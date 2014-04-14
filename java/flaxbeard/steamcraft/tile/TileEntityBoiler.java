@@ -1,0 +1,367 @@
+package flaxbeard.steamcraft.tile;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
+
+public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
+	private FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
+	public int steam;
+    private ItemStack[] furnaceItemStacks = new ItemStack[2];
+    private String field_145958_o;
+	public int furnaceCookTime;
+	public int furnaceBurnTime;
+	public int currentItemBurnTime;
+    private static final int[] slotsTop = new int[] {0};
+    private static final int[] slotsBottom = new int[] {0, 1};
+    private static final int[] slotsSides = new int[] {1};
+    
+    
+    @Override
+    public void updateEntity() {
+    	UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
+    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+    	if (this.getStackInSlot(1) != null) {
+	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
+	    		if (canDrainItem(this.getStackInSlot(1))) {
+	    			if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
+	    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));
+	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000),true);
+	    			}
+	    			if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
+	    				int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;
+	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, ((IFluidContainerItem)this.getStackInSlot(1).getItem()).drain(this.getStackInSlot(1), maxDrain, true).amount),true);
+	    			}
+	    		}
+	    	}
+    	}
+    	
+        boolean flag = this.furnaceBurnTime > 0;
+        boolean flag1 = false;
+
+        if (this.furnaceBurnTime > 0)
+        {
+            --this.furnaceBurnTime;
+        }
+
+       // if (!this.worldObj.isRemote)
+        //{
+            if (this.furnaceBurnTime == 0 && this.canSmelt())
+            {
+                this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[0]);
+
+                if (this.furnaceBurnTime > 0)
+                {
+                    flag1 = true;
+
+                    if (this.furnaceItemStacks[0] != null)
+                    {
+                        --this.furnaceItemStacks[0].stackSize;
+
+                        if (this.furnaceItemStacks[0].stackSize == 0)
+                        {
+                            this.furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
+                        }
+                    }
+                }
+            }
+            if (this.isBurning() && this.canSmelt())
+            {
+                ++this.furnaceCookTime;
+                --this.furnaceBurnTime;
+                    this.steam++;
+                    this.myTank.drain(10, true);
+                    flag1 = true;
+                
+            }
+            else
+            {
+                this.furnaceCookTime = 0;
+            }
+
+            if (flag != this.furnaceBurnTime > 0)
+            {
+                flag1 = true;
+               // BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+            }
+        //}
+
+        if (flag1)
+        {
+            this.markDirty();
+        }
+    }
+    
+    private boolean canSmelt() {
+		return myTank.getFluidAmount() > 9;
+	}
+
+	public boolean isBurning()
+    {
+        return true;
+    }
+    
+    private boolean canDrainItem(ItemStack stack) {
+    	return stack.stackSize == 1;
+    }
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		return myTank.fill(resource, doFill);
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource,
+			boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		return true;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		return new FluidTankInfo[] { new FluidTankInfo(myTank) };
+	}
+
+	@Override
+	public int getSizeInventory() {
+        return this.furnaceItemStacks.length;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int par1) {
+        return this.furnaceItemStacks[par1];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int par1, int par2) {
+		 if (this.furnaceItemStacks[par1] != null)
+		    {
+		        ItemStack itemstack;
+		
+		        if (this.furnaceItemStacks[par1].stackSize <= par2)
+		        {
+		            itemstack = this.furnaceItemStacks[par1];
+		            this.furnaceItemStacks[par1] = null;
+		            return itemstack;
+		        }
+		        else
+		        {
+		            itemstack = this.furnaceItemStacks[par1].splitStack(par2);
+		
+		            if (this.furnaceItemStacks[par1].stackSize == 0)
+		            {
+		                this.furnaceItemStacks[par1] = null;
+		            }
+		
+		            return itemstack;
+		        }
+		    }
+		    else
+		    {
+		        return null;
+		    }
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int par1) {
+        if (this.furnaceItemStacks[par1] != null)
+        {
+            ItemStack itemstack = this.furnaceItemStacks[par1];
+            this.furnaceItemStacks[par1] = null;
+            return itemstack;
+        }
+        else
+        {
+            return null;
+        }
+	}
+
+	@Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+        this.furnaceItemStacks[par1] = par2ItemStack;
+
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
+	}
+
+	@Override
+    public String getInventoryName()
+    {
+        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+    }
+
+	@Override
+    public boolean hasCustomInventoryName()
+    {
+        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+    }
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer var1) {
+		  return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : var1.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+	}
+
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
+	
+    public static int getItemBurnTime(ItemStack p_145952_0_)
+    {
+        if (p_145952_0_ == null)
+        {
+            return 0;
+        }
+        else
+        {
+            Item item = p_145952_0_.getItem();
+
+            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
+            {
+                Block block = Block.getBlockFromItem(item);
+
+                if (block == Blocks.wooden_slab)
+                {
+                    return 150;
+                }
+
+                if (block.getMaterial() == Material.wood)
+                {
+                    return 300;
+                }
+
+                if (block == Blocks.coal_block)
+                {
+                    return 16000;
+                }
+            }
+
+            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item == Items.stick) return 100;
+            if (item == Items.coal) return 1600;
+            if (item == Items.lava_bucket) return 20000;
+            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
+            if (item == Items.blaze_rod) return 2400;
+            return GameRegistry.getFuelValue(p_145952_0_);
+        }
+    }
+
+	@Override
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
+    {
+        return par1 == 1 ? getItemBurnTime(par2ItemStack) > 0 : par2ItemStack.getItem() == Items.bucket || FluidContainerRegistry.isEmptyContainer(par2ItemStack) || par2ItemStack.getItem()  instanceof IFluidContainerItem;
+    }
+
+    public int[] getAccessibleSlotsFromSide(int par1)
+    {
+        return par1 == 0 ? slotsBottom : (par1 == 1 ? slotsTop : slotsSides);
+    }
+
+
+	@Override
+    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
+    {
+        return this.isItemValidForSlot(par1, par2ItemStack);
+    }
+
+	@Override
+    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
+    {
+        return par2ItemStack.getItem() == Items.bucket;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getCookProgressScaled(int p_145953_1_)
+    {
+        return this.furnaceCookTime * p_145953_1_ / 200;
+    }
+
+	@Override
+	public float getPressure() {
+		return (this.steam/100);
+	}
+
+	@Override
+	public boolean canInsert(ForgeDirection face) {
+		return false;
+	}
+
+	@Override
+	public int getCapacity() {
+		return 100;
+	}
+
+	@Override
+	public int getSteam() {
+		return steam;
+	}
+
+	@Override
+	public void insertSteam(int amount, ForgeDirection face) {
+	}
+
+    @SideOnly(Side.CLIENT)
+    public int getBurnTimeRemainingScaled(int p_145955_1_)
+    {
+        if (this.currentItemBurnTime == 0)
+        {
+            this.currentItemBurnTime = 200;
+        }
+
+        return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
+    }
+
+	@Override
+	public void decrSteam(int i) {
+		this.steam-=i;
+	}
+
+}
