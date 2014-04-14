@@ -1,0 +1,28 @@
+itemGroup.steamcraft=Steamcraft
+
+item.steamcraft:musketCartridge.name=Musket Cartridge
+item.steamcraft:musket.name=Flintlock Musket
+item.steamcraft:pistol.name=Flintlock Pistol
+item.steamcraft:revolver.name=Flintlock Revolver
+item.steamcraft:blunderbuss.name=Flintlock Blunderbuss
+item.steamcraft:spyglass.name=Spyglass
+
+item.steamcraft:ingot.0.name=Copper Ingot
+item.steamcraft:ingot.1.name=Zinc Ingot
+
+item.steamcraft:nugget.0.name=Copper Nugget
+item.steamcraft:nugget.1.name=Zinc Nugget
+item.steamcraft:nugget.2.name=Iron Nugget
+
+item.steamcraft:plate.0.name=Copper Plate
+item.steamcraft:plate.1.name=Zinc Plate
+item.steamcraft:plate.2.name=Iron Plate
+item.steamcraft:plate.3.name=Gold Plate
+
+item.steamcraft:ingotMold.name=Ingot Mold
+item.steamcraft:nuggetMold.name=Nugget Mold
+item.steamcraft:plateMold.name=Plate Mold
+
+tile.steamcraft:crucible.name=Crucible
+tile.steamcraft:ore.0.name=Copper Ore
+tile.steamcraft:ore.1.name=Zinc Ore
