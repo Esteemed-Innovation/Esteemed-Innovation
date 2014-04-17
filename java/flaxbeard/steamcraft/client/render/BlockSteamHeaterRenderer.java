@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
@@ -146,34 +148,118 @@ public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
 		int meta = world.getBlockMetadata(x, y, z);
 		ForgeDirection direction = ForgeDirection.getOrientation(meta).getOpposite();
+		for (ForgeDirection dir : ForgeDirection.values()) {
+			if (dir != direction.getOpposite()) {
+				if (world.getTileEntity(pipe.xCoord+dir.offsetX, pipe.yCoord+dir.offsetY, pipe.zCoord+dir.offsetZ) != null) {
+					TileEntity tile = world.getTileEntity(pipe.xCoord+dir.offsetX, pipe.yCoord+dir.offsetY, pipe.zCoord+dir.offsetZ);
+					if (tile instanceof ISteamTransporter) {
+						ISteamTransporter target = (ISteamTransporter) tile;
+						if (target.doesConnect(dir.getOpposite())) {
+							myDirections.add(dir);
+							if (dir.offsetX == 1) {
+								maxX = 1.0F-2*px;
+							}
+							if (dir.offsetY == 1) {
+								maxY = 1.0F-2*px;
+							}
+							if (dir.offsetZ == 1) {
+								maxZ = 1.0F-2*px;
+							}
+							if (dir.offsetX == -1) {
+								minX = 0.0F+2*px;
+							}
+							if (dir.offsetY == -1) {
+								minY = 0.0F+2*px;
+							}
+							if (dir.offsetZ == -1) {
+								minZ = 0.0F+2*px;
+							}
+						}
+					}
+				}
+			}
+		}
+	    
+	    if (direction == ForgeDirection.WEST) { 
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(maxX, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (direction == ForgeDirection.EAST) { 
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, minX, 1.0F, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (direction == ForgeDirection.NORTH) { 
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(0.0F, 0.0F, maxZ, 1.0F, 1.0F, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (direction == ForgeDirection.SOUTH) { 
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, minZ);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (direction == ForgeDirection.DOWN) { 
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(0.0F, maxY, 0.0F, 1.0F, 1.0F, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (direction == ForgeDirection.UP) {     
+		    renderer.clearOverrideBlockTexture();
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, minY, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    
+	    renderer.overrideBlockTexture = ((BlockPipe)SteamcraftBlocks.pipe).sideIcon;
+	    if (minX == 2*px) {
+			block.setBlockBounds(0.0F, ringMin, ringMin, minX, ringMax, ringMax);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (maxX == 1.0F-2*px) {
+			block.setBlockBounds(maxX, ringMin, ringMin, 1.0F, ringMax, ringMax);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (minY == 2*px) {
+			block.setBlockBounds(ringMin, 0.0F, ringMin, ringMax, minY, ringMax);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+
+	    }
+	    if (maxY == 1.0F-2*px) {
+			block.setBlockBounds(ringMin, maxY, ringMin, ringMax, 1.0F, ringMax);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (minZ == 2*px) {
+			block.setBlockBounds(ringMin, ringMin, 0.0F, ringMax, ringMax,minZ);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    if (maxZ == 1.0F-2*px) {
+			block.setBlockBounds(ringMin, ringMin, maxZ, ringMax, ringMax, 1.0F);
+		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.renderStandardBlock(block, x, y, z);
+	    }
+	    renderer.clearOverrideBlockTexture();
+		
 		int type = -1;
-		if (direction.offsetX == 1) {
-			maxX = 1.0F-2*px;
-		}
-		if (direction.offsetY == 1) {
-			maxY = 1.0F-2*px;
-			//minY = 0.5F;
-			type = 1;
-		}
-		if (direction.offsetZ == 1) {
-			maxZ = 1.0F-2*px;
-			//minZ = 0.5F;
-			type = 2;
-		}
-		if (direction.offsetX == -1) {
-			minX = 0.0F+2*px;
-			//maxX = 0.5F;
-			type = 0;
-		}
-		if (direction.offsetY == -1) {
-			minY = 0.0F+2*px;
-			//maxY = 0.5F;
-			type = 1;
-		}
-		if (direction.offsetZ == -1) {
-			minZ = 0.0F+2*px;
-			//maxZ = 0.5F;
-			type = 2;
+		if (myDirections.size() == 1) {
+		    renderer.overrideBlockTexture = ((BlockPipe)SteamcraftBlocks.pipe).sideIcon;
+		    minX = minX - px;
+		    maxX = maxX + px;
+		    minY = minY - px;
+		    maxY = maxY + px;
+		    minZ = minZ - px;
+		    maxZ = maxZ + px;
 		}
 		block.setBlockBounds(minX, baseMin, baseMin, maxX, baseMax, baseMax);
 	    renderer.setRenderBoundsFromBlock(block);
@@ -186,68 +272,6 @@ public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
 	    block.setBlockBounds(baseMin, minY, baseMin, baseMax, maxY, baseMax);
 	    renderer.setRenderBoundsFromBlock(block);
 	    renderer.renderStandardBlock(block, x, y, z);
-	    
-	    renderer.overrideBlockTexture = ((BlockPipe)SteamcraftBlocks.pipe).sideIcon;
-	    if (minX == 2*px) {
-			block.setBlockBounds(0.0F, ringMin, ringMin, minX, ringMax, ringMax);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(maxX, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
-	    if (maxX == 1.0F-2*px) {
-			block.setBlockBounds(maxX, ringMin, ringMin, 1.0F, ringMax, ringMax);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, minX, 1.0F, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
-	    if (minY == 2*px) {
-			block.setBlockBounds(ringMin, 0.0F, ringMin, ringMax, minY, ringMax);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(0.0F, maxY, 0.0F, 1.0F, 1.0F, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
-	    if (maxY == 1.0F-2*px) {
-			block.setBlockBounds(ringMin, maxY, ringMin, ringMax, 1.0F, ringMax);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, minY, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
-	    if (minZ == 2*px) {
-			block.setBlockBounds(ringMin, ringMin, 0.0F, ringMax, ringMax,minZ);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(0.0F, 0.0F, maxZ, 1.0F, 1.0F, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
-	    if (maxZ == 1.0F-2*px) {
-			block.setBlockBounds(ringMin, ringMin, maxZ, ringMax, ringMax, 1.0F);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-		    
-		    renderer.clearOverrideBlockTexture();
-			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, minZ);
-		    renderer.setRenderBoundsFromBlock(block);
-		    renderer.renderStandardBlock(block, x, y, z);
-	    }
 	    renderer.clearOverrideBlockTexture();
 		return true;
 	}
