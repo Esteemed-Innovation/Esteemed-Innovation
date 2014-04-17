@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
 
 public class TileEntitySteamHeater extends TileEntity implements ISteamTransporter {
 	
@@ -40,6 +41,21 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 	
 	@Override
 	public void updateEntity() {
+		if (!this.worldObj.isRemote) {
+			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+			ForgeDirection[] directions = new ForgeDirection[5];
+			int i = 0;
+			for (ForgeDirection direction : ForgeDirection.values()) {
+				if (direction != dir) {
+					directions[i] = direction;
+					i++;
+				}
+			}
+			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,directions);
+			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		}
+		
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		if (this.worldObj.getTileEntity(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ) != null) {
@@ -89,7 +105,7 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 	public boolean canInsert(ForgeDirection face) {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		return face == dir.getOpposite();
+		return face != dir;
 	}
 
 	@Override
@@ -114,7 +130,7 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 	public boolean doesConnect(ForgeDirection face) {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		return face == dir.getOpposite();
+		return face != dir;
 	}
 
 }
