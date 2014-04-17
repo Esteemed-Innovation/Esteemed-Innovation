@@ -9,4 +9,5 @@ public interface ISteamTransporter {
 	public int getSteam();
 	public void insertSteam(int amount, ForgeDirection face);
 	public void decrSteam(int i);
+	public boolean doesConnect(ForgeDirection face);
 }

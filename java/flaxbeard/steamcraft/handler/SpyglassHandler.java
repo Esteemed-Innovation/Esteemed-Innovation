@@ -1,22 +1,11 @@
 package flaxbeard.steamcraft.handler;
 
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftItems;
 
 public class SpyglassHandler {
 	private boolean inUse = false;
@@ -31,7 +20,7 @@ public class SpyglassHandler {
 		inUse = false;
 		if(Minecraft.getMinecraft().thePlayer != null){
 			ItemStack item = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(Minecraft.getMinecraft().thePlayer.inventory.currentItem);
-			if (item != null && item.getItem() == Steamcraft.spyglass) {
+			if (item != null && item.getItem() == SteamcraftItems.spyglass) {
 				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -1.7F;

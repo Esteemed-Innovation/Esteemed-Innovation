@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import cpw.mods.fml.common.IWorldGenerator;
-import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 
 public class SteamcraftOreGen implements IWorldGenerator {
 
@@ -38,14 +38,14 @@ public class SteamcraftOreGen implements IWorldGenerator {
 			int x = i + random.nextInt(16);
 			int y = random.nextInt(80);
 			int z = j + random.nextInt(16);
-			(new WorldGenMinable(Steamcraft.steamcraftOre,0, 10,Blocks.stone)).generate(world, random, x, y, z);
+			(new WorldGenMinable(SteamcraftBlocks.steamcraftOre,0, 10,Blocks.stone)).generate(world, random, x, y, z);
 		}
 		
 		for(int k = 0; k < 10; k++) {
 			int x = i + random.nextInt(16);
 			int y = random.nextInt(75);
 			int z = j + random.nextInt(16);
-			(new WorldGenMinable(Steamcraft.steamcraftOre,1, 5,Blocks.stone)).generate(world, random, x, y, z);
+			(new WorldGenMinable(SteamcraftBlocks.steamcraftOre,1, 5,Blocks.stone)).generate(world, random, x, y, z);
 		}
 	}
 
