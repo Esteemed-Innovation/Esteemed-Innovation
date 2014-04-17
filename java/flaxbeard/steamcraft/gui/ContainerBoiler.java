@@ -8,6 +8,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
@@ -125,14 +128,20 @@ public class ContainerBoiler extends Container
             }
             else if (par2 != 1 && par2 != 0)
             {
-            	if (itemstack1.getItem() == Items.book || itemstack1.getItem() == Items.enchanted_book)
+            	if (itemstack1.getItem() ==  Items.water_bucket || (itemstack1.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)itemstack1.getItem()).getFluid(itemstack1).getFluid() == FluidRegistry.WATER))
                 {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false))
                     {
                         return null;
                     }
                 }
-               
+            	else if (TileEntityFurnace.isItemFuel(itemstack1))
+                {
+                    if (!this.mergeItemStack(itemstack1, 1, 2, false))
+                    {
+                        return null;
+                    }
+                }
                 else if (par2 >= 2 && par2 < 30)
                 {
                     if (!this.mergeItemStack(itemstack1, 30, 38, false))

@@ -17,7 +17,7 @@ import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityMoldRenderer extends TileEntitySpecialRenderer {
+public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 
 	private static final ModelMold model = new ModelMold();
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/mold.png");
@@ -129,6 +129,53 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer {
 	    tessellator.addVertexWithUV(1.0D, 1.0D, 0.0D, f3, f2);
 	    tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, f1, f2);
 	    tessellator.draw();
+	}
+
+	@Override
+	public void renderInventoryTileEntityAt(TileEntity var1, double x,
+			double y, double z, float var8) {
+		TileEntityMold mold = (TileEntityMold) var1;
+		GL11.glPushMatrix();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glColor4f(1F, 1F, 1F, 1F);
+		GL11.glTranslated(x, y, z);
+
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+	
+		GL11.glScalef(1F, -1F, -1F);
+		model.renderBottom();
+		GL11.glPushMatrix();
+		GL11.glRotatef(90.0F,1F,0F,0F);
+		float pix = 1.0F/16.0F;
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F+4*pix);
+		GL11.glTranslatef(0.0F,0.0F,-0.001F);
+		renderMoldUnder();
+
+		GL11.glPopMatrix();
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		GL11.glScalef(1F, -1F, -1F);
+		
+		GL11.glScalef(1F, -1F, -1F);
+		float px = (1.0F/16.0F);
+		
+		GL11.glTranslatef(0.0F*90.0F, 4*px, -6*px);
+
+		float tick = (float) (Math.PI*(0*90.0F/20.0F))/180.0F;
+		GL11.glRotatef(0.0F+MathHelper.sin(tick)*100.0F, 1F, 0F, 0F);
+		
+		model.renderTop();
+		GL11.glPushMatrix();
+		GL11.glRotatef(270.0F,1F,0F,0F);
+		GL11.glTranslatef(-0.5F, -0.5F-6*pix, -0.5F+8*pix);
+		GL11.glTranslatef(0.0F,0.0F,-0.001F);
+		renderMoldUnder();
+		GL11.glPopMatrix();
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+
+		GL11.glScalef(1F, -1F, -1F);
+		
+		GL11.glPopMatrix();
 	}
 
 }

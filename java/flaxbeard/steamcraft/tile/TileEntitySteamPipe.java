@@ -1,5 +1,11 @@
 package flaxbeard.steamcraft.tile;
 
+import java.util.ArrayList;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -8,11 +14,10 @@ import flaxbeard.steamcraft.api.UtilSteamTransport;
 public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter {
 	
 	private int steam;
-	private int capacity = 10;
 
 	@Override
 	public float getPressure() {
-		return this.getSteam()/this.getCapacity();
+		return this.getSteam()/1000.0F;
 	}
 
 	@Override
@@ -22,7 +27,7 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 
 	@Override
 	public int getCapacity() {
-		return capacity;
+		return 1000;
 	}
 
 	@Override
@@ -36,14 +41,63 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 	}
 	
 	@Override
-	public void updateEntity() {
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("steam", steam);
+        
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
+	    
 
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.steam = access.getInteger("steam");
+    	
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+	
+	@Override
+	public void updateEntity() {
+		if (!this.worldObj.isRemote) {
+			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
+			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		}
+
+		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
+				TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+				if (tile instanceof ISteamTransporter) {
+					ISteamTransporter target = (ISteamTransporter) tile;
+					if (target.doesConnect(direction.getOpposite())) {
+						myDirections.add(direction);
+					}
+				}
+			}
+		}
+		if (myDirections.size() == 2 && (int) Math.floor(this.steam/2.0F) > 0) {
+			ForgeDirection direction = myDirections.get(0).getOpposite();
+			if (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite())) {
+				this.steam = (int) Math.floor(this.steam/2.0F);
+				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
+			}
+		}
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+	
 	@Override
 	public void decrSteam(int i) {
 		this.steam -= i;
+	}
+
+	@Override
+	public boolean doesConnect(ForgeDirection face) {
+		return true;
 	}
 
 }

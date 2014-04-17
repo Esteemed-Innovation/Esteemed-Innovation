@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
 public class ItemFirearm extends Item
@@ -184,7 +185,7 @@ public class ItemFirearm extends Item
         NBTTagCompound nbt = par1ItemStack.getTagCompound();
         boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
 
-        if (var5 || par3EntityPlayer.inventory.hasItem(Steamcraft.musketCartridge))
+        if (var5 || par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge))
         {
             if (nbt.getBoolean("done") == false)
             {
@@ -195,12 +196,12 @@ public class ItemFirearm extends Item
                 }
                 else
                 {
-                    par3EntityPlayer.inventory.consumeInventoryItem(Steamcraft.musketCartridge);
+                    par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
                     if (this.shellCount > 1) {
                     	for (int i = 1; i < this.shellCount; i++) {
-                    		if (par3EntityPlayer.inventory.hasItem(Steamcraft.musketCartridge))
+                    		if (par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge))
                             {
-                    			par3EntityPlayer.inventory.consumeInventoryItem(Steamcraft.musketCartridge);
+                    			par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
                     			nbt.setInteger("numloaded", nbt.getInteger("numloaded") + 1);
                             }
                     	}

@@ -12,6 +12,11 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -27,6 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
 	private FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
@@ -40,10 +46,36 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {1};
     
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("steam", steam);
+        access.setInteger("water",myTank.getFluidAmount());
+        access.setShort("BurnTime", (short)this.furnaceBurnTime);
+        access.setShort("CookTime", (short)this.furnaceCookTime);
+     
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	    
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.steam = access.getInteger("steam");
+    	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getInteger("water")));
+    	this.furnaceBurnTime = access.getShort("BurnTime");
+      	this.furnaceCookTime = access.getShort("CookTime");
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+    
     
     @Override
     public void updateEntity() {
-    	UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
+    	UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
     	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
     	if (this.getStackInSlot(1) != null) {
 	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
@@ -60,22 +92,24 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 	    	}
     	}
     	
-        boolean flag = this.furnaceBurnTime > 0;
+    	boolean flag = this.furnaceBurnTime > 0;
         boolean flag1 = false;
 
         if (this.furnaceBurnTime > 0)
         {
             --this.furnaceBurnTime;
         }
+        
 
-       // if (!this.worldObj.isRemote)
-        //{
+        if (!this.worldObj.isRemote)
+        {  	
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
                 this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[0]);
 
                 if (this.furnaceBurnTime > 0)
                 {
+
                     flag1 = true;
 
                     if (this.furnaceItemStacks[0] != null)
@@ -89,14 +123,18 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
                     }
                 }
             }
+
             if (this.isBurning() && this.canSmelt())
             {
                 ++this.furnaceCookTime;
-                --this.furnaceBurnTime;
-                    this.steam++;
-                    this.myTank.drain(10, true);
+
+                if (this.furnaceCookTime > 0)
+                {
+                    this.furnaceCookTime = 0;
+                    this.steam+=1;
+                    this.myTank.drain(1, true);
                     flag1 = true;
-                
+                }
             }
             else
             {
@@ -106,14 +144,13 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
             if (flag != this.furnaceBurnTime > 0)
             {
                 flag1 = true;
-               // BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
-        //}
-
-        if (flag1)
-        {
-            this.markDirty();
+       }
+        if (!this.worldObj.isRemote) {
+        	//System.out.println(this.furnaceBurnTime);
         }
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     private boolean canSmelt() {
@@ -122,7 +159,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	public boolean isBurning()
     {
-        return true;
+		return this.furnaceBurnTime > 0;
     }
     
     private boolean canDrainItem(ItemStack stack) {
@@ -326,17 +363,17 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public float getPressure() {
-		return (this.steam/100);
+		return (this.steam/10000.0F);
 	}
 
 	@Override
 	public boolean canInsert(ForgeDirection face) {
-		return false;
+		return face==ForgeDirection.UP;
 	}
 
 	@Override
 	public int getCapacity() {
-		return 100;
+		return 10000;
 	}
 
 	@Override
@@ -346,6 +383,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public void insertSteam(int amount, ForgeDirection face) {
+		steam+=amount;
 	}
 
     @SideOnly(Side.CLIENT)
@@ -362,6 +400,11 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 	@Override
 	public void decrSteam(int i) {
 		this.steam-=i;
+	}
+
+	@Override
+	public boolean doesConnect(ForgeDirection face) {
+		return face == ForgeDirection.UP;
 	}
 
 }

@@ -14,13 +14,13 @@ import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer {
+public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 
 	private static final ModelCrucible model = new ModelCrucible();
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible.png");
@@ -83,7 +83,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer {
 	
 	private void renderLiquid(TileEntityCrucible crucible) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-		IIcon icon = ((BlockSteamcraftCrucible)Steamcraft.crucible).liquidIcon;
+		IIcon icon = ((BlockSteamcraftCrucible)SteamcraftBlocks.crucible).liquidIcon;
 	    Tessellator tessellator = Tessellator.instance;
 	    float f1 = (float) (icon.getMinU() + (icon.getMaxU() - icon.getMinU()) * 0.8);
 	    float f2 = icon.getMinV();
@@ -101,6 +101,29 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer {
 	    tessellator.addVertexWithUV(0.875D, 0.875D, 0.0D, f3, f2);
 	    tessellator.addVertexWithUV(0.125D, 0.875D, 0.0D, f1, f2);
 	    tessellator.draw();
+	}
+
+	@Override
+	public void renderInventoryTileEntityAt(TileEntity var1, double x,
+			double y, double z, float var8) {
+		TileEntityCrucible crucible = (TileEntityCrucible) var1;
+		GL11.glPushMatrix();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glColor4f(1F, 1F, 1F, 1F);
+		GL11.glTranslated(x, y, z);
+
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture2);
+		GL11.glScalef(1F, -1F, -1F);
+		model.renderNoRotate();
+		GL11.glScalef(1F, -1F, -1F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		GL11.glScalef(1F, -1F, -1F);
+		
+		model.renderAll();
+		GL11.glScalef(1F, -1F, -1F);
+		
+		GL11.glPopMatrix();
 	}
 
 }
