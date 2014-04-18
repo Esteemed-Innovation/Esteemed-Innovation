@@ -20,6 +20,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
 public class BlockSteamcraftCrucible extends BlockContainer {
@@ -44,11 +45,11 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         	EntityItem item = (EntityItem) entity;
         	if (world.getBlock(x, y-1, z) == Blocks.fire) {
         		MutablePair output;
-        		if (CrucibleLiquid.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()))) {
-        			output = CrucibleLiquid.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()));
+        		if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()))) {
+        			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()));
         		}
-        		else if (CrucibleLiquid.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),-1))) {
-        			output = CrucibleLiquid.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),-1));
+        		else if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),-1))) {
+        			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),-1));
         		}
         		else
         		{

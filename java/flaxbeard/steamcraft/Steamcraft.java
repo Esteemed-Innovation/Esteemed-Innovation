@@ -2,13 +2,11 @@ package flaxbeard.steamcraft;
 
 
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -25,27 +23,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.block.BlockBoiler;
-import flaxbeard.steamcraft.block.BlockManyMetadataItem;
-import flaxbeard.steamcraft.block.BlockMold;
-import flaxbeard.steamcraft.block.BlockPipe;
-import flaxbeard.steamcraft.block.BlockSteamPistonBase;
-import flaxbeard.steamcraft.block.BlockSteamPistonExtension;
-import flaxbeard.steamcraft.block.BlockSteamPistonMoving;
-import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
-import flaxbeard.steamcraft.block.BlockSteamcraftOre;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SpyglassHandler;
-import flaxbeard.steamcraft.item.ItemFirearm;
-import flaxbeard.steamcraft.item.ItemIngotMold;
-import flaxbeard.steamcraft.item.ItemNuggetMold;
-import flaxbeard.steamcraft.item.ItemPlateMold;
-import flaxbeard.steamcraft.item.ItemSpyglass;
-import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
-import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
-import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
+import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityMold;
@@ -54,7 +37,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
-@Mod(modid = "Steamcraft", name = "Steamcraft", version = "1.0.0")
+@Mod(modid = "Steamcraft", name = "Professor Flaxbeard's Wonderous Steam Power Mod", version = "1.0.0")
 
 public class Steamcraft {
 	
@@ -103,6 +86,7 @@ public class Steamcraft {
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 		
+		MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
 		MinecraftForge.EVENT_BUS.register(new MechHandler());
 		
 		FMLCommonHandler.instance().bus().register(new SpyglassHandler());
@@ -112,34 +96,34 @@ public class Steamcraft {
 		
 		proxy.registerRenderers();
 		liquidIron = new CrucibleLiquid(new ItemStack(Items.iron_ingot), new ItemStack(SteamcraftItems.steamcraftPlate,1,2), new ItemStack(SteamcraftItems.steamcraftNugget,1,2), null,200,200,200);
-		CrucibleLiquid.liquids.add(liquidIron);
+		SteamcraftRegistry.liquids.add(liquidIron);
 		liquidGold = new CrucibleLiquid(new ItemStack(Items.gold_ingot), new ItemStack(SteamcraftItems.steamcraftPlate,1,3), new ItemStack(Items.gold_nugget), null,220,157,11);
-		CrucibleLiquid.liquids.add(liquidGold);
+		SteamcraftRegistry.liquids.add(liquidGold);
 		liquidZinc = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,1), new ItemStack(SteamcraftItems.steamcraftPlate,1,1), new ItemStack(SteamcraftItems.steamcraftNugget,1,1), null,225,225,225);
-		CrucibleLiquid.liquids.add(liquidZinc);
+		SteamcraftRegistry.liquids.add(liquidZinc);
 		liquidCopper = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,0), new ItemStack(SteamcraftItems.steamcraftPlate,1,0), new ItemStack(SteamcraftItems.steamcraftNugget,1,0), null,140,66,12);
-		CrucibleLiquid.liquids.add(liquidCopper);
+		SteamcraftRegistry.liquids.add(liquidCopper);
 		liquidBrass = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,4), new ItemStack(SteamcraftItems.steamcraftNugget,1,3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4),242,191,66);
-		CrucibleLiquid.liquids.add(liquidBrass);
+		SteamcraftRegistry.liquids.add(liquidBrass);
 		
-		CrucibleLiquid.registerSmeltThingOredict("ingotGold", liquidGold, 9);
-		CrucibleLiquid.registerSmeltThingOredict("ingotIron", liquidIron, 9);
-		CrucibleLiquid.registerSmeltThingOredict("ingotZinc", liquidZinc, 9);
-		CrucibleLiquid.registerSmeltThingOredict("ingotCopper", liquidCopper, 9);
-		CrucibleLiquid.registerSmeltThingOredict("ingotBrass", liquidBrass, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("ingotZinc", liquidZinc, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("ingotCopper", liquidCopper, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("ingotBrass", liquidBrass, 9);
 		
-		CrucibleLiquid.registerSmeltThingOredict("plateGold", liquidGold, 9);
-		CrucibleLiquid.registerSmeltThingOredict("plateIron", liquidIron, 9);
-		CrucibleLiquid.registerSmeltThingOredict("plateZinc", liquidZinc, 9);
-		CrucibleLiquid.registerSmeltThingOredict("plateCopper", liquidCopper, 9);
-		CrucibleLiquid.registerSmeltThingOredict("plateBrass", liquidBrass, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("plateGold", liquidGold, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("plateIron", liquidIron, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("plateZinc", liquidZinc, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("plateCopper", liquidCopper, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("plateBrass", liquidBrass, 9);
 		
-		CrucibleLiquid.registerSmeltThingOredict("nuggetGold", liquidGold, 1);
-		CrucibleLiquid.registerSmeltThingOredict("nuggetIron", liquidIron, 1);
-		CrucibleLiquid.registerSmeltThingOredict("nuggetZinc", liquidZinc, 1);
-		CrucibleLiquid.registerSmeltThingOredict("nuggetCopper", liquidCopper, 1);
-		CrucibleLiquid.registerSmeltThingOredict("nuggetBrass", liquidBrass, 1);
-		CrucibleLiquid.registerSmeltThing(Items.gold_nugget, liquidGold, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("nuggetGold", liquidGold, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("nuggetIron", liquidIron, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("nuggetZinc", liquidZinc, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("nuggetCopper", liquidCopper, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("nuggetBrass", liquidBrass, 1);
+		SteamcraftRegistry.registerSmeltThing(Items.gold_nugget, liquidGold, 1);
 	}
 	
 	

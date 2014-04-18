@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.UtilEnhancements;
 
 public class SpyglassHandler {
 	private boolean inUse = false;
@@ -25,6 +26,14 @@ public class SpyglassHandler {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -1.7F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity = 0.0F;
+					this.renderTelescopeOverlay();
+				}
+			}
+			if (!wasInUse && item != null && item.getItem() == SteamcraftItems.musket && UtilEnhancements.getEnhancementFromItem(item) == SteamcraftItems.spyglass) {
+				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+					inUse = true;
+					Minecraft.getMinecraft().gameSettings.fovSetting = -0.85F;
+					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;
 					this.renderTelescopeOverlay();
 				}
 			}
