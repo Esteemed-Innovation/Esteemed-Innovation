@@ -1,4 +1,5 @@
 itemGroup.steamcraft=Steamcraft
+steamcraft.enhancementText=Enhancements:
 
 item.steamcraft:musketCartridge.name=Musket Cartridge
 item.steamcraft:musket.name=Flintlock Musket
@@ -6,6 +7,8 @@ item.steamcraft:pistol.name=Flintlock Pistol
 item.steamcraft:revolver.name=Flintlock Revolver
 item.steamcraft:blunderbuss.name=Flintlock Blunderbuss
 item.steamcraft:spyglass.name=Spyglass
+item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
+enhancement.steamcraft:musketMarksman=Scope Kit
 
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot

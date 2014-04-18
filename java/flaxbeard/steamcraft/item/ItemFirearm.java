@@ -1,5 +1,8 @@
 package flaxbeard.steamcraft.item;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,12 +10,15 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import flaxbeard.steamcraft.Steamcraft;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.UtilEnhancements;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
 public class ItemFirearm extends Item
@@ -50,7 +56,60 @@ public class ItemFirearm extends Item
         this.shellCount = par7;
         this.tinker = par8;
     }
-
+    
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+		if (UtilEnhancements.hasEnhancement(stack)) {
+			list.add(UtilEnhancements.getEnhancementDisplayText(stack));
+		}
+		super.addInformation(stack, player, list, par4);
+	}
+    
+	@Override
+	public String getUnlocalizedName(ItemStack stack)
+	{
+		if (UtilEnhancements.hasEnhancement(stack)) {
+			return UtilEnhancements.getNameFromEnhancement(stack);
+		}
+		else
+		{
+			return super.getUnlocalizedName(stack);
+		}
+	}
+    
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister ir)
+	{
+		super.registerIcons(ir);
+		UtilEnhancements.registerEnhancementsForItem(ir, this);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	{
+		if (UtilEnhancements.hasEnhancement(stack)) {
+			return UtilEnhancements.getIconFromEnhancement(stack);
+		}
+		else
+		{
+			return super.getIcon(stack, renderPass, player, usingItem, useRemaining);
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public IIcon getIconIndex(ItemStack stack)
+	{
+		if (UtilEnhancements.hasEnhancement(stack)) {
+			return UtilEnhancements.getIconFromEnhancement(stack);
+		}
+		else
+		{
+			return super.getIconIndex(stack);
+		}
+	}
+	
     /**
      * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
      */
@@ -61,6 +120,10 @@ public class ItemFirearm extends Item
 
         if (nbt.getInteger("loaded") > 0)
         {
+        	float enhancementAccuracy = 0.0F;
+        	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+        		enhancementAccuracy = UtilEnhancements.getEnhancementFromItem(par1ItemStack).getAccuracyChange();
+        	}
             int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
             ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
             MinecraftForge.EVENT_BUS.post(event);
@@ -84,29 +147,10 @@ public class ItemFirearm extends Item
                 var7 = 1.0F;
             }
 
-            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy) - var7), damage, true);
+            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy) - var7), damage, true);
 
             if (var7 == 1.0F)
             {
-            }
-
-            int var9 = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
-
-            if (var9 > 0)
-            {
-                var8.setDamage(var8.getDamage() + var9 * 0.5D + 0.5D);
-            }
-
-            int var10 = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
-
-            if (var10 > 0)
-            {
-                var8.setKnockbackStrength(var10);
-            }
-
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
-            {
-                var8.setFire(100);
             }
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
@@ -133,7 +177,7 @@ public class ItemFirearm extends Item
                 {
                     for (int i = 1; i < 21; i++)
                     {
-                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy) - var7, damage, this.tinker == "bassCannon");
+                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy) - var7, damage, this.tinker == "bassCannon");
                         par2World.spawnEntityInWorld(var12);
                     }
                 }
@@ -300,12 +344,4 @@ public class ItemFirearm extends Item
         return par1ItemStack;
     }
 
-    /**
-     * Return the enchantability factor of the item, most of the time is based on material.
-     */
-    @Override
-	public int getItemEnchantability()
-    {
-        return 1;
-    }
 }

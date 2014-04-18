@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 public class TileEntityCrucible extends TileEntity {
 	public ArrayList<CrucibleLiquid> contents = new ArrayList<CrucibleLiquid>();
@@ -68,7 +69,7 @@ public class TileEntityCrucible extends TileEntity {
 				this.tipping = false;
 			}
 		}
-		for (CrucibleLiquid liquid : CrucibleLiquid.liquids) {
+		for (CrucibleLiquid liquid : SteamcraftRegistry.liquids) {
 			if (liquid.recipe != null) {
 				CrucibleFormula recipe = liquid.recipe;
 				if (recipe.matches(contents, number, recipe)) {
@@ -111,7 +112,7 @@ public class TileEntityCrucible extends TileEntity {
 	
 	public CrucibleLiquid getLiquidFromIngot(ItemStack ingot) {
 		CrucibleLiquid output = null;
-		for (CrucibleLiquid liquid : CrucibleLiquid.liquids) {
+		for (CrucibleLiquid liquid : SteamcraftRegistry.liquids) {
 			ItemStack ingotClone = ingot.copy();
 			ingotClone.stackSize = 1;
 			if (liquid.ingot.equals(ingotClone)) {
@@ -123,7 +124,7 @@ public class TileEntityCrucible extends TileEntity {
 	}
 	
 	public CrucibleLiquid getNextLiquid(ICrucibleMold mold) {
-		for (CrucibleLiquid liquid : CrucibleLiquid.liquids) {
+		for (CrucibleLiquid liquid : SteamcraftRegistry.liquids) {
 			if (this.number.containsKey(liquid)) {
 				if (mold.canUseOn(liquid) && this.number.get(liquid) >= mold.getCostToMold(liquid)) {
 					return liquid;

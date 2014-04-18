@@ -1,6 +1,11 @@
 package flaxbeard.steamcraft;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
+import flaxbeard.steamcraft.api.IEnhancement;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
@@ -9,9 +14,6 @@ import flaxbeard.steamcraft.item.ItemSpyglass;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class SteamcraftItems {
 	public static Item musketCartridge;
@@ -29,19 +31,22 @@ public class SteamcraftItems {
     public static Item steamcraftNugget;
     public static Item steamcraftPlate;
     
+    public static Item enhancementScope;
+    
     public static void registerItems() {
     	musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
 		GameRegistry.registerItem(musketCartridge, "musketCartridge");
-		musket = new ItemFirearm(20.0F, 84,0.1F, 5.0F, false, 1).setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
+		musket = new ItemFirearm(20.0F, 84,0.2F, 5.0F, false, 1).setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
 		GameRegistry.registerItem(musket, "musket");
-		pistol = new ItemFirearm(15.0F, 42,0.3F, 2.0F, false, 1).setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
+		pistol = new ItemFirearm(15.0F, 42,0.5F, 2.0F, false, 1).setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
 		GameRegistry.registerItem(pistol, "pistol");
-		revolver = new ItemFirearm(12.5F, 84,0.4F, 1.0F, false, 6).setUnlocalizedName("steamcraft:revolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponRevolver");
+		revolver = new ItemFirearm(12.5F, 84,0.7F, 1.0F, false, 6).setUnlocalizedName("steamcraft:revolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponRevolver");
 		GameRegistry.registerItem(revolver, "revolver");
 		blunderbuss = new ItemFirearm(25.0F, 95,3.5F, 7.5F, true, 1).setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
 		GameRegistry.registerItem(blunderbuss, "blunderbuss");
 		spyglass = new ItemSpyglass().setUnlocalizedName("steamcraft:spyglass").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:spyglass");
 		GameRegistry.registerItem(spyglass, "spyglass");
+		SteamcraftRegistry.registerEnhancement((IEnhancement) spyglass);
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");

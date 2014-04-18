@@ -44,7 +44,7 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 		if (!this.worldObj.isRemote) {
 			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 			ForgeDirection dir = ForgeDirection.getOrientation(meta);
-			ForgeDirection[] directions = new ForgeDirection[5];
+			ForgeDirection[] directions = new ForgeDirection[6];
 			int i = 0;
 			for (ForgeDirection direction : ForgeDirection.values()) {
 				if (direction != dir) {
