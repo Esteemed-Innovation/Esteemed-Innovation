@@ -4,8 +4,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
-import flaxbeard.steamcraft.api.IEnhancement;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
 import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
@@ -31,7 +32,7 @@ public class SteamcraftItems {
     public static Item steamcraftNugget;
     public static Item steamcraftPlate;
     
-    public static Item enhancementScope;
+    public static Item enhancementAblaze;
     
     public static void registerItems() {
     	musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
@@ -47,6 +48,9 @@ public class SteamcraftItems {
 		spyglass = new ItemSpyglass().setUnlocalizedName("steamcraft:spyglass").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:spyglass");
 		GameRegistry.registerItem(spyglass, "spyglass");
 		SteamcraftRegistry.registerEnhancement((IEnhancement) spyglass);
+		enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
+		GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
+		SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");

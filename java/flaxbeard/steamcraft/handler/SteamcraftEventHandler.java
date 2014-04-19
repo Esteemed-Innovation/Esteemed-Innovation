@@ -3,9 +3,9 @@ package flaxbeard.steamcraft.handler;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import flaxbeard.steamcraft.api.IEnhancement;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilEnhancements;
+import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 
 public class SteamcraftEventHandler {
 	@SubscribeEvent

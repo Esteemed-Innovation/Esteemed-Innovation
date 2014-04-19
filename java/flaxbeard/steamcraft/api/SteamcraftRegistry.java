@@ -10,6 +10,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+
 public class SteamcraftRegistry {
 	private static int nextEnhancementID = 0;
 	public static ArrayList<CrucibleLiquid> liquids = new ArrayList<CrucibleLiquid>();

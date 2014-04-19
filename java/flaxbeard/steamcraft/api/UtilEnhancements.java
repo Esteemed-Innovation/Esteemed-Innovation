@@ -9,6 +9,8 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+
 public class UtilEnhancements {
 	public static void registerEnhancementsForItem(IIconRegister registry, Item item) {
 		for (IEnhancement enhancement : SteamcraftRegistry.enhancements.values()) {

@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.UtilEnhancements;
+import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
 public class ItemFirearm extends Item
@@ -121,8 +122,15 @@ public class ItemFirearm extends Item
         if (nbt.getInteger("loaded") > 0)
         {
         	float enhancementAccuracy = 0.0F;
+        	float enhancementDamage = 0;
+        	float enhancementKnockback = 0;
+        	
         	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-        		enhancementAccuracy = UtilEnhancements.getEnhancementFromItem(par1ItemStack).getAccuracyChange();
+        		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+        			enhancementAccuracy = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getAccuracyChange(this);
+        			enhancementDamage = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getDamageChange(this);
+        			enhancementKnockback = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getKnockbackChange(this);
+        		}
         	}
             int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
             ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
@@ -147,18 +155,20 @@ public class ItemFirearm extends Item
                 var7 = 1.0F;
             }
 
-            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy) - var7), damage, true);
-
-            if (var7 == 1.0F)
-            {
-            }
+            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy) - var7), (damage+enhancementDamage), true);
+           
+            if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+        		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+        			var8 = ((IEnhancementFirearm)UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var8);
+        		}
+        	}
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
             if (this.tinker == "") {
-            	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", (knockback * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+            	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
             }
             else if (this.tinker == "bassCannon") {
-            	 par2World.playSoundAtEntity(par3EntityPlayer, "steamcraft:wobble", (knockback * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+            	 par2World.playSoundAtEntity(par3EntityPlayer, "steamcraft:wobble", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
             }
             for (int i = 1; i < 16; i++)
             {
@@ -177,7 +187,12 @@ public class ItemFirearm extends Item
                 {
                     for (int i = 1; i < 21; i++)
                     {
-                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy) - var7, damage, this.tinker == "bassCannon");
+                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy) - var7, (damage+enhancementDamage), this.tinker == "bassCannon");
+                        if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+                    		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+                    			var12 = ((IEnhancementFirearm)UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var12);
+                    		}
+                    	}
                         par2World.spawnEntityInWorld(var12);
                     }
                 }
@@ -228,7 +243,12 @@ public class ItemFirearm extends Item
     {
         NBTTagCompound nbt = par1ItemStack.getTagCompound();
         boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
-
+        int enhancementShells  = 0;
+    	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+    		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+    			enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
+    		}
+    	}
         if (var5 || par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge))
         {
             if (nbt.getBoolean("done") == false)
@@ -236,13 +256,13 @@ public class ItemFirearm extends Item
             	nbt.setInteger("numloaded", 1);
                 if (var5)
                 {
-                	nbt.setInteger("numloaded", this.shellCount);
+                	nbt.setInteger("numloaded", this.shellCount+enhancementShells);
                 }
                 else
                 {
                     par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
-                    if (this.shellCount > 1) {
-                    	for (int i = 1; i < this.shellCount; i++) {
+                    if ((this.shellCount+enhancementShells) > 1) {
+                    	for (int i = 1; i < (this.shellCount+enhancementShells); i++) {
                     		if (par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge))
                             {
                     			par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
@@ -282,14 +302,21 @@ public class ItemFirearm extends Item
         }
 
         NBTTagCompound nbt = par1ItemStack.getTagCompound();
-
+        
+        int enhancementReload  = 0;
+    	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+    		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+    			enhancementReload = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getReloadChange(this);
+    		}
+    	}
+        
         if ((nbt.getInteger("loaded") > 0) || (nbt.getBoolean("done")))
         {
             return 72000;
         }
         else
         {
-            return reloadTime;
+            return reloadTime + enhancementReload;
         }
     }
 
@@ -337,8 +364,14 @@ public class ItemFirearm extends Item
 
         NBTTagCompound nbtt = par1ItemStack.getTagCompound();
         if (par3EntityPlayer.capabilities.isCreativeMode) {
+        	int enhancementShells  = 0;
+        	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
+        		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
+        			enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
+        		}
+        	}
         	nbtt.setInteger("loaded", 1);
-        	nbtt.setInteger("numloaded", this.shellCount);
+        	nbtt.setInteger("numloaded", this.shellCount+enhancementShells);
         }
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;

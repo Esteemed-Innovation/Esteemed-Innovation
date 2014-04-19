@@ -1,7 +1,9 @@
 package flaxbeard.steamcraft.handler;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -30,7 +32,15 @@ public class SpyglassHandler {
 				}
 			}
 			if (!wasInUse && item != null && item.getItem() == SteamcraftItems.musket && UtilEnhancements.getEnhancementFromItem(item) == SteamcraftItems.spyglass) {
-				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				boolean isShooting = false;
+				if (item.stackTagCompound != null) {
+			        NBTTagCompound nbt = item.getTagCompound();
+			        if (nbt.getInteger("loaded") > 0)
+			        {
+			            isShooting = true;
+			        }
+				}
+				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -0.85F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;

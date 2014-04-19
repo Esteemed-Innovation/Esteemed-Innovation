@@ -8,7 +8,9 @@ item.steamcraft:revolver.name=Flintlock Revolver
 item.steamcraft:blunderbuss.name=Flintlock Blunderbuss
 item.steamcraft:spyglass.name=Spyglass
 item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
-enhancement.steamcraft:musketMarksman=Scope Kit
+enhancement.steamcraft:musketMarksman=Marksman's Scope
+item.steamcraft:musketAblaze.name=Ablaze Flintlock Musket
+enhancement.steamcraft:musketAblaze=Ablaze
 
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot
