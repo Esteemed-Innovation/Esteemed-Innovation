@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.api;
+package flaxbeard.steamcraft.api.enhancement;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,5 +10,4 @@ public interface IEnhancement {
 	public String getIcon(Item item);
 	public String getName(Item item);
 	public String getEnhancementName(Item item);
-	public float getAccuracyChange();
 }

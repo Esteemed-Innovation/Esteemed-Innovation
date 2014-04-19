@@ -1,39 +1,14 @@
 package flaxbeard.steamcraft.item;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
-public class ItemSpyglass extends Item implements IEnhancementFirearm {
-    @Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		return par1ItemStack;
-    }
+public class ItemEnhancementFireMusket extends Item implements IEnhancementFirearm {
 
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-
-    @Override
-	public boolean isFull3D()
-    {
-    	return true;
-    }
-    
-    @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
-    {
-    }
-    
-    @Override
+	@Override
 	public boolean canApplyTo(ItemStack stack) {
 		return stack.getItem() == SteamcraftItems.musket;
 	}
@@ -45,27 +20,27 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
 
 	@Override
 	public String getID() {
-		return "scope";
+		return "fireMusket";
 	}
 
 	@Override
 	public String getIcon(Item item) {
-		return "steamcraft:weaponMusketSharpshooter";
+		return "steamcraft:weaponMusketAblaze";
 	}
 
 	@Override
 	public String getName(Item item) {
-		return "item.steamcraft:musketMarksman";
+		return "item.steamcraft:musketAblaze";
 	}
 	
 	@Override
 	public String getEnhancementName(Item item) {
-		return "enhancement.steamcraft:musketMarksman";
+		return "enhancement.steamcraft:musketAblaze";
 	}
 
 	@Override
 	public float getAccuracyChange(Item weapon) {
-		return -0.1F;
+		return 0;
 	}
 
 	@Override
@@ -87,9 +62,11 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
 	public int getClipSizeChange(Item weapon) {
 		return 0;
 	}
-	
+
 	@Override
 	public EntityMusketBall changeBullet(EntityMusketBall bullet) {
+		bullet.setFire(100);
 		return bullet;
 	}
+
 }
