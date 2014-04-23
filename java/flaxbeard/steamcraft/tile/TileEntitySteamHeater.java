@@ -18,6 +18,20 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 	private int steam = 0;
 	
 	@Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        this.steam = par1NBTTagCompound.getShort("steam");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setShort("steam",(short) this.steam);
+    }
+	
+	@Override
 	public Packet getDescriptionPacket()
 	{
     	super.getDescriptionPacket();

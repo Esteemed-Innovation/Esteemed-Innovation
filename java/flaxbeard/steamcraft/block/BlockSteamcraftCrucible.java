@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -19,8 +20,10 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.misc.Tuple3;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
 public class BlockSteamcraftCrucible extends BlockContainer {
@@ -53,13 +56,13 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		}
         		else
         		{
+        			System.out.println("HM");
         			return;
         		}
         		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
         		int amount = (Integer) output.right;
-            	System.out.println("T");
         		if (crucible != null) {
-                	System.out.println("U");
+        			System.out.println(amount);
         			if (crucible.getFill() + amount <= 90) {
 	        			CrucibleLiquid fluid = (CrucibleLiquid) output.left;
 	        			if (!crucible.contents.contains(fluid)) {
@@ -122,14 +125,62 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
 	{
-		if (!player.isSneaking()) {
+		if (!player.isSneaking() && player.getHeldItem() == null) {
 			TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
 			if (!tile.isTipping()) {
 				tile.setTipping();
 			}
 		}
 		else if (player.getHeldItem() != null) {
+			TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
+			for (CrucibleLiquid liquid : tile.contents) {
+				Tuple3 tuple = new Tuple3(player.getHeldItem().getItem(),player.getHeldItem().getItemDamage(),liquid);
+				if (SteamcraftRegistry.dunkThings.get(tuple) != null) {
+					int needed = SteamcraftRegistry.dunkThings.get(tuple).left;
+					ItemStack result = SteamcraftRegistry.dunkThings.get(tuple).right.copy();
+					if (tile.number.get(liquid) >= needed) {
+						player.inventory.decrStackSize(player.inventory.currentItem,1);
+						int currNum = tile.number.get(liquid);
+						currNum -= needed;
+						if (currNum == 0) {
+							tile.contents.remove(liquid);
+						}
+						tile.number.remove(liquid);
+						tile.number.put(liquid, currNum);
+						if (!player.inventory.addItemStackToInventory(result)) {
+							if (!player.worldObj.isRemote) {
+								player.entityDropItem(result,0.0F);
+							}
+						}
+						
+						break;
+					}
+				}
+				else if (SteamcraftRegistry.dunkThings.get(new Tuple3(player.getHeldItem().getItem(),-1,liquid)) != null) {
+					tuple = new Tuple3(player.getHeldItem().getItem(),-1,liquid);
+					int needed = SteamcraftRegistry.dunkThings.get(tuple).left;
+					ItemStack result = SteamcraftRegistry.dunkThings.get(tuple).right.copy();
+					if (tile.number.get(liquid) >= needed) {
+						player.inventory.decrStackSize(player.inventory.currentItem,1);
+						int currNum = tile.number.get(liquid);
+						currNum -= needed;
+						if (currNum == 0) {
+							tile.contents.remove(liquid);
+						}
+						tile.number.remove(liquid);
+						tile.number.put(liquid, currNum);
+						if (!player.inventory.addItemStackToInventory(result)) {
+							if (!player.worldObj.isRemote) {
+								player.entityDropItem(result,0.0F);
+							}
+						}
+						
+						break;
+					}
+				}
+			}
 		}
 		return true;
 	}
+
 }

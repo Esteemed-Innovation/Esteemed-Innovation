@@ -10,7 +10,7 @@ public class ItemEnhancementFireMusket extends Item implements IEnhancementFirea
 
 	@Override
 	public boolean canApplyTo(ItemStack stack) {
-		return stack.getItem() == SteamcraftItems.musket;
+		return stack.getItem() == SteamcraftItems.musket || stack.getItem() == SteamcraftItems.blunderbuss;
 	}
 
 	@Override
@@ -25,13 +25,26 @@ public class ItemEnhancementFireMusket extends Item implements IEnhancementFirea
 
 	@Override
 	public String getIcon(Item item) {
-		return "steamcraft:weaponMusketAblaze";
+		if (item == SteamcraftItems.musket) {
+			return "steamcraft:weaponMusketAblaze";
+		}
+		else
+		{
+			return "steamcraft:weaponBlunderbussAblaze";
+		}
 	}
 
 	@Override
 	public String getName(Item item) {
-		return "item.steamcraft:musketAblaze";
+		if (item == SteamcraftItems.musket) {
+			return "item.steamcraft:musketAblaze";
+		}
+		else
+		{
+			return "item.steamcraft:blunderbussAblaze";
+		}
 	}
+	
 	
 	@Override
 	public String getEnhancementName(Item item) {

@@ -24,6 +24,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookPageCrafting;
+import flaxbeard.steamcraft.api.book.BookPageItem;
+import flaxbeard.steamcraft.api.book.BookPageText;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
@@ -48,13 +51,7 @@ public class Steamcraft {
     
     
     public static CreativeTabs tab;
-    
-    public static CrucibleLiquid liquidIron;
-    public static CrucibleLiquid liquidZinc;
-    public static CrucibleLiquid liquidCopper;
-    public static CrucibleLiquid liquidGold;
-    public static CrucibleLiquid liquidBrass;
-	
+
     public static int tubeRenderID;
     public static int heaterRenderID;
     
@@ -95,35 +92,8 @@ public class Steamcraft {
 		heaterRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
 		proxy.registerRenderers();
-		liquidIron = new CrucibleLiquid(new ItemStack(Items.iron_ingot), new ItemStack(SteamcraftItems.steamcraftPlate,1,2), new ItemStack(SteamcraftItems.steamcraftNugget,1,2), null,200,200,200);
-		SteamcraftRegistry.liquids.add(liquidIron);
-		liquidGold = new CrucibleLiquid(new ItemStack(Items.gold_ingot), new ItemStack(SteamcraftItems.steamcraftPlate,1,3), new ItemStack(Items.gold_nugget), null,220,157,11);
-		SteamcraftRegistry.liquids.add(liquidGold);
-		liquidZinc = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,1), new ItemStack(SteamcraftItems.steamcraftPlate,1,1), new ItemStack(SteamcraftItems.steamcraftNugget,1,1), null,225,225,225);
-		SteamcraftRegistry.liquids.add(liquidZinc);
-		liquidCopper = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,0), new ItemStack(SteamcraftItems.steamcraftPlate,1,0), new ItemStack(SteamcraftItems.steamcraftNugget,1,0), null,140,66,12);
-		SteamcraftRegistry.liquids.add(liquidCopper);
-		liquidBrass = new CrucibleLiquid(new ItemStack(SteamcraftItems.steamcraftIngot,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,4), new ItemStack(SteamcraftItems.steamcraftNugget,1,3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4),242,191,66);
-		SteamcraftRegistry.liquids.add(liquidBrass);
-		
-		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("ingotZinc", liquidZinc, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("ingotCopper", liquidCopper, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("ingotBrass", liquidBrass, 9);
-		
-		SteamcraftRegistry.registerSmeltThingOredict("plateGold", liquidGold, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("plateIron", liquidIron, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("plateZinc", liquidZinc, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("plateCopper", liquidCopper, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("plateBrass", liquidBrass, 9);
-		
-		SteamcraftRegistry.registerSmeltThingOredict("nuggetGold", liquidGold, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("nuggetIron", liquidIron, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("nuggetZinc", liquidZinc, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("nuggetCopper", liquidCopper, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("nuggetBrass", liquidBrass, 1);
-		SteamcraftRegistry.registerSmeltThing(Items.gold_nugget, liquidGold, 1);
+		SteamcraftRecipes.registerRecipes();
+		SteamcraftBook.registerBookResearch();
 	}
 	
 	

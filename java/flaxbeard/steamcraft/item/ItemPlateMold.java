@@ -33,6 +33,6 @@ public class ItemPlateMold extends Item implements ICrucibleMold {
 
 	@Override
 	public int getCostToMold(CrucibleLiquid liquid) {
-		return 9;
+		return 6;
 	}
 }

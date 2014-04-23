@@ -19,8 +19,10 @@ public class CrucibleLiquid {
 	public int cr;
 	public int cg;
 	public int cb;
+	public String name;
 	
-	public CrucibleLiquid(ItemStack ingot1, ItemStack plate1, ItemStack nugget1, CrucibleFormula formula1, int r, int g, int b) {
+	public CrucibleLiquid(String string, ItemStack ingot1, ItemStack plate1, ItemStack nugget1, CrucibleFormula formula1, int r, int g, int b) {
+		this.name = string;
 		this.ingot = ingot1;
 		this.plate = plate1;
 		this.nugget = nugget1;
