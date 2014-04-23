@@ -1,3 +1,22 @@
+steamcraft.book.index=Index
+steamcraft.book.info=A brief guide to steam power.
+item.steamcraft:book.name=Esteemed Innovation
+
+category.Basics.name=Basics
+research.Ores.name=Ores
+research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find useful for them in the future.
+research.Book.name=Preface
+research.Book.0=I have decided to delve into the fantastical world of steam technology. I created this spiffy journal to record my exciting discoveries.<br>Any time I stumble upon something new, I'll jot it down, lest I need later.
+
+category.MetalCasting.name=Metal Casting
+research.Crucible.name=Crucible
+research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!<br>To use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.
+research.Crucible.1=This metal will melt into a liquid, and form into alloys if possible. Right clicking on the crucible with an empty hand will pour this liquid metal into an adjacent mold.
+research.Mold.name=Molding
+research.Mold.0=The crucible is useless without a way to cast the melted metal into usable shapes. That's where molds come in.<br>Simply place a mold block with the open end facing a crucible.
+research.Mold.1=Right clicking the mold block will open or close it. Right clicking with a mold will place it in the mold block. The mold can be removed by shift right clicking.<br>To cast metal, I first close the mold and pour in liquid metal. Then, I open the mold and retrieve my casted metal.
+
+
 itemGroup.steamcraft=Steamcraft
 steamcraft.enhancementText=Enhancements:
 
@@ -6,6 +25,7 @@ item.steamcraft:musket.name=Flintlock Musket
 item.steamcraft:pistol.name=Flintlock Pistol
 item.steamcraft:revolver.name=Flintlock Revolver
 item.steamcraft:blunderbuss.name=Flintlock Blunderbuss
+item.steamcraft:blunderbussAblaze.name=Ablaze Flintlock Blunderbuss
 item.steamcraft:spyglass.name=Spyglass
 item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
 enhancement.steamcraft:musketMarksman=Marksman's Scope
@@ -15,6 +35,7 @@ enhancement.steamcraft:musketAblaze=Ablaze
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot
 item.steamcraft:ingot.2.name=Brass Ingot
+item.steamcraft:ingot.3.name=Gilded Iron Ingot
 
 item.steamcraft:nugget.0.name=Copper Nugget
 item.steamcraft:nugget.1.name=Zinc Nugget

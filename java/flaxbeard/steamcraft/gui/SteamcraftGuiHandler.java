@@ -38,6 +38,9 @@ public class SteamcraftGuiHandler implements IGuiHandler {
 			} else {
 				return null;
 			}
+		case 1:
+			System.out.println("Y");
+			return new GuiSteamcraftBook(player, player.getHeldItem(), false);
 		default:
 			return null;
 		}

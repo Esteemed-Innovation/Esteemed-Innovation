@@ -5,7 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
@@ -16,6 +19,46 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 	private ItemStack[] inventory = new ItemStack[1];
 	public ItemStack mold = null;
 	public int changeTicks = 0;
+	
+  @Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        
+        this.open = par1NBTTagCompound.getBoolean("open");
+
+        if (par1NBTTagCompound.hasKey("inventory"))
+        {
+        	 this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
+        }
+        
+        if (par1NBTTagCompound.hasKey("mold"))
+        {
+        	 mold = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("mold"));
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        
+        par1NBTTagCompound.setBoolean("open", this.open);
+        
+        if (mold != null)
+        {
+	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	        mold.writeToNBT(nbttagcompound1);
+	        par1NBTTagCompound.setTag("mold", nbttagcompound1);
+        }
+
+        if (this.inventory[0] != null)
+        {
+	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	        this.inventory[0].writeToNBT(nbttagcompound1);
+	        par1NBTTagCompound.setTag("inventory", nbttagcompound1);
+        }
+    }
 	
 	public boolean canPour() {
 		return !this.open && myLiquid == null && mold != null && inventory[0] == null;

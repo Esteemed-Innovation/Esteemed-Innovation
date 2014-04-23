@@ -7,11 +7,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
 import flaxbeard.steamcraft.item.ItemPlateMold;
 import flaxbeard.steamcraft.item.ItemSpyglass;
+import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
@@ -34,7 +36,18 @@ public class SteamcraftItems {
     
     public static Item enhancementAblaze;
     
+    public static Item book;
+
+    public static Item exoArmorHead;
+    public static Item exoArmorBody;
+    public static Item exoArmorLegs;
+    public static Item exoArmorFeet;
+    
     public static void registerItems() {
+		
+		book = new ItemSteamcraftBook().setUnlocalizedName("steamcraft:book").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:book");
+		GameRegistry.registerItem(book, "book");
+		
     	musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
 		GameRegistry.registerItem(musketCartridge, "musketCartridge");
 		musket = new ItemFirearm(20.0F, 84,0.2F, 5.0F, false, 1).setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
@@ -51,6 +64,16 @@ public class SteamcraftItems {
 		enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
 		GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
 		SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+
+		
+		exoArmorHead = new ItemExosuitArmor(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+		GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
+		exoArmorBody = new ItemExosuitArmor(1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
+		GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
+		exoArmorLegs = new ItemExosuitArmor(2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
+		GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
+		exoArmorFeet = new ItemExosuitArmor(3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
+		GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");

@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSteamcraftIngot extends Item {
-	public IIcon[] icon = new IIcon[3];
+	public IIcon[] icon = new IIcon[4];
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -30,6 +30,7 @@ public class ItemSteamcraftIngot extends Item {
 		this.icon[0] = ir.registerIcon("steamcraft:ingotCopper");
 		this.icon[1] = ir.registerIcon("steamcraft:ingotZinc");
 		this.icon[2] = ir.registerIcon("steamcraft:ingotBrass");
+		this.icon[3] = ir.registerIcon("gold_ingot");
 	}
 	
 	@Override
@@ -38,6 +39,7 @@ public class ItemSteamcraftIngot extends Item {
 		par3List.add(new ItemStack(par1, 1, 0));
 		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
 	}
 	
 	@Override

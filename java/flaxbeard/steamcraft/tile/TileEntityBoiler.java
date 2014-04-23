@@ -72,6 +72,71 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
+    @Override
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getTag("Items");
+        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
+            byte b0 = nbttagcompound1.getByte("Slot");
+
+            if (b0 >= 0 && b0 < this.furnaceItemStacks.length)
+            {
+                this.furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            }
+        }
+
+        this.furnaceBurnTime = par1NBTTagCompound.getShort("BurnTime");
+        this.furnaceCookTime = par1NBTTagCompound.getShort("CookTime");
+
+        if (par1NBTTagCompound.hasKey("CustomName"))
+        {
+            this.field_145958_o = par1NBTTagCompound.getString("CustomName");
+        }
+        
+        if (par1NBTTagCompound.hasKey("water"))
+        {
+        	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,par1NBTTagCompound.getShort("water")));
+        }
+        
+        if (par1NBTTagCompound.hasKey("steam"))
+        {
+        	this.steam = par1NBTTagCompound.getShort("steam");
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setShort("BurnTime", (short)this.furnaceBurnTime);
+        par1NBTTagCompound.setShort("water",(short) myTank.getFluidAmount());
+        par1NBTTagCompound.setShort("steam",(short) this.steam);
+        par1NBTTagCompound.setShort("CookTime", (short)this.furnaceCookTime);
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < this.furnaceItemStacks.length; ++i)
+        {
+            if (this.furnaceItemStacks[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.furnaceItemStacks[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
+
+        par1NBTTagCompound.setTag("Items", nbttaglist);
+
+        if (this.hasCustomInventoryName())
+        {
+            par1NBTTagCompound.setString("CustomName", this.field_145958_o);
+        }
+    }
     
     @Override
     public void updateEntity() {
