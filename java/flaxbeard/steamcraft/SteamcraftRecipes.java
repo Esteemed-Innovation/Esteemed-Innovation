@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -59,11 +60,30 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerDunkThing(Items.iron_ingot, liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot,1,3));
 	}
 
+	
 	private static void registerCraftingRecipes() {
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.book), Items.book, "oreZinc", "oreCopper"));
+		
 		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.crucible), "x x", "x x", "xxx", 
 		        'x', Items.brick);
 		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.mold), "xxx", "x x", "xxx", 
 		        'x', Items.brick);
+		GameRegistry.addRecipe(new ItemStack(SteamcraftItems.blankMold), "xx", 
+		        'x', Items.brick);
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.carving), "xzx", "x x", "xxx", 
+		        'x', "plankWood", 'z', SteamcraftItems.blankMold));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
+		        'x', "ingotBrass", 'f', Blocks.furnace));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
+		        'x', "plateBrass", 'f', Blocks.furnace));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
+		        'x', "ingotBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
+		        'x', "plateBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
+		        'x', "ingotBrass", 'c', "nuggetCopper", 'f', Blocks.furnace,'p', SteamcraftBlocks.pipe));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
+		        'x', "plateBrass", 'c', "nuggetCopper", 'f', Blocks.furnace,'p', SteamcraftBlocks.pipe));
 		
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 0), "ingotCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 1), "ingotZinc"));

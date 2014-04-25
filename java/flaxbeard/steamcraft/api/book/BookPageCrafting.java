@@ -9,15 +9,16 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 public class BookPageCrafting extends BookPage {
 	
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private ItemStack output;
-    private ItemStack[] inputs;
+    private Object[] inputs;
 
-	public BookPageCrafting(String string,ItemStack op, ItemStack... ip) {
+	public BookPageCrafting(String string,ItemStack op, Object... ip) {
 		super(string);
 		output = op;
 		inputs = ip;
@@ -31,9 +32,19 @@ public class BookPageCrafting extends BookPage {
             for (int j = 0; j < 3; j++) {
             	if (inputs.length>(3*i) + j) {
             		if (!(inputs[(3*i)+j] == null)) {
-			            fontRenderer.setUnicodeFlag(false);
-			            this.drawItemStack(inputs[(3*i)+j], x+49+j*19, y+59+i*19, inputs[(3*i)+j].stackSize > 1 ? Integer.toString(inputs[(3*i)+j].stackSize) : "", renderer, fontRenderer);
-			            fontRenderer.setUnicodeFlag(true);
+            			if (inputs[(3*i)+j] instanceof ItemStack) {
+            				ItemStack item = (ItemStack) inputs[(3*i)+j];
+				            fontRenderer.setUnicodeFlag(false);
+				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer);
+				            fontRenderer.setUnicodeFlag(true);
+            			}
+            			if (inputs[(3*i)+j] instanceof ItemStack[]) {
+            				ItemStack[] item = (ItemStack[]) inputs[(3*i)+j];
+            				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
+				            fontRenderer.setUnicodeFlag(false);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer);
+				            fontRenderer.setUnicodeFlag(true);
+            			}
             		}
             	}
             }

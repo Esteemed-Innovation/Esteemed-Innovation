@@ -32,6 +32,7 @@ public class EntityMusketBall extends Entity implements IProjectile
     protected static Random itemRand = new Random();
     private boolean inGround = false;
     public boolean isWub;
+    public boolean pullMob = true;
 
     /** 1 if the player can pick up the arrow */
 
@@ -45,7 +46,7 @@ public class EntityMusketBall extends Entity implements IProjectile
     private double damage = 1.0D;
 
     /** The amount of knockback an arrow applies when it hits a mob. */
-    private int knockbackStrength;
+    private int knockbackStrength = 1;
 
     public EntityMusketBall(World par1World)
     {
@@ -297,7 +298,12 @@ public class EntityMusketBall extends Entity implements IProjectile
 
                                 if (var26 > 0.0F)
                                 {
-                                    var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
+//                                	if (!this.pullMob) {
+//                                		var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
+//                                	}
+//                                	else {
+                                		var4.entityHit.addVelocity(-this.motionX * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionY * 0.25F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionZ * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
+                                	//}//
                                 }
                             }
 
