@@ -21,6 +21,7 @@ public class SteamcraftRecipes {
     
 	public static void registerRecipes() {
 		registerCraftingRecipes();
+		registerSmeltingRecipes();
 		registerFluid();
 	}
 
@@ -59,7 +60,12 @@ public class SteamcraftRecipes {
 		
 		SteamcraftRegistry.registerDunkThing(Items.iron_ingot, liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot,1,3));
 	}
-
+	
+	
+	private static void registerSmeltingRecipes() {
+		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftItems.steamcraftIngot,1,0), 0.5F);
+		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,1), new ItemStack(SteamcraftItems.steamcraftIngot,1,1), 0.5F);
+	}
 	
 	private static void registerCraftingRecipes() {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.book), Items.book, "oreZinc", "oreCopper"));
