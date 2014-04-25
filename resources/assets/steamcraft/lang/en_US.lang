@@ -8,16 +8,30 @@ research.Ores.0=While delving into the depths of this world, I've found many dep
 research.Book.name=Preface
 research.Book.0=I have decided to delve into the fantastical world of steam technology. I created this spiffy journal to record my exciting discoveries.<br>Any time I stumble upon something new, I'll jot it down, lest I need later.
 
+research.Plates.name=Plates
+research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
+
 category.MetalCasting.name=Metal Casting
 research.Crucible.name=Crucible
 research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!<br>To use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.
 research.Crucible.1=This metal will melt into a liquid, and form into alloys if possible. Right clicking on the crucible with an empty hand will pour this liquid metal into an adjacent mold.
-research.Mold.name=Molding
+research.Mold.name=Mold Block
 research.Mold.0=The crucible is useless without a way to cast the melted metal into usable shapes. That's where molds come in.<br>Simply place a mold block with the open end facing a crucible.
 research.Mold.1=Right clicking the mold block will open or close it. Right clicking with a mold will place it in the mold block. The mold can be removed by shift right clicking.<br>To cast metal, I first close the mold and pour in liquid metal. Then, I open the mold and retrieve my casted metal.
+research.Molds.name=Molds
+research.Molds.0=Molds can be placed in the mold block to set the output of the mold.<br>Molds can be created in a mold carver, which will allow you to carve a brick into any type of mold.
+research.Brass.name=Brass
+research.Brass.0=I have created a new alloy that looks promising. Three parts copper and one part zinc creates brass, a shiny gold-like alloy.<br>Brass seems to resist corrosion, something that should prove useful.
 
+category.SteamPower.name=Steam Power
+research.Boiler.name=Boiler
+research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
+research.Pipe.name=Pipes
+research.Pipe.0=Brass makes the perfect conduit for carrying steam. Not sure what else to write here.
+research.Heater.name=Steam Heater
+research.Heater.0=Now I can power furnaces using steam power, using this nifty steam heater. <br>Steam heats the copper coils and allows a furnace to smelt, at a more efficient but slower rate than with solid fuels.
 
-itemGroup.steamcraft=Steamcraft
+itemGroup.steamcraft=FSM
 steamcraft.enhancementText=Enhancements:
 
 item.steamcraft:musketCartridge.name=Musket Cartridge
@@ -51,10 +65,13 @@ item.steamcraft:plate.4.name=Brass Plate
 item.steamcraft:ingotMold.name=Ingot Mold
 item.steamcraft:nuggetMold.name=Nugget Mold
 item.steamcraft:plateMold.name=Plate Mold
+item.steamcraft:blankMold.name=Blank Mold
 
 tile.steamcraft:crucible.name=Crucible
 tile.steamcraft:mold.name=Mold
 tile.steamcraft:pipe.name=Pipe
 tile.steamcraft:boiler.name=Boiler
+tile.steamcraft:heater.name=Steam Heater
 tile.steamcraft:ore.0.name=Copper Ore
 tile.steamcraft:ore.1.name=Zinc Ore
+tile.steamcraft:carving.name=Carving Table

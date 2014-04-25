@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
+import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
@@ -26,6 +27,7 @@ public class SteamcraftItems {
     public static Item blunderbuss;
     public static Item spyglass;
     
+    public static Item blankMold;
     public static Item ingotMold;
     public static Item nuggetMold;
     public static Item plateMold;
@@ -77,10 +79,15 @@ public class SteamcraftItems {
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");
+		SteamcraftRegistry.addCarvableMold((ICrucibleMold) ingotMold);
 		nuggetMold = new ItemNuggetMold().setUnlocalizedName("steamcraft:nuggetMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldNugget");
 		GameRegistry.registerItem(nuggetMold, "nuggetMold");
+		SteamcraftRegistry.addCarvableMold((ICrucibleMold) nuggetMold);
 		plateMold = new ItemPlateMold().setUnlocalizedName("steamcraft:plateMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldPlate");
 		GameRegistry.registerItem(plateMold, "plateMold");
+		SteamcraftRegistry.addCarvableMold((ICrucibleMold) plateMold);
+		blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
+		GameRegistry.registerItem(blankMold, "blankMold");
 		
 		steamcraftIngot = new ItemSteamcraftIngot().setUnlocalizedName("steamcraft:ingot").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftIngot, "steamcraftIngot");

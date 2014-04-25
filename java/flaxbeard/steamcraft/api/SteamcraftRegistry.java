@@ -17,6 +17,7 @@ import flaxbeard.steamcraft.misc.Tuple3;
 
 public class SteamcraftRegistry {
 	private static int nextEnhancementID = 0;
+	public static ArrayList<ICrucibleMold> molds = new ArrayList<ICrucibleMold>();
 	public static ArrayList<CrucibleLiquid> liquids = new ArrayList<CrucibleLiquid>();
 	public static HashMap<MutablePair<Item,Integer>,MutablePair<CrucibleLiquid,Integer>> smeltThings = new HashMap<MutablePair<Item,Integer>,MutablePair<CrucibleLiquid,Integer>>();
 	public static HashMap<Tuple3,MutablePair<Integer,ItemStack>> dunkThings = new HashMap<Tuple3,MutablePair<Integer,ItemStack>>();
@@ -25,6 +26,10 @@ public class SteamcraftRegistry {
 	public static ArrayList<String> categories = new ArrayList<String>();
 	public static ArrayList<MutablePair<String, String>> research = new ArrayList<MutablePair<String,String>>();
 	public static HashMap<String,BookPage[]> researchPages = new HashMap<String,BookPage[]>();
+	
+	public static void addCarvableMold(ICrucibleMold mold) {
+		molds.add(mold);
+	}
 	
 	public static void addCategory(String string) {
 		categories.add(string);

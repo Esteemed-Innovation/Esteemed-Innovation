@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
+import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
@@ -23,6 +24,7 @@ public class SteamcraftBlocks {
 	public static Block boilerOn;
 	public static Block pipe;
 	public static Block heater;
+	public static Block carving;
 	public static BlockSteamPistonBase steamPiston;
 	public static BlockSteamPistonMoving steamPiston_extension;
 	public static BlockSteamPistonExtension steamPiston_head;
@@ -43,6 +45,9 @@ public class SteamcraftBlocks {
 		
 		pipe = new BlockPipe().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pipe");
 		GameRegistry.registerBlock(pipe, "pipe");
+		
+		carving = new BlockCarvingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:carving").setBlockTextureName("steamcraft:carving").setHardness(2.5F).setStepSound(Block.soundTypeWood);
+		GameRegistry.registerBlock(carving, "carving");
 		
 		heater = new BlockSteamHeater().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:heater").setBlockTextureName("steamcraft:blockBrass");
 		GameRegistry.registerBlock(heater, "heater");

@@ -92,15 +92,13 @@ public class Steamcraft {
 		heaterRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
 		proxy.registerRenderers();
-		SteamcraftRecipes.registerRecipes();
-		SteamcraftBook.registerBookResearch();
 	}
 	
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		
-	    
+		SteamcraftRecipes.registerRecipes();
+		SteamcraftBook.registerBookResearch();
 	}
 
 
