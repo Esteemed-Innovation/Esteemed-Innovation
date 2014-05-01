@@ -13,6 +13,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemSteamcraftIngot extends Item {
 	public IIcon[] icon = new IIcon[4];
 	
+	public ItemSteamcraftIngot() {
+		this.setHasSubtypes(true);
+	}
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIconFromDamage(int par1)

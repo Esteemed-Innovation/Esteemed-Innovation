@@ -18,8 +18,8 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.UtilEnhancements;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
+import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
 public class ItemFirearm extends Item

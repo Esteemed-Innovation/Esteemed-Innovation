@@ -1,14 +1,13 @@
 package flaxbeard.steamcraft.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.UtilEnhancements;
+import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 
 public class SpyglassHandler {
 	private boolean inUse = false;

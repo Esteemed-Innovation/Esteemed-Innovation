@@ -98,12 +98,12 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 				}
 			}
 		}
-		if (myDirections.size() == 2 && (int) Math.floor(this.steam/2.0F) > 0) {
-			ForgeDirection direction = myDirections.get(0).getOpposite();
-			if (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite())) {
-				this.steam = (int) Math.floor(this.steam/2.0F);
-				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
-			}
+		int i = 0;
+		ForgeDirection direction = myDirections.get(0).getOpposite();
+		while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+			this.steam--;
+			this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
+			i++;
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}

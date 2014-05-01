@@ -8,6 +8,7 @@ public class BlockManyMetadataItem extends ItemBlock {
 
 	public BlockManyMetadataItem(Block p_i45328_1_) {
 		super(p_i45328_1_);
+		this.setHasSubtypes(true);
 	}
 	
 	public int getMetadata(int par1)

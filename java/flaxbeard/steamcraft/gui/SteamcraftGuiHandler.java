@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
+import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 
 public class SteamcraftGuiHandler implements IGuiHandler {
 	public SteamcraftGuiHandler() {
@@ -19,6 +20,12 @@ public class SteamcraftGuiHandler implements IGuiHandler {
 		case 0:
 			if(entity != null && entity instanceof TileEntityBoiler) {
 				return new ContainerBoiler(player.inventory, (TileEntityBoiler) entity);
+			} else {
+				return null;
+			}
+		case 2:
+			if(entity != null && entity instanceof TileEntityEngineeringTable) {
+				return new ContainerEngineeringTable(player.inventory, (TileEntityEngineeringTable) entity);
 			} else {
 				return null;
 			}
@@ -39,8 +46,13 @@ public class SteamcraftGuiHandler implements IGuiHandler {
 				return null;
 			}
 		case 1:
-			System.out.println("Y");
 			return new GuiSteamcraftBook(player, player.getHeldItem(), false);
+		case 2:
+			if(entity != null && entity instanceof TileEntityEngineeringTable) {
+				return new GuiEngineeringTable(player.inventory, (TileEntityEngineeringTable) entity);
+			} else {
+				return null;
+			}
 		default:
 			return null;
 		}

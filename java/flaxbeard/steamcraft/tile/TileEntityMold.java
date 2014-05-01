@@ -66,6 +66,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 	
 	public void pour(CrucibleLiquid liquid) {
 		this.inventory[0] = ((ICrucibleMold)mold.getItem()).getItemFromLiquid(liquid);
+		this.inventory[0].stackSize = 1;
 	}
 	
 	public void dropItem(ItemStack item) {
@@ -169,8 +170,10 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 		if (this.changeTicks > 0) {
 			changeTicks--;
 		}
-		if (open && inventory[0] != null && changeTicks < 10) {
-			dropItem(inventory[0]);
+		if (open &&  inventory[0] != null && changeTicks < 10) {
+			if (!this.worldObj.isRemote ) {
+				dropItem(inventory[0]);
+			}
 			this.inventory[0] = null;
 		}
 	}

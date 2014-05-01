@@ -98,6 +98,9 @@ public class BlockBoiler extends BlockContainer {
 	
     public IIcon getIcon(int p_149691_1_, int p_149691_2_)
     {
+    	if (p_149691_2_ == 0) {
+    		p_149691_2_ = 3;
+    	}
         return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.field_149936_O));
     }
 

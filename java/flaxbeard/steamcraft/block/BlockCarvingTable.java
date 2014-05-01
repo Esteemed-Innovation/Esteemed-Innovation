@@ -40,21 +40,24 @@ public class BlockCarvingTable extends Block
 
     public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
-    	if (player.getHeldItem().getItem() instanceof ICrucibleMold || player.getHeldItem().getItem() == SteamcraftItems.blankMold) {
-    		int index = 0;
-    		int i = 0;
-    		for (ICrucibleMold mold : SteamcraftRegistry.molds) {
-    			if (mold == player.getHeldItem().getItem()) {
-    				index = i;
-    			}
-    			i++;
-    		}
-    		if (index+1 == SteamcraftRegistry.molds.size()) {
-    			index = -1;
-    		}
-    		ICrucibleMold next = SteamcraftRegistry.molds.get(index+1);
-    		player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack((Item) next));
+    	if (player.getHeldItem() != null) {
+	    	if (player.getHeldItem().getItem() instanceof ICrucibleMold || player.getHeldItem().getItem() == SteamcraftItems.blankMold) {
+	    		int index = 0;
+	    		int i = 0;
+	    		for (ICrucibleMold mold : SteamcraftRegistry.molds) {
+	    			if (mold == player.getHeldItem().getItem()) {
+	    				index = i;
+	    			}
+	    			i++;
+	    		}
+	    		if (index+1 == SteamcraftRegistry.molds.size()) {
+	    			index = -1;
+	    		}
+	    		ICrucibleMold next = SteamcraftRegistry.molds.get(index+1);
+	    		player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack((Item) next));
+	    		return true;
+	    	}
     	}
-        return true;
+    	return false;
     }
 }
