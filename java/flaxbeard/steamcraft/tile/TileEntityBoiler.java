@@ -42,9 +42,9 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
-    private static final int[] slotsTop = new int[] {0};
+    private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
-    private static final int[] slotsSides = new int[] {1};
+    private static final int[] slotsSides = new int[] {0, 1};
     
 	@Override
 	public Packet getDescriptionPacket()
@@ -274,32 +274,32 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public ItemStack decrStackSize(int par1, int par2) {
-		 if (this.furnaceItemStacks[par1] != null)
-		    {
-		        ItemStack itemstack;
-		
-		        if (this.furnaceItemStacks[par1].stackSize <= par2)
-		        {
-		            itemstack = this.furnaceItemStacks[par1];
-		            this.furnaceItemStacks[par1] = null;
-		            return itemstack;
-		        }
-		        else
-		        {
-		            itemstack = this.furnaceItemStacks[par1].splitStack(par2);
-		
-		            if (this.furnaceItemStacks[par1].stackSize == 0)
-		            {
-		                this.furnaceItemStacks[par1] = null;
-		            }
-		
-		            return itemstack;
-		        }
-		    }
-		    else
-		    {
-		        return null;
-		    }
+	 if (this.furnaceItemStacks[par1] != null)
+	    {
+	        ItemStack itemstack;
+	
+	        if (this.furnaceItemStacks[par1].stackSize <= par2)
+	        {
+	            itemstack = this.furnaceItemStacks[par1];
+	            this.furnaceItemStacks[par1] = null;
+	            return itemstack;
+	        }
+	        else
+	        {
+	            itemstack = this.furnaceItemStacks[par1].splitStack(par2);
+	
+	            if (this.furnaceItemStacks[par1].stackSize == 0)
+	            {
+	                this.furnaceItemStacks[par1] = null;
+	            }
+	
+	            return itemstack;
+	        }
+	    }
+	    else
+	    {
+	        return null;
+	    }
 	}
 
 	@Override
@@ -399,7 +399,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 	@Override
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
-        return par1 == 1 ? getItemBurnTime(par2ItemStack) > 0 : par2ItemStack.getItem() == Items.bucket || FluidContainerRegistry.isEmptyContainer(par2ItemStack) || par2ItemStack.getItem()  instanceof IFluidContainerItem;
+        return par1 == 0 ? getItemBurnTime(par2ItemStack) > 0 : (par2ItemStack.getItem() == Items.water_bucket || FluidContainerRegistry.isEmptyContainer(par2ItemStack) || par2ItemStack.getItem()  instanceof IFluidContainerItem);
     }
 
     public int[] getAccessibleSlotsFromSide(int par1)
@@ -428,7 +428,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public float getPressure() {
-		return (this.steam/10000.0F);
+		return (this.steam/5000.0F);
 	}
 
 	@Override
@@ -438,7 +438,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public int getCapacity() {
-		return 10000;
+		return 5000;
 	}
 
 	@Override

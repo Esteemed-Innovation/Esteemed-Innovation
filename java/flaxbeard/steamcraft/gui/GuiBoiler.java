@@ -65,7 +65,7 @@ public class GuiBoiler extends GuiContainer
 	    	}
         }
         
-        fill = (int) ((this.furnaceInventory.steam/10000.0F)*58.0F);
+        fill = (int) ((this.furnaceInventory.steam/5000.0F)*58.0F);
         //System.out.println(this.furnaceInventory.steam);
         fill = Math.min(fill, 58);
         for (int i = 0; i < 2; i++) {

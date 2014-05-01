@@ -7,11 +7,16 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSteamcraftPlate extends Item {
-	public IIcon[] icon = new IIcon[5];
+	public IIcon[] icon = new IIcon[6];
+	
+	public ItemSteamcraftPlate() {
+		this.setHasSubtypes(true);
+	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -32,6 +37,7 @@ public class ItemSteamcraftPlate extends Item {
 		this.icon[2] = ir.registerIcon("steamcraft:plateIron");
 		this.icon[3] = ir.registerIcon("steamcraft:plateGold");
 		this.icon[4] = ir.registerIcon("steamcraft:plateBrass");
+		this.icon[5] = ir.registerIcon("steamcraft:plateThaumium");
 	}
 	
 	@Override
@@ -42,6 +48,9 @@ public class ItemSteamcraftPlate extends Item {
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
+		if (Loader.isModLoaded("Thaumcraft")) {
+			par3List.add(new ItemStack(par1, 1, 5));
+		}
 	}
 	
 	@Override

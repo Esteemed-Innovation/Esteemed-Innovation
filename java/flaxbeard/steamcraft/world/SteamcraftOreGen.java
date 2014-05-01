@@ -14,7 +14,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world,
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		System.out.println("GEN DAT");
+
 		switch(world.provider.dimensionId){
 		case -1:
 		    generateNether(world, random, chunkX * 16, chunkZ * 16);

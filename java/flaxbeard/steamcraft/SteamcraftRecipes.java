@@ -3,12 +3,16 @@ package flaxbeard.steamcraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 
 public class SteamcraftRecipes {
     
@@ -20,9 +24,9 @@ public class SteamcraftRecipes {
 	
     
 	public static void registerRecipes() {
+		registerFluid();
 		registerCraftingRecipes();
 		registerSmeltingRecipes();
-		registerFluid();
 	}
 
 	private static void registerFluid() {
@@ -36,6 +40,10 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.liquids.add(liquidCopper);
 		liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,4), new ItemStack(SteamcraftItems.steamcraftNugget,1,3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4),242,191,66);
 		SteamcraftRegistry.liquids.add(liquidBrass);
+		
+		if (Loader.isModLoaded("Thaumcraft")) {
+			ThaumcraftIntegration.addThaumiumLiquid();
+		}
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
@@ -57,6 +65,25 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltThing(Items.gold_nugget, liquidGold, 1);
 		
 		SteamcraftRegistry.registerSmeltTool(Items.iron_sword, liquidIron, 18);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_pickaxe, liquidIron, 27);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_axe, liquidIron, 27);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_hoe, liquidIron, 18);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_shovel, liquidIron, 9);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_boots, liquidIron, 36);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_chestplate, liquidIron, 81);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_helmet, liquidIron, 45);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_leggings, liquidIron, 63);
+		
+		SteamcraftRegistry.registerSmeltTool(Items.golden_sword, liquidGold, 18);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_pickaxe, liquidGold, 27);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_axe, liquidGold, 27);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_hoe, liquidGold, 18);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_shovel, liquidGold, 9);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_boots, liquidGold, 36);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_chestplate, liquidGold, 81);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_helmet, liquidGold, 45);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_leggings, liquidGold, 63);
+
 		
 		SteamcraftRegistry.registerDunkThing(Items.iron_ingot, liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot,1,3));
 	}
@@ -69,15 +96,31 @@ public class SteamcraftRecipes {
 	
 	private static void registerCraftingRecipes() {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.book), Items.book, "oreZinc", "oreCopper"));
-		
+
 		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.crucible), "x x", "x x", "xxx", 
 		        'x', Items.brick);
 		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.mold), "xxx", "x x", "xxx", 
 		        'x', Items.brick);
 		GameRegistry.addRecipe(new ItemStack(SteamcraftItems.blankMold), "xx", 
 		        'x', Items.brick);
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.carving), "xzx", "x x", "xxx", 
 		        'x', "plankWood", 'z', SteamcraftItems.blankMold));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
+		        'x', "blockCobble", 'z', "plateIron"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
+		        'x', Blocks.cobblestone, 'z', "plateIron"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockBrass), "iii", "iii", "iii",
+		        'i', "ingotBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,2), "i",
+		        'i', "blockBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.charger), "pxp", " p ", 
+		        'x', "blockBrass", 'p', SteamcraftBlocks.pipe));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
+		        'i', "plateBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
+		        'i', "ingotBrass"));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
 		        'x', "ingotBrass", 'f', Blocks.furnace));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
@@ -91,6 +134,19 @@ public class SteamcraftRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
 		        'x', "plateBrass", 'c', "nuggetCopper", 'f', Blocks.furnace,'p', SteamcraftBlocks.pipe));
 		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorHead), "xyx", "y y", "xyx", 
+		        'x', "plateBrass", 'y', "nuggetBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorBody,1,SteamcraftItems.exoArmorBody.getMaxDamage()-1), "x x", "yzy", "xxx", 
+		        'x', "plateBrass", 'y', "nuggetBrass", 'z', SteamcraftBlocks.tank));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorLegs), "xxx", "y y", "x x", 
+		        'x', "plateBrass", 'y', "nuggetBrass"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorFeet), "y y", "x x", 
+		        'x', "plateBrass", 'y', "nuggetBrass"));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.upgradeFlippers), "lsl", "sbs", "lsl",
+		        's', Items.slime_ball, 'b', Items.leather_boots, 'l', new ItemStack(Items.dye,1,4)));
+		
+		//5 8 7 4
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 0), "ingotCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 1), "ingotZinc"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 1), "ingotIron"));

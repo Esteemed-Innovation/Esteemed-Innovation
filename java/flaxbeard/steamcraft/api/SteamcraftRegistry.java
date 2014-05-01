@@ -13,6 +13,8 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.Tuple3;
 
 public class SteamcraftRegistry {
@@ -26,6 +28,12 @@ public class SteamcraftRegistry {
 	public static ArrayList<String> categories = new ArrayList<String>();
 	public static ArrayList<MutablePair<String, String>> research = new ArrayList<MutablePair<String,String>>();
 	public static HashMap<String,BookPage[]> researchPages = new HashMap<String,BookPage[]>();
+	public static HashMap<String,ExosuitPlate> plates = new HashMap<String,ExosuitPlate>();
+	public static HashMap<MutablePair<ItemExosuitArmor,ExosuitPlate>,IIcon> plateIcons = new HashMap<MutablePair<ItemExosuitArmor,ExosuitPlate>,IIcon>();
+	
+	public static void addExosuitPlate(ExosuitPlate plate) {
+		plates.put(plate.getIdentifier(), plate);
+	}
 	
 	public static void addCarvableMold(ICrucibleMold mold) {
 		molds.add(mold);

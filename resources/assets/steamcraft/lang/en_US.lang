@@ -19,7 +19,7 @@ research.Mold.name=Mold Block
 research.Mold.0=The crucible is useless without a way to cast the melted metal into usable shapes. That's where molds come in.<br>Simply place a mold block with the open end facing a crucible.
 research.Mold.1=Right clicking the mold block will open or close it. Right clicking with a mold will place it in the mold block. The mold can be removed by shift right clicking.<br>To cast metal, I first close the mold and pour in liquid metal. Then, I open the mold and retrieve my casted metal.
 research.Molds.name=Molds
-research.Molds.0=Molds can be placed in the mold block to set the output of the mold.<br>Molds can be created in a mold carver, which will allow you to carve a brick into any type of mold.
+research.Molds.0=Molds can be placed in the mold block to set the output of the mold.<br>Right clicking with a carved or blank mold on a mold carver will change the mold type, cycling through all options.
 research.Brass.name=Brass
 research.Brass.0=I have created a new alloy that looks promising. Three parts copper and one part zinc creates brass, a shiny gold-like alloy.<br>Brass seems to resist corrosion, something that should prove useful.
 
@@ -32,6 +32,7 @@ research.Heater.name=Steam Heater
 research.Heater.0=Now I can power furnaces using steam power, using this nifty steam heater. <br>Steam heats the copper coils and allows a furnace to smelt, at a more efficient but slower rate than with solid fuels.
 
 itemGroup.steamcraft=FSM
+itemGroup.steamcraftTools=FSM Tools
 steamcraft.enhancementText=Enhancements:
 
 item.steamcraft:musketCartridge.name=Musket Cartridge
@@ -45,6 +46,11 @@ item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
 enhancement.steamcraft:musketMarksman=Marksman's Scope
 item.steamcraft:musketAblaze.name=Ablaze Flintlock Musket
 enhancement.steamcraft:musketAblaze=Ablaze
+
+item.steamcraft:exoArmorHead.name=Steam Exosuit Headpiece
+item.steamcraft:exoArmorBody.name=Steam Exosuit Chestpiece
+item.steamcraft:exoArmorLegs.name=Steam Exosuit Legpiece
+item.steamcraft:exoArmorFeet.name=Steam Exosuit Footpiece
 
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot
@@ -61,12 +67,27 @@ item.steamcraft:plate.1.name=Zinc Plate
 item.steamcraft:plate.2.name=Iron Plate
 item.steamcraft:plate.3.name=Gold Plate
 item.steamcraft:plate.4.name=Brass Plate
+item.steamcraft:plate.5.name=Thaumium Plate
 
 item.steamcraft:ingotMold.name=Ingot Mold
 item.steamcraft:nuggetMold.name=Nugget Mold
 item.steamcraft:plateMold.name=Plate Mold
 item.steamcraft:blankMold.name=Blank Mold
 
+item.steamcraft:pickGildedGold.name=Gilded Iron Pickaxe
+item.steamcraft:axeGildedGold.name=Gilded Iron Axe
+item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
+item.steamcraft:hoeGildedGold.name=Gilded Iron Hoe
+item.steamcraft:swordGildedGold.name=Gilded Iron Sword
+
+item.steamcraft:pickBrass.name=Brass Pickaxe
+item.steamcraft:axeBrass.name=Brass Axe
+item.steamcraft:shovelBrass.name=Brass Shovel
+item.steamcraft:hoeBrass.name=Brass Hoe
+item.steamcraft:swordBrass.name=Brass Sword
+
+tile.steamcraft:blockBrass.name=Brass Block
+tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:crucible.name=Crucible
 tile.steamcraft:mold.name=Mold
 tile.steamcraft:pipe.name=Pipe
@@ -75,3 +96,5 @@ tile.steamcraft:heater.name=Steam Heater
 tile.steamcraft:ore.0.name=Copper Ore
 tile.steamcraft:ore.1.name=Zinc Ore
 tile.steamcraft:carving.name=Carving Table
+tile.steamcraft:engineering.name=Engineering Table
+tile.steamcraft:tank.name=Steam Tank

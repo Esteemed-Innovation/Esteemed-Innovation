@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.api;
+package flaxbeard.steamcraft.api.enhancement;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -9,7 +9,7 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 public class UtilEnhancements {
 	public static void registerEnhancementsForItem(IIconRegister registry, Item item) {

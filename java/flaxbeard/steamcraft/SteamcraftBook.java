@@ -50,6 +50,10 @@ public class SteamcraftBook {
 				brassIngotPlate, brassIngotPlate, brassIngotPlate,
 				null,  null, null,
 				brassIngotPlate, brassIngotPlate, brassIngotPlate));
+		SteamcraftRegistry.addResearch("research.Tank.name","category.SteamPower.name",new BookPageItem("research.Tank.name","research.Tank.0", new ItemStack(SteamcraftBlocks.tank)),new BookPageCrafting("",new ItemStack(SteamcraftBlocks.tank),
+				brassIngotPlate, brassIngotPlate, brassIngotPlate,
+				brassIngotPlate,  null, brassIngotPlate,
+				brassIngotPlate, brassIngotPlate, brassIngotPlate));
 		ItemStack[] nuggetCopper = getOreDict("nuggetCopper");
 		SteamcraftRegistry.addResearch("research.Heater.name","category.SteamPower.name",new BookPageItem("research.Heater.name","research.Heater.0", new ItemStack(SteamcraftBlocks.heater)),new BookPageCrafting("",new ItemStack(SteamcraftBlocks.heater),
 				nuggetCopper, nuggetCopper, nuggetCopper,
