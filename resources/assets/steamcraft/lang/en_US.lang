@@ -26,10 +26,14 @@ research.Brass.0=I have created a new alloy that looks promising. Three parts co
 category.SteamPower.name=Steam Power
 research.Boiler.name=Boiler
 research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
+research.Tank.name=Tanks
+research.Tank.0=
 research.Pipe.name=Pipes
 research.Pipe.0=Brass makes the perfect conduit for carrying steam. Not sure what else to write here.
 research.Heater.name=Steam Heater
 research.Heater.0=Now I can power furnaces using steam power, using this nifty steam heater. <br>Steam heats the copper coils and allows a furnace to smelt, at a more efficient but slower rate than with solid fuels.
+research.Charger.name=Steam Filler
+research.Charger.0=
 
 itemGroup.steamcraft=FSM
 itemGroup.steamcraftTools=FSM Tools

@@ -50,11 +50,13 @@ public class Steamcraft {
 
     public static int tubeRenderID;
     public static int heaterRenderID;
+	public static int chargerRenderID;
+	public static int genocideRenderID;
+
     
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static int chargerRenderID;
 
 	
 	@EventHandler
@@ -94,7 +96,9 @@ public class Steamcraft {
 		tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
 		heaterRenderID = RenderingRegistry.getNextAvailableRenderId();
 		chargerRenderID = RenderingRegistry.getNextAvailableRenderId();
-		
+		genocideRenderID  = RenderingRegistry.getNextAvailableRenderId();
+
+
 		proxy.registerRenderers();
 	}
 	

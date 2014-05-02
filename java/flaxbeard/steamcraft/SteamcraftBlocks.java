@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
+import flaxbeard.steamcraft.block.BlockFishGenocideMachine;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
@@ -30,6 +31,7 @@ public class SteamcraftBlocks {
 	public static Block pipe;
 	public static Block heater;
 	public static Block charger;
+	public static Block genocide;
 	public static Block blockBrass;
 	public static Block tank;
 
@@ -74,6 +76,9 @@ public class SteamcraftBlocks {
 		
 		charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName("steamcraft:blockBrass");
 		GameRegistry.registerBlock(charger, "charger");
+		
+		genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fishBoiler");
+		GameRegistry.registerBlock(genocide, "fishBoiler");
 
 //	
 //		steamPiston = (BlockSteamPistonBase) new BlockSteamPistonBase(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:piston");
