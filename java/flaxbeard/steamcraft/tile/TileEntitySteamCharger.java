@@ -1,17 +1,18 @@
 package flaxbeard.steamcraft.tile;
 
-import net.minecraft.block.BlockFurnace;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -29,6 +30,10 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
         super.readFromNBT(par1NBTTagCompound);
         this.steam = par1NBTTagCompound.getShort("steam");
         randomDegrees = (int)(Math.random()*360);
+        if (par1NBTTagCompound.hasKey("inventory"))
+        {
+        	 this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
+        }
     }
 
     @Override
@@ -36,6 +41,12 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("steam",(short) this.steam);
+        if (this.inventory[0] != null)
+        {
+	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	        this.inventory[0].writeToNBT(nbttagcompound1);
+	        par1NBTTagCompound.setTag("inventory", nbttagcompound1);
+        }
     }
 	
 	@Override
@@ -44,12 +55,6 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("steam", steam);
-        if (this.inventory[0] != null)
-        {
-	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-	        this.inventory[0].writeToNBT(nbttagcompound1);
-	        access.setTag("inventory", nbttagcompound1);
-        }
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -60,16 +65,17 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.steam = access.getInteger("steam");
-        if (access.hasKey("inventory"))
-        {
-        	 this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
-        }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
 	
 	@Override
 	public void updateEntity() {
+		if (!this.worldObj.isRemote) {
+			ForgeDirection[] dirs = { ForgeDirection.DOWN };
+			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
+			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		}
 		if (!this.worldObj.isAirBlock(xCoord, yCoord+1, zCoord) && this.getStackInSlot(0) != null) {
 			if (!this.worldObj.isRemote) {
 				this.dropItem(this.getStackInSlot(0));
@@ -118,8 +124,10 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	}
 
 	@Override
-	public void decrSteam(int i) {}
-
+	public void decrSteam(int i) {
+		this.steam -= i;
+	}
+	
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
 		return face == ForgeDirection.DOWN;

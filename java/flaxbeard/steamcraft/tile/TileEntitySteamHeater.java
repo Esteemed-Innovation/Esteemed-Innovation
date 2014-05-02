@@ -138,8 +138,9 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 	}
 
 	@Override
-	public void decrSteam(int i) {}
-
+	public void decrSteam(int i) {
+		this.steam -= i;
+	}
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
