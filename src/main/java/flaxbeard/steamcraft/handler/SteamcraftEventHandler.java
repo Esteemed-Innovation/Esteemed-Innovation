@@ -2,28 +2,41 @@ package flaxbeard.steamcraft.handler;
 
 import java.util.UUID;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-
-import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+
+import org.apache.commons.lang3.tuple.MutablePair;
+
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 
 public class SteamcraftEventHandler {
 	private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -33,12 +46,83 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 
+	@SubscribeEvent
+	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
+		if(event.type == ElementType.ALL) {
+			if (Loader.isModLoaded("Botania")) {
+				Minecraft mc = Minecraft.getMinecraft();
+				MovingObjectPosition pos = mc.objectMouseOver;
+				if(pos != null && !(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == BotaniaIntegration.twigWand()) && mc.thePlayer.getCurrentArmor(3) != null && mc.thePlayer.getCurrentArmor(3).getItem() == SteamcraftItems.exoArmorHead) {
+					if (((ItemExosuitArmor)mc.thePlayer.getCurrentArmor(3).getItem()).hasUpgrade(mc.thePlayer.getCurrentArmor(3), BotaniaIntegration.floralLaurel)) {
+						BotaniaIntegration.displayThings(pos, event);
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void handleFirePunch(LivingAttackEvent event) {
+		if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
+			boolean hasPower = hasPower(event.entityLiving);
+			int armor = getExoArmor(event.entityLiving);
+			EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
+			if (entity.getEquipmentInSlot(3) != null) {
+				ItemStack stack = entity.getEquipmentInSlot(3);
+				if (stack.getItem() instanceof ItemExosuitArmor) {
+					if (stack.getItemDamage() < stack.getMaxDamage()-1) {
+						hasPower = true;
+					}
+				}
+			}
+			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getHeldItem() == null) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.powerFist)) {
+			        entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, "random.explode", 4.0F, (1.0F + (entity.worldObj.rand.nextFloat() - entity.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+					event.entityLiving.motionX += 3.0F*entity.getLookVec().normalize().xCoord;
+					event.entityLiving.motionY += (entity.getLookVec().normalize().yCoord > 0.0F ? 2.0F*entity.getLookVec().normalize().yCoord : 0.0F) + 1.5F;
+					event.entityLiving.motionZ += 3.0F*entity.getLookVec().normalize().zCoord;
+				
+					entity.motionX += -1.0F*entity.getLookVec().normalize().xCoord;
+					entity.motionZ += -1.0F*entity.getLookVec().normalize().zCoord;
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void handleFallDamage(LivingHurtEvent event) {
+		if (event.source == DamageSource.fall) {
+			boolean hasPower = hasPower(event.entityLiving);
+			int armor = getExoArmor(event.entityLiving);
+			EntityLivingBase entity = event.entityLiving;
+			if (entity.getEquipmentInSlot(3) != null) {
+				ItemStack stack = entity.getEquipmentInSlot(3);
+				if (stack.getItem() instanceof ItemExosuitArmor) {
+					if (stack.getItemDamage() < stack.getMaxDamage()-1) {
+						hasPower = true;
+					}
+				}
+			}
+			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+
+				ItemExosuitArmor boots = (ItemExosuitArmor) entity.getEquipmentInSlot(1).getItem();
+				if (boots.hasUpgrade(entity.getEquipmentInSlot(1), SteamcraftItems.fallAssist)) {
+			        if (event.ammount <= 1.0F) {
+			        	event.ammount = 0.0F;
+			        }
+					event.ammount = event.ammount/1.5F;
+					System.out.println("T");
+				}
+			}
+		}
+	}
 	
 	@SubscribeEvent
 	public void rightClick(PlayerInteractEvent event) {
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
 			if (event.entityPlayer.getHeldItem() != null) {
-				if (event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamDrill) {
+				if ((event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamDrill || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamAxe || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamShovel) && (event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == null || event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) != SteamcraftBlocks.charger)) {
 					event.setCanceled(true);
 				}
 			}
@@ -87,8 +171,6 @@ public class SteamcraftEventHandler {
 	@SubscribeEvent
 	public void handleSteamcraftArmorMining(PlayerEvent.BreakSpeed event) {
 
-		
-		
 		boolean hasPower = hasPower(event.entityLiving);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
@@ -101,8 +183,35 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0) {
+			    	if (speed > 0 && event.block.isToolEffective("pickaxe", event.metadata)) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
+			    	}
+				}
+				if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
+					ItemSteamAxe.checkNBT(player);
+					MutablePair info = ItemSteamAxe.stuff.get(player.getEntityId());
+			    	int ticks = (Integer) info.left;
+			    	int speed = (Integer) info.right;
+			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
+			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
+			    		System.out.println(event.newSpeed);
+
+			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
+			    		System.out.println(event.newSpeed);
+			    	}
+				}
+				if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
+					ItemSteamShovel.checkNBT(player);
+					ItemSteamShovel shovel = (ItemSteamShovel) player.getHeldItem().getItem(); 
+					MutablePair info = ItemSteamShovel.stuff.get(player.getEntityId());
+			    	int ticks = (Integer) info.left;
+			    	int speed = (Integer) info.right;
+			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
+			    	if (speed > 0 && ForgeHooks.isToolEffective(player.getHeldItem(), event.block, event.metadata)) {
+			    		System.out.println(event.newSpeed);
+
+			    		event.newSpeed *= 1.0F+19.0F*(speed/100.0F);
+			    		System.out.println(event.newSpeed);
 			    	}
 				}
 			}
@@ -120,7 +229,7 @@ public class SteamcraftEventHandler {
 		}
 		if (hasPower) {
 			if (armor == 4) {
-				event.newSpeed = event.originalSpeed * 1.2F;
+				event.newSpeed = event.newSpeed * 1.2F;
 			}
 				
 		}
@@ -172,14 +281,21 @@ public class SteamcraftEventHandler {
 			ticksLeft--;
 			stack.stackTagCompound.setInteger("ticksUntilConsume", ticksLeft);
 			if (armor == 4) {
-				//System.out.println(UUID.randomUUID().toString());
 				if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid) == null) {
 					entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(exoBoost);
 				}
 				if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid) == null) {
 					entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).applyModifier(exoBoost);
 				}
-
+			}
+			else
+			{
+				if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid) != null) {
+					entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoost);
+				}
+				if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid) != null) {
+					entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoost);
+				}
 			}
 		}
 		else

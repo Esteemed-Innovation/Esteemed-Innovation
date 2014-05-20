@@ -29,6 +29,11 @@ public class BlockSteamGauge extends BlockContainer {
 	public BlockSteamGauge() {
 		super(Material.iron);
 	}
+	
+	@Override
+	public String getItemIconName() {
+		return "steamcraft:gauge";
+	}
     
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int xl, int yl, int zl)

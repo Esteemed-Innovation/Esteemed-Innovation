@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
+import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 
 public class SteamcraftGuiHandler implements IGuiHandler {
 	public SteamcraftGuiHandler() {
@@ -26,6 +27,12 @@ public class SteamcraftGuiHandler implements IGuiHandler {
 		case 2:
 			if(entity != null && entity instanceof TileEntityEngineeringTable) {
 				return new ContainerEngineeringTable(player.inventory, (TileEntityEngineeringTable) entity);
+			} else {
+				return null;
+			}
+		case 3:
+			if(entity != null && entity instanceof TileEntitySteamHammer) {
+				return new ContainerSteamAnvil(player.inventory, (TileEntitySteamHammer) entity, world, x, y-1, z, player);
 			} else {
 				return null;
 			}
@@ -50,6 +57,12 @@ public class SteamcraftGuiHandler implements IGuiHandler {
 		case 2:
 			if(entity != null && entity instanceof TileEntityEngineeringTable) {
 				return new GuiEngineeringTable(player.inventory, (TileEntityEngineeringTable) entity);
+			} else {
+				return null;
+			}
+		case 3:
+			if(entity != null && entity instanceof TileEntitySteamHammer) {
+				return new GuiSteamAnvil(player.inventory, (TileEntitySteamHammer) entity, world, x, y-1, z);
 			} else {
 				return null;
 			}

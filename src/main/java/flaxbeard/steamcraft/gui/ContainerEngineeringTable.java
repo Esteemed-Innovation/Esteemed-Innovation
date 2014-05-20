@@ -7,9 +7,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
@@ -23,12 +26,14 @@ public class ContainerEngineeringTable extends Container
     private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
+    private final InventoryPlayer inv;
 
     public ContainerEngineeringTable(InventoryPlayer par1InventoryPlayer, TileEntityEngineeringTable entity)
     {
         this.furnace = entity;
+        inv = par1InventoryPlayer;
         
-        this.addSlotToContainer(new Slot(entity, 0, 6, 35));
+        this.addSlotToContainer(new Slot(entity, 0, 30, 35));
         for (int i = 1; i<10; i++) {
             this.addSlotToContainer(new SlotLimitedStackSize(entity, i, -100, -100));
         }
@@ -44,6 +49,40 @@ public class ContainerEngineeringTable extends Container
             }
         }
 
+        for (i = 0; i < 4; ++i)
+        {
+            final int k = i;
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - i, 8, 8 + i * 18)
+            {
+            	private EntityPlayer player = inv.player;
+                private static final String __OBFID = "CL_00001755";
+                /**
+                 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1
+                 * in the case of armor slots)
+                 */
+                public int getSlotStackLimit()
+                {
+                    return 1;
+                }
+                /**
+                 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+                 */
+                public boolean isItemValid(ItemStack par1ItemStack)
+                {
+                    if (par1ItemStack == null) return false;
+                    return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, this.player);
+                }
+                /**
+                 * Returns the icon index on items.png that is used as background image of the slot.
+                 */
+                @SideOnly(Side.CLIENT)
+                public IIcon getBackgroundIconIndex()
+                {
+                    return ItemArmor.func_94602_b(k);
+                }
+            });
+        }
+        
         for (i = 0; i < 9; ++i)
         {
             this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 142));
@@ -151,9 +190,9 @@ public class ContainerEngineeringTable extends Container
         		for (MutablePair<Integer,Integer> pair : item.engineerCoordinates()) {
         			int x = pair.left;
         			int y = pair.right;
-        			((SlotLimitedStackSize)this.getSlot(i)).setSlotStackLimit(item.getStackLimit(furnace.getStackInSlot(0), i-1));
-        			this.getSlot(i).xDisplayPosition = x+26;
-    	    		this.getSlot(i).yDisplayPosition = y+6;
+        			((SlotLimitedStackSize)this.getSlot(i)).setSlotStackLimit(1);
+        			this.getSlot(i).xDisplayPosition = x+53;
+    	    		this.getSlot(i).yDisplayPosition = y+9;
     	    		
         			i++;
         			
@@ -179,10 +218,12 @@ public class ContainerEngineeringTable extends Container
     @Override
     public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
         //this.updateSlots();
-
-        ItemStack toReturn = super.slotClick(par1, par2, par3, par4EntityPlayer);
-        this.updateSlots();
-    	furnace.getWorldObj().markBlockForUpdate(furnace.xCoord, furnace.yCoord, furnace.zCoord);
-        return toReturn;
+    	//if (par1 == 0) {
+	        ItemStack toReturn = super.slotClick(par1, par2, par3, par4EntityPlayer);
+	        this.updateSlots();
+	    	furnace.getWorldObj().markBlockForUpdate(furnace.xCoord, furnace.yCoord, furnace.zCoord);
+	        return toReturn;
+    	//}
+    	//return super.slotClick(par1, par2, par3, par4EntityPlayer);
     }
 }

@@ -71,11 +71,9 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	
 	@Override
 	public void updateEntity() {
-		if (!this.worldObj.isRemote) {
-			ForgeDirection[] dirs = { ForgeDirection.DOWN };
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
-			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		}
+		ForgeDirection[] dirs = { ForgeDirection.DOWN };
+		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
+		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
 		if (!this.worldObj.isAirBlock(xCoord, yCoord+1, zCoord) && this.getStackInSlot(0) != null) {
 			if (!this.worldObj.isRemote) {
 				this.dropItem(this.getStackInSlot(0));
@@ -90,9 +88,13 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, (Math.random()-0.5F)/12.0F, 0.0F, (Math.random()-0.5F)/12.0F);
 			}
 			if (this.steam > item.steamPerDurability() && stack.getItemDamage() > 0) {
-				this.steam -= item.steamPerDurability();
-				stack.setItemDamage(stack.getItemDamage()-1);
- 				this.setInventorySlotContents(0, stack);
+ 				int i = 0;
+ 				while (i<9 && (this.steam > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+ 					this.steam -= item.steamPerDurability();
+ 					stack.setItemDamage(stack.getItemDamage()-1);
+ 	 				this.setInventorySlotContents(0, stack);
+ 					i++;
+ 				}
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 		}

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -15,6 +16,10 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
+import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
+import flaxbeard.steamcraft.item.ItemExosuitJetpack;
+import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
@@ -29,7 +34,9 @@ import flaxbeard.steamcraft.item.tool.ItemSteamcraftHoe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftPickaxe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftShovel;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftSword;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 
 public class SteamcraftItems {
 	public static HashMap<String,Item> tools = new HashMap<String,Item>();
@@ -61,6 +68,11 @@ public class SteamcraftItems {
     public static Item exoArmorFeet;
     
     public static Item steamDrill;
+    public static Item steamAxe;
+    public static Item steamShovel;
+	public static Item jetpack;
+	public static Item powerFist;
+	public static Item fallAssist;
     
     public static void registerItems() {
 		
@@ -84,10 +96,20 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
 		SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
 		
-	 	upgradeFlippers = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFlippers").setTextureName("steamcraft:upgradeFlippers");
-		GameRegistry.registerItem(upgradeFlippers, "upgradeFlippers");
+	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
+		GameRegistry.registerItem(jetpack, "jetpack");
+	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
+		GameRegistry.registerItem(powerFist, "powerFist");
+	 	fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallAssist");
+		GameRegistry.registerItem(fallAssist, "fallAssist");
 		
-		exoArmorHead = new ItemExosuitArmor(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+		if (Loader.isModLoaded("Thaumcraft")) {
+			exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+		}
+		else
+		{
+			exoArmorHead = new ItemExosuitArmor(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+		}
 		GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
 		exoArmorBody = new ItemExosuitArmor(1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
 		GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
@@ -98,6 +120,10 @@ public class SteamcraftItems {
 		
 		steamDrill = new ItemSteamDrill().setUnlocalizedName("steamcraft:steamDrill").setCreativeTab(Steamcraft.tabTools);
 		GameRegistry.registerItem(steamDrill, "steamDrill");
+		steamAxe = new ItemSteamAxe().setUnlocalizedName("steamcraft:steamAxe").setCreativeTab(Steamcraft.tabTools);
+		GameRegistry.registerItem(steamAxe, "steamAxe");
+		steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
+		GameRegistry.registerItem(steamShovel, "steamShovel");
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");

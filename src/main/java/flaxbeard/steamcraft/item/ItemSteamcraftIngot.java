@@ -4,11 +4,14 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.entity.EntityMortarItem;
 
 public class ItemSteamcraftIngot extends Item {
 	public IIcon[] icon = new IIcon[4];
@@ -51,4 +54,14 @@ public class ItemSteamcraftIngot extends Item {
 	{
 		return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
 	}
+	
+	 @Override
+	 public Entity createEntity(World world, Entity location, ItemStack itemstack) {
+		 return new EntityMortarItem(world, location.posX, location.posY, location.posZ, itemstack);
+	 }
+  
+	 @Override
+	 public boolean hasCustomEntity(ItemStack stack) {
+		 return true;
+	 }
 }
