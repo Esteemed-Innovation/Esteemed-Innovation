@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 
 public class SteamcraftRecipes {
@@ -43,6 +44,9 @@ public class SteamcraftRecipes {
 		
 		if (Loader.isModLoaded("Thaumcraft")) {
 			ThaumcraftIntegration.addThaumiumLiquid();
+		}
+		if (Loader.isModLoaded("Botania")) {
+			BotaniaIntegration.addItems();
 		}
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);

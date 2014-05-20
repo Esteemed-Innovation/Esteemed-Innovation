@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -81,6 +82,7 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 	
 	@Override
 	public void updateEntity() {
+		
 		if (!this.worldObj.isRemote) {
 			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
 			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
@@ -99,11 +101,16 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 			}
 		}
 		int i = 0;
-		ForgeDirection direction = myDirections.get(0).getOpposite();
-		while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-			this.steam--;
-			this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
-			i++;
+		if (myDirections.size() > 0) {
+			ForgeDirection direction = myDirections.get(0).getOpposite();
+			if (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+			}
+			while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+				this.steam--;
+				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
+				i++;
+			}
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}

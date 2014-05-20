@@ -1,15 +1,21 @@
 package flaxbeard.steamcraft.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -20,11 +26,32 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.render.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 
 public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngineerable,ISteamChargable {
+	
+	public static enum ExosuitSlot
+    {
+		bootsFeet(3,2),
+		bootsTop(3,1),
+		bodyFront(1,1),
+		bodyHand(1,2),
+		headGoggles(0,2),
+		headHelm(0,1);
+
+		public int slot;
+		public int armor;
+		private ExosuitSlot(int a, int s)
+        {
+			slot = s;
+			armor = a;
+        }
+    }
+	
 	private int slot;
 	public ItemExosuitArmor(int i) {
 		super(ItemArmor.ArmorMaterial.CHAIN, 1, i);
@@ -151,31 +178,27 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 
 	@Override
 	public MutablePair<Integer, Integer>[] engineerCoordinates() {
-		if (this.slot == 3) {
-			return new MutablePair[] { MutablePair.of(64,29),MutablePair.of(64,9),MutablePair.of(64,49) };
+		if (this.slot == 0) {
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
-		return new MutablePair[] { MutablePair.of(64,29) };
+		if (this.slot == 1) {
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(29,26) };
+		}
+		if (this.slot == 3) {
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
+		}
+		return new MutablePair[] { MutablePair.of(49,26) };
 	}
 	
 	public void hasPlates(ItemStack me) {
 		if (this.getStackInSlot(me, 1) != null) {
-			
-			if (this.getStackInSlot(me, 1).stackSize == this.getPlateReqs()) {
-
-				if (!me.hasTagCompound()) {
-					me.setTagCompound(new NBTTagCompound());
-				}
-				ItemStack clone = this.getStackInSlot(me, 1).copy();
-				clone.stackSize = 1;
-				if (UtilPlates.getPlate(clone) != null) {
-					me.stackTagCompound.setString("plate", UtilPlates.getPlate(clone).getIdentifier());
-				}
-				else
-				{
-					if (me.stackTagCompound.hasKey("plate")) {
-						me.stackTagCompound.removeTag("plate");
-					}
-				}
+			if (!me.hasTagCompound()) {
+				me.setTagCompound(new NBTTagCompound());
+			}
+			ItemStack clone = this.getStackInSlot(me, 1).copy();
+			clone.stackSize = 1;
+			if (UtilPlates.getPlate(clone) != null) {
+				me.stackTagCompound.setString("plate", UtilPlates.getPlate(clone).getIdentifier());
 			}
 			else
 			{
@@ -206,7 +229,6 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 
 	@Override
 	public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
-		System.out.println("fs");
 
 		if (!me.hasTagCompound()) {
 			me.setTagCompound(new NBTTagCompound());
@@ -261,26 +283,85 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	    	return null;
 	    }
 	}
+	
+	@Override
+	public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
+		if (slotNum == 0) {
+			ItemStack clone = upgrade.copy();
+			clone.stackSize = 1;
+			return UtilPlates.getPlate(clone) != null;
+		}
+		if (upgrade.getItem() instanceof IExosuitUpgrade) {
+			IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
+			return upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum;
+		}
+		return false;
+	}
+	
+	public boolean hasUpgrade(ItemStack me, Item check) {
+		if (me.hasTagCompound()) {
+			if (me.stackTagCompound.hasKey("inv")) {
+				for (int i = 1; i<10; i++) {
+					if (me.stackTagCompound.getCompoundTag("inv").hasKey(Integer.toString(i))) {
+						ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
+						if (stack.getItem() == check) {
+							return true;
+						}
+					}	
+				}
+			}
+		}
+		return false;
+	}
+	
+	public IExosuitUpgrade[] getUpgrades(ItemStack me) {
+		ArrayList<IExosuitUpgrade> upgrades = new ArrayList<IExosuitUpgrade>();
+		if (me.hasTagCompound()) {
+			if (me.stackTagCompound.hasKey("inv")) {
+				for (int i = 2; i<10; i++) {
+					if (me.stackTagCompound.getCompoundTag("inv").hasKey(Integer.toString(i))) {
+						ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
+						if (stack.getItem() instanceof IExosuitUpgrade) {
+							upgrades.add((IExosuitUpgrade) stack.getItem());
+						}
+					}	
+				}
+			}
+		}
+		return upgrades.toArray(new IExosuitUpgrade[0]);
+	}
 
 	@Override
 	public void drawSlot(GuiEngineeringTable guiEngineeringTable, int slotNum, int i, int j) {
 		guiEngineeringTable.mc.getTextureManager().bindTexture(guiEngineeringTable.furnaceGuiTextures);
 		if (this.slot == 0) {
-			if (slotNum != 0) {
-				guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
-			}
-			else
-			{
-				guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+			switch (slotNum) {
+				case 0:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+					break;
+				case 1:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 18, 18, 18);
+					break;
+				case 2:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 18, 18, 18);
+					break;
+				default:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
 		}
 		if (this.slot == 1) {
-			if (slotNum != 0) {
-				guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
-			}
-			else
-			{
-				guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+			switch (slotNum) {
+				case 0:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+					break;
+				case 1:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
+					break;
+				case 2:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
+					break;
+				default:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
 		}
 		if (this.slot == 2) {
@@ -304,46 +385,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 0, 18, 18);
 					break;
 				default:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 176194, 0, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
 		}
-	}
-
-	@Override
-	public int getStackLimit(ItemStack me, int i) {
-		if (this.slot == 0) {
-			switch (i) {
-				case 0:
-					return this.getPlateReqs();
-				default:
-					return 64;
-			}
-		}
-		if (this.slot == 1) {
-			switch (i) {
-				case 0:
-					return this.getPlateReqs();
-				default:
-					return 64;
-			}
-		}
-		if (this.slot == 2) {
-			switch (i) {
-				case 0:
-					return this.getPlateReqs();
-				default:
-					return 64;
-			}
-		}
-		if (this.slot == 3) {
-			switch (i) {
-				case 0:
-					return this.getPlateReqs();
-				default:
-					return 1;
-			}
-		}
-		return 64;
 	}
 
 	@Override
@@ -354,6 +398,24 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@Override
 	public boolean canCharge(ItemStack me) {
 		return this == SteamcraftItems.exoArmorBody;
+	}
+	
+	@Override
+	public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4)
+	{
+		super.addInformation(me, player, list, par4);
+		if (me.hasTagCompound()) {
+			if (me.stackTagCompound.hasKey("inv")) {
+				for (int i = 2; i<10; i++) {
+					if (me.stackTagCompound.getCompoundTag("inv").hasKey(Integer.toString(i))) {
+						ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
+						if (stack.getItem() instanceof IExosuitUpgrade) {
+							((IExosuitUpgrade)stack.getItem()).writeInfo(list);
+						}
+					}	
+				}
+			}
+		}
 	}
 
 }

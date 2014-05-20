@@ -1,7 +1,11 @@
 package flaxbeard.steamcraft.client;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -14,15 +18,20 @@ import flaxbeard.steamcraft.client.render.BlockSteamHeaterRenderer;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.client.render.IInventoryTESR;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
+import flaxbeard.steamcraft.client.render.RenderMortarItem;
 import flaxbeard.steamcraft.client.render.TileEntityCrucibleRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityMoldRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamChargerRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamGaugeRenderer;
+import flaxbeard.steamcraft.client.render.TileEntitySteamHammerRenderer;
 import flaxbeard.steamcraft.common.CommonProxy;
+import flaxbeard.steamcraft.entity.EntityMortarItem;
+import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
+import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 
 
 public class ClientProxy extends CommonProxy
@@ -30,6 +39,10 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerRenderers()
     {
+   	 	Steamcraft.channel.register(new SteamcraftClientPacketHandler());
+   	 	
+   	 	RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new RenderMortarItem());
+   	 
     	TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, renderCrucible);
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.crucible), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
@@ -41,6 +54,11 @@ public class ClientProxy extends CommonProxy
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamCharger.class, new TileEntitySteamChargerRenderer());
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());
 
+    	
+    	TileEntitySpecialRenderer renderSteamHammer = new TileEntitySteamHammerRenderer();
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
+
     	RenderingRegistry.registerBlockHandler(Steamcraft.tubeRenderID, new BlockSteamPipeRenderer());
     	RenderingRegistry.registerBlockHandler(Steamcraft.heaterRenderID, new BlockSteamHeaterRenderer());
     	RenderingRegistry.registerBlockHandler(Steamcraft.chargerRenderID, new BlockSteamChargerRenderer());
@@ -49,5 +67,8 @@ public class ClientProxy extends CommonProxy
 
     }
     
-	
+    @Override
+    public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {
+        Minecraft.getMinecraft().effectRenderer.addEffect((new EntityDiggingFX(world, x, y, z, xv, yv, zv, block, 0)));
+    }
 }

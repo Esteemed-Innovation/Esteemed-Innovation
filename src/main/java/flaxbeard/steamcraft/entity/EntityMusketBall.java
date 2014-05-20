@@ -302,7 +302,7 @@ public class EntityMusketBall extends Entity implements IProjectile
 //                                		var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
 //                                	}
 //                                	else {
-                                		var4.entityHit.addVelocity(-this.motionX * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionY * 0.25F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionZ * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
+                                	//	var4.entityHit.addVelocity(-this.motionX * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionY * 0.25F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26, -this.motionZ * 4.0F * (double)this.knockbackStrength * 0.6000000238418579D / (double)var26);
                                 	//}//
                                 }
                             }

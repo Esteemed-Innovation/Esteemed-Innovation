@@ -22,17 +22,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
+import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
-import flaxbeard.steamcraft.handler.SpyglassHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
+import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
+import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
-import flaxbeard.steamcraft.tile.TileEntityFishGenocideMachine;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
+import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
@@ -74,6 +76,7 @@ public class Steamcraft {
 		
 		GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
+	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
 
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");
 		GameRegistry.registerTileEntity(TileEntityMold.class, "mold");
@@ -85,21 +88,20 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
 		GameRegistry.registerTileEntity(TileEntitySteamTank.class, "steamTank");
 		GameRegistry.registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
-		GameRegistry.registerTileEntity(TileEntityFishGenocideMachine.class, "fishGenocideMachine");
-
+		GameRegistry.registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
+		GameRegistry.registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
 	}
 	
-	
-
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+		channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("steamcraft");
+
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 		
 		MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
 		MinecraftForge.EVENT_BUS.register(new MechHandler());
 		
-		FMLCommonHandler.instance().bus().register(new SpyglassHandler());
+		FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
 		
 		tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
 		heaterRenderID = RenderingRegistry.getNextAvailableRenderId();

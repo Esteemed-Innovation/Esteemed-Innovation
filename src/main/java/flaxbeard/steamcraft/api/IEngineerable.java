@@ -19,5 +19,5 @@ public interface IEngineerable {
 
 	public void drawSlot(GuiEngineeringTable guiEngineeringTable, int slotnum, int i, int j);
 
-	public int getStackLimit(ItemStack me, int i);
+	boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade);
 }

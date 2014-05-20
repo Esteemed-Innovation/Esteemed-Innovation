@@ -90,6 +90,14 @@ item.steamcraft:shovelBrass.name=Brass Shovel
 item.steamcraft:hoeBrass.name=Brass Hoe
 item.steamcraft:swordBrass.name=Brass Sword
 
+item.steamcraft:steamDrill.name=Steam Drill
+item.steamcraft:steamAxe.name=Steam Axe
+
+item.steamcraft:powerFist.name=Power Fist
+item.steamcraft:jetpack.name=Steam Jetpack
+item.steamcraft:goggleUpgrade.name=Mask of Revealing
+item.steamcraft:floralLaurel.name=Floral Laurel
+
 tile.steamcraft:blockBrass.name=Brass Block
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:crucible.name=Crucible
@@ -101,4 +109,7 @@ tile.steamcraft:ore.0.name=Copper Ore
 tile.steamcraft:ore.1.name=Zinc Ore
 tile.steamcraft:carving.name=Carving Table
 tile.steamcraft:engineering.name=Engineering Table
-tile.steamcraft:tank.name=Steam Tank
+tile.steamcraft:tank.0.name=Steam Tank
+tile.steamcraft:tank.1.name=Creative Steam Tank
+tile.steamcraft:meter.name=Steam Gauge
+tile.steamcraft:hammer.name=Steam Hammer

@@ -8,12 +8,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
-import flaxbeard.steamcraft.block.BlockFishGenocideMachine;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
+import flaxbeard.steamcraft.block.BlockSteamHammer;
 import flaxbeard.steamcraft.block.BlockSteamHeater;
 import flaxbeard.steamcraft.block.BlockSteamPistonBase;
 import flaxbeard.steamcraft.block.BlockSteamPistonExtension;
@@ -36,6 +36,7 @@ public class SteamcraftBlocks {
 	public static Block blockBrass;
 	public static Block tank;
 	public static Block meter;
+	public static Block hammer;
 
 	public static Block carving;
 	public static Block engineering;
@@ -57,7 +58,7 @@ public class SteamcraftBlocks {
 		OreDictionary.registerOre("blockBrass", blockBrass);
 		
 		tank = new BlockSteamTank().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:tank").setBlockTextureName("steamcraft:brassTank").setHardness(5.0F).setResistance(10.0F);
-		GameRegistry.registerBlock(tank, "steamTank");
+		GameRegistry.registerBlock(tank, BlockManyMetadataItem.class, "steamTank");
 		
 		boiler = new BlockBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:boiler").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(boiler,"boiler");
@@ -79,8 +80,8 @@ public class SteamcraftBlocks {
 		charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(charger, "charger");
 		
-		genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fishBoiler").setHardness(5.0F).setResistance(10.0F);
-		GameRegistry.registerBlock(genocide, "fishBoiler");
+		hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+		GameRegistry.registerBlock(hammer, "hammer");
 		
 		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter");
 		GameRegistry.registerBlock(meter, "meter");

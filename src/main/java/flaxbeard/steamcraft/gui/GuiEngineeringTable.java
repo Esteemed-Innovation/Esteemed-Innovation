@@ -57,7 +57,7 @@ public class GuiEngineeringTable extends GuiContainer
         		for (MutablePair<Integer,Integer> pair : item.engineerCoordinates()) {
         			int x = pair.left;
         			int y = pair.right;
-        			item.drawSlot(this,i,k+x+25,l+y+5);
+        			item.drawSlot(this,i,k+x+52,l+y+8);
         			i++;
         		}
         	}

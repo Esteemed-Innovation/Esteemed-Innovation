@@ -1,15 +1,26 @@
 package flaxbeard.steamcraft.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 
-public class SpyglassHandler {
+public class SteamcraftTickHandler {
 	private boolean inUse = false;
 	private boolean wasInUse = false;
 	private float fov = 0;
@@ -21,9 +32,32 @@ public class SpyglassHandler {
 		wasInUse = inUse;
 		inUse = false;
 		if(Minecraft.getMinecraft().thePlayer != null){
-			ItemStack item = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(Minecraft.getMinecraft().thePlayer.inventory.currentItem);
+			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+			
+			if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed()) {
+				SteamcraftClientPacketHandler.sendSpacePacket(player);
+				if (player != null) {
+
+					ItemStack armor = player.getCurrentArmor(2);
+					if (armor != null && armor.getItem() == SteamcraftItems.exoArmorBody) {
+						ItemExosuitArmor item = (ItemExosuitArmor) armor.getItem();
+						if (item.hasUpgrade(armor, SteamcraftItems.jetpack) && armor.getItemDamage() < armor.getMaxDamage()-5) {
+							if (!player.onGround && !player.capabilities.isFlying) {
+								player.motionY=player.motionY+0.06D;
+								double rotation = Math.toRadians(player.renderYawOffset);
+								
+								player.worldObj.spawnParticle("smoke", player.posX+0.4*Math.sin(rotation+0.9F), player.posY-1F, player.posZ-0.4*Math.cos(rotation+0.9F), 0.0F, -1.0F, 0.0F);
+								player.worldObj.spawnParticle("smoke", player.posX+0.4*Math.sin(rotation-0.9F), player.posY-1F, player.posZ-0.4*Math.cos(rotation-0.9F), 0.0F, -1.0F, 0.0F);
+							}
+						}
+					}
+				}
+			}
+			
+			ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
 			if (item != null && item.getItem() == SteamcraftItems.spyglass) {
-				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (player.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -1.7F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity = 0.0F;
@@ -39,7 +73,7 @@ public class SpyglassHandler {
 			            isShooting = true;
 			        }
 				}
-				if (Minecraft.getMinecraft().thePlayer.isUsingItem() && isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (player.isUsingItem() && isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -0.85F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;
