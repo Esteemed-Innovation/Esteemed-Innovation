@@ -3,6 +3,11 @@ package flaxbeard.steamcraft.api;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import flaxbeard.steamcraft.Steamcraft;
 
 public class UtilSteamTransport {
 	public static void generalPressureEvent(World world, int x, int y, int z, float pressure, int capacity) {
@@ -29,6 +34,28 @@ public class UtilSteamTransport {
 						if (change > 0 && change <= trans.getSteam()) {
 							trans.decrSteam(change);
 							target.insertSteam(change, direction.getOpposite());
+						}
+					}
+				}
+				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+					IFluidHandler target = (IFluidHandler) tile;
+					float cap = 0;
+					float steam = 0;
+					for (FluidTankInfo info : target.getTankInfo(direction.getOpposite())) {
+						if (info.fluid == null) {
+							cap += info.capacity/10.0F;
+						}
+						else if (info.fluid.getFluid() == FluidRegistry.getFluid("steam")) {
+							steam += info.fluid.amount/10.0F;
+							cap += info.capacity/10.0F;
+						}
+					}
+					float pressure = (float)steam/(float)cap;
+					if (target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam")) && trans.getPressure() > pressure) {
+						float targetpercent = ((float)trans.getSteam()+steam)/((float)trans.getCapacity()+cap);
+						int change = (int) (Math.floor(trans.getSteam()*cap-steam*trans.getCapacity())/(trans.getCapacity()+cap));
+						if (change > 0 && change <= trans.getSteam()) {
+							trans.decrSteam(change-target.fill(direction.getOpposite(), new FluidStack(FluidRegistry.getFluid("steam"), change*10), true)/10);
 						}
 					}
 				}

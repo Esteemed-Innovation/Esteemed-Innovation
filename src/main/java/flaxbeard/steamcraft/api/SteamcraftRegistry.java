@@ -11,9 +11,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import cpw.mods.fml.common.Loader;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.integration.TinkersIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.Tuple3;
 
@@ -30,6 +32,16 @@ public class SteamcraftRegistry {
 	public static HashMap<String,BookPage[]> researchPages = new HashMap<String,BookPage[]>();
 	public static HashMap<String,ExosuitPlate> plates = new HashMap<String,ExosuitPlate>();
 	public static HashMap<MutablePair<ItemExosuitArmor,ExosuitPlate>,IIcon> plateIcons = new HashMap<MutablePair<ItemExosuitArmor,ExosuitPlate>,IIcon>();
+	public static HashMap<MutablePair<Item,Integer>,MutablePair<Item,Integer>> steamedFoods = new HashMap<MutablePair<Item,Integer>,MutablePair<Item,Integer>>();
+
+	public static void addSteamFood(Item food1, int i,
+			Item food2, int j) {
+		steamedFoods.put(MutablePair.of(food1,i), MutablePair.of(food2,j));
+	}
+	
+	public static void addSteamFood(Item food1, Item food2) {
+		steamedFoods.put(MutablePair.of(food1,-1), MutablePair.of(food2,-1));
+	}
 	
 	public static void addExosuitPlate(ExosuitPlate plate) {
 		plates.put(plate.getIdentifier(), plate);
@@ -96,6 +108,9 @@ public class SteamcraftRegistry {
 	
 	public static void registerLiquid(CrucibleLiquid liquid) {
 		liquids.add(liquid);
+		if (Loader.isModLoaded("TConstruct")) {
+			TinkersIntegration.registerRecipes(liquid.name, liquid.plate, liquid.nugget);
+		}
 	}
 	
 	public static void registerEnhancement(IEnhancement enhancement) {

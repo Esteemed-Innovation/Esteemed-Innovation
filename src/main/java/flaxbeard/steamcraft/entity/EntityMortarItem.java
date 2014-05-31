@@ -1,24 +1,67 @@
 package flaxbeard.steamcraft.entity;
 
+import java.util.UUID;
+
+import cpw.mods.fml.common.FMLLog;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class EntityMortarItem extends EntityItem {
 	public int randomDir = 0;
 	public int randomDir2 = 0;
 	public int randomSprite = 0;
+	public int xT = 0;
+	public int zT = 0;
+	public boolean goingUp = true;
+	private double lastPos = 0;
 	private boolean lastOnGround = false;
+	
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    	super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("goingUp", this.goingUp);
+        par1NBTTagCompound.setBoolean("lastOnGround", this.lastOnGround);
+        par1NBTTagCompound.setDouble("lastPos", this.lastPos);
+        par1NBTTagCompound.setInteger("xT", this.xT);
+        par1NBTTagCompound.setInteger("zT", this.zT);
+
+    	super.writeEntityToNBT(par1NBTTagCompound);
+    }
+
+    /**
+     * Reads the entity from NBT (calls an abstract helper method to read specialized data)
+     */
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+    	super.readEntityFromNBT(par1NBTTagCompound);
+        this.goingUp = par1NBTTagCompound.getBoolean("goingUp");
+        this.lastOnGround = par1NBTTagCompound.getBoolean("lastOnGround");
+        this.lastPos = par1NBTTagCompound.getDouble("lastPos");
+        this.xT = par1NBTTagCompound.getInteger("xT");
+        this.zT = par1NBTTagCompound.getInteger("zT");
+    }
+	
 	public EntityMortarItem(World par1World) {
 		super(par1World);
-		
+		this.renderDistanceWeight *= 3;
 	}
 	
 	public EntityMortarItem(World par1World, double par2, double par4,
-			double par6, ItemStack par8ItemStack) {
+			double par6, ItemStack par8ItemStack, int xTarget, int zTarget) {
 		super(par1World, par2, par4, par6, par8ItemStack);
 		super.delayBeforeCanPickup = 20;
+		this.xT = xTarget;
+		this.zT = zTarget;
 	}
 	
 	@Override
@@ -33,6 +76,29 @@ public class EntityMortarItem extends EntityItem {
 				this.randomSprite = worldObj.rand.nextInt(5);
 			}
 		}
+		if (goingUp) {
+			if (!(this.posY > this.lastPos)) {
+				this.motionY = 0.0F;
+				this.goingUp = false;
+			}
+			if (this.posY > 256) {
+				this.motionY = 0.0F;
+				this.setPosition(xT+(this.worldObj.rand.nextInt(5)-2),256, zT+(this.worldObj.rand.nextInt(5)-2));
+				this.goingUp = false;
+			}
+			else
+			{
+				this.motionY = 2.0F;
+			}
+		}
+		lastPos = this.posY;
 		lastOnGround = onGround;
+	}
+	
+	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+		if (this.motionY < -1.0F) {
+			par1EntityPlayer.attackEntityFrom(DamageSource.fallingBlock, 2.0F);
+		}
+		super.onCollideWithPlayer(par1EntityPlayer);
 	}
 }

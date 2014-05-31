@@ -54,12 +54,12 @@ public class GuiBoiler extends GuiContainer
         this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
         GL11.glDisable(3042);
         int fill = (int) ((this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/10000.0F)*58.0F);
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
 	        for (int j = 0; j < 8; j++) {
 	    		if (Math.min(8, fill - j*8) > 0) {
 			        this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 			        //this.drawTexturedModelRectFromIcon(k + 81, l + 14 + 42 - j*16 + (16 - (Math.min(16, fill - j*16))), FluidRegistry.WATER.getIcon(), 16, Math.min(16, fill - j*16));
-		        	this.drawTexturedModalRect(k + 81 + i*8, l + 14 + 50 - j*8 + (8 - (Math.min(8, fill - j*8))), (int)(256*FluidRegistry.WATER.getIcon().getMinU()), (int)(256*FluidRegistry.WATER.getIcon().getMinV()), 8, Math.min(8, fill - j*8));
+		        	this.drawTexturedModalRect(k + 81 + i*4, l + 14 + 50 - j*8 + (8 - (Math.min(8, fill - j*8))), (int)(256*FluidRegistry.WATER.getIcon().getMinU()), (int)(256*FluidRegistry.WATER.getIcon().getMinV()), 8, Math.min(8, fill - j*8));
 			        GL11.glDisable(3042);
 	    		}
 	    	}
@@ -68,12 +68,12 @@ public class GuiBoiler extends GuiContainer
         fill = (int) ((this.furnaceInventory.steam/5000.0F)*58.0F);
         //System.out.println(this.furnaceInventory.steam);
         fill = Math.min(fill, 58);
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
 	        for (int j = 0; j < 8; j++) {
 	    		if (Math.min(8, fill - j*8) > 0) {
 			        this.mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 			        //this.drawTexturedModelRectFromIcon(k + 81, l + 14 + 42 - j*16 + (16 - (Math.min(16, fill - j*16))), FluidRegistry.WATER.getIcon(), 16, Math.min(16, fill - j*16));
-		        	this.drawTexturedModalRect(k + 104 + i*8, l + 14 + 50 - j*8 + (8 - (Math.min(8, fill - j*8))), (int)(256*FluidRegistry.WATER.getIcon().getMinU()), (int)(256*FluidRegistry.WATER.getIcon().getMinV()), 8, Math.min(8, fill - j*8));
+		        	this.drawTexturedModalRect(k + 104 + i*4, l + 14 + 50 - j*8 + (8 - (Math.min(8, fill - j*8))), (int)(256*FluidRegistry.WATER.getIcon().getMinU()), (int)(256*FluidRegistry.WATER.getIcon().getMinV()), 8, Math.min(8, fill - j*8));
 			        GL11.glDisable(3042);
 	    		}
 	    	}

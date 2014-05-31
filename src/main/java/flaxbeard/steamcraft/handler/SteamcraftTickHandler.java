@@ -1,22 +1,16 @@
 package flaxbeard.steamcraft.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 
@@ -28,10 +22,11 @@ public class SteamcraftTickHandler {
 	ResourceLocation spyglassfiller = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	ResourceLocation spyglass = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void tickStart(TickEvent.ClientTickEvent event) {
 		wasInUse = inUse;
 		inUse = false;
-		if(Minecraft.getMinecraft().thePlayer != null){
+		if(event.side == Side.CLIENT && Minecraft.getMinecraft().thePlayer != null){
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
 			

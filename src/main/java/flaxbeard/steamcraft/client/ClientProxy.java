@@ -20,6 +20,7 @@ import flaxbeard.steamcraft.client.render.IInventoryTESR;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
 import flaxbeard.steamcraft.client.render.RenderMortarItem;
 import flaxbeard.steamcraft.client.render.TileEntityCrucibleRenderer;
+import flaxbeard.steamcraft.client.render.TileEntityItemMortarRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityMoldRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamChargerRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamGaugeRenderer;
@@ -28,6 +29,7 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
@@ -58,6 +60,10 @@ public class ClientProxy extends CommonProxy
     	TileEntitySpecialRenderer renderSteamHammer = new TileEntitySteamHammerRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
+    	
+    	TileEntitySpecialRenderer renderItemMortar = new TileEntityItemMortarRenderer();
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.itemMortar), new ItemTESRRenderer((IInventoryTESR) renderItemMortar, new TileEntityItemMortar()));
 
     	RenderingRegistry.registerBlockHandler(Steamcraft.tubeRenderID, new BlockSteamPipeRenderer());
     	RenderingRegistry.registerBlockHandler(Steamcraft.heaterRenderID, new BlockSteamHeaterRenderer());
