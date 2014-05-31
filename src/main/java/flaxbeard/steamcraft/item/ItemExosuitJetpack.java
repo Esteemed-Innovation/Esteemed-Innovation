@@ -3,6 +3,8 @@ package flaxbeard.steamcraft.item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.client.render.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
@@ -25,6 +27,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderModel(ModelExosuit model, int armor, float size) {
 		if (armor == 1) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);

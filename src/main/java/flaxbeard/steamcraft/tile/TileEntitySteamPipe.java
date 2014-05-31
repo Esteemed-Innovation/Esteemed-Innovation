@@ -3,22 +3,26 @@ package flaxbeard.steamcraft.tile;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
-public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter {
-	
+public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISteamTransporter {
 	private int steam;
+	private FluidTank dummyFluidTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000);
+
 
 	@Override
 	public float getPressure() {
@@ -82,7 +86,9 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 	
 	@Override
 	public void updateEntity() {
-		
+		if (Steamcraft.steamRegistered) {
+			this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
+		}
 		if (!this.worldObj.isRemote) {
 			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
 			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
@@ -95,6 +101,12 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 				if (tile instanceof ISteamTransporter) {
 					ISteamTransporter target = (ISteamTransporter) tile;
 					if (target.doesConnect(direction.getOpposite())) {
+						myDirections.add(direction);
+					}
+				}
+				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+					IFluidHandler target = (IFluidHandler) tile;
+					if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
 						myDirections.add(direction);
 					}
 				}
@@ -128,6 +140,47 @@ public class TileEntitySteamPipe extends TileEntity implements ISteamTransporter
 	@Override
 	public boolean acceptsGauge(ForgeDirection face) {
 		return true;
+	}
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		if (resource.amount >= 10) {
+			if (doFill) {
+				this.steam += (resource.amount-resource.amount%10)/10;
+			}
+			FluidStack resource2 = resource.copy();
+			resource2.amount = resource.amount-resource.amount%10;
+			return dummyFluidTank.fill(resource2, doFill)+resource.amount%10;
+		}
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource,
+			boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		return (Steamcraft.steamRegistered ? fluid == FluidRegistry.getFluid("steam") : false);
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		System.out.println("SOME1WANTSIT");
+
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		return new FluidTankInfo[] {dummyFluidTank.getInfo()};
 	}
 
 }

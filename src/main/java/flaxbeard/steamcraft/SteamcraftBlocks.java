@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
+import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
@@ -37,6 +38,7 @@ public class SteamcraftBlocks {
 	public static Block tank;
 	public static Block meter;
 	public static Block hammer;
+	public static Block itemMortar;
 
 	public static Block carving;
 	public static Block engineering;
@@ -82,6 +84,9 @@ public class SteamcraftBlocks {
 		
 		hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(hammer, "hammer");
+		
+		itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(itemMortar, "itemMortar");
 		
 		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter");
 		GameRegistry.registerBlock(meter, "meter");

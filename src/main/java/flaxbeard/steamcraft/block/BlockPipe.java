@@ -11,6 +11,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
@@ -94,6 +96,30 @@ public class BlockPipe extends BlockContainer {
 						}
 					}
 				}
+				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+					IFluidHandler target = (IFluidHandler) tile;
+					if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
+						myDirections.add(direction);
+						if (direction.offsetX == 1) {
+							maxX = 1.0F-2*px;
+						}
+						if (direction.offsetY == 1) {
+							maxY = 1.0F-2*px;
+						}
+						if (direction.offsetZ == 1) {
+							maxZ = 1.0F-2*px;
+						}
+						if (direction.offsetX == -1) {
+							minX = 0.0F+2*px;
+						}
+						if (direction.offsetY == -1) {
+							minY = 0.0F+2*px;
+						}
+						if (direction.offsetZ == -1) {
+							minZ = 0.0F+2*px;
+						}
+					}
+				}
 			}
 		}
 		if (myDirections.size() == 2) {
@@ -158,6 +184,30 @@ public class BlockPipe extends BlockContainer {
 						}
 						if (direction.offsetZ == -1) {
 							minZ = 0.0F;
+						}
+					}
+				}
+				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+					IFluidHandler target = (IFluidHandler) tile;
+					if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
+						myDirections.add(direction);
+						if (direction.offsetX == 1) {
+							maxX = 1.0F-2*px;
+						}
+						if (direction.offsetY == 1) {
+							maxY = 1.0F-2*px;
+						}
+						if (direction.offsetZ == 1) {
+							maxZ = 1.0F-2*px;
+						}
+						if (direction.offsetX == -1) {
+							minX = 0.0F+2*px;
+						}
+						if (direction.offsetY == -1) {
+							minY = 0.0F+2*px;
+						}
+						if (direction.offsetZ == -1) {
+							minZ = 0.0F+2*px;
 						}
 					}
 				}

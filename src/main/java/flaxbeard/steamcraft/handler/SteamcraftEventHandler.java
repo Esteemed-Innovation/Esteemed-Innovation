@@ -10,18 +10,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -37,6 +40,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 public class SteamcraftEventHandler {
 	private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -46,6 +50,12 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 
+	
+//	@SubscribeEvent
+//	public void handleWorldLoad(WorldEvent.Load event) {
+//		AetherBlockData.get(event.world);
+//	}
+	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL) {
@@ -118,9 +128,45 @@ public class SteamcraftEventHandler {
 		}
 	}
 	
+//	public void checkForFall(World world, int x, int y, int z) {
+//		ArrayList<ChunkCoordinates> cc = AetherBlockData.get(world).cc;
+//		ChunkCoordinates c = new ChunkCoordinates(x, y, z);
+//
+//		if (cc.contains(c)) {
+//			Block block = world.getBlock(x, y, z);
+//			if (block != Blocks.air) {
+//				boolean canFall = true;
+//				for (int y2 = y-1; y>=0; y--) {
+//					if (cc.contains(new ChunkCoordinates(x, y2, z))) {
+//						canFall = false;
+//					}
+//				}
+//				if (canFall) {
+//					if (!world.isRemote) {
+//						EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, (double)((float)c.posX + 0.5F), (double)((float)c.posY + 0.5F), (double)((float)c.posZ + 0.5F), block, world.getBlockMetadata(c.posX, c.posY, c.posZ));
+//						world.spawnEntityInWorld(entityfallingblock);
+//					}
+//					else
+//					{
+//						world.setBlockToAir(c.posX, c.posY, c.posZ);
+//					}
+//					cc.remove(c);
+//				}
+//				for (int i = 0; i<6; i++) {
+//
+//	  				ForgeDirection dir = ForgeDirection.getOrientation(i);
+//	  				if (cc.contains(new ChunkCoordinates(c.posX + dir.offsetX, c.posY + dir.offsetY, c.posZ + dir.offsetZ))) {
+//	  					checkForFall(world, c.posX + dir.offsetX, c.posY + dir.offsetY, c.posZ + dir.offsetZ);
+//	  				}
+//	  			}
+//			}
+//		}
+//	}
+	
 	@SubscribeEvent
 	public void rightClick(PlayerInteractEvent event) {
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+			//checkForFall(event.entityPlayer.worldObj, event.x, event.y, event.z);
 			if (event.entityPlayer.getHeldItem() != null) {
 				if ((event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamDrill || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamAxe || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamShovel) && (event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == null || event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) != SteamcraftBlocks.charger)) {
 					event.setCanceled(true);
@@ -359,9 +405,13 @@ public class SteamcraftEventHandler {
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
 		if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) { 
+			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
+				System.out.println(((TileEntitySteamHeater)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).master);
+			}
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
 				System.out.println(((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getSteam() + " " + ((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getPressure());
 			}
+		
 		}
 	}
 	

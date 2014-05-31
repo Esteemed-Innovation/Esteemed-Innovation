@@ -3,7 +3,6 @@ package flaxbeard.steamcraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Loader;
@@ -11,9 +10,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.TinkersIntegration;
 
 public class SteamcraftRecipes {
     
@@ -47,6 +46,10 @@ public class SteamcraftRecipes {
 		}
 		if (Loader.isModLoaded("Botania")) {
 			BotaniaIntegration.addItems();
+		}
+		if (Loader.isModLoaded("TConstruct")) {
+			System.out.println("INTEGRATION FUCK YEAH");
+			TinkersIntegration.addIngotRecipes();
 		}
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);

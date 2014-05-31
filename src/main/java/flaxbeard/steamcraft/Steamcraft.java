@@ -5,6 +5,7 @@ package flaxbeard.steamcraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -31,8 +32,10 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
+import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
+import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
@@ -60,6 +63,7 @@ public class Steamcraft {
 	public static int genocideRenderID;
 	public static int gaugeRenderID;
 
+    public static boolean steamRegistered;
     
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
@@ -68,6 +72,8 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		Config.load(event);
+		
 		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false);
 		tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 		
@@ -75,6 +81,7 @@ public class Steamcraft {
 		SteamcraftItems.registerItems();
 		
 		GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
+
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
 
@@ -90,6 +97,9 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
 		GameRegistry.registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
 		GameRegistry.registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
+		GameRegistry.registerTileEntity(TileEntityItemMortar.class, "itemMortar");
+		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
+
 	}
 	
 	@EventHandler
@@ -116,6 +126,7 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		steamRegistered = FluidRegistry.isFluidRegistered("steam");
 		SteamcraftRecipes.registerRecipes();
 		SteamcraftBook.registerBookResearch();
 	}

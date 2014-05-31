@@ -54,14 +54,4 @@ public class ItemSteamcraftIngot extends Item {
 	{
 		return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
 	}
-	
-	 @Override
-	 public Entity createEntity(World world, Entity location, ItemStack itemstack) {
-		 return new EntityMortarItem(world, location.posX, location.posY, location.posZ, itemstack);
-	 }
-  
-	 @Override
-	 public boolean hasCustomEntity(ItemStack stack) {
-		 return true;
-	 }
 }

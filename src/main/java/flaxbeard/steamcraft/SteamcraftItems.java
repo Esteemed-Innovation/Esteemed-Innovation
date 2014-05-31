@@ -2,8 +2,11 @@ package flaxbeard.steamcraft;
 
 import java.util.HashMap;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemFishFood;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -14,6 +17,7 @@ import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.item.ItemAstrolabe;
 import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
@@ -29,6 +33,7 @@ import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
+import flaxbeard.steamcraft.item.ItemSteamedFood;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftAxe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftHoe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftPickaxe;
@@ -46,6 +51,8 @@ public class SteamcraftItems {
     public static Item revolver;
     public static Item blunderbuss;
     public static Item spyglass;
+    
+    public static Item astrolabe;
     
     public static Item blankMold;
     public static Item ingotMold;
@@ -73,6 +80,11 @@ public class SteamcraftItems {
 	public static Item jetpack;
 	public static Item powerFist;
 	public static Item fallAssist;
+	
+	public static Item steamedPorkchop;
+	public static Item steamedFish;
+	public static Item steamedBeef;
+	public static Item steamedChicken;
     
     public static void registerItems() {
 		
@@ -102,6 +114,9 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(powerFist, "powerFist");
 	 	fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallAssist");
 		GameRegistry.registerItem(fallAssist, "fallAssist");
+		
+	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe");
+		GameRegistry.registerItem(astrolabe, "astrolabe");
 		
 		if (Loader.isModLoaded("Thaumcraft")) {
 			exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
@@ -136,6 +151,20 @@ public class SteamcraftItems {
 		SteamcraftRegistry.addCarvableMold((ICrucibleMold) plateMold);
 		blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
 		GameRegistry.registerItem(blankMold, "blankMold");
+		
+		steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedFish, "steamedFish");
+        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
+		SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
+		steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken).setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedChicken, "steamedChicken");
+		SteamcraftRegistry.addSteamFood(Items.cooked_chicken, steamedChicken);
+		steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef).setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedBeef, "steamedBeef");
+		SteamcraftRegistry.addSteamFood(Items.cooked_beef, steamedBeef);
+		steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop).setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
+		SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
 		
 		steamcraftIngot = new ItemSteamcraftIngot().setUnlocalizedName("steamcraft:ingot").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftIngot, "steamcraftIngot");
