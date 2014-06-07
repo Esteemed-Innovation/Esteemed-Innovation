@@ -1,27 +1,112 @@
 package flaxbeard.steamcraft.api.book;
 
-import org.lwjgl.opengl.GL11;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.lwjgl.opengl.GL11;
+
+import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
 public class BookPageCrafting extends BookPage {
 	
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private ItemStack output;
-    private Object[] inputs;
+    private Object[] inputs = new Object[9];
 
 	public BookPageCrafting(String string,ItemStack op, Object... ip) {
 		super(string);
 		output = op;
 		inputs = ip;
+	}
+	
+	public BookPageCrafting(String string, String... keys) {
+		this(string, getRecipes(keys));
+	}
+	
+	public static IRecipe[] getRecipes(String... keys) {
+		ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
+		for (String key : keys) {
+			recipes.add(BookRecipeRegistry.getRecipe(key));
+		}
+		return recipes.toArray(new IRecipe[0]);
+	}
+
+	public BookPageCrafting(String string, IRecipe... recipes) {
+		super(string);
+		output = recipes[0].getRecipeOutput();
+		for (IRecipe recipe : recipes) {
+			if (recipe instanceof ShapedOreRecipe) {
+				for (int i = 0; i< 9; i++) {
+					ArrayList newList = new ArrayList();
+					if (inputs[i] != null) {
+						if (inputs[i] instanceof Collection) {
+							newList.addAll((Collection) inputs[i]);
+						}
+						else
+						{
+							newList.add(inputs[i]);
+						}
+					}
+					if (((ShapedOreRecipe)recipe).getInput().length > i && ((ShapedOreRecipe)recipe).getInput()[i] != null) {
+						if (((ShapedOreRecipe)recipe).getInput()[i] instanceof Collection) {
+							newList.addAll((Collection) ((ShapedOreRecipe)recipe).getInput()[i]);
+						}
+						else
+						{
+							newList.add(((ShapedOreRecipe)recipe).getInput()[i]);
+						}
+					}
+					inputs[i] = newList;
+				}
+			}
+			else if (recipe instanceof ShapedRecipes) {
+				for (int i = 0; i< 10; i++) {
+					ArrayList newList = new ArrayList();
+					if (inputs[i] != null) {
+						if (inputs[i] instanceof Collection) {
+							newList.addAll((Collection) inputs[i]);
+						}
+						else
+						{
+							newList.add(inputs[i]);
+						}
+					}
+					if (((ShapedRecipes)recipe).recipeItems.length > i && ((ShapedRecipes)recipe).recipeItems[i] != null) {
+						newList.add(((ShapedRecipes)recipe).recipeItems[i]);
+						
+					}
+					
+					inputs[i] = newList;
+				}
+			}
+			else if (recipe instanceof ShapelessRecipes) {
+				inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes)recipe).recipeItems.toArray(new Object[0]));
+			}
+			else if (recipe instanceof ShapelessOreRecipe) {
+				inputs = ArrayUtils.addAll(inputs, ((ShapelessOreRecipe)recipe).getInput().toArray(new Object[0]));
+			}
+		}
+		for (int i = 0; i< 9; i++) {
+			if (inputs[i] instanceof ArrayList) {
+				ArrayList<ItemStack> seen = new ArrayList<ItemStack>();
+				for (ItemStack input : ((ArrayList<ItemStack>)inputs[i])) {
+					
+				}
+			}
+		}
 	}
 
 	@Override
@@ -45,6 +130,31 @@ public class BookPageCrafting extends BookPage {
 				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer);
 				            fontRenderer.setUnicodeFlag(true);
             			}
+            			if (inputs[(3*i)+j] instanceof ArrayList && ((ArrayList)inputs[(3*i)+j]).size() > 0) {
+            				
+            				ArrayList<ItemStack> list2 = new ArrayList<ItemStack>();
+            				for (ItemStack item : ((ArrayList<ItemStack>)inputs[(3*i)+j])) {
+            					if (item.getItemDamage() == 32767) {
+            						ArrayList list = new ArrayList<ItemStack>();
+            						item.getItem().getSubItems(item.getItem(), null, list);
+            						for (Object item2 : list) {
+            							list2.add((ItemStack) item2);
+            						}
+            					}
+            					else
+            					{
+            						list2.add(item);
+            					}
+            				}
+            				ItemStack[] item = list2.toArray(new ItemStack[0]);
+            				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
+				            fontRenderer.setUnicodeFlag(false);
+	        				System.out.println(item.length);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer);
+				            fontRenderer.setUnicodeFlag(true);
+            			}
+
+
             		}
             	}
             }

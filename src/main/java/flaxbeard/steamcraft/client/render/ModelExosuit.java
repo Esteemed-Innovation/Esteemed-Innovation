@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -14,18 +16,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class ModelExosuit extends ModelBiped {
 	private ResourceLocation texture;
-	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
-	//private ModelRenderer 
 	private boolean hasOverlay;
-	private ModelRenderer Tank;
-//	private ModelRenderer Jetpack1;
-//	private ModelRenderer Jetpack2;
+	private static final ModelPointer model = new ModelPointer();
+	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
+	
 	private int armor;
 	private ItemStack me;
 	public ModelExosuit(ItemStack itemStack,int armorType) {
@@ -40,9 +42,6 @@ public class ModelExosuit extends ModelBiped {
 				texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(key, (ItemExosuitArmor) itemStack.getItem(), armorType));
 			}
 		}
-		Tank = new ModelRenderer(this, 0, 0);
-		Tank.addBox(-4.0F, -1F, 2F, 8, 12, 6);
-		bipedBody.addChild(Tank);
 //		Jetpack1 = new ModelRenderer(this, 28, 0);
 //		Jetpack2 = new ModelRenderer(this, 28, 0);
 //		if (itemStack.getItem() == SteamcraftItems.exoArmorBody && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2) != null && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2).getItem() == SteamcraftItems.jetpack) {
@@ -58,7 +57,6 @@ public class ModelExosuit extends ModelBiped {
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-		this.Tank.showModel = false;
 		//this.Jetpack1.showModel = false;
 	//	this.Jetpack2.showModel = false;
 
@@ -95,18 +93,8 @@ public class ModelExosuit extends ModelBiped {
 				this.bipedHeadwear.render(par7);
 			}
 			if (upgrade.hasModel()) {
-				upgrade.renderModel(this,armor,par7);
+				upgrade.renderModel(this,par1Entity,armor,par7,me);
 			}
-		}
-		if (armor == 1) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);
-			this.Tank.showModel = true;
-			this.Tank.render(par7);
-//			
-//			this.Jetpack1.showModel = true;
-//			this.Jetpack1.render(par7);
-//			this.Jetpack2.showModel = true;
-//			this.Jetpack2.render(par7);
 		}
 
 	}

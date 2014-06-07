@@ -41,13 +41,15 @@ public class UtilSteamTransport {
 					IFluidHandler target = (IFluidHandler) tile;
 					float cap = 0;
 					float steam = 0;
-					for (FluidTankInfo info : target.getTankInfo(direction.getOpposite())) {
-						if (info.fluid == null) {
-							cap += info.capacity/10.0F;
-						}
-						else if (info.fluid.getFluid() == FluidRegistry.getFluid("steam")) {
-							steam += info.fluid.amount/10.0F;
-							cap += info.capacity/10.0F;
+					if (target.getTankInfo(direction.getOpposite()) != null) {
+						for (FluidTankInfo info : target.getTankInfo(direction.getOpposite())) {
+							if (info.fluid == null) {
+								cap += info.capacity/10.0F;
+							}
+							else if (info.fluid.getFluid() == FluidRegistry.getFluid("steam")) {
+								steam += info.fluid.amount/10.0F;
+								cap += info.capacity/10.0F;
+							}
 						}
 					}
 					float pressure = (float)steam/(float)cap;

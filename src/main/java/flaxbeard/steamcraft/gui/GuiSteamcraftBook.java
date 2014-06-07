@@ -373,6 +373,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     }
 
     @SideOnly(Side.CLIENT)
+	public
     static class NextPageButton extends GuiButton
         {
             private final boolean field_146151_o;

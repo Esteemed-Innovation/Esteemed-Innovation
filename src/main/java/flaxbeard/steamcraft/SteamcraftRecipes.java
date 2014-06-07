@@ -10,6 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.integration.TinkersIntegration;
@@ -104,37 +105,37 @@ public class SteamcraftRecipes {
 	private static void registerCraftingRecipes() {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.book), Items.book, "oreZinc", "oreCopper"));
 
-		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.crucible), "x x", "x x", "xxx", 
+		BookRecipeRegistry.addRecipe("crucible",new ItemStack(SteamcraftBlocks.crucible), "x x", "x x", "xxx", 
 		        'x', Items.brick);
-		GameRegistry.addRecipe(new ItemStack(SteamcraftBlocks.mold), "xxx", "x x", "xxx", 
+		BookRecipeRegistry.addRecipe("mold",new ItemStack(SteamcraftBlocks.mold), "xxx", "x x", "xxx", 
 		        'x', Items.brick);
-		GameRegistry.addRecipe(new ItemStack(SteamcraftItems.blankMold), "xx", 
+		BookRecipeRegistry.addRecipe("blankMold",new ItemStack(SteamcraftItems.blankMold), "xx", 
 		        'x', Items.brick);
 		
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.carving), "xzx", "x x", "xxx", 
+		BookRecipeRegistry.addRecipe("carving",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.carving), "xzx", "x x", "xxx", 
 		        'x', "plankWood", 'z', SteamcraftItems.blankMold));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
+		BookRecipeRegistry.addRecipe("engineering1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
 		        'x', "blockCobble", 'z', "plateIron"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
+		BookRecipeRegistry.addRecipe("engineering2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.engineering), "xzx", "x x", "xxx", 
 		        'x', Blocks.cobblestone, 'z', "plateIron"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockBrass), "iii", "iii", "iii",
 		        'i', "ingotBrass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,2), "i",
 		        'i', "blockBrass"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.charger), "pxp", " p ", 
+		BookRecipeRegistry.addRecipe("filler",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.charger), "pxp", " p ", 
 		        'x', "blockBrass", 'p', SteamcraftBlocks.pipe));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
+		BookRecipeRegistry.addRecipe("tank1", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
 		        'i', "plateBrass"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
+		BookRecipeRegistry.addRecipe("tank2", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
 		        'i', "ingotBrass"));
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
 		        'x', "ingotBrass", 'f', Blocks.furnace));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
 		        'x', "plateBrass", 'f', Blocks.furnace));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
+		BookRecipeRegistry.addRecipe("pipe1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
 		        'x', "ingotBrass"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
+		BookRecipeRegistry.addRecipe("pipe2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pipe,4,0), "xxx", "   ", "xxx", 
 		        'x', "plateBrass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
 		        'x', "ingotBrass", 'c', "nuggetCopper", 'f', Blocks.furnace,'p', SteamcraftBlocks.pipe));

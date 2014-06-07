@@ -35,6 +35,8 @@ research.Heater.0=Now I can power furnaces using steam power, using this nifty s
 research.Charger.name=Steam Filler
 research.Charger.0=
 
+category.Exosuit.name=Exosuit
+
 itemGroup.steamcraft=FSM
 itemGroup.steamcraftTools=FSM Tools
 steamcraft.enhancementText=Enhancements:

@@ -24,6 +24,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
 import flaxbeard.steamcraft.item.ItemExosuitJetpack;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
+import flaxbeard.steamcraft.item.ItemExosuitWings;
 import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
@@ -78,8 +79,10 @@ public class SteamcraftItems {
     public static Item steamAxe;
     public static Item steamShovel;
 	public static Item jetpack;
+	public static Item wings;
 	public static Item powerFist;
 	public static Item fallAssist;
+	public static Item doubleJump;
 	
 	public static Item steamedPorkchop;
 	public static Item steamedFish;
@@ -110,10 +113,14 @@ public class SteamcraftItems {
 		
 	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
 		GameRegistry.registerItem(jetpack, "jetpack");
+	 	wings = new ItemExosuitWings().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:wings").setTextureName("steamcraft:wings");
+		GameRegistry.registerItem(wings, "wings");
 	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
 		GameRegistry.registerItem(powerFist, "powerFist");
-	 	fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallAssist");
+	 	fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
 		GameRegistry.registerItem(fallAssist, "fallAssist");
+	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+		GameRegistry.registerItem(doubleJump, "doubleJump");
 		
 	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe");
 		GameRegistry.registerItem(astrolabe, "astrolabe");
