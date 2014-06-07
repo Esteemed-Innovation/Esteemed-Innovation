@@ -12,24 +12,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -72,19 +71,24 @@ public class SteamcraftEventHandler {
 	}
 	
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void handleMainMenu(InitGuiEvent.Post event) {
+//		if (event.gui instanceof GuiOptions) {
+//			GuiOptions gui = (GuiOptions) event.gui;
+//	        int i = event.gui.height - 25;
+//	        int j = 5;
+//	        event.buttonList.add(new GuiButtonUpdate(5, j, i));
+//	        event.buttonList.add(new GuiButtonUpdate(5, j+24, i));
+//	        event.buttonList.add(new GuiButtonUpdate(5, j+48, i));
+//		}
+	}
+	
+	@SubscribeEvent
 	public void handleFirePunch(LivingAttackEvent event) {
 		if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
-			boolean hasPower = hasPower(event.entityLiving);
-			int armor = getExoArmor(event.entityLiving);
+
 			EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
-			if (entity.getEquipmentInSlot(3) != null) {
-				ItemStack stack = entity.getEquipmentInSlot(3);
-				if (stack.getItem() instanceof ItemExosuitArmor) {
-					if (stack.getItemDamage() < stack.getMaxDamage()-1) {
-						hasPower = true;
-					}
-				}
-			}
+			boolean hasPower = hasPower(entity,5);
 			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getHeldItem() == null) {
 				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
 				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.powerFist)) {
@@ -93,8 +97,9 @@ public class SteamcraftEventHandler {
 					event.entityLiving.motionY += (entity.getLookVec().normalize().yCoord > 0.0F ? 2.0F*entity.getLookVec().normalize().yCoord : 0.0F) + 1.5F;
 					event.entityLiving.motionZ += 3.0F*entity.getLookVec().normalize().zCoord;
 				
-					entity.motionX += -1.0F*entity.getLookVec().normalize().xCoord;
-					entity.motionZ += -1.0F*entity.getLookVec().normalize().zCoord;
+					entity.motionX += -0.5F*entity.getLookVec().normalize().xCoord;
+					entity.motionZ += -0.5F*entity.getLookVec().normalize().zCoord;
+					entity.getEquipmentInSlot(3).damageItem(5,entity);
 				}
 			}
 		}
@@ -103,89 +108,44 @@ public class SteamcraftEventHandler {
 	@SubscribeEvent
 	public void handleFallDamage(LivingHurtEvent event) {
 		if (event.source == DamageSource.fall) {
-			boolean hasPower = hasPower(event.entityLiving);
+			boolean hasPower = hasPower(event.entityLiving,(int)event.ammount/2);
 			int armor = getExoArmor(event.entityLiving);
 			EntityLivingBase entity = event.entityLiving;
-			if (entity.getEquipmentInSlot(3) != null) {
-				ItemStack stack = entity.getEquipmentInSlot(3);
-				if (stack.getItem() instanceof ItemExosuitArmor) {
-					if (stack.getItemDamage() < stack.getMaxDamage()-1) {
-						hasPower = true;
-					}
-				}
-			}
 			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
-
 				ItemExosuitArmor boots = (ItemExosuitArmor) entity.getEquipmentInSlot(1).getItem();
+				entity.getEquipmentInSlot(3).damageItem((int)event.ammount/2, event.entityLiving);
 				if (boots.hasUpgrade(entity.getEquipmentInSlot(1), SteamcraftItems.fallAssist)) {
 			        if (event.ammount <= 1.0F) {
 			        	event.ammount = 0.0F;
 			        }
 					event.ammount = event.ammount/1.5F;
-					System.out.println("T");
 				}
 			}
 		}
 	}
 	
-//	public void checkForFall(World world, int x, int y, int z) {
-//		ArrayList<ChunkCoordinates> cc = AetherBlockData.get(world).cc;
-//		ChunkCoordinates c = new ChunkCoordinates(x, y, z);
-//
-//		if (cc.contains(c)) {
-//			Block block = world.getBlock(x, y, z);
-//			if (block != Blocks.air) {
-//				boolean canFall = true;
-//				for (int y2 = y-1; y>=0; y--) {
-//					if (cc.contains(new ChunkCoordinates(x, y2, z))) {
-//						canFall = false;
-//					}
-//				}
-//				if (canFall) {
-//					if (!world.isRemote) {
-//						EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, (double)((float)c.posX + 0.5F), (double)((float)c.posY + 0.5F), (double)((float)c.posZ + 0.5F), block, world.getBlockMetadata(c.posX, c.posY, c.posZ));
-//						world.spawnEntityInWorld(entityfallingblock);
-//					}
-//					else
-//					{
-//						world.setBlockToAir(c.posX, c.posY, c.posZ);
-//					}
-//					cc.remove(c);
-//				}
-//				for (int i = 0; i<6; i++) {
-//
-//	  				ForgeDirection dir = ForgeDirection.getOrientation(i);
-//	  				if (cc.contains(new ChunkCoordinates(c.posX + dir.offsetX, c.posY + dir.offsetY, c.posZ + dir.offsetZ))) {
-//	  					checkForFall(world, c.posX + dir.offsetX, c.posY + dir.offsetY, c.posZ + dir.offsetZ);
-//	  				}
-//	  			}
-//			}
-//		}
-//	}
-	
 	@SubscribeEvent
 	public void rightClick(PlayerInteractEvent event) {
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-			//checkForFall(event.entityPlayer.worldObj, event.x, event.y, event.z);
 			if (event.entityPlayer.getHeldItem() != null) {
 				if ((event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamDrill || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamAxe || event.entityPlayer.getHeldItem().getItem() instanceof ItemSteamShovel) && (event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == null || event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) != SteamcraftBlocks.charger)) {
 					event.setCanceled(true);
 				}
 			}
 		}
+		
 	}
 	@SubscribeEvent
 	public void playerJumps(LivingEvent.LivingJumpEvent event)
 	{
-		boolean hasPower = hasPower(event.entityLiving);
-
+		boolean hasPower = hasPower(event.entityLiving,3);
+		
 		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0).getItem() instanceof ItemExosuitArmor)) {
 			ItemStack stack = ((EntityPlayer)event.entity).inventory.armorItemInSlot(0);
 			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
 			if (item.getStackInSlot(stack,3) != null && hasPower) {
 				if (event.entityLiving.getEquipmentInSlot(3).getItemDamage() < event.entityLiving.getEquipmentInSlot(3).getMaxDamage()-2) {
 					if (item.getStackInSlot(stack, 3).getItem() == SteamcraftItems.pistol) {
-						event.entityLiving.getEquipmentInSlot(3).damageItem(1, event.entityLiving);
 						if (((EntityPlayer)event.entity).isSneaking()) {
 							Vec3 vector = event.entityLiving.getLook(0.5F);
 							double total = Math.abs(vector.zCoord + vector.xCoord);
@@ -201,23 +161,27 @@ public class SteamcraftEventHandler {
 							event.entityLiving.motionY += ((jump+1)*vector.yCoord)/1.5F;
 							event.entityLiving.motionZ += (jump+1)*vector.zCoord*4;
 							event.entityLiving.motionX += (jump+1)*vector.xCoord*4;
-	
-				      
+							event.entityLiving.getEquipmentInSlot(3).damageItem(3, event.entityLiving);
 						}
 						else
 						{
+							event.entityLiving.getEquipmentInSlot(3).damageItem(1, event.entityLiving);
 							event.entityLiving.motionY += 0.2750000059604645D;
 						}
 					}
 				}		
 			}
+			if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
+				stack.stackTagCompound.setBoolean("releasedSpace", false);
+			}
+			
 		}	
 	}
 
 	@SubscribeEvent
 	public void handleSteamcraftArmorMining(PlayerEvent.BreakSpeed event) {
 
-		boolean hasPower = hasPower(event.entityLiving);
+		boolean hasPower = hasPower(event.entityLiving,1);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
 		if (entity instanceof EntityPlayer) {
@@ -282,17 +246,18 @@ public class SteamcraftEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void handleFlippers(LivingEvent.LivingUpdateEvent event) {
-		boolean hasPower = hasPower(event.entityLiving);
-		EntityLivingBase entity = event.entityLiving;
-		boolean hasFlippers = false;
+	public void handleFlippers(LivingEvent.LivingUpdateEvent event) {	
+		int armor = getExoArmor(event.entityLiving);
+		EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
 
-		if (entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
-			ItemStack stack = entity.getEquipmentInSlot(1);
-			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
-			if (item.getStackInSlot(stack,3) != null && entity.isInWater()) {
-				if (item.getStackInSlot(stack, 3).getItem() == SteamcraftItems.upgradeFlippers) {
-					entity.moveEntity(entity.motionX*3, 0, entity.motionZ*3);
+		
+		if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+			if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.wings)) {
+				if (entity.fallDistance > 1.5F && !entity.isSneaking()) {
+					entity.fallDistance = 1.5F;
+					entity.motionY = Math.max(entity.motionY, -0.1F);
+					entity.moveEntity(entity.motionX, 0, entity.motionZ);
 				}
 			}
 		}
@@ -300,9 +265,30 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void handleSteamcraftArmor(LivingEvent.LivingUpdateEvent event) {
-		boolean hasPower = hasPower(event.entityLiving);
+		boolean hasPower = hasPower(event.entityLiving, 1);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
+		ItemStack armor2 = entity.getEquipmentInSlot(1);
+		if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+			ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+			if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump)) {
+				if (!armor2.stackTagCompound.hasKey("usedJump") || entity.onGround) {
+					armor2.stackTagCompound.setBoolean("usedJump", false);
+					System.out.println("Y");
+				}
+				
+				if (!armor2.stackTagCompound.hasKey("airTicks")) {
+					armor2.stackTagCompound.setInteger("airTicks", 0);
+				}
+				int airTicks = armor2.stackTagCompound.getInteger("airTicks");
+				airTicks++;
+				if (entity.onGround) {
+					airTicks = 0;
+				}
+				armor2.stackTagCompound.setInteger("airTicks", airTicks);
+
+			}
+		}
 		if (hasPower) {
 			if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid2) != null) {
 				entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoostBad);
@@ -377,13 +363,11 @@ public class SteamcraftEventHandler {
 //		return (entity.isp)
 //	}
 	
-	public boolean hasPower(EntityLivingBase entityLiving) {
+	public static boolean hasPower(EntityLivingBase entityLiving, int i) {
 		if (entityLiving.getEquipmentInSlot(3) != null) {
 			ItemStack stack = entityLiving.getEquipmentInSlot(3);
 			if (stack.getItem() instanceof ItemExosuitArmor) {
-				if (stack.getItemDamage() < stack.getMaxDamage()-1) {
-					return true;
-				}
+				return ((ItemExosuitArmor)stack.getItem()).hasPower(stack, i);
 			}
 		}
 		return false;

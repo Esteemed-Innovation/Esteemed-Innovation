@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -87,7 +88,7 @@ public class BlockMold extends BlockContainer {
 		}
 		else
 		{
-			if (tile.changeTicks == 0) {
+			if (tile.changeTicks == 0 && (player.getHeldItem() == null || !(player.getHeldItem().getItem() instanceof ItemBlock))) {
 				tile.open = !tile.open;
 				tile.changeTicks = 20;
 			}

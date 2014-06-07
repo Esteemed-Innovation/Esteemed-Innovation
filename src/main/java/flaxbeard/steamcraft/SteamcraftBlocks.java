@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
+import flaxbeard.steamcraft.block.BlockConveyor;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
@@ -23,6 +24,7 @@ import flaxbeard.steamcraft.block.BlockSteamTank;
 import flaxbeard.steamcraft.block.BlockSteamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
+import flaxbeard.steamcraft.item.BlockTankItem;
 
 public class SteamcraftBlocks {
 	public static Block steamcraftOre;
@@ -38,6 +40,7 @@ public class SteamcraftBlocks {
 	public static Block tank;
 	public static Block meter;
 	public static Block hammer;
+	public static Block conveyor;
 	public static Block itemMortar;
 
 	public static Block carving;
@@ -60,7 +63,7 @@ public class SteamcraftBlocks {
 		OreDictionary.registerOre("blockBrass", blockBrass);
 		
 		tank = new BlockSteamTank().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:tank").setBlockTextureName("steamcraft:brassTank").setHardness(5.0F).setResistance(10.0F);
-		GameRegistry.registerBlock(tank, BlockManyMetadataItem.class, "steamTank");
+		GameRegistry.registerBlock(tank, BlockTankItem.class, "steamTank");
 		
 		boiler = new BlockBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:boiler").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(boiler,"boiler");
@@ -84,6 +87,9 @@ public class SteamcraftBlocks {
 		
 		hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(hammer, "hammer");
+		
+		conveyor = new BlockConveyor().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:conveyor").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+		GameRegistry.registerBlock(conveyor, "conveyor");
 		
 		itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(itemMortar, "itemMortar");

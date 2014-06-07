@@ -19,6 +19,7 @@ import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.client.render.IInventoryTESR;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
 import flaxbeard.steamcraft.client.render.RenderMortarItem;
+import flaxbeard.steamcraft.client.render.TileEntityConveyorRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityCrucibleRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityItemMortarRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityMoldRenderer;
@@ -28,6 +29,7 @@ import flaxbeard.steamcraft.client.render.TileEntitySteamHammerRenderer;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.tile.TileEntityConveyor;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
@@ -60,6 +62,10 @@ public class ClientProxy extends CommonProxy
     	TileEntitySpecialRenderer renderSteamHammer = new TileEntitySteamHammerRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
+    	
+    	TileEntitySpecialRenderer renderConveyor = new TileEntityConveyorRenderer();
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConveyor.class, new TileEntityConveyorRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.conveyor), new ItemTESRRenderer((IInventoryTESR) renderConveyor, new TileEntityConveyor()));
     	
     	TileEntitySpecialRenderer renderItemMortar = new TileEntityItemMortarRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());

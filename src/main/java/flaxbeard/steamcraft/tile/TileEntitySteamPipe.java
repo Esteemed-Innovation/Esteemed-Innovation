@@ -21,7 +21,7 @@ import flaxbeard.steamcraft.api.UtilSteamTransport;
 
 public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISteamTransporter {
 	private int steam;
-	private FluidTank dummyFluidTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000);
+	private FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
 
 	@Override

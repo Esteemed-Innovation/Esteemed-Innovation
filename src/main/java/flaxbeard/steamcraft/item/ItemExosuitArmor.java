@@ -13,9 +13,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -26,11 +24,11 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.render.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 
 public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngineerable,ISteamChargable {
 	
@@ -40,6 +38,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		bootsTop(3,1),
 		bodyFront(1,1),
 		bodyHand(1,2),
+		bodyTank(1,3),
 		headGoggles(0,2),
 		headHelm(0,1);
 
@@ -56,13 +55,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	public ItemExosuitArmor(int i) {
 		super(ItemArmor.ArmorMaterial.CHAIN, 1, i);
 		slot = i;
-		if (slot == 1) {
-			this.setMaxDamage(6400);
-		}
-		else
-		{
-			this.setMaxDamage(0);
-		}
+		this.setMaxDamage(0);
 	}
 	
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
@@ -166,6 +159,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 		if (this.slot == 1) {
+			System.out.println("CALLED");
 			if (stack.getItemDamage() < stack.getMaxDamage()-40) {
 				stack.damageItem(damage*40, entity);
 			}
@@ -182,7 +176,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
 		if (this.slot == 1) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(29,26) };
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(29,26),MutablePair.of(49,46) };
 		}
 		if (this.slot == 3) {
 			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
@@ -243,6 +237,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		if (stack != null) {
 			stack.writeToNBT(stc);
 			me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
+			if (var1 == 4 && slot == 1) {
+				me.setItemDamage(me.getMaxDamage()-1);
+			}
 		}
 		this.hasPlates(me);
 	}
@@ -294,6 +291,15 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		if (upgrade.getItem() instanceof IExosuitUpgrade) {
 			IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
 			return upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum;
+		}
+		return false;
+	}
+	
+	public boolean hasPower(ItemStack me, int powerNeeded) {
+		if (this.slot == 1) {
+			if (me.getItemDamage() < me.getMaxDamage()-powerNeeded) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -355,10 +361,13 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
 					break;
 				case 1:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 18, 18, 18);
 					break;
 				case 2:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
+					break;
+				case 3:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
 					break;
 				default:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
@@ -389,6 +398,18 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 			}
 		}
 	}
+	
+    public int getMaxDamage(ItemStack stack)
+    {
+		if (this.slot == 1) {
+			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
+			if (item.getStackInSlot(stack, 4) != null && item.getStackInSlot(stack, 4).getItem() instanceof IExosuitTank) {
+				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 4).getItem();
+				return tank.getStorage(stack);
+			}
+		}
+		return 0;
+    }
 
 	@Override
 	public int steamPerDurability() {
@@ -396,8 +417,15 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	}
 
 	@Override
-	public boolean canCharge(ItemStack me) {
-		return this == SteamcraftItems.exoArmorBody;
+	public boolean canCharge(ItemStack stack) {
+		if (this.slot == 1) {
+			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
+			if (item.getStackInSlot(stack, 4) != null && item.getStackInSlot(stack, 4).getItem() instanceof IExosuitTank) {
+				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 4).getItem();
+				return tank.canFill(stack);
+			}
+		}
+		return false;
 	}
 	
 	@Override
@@ -417,5 +445,4 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 			}
 		}
 	}
-
 }

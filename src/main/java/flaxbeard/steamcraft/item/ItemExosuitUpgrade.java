@@ -2,7 +2,9 @@ package flaxbeard.steamcraft.item;
 
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,7 +46,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderModel(ModelExosuit model, int armor, float size) {}
+	public void renderModel(ModelExosuit model, Entity entity, int armor, float size, ItemStack me) {}
 
 	@Override
 	public void writeInfo(List list) {

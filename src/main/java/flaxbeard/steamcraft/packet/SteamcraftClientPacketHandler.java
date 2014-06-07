@@ -38,6 +38,26 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 			e.printStackTrace();
 		}
 	}
+	
+	public static void sendNoSpacePacket(Entity player)
+	{
+		ByteBuf buf = Unpooled.buffer();
+		ByteBufOutputStream out = new ByteBufOutputStream(buf);
+		try
+	    {
+	    	out.writeByte(2);
+	    	out.writeInt(player.worldObj.provider.dimensionId);
+	    	out.writeInt(player.getEntityId());
+	    }
+	    catch (IOException e) {}
+	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
+	    Steamcraft.channel.sendToServer(packet);
+	    try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@SubscribeEvent
 	public void onClientPacket(ClientCustomPacketEvent event) {

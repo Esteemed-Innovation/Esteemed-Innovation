@@ -16,6 +16,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class ThaumcraftIntegration {
     public static Item goggleUpgrade;
+  //  public static Item thaumSource;
     
 	public static void addThaumiumLiquid() {
 		CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,5), new ItemStack(ConfigItems.itemNugget,1,6), null,105,87,163);
@@ -23,6 +24,8 @@ public class ThaumcraftIntegration {
 		
 		goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
 		GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
+		//thaumSource = new ItemThaumcraftPowerSource().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thaumSource").setTextureName("steamcraft:thaumSource");
+		//GameRegistry.registerItem(thaumSource, "thaumSource");
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
@@ -44,4 +47,6 @@ public class ThaumcraftIntegration {
 	public static Item gogglesRevealing() {
 		return ConfigItems.itemGoggles;
 	}
+	
+	
 }
