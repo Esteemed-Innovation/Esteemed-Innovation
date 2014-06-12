@@ -27,7 +27,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
-import flaxbeard.steamcraft.client.render.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 
 public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngineerable,ISteamChargable {
@@ -138,10 +138,10 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		if (armor.hasTagCompound()) {
         	if (armor.stackTagCompound.hasKey("plate")) {
         		ExosuitPlate plate = UtilPlates.getPlate(armor.stackTagCompound.getString("plate"));
-        		return new ArmorProperties(0, plate.getDamageReductionAmount(slot,source) / 25.0D, armorStack.getMaxDamage() + 1 - armor.getItemDamage());
+        		return new ArmorProperties(0, plate.getDamageReductionAmount(slot,source) / 25.0D, armorStack.getMaxDamage());
         	}
         }
-		return new ArmorProperties(0, ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot) / 25.0D, armorStack.getMaxDamage() + 1 - armor.getItemDamage());
+		return new ArmorProperties(0, ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot) / 25.0D, armorStack.getMaxDamage());
 	}
 
 	@Override
@@ -159,7 +159,6 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 		if (this.slot == 1) {
-			System.out.println("CALLED");
 			if (stack.getItemDamage() < stack.getMaxDamage()-40) {
 				stack.damageItem(damage*40, entity);
 			}

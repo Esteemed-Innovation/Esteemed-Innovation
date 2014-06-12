@@ -11,6 +11,10 @@ import net.minecraftforge.common.DimensionManager;
 
 public class ItemAstrolabe extends Item {
 	
+	public ItemAstrolabe() {
+		this.setMaxStackSize(1);
+	}
+	
 	@Override
 	public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 	    if (item.hasTagCompound() && item.getTagCompound().hasKey("targetX")) {

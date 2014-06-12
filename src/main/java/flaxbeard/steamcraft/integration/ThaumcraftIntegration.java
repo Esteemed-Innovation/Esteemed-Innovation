@@ -5,11 +5,13 @@ import thaumcraft.common.config.ConfigItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
@@ -24,8 +26,8 @@ public class ThaumcraftIntegration {
 		
 		goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
 		GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
-		//thaumSource = new ItemThaumcraftPowerSource().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thaumSource").setTextureName("steamcraft:thaumSource");
-		//GameRegistry.registerItem(thaumSource, "thaumSource");
+		BookRecipeRegistry.addRecipe("mask",new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x " ,
+		        'x',"nuggetBrass", 'g', ConfigItems.itemGoggles));
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);

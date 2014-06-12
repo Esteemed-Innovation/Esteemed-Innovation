@@ -1,10 +1,7 @@
 package flaxbeard.steamcraft.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,7 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
+import flaxbeard.steamcraft.client.render.model.ModelPointer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer {

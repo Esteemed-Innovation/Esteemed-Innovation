@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
@@ -27,8 +26,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -70,18 +67,6 @@ public class SteamcraftEventHandler {
 		}
 	}
 	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void handleMainMenu(InitGuiEvent.Post event) {
-//		if (event.gui instanceof GuiOptions) {
-//			GuiOptions gui = (GuiOptions) event.gui;
-//	        int i = event.gui.height - 25;
-//	        int j = 5;
-//	        event.buttonList.add(new GuiButtonUpdate(5, j, i));
-//	        event.buttonList.add(new GuiButtonUpdate(5, j+24, i));
-//	        event.buttonList.add(new GuiButtonUpdate(5, j+48, i));
-//		}
-	}
 	
 	@SubscribeEvent
 	public void handleFirePunch(LivingAttackEvent event) {

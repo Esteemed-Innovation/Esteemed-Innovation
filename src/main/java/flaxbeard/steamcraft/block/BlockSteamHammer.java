@@ -24,12 +24,7 @@ public class BlockSteamHammer extends BlockContainer
     @SideOnly(Side.CLIENT)
 	public IIcon top;
     private IIcon bottom;
-    
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return null;
-    }
-    
+
 	@Override
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
 	{
@@ -40,6 +35,15 @@ public class BlockSteamHammer extends BlockContainer
     public BlockSteamHammer()
     {
         super(Material.iron);
+    }
+    
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+    
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+		return null;
     }
     
     public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int xp, int yp, int zp)

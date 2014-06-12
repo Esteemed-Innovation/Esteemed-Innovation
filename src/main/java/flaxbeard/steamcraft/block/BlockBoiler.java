@@ -6,12 +6,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
@@ -147,23 +151,38 @@ public class BlockBoiler extends BlockContainer {
 	}
 	
 	@Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        if (par1World.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            TileEntityBoiler tileentityfurnace = (TileEntityBoiler)par1World.getTileEntity(par2, par3, par4);
+        TileEntityBoiler tileentityfurnace = (TileEntityBoiler)par1World.getTileEntity(par2, par3, par4);
 
-            if (tileentityfurnace != null)
+		if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
+			if (tileentityfurnace != null)
             {
-            	par5EntityPlayer.openGui(Steamcraft.instance, 0, par1World, par2,par3,par4);
+				tileentityfurnace.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
+				if (!player.capabilities.isCreativeMode) {
+					player.inventory.consumeInventoryItem(Items.water_bucket);
+					player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
+				}
             }
-
-            return true;
-        }
+			return true;
+		}
+		else
+		{
+	        if (par1World.isRemote)
+	        {
+	            return true;
+	        }
+	        else
+	        {
+	
+	            if (tileentityfurnace != null)
+	            {
+	            	player.openGui(Steamcraft.instance, 0, par1World, par2,par3,par4);
+	            }
+	
+	            return true;
+	        }
+		}
     }
 
 }

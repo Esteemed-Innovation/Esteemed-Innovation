@@ -8,11 +8,13 @@ import flaxbeard.steamcraft.Steamcraft;
 
 public class ItemSteamcraftBook extends Item {
 	
+	public ItemSteamcraftBook() {
+		this.setMaxStackSize(1);
+	}
+	
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player)
 	{
-    		player.openGui(Steamcraft.instance, 1, world, 0,0,0);
-
-        
+    	player.openGui(Steamcraft.instance, 1, world, 0,0,0);
     	return par1ItemStack;
     }
 

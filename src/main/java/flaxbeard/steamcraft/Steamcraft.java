@@ -42,6 +42,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
+import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
 @Mod(modid = "Steamcraft", name = "Professor Flaxbeard's Wonderous Steam Power Mod", version = "1.0.0")
@@ -89,6 +90,8 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityMold.class, "mold");
 		GameRegistry.registerTileEntity(TileEntityBoiler.class, "boiler");
 		GameRegistry.registerTileEntity(TileEntitySteamPipe.class, "pipe");
+		GameRegistry.registerTileEntity(TileEntityValvePipe.class, "valvePipe");
+
 		GameRegistry.registerTileEntity(TileEntitySteamPiston.class, "steamPiston");
 		GameRegistry.registerTileEntity(TileEntitySteamHeater.class, "heater");
 		GameRegistry.registerTileEntity(TileEntityEngineeringTable.class, "engineeringTable");

@@ -17,6 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
+import flaxbeard.steamcraft.client.render.model.ModelCrucible;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
 @SideOnly(Side.CLIENT)

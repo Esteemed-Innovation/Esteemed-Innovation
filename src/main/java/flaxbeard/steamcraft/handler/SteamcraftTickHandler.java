@@ -19,6 +19,7 @@ public class SteamcraftTickHandler {
 	private boolean wasInUse = false;
 	private float fov = 0;
 	private float sensitivity = 0;
+	private static float zoom = 0.0F;
 	ResourceLocation spyglassfiller = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	ResourceLocation spyglass = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	@SubscribeEvent
@@ -47,45 +48,43 @@ public class SteamcraftTickHandler {
 						}
 					}
 					
-					ItemStack armor2 = player.getCurrentArmor(0);
-					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
-							if (!armor2.stackTagCompound.hasKey("usedJump")) {
-								armor2.stackTagCompound.setBoolean("usedJump", false);
-							}
-							if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
-								armor2.stackTagCompound.setBoolean("releasedSpace", false);
-							}
-							if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
-								armor2.stackTagCompound.setBoolean("usedJump", true);
-								player.motionY=player.motionY+0.3D;
-							}
-							armor2.stackTagCompound.setBoolean("releasedSpace", false);
-						}
-					}
+//					ItemStack armor2 = player.getCurrentArmor(0);
+//					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+//						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+//						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
+//							if (!armor2.stackTagCompound.hasKey("usedJump")) {
+//								armor2.stackTagCompound.setBoolean("usedJump", false);
+//							}
+//							if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
+//								armor2.stackTagCompound.setBoolean("releasedSpace", false);
+//							}
+//							if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
+//								armor2.stackTagCompound.setBoolean("usedJump", true);
+//								player.motionY=player.motionY+0.3D;
+//							}
+//							armor2.stackTagCompound.setBoolean("releasedSpace", false);
+//						}
+//					}
 				}
 			}
 			else
 			{
-				SteamcraftClientPacketHandler.sendNoSpacePacket(player);
-				if (player != null) {
-					ItemStack armor2 = player.getCurrentArmor(0);
-					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
-							armor2.stackTagCompound.setBoolean("releasedSpace", true);
-						}
-					}
-				}
+//				SteamcraftClientPacketHandler.sendNoSpacePacket(player);
+//				if (player != null) {
+//					ItemStack armor2 = player.getCurrentArmor(0);
+//					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+//						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+//						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
+//							armor2.stackTagCompound.setBoolean("releasedSpace", true);
+//						}
+//					}
+//				}
 			}
 			
 			ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
 			if (item != null && item.getItem() == SteamcraftItems.spyglass) {
-				if (player.isUsingItem() && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
-					Minecraft.getMinecraft().gameSettings.fovSetting = -1.7F;
-					Minecraft.getMinecraft().gameSettings.mouseSensitivity = 0.0F;
 					this.renderTelescopeOverlay();
 				}
 			}
@@ -98,7 +97,7 @@ public class SteamcraftTickHandler {
 			            isShooting = true;
 			        }
 				}
-				if (player.isUsingItem() && isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					Minecraft.getMinecraft().gameSettings.fovSetting = -0.85F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;
@@ -113,6 +112,20 @@ public class SteamcraftTickHandler {
 		if (!inUse && wasInUse) {
 			Minecraft.getMinecraft().gameSettings.fovSetting = fov;
 			Minecraft.getMinecraft().gameSettings.mouseSensitivity = sensitivity;
+		}
+		if (inUse && !wasInUse) {
+			this.zoom = 0.0F;
+		}
+		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F) {
+			this.zoom-=1.0F;
+			Minecraft.getMinecraft().gameSettings.fovSetting += 0.05F;
+			Minecraft.getMinecraft().gameSettings.mouseSensitivity += 0.01F;
+
+		}
+		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindUseItem.getIsKeyPressed() && zoom < 34F) {
+			this.zoom+=1.0F;
+			Minecraft.getMinecraft().gameSettings.fovSetting -= 0.05F;
+			Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.01F;
 		}
 	}
 	

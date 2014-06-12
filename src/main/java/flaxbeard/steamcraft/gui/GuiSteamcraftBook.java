@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -16,7 +17,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
@@ -26,6 +26,9 @@ import flaxbeard.steamcraft.api.book.BookPage;
 
 public class GuiSteamcraftBook extends GuiScreen {
     private static final ResourceLocation bookGuiTextures = new ResourceLocation("steamcraft:textures/gui/book.png");
+    private static final ResourceLocation book2 = new ResourceLocation("steamcraft:textures/gui/book2.png");
+    private static final ResourceLocation reverseBookGuiTextures = new ResourceLocation("steamcraft:textures/gui/bookReverse.png");
+
     /** The player editing the book */
     private final EntityPlayer editingPlayer;
     private final ItemStack bookObj;
@@ -35,13 +38,13 @@ public class GuiSteamcraftBook extends GuiScreen {
     public int bookImageWidth = 192;
     public int bookImageHeight = 192;
     private int bookTotalPages = 1;
-    private int currPage;
+    private static int currPage = 0;
+    private static int lastIndexPage = 0;
     private NBTTagList bookPages;
     private String bookTitle = "";
     private GuiSteamcraftBook.NextPageButton buttonNextPage;
     private GuiSteamcraftBook.NextPageButton buttonPreviousPage;
-    private GuiSteamcraftBook.NextPageButton buttonBack;
-    private String viewing = "";
+    public static String viewing = "";
     /** The GuiButton to sign this book. */
     private static final String __OBFID = "CL_00000744";
     
@@ -94,22 +97,10 @@ public class GuiSteamcraftBook extends GuiScreen {
     	int i = 0;
 		String lastCategory = "";
 		boolean canDo = true;
-		for (String category : SteamcraftRegistry.categories) {
-			i+=10;
-			for (MutablePair research : SteamcraftRegistry.research) {
-				
-				if (research.right == category) {
-					i+=10;
-				}
-			}
-			lastCategory = "";
-			if (i-10 > (currPage-1)*80+70 && currPage != 0 && canDo) {
-				canDo = false;
-				lastCategory = category;
-				int left = ((i-10)/10);
-			}
+		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.categories.size()/2F)+1;
+		if (viewing != "") {
+    		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
 		}
-		this.bookTotalPages = Math.max(1, MathHelper.ceiling_double_int(i/80.0D));
     }
     
     @Override
@@ -132,31 +123,21 @@ public class GuiSteamcraftBook extends GuiScreen {
     public void initGui()
     {
         this.buttonList.clear();
-        Keyboard.enableRepeatEvents(true);
 
 
         int i = (this.width - this.bookImageWidth) / 2;
         int b0 = (this.height - this.bookImageHeight) / 2;
-        this.buttonList.add(this.buttonNextPage = new GuiSteamcraftBook.NextPageButton(1, i + 120, b0 + 154, true));
-        this.buttonList.add(this.buttonPreviousPage = new GuiSteamcraftBook.NextPageButton(2, i + 38, b0 + 154, false));
-        this.buttonList.add(this.buttonBack = new GuiSteamcraftBook.NextPageButton(3, i + 80, b0 + 154, false));
+        this.buttonList.add(this.buttonNextPage = new GuiSteamcraftBook.NextPageButton(1, i + 120 + 67, b0 + 154, true));
+        this.buttonList.add(this.buttonPreviousPage = new GuiSteamcraftBook.NextPageButton(2, i + 38 - 67, b0 + 154, false));
      
         this.updateButtons();
     }
 
-    /**
-     * Called when the screen is unloaded. Used to disable keyboard repeat events
-     */
-    public void onGuiClosed()
-    {
-        Keyboard.enableRepeatEvents(false);
-    }
 
     private void updateButtons()
     {
         this.buttonNextPage.visible = (this.currPage < this.bookTotalPages - 1);
         this.buttonPreviousPage.visible = this.currPage > 0;
-        this.buttonBack.visible = this.viewing != "";
     }
 
     protected void actionPerformed(GuiButton p_146284_1_)
@@ -181,38 +162,23 @@ public class GuiSteamcraftBook extends GuiScreen {
                     --this.currPage;
                 }
             }
-            else if (p_146284_1_.id == 3)
-            {
-            	this.viewing = "";
-            	this.currPage = 0;
-            	int i = 0;
-        		String lastCategory = "";
-        		boolean canDo = true;
-        		for (String category : SteamcraftRegistry.categories) {
-        			i+=10;
-        			for (MutablePair research : SteamcraftRegistry.research) {
-        				
-        				if (research.right == category) {
-        					i+=10;
-        				}
-        			}
-        			lastCategory = "";
-        			if (i-10 > (currPage-1)*80+70 && currPage != 0 && canDo) {
-        				canDo = false;
-        				lastCategory = category;
-        				int left = ((i-10)/10);
-        			}
-        		}
-        		
-        		this.bookTotalPages = Math.max(1, MathHelper.ceiling_double_int(i/80.0D));
-                this.updateButtons();
-            }
+//            else if (p_146284_1_.id == 3)
+//            {
+//            	this.viewing = "";
+//            	this.currPage = lastIndexPage;
+//            	int i = 0;
+//        		String lastCategory = "";
+//        		boolean canDo = true;
+//        		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.categories.size()/2F)+1;
+//                this.updateButtons();
+//            }
             
             if (p_146284_1_ instanceof GuiButtonSelect) {
             	GuiButtonSelect button = (GuiButtonSelect) p_146284_1_;
+            	this.lastIndexPage = currPage;
             	this.viewing = button.name;
             	this.currPage = 0;
-        		this.bookTotalPages = Math.max(1, SteamcraftRegistry.researchPages.get(this.viewing).length);
+        		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
                 this.updateButtons();
             }
             
@@ -257,23 +223,24 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
     }
     
-//    if (this.viewing == "") {
-//        int v = 0;
-//        int z = 4;
-//        String s;
-//        for (String category : SteamcraftRegistry.categories) {
-//			for (MutablePair research : SteamcraftRegistry.research) {
-//				if (research.right == category) {
-//			        s = (String) research.left;
-//			        if (v >= (currPage)*80 && v <= (currPage)*80+70) {
-//			        	this.buttonList.add(new GuiButtonSelect(z, i+50, b0 + 64 + v - (currPage)*80, 110, 10, s));
-//			        }
-//					v+=10;
-//				}
-//			}
-//        	v+=10;
-//        }
-//    }
+    
+    protected void keyTyped(char par1, int par2)
+    {
+        if (par2 == 1 && this.viewing != "")
+        {
+        	this.viewing = "";
+        	this.currPage = lastIndexPage;
+        	int i = 0;
+    		String lastCategory = "";
+    		boolean canDo = true;
+    		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.categories.size()/2F)+1;
+            this.updateButtons();
+        }
+        else
+        {
+        	super.keyTyped(par1, par2);
+        }
+    }
 
     /**
      * Draws the screen and all the components in it.
@@ -282,11 +249,21 @@ public class GuiSteamcraftBook extends GuiScreen {
     {
     	
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(bookGuiTextures);
         int k = (this.width - this.bookImageWidth) / 2;
         int b0 = (this.height - this.bookImageHeight) / 2;
+        if (currPage == 0 && viewing == "") {
+            this.mc.getTextureManager().bindTexture(book2);
+            this.drawTexturedModalRect(k+67, b0, 0, 0, this.bookImageWidth, this.bookImageHeight);
+        }
+        else
+        {
+            this.mc.getTextureManager().bindTexture(reverseBookGuiTextures);
+            this.drawTexturedModalRect(k-67, b0, 0, 0, this.bookImageWidth, this.bookImageHeight);
+            this.mc.getTextureManager().bindTexture(bookGuiTextures);
+            this.drawTexturedModalRect(k+67, b0, 0, 0, this.bookImageWidth, this.bookImageHeight);
+        }
+
   
-        this.drawTexturedModalRect(k, b0, 0, 0, this.bookImageWidth, this.bookImageHeight);
         String s;
         String s1;
         int l;
@@ -297,62 +274,83 @@ public class GuiSteamcraftBook extends GuiScreen {
       
         this.fontRendererObj.drawStringWithShadow(s, k + this.bookImageWidth/2 - l/2 - 3, b0-15, 0xFFFFFF);
     
-        s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages)});
-        s1 = "";
-
-        if (this.bookPages != null && this.currPage >= 0 && this.currPage < this.bookPages.tagCount())
-        {
-            s1 = this.bookPages.getStringTagAt(this.currPage);
-        }
-
-     
         boolean unicode = fontRendererObj.getUnicodeFlag();
 		fontRendererObj.setUnicodeFlag(true);
-        l = this.fontRendererObj.getStringWidth(s);
-        this.fontRendererObj.drawString(s, k - l + this.bookImageWidth - 44, b0 + 16, 0x3F3F3F);
-        this.fontRendererObj.drawSplitString(s1, k + 36, b0 + 16 + 16, 116, 0);
+        if (!(currPage == 0 && viewing == "")) {
+	        s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf((this.currPage-1)*2 + 4), Integer.valueOf(this.bookTotalPages*2)});
+	        if (this.viewing == "") {
+		        s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf((this.currPage-1)*2 + 2), Integer.valueOf(this.bookTotalPages*2-2)});
+	        }
+	        l = this.fontRendererObj.getStringWidth(s);
+	        this.fontRendererObj.drawString(s, k - l + this.bookImageWidth - 44 + 67, b0 + 16, 0x3F3F3F);
+	        
+	        s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf((this.currPage-1)*2 + 3), Integer.valueOf(this.bookTotalPages*2)});
+	        if (this.viewing == "") {
+		        s = I18n.format("book.pageIndicator", new Object[] {Integer.valueOf((this.currPage-1)*2 + 1), Integer.valueOf(this.bookTotalPages*2-2)});
+	        }
+	        this.fontRendererObj.drawString(s, k + l - this.bookImageWidth + 54 + 67, b0 + 16, 0x3F3F3F);
+
+        }
+        else
+        {
+    		fontRendererObj.setUnicodeFlag(unicode);
+            this.fontRendererObj.drawStringWithShadow(s, k + 67 + this.bookImageWidth/2 - l/2 - 3, b0+80, 0xC19E51);
+    		fontRendererObj.setUnicodeFlag(true);
+    		s = I18n.format("steamcraft.book.info");
+	        l = this.fontRendererObj.getStringWidth(s);
+	        this.fontRendererObj.drawString("\u00A7o" + s, k + 67 + this.bookImageWidth/2 - l/2 - 3, b0+90, 0xC19E51);
+	        s = I18n.format("steamcraft.book.by");
+	        l = this.fontRendererObj.getStringWidth(s + " " + Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+	        this.fontRendererObj.drawString("\u00A7o" + s + " " + Minecraft.getMinecraft().thePlayer.getCommandSenderName(), k + 67 + this.bookImageWidth/2 - l/2 - 3, b0+105, 0xC19E51);
+        }
 
         
         if (this.viewing == "") {
-	        s = I18n.format("steamcraft.book.info");
-	        l = this.fontRendererObj.getStringWidth(s);
-	        this.fontRendererObj.drawString("\u00A7o" + s, k + this.bookImageWidth/2 - l/2 - 3, b0+30, 0x3F3F3F);
-	
-	        s = I18n.format("steamcraft.book.index");
-	        l = this.fontRendererObj.getStringWidth(s);
-	        this.fontRendererObj.drawString("\u00A7l"+"\u00A7n"+s, k + this.bookImageWidth/2 - l/2 - 5, b0+45, 0x3F3F3F);
-	
-			
-			int i = 0;
-			String lastCategory = "";
-			boolean canDo = true;
-			ArrayList<Object> thingsToRemove = new ArrayList<Object>();
-			for (Object button : this.buttonList) {
-				if (button instanceof GuiButtonSelect) {
-					thingsToRemove.add(button);
-				}
-			}
-			for (Object button : thingsToRemove) {
-				this.buttonList.remove(button);
-			}
-			
-			for (String category : SteamcraftRegistry.categories) {
-		        s = I18n.format(category);
+        	if (this.currPage > 0) {
+    			s = I18n.format("steamcraft.book.index");
+    			l = this.fontRendererObj.getStringWidth(s);
+    			this.fontRendererObj.drawString("\u00A7l"+"\u00A7n"+s, k - 67 + this.bookImageWidth/2 - l/2 - 5, b0+30, 0x3F3F3F);
+    			this.fontRendererObj.drawString("\u00A7l"+"\u00A7n"+s, k + 67 + this.bookImageWidth/2 - l/2 - 5, b0+30, 0x3F3F3F);
 
-		        if (i >= (currPage)*80 && i <= (currPage)*80+70) {
-		        	this.fontRendererObj.drawString("\u00A7n"+s, k + 40, b0+55+i-(currPage)*90, 0x3F3F3F);
-		        }	        
-				i+=10;
-				for (MutablePair research : SteamcraftRegistry.research) {
-					if (research.right == category) {
-						if (i >= (currPage)*80+10 && i <= (currPage)*80+80) {
-							s = (String) research.left;
-			        		this.buttonList.add(new GuiButtonSelect(4, k+50, b0 + 54 + i - (currPage)*90, 110, 10, s));
-						}
-			        	i+=10;
+				
+				String lastCategory = "";
+				boolean canDo = true;
+				ArrayList<Object> thingsToRemove = new ArrayList<Object>();
+				for (Object button : this.buttonList) {
+					if (button instanceof GuiButtonSelect) {
+						thingsToRemove.add(button);
 					}
 				}
-			}
+				for (Object button : thingsToRemove) {
+					this.buttonList.remove(button);
+				}
+				
+				String category = SteamcraftRegistry.categories.get((currPage-1)*2);
+		        s = I18n.format(category);
+				int i = 10;
+	        	this.fontRendererObj.drawString("\u00A7n"+s, k + 40 -67, 44+b0, 0x3F3F3F);
+				for (MutablePair research : SteamcraftRegistry.research) {
+					if (research.right == category) {
+						s = (String)research.left;
+		        		this.buttonList.add(new GuiButtonSelect(4, k+50-67, b0 + 44 + i, 110, 10, s));
+		        		i+= 10;
+					}
+				}
+				
+				if (SteamcraftRegistry.categories.size() > 1+((currPage-1)*2)) {
+					category = SteamcraftRegistry.categories.get(((currPage-1)*2)+1);
+			        s = I18n.format(category);
+					i = 10;
+		        	this.fontRendererObj.drawString("\u00A7n"+s, k + 40 + 67, 44+b0, 0x3F3F3F);
+					for (MutablePair research : SteamcraftRegistry.research) {
+						if (research.right == category) {
+							s = (String)research.left;
+			        		this.buttonList.add(new GuiButtonSelect(4, k+50+67, b0 + 44 + i, 110, 10, s));
+			        		i+= 10;
+						}
+					}
+				}
+        	}
 			fontRendererObj.setUnicodeFlag(unicode);
 			super.drawScreen(par1, par2, par3);
         }
@@ -363,8 +361,14 @@ public class GuiSteamcraftBook extends GuiScreen {
     		super.drawScreen(par1, par2, par3);
     		fontRendererObj.setUnicodeFlag(true);
         	if (SteamcraftRegistry.researchPages.containsKey(this.viewing)) {
-        		BookPage page = SteamcraftRegistry.researchPages.get(this.viewing)[this.currPage];
-        		page.renderPage(k, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0);
+        		BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
+        		BookPage page = pages[(this.currPage)*2];
+        		page.renderPage(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+        		GL11.glEnable(GL11.GL_BLEND);
+        		if (pages.length > (this.currPage)*2+1) {
+        			page = pages[(this.currPage)*2+1];
+            		page.renderPage(k+67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
+        		}
         	}
     		fontRendererObj.setUnicodeFlag(unicode);
         	
@@ -412,5 +416,35 @@ public class GuiSteamcraftBook extends GuiScreen {
                 }
             }
         }
+    
+    public void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_)
+    {
+        List list = p_146285_1_.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+
+        for (int k = 0; k < list.size(); ++k)
+        {
+            if (k == 0)
+            {
+                list.set(k, p_146285_1_.getRarity().rarityColor + (String)list.get(k));
+            }
+            else
+            {
+                list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+            }
+        }
+
+        FontRenderer font = p_146285_1_.getItem().getFontRenderer(p_146285_1_);
+        this.func_146283_a(list, p_146285_2_, p_146285_3_);
+        drawHoveringText(list, p_146285_2_, p_146285_3_, (font == null ? fontRendererObj : font));
+    
+    }
+    
+    public void renderText(String str, int p_146285_2_, int p_146285_3_)
+    {
+        List list = new ArrayList<String>();
+        list.add(I18n.format(str));
+        this.func_146283_a(list, p_146285_2_, p_146285_3_);
+        drawHoveringText(list, p_146285_2_, p_146285_3_, fontRendererObj);
+    }
 
 }

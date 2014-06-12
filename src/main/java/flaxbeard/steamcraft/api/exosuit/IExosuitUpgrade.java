@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import flaxbeard.steamcraft.client.render.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public interface IExosuitUpgrade {

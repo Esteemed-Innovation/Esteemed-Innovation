@@ -1,17 +1,15 @@
 package flaxbeard.steamcraft.client.render;
 
-import javax.vecmath.Vector2d;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import flaxbeard.steamcraft.client.render.model.ModelMortar;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 
 public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {

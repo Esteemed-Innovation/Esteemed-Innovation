@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -39,6 +40,16 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 		super(Material.rock);
 	}
 	
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+	
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+    	return AxisAlignedBB.getBoundingBox(i+px, j+0.0F+px, k+px, i+1.0F-px, j+1.0F-px, k+1.0F-px);
+    }
+
+	
 	
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
     {
@@ -46,7 +57,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         if (entity instanceof EntityItem) {
 
         	EntityItem item = (EntityItem) entity;
-        	if (world.getBlock(x, y-1, z) == Blocks.fire) {
+        	if (world.getBlock(x, y-1, z) == Blocks.fire || world.getBlock(x, y-1, z).getMaterial() == Material.lava) {
         		MutablePair output;
         		if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()))) {
         			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()));
@@ -56,13 +67,11 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		}
         		else
         		{
-        			System.out.println("HM");
         			return;
         		}
         		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
         		int amount = (Integer) output.right;
         		if (crucible != null) {
-        			System.out.println(amount);
         			if (crucible.getFill() + amount <= 90) {
 	        			CrucibleLiquid fluid = (CrucibleLiquid) output.left;
 	        			if (!crucible.contents.contains(fluid)) {

@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.client.render.model.ModelMold;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 
 @SideOnly(Side.CLIENT)
@@ -36,7 +37,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 		GL11.glTranslated(x, y, z);
 
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(90.0F*(meta+(meta%2*2)), 0F, 1F, 0F);
+		GL11.glRotatef(90.0F*(meta+(meta%2*2))+180.0F, 0F, 1F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 	
 		GL11.glScalef(1F, -1F, -1F);
@@ -46,8 +47,8 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 		float pix = 1.0F/16.0F;
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F+4*pix);
 
-		if (mold.mold != null) {
-			renderMold(mold.mold.getItem(), true);
+		if (mold.mold[0] != null) {
+			renderMold(mold.mold[0].getItem(), true);
 		}
 		GL11.glTranslatef(0.0F,0.0F,-0.001F);
 		renderMoldUnder();
@@ -75,8 +76,8 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 		GL11.glRotatef(270.0F,1F,0F,0F);
 		GL11.glTranslatef(-0.5F, -0.5F-6*pix, -0.5F+8*pix);
 
-		if (mold.mold != null) {
-			renderMold(mold.mold.getItem(), false);
+		if (mold.mold[0] != null) {
+			renderMold(mold.mold[0].getItem(), false);
 		}
 		GL11.glTranslatef(0.0F,0.0F,-0.001F);
 		renderMoldUnder();

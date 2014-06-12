@@ -1,26 +1,19 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class ModelExosuit extends ModelBiped {
 	private ResourceLocation texture;

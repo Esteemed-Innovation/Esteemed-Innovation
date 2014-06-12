@@ -72,15 +72,15 @@ public class BlockMold extends BlockContainer {
 		}
 		if (editingMold) {
 			if (tile.open) {
-				if (tile.mold != null) {
+				if (tile.mold[0] != null) {
 					if (!world.isRemote) {
-						tile.dropItem(tile.mold);
+						tile.dropItem(tile.mold[0]);
 					}
-					tile.mold = null;
+					tile.mold[0] = null;
 				}
 				if (player.getHeldItem() != null) {
 					if (player.getHeldItem().getItem() instanceof ICrucibleMold) {
-						tile.mold = player.getHeldItem();
+						tile.mold[0] = player.getHeldItem();
 						player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 					}
 				}

@@ -32,7 +32,6 @@ public class TileEntityCrucible extends TileEntity {
     	for (int i = 0; i < nbttaglist.tagCount(); ++i)
     	{
     		NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
-    		System.out.println("IT IS: "+ nbttagcompound1.getString("name"));
     		CrucibleLiquid liquid = SteamcraftRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
     		if (liquid != null) {
 	    		this.contents.add(liquid);
@@ -121,7 +120,7 @@ public class TileEntityCrucible extends TileEntity {
 					if (this.worldObj.getTileEntity(posX, this.yCoord, posZ) instanceof TileEntityMold) {
 						TileEntityMold mold = (TileEntityMold) this.worldObj.getTileEntity(posX, this.yCoord, posZ);
 						if (mold.canPour() && this.contents.size() > 0) {
-							ICrucibleMold crucibleMold = (ICrucibleMold) mold.mold.getItem();
+							ICrucibleMold crucibleMold = (ICrucibleMold) mold.mold[0].getItem();
 							CrucibleLiquid liquid = this.getNextLiquid(crucibleMold);
 							if (liquid != null) {
 								if (!worldObj.isRemote) {
@@ -133,7 +132,9 @@ public class TileEntityCrucible extends TileEntity {
 									contents.remove(liquid);
 								}
 								number.remove(liquid);
-								number.put(liquid, currNum);
+								if (currNum > 0) {
+									number.put(liquid, currNum);
+								}
 							}
 						}
 					}
@@ -176,8 +177,11 @@ public class TileEntityCrucible extends TileEntity {
 					}
 					currNum = number.get(liquid);
 					currNum += recipe.output;
+				//	System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
+					System.out.println(number.get(liquid));
+
 				}
 			}
 		}

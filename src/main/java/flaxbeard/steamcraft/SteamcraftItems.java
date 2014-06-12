@@ -31,6 +31,7 @@ import flaxbeard.steamcraft.item.ItemNuggetMold;
 import flaxbeard.steamcraft.item.ItemPlateMold;
 import flaxbeard.steamcraft.item.ItemSpyglass;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
+import flaxbeard.steamcraft.item.ItemSteamcraftCrafting;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
@@ -63,6 +64,7 @@ public class SteamcraftItems {
     public static Item steamcraftIngot;
     public static Item steamcraftNugget;
     public static Item steamcraftPlate;
+    public static Item steamcraftCrafting;
     
     public static Item enhancementAblaze;
     
@@ -172,6 +174,9 @@ public class SteamcraftItems {
 		steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop).setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
 		SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
+		
+		steamcraftCrafting = new ItemSteamcraftCrafting().setUnlocalizedName("steamcraft:crafting").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamcraftCrafting, "steamcraftCrafting");
 		
 		steamcraftIngot = new ItemSteamcraftIngot().setUnlocalizedName("steamcraft:ingot").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftIngot, "steamcraftIngot");
