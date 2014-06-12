@@ -20,8 +20,8 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
 public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISteamTransporter {
-	private int steam;
-	private FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
+	protected int steam;
+	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
 
 	@Override
@@ -115,8 +115,9 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 		int i = 0;
 		if (myDirections.size() > 0) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
+
 			if (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 			}
 			while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 				this.steam--;
@@ -150,7 +151,9 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 			}
 			FluidStack resource2 = resource.copy();
 			resource2.amount = resource.amount-resource.amount%10;
-			return dummyFluidTank.fill(resource2, doFill)+resource.amount%10;
+			if (resource2 != null) {
+				return dummyFluidTank.fill(resource2, doFill)+resource.amount%10;
+			}
 		}
 		return 0;
 	}
@@ -173,7 +176,6 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		System.out.println("SOME1WANTSIT");
 
 		return false;
 	}

@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import flaxbeard.steamcraft.client.render.model.ModelHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 
 public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {

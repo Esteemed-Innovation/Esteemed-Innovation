@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 

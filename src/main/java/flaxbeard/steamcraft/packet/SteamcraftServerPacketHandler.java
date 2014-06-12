@@ -34,7 +34,7 @@ public class SteamcraftServerPacketHandler {
 						if (!player.onGround && !player.capabilities.isFlying) {
 							player.motionY=player.motionY+0.06D;
 							player.fallDistance = 0.0F;
-							player.getCurrentArmor(2).damageItem(5, player);
+							player.getCurrentArmor(2).damageItem(1, player);
 						}
 					}
 				}
@@ -70,23 +70,23 @@ public class SteamcraftServerPacketHandler {
 	
 	private void handleNoSpacePacket(ByteBufInputStream dat, World world)
  	{
-		try {
-			int id = dat.readInt();
-			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
-			if (player != null) {
-				ItemStack armor2 = player.getCurrentArmor(0);
-				if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-					ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-					if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
-						armor2.stackTagCompound.setBoolean("releasedSpace", true);
-					}
-				}
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+//		try {
+//			int id = dat.readInt();
+//			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+//			if (player != null) {
+//				ItemStack armor2 = player.getCurrentArmor(0);
+//				if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+//					ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+//					if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
+//						armor2.stackTagCompound.setBoolean("releasedSpace", true);
+//					}
+//				}
+//			}
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
  	}
 	  
 	private void handleItemNamePacket(ByteBufInputStream dat, World world)

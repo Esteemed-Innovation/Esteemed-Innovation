@@ -6,6 +6,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,55 +20,106 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 	public boolean open = true;
 	public CrucibleLiquid myLiquid;
 	private ItemStack[] inventory = new ItemStack[1];
-	public ItemStack mold = null;
+	public ItemStack[] mold = new ItemStack[1];;
 	public int changeTicks = 0;
+	public boolean needsToUpdate=true;
 	
-  @Override
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setBoolean("open", this.open);
+        NBTTagCompound nbttagcompound1;
+
+		if (this.mold[0] != null)
+        {
+			System.out.println("SAV");
+	        nbttagcompound1 = new NBTTagCompound();
+	        this.mold[0].writeToNBT(nbttagcompound1);
+	        access.setTag("mold", nbttagcompound1);
+        }
+
+        if (this.inventory[0] != null)
+        {
+	        nbttagcompound1 = new NBTTagCompound();
+	        this.inventory[0].writeToNBT(nbttagcompound1);
+	        access.setTag("inventory", nbttagcompound1);
+        }
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	    
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+        this.open = access.getBoolean("open");
+        if (access.hasKey("inventory"))
+        {
+        	 this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
+        }
+
+        if (access.hasKey("mold"))
+        {
+
+        	 this.mold[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("mold"));
+        }
+
+    }
+	
+
+    
+	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        
         this.open = par1NBTTagCompound.getBoolean("open");
-
         if (par1NBTTagCompound.hasKey("inventory"))
         {
         	 this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
         }
-        
+
         if (par1NBTTagCompound.hasKey("mold"))
         {
-        	 mold = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("mold"));
+
+        	 this.mold[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("mold"));
         }
+        //System.out.println(this.worldObj == null);
+        //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        
         par1NBTTagCompound.setBoolean("open", this.open);
         
-        if (mold != null)
+
+        NBTTagCompound nbttagcompound1;
+		if (this.mold[0] != null)
         {
-	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-	        mold.writeToNBT(nbttagcompound1);
+	        nbttagcompound1 = new NBTTagCompound();
+	        this.mold[0].writeToNBT(nbttagcompound1);
 	        par1NBTTagCompound.setTag("mold", nbttagcompound1);
         }
 
         if (this.inventory[0] != null)
         {
-	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	        nbttagcompound1 = new NBTTagCompound();
 	        this.inventory[0].writeToNBT(nbttagcompound1);
 	        par1NBTTagCompound.setTag("inventory", nbttagcompound1);
         }
     }
 	
 	public boolean canPour() {
-		return !this.open && myLiquid == null && mold != null && inventory[0] == null;
+		return !this.open && myLiquid == null && mold[0] != null && inventory[0] == null;
 	}
 	
 	public void pour(CrucibleLiquid liquid) {
-		this.inventory[0] = ((ICrucibleMold)mold.getItem()).getItemFromLiquid(liquid);
+		this.inventory[0] = ((ICrucibleMold)mold[0].getItem()).getItemFromLiquid(liquid);
 		this.inventory[0].stackSize = 1;
 	}
 	

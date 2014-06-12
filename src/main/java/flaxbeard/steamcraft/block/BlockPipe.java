@@ -22,6 +22,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 public class BlockPipe extends BlockContainer {
 	
 	public IIcon sideIcon;
+	public IIcon copperIcon;
     public int pass = 0;
     
     @Override
@@ -124,6 +125,7 @@ public class BlockPipe extends BlockContainer {
 		}
 		if (myDirections.size() == 2) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
+			
 			if (direction.offsetX == 1) {
 				maxX = 1.0F;
 			}
@@ -244,5 +246,7 @@ public class BlockPipe extends BlockContainer {
     {
         this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockBrass");
         this.sideIcon = p_149651_1_.registerIcon("steamcraft:blockBrass" + "_pipe");
+        this.copperIcon = p_149651_1_.registerIcon("steamcraft:blockCopper");
+
     }
 }

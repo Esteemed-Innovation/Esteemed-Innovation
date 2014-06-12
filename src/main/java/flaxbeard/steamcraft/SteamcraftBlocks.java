@@ -7,7 +7,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
-import flaxbeard.steamcraft.block.BlockConveyor;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
@@ -24,6 +23,7 @@ import flaxbeard.steamcraft.block.BlockSteamTank;
 import flaxbeard.steamcraft.block.BlockSteamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
+import flaxbeard.steamcraft.block.BlockValvePipe;
 import flaxbeard.steamcraft.item.BlockTankItem;
 
 public class SteamcraftBlocks {
@@ -33,6 +33,7 @@ public class SteamcraftBlocks {
 	public static Block boiler;
 	public static Block boilerOn;
 	public static Block pipe;
+	public static Block valvePipe;
 	public static Block heater;
 	public static Block charger;
 	public static Block genocide;
@@ -72,6 +73,9 @@ public class SteamcraftBlocks {
 		
 		pipe = new BlockPipe().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pipe").setHardness(2.5F).setResistance(5.0F);
 		GameRegistry.registerBlock(pipe, "pipe");
+		valvePipe = new BlockValvePipe().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:valvePipe").setHardness(2.5F).setResistance(5.0F);
+		GameRegistry.registerBlock(valvePipe, "valvePipe");
+		
 		
 		carving = new BlockCarvingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:carving").setBlockTextureName("steamcraft:carving").setHardness(2.5F).setStepSound(Block.soundTypeWood);
 		GameRegistry.registerBlock(carving, "carving");
@@ -88,9 +92,6 @@ public class SteamcraftBlocks {
 		hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(hammer, "hammer");
 		
-		conveyor = new BlockConveyor().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:conveyor").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
-		GameRegistry.registerBlock(conveyor, "conveyor");
-		
 		itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(itemMortar, "itemMortar");
 		
@@ -106,7 +107,7 @@ public class SteamcraftBlocks {
 //	    steamPiston_extension = new BlockSteamPistonMoving();
 //		GameRegistry.registerBlock(steamPiston_extension, "steamPiston_extension");
 		
-		mold = new BlockMold().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:mold").setBlockTextureName("steamcraft:mold");
+		mold = new BlockMold().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:mold").setBlockTextureName("steamcraft:mold").setHardness(3.5F);
 		GameRegistry.registerBlock(mold, "mold");
 	}
 }

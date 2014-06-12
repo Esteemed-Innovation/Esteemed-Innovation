@@ -6,17 +6,18 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
-import flaxbeard.steamcraft.client.render.ModelExosuit;
-import flaxbeard.steamcraft.client.render.ModelPointer;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.ModelPointer;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank, IExosuitUpgrade {
@@ -53,6 +54,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
 			float par7, ItemStack itemStack) {	
 		if (armor == 1) {
@@ -99,7 +101,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 
 	@Override
 	public int getStorage(ItemStack stack) {
-		return 6400;
+		return 18000;
 	}
 
 }

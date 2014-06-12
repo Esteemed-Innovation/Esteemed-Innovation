@@ -9,12 +9,16 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
+import flaxbeard.steamcraft.misc.Tuple3;
 
 public class BookPageItem extends BookPageText {
 	private ItemStack[] item;
 	private String name;
 	private String text;
+	public static String lastViewing = "";
+	public static int abdoName = 0;
 	
 	public BookPageItem(String string, String string2, ItemStack... is) {
 		super(string, string2);
@@ -24,7 +28,11 @@ public class BookPageItem extends BookPageText {
 	}
 	
 	@Override
-	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage) {
+	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+		if (!lastViewing.equals(book.viewing)) {
+			abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
+			lastViewing = book.viewing;
+		}
 		String s;
 		int l;
 	  	int yOffset = y+55;
@@ -32,13 +40,16 @@ public class BookPageItem extends BookPageText {
 			yOffset = y+65;
 			s = I18n.format(name);
 			l = fontRenderer.getStringWidth(s);
-		  	fontRenderer.drawString("\u00A7l"+"\u00A7n"+s, x + book.bookImageWidth/2 - l/2 - 5, y+30, 0x3F3F3F);
+		  	fontRenderer.drawString("\u00A7l"+"\u00A7n"+s, (int) (x + book.bookImageWidth/2 - (l/1.6)-3), y+30, 0x3F3F3F);
 	    }
 
 		s = I18n.format(text);
 		String stringLeft = s;
 		while (stringLeft.indexOf("<br>") != -1) {
 			String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
+			if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+				output = doLizbeth(output);
+			}
 		    l = fontRenderer.splitStringWidth(output, 110);
 		    fontRenderer.drawSplitString(output, x +40, yOffset, 110, 0);
 		    yOffset+=this.getSplitStringHeight(fontRenderer, output, x +40, yOffset, 110);
@@ -46,6 +57,9 @@ public class BookPageItem extends BookPageText {
 		    stringLeft = stringLeft.substring(stringLeft.indexOf("<br>")+4, stringLeft.length());
 		}
 		String output = stringLeft;
+		if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+			output = doLizbeth(output);
+		}
 	    l = fontRenderer.splitStringWidth(output, 110);
 	    fontRenderer.drawSplitString(output, x +40, yOffset, 110, 0);
 	    
@@ -55,22 +69,34 @@ public class BookPageItem extends BookPageText {
 	    	this.drawItemStack(stack, (int)( x + book.bookImageWidth/2 - 12 - (size-1)*9 + i*18), isFirstPage ? y+45 : y+35, "", renderer, fontRenderer);
 	    	i++;
 	    }
+	    for (Tuple3 item : items) {
+	    	int ix = (Integer) item.first;
+	    	int iy = (Integer) item.second;
+	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+	    		fontRenderer.setUnicodeFlag(false);
+	    		book.renderToolTip((ItemStack) item.third, mx, my);
+	    		fontRenderer.setUnicodeFlag(true);
+	    	}
+	    }
+        items.clear();
 	}
 	
-    private void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj)
-    {
-    	GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.zLevel = 200.0F;
-        FontRenderer font = null;
-        if (stack != null) font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = fontRendererObj;
-        itemRender.renderItemAndEffectIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y);
-        itemRender.renderItemOverlayIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y, str);
-        itemRender.zLevel = 0.0F;
-        GL11.glPopMatrix();
-    }
+	public static String doLizbeth(String str) {
+		String name = Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+		if (name.equals("MasterAbdoTGM50")) {
+			String[] abdoNames = { "Abdo", "Teku", "Tombyn", "Kryse", "Fredje", "Wesley", "Lizbeth" };
+			name = abdoNames[abdoName];
+		}
+		str = str.replace("I am", name + " is");
+		str = str.replace("my", name + "'s");
+		str = str.replace("I've", name + " has");
+		str = str.replace("I'll", name + " will");
+		str = str.replace("I ", name + " ");
+		str = str.replace("have", "has");
+		str = str.replace("stumble", "stumbles");
+		str = str.replace("insert", "inserts");
+		str = str.replace("need", "needs");
 
-
+		return str;
+	}
 }

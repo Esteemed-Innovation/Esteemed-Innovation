@@ -240,19 +240,20 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 
 	public static void replace(TileEntitySteamFurnace te) {
 		TileEntitySteamFurnace furnace = (TileEntitySteamFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
-		ItemStack[] furnaceItemStacks = new ItemStack[]  {furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
-	    int furnaceBurnTime = furnace.furnaceBurnTime;
-	    int currentItemBurnTime = furnace.currentItemBurnTime;
-	    int furnaceCookTime = furnace.furnaceCookTime; 
-	    te.getWorldObj().setTileEntity(te.xCoord, te.yCoord, te.zCoord, new TileEntityFurnace());
-		TileEntityFurnace furnace2 = (TileEntityFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
-		furnace2.setInventorySlotContents(0, furnaceItemStacks[0]);
-		furnace2.setInventorySlotContents(1, furnaceItemStacks[1]);
-		furnace2.setInventorySlotContents(2, furnaceItemStacks[2]);
-		furnace2.furnaceBurnTime = furnaceBurnTime;
-		furnace2.currentItemBurnTime = currentItemBurnTime;
-		furnace2.furnaceCookTime = furnaceCookTime;
-	
+		if (furnace != null) {
+			ItemStack[] furnaceItemStacks = new ItemStack[]  {furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
+		    int furnaceBurnTime = furnace.furnaceBurnTime;
+		    int currentItemBurnTime = furnace.currentItemBurnTime;
+		    int furnaceCookTime = furnace.furnaceCookTime; 
+		    te.getWorldObj().setTileEntity(te.xCoord, te.yCoord, te.zCoord, new TileEntityFurnace());
+			TileEntityFurnace furnace2 = (TileEntityFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
+			furnace2.setInventorySlotContents(0, furnaceItemStacks[0]);
+			furnace2.setInventorySlotContents(1, furnaceItemStacks[1]);
+			furnace2.setInventorySlotContents(2, furnaceItemStacks[2]);
+			furnace2.furnaceBurnTime = furnaceBurnTime;
+			furnace2.currentItemBurnTime = currentItemBurnTime;
+			furnace2.furnaceCookTime = furnaceCookTime;
+		}
 	}
 
 }

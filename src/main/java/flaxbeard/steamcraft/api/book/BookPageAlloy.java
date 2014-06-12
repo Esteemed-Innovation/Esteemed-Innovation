@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
+import flaxbeard.steamcraft.misc.Tuple3;
 
 public class BookPageAlloy extends BookPage {
 	
@@ -32,7 +33,7 @@ public class BookPageAlloy extends BookPage {
 	}
 
 	@Override
-	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage) {
+	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
 		book.mc.getTextureManager().bindTexture(craftSquareTexture);
         book.drawTexturedModalRect(x+45, y+65, 0, 82, 97, 59);
         fontRenderer.setUnicodeFlag(false);
@@ -42,20 +43,16 @@ public class BookPageAlloy extends BookPage {
         this.drawItemStack(item2[ticks], x+40+19, y+65+20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer);
         this.drawItemStack(output.ingot, x+40+75, y+65+14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer);
         fontRenderer.setUnicodeFlag(true);
+		
+	    for (Tuple3 item : items) {
+	    	int ix = (Integer) item.first;
+	    	int iy = (Integer) item.second;
+	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+	    		fontRenderer.setUnicodeFlag(false);
+	    		book.renderToolTip((ItemStack) item.third, mx, my);
+	    		fontRenderer.setUnicodeFlag(true);
+	    	}
+	    }
+        items.clear();
 	}
-	
-    private void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj)
-    {
-    	GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.zLevel = 200.0F;
-        FontRenderer font = null;
-        if (stack != null) font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = fontRendererObj;
-        itemRender.renderItemAndEffectIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y);
-        itemRender.renderItemOverlayIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y, str);
-        itemRender.zLevel = 0.0F;
-        GL11.glPopMatrix();
-    }
 }

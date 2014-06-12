@@ -1,3 +1,4 @@
 {
-   "hiss": {"category": "master","sounds": [{"name": "hiss","stream": false}]}
+   "hiss": {"category": "master","sounds": [{"name": "hiss","stream": false}]},
+   "leaking": {"category": "master","sounds": [{"name": "leaking","stream": false}]}
 }

@@ -10,7 +10,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import org.lwjgl.opengl.GL11;
@@ -48,15 +47,46 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 	    renderer.setRenderBoundsFromBlock(block);
 	 	this.drawSides(icon, block, renderer);
 
-        
-//        
+               
 		block.setBlockBounds(0.0F, ringMin, ringMin, minX, ringMax, ringMax);
 	    renderer.setRenderBoundsFromBlock(block);
 	 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).sideIcon, block, renderer);
 		block.setBlockBounds(maxX, ringMin, ringMin, 1.0F, ringMax, ringMax);
 	    renderer.setRenderBoundsFromBlock(block);
 	 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).sideIcon, block, renderer);
-    
+	 	
+	 	if (block == SteamcraftBlocks.valvePipe) {
+	 		block.setBlockBounds(4.5F*px, 1.0F-5.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+	 		
+		 	block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px, 1.0F-4.5F*px, 5.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		 	
+		 	block.setBlockBounds(4.5F*px, 5.5F*px, baseMax+1*px, 5.5F*px, 1.0F-5.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		 	
+		 	block.setBlockBounds(1.0F-5.5F*px, 5.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-5.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		 	
+		 	block.setBlockBounds(5.5F*px, 7.5F*px, baseMax+1*px, 1.0F-5.5F*px, 8.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		 	
+		 	block.setBlockBounds(7.5F*px, 5.5F*px, baseMax+1*px, 8.5F*px, 1.0F-5.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		 	
+		 	block.setBlockBounds(6.5F*px, 6.5F*px, baseMax, 9.5F*px, 9.5F*px, baseMax+2*px);
+		    renderer.setRenderBoundsFromBlock(block);
+		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+		//	block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
+		    //renderer.setRenderBoundsFromBlock(block);
+		 	//this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+	 	}
 	}
 	
 	private void drawSides(IIcon icon, Block block, RenderBlocks renderer) {
@@ -114,7 +144,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
 	
 		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (world.getTileEntity(pipe.xCoord+direction.offsetX, pipe.yCoord+direction.offsetY, pipe.zCoord+direction.offsetZ) != null) {
+			if (pipe.doesConnect(direction) && world.getTileEntity(pipe.xCoord+direction.offsetX, pipe.yCoord+direction.offsetY, pipe.zCoord+direction.offsetZ) != null) {
 				TileEntity tile = world.getTileEntity(pipe.xCoord+direction.offsetX, pipe.yCoord+direction.offsetY, pipe.zCoord+direction.offsetZ);
 				if (tile instanceof ISteamTransporter) {
 					ISteamTransporter target = (ISteamTransporter) tile;
@@ -177,6 +207,9 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 		}
 		if (myDirections.size() == 2) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
+			while (!pipe.doesConnect(direction)) {
+				direction = ForgeDirection.getOrientation((direction.flag+1)%5);
+			}
 			if (direction.offsetX == 1) {
 				maxX = 1.0F-2*px;
 			}
