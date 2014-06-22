@@ -95,9 +95,9 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
  	 				this.setInventorySlotContents(0, stack);
  					i++;
  				}
-				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 		}
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override

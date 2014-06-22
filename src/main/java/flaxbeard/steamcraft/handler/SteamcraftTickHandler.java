@@ -29,7 +29,20 @@ public class SteamcraftTickHandler {
 		inUse = false;
 		if(event.side == Side.CLIENT && Minecraft.getMinecraft().thePlayer != null){
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+			
+			if (SteamcraftEventHandler.hasPower(player, 1) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
+				if (player.worldObj.isRemote && chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
+					if (!player.onGround && Math.abs(player.motionX) + Math.abs(player.motionZ) > 0.0F && !player.isInWater() && !(player.capabilities.isFlying)) {
+						double rotation = Math.toRadians(player.renderYawOffset+90.0F);
+						double rotation2 = Math.toRadians(player.renderYawOffset+270.0F);
 
+						player.worldObj.spawnParticle("smoke", player.posX+0.5*Math.sin(rotation), player.posY-1F, player.posZ-0.5*Math.cos(rotation), player.motionX*-0.1F, 0, player.motionZ*-0.1F);
+						player.worldObj.spawnParticle("smoke", player.posX+0.5*Math.sin(rotation2), player.posY-1F, player.posZ-0.5*Math.cos(rotation2), player.motionX*-0.1F, 0, player.motionZ*-0.1F);
+
+					}
+				}
+			}
 			
 			if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed()) {
 				SteamcraftClientPacketHandler.sendSpacePacket(player);

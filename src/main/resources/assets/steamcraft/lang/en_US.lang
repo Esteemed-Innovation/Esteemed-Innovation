@@ -4,6 +4,25 @@ steamcraft.book.by=by
 steamcraft.book.shapeless=Shapeless
 item.steamcraft:book.name=Esteemed Innovation
 
+steamcraft.astrolabe.target=Target:
+steamcraft.astrolabe.noTarget=No target
+steamcraft.astrolabe.dimension=dimension
+steamcraft.astrolabe.dimension.overworld=the Overworld
+steamcraft.astrolabe.dimension.nether=the Nether
+steamcraft.astrolabe.dimension.end=the End
+steamcraft.astrolabe.in=in
+
+steamcraft.waila.pressure=Pressure
+steamcraft.waila.valveOpen=Valve open
+steamcraft.waila.valveClosed=Valve closed
+steamcraft.waila.complete=Complete
+steamcraft.waila.filling=Filling
+steamcraft.waila.mold=Mold:
+
+steamcraft.exosuit.thrustTick=consumed per tick of thruster use
+steamcraft.exosuit.flyTick=consumed per flying tick
+
+
 category.Basics.name=Basics
 research.Ores.name=Ores
 research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find uses for them in the future.
@@ -139,6 +158,8 @@ item.steamcraft:steamDrill.name=Steam Drill
 item.steamcraft:steamAxe.name=Steam Axe
 item.steamcraft:astrolabe.name=Astrolabe
 
+item.steamcraft:survivalist.name=Survivalist's Toolkit
+
 item.steamcraft:powerFist.name=Power Fist
 item.steamcraft:fallAssist.name=Fall Assist
 item.steamcraft:jetpack.name=Steam Jetpack
@@ -168,3 +189,5 @@ tile.steamcraft:tank.1.name=Creative Steam Tank
 tile.steamcraft:meter.name=Steam Gauge
 tile.steamcraft:hammer.name=Steam Hammer
 tile.steamcraft:itemMortar.name=Item Mortar
+
+

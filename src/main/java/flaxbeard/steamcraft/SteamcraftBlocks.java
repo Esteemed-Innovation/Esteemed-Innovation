@@ -38,6 +38,7 @@ public class SteamcraftBlocks {
 	public static Block charger;
 	public static Block genocide;
 	public static Block blockBrass;
+	public static Block blockCopper;
 	public static Block tank;
 	public static Block meter;
 	public static Block hammer;
@@ -62,6 +63,10 @@ public class SteamcraftBlocks {
 		blockBrass = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockBrass, "blockBrass");
 		OreDictionary.registerOre("blockBrass", blockBrass);
+		
+		blockCopper = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockCopper").setBlockTextureName("steamcraft:blockCopper").setHardness(5.0F).setResistance(10.0F);
+		GameRegistry.registerBlock(blockCopper, "blockCopper");
+		OreDictionary.registerOre("blockCopper", blockCopper);
 		
 		tank = new BlockSteamTank().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:tank").setBlockTextureName("steamcraft:brassTank").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(tank, BlockTankItem.class, "steamTank");

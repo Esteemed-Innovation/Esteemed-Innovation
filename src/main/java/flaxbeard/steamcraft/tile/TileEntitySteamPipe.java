@@ -182,7 +182,10 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		return new FluidTankInfo[] {dummyFluidTank.getInfo()};
+		if (Steamcraft.steamRegistered) {
+			return new FluidTankInfo[] {dummyFluidTank.getInfo()};
+		}
+		return null;
 	}
 
 }

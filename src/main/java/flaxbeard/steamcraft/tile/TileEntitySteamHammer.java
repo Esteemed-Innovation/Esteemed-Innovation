@@ -77,7 +77,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
 		else
 		{
 			if (hammerTicks > 0) {
-				hammerTicks -=5;
+				hammerTicks = 0;
 			}
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -198,7 +198,8 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
         access.setInteger("cost", cost);
         access.setInteger("progress",progress);
         access.setInteger("hammerTicks",hammerTicks);
-     
+        access.setInteger("steam", steam);
+
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 
@@ -210,6 +211,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
     	this.cost = access.getInteger("cost");
     	this.progress = access.getInteger("progress");
     	this.hammerTicks = access.getInteger("hammerTicks");
+    	this.steam = access.getInteger("steam");
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
