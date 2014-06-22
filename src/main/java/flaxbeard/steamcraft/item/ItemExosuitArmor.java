@@ -40,7 +40,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		bodyHand(1,2),
 		bodyTank(1,3),
 		headGoggles(0,2),
-		headHelm(0,1);
+		headHelm(0,1),
+		legsHips(2,2),
+		legsLegs(2,1);
 
 		public int slot;
 		public int armor;
@@ -172,6 +174,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@Override
 	public MutablePair<Integer, Integer>[] engineerCoordinates() {
 		if (this.slot == 0) {
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
+		}
+		if (this.slot == 2) {
 			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
 		if (this.slot == 1) {
@@ -373,12 +378,21 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 			}
 		}
 		if (this.slot == 2) {
-			if (slotNum != 0) {
-				guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
-			}
-			else
-			{
-				guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+			switch (slotNum) {
+				case 0:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
+					break;
+				case 1:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 36, 18, 18);
+					break;
+				case 2:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 36, 18, 18);
+					break;
+				case 3:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
+					break;
+				default:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
 		}
 		if (this.slot == 3) {

@@ -17,12 +17,14 @@ import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemAstrolabe;
 import flaxbeard.steamcraft.item.ItemEnhancementFireMusket;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
 import flaxbeard.steamcraft.item.ItemExosuitJetpack;
+import flaxbeard.steamcraft.item.ItemExosuitSidepack;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemExosuitWings;
 import flaxbeard.steamcraft.item.ItemFirearm;
@@ -54,6 +56,8 @@ public class SteamcraftItems {
     public static Item blunderbuss;
     public static Item spyglass;
     
+    public static Item survivalist;
+    
     public static Item astrolabe;
     
     public static Item blankMold;
@@ -83,6 +87,7 @@ public class SteamcraftItems {
 	public static Item jetpack;
 	public static Item wings;
 	public static Item powerFist;
+	public static Item thrusters;
 	public static Item fallAssist;
 	public static Item doubleJump;
 	
@@ -119,13 +124,24 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(wings, "wings");
 	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
 		GameRegistry.registerItem(powerFist, "powerFist");
-	 	fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
+		thrusters = new ItemExosuitSidepack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thrusters").setTextureName("steamcraft:thrusters");
+		GameRegistry.registerItem(thrusters, "thrusters");
+		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
 		GameRegistry.registerItem(fallAssist, "fallAssist");
 	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
 		GameRegistry.registerItem(doubleJump, "doubleJump");
 		
-	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe");
+	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 		GameRegistry.registerItem(astrolabe, "astrolabe");
+		
+		if (!Loader.isModLoaded("Baubles")) {
+			survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
+		}
+		else
+		{
+			survivalist = BaublesIntegration.getSurvivalist();
+		}
+		GameRegistry.registerItem(survivalist, "survivalist");
 		
 		if (Loader.isModLoaded("Thaumcraft")) {
 			exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");

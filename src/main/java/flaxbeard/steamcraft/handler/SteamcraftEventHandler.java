@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.handler;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -7,7 +8,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -31,6 +34,7 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
@@ -100,10 +104,10 @@ public class SteamcraftEventHandler {
 				ItemExosuitArmor boots = (ItemExosuitArmor) entity.getEquipmentInSlot(1).getItem();
 				entity.getEquipmentInSlot(3).damageItem((int)event.ammount/2, event.entityLiving);
 				if (boots.hasUpgrade(entity.getEquipmentInSlot(1), SteamcraftItems.fallAssist)) {
-			        if (event.ammount <= 1.0F) {
+			        if (event.ammount <= 6.0F) {
 			        	event.ammount = 0.0F;
 			        }
-					event.ammount = event.ammount/1.5F;
+					event.ammount = event.ammount/3.0F;
 				}
 			}
 		}
@@ -162,15 +166,45 @@ public class SteamcraftEventHandler {
 			
 		}	
 	}
+	
+	public boolean hasItemInHotbar(EntityPlayer player, Item item) {
+		for (int i = 0; i<10; i++) {
+			if (player.inventory.getStackInSlot(i) != null && player.inventory.getStackInSlot(i).getItem() == item) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@SubscribeEvent
 	public void handleSteamcraftArmorMining(PlayerEvent.BreakSpeed event) {
+		
 
 		boolean hasPower = hasPower(event.entityLiving,1);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
+			if (Loader.isModLoaded("Baubles")) {
+				if (player.getHeldItem() != null && BaublesIntegration.checkForSurvivalist(player)) {
+					if (player.getHeldItem().getItem() instanceof ItemTool) {
+						if (player.getHeldItem().getItemDamage() == player.getHeldItem().getMaxDamage()) {
+
+							event.newSpeed = 0.0F;
+						}
+					}
+				
+				}
+			}
+			else if (player.getHeldItem() != null && hasItemInHotbar(player, SteamcraftItems.survivalist)) {
+				if (player.getHeldItem().getItem() instanceof ItemTool) {
+					if (player.getHeldItem().getItemDamage() == player.getHeldItem().getMaxDamage()) {
+
+						event.newSpeed = 0.0F;
+					}
+				}
+			
+			}
 			if (player.getHeldItem() != null) {
 				if (player.getHeldItem().getItem() instanceof ItemSteamDrill) {
 					ItemSteamDrill.checkNBT(player);
@@ -229,11 +263,14 @@ public class SteamcraftEventHandler {
 				
 		}
 	}
+	public static HashMap<Integer,MutablePair<Double,Double>> lastMotions = new HashMap<Integer,MutablePair<Double,Double>>();
+
 	
 	@SubscribeEvent
 	public void handleFlippers(LivingEvent.LivingUpdateEvent event) {	
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
+		boolean hasPower = hasPower(entity,1);
 
 		
 		if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
@@ -246,6 +283,27 @@ public class SteamcraftEventHandler {
 				}
 			}
 		}
+		
+		if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
+				if (!lastMotions.containsKey(entity.getEntityId())) {
+					lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX,entity.posZ));
+				}
+				double lastX = lastMotions.get(entity.getEntityId()).left;
+				double lastZ = lastMotions.get(entity.getEntityId()).right;
+				if ((lastX != entity.posX || lastZ != entity.posZ) && !entity.onGround && !entity.isInWater() && (!(entity instanceof EntityPlayer) || !((EntityPlayer)entity).capabilities.isFlying)) {
+					entity.moveEntity(entity.motionX, 0, entity.motionZ);
+					if (!event.entityLiving.getEquipmentInSlot(3).stackTagCompound.hasKey("ticksUntilConsume")) {
+						event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
+					}
+					if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
+						event.entityLiving.getEquipmentInSlot(3).damageItem(1, event.entityLiving);
+					}
+				}
+				lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX,entity.posZ));
+			}
+		}
 	}
 	
 	@SubscribeEvent
@@ -254,26 +312,7 @@ public class SteamcraftEventHandler {
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
 		ItemStack armor2 = entity.getEquipmentInSlot(1);
-		if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-			ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-			if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump)) {
-				if (!armor2.stackTagCompound.hasKey("usedJump") || entity.onGround) {
-					armor2.stackTagCompound.setBoolean("usedJump", false);
-					System.out.println("Y");
-				}
-				
-				if (!armor2.stackTagCompound.hasKey("airTicks")) {
-					armor2.stackTagCompound.setInteger("airTicks", 0);
-				}
-				int airTicks = armor2.stackTagCompound.getInteger("airTicks");
-				airTicks++;
-				if (entity.onGround) {
-					airTicks = 0;
-				}
-				armor2.stackTagCompound.setInteger("airTicks", airTicks);
-
-			}
-		}
+		
 		if (hasPower) {
 			if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid2) != null) {
 				entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoostBad);

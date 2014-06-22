@@ -13,6 +13,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
@@ -124,6 +125,8 @@ public class Steamcraft {
 
 
 		proxy.registerRenderers();
+		
+        FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
 	}
 	
 	

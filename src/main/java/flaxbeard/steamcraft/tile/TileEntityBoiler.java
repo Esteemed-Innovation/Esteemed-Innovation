@@ -143,7 +143,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     	UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
     	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
     	if (this.getStackInSlot(1) != null) {
-	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
+	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
 	    		if (canDrainItem(this.getStackInSlot(1))) {
 	    			if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
 	    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));

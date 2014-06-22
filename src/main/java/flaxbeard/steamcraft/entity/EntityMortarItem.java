@@ -1,20 +1,14 @@
 package flaxbeard.steamcraft.entity;
 
-import java.util.UUID;
+import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
 
 public class EntityMortarItem extends EntityItem {
 	public int randomDir = 0;
@@ -93,12 +87,19 @@ public class EntityMortarItem extends EntityItem {
 		}
 		lastPos = this.posY;
 		lastOnGround = onGround;
+        List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ));
+        for (Object obj : list) {
+        	Entity entity = (Entity) obj;
+        	if (entity.canBeCollidedWith() && this.motionY < -1.0F) {
+    			entity.attackEntityFrom(DamageSource.fallingBlock, 3.0F);
+    		}
+        }
 	}
 	
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
-		if (this.motionY < -1.0F) {
-			par1EntityPlayer.attackEntityFrom(DamageSource.fallingBlock, 2.0F);
-		}
+//		if (this.motionY < -1.0F) {
+//			par1EntityPlayer.attackEntityFrom(DamageSource.fallingBlock, 2.0F);
+//		}
 		super.onCollideWithPlayer(par1EntityPlayer);
 	}
 }

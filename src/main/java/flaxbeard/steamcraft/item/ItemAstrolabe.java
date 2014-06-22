@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.item;
 
 import java.util.List;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,19 +19,21 @@ public class ItemAstrolabe extends Item {
 	@Override
 	public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 	    if (item.hasTagCompound() && item.getTagCompound().hasKey("targetX")) {
-	    	String dimension = "dimension " + item.stackTagCompound.getInteger("dim");
-
-	    	String dimension2 = 	    	DimensionManager.getWorld(item.stackTagCompound.getInteger("dim")).getWorldInfo().getWorldName();
+	    	String dimension = I18n.format("steamcraft.astrolabe.dimension") + " " + item.stackTagCompound.getInteger("dim");
 	    	if (item.stackTagCompound.getInteger("dim") == 0) {
-	    		dimension = "the Overworld";
+	    		dimension = I18n.format("steamcraft.astrolabe.dimension.overworld");
 	    	}
 	    	if (item.stackTagCompound.getInteger("dim") == -1) {
-	    		dimension = "the Nether";
+	    		dimension = I18n.format("steamcraft.astrolabe.dimension.nether");
 	    	}
 	    	if (item.stackTagCompound.getInteger("dim") == 1) {
-	    		dimension = "the End";
+	    		dimension = I18n.format("steamcraft.astrolabe.dimension.end");
 	    	}
-	    	par3List.add("Target: " + item.stackTagCompound.getInteger("targetX") + ", " + item.stackTagCompound.getInteger("targetZ") + " in " + dimension);
+	    	par3List.add(I18n.format("steamcraft.astrolabe.target") + " " + item.stackTagCompound.getInteger("targetX") + ", " + item.stackTagCompound.getInteger("targetZ") + " " + I18n.format("steamcraft.astrolabe.in") + " " + dimension);
+	    }
+	    else
+	    {
+	    	par3List.add(I18n.format("steamcraft.astrolabe.noTarget"));
 	    }
     }
 	
