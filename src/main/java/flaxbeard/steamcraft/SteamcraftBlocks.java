@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
+import flaxbeard.steamcraft.block.BlockPump;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 import flaxbeard.steamcraft.block.BlockSteamHammer;
@@ -44,6 +45,8 @@ public class SteamcraftBlocks {
 	public static Block hammer;
 	public static Block conveyor;
 	public static Block itemMortar;
+	
+	public static Block pump;
 
 	public static Block carving;
 	public static Block engineering;
@@ -70,6 +73,9 @@ public class SteamcraftBlocks {
 		
 		tank = new BlockSteamTank().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:tank").setBlockTextureName("steamcraft:brassTank").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(tank, BlockTankItem.class, "steamTank");
+		
+		pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
+		GameRegistry.registerBlock(pump,"pump");
 		
 		boiler = new BlockBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:boiler").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(boiler,"boiler");

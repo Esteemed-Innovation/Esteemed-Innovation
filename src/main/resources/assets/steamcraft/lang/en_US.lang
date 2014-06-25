@@ -63,7 +63,7 @@ research.Heater.0=Now I can power furnaces using steam power, using this nifty s
 research.Filler.name=Steam Filler
 research.Filler.0=Pipes are great for transporting steam to fixed machines, but they're not much good to supply power to tools or armor. That's where the steam filler comes in.<br>Simply place in a steam-using device and wait.
 research.ItemMortar.name=Item Mortar
-research.ItemMortar.0=I've found an ingenius way to transport items - a pressurized steam cannon!<br>This mortar will launch items skyward, at a high trajectory, to land at a targeted location.
+research.ItemMortar.0=I've found an ingenious way to transport items - a pressurized steam cannon!<br>This mortar will launch items skyward, at a high trajectory, to land at a targeted location.
 research.ItemMortar.1=Simply insert items via a hopper, set a target, and watch items fly.<br>An astrolabe is my device of choice for aiming the mortar. First, I have to shift-right click on the targeted location with an astrolabe, and then right click on the mortar to calibrate it.
 research.Hammer.name=Steam Hammer
 research.Hammer.0=I've created an interesting invention - a steam hammer - that allows me to perform anvil actions using steam instead of experience.<br>I first place the hammer above an anvil.
@@ -166,6 +166,7 @@ item.steamcraft:jetpack.name=Steam Jetpack
 item.steamcraft:wings.name=Steam Wings
 item.steamcraft:goggleUpgrade.name=Mask of Revealing
 item.steamcraft:floralLaurel.name=Floral Laurel
+item.steamcraft:thrusters.name=Thrusters
 
 item.steamcraft:steamedChicken.name=Steamed Chicken
 item.steamcraft:steamedBeef.name=Steamed Beef
@@ -189,5 +190,6 @@ tile.steamcraft:tank.1.name=Creative Steam Tank
 tile.steamcraft:meter.name=Steam Gauge
 tile.steamcraft:hammer.name=Steam Hammer
 tile.steamcraft:itemMortar.name=Item Mortar
+tile.steamcraft:pump.name=Archimedes Screw
 
 
