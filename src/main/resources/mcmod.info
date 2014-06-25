@@ -1,9 +1,9 @@
 [
 {
   "modid": "Steamcraft",
-  "name": "Professor Flaxbeard's Wonderous Steam Power Mod",
+  "name": "Flaxbeard's Steam Power",
   "description": "A mod based around steam power and steampunk tech.",
-  "version": "pre16",
+  "version": "pre17",
   "mcversion": "1.7.2",
   "url": "https://github.com/Flaxbeard/SteamCraft_1.7",
   "updateUrl": "",
