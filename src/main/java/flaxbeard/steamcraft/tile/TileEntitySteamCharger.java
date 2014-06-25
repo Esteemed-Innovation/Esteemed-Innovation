@@ -74,13 +74,6 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 		ForgeDirection[] dirs = { ForgeDirection.DOWN };
 		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
 		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		if (!this.worldObj.isAirBlock(xCoord, yCoord+1, zCoord) && this.getStackInSlot(0) != null) {
-			if (!this.worldObj.isRemote) {
-				this.dropItem(this.getStackInSlot(0));
-			}
-			this.setInventorySlotContents(0, null);
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		}
 		if (this.getStackInSlot(0) != null) {
 			ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
 			ItemStack stack = this.getStackInSlot(0).copy();

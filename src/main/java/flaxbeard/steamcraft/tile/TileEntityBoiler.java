@@ -249,7 +249,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
+		return fluid == FluidRegistry.WATER;
 	}
 
 	@Override
