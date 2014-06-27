@@ -1,7 +1,5 @@
 package flaxbeard.steamcraft.integration;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -11,9 +9,6 @@ import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
-
-import com.spiteful.forbidden.DarkAspects;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
