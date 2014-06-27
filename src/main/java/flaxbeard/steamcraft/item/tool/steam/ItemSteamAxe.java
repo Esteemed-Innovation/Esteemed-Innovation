@@ -115,7 +115,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 	    	int speed = (Integer) info.right;
 	    	if (speed <= 1000) {
 	    		speed+=Math.min(90,1000-speed);
-	    		stack.damageItem(1, player);
+	    		stack.damageItem(3, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
 			System.out.println(speed);
