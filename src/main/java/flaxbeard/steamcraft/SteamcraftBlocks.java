@@ -24,6 +24,7 @@ import flaxbeard.steamcraft.block.BlockSteamTank;
 import flaxbeard.steamcraft.block.BlockSteamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
+import flaxbeard.steamcraft.block.BlockThumper;
 import flaxbeard.steamcraft.block.BlockValvePipe;
 import flaxbeard.steamcraft.item.BlockTankItem;
 
@@ -45,6 +46,7 @@ public class SteamcraftBlocks {
 	public static Block hammer;
 	public static Block conveyor;
 	public static Block itemMortar;
+	public static Block thumper;
 	
 	public static Block pump;
 
@@ -108,6 +110,9 @@ public class SteamcraftBlocks {
 		
 		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter");
 		GameRegistry.registerBlock(meter, "meter");
+		
+		thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(thumper, "thumper");
 
 
 //	

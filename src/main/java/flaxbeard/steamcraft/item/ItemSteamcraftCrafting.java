@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 
 public class ItemSteamcraftCrafting extends Item {
-	public IIcon[] icon = new IIcon[5];
+	public IIcon[] icon = new IIcon[6];
 	
 	public ItemSteamcraftCrafting() {
 		this.setHasSubtypes(true);
@@ -39,6 +39,7 @@ public class ItemSteamcraftCrafting extends Item {
 		this.icon[2] = ir.registerIcon("steamcraft:gunBarrel");
 		this.icon[3] = ir.registerIcon("steamcraft:gunBarrel2");
 		this.icon[4] = ir.registerIcon("steamcraft:gunFlintlock");
+		this.icon[5] = ir.registerIcon("steamcraft:creeperGland");
 	}
 	
 	@Override
@@ -49,6 +50,8 @@ public class ItemSteamcraftCrafting extends Item {
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
+		par3List.add(new ItemStack(par1, 1, 5));
+
 	}
 	
 	@Override

@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.entity;
 
 import java.util.List;
 
+import flaxbeard.steamcraft.Config;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,7 +79,8 @@ public class EntityMortarItem extends EntityItem {
 			}
 			if (this.posY > 256) {
 				this.motionY = 0.0F;
-				this.setPosition(xT+(this.worldObj.rand.nextInt(5)-2),256, zT+(this.worldObj.rand.nextInt(5)-2));
+				int r = Config.mortarRadius;
+				this.setPosition(xT+(this.worldObj.rand.nextInt((2*r)+1)-r),256, zT+(this.worldObj.rand.nextInt((2*r)+1)-r));
 				this.goingUp = false;
 			}
 			else

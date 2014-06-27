@@ -15,7 +15,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
 
 	public ItemExosuitJetpack() {
-		super(ExosuitSlot.bodyFront, "","\u00A7e1 SU "  + I18n.format("steamcraft.exosuit.flyTick"), 0);
+		super(ExosuitSlot.bodyFront, "","", 0);
 	}
 
 

@@ -116,7 +116,6 @@ public class TileEntityCrucible extends TileEntity {
 				int posX = this.xCoord+dirs[meta].offsetX;
 				int posZ = this.zCoord+dirs[meta].offsetZ;
 				if (this.worldObj.getTileEntity(posX, this.yCoord, posZ) != null) {
-					System.out.println(meta);
 					if (this.worldObj.getTileEntity(posX, this.yCoord, posZ) instanceof TileEntityMold) {
 						TileEntityMold mold = (TileEntityMold) this.worldObj.getTileEntity(posX, this.yCoord, posZ);
 						if (mold.canPour() && this.contents.size() > 0) {
@@ -124,7 +123,7 @@ public class TileEntityCrucible extends TileEntity {
 							CrucibleLiquid liquid = this.getNextLiquid(crucibleMold);
 							if (liquid != null) {
 								if (!worldObj.isRemote) {
-									mold.pour(this.contents.get(0));
+									mold.pour(liquid);
 								}
 								int currNum = number.get(liquid);
 								currNum -= crucibleMold.getCostToMold(liquid);
@@ -180,7 +179,6 @@ public class TileEntityCrucible extends TileEntity {
 				//	System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
-					System.out.println(number.get(liquid));
 
 				}
 			}

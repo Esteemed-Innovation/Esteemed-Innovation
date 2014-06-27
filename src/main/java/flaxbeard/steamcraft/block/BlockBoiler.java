@@ -1,15 +1,18 @@
 package flaxbeard.steamcraft.block;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -28,6 +31,8 @@ public class BlockBoiler extends BlockContainer {
 		super(Material.iron);
         this.field_149932_b = on;
 	}
+    private final Random rand = new Random();
+
     private final boolean field_149932_b;
     private static boolean field_149934_M;
     @SideOnly(Side.CLIENT)
@@ -141,7 +146,7 @@ public class BlockBoiler extends BlockContainer {
 
         if (p_149689_6_.hasDisplayName())
         {
-            ((TileEntityFurnace)p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).func_145951_a(p_149689_6_.getDisplayName());
+           // ((TileEntityBoiler)p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).func_145951_a(p_149689_6_.getDisplayName());
         }
     }
 
@@ -153,12 +158,12 @@ public class BlockBoiler extends BlockContainer {
 	@Override
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        TileEntityBoiler tileentityfurnace = (TileEntityBoiler)par1World.getTileEntity(par2, par3, par4);
+        TileEntityBoiler tileentityboiler = (TileEntityBoiler)par1World.getTileEntity(par2, par3, par4);
 
 		if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
-			if (tileentityfurnace != null)
+			if (tileentityboiler != null)
             {
-				tileentityfurnace.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
+				tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
 				if (!player.capabilities.isCreativeMode) {
 					player.inventory.consumeInventoryItem(Items.water_bucket);
 					player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
@@ -175,7 +180,7 @@ public class BlockBoiler extends BlockContainer {
 	        else
 	        {
 	
-	            if (tileentityfurnace != null)
+	            if (tileentityboiler != null)
 	            {
 	            	player.openGui(Steamcraft.instance, 0, par1World, par2,par3,par4);
 	            }
@@ -183,6 +188,57 @@ public class BlockBoiler extends BlockContainer {
 	            return true;
 	        }
 		}
+    }
+	
+    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
+    {
+        if (!field_149934_M)
+        {
+        	TileEntityBoiler tileentityboiler = (TileEntityBoiler)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+
+            if (tileentityboiler != null)
+            {
+                for (int i1 = 0; i1 < tileentityboiler.getSizeInventory(); ++i1)
+                {
+                    ItemStack itemstack = tileentityboiler.getStackInSlot(i1);
+
+                    if (itemstack != null)
+                    {
+                        float f = this.rand.nextFloat() * 0.8F + 0.1F;
+                        float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
+                        float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
+
+                        while (itemstack.stackSize > 0)
+                        {
+                            int j1 = this.rand.nextInt(21) + 10;
+
+                            if (j1 > itemstack.stackSize)
+                            {
+                                j1 = itemstack.stackSize;
+                            }
+
+                            itemstack.stackSize -= j1;
+                            EntityItem entityitem = new EntityItem(p_149749_1_, (double)((float)p_149749_2_ + f), (double)((float)p_149749_3_ + f1), (double)((float)p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+
+                            if (itemstack.hasTagCompound())
+                            {
+                                entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+                            }
+
+                            float f3 = 0.05F;
+                            entityitem.motionX = (double)((float)this.rand.nextGaussian() * f3);
+                            entityitem.motionY = (double)((float)this.rand.nextGaussian() * f3 + 0.2F);
+                            entityitem.motionZ = (double)((float)this.rand.nextGaussian() * f3);
+                            p_149749_1_.spawnEntityInWorld(entityitem);
+                        }
+                    }
+                }
+
+                p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+            }
+        }
+
+        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
 
 }

@@ -23,7 +23,7 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
 
 	public ItemExosuitSidepack() {
-		super(ExosuitSlot.legsHips, "","\u00A7e0.5 SU " + I18n.format("steamcraft.exosuit.thrustTick"), 0);
+		super(ExosuitSlot.legsHips, "","", 0);
 	}
 
 
