@@ -134,6 +134,8 @@ public class TileEntityCrucible extends TileEntity {
 								if (currNum > 0) {
 									number.put(liquid, currNum);
 								}
+						        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 							}
 						}
 					}
@@ -179,6 +181,7 @@ public class TileEntityCrucible extends TileEntity {
 				//	System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
+			        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 				}
 			}
