@@ -118,12 +118,14 @@ public class ItemFirearm extends Item
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         NBTTagCompound nbt = par1ItemStack.getTagCompound();
-
+        boolean crouched = par3EntityPlayer.isSneaking();
+        
         if (nbt.getInteger("loaded") > 0)
         {
         	float enhancementAccuracy = 0.0F;
         	float enhancementDamage = 0;
         	float enhancementKnockback = 0;
+        	float crouchingBonus = crouched ? 0.10F : 0;
         	
         	if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
         		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
@@ -155,7 +157,7 @@ public class ItemFirearm extends Item
                 var7 = 1.0F;
             }
 
-            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy) - var7), (damage+enhancementDamage), true);
+            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7), (damage+enhancementDamage), true);
            
             if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
         		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
@@ -187,7 +189,7 @@ public class ItemFirearm extends Item
                 {
                     for (int i = 1; i < 21; i++)
                     {
-                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy) - var7, (damage+enhancementDamage), this.tinker == "bassCannon");
+                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7, (damage+enhancementDamage), this.tinker == "bassCannon");
                         if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
                     		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
                     			var12 = ((IEnhancementFirearm)UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var12);
