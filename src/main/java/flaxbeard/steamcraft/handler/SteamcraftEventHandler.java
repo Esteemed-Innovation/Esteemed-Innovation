@@ -326,7 +326,7 @@ public class SteamcraftEventHandler {
 			}
 		}
 		
-		if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+		if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
 			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
 			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
 				if (!lastMotions.containsKey(entity.getEntityId())) {
