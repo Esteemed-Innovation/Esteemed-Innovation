@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
@@ -64,6 +65,17 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 	}
 	
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
+    	if (!stack.hasTagCompound()) {
+    		stack.setTagCompound(new NBTTagCompound());
+    	}
+    	if (!stack.stackTagCompound.hasKey("player")) {
+    		stack.stackTagCompound.setInteger("player", -1);
+    	}
+    	int oldPlayer = stack.stackTagCompound.getInteger("player");
+    	if (oldPlayer != player.getEntityId()) {
+    		stack.stackTagCompound.setInteger("player", player.getEntityId());
+
+    	}
     	if (player instanceof EntityPlayer) {
 	    	this.checkNBT((EntityPlayer) player);
 	    	MutablePair info = stuff.get(player.getEntityId());
