@@ -23,6 +23,7 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	public IIcon[] icon = new IIcon[2];
 	public static HashMap<Integer,MutablePair<Integer,Integer>> stuff = new HashMap<Integer,MutablePair<Integer,Integer>>();
+	private boolean hasBrokenBlock = false;
 	
 	public ItemSteamShovel() {
 		super(EnumHelper.addToolMaterial("SHOVEL", 2, 1600, 1.0F, -1.0F, 0));
@@ -37,6 +38,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
     @Override
     public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_)
     {
+    	hasBrokenBlock = true;
         return true;
     }
 	
@@ -53,7 +55,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 
     	MutablePair info = stuff.get(player.getEntityId());
     	int ticks = (Integer) info.left;
-    	return this.icon[ticks > 125 ? 0 : 1];
+    	return this.icon[ticks > 50 ? 0 : 1];
     }
 	
 	@Override
@@ -81,11 +83,24 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
-	    	ticks += speed;
+	    	
+	    	if (hasBrokenBlock){
+	    		speed -= 10;
+	    		hasBrokenBlock = false;
+	    	}
+	    	int addedTicks = Math.min(((Double)Math.floor((double)speed/1000D*25D)).intValue(), 50);
+	    	ticks += addedTicks;
+	    	//System.out.println("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
 	    	if (speed > 0) {
 	    		speed--;
+	    	} else if (ticks <= 0){
+	    		ticks = 0;
+	    	} else {
+	    		ticks--;
 	    	}
-	    	ticks = ticks%250;
+	    	
+	    	
+	    	ticks = ticks%100;
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
     	}
     }
@@ -98,8 +113,8 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
-	    	if (speed <= 100) {
-	    		speed+=Math.min(9,100-speed);
+	    	if (speed <= 1000) {
+	    		speed+=Math.min(90,1000-speed);
 	    		stack.damageItem(1, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
