@@ -33,11 +33,19 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     {
         return true;
     }
+	
+	
 
     @Override
-    public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_)
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity)
     {
-        return true;
+    	MutablePair info = stuff.get(entity.getEntityId());
+    	int speed = (Integer) info.right;
+    	speed -= 10;
+    	stuff.put(entity.getEntityId(), MutablePair.of((Integer)info.left, speed));
+    	System.out.println(speed);
+    	System.out.println("Decreasing on account of you broke the block");
+    	return true;
     }
 	
 	public static void checkNBT(EntityPlayer player) {
@@ -70,11 +78,22 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
-	    	ticks += speed;
-	    	if (speed > 0) {
-	    		speed--;
+	    	if (speed % 2 == 0){
+	    		ticks += speed ;
 	    	}
-	    	ticks = ticks%250;
+	    	
+	    	//System.out.println("speed: "+speed + "; ticks: "+ticks);
+	    	if (speed > 0) {
+	    		
+	    		speed--;
+	    	} else if (ticks <= 0){
+	    		ticks = 0;
+	    	} else {
+	    		ticks--;
+	    	}
+	    	
+	    	
+	    	ticks = ticks%201;
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
     	}
     }
@@ -87,14 +106,15 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
-	    	if (speed <= 100) {
-	    		speed+=Math.min(9,100-speed);
+	    	if (speed <= 1000) {
+	    		speed+=Math.min(90,1000-speed);
 	    		stack.damageItem(1, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
 			System.out.println(speed);
 		}
     	return stack;
+    	
     }
     
     @Override
