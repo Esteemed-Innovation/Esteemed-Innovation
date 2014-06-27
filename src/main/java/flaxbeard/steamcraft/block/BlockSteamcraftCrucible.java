@@ -82,6 +82,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 	        			currAmount += amount;
 	        			crucible.number.remove(fluid);
 	        			crucible.number.put(fluid, currAmount);
+	        			world.markBlockForUpdate(x, y, z);
+
 	        			entity.setDead();
 	        		}
         		}
