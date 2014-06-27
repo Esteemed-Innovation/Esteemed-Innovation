@@ -32,6 +32,9 @@ research.Bits.name=Bits and Bobs
 research.Bits.0=Here I will document various components I may need for crafting.<br>Plating a piston assembly with brass increases durability and makes it useful for applications within steam apparatus.
 research.Spyglass.name=Spyglass
 research.Spyglass.0=Who knew a few glass lenses in a brass housing could work as a magnifier? Now I can spot loot from a mile away!<br>Holding this device and pressing right click will zoom in, left clicking will zoom out.
+research.Survivalist.name=Survivalist's Toolkit
+research.Survivalist.0=Too many times I've broken my valuable enchanted tools. I've created a nice toolkit I can carry with me to stop this from happening in the future. Keeping this toolkit in my hotbar will prevent me from using tools that are about to break.
+research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted tools. I've created a nice toolkit I can carry with me to stop this from happening in the future. Wearing this toolkit in my belt slot will prevent me from using tools that are about to break.
 
 research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
@@ -68,6 +71,8 @@ research.ItemMortar.1=Simply insert items via a hopper, set a target, and watch 
 research.Hammer.name=Steam Hammer
 research.Hammer.0=I've created an interesting invention - a steam hammer - that allows me to perform anvil actions using steam instead of experience.<br>I first place the hammer above an anvil.
 research.Hammer.1=Right clicking the hammer will open its interface, where I can set up what I want the hammer to do. After I set up the action I want done, I simply insert steam and wait for the repairs or renaming to finish.
+research.Screw.name=Archimedes Screw
+research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
@@ -129,6 +134,7 @@ item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
 item.steamcraft:crafting.3.name=Blunderbuss Barrel
 item.steamcraft:crafting.4.name=Flintlock
+item.steamcraft:crafting.5.name=Creeper Explosive Gland
 
 item.steamcraft:plate.0.name=Copper Plate
 item.steamcraft:plate.1.name=Zinc Plate

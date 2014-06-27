@@ -15,10 +15,10 @@ import net.minecraftforge.fluids.FluidStack;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 public class TileEntityMold extends TileEntity implements ISidedInventory {
 	public boolean open = true;
-	public CrucibleLiquid myLiquid;
 	private ItemStack[] inventory = new ItemStack[1];
 	public ItemStack[] mold = new ItemStack[1];;
 	public int changeTicks = 0;
@@ -32,10 +32,10 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
         NBTTagCompound access = new NBTTagCompound();
         access.setBoolean("open", this.open);
         NBTTagCompound nbttagcompound1;
+        
 
 		if (this.mold[0] != null)
         {
-			System.out.println("SAV");
 	        nbttagcompound1 = new NBTTagCompound();
 	        this.mold[0].writeToNBT(nbttagcompound1);
 	        access.setTag("mold", nbttagcompound1);
@@ -67,6 +67,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
         	 this.mold[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("mold"));
         }
+        
 
     }
 	
@@ -115,12 +116,13 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 	
 	public boolean canPour() {
-		return !this.open && myLiquid == null && mold[0] != null && inventory[0] == null;
+		return (!this.open) && mold[0] != null && inventory[0] == null;
 	}
 	
 	public void pour(CrucibleLiquid liquid) {
 		this.inventory[0] = ((ICrucibleMold)mold[0].getItem()).getItemFromLiquid(liquid);
 		this.inventory[0].stackSize = 1;
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public void dropItem(ItemStack item) {

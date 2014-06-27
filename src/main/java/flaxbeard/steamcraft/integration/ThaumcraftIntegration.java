@@ -1,20 +1,28 @@
 package flaxbeard.steamcraft.integration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import thaumcraft.common.config.ConfigItems;
-import net.minecraft.init.Items;
+import java.util.ArrayList;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.config.ConfigItems;
+
+import com.spiteful.forbidden.DarkAspects;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
-import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
+import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 
 public class ThaumcraftIntegration {
     public static Item goggleUpgrade;
@@ -44,6 +52,36 @@ public class ThaumcraftIntegration {
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
+	
+		
+		AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));
+		if (list == null || list.size() == 0){
+			list = new AspectList();
+			list.add(Aspect.METAL, 2);
+			ThaumcraftApi.registerObjectTag(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE), list);
+		}
+		
+		list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1));
+		if (list == null || list.size() == 0){
+			list = new AspectList();
+			list.add(Aspect.METAL, 3);
+			list.add(Aspect.HEAL, 1);
+			ThaumcraftApi.registerObjectTag(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1), list);
+		}
+		
+		list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftNugget, 1, 1));
+		if (list == null || list.size() == 0){
+			list = new AspectList();
+			list.add(Aspect.METAL, 1);
+			ThaumcraftApi.registerObjectTag(new ItemStack(SteamcraftItems.steamcraftNugget, 1, 1), list);
+		}
+		
+		list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftNugget, 1, 3));
+		if (list == null || list.size() == 0){
+			list = new AspectList();
+			list.add(Aspect.METAL, 1);
+			ThaumcraftApi.registerObjectTag(new ItemStack(SteamcraftItems.steamcraftNugget, 1, 3), list);
+		}
 	}
 
 	public static Item gogglesRevealing() {

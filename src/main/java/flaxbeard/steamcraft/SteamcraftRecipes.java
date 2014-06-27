@@ -48,10 +48,10 @@ public class SteamcraftRecipes {
 		if (Loader.isModLoaded("Botania")) {
 			BotaniaIntegration.addItems();
 		}
-		if (Loader.isModLoaded("TConstruct")) {
-			System.out.println("INTEGRATION FUCK YEAH");
-			TinkersIntegration.addIngotRecipes();
-		}
+//		if (Loader.isModLoaded("TConstruct")) {
+//			System.out.println("INTEGRATION FUCK YEAH");
+//			TinkersIntegration.addIngotRecipes();
+//		}
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
@@ -112,6 +112,9 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("blankMold",new ItemStack(SteamcraftItems.blankMold), "xx", 
 		        'x', Items.brick);
 		
+		BookRecipeRegistry.addRecipe("survivalist",new ItemStack(SteamcraftItems.survivalist), "b s", "xwx", "xxx", 
+		        'x', Items.leather, 's', Items.string, 'b', Items.brick, 'w', Items.stick);
+		
 		BookRecipeRegistry.addRecipe("astrolabe",new ShapedOreRecipe(new ItemStack(SteamcraftItems.astrolabe), " x ", "xrx", " x ", 
 		        'x', "ingotBrass", 'r', Items.redstone));
 		
@@ -133,6 +136,11 @@ public class SteamcraftRecipes {
 		        'i', "plateBrass"));
 		BookRecipeRegistry.addRecipe("tank2", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.tank), "iii", "i i", "iii",
 		        'i', "ingotBrass"));
+		
+		BookRecipeRegistry.addRecipe("pump1", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pump), "gng", "iii", "ngn",
+		        'i', "plateBrass", 'n', "nuggetBrass", 'g', Blocks.glass_pane));
+		BookRecipeRegistry.addRecipe("pump2", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.pump), "gng", "iii", "ngn",
+		        'i', "ingotBrass", 'n', "nuggetBrass", 'g', Blocks.glass_pane));
 		
 		BookRecipeRegistry.addRecipe("piston1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,0), " x ", "xpx", " i ", 
 		        'x', "ingotBrass", 'p', Blocks.piston, 'i', SteamcraftBlocks.pipe));
@@ -200,14 +208,14 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("itemMortar4",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.itemMortar), "p p", "pbp", "ccc", 
 		        'p', "ingotBrass", 'c', "ingotCopper", 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)));
 		
-		BookRecipeRegistry.addRecipe("exoHead",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorHead), "xyx", "y y", "xyx", 
-		        'x', "plateBrass", 'y', "nuggetBrass"));
-		BookRecipeRegistry.addRecipe("exoBody",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorBody,1,SteamcraftItems.exoArmorBody.getMaxDamage()-1), "x x", "ygy", "xxx", 
-		        'x', "plateBrass", 'y', "nuggetBrass", 'g', SteamcraftBlocks.meter));
-		BookRecipeRegistry.addRecipe("exoLegs",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorLegs), "xxx", "y y", "x x", 
-		        'x', "plateBrass", 'y', "nuggetBrass"));
-		BookRecipeRegistry.addRecipe("exoFeet",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorFeet), "y y", "x x", 
-		        'x', "plateBrass", 'y', "nuggetBrass"));
+		BookRecipeRegistry.addRecipe("exoHead",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorHead), "xyx", "p p", "xyx", 
+		        'x', "plateBrass", 'y', "nuggetBrass", 'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)));
+		BookRecipeRegistry.addRecipe("exoBody",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorBody,1,SteamcraftItems.exoArmorBody.getMaxDamage()-1), "p p", "ygy", "xxx", 
+		        'x', "plateBrass", 'y', "nuggetBrass", 'g', SteamcraftBlocks.meter, 'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)));
+		BookRecipeRegistry.addRecipe("exoLegs",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorLegs), "yxy", "p p", "x x", 
+		        'x', "plateBrass", 'y', "nuggetBrass", 'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)));
+		BookRecipeRegistry.addRecipe("exoFeet",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exoArmorFeet), "p p", "x x", 
+		        'x', "plateBrass", 'y', "nuggetBrass", 'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)));
 		
 		BookRecipeRegistry.addRecipe("jetpack1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.jetpack), "p p", "ptg", "p p" ,
 		        'p', SteamcraftBlocks.pipe, 'g', SteamcraftBlocks.meter, 't', "ingotBrass"));

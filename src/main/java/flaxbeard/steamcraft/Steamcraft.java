@@ -3,7 +3,6 @@ package flaxbeard.steamcraft;
 
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -26,7 +25,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
-import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
@@ -46,6 +44,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
+import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
@@ -89,8 +88,8 @@ public class Steamcraft {
 
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
-	    EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
-	    EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
+	  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
+	    //EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
 
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");
 		GameRegistry.registerTileEntity(TileEntityMold.class, "mold");
@@ -109,6 +108,8 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityItemMortar.class, "itemMortar");
 		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
 		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
+		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
+
 	}
 	
 	@EventHandler
@@ -157,7 +158,7 @@ public class Steamcraft {
 			if (tt) {
 				return SteamcraftItems.pick("Brass");
 			}
-			return Item.getItemFromBlock(SteamcraftBlocks.crucible);
+			return SteamcraftItems.book;
 		}	
 	}
 }

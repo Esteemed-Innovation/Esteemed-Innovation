@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.handler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -7,7 +8,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -20,6 +24,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -29,6 +34,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -52,9 +58,44 @@ public class SteamcraftEventHandler {
 
 	
 //	@SubscribeEvent
-//	public void handleWorldLoad(WorldEvent.Load event) {
-//		AetherBlockData.get(event.world);
+//	public void handleMobDrop(LivingDropsEvent event) {
+//		if (event.entityLiving instanceof EntityCreeper) {
+//			int gunpowder = 0;
+//			for (EntityItem drop : event.drops) {
+//				if (drop.getEntityItem().getItem() == Items.gunpowder) {
+//					gunpowder+=drop.getEntityItem().stackSize;
+//				}
+//			}
+//			if (gunpowder >= 2 && !event.entityLiving.worldObj.isRemote && event.entityLiving.worldObj.rand.nextBoolean()) {
+//				int dropsLeft = 2;
+//				ArrayList<EntityItem> dropsToRemove = new ArrayList<EntityItem>();
+//				EntityItem baseItem = null;
+//				for (EntityItem drop : event.drops) {
+//					if (baseItem == null && drop.getEntityItem().getItem() == Items.gunpowder) {
+//						baseItem = drop;
+//					}
+//					if (dropsLeft > 0 && drop.getEntityItem().getItem() == Items.gunpowder) {
+//						if (drop.getEntityItem().stackSize <= dropsLeft) {
+//							dropsLeft -= drop.getEntityItem().stackSize;
+//							dropsToRemove.add(drop);
+//						}
+//						else
+//						{
+//							drop.getEntityItem().stackSize -= dropsLeft;
+//							dropsLeft = 0;
+//						}
+//					}
+//				}
+//				for (EntityItem drop : dropsToRemove) {
+//					event.drops.remove(drop);
+//				}
+//				baseItem.setEntityItemStack(new ItemStack(SteamcraftItems.steamcraftCrafting,1,5));
+//                event.drops.add(baseItem);
+//				System.out.println("REMOVED GUNPOWDER");
+//			}
+//		}
 //	}
+
 	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
@@ -268,6 +309,7 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void handleFlippers(LivingEvent.LivingUpdateEvent event) {	
+		
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
 		boolean hasPower = hasPower(entity,1);
@@ -331,7 +373,9 @@ public class SteamcraftEventHandler {
 			//System.out.println(ticksLeft);
 
 			if (ticksLeft <= 0) {
-				stack.damageItem(1, entity);
+				if (Config.passiveDrain) {
+					stack.damageItem(1, entity);
+				}
 				ticksLeft = 2;
 			}
 			ticksLeft--;

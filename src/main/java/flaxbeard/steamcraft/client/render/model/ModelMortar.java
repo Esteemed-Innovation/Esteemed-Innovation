@@ -5,6 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 
 public class ModelMortar extends ModelBase {
     public ModelRenderer mortarBottom;
+    public ModelRenderer mortarBottom2;
     public ModelRenderer mortarSide1;
     public ModelRenderer mortarSide2;
     public ModelRenderer mortarBody1;
@@ -20,22 +21,22 @@ public class ModelMortar extends ModelBase {
     	mortarSide2.addBox(13.0F,6.0F,2.0F, 2, 10, 12);
     	this.mortarSide1 = (new ModelRenderer(this, 0, 20)).setTextureSize(128, 64);
     	mortarSide1.addBox(1.0F,6.0F,2.0F, 2, 10, 12);
+    	this.mortarBottom2 = (new ModelRenderer(this, 0, 46)).setTextureSize(128, 64);
+    	mortarBottom2.addBox(1.0F,4.0F,1.0F, 14, 2, 14);
+    	this.mortarBottom = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);
+    	mortarBottom.addBox(0.0F,0.0F,0.0F, 16, 4, 16);
     }
     
     
     public void renderBase()
     {
-    	this.mortarBottom = (new ModelRenderer(this, 0, 0)).setTextureSize(128, 64);
-    	mortarBottom.addBox(0.0F,0.0F,0.0F, 16, 4, 16);
         this.mortarBottom.render(0.0625F);
 
     }
     
     public void render()
     {
-    	this.mortarBottom = (new ModelRenderer(this, 0, 46)).setTextureSize(128, 64);
-    	mortarBottom.addBox(1.0F,4.0F,1.0F, 14, 2, 14);
-        this.mortarBottom.render(0.0625F);
+        this.mortarBottom2.render(0.0625F);
         
         this.mortarSide1.render(0.0625F);
         this.mortarSide2.render(0.0625F);
