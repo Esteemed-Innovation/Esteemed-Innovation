@@ -23,7 +23,7 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	public IIcon[] icon = new IIcon[2];
 	public static HashMap<Integer,MutablePair<Integer,Integer>> stuff = new HashMap<Integer,MutablePair<Integer,Integer>>();
-	
+	private boolean hasBrokenBlock = false;
 	public ItemSteamDrill() {
 		super(EnumHelper.addToolMaterial("DRILL", 2, 1600, 1.0F, -1.0F, 0));
 	}
@@ -39,12 +39,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity)
     {
-    	MutablePair info = stuff.get(entity.getEntityId());
-    	int speed = (Integer) info.right;
-    	speed -= 10;
-    	stuff.put(entity.getEntityId(), MutablePair.of((Integer)info.left, speed));
-    	System.out.println(speed);
-    	System.out.println("Decreasing on account of you broke the block");
+    	hasBrokenBlock = true;
     	return true;
     }
 	
@@ -78,13 +73,16 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
-	    	if (speed % 2 == 0){
-	    		ticks += speed ;
+	    	
+	    	if (hasBrokenBlock){
+	    		speed -= 10;
+	    		hasBrokenBlock = false;
 	    	}
+	    	
+	    	ticks += speed ;
 	    	
 	    	//System.out.println("speed: "+speed + "; ticks: "+ticks);
 	    	if (speed > 0) {
-	    		
 	    		speed--;
 	    	} else if (ticks <= 0){
 	    		ticks = 0;
