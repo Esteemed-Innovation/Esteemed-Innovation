@@ -56,7 +56,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
     	MutablePair info = stuff.get(player.getEntityId());
     	int ticks = (Integer) info.left;
-    	return this.icon[ticks > 125 ? 0 : 1];
+    	return this.icon[ticks > 50 ? 0 : 1];
     }
 	
 	@Override
@@ -89,10 +89,9 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    		speed -= 10;
 	    		hasBrokenBlock = false;
 	    	}
-	    	
-	    	ticks += speed ;
-	    	
-	    	//System.out.println("speed: "+speed + "; ticks: "+ticks);
+	    	int addedTicks = Math.min(((Double)Math.floor((double)speed/1000D*25D)).intValue(), 50);
+	    	ticks += addedTicks;
+	    	System.out.println("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
 	    	if (speed > 0) {
 	    		speed--;
 	    	} else if (ticks <= 0){
@@ -102,7 +101,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    	}
 	    	
 	    	
-	    	ticks = ticks%201;
+	    	ticks = ticks%100;
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
     	}
     }
