@@ -254,7 +254,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && event.block.isToolEffective("pickaxe", event.metadata)) {
-			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
+			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
 				if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
