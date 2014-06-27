@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.handler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -8,10 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -24,11 +20,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -43,6 +39,7 @@ import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
@@ -111,6 +108,30 @@ public class SteamcraftEventHandler {
 			}
 		}
 	}
+	
+	public static int use = -1;
+	
+	@SubscribeEvent
+	public void useItem(PlayerUseItemEvent.Tick event) {
+		if (event.item.getItem() instanceof ItemFirearm) {
+        	use = event.duration;
+		}
+	}
+	
+	@SubscribeEvent
+	public void useItemEnd(PlayerUseItemEvent.Finish event) {
+		if (event.item.getItem() instanceof ItemFirearm) {
+			use = -1;
+		}
+	}
+	
+	@SubscribeEvent
+	public void useItemEnd(PlayerUseItemEvent.Stop event) {
+		if (event.item.getItem() instanceof ItemFirearm) {
+			use = -1;
+		}
+	}
+	
 	
 	
 	@SubscribeEvent
@@ -264,10 +285,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
-			    		System.out.println(event.newSpeed);
-
 			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
-			    		System.out.println(event.newSpeed);
 			    	}
 				}
 				if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
@@ -278,10 +296,8 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && ForgeHooks.isToolEffective(player.getHeldItem(), event.block, event.metadata)) {
-			    		System.out.println(event.newSpeed);
 
 			    		event.newSpeed *= 1.0F+19.0F*(speed/100.0F);
-			    		System.out.println(event.newSpeed);
 			    	}
 				}
 			}

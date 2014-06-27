@@ -157,11 +157,19 @@ public class SteamcraftRecipes {
 		        'i', "ingotBrass"));
 		BookRecipeRegistry.addRecipe("blunderBarrel2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), "i  ", " i ", "  i", 
 		        'i', "plateBrass"));
-		BookRecipeRegistry.addRecipe("cartridge1",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetIron", Items.paper, Items.gunpowder));
-		BookRecipeRegistry.addRecipe("cartridge2",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetLead", Items.paper, Items.gunpowder));
-		BookRecipeRegistry.addRecipe("cartridge3",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetSteel", Items.paper, Items.gunpowder));
-		BookRecipeRegistry.addRecipe("cartridge4",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetSilver", Items.paper, Items.gunpowder));
-
+		if (!Config.expensiveMusketRecipes) {
+			BookRecipeRegistry.addRecipe("cartridge1",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetIron", "nuggetIron", Items.paper, Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge2",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetLead", "nuggetLead", Items.paper, Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge3",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetSteel", "nuggetSteel", Items.paper, Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge4",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetSilver", "nuggetSilver", Items.paper, Items.paper, Items.gunpowder));
+		}
+		else
+		{
+			BookRecipeRegistry.addRecipe("cartridge1",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetIron", Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge2",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetLead", Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge3",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetSteel", Items.paper, Items.gunpowder));
+			BookRecipeRegistry.addRecipe("cartridge4",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge), "nuggetSilver", Items.paper, Items.gunpowder));
+		}
 		BookRecipeRegistry.addRecipe("flintlock1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), "f i", "iri", 
 		        'i', "ingotIron", 'r', Items.redstone, 'f', Items.flint_and_steel));
 		BookRecipeRegistry.addRecipe("flintlock2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), "f i", "iri",

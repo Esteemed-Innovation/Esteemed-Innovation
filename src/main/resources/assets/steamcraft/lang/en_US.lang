@@ -98,8 +98,8 @@ research.Blunderbuss.name=Flintlock Blunderbuss
 research.Blunderbuss.0=Using a larger brass barrel with modified musket mechanisms makes for an interesting combination, I call it a blunderbuss. This device shoots multiple inaccurate shots at once, allowing me to hit many foes.
 research.Pistol.name=Flintlock Pistol
 research.Pistol.0=I've found a way to shrink down my musket to a more manageable size, that can be armed faster. Of course, the smaller barrel means decreased damage and accuracy, but the increased speed is worth it.
-itemGroup.steamcraft=FSM
-itemGroup.steamcraftTools=FSM Tools
+itemGroup.steamcraft=FSP
+itemGroup.steamcraftTools=FSP Tools
 steamcraft.enhancementText=Enhancements:
 
 item.steamcraft:musketCartridge.name=Musket Cartridge
