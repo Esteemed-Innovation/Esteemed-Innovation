@@ -87,6 +87,8 @@ public class TileEntityCrucible extends TileEntity {
     	NBTTagCompound access = pkt.func_148857_g();
     	NBTTagList nbttaglist = (NBTTagList) access.getTag("liquids");
 
+    	contents = new ArrayList<CrucibleLiquid>();
+    	number = new HashMap<CrucibleLiquid,Integer>();
     	for (int i = 0; i < nbttaglist.tagCount(); ++i)
     	{
     		NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
