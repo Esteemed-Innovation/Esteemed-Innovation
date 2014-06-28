@@ -39,7 +39,7 @@ import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
@@ -484,12 +484,12 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void handleEnhancement(AnvilUpdateEvent event) {
-		if (event.right.getItem() instanceof IEnhancement) {
-			IEnhancement enhancement = (IEnhancement) event.right.getItem();
-			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
-				event.cost = enhancement.cost(event.left);
-				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
-			}
-		}
+//		if (event.right.getItem() instanceof IEnhancement) {
+//			IEnhancement enhancement = (IEnhancement) event.right.getItem();
+//			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
+//				event.cost = enhancement.cost(event.left);
+//				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
+//			}
+//		}
 	}
 }

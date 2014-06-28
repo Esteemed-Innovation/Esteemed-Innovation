@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.item;
+package flaxbeard.steamcraft.item.firearm;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
