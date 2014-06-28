@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -53,7 +54,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
         }
     }
 	
-	private int slot;
+	public int slot;
 	public ItemExosuitArmor(int i) {
 		super(ItemArmor.ArmorMaterial.CHAIN, 1, i);
 		slot = i;
@@ -342,8 +343,8 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	}
 
 	@Override
-	public void drawSlot(GuiEngineeringTable guiEngineeringTable, int slotNum, int i, int j) {
-		guiEngineeringTable.mc.getTextureManager().bindTexture(guiEngineeringTable.furnaceGuiTextures);
+	public void drawSlot(GuiContainer guiEngineeringTable, int slotNum, int i, int j) {
+		guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
 		if (this.slot == 0) {
 			switch (slotNum) {
 				case 0:
