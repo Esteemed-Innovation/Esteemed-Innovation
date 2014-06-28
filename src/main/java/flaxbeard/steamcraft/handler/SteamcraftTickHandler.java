@@ -30,7 +30,9 @@ public class SteamcraftTickHandler {
 		if(event.side == Side.CLIENT && Minecraft.getMinecraft().thePlayer != null){
 			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 			
-			if (SteamcraftEventHandler.hasPower(player, 1) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+			if (SteamcraftEventHandler.hasPower(player, 1) 
+					&& player.getEquipmentInSlot(2) != null 
+					&& player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
 				ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
 				if (player.worldObj.isRemote && chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
 					if (!player.onGround && Math.abs(player.motionX) + Math.abs(player.motionZ) > 0.0F && !player.isInWater() && !(player.capabilities.isFlying)) {

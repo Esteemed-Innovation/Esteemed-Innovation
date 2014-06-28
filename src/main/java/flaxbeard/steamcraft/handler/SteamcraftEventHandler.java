@@ -275,7 +275,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && event.block.isToolEffective("pickaxe", event.metadata)) {
-			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
+			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
 				if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
@@ -285,7 +285,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
-			    		event.newSpeed *= 1.0F+11.0F*(speed/100.0F);
+			    		event.newSpeed *= 1.0F+11.0F*(speed/650.0F);
 			    	}
 				}
 				if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
@@ -296,8 +296,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && ForgeHooks.isToolEffective(player.getHeldItem(), event.block, event.metadata)) {
-
-			    		event.newSpeed *= 1.0F+19.0F*(speed/100.0F);
+			    		event.newSpeed *= 1.0F+19.0F*(speed/1000.0F);
 			    	}
 				}
 			}
@@ -342,7 +341,7 @@ public class SteamcraftEventHandler {
 			}
 		}
 		
-		if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
+		if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
 			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
 			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
 				if (!lastMotions.containsKey(entity.getEntityId())) {
