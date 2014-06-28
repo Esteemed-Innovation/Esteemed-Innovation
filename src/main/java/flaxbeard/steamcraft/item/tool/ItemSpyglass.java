@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.item;
+package flaxbeard.steamcraft.item.tool;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
