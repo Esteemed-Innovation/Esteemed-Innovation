@@ -31,6 +31,7 @@ import flaxbeard.steamcraft.item.ItemFirearm;
 import flaxbeard.steamcraft.item.ItemIngotMold;
 import flaxbeard.steamcraft.item.ItemNuggetMold;
 import flaxbeard.steamcraft.item.ItemPlateMold;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.item.ItemSpyglass;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.ItemSteamcraftCrafting;
@@ -90,6 +91,8 @@ public class SteamcraftItems {
 	public static Item thrusters;
 	public static Item fallAssist;
 	public static Item doubleJump;
+	
+	public static Item smashedOre;
 	
 	public static Item steamedPorkchop;
 	public static Item steamedFish;
@@ -177,6 +180,8 @@ public class SteamcraftItems {
 		blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
 		GameRegistry.registerItem(blankMold, "blankMold");
 		
+		smashedOre = new ItemSmashedOre().setUnlocalizedName("steamcraft:smashedOre").setMaxStackSize(64).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:smashedOre");
+		GameRegistry.registerItem(smashedOre, "smashedOre");
 		steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamedFish, "steamedFish");
         ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
