@@ -12,8 +12,8 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import flaxbeard.steamcraft.misc.Tuple3;
 
 public class BookPage {
 	private String name;
