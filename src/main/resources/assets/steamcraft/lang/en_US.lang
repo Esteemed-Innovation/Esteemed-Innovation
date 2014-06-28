@@ -129,6 +129,19 @@ item.steamcraft:nugget.1.name=Zinc Nugget
 item.steamcraft:nugget.2.name=Iron Nugget
 item.steamcraft:nugget.3.name=Brass Nugget
 
+item.steamcraft:smashedOre.iron.name=Smashed Iron Ore
+item.steamcraft:smashedOre.gold.name=Smashed Gold Ore
+item.steamcraft:smashedOre.copper.name=Smashed Copper Ore
+item.steamcraft:smashedOre.zinc.name=Smashed Zinc Ore
+item.steamcraft:smashedOre.tin.name=Smashed Tin Ore
+item.steamcraft:smashedOre.nickel.name=Smashed Nickel Ore
+item.steamcraft:smashedOre.silver.name=Smashed Silver Ore
+item.steamcraft:smashedOre.lead.name=Smashed Lead Ore
+item.steamcraft:smashedOre.aluminum.name=Smashed Aluminum Ore
+item.steamcraft:smashedOre.osmium.name=Smashed Osmium Ore
+item.steamcraft:smashedOre.cobalt.name=Smashed Cobalt Ore
+item.steamcraft:smashedOre.ardite.name=Smashed Ardite Ore
+
 item.steamcraft:crafting.0.name=Brass Piston
 item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
