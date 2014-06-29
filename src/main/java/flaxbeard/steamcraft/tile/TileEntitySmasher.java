@@ -3,17 +3,17 @@ package flaxbeard.steamcraft.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class TileEntitySmasher extends TileEntity {
 	
@@ -33,7 +33,6 @@ public class TileEntitySmasher extends TileEntity {
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("spinup", spinup);
-        access.setBoolean("hasBlockUpdate", hasBlockUpdate);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
@@ -51,7 +50,6 @@ public class TileEntitySmasher extends TileEntity {
     	this.extendedLength = access.getFloat("extendedLength");
     	this.extendedTicks = access.getInteger("extendedTicks");
     	this.spinup = access.getInteger("spinup");
-    	this.hasBlockUpdate = access.getBoolean("hasBlockUpdate");
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
 
@@ -61,8 +59,11 @@ public class TileEntitySmasher extends TileEntity {
 	public void updateEntity(){
 		int[] target = getTarget(1);
 		int x = target[0], y = yCoord, z = target[1];
-		if (extendedTicks == 3){
-			Steamcraft.instance.proxy.spawnBreakParticles(worldObj, x+0.5F, y + 0.7F, z + 0.5F, this.smooshingBlock,  (float)(Math.random()-0.5F)/12.0F, 0.0F, (float)(Math.random()-0.5F)/12.0F);
+		//Remote == client, might as well not run on server
+		if (extendedTicks == 3 && this.worldObj.isRemote) {
+			for (int i = 0; i < 10; i++) {
+				//Steamcraft.instance.proxy.spawnBreakParticles(worldObj, x+0.5F, y + 0.7F, z + 0.5F, this.smooshingBlock,  (float)(Math.random()-0.5F)/12.0F, 0.0F, (float)(Math.random()-0.5F)/12.0F);	
+			}
 		}
 		//handle state changes
 		if (this.hasBlockUpdate && this.hasPartner()){
@@ -93,8 +94,9 @@ public class TileEntitySmasher extends TileEntity {
 						
 						this.smooshingBlock = worldObj.getBlock(x, y, z);
 						this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-
+						
 						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
+
 						
 						//TODO: play smashing sound
 						//TODO: drop item(s)
@@ -139,9 +141,21 @@ public class TileEntitySmasher extends TileEntity {
 	
 	}
 	
-	@SideOnly(Side.SERVER)
 	private void spawnItems(int x, int y, int z){
+		int id = OreDictionary.getOreID(new ItemStack(smooshingBlock.getItem(worldObj, x, y, z), 1, smooshingMeta));
 		
+		if (ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id))) {
+			//Chance you'll get double
+			boolean doubleItems = worldObj.rand.nextInt(5) == 0;
+			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
+			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.5F, z+0.5F, items);
+			this.worldObj.spawnEntityInWorld(entityItem);
+
+		}
+		else
+		{
+			smooshingBlock.dropBlockAsItem(worldObj, x, y, z, this.smooshingMeta, 0);
+		}
 	}
 	
 	private boolean hasSomethingToSmash() {
