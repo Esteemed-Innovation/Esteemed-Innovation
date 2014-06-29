@@ -51,7 +51,7 @@ public class TileEntitySmasher extends TileEntity {
 				// if we've spun up, extend
 				} else if (this.extendedLength < 0.5F){
 					System.out.println("Extending: "+this.extendedLength);
-					this.extendedLength += 0.05F;
+					this.extendedLength += 0.1F;
 				
 				// we're done extending. Time to go inactive and start retracting	
 				} else {
@@ -61,7 +61,8 @@ public class TileEntitySmasher extends TileEntity {
 			} else {
 				// Get back in line!
 				if (this.extendedLength > 0.0F){
-					this.extendedLength -= 0.5F;
+					this.extendedLength -= 0.025F;
+					System.out.println("Retracting: "+this.extendedLength);
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
 				} else {
 					//TODO: destroy dummy block
