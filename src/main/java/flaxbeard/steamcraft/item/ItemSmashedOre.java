@@ -64,9 +64,9 @@ public class ItemSmashedOre extends Item {
 		//par3List.add(new ItemStack(par1, 1, 2));
 		//par3List.add(new ItemStack(par1, 1, 3));
 		for (int i = 0; i < oreTypes.size(); i++){
-			if (OreDictionary.getOres(oreTypes.get(i).getLeft()).size() > 0){
+			//if (OreDictionary.getOres(oreTypes.get(i).getLeft()).size() > 0){
 				list.add(new ItemStack(item, 1, i));
-			}
+			//}
 		}
 	}
 	

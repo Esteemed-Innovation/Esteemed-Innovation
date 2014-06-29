@@ -93,7 +93,7 @@ public class SteamcraftItems {
 	public static Item doubleJump;
 	
 	public static Item smashedOre;
-	public static Item fakeOre;
+	//public static Item fakeOre;
 	
 	public static Item steamedPorkchop;
 	public static Item steamedFish;
@@ -184,15 +184,15 @@ public class SteamcraftItems {
 		smashedOre = new ItemSmashedOre().setUnlocalizedName("steamcraft:smashedOre").setMaxStackSize(64).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:smashedOre");
 		GameRegistry.registerItem(smashedOre, "smashedOre");
 		
-		fakeOre = new Item().setUnlocalizedName("steamcraft:fakeOre");
-		OreDictionary.registerOre("oreTin", new ItemStack(fakeOre,1,0));
-		OreDictionary.registerOre("oreLead", new ItemStack(fakeOre,1,1));
-		OreDictionary.registerOre("oreSilver", new ItemStack(fakeOre,1,2));
-		OreDictionary.registerOre("oreOsmium", new ItemStack(fakeOre, 1,3));
-		OreDictionary.registerOre("oreNickel", new ItemStack(fakeOre, 1,4));
-		OreDictionary.registerOre("oreAluminum", new ItemStack(fakeOre, 1,5));
-		OreDictionary.registerOre("oreCobalt", new ItemStack(fakeOre, 1,6));
-		OreDictionary.registerOre("oreArdite", new ItemStack(fakeOre, 1,7));
+//		fakeOre = new Item().setUnlocalizedName("steamcraft:fakeOre");
+//		OreDictionary.registerOre("oreTin", new ItemStack(fakeOre,1,0));
+//		OreDictionary.registerOre("oreLead", new ItemStack(fakeOre,1,1));
+//		OreDictionary.registerOre("oreSilver", new ItemStack(fakeOre,1,2));
+//		OreDictionary.registerOre("oreOsmium", new ItemStack(fakeOre, 1,3));
+//		OreDictionary.registerOre("oreNickel", new ItemStack(fakeOre, 1,4));
+//		OreDictionary.registerOre("oreAluminum", new ItemStack(fakeOre, 1,5));
+//		OreDictionary.registerOre("oreCobalt", new ItemStack(fakeOre, 1,6));
+//		OreDictionary.registerOre("oreArdite", new ItemStack(fakeOre, 1,7));
 		
 		
 		steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
