@@ -95,6 +95,7 @@ public class TileEntitySmasher extends TileEntity {
 				if (this.extendedLength > 0.0F){
 					this.extendedLength -= 0.025F;
 					this.extendedTicks++;
+					System.out.println("Retracting: "+this.extendedLength);
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
 				} else {
 					//TODO: destroy dummy block
