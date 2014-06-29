@@ -41,9 +41,11 @@ public class TileEntitySmasher extends TileEntity {
 						System.out.println("SMAAAAASH");
 						int[] target = getTarget(1);
 						int x = target[0], y = yCoord, z = target[1];
-						worldObj.setBlockToAir(x, y, z);
+						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
+						
 						//TODO: play smashing sound
 						//TODO: drop item(s)
+						// if (meta % 2 == 0) I'm the drop handler.
 					}
 					this.spinup++;
 				
@@ -52,13 +54,13 @@ public class TileEntitySmasher extends TileEntity {
 					System.out.println("Extending: "+this.extendedLength);
 					this.extendedLength += 0.05F;
 				
-				// we're done extending. Time to go inactive, create dummy block and retract	
+				// we're done extending. Time to go inactive and start retracting	
 				} else {
 					this.isBreaking = false;
 					this.spinup = 0;
 				}
 			} else {
-				// extension done. Get back in line!
+				// Get back in line!
 				if (this.extendedLength > 0.0F){
 					this.extendedLength -= 0.5F;
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
