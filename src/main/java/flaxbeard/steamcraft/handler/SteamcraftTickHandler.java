@@ -103,7 +103,7 @@ public class SteamcraftTickHandler {
 					this.renderTelescopeOverlay();
 				}
 			}
-			if (!wasInUse && item != null && item.getItem() == SteamcraftItems.musket && UtilEnhancements.getEnhancementFromItem(item) == SteamcraftItems.spyglass) {
+			if (!wasInUse && item != null && player.isUsingItem() && item.getItem() == SteamcraftItems.musket && UtilEnhancements.getEnhancementFromItem(item) == SteamcraftItems.spyglass) {
 				boolean isShooting = false;
 				if (item.stackTagCompound != null) {
 			        NBTTagCompound nbt = item.getTagCompound();

@@ -113,6 +113,7 @@ item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
 enhancement.steamcraft:musketMarksman=Marksman's Scope
 item.steamcraft:musketAblaze.name=Ablaze Flintlock Musket
 enhancement.steamcraft:musketAblaze=Ablaze
+enhancement.steamcraft:revolver=Revolver Kit
 
 item.steamcraft:exoArmorHead.name=Steam Exosuit Headpiece
 item.steamcraft:exoArmorBody.name=Steam Exosuit Chestpiece

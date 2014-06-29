@@ -2,16 +2,12 @@ package flaxbeard.steamcraft.api.book;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.GL11;
-
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import flaxbeard.steamcraft.misc.Tuple3;
 
 public class BookPageItem extends BookPageText {
 	private ItemStack[] item;
