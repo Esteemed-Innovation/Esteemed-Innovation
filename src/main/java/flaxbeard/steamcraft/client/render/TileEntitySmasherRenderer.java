@@ -50,10 +50,10 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 
 			model.renderAnchored();
 			double dist = 0.0f;
-			if (smasher.extendedTicks <= 5) {
+			if (smasher.extendedTicks <= 2) {
 				dist = (Math.sin(Math.toRadians(18D*smasher.extendedTicks))*0.51F);
 			}
-			else if (smasher.extendedTicks <= 15) {
+			else if (smasher.extendedTicks <= 18) {
 				dist = 0.51F;
 			}
 			else
