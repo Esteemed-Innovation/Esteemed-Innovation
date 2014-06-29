@@ -36,6 +36,7 @@ import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
+import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
@@ -109,6 +110,8 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
 		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
 		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
+		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
+
 
 	}
 	
