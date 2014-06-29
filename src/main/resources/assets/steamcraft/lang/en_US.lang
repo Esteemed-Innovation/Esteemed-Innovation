@@ -50,7 +50,9 @@ research.Molds.name=Molds
 research.Molds.0=Molds can be placed in the mold block to set the output of the mold.<br>Right clicking with a carved or blank mold on a mold carver will change the mold type, cycling through all options.
 research.Brass.name=Brass
 research.Brass.0=I have created a new alloy that looks promising. Three parts copper and one part zinc creates brass, a shiny gold-like alloy.<br>Brass seems to resist corrosion, something that should prove useful.
-
+research.GildedGold.name=Gilded Iron
+research.GildedGold.0=I have found a way to combine the sturdy composition of iron with the magical capabilities of gold: gilding. I can coat iron ingots and tools with gold to combine their abilities.
+research.GildedGold.1=Simply right clicking on a crucible containing gold with an iron ingot will use up one nugget's worth of gold, leaving me with ingots that encompass the strength of iron and enchantability of gold.
 category.SteamPower.name=Steam Power
 research.Boiler.name=Boiler
 research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
