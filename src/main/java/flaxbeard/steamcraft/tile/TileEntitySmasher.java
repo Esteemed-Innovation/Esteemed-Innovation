@@ -2,6 +2,10 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -11,8 +15,33 @@ public class TileEntitySmasher extends TileEntity {
 	private boolean isActive = false;
 	private boolean isBreaking = false;
 	private boolean shouldStop = false;
-	private int spinup = 0;
-	private float extendedLength = 0.0F;
+	public int spinup = 0;
+	public float extendedLength = 0.0F;
+	public int extendedTicks = 0;
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("spinup", spinup);
+        access.setFloat("extendedLength", extendedLength);
+        access.setInteger("extendedTicks", extendedTicks);
+
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.extendedLength = access.getFloat("extendedLength");
+    	this.extendedTicks = access.getInteger("extendedTicks");
+    	this.spinup = access.getInteger("spinup");
+    	
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 	
 	public void updateEntity(){
 		//handle state changes
@@ -26,11 +55,13 @@ public class TileEntitySmasher extends TileEntity {
 		} else if (this.shouldStop){
 			this.spinup = 0;
 			this.extendedLength = 0;
+			this.extendedTicks = 0;
 			this.isActive = false;
 		}
 		
 		//handle processing
 		if (this.isActive){
+
 			// if we haven't spun up yet, do it.
 			if (this.isBreaking){
 				if (this.spinup < 41){
@@ -51,7 +82,8 @@ public class TileEntitySmasher extends TileEntity {
 				// if we've spun up, extend
 				} else if (this.extendedLength < 0.5F){
 					System.out.println("Extending: "+this.extendedLength);
-					this.extendedLength += 0.05F;
+					this.extendedLength += 0.1F;
+					this.extendedTicks++;
 				
 				// we're done extending. Time to go inactive and start retracting	
 				} else {
@@ -61,15 +93,19 @@ public class TileEntitySmasher extends TileEntity {
 			} else {
 				// Get back in line!
 				if (this.extendedLength > 0.0F){
-					this.extendedLength -= 0.5F;
+					this.extendedLength -= 0.025F;
+					this.extendedTicks++;
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
 				} else {
 					//TODO: destroy dummy block
 					System.out.println("Done!");
 					this.isActive = false;
+					this.extendedTicks = 0;
 				}
 			}
 			
+			//Mark for sync
+			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	
 	}

@@ -61,15 +61,14 @@ public class BlockSmasher extends BlockContainer {
 		if (meta == 0) {
     		meta = 3;
     	}
-        return side == 1 ? this.blockIcon : (side == 0 ? this.blockIcon : (side != meta ? this.blockIcon : this.frontIcon));
+        return this.blockIcon;
     }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register)
     {
-        this.blockIcon = register.registerIcon("steamcraft:testSide");
-        this.frontIcon = register.registerIcon("steamcraft:testFront");
+        this.blockIcon = register.registerIcon("steamcraft:blankTexture");
     }
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
@@ -81,5 +80,11 @@ public class BlockSmasher extends BlockContainer {
 		TileEntitySmasher smasher = (TileEntitySmasher)world.getTileEntity(x, y, z);
 		smasher.blockUpdate();
 	}
+	
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+	
 	
 }
