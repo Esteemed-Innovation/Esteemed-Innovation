@@ -72,7 +72,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 			RenderBlocks renderBlocks = new RenderBlocks(smasher.getWorldObj());
 			renderBlocks.renderAllFaces = true;
 			
-			if (smasher.spinup >= 41 &&  smasher.extendedTicks < 5 && smasher.getWorldObj().getBlockMetadata(smasher.xCoord, smasher.yCoord, smasher.zCoord) % 2 == 0) {
+			if (smasher.spinup >= 41 &&  smasher.extendedTicks < 3 && smasher.getWorldObj().getBlockMetadata(smasher.xCoord, smasher.yCoord, smasher.zCoord) % 2 == 0) {
 				GL11.glTranslated(-dist, 0.0F, 0.0F);
 				GL11.glTranslatef(1.5F, 1.0F,1.0F);
 				GL11.glScaled(1.0F-dist*2F, 1.0F, 1.0F);
@@ -127,7 +127,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 	//				}
 	//
 	//				MalisisDoorsSettings.simpleMixedBlockRendering.set(smbr);
-	
+					renderBlocks = null;
 				}
 				catch (Exception e)
 				{
