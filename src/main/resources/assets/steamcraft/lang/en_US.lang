@@ -161,6 +161,11 @@ item.steamcraft:nuggetMold.name=Nugget Mold
 item.steamcraft:plateMold.name=Plate Mold
 item.steamcraft:blankMold.name=Blank Mold
 
+item.steamcraft:helmGildedGold.name=Gilded Iron Helmet
+item.steamcraft:chestGildedGold.name=Gilded Iron Chestplate
+item.steamcraft:legsGildedGold.name=Gilded Iron Leggings
+item.steamcraft:feetGildedGold.name=Gilded Iron Boots
+
 item.steamcraft:pickGildedGold.name=Gilded Iron Pickaxe
 item.steamcraft:axeGildedGold.name=Gilded Iron Axe
 item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
@@ -171,6 +176,7 @@ item.steamcraft:helmBrass.name=Brass Helmet
 item.steamcraft:chestBrass.name=Brass Chestplate
 item.steamcraft:legsBrass.name=Brass Leggings
 item.steamcraft:feetBrass.name=Brass Boots
+
 item.steamcraft:pickBrass.name=Brass Pickaxe
 item.steamcraft:axeBrass.name=Brass Axe
 item.steamcraft:shovelBrass.name=Brass Shovel

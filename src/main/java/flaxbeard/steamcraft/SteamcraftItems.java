@@ -225,6 +225,7 @@ public class SteamcraftItems {
 		registerToolSet(brass, "Brass", "ingotBrass", true);
 		registerArmorSet(mat, "Brass", "ingotBrass", true);
 		registerGildedTools();
+		registerGildedArmor();
 		
 		steamcraftNugget = new ItemSteamcraftNugget().setUnlocalizedName("steamcraft:nugget").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftNugget, "steamcraftNugget");
@@ -283,19 +284,19 @@ public class SteamcraftItems {
     
     public static void registerArmorSet(ItemArmor.ArmorMaterial tool, String string, Object repair, boolean addRecipes) {
     	Item helm = new ItemSteamcraftArmor(tool, 2, 0, repair, string).setUnlocalizedName("steamcraft:helm"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:helm"+string);
- 		GameRegistry.registerItem(helm, "helm"+helm);
+ 		GameRegistry.registerItem(helm, "helm"+string);
  		tools.put("helm"+string,helm);
  		
     	Item chest = new ItemSteamcraftArmor(tool, 2, 1, repair, string).setUnlocalizedName("steamcraft:chest"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:chest"+string);
- 		GameRegistry.registerItem(chest, "chest"+chest);
+ 		GameRegistry.registerItem(chest, "chest"+string);
  		tools.put("chest"+string,chest);
  		
     	Item legs = new ItemSteamcraftArmor(tool, 2, 2, repair, string).setUnlocalizedName("steamcraft:legs"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:legs"+string);
- 		GameRegistry.registerItem(legs, "legs"+legs);
+ 		GameRegistry.registerItem(legs, "legs"+string);
  		tools.put("legs"+string,legs);
  		
     	Item feet = new ItemSteamcraftArmor(tool, 2, 3, repair, string).setUnlocalizedName("steamcraft:feet"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:feet"+string);
- 		GameRegistry.registerItem(feet, "feet"+feet);
+ 		GameRegistry.registerItem(feet, "feet"+string);
  		tools.put("feet"+string,feet);
  		
  		if (addRecipes) {
@@ -343,6 +344,36 @@ public class SteamcraftItems {
 		        'x', new ItemStack(steamcraftIngot,1,3), 's', "stickWood"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(sword), "x", "x", "s", 
 		        'x', new ItemStack(steamcraftIngot,1,3), 's', "stickWood"));
+    }
+    
+    public static void registerGildedArmor() {
+		ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("GILDEDGOLD",15, new int[]{2, 6, 5, 2}, 9);
+
+    	Item helm = new ItemSteamcraftArmor(tool, 2, 0, new ItemStack(steamcraftIngot,1,3), "Gilded").setUnlocalizedName("steamcraft:helmGildedGold").setCreativeTab(Steamcraft.tabTools).setTextureName("gold_helmet");
+ 		GameRegistry.registerItem(helm, "helmGildedGold");
+ 		tools.put("helmGildedGold",helm);
+ 		
+    	Item chest = new ItemSteamcraftArmor(tool, 2, 1, new ItemStack(steamcraftIngot,1,3), "Gilded").setUnlocalizedName("steamcraft:chestGildedGold").setCreativeTab(Steamcraft.tabTools).setTextureName("gold_chestplate");
+ 		GameRegistry.registerItem(chest, "chestGildedGold");
+ 		tools.put("chestGildedGold",chest);
+ 		
+    	Item legs = new ItemSteamcraftArmor(tool, 2, 2, new ItemStack(steamcraftIngot,1,3), "Gilded").setUnlocalizedName("steamcraft:legsGildedGold").setCreativeTab(Steamcraft.tabTools).setTextureName("gold_leggings");
+ 		GameRegistry.registerItem(legs, "legsGildedGold");
+ 		tools.put("legsGildedGold",legs);
+ 		
+    	Item feet = new ItemSteamcraftArmor(tool, 2, 3, new ItemStack(steamcraftIngot,1,3), "Gilded").setUnlocalizedName("steamcraft:feetGildedGold").setCreativeTab(Steamcraft.tabTools).setTextureName("gold_boots");
+ 		GameRegistry.registerItem(feet, "feetGildedGold");
+ 		tools.put("feetGildedGold",feet);
+ 		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(helm), "xxx", "x x", 
+		        'x', new ItemStack(steamcraftIngot,1,3)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(chest), "x x", "xxx", "xxx",
+		        'x', new ItemStack(steamcraftIngot,1,3)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(legs), "xxx", "x x", "x x",
+		        'x', new ItemStack(steamcraftIngot,1,3)));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(feet), "x x", "x x",
+		        'x', new ItemStack(steamcraftIngot,1,3)));
+ 		
     }
     
     public static Item pick(String string) {
