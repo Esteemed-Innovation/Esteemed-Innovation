@@ -5,6 +5,7 @@ import java.util.HashMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -39,6 +40,7 @@ import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
+import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftAxe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftHoe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftPickaxe;
@@ -219,7 +221,9 @@ public class SteamcraftItems {
 		OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot,1,2));
 		
 		ToolMaterial brass = EnumHelper.addToolMaterial("BRASS", 2, 191, 7.0F, 2.5F, 14);
+		ItemArmor.ArmorMaterial mat = EnumHelper.addArmorMaterial("BRASS", 11, new int[]{2, 7, 6, 3}, 9);
 		registerToolSet(brass, "Brass", "ingotBrass", true);
+		registerArmorSet(mat, "Brass", "ingotBrass", true);
 		registerGildedTools();
 		
 		steamcraftNugget = new ItemSteamcraftNugget().setUnlocalizedName("steamcraft:nugget").setCreativeTab(Steamcraft.tab);
@@ -277,6 +281,35 @@ public class SteamcraftItems {
  		}
     }
     
+    public static void registerArmorSet(ItemArmor.ArmorMaterial tool, String string, Object repair, boolean addRecipes) {
+    	Item helm = new ItemSteamcraftArmor(tool, 2, 0, repair, string).setUnlocalizedName("steamcraft:helm"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:helm"+string);
+ 		GameRegistry.registerItem(helm, "helm"+helm);
+ 		tools.put("helm"+string,helm);
+ 		
+    	Item chest = new ItemSteamcraftArmor(tool, 2, 1, repair, string).setUnlocalizedName("steamcraft:chest"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:chest"+string);
+ 		GameRegistry.registerItem(chest, "chest"+chest);
+ 		tools.put("chest"+string,chest);
+ 		
+    	Item legs = new ItemSteamcraftArmor(tool, 2, 2, repair, string).setUnlocalizedName("steamcraft:legs"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:legs"+string);
+ 		GameRegistry.registerItem(legs, "legs"+legs);
+ 		tools.put("legs"+string,legs);
+ 		
+    	Item feet = new ItemSteamcraftArmor(tool, 2, 3, repair, string).setUnlocalizedName("steamcraft:feet"+string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:feet"+string);
+ 		GameRegistry.registerItem(feet, "feet"+feet);
+ 		tools.put("feet"+string,feet);
+ 		
+ 		if (addRecipes) {
+ 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(helm), "xxx", "x x", 
+ 			        'x', repair));
+ 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(chest), "x x", "xxx", "xxx",
+ 			        'x', repair));
+ 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(legs), "xxx", "x x", "x x",
+ 			        'x', repair));
+ 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(feet), "x x", "x x",
+ 			        'x', repair));
+ 		}
+    }
+    
     public static void registerGildedTools() {
 		ToolMaterial tool = EnumHelper.addToolMaterial("GILDEDGOLD", 2, 250, 6.0F, 2.0F, 22);
 		
@@ -326,5 +359,18 @@ public class SteamcraftItems {
     }
     public static Item sword(String string) {
     	return tools.get("sword"+string);
+    }
+    
+    public static Item helm(String string) {
+    	return tools.get("helm"+string);
+    }
+    public static Item chest(String string) {
+    	return tools.get("chest"+string);
+    }
+    public static Item legs(String string) {
+    	return tools.get("legs"+string);
+    }
+    public static Item feet(String string) {
+    	return tools.get("feet"+string);
     }
 }
