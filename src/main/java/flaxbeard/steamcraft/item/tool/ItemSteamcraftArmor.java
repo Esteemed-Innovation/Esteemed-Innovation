@@ -18,11 +18,19 @@ public class ItemSteamcraftArmor extends ItemArmor {
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-		if (slot == 2) {
-			return "steamcraft:textures/models/armor/" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "_2.png";
+		if (name != "Gilded") {
+			if (slot == 2) {
+				return "steamcraft:textures/models/armor/" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "_2.png";
+			}
+			return "steamcraft:textures/models/armor/" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "_1.png";
 		}
-		return "steamcraft:textures/models/armor/" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "_1.png";
-
+		else
+		{
+			if (slot == 2) {
+				return "minecraft:textures/models/armor/gold_layer_2.png";
+			}
+			return "minecraft:textures/models/armor/gold_layer_1.png";
+		}
 	}
 
 	
