@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.item;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,7 +12,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,6 +23,8 @@ public class ItemSmashedOre extends Item {
 	
 	public IIcon theOverlay;
 	public static ArrayList<MutablePair<String,MutablePair<IIcon,String>>> oreTypes = new ArrayList<MutablePair<String,MutablePair<IIcon,String>>>();
+	public static HashMap<String,Integer> oreTypesFromOre = new HashMap<String,Integer>();
+	private static int id = 0;
 	
 	public ItemSmashedOre(){
 		super();
@@ -44,6 +46,8 @@ public class ItemSmashedOre extends Item {
 	}
 	
 	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName){
+		oreTypesFromOre.put(oreDict, id);
+		id++;
 		return new MutablePair<String, MutablePair<IIcon, String>>(oreDict, new MutablePair<IIcon, String>(icon, uName));
 	}
 	

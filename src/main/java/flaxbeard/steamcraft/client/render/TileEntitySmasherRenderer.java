@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -69,6 +70,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 			}
 			GL11.glTranslated(dist, 0.0F, 0.0F);
 			model.renderPiston(0.0F);
+
 			RenderBlocks renderBlocks = new RenderBlocks(smasher.getWorldObj());
 			renderBlocks.renderAllFaces = true;
 			
@@ -91,42 +93,10 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 					Tessellator tess = Tessellator.instance;
 					tess.startDrawingQuads();
 					Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-					
-
-					//GL11.glScalef(0.5F, 1.0F, 1.0F);
-	
-					GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_ONE_MINUS_CONSTANT_ALPHA);
-					//renderBlocks.overrideBlockTexture = block.getIcon(blockMetadata, 0);
+					RenderHelper.enableStandardItemLighting();
 					boolean rendered = renderBlocks.renderBlockByRenderType(block, smasher.xCoord, smasher.yCoord, smasher.zCoord);
-					//renderBlocks.overrideBlockTexture = null;
 					tess.draw();
 					GL11.glPopMatrix();
-	
-	//				if (te.copiedBlock.canRenderInPass(0))
-	//				{
-	//					GL14.glBlendColor(0, 0, 0, scale);
-	//					rendered |= renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
-	//					next();
-	//				}
-	//				if (te.copiedBlock.canRenderInPass(1))
-	//				{
-	//					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	//					rendered |= renderBlocks.renderBlockByRenderType(te.copiedBlock, x, y, z);
-	//					next();
-	//				}
-	//
-	//				if (!rendered)
-	//					drawShape(shape, rp);
-	//
-	//				GL11.glPopMatrix();
-	//
-	//				if (te.copiedTileEntity != null)
-	//				{
-	//					clean();
-	//					TileEntityRendererDispatcher.instance.renderTileEntity(te.copiedTileEntity, partialTick);
-	//				}
-	//
-	//				MalisisDoorsSettings.simpleMixedBlockRendering.set(smbr);
 					renderBlocks = null;
 				}
 				catch (Exception e)
