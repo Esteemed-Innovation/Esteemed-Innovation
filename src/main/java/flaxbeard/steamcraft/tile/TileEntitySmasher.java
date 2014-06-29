@@ -1,17 +1,21 @@
 package flaxbeard.steamcraft.tile;
 
+
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import net.minecraft.block.Block;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 
 public class TileEntitySmasher extends TileEntity {
 	
@@ -21,6 +25,8 @@ public class TileEntitySmasher extends TileEntity {
 	private boolean shouldStop = false;
 	public int spinup = 0;
 	public float extendedLength = 0.0F;
+	public Block smooshingBlock;
+	public int smooshingMeta;
 	public int extendedTicks = 0;
 	
 	@Override
@@ -31,6 +37,8 @@ public class TileEntitySmasher extends TileEntity {
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
+        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("smooshingMeta", smooshingMeta);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -43,7 +51,9 @@ public class TileEntitySmasher extends TileEntity {
     	this.extendedLength = access.getFloat("extendedLength");
     	this.extendedTicks = access.getInteger("extendedTicks");
     	this.spinup = access.getInteger("spinup");
-    	
+    	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
+    	this.smooshingMeta = access.getInteger("smooshingMeta");
+
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -75,10 +85,15 @@ public class TileEntitySmasher extends TileEntity {
 						System.out.println("SMAAAAASH");
 						int[] target = getTarget(1);
 						int x = target[0], y = yCoord, z = target[1];
-						Block block = worldObj.getBlock(x, y, z);
-						Item item = block.getItem(worldObj, x, y, z);
-						ItemStack stack = new ItemStack(block.getItem(worldObj, x, y, z), worldObj.getBlockMetadata(x, y, z));
-						EntityItem eItem = new EntityItem(worldObj, (float) x, (float) y, (float) z, stack);
+//						Block block = worldObj.getBlock(x, y, z);
+//						Item item = block.getItem(worldObj, x, y, z);
+//						ItemStack stack = new ItemStack(block.getItem(worldObj, x, y, z), worldObj.getBlockMetadata(x, y, z));
+//						EntityItem eItem = new EntityItem(worldObj, (float) x, (float) y, (float) z, stack);
+//						eItem.setVelocity(0D, 0D, 0D);
+//						worldObj.spawnEntityInWorld(eItem);
+						this.smooshingBlock = worldObj.getBlock(x, y, z);
+						this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+
 						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
 						
 						//TODO: play smashing sound
