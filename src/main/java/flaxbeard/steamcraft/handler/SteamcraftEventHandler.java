@@ -39,7 +39,7 @@ import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
@@ -285,7 +285,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
-			    		event.newSpeed *= 1.0F+11.0F*(speed/650.0F);
+			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
 				if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
@@ -296,7 +296,7 @@ public class SteamcraftEventHandler {
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && ForgeHooks.isToolEffective(player.getHeldItem(), event.block, event.metadata)) {
-			    		event.newSpeed *= 1.0F+19.0F*(speed/1000.0F);
+			    		event.newSpeed *= 1.0F+19.0F*(speed/3000.0F);
 			    	}
 				}
 			}
@@ -484,12 +484,12 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void handleEnhancement(AnvilUpdateEvent event) {
-		if (event.right.getItem() instanceof IEnhancement) {
-			IEnhancement enhancement = (IEnhancement) event.right.getItem();
-			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
-				event.cost = enhancement.cost(event.left);
-				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
-			}
-		}
+//		if (event.right.getItem() instanceof IEnhancement) {
+//			IEnhancement enhancement = (IEnhancement) event.right.getItem();
+//			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
+//				event.cost = enhancement.cost(event.left);
+//				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
+//			}
+//		}
 	}
 }

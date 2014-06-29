@@ -17,8 +17,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import flaxbeard.steamcraft.misc.Tuple3;
 
 public class BookPageCrafting extends BookPage {
 	
