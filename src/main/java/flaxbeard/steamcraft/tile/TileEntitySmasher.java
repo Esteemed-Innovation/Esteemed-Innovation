@@ -1,7 +1,11 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -71,6 +75,10 @@ public class TileEntitySmasher extends TileEntity {
 						System.out.println("SMAAAAASH");
 						int[] target = getTarget(1);
 						int x = target[0], y = yCoord, z = target[1];
+						Block block = worldObj.getBlock(x, y, z);
+						Item item = block.getItem(worldObj, x, y, z);
+						ItemStack stack = new ItemStack(block.getItem(worldObj, x, y, z), worldObj.getBlockMetadata(x, y, z));
+						EntityItem eItem = new EntityItem(worldObj, (float) x, (float) y, (float) z, stack);
 						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
 						
 						//TODO: play smashing sound
