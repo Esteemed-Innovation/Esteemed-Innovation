@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.misc;
+package flaxbeard.steamcraft.api;
 
 public class Tuple3
 {

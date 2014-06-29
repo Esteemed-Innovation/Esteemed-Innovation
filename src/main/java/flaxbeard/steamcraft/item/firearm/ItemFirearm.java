@@ -1,7 +1,8 @@
-package flaxbeard.steamcraft.item;
+package flaxbeard.steamcraft.item.firearm;
 
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,14 +16,21 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.IEngineerable;
+import flaxbeard.steamcraft.api.UtilMisc;
+import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
+import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 
-public class ItemFirearm extends Item
+public class ItemFirearm extends Item implements IEngineerable
 {
     public float damage;
     public int reloadTime;
@@ -30,8 +38,8 @@ public class ItemFirearm extends Item
     public float accuracy;
     public float knockback;
     public boolean shotgun;
-    public String tinker;
-
+    public Object repairMaterial = null;
+    
     public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7)
     {
         this.maxStackSize = 1;
@@ -42,10 +50,9 @@ public class ItemFirearm extends Item
         this.knockback = par5;
         this.shotgun = par6;
         this.shellCount = par7;
-        this.tinker = "";
     }
     
-    public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7, String par8)
+    public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7, Object repair)
     {
         this.maxStackSize = 1;
         this.setMaxDamage(384);
@@ -55,7 +62,7 @@ public class ItemFirearm extends Item
         this.knockback = par5;
         this.shotgun = par6;
         this.shellCount = par7;
-        this.tinker = par8;
+        this.repairMaterial = repair;
     }
     
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
@@ -166,21 +173,10 @@ public class ItemFirearm extends Item
         	}
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-            if (this.tinker == "") {
-            	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
-            }
-            else if (this.tinker == "bassCannon") {
-            	 par2World.playSoundAtEntity(par3EntityPlayer, "steamcraft:wobble", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-            }
+        	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
             for (int i = 1; i < 16; i++)
             {
-            	if (this.tinker != "bassCannon") {
-            		par2World.spawnParticle("smoke", par3EntityPlayer.posX + itemRand.nextFloat() - 0.5F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat() - 0.5F, 0.0D, 0.01D, 0.0D);
-            	}
-            	else
-            	{
-            		par2World.spawnParticle("note", par3EntityPlayer.posX + itemRand.nextFloat()*4 - 2F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat()*4 - 2F, 0.0D, 0.01D, 0.0D);
-            	}
+        		par2World.spawnParticle("smoke", par3EntityPlayer.posX + itemRand.nextFloat() - 0.5F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat() - 0.5F, 0.0D, 0.01D, 0.0D);
             }
 
             if (!par2World.isRemote)
@@ -189,7 +185,7 @@ public class ItemFirearm extends Item
                 {
                     for (int i = 1; i < 21; i++)
                     {
-                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7, (damage+enhancementDamage), this.tinker == "bassCannon");
+                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7, (damage+enhancementDamage), false);
                         if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
                     		if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
                     			var12 = ((IEnhancementFirearm)UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var12);
@@ -378,5 +374,72 @@ public class ItemFirearm extends Item
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;
     }
+
+	@Override
+	public MutablePair<Integer, Integer>[] engineerCoordinates() {
+		return new MutablePair[] { MutablePair.of(49,26) };
+	}
+
+	@Override
+	public ItemStack getStackInSlot(ItemStack me, int var1) {
+		if (UtilEnhancements.hasEnhancement(me)) {
+			Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
+			return new ItemStack(item);
+		}
+		return null;
+	}
+
+	@Override
+	public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+		if (!me.hasTagCompound()) {
+			me.setTagCompound(new NBTTagCompound());
+		}
+		IEnhancement enhancement = (IEnhancement) stack.getItem();
+		NBTTagCompound enhancements = new NBTTagCompound();
+		enhancements.setString("id", enhancement.getID());
+		me.stackTagCompound.setTag("enhancements", enhancements);
+
+	}
+
+	@Override
+	public boolean isItemValidForSlot(ItemStack me, int var1, ItemStack var2) {
+		return true;
+	}
+
+	@Override
+	public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
+		if (UtilEnhancements.hasEnhancement(me)) {
+			Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
+			UtilEnhancements.removeEnhancement(me);
+			return new ItemStack(item);
+		}
+		return null;
+	}
+
+	@Override
+	public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i,
+			int j) {
+		guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
+		guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);		
+	}
+
+	@Override
+	public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
+		return upgrade.getItem() instanceof IEnhancement && ((IEnhancement)upgrade.getItem()).canApplyTo(me);
+	}
+	
+	@Override
+	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
+	{
+		if (repairMaterial != null) {
+			if (repairMaterial instanceof ItemStack) {
+				return par2ItemStack.isItemEqual((ItemStack) repairMaterial) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+			}
+			if (repairMaterial instanceof String) {
+				return UtilMisc.doesMatch(par2ItemStack, (String) repairMaterial) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+			}
+		}
+		return super.getIsRepairable(par1ItemStack, par2ItemStack);
+	}
 
 }

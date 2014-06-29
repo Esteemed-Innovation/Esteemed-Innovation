@@ -85,4 +85,10 @@ public class UtilEnhancements {
 
 		return output;
 	}
+	
+	public static void removeEnhancement(ItemStack item) {
+		if (item.hasTagCompound() && item.stackTagCompound.hasKey("enhancements")) {
+			item.stackTagCompound.removeTag("enhancements");
+		}
+	}
 }

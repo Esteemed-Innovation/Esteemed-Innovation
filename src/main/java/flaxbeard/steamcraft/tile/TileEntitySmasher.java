@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.misc.Tuple3;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
