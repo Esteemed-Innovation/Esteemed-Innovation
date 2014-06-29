@@ -167,6 +167,10 @@ item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
 item.steamcraft:hoeGildedGold.name=Gilded Iron Hoe
 item.steamcraft:swordGildedGold.name=Gilded Iron Sword
 
+item.steamcraft:helmBrass.name=Brass Helmet
+item.steamcraft:chestBrass.name=Brass Chestplate
+item.steamcraft:legsBrass.name=Brass Leggings
+item.steamcraft:feetBrass.name=Brass Boots
 item.steamcraft:pickBrass.name=Brass Pickaxe
 item.steamcraft:axeBrass.name=Brass Axe
 item.steamcraft:shovelBrass.name=Brass Shovel
