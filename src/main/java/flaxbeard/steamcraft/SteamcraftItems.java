@@ -196,6 +196,7 @@ public class SteamcraftItems {
 		smashedOre = new ItemSmashedOre().setUnlocalizedName("steamcraft:smashedOre").setMaxStackSize(64).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:smashedOre");
 		GameRegistry.registerItem(smashedOre, "smashedOre");
 		
+		
 //		fakeOre = new Item().setUnlocalizedName("steamcraft:fakeOre");
 //		OreDictionary.registerOre("oreTin", new ItemStack(fakeOre,1,0));
 //		OreDictionary.registerOre("oreLead", new ItemStack(fakeOre,1,1));
