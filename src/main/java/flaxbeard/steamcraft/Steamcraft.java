@@ -145,8 +145,6 @@ public class Steamcraft {
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
 		SteamcraftRecipes.registerRecipes();
 		SteamcraftBook.registerBookResearch();
-		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
-		iso.addSmelting();
 	}
 
 

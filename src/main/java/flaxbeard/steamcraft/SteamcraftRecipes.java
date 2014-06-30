@@ -14,6 +14,7 @@ import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.integration.TinkersIntegration;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class SteamcraftRecipes {
     
@@ -110,6 +111,8 @@ public class SteamcraftRecipes {
 	private static void registerSmeltingRecipes() {
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftItems.steamcraftIngot,1,0), 0.5F);
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,1), new ItemStack(SteamcraftItems.steamcraftIngot,1,1), 0.5F);
+		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
+		iso.addSmelting();
 	}
 	
 	private static void registerCraftingRecipes() {
