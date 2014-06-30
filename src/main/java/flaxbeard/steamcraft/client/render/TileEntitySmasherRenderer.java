@@ -7,19 +7,17 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.client.render.model.ModelSmasher;
+import flaxbeard.steamcraft.misc.WorldContainer;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
-public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
+public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 	private static final ModelSmasher model = new ModelSmasher();
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/smasher.png");
 
@@ -71,7 +69,8 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 			GL11.glTranslated(dist, 0.0F, 0.0F);
 			model.renderPiston(0.0F);
 
-			RenderBlocks renderBlocks = new RenderBlocks(smasher.getWorldObj());
+			WorldContainer wc = new WorldContainer(smasher.getWorldObj(),smasher.smooshingMeta);
+			RenderBlocks renderBlocks = new RenderBlocks(wc);
 			renderBlocks.renderAllFaces = true;
 			
 			if (smasher.spinup >= 41 &&  smasher.extendedTicks < 3 && smasher.getWorldObj().getBlockMetadata(smasher.xCoord, smasher.yCoord, smasher.zCoord) % 2 == 0) {
@@ -105,6 +104,21 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer {
 				}
 			}
 			GL11.glPopMatrix();
+			wc = null;
+	}
+
+
+	@Override
+	public void renderInventoryTileEntityAt(TileEntity var1, double x,
+			double y, double z, float var8) {
+	    GL11.glPushMatrix();
+		GL11.glTranslatef((float)x, (float)y-0.1F, (float)z);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+
+		model.renderAnchored();
+		model.renderPiston(0);
+		GL11.glPopMatrix();
+
 	}
 
 

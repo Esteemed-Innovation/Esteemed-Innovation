@@ -142,6 +142,7 @@ item.steamcraft:smashedOre.Aluminum.name=Smashed Aluminum Ore
 item.steamcraft:smashedOre.Osmium.name=Smashed Osmium Ore
 item.steamcraft:smashedOre.Cobalt.name=Smashed Cobalt Ore
 item.steamcraft:smashedOre.Ardite.name=Smashed Ardite Ore
+item.steamcraft:smashedOre.Cinnabar.name=Smashed Cinnabar Ore
 
 item.steamcraft:crafting.0.name=Brass Piston
 item.steamcraft:crafting.1.name=Wooden Stock
@@ -221,5 +222,5 @@ tile.steamcraft:meter.name=Steam Gauge
 tile.steamcraft:hammer.name=Steam Hammer
 tile.steamcraft:itemMortar.name=Item Mortar
 tile.steamcraft:pump.name=Archimedes Screw
-
+tile.steamcraft:smasher.name=Rock Smasher
 
