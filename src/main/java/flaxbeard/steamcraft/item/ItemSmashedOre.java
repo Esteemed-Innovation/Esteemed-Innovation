@@ -8,13 +8,17 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.SteamcraftItems;
 
 
 
@@ -50,7 +54,12 @@ public class ItemSmashedOre extends Item {
 	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName){
 		oreTypesFromOre.put(oreDict, id);
 		id++;
+		if (OreDictionary.getOres(oreDict).size() > 0) {
+			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreDict).get(0));
+			GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,id), result, 0.5F);
+		}
 		return new MutablePair<String, MutablePair<IIcon, String>>(oreDict, new MutablePair<IIcon, String>(icon, uName));
+		
 	}
 	
 	@Override
