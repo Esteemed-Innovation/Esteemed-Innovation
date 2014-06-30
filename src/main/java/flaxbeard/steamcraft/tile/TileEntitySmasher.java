@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
@@ -242,7 +243,7 @@ public class TileEntitySmasher extends TileEntity {
 		}
 		if ( isSmashableOre) {
 			//Chance you'll get double
-			boolean doubleItems = worldObj.rand.nextInt(3) == 0;
+			boolean doubleItems = worldObj.rand.nextInt(Config.chance) == 0;
 			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
 			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.1F, z+0.5F, items);
 			this.worldObj.spawnEntityInWorld(entityItem);
