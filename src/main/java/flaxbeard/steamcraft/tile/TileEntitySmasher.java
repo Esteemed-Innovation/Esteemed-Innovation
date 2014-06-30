@@ -51,7 +51,7 @@ public class TileEntitySmasher extends TileEntity {
 		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
 		if (!worldObj.isRemote){
 			if (extendedTicks==3) smash = 1;
-			
+			if (extendedTicks >= 8 && extendedTicks <= 16 && (extendedTicks % 4) == 0) smoke1 = 2;
 			//int smoke1 = (extendedTicks == 3) ? (1 << 1) : 0;
 			//int smoke2 = (extendedTicks >= 8) && (extendedTicks <= 16) && ((extendedTicks % 4) == 0) ? (1  << 2): 0;
 			//int smoke3 =  (extendedTicks == 6) ? (1 << 3) : 0;
@@ -72,10 +72,21 @@ public class TileEntitySmasher extends TileEntity {
 			int x= tgt[0], y = yCoord, z=tgt[1];
 
 			if (smash){
-				System.out.println("smash!");
-				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F);
-				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/6.0F);
-				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/12.0F);
+				System.out.println((float)(Math.random()-0.5F)/3.0F);
+				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F);
+				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/3.0F);
+				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/32.0F, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/3.0F);
+			}
+			if (smoke1){
+				float xV = 0F, zV = 0F;
+				switch (getBlockMetadata()){
+				case 2: zV = 0.05F; break;
+				case 3: zV = -0.05F; break;
+				case 4: xV = 0.05F; break;
+				case 5: xV = -0.05F; break;
+				default: break;
+				}
+				worldObj.spawnParticle("smoke", xCoord+0.5D, y+1.1D, zCoord+0.5D, xV, 0.05F, zV);
 			}
 		}
 		
@@ -100,24 +111,28 @@ public class TileEntitySmasher extends TileEntity {
 		int[] target = getTarget(1);
 		int x = target[0], y = yCoord, z = target[1];
 		//Remote == client, might as well not run on server
-		if (extendedTicks == 3 && this.worldObj.isRemote) {
-			for (int i = 0; i < 10; i++) {
-				//Steamcraft.instance.proxy.spawnBreakParticles(worldObj, x+0.5F, y + 0.7F, z + 0.5F, this.smooshingBlock,  (float)(Math.random()-0.5F)/12.0F, 0.0F, (float)(Math.random()-0.5F)/12.0F);	
-			}
-		}
+		
+		
 		//handle state changes
 		if (this.hasBlockUpdate && this.hasPartner()){
+			if (this.shouldStop){
+				System.out.println("shouldStop");
+				this.spinup = 0;
+				this.extendedLength = 0;
+				this.extendedTicks = 0;
+				this.isActive = false;
+				this.shouldStop = false;
+				this.isBreaking = false;
+				return;
+			} else {
+				System.out.println("shouldn'tStop");
+			}
 			//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
 			if (this.hasSomethingToSmash() && !this.isActive){
 				this.isActive = true;
 				this.isBreaking = true;
 			}
 			this.hasBlockUpdate = false;
-		} else if (this.shouldStop){
-			this.spinup = 0;
-			this.extendedLength = 0;
-			this.extendedTicks = 0;
-			this.isActive = false;
 		}
 		
 		//handle processing
@@ -131,12 +146,27 @@ public class TileEntitySmasher extends TileEntity {
 					if (this.spinup == 40){
 						//System.out.println("SMAAAAASH");
 						
+						if (!worldObj.isAirBlock(x, y, z)){
+							this.smooshingBlock = worldObj.getBlock(x, y, z);
+							this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+							this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
+							this.spinup++;
+							if (this.getBlockMetadata() % 2 == 0)
+								worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
+						} else {
+							if (this.hasPartner()){
+								int[] pc = getTarget(2);
+								TileEntitySmasher partner =  (TileEntitySmasher) worldObj.getTileEntity(pc[0], yCoord, pc[1]);
+								if (partner.spinup == 40 || (partner.spinup == 41 && partner.shouldStop)){
+									this.shouldStop = true;
+									this.spinup++;
+									return;
+								}
+							}
+							
+							
+						}
 						
-						this.smooshingBlock = worldObj.getBlock(x, y, z);
-						this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-						this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
-						
-						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
 
 						
 						//TODO: play smashing sound
