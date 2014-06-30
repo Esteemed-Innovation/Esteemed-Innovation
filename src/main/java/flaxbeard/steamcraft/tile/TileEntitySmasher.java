@@ -76,14 +76,15 @@ public class TileEntitySmasher extends TileEntity {
 //			if (smoke1){
 			if (extendedTicks > 15) {
 				float xV = 0F, zV = 0F;
+				double xO = 0D, zO = 0D;
 				switch (getBlockMetadata()){
-				case 2: zV = 0.05F; break;
-				case 3: zV = -0.05F; break;
-				case 4: xV = 0.05F; break;
-				case 5: xV = -0.05F; break;
+				case 2: zV = 0.05F; zO = 0.1D; break;
+				case 3: zV = -0.05F; zO = -0.1D; break;
+				case 4: xV = 0.05F; xO = 0.1D; break;
+				case 5: xV = -0.05F; xO = -0.1D; break;
 				default: break;
 				}
-				worldObj.spawnParticle("smoke", xCoord+0.5D, y+1.1D, zCoord+0.5D, xV, 0.05F, zV);
+				worldObj.spawnParticle("smoke", xCoord+0.5D+xO, y+1.1D, zCoord+0.5D+zO, xV, 0.05F, zV);
 			//}
 			}
 		}
@@ -144,22 +145,38 @@ public class TileEntitySmasher extends TileEntity {
 					if (this.spinup == 40){
 						//System.out.println("SMAAAAASH");
 						
-						if (!worldObj.isAirBlock(x, y, z)){
+						if (!worldObj.isAirBlock(x, y, z) && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 							this.smooshingBlock = worldObj.getBlock(x, y, z);
 							this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
 							this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
 							this.spinup++;
 							if (this.getBlockMetadata() % 2 == 0)
-								worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
+								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 						} else {
+							System.out.println("No block.");
 							if (this.hasPartner()){
+								System.out.println("I have a partner");
 								int[] pc = getTarget(2);
 								TileEntitySmasher partner =  (TileEntitySmasher) worldObj.getTileEntity(pc[0], yCoord, pc[1]);
-								if (partner.spinup == 40 || (partner.spinup == 41 && partner.shouldStop)){
+								System.out.println("partner.spinup: "+partner.spinup);
+								if (partner.spinup < 41){
+									System.out.println("No block and partner hasn't updated. I should stop.");
 									this.shouldStop = true;
+								}
+								if (partner.spinup >= 41){
+									System.out.println("Partner has updated.");
+									if (partner.shouldStop){
+										System.out.println("Partner is stopping. I should stop too.");
+										this.shouldStop = true;
+									}
+								}
+								if (shouldStop){
 									this.spinup++;
 									return;
 								}
+									
+									
+								
 							}
 							
 							
@@ -174,7 +191,7 @@ public class TileEntitySmasher extends TileEntity {
 					this.spinup++;
 				
 				// if we've spun up, extend
-				} else if (this.extendedLength < 0.5F){
+				} else if (this.extendedLength < 0.5F && !this.shouldStop){
 					//System.out.println("Extending: "+this.extendedLength);
 					this.extendedLength += 0.1F;
 					if (this.extendedTicks == 3){
@@ -197,10 +214,13 @@ public class TileEntitySmasher extends TileEntity {
 					//System.out.println("Retracting: "+this.extendedLength);
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
 				} else {
-					//TODO: destroy dummy block
 					//System.out.println("Done!");
 					this.isActive = false;
 					this.extendedTicks = 0;
+					if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy){
+						worldObj.setBlockToAir(x, y, z);
+					}
+					
 				}
 			}
 			
@@ -212,8 +232,13 @@ public class TileEntitySmasher extends TileEntity {
 	
 	private void spawnItems(int x, int y, int z){
 		int id = OreDictionary.getOreID(this.smooshedStack);
-		
-		if ( ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id))) {
+		boolean isSmashableOre = false;
+		try {
+			isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
+		} catch (Exception e) {
+			
+		}
+		if ( isSmashableOre) {
 			//Chance you'll get double
 			boolean doubleItems = worldObj.rand.nextInt(3) == 0;
 			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
