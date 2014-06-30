@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
+import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
@@ -52,6 +53,7 @@ public class SteamcraftBlocks {
 	public static Block pump;
 	
 	public static Block smasher;
+	public static Block dummy;
 
 	public static Block carving;
 	public static Block engineering;
@@ -84,6 +86,8 @@ public class SteamcraftBlocks {
 		
 		smasher = new BlockSmasher().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:smasher").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(smasher, "smasher");
+		dummy = new BlockDummy().setBlockName("steamcraft:dummy");
+		GameRegistry.registerBlock(dummy, "dummy");
 		
 		boiler = new BlockBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:boiler").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(boiler,"boiler");
