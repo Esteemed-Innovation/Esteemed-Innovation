@@ -27,6 +27,7 @@ public class TileEntitySmasher extends TileEntity {
 	public Block smooshingBlock;
 	public int smooshingMeta;
 	public int extendedTicks = 0;
+	public ItemStack smooshedStack;
 	
 	@Override
 	public Packet getDescriptionPacket()
@@ -133,6 +134,7 @@ public class TileEntitySmasher extends TileEntity {
 						
 						this.smooshingBlock = worldObj.getBlock(x, y, z);
 						this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+						this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
 						
 						worldObj.setBlockToAir(x, y, z); //TODO: create dummy block instead
 
@@ -149,7 +151,7 @@ public class TileEntitySmasher extends TileEntity {
 					this.extendedLength += 0.1F;
 					if (this.extendedTicks == 3){
 						
-						spawnItems(x, y, z);
+						if (this.getBlockMetadata() % 2 == 0 && !worldObj.isRemote) spawnItems(x, y, z);
 						
 					}
 					this.extendedTicks++;
@@ -181,15 +183,15 @@ public class TileEntitySmasher extends TileEntity {
 	}
 	
 	private void spawnItems(int x, int y, int z){
-		int id = OreDictionary.getOreID(new ItemStack(smooshingBlock.getItem(worldObj, x, y, z), 1, smooshingMeta));
+		int id[] = OreDictionary.getOreIDs(this.smooshedStack);
 		
-		if (ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id))) {
+		if (id.length > 0 && ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id[0]))) {
 			//Chance you'll get double
-			boolean doubleItems = worldObj.rand.nextInt(5) == 0;
-			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
+			boolean doubleItems = worldObj.rand.nextInt(3) == 0;
+			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id[0])));
 			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.5F, z+0.5F, items);
 			this.worldObj.spawnEntityInWorld(entityItem);
-
+			this.smooshedStack = null;
 		}
 		else
 		{
