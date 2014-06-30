@@ -29,6 +29,7 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
@@ -144,6 +145,8 @@ public class Steamcraft {
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
 		SteamcraftRecipes.registerRecipes();
 		SteamcraftBook.registerBookResearch();
+		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
+		iso.addSmelting();
 	}
 
 

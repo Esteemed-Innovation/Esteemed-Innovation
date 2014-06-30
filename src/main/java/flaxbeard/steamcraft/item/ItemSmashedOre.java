@@ -34,34 +34,42 @@ public class ItemSmashedOre extends Item {
 		super();
 		this.setHasSubtypes(true);
 		
-		oreTypes.add(getPair("oreIron", null, "Iron"));
-		oreTypes.add(getPair("oreGold", null, "Gold"));
-		oreTypes.add(getPair("oreCopper", null, "Copper"));
-		oreTypes.add(getPair("oreZinc", null, "Zinc"));
-		oreTypes.add(getPair("oreTin", null, "Tin"));
-		oreTypes.add(getPair("oreNickel", null, "Nickel"));
-		oreTypes.add(getPair("oreSilver", null, "Silver"));
-		oreTypes.add(getPair("oreLead", null, "Lead"));
-		oreTypes.add(getPair("oreAluminum", null, "Aluminum"));
-		oreTypes.add(getPair("oreOsmium", null, "Osmium"));
-		oreTypes.add(getPair("oreCobalt", null, "Cobalt"));
-		oreTypes.add(getPair("oreArdite", null, "Ardite"));
-		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar"));
+		oreTypes.add(getPair("oreIron", null, "Iron", 0));
+		oreTypes.add(getPair("oreGold", null, "Gold", 1));
+		oreTypes.add(getPair("oreCopper", null, "Copper", 2));
+		oreTypes.add(getPair("oreZinc", null, "Zinc", 3));
+		oreTypes.add(getPair("oreTin", null, "Tin", 4));
+		oreTypes.add(getPair("oreNickel", null, "Nickel", 5));
+		oreTypes.add(getPair("oreSilver", null, "Silver", 6));
+		oreTypes.add(getPair("oreLead", null, "Lead", 7));
+		oreTypes.add(getPair("oreAluminum", null, "Aluminum", 8));
+		oreTypes.add(getPair("oreOsmium", null, "Osmium", 9));
+		oreTypes.add(getPair("oreCobalt", null, "Cobalt", 10));
+		oreTypes.add(getPair("oreArdite", null, "Ardite", 11));
+		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar", 12));
 
 		
 	}
 	
-	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName){
-		oreTypesFromOre.put(oreDict, id);
-		id++;
+	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName, int index){
+		oreTypesFromOre.put(oreDict, index);
 		if (OreDictionary.getOres(oreDict).size() > 0) {
 			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreDict).get(0));
 			System.out.println(result == null ? "NO RESULT" : result.toString());
 
-			GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,id), result, 0.5F);
+			System.out.println("Adding smelting recipe for "+uName);
 		}
 		return new MutablePair<String, MutablePair<IIcon, String>>(oreDict, new MutablePair<IIcon, String>(icon, uName));
 		
+	}
+	
+	public void addSmelting(){
+		for (int i = 0; i < oreTypes.size(); i++){
+			if (OreDictionary.getOres(oreTypes.get(i).getLeft()).size() > 0){
+				ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreTypes.get(i).getLeft()).get(0));
+				GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,i), result, 0.5F);
+			}
+		}
 	}
 	
 	@Override
