@@ -73,6 +73,9 @@ research.Hammer.0=I've created an interesting invention - a steam hammer - that 
 research.Hammer.1=Right clicking the hammer will open its interface, where I can set up what I want the hammer to do. After I set up the action I want done, I simply insert steam and wait for the repairs or renaming to finish.
 research.Screw.name=Archimedes Screw
 research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
+research.Smasher.name=Rock Smasher
+research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost during smelting. If I place two of these one block apart, facing each other, and supply steam, they will automatically break blocks placed between them, though some are too hard to break.
+
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
