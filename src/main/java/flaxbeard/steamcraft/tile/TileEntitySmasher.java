@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.tile;
 
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,15 +9,19 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
-public class TileEntitySmasher extends TileEntity {
+public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
+	
+	
+	private int steam = 0;
 	
 	private boolean hasBlockUpdate = false;
 	private boolean isActive = false;
@@ -32,6 +35,31 @@ public class TileEntitySmasher extends TileEntity {
 	public ItemStack smooshedStack;
 	
 	@Override
+    public void readFromNBT(NBTTagCompound access)
+    {
+        super.readFromNBT(access);
+        this.extendedLength = access.getFloat("extendedLength");
+    	this.extendedTicks = access.getInteger("extendedTicks");
+    	this.spinup = access.getInteger("spinup");
+    	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
+    	this.smooshingMeta = access.getInteger("smooshingMeta");
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	this.steam = access.getInteger("steam");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound access)
+    {
+        super.writeToNBT(access);
+        access.setInteger("spinup", spinup);
+        access.setFloat("extendedLength", extendedLength);
+        access.setInteger("extendedTicks", extendedTicks);
+        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("smooshingMeta", smooshingMeta);
+        access.setInteger("steam", steam);
+    }
+	
+	@Override
 	public Packet getDescriptionPacket()
 	{
     	super.getDescriptionPacket();
@@ -41,6 +69,8 @@ public class TileEntitySmasher extends TileEntity {
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
+        access.setInteger("steam", steam);
+
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	
@@ -108,9 +138,21 @@ public class TileEntitySmasher extends TileEntity {
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	this.steam = access.getInteger("steam");
+
     }
 	
 	public void updateEntity(){
+		ForgeDirection[] directions = new ForgeDirection[5];
+		int i = 0;
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (direction != myDir() && direction != ForgeDirection.UP) {
+				directions[i] = direction;
+				i++;
+			}
+		}
+		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,directions);
+		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
 		int[] target = getTarget(1);
 		
 		int x = target[0], y = yCoord, z = target[1];
@@ -125,8 +167,9 @@ public class TileEntitySmasher extends TileEntity {
 			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.break", 0.5F, (float) (0.75F+(Math.random()*0.1F)));
 		}
 		if (extendedTicks > 0 && extendedTicks < 6) {
-			
-			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+			if (smooshingBlock != null && smooshingBlock.stepSound != null) {
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+			}
 		}
 		
 		//Remote == client, might as well not run on server
@@ -134,7 +177,7 @@ public class TileEntitySmasher extends TileEntity {
 		//Flag does nothing
 		decodeAndCreateParticles(1);
 		//handle state changes
-		if (this.hasBlockUpdate && this.hasPartner()){
+		if (this.hasBlockUpdate && this.hasPartner() && this.steam > 100){
 			if (this.shouldStop){
 				System.out.println("shouldStop");
 				this.spinup = 0;
@@ -149,6 +192,7 @@ public class TileEntitySmasher extends TileEntity {
 			}
 			//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
 			if (this.hasSomethingToSmash() && !this.isActive){
+				this.steam -= 100;
 				this.isActive = true;
 				this.isBreaking = true;
 			}
@@ -295,7 +339,7 @@ public class TileEntitySmasher extends TileEntity {
 		int[] target = getTarget(2);
 		int x = target[0], y=yCoord, z=target[1], opposite=target[2];
 		
-		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher && worldObj.getBlockMetadata(x, y, z) == opposite){
+		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).steam > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
 			System.out.println("I have a partner!");
 			return true;
 		}
@@ -325,6 +369,64 @@ public class TileEntitySmasher extends TileEntity {
 	
 	public boolean hasUpdate(){
 		return hasBlockUpdate;
+	}
+
+
+	@Override
+	public float getPressure() {
+		return this.steam/1000.0F;
+	}
+
+	@Override
+	public boolean canInsert(ForgeDirection face) {
+		return face != myDir() && face != ForgeDirection.UP;
+	}
+
+	@Override
+	public int getCapacity() {
+		return 1000;
+	}
+
+	@Override
+	public int getSteam() {
+		return this.steam;
+	}
+
+	@Override
+	public void insertSteam(int amount, ForgeDirection face) {
+		this.steam+=amount;
+	}
+
+	@Override
+	public void decrSteam(int i) {
+		this.steam -= i;
+	}
+
+
+	@Override
+	public boolean doesConnect(ForgeDirection face) {
+		return face != myDir() && face != ForgeDirection.UP;
+	}
+
+
+	@Override
+	public boolean acceptsGauge(ForgeDirection face) {
+		return face != myDir();
+	}
+	
+	public ForgeDirection myDir() {
+		int meta = worldObj.getBlockMetadata(xCoord,yCoord, zCoord);
+		switch (meta) {
+		case 2:
+			return ForgeDirection.NORTH;
+		case 3:
+			return ForgeDirection.SOUTH;
+		case 4:
+			return ForgeDirection.WEST;
+		case 5:
+			return ForgeDirection.EAST;
+		}
+		return ForgeDirection.NORTH;
 	}
 
 }
