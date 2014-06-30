@@ -53,8 +53,7 @@ import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
-@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = "1.0.0")
-
+@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = "1.0.0", dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
 public class Steamcraft {
 	
     @Instance("Steamcraft")
