@@ -226,6 +226,8 @@ public class TileEntitySmasher extends TileEntity {
 			
 			//Mark for sync
 			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		} else if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy && getBlockMetadata() % 2 == 0){
+			worldObj.setBlockToAir(x, y, z);
 		}
 	
 	}
