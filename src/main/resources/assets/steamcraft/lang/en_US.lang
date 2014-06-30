@@ -52,6 +52,8 @@ research.Brass.name=Brass
 research.Brass.0=I have created a new alloy that looks promising. Three parts copper and one part zinc creates brass, a shiny gold-like alloy.<br>Brass seems to resist corrosion, something that should prove useful.
 
 category.SteamPower.name=Steam Power
+category.SteamPower2.name=Steam Power
+
 research.Boiler.name=Boiler
 research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
 research.Tank.name=Tanks
@@ -74,7 +76,7 @@ research.Hammer.1=Right clicking the hammer will open its interface, where I can
 research.Screw.name=Archimedes Screw
 research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
 research.Smasher.name=Rock Smasher
-research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost during smelting. If I place two of these one block apart, facing each other, and supply steam, they will automatically break blocks placed between them, though some are too hard to break.
+research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
 
 
 category.Exosuit.name=Exosuit

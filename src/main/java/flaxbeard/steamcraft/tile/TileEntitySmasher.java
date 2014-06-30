@@ -117,7 +117,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 				default: break;
 				}
 				worldObj.spawnParticle("smoke", xCoord+0.5D+xO, y+1.1D, zCoord+0.5D+zO, xV, 0.05F, zV);
-				System.out.println("STEAM!");
+			//	System.out.println("STEAM!");
 				
 				
 			//}
@@ -179,7 +179,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 		//handle state changes
 		if (this.hasBlockUpdate && this.hasPartner() && this.steam > 100){
 			if (this.shouldStop){
-				System.out.println("shouldStop");
+				//System.out.println("shouldStop");
 				this.spinup = 0;
 				this.extendedLength = 0;
 				this.extendedTicks = 0;
@@ -188,7 +188,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 				this.isBreaking = false;
 				return;
 			} else {
-				System.out.println("shouldn'tStop");
+				//System.out.println("shouldn'tStop");
 			}
 			//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
 			if (this.hasSomethingToSmash() && !this.isActive){
@@ -218,20 +218,20 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 							if (this.getBlockMetadata() % 2 == 0)
 								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 						} else {
-							System.out.println("No block.");
+							//System.out.println("No block.");
 							if (this.hasPartner()){
-								System.out.println("I have a partner");
+								//System.out.println("I have a partner");
 								int[] pc = getTarget(2);
 								TileEntitySmasher partner =  (TileEntitySmasher) worldObj.getTileEntity(pc[0], yCoord, pc[1]);
-								System.out.println("partner.spinup: "+partner.spinup);
+							//	System.out.println("partner.spinup: "+partner.spinup);
 								if (partner.spinup < 41){
-									System.out.println("No block and partner hasn't updated. I should stop.");
+									//System.out.println("No block and partner hasn't updated. I should stop.");
 									this.shouldStop = true;
 								}
 								if (partner.spinup >= 41){
-									System.out.println("Partner has updated.");
+									//System.out.println("Partner has updated.");
 									if (partner.shouldStop){
-										System.out.println("Partner is stopping. I should stop too.");
+									//	System.out.println("Partner is stopping. I should stop too.");
 										this.shouldStop = true;
 									}
 								}
@@ -291,11 +291,11 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 			}
 			
 			//Mark for sync
-			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		} else if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy && getBlockMetadata() % 2 == 0){
 			worldObj.setBlockToAir(x, y, z);
 		}
-	
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 	}
 	
 	private void spawnItems(int x, int y, int z){
@@ -324,23 +324,23 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 		//System.out.println("Can I smash anything?");
 		int[] target = getTarget(1);
 		int x = target[0], y=yCoord, z=target[1];
-		if (!worldObj.isAirBlock(x, y, z)){
-			System.out.println("Maybe?");
+		if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null){
+			//System.out.println("Maybe?");
 			return true;
 		} else {
-			System.out.println("No =( " + x + ", " + y + ", " + z);
+			//System.out.println("No =( " + x + ", " + y + ", " + z);
 			return false;
 		}
 		
 	}
 
 	public boolean hasPartner(){
-		System.out.println("Do I have a partner?");
+	//	System.out.println("Do I have a partner?");
 		int[] target = getTarget(2);
 		int x = target[0], y=yCoord, z=target[1], opposite=target[2];
 		
 		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).steam > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
-			System.out.println("I have a partner!");
+		//	System.out.println("I have a partner!");
 			return true;
 		}
 		
