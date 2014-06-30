@@ -29,6 +29,7 @@ import flaxbeard.steamcraft.client.render.TileEntityCrucibleRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityItemMortarRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityMoldRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityPumpRenderer;
+import flaxbeard.steamcraft.client.render.TileEntitySmasherRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamChargerRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamGaugeRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamHammerRenderer;
@@ -42,6 +43,7 @@ import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
+import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
@@ -87,6 +89,10 @@ public class ClientProxy extends CommonProxy
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.pump), new ItemTESRRenderer((IInventoryTESR) renderPump, new TileEntityPump()));
     	
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValvePipe.class, new TileEntityValvePipeRenderer());
+    	
+    	TileEntitySpecialRenderer renderSmasher = new TileEntitySmasherRenderer();
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmasher.class, new TileEntitySmasherRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.smasher), new ItemTESRRenderer((IInventoryTESR) renderSmasher, new TileEntitySmasher()));
 
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamDrill, new ItemSteamToolRenderer(0));
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamAxe, new ItemSteamToolRenderer(1));

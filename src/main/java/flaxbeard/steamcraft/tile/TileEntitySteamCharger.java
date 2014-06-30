@@ -55,6 +55,12 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("steam", steam);
+        if (this.inventory[0] != null)
+        {
+	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	        this.inventory[0].writeToNBT(nbttagcompound1);
+	        access.setTag("inventory", nbttagcompound1);
+        }
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -65,6 +71,14 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.steam = access.getInteger("steam");
+        if (access.hasKey("inventory"))
+        {
+        	 this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
+        }
+        else
+        {
+        	this.inventory[0] = null;
+        }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	

@@ -8,6 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -29,6 +30,9 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
@@ -36,6 +40,7 @@ import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
+import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
@@ -48,8 +53,7 @@ import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
-@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = "1.0.0")
-
+@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = "1.0.0", dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
 public class Steamcraft {
 	
     @Instance("Steamcraft")
@@ -109,6 +113,8 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
 		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
 		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
+		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
+
 
 	}
 	
@@ -131,7 +137,8 @@ public class Steamcraft {
 
 
 		proxy.registerRenderers();
-		
+		SteamcraftRecipes.registerRecipes();
+
         FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
 	}
 	
@@ -139,8 +146,15 @@ public class Steamcraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
-		SteamcraftRecipes.registerRecipes();
+		if (Loader.isModLoaded("Thaumcraft")) {
+			ThaumcraftIntegration.addThaumiumLiquid();
+		}
+		if (Loader.isModLoaded("Botania")) {
+			BotaniaIntegration.addItems();
+		}
 		SteamcraftBook.registerBookResearch();
+		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
+		iso.addSmelting();
 	}
 
 

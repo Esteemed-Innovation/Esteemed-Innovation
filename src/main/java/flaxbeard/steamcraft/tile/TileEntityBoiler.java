@@ -195,9 +195,13 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
                 if (this.furnaceCookTime > 0)
                 {
+                	int i = 0;
+                	while (i<5 && this.canSmelt()) {
+	                    this.steam+=1;
+	                    this.myTank.drain(1, true);
+	                    i++;
+                	}
                     this.furnaceCookTime = 0;
-                    this.steam+=1;
-                    this.myTank.drain(10, true);
                     flag1 = true;
                 }
             }

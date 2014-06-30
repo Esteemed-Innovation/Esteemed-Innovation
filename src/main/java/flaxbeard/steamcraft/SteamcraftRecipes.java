@@ -5,15 +5,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
-import flaxbeard.steamcraft.integration.TinkersIntegration;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class SteamcraftRecipes {
     
@@ -42,12 +39,7 @@ public class SteamcraftRecipes {
 		liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,4), new ItemStack(SteamcraftItems.steamcraftNugget,1,3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4),242,191,66);
 		SteamcraftRegistry.liquids.add(liquidBrass);
 		
-		if (Loader.isModLoaded("Thaumcraft")) {
-			ThaumcraftIntegration.addThaumiumLiquid();
-		}
-		if (Loader.isModLoaded("Botania")) {
-			BotaniaIntegration.addItems();
-		}
+
 //		if (Loader.isModLoaded("TConstruct")) {
 //			System.out.println("INTEGRATION FUCK YEAH");
 //			TinkersIntegration.addIngotRecipes();
@@ -80,7 +72,7 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltTool(Items.iron_boots, liquidIron, 36);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_chestplate, liquidIron, 81);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_helmet, liquidIron, 45);
-		SteamcraftRegistry.registerSmeltTool(Items.iron_leggings, liquidIron, 63);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_leggings, liquidIron, 63);	
 		
 		SteamcraftRegistry.registerSmeltTool(Items.golden_sword, liquidGold, 18);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_pickaxe, liquidGold, 27);
@@ -91,6 +83,16 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltTool(Items.golden_chestplate, liquidGold, 81);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_helmet, liquidGold, 45);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_leggings, liquidGold, 63);
+		
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.sword("Brass"), liquidBrass, 18);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.pick("Brass"), liquidBrass, 27);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.axe("Brass"), liquidBrass, 27);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.hoe("Brass"), liquidBrass, 18);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.shovel("Brass"), liquidBrass, 9);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.feet("Brass"), liquidBrass, 36);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.chest("Brass"), liquidBrass, 81);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.helm("Brass"), liquidBrass, 45);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
 		
 		SteamcraftRegistry.registerDunkThing(Items.iron_ingot, liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot,1,3));
@@ -100,6 +102,7 @@ public class SteamcraftRecipes {
 	private static void registerSmeltingRecipes() {
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftItems.steamcraftIngot,1,0), 0.5F);
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,1), new ItemStack(SteamcraftItems.steamcraftIngot,1,1), 0.5F);
+
 	}
 	
 	private static void registerCraftingRecipes() {
@@ -243,6 +246,14 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
 		        'b',Items.leather_boots, 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'s', Items.slime_ball));
 		
+		BookRecipeRegistry.addRecipe("smasher1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "plateBrass"));
+		BookRecipeRegistry.addRecipe("smasher2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		        'i',"ingotIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "ingotBrass"));
+		BookRecipeRegistry.addRecipe("smasher3",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		        'i',"ingotIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "plateBrass"));
+		BookRecipeRegistry.addRecipe("smasher4",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "ingotBrass"));
 		
 		//5 8 7 4
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 0), "ingotCopper"));
@@ -259,6 +270,7 @@ public class SteamcraftRecipes {
 		        'x', "nuggetIron"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), "xxx", "xxx", "xxx", 
 		        'x', "nuggetBrass"));
-
+		
+		
 	}
 }
