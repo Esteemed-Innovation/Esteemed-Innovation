@@ -56,6 +56,8 @@ public class ItemSmashedOre extends Item {
 		id++;
 		if (OreDictionary.getOres(oreDict).size() > 0) {
 			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreDict).get(0));
+			System.out.println(result == null ? "NO RESULT" : result.toString());
+
 			GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,id), result, 0.5F);
 		}
 		return new MutablePair<String, MutablePair<IIcon, String>>(oreDict, new MutablePair<IIcon, String>(icon, uName));

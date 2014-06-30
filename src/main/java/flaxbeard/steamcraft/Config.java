@@ -12,6 +12,7 @@ public class Config {
 	
 	public static int mortarRadius;
 	public static boolean expensiveMusketRecipes;
+	public static int chance;
 	
 	public static void load(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -21,6 +22,7 @@ public class Config {
 		genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
 		expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
 		mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
+		chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();
 		passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
 
