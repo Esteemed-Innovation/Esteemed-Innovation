@@ -5,15 +5,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
-import flaxbeard.steamcraft.integration.TinkersIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class SteamcraftRecipes {
@@ -43,12 +39,7 @@ public class SteamcraftRecipes {
 		liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,4), new ItemStack(SteamcraftItems.steamcraftNugget,1,3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4),242,191,66);
 		SteamcraftRegistry.liquids.add(liquidBrass);
 		
-		if (Loader.isModLoaded("Thaumcraft")) {
-			ThaumcraftIntegration.addThaumiumLiquid();
-		}
-		if (Loader.isModLoaded("Botania")) {
-			BotaniaIntegration.addItems();
-		}
+
 //		if (Loader.isModLoaded("TConstruct")) {
 //			System.out.println("INTEGRATION FUCK YEAH");
 //			TinkersIntegration.addIngotRecipes();
