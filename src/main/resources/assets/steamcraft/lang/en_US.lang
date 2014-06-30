@@ -54,6 +54,8 @@ research.GildedGold.name=Gilded Iron
 research.GildedGold.0=I have found a way to combine the sturdy composition of iron with the magical capabilities of gold: gilding. I can coat iron ingots and tools with gold to combine their abilities.
 research.GildedGold.1=Simply right clicking on a crucible containing gold with an iron ingot will use up one nugget's worth of gold, leaving me with ingots that encompass the strength of iron and enchantability of gold.
 category.SteamPower.name=Steam Power
+category.SteamPower2.name=Steam Power
+
 research.Boiler.name=Boiler
 research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
 research.Tank.name=Tanks
@@ -75,6 +77,9 @@ research.Hammer.0=I've created an interesting invention - a steam hammer - that 
 research.Hammer.1=Right clicking the hammer will open its interface, where I can set up what I want the hammer to do. After I set up the action I want done, I simply insert steam and wait for the repairs or renaming to finish.
 research.Screw.name=Archimedes Screw
 research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
+research.Smasher.name=Rock Smasher
+research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
+
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
@@ -132,6 +137,20 @@ item.steamcraft:nugget.1.name=Zinc Nugget
 item.steamcraft:nugget.2.name=Iron Nugget
 item.steamcraft:nugget.3.name=Brass Nugget
 
+item.steamcraft:smashedOre.Iron.name=Smashed Iron Ore
+item.steamcraft:smashedOre.Gold.name=Smashed Gold Ore
+item.steamcraft:smashedOre.Copper.name=Smashed Copper Ore
+item.steamcraft:smashedOre.Zinc.name=Smashed Zinc Ore
+item.steamcraft:smashedOre.Tin.name=Smashed Tin Ore
+item.steamcraft:smashedOre.Nickel.name=Smashed Nickel Ore
+item.steamcraft:smashedOre.Silver.name=Smashed Silver Ore
+item.steamcraft:smashedOre.Lead.name=Smashed Lead Ore
+item.steamcraft:smashedOre.Aluminum.name=Smashed Aluminum Ore
+item.steamcraft:smashedOre.Osmium.name=Smashed Osmium Ore
+item.steamcraft:smashedOre.Cobalt.name=Smashed Cobalt Ore
+item.steamcraft:smashedOre.Ardite.name=Smashed Ardite Ore
+item.steamcraft:smashedOre.Cinnabar.name=Smashed Cinnabar Ore
+
 item.steamcraft:crafting.0.name=Brass Piston
 item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
@@ -151,11 +170,21 @@ item.steamcraft:nuggetMold.name=Nugget Mold
 item.steamcraft:plateMold.name=Plate Mold
 item.steamcraft:blankMold.name=Blank Mold
 
+item.steamcraft:helmGildedGold.name=Gilded Iron Helmet
+item.steamcraft:chestGildedGold.name=Gilded Iron Chestplate
+item.steamcraft:legsGildedGold.name=Gilded Iron Leggings
+item.steamcraft:feetGildedGold.name=Gilded Iron Boots
+
 item.steamcraft:pickGildedGold.name=Gilded Iron Pickaxe
 item.steamcraft:axeGildedGold.name=Gilded Iron Axe
 item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
 item.steamcraft:hoeGildedGold.name=Gilded Iron Hoe
 item.steamcraft:swordGildedGold.name=Gilded Iron Sword
+
+item.steamcraft:helmBrass.name=Brass Helmet
+item.steamcraft:chestBrass.name=Brass Chestplate
+item.steamcraft:legsBrass.name=Brass Leggings
+item.steamcraft:feetBrass.name=Brass Boots
 
 item.steamcraft:pickBrass.name=Brass Pickaxe
 item.steamcraft:axeBrass.name=Brass Axe
@@ -200,5 +229,5 @@ tile.steamcraft:meter.name=Steam Gauge
 tile.steamcraft:hammer.name=Steam Hammer
 tile.steamcraft:itemMortar.name=Item Mortar
 tile.steamcraft:pump.name=Archimedes Screw
-
+tile.steamcraft:smasher.name=Rock Smasher
 
