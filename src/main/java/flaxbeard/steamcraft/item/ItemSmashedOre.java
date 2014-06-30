@@ -42,6 +42,8 @@ public class ItemSmashedOre extends Item {
 		oreTypes.add(getPair("oreOsmium", null, "Osmium"));
 		oreTypes.add(getPair("oreCobalt", null, "Cobalt"));
 		oreTypes.add(getPair("oreArdite", null, "Ardite"));
+		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar"));
+
 		
 	}
 	
