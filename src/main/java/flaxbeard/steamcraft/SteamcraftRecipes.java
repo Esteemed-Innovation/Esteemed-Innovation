@@ -102,8 +102,7 @@ public class SteamcraftRecipes {
 	private static void registerSmeltingRecipes() {
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftItems.steamcraftIngot,1,0), 0.5F);
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,1), new ItemStack(SteamcraftItems.steamcraftIngot,1,1), 0.5F);
-		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
-		iso.addSmelting();
+
 	}
 	
 	private static void registerCraftingRecipes() {

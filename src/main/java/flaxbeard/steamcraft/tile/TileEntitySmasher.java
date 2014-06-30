@@ -86,6 +86,10 @@ public class TileEntitySmasher extends TileEntity {
 				default: break;
 				}
 				worldObj.spawnParticle("smoke", xCoord+0.5D+xO, y+1.1D, zCoord+0.5D+zO, xV, 0.05F, zV);
+				System.out.println("STEAM!");
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+1F, this.zCoord+0.5F, "steamcraft:leaking", 1.0F, 0.9F);
+				
+				
 			//}
 			}
 		}
@@ -212,6 +216,7 @@ public class TileEntitySmasher extends TileEntity {
 				if (this.extendedLength > 0.0F){
 					this.extendedLength -= 0.025F;
 					this.extendedTicks++;
+					
 					//System.out.println("Retracting: "+this.extendedLength);
 					if (this.extendedLength < 0F) this.extendedLength = 0F;
 				} else {
