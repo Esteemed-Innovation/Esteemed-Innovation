@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,7 +88,6 @@ public class TileEntitySmasher extends TileEntity {
 				}
 				worldObj.spawnParticle("smoke", xCoord+0.5D+xO, y+1.1D, zCoord+0.5D+zO, xV, 0.05F, zV);
 				System.out.println("STEAM!");
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+1F, this.zCoord+0.5F, "steamcraft:leaking", 1.0F, 0.9F);
 				
 				
 			//}
@@ -112,7 +112,23 @@ public class TileEntitySmasher extends TileEntity {
 	
 	public void updateEntity(){
 		int[] target = getTarget(1);
+		
 		int x = target[0], y = yCoord, z = target[1];
+		if (this.spinup == 1) {
+			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+		}
+		if (extendedTicks > 15) {
+			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+		}
+		if (extendedTicks == 5) {
+			
+			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.break", 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+		}
+		if (extendedTicks > 0 && extendedTicks < 6) {
+			
+			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+		}
+		
 		//Remote == client, might as well not run on server
 		
 		//Flag does nothing
