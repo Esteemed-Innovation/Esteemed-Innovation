@@ -246,13 +246,13 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
 		        'b',Items.leather_boots, 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'s', Items.slime_ball));
 		
-		BookRecipeRegistry.addRecipe("smasher1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		BookRecipeRegistry.addRecipe("smasher1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",
 		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "plateBrass"));
-		BookRecipeRegistry.addRecipe("smasher2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		BookRecipeRegistry.addRecipe("smasher2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",
 		        'i',"ingotIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "ingotBrass"));
-		BookRecipeRegistry.addRecipe("smasher3",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		BookRecipeRegistry.addRecipe("smasher3",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",
 		        'i',"ingotIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "plateBrass"));
-		BookRecipeRegistry.addRecipe("smasher4",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "ipb", "ipb", "ipb",
+		BookRecipeRegistry.addRecipe("smasher4",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",
 		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "ingotBrass"));
 		
 		//5 8 7 4
