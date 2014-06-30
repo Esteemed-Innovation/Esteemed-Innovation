@@ -10,7 +10,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.Steamcraft;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
@@ -38,10 +39,48 @@ public class TileEntitySmasher extends TileEntity {
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         
+        access.setInteger("doParticleEffects", encodeParticles());
+        
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
+	
+	
+	private int encodeParticles(){
+		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
+		if (!worldObj.isRemote){
+			if (extendedTicks==3) smash = 1;
+			
+			//int smoke1 = (extendedTicks == 3) ? (1 << 1) : 0;
+			//int smoke2 = (extendedTicks >= 8) && (extendedTicks <= 16) && ((extendedTicks % 4) == 0) ? (1  << 2): 0;
+			//int smoke3 =  (extendedTicks == 6) ? (1 << 3) : 0;
+			
+		}
+		
+		
+		return smash + smoke1 + smoke2 + smoke3;
+	}
 
+	private void decodeAndCreateParticles(int flags){
+		if (worldObj.isRemote){
+			boolean smash = (flags & 1) == 1; // 0b0001
+			boolean smoke1 = ((flags & 2) >> 1 ) == 1; // 0b0010
+			boolean smoke2 = ((flags & 4) >> 2) == 1; // 0b0100
+			boolean smoke3 = ((flags & 8) >> 3) == 1; // 0b1000
+			int[] tgt = getTarget(1);
+			int x= tgt[0], y = yCoord, z=tgt[1];
+
+			if (smash){
+				System.out.println("smash!");
+				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F);
+				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/6.0F);
+				worldObj.spawnParticle("smoke", x+0.5D, y+1D, z+0.5D, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/12.0F);
+			}
+		}
+		
+	}
+	
+	
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
@@ -52,7 +91,7 @@ public class TileEntitySmasher extends TileEntity {
     	this.spinup = access.getInteger("spinup");
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
-
+    	decodeAndCreateParticles(access.getInteger("doParticleEffects"));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -159,7 +198,7 @@ public class TileEntitySmasher extends TileEntity {
 	}
 	
 	private boolean hasSomethingToSmash() {
-		System.out.println("Can I smash anything?");
+		//System.out.println("Can I smash anything?");
 		int[] target = getTarget(1);
 		int x = target[0], y=yCoord, z=target[1];
 		if (!worldObj.isAirBlock(x, y, z)){
