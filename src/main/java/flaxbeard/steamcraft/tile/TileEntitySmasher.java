@@ -39,45 +39,42 @@ public class TileEntitySmasher extends TileEntity {
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
-        
-        access.setInteger("doParticleEffects", encodeParticles());
-        
-
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	
 	
-	private int encodeParticles(){
-		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
-		if (!worldObj.isRemote){
-			if (extendedTicks==3) smash = 1;
-			if (extendedTicks >= 8 && extendedTicks <= 16 && (extendedTicks % 4) == 0) smoke1 = 2;
-			//int smoke1 = (extendedTicks == 3) ? (1 << 1) : 0;
-			//int smoke2 = (extendedTicks >= 8) && (extendedTicks <= 16) && ((extendedTicks % 4) == 0) ? (1  << 2): 0;
-			//int smoke3 =  (extendedTicks == 6) ? (1 << 3) : 0;
-			
-		}
-		
-		
-		return smash + smoke1 + smoke2 + smoke3;
-	}
+//	private int encodeParticles(){
+//		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
+//		if (!worldObj.isRemote){
+//			if (extendedTicks==3) smash = 1;
+//			if (extendedTicks >= 8 && extendedTicks <= 16 && (extendedTicks % 4) == 0) smoke1 = 2;
+//			//int smoke1 = (extendedTicks == 3) ? (1 << 1) : 0;
+//			//int smoke2 = (extendedTicks >= 8) && (extendedTicks <= 16) && ((extendedTicks % 4) == 0) ? (1  << 2): 0;
+//			//int smoke3 =  (extendedTicks == 6) ? (1 << 3) : 0;
+//			
+//		}
+//		
+//		
+//		return smash + smoke1 + smoke2 + smoke3;
+//	}
 
 	private void decodeAndCreateParticles(int flags){
 		if (worldObj.isRemote){
-			boolean smash = (flags & 1) == 1; // 0b0001
-			boolean smoke1 = ((flags & 2) >> 1 ) == 1; // 0b0010
-			boolean smoke2 = ((flags & 4) >> 2) == 1; // 0b0100
-			boolean smoke3 = ((flags & 8) >> 3) == 1; // 0b1000
+//			boolean smash = (flags & 1) == 1; // 0b0001
+//			boolean smoke1 = ((flags & 2) >> 1 ) == 1; // 0b0010
+//			boolean smoke2 = ((flags & 4) >> 2) == 1; // 0b0100
+//			boolean smoke3 = ((flags & 8) >> 3) == 1; // 0b1000
 			int[] tgt = getTarget(1);
 			int x= tgt[0], y = yCoord, z=tgt[1];
-
-			if (smash){
-				System.out.println((float)(Math.random()-0.5F)/3.0F);
-				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F);
-				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/3.0F);
-				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/32.0F, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/3.0F);
-			}
-			if (smoke1){
+//
+//			if (smash){
+//				System.out.println((float)(Math.random()-0.5F)/3.0F);
+//				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/3.0F);
+//				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/3.0F, (float)(Math.random()-0.5F)/6.0F, (float)(Math.random()-0.5F)/3.0F);
+//				//worldObj.spawnParticle("smoke", x+0.5D, y+0.5D, z+0.5D, (float)(Math.random()-0.5F)/32.0F, (float)(Math.random()-0.5F)/12.0F, (float)(Math.random()-0.5F)/3.0F);
+//			}
+//			if (smoke1){
+			if (extendedTicks > 15) {
 				float xV = 0F, zV = 0F;
 				switch (getBlockMetadata()){
 				case 2: zV = 0.05F; break;
@@ -87,6 +84,7 @@ public class TileEntitySmasher extends TileEntity {
 				default: break;
 				}
 				worldObj.spawnParticle("smoke", xCoord+0.5D, y+1.1D, zCoord+0.5D, xV, 0.05F, zV);
+			//}
 			}
 		}
 		
@@ -103,7 +101,6 @@ public class TileEntitySmasher extends TileEntity {
     	this.spinup = access.getInteger("spinup");
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
-    	decodeAndCreateParticles(access.getInteger("doParticleEffects"));
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -112,7 +109,8 @@ public class TileEntitySmasher extends TileEntity {
 		int x = target[0], y = yCoord, z = target[1];
 		//Remote == client, might as well not run on server
 		
-		
+		//Flag does nothing
+		decodeAndCreateParticles(1);
 		//handle state changes
 		if (this.hasBlockUpdate && this.hasPartner()){
 			if (this.shouldStop){
@@ -213,13 +211,13 @@ public class TileEntitySmasher extends TileEntity {
 	}
 	
 	private void spawnItems(int x, int y, int z){
-		int id[] = OreDictionary.getOreIDs(this.smooshedStack);
+		int id = OreDictionary.getOreID(this.smooshedStack);
 		
-		if (id.length > 0 && ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id[0]))) {
+		if ( ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id))) {
 			//Chance you'll get double
 			boolean doubleItems = worldObj.rand.nextInt(3) == 0;
-			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id[0])));
-			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.5F, z+0.5F, items);
+			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
+			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.1F, z+0.5F, items);
 			this.worldObj.spawnEntityInWorld(entityItem);
 			this.smooshedStack = null;
 		}
