@@ -2,6 +2,9 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,10 +33,10 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 			this.progress++;
 			this.steam -= 200;
 		}
-		if (progress > 0 && progress < 80) {
+		if (progress > 0 && progress < 110) {
 			progress++;
 		}
-		if (progress >= 80) {
+		if (progress >= 110) {
 			progress = 0;
 	        this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.explode", 8.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 //	        List players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord-4.5F, yCoord-4.5F, zCoord-4.5F, xCoord+5.5F, yCoord+5.5F, zCoord+5.5F));
@@ -50,9 +53,31 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 			        boolean hasTarget = false;
 			        int i = 0;
 			        ChunkCoordinates target = new ChunkCoordinates(xCoord,yCoord-10,zCoord);
-			        ForgeDirection[] moveDirs = ForgeDirection.values();
-			        ForgeDirection[] moveDirsNotUp = dirs;
-			        while (!hasTarget && i < 100) {
+			        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+			        ForgeDirection[] moveDirs;
+			        ForgeDirection[] moveDirsNotUp;
+			        ForgeDirection[] forbiddenDirs;
+					if (meta == 1 || meta == 3) {
+						ForgeDirection[] moveDirs2 = { ForgeDirection.DOWN, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.WEST,ForgeDirection.WEST,ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST };
+						ForgeDirection[] moveDirsNotUp2 = { ForgeDirection.DOWN, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.EAST, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.WEST,ForgeDirection.WEST,ForgeDirection.WEST ,ForgeDirection.WEST ,ForgeDirection.WEST };
+						ForgeDirection[] forbiddenDirs2 = { ForgeDirection.NORTH, ForgeDirection.SOUTH };
+
+						moveDirs = moveDirs2;
+						moveDirsNotUp = moveDirsNotUp2;
+						forbiddenDirs = forbiddenDirs2;
+					}
+					else
+					{
+						ForgeDirection[] moveDirs2 = { ForgeDirection.DOWN, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH };
+						ForgeDirection[] moveDirsNotUp2 = { ForgeDirection.DOWN, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH };
+						ForgeDirection[] forbiddenDirs2 = { ForgeDirection.EAST, ForgeDirection.WEST };
+
+						moveDirs = moveDirs2;
+						moveDirsNotUp = moveDirsNotUp2;
+						forbiddenDirs = forbiddenDirs2;
+					}
+			      
+			        while (!hasTarget && i < 160) {
 			        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
 			        		hasTarget = true;
 			        	}
@@ -60,11 +85,18 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 			        	{
 			        		if (target.posY < yCoord-3) {
 			        			ForgeDirection direction = moveDirs[worldObj.rand.nextInt(moveDirs.length)];
+			        			if (this.worldObj.rand.nextInt(50) == 0) {
+				        			direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
+			        			}
 			        			target = new ChunkCoordinates(target.posX + direction.offsetX, target.posY + direction.offsetY, target.posZ + direction.offsetZ);
 			        		}
 			        		else
 			        		{
+			        			
 			        			ForgeDirection direction = moveDirsNotUp[worldObj.rand.nextInt(moveDirsNotUp.length)];
+			        			if (this.worldObj.rand.nextInt(50) == 0) {
+				        			direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
+			        			}
 			        			target = new ChunkCoordinates(target.posX + direction.offsetX, target.posY + direction.offsetY, target.posZ + direction.offsetZ);
 			        		}
 			        	}
@@ -83,6 +115,12 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
+	}
+	
+	
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+	        return AxisAlignedBB.getAABBPool().getAABB(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 5, this.zCoord + 1);
 	}
 
 	@Override
