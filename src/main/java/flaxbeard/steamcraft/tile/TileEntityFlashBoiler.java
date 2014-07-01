@@ -101,8 +101,8 @@ public class TileEntityFlashBoiler extends TileEntity {
 						
 						
 					} else if (getBlockMetadata() > 0){
-						//TODO: too many or not enough. Either way, invalid.
-
+						// too many or not enough. Either way, invalid.
+						//destroyMultiblock();
 						
 					}
 				}
@@ -147,7 +147,10 @@ public class TileEntityFlashBoiler extends TileEntity {
 					TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
 					fb.wasChecked();
 				}
-				count++;
+				if (! (worldObj.getBlockMetadata(x, y, z) > 0)){
+					count++;
+				}
+				
 			}
 			//System.out.println(x + ", " + y +", " +z);
 		}
@@ -214,5 +217,15 @@ public class TileEntityFlashBoiler extends TileEntity {
 	public void wasChecked(){
 		this.wasChecked = true;
 	}
-
+	
+	public TileEntityFlashBoiler getMasterTileEntity(){
+		int[][] cluster = getClusterCoords(getValidClusterFromMetadata());
+		int x = cluster[0][0], y=cluster[0][1], z=cluster[0][2];
+		TileEntityFlashBoiler boiler = null;
+		if (worldObj.getBlock(x, y, z)==SteamcraftBlocks.flashBoiler && worldObj.getBlockMetadata(x, y, z) > 0){
+			boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
+		}
+		
+		return boiler;
+	}
 }

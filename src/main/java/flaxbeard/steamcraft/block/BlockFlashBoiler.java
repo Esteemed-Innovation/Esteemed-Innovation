@@ -4,8 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
@@ -16,9 +18,7 @@ import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 // meta 0  : not in multiblock
 // meta 1-8: in multiblock, signifies which corner
 
-// getIcon doesn't get world object, so can't use TE to determine icon
-// Might have to do the other block for on status =\
-// looking into how connected textures work might help figure out a way around it.
+
 
 public class BlockFlashBoiler extends BlockContainer{
 	public IIcon otherIcon;
@@ -27,6 +27,7 @@ public class BlockFlashBoiler extends BlockContainer{
 	
 	public BlockFlashBoiler(){
 		super(Material.iron);
+		
 	}
 
 	@Override
@@ -60,10 +61,23 @@ public class BlockFlashBoiler extends BlockContainer{
 		this.blockIcon = p_149651_1_.registerIcon("steamcraft:testSide");
 		this.otherIcon = p_149651_1_.registerIcon("steamcraft:testFront");
 		this.specialIcon = p_149651_1_.registerIcon("steamcraft:testSpecial");
+		
 	}
 	
-	public IIcon getIcon(int side, int meta){
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float x1, float y1, float z1){
+		if (world.getBlockMetadata(x, y, z) > 0){
+			TileEntityFlashBoiler master = ((TileEntityFlashBoiler) world.getTileEntity(x, y, z)).getMasterTileEntity();
+			System.out.println("Master TE's meta: "+master.getBlockMetadata());
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side){
+		super.getIcon(block, x, y, z, side);
 		//System.out.println(meta);
+		int meta = block.getBlockMetadata(x, y, z); 
 		if (meta == 1){
 			return specialIcon;
 		} else if (meta == 0) {
