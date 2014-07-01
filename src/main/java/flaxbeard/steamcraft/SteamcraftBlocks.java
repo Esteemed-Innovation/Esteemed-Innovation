@@ -28,8 +28,10 @@ import flaxbeard.steamcraft.block.BlockSteamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.block.BlockThumper;
+import flaxbeard.steamcraft.block.BlockThumperDummy;
 import flaxbeard.steamcraft.block.BlockValvePipe;
 import flaxbeard.steamcraft.item.BlockTankItem;
+import flaxbeard.steamcraft.item.BlockThumperItem;
 
 public class SteamcraftBlocks {
 	public static Block steamcraftOre;
@@ -45,12 +47,14 @@ public class SteamcraftBlocks {
 	public static Block genocide;
 	public static Block blockBrass;
 	public static Block blockCopper;
+	public static Block blockZinc;
 	public static Block tank;
 	public static Block meter;
 	public static Block hammer;
 	public static Block conveyor;
 	public static Block itemMortar;
 	public static Block thumper;
+	public static Block thumperDummy;
 	
 	public static Block pump;
 	
@@ -75,6 +79,10 @@ public class SteamcraftBlocks {
 		blockBrass = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockBrass, "blockBrass");
 		OreDictionary.registerOre("blockBrass", blockBrass);
+		
+		blockZinc = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockZinc").setBlockTextureName("steamcraft:blockZinc").setHardness(5.0F).setResistance(10.0F);
+		GameRegistry.registerBlock(blockZinc, "blockZinc");
+		OreDictionary.registerOre("blockZinc", blockZinc);
 		
 		blockCopper = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockCopper").setBlockTextureName("steamcraft:blockCopper").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockCopper, "blockCopper");
@@ -128,7 +136,9 @@ public class SteamcraftBlocks {
 		GameRegistry.registerBlock(meter, "meter");
 		
 		thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
-		GameRegistry.registerBlock(thumper, "thumper");
+		GameRegistry.registerBlock(thumper, BlockThumperItem.class, "thumper");
+		thumperDummy = new BlockThumperDummy().setBlockName("steamcraft:thumperDummy").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(thumperDummy, "thumperDummy");
 
 
 //	

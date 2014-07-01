@@ -14,7 +14,7 @@ import flaxbeard.steamcraft.tile.TileEntityThumper;
 public class TileEntityThumperRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 	private static final ModelThumper model = new ModelThumper();
 
-	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/mortarItem.png");
+	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/thumper.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity var1, double var2, double var4,

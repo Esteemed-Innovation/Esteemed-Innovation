@@ -13,6 +13,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -140,10 +141,18 @@ public class BlockMold extends BlockContainer {
         return false;
     }
     
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
     {
     	setBlockBounds( 2*px,0.0F, 2*px, 1.0F-2*px, 1.0F-8*px, 1.0F-2*px);
     	super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
+    }
+    
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+    {
+    	return AxisAlignedBB.getBoundingBox( i+ 2*px,j +0.0F, k + 2*px, i + 1.0F-2*px, j + 1.0F-8*px,k +1.0F-2*px);
     }
 	
 	@Override
