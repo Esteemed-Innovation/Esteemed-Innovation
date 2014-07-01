@@ -60,7 +60,8 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addCategory("category.SteamPower2.name");
 
 		SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
-		
+		SteamcraftRegistry.addResearch("research.Thumper.name", "category.SteamPower2.name", new BookPageItem("research.Thumper.name","research.Thumper.0", new ItemStack(SteamcraftBlocks.thumper)),new BookPageText("research.Thumper.name","research.Thumper.1"), new BookPageCrafting("","thumper1","thumper2"));
+
 		SteamcraftRegistry.addCategory("category.Exosuit.name");
 		SteamcraftRegistry.addResearch("research.Exosuit.name","category.Exosuit.name",new BookPageItem("research.Exosuit.name","research.Exosuit.0", new ItemStack(SteamcraftItems.exoArmorHead), new ItemStack(SteamcraftItems.exoArmorBody), new ItemStack(SteamcraftItems.exoArmorLegs), new ItemStack(SteamcraftItems.exoArmorFeet)),
 				new BookPageText("research.Exosuit.name","research.Exosuit.1"),new BookPageCrafting("","engineering1","engineering2"),new BookPageCrafting("","exoHead"),new BookPageCrafting("","exoBody"),new BookPageCrafting("","exoLegs"),new BookPageCrafting("","exoFeet"));

@@ -79,7 +79,9 @@ research.Screw.name=Archimedes Screw
 research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
 research.Smasher.name=Rock Smasher
 research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
-
+research.Thumper.name=Thumper
+research.Thumper.0=I need to think bigger. I've wasted my time working on manipulating small things like moving water or smashing rock...<br>No. I need to think on a grander scale. This is where the thumper comes in.
+research.Thumper.1=The thumper is able to fracture the very earth itself, slowly eroding a ravine below it. This ravine won't be exposed to the surface, and the destroyed rock and ore will remain there, so I must find another way to collect the spoils.
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
@@ -211,7 +213,10 @@ item.steamcraft:steamedBeef.name=Steamed Beef
 item.steamcraft:steamedFish.name=Steamed Fish
 item.steamcraft:steamedPorkchop.name=Steamed Porkchop
 
-tile.steamcraft:blockBrass.name=Brass Block
+tile.steamcraft:blockBrass.name=Block of Brass
+tile.steamcraft:blockCopper.name=Block of Copper
+tile.steamcraft:blockZinc.name=Block of Zinc
+
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:crucible.name=Crucible
 tile.steamcraft:mold.name=Mold
@@ -230,4 +235,5 @@ tile.steamcraft:hammer.name=Steam Hammer
 tile.steamcraft:itemMortar.name=Item Mortar
 tile.steamcraft:pump.name=Archimedes Screw
 tile.steamcraft:smasher.name=Rock Smasher
+tile.steamcraft:thumper.name=Thumper
 
