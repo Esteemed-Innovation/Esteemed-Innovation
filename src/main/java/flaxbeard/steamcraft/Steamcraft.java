@@ -23,6 +23,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
@@ -37,6 +38,7 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
+import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
@@ -114,6 +116,8 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
 		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
 		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
+		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
+		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
 
 
 	}
