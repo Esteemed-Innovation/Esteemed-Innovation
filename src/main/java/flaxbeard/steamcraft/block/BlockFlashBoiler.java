@@ -1,5 +1,9 @@
 package flaxbeard.steamcraft.block;
 
+import java.util.Random;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -104,5 +108,96 @@ public class BlockFlashBoiler extends BlockContainer{
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random)
+    {
+		if (world.getBlockMetadata(x, y, z) < 5){
+			TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
+					
+					if (boiler.isBurning())
+			        {
+			            int front = boiler.getFront();
+			            float xOffset = (float)x + 0.5F;
+			            float yOffset = (float)y + 0.0F + random.nextFloat() * 6.0F / 12.0F;
+			            float zOffset = (float)z + 0.5F;
+			            float f3 = 0.52F;
+			            float f4 = getRandomFlameOffset(random);
+
+			            if (front == 4)
+			            {
+			                world.spawnParticle("smoke", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+//			                
+//			                world.spawnParticle("smoke", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+//			                world.spawnParticle("flame", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			            }
+			            else if (front == 5)
+			            {
+			                world.spawnParticle("smoke", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
+			            }
+			            else if (front == 2)
+			            {
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset - f3), 0.0D, 0.0D, 0.0D);
+			            }
+			            else if (front == 3)
+			            {
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                f4 = getRandomFlameOffset(random);
+			                
+			                world.spawnParticle("smoke", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			                world.spawnParticle("flame", (double)(xOffset + f4), (double)yOffset, (double)(zOffset + f3), 0.0D, 0.0D, 0.0D);
+			            }
+			        }
+		}
+		
+    }
+	
+	private float getRandomFlameOffset(Random random){
+		return random.nextFloat() * 0.8F - 0.4F;
+	}
 	
 }
