@@ -154,8 +154,12 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 			IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
 			if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
 				int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
-				this.myTank.drain(amnt, true);
-				progress = 0;
+				if (amnt > 0) {
+					this.myTank.drain(amnt, true);
+					if (myTank.getFluidAmount()  == 0) {
+						progress = 0;
+					}
+				}
 			}
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

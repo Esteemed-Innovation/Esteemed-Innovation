@@ -55,7 +55,8 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         access.setInteger("water",myTank.getFluidAmount());
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("CookTime", (short)this.furnaceCookTime);
-     
+        access.setShort("cIBT", (short)this.currentItemBurnTime);
+
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -68,6 +69,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     	this.steam = access.getInteger("steam");
     	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getInteger("water")));
     	this.furnaceBurnTime = access.getShort("BurnTime");
+    	this.currentItemBurnTime = access.getShort("cIBT");
       	this.furnaceCookTime = access.getShort("CookTime");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -92,6 +94,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
         this.furnaceBurnTime = par1NBTTagCompound.getShort("BurnTime");
         this.furnaceCookTime = par1NBTTagCompound.getShort("CookTime");
+        this.currentItemBurnTime = par1NBTTagCompound.getShort("cIBT");
 
         if (par1NBTTagCompound.hasKey("CustomName"))
         {
@@ -117,6 +120,8 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         par1NBTTagCompound.setShort("water",(short) myTank.getFluidAmount());
         par1NBTTagCompound.setShort("steam",(short) this.steam);
         par1NBTTagCompound.setShort("CookTime", (short)this.furnaceCookTime);
+        par1NBTTagCompound.setShort("cIBT", (short)this.currentItemBurnTime);
+
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
@@ -159,10 +164,12 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     	
     	boolean flag = this.furnaceBurnTime > 0;
         boolean flag1 = false;
-
+        int maxThisTick = 10;
         if (this.furnaceBurnTime > 0)
         {
-            --this.furnaceBurnTime;
+        	//maxThisTick = Math.min(furnaceBurnTime, 10);
+            this.furnaceBurnTime -= 1; //maxThisTick
+
         }
         
 
@@ -195,9 +202,14 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
                 if (this.furnaceCookTime > 0)
                 {
-                    this.furnaceCookTime = 0;
-                    this.steam+=1;
-                    this.myTank.drain(2, true);
+                	//int i = 0;
+                //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
+                		this.steam+=1;
+                		this.myTank.drain(2, true);
+                		///i++;
+                	//}
+            		this.furnaceCookTime = 0;
+
                     flag1 = true;
                 }
             }
