@@ -9,6 +9,7 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
+import flaxbeard.steamcraft.block.BlockFlashBoiler;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
@@ -35,6 +36,7 @@ public class SteamcraftBlocks {
 	public static Block crucible;
 	public static Block mold;
 	public static Block boiler;
+	public static Block flashBoiler;
 	public static Block boilerOn;
 	public static Block pipe;
 	public static Block valvePipe;
@@ -93,6 +95,9 @@ public class SteamcraftBlocks {
 		GameRegistry.registerBlock(boiler,"boiler");
 		boilerOn = new BlockBoiler(true).setBlockName("steamcraft:boiler").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(boilerOn, "boilerOn");
+		
+		flashBoiler = new BlockFlashBoiler().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:flashBoiler").setHardness(5.0f).setResistance(10.0F);
+		GameRegistry.registerBlock(flashBoiler, "flashBoiler");
 		
 		pipe = new BlockPipe().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pipe").setHardness(2.5F).setResistance(5.0F);
 		GameRegistry.registerBlock(pipe, "pipe");
