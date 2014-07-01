@@ -1,15 +1,21 @@
 package flaxbeard.steamcraft.block;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 
@@ -18,6 +24,23 @@ public class BlockThumper extends BlockContainer {
 	public BlockThumper() {
 		super(Material.iron);
 	}
+	
+	@Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
+		if (!(world.getBlock(x,y+1,z) == SteamcraftBlocks.thumperDummy)) {
+			if (!world.isRemote) {
+				this.dropBlockAsItem(world, x, y, z, 0, 0);
+			}
+            world.setBlockToAir(x, y, z);
+		}
+	}
+	
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k)
+    {
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 4.0F, 1.0F);
+    }
+
 	
 	@Override
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
@@ -41,6 +64,11 @@ public class BlockThumper extends BlockContainer {
     public boolean isOpaqueCube()
     {
         return false;
+    }
+    
+    public int quantityDropped(Random p_149745_1_)
+    {
+        return 0;
     }
 
 }
