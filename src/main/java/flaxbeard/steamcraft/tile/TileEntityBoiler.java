@@ -79,7 +79,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getTag("Items");
-        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
+        this.furnaceItemStacks = new ItemStack[2];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
