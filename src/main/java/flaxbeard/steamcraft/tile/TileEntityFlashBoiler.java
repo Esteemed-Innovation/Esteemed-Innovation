@@ -1,12 +1,18 @@
 package flaxbeard.steamcraft.tile;
 
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 
 public class TileEntityFlashBoiler extends TileEntity {
 	
-	private boolean wasChecked = false;
+	private int frontSide = -1;
+	
+	private boolean loaded = false;
 	
 	// ====================================================
 	//          All the possible configurations
@@ -79,45 +85,72 @@ public class TileEntityFlashBoiler extends TileEntity {
 		bbl, tbl, bbr, tbr, btl, ttl, btr, ttr
 	};
 	
-	public void checkMultiblock(boolean isBreaking) {
+	public void readFromNBT(NBTTagCompound access)
+    {
+        super.readFromNBT(access);
+        this.frontSide = access.getInteger("frontSide");
+    	
+        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound access)
+    {
+        super.writeToNBT(access);
+        access.setInteger("frontSide", this.frontSide);
+        
+    }
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("frontSide", this.frontSide);
+        
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	
+	@Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.frontSide = access.getInteger("frontSide");
+
+    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+	
+	public void checkMultiblock(boolean isBreaking, int frontSide) {
+		//System.out.println(frontSideIn);
 		int x = xCoord, y=yCoord, z=zCoord;
 		
-		//System.out.println("Checking multiblock");
+		//System.out.println("Checking multiblock; frontSide: "+this.frontSide);
 		
 		boolean isMultiblock = false;
 		boolean isTooManyBlocks = false;
 		
 		
 		if (!worldObj.isRemote){
-			if (!wasChecked){
-				if (!isBreaking){
+			if (!isBreaking){
+				//System.out.println(this.frontSide);
+				int[] validClusters = getValidClusters(); 
+				//System.out.println("valid configs found: " +validClusters.length);
+				
+				if (validClusters.length == 1){
 					
-					int[] validClusters = getValidClusters(); 
-					//System.out.println("valid configs found: " +validClusters.length);
+					updateMultiblock(validClusters[0], true, frontSide);
 					
-					if (validClusters.length == 1){
-						
-						updateMultiblock(validClusters[0], true);
-						
-						
-					} else if (getBlockMetadata() > 0){
-						// too many or not enough. Either way, invalid.
-						//destroyMultiblock();
-						
-					}
+					
 				}
-				this.wasChecked = false;
-			} else {
-				//clear checked flag
-				this.wasChecked = false;
 			}
-			
 		}
 		
 	}
 	
 	public void destroyMultiblock(){
-		updateMultiblock(this.getValidClusterFromMetadata(), false);
+		updateMultiblock(this.getValidClusterFromMetadata(), false, -1);
 	}
 	
 	private int getValidClusterFromMetadata(){
@@ -133,7 +166,7 @@ public class TileEntityFlashBoiler extends TileEntity {
 		case 7: validCluster = 5; break;
 		case 8: validCluster = 7; break;
 		}
-		//System.out.println("validCluster: "+validCluster);
+		
 		return validCluster;
 	}
 	
@@ -143,16 +176,13 @@ public class TileEntityFlashBoiler extends TileEntity {
 			int x = cluster[pos][0]+xCoord, y= cluster[pos][1]+yCoord, z=cluster[pos][2]+zCoord;
 			Block b = worldObj.getBlock(x,y,z);
 			if (b == SteamcraftBlocks.flashBoiler){
-				if (x != xCoord &&  y != yCoord && z  != zCoord){ // skip this one.
-					TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
-					fb.wasChecked();
-				}
+				TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
 				if (! (worldObj.getBlockMetadata(x, y, z) > 0)){
 					count++;
 				}
 				
 			}
-			//System.out.println(x + ", " + y +", " +z);
+			
 		}
 		
 		return count;
@@ -163,16 +193,13 @@ public class TileEntityFlashBoiler extends TileEntity {
 		int[] out;
 		int count = 0;
 		for (int clusterIndex = 0; clusterIndex< 8; clusterIndex++){
-			System.out.println("Checking cluster "+clusterIndex);
+			//System.out.println("Checking cluster "+clusterIndex);
 			boolean isValid = false;
 			if (checkCluster(validConfigs[clusterIndex])==8){
 				valid[count] = clusterIndex;
 				count++;
 				isValid = true;
 			}
-			String coords = "("+xCoord  +","+yCoord+","+zCoord+")";
-			//System.out.println("Block "+getBlockMetadata()+" at "+coords+" thinks this is valid? "+isValid);
-			//System.out.println("=================================");
 		}
 		out = new int[count];
 		for (int i = 0; i < count; i++){
@@ -190,7 +217,7 @@ public class TileEntityFlashBoiler extends TileEntity {
 		return out;
 	}
 	
-	private void updateMultiblock(int clusterIndex, boolean isMultiblock){
+	private void updateMultiblock(int clusterIndex, boolean isMultiblock, int frontSide){
 		int[][] cluster = getClusterCoords(clusterIndex);
 		for (int pos = 0; pos < 8; pos++){
 			int x = cluster[pos][0], y= cluster[pos][1],z= cluster[pos][2];
@@ -200,6 +227,8 @@ public class TileEntityFlashBoiler extends TileEntity {
 						isMultiblock ? pos+1 : 0, 
 						2
 					);
+				TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(cluster[pos][0], cluster[pos][1], cluster[pos][2]);
+				boiler.setFront(frontSide, false);
 			} else {
 				System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
 			}
@@ -214,10 +243,6 @@ public class TileEntityFlashBoiler extends TileEntity {
 		}
 	}
 	
-	public void wasChecked(){
-		this.wasChecked = true;
-	}
-	
 	public TileEntityFlashBoiler getMasterTileEntity(){
 		int[][] cluster = getClusterCoords(getValidClusterFromMetadata());
 		int x = cluster[0][0], y=cluster[0][1], z=cluster[0][2];
@@ -227,5 +252,25 @@ public class TileEntityFlashBoiler extends TileEntity {
 		}
 		
 		return boiler;
+	}
+
+	public void setFront(int frontSide, boolean print) {
+		if (print) System.out.println("Setting front side to "+frontSide);
+		if (!worldObj.isRemote)
+			this.frontSide = frontSide;
+	}
+	
+	public int getFront(){
+		return this.frontSide;
+	}
+	
+	public void updateEntity(){
+		String worldLoc = worldObj.isRemote? "Client: " : "Server: ";
+		//System.out.println(worldLoc + this.frontSide);
+		if (!loaded){
+			System.out.println("Loading up the block!");
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			this.loaded = true;
+		}
 	}
 }
