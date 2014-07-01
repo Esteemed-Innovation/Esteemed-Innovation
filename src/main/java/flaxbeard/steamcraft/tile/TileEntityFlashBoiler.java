@@ -35,7 +35,7 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.block.BlockBoiler;
 
-public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter{
+public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHandler,ISidedInventory,ISteamTransporter{
 	
 	private FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
 	public int steam;
@@ -47,6 +47,8 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
     private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
+    
+    private boolean waitOneTick = true;
     
 	private int frontSide = -1;
 	
@@ -151,7 +153,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
             this.field_145958_o = access.getString("CustomName");
         }
         
-        if (access.hasKey("water"))
+        if (access.hasKey("water") && this.getBlockMetadata() == 1)
         {
         	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getShort("water")));
         }
@@ -161,7 +163,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
         	this.steam = access.getShort("steam");
         }
     	
-        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	
     }
 
@@ -342,13 +344,6 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 		}
 	}
 	
-	private void printClusterCoords(int clusterIndex){
-		int[][] cluster = getClusterCoords(clusterIndex);
-		for (int pos = 0; pos < 8; pos++){
-			System.out.println(cluster[pos][0]+ ", " + cluster[pos][1] + ", " +cluster[pos][2]);
-		}
-	}
-	
 	public TileEntityFlashBoiler getMasterTileEntity(){
 		int[][] cluster = getClusterCoords(getValidClusterFromMetadata());
 		int x = cluster[0][0], y=cluster[0][1], z=cluster[0][2];
@@ -371,85 +366,110 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 	}
 	
 	public void updateEntity(){
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
-    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-    	if (this.getStackInSlot(1) != null) {
-	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
-	    		if (canDrainItem(this.getStackInSlot(1))) {
-	    			if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
-	    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));
-	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000),true);
-	    			}
-	    			if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
-	    				int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;
-	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, ((IFluidContainerItem)this.getStackInSlot(1).getItem()).drain(this.getStackInSlot(1), maxDrain, true).amount),true);
-	    			}
-	    		}
+		
+		System.out.println(this.getFront());
+		if (waitOneTick)
+			waitOneTick = false;
+		else {
+			if (getBlockMetadata() > 4){ // Only the top layer can distribute, just like the boiler.
+				if (!isInCluster(xCoord-1, yCoord, zCoord)){
+					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.WEST });
+				}
+				if (!isInCluster(xCoord + 1, yCoord, zCoord)){
+					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.EAST });
+				}
+				if (!isInCluster(xCoord, yCoord, zCoord - 1)){
+					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.NORTH });
+				}
+				if (!isInCluster(xCoord, yCoord, zCoord + 1)){
+					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.SOUTH });
+				}
+				UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
+		    	
+			}
+			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+			
+	    	if (getBlockMetadata() == 1){
+	    		if (this.getStackInSlot(1) != null) {
+	    	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
+	    	    		if (canDrainItem(this.getStackInSlot(1))) {
+	    	    			if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
+	    	    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));
+	    	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000),true);
+	    	    			}
+	    	    			if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
+	    	    				int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;
+	    	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, ((IFluidContainerItem)this.getStackInSlot(1).getItem()).drain(this.getStackInSlot(1), maxDrain, true).amount),true);
+	    	    			}
+	    	    		}
+	    	    	}
+	        	}
+	        	
+	        	boolean flag = this.furnaceBurnTime > 0;
+	            boolean flag1 = false;
+	            int maxThisTick = 10;
+	            if (this.furnaceBurnTime > 0)
+	            {
+	            	//maxThisTick = Math.min(furnaceBurnTime, 10);
+	                this.furnaceBurnTime -= 1; //maxThisTick
+	
+	            }
+	            
+	
+	            if (!this.worldObj.isRemote)
+	            {  	
+	                if (this.furnaceBurnTime == 0 && this.canSmelt())
+	                {
+	                    this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[0]);
+	
+	                    if (this.furnaceBurnTime > 0)
+	                    {
+	
+	                        flag1 = true;
+	
+	                        if (this.furnaceItemStacks[0] != null)
+	                        {
+	                            --this.furnaceItemStacks[0].stackSize;
+	
+	                            if (this.furnaceItemStacks[0].stackSize == 0)
+	                            {
+	                                this.furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
+	                            }
+	                        }
+	                    }
+	                }
+	
+	                if (this.isBurning() && this.canSmelt())
+	                {
+	                    ++this.furnaceCookTime;
+	
+	                    if (this.furnaceCookTime > 0)
+	                    {
+	                    	//int i = 0;
+	                    //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
+	                    		this.steam+=10;
+	                    		this.myTank.drain(20, true);
+	                    		///i++;
+	                    	//}
+	                		this.furnaceCookTime = 0;
+	
+	                        flag1 = true;
+	                    }
+	                }
+	                else
+	                {
+	                    this.furnaceCookTime = 0;
+	                }
+	
+	                if (flag != this.furnaceBurnTime > 0)
+	                {
+	                    flag1 = true;
+	                    //BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+	                }
+	           }
 	    	}
-    	}
+		}
     	
-    	boolean flag = this.furnaceBurnTime > 0;
-        boolean flag1 = false;
-        int maxThisTick = 10;
-        if (this.furnaceBurnTime > 0)
-        {
-        	//maxThisTick = Math.min(furnaceBurnTime, 10);
-            this.furnaceBurnTime -= 1; //maxThisTick
-
-        }
-        
-
-        if (!this.worldObj.isRemote)
-        {  	
-            if (this.furnaceBurnTime == 0 && this.canSmelt())
-            {
-                this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[0]);
-
-                if (this.furnaceBurnTime > 0)
-                {
-
-                    flag1 = true;
-
-                    if (this.furnaceItemStacks[0] != null)
-                    {
-                        --this.furnaceItemStacks[0].stackSize;
-
-                        if (this.furnaceItemStacks[0].stackSize == 0)
-                        {
-                            this.furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
-                        }
-                    }
-                }
-            }
-
-            if (this.isBurning() && this.canSmelt())
-            {
-                ++this.furnaceCookTime;
-
-                if (this.furnaceCookTime > 0)
-                {
-                	//int i = 0;
-                //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
-                		this.steam+=1;
-                		this.myTank.drain(2, true);
-                		///i++;
-                	//}
-            		this.furnaceCookTime = 0;
-
-                    flag1 = true;
-                }
-            }
-            else
-            {
-                this.furnaceCookTime = 0;
-            }
-
-            if (flag != this.furnaceBurnTime > 0)
-            {
-                flag1 = true;
-                BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            }
-       }
         if (!this.worldObj.isRemote) {
         	//System.out.println(this.furnaceBurnTime);
         }
@@ -472,34 +492,34 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
                 if (block == Blocks.wooden_slab)
                 {
-                    return 150;
+                    return 15;
                 }
 
                 if (block.getMaterial() == Material.wood)
                 {
-                    return 300;
+                    return 30;
                 }
 
                 if (block == Blocks.coal_block)
                 {
-                    return 16000;
+                    return 1600;
                 }
             }
 
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
+            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 20;
+            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 20;
+            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 20;
+            if (item == Items.stick) return 10;
+            if (item == Items.coal) return 160;
+            if (item == Items.lava_bucket) return 2000;
+            if (item == Item.getItemFromBlock(Blocks.sapling)) return 10;
+            if (item == Items.blaze_rod) return 240;
             return GameRegistry.getFuelValue(stack);
         }
     }
 
 	private boolean canSmelt() {
-		return getBlockMetadata() == 1 ? myTank.getFluidAmount() > 9 : getMasterTileEntity().canSmelt();
+		return getBlockMetadata() == 1 ? myTank.getFluidAmount() > 9 : getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().canSmelt() : false;
 	}
 	
 	private boolean canDrainItem(ItemStack stack) {
@@ -507,17 +527,30 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
     }
 	
 	public boolean isBurning() {
-		return getBlockMetadata() == 1 ? this.furnaceBurnTime > 0 : getMasterTileEntity().isBurning();
+		if (getBlockMetadata() == 1){
+			return this.furnaceBurnTime > 0;
+		} else if (getBlockMetadata() > 0){
+			if(getMasterTileEntity() != null){
+				return getMasterTileEntity().isBurning();
+			} else return false;
+			
+		} else return false;
+		  
 	}
 
+	public boolean hasMaster(){
+		return getMasterTileEntity() != null;
+	}
+	
 	@Override
 	public int getSizeInventory() {
-        return getBlockMetadata() == 1 ? this.furnaceItemStacks.length : getMasterTileEntity().getSizeInventory();
+		
+		return getBlockMetadata() == 1 ? this.furnaceItemStacks.length : (getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getSizeInventory() : 0);
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-        return getBlockMetadata() == 0? this.furnaceItemStacks[slot] : getMasterTileEntity().getStackInSlot(slot);
+		return getBlockMetadata() == 1? this.furnaceItemStacks[slot] : (getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getStackInSlot(slot) : null);
 	}
 
 	@Override
@@ -550,7 +583,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 		        return null;
 		    }
 		} else {
-			return getMasterTileEntity().decrStackSize(par1, par2);
+			return getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().decrStackSize(par1, par2) : null;
 		}
 	 
 	}
@@ -569,9 +602,19 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 	            return null;
 	        }
 		} else {
-			return getMasterTileEntity().getStackInSlotOnClosing(par1);
+			return getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getStackInSlotOnClosing(par1) : null;
 		}
         
+	}
+	
+	public boolean isInCluster(int x, int y, int z){
+		int[][] cluster = this.getClusterCoords(this.getValidClusterFromMetadata());
+		for (int pos = 0; pos < cluster.length; pos++){
+			if (x == cluster[pos][0] && y == cluster[pos][1] && z == cluster[pos][1]){
+				return worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler && worldObj.getBlockMetadata(x, y, z) > 0;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -583,8 +626,8 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
             {
                 par2ItemStack.stackSize = this.getInventoryStackLimit();
             }	
-        } else {
-        	getMasterTileEntity().setInventorySlotContents(par1, par2ItemStack);
+        } else if (getBlockMetadata() > 0) {
+        	 getMasterTileEntity().setInventorySlotContents(par1, par2ItemStack);
         }
 	}
 
@@ -628,7 +671,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 		if (getBlockMetadata() == 1){
 			return (this.steam/(5000.0F*8F));
 		} else {
-			return getMasterTileEntity().getPressure();
+			return getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getPressure() : 0F;
 		}
 		
 	}
@@ -640,19 +683,19 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
 	@Override
 	public int getCapacity() {
-		return 5000*8;
+		return getBlockMetadata() > 0 && hasMaster() ? 5000*8 : 0;
 	}
 
 	@Override
 	public int getSteam() {
-		return getBlockMetadata() == 1 ? steam : getMasterTileEntity().getSteam();
+		return getBlockMetadata() == 1 ? steam : (getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getSteam() : 0);
 	}
 
 	@Override
 	public void insertSteam(int amount, ForgeDirection face) {
 		if (getBlockMetadata() == 1 ) {
 			steam+=amount;
-		} else {
+		} else if (getBlockMetadata() > 0) {
 			getMasterTileEntity().insertSteam(amount, face);
 		}
 	}
@@ -668,7 +711,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
 	        return this.furnaceBurnTime * scale / this.currentItemBurnTime;
 		} else {
-			return getMasterTileEntity().getBurnTimeRemainingScaled(scale);
+			return getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getBurnTimeRemainingScaled(scale) : 0;
 		}
         
     }
@@ -677,7 +720,7 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 	public void decrSteam(int i) {
 		if (getBlockMetadata()==1){
 			this.steam-=i;
-		} else {
+		} else if (getBlockMetadata() > 0){
 			getMasterTileEntity().decrSteam(i);
 		}
 		
@@ -690,19 +733,18 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
 	@Override
 	public boolean acceptsGauge(ForgeDirection face) {
-		if (face != ForgeDirection.UP){
+		if (face != ForgeDirection.UP && getBlockMetadata() > 0){
 			if (getBlockMetadata() > 4 && face != ForgeDirection.UP){
 				return true;
 			} else if (face != myDir()){
 				return true;
 			}
-		}
-		
+		} 
 		return false;
 	}
 	
 	public ForgeDirection myDir() {
-		int meta = worldObj.getBlockMetadata(xCoord,yCoord, zCoord);
+		int meta = this.frontSide;
 		switch (meta) {
 		case 2:
 			return ForgeDirection.NORTH;
@@ -723,13 +765,13 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
 	@Override
     public boolean canInsertItem(int slot, ItemStack stack, int side)
-    {
+    {	
 		int[] accessibleSlots = getAccessibleSlotsFromSide(side);
 		boolean isAccessibleSlot = false;
 		for (int i = 0; i < accessibleSlots.length; i++){
 			if (accessibleSlots[i] == slot) isAccessibleSlot = true;
 		}
-        return this.isItemValidForSlot(slot, stack) && isAccessibleSlot;
+        return getBlockMetadata() > 0 && hasMaster() ? this.isItemValidForSlot(slot, stack) && isAccessibleSlot : false;
     }
 
 	@Override
@@ -738,19 +780,19 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 		if (getBlockMetadata() == 1){
 			return stack.getItem() == Items.bucket;
 		} else {
-			return getMasterTileEntity().canExtractItem(slot, stack, side);
+			return getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().canExtractItem(slot, stack, side): false;
 		}
     }
 	
 	@SideOnly(Side.CLIENT)
     public int getCookProgressScaled(int scale)
     {
-        return getBlockMetadata() == 1 ? this.furnaceCookTime * scale / 200 : getMasterTileEntity().getCookProgressScaled(scale);
+        return getBlockMetadata() == 1 ? this.furnaceCookTime * scale / 200 : (getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getCookProgressScaled(scale) : 0);
     }
 
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return getBlockMetadata() == 1 ? myTank.fill(resource, doFill) : getMasterTileEntity().fill(from, resource, doFill);
+		return getBlockMetadata() == 1 ? myTank.fill(resource, doFill) : (getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().fill(from, resource, doFill) : 0);
 	}
 
 	@Override
@@ -776,6 +818,6 @@ public class TileEntityFlashBoiler extends TileEntity implements IFluidHandler,I
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		return getBlockMetadata() == 1 ? new FluidTankInfo[] { new FluidTankInfo(myTank) } : getMasterTileEntity().getTankInfo(from);
+		return getBlockMetadata() == 1 ? new FluidTankInfo[] { new FluidTankInfo(myTank) } : getBlockMetadata() > 0 && hasMaster() ? getMasterTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
 	}
 }

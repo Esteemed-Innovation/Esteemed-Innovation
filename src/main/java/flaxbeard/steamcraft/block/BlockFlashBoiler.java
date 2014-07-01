@@ -10,13 +10,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
 // Notes:
@@ -66,14 +72,42 @@ public class BlockFlashBoiler extends BlockContainer{
 		
 	}
 	
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float x1, float y1, float z1){
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf){
 		if (world.getBlockMetadata(x, y, z) > 0){
-			TileEntityFlashBoiler master = ((TileEntityFlashBoiler) world.getTileEntity(x, y, z)).getMasterTileEntity();
-			System.out.println("Master TE's meta: "+master.getBlockMetadata());
-			return true;
-		}
+
+			TileEntityFlashBoiler tileentityboiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
+
+			if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
+				if (tileentityboiler != null)
+	            {
+					tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
+					if (!player.capabilities.isCreativeMode) {
+						player.inventory.consumeInventoryItem(Items.water_bucket);
+						player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
+					}
+	            }
+				return true;
+			}
+			else
+			{
+		        if (world.isRemote)
+		        {
+		            return true;
+		        }
+		        else
+		        {
 		
-		return false;
+		            if (tileentityboiler != null)
+		            {
+		            	player.openGui(Steamcraft.instance, 0, world, x,y,z);
+		            }
+		
+		            return true;
+		        }
+			}
+		} else {
+			return false;
+		}
 		
 	}
 	
