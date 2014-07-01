@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
@@ -32,6 +33,11 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 		if (this.steam >= 200 && this.progress == 0) {
 			this.progress++;
 			this.steam -= 200;
+
+		}
+		if (this.progress == 15) {
+			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+
 		}
 		if (progress > 0 && progress < 110) {
 			progress++;
@@ -104,7 +110,9 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 			        }
 			        if (hasTarget) {
 			        	Block block = worldObj.getBlock(target.posX, target.posY, target.posZ);
-			        	block.dropBlockAsItem(worldObj, target.posX, target.posY, target.posZ, this.worldObj.getBlockMetadata(target.posX,target.posY,target.posZ), 0);
+			        	if (Config.dropItem) {
+			        		block.dropBlockAsItem(worldObj, target.posX, target.posY, target.posZ, this.worldObj.getBlockMetadata(target.posX,target.posY,target.posZ), 0);
+			        	}
 			        	worldObj.setBlockToAir(target.posX, target.posY, target.posZ);
 			        }
 			        else
