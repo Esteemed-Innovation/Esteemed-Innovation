@@ -286,6 +286,11 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("jetpack2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.jetpack), "p p", "ptg", "p p" ,
 		        'p', SteamcraftBlocks.pipe, 'g', SteamcraftBlocks.meter, 't', "plateBrass"));
 		
+		BookRecipeRegistry.addRecipe("thrusters1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.thrusters), "tnt", "ptp", "tnt" ,
+		        'p', SteamcraftBlocks.pipe, 't', "ingotBrass", 'n', "nuggetBrass"));
+		BookRecipeRegistry.addRecipe("thrusters2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.thrusters), "tnt", "ptp", "tnt" ,
+		        'p', SteamcraftBlocks.pipe, 't', "plateBrass", 'n', "nuggetBrass"));
+		
 		BookRecipeRegistry.addRecipe("wings1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wings), "xxx", "ccc", "c c" ,
 		        'x',"ingotBrass", 'c', "plateCopper"));
 		BookRecipeRegistry.addRecipe("wings2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wings), "xxx", "ccc", "c c" ,
