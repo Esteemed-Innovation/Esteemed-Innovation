@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 
 @SideOnly(Side.CLIENT)
@@ -57,7 +58,7 @@ public class GuiBoiler extends GuiContainer
         GL11.glDisable(3042);
         System.out.println(this.furnaceInventory.myTank.getCapacity());
         float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
-        drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58);
+        drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58, false);
         this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
         this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
         
@@ -67,18 +68,21 @@ public class GuiBoiler extends GuiContainer
         if (FluidRegistry.isFluidRegistered("steam")) {
         	stack = new FluidStack(FluidRegistry.getFluid("steam"),1);
         }
-        drawFluid(stack, (int)(fill*58.0F), k + 104, l + 14, 16, 58);
+        drawFluid(stack, (int)(fill*58.0F), k + 104, l + 14, 16, 58, true);
         this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
         this.drawTexturedModalRect(k + 103, l + 13, 190, 0, 18, 60);
        
         GL11.glDisable(3042);
     }
     
-    private void drawFluid(FluidStack fluid, int level, int x, int y, int width, int height) {
+    private void drawFluid(FluidStack fluid, int level, int x, int y, int width, int height, boolean steam) {
 		if (fluid == null || fluid.getFluid() == null) {
 			return;
 		}
 		IIcon icon = fluid.getFluid().getIcon(fluid);
+		if (steam) {
+			icon = BlockBoiler.steamIcon;
+		}
 		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		//RenderUtils.setGLColorFromInt(fluid.getFluid().getColor(fluid));
 		int fullX = width / 16;
