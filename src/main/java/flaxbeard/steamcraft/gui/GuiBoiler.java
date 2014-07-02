@@ -55,7 +55,8 @@ public class GuiBoiler extends GuiContainer
         i1 = this.furnaceInventory.getBurnTimeRemainingScaled(14);
         this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
         GL11.glDisable(3042);
-        float fill = (this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/10000.0F);
+        System.out.println(this.furnaceInventory.myTank.getCapacity());
+        float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
         drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58);
         this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
         this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);

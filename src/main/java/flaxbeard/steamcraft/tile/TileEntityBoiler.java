@@ -35,7 +35,7 @@ import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
-	private FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
+	public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
 	public int steam;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
