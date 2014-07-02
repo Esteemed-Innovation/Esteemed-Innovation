@@ -43,6 +43,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
+	public int heat;
     private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
@@ -165,6 +166,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         {
         	this.steam = access.getShort("steam");
         }
+        
+        if (access.hasKey("heat"))
+        {
+        	this.heat = access.getShort("heat");
+        }
        // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	
     }
@@ -177,6 +183,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("water",(short) myTank.getFluidAmount());
         access.setShort("steam",(short) this.steam);
+        access.setShort("heat",(short) this.heat);
+
         access.setShort("CookTime", (short)this.furnaceCookTime);
         access.setShort("cIBT", (short)this.currentItemBurnTime);
 
@@ -440,6 +448,14 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                        }
 	                    }
 	                }
+	                
+	                if (!this.isBurning() && this.heat > 0) {
+	                	this.heat -= Math.min(this.heat, 10);
+	                }
+	                
+	                if (this.isBurning() && this.heat < 1600) {
+	                	this.heat++;
+	                }
 	
 	                if (this.isBurning() && this.canSmelt())
 	                {
@@ -448,7 +464,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    if (this.furnaceCookTime > 0)
 	                    {
 	                    	int i = 0;
-	                    	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
+	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)this.heat/1600.0F)));
+	                    	System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
+	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
 	                    		this.steam+=1;
 	                    		this.myTank.drain(2, true);
 	                    		i++;

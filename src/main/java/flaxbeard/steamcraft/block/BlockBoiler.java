@@ -39,6 +39,8 @@ public class BlockBoiler extends BlockContainer {
     private IIcon field_149935_N;
     @SideOnly(Side.CLIENT)
     private IIcon field_149936_O;
+    @SideOnly(Side.CLIENT)
+	public static IIcon steamIcon;
     
     public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_)
     {
@@ -151,6 +153,8 @@ public class BlockBoiler extends BlockContainer {
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockBrass");
+        this.steamIcon = p_149651_1_.registerIcon("steamcraft:steam");
+
         this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "steamcraft:boilerOn" : "steamcraft:boiler");
         this.field_149935_N = p_149651_1_.registerIcon("steamcraft:blockBrass");
     }
