@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.block;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;
@@ -43,6 +45,12 @@ public class BlockThumperDummy extends Block {
     	    	}
     		}
     	}
+    }
+    
+    
+    public int quantityDropped(Random p_149745_1_)
+    {
+        return 0;
     }
 
 }
