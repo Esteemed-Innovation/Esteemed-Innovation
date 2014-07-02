@@ -35,9 +35,7 @@ public class UtilSteamTransport {
 				if (tile instanceof ISteamTransporter) {
 					ISteamTransporter target = (ISteamTransporter) tile;
 					if (trans.getPressure() > target.getPressure() && target.canInsert(direction.getOpposite())) {
-						//System.out.println("UNS");
 						float targetpercent = ((float)trans.getSteam()+target.getSteam())/((float)trans.getCapacity()+target.getCapacity());
-						//System.out.println(targetpercent);
 						int change = (int) (Math.floor(trans.getSteam()*target.getCapacity()-target.getSteam()*trans.getCapacity())/(trans.getCapacity()+target.getCapacity()));
 						if (change > 0 && change <= trans.getSteam()) {
 							trans.decrSteam(change);
@@ -68,6 +66,21 @@ public class UtilSteamTransport {
 							trans.decrSteam(change-target.fill(direction.getOpposite(), new FluidStack(FluidRegistry.getFluid("steam"), change*10), true)/10);
 						}
 					}
+				}
+			}
+		}
+	}
+	
+	public static void preExplosion(World worldObj, int xCoord,
+			int yCoord, int zCoord, ForgeDirection[] values) {
+		ISteamTransporter trans = (ISteamTransporter) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		for (ForgeDirection direction : values) {
+			if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
+				TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+				if (tile instanceof ISteamTransporter) {
+					ISteamTransporter target = (ISteamTransporter) tile;
+					int change = (int)(-10.0F * ((float)target.getCapacity() / 100.0F));
+					trans.decrSteam(change);
 				}
 			}
 		}

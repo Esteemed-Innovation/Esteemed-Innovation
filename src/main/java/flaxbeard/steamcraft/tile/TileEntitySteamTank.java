@@ -103,5 +103,8 @@ public class TileEntitySteamTank extends TileEntity implements ISteamTransporter
 		return true;
 	}
 
-	public void explode(){ this.steam = 0;}
+	public void explode(){
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
+		this.steam = 0;
+	}
 }

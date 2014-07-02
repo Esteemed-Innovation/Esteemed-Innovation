@@ -257,6 +257,8 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 	}
 
 	public void explode(){
+		ForgeDirection[] dirs = { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
 		this.steam = 0;
 	}
 }

@@ -206,5 +206,8 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 		return false;
 	}
 	
-	public void explode(){ this.steam = 0; }
+	public void explode(){ 
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
+		this.steam = 0;
+	}
 }

@@ -494,6 +494,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public void explode() {
+    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
 		this.steam = 0;
 	}
 
