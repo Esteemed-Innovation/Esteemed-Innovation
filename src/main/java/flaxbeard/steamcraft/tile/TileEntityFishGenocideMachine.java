@@ -158,4 +158,8 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
 	public boolean acceptsGauge(ForgeDirection face) {
 		return false;
 	}
+	
+	public void explode(){
+		this.steam = 0;
+	}
 }

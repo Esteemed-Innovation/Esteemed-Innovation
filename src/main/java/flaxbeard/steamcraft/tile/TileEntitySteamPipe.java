@@ -187,5 +187,7 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 		}
 		return null;
 	}
+	
+	public void explode(){ this.steam = 0;}
 
 }

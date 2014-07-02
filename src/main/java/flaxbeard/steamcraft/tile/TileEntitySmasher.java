@@ -28,6 +28,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	private boolean isBreaking = false;
 	private boolean shouldStop = false;
 	public int spinup = 0;
+	public final float pressureResistance = 0.8F; 
 	public float extendedLength = 0.0F;
 	public Block smooshingBlock;
 	public int smooshingMeta;
@@ -428,5 +429,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 		}
 		return ForgeDirection.NORTH;
 	}
+	
+	public void explode(){ this.steam = 0;}
 
 }

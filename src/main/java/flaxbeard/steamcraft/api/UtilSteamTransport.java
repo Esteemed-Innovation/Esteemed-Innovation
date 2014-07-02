@@ -11,9 +11,17 @@ import flaxbeard.steamcraft.Steamcraft;
 
 public class UtilSteamTransport {
 	public static void generalPressureEvent(World world, int x, int y, int z, float pressure, int capacity) {
-		if (pressure > 1.1F) {
-			if (world.rand.nextInt(1) == 0) {
-				//world.createExplosion(null, x+0.5F, y+0.5F, z+0.5F, 2.0F, true);
+		if (pressure > 1.2F) {
+			ISteamTransporter trans = (ISteamTransporter) world.getTileEntity(x, y, z);
+			float resistance = trans.pressureResistance;
+			int steam = trans.getSteam();
+			int oneInX = Math.max(1, (int)Math.floor((double)(500.0F  - (pressure / (1.1F + resistance) * 100)) ));
+			//System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
+			System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
+			if (oneInX <= 1 ||  world.rand.nextInt(oneInX - 1) == 0) {
+				System.out.println("boom!");
+				trans.explode();
+				world.createExplosion(null, x+0.5F, y+0.5F, z+0.5F, 4.0F, true);
 			}
 		}
 	}

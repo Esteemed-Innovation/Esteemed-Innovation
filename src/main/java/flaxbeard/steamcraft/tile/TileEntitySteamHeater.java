@@ -255,5 +255,7 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 			furnace2.furnaceCookTime = furnaceCookTime;
 		}
 	}
+	
+	public void explode(){ this.steam = 0;}
 
 }

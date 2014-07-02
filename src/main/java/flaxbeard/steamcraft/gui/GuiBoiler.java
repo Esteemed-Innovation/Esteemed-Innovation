@@ -43,36 +43,41 @@ public class GuiBoiler extends GuiContainer
      */
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        GL11.glEnable(3042);
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        
-        int i1;
+    	try {
+    		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
+            int k = (this.width - this.xSize) / 2;
+            int l = (this.height - this.ySize) / 2;
+            GL11.glEnable(3042);
+            this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+            
+            int i1;
 
 
-        i1 = this.furnaceInventory.getBurnTimeRemainingScaled(14);
-        this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
-        GL11.glDisable(3042);
-        System.out.println(this.furnaceInventory.myTank.getCapacity());
-        float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
-        drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58, false);
-        this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
-        this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
+            i1 = this.furnaceInventory.getBurnTimeRemainingScaled(14);
+            this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
+            GL11.glDisable(3042);
+            System.out.println(this.furnaceInventory.myTank.getCapacity());
+            float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
+            drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58, false);
+            this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
+            this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
+            
+            fill = (float)this.furnaceInventory.getSteam()/(float)this.furnaceInventory.getCapacity();
+            fill = Math.min(fill, 1.0F);
+            FluidStack stack = new FluidStack(FluidRegistry.WATER,1);
+            if (FluidRegistry.isFluidRegistered("steam")) {
+            	stack = new FluidStack(FluidRegistry.getFluid("steam"),1);
+            }
+            drawFluid(stack, (int)(fill*58.0F), k + 104, l + 14, 16, 58, true);
+            this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
+            this.drawTexturedModalRect(k + 103, l + 13, 190, 0, 18, 60);
+           
+            GL11.glDisable(3042);
+    	} catch (NullPointerException e){
+    		System.out.println("Did the boiler explode while the GUI was open?");
+    	}
         
-        fill = (float)this.furnaceInventory.getSteam()/(float)this.furnaceInventory.getCapacity();
-        fill = Math.min(fill, 1.0F);
-        FluidStack stack = new FluidStack(FluidRegistry.WATER,1);
-        if (FluidRegistry.isFluidRegistered("steam")) {
-        	stack = new FluidStack(FluidRegistry.getFluid("steam"),1);
-        }
-        drawFluid(stack, (int)(fill*58.0F), k + 104, l + 14, 16, 58, true);
-        this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
-        this.drawTexturedModalRect(k + 103, l + 13, 190, 0, 18, 60);
-       
-        GL11.glDisable(3042);
     }
     
     private void drawFluid(FluidStack fluid, int level, int x, int y, int width, int height, boolean steam) {
