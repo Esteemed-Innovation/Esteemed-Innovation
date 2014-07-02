@@ -350,7 +350,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(cluster[pos][0], cluster[pos][1], cluster[pos][2]);
 				boiler.setFront(frontSide, false);
 			} else {
-				System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
+				//System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
 			}
 			
 		}
@@ -368,7 +368,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 
 	public void setFront(int frontSide, boolean print) {
-		if (print) System.out.println("Setting front side to "+frontSide);
+		//if (print) System.out.println("Setting front side to "+frontSide);
 		if (!worldObj.isRemote)
 			this.frontSide = frontSide;
 	}

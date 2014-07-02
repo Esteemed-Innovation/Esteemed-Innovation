@@ -69,8 +69,8 @@ public class BlockFlashBoiler extends BlockContainer{
 	}
 	
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta){
-		System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
-		 System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
+	//	System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
+		// System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
      	TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
 
          if (boiler != null)
@@ -118,7 +118,7 @@ public class BlockFlashBoiler extends BlockContainer{
 	        
          if (meta > 0){
 				TileEntityFlashBoiler te = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-				System.out.println(te.getMasterTileEntity().getBlockMetadata());
+			//System.out.println(te.getMasterTileEntity().getBlockMetadata());
 				te.destroyMultiblock();
 			}
 		
@@ -203,7 +203,9 @@ public class BlockFlashBoiler extends BlockContainer{
 		case 1: frontSide = 5; break;
 		case 2: frontSide = 3; break;
 		case 3: frontSide = 4; break;
-		default: System.out.println(l); break;
+		default: 
+			//System.out.println(l); 
+		break;
 		}
 
 		checkMultiblock(world, x, y, z, false, frontSide);
