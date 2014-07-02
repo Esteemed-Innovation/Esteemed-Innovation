@@ -24,11 +24,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	public void updateRedstoneState(boolean flag) {
 		
-		if (flag != redstoneState) {
-			if (!this.turning) {
-				this.setTurining();
-			}
-		}
+//		if (flag != redstoneState) {
+//			if (!this.turning) {
+//				this.setTurining();
+//			}
+//		}
 		redstoneState = flag;
 		
 	}
