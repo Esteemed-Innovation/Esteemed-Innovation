@@ -42,8 +42,8 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		bodyTank(1,3),
 		headGoggles(0,2),
 		headHelm(0,1),
-		legsHips(2,2),
-		legsLegs(2,1);
+		legsHips(2,1),
+		legsLegs(2,2);
 
 		public int slot;
 		public int armor;
