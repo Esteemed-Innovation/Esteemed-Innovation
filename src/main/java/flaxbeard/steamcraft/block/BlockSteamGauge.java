@@ -8,8 +8,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -151,6 +153,16 @@ public class BlockSteamGauge extends BlockContainer {
     public int getRenderType()
     {
         return Steamcraft.gaugeRenderID;
+    }
+    
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf){
+    	TileEntitySteamGauge gauge = (TileEntitySteamGauge)world.getTileEntity(x, y, z);
+    	int pressurePerc = (int)(gauge.getPressure() * 100);
+    	if (world.isRemote){
+    		player.addChatComponentMessage(new ChatComponentText("Current pressure: "+pressurePerc+"%"));
+    	}
+    	
+    	return true;
     }
     
 }
