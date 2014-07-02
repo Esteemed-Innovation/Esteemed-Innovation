@@ -30,6 +30,7 @@ research.Book.name=Preface
 research.Book.0=I have decided to delve into the fantastical world of steam technology. I created this spiffy journal to record my exciting discoveries.<br>Any time I stumble upon something new, I'll jot it down, lest I need it later.
 research.Bits.name=Bits and Bobs
 research.Bits.0=Here I will document various components I may need for crafting.<br>Plating a piston assembly with brass increases durability and makes it useful for applications within steam apparatus.
+research.Bits.1=A simple turbine shape made of brass proves a valuable component, no doubt useful for many purposes, especially making things spin.
 research.Spyglass.name=Spyglass
 research.Spyglass.0=Who knew a few glass lenses in a brass housing could work as a magnifier? Now I can spot loot from a mile away!<br>Holding this device and pressing right click will zoom in, left clicking will zoom out.
 research.Survivalist.name=Survivalist's Toolkit
@@ -58,13 +59,16 @@ category.SteamPower2.name=Steam Power
 
 research.Boiler.name=Boiler
 research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
+research.FlashBoiler.name=Flash Boiler
+research.FlashBoiler.0=I find myself needing more and more boilers as my steam usage continues to increase. I grew fed up with the endless boilers filling my workshop, so I set out to make something superior. The result? The flash boiler.
+research.FlashBoiler.1=The flash boiler is constructed by placing its components in a 2x2x2 cube shape. I can then start to power it. The flash boiler consumes water and fuel at a rate tenfold that of the basic boiler, but its output is also tenfold. The flash boiler requires time to heat up, and will not produce steam as quickly or as efficiently until warmed up.
 research.Tank.name=Tanks
 research.Tank.0=Pipes are great for transporting steam, but I've grown weary of refilling the boiler every time I need more. I've created tanks to remedy this problem. They store large amounts of steam, so I can save some for later.
 research.Pipe.name=Pipes
 research.Pipe.0=Steam is useless without a way to move it about but I've struggled to find a way to move it effectively.<br>Brass pipes are able to resist corrosion and thus make the perfect conduit for steam.
-research.Pipe.1=Combining a lever with a pipe allows me to toggle the flow of steam. Right clicking on this valve pipe will open or close the valve.<br>I can also control the valve using redstone. Changing the redstone polarity will turn the valve.
+research.Pipe.1=Combining a lever with a pipe allows me to toggle the flow of steam. Right clicking on this valve pipe will open or close the valve.
 research.Gauge.name=Steam Gauge
-research.Gauge.0=I've created a simple method for measuring steam within a conduit. I can simply slap on one of these to a boiler, pipe, tank, or other device and it will visually display the pressure.
+research.Gauge.0=I've created a simple method for measuring steam within a conduit. I can simply slap on one of these to a boiler, pipe, tank, or other device and it will visually display the pressure, outputting a corresponding redstone signal to comparators.
 research.Heater.name=Steam Heater
 research.Heater.0=Now I can power furnaces using steam power, using this nifty steam heater. <br>Steam heats the copper coils and allows a furnace to smelt without fuel. More heaters will smelt faster but use more steam.
 research.Filler.name=Steam Filler
@@ -97,6 +101,11 @@ research.FallAssist.name=Fall Assist
 research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
 research.Mask.name=Mask of Revealing
 research.Mask.0=Who says thaumaturgy can't mix with technology? Not I! I've developed a snazzy mask that gives my exosuit the same properties as the goggles of revealing.
+
+category.SteamTools.name=Steam Tools
+research.SteamTools.name=Steam Tools
+research.SteamTools.0=Following the successes of my rock smasher and thumper, I ventured to make more portable versions of these rock-breaking tools. Finally, my work has come to frutition, in the form of the steam drill, saw, and shovel.
+research.SteamTools.1=These three tools can be filled with steam and do not break.<br>They must be spun up in order to be used effectively. Right clicking while holding a tool will spin it up, using steam, and speed up the tool. Unlike normal tools, mining itself does not use steam.
 
 category.Flintlock.name=Flintlock Weapons
 research.Parts.name=Weapon Parts
@@ -158,7 +167,7 @@ item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
 item.steamcraft:crafting.3.name=Blunderbuss Barrel
 item.steamcraft:crafting.4.name=Flintlock
-item.steamcraft:crafting.5.name=Creeper Explosive Gland
+item.steamcraft:crafting.5.name=Brass Turbine
 
 item.steamcraft:plate.0.name=Copper Plate
 item.steamcraft:plate.1.name=Zinc Plate
@@ -195,7 +204,8 @@ item.steamcraft:hoeBrass.name=Brass Hoe
 item.steamcraft:swordBrass.name=Brass Sword
 
 item.steamcraft:steamDrill.name=Steam Drill
-item.steamcraft:steamAxe.name=Steam Axe
+item.steamcraft:steamAxe.name=Steam Saw
+item.steamcraft:steamShovel.name=Steam Shovel
 item.steamcraft:astrolabe.name=Astrolabe
 
 item.steamcraft:survivalist.name=Survivalist's Toolkit

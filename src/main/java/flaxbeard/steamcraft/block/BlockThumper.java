@@ -65,10 +65,6 @@ public class BlockThumper extends BlockContainer {
     {
         return false;
     }
-    
-    public int quantityDropped(Random p_149745_1_)
-    {
-        return 0;
-    }
+
 
 }

@@ -20,7 +20,7 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addCategory("category.Basics.name");
 		SteamcraftRegistry.addResearch("research.Book.name","category.Basics.name",new BookPageItem("research.Book.name","research.Book.0", new ItemStack(SteamcraftItems.book)),new BookPageCrafting("","book"));
 		SteamcraftRegistry.addResearch("research.Ores.name","category.Basics.name",new BookPageItem("research.Ores.name","research.Ores.0", new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftBlocks.steamcraftOre,1,1)));
-		SteamcraftRegistry.addResearch("research.Bits.name","category.Basics.name",new BookPageItem("research.Bits.name","research.Bits.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,0)),new BookPageCrafting("","piston1","piston2"));
+		SteamcraftRegistry.addResearch("research.Bits.name","category.Basics.name",new BookPageItem("research.Bits.name","research.Bits.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)),new BookPageCrafting("","piston1","piston2"),new BookPageText("research.Bits.name","research.Bits.1"),new BookPageCrafting("","turbine1","turbine2"));
 		SteamcraftRegistry.addResearch("research.Spyglass.name","category.Basics.name",new BookPageItem("research.Spyglass.name","research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)),new BookPageCrafting("","spyglass1","spyglass2"));
 		if (Loader.isModLoaded("Baubles")) {
 			SteamcraftRegistry.addResearch("research.Survivalist.name","category.Basics.name",new BookPageItem("research.Survivalist.name","research.SurvivalistBaubles.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
@@ -49,6 +49,7 @@ public class SteamcraftBook {
 
 		SteamcraftRegistry.addCategory("category.SteamPower.name");
 		SteamcraftRegistry.addResearch("research.Boiler.name","category.SteamPower.name",new BookPageItem("research.Boiler.name","research.Boiler.0", new ItemStack(SteamcraftBlocks.boiler)),new BookPageCrafting("","boiler1","boiler2"));
+		SteamcraftRegistry.addResearch("research.FlashBoiler.name", "category.SteamPower.name", new BookPageItem("research.FlashBoiler.name","research.FlashBoiler.0", new ItemStack(SteamcraftBlocks.flashBoiler)),new BookPageText("research.FlashBoiler.name","research.FlashBoiler.1"), new BookPageCrafting("","flashBoiler1","flashBoiler2"));
 		SteamcraftRegistry.addResearch("research.Pipe.name","category.SteamPower.name",new BookPageItem("research.Pipe.name","research.Pipe.0", new ItemStack(SteamcraftBlocks.pipe)),new BookPageCrafting("","pipe1","pipe2"),new BookPageText("research.Pipe.name","research.Pipe.1"),new BookPageCrafting("","valvePipe"));
 		SteamcraftRegistry.addResearch("research.Gauge.name","category.SteamPower.name",new BookPageItem("research.Gauge.name","research.Gauge.0", new ItemStack(SteamcraftBlocks.meter)),new BookPageCrafting("","gauge"));
 		SteamcraftRegistry.addResearch("research.Tank.name","category.SteamPower.name",new BookPageItem("research.Tank.name","research.Tank.0", new ItemStack(SteamcraftBlocks.tank)),new BookPageCrafting("","tank1","tank2"));
@@ -56,11 +57,16 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Heater.name","category.SteamPower.name",new BookPageItem("research.Heater.name","research.Heater.0", new ItemStack(SteamcraftBlocks.heater)),new BookPageCrafting("","heater1","heater2"));
 		SteamcraftRegistry.addResearch("research.ItemMortar.name","category.SteamPower.name",new BookPageItem("research.ItemMortar.name","research.ItemMortar.0", new ItemStack(SteamcraftBlocks.itemMortar)),new BookPageText("research.ItemMortar.name","research.ItemMortar.1"),new BookPageCrafting("","astrolabe"),new BookPageCrafting("","itemMortar2","itemMortar3"));
 		SteamcraftRegistry.addResearch("research.Hammer.name","category.SteamPower.name",new BookPageItem("research.Hammer.name","research.Hammer.0", new ItemStack(SteamcraftBlocks.hammer)),new BookPageText("research.Hammer.name","research.Hammer.1"),new BookPageCrafting("","hammer1","hammer2"));
-		SteamcraftRegistry.addResearch("research.Screw.name","category.SteamPower.name",new BookPageItem("research.Screw.name","research.Screw.0", new ItemStack(SteamcraftBlocks.pump)),new BookPageCrafting("","pump1","pump2"));
 		SteamcraftRegistry.addCategory("category.SteamPower2.name");
 
+		SteamcraftRegistry.addResearch("research.Screw.name","category.SteamPower2.name",new BookPageItem("research.Screw.name","research.Screw.0", new ItemStack(SteamcraftBlocks.pump)),new BookPageCrafting("","pump1","pump2"));
 		SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
 		SteamcraftRegistry.addResearch("research.Thumper.name", "category.SteamPower2.name", new BookPageItem("research.Thumper.name","research.Thumper.0", new ItemStack(SteamcraftBlocks.thumper)),new BookPageText("research.Thumper.name","research.Thumper.1"), new BookPageCrafting("","thumper1","thumper2"));
+		
+		SteamcraftRegistry.addCategory("category.SteamTools.name");
+		SteamcraftRegistry.addResearch("research.SteamTools.name", "category.SteamTools.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
+				new BookPageCrafting("","axe1","axe2","axe3","axe4"),
+				new BookPageCrafting("","shovel1","shovel2","shovel3","shovel4"));
 
 		SteamcraftRegistry.addCategory("category.Exosuit.name");
 		SteamcraftRegistry.addResearch("research.Exosuit.name","category.Exosuit.name",new BookPageItem("research.Exosuit.name","research.Exosuit.0", new ItemStack(SteamcraftItems.exoArmorHead), new ItemStack(SteamcraftItems.exoArmorBody), new ItemStack(SteamcraftItems.exoArmorLegs), new ItemStack(SteamcraftItems.exoArmorFeet)),

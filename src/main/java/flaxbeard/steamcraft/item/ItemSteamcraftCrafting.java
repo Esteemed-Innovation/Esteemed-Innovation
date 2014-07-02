@@ -39,7 +39,7 @@ public class ItemSteamcraftCrafting extends Item {
 		this.icon[2] = ir.registerIcon("steamcraft:gunBarrel");
 		this.icon[3] = ir.registerIcon("steamcraft:gunBarrel2");
 		this.icon[4] = ir.registerIcon("steamcraft:gunFlintlock");
-		this.icon[5] = ir.registerIcon("steamcraft:creeperGland");
+		this.icon[5] = ir.registerIcon("steamcraft:brassTurbine");
 	}
 	
 	@Override
