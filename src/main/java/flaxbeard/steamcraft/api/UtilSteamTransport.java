@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class UtilSteamTransport {
 	public static void generalPressureEvent(World world, int x, int y, int z, float pressure, int capacity) {
@@ -43,7 +44,7 @@ public class UtilSteamTransport {
 						}
 					}
 				}
-				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered && trans instanceof TileEntitySteamPipe) {
 					IFluidHandler target = (IFluidHandler) tile;
 					float cap = 0;
 					float steam = 0;

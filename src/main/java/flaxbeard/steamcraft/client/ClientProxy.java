@@ -14,6 +14,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.render.BlockFishGenocideMachineRenderer;
+import flaxbeard.steamcraft.client.render.BlockRuptureDiscRenderer;
 import flaxbeard.steamcraft.client.render.BlockSteamChargerRenderer;
 import flaxbeard.steamcraft.client.render.BlockSteamGaugeRenderer;
 import flaxbeard.steamcraft.client.render.BlockSteamHeaterRenderer;
@@ -110,6 +111,8 @@ public class ClientProxy extends CommonProxy
     	RenderingRegistry.registerBlockHandler(Steamcraft.chargerRenderID, new BlockSteamChargerRenderer());
     	RenderingRegistry.registerBlockHandler(Steamcraft.genocideRenderID, new BlockFishGenocideMachineRenderer());
     	RenderingRegistry.registerBlockHandler(Steamcraft.gaugeRenderID, new BlockSteamGaugeRenderer());
+    	RenderingRegistry.registerBlockHandler(Steamcraft.ruptureDiscRenderID, new BlockRuptureDiscRenderer());
+
 
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.musket, new ItemFirearmRenderer());
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.blunderbuss, new ItemFirearmRenderer());

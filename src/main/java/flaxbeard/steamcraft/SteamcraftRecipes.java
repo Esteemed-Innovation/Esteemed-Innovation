@@ -252,6 +252,8 @@ public class SteamcraftRecipes {
 
 		BookRecipeRegistry.addRecipe("gauge",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.meter), " x ", "xrx", " x ",
 		        'x', "nuggetBrass", 'r', Items.compass));
+		BookRecipeRegistry.addRecipe("disc",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.ruptureDisc), " x ", "xrx", " x ",
+		        'x', "nuggetBrass", 'r', "plateZinc"));
 		BookRecipeRegistry.addRecipe("heater1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
 		        'x', "ingotBrass", 'c', "nuggetCopper", 'f', Blocks.furnace,'p', SteamcraftBlocks.pipe));
 		BookRecipeRegistry.addRecipe("heater2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.heater), "ccc", "xfx", " p ", 
@@ -322,6 +324,8 @@ public class SteamcraftRecipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 2), new ItemStack(Items.iron_ingot)));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 3), "ingotBrass"));
 
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftBlocks.ruptureDisc, 1, 0), "plateZinc", new ItemStack(SteamcraftBlocks.ruptureDisc, 1, 1)));
+		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 0), "xxx", "xxx", "xxx", 
 		        'x', "nuggetCopper"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1), "xxx", "xxx", "xxx", 

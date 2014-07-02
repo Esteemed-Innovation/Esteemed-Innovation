@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.block;
+package flaxbeard.steamcraft.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

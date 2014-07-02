@@ -11,10 +11,10 @@ import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockFlashBoiler;
 import flaxbeard.steamcraft.block.BlockItemMortar;
-import flaxbeard.steamcraft.block.BlockManyMetadataItem;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.block.BlockPump;
+import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSmasher;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
@@ -30,6 +30,8 @@ import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.block.BlockThumper;
 import flaxbeard.steamcraft.block.BlockThumperDummy;
 import flaxbeard.steamcraft.block.BlockValvePipe;
+import flaxbeard.steamcraft.item.BlockManyMetadataItem;
+import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
 import flaxbeard.steamcraft.item.BlockThumperItem;
 
@@ -50,6 +52,7 @@ public class SteamcraftBlocks {
 	public static Block blockZinc;
 	public static Block tank;
 	public static Block meter;
+	public static Block ruptureDisc;
 	public static Block hammer;
 	public static Block conveyor;
 	public static Block itemMortar;
@@ -134,6 +137,9 @@ public class SteamcraftBlocks {
 		
 		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter");
 		GameRegistry.registerBlock(meter, "meter");
+		
+		ruptureDisc = new BlockRuptureDisc().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ruptureDisc");
+		GameRegistry.registerBlock(ruptureDisc, BlockRuptureDiscItem.class, "ruptureDisc");
 		
 		thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(thumper, BlockThumperItem.class, "thumper");

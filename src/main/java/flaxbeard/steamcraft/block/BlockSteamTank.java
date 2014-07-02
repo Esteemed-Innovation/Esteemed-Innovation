@@ -22,6 +22,11 @@ public class BlockSteamTank extends BlockContainer {
 		super(Material.iron);
 	}
 	
+    public int damageDropped(int meta)
+    {
+        return meta;
+    }
+	
 	public IIcon[] icon = new IIcon[2];
 	
 	@SideOnly(Side.CLIENT)

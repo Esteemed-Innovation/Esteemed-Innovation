@@ -51,9 +51,9 @@ public class BlockSteamcraftOre extends Block{
 		par3List.add(new ItemStack(par1, 1, 1));
 	}
 	
-    public int damageDropped(int p_149692_1_)
+    public int damageDropped(int meta)
     {
-        return p_149692_1_;
+        return meta;
     }
 
 }

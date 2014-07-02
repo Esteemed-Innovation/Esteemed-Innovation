@@ -273,7 +273,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 		    renderer.renderStandardBlock(block, x, y, z);
 	    }
 	    renderer.clearOverrideBlockTexture();
-    
+	    
 		return true;
 	}
 

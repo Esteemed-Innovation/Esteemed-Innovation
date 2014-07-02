@@ -42,6 +42,7 @@ import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
+import flaxbeard.steamcraft.tile.TileEntityRuptureDisc;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
@@ -72,6 +73,7 @@ public class Steamcraft {
 	public static int chargerRenderID;
 	public static int genocideRenderID;
 	public static int gaugeRenderID;
+	public static int ruptureDiscRenderID;
 
     public static boolean steamRegistered;
     
@@ -109,6 +111,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
 		GameRegistry.registerTileEntity(TileEntitySteamTank.class, "steamTank");
 		GameRegistry.registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
+		GameRegistry.registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
 		GameRegistry.registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
 		GameRegistry.registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
 		GameRegistry.registerTileEntity(TileEntityItemMortar.class, "itemMortar");
@@ -138,6 +141,7 @@ public class Steamcraft {
 		chargerRenderID = RenderingRegistry.getNextAvailableRenderId();
 		genocideRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		gaugeRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		ruptureDiscRenderID  = RenderingRegistry.getNextAvailableRenderId();
 
 
 		proxy.registerRenderers();
