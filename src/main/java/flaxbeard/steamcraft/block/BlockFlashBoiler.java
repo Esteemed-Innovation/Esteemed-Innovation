@@ -38,6 +38,20 @@ public class BlockFlashBoiler extends BlockContainer{
 	public IIcon otherIcon;
 	public IIcon specialIcon;
 	
+	public IIcon topLeft;
+	public IIcon topLeftSide;
+	public IIcon bottomLeft;
+	public IIcon topRight;
+	public IIcon topRightSide;
+	public IIcon bottomRight;
+	public IIcon topLeftF;
+	public IIcon bottomLeftF;
+	public IIcon topRightF;
+	public IIcon bottomRightF;
+	public IIcon topLeftO;
+	public IIcon bottomLeftO;
+	public IIcon topRightO;
+	public IIcon bottomRightO;
 	
 	public BlockFlashBoiler(){
 		super(Material.iron);
@@ -66,10 +80,26 @@ public class BlockFlashBoiler extends BlockContainer{
 	}
 	
 	public void registerBlockIcons(IIconRegister p_149651_1_){
-		this.blockIcon = p_149651_1_.registerIcon("steamcraft:testSide");
+		this.blockIcon = p_149651_1_.registerIcon("steamcraft:flashBoiler");
 		this.otherIcon = p_149651_1_.registerIcon("steamcraft:testFront");
 		this.specialIcon = p_149651_1_.registerIcon("steamcraft:testSpecial");
 		
+		this.topLeft = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeft");
+		this.topLeftSide = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftSide");
+		this.bottomLeft = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeft");
+		this.topRight = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRight");
+		this.topRightSide = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightSide");
+
+		this.bottomRight = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRight");
+		this.topLeftF = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftO");
+		this.bottomLeftF = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeftO");
+		this.topRightF = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightO");
+		this.bottomRightF = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRightO");
+		this.topLeftO = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftT");
+		this.bottomLeftO = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeftT");
+		this.topRightO = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightT");
+		this.bottomRightO = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRightT");
+
 	}
 	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf){
@@ -133,11 +163,111 @@ public class BlockFlashBoiler extends BlockContainer{
 			return blockIcon;
 		} else {
 			TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) block.getTileEntity(x, y, z);
-			if (side == boiler.getFront()){
-				return specialIcon;
-			} else {
-				return otherIcon;
+			IIcon tex = otherIcon;
+			if (meta == 1) {
+				if (side == 0) {
+					tex = topLeft;
+				}
+				else
+				{
+					tex = bottomLeft;
+				}
 			}
+			if (meta == 2) {
+				if (side == 2) {
+					tex = bottomRight;
+				}
+				else if (side == 0) {
+					tex = topRight;
+				}
+				else
+				{
+					tex = bottomLeft;
+				}
+			}
+			if (meta == 3) {
+				if (side == 3 || side == 0) {
+					tex = bottomLeft;
+				}
+				else
+				{
+					tex = bottomRight;
+				}
+			}
+			if (meta == 4) {
+				tex = bottomRight;
+			}
+			if (meta == 5) {
+				if (side == 1) {
+					tex = topLeft;
+				}
+				else
+				{
+					tex = topLeftSide;
+				}
+			}
+			if (meta == 6) {
+				if (side == 2) {
+					tex = topRightSide;
+				}
+				else if (side == 1) {
+					tex = topRight;
+				}
+				else
+				{
+					tex = topLeftSide;
+				}
+			}
+			if (meta == 7) {
+				if (side == 3) {
+					tex = topLeftSide;
+				}
+				else if (side == 1)  {
+					tex = bottomLeft;
+				}
+				else
+				{
+					tex = topRightSide;
+				}
+			}
+			if (meta == 8) {
+				if (side == 1) {
+					tex = bottomRight;
+				}
+				else
+				{
+					tex = topRightSide;
+				}
+			}
+			if (side == boiler.getFront()){
+				if (boiler.isBurning()) {
+					if (tex == topLeftSide) {
+						return topLeftO;
+					}
+					if (tex == topRightSide) {
+						return topRightO;
+					}
+					if (tex == bottomRight) {
+						return bottomRightO;
+					}
+					if (tex == bottomLeft) {
+						return bottomLeftO;
+					}
+				}
+				if (tex == topLeftSide) {
+					return topLeftF;
+				}
+				if (tex == topRightSide) {
+					return topRightF;
+				}
+				if (tex == bottomRight) {
+					return bottomRightF;
+				}
+				if (tex == bottomLeft) {
+					return bottomLeftF;
+				}
+			}
+			return tex;
 		}
 		
 	}
@@ -152,7 +282,7 @@ public class BlockFlashBoiler extends BlockContainer{
 			        {
 			            int front = boiler.getFront();
 			            float xOffset = (float)x + 0.5F;
-			            float yOffset = (float)y + 0.0F + random.nextFloat() * 6.0F / 12.0F;
+			            float yOffset = (float)y + 0.25F + random.nextFloat() * 0.8F;
 			            float zOffset = (float)z + 0.5F;
 			            float f3 = 0.52F;
 			            float f4 = getRandomFlameOffset(random);

@@ -37,7 +37,6 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHandler,ISidedInventory,ISteamTransporter{
 	
-	private FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
 	public int steam;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
@@ -53,6 +52,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	private int frontSide = -1;
 	
 	private boolean loaded = false;
+	
+    public TileEntityFlashBoiler() {
+    	super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),80000);
+
+    }
 	
 	// ====================================================
 	//          All the possible configurations
@@ -408,8 +412,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	            int maxThisTick = 10;
 	            if (this.furnaceBurnTime > 0)
 	            {
-	            	//maxThisTick = Math.min(furnaceBurnTime, 10);
-	                this.furnaceBurnTime -= 1; //maxThisTick
+	            	maxThisTick = Math.min(furnaceBurnTime, 10);
+	                this.furnaceBurnTime -= maxThisTick;
 	
 	            }
 	            
@@ -443,12 +447,12 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	                    if (this.furnaceCookTime > 0)
 	                    {
-	                    	//int i = 0;
-	                    //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
-	                    		this.steam+=10;
-	                    		this.myTank.drain(20, true);
-	                    		///i++;
-	                    	//}
+	                    	int i = 0;
+	                    	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
+	                    		this.steam+=1;
+	                    		this.myTank.drain(2, true);
+	                    		i++;
+	                    	}
 	                		this.furnaceCookTime = 0;
 	
 	                        flag1 = true;
@@ -474,15 +478,15 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
-	public static int getItemBurnTime(ItemStack stack)
+	public static int getItemBurnTime(ItemStack p_145952_0_)
     {
-        if (stack == null)
+        if (p_145952_0_ == null)
         {
             return 0;
         }
         else
         {
-            Item item = stack.getItem();
+            Item item = p_145952_0_.getItem();
 
             if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
             {
@@ -490,29 +494,29 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
                 if (block == Blocks.wooden_slab)
                 {
-                    return 15;
+                    return 150;
                 }
 
                 if (block.getMaterial() == Material.wood)
                 {
-                    return 30;
+                    return 300;
                 }
 
                 if (block == Blocks.coal_block)
                 {
-                    return 1600;
+                    return 16000;
                 }
             }
 
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 20;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 20;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 20;
-            if (item == Items.stick) return 10;
-            if (item == Items.coal) return 160;
-            if (item == Items.lava_bucket) return 2000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 10;
-            if (item == Items.blaze_rod) return 240;
-            return GameRegistry.getFuelValue(stack);
+            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
+            if (item == Items.stick) return 100;
+            if (item == Items.coal) return 1600;
+            if (item == Items.lava_bucket) return 20000;
+            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
+            if (item == Items.blaze_rod) return 2400;
+            return GameRegistry.getFuelValue(p_145952_0_);
         }
     }
 
