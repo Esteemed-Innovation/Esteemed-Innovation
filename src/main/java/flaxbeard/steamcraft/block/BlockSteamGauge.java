@@ -25,9 +25,21 @@ public class BlockSteamGauge extends BlockContainer {
     public IIcon front;
     public IIcon back;
     public IIcon top;
-
+    
 	public BlockSteamGauge() {
 		super(Material.iron);
+	}
+	
+	public boolean hasComparatorInputOverride(){
+		return true;
+	}
+	
+	public int getComparatorInputOverride(World world, int x, int y, int z, int meta){
+		TileEntity te = world.getTileEntity(x, y, z);
+		if (te != null && te instanceof TileEntitySteamGauge){
+			return ((TileEntitySteamGauge)te).getComparatorOutput();
+		}
+		return 0;
 	}
 	
 	@Override
