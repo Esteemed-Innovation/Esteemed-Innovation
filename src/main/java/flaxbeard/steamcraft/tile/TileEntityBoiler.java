@@ -37,6 +37,7 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
 	public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
 	public int steam;
+	public final float pressureResistance = 0.8F;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
 	public int furnaceCookTime;
@@ -488,6 +489,12 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 	@Override
 	public boolean acceptsGauge(ForgeDirection face) {
 		return face != ForgeDirection.UP;
+	}
+
+
+	@Override
+	public void explode() {
+		this.steam = 0;
 	}
 
 }

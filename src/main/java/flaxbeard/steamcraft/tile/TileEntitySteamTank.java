@@ -103,4 +103,5 @@ public class TileEntitySteamTank extends TileEntity implements ISteamTransporter
 		return true;
 	}
 
+	public void explode(){ this.steam = 0;}
 }

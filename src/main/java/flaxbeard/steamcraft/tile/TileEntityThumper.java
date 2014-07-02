@@ -211,5 +211,5 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 	public boolean acceptsGauge(ForgeDirection face) {
 		return false;
 	}
-
+	public void explode(){ this.steam = 0;}
 }

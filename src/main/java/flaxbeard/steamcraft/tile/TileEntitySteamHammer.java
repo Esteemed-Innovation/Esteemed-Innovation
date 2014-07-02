@@ -320,5 +320,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
 	public boolean acceptsGauge(ForgeDirection face) {
 		return false;
 	}
+	
+	public void explode(){ this.steam = 0;}
 
 }

@@ -205,4 +205,6 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	public boolean acceptsGauge(ForgeDirection face) {
 		return false;
 	}
+	
+	public void explode(){ this.steam = 0; }
 }

@@ -232,5 +232,7 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	public boolean acceptsGauge(ForgeDirection face) {
 		return face != ForgeDirection.UP && face != ForgeDirection.DOWN;
 	}
+	
+	public void explode(){ this.steam = 0;}
 
 }

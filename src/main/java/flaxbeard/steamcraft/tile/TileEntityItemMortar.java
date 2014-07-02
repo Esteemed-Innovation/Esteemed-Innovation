@@ -256,4 +256,7 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 		return true;
 	}
 
+	public void explode(){
+		this.steam = 0;
+	}
 }

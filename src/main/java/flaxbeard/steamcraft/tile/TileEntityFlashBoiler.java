@@ -40,6 +40,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public int steam;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
+    public final float pressureResistance = 1.0F;
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
@@ -47,6 +48,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
+    private boolean shouldExplode = false;
     
     private boolean waitOneTick = true;
     
@@ -376,8 +378,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 	
 	public void updateEntity(){
-		
-		System.out.println(this.getFront());
+		if (this.shouldExplode){
+			worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
+			return;
+		}
+		//System.out.println(this.getFront());
 		if (waitOneTick)
 			waitOneTick = false;
 		else {
@@ -465,7 +470,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    {
 	                    	int i = 0;
 	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)this.heat/1600.0F)));
-	                    	System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
+	                    	//System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
 	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
 	                    		this.steam+=1;
 	                    		this.myTank.drain(2, true);
@@ -839,5 +844,21 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? new FluidTankInfo[] { new FluidTankInfo(myTank) } : worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
+	}
+	
+	public void explode(){
+		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
+		for (int pos = 0; pos < cluster.length; pos++){
+			int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
+			if (!(x==xCoord && y==yCoord && z==zCoord)){
+				TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
+				if (otherBoiler != null) otherBoiler.secondaryExplosion();
+			}
+		}
+	}
+	
+	public void secondaryExplosion(){
+		this.shouldExplode = true;
 	}
 }
