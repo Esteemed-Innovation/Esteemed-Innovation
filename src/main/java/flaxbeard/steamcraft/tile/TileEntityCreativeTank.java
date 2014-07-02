@@ -4,12 +4,12 @@ package flaxbeard.steamcraft.tile;
 public class TileEntityCreativeTank extends TileEntitySteamTank {
 	@Override
 	public int getSteam() {
-		return (int) (90001*1.2);
+		return (int) (90001);
 	}
 	
 	@Override
 	public float getPressure() {
-		return 1.2F;
+		return 1.0F;
 	}
 	
 	@Override
