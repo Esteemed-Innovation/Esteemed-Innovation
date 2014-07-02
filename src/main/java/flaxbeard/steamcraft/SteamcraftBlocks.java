@@ -135,10 +135,10 @@ public class SteamcraftBlocks {
 		itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(itemMortar, "itemMortar");
 		
-		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter");
+		meter = new BlockSteamGauge().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:meter").setHardness(1.0F);
 		GameRegistry.registerBlock(meter, "meter");
 		
-		ruptureDisc = new BlockRuptureDisc().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ruptureDisc");
+		ruptureDisc = new BlockRuptureDisc().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ruptureDisc").setHardness(1.0F);
 		GameRegistry.registerBlock(ruptureDisc, BlockRuptureDiscItem.class, "ruptureDisc");
 		
 		thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);

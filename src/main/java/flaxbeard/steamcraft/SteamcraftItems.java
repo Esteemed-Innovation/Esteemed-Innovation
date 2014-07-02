@@ -127,12 +127,12 @@ public class SteamcraftItems {
 		spyglass = new ItemSpyglass().setUnlocalizedName("steamcraft:spyglass").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:spyglass");
 		GameRegistry.registerItem(spyglass, "spyglass");
 		SteamcraftRegistry.registerEnhancement((IEnhancement) spyglass);
-		enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
-		GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
-		SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
-		enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
-		GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
-		SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+		//enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
+		//GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
+	//	SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
+	//	enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
+		//GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
+		//SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
 		
 	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
 		GameRegistry.registerItem(jetpack, "jetpack");
@@ -144,8 +144,8 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(thrusters, "thrusters");
 		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
 		GameRegistry.registerItem(fallAssist, "fallAssist");
-	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
-		GameRegistry.registerItem(doubleJump, "doubleJump");
+	 	//doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+		//GameRegistry.registerItem(doubleJump, "doubleJump");
 		
 	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 		GameRegistry.registerItem(astrolabe, "astrolabe");
