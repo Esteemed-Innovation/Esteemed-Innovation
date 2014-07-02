@@ -32,7 +32,7 @@ public class TileEntitySteamGauge extends TileEntity {
 		}
 	}
 	
-	private float getPressure(){
+	public float getPressure(){
 		ForgeDirection d = myDir().getOpposite();
 		ISteamTransporter source = null;
 		TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord+ d.offsetZ);
@@ -45,7 +45,7 @@ public class TileEntitySteamGauge extends TileEntity {
 	
 	public int getComparatorOutput(){
 		int out = (int)(15 * (100*((double)getPressure() * 0.01D) ));
-		System.out.println(out);
+		//System.out.println(out);
 		return out;
 	}
 	
