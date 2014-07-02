@@ -846,7 +846,26 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? new FluidTankInfo[] { new FluidTankInfo(myTank) } : worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
 	}
 	
+	@Override
 	public void explode(){
+		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 4){ // Only the top layer can distribute, just like the boiler.
+			if (!isInCluster(xCoord-1, yCoord, zCoord)){
+				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.WEST });
+			}
+			if (!isInCluster(xCoord + 1, yCoord, zCoord)){
+				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.EAST });
+			}
+			if (!isInCluster(xCoord, yCoord, zCoord - 1)){
+				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.NORTH });
+			}
+			if (!isInCluster(xCoord, yCoord, zCoord + 1)){
+				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.SOUTH });
+			}
+			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
+	    	
+		}
+		
+		
 		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)worldObj.getTileEntity(xCoord, yCoord, zCoord);
 		int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
 		for (int pos = 0; pos < cluster.length; pos++){

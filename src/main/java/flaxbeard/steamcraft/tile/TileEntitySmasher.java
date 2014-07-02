@@ -430,6 +430,17 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 		return ForgeDirection.NORTH;
 	}
 	
-	public void explode(){ this.steam = 0;}
+	public void explode(){
+		ForgeDirection[] directions = new ForgeDirection[5];
+		int i = 0;
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (direction != myDir() && direction != ForgeDirection.UP) {
+				directions[i] = direction;
+				i++;
+			}
+		}
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
+		this.steam = 0;
+	}
 
 }

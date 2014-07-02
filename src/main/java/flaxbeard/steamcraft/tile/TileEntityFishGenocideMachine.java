@@ -160,6 +160,8 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
 	}
 	
 	public void explode(){
+		ForgeDirection[] distr = { ForgeDirection.UP, ForgeDirection.DOWN };
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,distr);
 		this.steam = 0;
 	}
 }

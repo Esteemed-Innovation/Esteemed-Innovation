@@ -175,4 +175,20 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		this.turning = true;
 		this.turnTicks = 0;
 	}
+	
+	@Override
+	public void explode() {
+		ForgeDirection myDir = dir();
+		ForgeDirection[] directions = new ForgeDirection[6];
+		int i = 0;
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (direction != myDir) {
+				directions[i] = direction;
+				i++;
+			}
+		}
+		if (open) {
+			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
+		}
+	}
 }

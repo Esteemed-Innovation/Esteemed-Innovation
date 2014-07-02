@@ -321,6 +321,24 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
 		return false;
 	}
 	
-	public void explode(){ this.steam = 0;}
+	public void explode(){
+		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		if (meta == 0) {
+			dir = ForgeDirection.SOUTH;
+		}
+		if (meta == 1) {
+			dir = ForgeDirection.WEST;
+		}
+		if (meta == 2) {
+			dir = ForgeDirection.NORTH;
+		}
+		if (meta == 3) {
+			dir = ForgeDirection.EAST;
+		}
+		ForgeDirection[] dirs = { dir.getOpposite() };
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
+		this.steam = 0;
+	}
 
 }

@@ -233,6 +233,10 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 		return face != ForgeDirection.UP && face != ForgeDirection.DOWN;
 	}
 	
-	public void explode(){ this.steam = 0;}
+	public void explode(){
+		ForgeDirection[] dirs = { ForgeDirection.DOWN };
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
+		this.steam = 0;
+	}
 
 }

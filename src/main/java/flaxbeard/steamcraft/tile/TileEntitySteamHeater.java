@@ -256,6 +256,19 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 		}
 	}
 	
-	public void explode(){ this.steam = 0;}
+	public void explode(){
+		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		ForgeDirection[] directions = new ForgeDirection[6];
+		int i = 0;
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (direction != dir) {
+				directions[i] = direction;
+				i++;
+			}
+		}
+		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
+		this.steam = 0;
+	}
 
 }
