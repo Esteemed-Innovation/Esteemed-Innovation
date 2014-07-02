@@ -250,7 +250,7 @@ public class SteamcraftEventHandler {
 			if (Loader.isModLoaded("Baubles")) {
 				if (player.getHeldItem() != null && BaublesIntegration.checkForSurvivalist(player)) {
 					if (player.getHeldItem().getItem() instanceof ItemTool) {
-						if (player.getHeldItem().getItemDamage() == player.getHeldItem().getMaxDamage()) {
+						if (player.getHeldItem().getItemDamage() <= player.getHeldItem().getMaxDamage() - 1) {
 
 							event.newSpeed = 0.0F;
 						}
@@ -260,12 +260,10 @@ public class SteamcraftEventHandler {
 			}
 			else if (player.getHeldItem() != null && hasItemInHotbar(player, SteamcraftItems.survivalist)) {
 				if (player.getHeldItem().getItem() instanceof ItemTool) {
-					if (player.getHeldItem().getItemDamage() == player.getHeldItem().getMaxDamage()) {
-
+					if (player.getHeldItem().getItemDamage() <= player.getHeldItem().getMaxDamage() - 1) {
 						event.newSpeed = 0.0F;
 					}
 				}
-			
 			}
 			if (player.getHeldItem() != null) {
 				if (player.getHeldItem().getItem() instanceof ItemSteamDrill) {
