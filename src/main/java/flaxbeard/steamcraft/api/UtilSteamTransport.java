@@ -10,6 +10,14 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 
 public class UtilSteamTransport {
+	
+	private static String[] boom  = new String[]{
+			"It can't withstand that kind of pressure!",
+			"She's holding all she can, cap'n!",
+			"Your pipes asplode",
+			"Boom!"
+	};
+	
 	public static void generalPressureEvent(World world, int x, int y, int z, float pressure, int capacity) {
 		if (pressure > 1.2F) {
 			ISteamTransporter trans = (ISteamTransporter) world.getTileEntity(x, y, z);
@@ -17,9 +25,10 @@ public class UtilSteamTransport {
 			int steam = trans.getSteam();
 			int oneInX = Math.max(1, (int)Math.floor((double)(500.0F  - (pressure / (1.1F + resistance) * 100)) ));
 			//System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
-			System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
+			//System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
 			if (oneInX <= 1 ||  world.rand.nextInt(oneInX - 1) == 0) {
-				System.out.println("boom!");
+				
+				System.out.println("FSP: "+boom[world.rand.nextInt(boom.length)]);
 				trans.explode();
 				world.createExplosion(null, x+0.5F, y+0.5F, z+0.5F, 4.0F, true);
 			}

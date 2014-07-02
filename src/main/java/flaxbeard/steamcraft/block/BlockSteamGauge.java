@@ -155,14 +155,25 @@ public class BlockSteamGauge extends BlockContainer {
         return Steamcraft.gaugeRenderID;
     }
     
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf){
-    	TileEntitySteamGauge gauge = (TileEntitySteamGauge)world.getTileEntity(x, y, z);
-    	int pressurePerc = (int)(gauge.getPressure() * 100);
-    	if (world.isRemote){
-    		player.addChatComponentMessage(new ChatComponentText("Current pressure: "+pressurePerc+"%"));
-    	}
-    	
-    	return true;
-    }
+//    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf){
+//    	TileEntitySteamGauge gauge = (TileEntitySteamGauge)world.getTileEntity(x, y, z);
+//    	int pressurePerc = (int)(gauge.getPressure() * 100);
+//    	if (world.isRemote){
+//    		String color = "";
+//    		
+//    		if (pressurePerc > 120){
+//    			color = "§4";
+//    		} else if (pressurePerc > 115){
+//    			color = "§c";
+//    		} else if (pressurePerc > 100){
+//    			color = "§e";
+//    		}
+//    		
+//    		player.addChatComponentMessage(new ChatComponentText(color+"Current pressure: "+pressurePerc+"%"));
+//    			
+//    	}
+//    	
+//    	return true;
+//    }
     
 }
