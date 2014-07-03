@@ -237,6 +237,8 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 			}
 			this.inventory[0] = null;
 		}
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 	}
 
 }

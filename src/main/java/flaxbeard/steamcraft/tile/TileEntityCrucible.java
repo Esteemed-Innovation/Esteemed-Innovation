@@ -192,6 +192,8 @@ public class TileEntityCrucible extends TileEntity {
 				}
 			}
 		}
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 	}
 	
 	public int getFill() {
