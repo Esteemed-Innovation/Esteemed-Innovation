@@ -57,6 +57,12 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
 		
+		SteamcraftRegistry.registerSmeltThingOredict("dustTinyGold", liquidGold, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("dustTinyIron", liquidIron, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("dustTinyZinc", liquidZinc, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("dustTinyCopper", liquidCopper, 1);
+		SteamcraftRegistry.registerSmeltThingOredict("dustTinyBrass", liquidBrass, 1);
+		
 		SteamcraftRegistry.registerSmeltThingOredict("plateGold", liquidGold, 6);
 		SteamcraftRegistry.registerSmeltThingOredict("plateIron", liquidIron, 6);
 		SteamcraftRegistry.registerSmeltThingOredict("plateZinc", liquidZinc, 6);
