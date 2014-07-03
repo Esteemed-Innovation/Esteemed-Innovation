@@ -1,0 +1,451 @@
+****************************
+ Powered By MCP:            
+ http://mcp.ocean-labs.de/  
+ Searge, ProfMobius, Fesh0r,
+ R4wk, ZeuX, IngisKahn      
+ MCP Data version : unknown
+****************************
+:compileApiJava UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:sourceMainJava
+:compileJavawarning: [options] bootstrap class path not set in conjunction with -source 1.6
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BaublesIntegration.java:8: error: package baubles.api does not exist
+import baubles.api.BaubleType;
+                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BaublesIntegration.java:9: error: package baubles.api does not exist
+import baubles.api.BaublesApi;
+                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BotaniaIntegration.java:6: error: package vazkii.botania.common.item does not exist
+import vazkii.botania.common.item.ModItems;
+                                 ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:6: error: package baubles.api does not exist
+import baubles.api.BaubleType;
+                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:7: error: package baubles.api does not exist
+import baubles.api.IBauble;
+                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:9: error: cannot find symbol
+public class ItemBauble extends Item implements IBauble {
+                                                ^
+  symbol: class IBauble
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:10: error: cannot find symbol
+	public BaubleType baubleType;
+	       ^
+  symbol:   class BaubleType
+  location: class ItemBauble
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:12: error: cannot find symbol
+	public ItemBauble(BaubleType t) {
+	                  ^
+  symbol:   class BaubleType
+  location: class ItemBauble
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:18: error: cannot find symbol
+	public BaubleType getBaubleType(ItemStack arg0) {
+	       ^
+  symbol:   class BaubleType
+  location: class ItemBauble
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemThaumcraftPowerSource.java:16: error: package thaumcraft.common.items.wands does not exist
+import thaumcraft.common.items.wands.ItemWandCasting;
+                                    ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:7: error: package thaumcraft.api does not exist
+import thaumcraft.api.ThaumcraftApi;
+                     ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:8: error: package thaumcraft.api does not exist
+import thaumcraft.api.ThaumcraftApiHelper;
+                     ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:9: error: package thaumcraft.api.aspects does not exist
+import thaumcraft.api.aspects.Aspect;
+                             ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:10: error: package thaumcraft.api.aspects does not exist
+import thaumcraft.api.aspects.AspectList;
+                             ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:11: error: package thaumcraft.common.config does not exist
+import thaumcraft.common.config.ConfigItems;
+                               ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\TinkersIntegration.java:9: error: package tconstruct does not exist
+import tconstruct.TConstruct;
+                 ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\TinkersIntegration.java:10: error: package tconstruct.common does not exist
+import tconstruct.common.TRepo;
+                        ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\TinkersIntegration.java:11: error: package tconstruct.library does not exist
+import tconstruct.library.TConstructRegistry;
+                         ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\TinkersIntegration.java:12: error: package tconstruct.library.crafting does not exist
+import tconstruct.library.crafting.CastingRecipe;
+                                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\TinkersIntegration.java:13: error: package tconstruct.library.crafting does not exist
+import tconstruct.library.crafting.LiquidCasting;
+                                  ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:5: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaConfigHandler;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:6: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataAccessor;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:7: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataProvider;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:12: error: cannot find symbol
+public class CrucibleDataProvider implements IWailaDataProvider{
+                                             ^
+  symbol: class IWailaDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:14: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                   ^
+  symbol:   class IWailaDataAccessor
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:14: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                                          ^
+  symbol:   class IWailaConfigHandler
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:27: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:27: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:32: error: cannot find symbol
+	public ItemStack getWailaStack(IWailaDataAccessor da,
+	                               ^
+  symbol:   class IWailaDataAccessor
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:33: error: cannot find symbol
+			IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaConfigHandler
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:39: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\CrucibleDataProvider.java:39: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class CrucibleDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:5: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaConfigHandler;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:6: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataAccessor;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:7: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataProvider;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:14: error: cannot find symbol
+public class MoldDataProvider implements IWailaDataProvider{
+                                         ^
+  symbol: class IWailaDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:16: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                   ^
+  symbol:   class IWailaDataAccessor
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:16: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                                          ^
+  symbol:   class IWailaConfigHandler
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:28: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:28: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:33: error: cannot find symbol
+	public ItemStack getWailaStack(IWailaDataAccessor da,
+	                               ^
+  symbol:   class IWailaDataAccessor
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:34: error: cannot find symbol
+			IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaConfigHandler
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:40: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\MoldDataProvider.java:40: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class MoldDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:5: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaConfigHandler;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:6: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataAccessor;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:7: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaDataProvider;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:16: error: cannot find symbol
+public class SteamTransporterDataProvider implements IWailaDataProvider{
+                                                     ^
+  symbol: class IWailaDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:18: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                   ^
+  symbol:   class IWailaDataAccessor
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:18: error: cannot find symbol
+	public List<String> getWailaBody(ItemStack stack, List<String> tt, IWailaDataAccessor da, IWailaConfigHandler ch) {
+	                                                                                          ^
+  symbol:   class IWailaConfigHandler
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:64: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:64: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler cj) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:69: error: cannot find symbol
+	public ItemStack getWailaStack(IWailaDataAccessor da,
+	                               ^
+  symbol:   class IWailaDataAccessor
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:70: error: cannot find symbol
+			IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaConfigHandler
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:76: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			^
+  symbol:   class IWailaDataAccessor
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\SteamTransporterDataProvider.java:76: error: cannot find symbol
+			IWailaDataAccessor da, IWailaConfigHandler ch) {
+			                       ^
+  symbol:   class IWailaConfigHandler
+  location: class SteamTransporterDataProvider
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\WailaIntegration.java:3: error: package mcp.mobius.waila.api does not exist
+import mcp.mobius.waila.api.IWailaRegistrar;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\waila\WailaIntegration.java:9: error: cannot find symbol
+    public static void callbackRegister(IWailaRegistrar registrar)
+                                        ^
+  symbol:   class IWailaRegistrar
+  location: class WailaIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:10: error: package thaumcraft.api does not exist
+import thaumcraft.api.IGoggles;
+                     ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:11: error: package thaumcraft.api does not exist
+import thaumcraft.api.IVisDiscountGear;
+                     ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:12: error: package thaumcraft.api.aspects does not exist
+import thaumcraft.api.aspects.Aspect;
+                             ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:13: error: package thaumcraft.api.nodes does not exist
+import thaumcraft.api.nodes.IRevealer;
+                           ^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:16: error: cannot find symbol
+public class ItemExosuitArmorThaum extends ItemExosuitArmor implements IRevealer, IGoggles, IVisDiscountGear {
+                                                                       ^
+  symbol: class IRevealer
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:16: error: cannot find symbol
+public class ItemExosuitArmorThaum extends ItemExosuitArmor implements IRevealer, IGoggles, IVisDiscountGear {
+                                                                                  ^
+  symbol: class IGoggles
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:16: error: cannot find symbol
+public class ItemExosuitArmorThaum extends ItemExosuitArmor implements IRevealer, IGoggles, IVisDiscountGear {
+                                                                                            ^
+  symbol: class IVisDiscountGear
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\item\ItemExosuitArmorThaum.java:42: error: cannot find symbol
+	public int getVisDiscount(ItemStack me, EntityPlayer arg1, Aspect arg2) {
+	                                                           ^
+  symbol:   class Aspect
+  location: class ItemExosuitArmorThaum
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BaublesIntegration.java:14: error: cannot find symbol
+		IInventory inventory = BaublesApi.getBaubles(player);
+		                       ^
+  symbol:   variable BaublesApi
+  location: class BaublesIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BaublesIntegration.java:26: error: cannot find symbol
+		return new ItemBauble(BaubleType.BELT).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
+		                      ^
+  symbol:   variable BaubleType
+  location: class BaublesIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\BotaniaIntegration.java:29: error: cannot find symbol
+		return ModItems.twigWand;
+		       ^
+  symbol:   variable ModItems
+  location: class BotaniaIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:17: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:22: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:26: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:30: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:34: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemBauble.java:39: error: method does not override or implement a method from a supertype
+	@Override
+	^
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemThaumcraftPowerSource.java:39: error: cannot find symbol
+				if (wand != null && wand.getItem() instanceof ItemWandCasting) {
+				                                              ^
+  symbol:   class ItemWandCasting
+  location: class ItemThaumcraftPowerSource
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemThaumcraftPowerSource.java:40: error: cannot find symbol
+					ItemWandCasting wandItem = (ItemWandCasting) wand.getItem();
+					^
+  symbol:   class ItemWandCasting
+  location: class ItemThaumcraftPowerSource
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemThaumcraftPowerSource.java:40: error: cannot find symbol
+					ItemWandCasting wandItem = (ItemWandCasting) wand.getItem();
+					                            ^
+  symbol:   class ItemWandCasting
+  location: class ItemThaumcraftPowerSource
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ItemThaumcraftPowerSource.java:99: error: cannot find symbol
+					if (wand != null && wand.getItem() instanceof ItemWandCasting) {
+					                                              ^
+  symbol:   class ItemWandCasting
+  location: class ItemThaumcraftPowerSource
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:27: error: cannot find symbol
+		CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,5), new ItemStack(ConfigItems.itemNugget,1,6), null,105,87,163);
+		                                                                             ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:27: error: cannot find symbol
+		CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,5), new ItemStack(ConfigItems.itemNugget,1,6), null,105,87,163);
+		                                                                                                                                                                              ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:33: error: cannot find symbol
+		        'x',"nuggetBrass", 'g', ConfigItems.itemGoggles));
+		                                ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:41: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:42: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:43: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:44: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHoeThaumium, liquidThaumium, 18);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:45: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemShovelThaumium, liquidThaumium, 9);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:46: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemBootsThaumium, liquidThaumium, 36);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:47: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:48: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:49: error: cannot find symbol
+		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
+		                                     ^
+  symbol:   variable ConfigItems
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:52: error: cannot find symbol
+		AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));
+		^
+  symbol:   class AspectList
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:52: error: cannot find symbol
+		AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));
+		                  ^
+  symbol:   variable ThaumcraftApiHelper
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:54: error: cannot find symbol
+			list = new AspectList();
+			           ^
+  symbol:   class AspectList
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:55: error: cannot find symbol
+			list.add(Aspect.METAL, 2);
+			         ^
+  symbol:   variable Aspect
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:56: error: cannot find symbol
+			ThaumcraftApi.registerObjectTag(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE), list);
+			^
+  symbol:   variable ThaumcraftApi
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:59: error: cannot find symbol
+		list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1));
+		       ^
+  symbol:   variable ThaumcraftApiHelper
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:61: error: cannot find symbol
+			list = new AspectList();
+			           ^
+  symbol:   class AspectList
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:62: error: cannot find symbol
+			list.add(Aspect.METAL, 3);
+			         ^
+  symbol:   variable Aspect
+  location: class ThaumcraftIntegration
+C:\dev\flax\Flaxbeards-Steam-Power\build\sources\java\flaxbeard\steamcraft\integration\ThaumcraftIntegration.java:63: error: cannot find symbol
+			list.add(Aspect.HEAL, 1);
+			         ^
+  symbol:   variable Aspect
+  location: class ThaumcraftIntegration
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+100 errors
+1 warning
+ FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+
+Total time: 2 mins 44.433 secs
