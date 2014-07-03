@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -217,7 +218,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 								try{
 									this.smooshingBlock = worldObj.getBlock(x, y, z);
 									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-									this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
+									this.smooshedStack = new ItemStack(Item.getItemFromBlock(smooshingBlock),1, smooshingMeta);
 								} catch (Exception e){
 									System.out.println("================== WOULD HAVE CRASHED ==================");
 									System.out.println("This smasher's meta: "+this.getBlockMetadata());
