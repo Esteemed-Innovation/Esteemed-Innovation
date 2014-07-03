@@ -1,30 +1,42 @@
 package flaxbeard.steamcraft.handler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -33,9 +45,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.ai.EntityAIFirearmAttack;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.enhancement.IEnhancement;
-import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.data.ChunkScoreWorldData;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -53,6 +65,12 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 
+	@SubscribeEvent
+	public void handleWorldLoad(WorldEvent.Load event) {
+		if (!event.world.isRemote) {
+			ChunkScoreWorldData.get(event.world);
+		}
+	}
 	
 //	@SubscribeEvent
 //	public void handleMobDrop(LivingDropsEvent event) {
@@ -132,7 +150,72 @@ public class SteamcraftEventHandler {
 		}
 	}
 	
+	@SubscribeEvent
+	public void spawnInEvent(EntityJoinWorldEvent event) {
+		if (event.entity instanceof EntitySkeleton && !event.world.isRemote) {
+			Chunk chunk = event.world.getChunkFromBlockCoords(MathHelper.floor_double(event.entity.posX), MathHelper.floor_double(event.entity.posZ));
+			int fspMachines = 0;
+			ChunkScoreWorldData data = ChunkScoreWorldData.get(event.world);
+			fspMachines += data.getScore(new ChunkCoordinates(chunk.xPosition, 0, chunk.zPosition));
+			
+			System.out.println("THERE ARE " + fspMachines + " FSP MACHINES BY THIS MOB");
+		
+			EntitySkeleton mob = (EntitySkeleton) event.entity;
+			if (mob.getHeldItem() != null && mob.getHeldItem().getItem() == Items.bow) {
+				List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
+				for ( Object entry : mob.tasks.taskEntries)
+				{
+					EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
+					if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
+					{
+						tasksToRemove.add((EntityAITaskEntry) entry);
+					}
+				}
+				for (EntityAITaskEntry entry : tasksToRemove)
+				{
+					mob.tasks.removeTask(entry.action);
+				}
+				int rand = mob.worldObj.rand.nextInt(10);
+				if (rand < 2) {
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.blunderbuss));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 5.0F)); 
+
+				}
+				else if (rand < 6) {
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.pistol));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 10.0F)); 
+
+				}
+				else {
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.musket));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 15.0F)); 
+
+				}
+			}
+		}
+	}
 	
+	@SubscribeEvent
+	public void keepYerGoddamnGuns(LivingEvent.LivingUpdateEvent event) {
+		if (event.entity instanceof EntitySkeleton) {
+			EntitySkeleton mob = (EntitySkeleton) event.entity;
+			if (mob.getHeldItem() != null && mob.getHeldItem().getItem() instanceof ItemFirearm) {
+				List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
+				for ( Object entry : mob.tasks.taskEntries)
+				{
+					EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
+					if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
+					{
+						tasksToRemove.add((EntityAITaskEntry) entry);
+					}
+				}
+				for (EntityAITaskEntry entry : tasksToRemove)
+				{
+					mob.tasks.removeTask(entry.action);
+				}
+			}
+		}
+	}
 	
 	@SubscribeEvent
 	public void handleFirePunch(LivingAttackEvent event) {

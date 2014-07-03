@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.enchantment.EnchantmentThorns;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -64,16 +65,16 @@ public class EntityMusketBall extends Entity implements IProjectile
         this.yOffset = 0.0F;
     }
 
-    public EntityMusketBall(World par1World, EntityPlayer par3EntityPlayer, float par3, float par4, float par5, boolean par6)
+    public EntityMusketBall(World par1World, EntityLivingBase rangedAttackEntityHost, float par3, float par4, float par5, boolean par6)
     {
     	
         super(par1World);
         this.damage = par5;
         this.renderDistanceWeight = 10.0D;
-        this.shootingEntity = par3EntityPlayer;
+        this.shootingEntity = rangedAttackEntityHost;
 
         this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(par3EntityPlayer.posX, par3EntityPlayer.posY + (double)par3EntityPlayer.getEyeHeight(), par3EntityPlayer.posZ, par3EntityPlayer.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), par3EntityPlayer.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
+		this.setLocationAndAngles(rangedAttackEntityHost.posX, rangedAttackEntityHost.posY + (double)rangedAttackEntityHost.getEyeHeight(), rangedAttackEntityHost.posZ, rangedAttackEntityHost.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), rangedAttackEntityHost.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
         this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
         this.posY -= 0.10000000149011612D;
         this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
@@ -233,6 +234,9 @@ public class EntityMusketBall extends Entity implements IProjectile
                 if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     var11 = 0.3F;
+                    if (this.shootingEntity instanceof EntityMob) {
+                        var11 = 1.8F;
+                    }
                     AxisAlignedBB var12 = var10.boundingBox.expand((double)var11, (double)var11, (double)var11);
                     MovingObjectPosition var13 = var12.calculateIntercept(var17, var3);
 
