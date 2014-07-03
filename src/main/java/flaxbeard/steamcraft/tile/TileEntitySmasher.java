@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -213,16 +214,18 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 						
 						if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 							this.spinup++;
+							try{
+								this.smooshingBlock = worldObj.getBlock(x, y, z);
+								this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+								this.smooshedStack = new ItemStack(Item.getItemFromBlock(smooshingBlock),1, smooshingMeta);
+							} catch (Exception e){
+								System.out.println("================== WOULD HAVE CRASHED ==================");
+								System.out.println("This smasher's meta: "+this.getBlockMetadata());
+								System.out.println("The block: "+smooshingBlock.getClass().toString());
+								e.printStackTrace();
+							}
 							if (this.getBlockMetadata() % 2 == 0)
-								try{
-									this.smooshingBlock = worldObj.getBlock(x, y, z);
-									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-									this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
-								} catch (Exception e){
-									System.out.println("================== WOULD HAVE CRASHED ==================");
-									System.out.println("This smasher's meta: "+this.getBlockMetadata());
-									e.printStackTrace();
-								}
+								
 								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 						} else {
 							//System.out.println("No block.");
