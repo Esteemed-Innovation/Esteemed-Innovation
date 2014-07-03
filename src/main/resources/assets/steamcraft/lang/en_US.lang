@@ -167,6 +167,12 @@ item.steamcraft:smashedOre.Cobalt.name=Smashed Cobalt Ore
 item.steamcraft:smashedOre.Ardite.name=Smashed Ardite Ore
 item.steamcraft:smashedOre.Cinnabar.name=Smashed Cinnabar Ore
 
+item.steamcraft:smashedOre.PoorIron.name=Smashed Poor Iron Ore
+item.steamcraft:smashedOre.PoorGold.name=Smashed Poor Gold Ore
+item.steamcraft:smashedOre.PoorCopper.name=Smashed Poor Copper Ore
+item.steamcraft:smashedOre.PoorZinc.name=Smashed Poor Zinc Ore
+item.steamcraft:smashedOre.PoorTin.name=Smashed Poor Tin Ore
+
 item.steamcraft:crafting.0.name=Brass Piston
 item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
