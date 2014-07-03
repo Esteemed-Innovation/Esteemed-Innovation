@@ -212,11 +212,11 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 						//System.out.println("SMAAAAASH");
 						
 						if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
-							this.smooshingBlock = worldObj.getBlock(x, y, z);
-							this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-							this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
 							this.spinup++;
 							if (this.getBlockMetadata() % 2 == 0)
+								this.smooshingBlock = worldObj.getBlock(x, y, z);
+							this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+							this.smooshedStack = new ItemStack(smooshingBlock.getItem(worldObj, x, y, z),1, smooshingMeta);
 								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 						} else {
 							//System.out.println("No block.");
