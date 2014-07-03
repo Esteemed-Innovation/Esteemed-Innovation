@@ -63,6 +63,8 @@ public class TileEntityCrucible extends TileEntity {
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         NBTTagList nbttaglist = new NBTTagList();
+        access.setInteger("tipTicks",this.tipTicks);
+        access.setBoolean("tipping", tipping);
 
         for (CrucibleLiquid liquid : this.contents)
         {
@@ -89,6 +91,8 @@ public class TileEntityCrucible extends TileEntity {
 
     	contents = new ArrayList<CrucibleLiquid>();
     	number = new HashMap<CrucibleLiquid,Integer>();
+    	this.tipTicks = access.getInteger("tipTicks");
+    	this.tipping = access.getBoolean("tipping");
     	for (int i = 0; i < nbttaglist.tagCount(); ++i)
     	{
     		NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
