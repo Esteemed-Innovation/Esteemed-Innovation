@@ -31,6 +31,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setBoolean("open", this.open);
+        access.setInteger("changeTicks",this.changeTicks);
         NBTTagCompound nbttagcompound1;
         
 
@@ -57,6 +58,9 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
         this.open = access.getBoolean("open");
+    	this.changeTicks = access.getInteger("changeTicks");
+
+
         if (access.hasKey("inventory"))
         {
         	 this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
@@ -78,6 +82,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     {
         super.readFromNBT(par1NBTTagCompound);
         this.open = par1NBTTagCompound.getBoolean("open");
+
         if (par1NBTTagCompound.hasKey("inventory"))
         {
         	 this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));

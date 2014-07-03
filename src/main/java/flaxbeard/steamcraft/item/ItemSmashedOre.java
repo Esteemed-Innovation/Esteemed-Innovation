@@ -70,7 +70,7 @@ public class ItemSmashedOre extends Item {
 	public void addSmelting(){
 
 		for (int i = 0; i < oreTypes.size(); i++){
-			OreDictionary.registerOre("dust"+oreTypes.get(i).getLeft(), new ItemStack(SteamcraftItems.smashedOre,1,i));
+			OreDictionary.registerOre("dust"+oreTypes.get(i).getRight().getRight(), new ItemStack(SteamcraftItems.smashedOre,1,i));
 			if (OreDictionary.getOres(oreTypes.get(i).getLeft()).size() > 0){
 				ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreTypes.get(i).getLeft()).get(0));
 				GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,i), result, 0.5F);
