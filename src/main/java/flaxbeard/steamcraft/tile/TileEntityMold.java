@@ -71,6 +71,10 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
         	 this.mold[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("mold"));
         }
+        else
+        {
+        	this.mold[0] = null;
+        }
         
 
     }
@@ -92,6 +96,10 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
         {
 
         	 this.mold[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("mold"));
+        }
+        else
+        {
+        	this.mold[0] = null;
         }
         //System.out.println(this.worldObj == null);
         //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -228,7 +236,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 	
 	@Override
 	public void updateEntity() {
-		if (this.changeTicks > 0) {
+		if (this.changeTicks > 0 && !this.worldObj.isRemote) {
 			changeTicks--;
 		}
 		if (open &&  inventory[0] != null && changeTicks < 10) {

@@ -34,8 +34,6 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.enhancement.IEnhancement;
-import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -250,7 +248,7 @@ public class SteamcraftEventHandler {
 			if (Loader.isModLoaded("Baubles")) {
 				if (player.getHeldItem() != null && BaublesIntegration.checkForSurvivalist(player)) {
 					if (player.getHeldItem().getItem() instanceof ItemTool) {
-						if (player.getHeldItem().getItemDamage() <= player.getHeldItem().getMaxDamage() - 1) {
+						if (player.getHeldItem().getItemDamage() >= player.getHeldItem().getMaxDamage() - 1) {
 
 							event.newSpeed = 0.0F;
 						}
@@ -260,7 +258,7 @@ public class SteamcraftEventHandler {
 			}
 			else if (player.getHeldItem() != null && hasItemInHotbar(player, SteamcraftItems.survivalist)) {
 				if (player.getHeldItem().getItem() instanceof ItemTool) {
-					if (player.getHeldItem().getItemDamage() <= player.getHeldItem().getMaxDamage() - 1) {
+					if (player.getHeldItem().getItemDamage() >= player.getHeldItem().getMaxDamage() - 1) {
 						event.newSpeed = 0.0F;
 					}
 				}
@@ -272,7 +270,7 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0 && event.block.isToolEffective("pickaxe", event.metadata)) {
+			    	if (speed > 0 && SteamcraftItems.steamDrill.canHarvestBlock(event.block, player.getHeldItem())) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
