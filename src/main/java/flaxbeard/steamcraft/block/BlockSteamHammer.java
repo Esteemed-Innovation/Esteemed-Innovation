@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 
-public class BlockSteamHammer extends BlockContainer
+public class BlockSteamHammer extends BlockSteamTransporter
 {
     @SideOnly(Side.CLIENT)
 	public IIcon top;

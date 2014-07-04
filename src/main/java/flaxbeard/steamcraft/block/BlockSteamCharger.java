@@ -24,7 +24,7 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
-public class BlockSteamCharger extends BlockContainer
+public class BlockSteamCharger extends BlockSteamTransporter
 {
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)

@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
@@ -171,7 +172,19 @@ public class EntityAIFirearmAttack extends EntityAIBase
     	World worldObj = rangedAttackEntityHost.worldObj;
     	if (rangedAttackEntityHost.getHeldItem().getItem() != null && rangedAttackEntityHost.getHeldItem().getItem() instanceof ItemFirearm) {
     		ItemFirearm gun = (ItemFirearm) rangedAttackEntityHost.getHeldItem().getItem();
-	        EntityMusketBall entityMusketBall = new EntityMusketBall(worldObj, rangedAttackEntityHost, 2.0F, ((0.0F + gun.accuracy)), (gun.damage-worldObj.difficultySetting.getDifficultyId()), true);
+	        float damage = (gun.damage/2.0F);
+	        
+            if (worldObj.difficultySetting == EnumDifficulty.EASY)
+            {
+            	damage = damage / 2.0F + 1.0F;
+            }
+
+            if (worldObj.difficultySetting == EnumDifficulty.HARD)
+            {
+            	damage = damage * 3.0F / 2.0F;
+            }
+	        EntityMusketBall entityMusketBall = new EntityMusketBall(worldObj, rangedAttackEntityHost, 2.0F, ((0.0F + gun.accuracy)), damage, true);
+
 	        worldObj.playSoundAtEntity(rangedAttackEntityHost, "random.explode", ((gun.knockback) * (2F / 5F)), 1.0F / (worldObj.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
             for (int i = 1; i < 16; i++)
             {

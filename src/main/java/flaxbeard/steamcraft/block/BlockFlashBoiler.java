@@ -2,10 +2,7 @@ package flaxbeard.steamcraft.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,9 +19,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
 // Notes:
@@ -36,7 +33,7 @@ import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
 
 
-public class BlockFlashBoiler extends BlockContainer{
+public class BlockFlashBoiler extends BlockSteamTransporter {
 	
 	private final Random rand = new Random();
 	

@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
-public class BlockSteamHeater extends BlockContainer {
+public class BlockSteamHeater extends BlockSteamTransporter {
 	private IIcon iconOn;
 	private IIcon iconOff;
     public BlockSteamHeater() {

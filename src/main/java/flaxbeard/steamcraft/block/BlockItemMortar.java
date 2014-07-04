@@ -17,7 +17,7 @@ import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 
-public class BlockItemMortar extends BlockContainer
+public class BlockItemMortar extends BlockSteamTransporter
 {
 
     public BlockItemMortar()

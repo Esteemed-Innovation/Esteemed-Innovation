@@ -13,13 +13,13 @@ import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -37,6 +37,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -47,10 +48,13 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.ai.EntityAIFirearmAttack;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.data.ChunkScoreWorldData;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
@@ -65,6 +69,13 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 
+	ArrayList<MutablePair<ExosuitSlot,ItemStack>> upgrades = new ArrayList<MutablePair<ExosuitSlot,ItemStack>>();
+
+	public SteamcraftEventHandler() {
+		upgrades.add(upgrade(ExosuitSlot.bodyHand,  new ItemStack(SteamcraftItems.powerFist)));
+		upgrades.add(upgrade(ExosuitSlot.bootsTop, new ItemStack(SteamcraftItems.fallAssist)));
+	}
+	
 	@SubscribeEvent
 	public void handleWorldLoad(WorldEvent.Load event) {
 		if (!event.world.isRemote) {
@@ -156,43 +167,170 @@ public class SteamcraftEventHandler {
 			Chunk chunk = event.world.getChunkFromBlockCoords(MathHelper.floor_double(event.entity.posX), MathHelper.floor_double(event.entity.posZ));
 			int fspMachines = 0;
 			ChunkScoreWorldData data = ChunkScoreWorldData.get(event.world);
-			fspMachines += data.getScore(new ChunkCoordinates(chunk.xPosition, 0, chunk.zPosition));
-			
-			System.out.println("THERE ARE " + fspMachines + " FSP MACHINES BY THIS MOB");
-		
-			EntitySkeleton mob = (EntitySkeleton) event.entity;
-			if (mob.getHeldItem() != null && mob.getHeldItem().getItem() == Items.bow) {
-				List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
-				for ( Object entry : mob.tasks.taskEntries)
-				{
-					EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
-					if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
-					{
-						tasksToRemove.add((EntityAITaskEntry) entry);
-					}
-				}
-				for (EntityAITaskEntry entry : tasksToRemove)
-				{
-					mob.tasks.removeTask(entry.action);
-				}
-				int rand = mob.worldObj.rand.nextInt(10);
-				if (rand < 2) {
-					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.blunderbuss));
-					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 5.0F)); 
-
-				}
-				else if (rand < 6) {
-					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.pistol));
-					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 10.0F)); 
-
-				}
-				else {
-					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.musket));
-					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 15.0F)); 
-
+			for (int z = -3; z<4; z++) {
+				for (int x = -3; x<4; x++) {
+					fspMachines += data.getScore(chunk.xPosition+z,chunk.zPosition+x);
 				}
 			}
+		
+			EntitySkeleton mob = (EntitySkeleton) event.entity;
+			
+			if (fspMachines > 20 && event.world.rand.nextInt(Math.max(4, 28-fspMachines)) == 0) {
+				if (mob.getHeldItem() != null && mob.getHeldItem().getItem() == Items.bow) {
+					List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
+					for ( Object entry : mob.tasks.taskEntries)
+					{
+						EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
+						if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
+						{
+							tasksToRemove.add((EntityAITaskEntry) entry);
+						}
+					}
+					for (EntityAITaskEntry entry : tasksToRemove)
+					{
+						mob.tasks.removeTask(entry.action);
+					}
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.blunderbuss));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 5.0F)); 
+				}
+			}
+			else if (fspMachines > 10 && event.world.rand.nextInt(Math.max(3, 17-fspMachines)) == 0) {
+				if (mob.getHeldItem() != null && mob.getHeldItem().getItem() == Items.bow) {
+					List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
+					for ( Object entry : mob.tasks.taskEntries)
+					{
+						EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
+						if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
+						{
+							tasksToRemove.add((EntityAITaskEntry) entry);
+						}
+					}
+					for (EntityAITaskEntry entry : tasksToRemove)
+					{
+						mob.tasks.removeTask(entry.action);
+					}
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.musket));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 15.0F)); 
+				}
+			}
+			else if (fspMachines > 5 && event.world.rand.nextInt(Math.max(fspMachines > 10 ? 2 : 3, 10-fspMachines)) == 0) {
+				if (mob.getHeldItem() != null && mob.getHeldItem().getItem() == Items.bow) {
+					List<EntityAITaskEntry> tasksToRemove = new ArrayList<EntityAITaskEntry>();
+					for ( Object entry : mob.tasks.taskEntries)
+					{
+						EntityAITaskEntry entry2 = (EntityAITaskEntry)entry;
+						if (entry2.action instanceof EntityAIArrowAttack || entry2.action instanceof EntityAIAttackOnCollide)
+						{
+							tasksToRemove.add((EntityAITaskEntry) entry);
+						}
+					}
+					for (EntityAITaskEntry entry : tasksToRemove)
+					{
+						mob.tasks.removeTask(entry.action);
+					}
+					mob.setCurrentItemOrArmor(0, new ItemStack(SteamcraftItems.pistol));
+					mob.tasks.addTask(4, new EntityAIFirearmAttack(mob, 1.0D, 20, 10, 10.0F)); 
+				}
+			}
+			
 		}
+		
+		if (event.entity instanceof EntityZombie && !event.world.isRemote) {
+			Chunk chunk = event.world.getChunkFromBlockCoords(MathHelper.floor_double(event.entity.posX), MathHelper.floor_double(event.entity.posZ));
+			int fspMachines = 0;
+			ChunkScoreWorldData data = ChunkScoreWorldData.get(event.world);
+			for (int z = -3; z<4; z++) {
+				for (int x = -3; x<4; x++) {
+					fspMachines += data.getScore(chunk.xPosition+z,chunk.zPosition+x);
+				}
+			}
+		
+
+			System.out.println("THERE ARE " + fspMachines + " FSP MACHINES BY THIS MOB");
+		
+			EntityZombie mob = (EntityZombie) event.entity;
+			if (fspMachines > 15 && event.world.rand.nextInt(Math.max(2, 22-fspMachines)) == 0) {
+				ItemStack armor = new ItemStack(SteamcraftItems.exoArmorBody);
+				mob.setCurrentItemOrArmor(3, armor);
+				MutablePair<ExosuitSlot,ItemStack> upgrade = null;
+				int rand = mob.worldObj.rand.nextInt(3);
+				switch (rand) {
+				case 0:
+					mob.setCurrentItemOrArmor(1, new ItemStack(SteamcraftItems.exoArmorFeet));
+					break;
+				case 1:
+					mob.setCurrentItemOrArmor(2, new ItemStack(SteamcraftItems.exoArmorLegs));
+					break;
+				case 2:
+					mob.setCurrentItemOrArmor(2, new ItemStack(SteamcraftItems.exoArmorHead));
+					break;
+				}
+				while (upgrade == null || mob.getEquipmentInSlot(4-upgrade.left.armor) == null || !(mob.getEquipmentInSlot(4-upgrade.left.armor).getItem() instanceof ItemExosuitArmor) || ((ItemExosuitArmor)mob.getEquipmentInSlot(4-upgrade.left.armor).getItem()).getStackInSlot(mob.getEquipmentInSlot(4-upgrade.left.armor), upgrade.left.slot) != null) {
+					upgrade = upgrades.get(mob.worldObj.rand.nextInt(upgrades.size()-1));
+				}
+
+				ItemStack targetStack = mob.getEquipmentInSlot(4-upgrade.left.armor);
+				((ItemExosuitArmor)targetStack.getItem()).setInventorySlotContents(targetStack, upgrade.left.slot, upgrade.right);
+				mob.setCurrentItemOrArmor(4-upgrade.left.armor, targetStack);
+				
+				if (mob.worldObj.rand.nextBoolean()) {
+					ItemStack setItem = null;
+					ExosuitPlate[] options = SteamcraftRegistry.plates.values().toArray(new ExosuitPlate[0]);
+					ExosuitPlate plate = options[mob.worldObj.rand.nextInt(options.length-1)];
+					if (plate.getItem() instanceof Item) {
+						setItem = new ItemStack((Item)plate.getItem());
+					}
+					if (plate.getItem() instanceof String) {
+
+						setItem = OreDictionary.getOres((String)plate.getItem()).get(0);
+					}
+					for (int i = 1; i<4; i++) {
+						if (mob.getEquipmentInSlot(i) != null && mob.getEquipmentInSlot(i).getItem() instanceof ItemExosuitArmor && setItem != null) {
+
+							targetStack = mob.getEquipmentInSlot(i);
+							((ItemExosuitArmor)targetStack.getItem()).setInventorySlotContents(targetStack, 1, setItem);
+						}
+					}
+				}
+			}
+			else 
+			if (fspMachines > 10 && event.world.rand.nextInt(Math.max(fspMachines > 15 ? 2 : 3, 17-fspMachines)) == 0) {
+				ItemStack armor = new ItemStack(SteamcraftItems.exoArmorBody);
+				mob.setCurrentItemOrArmor(3, armor);
+				MutablePair<ExosuitSlot,ItemStack> upgrade = null;
+				while (upgrade == null || mob.getEquipmentInSlot(4-upgrade.left.armor) == null || !(mob.getEquipmentInSlot(4-upgrade.left.armor).getItem() instanceof ItemExosuitArmor) || ((ItemExosuitArmor)mob.getEquipmentInSlot(4-upgrade.left.armor).getItem()).getStackInSlot(mob.getEquipmentInSlot(4-upgrade.left.armor), upgrade.left.slot) != null) {
+					upgrade = upgrades.get(mob.worldObj.rand.nextInt(upgrades.size()-1));
+				}
+				System.out.println(upgrade.right.toString());
+
+				ItemStack targetStack = mob.getEquipmentInSlot(4-upgrade.left.armor);
+				((ItemExosuitArmor)targetStack.getItem()).setInventorySlotContents(targetStack, upgrade.left.slot, upgrade.right);
+				mob.setCurrentItemOrArmor(4-upgrade.left.armor, targetStack);
+				
+				if (mob.worldObj.rand.nextBoolean()) {
+					ItemStack setItem = null;
+					ExosuitPlate[] options = SteamcraftRegistry.plates.values().toArray(new ExosuitPlate[0]);
+					ExosuitPlate plate = options[options.length-1];
+					if (plate.getItem() instanceof Item) {
+						setItem = new ItemStack((Item)plate.getItem());
+					}
+					if (plate.getItem() instanceof String) {
+						setItem = OreDictionary.getOres((String)plate.getItem()).get(0);
+					}
+					for (int i = 1; i<4; i++) {
+						if (mob.getEquipmentInSlot(i) != null && mob.getEquipmentInSlot(i).getItem() instanceof ItemExosuitArmor && setItem != null) {
+
+							targetStack = mob.getEquipmentInSlot(i);
+							((ItemExosuitArmor)targetStack.getItem()).setInventorySlotContents(targetStack, 1, setItem);
+						}
+					}
+				}
+			}	
+		}
+	}
+	
+	public MutablePair<ItemExosuitArmor.ExosuitSlot,ItemStack> upgrade(ItemExosuitArmor.ExosuitSlot slot,ItemStack stack) {
+		return MutablePair.of(slot, stack);
 	}
 	
 	@SubscribeEvent
@@ -223,8 +361,11 @@ public class SteamcraftEventHandler {
 
 			EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
 			boolean hasPower = hasPower(entity,5);
+			System.out.println(hasPower);
+
 			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getHeldItem() == null) {
 				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+
 				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.powerFist)) {
 			        entity.worldObj.playSoundEffect(entity.posX, entity.posY, entity.posZ, "random.explode", 4.0F, (1.0F + (entity.worldObj.rand.nextFloat() - entity.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
 					event.entityLiving.motionX += 3.0F*entity.getLookVec().normalize().xCoord;
@@ -528,13 +669,25 @@ public class SteamcraftEventHandler {
 //	}
 	
 	public static boolean hasPower(EntityLivingBase entityLiving, int i) {
-		if (entityLiving.getEquipmentInSlot(3) != null) {
-			ItemStack stack = entityLiving.getEquipmentInSlot(3);
-			if (stack.getItem() instanceof ItemExosuitArmor) {
-				return ((ItemExosuitArmor)stack.getItem()).hasPower(stack, i);
+		if (entityLiving instanceof EntityPlayer) {
+			if (entityLiving.getEquipmentInSlot(3) != null) {
+				ItemStack stack = entityLiving.getEquipmentInSlot(3);
+				if (stack.getItem() instanceof ItemExosuitArmor) {
+					return ((ItemExosuitArmor)stack.getItem()).hasPower(stack, i);
+				}
 			}
+			return false;
 		}
-		return false;
+		else
+		{
+			if (entityLiving.getEquipmentInSlot(3) != null) {
+				ItemStack stack = entityLiving.getEquipmentInSlot(3);
+				if (stack.getItem() instanceof ItemExosuitArmor) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 	
 	public int getExoArmor(EntityLivingBase entityLiving) {

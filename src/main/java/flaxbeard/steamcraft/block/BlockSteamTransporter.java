@@ -25,7 +25,7 @@ public class BlockSteamTransporter extends BlockContainer {
     {
 		ChunkScoreWorldData data = ChunkScoreWorldData.get(world);
 		Chunk c = world.getChunkFromBlockCoords(x, z);
-		data.down(data, new ChunkCoordinates(c.xPosition, 0, c.zPosition));
+		data.down(c.xPosition,c.zPosition);
         world.perWorldStorage.saveAllData();
 
 		super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
@@ -36,7 +36,7 @@ public class BlockSteamTransporter extends BlockContainer {
     {
 		ChunkScoreWorldData data = ChunkScoreWorldData.get(world);
 		Chunk c = world.getChunkFromBlockCoords(x, z);
-		data.up(data, new ChunkCoordinates(c.xPosition, 0, c.zPosition));
+		data.up(c.xPosition,c.zPosition);
         world.perWorldStorage.saveAllData();
 
 		super.onBlockAdded(world, x, y, z);

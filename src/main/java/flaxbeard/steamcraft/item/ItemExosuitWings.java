@@ -35,6 +35,8 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderModel(ModelExosuit model, Entity entity, int armor, float size, ItemStack me) {
+		System.out.println("D");
+
 		if (armor == 1) {
 			int ticks = getTicks(entity);
 			Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);

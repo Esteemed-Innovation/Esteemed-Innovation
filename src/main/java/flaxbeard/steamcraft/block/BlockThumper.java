@@ -19,7 +19,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 
-public class BlockThumper extends BlockContainer {
+public class BlockThumper extends BlockSteamTransporter {
 
 	public BlockThumper() {
 		super(Material.iron);

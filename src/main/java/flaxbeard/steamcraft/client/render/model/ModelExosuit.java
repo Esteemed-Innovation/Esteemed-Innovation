@@ -7,9 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
@@ -18,7 +20,6 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 public class ModelExosuit extends ModelBiped {
 	private ResourceLocation texture;
 	private boolean hasOverlay;
-	private static final ModelPointer model = new ModelPointer();
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
 	
 	private int armor;
@@ -60,7 +61,6 @@ public class ModelExosuit extends ModelBiped {
 		this.bipedRightLeg.render(par7);
 		this.bipedLeftLeg.render(par7);
 		this.bipedHeadwear.render(par7);
-		
 		if (hasOverlay) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			this.bipedHead.render(par7);
@@ -97,6 +97,7 @@ public class ModelExosuit extends ModelBiped {
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
 		EntityLivingBase living = (EntityLivingBase) par7Entity;
+
     	isSneak = living != null ? living.isSneaking() : false;
         if(living != null && living instanceof EntityPlayer) {
         	EntityPlayer player = (EntityPlayer) living;
@@ -113,6 +114,23 @@ public class ModelExosuit extends ModelBiped {
                    aimedBow = true;
             }
         }
+        
     	super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
+		if (living instanceof EntityZombie) {
+	        float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
+	        float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+	        this.bipedRightArm.rotateAngleZ = 0.0F;
+	        this.bipedLeftArm.rotateAngleZ = 0.0F;
+	        this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
+	        this.bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F;
+	        this.bipedRightArm.rotateAngleX = -((float)Math.PI / 2F);
+	        this.bipedLeftArm.rotateAngleX = -((float)Math.PI / 2F);
+	        this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+	        this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+	        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+	        this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
+	        this.bipedRightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
+	        this.bipedLeftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
+		}
     }
 }

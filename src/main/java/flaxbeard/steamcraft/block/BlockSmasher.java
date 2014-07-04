@@ -17,7 +17,7 @@ import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
 
 
-public class BlockSmasher extends BlockContainer {
+public class BlockSmasher extends BlockSteamTransporter {
 	
 	@SideOnly(Side.CLIENT)
 	public IIcon frontIcon;
