@@ -2,3 +2,6 @@
 .gradle
 .gitignore
 *~
+/libs
+/build
+/archive
