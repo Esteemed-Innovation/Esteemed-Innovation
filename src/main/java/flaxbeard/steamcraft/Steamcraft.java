@@ -5,6 +5,8 @@ package flaxbeard.steamcraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -54,6 +56,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
+import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = "1.0.0", dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
@@ -76,7 +79,7 @@ public class Steamcraft {
 	public static int ruptureDiscRenderID;
 
     public static boolean steamRegistered;
-    
+    public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType)EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
 
@@ -93,6 +96,9 @@ public class Steamcraft {
 		SteamcraftItems.registerItems();
 		
 		GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
+		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE,6,75,4,43));
+		}
 
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);

@@ -49,7 +49,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
 				int x = i + random.nextInt(16);
 				int y = random.nextInt(75);
 				int z = j + random.nextInt(16);
-				(new WorldGenMinable(SteamcraftBlocks.steamcraftOre,1, 5,Blocks.stone)).generate(world, random, x, y, z);
+				(new WorldGenMinable(SteamcraftBlocks.steamcraftOre,1, 7,Blocks.stone)).generate(world, random, x, y, z);
 			}
 		}
 	}
