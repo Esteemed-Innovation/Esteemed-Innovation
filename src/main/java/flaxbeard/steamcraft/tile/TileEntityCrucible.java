@@ -115,7 +115,7 @@ public class TileEntityCrucible extends TileEntity {
 	@Override
 	public void updateEntity() {
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		if (this.tipping) {
+		if (this.tipping && !this.worldObj.isRemote) {
 			this.tipTicks++;
 			if (this.tipTicks == 45) {
 				
