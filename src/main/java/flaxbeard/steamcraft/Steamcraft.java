@@ -96,9 +96,7 @@ public class Steamcraft {
 		SteamcraftItems.registerItems();
 		
 		GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
-		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
-			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE,6,75,4,43));
-		}
+
 
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
@@ -154,6 +152,9 @@ public class Steamcraft {
 		SteamcraftRecipes.registerRecipes();
 
         FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
+		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE,8, 70, 3, 29));
+		}
 	}
 	
 	
