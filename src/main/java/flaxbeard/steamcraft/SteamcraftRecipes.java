@@ -302,9 +302,9 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("wings2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wings), "xxx", "ccc", "c c" ,
 		        'x',"plateBrass", 'c', "plateCopper"));
 		
-		BookRecipeRegistry.addRecipe("powerFist1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.powerFist), "i b", "ipb", "i b" ,
+		BookRecipeRegistry.addRecipe("powerFist1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.powerFist), "b i", "bpi", "b i" ,
 		        'i',"ingotIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "nuggetBrass"));
-		BookRecipeRegistry.addRecipe("powerFist2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.powerFist), "i b", "ipb", "i b" ,
+		BookRecipeRegistry.addRecipe("powerFist2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.powerFist), "b i", "bpi", "b i" ,
 		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "nuggetBrass"));
 		
 		BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
