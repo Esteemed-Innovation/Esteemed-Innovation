@@ -247,6 +247,7 @@ tile.steamcraft:boiler.name=Boiler
 tile.steamcraft:heater.name=Steam Heater
 tile.steamcraft:ore.0.name=Copper Ore
 tile.steamcraft:ore.1.name=Zinc Ore
+tile.steamcraft:ore.2.name=Poor Zinc Ore
 tile.steamcraft:carving.name=Carving Table
 tile.steamcraft:engineering.name=Engineering Table
 tile.steamcraft:tank.0.name=Steam Tank

@@ -48,7 +48,7 @@ public class PoorOreGeneratorZinc {
  
     @SubscribeEvent
     public void generate(OreGenEvent.Post event) {
- 
+
         World world = event.world;
         Random rand = event.rand;
         int worldX = event.worldX;
@@ -65,7 +65,7 @@ public class PoorOreGeneratorZinc {
             noise = new NoiseGenSimplex(new Random(seed), scale);
             noiseMap.put(world, noise);
         }
- 
+
         if (canGen(world, rand, worldX, worldZ))
             for (int i = 0; i < 32; i++) {
                 int x = worldX + rand.nextInt(16);
