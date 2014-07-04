@@ -19,6 +19,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	public FluidTank myTank = new FluidTank(1000);
 	public int progress = 0;
 	public int steam = 0;
+	public int rotateTicks = 0;
 	
 	
 	@Override
@@ -145,6 +146,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 		}
 		if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
 			progress++;
+			rotateTicks++;
 		}
 		ForgeDirection outputDir = this.getOutputDirection();
 		int x2 = this.xCoord + outputDir.offsetX;
