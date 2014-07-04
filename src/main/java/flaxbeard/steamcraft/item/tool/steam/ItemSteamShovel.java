@@ -118,7 +118,6 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	    		stack.damageItem(3, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
-			System.out.println(speed);
 		}
     	return stack;
     }

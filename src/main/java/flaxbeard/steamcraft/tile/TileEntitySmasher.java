@@ -1,11 +1,14 @@
 package flaxbeard.steamcraft.tile;
 
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -34,7 +37,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	public Block smooshingBlock;
 	public int smooshingMeta;
 	public int extendedTicks = 0;
-	public ItemStack smooshedStack;
+	public ArrayList<ItemStack> smooshedStack;
 	
 	@Override
     public void readFromNBT(NBTTagCompound access)
@@ -45,6 +48,14 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
     	this.spinup = access.getInteger("spinup");
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
+    	NBTTagList nbttaglist = (NBTTagList) access.getTag("Items");
+        this.smooshedStack = new ArrayList<ItemStack>();
+
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
+            this.smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
+        }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	this.steam = access.getInteger("steam");
     }
@@ -59,6 +70,18 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         access.setInteger("steam", steam);
+        NBTTagList nbttaglist = new NBTTagList();
+
+        if (this.smooshedStack != null) {
+        	for (int i = 0; i < this.smooshedStack.size(); ++i)
+	        {
+	            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+	            this.smooshedStack.get(i).writeToNBT(nbttagcompound1);
+	            nbttaglist.appendTag(nbttagcompound1);
+	        }
+        }
+
+        access.setTag("Items", nbttaglist);
     }
 	
 	@Override
@@ -218,7 +241,8 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 								try{
 									this.smooshingBlock = worldObj.getBlock(x, y, z);
 									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-									this.smooshedStack = new ItemStack(Item.getItemFromBlock(smooshingBlock),1, smooshingMeta);
+		
+									this.smooshedStack = smooshingBlock.getDrops(worldObj, x, y, z, smooshingMeta, 0);
 								} catch (Exception e){
 									System.out.println("================== WOULD HAVE CRASHED ==================");
 									System.out.println("This smasher's meta: "+this.getBlockMetadata());
@@ -307,24 +331,30 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	}
 	
 	private void spawnItems(int x, int y, int z){
-		int id = OreDictionary.getOreID(this.smooshedStack);
-		boolean isSmashableOre = false;
-		try {
-			isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
-		} catch (Exception e) {
-			
-		}
-		if ( isSmashableOre) {
-			//Chance you'll get double
-			boolean doubleItems = worldObj.rand.nextInt(Config.chance) == 0;
-			ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
-			EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.1F, z+0.5F, items);
-			this.worldObj.spawnEntityInWorld(entityItem);
-			this.smooshedStack = null;
-		}
-		else
-		{
-			smooshingBlock.dropBlockAsItem(worldObj, x, y, z, this.smooshingMeta, 0);
+		if (smooshedStack != null) {
+			for (ItemStack stack : smooshedStack) {
+				int id = OreDictionary.getOreID(stack);
+				boolean isSmashableOre = false;
+				try {
+					isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
+				} catch (Exception e) {
+					
+				}
+				if ( isSmashableOre) {
+					//Chance you'll get double
+					boolean doubleItems = worldObj.rand.nextInt(Config.chance) == 0;
+					ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
+					EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.1F, z+0.5F, items);
+					this.worldObj.spawnEntityInWorld(entityItem);
+					this.smooshedStack = null;
+				}
+				else
+				{
+					EntityItem entityItem = new EntityItem(this.worldObj, x+0.5F, y+0.1F, z+0.5F, stack);
+					this.worldObj.spawnEntityInWorld(entityItem);
+					this.smooshedStack = null;
+				}
+			}
 		}
 	}
 	
