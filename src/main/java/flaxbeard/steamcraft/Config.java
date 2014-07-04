@@ -14,6 +14,7 @@ public class Config {
 	public static boolean expensiveMusketRecipes;
 	public static int chance;
 	public static boolean dropItem;
+	public static boolean genPoorOre;
 	
 	public static void load(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -21,6 +22,9 @@ public class Config {
 		
 		genCopper = config.get("World Generation", "Generate Copper", true).getBoolean(true);
 		genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
+		genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
+
+		
 		expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
 		
 		mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();

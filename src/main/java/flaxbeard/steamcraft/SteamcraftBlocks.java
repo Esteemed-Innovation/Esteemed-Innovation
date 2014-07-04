@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
@@ -75,6 +76,9 @@ public class SteamcraftBlocks {
 		GameRegistry.registerBlock(steamcraftOre, BlockManyMetadataItem.class, "steamcraftOre");
 		OreDictionary.registerOre("oreCopper", new ItemStack(steamcraftOre,1,0));
 		OreDictionary.registerOre("oreZinc", new ItemStack(steamcraftOre,1,1));
+		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+			OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre,1,2));
+		}
 		
 		crucible = new BlockSteamcraftCrucible().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:crucible").setBlockTextureName("steamcraft:crucible").setHardness(3.5F);
 		GameRegistry.registerBlock(crucible, "crucible");

@@ -5,6 +5,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
@@ -114,7 +115,9 @@ public class SteamcraftRecipes {
 	private static void registerSmeltingRecipes() {
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftItems.steamcraftIngot,1,0), 0.5F);
 		GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,1), new ItemStack(SteamcraftItems.steamcraftIngot,1,1), 0.5F);
-
+		if (Loader.isModLoaded("Railcraft")) {
+			GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre,1,2), new ItemStack(SteamcraftItems.steamcraftNugget,1,1), 0.5F);
+		}
 	}
 	
 	private static void registerCraftingRecipes() {

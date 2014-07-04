@@ -10,8 +10,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 
 public class BlockSteamcraftOre extends Block{
 
@@ -22,7 +24,7 @@ public class BlockSteamcraftOre extends Block{
 	    setStepSound(Block.soundTypeStone);
 	}
 	
-	public IIcon[] icon = new IIcon[2];
+	public IIcon[] icon = new IIcon[3];
 	
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -34,6 +36,9 @@ public class BlockSteamcraftOre extends Block{
 		if (par2 == 1) {
 			return this.icon[1];
 	    }
+		if (par2 == 2) {
+			return this.icon[2];
+	    }
 			return this.icon[0];
 	}
 	 
@@ -43,12 +48,16 @@ public class BlockSteamcraftOre extends Block{
 	{
 		this.icon[0] = ir.registerIcon("steamcraft:oreCopper");
 		this.icon[1] = ir.registerIcon("steamcraft:oreZinc");
+		this.icon[2] = ir.registerIcon("steamcraft:poorOreZinc");
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		par3List.add(new ItemStack(par1, 1, 0));
 		par3List.add(new ItemStack(par1, 1, 1));
+		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+			par3List.add(new ItemStack(par1, 1, 2));
+		}
 	}
 	
     public int damageDropped(int meta)
