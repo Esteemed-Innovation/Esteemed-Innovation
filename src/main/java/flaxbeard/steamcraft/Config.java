@@ -4,6 +4,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
+	public static final String VERSION = "{major.minor}.{artifact}";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;

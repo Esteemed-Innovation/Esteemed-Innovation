@@ -140,6 +140,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 			if (myTank.getFluidAmount() < 1000) {
 				this.myTank.fill(new FluidStack(fluid,1000), true);
 				this.worldObj.setBlockToAir(x,y,z);
+				this.worldObj.markBlockForUpdate(x, y, z);
 				progress = 0;
 				steam-=10;
 			}
