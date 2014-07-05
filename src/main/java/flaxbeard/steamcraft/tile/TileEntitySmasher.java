@@ -56,7 +56,6 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             this.smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	this.steam = access.getInteger("steam");
     }
 
@@ -237,7 +236,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 						
 						if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 							this.spinup++;
-							if (this.getBlockMetadata() % 2 == 0)
+							if (this.getBlockMetadata() % 2 == 0) {
 								try{
 									this.smooshingBlock = worldObj.getBlock(x, y, z);
 									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
@@ -249,6 +248,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 									e.printStackTrace();
 								}
 								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
+							}
 						} else {
 							//System.out.println("No block.");
 							if (this.hasPartner()){
