@@ -151,7 +151,7 @@ public class Steamcraft {
 		proxy.registerRenderers();
 		SteamcraftRecipes.registerRecipes();
 
-        FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
+        //FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
 		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
 			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE,8, 70, 3, 29));
 		}
