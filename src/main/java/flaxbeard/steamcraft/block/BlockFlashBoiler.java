@@ -223,21 +223,25 @@ public class BlockFlashBoiler extends BlockContainer{
 				if (side == 0) {
 					tex = topLeft;
 				}
-				else
+				else if (side == 4)
 				{
 					tex = bottomLeft;
+				}
+				else
+				{
+					tex = bottomRight;
 				}
 			}
 			if (meta == 2) {
 				if (side == 2) {
-					tex = bottomRight;
+					tex = bottomLeft;
 				}
 				else if (side == 0) {
 					tex = topRight;
 				}
 				else
 				{
-					tex = bottomLeft;
+					tex = bottomRight;
 				}
 			}
 			if (meta == 3) {
@@ -249,30 +253,44 @@ public class BlockFlashBoiler extends BlockContainer{
 					tex = bottomRight;
 				}
 			}
+			//Fixed
 			if (meta == 4) {
-				tex = bottomRight;
+				if (side == 5) {
+					tex = bottomLeft;
+				}
+				else
+				{
+					tex = bottomRight;
+				}
 			}
+			//Front
 			if (meta == 5) {
 				if (side == 1) {
 					tex = topLeft;
 				}
-				else
+				else if (side == 4)
 				{
 					tex = topLeftSide;
 				}
+				else
+				{
+					tex = topRightSide;
+				}
 			}
+			//Fixed
 			if (meta == 6) {
 				if (side == 2) {
-					tex = topRightSide;
+					tex = topLeftSide;
 				}
 				else if (side == 1) {
 					tex = topRight;
 				}
 				else
 				{
-					tex = topLeftSide;
+					tex = topRightSide;
 				}
 			}
+			//Front
 			if (meta == 7) {
 				if (side == 3) {
 					tex = topLeftSide;
@@ -288,6 +306,10 @@ public class BlockFlashBoiler extends BlockContainer{
 			if (meta == 8) {
 				if (side == 1) {
 					tex = bottomRight;
+				}
+				else if (side == 5)
+				{
+					tex = topLeftSide;
 				}
 				else
 				{
