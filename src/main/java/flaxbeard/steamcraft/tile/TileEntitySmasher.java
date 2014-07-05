@@ -237,7 +237,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 						
 						if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 							this.spinup++;
-							if (this.getBlockMetadata() % 2 == 0)
+							if (this.getBlockMetadata() % 2 == 0) {
 								try{
 									this.smooshingBlock = worldObj.getBlock(x, y, z);
 									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
@@ -249,6 +249,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 									e.printStackTrace();
 								}
 								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
+							}
 						} else {
 							//System.out.println("No block.");
 							if (this.hasPartner()){
@@ -333,7 +334,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	private void spawnItems(int x, int y, int z){
 		if (smooshedStack != null) {
 			for (ItemStack stack : smooshedStack) {
-				int id = OreDictionary.getOreID(stack);
+				int id = OreDictionary.getOreIDs(stack)[0];
 				boolean isSmashableOre = false;
 				try {
 					isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
