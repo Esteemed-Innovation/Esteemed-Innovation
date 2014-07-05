@@ -53,7 +53,6 @@ public class BlockSteamcraftCrucible extends BlockContainer {
     {
 
         if (entity instanceof EntityItem) {
-
         	EntityItem item = (EntityItem) entity;
         	if (world.getBlock(x, y-1, z) == Blocks.fire || world.getBlock(x, y-1, z).getMaterial() == Material.lava) {
         		MutablePair output;
@@ -62,6 +61,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		}
         		else if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),-1))) {
         			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),-1));
+        			
         		}
         		else
         		{
@@ -70,20 +70,14 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
         		int amount = (Integer) output.right;
         		if (crucible != null) {
-        			if (crucible.getFill() + amount <= 90) {
-	        			CrucibleLiquid fluid = (CrucibleLiquid) output.left;
-	        			if (!crucible.contents.contains(fluid)) {
-	        				crucible.contents.add(fluid);
-	        				crucible.number.put(fluid, 0);
-	        			}
-	        			int currAmount = crucible.number.get(fluid);
-	        			currAmount += amount;
-	        			crucible.number.remove(fluid);
-	        			crucible.number.put(fluid, currAmount);
-	        			world.markBlockForUpdate(x, y, z);
-
-	        			entity.setDead();
-	        		}
+        			ItemStack stack = item.getEntityItem();
+    				ItemStack out = crucible.fillWith(stack, amount, output);
+    				
+    				if (out.stackSize <= 0){
+    					entity.setDead();
+    				} else {
+    					item.setEntityItemStack(out);
+    				}
         		}
         	}
         }
