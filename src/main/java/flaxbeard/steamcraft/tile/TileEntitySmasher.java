@@ -56,7 +56,6 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             this.smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     	this.steam = access.getInteger("steam");
     }
 
