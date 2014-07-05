@@ -3,6 +3,8 @@ package flaxbeard.steamcraft.tile;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -19,6 +21,8 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 public class TileEntityCrucible extends TileEntity {
 	public ArrayList<CrucibleLiquid> contents = new ArrayList<CrucibleLiquid>();
 	public HashMap<CrucibleLiquid,Integer> number = new HashMap<CrucibleLiquid,Integer>();
+	public boolean hasUpdated = true;
+	private int targetFill = -1;
 	private boolean tipping;
 	public int tipTicks=0;
 	private ForgeDirection[] dirs = { ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST };
@@ -114,6 +118,12 @@ public class TileEntityCrucible extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		if (targetFill <0){
+			this.targetFill = this.getFill();
+		}
+		if (this.getFill() == targetFill){
+			hasUpdated = true;
+		}
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		if (this.tipping && !this.worldObj.isRemote) {
 			this.tipTicks++;
@@ -201,7 +211,33 @@ public class TileEntityCrucible extends TileEntity {
 		for (CrucibleLiquid liquid : contents) {
 			fill += number.get(liquid);
 		}
+		//System.out.println("fill: " + fill);
 		return fill;
+		
+	}
+	
+	public ItemStack fillWith(ItemStack stack, int amount, MutablePair output){
+		int fill = this.getFill();
+		if (!worldObj.isRemote){
+			if (fill + amount <= 90 && this.hasUpdated) {
+				//System.out.println(fill + " " +this.hasUpdated);
+				CrucibleLiquid fluid = (CrucibleLiquid) output.left;
+				if (!this.contents.contains(fluid)) {
+					this.contents.add(fluid);
+					this.number.put(fluid, 0);
+				}
+				int currAmount = this.number.get(fluid);
+				currAmount += amount;
+				this.number.remove(fluid);
+				this.number.put(fluid, currAmount);
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				stack.stackSize--;
+				this.hasUpdated = false;
+				this.targetFill = fill + amount;
+				//System.out.println(fill + " " +this.hasUpdated);
+			}
+		}
+		return stack;
 	}
 	
 	public CrucibleLiquid getLiquidFromIngot(ItemStack ingot) {
