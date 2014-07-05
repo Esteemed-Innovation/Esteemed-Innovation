@@ -394,11 +394,12 @@ public class ItemFirearm extends Item implements IEngineerable
 		if (!me.hasTagCompound()) {
 			me.setTagCompound(new NBTTagCompound());
 		}
-		IEnhancement enhancement = (IEnhancement) stack.getItem();
-		NBTTagCompound enhancements = new NBTTagCompound();
-		enhancements.setString("id", enhancement.getID());
-		me.stackTagCompound.setTag("enhancements", enhancements);
-
+		if (stack != null) {
+			IEnhancement enhancement = (IEnhancement) stack.getItem();
+			NBTTagCompound enhancements = new NBTTagCompound();
+			enhancements.setString("id", enhancement.getID());
+			me.stackTagCompound.setTag("enhancements", enhancements);
+		}
 	}
 
 	@Override
