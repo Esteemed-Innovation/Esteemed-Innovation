@@ -48,11 +48,11 @@ public class ItemSmashedOre extends Item {
 		oreTypes.add(getPair("oreArdite", null, "Ardite", 11, "ingotArdite"));
 		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar", 12, "quicksilver"));
 
-		oreTypes.add(getPair("orePoorIron", null, "PoorIron", 13));
-		oreTypes.add(getPair("orePoorGold", null, "PoorGold", 14));
-		oreTypes.add(getPair("orePoorCopper", null, "PoorCopper", 15));
-		oreTypes.add(getPair("orePoorZinc", null, "PoorZinc", 16));
-		oreTypes.add(getPair("orePoorTin", null, "PoorTin", 17));
+		oreTypes.add(getPair("orePoorIron", null, "PoorIron", 13, "nuggetIron"));
+		oreTypes.add(getPair("orePoorGold", null, "PoorGold", 14, "nuggetGold"));
+		oreTypes.add(getPair("orePoorCopper", null, "PoorCopper", 15, "nuggetCopper"));
+		oreTypes.add(getPair("orePoorZinc", null, "PoorZinc", 16, "nuggetZinc"));
+		oreTypes.add(getPair("orePoorTin", null, "PoorTin", 17, "nuggetTin"));
 	}
 	
 	public void registerDusts(){
