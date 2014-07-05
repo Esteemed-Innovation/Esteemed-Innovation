@@ -133,11 +133,4 @@ public class ItemSmashedOre extends Item {
 		}
         
     }
-	
-	
-	
-	
-	
-	
-
 }
