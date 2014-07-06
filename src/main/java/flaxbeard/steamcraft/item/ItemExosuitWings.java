@@ -57,6 +57,8 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
 				
 				Wing1.render(size);
 				Wing2.render(size);
+				Wing1 = null;
+				Wing2 = null;
 			}
 			ModelRenderer Wing1 = new ModelRenderer(model, 0, 0).setTextureSize(64, 64);
 			ModelRenderer Wing2 = new ModelRenderer(model, 0, 0).setTextureSize(64, 64);
@@ -82,6 +84,8 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
 				ticks--;
 			}
 			updateTicks(entity,ticks);
+			Wing1 = null;
+			Wing2 = null;
 		}
 	}
 	

@@ -45,6 +45,8 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 			
 			Jetpack1.render(size);
 			Jetpack2.render(size);
+			Jetpack1 = null;
+			Jetpack2 = null;
 		}
 	}
 

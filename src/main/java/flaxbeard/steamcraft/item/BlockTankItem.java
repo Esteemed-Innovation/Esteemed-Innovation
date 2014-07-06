@@ -86,6 +86,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 			Minecraft.getMinecraft().renderEngine.bindTexture(gauge);
 			pointer.render();
 			GL11.glPopMatrix();
+			Tank = null;
 		}
 	}
 
