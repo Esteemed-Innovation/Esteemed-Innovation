@@ -149,11 +149,11 @@ public class SteamcraftRecipes {
 		        'i', "blockBrass"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockCopper), "iii", "iii", "iii",
 		        'i', "ingotCopper"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,2), "i",
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,0), "i",
 		        'i', "blockCopper"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockZinc), "iii", "iii", "iii",
 		        'i', "ingotZinc"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,2), "i",
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot,9,1), "i",
 		        'i', "blockZinc"));
 		
 		
