@@ -111,6 +111,13 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
 			
 			Jetpack2.render(size);
 			GL11.glPopMatrix();
+			
+			Jetpack1 = null;
+			Jetpack2 = null;
+			Holder1 = null;
+			Holder2 = null;
+			Holder3 = null;
+			Holder4 = null;
 		}
 	}
 

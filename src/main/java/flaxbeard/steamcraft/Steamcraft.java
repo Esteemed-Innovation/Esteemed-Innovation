@@ -4,6 +4,7 @@ package flaxbeard.steamcraft;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.terraingen.OreGenEvent;
@@ -16,13 +17,13 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
@@ -56,8 +57,11 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
+import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
+import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
+import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION, dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
 public class Steamcraft {
@@ -96,8 +100,13 @@ public class Steamcraft {
 		SteamcraftItems.registerItems();
 		
 		GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
-
-
+		
+		int id = Config.villagerId;
+		VillagerRegistry.instance().registerVillagerId(id);
+		VillagerRegistry.instance().registerVillageTradeHandler(id, new SteampunkVillagerTradeHandler());
+		VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
+		MapGenStructureIO.func_143031_a(ComponentSteamWorkshop.class, "steamcraft:workshop");
+		
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
 	  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
