@@ -1,8 +1,6 @@
 package flaxbeard.steamcraft.world;
  
 import java.util.Random;
-
-import thaumcraft.common.lib.world.biomes.SimplexNoise;
  
 /**
  *
