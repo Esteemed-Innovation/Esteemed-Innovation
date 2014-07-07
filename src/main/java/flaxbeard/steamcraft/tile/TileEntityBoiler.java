@@ -36,9 +36,7 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
 	public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
-	public int steam;
-	public final float pressureResistance = 0.8F;
-    private ItemStack[] furnaceItemStacks = new ItemStack[2];
+	private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
@@ -49,6 +47,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     
     public TileEntityBoiler(){
     	super(5000, new ForgeDirection[]{ForgeDirection.UP});
+    	this.addSideToGaugeBlacklist(ForgeDirection.UP);
+    	this.setPressureResistance(0.8F);
     }
     
 	@Override
@@ -434,16 +434,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         return this.furnaceCookTime * p_145953_1_ / 200;
     }
 
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face==ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 5000;
-	}
-
 	@SideOnly(Side.CLIENT)
     public int getBurnTimeRemainingScaled(int p_145955_1_)
     {
@@ -454,16 +444,5 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 
         return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
     }
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face == ForgeDirection.UP;
-	}
-
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
 
 }

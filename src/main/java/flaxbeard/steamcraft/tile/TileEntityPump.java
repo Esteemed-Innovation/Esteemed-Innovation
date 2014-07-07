@@ -1,12 +1,9 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -14,21 +11,27 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
 
-public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTransporter {
+public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler,ISteamTransporter {
 	public FluidTank myTank = new FluidTank(1000);
 	public int progress = 0;
-	public int steam = 0;
 	public int rotateTicks = 0;
 	
+	
+	public TileEntityPump(){
+		super(ForgeDirection.VALID_DIRECTIONS);
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
 	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         this.progress = par1NBTTagCompound.getShort("progress");
-        this.steam = par1NBTTagCompound.getShort("steam");
-
+    
         if (par1NBTTagCompound.hasKey("fluid")) {
             this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(par1NBTTagCompound.getShort("fluid")),par1NBTTagCompound.getShort("water")));
 
@@ -40,8 +43,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	{
 	    super.writeToNBT(par1NBTTagCompound);
 	    par1NBTTagCompound.setShort("progress",(short) progress);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
-
+    
 	    par1NBTTagCompound.setShort("water",(short) myTank.getFluidAmount());
 	    if (myTank.getFluid() != null) {
 	    	par1NBTTagCompound.setShort("fluid",(short)myTank.getFluid().fluidID);
@@ -53,8 +55,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
-
+    
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 
@@ -63,8 +64,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
-
+    
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	    
@@ -129,8 +129,7 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	
 	@Override
 	public void updateEntity() {
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		ForgeDirection inputDir = this.getOutputDirection().getOpposite();
 		int x = this.xCoord + inputDir.offsetX;
 		int y = this.yCoord + inputDir.offsetY;
@@ -167,50 +166,5 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
-	}
-
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return true;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;	
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return true;
-	}
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-	
-	public void explode(){ 
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		this.steam = 0;
 	}
 }

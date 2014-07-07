@@ -1,9 +1,5 @@
 package flaxbeard.steamcraft.tile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,23 +8,26 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
-public class TileEntitySteamCharger extends TileEntity implements ISteamTransporter,IInventory {
+public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter,IInventory {
 	
-	private int steam = 0;
 	private ItemStack[] inventory = new ItemStack[1];
 	public int randomDegrees;
+	
+	public TileEntitySteamCharger(){
+		super(new ForgeDirection[]{ForgeDirection.DOWN});
+		this.addSidesToGaugeBlacklist(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
+	}
 	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
         randomDegrees = (int)(Math.random()*360);
         if (par1NBTTagCompound.hasKey("inventory"))
         {
@@ -54,7 +53,6 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
         if (this.inventory[0] != null)
         {
 	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -70,8 +68,7 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
-        if (access.hasKey("inventory"))
+    	if (access.hasKey("inventory"))
         {
         	 this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
         }
@@ -85,9 +82,7 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	
 	@Override
 	public void updateEntity() {
-		ForgeDirection[] dirs = { ForgeDirection.DOWN };
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		if (this.getStackInSlot(0) != null) {
 			ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
 			ItemStack stack = this.getStackInSlot(0).copy();
@@ -107,41 +102,6 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face == ForgeDirection.DOWN;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-	
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face == ForgeDirection.DOWN;
-	}
-
 	@Override
 	public int getSizeInventory() {
 		return 1;
@@ -226,17 +186,6 @@ public class TileEntitySteamCharger extends TileEntity implements ISteamTranspor
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return var2.getItem() instanceof ISteamChargable;
-	}
-	
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return face != ForgeDirection.UP && face != ForgeDirection.DOWN;
-	}
-	
-	public void explode(){
-		ForgeDirection[] dirs = { ForgeDirection.DOWN };
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
-		this.steam = 0;
 	}
 
 }

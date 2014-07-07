@@ -37,11 +37,9 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHandler,ISidedInventory,ISteamTransporter{
 	
-	public int steam;
-    private ItemStack[] furnaceItemStacks = new ItemStack[2];
+	private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
-    public final float pressureResistance = 1.0F;
-	public int furnaceCookTime;
+    public int furnaceCookTime;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
 	public int heat;
@@ -57,8 +55,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	private boolean loaded = false;
 	
     public TileEntityFlashBoiler() {
+    	super();
     	super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),80000);
-
+    	this.setPressureResistance(1.0F);
     }
 	
 	// ====================================================
@@ -164,11 +163,6 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getShort("water")));
         }
         
-        if (access.hasKey("steam"))
-        {
-        	this.steam = access.getShort("steam");
-        }
-        
         if (access.hasKey("heat"))
         {
         	this.heat = access.getShort("heat");
@@ -184,7 +178,6 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         access.setInteger("frontSide", this.frontSide);
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("water",(short) myTank.getFluidAmount());
-        access.setShort("steam",(short) this.steam);
         access.setShort("heat",(short) this.heat);
 
         access.setShort("CookTime", (short)this.furnaceCookTime);
@@ -217,7 +210,6 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("frontSide", this.frontSide);
-        access.setInteger("steam", steam);
         access.setInteger("water",myTank.getFluidAmount());
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("CookTime", (short)this.furnaceCookTime);
@@ -233,7 +225,6 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.frontSide = access.getInteger("frontSide");
-    	this.steam = access.getInteger("steam");
     	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getInteger("water")));
     	this.furnaceBurnTime = access.getShort("BurnTime");
     	this.currentItemBurnTime = access.getShort("cIBT");

@@ -5,39 +5,42 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
-public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
+public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter {
 	
-	
-	private int steam = 0;
 	
 	private boolean hasBlockUpdate = false;
 	private boolean isActive = false;
 	private boolean isBreaking = false;
 	private boolean shouldStop = false;
 	public int spinup = 0;
-	public final float pressureResistance = 0.8F; 
 	public float extendedLength = 0.0F;
 	public Block smooshingBlock;
 	public int smooshingMeta;
 	public int extendedTicks = 0;
+	private boolean isInitialized = false;
 	public ArrayList<ItemStack> smooshedStack;
+	
+	public TileEntitySmasher(){
+		super(ForgeDirection.VALID_DIRECTIONS);
+	}
+	
+	
 	
 	@Override
     public void readFromNBT(NBTTagCompound access)
@@ -56,7 +59,6 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             this.smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
         }
-    	this.steam = access.getInteger("steam");
     }
 
     @Override
@@ -68,7 +70,6 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
-        access.setInteger("steam", steam);
         NBTTagList nbttaglist = new NBTTagList();
 
         if (this.smooshedStack != null) {
@@ -93,8 +94,7 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
-        access.setInteger("steam", steam);
-
+    
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	
@@ -162,21 +162,25 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    	this.steam = access.getInteger("steam");
-
+    
     }
 	
 	public void updateEntity(){
-		ForgeDirection[] directions = new ForgeDirection[5];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir() && direction != ForgeDirection.UP) {
-				directions[i] = direction;
-				i++;
+		if (!isInitialized){
+			ForgeDirection myDir = myDir();
+			this.addSideToGaugeBlacklist(myDir);
+			ForgeDirection[] directions = new ForgeDirection[5];
+			int i = 0;
+			for (ForgeDirection direction : ForgeDirection.values()) {
+				if (direction != myDir && direction != ForgeDirection.UP) {
+					directions[i] = direction;
+					i++;
+				}
 			}
+			this.setDistributionDirections(directions);
+			this.isInitialized = true;
 		}
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,directions);
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		int[] target = getTarget(1);
 		
 		int x = target[0], y = yCoord, z = target[1];
@@ -410,48 +414,6 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	}
 
 
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face != myDir() && face != ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face != myDir() && face != ForgeDirection.UP;
-	}
-
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return face != myDir();
-	}
-	
 	public ForgeDirection myDir() {
 		int meta = worldObj.getBlockMetadata(xCoord,yCoord, zCoord);
 		switch (meta) {
@@ -467,17 +429,5 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 		return ForgeDirection.NORTH;
 	}
 	
-	public void explode(){
-		ForgeDirection[] directions = new ForgeDirection[5];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir() && direction != ForgeDirection.UP) {
-				directions[i] = direction;
-				i++;
-			}
-		}
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
-		this.steam = 0;
-	}
-
+	
 }

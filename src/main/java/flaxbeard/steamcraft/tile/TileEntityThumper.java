@@ -1,35 +1,32 @@
 package flaxbeard.steamcraft.tile;
 
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
-public class TileEntityThumper extends TileEntity implements ISteamTransporter{
+public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter{
 	
-	private int steam = 0;
 	public int progress = 0;
 	
+	public TileEntityThumper(){
+		super(new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST});
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
 
 	@Override
 	public void updateEntity() {
-		ForgeDirection[] dirs = { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		if (this.steam >= 200 && this.progress == 0) {
 			this.progress++;
 			this.steam -= 200;
@@ -135,7 +132,6 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
         this.progress = par1NBTTagCompound.getShort("progress");
 
     }
@@ -144,7 +140,6 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
         par1NBTTagCompound.setShort("progress",(short) this.progress);
 
     }
@@ -154,7 +149,6 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
         access.setInteger("progress", progress);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
@@ -166,54 +160,8 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
     	this.progress = access.getInteger("progress");
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-    
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-	
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-	public void explode(){
-		ForgeDirection[] dirs = { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
-		this.steam = 0;
-	}
 }

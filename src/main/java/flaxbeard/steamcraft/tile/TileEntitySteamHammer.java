@@ -10,39 +10,35 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
-public class TileEntitySteamHammer extends TileEntity implements IInventory,ISteamTransporter {
+public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory,ISteamTransporter {
 	public int hammerTicks = 0;
+	private boolean isInitialized = false;
 	private ItemStack[] inventory = new ItemStack[3];
 	public String itemName = "";
 	public int cost = 0;
 	public int progress = 0;
-	public int steam = 0;
+	
+	public TileEntitySteamHammer(){
+		super(ForgeDirection.VALID_DIRECTIONS);
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
 	
 	@Override
 	public void updateEntity() {
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		if (meta == 0) {
-			dir = ForgeDirection.SOUTH;
+		ForgeDirection dir = myDir();
+		if (!isInitialized){
+			
+			ForgeDirection[] dirs = { dir.getOpposite() };
+			this.setDistributionDirections(dirs);
+			this.isInitialized = true;
 		}
-		if (meta == 1) {
-			dir = ForgeDirection.WEST;
-		}
-		if (meta == 2) {
-			dir = ForgeDirection.NORTH;
-		}
-		if (meta == 3) {
-			dir = ForgeDirection.EAST;
-		}
-		ForgeDirection[] dirs = { dir.getOpposite() };
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		if (cost > 0 && progress < cost && hammerTicks == 355) {
 			progress++;
 		}
@@ -82,6 +78,24 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
+	}
+	
+	private ForgeDirection myDir(){
+		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		if (meta == 0) {
+			dir = ForgeDirection.SOUTH;
+		}
+		if (meta == 1) {
+			dir = ForgeDirection.WEST;
+		}
+		if (meta == 2) {
+			dir = ForgeDirection.NORTH;
+		}
+		if (meta == 3) {
+			dir = ForgeDirection.EAST;
+		}
+		return dir;
 	}
 	
 //	@Override
@@ -198,8 +212,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
         access.setInteger("cost", cost);
         access.setInteger("progress",progress);
         access.setInteger("hammerTicks",hammerTicks);
-        access.setInteger("steam", steam);
-
+        
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 
@@ -211,8 +224,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
     	this.cost = access.getInteger("cost");
     	this.progress = access.getInteger("progress");
     	this.hammerTicks = access.getInteger("hammerTicks");
-    	this.steam = access.getInteger("steam");
-
+    	
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
@@ -237,8 +249,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
     	this.cost = par1NBTTagCompound.getInteger("cost");
     	this.progress = par1NBTTagCompound.getInteger("progress");
     	this.hammerTicks = par1NBTTagCompound.getInteger("hammerTicks");
-        this.steam = par1NBTTagCompound.getShort("steam");
-
+        
     }
 
     @Override
@@ -248,8 +259,7 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
         par1NBTTagCompound.setInteger("cost", cost);
         par1NBTTagCompound.setInteger("progress",progress);
         par1NBTTagCompound.setInteger("hammerTicks",hammerTicks);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
-
+        
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inventory.length; ++i)
@@ -266,79 +276,5 @@ public class TileEntitySteamHammer extends TileEntity implements IInventory,ISte
         par1NBTTagCompound.setTag("Items", nbttaglist);
 
     }
-
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		if (meta == 0) {
-			dir = ForgeDirection.NORTH;
-		}
-		if (meta == 1) {
-			dir = ForgeDirection.EAST;
-		}
-		if (meta == 2) {
-			dir = ForgeDirection.SOUTH;
-		}
-		if (meta == 3) {
-			dir = ForgeDirection.WEST;
-		}
-		return face == dir;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return this.canInsert(face);
-	}
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-	
-	public void explode(){
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		if (meta == 0) {
-			dir = ForgeDirection.SOUTH;
-		}
-		if (meta == 1) {
-			dir = ForgeDirection.WEST;
-		}
-		if (meta == 2) {
-			dir = ForgeDirection.NORTH;
-		}
-		if (meta == 3) {
-			dir = ForgeDirection.EAST;
-		}
-		ForgeDirection[] dirs = { dir.getOpposite() };
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
-		this.steam = 0;
-	}
 
 }

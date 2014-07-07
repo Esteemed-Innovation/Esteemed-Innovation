@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.api;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,10 +15,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
+	public float pressureResistance = 0.5F;
 	public int steam;
 	public int capacity;
 	public int lastSteam = 0;
 	private ForgeDirection[] distributionDirections;
+	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
 	
 	public SteamTransporterTileEntity(){
 		this(ForgeDirection.VALID_DIRECTIONS);
@@ -52,6 +56,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	NBTTagCompound access = pkt.func_148857_g();
     	this.steam = access.getInteger("steam");
     	this.lastSteam = access.getInteger("lastSteam");
+    	
+    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	 
 	@Override
@@ -94,12 +100,13 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void updateEntity(){
-		if (this.steam != this.lastSteam){
-			System.out.println("Pressure change!");
+		//if (this.steam != this.lastSteam){
+			//System.out.println("Pressure change!");
 			this.lastSteam = this.steam;
 			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
 	    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-	    }
+	    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	    //}
 		
 	}
 	
@@ -115,13 +122,11 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void explode() {
-    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
+    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord, this.distributionDirections);
 		this.steam = 0;
 	}
 
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
+	private boolean isValidSteamSide(ForgeDirection face){
 		for (ForgeDirection d : distributionDirections){
 			if (d == face){
 				return true;
@@ -129,18 +134,44 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		}
 		return false;
 	}
-
+	
 
 	@Override
+	public boolean canInsert(ForgeDirection face) {
+		return isValidSteamSide(face);
+	}
+
+
+	public void addSideToGaugeBlacklist(ForgeDirection face){
+		gaugeSideBlacklist.add(face);
+	}
+	
+	public void addSidesToGaugeBlacklist(ForgeDirection[] faces){
+		for (ForgeDirection face : faces){
+			addSideToGaugeBlacklist(face);
+		}
+	}
+	
+	@Override
 	public boolean doesConnect(ForgeDirection face) {
-		return false;
+		return isValidSteamSide(face);
 	}
 
 
 	@Override
 	public boolean acceptsGauge(ForgeDirection face) {
-		// TODO Auto-generated method stub
-		return false;
+		return !gaugeSideBlacklist.contains(face);
+	}
+
+	protected void setPressureResistance(float resistance){
+		this.pressureResistance = resistance;
 	}
 	
+	public float getPressureResistance(){
+		return this.pressureResistance;
+	}
+	
+	public void setDistributionDirections(ForgeDirection[] faces){
+		this.distributionDirections = faces;
+	}
 }
