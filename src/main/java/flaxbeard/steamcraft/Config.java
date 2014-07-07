@@ -5,6 +5,15 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Config {
 	public static final String VERSION = "0.22.8";
+	public static final int jumpBoostConsumption = 1;
+	public static final int jetpackConsumption = 1;
+	public static final int jumpBoostConsumptionShiftJump = 3;
+	public static final int powerFistConsumption = 5;
+
+	public static final float fallAssistDivisor = 2;
+
+	public static final int basicTankCap = 18000;
+
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;

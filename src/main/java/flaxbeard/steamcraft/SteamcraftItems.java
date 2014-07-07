@@ -93,7 +93,10 @@ public class SteamcraftItems {
 	public static Item powerFist;
 	public static Item thrusters;
 	public static Item fallAssist;
+	public static Item jumpAssist;
+	public static Item runAssist;
 	public static Item doubleJump;
+	public static Item antiFire;
 	
 	public static Item smashedOre;
 	//public static Item fakeOre;
@@ -136,8 +139,14 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(thrusters, "thrusters");
 		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
 		GameRegistry.registerItem(fallAssist, "fallAssist");
-	 	//doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
-		//GameRegistry.registerItem(doubleJump, "doubleJump");
+		jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/jumpUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
+		GameRegistry.registerItem(jumpAssist, "jumpAssist");
+		runAssist = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/runUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
+		GameRegistry.registerItem(runAssist, "runAssist");
+	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+		GameRegistry.registerItem(doubleJump, "doubleJump");
+	 	antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
+		GameRegistry.registerItem(antiFire, "antiFire");
 		
 	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 		GameRegistry.registerItem(astrolabe, "astrolabe");

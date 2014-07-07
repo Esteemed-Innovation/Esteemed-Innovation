@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
@@ -101,7 +102,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 
 	@Override
 	public int getStorage(ItemStack stack) {
-		return 18000;
+		return Config.basicTankCap;
 	}
 
 }
