@@ -122,6 +122,11 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
 	@Override
 	public boolean canInsert(ForgeDirection face) {
+		for (ForgeDirection d : distributionDirections){
+			if (d == face){
+				return true;
+			}
+		}
 		return false;
 	}
 
