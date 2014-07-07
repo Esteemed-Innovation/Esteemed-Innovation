@@ -4,6 +4,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ISteamTransporter {
 	public final float pressureResistance = 0.5F;
+	public int getLastSteam();
 	public float getPressure();
 	public boolean canInsert(ForgeDirection face);
 	public int getCapacity();

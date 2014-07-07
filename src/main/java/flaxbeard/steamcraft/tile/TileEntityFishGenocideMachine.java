@@ -20,26 +20,28 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 
-public class TileEntityFishGenocideMachine extends TileEntity implements ISteamTransporter {
+public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {
     private static final List field_146036_f = Arrays.asList(new WeightedRandomFishable[] {new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.func_150976_a()), 60), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.func_150976_a()), 25), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.func_150976_a()), 2), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()), 13)});
 
 	private int steam = 0;
+	public TileEntityFishGenocideMachine(){
+		super(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
+	}
 	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
     }
 	
 	@Override
@@ -47,7 +49,6 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -57,7 +58,6 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
@@ -88,11 +88,7 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
     
 	@Override
 	public void updateEntity() {
-		if (!this.worldObj.isRemote) {
-			ForgeDirection[] distr = { ForgeDirection.UP, ForgeDirection.DOWN };
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,distr);
-			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		}
+		super.updateEntity();
 		int src = calcSourceBlocks();
 		if (this.steam > src) {
 			this.steam -= src;
@@ -110,33 +106,8 @@ public class TileEntityFishGenocideMachine extends TileEntity implements ISteamT
 	}
 	
 	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
 	public boolean canInsert(ForgeDirection face) {
 		return face == ForgeDirection.DOWN || face == ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
 	}
 
 	@Override
