@@ -49,24 +49,6 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 	    	par1NBTTagCompound.setShort("fluid",(short)myTank.getFluid().fluidID);
 	    }
 	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-    
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-	}
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-    	super.onDataPacket(net, pkt);
-    	NBTTagCompound access = pkt.func_148857_g();
-    
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
 	    
 	private ForgeDirection getOutputDirection() {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);

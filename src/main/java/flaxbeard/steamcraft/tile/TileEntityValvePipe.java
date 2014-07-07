@@ -36,8 +36,8 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setBoolean("turning", turning);
         access.setBoolean("open", open);
         access.setInteger("turnTicks", turnTicks);

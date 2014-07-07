@@ -207,8 +207,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
         access.setInteger("frontSide", this.frontSide);
         access.setInteger("water",myTank.getFluidAmount());
         access.setShort("BurnTime", (short)this.furnaceBurnTime);

@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,7 +32,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
@@ -54,12 +54,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
         access.setInteger("water",myTank.getFluidAmount());
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("CookTime", (short)this.furnaceCookTime);
         access.setShort("cIBT", (short)this.currentItemBurnTime);
+        access.setInteger("steam", steam);
+
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}

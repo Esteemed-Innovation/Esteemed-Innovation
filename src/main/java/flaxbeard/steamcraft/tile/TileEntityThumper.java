@@ -147,8 +147,8 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setInteger("progress", progress);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);

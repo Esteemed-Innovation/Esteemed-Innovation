@@ -207,8 +207,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setInteger("cost", cost);
         access.setInteger("progress",progress);
         access.setInteger("hammerTicks",hammerTicks);

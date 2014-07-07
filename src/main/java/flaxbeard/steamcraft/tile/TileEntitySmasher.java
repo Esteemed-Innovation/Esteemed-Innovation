@@ -87,8 +87,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);

@@ -51,8 +51,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         if (this.inventory[0] != null)
         {
 	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
