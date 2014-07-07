@@ -3,9 +3,9 @@ package flaxbeard.steamcraft.api;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ISteamTransporter {
-	public final float pressureResistance = 0.5F;
 	public int getLastSteam();
 	public float getPressure();
+	public float getPressureResistance();
 	public boolean canInsert(ForgeDirection face);
 	public int getCapacity();
 	public int getSteam();

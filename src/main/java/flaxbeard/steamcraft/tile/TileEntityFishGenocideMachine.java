@@ -27,9 +27,9 @@ import flaxbeard.steamcraft.entity.EntityFloatingItem;
 public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {
     private static final List field_146036_f = Arrays.asList(new WeightedRandomFishable[] {new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.func_150976_a()), 60), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.func_150976_a()), 25), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.func_150976_a()), 2), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()), 13)});
 
-	private int steam = 0;
 	public TileEntityFishGenocideMachine(){
 		super(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
 	}
 	
 	@Override
@@ -105,16 +105,6 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity im
 		}
 	}
 	
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face == ForgeDirection.DOWN || face == ForgeDirection.UP;
-	}
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face == ForgeDirection.DOWN || face == ForgeDirection.UP;
-	}
-	
 	public void dropItem(ItemStack item) {
 		EntityItem entityItem = new EntityItem(this.worldObj, this.xCoord+0.5F, this.yCoord + 1.25F, this.zCoord+0.5F, item);
 		this.worldObj.spawnEntityInWorld(entityItem);
@@ -125,14 +115,4 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity im
 		this.worldObj.spawnEntityInWorld(entityItem);
 	}
 	
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-	
-	public void explode(){
-		ForgeDirection[] distr = { ForgeDirection.UP, ForgeDirection.DOWN };
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,distr);
-		this.steam = 0;
-	}
 }
