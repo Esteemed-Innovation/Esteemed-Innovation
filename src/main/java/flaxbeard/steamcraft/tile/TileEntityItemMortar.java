@@ -64,8 +64,8 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setInteger("fireTicks", fireTicks);
         access.setInteger("xT", this.xT);
         access.setInteger("zT", this.zT);

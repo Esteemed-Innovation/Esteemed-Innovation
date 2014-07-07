@@ -2,16 +2,12 @@ package flaxbeard.steamcraft.api;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
@@ -47,6 +43,14 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         access.setInteger("lastSteam", lastSteam);
         
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	
+	public NBTTagCompound getDescriptionTag()
+	{
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("steam", steam);
+        access.setInteger("lastSteam", lastSteam);
+        return access;
 	}
 	
 	@Override

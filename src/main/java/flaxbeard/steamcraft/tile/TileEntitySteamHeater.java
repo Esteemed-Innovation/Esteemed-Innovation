@@ -47,26 +47,6 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
     }
 	
 	@Override
-	public Packet getDescriptionPacket()
-	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-	}
-	    
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-    	super.onDataPacket(net, pkt);
-    	NBTTagCompound access = pkt.func_148857_g();
-    	
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-	
-	
-	@Override
 	public void updateEntity() {
 		ForgeDirection dir = myDir();
 		if (!this.isInitialized){
