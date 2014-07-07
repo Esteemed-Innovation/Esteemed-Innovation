@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.client.render.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -14,12 +15,14 @@ import net.minecraft.util.ResourceLocation;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.misc.ComparatorUpgrade;
 
 public class ModelExosuit extends ModelBiped {
 	private ResourceLocation texture;
 	private boolean hasOverlay;
 	private static final ModelPointer model = new ModelPointer();
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
+	private static final ComparatorUpgrade comparator = new ComparatorUpgrade();
 	
 	private int armor;
 	private ItemStack me;
@@ -73,7 +76,7 @@ public class ModelExosuit extends ModelBiped {
 		}
 		IExosuitUpgrade[] upgrades = ((ItemExosuitArmor) me.getItem()).getUpgrades(me);
 		ArrayList<IExosuitUpgrade> upgrades2 = new ArrayList<IExosuitUpgrade>(Arrays.asList(upgrades));
-
+		Collections.sort(upgrades2, comparator);
 		for (IExosuitUpgrade upgrade: upgrades2) {
 			if (upgrade.hasOverlay()) {
 				Minecraft.getMinecraft().renderEngine.bindTexture(upgrade.getOverlay());

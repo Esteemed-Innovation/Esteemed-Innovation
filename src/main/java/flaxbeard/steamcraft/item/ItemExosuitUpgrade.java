@@ -17,11 +17,13 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 	private ExosuitSlot mySlot;
 	protected ResourceLocation myOverlay;
 	protected String myInfo;
+	protected int pri;
 	
 	public ItemExosuitUpgrade(ExosuitSlot slot, String loc, String info, int priority) {
 		mySlot = slot;
 		myInfo = info;
 		myOverlay = new ResourceLocation(loc);
+		pri = priority;
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 
 	@Override
 	public int renderPriority() {
-		return 0;
+		return pri;
 	}
 
 }

@@ -37,6 +37,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 	
 	public static void sendNoSpacePacket(Entity player)

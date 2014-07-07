@@ -63,37 +63,38 @@ public class SteamcraftTickHandler {
 						}
 					}
 					
-//					ItemStack armor2 = player.getCurrentArmor(0);
-//					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-//						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-//						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
-//							if (!armor2.stackTagCompound.hasKey("usedJump")) {
-//								armor2.stackTagCompound.setBoolean("usedJump", false);
-//							}
-//							if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
-//								armor2.stackTagCompound.setBoolean("releasedSpace", false);
-//							}
-//							if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
-//								armor2.stackTagCompound.setBoolean("usedJump", true);
-//								player.motionY=player.motionY+0.3D;
-//							}
-//							armor2.stackTagCompound.setBoolean("releasedSpace", false);
-//						}
-//					}
+					ItemStack armor2 = player.getCurrentArmor(0);
+					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
+							if (!armor2.stackTagCompound.hasKey("usedJump")) {
+								armor2.stackTagCompound.setBoolean("usedJump", false);
+							}
+							if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
+								armor2.stackTagCompound.setBoolean("releasedSpace", false);
+							}
+							//System.out.println(armor2.stackTagCompound.getBoolean("usedJump"));
+							if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
+								armor2.stackTagCompound.setBoolean("usedJump", true);
+								player.motionY=0.65D;
+							}
+							armor2.stackTagCompound.setBoolean("releasedSpace", false);
+						}
+					}
 				}
 			}
 			else
 			{
-//				SteamcraftClientPacketHandler.sendNoSpacePacket(player);
-//				if (player != null) {
-//					ItemStack armor2 = player.getCurrentArmor(0);
-//					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-//						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-//						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
-//							armor2.stackTagCompound.setBoolean("releasedSpace", true);
-//						}
-//					}
-//				}
+				SteamcraftClientPacketHandler.sendNoSpacePacket(player);
+				if (player != null) {
+					ItemStack armor2 = player.getCurrentArmor(0);
+					if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
+						ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
+						if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
+							armor2.stackTagCompound.setBoolean("releasedSpace", true);
+						}
+					}
+				}
 			}
 			
 			ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
