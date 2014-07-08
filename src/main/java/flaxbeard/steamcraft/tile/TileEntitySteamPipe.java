@@ -2,12 +2,12 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 
@@ -116,13 +117,32 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 		if (myDirections.size() > 0) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
 
-			if (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+			if (myDirections.size() == 2 && this.steam > 0 && i < 10 && ((worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || worldObj.getBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) == SteamcraftBlocks.steam) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 			}
-			while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.steam--;
+			while (myDirections.size() == 2 && this.steam > 0 && i < 10 && ((worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || worldObj.getBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) == SteamcraftBlocks.steam) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
 				i++;
+			}
+			int steamToLose = Math.min(this.steam, 100);
+			if (steamToLose > 0) {
+				if ( worldObj.getBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) == SteamcraftBlocks.steam) {
+					int stea = ((TileEntitySteam) this.worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ)).steam;
+					float pressure = stea/80000.0F;
+					if (this.getPressure() > pressure) {
+						float targetpercent = ((float)this.getSteam()+(stea/100.0F))/((float)this.getCapacity()+800);
+						int change = (int) (Math.floor(this.getSteam()*800-(stea/100.0F)*this.getCapacity())/(800+this.getCapacity()));
+						if (change > 0 && change <= (stea/100.0F)) {
+							this.decrSteam(change);
+							((TileEntitySteam) this.worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ)).steam += change;
+						}
+					}
+				}
+				else if (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ)) {
+					worldObj.setBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, SteamcraftBlocks.steam);
+					((TileEntitySteam) this.worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ)).steam = steamToLose*10;
+					this.steam -= steamToLose;
+				}
 			}
 		}
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

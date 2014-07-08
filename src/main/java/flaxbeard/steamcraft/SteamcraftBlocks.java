@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -17,6 +18,7 @@ import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.block.BlockPump;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSmasher;
+import flaxbeard.steamcraft.block.BlockSteam;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 import flaxbeard.steamcraft.block.BlockSteamHammer;
@@ -31,6 +33,7 @@ import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.block.BlockThumper;
 import flaxbeard.steamcraft.block.BlockThumperDummy;
 import flaxbeard.steamcraft.block.BlockValvePipe;
+import flaxbeard.steamcraft.block.MaterialAirlike;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
@@ -71,7 +74,14 @@ public class SteamcraftBlocks {
 	public static BlockSteamPistonMoving steamPiston_extension;
 	public static BlockSteamPistonExtension steamPiston_head;
 	
+	public static Material airlike;
+	public static Block steam;
+	
 	public static void registerBlocks() {
+		airlike = new MaterialAirlike(MapColor.airColor);
+		steam = new BlockSteam().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:steam").setBlockTextureName("steamcraft:steam2").setHardness(0.0F).setResistance(0.0F);
+		GameRegistry.registerBlock(steam, BlockManyMetadataItem.class, "steam");
+
 		steamcraftOre = new BlockSteamcraftOre().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ore").setHardness(3.0F).setResistance(5.0F);
 		GameRegistry.registerBlock(steamcraftOre, BlockManyMetadataItem.class, "steamcraftOre");
 		OreDictionary.registerOre("oreCopper", new ItemStack(steamcraftOre,1,0));

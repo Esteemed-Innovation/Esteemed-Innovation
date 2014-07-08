@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -41,6 +42,7 @@ import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.tile.TileEntitySteam;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 public class SteamcraftEventHandler {
@@ -474,7 +476,20 @@ public class SteamcraftEventHandler {
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
 				System.out.println(((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getSteam() + " " + ((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getPressure());
 			}
-		
+			System.out.println("g");
+		}
+		if (event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == Blocks.glass && !event.world.isRemote) {
+			int steam = 0;
+			for (int x = -5; x<4; x++) {
+				for (int y = -5; y<4; y++) {
+					for (int z = -5; z<4; z++) {
+						if (event.entityPlayer.worldObj.getTileEntity(event.x+x, event.y+y, event.z+z) instanceof TileEntitySteam) {
+							steam += ((TileEntitySteam) event.entityPlayer.worldObj.getTileEntity(event.x+x, event.y+y, event.z+z)).steam;
+						}
+					}
+				}
+			}
+			System.out.println(steam);
 		}
 	}
 	
