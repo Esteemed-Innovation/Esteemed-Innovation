@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.block;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,9 +22,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 
-public class BlockBoiler extends BlockContainer {
+public class BlockBoiler extends BlockSteamTransporter {
 
 	public BlockBoiler(boolean on) {
 		super(Material.iron);
