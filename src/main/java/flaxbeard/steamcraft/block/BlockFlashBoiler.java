@@ -71,7 +71,8 @@ public class BlockFlashBoiler extends BlockContainer{
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta){
 	//	System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
 		// System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
-     	TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
+     	super.onBlockPreDestroy(world, x, y, z, meta);
+		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
 
          if (boiler != null)
          {

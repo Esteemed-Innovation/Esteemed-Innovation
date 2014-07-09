@@ -14,6 +14,7 @@ import flaxbeard.steamcraft.api.Tuple3;
 public class SteamNetwork {
 	
 	private static Random random = new Random();
+	private String name;
 	private int steam;
 	private int capacity;
 	private boolean isPopulated = false;
@@ -30,6 +31,14 @@ public class SteamNetwork {
 		this.capacity = capacity;
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
+	protected void setName(String name){
+		this.name = name;
+	}
+	
 	protected void tick(){
 		
 		if (this.getPressure() > 1.2F){
@@ -43,6 +52,44 @@ public class SteamNetwork {
 		}
 		
 		
+	}
+	
+	public synchronized static void newOrJoin(ISteamTransporter trans){
+		HashSet<ISteamTransporter> others = getNeighboringTransporters(trans);
+		HashSet<SteamNetwork> nets = new HashSet();
+		boolean hasJoinedNetwork = false;
+		if (others.size() > 0){
+			for (ISteamTransporter t : others){
+				System.out.println("Checking other!");
+				if (t.getNetwork() != null){
+					System.out.println(t.getNetwork().name);
+					SteamNetwork net = t.getNetwork();
+					if (net != null){
+						nets.add(net);
+					}
+				}
+			}
+			if (nets.size() > 0){
+				System.out.println("Other net(s) found: " + nets.size());
+				SteamNetwork main = null;
+				for (SteamNetwork net : nets){
+					if (main != null){
+						System.out.println(net.name + " will be joining "+main.name);
+						main.join(net);
+					} else {
+						System.out.println("Setting main to network "+net.name);
+						main = net;
+					}
+				}
+				main.addTransporter(trans);
+				hasJoinedNetwork = true;
+			}
+			
+		} 
+		if (!hasJoinedNetwork) {
+			SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
+			net.addTransporter(trans);
+		}
 	}
 	
 	public void addSteam(int amount){
@@ -77,7 +124,7 @@ public class SteamNetwork {
 		return transporters.size();
 	}
 	
-	public HashSet<ISteamTransporter> getNeighboringTransporters(ISteamTransporter trans){
+	public static HashSet<ISteamTransporter> getNeighboringTransporters(ISteamTransporter trans){
 		HashSet<ISteamTransporter> out = new HashSet();
 		Tuple3<Integer, Integer, Integer> transCoords = trans.getCoords(); 
 		for (ForgeDirection d : trans.getConnectionSides()){
@@ -96,6 +143,8 @@ public class SteamNetwork {
 		this.capacity += trans.getCapacity();
 		Tuple3<Integer, Integer, Integer> transCoords = trans.getCoords();
 		transporters.put(new Tuple3(transCoords.first, transCoords.second, transCoords.third), trans);
+		trans.setNetworkName(this.name);
+		trans.setNetwork(this);
 	}
 	
 	public void setTransporterCoords(Tuple3<Integer, Integer, Integer>[] coords){
@@ -141,8 +190,8 @@ public class SteamNetwork {
 				}
 			}
 			if (!isInNetwork){
-				SteamNetwork net = new SteamNetwork();
-				net.buildFromTransporter(trans);
+				SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
+				net.buildFromTransporter(trans, net);
 				newNets.add(net);
 			}
 		}
@@ -152,28 +201,31 @@ public class SteamNetwork {
 				int steamShare = (int)Math.floor((double)capacityShare * (double)this.steam);
 				this.steam -= steamShare;
 				net.addSteam(steamShare);
-				SteamNetworkRegistry.add(net);
+				SteamNetworkRegistry.getInstance().add(net);
 			}
-			SteamNetworkRegistry.remove(this);
+			SteamNetworkRegistry.getInstance().remove(this);
 		} else if (newNets.size() == 1){
 			// There is only one network. Probably this one.
 			transporters.remove(split.getCoords());
 		} else {
 			// There's nothing left.
-			SteamNetworkRegistry.remove(this);
+			SteamNetworkRegistry.getInstance().remove(this);
 		}
 		
 	}
 	
-	public synchronized void buildFromTransporter(ISteamTransporter trans) {
+	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target) {
+		System.out.println("Building network!");
 		HashSet<ISteamTransporter> checked = new HashSet();
-		SteamNetwork net = new SteamNetwork();
-		HashSet<ISteamTransporter> members = net.crawlNetwork(trans, checked);
+		HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked);
+		boolean targetIsThis = target == this;
+		SteamNetwork net = targetIsThis ? this : SteamNetworkRegistry.getInstance().getNewNetwork();
 		for (ISteamTransporter member : members){
-			if (!this.transporters.containsValue(trans)){
-				net.addTransporter(trans);
+			if ( !this.transporters.containsValue(member)){
+				target.addTransporter(member);
 			}
 		}
+		net.addTransporter(trans);
 	}
 	
 	public boolean contains(ISteamTransporter trans){
@@ -212,7 +264,11 @@ public class SteamNetwork {
 	}
 
 	public void join(SteamNetwork other){
-		// TODO: stub
+		for (ISteamTransporter trans : other.transporters.values()){
+			this.addTransporter(trans);
+		}
+		this.steam += other.getSteam();
+		SteamNetworkRegistry.getInstance().remove(other);
 	}
 	
 	

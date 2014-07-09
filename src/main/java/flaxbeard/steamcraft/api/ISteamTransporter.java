@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.steamNetwork.SteamNetwork;
 
 public interface ISteamTransporter {
 	public int getLastSteam();
@@ -20,4 +21,8 @@ public interface ISteamTransporter {
 	public HashSet<ForgeDirection> getConnectionSides();
 	public World getWorldObj();
 	public Tuple3<Integer, Integer, Integer> getCoords();
+	public String getNetworkName();
+	public SteamNetwork getNetwork();
+	public void setNetworkName(String name);
+	public void setNetwork(SteamNetwork steamNetwork);
 }

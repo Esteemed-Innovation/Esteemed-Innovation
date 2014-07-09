@@ -472,7 +472,8 @@ public class SteamcraftEventHandler {
 				System.out.println(((TileEntitySteamHeater)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).master);
 			}
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
-				System.out.println(((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getSteam() + " " + ((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getPressure());
+				ISteamTransporter trans = (ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
+				System.out.println(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName());
 			}
 		
 		}

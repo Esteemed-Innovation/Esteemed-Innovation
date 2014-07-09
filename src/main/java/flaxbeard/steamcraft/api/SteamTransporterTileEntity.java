@@ -9,10 +9,14 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.steamNetwork.SteamNetwork;
+import flaxbeard.steamcraft.steamNetwork.SteamNetworkRegistry;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
 	public float pressureResistance = 0.5F;
+	private String networkName;
+	private SteamNetwork network;
 	public int steam;
 	public int capacity;
 	public int lastSteam = 0;
@@ -42,6 +46,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("steam", steam);
         access.setInteger("lastSteam", lastSteam);
+        if (networkName != null)
+        	access.setString("networkName", networkName);
         
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -51,6 +57,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("steam", steam);
         access.setInteger("lastSteam", lastSteam);
+        if (networkName != null){
+        	access.setString("networkName", networkName);
+        }
         return access;
 	}
 	
@@ -61,6 +70,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	NBTTagCompound access = pkt.func_148857_g();
     	this.steam = access.getInteger("steam");
     	this.lastSteam = access.getInteger("lastSteam");
+    	if (access.hasKey("networkName"))
+    		this.networkName = access.getString("networkName");
     	
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -77,6 +88,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         if (compound.hasKey("lastSteam")){
         	this.lastSteam = compound.getShort("lastSteam");
         }
+        if (compound.hasKey("networkName")){
+        	this.networkName = compound.getString("networkName");
+        }
     }
 	
 	@Override
@@ -85,6 +99,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         super.writeToNBT(compound);
         compound.setShort("steam",(short) this.steam);
         compound.setShort("lastSteam",(short) this.lastSteam);
+        if (networkName != null)
+        	compound.setString("networkName", networkName);
     }
 	
 	public int getSteam(){
@@ -105,17 +121,35 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void updateEntity(){
-		if (this.steam != this.lastSteam){
-			if (!worldObj.isRemote){
-				System.out.println("Pressure change!");
-				this.lastSteam = this.steam;
-				UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
-		    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		    	//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (this.network == null && !worldObj.isRemote){
+			System.out.println("Null network");
+			if (this.networkName != null){
+				this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName);
+				if (this.network == null){
+					SteamNetwork.newOrJoin(this);
+				}
+				
+			} else {
+				System.out.println("Requesting new network build");
+				SteamNetwork.newOrJoin(this);
+				
 			}
-			
-	    }
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		} else {
+			//System.out.println("My network: "+this.network.toString());
+			if (this.steam != this.lastSteam){
+				if (!worldObj.isRemote){
+					System.out.println("Pressure change!");
+					this.lastSteam = this.steam;
+					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
+			    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+			    	//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				
+		    }
+		}
+		
 		
 	}
 	
@@ -198,6 +232,24 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	@Override
 	public Tuple3<Integer, Integer, Integer> getCoords() {
 		return new Tuple3(xCoord, yCoord,zCoord);
+	}
+
+
+	@Override
+	public String getNetworkName() {
+		return this.networkName;
+	}
+	
+	public void setNetworkName(String name){
+		this.networkName = name;
+	}
+	
+	public SteamNetwork getNetwork(){
+		return this.network;
+	}
+	
+	public void setNetwork(SteamNetwork network){
+		this.network = network;
 	}
 	
 	 
