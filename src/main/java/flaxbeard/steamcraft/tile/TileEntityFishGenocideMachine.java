@@ -20,8 +20,8 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 
 public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {

@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,9 +11,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
-public class BlockSteamHeater extends BlockContainer {
+public class BlockSteamHeater extends BlockSteamTransporter {
 	private IIcon iconOn;
 	private IIcon iconOff;
     public BlockSteamHeater() {

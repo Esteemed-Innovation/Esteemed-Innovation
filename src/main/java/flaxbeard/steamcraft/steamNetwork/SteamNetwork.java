@@ -170,6 +170,7 @@ public class SteamNetwork {
 	}
 	
 	public synchronized void split(ISteamTransporter split){
+		System.out.println("Splitting network: "+ this.name);
 		if (this.steam >= split.getCapacity() * this.getPressure()){
 			this.steam -= split.getCapacity() * this.getPressure();
 		}
@@ -191,7 +192,7 @@ public class SteamNetwork {
 			}
 			if (!isInNetwork){
 				SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
-				net.buildFromTransporter(trans, net);
+				net.buildFromTransporter(trans, net, split);
 				newNets.add(net);
 			}
 		}
@@ -214,10 +215,10 @@ public class SteamNetwork {
 		
 	}
 	
-	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target) {
+	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
 		System.out.println("Building network!");
 		HashSet<ISteamTransporter> checked = new HashSet();
-		HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked);
+		HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
 		boolean targetIsThis = target == this;
 		SteamNetwork net = targetIsThis ? this : SteamNetworkRegistry.getInstance().getNewNetwork();
 		for (ISteamTransporter member : members){
@@ -232,7 +233,7 @@ public class SteamNetwork {
 		return this.transporters.containsValue(trans);
 	}
 	
-	protected HashSet<ISteamTransporter> crawlNetwork(ISteamTransporter trans, HashSet<ISteamTransporter> checked){
+	protected HashSet<ISteamTransporter> crawlNetwork(ISteamTransporter trans, HashSet<ISteamTransporter> checked, ISteamTransporter ignore){
 		if (checked == null){
 			checked = new HashSet<ISteamTransporter>();
 		}
@@ -241,9 +242,9 @@ public class SteamNetwork {
 		}
 		HashSet<ISteamTransporter> neighbors = getNeighboringTransporters(trans);
 		for (ISteamTransporter neighbor : neighbors){
-			if (! checked.contains(neighbor)){
+			if (! checked.contains(neighbor) && neighbor != ignore){
 				checked.add(neighbor);
-				crawlNetwork(neighbor, checked);
+				crawlNetwork(neighbor, checked, ignore);
 			}
 		}
 		return checked;

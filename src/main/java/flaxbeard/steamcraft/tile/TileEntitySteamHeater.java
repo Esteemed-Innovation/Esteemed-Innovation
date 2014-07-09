@@ -16,9 +16,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter {
 	

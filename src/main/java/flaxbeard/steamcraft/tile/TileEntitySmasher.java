@@ -17,8 +17,8 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter {

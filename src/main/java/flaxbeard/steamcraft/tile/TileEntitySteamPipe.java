@@ -16,8 +16,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntitySteamPipe extends SteamTransporterTileEntity implements IFluidHandler,ISteamTransporter {
 	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;

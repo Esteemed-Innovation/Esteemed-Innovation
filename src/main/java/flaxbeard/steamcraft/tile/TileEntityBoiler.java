@@ -31,7 +31,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
