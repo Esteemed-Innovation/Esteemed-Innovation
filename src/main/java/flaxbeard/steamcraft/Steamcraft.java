@@ -41,6 +41,7 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
+import flaxbeard.steamcraft.tile.TileEntityFan;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
@@ -134,6 +135,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
 		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
+		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
 
 
 	}

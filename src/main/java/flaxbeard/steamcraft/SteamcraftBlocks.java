@@ -10,6 +10,7 @@ import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
+import flaxbeard.steamcraft.block.BlockFan;
 import flaxbeard.steamcraft.block.BlockFlashBoiler;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockMold;
@@ -59,6 +60,7 @@ public class SteamcraftBlocks {
 	public static Block itemMortar;
 	public static Block thumper;
 	public static Block thumperDummy;
+	public static Block fan;
 	
 	public static Block pump;
 	
@@ -149,6 +151,10 @@ public class SteamcraftBlocks {
 		GameRegistry.registerBlock(thumper, BlockThumperItem.class, "thumper");
 		thumperDummy = new BlockThumperDummy().setBlockName("steamcraft:thumperDummy").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(thumperDummy, "thumperDummy");
+		
+		fan = new BlockFan().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fan").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(fan, "fan");
+		
 
 
 //	
