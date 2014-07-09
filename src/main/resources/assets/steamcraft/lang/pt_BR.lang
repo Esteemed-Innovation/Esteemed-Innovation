@@ -1,0 +1,263 @@
+teamcraft.book.index=Index
+steamcraft.book.info=Um breve guia para o poder do vapor.
+steamcraft.book.by=por
+steamcraft.book.shapeless=Qualquer formato
+item.steamcraft:book.name=Inovação em forma de vapor
+
+steamcraft.astrolabe.target=Alvo:
+steamcraft.astrolabe.noTarget=Sem alvo
+steamcraft.astrolabe.dimension=dimenção
+steamcraft.astrolabe.dimension.overworld=o mundo
+steamcraft.astrolabe.dimension.nether=o Nether
+steamcraft.astrolabe.dimension.end=o fim
+steamcraft.astrolabe.in=em
+
+steamcraft.waila.pressure=Pressão
+steamcraft.waila.valveOpen=Valvula aberta
+steamcraft.waila.valveClosed=valvula fechada
+steamcraft.waila.complete=Completado
+steamcraft.waila.filling=Preenchendo
+steamcraft.waila.mold=Molde:
+
+steamcraft.exosuit.thrustTick=consumo por tick de uso do motor
+steamcraft.exosuit.flyTick=consumido por tick em voo
+
+
+category.Basics.name=Basicos
+research.Ores.name=Minerios
+research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find uses for them in the future.
+research.Book.name=Preface
+research.Book.0=I have decided to delve into the fantastical world of steam technology. I created this spiffy journal to record my exciting discoveries.<br>Any time I stumble upon something new, I'll jot it down, lest I need it later.
+research.Bits.name=Bits and Bobs
+research.Bits.0=Here I will document various components I may need for crafting.<br>Plating a piston assembly with brass increases durability and makes it useful for applications within steam apparatus.
+research.Bits.1=A simple turbine shape made of brass proves a valuable component, no doubt useful for many purposes, especially making things spin.
+research.Spyglass.name=Spyglass
+research.Spyglass.0=Who knew a few glass lenses in a brass housing could work as a magnifier? Now I can spot loot from a mile away!<br>Holding this device and pressing right click will zoom in, left clicking will zoom out.
+research.Survivalist.name=Survivalist's Toolkit
+research.Survivalist.0=Too many times I've broken my valuable enchanted tools. I've created a nice toolkit I can carry with me to stop this from happening in the future. Keeping this toolkit in my hotbar will prevent me from using tools that are about to break.
+research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted tools. I've created a nice toolkit I can carry with me to stop this from happening in the future. Wearing this toolkit in my belt slot will prevent me from using tools that are about to break.
+
+research.Plates.name=Placas
+research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
+
+category.MetalCasting.name=Fundição de metal
+research.Crucible.name=Cadinho
+research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!<br>To use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.
+research.Crucible.1=This metal will melt into a liquid, and form into alloys if possible. Right clicking on the crucible with an empty hand will pour this liquid metal into an adjacent mold.
+research.Mold.name=molde de bloco
+research.Mold.0=The crucible is useless without a way to cast the melted metal into usable shapes. That's where molds come in.<br>Simply place a mold block with the open end facing a crucible.
+research.Mold.1=Right clicking the mold block will open or close it. Right clicking with a mold will place it in the mold block. The mold can be removed by shift right clicking.<br>To cast metal, I first close the mold and pour in liquid metal. Then, I open the mold and retrieve my casted metal.
+research.Molds.name=Moldes
+research.Molds.0=Molds can be placed in the mold block to set the output of the mold.<br>Right clicking with a carved or blank mold on a mold carver will change the mold type, cycling through all options.
+research.Brass.name=Latão
+research.Brass.0=I have created a new alloy that looks promising. Three parts copper and one part zinc creates brass, a shiny gold-like alloy.<br>Brass seems to resist corrosion, something that should prove useful.
+research.GildedGold.name=Aço Tratado
+research.GildedGold.0=I have found a way to combine the sturdy composition of iron with the magical capabilities of gold: gilding. I can coat iron ingots and tools with gold to combine their abilities.
+research.GildedGold.1=Simply right clicking on a crucible containing gold with an iron ingot will use up one nugget's worth of gold, leaving me with ingots that encompass the strength of iron and enchantability of gold.
+category.SteamPower.name=Poder do vapor
+category.SteamPower2.name=Poder do vapor
+
+research.Boiler.name=Caldeira
+research.Boiler.0=I have made a device that allows for the production of gaseous water, steam. If I insert water and fuel, steam will be produced.<br>This steam can then be piped out the top.
+research.FlashBoiler.name=Caldeira rapida
+research.FlashBoiler.0=I find myself needing more and more boilers as my steam usage continues to increase. I grew fed up with the endless boilers filling my workshop, so I set out to make something superior. The result? The flash boiler.
+research.FlashBoiler.1=The flash boiler is constructed by placing its components in a 2x2x2 cube shape. I can then start to power it. The flash boiler consumes water and fuel at a rate tenfold that of the basic boiler, but its output is also tenfold. The flash boiler requires time to heat up, and will not produce steam as quickly or as efficiently until warmed up.
+research.Tank.name=Obrigado
+research.Tank.0=Pipes are great for transporting steam, but I've grown weary of refilling the boiler every time I need more. I've created tanks to remedy this problem. They store large amounts of steam, so I can save some for later.
+research.Pipe.name=Tubos
+research.Pipe.0=Steam is useless without a way to move it about but I've struggled to find a way to move it effectively.<br>Brass pipes are able to resist corrosion and thus make the perfect conduit for steam.
+research.Pipe.1=Combining a lever with a pipe allows me to toggle the flow of steam. Right clicking on this valve pipe will open or close the valve.
+research.RuptureDisc.name=Disco de ruptura
+research.RuptureDisc.0=One too many times I've lost a valuable boiler or machine because its pressure was too high. This is where the rupture disc comes in.<br>To use the rupture disc, I simply place one on a machine or pipe that I fear may explode.
+research.RuptureDisc.1=It will pop before a critical pressure is reached, letting steam out. Of course, it will keep letting steam out until repaired by crafting with a zinc plate or right clicking with a zinc plate.
+research.Gauge.name=Valvula de vapor
+research.Gauge.0=I've created a simple method for measuring steam within a conduit. I can simply slap on one of these to a boiler, pipe, tank, or other device and it will visually display the pressure, outputting a corresponding redstone signal to comparators.
+research.Heater.name=Aquecedor a vapor
+research.Heater.0=Now I can power furnaces using steam power, using this nifty steam heater. <br>Steam heats the copper coils and allows a furnace to smelt without fuel. More heaters will smelt faster but use more steam.
+research.Filler.name=Preenchedor de vapor
+research.Filler.0=Pipes are great for transporting steam to fixed machines, but they're not much good to supply power to tools or armor. That's where the steam filler comes in.<br>Simply place in a steam-using device and wait.
+research.ItemMortar.name=Morteiro
+research.ItemMortar.0=I've found an ingenious way to transport items - a pressurized steam cannon!<br>This mortar will launch items skyward, at a high trajectory, to land at a targeted location.
+research.ItemMortar.1=Simply insert items via a hopper, set a target, and watch items fly.<br>An astrolabe is my device of choice for aiming the mortar. First, I have to shift-right click on the targeted location with an astrolabe, and then right click on the mortar to calibrate it.
+research.Hammer.name=Martelo a vapor
+research.Hammer.0=I've created an interesting invention - a steam hammer - that allows me to perform anvil actions using steam instead of experience.<br>I first place the hammer above an anvil.
+research.Hammer.1=Right clicking the hammer will open its interface, where I can set up what I want the hammer to do. After I set up the action I want done, I simply insert steam and wait for the repairs or renaming to finish.
+research.Screw.name=Parafusos de arquimedes
+research.Screw.0=I've created a way to move liquids into adjacent inventories. Placing and powering this screw will move liquid sources from the lower end to inventories on the higher end, allowing me to fill boilers and other tanks with ease.
+research.Smasher.name=Quebra pedras
+research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
+research.Thumper.name=Ariete
+research.Thumper.0=I need to think bigger. I've wasted my time working on manipulating small things like moving water or smashing rock...<br>No. I need to think on a grander scale. This is where the thumper comes in.
+research.Thumper.1=The thumper is able to fracture the very earth itself, slowly eroding a ravine below it. This ravine won't be exposed to the surface, and the destroyed rock and ore will remain there, so I must find another way to collect the spoils.<br>Eventually, the thumper will slow and stop fracturing all together. It should then be moved.
+
+category.Exosuit.name=Exoesqueleto
+research.Exosuit.name=Exoesqueleto
+research.Exosuit.0=I've been able to manipulate the world to my desire using the power of steam... What left is there to improve but me?<br>This is where my exosuit comes in, a versatile armor set powered by steam.
+research.Exosuit.1=Upgrades can be placed in the suit using an engineering table. First things first, I need to place a steam tank in the cuboid shaped slot in the exosuit chestpiece. I then can fill the chestpiece with steam.<br>A full set of exosuit parts will provide a small mining and speed boost, but without steam I will be slowed.
+research.Jetpack.name=Jetpack a vapor
+research.Jetpack.0=I've developed a rather exciting exosuit upgrade that grants me the power of flight.<br>This steam 'jetpack' of sorts consumes a substantial amount of steam, but you can't put a price tag on flight.
+research.Wings.name=Asas a vapor
+research.Wings.0=Now I can glide like a chicken, at no steam cost!<br>This steam powered chestpiece upgrade will deploy when I start falling too fast to slow my fall, but this can be disabled by hitting shift.
+research.Thrusters.name=Propulsores
+research.Thrusters.0=I have created a new exosuit upgrade for the legpiece to aid with movement.<br>These thrusters will increase my air movement speed, albeit at a steam cost. This lets me jump further and fly faster using a jetpack.
+research.Fist.name=Soco poderoso
+research.Fist.0=This chestpiece upgrade is one of my more fun inventions. It makes my punches pack a real... punch.<br>Any time I punch an enemy with a bare fist they'll go flying, at the cost of some steam.
+research.FallAssist.name=Botas de queda
+research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
+research.Mask.name=Mascara da revelação
+research.Mask.0=Who says thaumaturgy can't mix with technology? Not I! I've developed a snazzy mask that gives my exosuit the same properties as the goggles of revealing.
+
+category.SteamTools.name=Ferramentas a vapor
+research.SteamTools.name=Ferramentas a vapor
+research.SteamTools.0=Following the successes of my rock smasher and thumper, I ventured to make more portable versions of these rock-breaking tools. Finally, my work has come to frutition, in the form of the steam drill, saw, and shovel.
+research.SteamTools.1=These three tools can be filled with steam and do not break.<br>They must be spun up in order to be used effectively. Right clicking while holding a tool will spin it up, using steam, and speed up the tool. Unlike normal tools, mining itself does not use steam.
+
+category.Flintlock.name=Armas de pederneira
+research.Parts.name=Partes de armas
+research.Parts.0=Flintlock weapons are extremely intricate devices, and I'll need to craft some complex devices in order to make them. This section details exactly how to do that.
+research.Musket.name=Mosquete
+research.Musket.0=I have found a way to harness the power of fire to make an efficient killing machine: the musket. This device requires reloading between every shot, using musket cartridges as ammunition. Hold right click to reload and to aim.
+research.Blunderbuss.name=Blunderbuss
+research.Blunderbuss.0=Using a larger brass barrel with modified musket mechanisms makes for an interesting combination, I call it a blunderbuss. This device shoots multiple inaccurate shots at once, allowing me to hit many foes.
+research.Pistol.name=Pistola de pederneira
+research.Pistol.0=I've found a way to shrink down my musket to a more manageable size, that can be armed faster. Of course, the smaller barrel means decreased damage and accuracy, but the increased speed is worth it.
+itemGroup.steamcraft=FSP
+itemGroup.steamcraftTools=Ferramentas do FSP
+steamcraft.enhancementText=Melhorias:
+
+item.steamcraft:musketCartridge.name=Cartucho de mosquete
+item.steamcraft:musket.name=Mosquete
+item.steamcraft:pistol.name=Pistola de pederneira
+item.steamcraft:revolver.name=Revolver de pederneira
+item.steamcraft:blunderbuss.name=Blunderbuss
+item.steamcraft:blunderbussAblaze.name=Ablaze Blunderbuss
+item.steamcraft:spyglass.name=Luneta
+item.steamcraft:musketMarksman.name=Mosquete de precisão
+enhancement.steamcraft:musketMarksman=Luneta de precisão
+item.steamcraft:musketAblaze.name=Ablaze Musket
+enhancement.steamcraft:musketAblaze=Ablaze
+enhancement.steamcraft:revolver=Kit de revolveres
+
+item.steamcraft:exoArmorHead.name=Steam Exosuit Headpiece
+item.steamcraft:exoArmorBody.name=Steam Exosuit Chestpiece
+item.steamcraft:exoArmorLegs.name=Steam Exosuit Legpiece
+item.steamcraft:exoArmorFeet.name=Steam Exosuit Footpiece
+
+item.steamcraft:ingot.0.name=Barra de cobre
+item.steamcraft:ingot.1.name=Barra de zinco
+item.steamcraft:ingot.2.name=Barra de latão
+item.steamcraft:ingot.3.name=Barra da aço tratado
+
+item.steamcraft:nugget.0.name=Pepita de cobre
+item.steamcraft:nugget.1.name=Pepita de zinco
+item.steamcraft:nugget.2.name=Pepita de ferro
+item.steamcraft:nugget.3.name=Pepita de latão
+
+item.steamcraft:smashedOre.Iron.name=Minerio de ferro esmagado
+item.steamcraft:smashedOre.Gold.name=Minerio de ouro esmagado
+item.steamcraft:smashedOre.Copper.name=Minerio de cobre esmagado
+item.steamcraft:smashedOre.Zinc.name=Minerio de zinco esmagado
+item.steamcraft:smashedOre.Tin.name=Minerio de estanho
+item.steamcraft:smashedOre.Nickel.name=Minerio de nickel esmagado
+item.steamcraft:smashedOre.Silver.name=Minerio de prata esmagado
+item.steamcraft:smashedOre.Lead.name=Minerio de chumbo esmagado
+item.steamcraft:smashedOre.Aluminum.name=Minerio de aluminio esmagado
+item.steamcraft:smashedOre.Osmium.name=Minerio de osmio esmagado
+item.steamcraft:smashedOre.Cobalt.name=Minerio de cobalto esmagado
+item.steamcraft:smashedOre.Ardite.name=Minerio de ardita esmagado
+item.steamcraft:smashedOre.Cinnabar.name=Minerio de cinnabar esmagado
+
+item.steamcraft:smashedOre.PoorIron.name=Smashed Poor Iron Ore
+item.steamcraft:smashedOre.PoorGold.name=Smashed Poor Gold Ore
+item.steamcraft:smashedOre.PoorCopper.name=Smashed Poor Copper Ore
+item.steamcraft:smashedOre.PoorZinc.name=Smashed Poor Zinc Ore
+item.steamcraft:smashedOre.PoorTin.name=Smashed Poor Tin Ore
+
+item.steamcraft:crafting.0.name=Pistão de latão
+item.steamcraft:crafting.1.name=Coronha de madeira
+item.steamcraft:crafting.2.name=Cano de ferro
+item.steamcraft:crafting.3.name=cano de Blunderbuss
+item.steamcraft:crafting.4.name=Pederneira
+item.steamcraft:crafting.5.name=Turbina de latão
+
+item.steamcraft:plate.0.name=Chapa de cobre
+item.steamcraft:plate.1.name=Chapa de zinco
+item.steamcraft:plate.2.name=Chapa de ferro
+item.steamcraft:plate.3.name=Chapa de ouro
+item.steamcraft:plate.4.name=Chapa de latão
+item.steamcraft:plate.5.name=Chapa de thaumium
+
+item.steamcraft:ingotMold.name=Molde de barra
+item.steamcraft:nuggetMold.name=Molde de pepita
+item.steamcraft:plateMold.name=Molde de chapa
+item.steamcraft:blankMold.name=Molde em branco
+
+item.steamcraft:helmGildedGold.name=Gilded Iron Helmet
+item.steamcraft:chestGildedGold.name=Gilded Iron Chestplate
+item.steamcraft:legsGildedGold.name=Gilded Iron Leggings
+item.steamcraft:feetGildedGold.name=Gilded Iron Boots
+
+item.steamcraft:pickGildedGold.name=Gilded Iron Pickaxe
+item.steamcraft:axeGildedGold.name=Gilded Iron Axe
+item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
+item.steamcraft:hoeGildedGold.name=Gilded Iron Hoe
+item.steamcraft:swordGildedGold.name=Gilded Iron Sword
+
+item.steamcraft:helmBrass.name=Brass Helmet
+item.steamcraft:chestBrass.name=Brass Chestplate
+item.steamcraft:legsBrass.name=Brass Leggings
+item.steamcraft:feetBrass.name=Brass Boots
+
+item.steamcraft:pickBrass.name=Brass Pickaxe
+item.steamcraft:axeBrass.name=Brass Axe
+item.steamcraft:shovelBrass.name=Brass Shovel
+item.steamcraft:hoeBrass.name=Brass Hoe
+item.steamcraft:swordBrass.name=Brass Sword
+
+item.steamcraft:steamDrill.name=Furadeira a vapor
+item.steamcraft:steamAxe.name=Serra a vapor
+item.steamcraft:steamShovel.name=Pá a vapor
+item.steamcraft:astrolabe.name=Astrolabio
+
+item.steamcraft:survivalist.name=Kit de ferramentas de sobrevivencia
+
+item.steamcraft:powerFist.name=Soco poderoso
+item.steamcraft:fallAssist.name=Botas de queda
+item.steamcraft:jetpack.name=Jetpack a vapor
+item.steamcraft:wings.name=Asas a vapor
+item.steamcraft:goggleUpgrade.name=Mascara da revelação
+item.steamcraft:floralLaurel.name=Laureu floral
+item.steamcraft:thrusters.name=Propulsores
+
+item.steamcraft:steamedChicken.name=Galinha cosida
+item.steamcraft:steamedBeef.name=Carne cosida
+item.steamcraft:steamedFish.name=Peixe cosido
+item.steamcraft:steamedPorkchop.name=Bisteca cosida
+
+tile.steamcraft:blockBrass.name=Bloco de latão
+tile.steamcraft:blockCopper.name=Bloco de cobre
+tile.steamcraft:blockZinc.name=Bloco de zinco
+
+tile.steamcraft:charger.name=Preenchedor a vapor
+tile.steamcraft:crucible.name=Cadinho
+tile.steamcraft:mold.name=Molde
+tile.steamcraft:pipe.name=Cano
+tile.steamcraft:valvePipe.name=Cano com valvula
+tile.steamcraft:boiler.name=Caldeira
+tile.steamcraft:heater.name=Aquedor a vapor
+tile.steamcraft:ore.0.name=Minerio de cobre
+tile.steamcraft:ore.1.name=Minerio de zinco
+tile.steamcraft:ore.2.name=Minerio de zinco pobre
+tile.steamcraft:carving.name=Mesa de gravação
+tile.steamcraft:engineering.name=Mesa de engenharia
+tile.steamcraft:tank.0.name=Tanque de vapor
+tile.steamcraft:tank.1.name=Tanque de vapor do modo criativo
+tile.steamcraft:meter.name=Valvula de vapor
+tile.steamcraft:hammer.name=Martelo de vapor
+tile.steamcraft:itemMortar.name=Morteiro de itens
+tile.steamcraft:pump.name=Parafuso de archimedes
+tile.steamcraft:smasher.name=Quebra pedras
+tile.steamcraft:thumper.name=Ariete
+tile.steamcraft:flashBoiler.name=Peça de caldeira rapida
+tile.steamcraft:ruptureDisc.0.name=Disco de ruptura
+tile.steamcraft:ruptureDisc.1.name=Disco de ruptura rompido
