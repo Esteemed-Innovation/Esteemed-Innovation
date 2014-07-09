@@ -15,21 +15,26 @@ import flaxbeard.steamcraft.Steamcraft;
 public class TileEntityFan extends TileEntity {
 	@Override
 	public void updateEntity() {
+
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		this.worldObj.spawnParticle("smoke", xCoord+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);
 		int blocksInFront = 0;
 		boolean blocked = false;
-		for (int i = 1; i<6; i++) {
+		for (int i = 1; i<9; i++) {
 			if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(20) == 0 && !blocked && this.worldObj.getBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i) != Blocks.air && this.worldObj.getBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i).isReplaceable(worldObj, xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i)) {
 				int tMeta = this.worldObj.getBlockMetadata(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i);				
 				this.worldObj.getBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i).dropBlockAsItem(worldObj, xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i, tMeta, 0);
 				for (int v = 0; v<5; v++) {
 					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, xCoord+dir.offsetX*i+0.5F, yCoord+dir.offsetY*i+0.5F, zCoord+dir.offsetZ*i+0.5F, this.worldObj.getBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i), 0.0F, 0.0F, 0.0F);
 				}
+				this.worldObj.spawnParticle("smoke", xCoord+dir.offsetX*i+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+dir.offsetY*i+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+dir.offsetZ*i+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.25F, dir.offsetY*0.25F, dir.offsetZ*0.25F);
 				this.worldObj.setBlockToAir(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i);
 			}
 			if (!blocked && (this.worldObj.getBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i).isReplaceable(worldObj, xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i) || this.worldObj.isAirBlock(xCoord+dir.offsetX*i, yCoord+dir.offsetY*i, zCoord+dir.offsetZ*i))) {
 				blocksInFront = i;
+				if (i != 8)
+					this.worldObj.spawnParticle("smoke", xCoord+dir.offsetX*i+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+dir.offsetY*i+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+dir.offsetZ*i+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);
 			}
 			else
 			{
