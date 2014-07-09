@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.api;
+package flaxbeard.steamcraft.api.tile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,6 +9,9 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.Tuple3;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.steamNetwork.SteamNetwork;
 import flaxbeard.steamcraft.steamNetwork.SteamNetworkRegistry;
 
