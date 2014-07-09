@@ -112,7 +112,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 //						furnace.setInventorySlotContents(2, replacement);
 //						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 //					}
-					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.steam >= 2 && canSmelt(furnace)) {
+					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteam() >= 2 && canSmelt(furnace)) {
 						if (furnace.furnaceBurnTime == 0) {
 							BlockFurnace.updateFurnaceBlockState(true, this.worldObj, xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 						}

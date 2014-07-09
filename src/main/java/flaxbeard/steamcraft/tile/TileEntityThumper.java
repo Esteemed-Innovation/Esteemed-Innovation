@@ -27,9 +27,9 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if (this.steam >= 200 && this.progress == 0) {
+		if (this.getSteam() >= 200 && this.progress == 0) {
 			this.progress++;
-			this.steam -= 200;
+			this.decrSteam(200);
 
 		}
 		if (this.progress == 15) {

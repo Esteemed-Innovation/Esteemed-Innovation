@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.tile;
 
+import java.util.HashSet;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,6 +35,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.block.BlockBoiler;
 
 public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHandler,ISidedInventory,ISteamTransporter{
@@ -339,6 +342,14 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 					);
 				TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(cluster[pos][0], cluster[pos][1], cluster[pos][2]);
 				boiler.setFront(frontSide, false);
+				if (isMultiblock){
+					SteamNetwork.newOrJoin(boiler);
+				} else {
+					if (this.getNetwork()!= null){
+						this.getNetwork().split(boiler);
+					}
+				}
+				
 			} else {
 				//System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
 			}
@@ -462,7 +473,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)this.heat/1600.0F)));
 	                    	//System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
 	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
-	                    		this.steam+=1;
+	                    		this.insertSteam(1);
 	                    		this.myTank.drain(2, true);
 	                    		i++;
 	                    	}
@@ -489,6 +500,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         	//System.out.println(this.furnaceBurnTime);
         }
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	private void insertSteam(int i) {
+		if (this.getNetwork() != null){
+			this.getNetwork().addSteam(i);
+		}
+		
 	}
 
 	public static int getItemBurnTime(ItemStack p_145952_0_)
@@ -684,11 +702,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	@Override
 	public float getPressure() {
 		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1){
-			return (this.steam/(5000.0F*8F));
-		} else {
-			return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getPressure() : 0F;
+			if (this.getNetwork() != null)
+				return (super.getPressure());
+			else
+				return 0;
 		}
 		
+		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getPressure() : 0F;
 	}
 
 	@Override
@@ -703,13 +723,15 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
 	@Override
 	public int getSteam() {
-		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? steam : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSteam() : 0);
+		if (this.getNetwork() != null)
+			return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSteam() : 0);
+		else return 0;
 	}
 
 	@Override
 	public void insertSteam(int amount, ForgeDirection face) {
-		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ) {
-			steam+=amount;
+		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 && this.getNetwork() != null) {
+			this.getNetwork().addSteam(amount);
 		} else if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0) {
 			getMasterTileEntity().insertSteam(amount, face);
 		}
@@ -733,8 +755,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
 	@Override
 	public void decrSteam(int i) {
-		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord)==1){
-			this.steam-=i;
+		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord)==1 && this.getNetwork() != null){
+			this.getNetwork().decrSteam(i);
 		} else if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0){
 			getMasterTileEntity().decrSteam(i);
 		}
@@ -865,6 +887,22 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				if (otherBoiler != null) otherBoiler.secondaryExplosion();
 			}
 		}
+	}
+	
+	@Override
+	public HashSet<ForgeDirection> getConnectionSides() {
+		int meta = this.getBlockMetadata();
+		HashSet<ForgeDirection> sides = new HashSet();
+		if (meta > 0){
+			if (meta > 4){
+				for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS){
+					sides.add(side);
+				}
+			} else {
+				sides.add(ForgeDirection.UP);
+			}
+		}
+		return sides;
 	}
 	
 	public void secondaryExplosion(){

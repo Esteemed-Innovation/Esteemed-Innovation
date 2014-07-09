@@ -13,7 +13,10 @@ public abstract class BlockSteamTransporter extends BlockContainer {
 	
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta){
 		ISteamTransporter te = (ISteamTransporter) world.getTileEntity(x, y, z);
-		te.getNetwork().split(te);
+		if (te != null && te.getNetwork() != null){
+			te.getNetwork().split(te);
+		}
+		
 	}
 
 }

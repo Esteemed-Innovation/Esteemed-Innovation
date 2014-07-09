@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.steamNetwork;
+package flaxbeard.steamcraft.api.steamnet;
 
 import java.util.HashMap;
 import java.util.UUID;

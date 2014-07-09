@@ -59,8 +59,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("CookTime", (short)this.furnaceCookTime);
         access.setShort("cIBT", (short)this.currentItemBurnTime);
-        access.setInteger("steam", steam);
-
+        
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -201,7 +200,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                 {
                 	//int i = 0;
                 //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
-                		this.steam+=1;
+                		this.getNetwork().addSteam(1);
                 		this.myTank.drain(2, true);
                 		///i++;
                 	//}

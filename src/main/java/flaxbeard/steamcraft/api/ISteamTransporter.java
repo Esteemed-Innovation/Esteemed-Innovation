@@ -4,10 +4,9 @@ import java.util.HashSet;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import flaxbeard.steamcraft.steamNetwork.SteamNetwork;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 
 public interface ISteamTransporter {
-	public int getLastSteam();
 	public float getPressure();
 	public float getPressureResistance();
 	public boolean canInsert(ForgeDirection face);

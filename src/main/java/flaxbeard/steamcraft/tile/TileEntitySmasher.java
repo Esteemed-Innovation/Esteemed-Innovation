@@ -205,7 +205,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		//Flag does nothing
 		decodeAndCreateParticles(1);
 		//handle state changes
-		if (this.hasBlockUpdate && this.hasPartner() && this.steam > 100){
+		if (this.hasBlockUpdate && this.hasPartner() && this.getSteam() > 100){
 			if (this.shouldStop){
 				//System.out.println("shouldStop");
 				this.spinup = 0;
@@ -220,7 +220,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			}
 			//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
 			if (this.hasSomethingToSmash() && !this.isActive){
-				this.steam -= 100;
+				this.decrSteam(100);
 				this.isActive = true;
 				this.isBreaking = true;
 			}
@@ -282,12 +282,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 							
 							
 						}
-						
-
-						
-						//TODO: play smashing sound
-						//TODO: drop item(s)
-						// if (meta % 2 == 0) I'm the drop handler.
 					}
 					this.spinup++;
 				
@@ -333,7 +327,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	}
-	
+
 	private void spawnItems(int x, int y, int z){
 		if (smooshedStack != null) {
 			for (ItemStack stack : smooshedStack) {
@@ -381,7 +375,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		int[] target = getTarget(2);
 		int x = target[0], y=yCoord, z=target[1], opposite=target[2];
 		
-		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).steam > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
+		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).getSteam() > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
 		//	System.out.println("I have a partner!");
 			return true;
 		}
