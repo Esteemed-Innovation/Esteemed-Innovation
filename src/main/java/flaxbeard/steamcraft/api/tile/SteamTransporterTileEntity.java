@@ -10,6 +10,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
@@ -47,10 +49,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        if (networkName != null)
+        if (networkName != null) {
         	access.setString("networkName", networkName);
         	access.setFloat("pressure", this.getPressure());
-        
+        }
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	
@@ -59,8 +61,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null){
         	access.setString("networkName", networkName);
+            access.setFloat("pressure", this.getPressure());
+
         }
-        access.setFloat("pressure", this.getPressure());
         return access;
 	}
 	
@@ -69,10 +72,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	if (access.hasKey("networkName"))
+    	if (access.hasKey("networkName")) {
     		this.networkName = access.getString("networkName");
     		this.pressure = access.getFloat("pressure");
-    	
+    	}
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	 
@@ -97,9 +100,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public int getCapacity(){
 		return this.capacity;
 	}
-	 
+	
 	public float getPressure(){
-		return (this.network != null) ? (float)this.network.getPressure() : 0F;
+		return (this.network != null) ? (float)this.network.getPressure() : this.pressure;
 	}
 	
 	@Override
