@@ -743,7 +743,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
-		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 4 && face != myDir();
+		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 4;
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 	public void updateEntity() {
 		ForgeDirection dir = myDir();
 		if (!this.isInitialized){
-			ForgeDirection[] directions = new ForgeDirection[5];
+			ForgeDirection[] directions = new ForgeDirection[6];
 			int i = 0;
 			for (ForgeDirection direction : ForgeDirection.values()) {
 				if (direction != dir) {

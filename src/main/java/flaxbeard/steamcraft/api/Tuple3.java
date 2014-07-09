@@ -1,12 +1,12 @@
 package flaxbeard.steamcraft.api;
 
-public class Tuple3
+public class Tuple3<T1, T2, T3>
 {
-	public Object first;
-    public Object second;
-    public Object third;
+	public T1 first;
+    public T2 second;
+    public T3 third;
     
-    public Tuple3(Object a, Object b, Object c)
+    public Tuple3(T1 a, T2 b, T3 c)
     {
         this.first = a;
         this.second = b;

@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.api;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -104,13 +105,17 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void updateEntity(){
-		//if (this.steam != this.lastSteam){
-			//System.out.println("Pressure change!");
-			this.lastSteam = this.steam;
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
-	    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-	    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	    //}
+		if (this.steam != this.lastSteam){
+			if (!worldObj.isRemote){
+				System.out.println("Pressure change!");
+				this.lastSteam = this.steam;
+				UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
+		    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		    	//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			
+	    }
 		
 	}
 	
@@ -178,4 +183,22 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public void setDistributionDirections(ForgeDirection[] faces){
 		this.distributionDirections = faces;
 	}
+
+
+	@Override
+	public HashSet<ForgeDirection> getConnectionSides() {
+		HashSet<ForgeDirection> out = new HashSet();
+		for (ForgeDirection d : distributionDirections){
+			out.add(d);
+		}
+		return out;
+	}
+
+
+	@Override
+	public Tuple3<Integer, Integer, Integer> getCoords() {
+		return new Tuple3(xCoord, yCoord,zCoord);
+	}
+	
+	 
 }

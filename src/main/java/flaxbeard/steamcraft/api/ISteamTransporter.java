@@ -1,5 +1,8 @@
 package flaxbeard.steamcraft.api;
 
+import java.util.HashSet;
+
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ISteamTransporter {
@@ -14,4 +17,7 @@ public interface ISteamTransporter {
 	public void decrSteam(int i);
 	public boolean doesConnect(ForgeDirection face);
 	public abstract boolean acceptsGauge(ForgeDirection face);
+	public HashSet<ForgeDirection> getConnectionSides();
+	public World getWorldObj();
+	public Tuple3<Integer, Integer, Integer> getCoords();
 }

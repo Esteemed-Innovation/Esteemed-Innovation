@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.steamNetwork.SteamNetworkRegistry;
 
 public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
@@ -21,6 +22,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	private boolean turning;
 	public int turnTicks=0;
 	private boolean redstoneState;
+	private boolean isInitialized = false;
 	
 	public void updateRedstoneState(boolean flag) {
 		
@@ -90,6 +92,10 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public void updateEntity() {
+		if (!this.isInitialized){
+			this.isInitialized = true;
+			//SteamNetworkRegistry.buildFromTransporter(this);
+		}
 		if (!this.worldObj.isRemote) {
 			if (turning && turnTicks < 10) {
 				turnTicks++;
