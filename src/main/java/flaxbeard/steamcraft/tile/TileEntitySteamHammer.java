@@ -44,8 +44,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
 		}
 		if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
 			if (hammerTicks == 0) {
-				if (this.steam > 400) {
-					this.steam -= 400;
+				if (this.getSteam() > 400) {
+					this.decrSteam(400);
 				}
 				else
 				{

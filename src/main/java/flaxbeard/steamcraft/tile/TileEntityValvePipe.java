@@ -14,7 +14,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
-import flaxbeard.steamcraft.steamNetwork.SteamNetworkRegistry;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 
 public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
@@ -44,7 +45,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         access.setBoolean("open", open);
         access.setInteger("turnTicks", turnTicks);
 
-        access.setInteger("steam", steam);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -92,9 +92,19 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public void updateEntity() {
-		if (!this.isInitialized){
-			this.isInitialized = true;
-			//SteamNetworkRegistry.buildFromTransporter(this);
+		if (this.getNetwork() == null && !worldObj.isRemote && this.open){
+			System.out.println("Null network");
+			if (this.getNetworkName() != null){
+				this.setNetwork(SteamNetworkRegistry.getInstance().getNetwork(this.getNetworkName()));
+				if (this.getNetwork() == null){
+					SteamNetwork.newOrJoin(this);
+				}
+				
+			} else {
+				System.out.println("Requesting new network build");
+				SteamNetwork.newOrJoin(this);
+				
+			}
 		}
 		if (!this.worldObj.isRemote) {
 			if (turning && turnTicks < 10) {
@@ -102,7 +112,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 			}
 			if (turnTicks >= 10) {
 				turning = false;
-				open = !open;
+				this.setOpen(!this.open);
 				turnTicks = 0;
 			}
 			if (!turning) {
@@ -151,11 +161,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 			while (!this.doesConnect(direction)) {
 				direction = ForgeDirection.getOrientation((direction.flag+1)%5);
 			}
-			if (myDirections.size() == 2 && open && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+			if (myDirections.size() == 2 && open && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 			}
-			while (myDirections.size() == 2 && open && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.steam--;
+			while (myDirections.size() == 2 && open && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+				this.decrSteam(1);
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
 				i++;
 			}
@@ -163,6 +173,14 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
+	private void setOpen(boolean open) {
+		if (open){
+			SteamNetwork.newOrJoin(this);
+		} else {
+			this.getNetwork().split(this);
+		}
+	}
+
 	@Override
 	public boolean canInsert(ForgeDirection face) {
 		return face != dir() && open;
@@ -180,21 +198,5 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	public void setTurining() {
 		this.turning = true;
 		this.turnTicks = 0;
-	}
-	
-	@Override
-	public void explode() {
-		ForgeDirection myDir = dir();
-		ForgeDirection[] directions = new ForgeDirection[6];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir) {
-				directions[i] = direction;
-				i++;
-			}
-		}
-		if (open) {
-			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
-		}
 	}
 }

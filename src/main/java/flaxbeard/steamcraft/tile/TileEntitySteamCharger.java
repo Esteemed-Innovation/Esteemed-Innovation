@@ -39,7 +39,6 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
         if (this.inventory[0] != null)
         {
 	        NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -86,13 +85,13 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 		if (this.getStackInSlot(0) != null) {
 			ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
 			ItemStack stack = this.getStackInSlot(0).copy();
-			if (this.steam > 0 && stack.getItemDamage() > 0) {
+			if (this.getSteam() > 0 && stack.getItemDamage() > 0) {
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, (Math.random()-0.5F)/12.0F, 0.0F, (Math.random()-0.5F)/12.0F);
 			}
-			if (this.steam > item.steamPerDurability() && stack.getItemDamage() > 0) {
+			if (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0) {
  				int i = 0;
- 				while (i<9 && (this.steam > item.steamPerDurability() && stack.getItemDamage() > 0)) {
- 					this.steam -= item.steamPerDurability();
+ 				while (i<9 && (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+ 					this.decrSteam(item.steamPerDurability());
  					stack.setItemDamage(stack.getItemDamage()-1);
  	 				this.setInventorySlotContents(0, stack);
  					i++;

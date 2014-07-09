@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.api.tile;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -12,17 +13,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
-import flaxbeard.steamcraft.steamNetwork.SteamNetwork;
-import flaxbeard.steamcraft.steamNetwork.SteamNetworkRegistry;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
+import flaxbeard.steamcraft.block.BlockSteamGauge;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
 	public float pressureResistance = 0.5F;
+	public float pressure;
 	private String networkName;
 	private SteamNetwork network;
-	public int steam;
 	public int capacity;
-	public int lastSteam = 0;
 	private ForgeDirection[] distributionDirections;
 	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
 	
@@ -32,7 +33,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	
 	public SteamTransporterTileEntity(ForgeDirection[] distributionDirections){
-		this.steam = 0;
 		this.capacity = 1000;
 		this.distributionDirections = distributionDirections;
 	}
@@ -47,10 +47,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	{
     	super.getDescriptionPacket();
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
-        access.setInteger("lastSteam", lastSteam);
         if (networkName != null)
         	access.setString("networkName", networkName);
+        	access.setFloat("pressure", this.getPressure());
         
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -58,11 +57,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public NBTTagCompound getDescriptionTag()
 	{
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
-        access.setInteger("lastSteam", lastSteam);
         if (networkName != null){
         	access.setString("networkName", networkName);
         }
+        access.setFloat("pressure", this.getPressure());
         return access;
 	}
 	
@@ -71,10 +69,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
-    	this.lastSteam = access.getInteger("lastSteam");
     	if (access.hasKey("networkName"))
     		this.networkName = access.getString("networkName");
+    		this.pressure = access.getFloat("pressure");
     	
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -84,13 +81,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     {
 		super.readFromNBT(compound);
         
-        if (compound.hasKey("steam"))
-        {
-        	this.steam = compound.getShort("steam");
-        }
-        if (compound.hasKey("lastSteam")){
-        	this.lastSteam = compound.getShort("lastSteam");
-        }
         if (compound.hasKey("networkName")){
         	this.networkName = compound.getString("networkName");
         }
@@ -100,26 +90,16 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setShort("steam",(short) this.steam);
-        compound.setShort("lastSteam",(short) this.lastSteam);
         if (networkName != null)
         	compound.setString("networkName", networkName);
     }
-	
-	public int getSteam(){
-		return this.steam;
-	}
 	
 	public int getCapacity(){
 		return this.capacity;
 	}
 	 
-	public int getLastSteam(){
-		return this.lastSteam;
-	}
-	
 	public float getPressure(){
-		return (float)this.steam/(float)this.capacity;
+		return (this.network != null) ? (float)this.network.getPressure() : 0F;
 	}
 	
 	@Override
@@ -138,38 +118,29 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 				
 			}
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		} else {
-			//System.out.println("My network: "+this.network.toString());
-			if (this.steam != this.lastSteam){
-				if (!worldObj.isRemote){
-					System.out.println("Pressure change!");
-					this.lastSteam = this.steam;
-					UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,this.distributionDirections);
-			    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-			    	//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			    	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				}
-				
-		    }
 		}
-		
-		
+		if (this.hasGauge()){
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
 	}
 	
 	@Override
 	public void insertSteam(int amount, ForgeDirection face) {
-		steam+=amount;
+		if (this.network != null){
+			this.network.addSteam(amount);
+		}
 	}
 	
 	@Override
 	public void decrSteam(int i) {
-		this.steam-=i;
+		if (this.network != null){
+			this.network.decrSteam(i);
+		}
 	}
 	
 	@Override
 	public void explode() {
     	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord, this.distributionDirections);
-		this.steam = 0;
 	}
 
 	private boolean isValidSteamSide(ForgeDirection face){
@@ -253,6 +224,26 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	public void setNetwork(SteamNetwork network){
 		this.network = network;
+	}
+
+	@Override
+	public int getSteam() {
+		if (this.network != null){
+			int mySteam = (int)(Math.floor((double)this.getCapacity() * (double)this.network.getPressure()));
+			return mySteam;
+		}
+		return 0;
+	}
+	
+	public boolean hasGauge(){
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+			if (this.acceptsGauge(dir)){
+				Block block = worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+				if (block instanceof BlockSteamGauge)
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	 

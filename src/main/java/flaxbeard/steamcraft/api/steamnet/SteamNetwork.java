@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.steamNetwork;
+package flaxbeard.steamcraft.api.steamnet;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -172,8 +172,11 @@ public class SteamNetwork {
 	public synchronized void split(ISteamTransporter split){
 		System.out.println("Splitting network: "+ this.name);
 		if (this.steam >= split.getCapacity() * this.getPressure()){
+			System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
 			this.steam -= split.getCapacity() * this.getPressure();
+			
 		}
+		System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
 		this.capacity -= split.getCapacity();
 		World world = split.getWorldObj();
 		Tuple3<Integer, Integer, Integer> coords = split.getCoords();
@@ -196,20 +199,17 @@ public class SteamNetwork {
 				newNets.add(net);
 			}
 		}
-		if (newNets.size() > 1){
+		if (newNets.size() > 0){
+			System.out.println("More than one new network found");
 			for (SteamNetwork net : newNets){
-				Double capacityShare = Double.valueOf((double)net.getCapacity() / (double)this.capacity);
-				int steamShare = (int)Math.floor((double)capacityShare * (double)this.steam);
-				this.steam -= steamShare;
+				int steamShare = (int)Math.floor((double)(net.capacity * this.getPressure()));
 				net.addSteam(steamShare);
 				SteamNetworkRegistry.getInstance().add(net);
 			}
 			SteamNetworkRegistry.getInstance().remove(this);
-		} else if (newNets.size() == 1){
-			// There is only one network. Probably this one.
-			transporters.remove(split.getCoords());
 		} else {
 			// There's nothing left.
+			System.out.println("No networks around");
 			SteamNetworkRegistry.getInstance().remove(this);
 		}
 		
