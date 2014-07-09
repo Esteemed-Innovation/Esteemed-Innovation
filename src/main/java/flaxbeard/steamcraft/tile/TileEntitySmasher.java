@@ -333,12 +333,16 @@ public class TileEntitySmasher extends TileEntity implements ISteamTransporter {
 	private void spawnItems(int x, int y, int z){
 		if (smooshedStack != null) {
 			for (ItemStack stack : smooshedStack) {
-				int id = OreDictionary.getOreIDs(stack)[0];
+				int[] ids = OreDictionary.getOreIDs(stack);
 				boolean isSmashableOre = false;
-				try {
-					isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
-				} catch (Exception e) {
-					
+				int id = 0;
+				if (ids != null && ids.length > 0) {
+					id = OreDictionary.getOreIDs(stack)[0];
+					try {
+						isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
+					} catch (Exception e) {
+						
+					}
 				}
 				if ( isSmashableOre) {
 					//Chance you'll get double
