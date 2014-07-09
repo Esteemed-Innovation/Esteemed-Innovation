@@ -29,10 +29,10 @@ public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements 
 		if (meta == 1) {
 			GL11.glRotatef(90.0F, 0F, 0F, 1F);
 		}
-		if (meta == 2) {
+		if (meta == 3) {
 			GL11.glRotatef(-90.0F, 0F, 1F, 0F);
 		}
-		if (meta == 3) {
+		if (meta == 2) {
 			GL11.glRotatef(90.0F, 0F, 1F, 0F);
 		}
 		if (meta == 4) {
@@ -73,18 +73,26 @@ public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements 
 	public void renderInventoryTileEntityAt(TileEntity var1, double x,
 			double y, double z, float var8) {
 		GL11.glPushMatrix();
-//		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//		GL11.glTranslated(x, y, z);
-//
-//		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-//		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-//		GL11.glScalef(0.3F, 0.3F, 0.3F);
-//		GL11.glTranslatef(-0.5F, -2.9F, -0.5F);
-//
-//
-//		model.render();
-//		model.renderThumper();
+		GL11.glTranslated(x, y, z);
 
+		GL11.glTranslatef(-0.2F, -0.5F,-0.5F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+
+		model.renderBase();
+		model.render();
+		for (int i = 0; i<4; i++) {
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			
+			GL11.glRotatef(90.0F*i, 1F, 0F, 0F);
+			GL11.glRotatef(10.0F, 0F, 1F, 0F);
+
+			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+			model.renderBlade();
+
+			GL11.glPopMatrix();
+			
+		}
 		GL11.glPopMatrix();
 
 	}

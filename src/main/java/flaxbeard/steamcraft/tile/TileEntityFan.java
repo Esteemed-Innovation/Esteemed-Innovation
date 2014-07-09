@@ -2,15 +2,15 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.List;
 
-import flaxbeard.steamcraft.Steamcraft;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.Steamcraft;
 
 public class TileEntityFan extends TileEntity {
 	@Override
@@ -39,7 +39,7 @@ public class TileEntityFan extends TileEntity {
 		List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
 		for (Object obj : entities) {
 			Entity entity = (Entity) obj;
-			if (entity.canBePushed() || entity instanceof EntityItem) {
+			if (!(entity instanceof EntityPlayer) || !(((EntityPlayer)entity).capabilities.isFlying && ((EntityPlayer)entity).capabilities.isCreativeMode)) {
 				if (entity instanceof EntityPlayer && ((EntityPlayer)entity).isSneaking()) {
 					entity.motionX += dir.offsetX * 0.025F;
 					entity.motionY += dir.offsetY * 0.05F;
