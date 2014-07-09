@@ -57,6 +57,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
+import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
@@ -136,6 +137,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
 		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
+		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
 
 
 	}

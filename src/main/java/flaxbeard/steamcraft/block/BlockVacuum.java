@@ -2,53 +2,22 @@ package flaxbeard.steamcraft.block;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.tile.TileEntityFan;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+import flaxbeard.steamcraft.tile.TileEntityVacuum;
 
-public class BlockFan extends BlockContainer {
+public class BlockVacuum extends BlockContainer {
 	
 	private IIcon iconOn;
 	private IIcon iconOff;
-    public BlockFan() {
+    public BlockVacuum() {
 		super(Material.iron);
 	}
     
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-    
-    public int getRenderType()
-    {
-        return -1;
-    }
-    
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-    	int meta = world.getBlockMetadata(i,j,k);
-    	ForgeDirection dir = ForgeDirection.getOrientation(meta);
-    	return AxisAlignedBB.getBoundingBox(i+(dir.offsetX < 0 ? 0.625F : 0), j+(dir.offsetY < 0 ? 0.625F : 0), k+(dir.offsetZ < 0 ? 0.625F : 0), i+1.0F+(dir.offsetX > 0 ? -0.625F : 0), j+1.0F+(dir.offsetY > 0 ? -0.625F : 0), k+1.0F+(dir.offsetZ > 0 ? -0.625F : 0));
-    }
-    
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
-    {
-    	int meta = par1iBlockAccess.getBlockMetadata(par2,par3,par4);
-    	ForgeDirection dir = ForgeDirection.getOrientation(meta);
-    	setBlockBounds((dir.offsetX < 0 ? 0.625F : 0), (dir.offsetY < 0 ? 0.625F : 0), (dir.offsetZ < 0 ? 0.625F : 0), 1.0F+(dir.offsetX > 0 ? -0.625F : 0), 1.0F+(dir.offsetY > 0 ? -0.625F : 0), 1.0F+(dir.offsetZ > 0 ? -0.625F : 0));
-    	super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
-    }
-
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
     {
         int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
@@ -78,7 +47,7 @@ public class BlockFan extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityFan();
+		return new TileEntityVacuum();
 	}
 	
     public boolean isOpaqueCube()
