@@ -35,6 +35,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	public int extendedTicks = 0;
 	private boolean isInitialized = false;
 	public ArrayList<ItemStack> smooshedStack;
+	private boolean running = false;
 	
 	public TileEntitySmasher(){
 		super(ForgeDirection.VALID_DIRECTIONS);
@@ -88,13 +89,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	public Packet getDescriptionPacket()
 	{
         NBTTagCompound access = super.getDescriptionTag();
-
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
         access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
-    
+        access.setBoolean("running", this.running);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	
@@ -161,6 +161,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	this.spinup = access.getInteger("spinup");
     	this.smooshingBlock = Block.getBlockById(access.getInteger("block"));
     	this.smooshingMeta = access.getInteger("smooshingMeta");
+    	this.running = access.getBoolean("running");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     
     }
@@ -181,150 +182,173 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			this.isInitialized = true;
 		}
 		super.updateEntity();
-		int[] target = getTarget(1);
-		
-		int x = target[0], y = yCoord, z = target[1];
-		if (this.spinup == 1) {
-			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
-		}
-		if (extendedTicks > 15) {
-			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
-		}
-		if (extendedTicks == 5) {
+		if (!worldObj.isRemote){
+			int[] target = getTarget(1);
 			
-			this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.break", 0.5F, (float) (0.75F+(Math.random()*0.1F)));
-		}
-		if (extendedTicks > 0 && extendedTicks < 6) {
-			if (smooshingBlock != null && smooshingBlock.stepSound != null) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+			int x = target[0], y = yCoord, z = target[1];
+			if (this.spinup == 1) {
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
 			}
-		}
-		
-		//Remote == client, might as well not run on server
-		
-		//Flag does nothing
-		decodeAndCreateParticles(1);
-		//handle state changes
-		if (this.hasBlockUpdate && this.hasPartner() && this.getSteam() > 100){
-			if (this.shouldStop){
-				//System.out.println("shouldStop");
-				this.spinup = 0;
-				this.extendedLength = 0;
-				this.extendedTicks = 0;
-				this.isActive = false;
-				this.shouldStop = false;
-				this.isBreaking = false;
-				return;
-			} else {
-				//System.out.println("shouldn'tStop");
+			if (extendedTicks > 15) {
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 			}
-			//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
-			if (this.hasSomethingToSmash() && !this.isActive){
-				this.decrSteam(100);
-				this.isActive = true;
-				this.isBreaking = true;
+			if (extendedTicks == 5) {
+				
+				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.break", 0.5F, (float) (0.75F+(Math.random()*0.1F)));
 			}
-			this.hasBlockUpdate = false;
-		}
-		
-		//handle processing
-		if (this.isActive){
+			if (extendedTicks > 0 && extendedTicks < 6) {
+				if (smooshingBlock != null && smooshingBlock.stepSound != null) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+				}
+			}
+			
+			//Remote == client, might as well not run on server
+			
+			//Flag does nothing
+			decodeAndCreateParticles(1);
+			//handle state changes
+			if (this.hasBlockUpdate && this.hasPartner() && this.getSteam() > 100){
+				if (this.shouldStop){
+					//System.out.println("shouldStop");
+					this.spinup = 0;
+					this.extendedLength = 0;
+					this.extendedTicks = 0;
+					this.isActive = false;
+					this.shouldStop = false;
+					this.isBreaking = false;
+					this.running = false;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					return;
+				} else {
+					//System.out.println("shouldn'tStop");
+				}
+				//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
+				if (this.hasSomethingToSmash() && !this.isActive){
+					this.decrSteam(100);
+					this.running = true;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					this.isActive = true;
+					this.isBreaking = true;
+				}
+				this.hasBlockUpdate = false;
+			}
+			
+			//handle processing
+			if (this.isActive){
 
-			// if we haven't spun up yet, do it.
-			if (this.isBreaking){
-				if (this.spinup < 41){
-					//System.out.println("Spinning up!" + spinup);
-					// spinup complete. SMAASH!
-					if (this.spinup == 40){
-						//System.out.println("SMAAAAASH");
-						
-						if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
-							this.spinup++;
-							if (this.getBlockMetadata() % 2 == 0) {
-								try{
-									this.smooshingBlock = worldObj.getBlock(x, y, z);
-									this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-		
-									this.smooshedStack = smooshingBlock.getDrops(worldObj, x, y, z, smooshingMeta, 0);
-								} catch (Exception e){
-									System.out.println("================== WOULD HAVE CRASHED ==================");
-									System.out.println("This smasher's meta: "+this.getBlockMetadata());
-									e.printStackTrace();
+				// if we haven't spun up yet, do it.
+				if (this.isBreaking){
+					if (this.spinup < 41){
+						//System.out.println("Spinning up!" + spinup);
+						// spinup complete. SMAASH!
+						if (this.spinup == 40){
+							//System.out.println("SMAAAAASH");
+							
+							if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
+								this.spinup++;
+								if (this.getBlockMetadata() % 2 == 0) {
+									try{
+										this.smooshingBlock = worldObj.getBlock(x, y, z);
+										this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+			
+										this.smooshedStack = smooshingBlock.getDrops(worldObj, x, y, z, smooshingMeta, 0);
+									} catch (Exception e){
+										System.out.println("================== WOULD HAVE CRASHED ==================");
+										System.out.println("This smasher's meta: "+this.getBlockMetadata());
+										e.printStackTrace();
+									}
+									worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 								}
-								worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
-							}
-						} else {
-							//System.out.println("No block.");
-							if (this.hasPartner()){
-								//System.out.println("I have a partner");
-								int[] pc = getTarget(2);
-								TileEntitySmasher partner =  (TileEntitySmasher) worldObj.getTileEntity(pc[0], yCoord, pc[1]);
-							//	System.out.println("partner.spinup: "+partner.spinup);
-								if (partner.spinup < 41){
-									//System.out.println("No block and partner hasn't updated. I should stop.");
-									this.shouldStop = true;
-								}
-								if (partner.spinup >= 41){
-									//System.out.println("Partner has updated.");
-									if (partner.shouldStop){
-									//	System.out.println("Partner is stopping. I should stop too.");
+							} else {
+								//System.out.println("No block.");
+								if (this.hasPartner()){
+									//System.out.println("I have a partner");
+									int[] pc = getTarget(2);
+									TileEntitySmasher partner =  (TileEntitySmasher) worldObj.getTileEntity(pc[0], yCoord, pc[1]);
+								//	System.out.println("partner.spinup: "+partner.spinup);
+									if (partner.spinup < 41){
+										//System.out.println("No block and partner hasn't updated. I should stop.");
 										this.shouldStop = true;
 									}
-								}
-								if (shouldStop){
-									this.spinup++;
-									return;
-								}
+									if (partner.spinup >= 41){
+										//System.out.println("Partner has updated.");
+										if (partner.shouldStop){
+										//	System.out.println("Partner is stopping. I should stop too.");
+											this.shouldStop = true;
+										}
+									}
+									if (shouldStop){
+										this.spinup++;
+										return;
+									}
+										
+										
 									
-									
+								}
+								
 								
 							}
+						}
+						this.spinup++;
+					
+					// if we've spun up, extend
+					} else if (this.extendedLength < 0.5F && !this.shouldStop){
+						//System.out.println("Extending: "+this.extendedLength);
+						this.extendedLength += 0.1F;
+						if (this.extendedTicks == 3){
 							
+							if (this.getBlockMetadata() % 2 == 0 && !worldObj.isRemote) spawnItems(x, y, z);
 							
 						}
+						this.extendedTicks++;
+					
+					// we're done extending. Time to go inactive and start retracting	
+					} else {
+						this.isBreaking = false;
+						this.spinup = 0;
+						this.running = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
-					this.spinup++;
-				
-				// if we've spun up, extend
-				} else if (this.extendedLength < 0.5F && !this.shouldStop){
-					//System.out.println("Extending: "+this.extendedLength);
-					this.extendedLength += 0.1F;
-					if (this.extendedTicks == 3){
-						
-						if (this.getBlockMetadata() % 2 == 0 && !worldObj.isRemote) spawnItems(x, y, z);
-						
-					}
-					this.extendedTicks++;
-				
-				// we're done extending. Time to go inactive and start retracting	
 				} else {
-					this.isBreaking = false;
-					this.spinup = 0;
+					// Get back in line!
+					if (this.extendedLength > 0.0F){
+						this.extendedLength -= 0.025F;
+						this.extendedTicks++;
+						
+						//System.out.println("Retracting: "+this.extendedLength);
+						if (this.extendedLength < 0F){ this.extendedLength = 0F;}
+					} else {
+						//System.out.println("Done!");
+						this.isActive = false;
+						this.running = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						this.extendedTicks = 0;
+						if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy){
+							worldObj.setBlockToAir(x, y, z);
+						}
+						
+					}
+				}
+				//Mark for sync
+				
+			} else if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy && getBlockMetadata() % 2 == 0){
+				worldObj.setBlockToAir(x, y, z);
+			} 
+			//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		} else {
+			if (this.running){
+				if (this.spinup < 41){
+					this.spinup++;
+				} else if (this.extendedTicks < 100){
+					this.extendedTicks++;
 				}
 			} else {
-				// Get back in line!
-				if (this.extendedLength > 0.0F){
-					this.extendedLength -= 0.025F;
-					this.extendedTicks++;
-					
-					//System.out.println("Retracting: "+this.extendedLength);
-					if (this.extendedLength < 0F) this.extendedLength = 0F;
-				} else {
-					//System.out.println("Done!");
-					this.isActive = false;
-					this.extendedTicks = 0;
-					if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy){
-						worldObj.setBlockToAir(x, y, z);
-					}
-					
-				}
+				this.spinup = 0;
+				this.extendedTicks = 0;
 			}
 			
-			//Mark for sync
-		} else if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy && getBlockMetadata() % 2 == 0){
-			worldObj.setBlockToAir(x, y, z);
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		
 
 	}
 

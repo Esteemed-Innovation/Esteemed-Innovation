@@ -22,6 +22,7 @@ import flaxbeard.steamcraft.block.BlockSteamGauge;
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
 	public float pressureResistance = 0.5F;
+	public float lastPressure = -1F;
 	public float pressure;
 	private String networkName;
 	private SteamNetwork network;
@@ -60,9 +61,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	{
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null){
+        	//System.out.println("Setting pressure!");
         	access.setString("networkName", networkName);
             access.setFloat("pressure", this.getPressure());
-
         }
         return access;
 	}
@@ -75,8 +76,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	if (access.hasKey("networkName")) {
     		this.networkName = access.getString("networkName");
     		this.pressure = access.getFloat("pressure");
+    		System.out.println("Set pressure to "+this.pressure);
     	}
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	markDirty();
     }
 	 
 	@Override
@@ -123,7 +126,12 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		if (this.hasGauge()){
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
+				System.out.println("Updating PRESHAAA");
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				this.lastPressure = this.getPressure();
+			}
+			
 		}
 	}
 	

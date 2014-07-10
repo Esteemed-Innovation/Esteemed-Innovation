@@ -19,11 +19,36 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 	public FluidTank myTank = new FluidTank(1000);
 	public int progress = 0;
 	public int rotateTicks = 0;
+	private boolean running = false;
 	
 	
 	public TileEntityPump(){
 		super(ForgeDirection.VALID_DIRECTIONS);
 		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
+
+	@Override
+	public Packet getDescriptionPacket(){
+		NBTTagCompound access = super.getDescriptionTag();
+		access.setShort("progress", (short)progress);
+		if (myTank.getFluid() != null){
+			access.setShort("fluid", (short)myTank.getFluid().fluidID);
+		}
+		access.setBoolean("running", this.running);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	
+	@Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+		super.onDataPacket(net, pkt);
+		NBTTagCompound access = pkt.func_148857_g();
+		this.progress = access.getShort("progress");
+		if (access.hasKey("fluid")){
+			this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getShort("fluid")),access.getShort("water")));
+		}
+		System.out.println(access.getBoolean("running"));
+		this.running = access.getBoolean("running");
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override
@@ -112,41 +137,59 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		ForgeDirection inputDir = this.getOutputDirection().getOpposite();
-		int x = this.xCoord + inputDir.offsetX;
-		int y = this.yCoord + inputDir.offsetY;
-		int z = this.zCoord + inputDir.offsetZ;
-		if (this.getSteam() >= 10 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
-			Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x,y,z));
-			if (myTank.getFluidAmount() < 1000) {
-				this.myTank.fill(new FluidStack(fluid,1000), true);
-				this.worldObj.setBlockToAir(x,y,z);
-				this.worldObj.markBlockForUpdate(x, y, z);
+		if (worldObj.isRemote){
+			if (this.running){
+				System.out.println("Running!");
+				progress++;
+				rotateTicks++;
+			} else {
+				//System.out.println("Not running =\\ ");
 				progress = 0;
-				this.decrSteam(10);
 			}
-		}
-		if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
-			progress++;
-			rotateTicks++;
-		}
-		ForgeDirection outputDir = this.getOutputDirection();
-		int x2 = this.xCoord + outputDir.offsetX;
-		int y2 = this.yCoord + outputDir.offsetY;
-		int z2 = this.zCoord + outputDir.offsetZ;
-		if (myTank.getFluidAmount() > 0 && progress == 100 && this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
-			IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
-			if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
-				int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
-				if (amnt > 0) {
-					this.myTank.drain(amnt, true);
-					if (myTank.getFluidAmount()  == 0) {
-						progress = 0;
+		} else {
+			ForgeDirection inputDir = this.getOutputDirection().getOpposite();
+			int x = this.xCoord + inputDir.offsetX;
+			int y = this.yCoord + inputDir.offsetY;
+			int z = this.zCoord + inputDir.offsetZ;
+			if (this.getSteam() >= 10 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
+				Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x,y,z));
+				if (myTank.getFluidAmount() < 1000) {
+					this.myTank.fill(new FluidStack(fluid,1000), true);
+					this.worldObj.setBlockToAir(x,y,z);
+					this.worldObj.markBlockForUpdate(x, y, z);
+					progress = 0;
+					this.decrSteam(10);
+					System.out.println("cycle start");
+					this.running  = true;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					
+				}
+			}
+			if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
+				progress++;
+				rotateTicks++;
+			}
+			ForgeDirection outputDir = this.getOutputDirection();
+			int x2 = this.xCoord + outputDir.offsetX;
+			int y2 = this.yCoord + outputDir.offsetY;
+			int z2 = this.zCoord + outputDir.offsetZ;
+			if (myTank.getFluidAmount() > 0 && progress == 100 && this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
+				IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
+				if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
+					int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
+					if (amnt > 0) {
+						this.myTank.drain(amnt, true);
+						if (myTank.getFluidAmount()  == 0) {
+							this.running = false;
+							System.out.println("cycle complete");
+							progress = 0;
+							this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+							
+						}
 					}
 				}
 			}
+			
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
 	}
 }

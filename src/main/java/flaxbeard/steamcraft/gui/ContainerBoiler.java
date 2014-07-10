@@ -21,6 +21,7 @@ public class ContainerBoiler extends Container
     private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
+    private int lastPressure;
 
     public ContainerBoiler(InventoryPlayer par1InventoryPlayer, TileEntityBoiler par2TileEntityBoiler)
     {
@@ -50,6 +51,7 @@ public class ContainerBoiler extends Container
         par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
         par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.getItemBurnTime(null));
+        par1ICrafting.sendProgressBarUpdate(this, 3, (int)Math.floor((double)this.furnace.getPressure()*1000));
     }
 
     /**
@@ -77,11 +79,16 @@ public class ContainerBoiler extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
             }
+            
+            if (this.lastPressure != this.furnace.getPressureAsInt()){
+            	icrafting.sendProgressBarUpdate(this, 3, this.furnace.getPressureAsInt());
+            }
         }
 
         this.lastCookTime = this.furnace.furnaceCookTime;
         this.lastBurnTime = this.furnace.furnaceBurnTime;
         this.lastItemBurnTime = this.furnace.currentItemBurnTime;
+        this.lastPressure = this.furnace.getPressureAsInt();
     }
 
     @SideOnly(Side.CLIENT)
@@ -100,6 +107,9 @@ public class ContainerBoiler extends Container
         if (par1 == 2)
         {
             this.furnace.currentItemBurnTime = par2;
+        }
+        if (par1 == 3){
+        	this.furnace.pressure = (float)par2 / 1000F;
         }
     }
 
