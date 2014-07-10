@@ -36,6 +36,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	private boolean isInitialized = false;
 	public ArrayList<ItemStack> smooshedStack;
 	private boolean running = false;
+	private boolean smashNextRound= false;
 	
 	public TileEntitySmasher(){
 		super(ForgeDirection.VALID_DIRECTIONS);
@@ -205,24 +206,39 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			//Remote == client, might as well not run on server
 			
 			//Flag does nothing
-			decodeAndCreateParticles(1);
+			
 			//handle state changes
-			if (this.hasBlockUpdate && this.hasPartner() && this.getSteam() > 100){
-				if (this.shouldStop){
-					//System.out.println("shouldStop");
-					this.spinup = 0;
-					this.extendedLength = 0;
-					this.extendedTicks = 0;
-					this.isActive = false;
-					this.shouldStop = false;
-					this.isBreaking = false;
-					this.running = false;
-					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-					return;
-				} else {
-					//System.out.println("shouldn'tStop");
-				}
+			if (this.shouldStop){
+				//System.out.println("shouldStop");
+				this.spinup = 0;
+				this.extendedLength = 0;
+				this.extendedTicks = 0;
+				this.isActive = false;
+				this.shouldStop = false;
+				this.isBreaking = false;
+				this.running = false;
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				return;
+			}	
+			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteam() > 100 && !isActive){
+				
+				//System.out.println("Smash next round!");
+				this.smashNextRound = true;
+				return;
+				//System.out.println("I should never get here");
+			
+				
+			}
+			boolean smashThisRound = false;
 				//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
+			if (this.smashNextRound){
+				//System.out.println("Smash this round!");
+				smashThisRound = true;
+				this.smashNextRound = false;
+			}
+			if (smashThisRound){
+				
+				//System.out.println("Smashing!");
 				if (this.hasSomethingToSmash() && !this.isActive){
 					this.decrSteam(100);
 					this.running = true;
@@ -230,14 +246,19 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 					this.isActive = true;
 					this.isBreaking = true;
 				}
-				this.hasBlockUpdate = false;
 			}
 			
 			//handle processing
 			if (this.isActive){
-
 				// if we haven't spun up yet, do it.
 				if (this.isBreaking){
+					if (!this.hasSomethingToSmash() && this.spinup < 40 && this.getBlockMetadata() % 2 == 0){
+						this.shouldStop = true;
+						int[] tc = getTarget(2);
+						TileEntitySmasher partner = (TileEntitySmasher)worldObj.getTileEntity(tc[0], yCoord, tc[1]);
+						partner.shouldStop = true;
+						return;
+					}
 					if (this.spinup < 41){
 						//System.out.println("Spinning up!" + spinup);
 						// spinup complete. SMAASH!
@@ -306,8 +327,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 					} else {
 						this.isBreaking = false;
 						this.spinup = 0;
-						this.running = false;
-						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						
 					}
 				} else {
 					// Get back in line!
@@ -336,10 +356,27 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			} 
 			//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		} else {
+			//if (this.extendedTicks >  0) System.out.println(this.extendedTicks);
 			if (this.running){
-				if (this.spinup < 41){
+				decodeAndCreateParticles(1);
+				if (this.spinup < 40){
 					this.spinup++;
-				} else if (this.extendedTicks < 100){
+				} else if (this.spinup == 40){
+					int[] tc = getTarget(1);
+					int x = tc[0], y=tc[1],z=tc[2];
+					this.spinup++;
+					if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
+						if (this.getBlockMetadata() % 2 == 0) {
+							try{
+								this.smooshingBlock = worldObj.getBlock(x, y, z);
+								this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
+							} catch (Exception e) {
+								
+							}
+						}
+					}
+						
+				} else if (this.extendedTicks < 25){
 					this.extendedTicks++;
 				}
 			} else {
