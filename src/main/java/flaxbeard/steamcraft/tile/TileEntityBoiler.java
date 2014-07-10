@@ -221,7 +221,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
             if (flag != this.furnaceBurnTime > 0)
             {
                 flag1 = true;
-                BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
        }
     }
