@@ -138,7 +138,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 	public void updateEntity() {
 		super.updateEntity();
 		if (worldObj.isRemote){
-			if (this.running){
+			if (this.running && progress < 100){
 				//System.out.println("Running!");
 				progress++;
 				rotateTicks++;
