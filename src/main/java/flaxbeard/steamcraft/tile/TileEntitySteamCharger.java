@@ -16,6 +16,9 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter,IInventory {
 	
+	private boolean isCharging = false;
+	private boolean hadItem = false;
+	
 	private ItemStack[] inventory = new ItemStack[1];
 	public int randomDegrees;
 	
@@ -58,6 +61,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	        this.inventory[0].writeToNBT(nbttagcompound1);
 	        access.setTag("inventory", nbttagcompound1);
         }
+        access.setBoolean("isCharging", this.isCharging);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -75,6 +79,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         {
         	this.inventory[0] = null;
         }
+    	this.isCharging = access.getBoolean("isCharging");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -82,23 +87,54 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if (this.getStackInSlot(0) != null) {
-			ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
-			ItemStack stack = this.getStackInSlot(0).copy();
-			if (this.getSteam() > 0 && stack.getItemDamage() > 0) {
-				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, (Math.random()-0.5F)/12.0F, 0.0F, (Math.random()-0.5F)/12.0F);
+		if (this.worldObj.isRemote){
+			if (this.getStackInSlot(0) != null) {
+				ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
+				ItemStack stack = this.getStackInSlot(0).copy();
+				if (this.isCharging) {
+					this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, (Math.random()-0.5F)/12.0F, 0.0F, (Math.random()-0.5F)/12.0F);
+				}
 			}
-			if (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0) {
- 				int i = 0;
- 				while (i<9 && (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
- 					this.decrSteam(item.steamPerDurability());
- 					stack.setItemDamage(stack.getItemDamage()-1);
- 	 				this.setInventorySlotContents(0, stack);
- 					i++;
- 				}
+		} else {
+			if (this.getStackInSlot(0) != null) {
+				if (!this.hadItem){
+					this.hadItem = true;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
+				ItemStack stack = this.getStackInSlot(0).copy();
+				if (this.getSteam() > 0 && stack.getItemDamage() > 0) {
+					if (!this.isCharging){
+						System.out.println("Charging");
+						this.isCharging = true;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					}
+				} else {
+					if (this.isCharging){
+						System.out.println("Not charging");
+						this.isCharging = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					}
+				}
+				if (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0) {
+	 				int i = 0;
+	 				while (i<9 && (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+	 					this.decrSteam(item.steamPerDurability());
+	 					stack.setItemDamage(stack.getItemDamage()-1);
+	 	 				this.setInventorySlotContents(0, stack);
+	 					i++;
+	 				}
+				}
+			} else {
+				if (this.hadItem){
+					System.out.println("No item");
+					this.hadItem = false;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
 			}
+			//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		
 	}
 	
 	@Override
