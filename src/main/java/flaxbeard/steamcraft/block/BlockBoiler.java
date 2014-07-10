@@ -169,7 +169,7 @@ public class BlockBoiler extends BlockSteamTransporter {
     	if (p_149691_2_ == 0) {
     		p_149691_2_ = 3;
     	}
-        return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.field_149936_O));
+        return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.boilerOffIcon));
     }
 
     public void registerBlockIcons(IIconRegister p_149651_1_)

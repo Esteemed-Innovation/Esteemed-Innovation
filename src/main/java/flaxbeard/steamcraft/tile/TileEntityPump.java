@@ -172,7 +172,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 			int y2 = this.yCoord + outputDir.offsetY;
 			int z2 = this.zCoord + outputDir.offsetZ;
 			if (myTank.getFluidAmount() > 0 && progress == 100){
-				System.out.println("Should be done");
+				//System.out.println("Should be done");
 				if (this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
 					IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
 					if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
@@ -181,7 +181,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 							this.myTank.drain(amnt, true);
 							if (myTank.getFluidAmount()  == 0) {
 								this.running = false;
-								System.out.println("cycle complete");
+								//System.out.println("cycle complete");
 								progress = 0;
 								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 								
