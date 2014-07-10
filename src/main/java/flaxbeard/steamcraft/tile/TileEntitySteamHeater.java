@@ -128,7 +128,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 							furnace.furnaceCookTime = Math.min(furnace.furnaceCookTime,199);
 						}
 						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
-						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 					this.prevHadYuck = !(furnace.getStackInSlot(2) == null || !SteamcraftRegistry.steamedFoods.containsKey(furnace.getStackInSlot(2).getItem()));
 				}

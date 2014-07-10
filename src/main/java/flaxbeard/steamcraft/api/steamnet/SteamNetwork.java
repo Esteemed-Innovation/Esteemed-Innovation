@@ -92,12 +92,15 @@ public class SteamNetwork {
 		}
 	}
 	
-	public void addSteam(int amount){
+	public synchronized void addSteam(int amount){
 		this.steam += amount;
 	}
 	
-	public void decrSteam(int amount){
+	public synchronized void decrSteam(int amount){
 		this.steam -= amount;
+		if (this.steam < 0){
+			this.steam = 0;
+		}
 	}
 	
 	public int getSteam(){
@@ -130,10 +133,13 @@ public class SteamNetwork {
 		for (ForgeDirection d : trans.getConnectionSides()){
 			TileEntity te = trans.getWorldObj().getTileEntity(transCoords.first + d.offsetX, transCoords.second + d.offsetY, transCoords.third + d.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
-				ISteamTransporter t = (ISteamTransporter) te;
-				if (t.getConnectionSides().contains(d.getOpposite())){
-					out.add(t);
+				if (te != trans){
+					ISteamTransporter t = (ISteamTransporter) te;
+					if (t.getConnectionSides().contains(d.getOpposite())){
+						out.add(t);
+					}
 				}
+				
 			}
 		}
 		return out;
@@ -178,10 +184,10 @@ public class SteamNetwork {
 		}
 		System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
 		this.capacity -= split.getCapacity();
-		World world = split.getWorldObj();
-		Tuple3<Integer, Integer, Integer> coords = split.getCoords();
-		int x = coords.first, y= coords.second, z=coords.third;
-		HashSet<ForgeDirection> dirs = split.getConnectionSides();
+		//World world = split.getWorldObj();
+		//Tuple3<Integer, Integer, Integer> coords = split.getCoords();
+		//int x = coords.first, y= coords.second, z=coords.third;
+		//HashSet<ForgeDirection> dirs = split.getConnectionSides();
 		HashSet<SteamNetwork> newNets = new HashSet();
 		for (ISteamTransporter trans : this.getNeighboringTransporters(split)){
 			boolean isInNetwork = false;
@@ -194,9 +200,12 @@ public class SteamNetwork {
 				}
 			}
 			if (!isInNetwork){
+				System.out.println("Not in network!");
 				SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
+				System.out.println("Crawling!");
 				net.buildFromTransporter(trans, net, split);
 				newNets.add(net);
+				System.out.println(net.getSize());
 			}
 		}
 		if (newNets.size() > 0){
@@ -242,7 +251,9 @@ public class SteamNetwork {
 		}
 		HashSet<ISteamTransporter> neighbors = getNeighboringTransporters(trans);
 		for (ISteamTransporter neighbor : neighbors){
+			System.out.println(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
 			if (! checked.contains(neighbor) && neighbor != ignore){
+				System.out.println("Didn't ignore");
 				checked.add(neighbor);
 				crawlNetwork(neighbor, checked, ignore);
 			}
