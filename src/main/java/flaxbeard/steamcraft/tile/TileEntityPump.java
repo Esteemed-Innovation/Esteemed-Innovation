@@ -139,12 +139,10 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 		super.updateEntity();
 		if (worldObj.isRemote){
 			if (this.running){
-				System.out.println("Running!");
+				//System.out.println("Running!");
 				progress++;
 				rotateTicks++;
 			} else {
-				//System.out.println("Not running =\\ ");
-				progress = 0;
 			}
 		} else {
 			ForgeDirection inputDir = this.getOutputDirection().getOpposite();
@@ -173,22 +171,43 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 			int x2 = this.xCoord + outputDir.offsetX;
 			int y2 = this.yCoord + outputDir.offsetY;
 			int z2 = this.zCoord + outputDir.offsetZ;
-			if (myTank.getFluidAmount() > 0 && progress == 100 && this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
-				IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
-				if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
-					int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
-					if (amnt > 0) {
-						this.myTank.drain(amnt, true);
-						if (myTank.getFluidAmount()  == 0) {
-							this.running = false;
-							System.out.println("cycle complete");
-							progress = 0;
-							this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			if (myTank.getFluidAmount() > 0 && progress == 100){
+				System.out.println("Should be done");
+				if (this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
+					IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
+					if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
+						int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
+						if (amnt > 0) {
+							this.myTank.drain(amnt, true);
+							if (myTank.getFluidAmount()  == 0) {
+								this.running = false;
+								System.out.println("cycle complete");
+								progress = 0;
+								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+								
+							}
+						} else {
+							if (running){
+								this.running = false;
+								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+							}
 							
 						}
+					} else {
+						if (running){
+							this.running = false;
+							this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+					}
+				}else {
+					if (running){
+						this.running = false;
+						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 				}
 			}
+				
+			
 			
 		}
 	}

@@ -10,6 +10,7 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,6 +23,7 @@ public class ContainerBoiler extends Container
     private int lastBurnTime;
     private int lastItemBurnTime;
     private int lastPressure;
+    private int lastWater;
 
     public ContainerBoiler(InventoryPlayer par1InventoryPlayer, TileEntityBoiler par2TileEntityBoiler)
     {
@@ -83,12 +85,17 @@ public class ContainerBoiler extends Container
             if (this.lastPressure != this.furnace.getPressureAsInt()){
             	icrafting.sendProgressBarUpdate(this, 3, this.furnace.getPressureAsInt());
             }
+            
+            if (this.lastWater != this.furnace.myTank.getFluidAmount()){
+            	icrafting.sendProgressBarUpdate(this, 4, this.furnace.myTank.getFluidAmount());
+            }
         }
 
         this.lastCookTime = this.furnace.furnaceCookTime;
         this.lastBurnTime = this.furnace.furnaceBurnTime;
         this.lastItemBurnTime = this.furnace.currentItemBurnTime;
         this.lastPressure = this.furnace.getPressureAsInt();
+        this.lastWater = this.furnace.myTank.getFluidAmount();
     }
 
     @SideOnly(Side.CLIENT)
@@ -110,6 +117,15 @@ public class ContainerBoiler extends Container
         }
         if (par1 == 3){
         	this.furnace.pressure = (float)par2 / 1000F;
+        }
+        if (par1 == 4){
+        	int current = this.furnace.myTank.getFluidAmount();
+        	int diff = par2 - current;
+        	if (diff > 0){
+        		this.furnace.myTank.fill(new FluidStack(FluidRegistry.WATER, diff), true);
+        	} else {
+        		this.furnace.myTank.drain(-1 * diff, true);
+        	}
         }
     }
 
