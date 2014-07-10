@@ -39,6 +39,7 @@ import flaxbeard.steamcraft.client.render.TileEntitySteamChargerRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamGaugeRenderer;
 import flaxbeard.steamcraft.client.render.TileEntitySteamHammerRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityThumperRenderer;
+import flaxbeard.steamcraft.client.render.TileEntityVacuumRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityValvePipeRenderer;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
@@ -55,6 +56,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
+import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 
 
@@ -110,6 +112,10 @@ public class ClientProxy extends CommonProxy
     	TileEntitySpecialRenderer renderFan = new TileEntityFanRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFan.class, new TileEntityFanRenderer());
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.fan), new ItemTESRRenderer((IInventoryTESR) renderFan, new TileEntityFan()));
+
+    	TileEntitySpecialRenderer renderVacuum = new TileEntityVacuumRenderer();
+    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVacuum.class, new TileEntityVacuumRenderer());
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.vacuum), new ItemTESRRenderer((IInventoryTESR) renderVacuum, new TileEntityVacuum()));
 
     	
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamDrill, new ItemSteamToolRenderer(0));
