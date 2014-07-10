@@ -130,7 +130,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 				this.fireTicks = 0;
 			}
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override

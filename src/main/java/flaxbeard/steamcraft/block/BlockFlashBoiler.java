@@ -294,7 +294,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 				}
 			}
 			if (side == boiler.getFront()){
-				if (boiler.isBurning()) {
+				if (boiler.getBurning()) {
 					if (tex == topLeftSide) {
 						return topLeftO;
 					}

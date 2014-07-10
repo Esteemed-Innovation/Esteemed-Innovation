@@ -23,6 +23,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
 	
+	private boolean isLeaking = false;
+	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
 	}
@@ -56,26 +58,26 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 //        par1NBTTagCompound.setShort("steam",(short) this.steam);
 //    }
 	
-//	@Override
-//	public Packet getDescriptionPacket()
-//	{
-//    	super.getDescriptionPacket();
-//        NBTTagCompound access = new NBTTagCompound();
-//        access.setInteger("steam", steam);
-//        
-//        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-//	}
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	NBTTagCompound access = super.getDescriptionTag();
+    	access.setBoolean("isLeaking", this.isLeaking);
+        
+        
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
 	    
 
-//    @Override
-//    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-//    {
-//    	super.onDataPacket(net, pkt);
-//    	NBTTagCompound access = pkt.func_148857_g();
-//    	this.steam = access.getInteger("steam");
-//    	
-//        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-//    }
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.isLeaking = access.getBoolean("isLeaking");
+    	
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 	
 	@Override
 	public void updateEntity() {
@@ -105,17 +107,40 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		int i = 0;
 		if (myDirections.size() > 0) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
-
-			if (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+			if (!worldObj.isRemote){
+				if (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+					if (!isLeaking){
+						System.out.println("Block is leaking!");
+						isLeaking = true;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						markDirty();
+					}
+					
+				} else {
+					if (isLeaking){
+						System.out.println("Block is no longer leaking!");
+						isLeaking = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						markDirty();
+					}
+				}
+				while (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					if (worldObj.isRemote){
+						System.out.println("I AM THE CLIENT!");
+					}
+					this.decrSteam(1);
+					
+					i++;
+				}
 			}
-			while (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.decrSteam(1);
+			if (worldObj.isRemote && this.isLeaking){
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
-				i++;
 			}
+			
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		
+		
 	}
 	
 //	@Override

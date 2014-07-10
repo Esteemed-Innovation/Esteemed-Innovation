@@ -140,6 +140,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         }
     }
     
+    public void superUpdateOnly(){
+    	super.updateEntity();
+    }
+    
     @Override
     public void updateEntity() {
     	super.updateEntity();
@@ -220,10 +224,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                 BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
        }
-        if (!this.worldObj.isRemote) {
-        	//System.out.println(this.furnaceBurnTime);
-        }
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     private boolean canSmelt() {
@@ -358,6 +358,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 
 	@Override
 	public void openInventory() {}
+	
+	public int getPressureAsInt(){
+		return (int)Math.floor((double)this.getPressure()*1000);
+	}
 
 	@Override
 	public void closeInventory() {}
