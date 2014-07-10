@@ -19,6 +19,8 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory,ISteamTransporter {
 	public int hammerTicks = 0;
 	private boolean isInitialized = false;
+	private boolean isWorking = false;
+	private boolean hadItem = false;
 	private ItemStack[] inventory = new ItemStack[3];
 	public String itemName = "";
 	public int cost = 0;
@@ -39,44 +41,78 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
 			this.isInitialized = true;
 		}
 		super.updateEntity();
-		if (cost > 0 && progress < cost && hammerTicks == 355) {
-			progress++;
-		}
-		if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
-			if (hammerTicks == 0) {
-				if (this.getSteam() > 400) {
-					this.decrSteam(400);
+		if (worldObj.isRemote){
+			if (this.isWorking){
+				if (cost > 0 && progress < cost && hammerTicks == 355){
+					progress++;
 				}
-				else
-				{
-					return;
-				}
-			}
-			hammerTicks = (hammerTicks+5)%360;
-			if (hammerTicks == 15) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.anvil_land", 0.2F, (float) (0.75F+(Math.random()*0.1F)));
-			}
-			if (hammerTicks == 20) {
-				if (worldObj.isRemote) {
+				hammerTicks = (hammerTicks+5)%360;
+				if (hammerTicks == 20) {
 					for (int i = 0; i<5; i++) {
 						Steamcraft.instance.proxy.spawnBreakParticles(worldObj, xCoord+0.5F+0.25F*dir.offsetX, yCoord, zCoord+0.5F+0.25F*dir.offsetZ, Blocks.anvil, (float)(Math.random()-0.5F)/12.0F, 0.0F, (float)(Math.random()-0.5F)/12.0F);
 					}
 				}
-			}
-			if (hammerTicks == 40) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.anvil_land", 0.075F, (float) (0.75F+(Math.random()*0.1F)));
-			}
-			if (hammerTicks == 170) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
-			}
-		}
-		else
-		{
-			if (hammerTicks > 0) {
+			} else {
 				hammerTicks = 0;
+				progress = 0;
+			}
+		} else {
+			if (this.getStackInSlot(0) != null){
+				if (!this.hadItem){
+					this.hadItem = true;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+			} else if (this.hadItem){
+				this.hadItem = false;
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			if (cost > 0 && progress < cost && hammerTicks == 355) {
+				progress++;
+			}
+			if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
+				if (hammerTicks == 0) {
+					if (this.getSteam() > 400) {
+						this.decrSteam(400);
+						if (!this.isWorking){
+							this.isWorking = true;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+						
+					}
+					else
+					{
+						if (this.isWorking){
+							this.isWorking = false;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+						return;
+					}
+				}
+				hammerTicks = (hammerTicks+5)%360;
+				if (hammerTicks == 15) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.anvil_land", 0.2F, (float) (0.75F+(Math.random()*0.1F)));
+				}
+				
+				if (hammerTicks == 40) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.anvil_land", 0.075F, (float) (0.75F+(Math.random()*0.1F)));
+				}
+				if (hammerTicks == 170) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+				}
+			}
+			else
+			{
+				if (this.isWorking){
+					this.isWorking = false;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				if (hammerTicks > 0) {
+					hammerTicks = 0;
+				}
 			}
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		
+		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	}
 	
@@ -212,6 +248,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         access.setInteger("cost", cost);
         access.setInteger("progress",progress);
         access.setInteger("hammerTicks",hammerTicks);
+        access.setBoolean("isWorking", this.isWorking);
         
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -222,6 +259,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.cost = access.getInteger("cost");
+    	this.isWorking = access.getBoolean("isWorking");
     	this.progress = access.getInteger("progress");
     	this.hammerTicks = access.getInteger("hammerTicks");
     	
