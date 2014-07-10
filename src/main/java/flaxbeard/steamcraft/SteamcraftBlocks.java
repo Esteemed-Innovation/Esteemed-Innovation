@@ -154,10 +154,10 @@ public class SteamcraftBlocks {
 		thumperDummy = new BlockThumperDummy().setBlockName("steamcraft:thumperDummy").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(thumperDummy, "thumperDummy");
 		
-		fan = new BlockFan().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fan").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		fan = new BlockFan().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fan").setResistance(7.5F).setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(fan, "fan");
 		
-		vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F);
+		vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
 		GameRegistry.registerBlock(vacuum, "vacuum");
 
 //	
