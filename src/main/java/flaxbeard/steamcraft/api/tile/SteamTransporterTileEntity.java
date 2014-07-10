@@ -10,13 +10,12 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
+import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
@@ -250,7 +249,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
 			if (this.acceptsGauge(dir)){
 				Block block = worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-				if (block instanceof BlockSteamGauge)
+				if (block instanceof BlockSteamGauge || block instanceof BlockRuptureDisc)
 					return true;
 			}
 		}
