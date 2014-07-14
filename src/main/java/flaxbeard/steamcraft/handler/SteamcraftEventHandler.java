@@ -25,6 +25,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -34,6 +35,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -51,6 +53,13 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 
+	
+	@SubscribeEvent
+	public void handleWorldLoad(WorldEvent.Load event) {
+		if (!event.world.isRemote) {
+			SteamNetworkData.get(event.world);
+		}
+	}
 	
 //	@SubscribeEvent
 //	public void handleMobDrop(LivingDropsEvent event) {

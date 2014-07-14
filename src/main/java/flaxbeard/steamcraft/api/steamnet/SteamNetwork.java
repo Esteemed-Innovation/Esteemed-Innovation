@@ -190,6 +190,7 @@ public class SteamNetwork {
 		transporters.put(transCoords, trans);
 		trans.setNetworkName(this.name);
 		trans.setNetwork(this);
+		SteamNetworkRegistry.markDirty(this);
 	}
 	
 	public void setTransporterCoords(Coord4[] coords){
@@ -324,6 +325,14 @@ public class SteamNetwork {
 
 	public int getDimension() {
 		return transporters.keySet().iterator().next().dimension;
+	}
+	
+	public World getWorld(){
+		return transporters.values().iterator().next().getWorldObj();
+	}
+	
+	public void markDirty(){
+		SteamNetworkRegistry.markDirty(this);
 	}
 	
 	

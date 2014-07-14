@@ -77,10 +77,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	if (access.hasKey("networkName")) {
     		this.networkName = access.getString("networkName");
     		this.pressure = access.getFloat("pressure");
-    		System.out.println("Set pressure to "+this.pressure);
+    		//System.out.println("Set pressure to "+this.pressure);
     	}
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    	markDirty();
     }
 	 
 	@Override
@@ -114,14 +113,18 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		if (!this.isInitialized  ){
 			this.refresh();
 		}
-		if (this.hasGauge()){
-			if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
-				System.out.println("Updating PRESHAAA");
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-				this.lastPressure = this.getPressure();
+		if (!worldObj.isRemote){
+			if (this.hasGauge()){
+				if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
+					//System.out.println("Updating PRESHAAA");
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					this.lastPressure = this.getPressure();
+					this.network.markDirty();
+				}
+				
 			}
-			
 		}
+		
 	}
 	
 	@Override

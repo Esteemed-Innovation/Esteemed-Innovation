@@ -92,7 +92,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public void updateEntity() {
-		super.superUpdate();
+		super.updateEntity();
 		if (worldObj.isRemote){
 			
 		} else {
