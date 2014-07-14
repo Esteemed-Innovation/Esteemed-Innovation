@@ -15,6 +15,7 @@ import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
+import flaxbeard.steamcraft.api.util.Coord4;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 
@@ -28,6 +29,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public int capacity;
 	private ForgeDirection[] distributionDirections;
 	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
+	private boolean isInitialized = false;
 	
 	public SteamTransporterTileEntity(){
 		this(ForgeDirection.VALID_DIRECTIONS);
@@ -109,20 +111,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void updateEntity(){
-		if (this.network == null && !worldObj.isRemote){
-			System.out.println("Null network");
-			if (this.networkName != null){
-				this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName);
-				if (this.network == null){
-					SteamNetwork.newOrJoin(this);
-				}
-				
-			} else {
-				System.out.println("Requesting new network build");
-				SteamNetwork.newOrJoin(this);
-				
-			}
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (!this.isInitialized  ){
+			this.refresh();
 		}
 		if (this.hasGauge()){
 			if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
@@ -214,8 +204,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
 
 	@Override
-	public Tuple3<Integer, Integer, Integer> getCoords() {
-		return new Tuple3(xCoord, yCoord,zCoord);
+	public Coord4 getCoords() {
+		return new Coord4(xCoord, yCoord,zCoord, worldObj.provider.dimensionId);
 	}
 
 
@@ -254,6 +244,25 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 			}
 		}
 		return false;
+	}
+
+
+	public void refresh() {
+		if (this.network == null && !worldObj.isRemote){
+			System.out.println("Null network");
+			if (this.networkName != null){
+				this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
+			} else {
+				System.out.println("Requesting new network build");
+				SteamNetwork.newOrJoin(this);
+				
+			}
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+	
+	public int getDimension(){
+		return this.worldObj.provider.dimensionId;
 	}
 	
 	 

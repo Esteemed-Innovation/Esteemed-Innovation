@@ -1,15 +1,17 @@
 package flaxbeard.steamcraft.api.steamnet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.Tuple3;
+import flaxbeard.steamcraft.api.util.Coord4;
 
 public class SteamNetwork {
 	
@@ -18,8 +20,8 @@ public class SteamNetwork {
 	private int steam;
 	private int capacity;
 	private boolean isPopulated = false;
-	private Tuple3<Integer, Integer, Integer>[] transporterCoords;
-	private HashMap<Tuple3<Integer, Integer, Integer>,ISteamTransporter> transporters = new HashMap<Tuple3<Integer, Integer, Integer>,ISteamTransporter>();
+	private Coord4[] transporterCoords;
+	private HashMap<Coord4,ISteamTransporter> transporters = new HashMap<Coord4,ISteamTransporter>();
 	
 	public SteamNetwork(){
 		this.steam = 0;
@@ -29,6 +31,39 @@ public class SteamNetwork {
 	public SteamNetwork(int steam, int capacity){
 		this.steam = steam;
 		this.capacity = capacity;
+	}
+	
+	public SteamNetwork(int steam, int capacity, String name, ArrayList<Coord4> coordList){
+		this(steam, capacity);
+		for (Coord4 c : coordList){
+			this.transporters.put(c, null);
+		}
+		this.name = name;
+	}
+	
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
+		NBTTagList nbtl = new NBTTagList();
+		for (Coord4 c : transporters.keySet()){
+			nbtl.appendTag(c.writeToNBT(new NBTTagCompound()));
+		}
+		nbt.setTag("transporters", nbtl);
+		nbt.setString("name", name);
+		nbt.setInteger("steam", steam);
+		nbt.setInteger("capacity", capacity);
+		return nbt;
+	}
+	
+	public static SteamNetwork readFromNBT(NBTTagCompound nbt){
+		ArrayList<Coord4> coords = new ArrayList();
+		NBTTagList nbtl = (NBTTagList)nbt.getTag("transporters");
+		for (int i = 0; i < nbtl.tagCount(); i ++){
+			NBTTagCompound tag = nbtl.getCompoundTagAt(i);
+			coords.add(Coord4.readFromNBT(tag));
+		}
+		int s = nbt.getInteger("steam");
+		int c = nbt.getInteger("capacity");
+		String n = nbt.getString("name");
+		return new SteamNetwork(s, c, n, coords);
 	}
 	
 	public String getName(){
@@ -45,8 +80,8 @@ public class SteamNetwork {
 			for (ISteamTransporter trans : transporters.values()){
 				if (!trans.getWorldObj().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 					trans.explode();
-					Tuple3<Integer, Integer, Integer> c = trans.getCoords();
-					trans.getWorldObj().createExplosion(null, c.first+0.5F, c.second+0.5F, c.third+0.5F, 4.0F, true);
+					Coord4 c = trans.getCoords();
+					trans.getWorldObj().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
 				}
 			}
 		}
@@ -54,9 +89,10 @@ public class SteamNetwork {
 		
 	}
 	
-	public synchronized static void newOrJoin(ISteamTransporter trans){
+	public synchronized static SteamNetwork newOrJoin(ISteamTransporter trans){
 		HashSet<ISteamTransporter> others = getNeighboringTransporters(trans);
 		HashSet<SteamNetwork> nets = new HashSet();
+		SteamNetwork theNetwork = null;
 		boolean hasJoinedNetwork = false;
 		if (others.size() > 0){
 			for (ISteamTransporter t : others){
@@ -83,13 +119,16 @@ public class SteamNetwork {
 				}
 				main.addTransporter(trans);
 				hasJoinedNetwork = true;
+				theNetwork = main;
 			}
 			
 		} 
 		if (!hasJoinedNetwork) {
 			SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
 			net.addTransporter(trans);
+			theNetwork = net;
 		}
+		return theNetwork;
 	}
 	
 	public synchronized void addSteam(int amount){
@@ -129,9 +168,9 @@ public class SteamNetwork {
 	
 	public static HashSet<ISteamTransporter> getNeighboringTransporters(ISteamTransporter trans){
 		HashSet<ISteamTransporter> out = new HashSet();
-		Tuple3<Integer, Integer, Integer> transCoords = trans.getCoords(); 
+		Coord4 transCoords = trans.getCoords(); 
 		for (ForgeDirection d : trans.getConnectionSides()){
-			TileEntity te = trans.getWorldObj().getTileEntity(transCoords.first + d.offsetX, transCoords.second + d.offsetY, transCoords.third + d.offsetZ);
+			TileEntity te = trans.getWorldObj().getTileEntity(transCoords.x + d.offsetX, transCoords.y + d.offsetY, transCoords.z + d.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
 				if (te != trans){
 					ISteamTransporter t = (ISteamTransporter) te;
@@ -147,13 +186,13 @@ public class SteamNetwork {
 	
 	public void addTransporter(ISteamTransporter trans){
 		this.capacity += trans.getCapacity();
-		Tuple3<Integer, Integer, Integer> transCoords = trans.getCoords();
-		transporters.put(new Tuple3(transCoords.first, transCoords.second, transCoords.third), trans);
+		Coord4 transCoords = trans.getCoords();
+		transporters.put(transCoords, trans);
 		trans.setNetworkName(this.name);
 		trans.setNetwork(this);
 	}
 	
-	public void setTransporterCoords(Tuple3<Integer, Integer, Integer>[] coords){
+	public void setTransporterCoords(Coord4[] coords){
 		this.transporterCoords = coords;
 	}
 	
@@ -165,8 +204,8 @@ public class SteamNetwork {
 	
 	public synchronized void loadTransporters(World world){
 		for (int i = this.transporterCoords.length - 1; i >= 0; i-- ){
-			Tuple3<Integer, Integer, Integer> coords = this.transporterCoords[i];
-			int x = coords.first, y = coords.second, z = coords.third;
+			Coord4 coords = this.transporterCoords[i];
+			int x = coords.x, y = coords.y, z = coords.z;
 			TileEntity te = world.getTileEntity(x, y, z);
 			if (te instanceof ISteamTransporter){
 				this.transporters.put(this.transporterCoords[i], (ISteamTransporter)te);
@@ -263,8 +302,8 @@ public class SteamNetwork {
 	
 	private HashSet<ISteamTransporter> getNeighborTransporters(ISteamTransporter trans){
 		HashSet<ISteamTransporter> out  = new HashSet();
-		Tuple3<Integer, Integer, Integer> coords = trans.getCoords();
-		int x = coords.first, y = coords.second, z = coords.third;
+		Coord4 coords = trans.getCoords();
+		int x = coords.x, y = coords.y, z = coords.z;
 		for (ForgeDirection dir : trans.getConnectionSides()){
 			TileEntity te = trans.getWorldObj().getTileEntity(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
@@ -281,6 +320,10 @@ public class SteamNetwork {
 		}
 		this.steam += other.getSteam();
 		SteamNetworkRegistry.getInstance().remove(other);
+	}
+
+	public int getDimension() {
+		return transporters.keySet().iterator().next().dimension;
 	}
 	
 	

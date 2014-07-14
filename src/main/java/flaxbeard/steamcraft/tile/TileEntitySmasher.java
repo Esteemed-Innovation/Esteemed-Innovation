@@ -181,6 +181,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			}
 			this.setDistributionDirections(directions);
 			this.isInitialized = true;
+			if (!worldObj.isRemote){
+				System.out.println(worldObj.getChunkProvider().chunkExists(10, -63));
+			}
+			
 		}
 		super.updateEntity();
 		if (!worldObj.isRemote){

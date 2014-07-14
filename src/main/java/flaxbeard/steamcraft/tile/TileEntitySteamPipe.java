@@ -78,6 +78,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     	
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
+    
+    public void superUpdate(){
+    	super.updateEntity();
+    }
 	
 	@Override
 	public void updateEntity() {
