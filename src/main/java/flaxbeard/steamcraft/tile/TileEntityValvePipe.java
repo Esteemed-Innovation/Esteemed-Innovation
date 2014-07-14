@@ -92,21 +92,10 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public void updateEntity() {
-		if (this.getNetwork() == null && !worldObj.isRemote && this.open){
-			System.out.println("Null network");
-			if (this.getNetworkName() != null){
-				this.setNetwork(SteamNetworkRegistry.getInstance().getNetwork(this.getNetworkName()));
-				if (this.getNetwork() == null){
-					SteamNetwork.newOrJoin(this);
-				}
-				
-			} else {
-				System.out.println("Requesting new network build");
-				SteamNetwork.newOrJoin(this);
-				
-			}
-		}
-		if (!this.worldObj.isRemote) {
+		super.superUpdate();
+		if (worldObj.isRemote){
+			
+		} else {
 			if (turning && turnTicks < 10) {
 				turnTicks++;
 			}
@@ -119,6 +108,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 				this.turnTicks = 0;
 			}
 		}
+		// TODO: Needs to be updated.
 		ForgeDirection myDir = dir();
 		ForgeDirection[] directions = new ForgeDirection[6];
 		int i = 0;

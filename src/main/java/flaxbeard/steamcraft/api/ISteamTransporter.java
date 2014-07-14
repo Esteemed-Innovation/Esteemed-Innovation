@@ -5,6 +5,7 @@ import java.util.HashSet;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.util.Coord4;
 
 public interface ISteamTransporter {
 	public float getPressure();
@@ -19,9 +20,11 @@ public interface ISteamTransporter {
 	public abstract boolean acceptsGauge(ForgeDirection face);
 	public HashSet<ForgeDirection> getConnectionSides();
 	public World getWorldObj();
-	public Tuple3<Integer, Integer, Integer> getCoords();
 	public String getNetworkName();
 	public SteamNetwork getNetwork();
 	public void setNetworkName(String name);
 	public void setNetwork(SteamNetwork steamNetwork);
+	public void refresh();
+	public Coord4 getCoords();
+	public int getDimension();
 }
