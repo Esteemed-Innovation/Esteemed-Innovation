@@ -13,5 +13,6 @@ you can give people on your country thath dont understand english very well to p
 be sure to credit youself down here:
 <ul>
 <li>The original mod team: en_US</li>
-<li>matheusxaviersi: pt_BR</li>
+<li><a href="https://github.com/matheusxaviersi">matheusxaviersi: pt_BR</a></li>
+<li><a href="https://github.com/Mrkwtkr">Mrkwtkr: zh_CN</a></li>
 </ul></b>
