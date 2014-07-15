@@ -86,8 +86,8 @@ public class ContainerBoiler extends Container
             	icrafting.sendProgressBarUpdate(this, 3, this.furnace.getPressureAsInt());
             }
             
-            if (this.lastWater != this.furnace.myTank.getFluidAmount()){
-            	icrafting.sendProgressBarUpdate(this, 4, this.furnace.myTank.getFluidAmount());
+            if (this.lastWater != this.furnace.getTank().getFluidAmount()){
+            	icrafting.sendProgressBarUpdate(this, 4, this.furnace.getTank().getFluidAmount());
             }
         }
 
@@ -95,7 +95,7 @@ public class ContainerBoiler extends Container
         this.lastBurnTime = this.furnace.furnaceBurnTime;
         this.lastItemBurnTime = this.furnace.currentItemBurnTime;
         this.lastPressure = this.furnace.getPressureAsInt();
-        this.lastWater = this.furnace.myTank.getFluidAmount();
+        this.lastWater = this.furnace.getTank().getFluidAmount();
     }
 
     @SideOnly(Side.CLIENT)
@@ -119,12 +119,12 @@ public class ContainerBoiler extends Container
         	this.furnace.pressure = (float)par2 / 1000F;
         }
         if (par1 == 4){
-        	int current = this.furnace.myTank.getFluidAmount();
+        	int current = this.furnace.getTank().getFluidAmount();
         	int diff = par2 - current;
         	if (diff > 0){
-        		this.furnace.myTank.fill(new FluidStack(FluidRegistry.WATER, diff), true);
+        		this.furnace.getTank().fill(new FluidStack(FluidRegistry.WATER, diff), true);
         	} else {
-        		this.furnace.myTank.drain(-1 * diff, true);
+        		this.furnace.getTank().drain(-1 * diff, true);
         	}
         }
     }

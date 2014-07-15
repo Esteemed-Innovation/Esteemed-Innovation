@@ -1,12 +1,14 @@
 package flaxbeard.steamcraft.api.steamnet;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,7 +22,9 @@ import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 public class SteamNetworkRegistry {
 	
 	private static boolean loaderRegistered = false;
+	
 	private static SteamNetworkRegistry INSTANCE = new SteamNetworkRegistry();
+	private HashSet<Integer> initialized = new HashSet<Integer>();
 	private HashMap<Integer, HashMap<String, SteamNetwork>> networks = new HashMap<Integer, HashMap<String, SteamNetwork>>(); 
 	
 	
@@ -29,7 +33,7 @@ public class SteamNetworkRegistry {
 		return INSTANCE;
 	}
 	
-	public static void initiate()
+	public static void initialize()
 	{
 		if(!loaderRegistered)
 		{
@@ -42,7 +46,7 @@ public class SteamNetworkRegistry {
 	
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID){
-		System.out.println("Writing network registry for dimension" + dimID + " to NBT");
+		//System.out.println("Writing network registry for dimension" + dimID + " to NBT");
 		NBTTagList nets = new NBTTagList();
 		for (SteamNetwork net : networks.get(dimID).values()){
 			nets.appendTag(net.writeToNBT(new NBTTagCompound()));
@@ -52,18 +56,25 @@ public class SteamNetworkRegistry {
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt, int dimID){
-		System.out.println("reading network registry for dimension " + dimID + " from NBT");
+		//System.out.println("reading network registry for dimension " + dimID + " from NBT");
 		
 		HashMap<String, SteamNetwork> nets = new HashMap<String, SteamNetwork>();
 		if (nbt.hasKey("networks")){
 			NBTTagList tagNets = (NBTTagList) nbt.getTag("networks");
 			for (int i = 0; i < tagNets.tagCount(); i++){
 				SteamNetwork net = SteamNetwork.readFromNBT(tagNets.getCompoundTagAt(i));
+				//System.out.println("Loaded network "+net.getName());
 				nets.put(net.getName(), net);
 			}
 			networks.put(dimID, nets);
 		}
-			
+		
+		initialized.add(dimID);
+		
+	}
+	
+	public boolean isInitialized(int dim){
+		return initialized.contains(dim);
 	}
 	
 
@@ -79,7 +90,7 @@ public class SteamNetworkRegistry {
 	public SteamNetwork getNewNetwork(){
 		SteamNetwork net = new SteamNetwork();
 		String name = UUID.randomUUID().toString();
-		System.out.println(name);
+		//System.out.println(name);
 		net.setName(name);
 		return net;
 	}
@@ -90,14 +101,22 @@ public class SteamNetworkRegistry {
 		}
 		HashMap<String, SteamNetwork> dimension = networks.get(network.getDimension());
 		dimension.put(network.getName(), network);
-		SteamNetworkData.get(network.getWorld()).markDirty();
+		World world = network.getWorld();
+		if (world != null){
+			SteamNetworkData.get(world).markDirty();
+		}
+		//printNetworks(network.getDimension());
 	}
 	
 	public void remove(SteamNetwork network){
 		if (networks.containsKey(network.getDimension())){
 			HashMap<String, SteamNetwork> dimension = networks.get(network.getDimension());
 			dimension.remove(network.getName());
-			SteamNetworkData.get(network.getWorld()).markDirty();
+			World world = network.getWorld();
+			if (world != null){
+				SteamNetworkData.get(world).markDirty();
+			}
+			
 		}
 	}
 	
@@ -118,7 +137,11 @@ public class SteamNetworkRegistry {
 	}
 	
 	public static void markDirty(SteamNetwork network){
-		SteamNetworkData.get(network.getWorld()).markDirty();
+		World world = network.getWorld();
+		if (world != null){
+			SteamNetworkData.get(world).markDirty();
+		}
+		
 	}
 	
 	/**
@@ -174,6 +197,12 @@ public class SteamNetworkRegistry {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void printNetworks(int dim){
+		for (SteamNetwork net : networks.get(dim).values()){
+			System.out.println(net.getName());
 		}
 	}
 	

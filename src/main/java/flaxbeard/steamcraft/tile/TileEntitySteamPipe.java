@@ -23,10 +23,15 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
 	
-	private boolean isLeaking = false;
+	protected boolean isLeaking = false;
 	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
+	}
+	
+	public TileEntitySteamPipe(int capacity){
+		this();
+		this.capacity = capacity;
 	}
 
 //	@Override
