@@ -5,6 +5,7 @@ If you are native to any language not listed here fork this repo and work on thi
 <ul>
 <li>English - USA</li>
 <li>Brazilian - Portuguese</li>
+<li>Chinese - China</li>
 </ul>
 <br>
 <b>
@@ -14,4 +15,5 @@ be sure to credit youself down here:
 <ul>
 <li>The original mod team: en_US</li>
 <li>matheusxaviersi: pt_BR</li>
+<li>Mrkwtkr: zh_CN</li>
 </ul></b>
