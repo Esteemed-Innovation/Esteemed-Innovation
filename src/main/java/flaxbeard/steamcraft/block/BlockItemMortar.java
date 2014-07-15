@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.block;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,12 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.ISteamChargable;
-import flaxbeard.steamcraft.tile.TileEntityItemMortar;
-import flaxbeard.steamcraft.tile.TileEntityItemMortar;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 
-public class BlockItemMortar extends BlockContainer
+public class BlockItemMortar extends BlockSteamTransporter
 {
 
     public BlockItemMortar()
