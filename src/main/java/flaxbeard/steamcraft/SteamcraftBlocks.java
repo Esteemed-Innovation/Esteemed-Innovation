@@ -8,6 +8,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
+import flaxbeard.steamcraft.block.BlockChargingPad;
 import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockFlashBoiler;
@@ -59,7 +60,8 @@ public class SteamcraftBlocks {
 	public static Block itemMortar;
 	public static Block thumper;
 	public static Block thumperDummy;
-	
+	public static Block chargingPad;
+
 	public static Block pump;
 	
 	public static Block smasher;
@@ -132,6 +134,8 @@ public class SteamcraftBlocks {
 		
 		charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(charger, "charger");
+		chargingPad = new BlockChargingPad().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:chargingPad").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+		GameRegistry.registerBlock(chargingPad, "chargingPad");
 		
 		hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
 		GameRegistry.registerBlock(hammer, "hammer");

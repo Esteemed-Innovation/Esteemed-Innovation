@@ -38,6 +38,7 @@ import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
+import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
@@ -134,6 +135,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
 		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
+		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
 
 
 	}
