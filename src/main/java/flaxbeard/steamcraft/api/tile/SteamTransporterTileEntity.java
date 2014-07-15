@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.api.tile;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -251,6 +252,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
 
 	public void refresh() {
+		if (!worldObj.isRemote){
+			//FMLRelaunchLog.info("Refreshing", null);
+		}
 		if (this.network == null && !worldObj.isRemote){
 			if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
 				//System.out.println("Null network");

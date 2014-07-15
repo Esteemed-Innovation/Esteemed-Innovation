@@ -15,6 +15,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
@@ -46,7 +47,7 @@ public class SteamNetworkRegistry {
 	
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID){
-		//System.out.println("Writing network registry for dimension" + dimID + " to NBT");
+		System.out.println("Writing network registry for dimension" + dimID + " to NBT");
 		NBTTagList nets = new NBTTagList();
 		for (SteamNetwork net : networks.get(dimID).values()){
 			nets.appendTag(net.writeToNBT(new NBTTagCompound()));
@@ -56,7 +57,7 @@ public class SteamNetworkRegistry {
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt, int dimID){
-		//System.out.println("reading network registry for dimension " + dimID + " from NBT");
+		System.out.println("reading network registry for dimension " + dimID + " from NBT");
 		
 		HashMap<String, SteamNetwork> nets = new HashMap<String, SteamNetwork>();
 		if (nbt.hasKey("networks")){
@@ -68,7 +69,7 @@ public class SteamNetworkRegistry {
 			}
 			networks.put(dimID, nets);
 		}
-		
+		System.out.println("==================================================Loaded "+dimID);
 		initialized.add(dimID);
 		
 	}
@@ -78,8 +79,9 @@ public class SteamNetworkRegistry {
 	}
 	
 
-	
-	public void onTick(ServerTickEvent e){
+	@SubscribeEvent
+	public void onTick(TickEvent.ServerTickEvent e){
+		//System.out.println("Tick");
 		for (HashMap<String, SteamNetwork> dimension : networks.values()){
 			for (SteamNetwork net : dimension.values()){
 				net.tick();
@@ -88,6 +90,7 @@ public class SteamNetworkRegistry {
 	}
 	
 	public SteamNetwork getNewNetwork(){
+		System.out.println("Returning new network");
 		SteamNetwork net = new SteamNetwork();
 		String name = UUID.randomUUID().toString();
 		//System.out.println(name);
@@ -204,6 +207,11 @@ public class SteamNetworkRegistry {
 		for (SteamNetwork net : networks.get(dim).values()){
 			System.out.println(net.getName());
 		}
+	}
+
+	public void newDimension(int dimensionId) {
+		initialized.add(dimensionId);
+		
 	}
 	
 }
