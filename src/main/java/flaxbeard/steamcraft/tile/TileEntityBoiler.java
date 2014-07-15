@@ -196,7 +196,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                 }
             }
 
-            if (this.isBurning() && this.canSmelt())
+            if (this.isBurning() && this.canSmelt() && this.getNetwork() != null)
             {
                 ++this.furnaceCookTime;
 
@@ -448,5 +448,9 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 
         return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
     }
+	
+	public FluidTank getTank(){
+		return myTank;
+	}
 
 }

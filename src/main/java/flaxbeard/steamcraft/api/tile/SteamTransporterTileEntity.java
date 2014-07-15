@@ -114,7 +114,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 			this.refresh();
 		}
 		if (!worldObj.isRemote){
-			if (this.hasGauge()){
+			if (this.hasGauge() && this.network != null){
 				if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
 					//System.out.println("Updating PRESHAAA");
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -252,15 +252,19 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
 	public void refresh() {
 		if (this.network == null && !worldObj.isRemote){
-			System.out.println("Null network");
-			if (this.networkName != null){
-				this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
-			} else {
-				System.out.println("Requesting new network build");
-				SteamNetwork.newOrJoin(this);
-				
+			if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+				//System.out.println("Null network");
+				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
+					this.network.rejoin(this);
+				} else {
+					//System.out.println("Requesting new network build");
+					SteamNetwork.newOrJoin(this);
+					
+				}
+				this.isInitialized = true;
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 	

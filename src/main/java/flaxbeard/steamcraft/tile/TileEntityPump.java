@@ -46,7 +46,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 		if (access.hasKey("fluid")){
 			this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getShort("fluid")),access.getShort("water")));
 		}
-		System.out.println(access.getBoolean("running"));
+		//System.out.println(access.getBoolean("running"));
 		this.running = access.getBoolean("running");
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
@@ -157,7 +157,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 					this.worldObj.markBlockForUpdate(x, y, z);
 					progress = 0;
 					this.decrSteam(10);
-					System.out.println("cycle start");
+					//System.out.println("cycle start");
 					this.running  = true;
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					

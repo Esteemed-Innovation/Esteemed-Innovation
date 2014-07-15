@@ -832,7 +832,16 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? myTank.fill(resource, doFill) : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().fill(from, resource, doFill) : 0);
+		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+		if (meta == 1){
+			//System.out.println("Filling master");
+			return myTank.fill(resource,  doFill);
+		} else if (meta > 0 && hasMaster()){
+			//System.out.println("Deferring fill to master");
+			return getMasterTileEntity().fill(from, resource, doFill);
+		} else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -914,5 +923,23 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	public boolean getBurning(){
 		return this.burning;
+	}
+	
+	@Override
+	public FluidTank getTank(){
+		//System.out.println("Flash boiler tank get!");
+		if (this.getBlockMetadata() > 0){
+			if (this.getBlockMetadata() == 1){
+				//System.out.println("Master returning tank");
+				//System.out.println("Fill = "+myTank.getFluidAmount());
+				return this.myTank;
+			} else {
+				if (this.hasMaster()){
+					//System.out.println("Asking master to return tank");
+					return this.getMasterTileEntity().getTank();
+				}
+			}
+		}
+		return null;
 	}
 }
