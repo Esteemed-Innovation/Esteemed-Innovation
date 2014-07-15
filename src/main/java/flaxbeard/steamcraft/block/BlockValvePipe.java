@@ -42,6 +42,7 @@ public class BlockValvePipe extends BlockPipe {
 			TileEntityValvePipe tile = (TileEntityValvePipe) world.getTileEntity(x, y, z);
 			if (!tile.isTurning()) {
 				tile.setTurining();
+				System.out.println(tile.getNetworkName());
 			}
 		}
 		return true;
