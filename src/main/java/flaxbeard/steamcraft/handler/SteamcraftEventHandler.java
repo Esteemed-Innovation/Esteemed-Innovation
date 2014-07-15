@@ -31,10 +31,12 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
@@ -58,6 +60,7 @@ public class SteamcraftEventHandler {
 	public void handleWorldLoad(WorldEvent.Load event) {
 		if (!event.world.isRemote) {
 			SteamNetworkData.get(event.world);
+			SteamNetworkRegistry.initialize();
 		}
 	}
 	
@@ -482,7 +485,11 @@ public class SteamcraftEventHandler {
 			}
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
 				ISteamTransporter trans = (ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
-				//System.out.println(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork());
+				if (event.entityPlayer.worldObj.isRemote){
+					System.out.println("I AM THE CLIENT");
+				}
+				//FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
+				System.out.println(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork());
 			}
 		
 		}
