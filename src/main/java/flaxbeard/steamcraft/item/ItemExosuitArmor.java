@@ -136,27 +136,27 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player,
-			ItemStack armor, DamageSource source, double damage, int slot) {
+			ItemStack armor, DamageSource source, double damage, int armorType) {
 		ItemArmor armorStack = (ItemArmor)armor.getItem();
 		if (armor.hasTagCompound()) {
         	if (armor.stackTagCompound.hasKey("plate")) {
         		ExosuitPlate plate = UtilPlates.getPlate(armor.stackTagCompound.getString("plate"));
-        		return new ArmorProperties(0, plate.getDamageReductionAmount(slot,source) / 25.0D, armor.getMaxDamage() + 1 - armor.getItemDamage());
+        		return new ArmorProperties(0, plate.getDamageReductionAmount(armorType,source) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(armorType));
         	}
         }
-		return new ArmorProperties(0, ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot) / 25.0D, armor.getMaxDamage() + 1 - armor.getItemDamage());
+		return new ArmorProperties(0, ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(armorType) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(armorType));
 	}
 
 	@Override
-	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int armorType) {
 		ItemArmor armorStack = (ItemArmor)armor.getItem();
         if (armor.hasTagCompound()) {
         	if (armor.stackTagCompound.hasKey("plate")) {
         		ExosuitPlate plate = UtilPlates.getPlate(armor.stackTagCompound.getString("plate"));                
-        		return plate.getDamageReductionAmount(slot, DamageSource.generic); 
+        		return plate.getDamageReductionAmount(armorType, DamageSource.generic); 
             }
         }
-        return ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot);
+        return ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(armorType);
 	}
 
 	@Override
