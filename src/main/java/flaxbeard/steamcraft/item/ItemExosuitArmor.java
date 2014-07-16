@@ -141,10 +141,10 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		if (armor.hasTagCompound()) {
         	if (armor.stackTagCompound.hasKey("plate")) {
         		ExosuitPlate plate = UtilPlates.getPlate(armor.stackTagCompound.getString("plate"));
-        		return new ArmorProperties(0, plate.getDamageReductionAmount(slot,source) / 25.0D, armor.getMaxDamage() + 1 - armor.getItemDamage());
+        		return new ArmorProperties(0, plate.getDamageReductionAmount(slot,source) / 25.0D, armor.getMaxDamage());
         	}
         }
-		return new ArmorProperties(0, ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot) / 25.0D, armor.getMaxDamage() + 1 - armor.getItemDamage());
+		return new ArmorProperties(0, ItemArmor.ArmorMaterial.CLOTH.getDamageReductionAmount(3-slot) / 25.0D, armor.getMaxDamage());
 	}
 
 	@Override
