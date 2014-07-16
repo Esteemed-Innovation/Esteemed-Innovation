@@ -258,6 +258,7 @@ public class SteamcraftItems {
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper","plateCopper","Copper","Copper"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron","plateIron","Iron","Iron"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold","plateGold","Gold","Gold"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass","plateBrass","Brass","Brass"));
 
     }
     

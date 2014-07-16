@@ -45,35 +45,21 @@ public class ExosuitPlate {
 	}
 
 	public int getDamageReductionAmount(int slot, DamageSource source) {
-		//return ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(3-slot);
-
 		if (this.identifier == "Copper") {
 			if (source.isExplosion()) {
-				System.out.println("COOL");
-
-				return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(3-slot);
-
-			}
-			else
-			{
-				return ItemArmor.ArmorMaterial.CHAIN.getDamageReductionAmount(3-slot);
+				return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
 			}
 		}
-		else
-		{
-			if (bonusSources.length == 0) {
-				return ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(3-slot);
-			}
-			else
-			{
-				if (Arrays.asList(bonusSources).contains(source)) {
-					return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(3-slot);
-				}
-				else
-				{
-					return ItemArmor.ArmorMaterial.CHAIN.getDamageReductionAmount(3-slot);
-				}
+		if (this.identifier == "Iron") {
+			if (source.isProjectile()) {
+				return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
 			}
 		}
+		if (this.identifier == "Brass") {
+			if (source.isFireDamage()) {
+				return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
+			}
+		}
+		return ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(slot);
 	}
 }

@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -26,6 +27,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -36,6 +38,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -93,6 +96,22 @@ public class SteamcraftEventHandler {
 //		}
 //	}
 
+	@SubscribeEvent
+	public void doubleExp(PlayerPickupXpEvent event) {
+		EntityPlayer player = event.entityPlayer;
+		for (int i = 1; i<5; i++) {
+			float multValu = 1;
+			if (player.getEquipmentInSlot(i) != null) {
+				ItemStack stack = player.getEquipmentInSlot(i);
+				if (stack.getItem() instanceof ItemExosuitArmor) {
+					if (UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Gold") {
+						multValu *= 1.25F;
+					}
+				}
+			}
+			event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue*multValu);
+		}
+	}
 	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
