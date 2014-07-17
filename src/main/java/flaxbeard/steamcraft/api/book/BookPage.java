@@ -18,13 +18,19 @@ import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 public class BookPage {
 	private String name;
 	protected ArrayList<Tuple3> items = new ArrayList<Tuple3>();
+	protected boolean shouldDisplayTitle;
 	
 	public BookPage(String string) {
 		name = string;
 	}
 	
+	public BookPage(String string, Boolean title) {
+		name = string;
+		shouldDisplayTitle = title;
+	}
+	
 	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
-		 if (isFirstPage) {
+		 if (isFirstPage || shouldDisplayTitle) {
 			 String s = I18n.format(name);
 		     int l = fontRenderer.getStringWidth(s);
 		     fontRenderer.drawString("\u00A7l"+"\u00A7n"+s, (int) (x + book.bookImageWidth/2 - (l/1.6)-3), y+30, 0x3F3F3F);

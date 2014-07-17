@@ -14,14 +14,22 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import vazkii.botania.common.core.handler.PixieHandler.IPixieSpawner;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
@@ -31,8 +39,10 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
 
-public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngineerable,ISteamChargable {
+@Optional.Interface(iface = "IPixieSpawner", modid = "Botania")
+public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecialArmor,IEngineerable,ISteamChargable {
 	
 	public static enum ExosuitSlot
     {
@@ -95,10 +105,16 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
   	{
+		//if (!(entity instanceof EntityLivingBase) || !((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
 		if (stack.getItem() == SteamcraftItems.exoArmorLegs) {
 			return "steamcraft:textures/models/armor/exo_2.png";
 		}
 		return "steamcraft:textures/models/armor/exo_1.png";
+//		}
+//		else
+//		{
+//			return "steamcraft:textures/models/armor/blankArmor.png";
+//		}
   	}
 	
 	@Override
@@ -124,6 +140,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	@SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel (EntityLivingBase entityLiving, ItemStack itemStack, int par2)
     {
+		//if (!entityLiving.isPotionActive(Steamcraft.semiInvisible)) {
 		ModelExosuit modelbiped = new ModelExosuit(itemStack,par2);
         modelbiped.bipedHead.showModel = par2 == 0;
         modelbiped.bipedHeadwear.showModel = par2 == 0;
@@ -133,6 +150,8 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
         modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
         modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
         return modelbiped;
+//		}
+//		return null;
     }
 
 	@Override
@@ -190,7 +209,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 		return new MutablePair[] { MutablePair.of(49,26) };
 	}
 	
-	public void hasPlates(ItemStack me) {
+	public boolean hasPlates(ItemStack me) {
 		if (this.getStackInSlot(me, 1) != null) {
 			if (!me.hasTagCompound()) {
 				me.setTagCompound(new NBTTagCompound());
@@ -199,19 +218,25 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 			clone.stackSize = 1;
 			if (UtilPlates.getPlate(clone) != null) {
 				me.stackTagCompound.setString("plate", UtilPlates.getPlate(clone).getIdentifier());
+				return true;
 			}
 			else
 			{
 				if (me.stackTagCompound.hasKey("plate")) {
 					me.stackTagCompound.removeTag("plate");
 				}
+				return false;
 			}
 		}
 		else
 		{
+			if (!me.hasTagCompound()) {
+				me.setTagCompound(new NBTTagCompound());
+			}
 			if (me.stackTagCompound.hasKey("plate")) {
 				me.stackTagCompound.removeTag("plate");
 			}
+			return false;
 		}
 	}
 
@@ -444,20 +469,48 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 	}
 	
 	@Override
+    public Multimap getAttributeModifiers(ItemStack stack) {
+		Multimap map = HashMultimap.create();
+		if (Loader.isModLoaded("Botania")) {
+			map = BotaniaIntegration.addModifiers(map,stack,armorType);
+		}
+		return map;
+	}
+	
+	@Override
 	public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4)
 	{
 		super.addInformation(me, player, list, par4);
 		if (me.hasTagCompound()) {
+			if (hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() != "Thaumium" && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() != "Terrasteel") {
+				list.add(EnumChatFormatting.BLUE + UtilPlates.getPlate(me.stackTagCompound.getString("plate")).effect());
+			}
 			if (me.stackTagCompound.hasKey("inv")) {
 				for (int i = 2; i<10; i++) {
 					if (me.stackTagCompound.getCompoundTag("inv").hasKey(Integer.toString(i))) {
 						ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
-						if (stack.getItem() instanceof IExosuitUpgrade) {
-							((IExosuitUpgrade)stack.getItem()).writeInfo(list);
-						}
+						list.add(EnumChatFormatting.RED + stack.getDisplayName());
 					}	
 				}
 			}
 		}
+	}
+
+    @Optional.Method(modid = "Botania")
+    @Override
+	public float getPixieChance(ItemStack stack) {
+		if ((((ItemExosuitArmor)stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Elementium")) {
+			switch (armorType) {
+				case 0:
+					return 0.025F;
+				case 1:
+					return 0.04F;
+				case 2:
+					return 0.035F;
+				case 3:
+					return 0.02F;
+			}
+		}
+		return 0;
 	}
 }

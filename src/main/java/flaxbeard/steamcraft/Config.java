@@ -28,6 +28,8 @@ public class Config {
 	
 	public static int villagerId;
 	
+	public static int potionId;
+	
 	public static void load(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
@@ -43,6 +45,7 @@ public class Config {
 		mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
 		chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();
 		dropItem = config.get("Machines", "Thumper drops items (may lag servers)", true).getBoolean(true);
+		potionId = config.get("Exosuit", "Partial Invisibility Potion IDd", 24).getInt(24);
 
 		passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);

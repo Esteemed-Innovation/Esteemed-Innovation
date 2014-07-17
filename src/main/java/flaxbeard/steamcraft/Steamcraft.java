@@ -4,6 +4,7 @@ package flaxbeard.steamcraft;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -37,6 +38,7 @@ import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
+import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
@@ -84,6 +86,7 @@ public class Steamcraft {
 	public static int ruptureDiscRenderID;
 
     public static boolean steamRegistered;
+    public static Potion semiInvisible;
     public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType)EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
@@ -143,7 +146,7 @@ public class Steamcraft {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("steamcraft");
-
+		semiInvisible = (new SteamcraftPotion(Config.potionId, false, 0)).setIconIndex(0, 1).setPotionName("potion.partialInvisible");
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 		
 		MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
@@ -176,7 +179,7 @@ public class Steamcraft {
 			ThaumcraftIntegration.addThaumiumLiquid();
 		}
 		if (Loader.isModLoaded("Botania")) {
-			BotaniaIntegration.addItems();
+			BotaniaIntegration.addBotaniaLiquid();
 		}
 		SteamcraftBook.registerBookResearch();
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 

@@ -23,6 +23,13 @@ public class BookPageItem extends BookPageText {
 		name = string;
 	}
 	
+	public BookPageItem(String string, String string2, boolean title, ItemStack... is) {
+		super(string, string2, title);
+		item = is;
+		text = string2;
+		name = string;
+	}
+	
 	@Override
 	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
 		if (!lastViewing.equals(book.viewing)) {
@@ -32,7 +39,7 @@ public class BookPageItem extends BookPageText {
 		String s;
 		int l;
 	  	int yOffset = y+55;
-		if (isFirstPage) {
+		if (isFirstPage || shouldDisplayTitle) {
 			yOffset = y+65;
 			s = I18n.format(name);
 			l = fontRenderer.getStringWidth(s);
@@ -62,7 +69,7 @@ public class BookPageItem extends BookPageText {
 	    int size = item.length;
 	    int i = 0;
 	    for (ItemStack stack : item) {
-	    	this.drawItemStack(stack, (int)( x + book.bookImageWidth/2 - 12 - (size-1)*9 + i*18), isFirstPage ? y+45 : y+35, "", renderer, fontRenderer);
+	    	this.drawItemStack(stack, (int)( x + book.bookImageWidth/2 - 12 - (size-1)*9 + i*18), isFirstPage || shouldDisplayTitle? y+45 : y+35, "", renderer, fontRenderer);
 	    	i++;
 	    }
 	    for (Tuple3 item : items) {

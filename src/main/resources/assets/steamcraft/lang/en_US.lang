@@ -3,6 +3,15 @@ steamcraft.book.info=A brief guide to steam power.
 steamcraft.book.by=by
 steamcraft.book.shapeless=Shapeless
 item.steamcraft:book.name=Esteemed Innovation
+potion.partialInvisible=Cloaking
+steamcraft.plate.bonus=Exosuit Effect: 
+steamcraft.plate.copper=Blast Protection
+steamcraft.plate.brass=Fire Protection
+steamcraft.plate.iron=Projectile Protection
+steamcraft.plate.gold=Extra Experience
+steamcraft.plate.thaumium=Vis Discount
+steamcraft.plate.terrasteel=Increased Health
+steamcraft.plate.elementum=Spawns Pixies
 
 steamcraft.astrolabe.target=Target:
 steamcraft.astrolabe.noTarget=No target
@@ -94,6 +103,9 @@ category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
 research.Exosuit.0=I've been able to manipulate the world to my desire using the power of steam... What left is there to improve but me?<br>This is where my exosuit comes in, a versatile armor set powered by steam.
 research.Exosuit.1=Upgrades can be placed in the suit using an engineering table. First things first, I need to place a steam tank in the cuboid shaped slot in the exosuit chestpiece. I then can fill the chestpiece with steam.<br>A full set of exosuit parts will provide a small mining and speed boost, but without steam I will be slowed.
+research.ExoPlates.name=Exosuit Plates
+research.ExoPlates.0=The exosuit on its own is a fragile framework for upgrades. One of the most critical upgrades is plates. Various types of plating can be installed in the exosuit, providing the wearer with siginificantly more protection. All plates provide an equal baseline of protection, similar to that of iron armor, but each plate provides a unique proficiency.
+
 research.Jetpack.name=Steam Jetpack
 research.Jetpack.0=I've developed a rather exciting exosuit upgrade that grants me the power of flight.<br>This steam 'jetpack' of sorts consumes a substantial amount of steam, but you can't put a price tag on flight.
 research.Wings.name=Steam Wings
@@ -186,6 +198,8 @@ item.steamcraft:plate.2.name=Iron Plate
 item.steamcraft:plate.3.name=Gold Plate
 item.steamcraft:plate.4.name=Brass Plate
 item.steamcraft:plate.5.name=Thaumium Plate
+item.steamcraft:plate.6.name=Terrasteel Plate
+item.steamcraft:plate.7.name=Elementium Plate
 
 item.steamcraft:ingotMold.name=Ingot Mold
 item.steamcraft:nuggetMold.name=Nugget Mold

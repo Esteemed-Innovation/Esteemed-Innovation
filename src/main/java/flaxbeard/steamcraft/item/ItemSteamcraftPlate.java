@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSteamcraftPlate extends Item {
-	public IIcon[] icon = new IIcon[6];
+	public IIcon[] icon = new IIcon[8];
 	
 	public ItemSteamcraftPlate() {
 		this.setHasSubtypes(true);
@@ -38,6 +38,8 @@ public class ItemSteamcraftPlate extends Item {
 		this.icon[3] = ir.registerIcon("steamcraft:plateGold");
 		this.icon[4] = ir.registerIcon("steamcraft:plateBrass");
 		this.icon[5] = ir.registerIcon("steamcraft:plateThaumium");
+		this.icon[6] = ir.registerIcon("steamcraft:plateTerrasteel");
+		this.icon[7] = ir.registerIcon("steamcraft:plateElementum");
 	}
 	
 	@Override
@@ -50,6 +52,10 @@ public class ItemSteamcraftPlate extends Item {
 		par3List.add(new ItemStack(par1, 1, 4));
 		if (Loader.isModLoaded("Thaumcraft")) {
 			par3List.add(new ItemStack(par1, 1, 5));
+		}
+		if (Loader.isModLoaded("Botania")) {
+			par3List.add(new ItemStack(par1, 1, 6));
+			par3List.add(new ItemStack(par1, 1, 7));
 		}
 	}
 	

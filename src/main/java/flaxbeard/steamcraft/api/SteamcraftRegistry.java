@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import scala.actors.threadpool.Arrays;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
@@ -52,8 +54,19 @@ public class SteamcraftRegistry {
 	}
 	
 	public static void addResearch(String string, String category, BookPage... pages) {
-		research.add(MutablePair.of(string,category));
-		researchPages.put(string, pages);
+		if (!category.substring(0, 1).equals("!")) {
+			research.add(MutablePair.of(string,category));
+			researchPages.put(string, pages);
+		}
+		else
+		{
+			BookPage[] targetPages = researchPages.get(category.substring(1));
+			ArrayList<BookPage> pages2 = new ArrayList<BookPage>(Arrays.asList(targetPages));
+			for (BookPage page : pages) {
+				pages2.add(page);
+			}
+			researchPages.put(category.substring(1), (BookPage[]) pages2.toArray(new BookPage[0]));
+		}
 	}
 	
 	public static CrucibleLiquid getLiquidFromName(String name) {
