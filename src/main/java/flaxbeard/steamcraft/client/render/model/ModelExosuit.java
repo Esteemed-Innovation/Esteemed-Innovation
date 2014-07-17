@@ -12,6 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -50,9 +54,17 @@ public class ModelExosuit extends ModelBiped {
 	}
 
 	@Override
-	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
+	public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
+        GL11.glPushMatrix();
+        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
+	        GL11.glDepthMask(false);
+	        GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+        }
+	    this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
 		//this.Jetpack1.showModel = false;
 	//	this.Jetpack2.showModel = false;
 
@@ -89,10 +101,10 @@ public class ModelExosuit extends ModelBiped {
 				this.bipedHeadwear.render(par7);
 			}
 			if (upgrade.hasModel()) {
-				upgrade.renderModel(this,par1Entity,armor,par7,me);
+				upgrade.renderModel(this,entity,armor,par7,me);
 			}
 		}
-
+		GL11.glPopMatrix();
 	}
 	
 

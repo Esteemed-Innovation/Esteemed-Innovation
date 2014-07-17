@@ -1,9 +1,8 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class ExosuitPlate {
@@ -12,14 +11,16 @@ public class ExosuitPlate {
 	private String invMod;
 	private String armorMod;
 	private Object plate;
+	private String effect;
 	private DamageSource[] bonusSources;
 	
-	public ExosuitPlate(String id, Object item, String invLocMod, String armorLocMod, DamageSource... sources) {
+	public ExosuitPlate(String id, Object item, String invLocMod, String armorLocMod, String effectLoc, DamageSource... sources) {
 		identifier = id;
 		invMod = invLocMod;
 		armorMod = armorLocMod;
 		plate = item;
 		bonusSources = sources;
+		effect = effectLoc;
 	}
 	
 	public String getIdentifier() {
@@ -61,5 +62,9 @@ public class ExosuitPlate {
 			}
 		}
 		return ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(slot);
+	}
+	
+	public String effect() {
+		return StatCollector.translateToLocal(effect);
 	}
 }

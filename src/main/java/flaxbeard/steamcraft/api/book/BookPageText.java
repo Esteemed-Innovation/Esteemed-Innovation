@@ -17,6 +17,12 @@ public class BookPageText extends BookPage {
 		super(string);
 		text = string2;
 	}
+	
+	public BookPageText(String string,String string2,Boolean title) {
+		super(string,title);
+		text = string2;
+	}
+
 
 	@Override
 	public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
@@ -26,7 +32,7 @@ public class BookPageText extends BookPage {
 			BookPageItem.lastViewing = book.viewing;
 		}
 		int yOffset = y+30;
-		if (isFirstPage) {
+		if (isFirstPage || shouldDisplayTitle) {
 			yOffset = y+40;
 		}
 		String s = I18n.format(text);

@@ -1,43 +1,60 @@
 package flaxbeard.steamcraft.handler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookPageCrafting;
+import flaxbeard.steamcraft.api.book.BookPageItem;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
@@ -55,7 +72,7 @@ public class SteamcraftEventHandler {
 	private static final AttributeModifier exoBoostBad = new AttributeModifier(uuid2,"EXOMODBAD", -0.2D, 2).setSaved(true);
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
-
+	
 	
 //	@SubscribeEvent
 //	public void handleMobDrop(LivingDropsEvent event) {
@@ -95,7 +112,105 @@ public class SteamcraftEventHandler {
 //			}
 //		}
 //	}
-
+	
+	@SubscribeEvent
+	public void hideCloakedPlayers(LivingUpdateEvent event) {
+		if (event.entityLiving instanceof EntityLiving) {
+			EntityLiving entity = (EntityLiving) event.entityLiving;
+			if (entity.getAttackTarget() != null && entity.getAttackTarget().isPotionActive(Steamcraft.semiInvisible)) {
+		        IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.followRange);
+		        double d0 = iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
+			    d0 = d0 / 3D;
+		        List list = entity.worldObj.getEntitiesWithinAABB(Entity.class, entity.boundingBox.expand(d0, 4.0D, d0));
+			    boolean foundPlayer = false;
+			    for (Object mob : list) {
+			    	Entity ent = (Entity) mob;
+			    	if (ent == entity.getAttackTarget()) {
+			    		foundPlayer = true;
+			    	}
+			    }
+			    if (!foundPlayer) {
+			    	entity.setAttackTarget(null);
+			    }
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void hideCloakedPlayers(LivingSetAttackTargetEvent event) {
+		if (event.entityLiving instanceof EntityLiving) {
+			EntityLiving entity = (EntityLiving) event.entityLiving;
+			if (event.target != null && event.target.isPotionActive(Steamcraft.semiInvisible)) {
+		        IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.followRange);
+		        double d0 = iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
+			    d0 = d0 / 3D;
+		        List list = entity.worldObj.getEntitiesWithinAABB(Entity.class, entity.boundingBox.expand(d0, 4.0D, d0));
+			    boolean foundPlayer = false;
+			    for (Object mob : list) {
+			    	Entity ent = (Entity) mob;
+			    	if (ent == event.target) {
+			    		foundPlayer = true;
+			    	}
+			    }
+			    if (!foundPlayer) {
+			    	entity.setAttackTarget(null);
+			    }
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void preRender(RenderLivingEvent.Pre event) {
+		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
+	        GL11.glPushMatrix();
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.10F);
+	        GL11.glDepthMask(false);
+	        GL11.glEnable(GL11.GL_BLEND);
+	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+		}
+	}
+	
+	@SubscribeEvent
+	public void postRender(RenderLivingEvent.Post event) {
+		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
+	        GL11.glDisable(GL11.GL_BLEND);
+	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+	        GL11.glPopMatrix();
+	        GL11.glDepthMask(true);
+		}
+	}
+	
+	
+	@SubscribeEvent
+	public void plateTooltip(ItemTooltipEvent event) {
+		ItemStack stack = event.itemStack;
+		if (UtilPlates.getPlate(stack) != null) {
+			event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("steamcraft.plate.bonus") + UtilPlates.getPlate(stack).effect());
+		}
+		if (stack.getItem() instanceof ItemExosuitArmor) {
+			ArrayList<String> linesToRemove = new ArrayList<String>();
+			for (String str : event.toolTip) {
+				if (str == "") {
+					linesToRemove.add(str);
+				}
+				if (str.contains("+")) {
+					linesToRemove.add(str);
+				}
+			}
+			for (String str : linesToRemove) {
+				if (str.contains("+")) {
+					event.toolTip.remove(str);
+					event.toolTip.add(1,str);
+				}
+				else
+				{
+					event.toolTip.remove(str);
+				}
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void doubleExp(PlayerPickupXpEvent event) {
 		EntityPlayer player = event.entityPlayer;
@@ -104,7 +219,7 @@ public class SteamcraftEventHandler {
 			if (player.getEquipmentInSlot(i) != null) {
 				ItemStack stack = player.getEquipmentInSlot(i);
 				if (stack.getItem() instanceof ItemExosuitArmor) {
-					if (UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Gold") {
+					if (((ItemExosuitArmor)stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Gold") {
 						multValu *= 1.25F;
 					}
 				}
@@ -230,8 +345,8 @@ public class SteamcraftEventHandler {
 							vector.yCoord = total;
 			      
 						event.entityLiving.motionY += ((jump+1)*vector.yCoord)/1.5F;
-						event.entityLiving.motionZ += (jump+1)*vector.zCoord*4;
-						event.entityLiving.motionX += (jump+1)*vector.xCoord*4;
+						event.entityLiving.motionZ += (jump+1)*vector.zCoord*2;
+						event.entityLiving.motionX += (jump+1)*vector.xCoord*2;
 						event.entityLiving.getEquipmentInSlot(3).damageItem(Config.jumpBoostConsumptionShiftJump, event.entityLiving);
 					}
 					else
@@ -431,6 +546,11 @@ public class SteamcraftEventHandler {
 		ItemStack armor2 = entity.getEquipmentInSlot(1);
 		
 		if (hasPower) {
+			if (entity.isSneaking()) {
+				if ((!event.entityLiving.isPotionActive(Steamcraft.semiInvisible) || event.entityLiving.getActivePotionEffect(Steamcraft.semiInvisible).getDuration() < 2)) {
+					event.entityLiving.addPotionEffect(new PotionEffect(Steamcraft.semiInvisible.id, 2, 0, false));
+				}
+			}
 			if (!lastMotions.containsKey(entity.getEntityId())) {
 				lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX,entity.posZ));
 			}
@@ -548,6 +668,8 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
+		//SteamcraftRegistry.addResearch("research.Jetpack.name","!research.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
+
 		if (event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).getMaterial() == Material.water) {
 			System.out.println(event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).toString() + " " + event.entityPlayer.worldObj.getBlockMetadata(event.x, event.y+1, event.z));
 		}
