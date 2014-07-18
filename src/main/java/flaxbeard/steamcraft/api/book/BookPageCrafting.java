@@ -17,10 +17,12 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import scala.Tuple4;
+
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
-public class BookPageCrafting extends BookPage {
+public class BookPageCrafting extends BookPage implements ICraftingPage {
 	
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private ItemStack output;
@@ -146,14 +148,14 @@ public class BookPageCrafting extends BookPage {
             			if (inputs[(3*i)+j] instanceof ItemStack) {
             				ItemStack item = (ItemStack) inputs[(3*i)+j];
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer);
+				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
             			if (inputs[(3*i)+j] instanceof ItemStack[]) {
             				ItemStack[] item = (ItemStack[]) inputs[(3*i)+j];
             				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
             			if (inputs[(3*i)+j] instanceof ArrayList && ((ArrayList)inputs[(3*i)+j]).size() > 0) {
@@ -175,7 +177,7 @@ public class BookPageCrafting extends BookPage {
             				ItemStack[] item = list2.toArray(new ItemStack[0]);
             				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
 
@@ -185,17 +187,20 @@ public class BookPageCrafting extends BookPage {
             }
         }
         fontRenderer.setUnicodeFlag(false);
-        this.drawItemStack(output, x+45+76, y+55+23, output.stackSize > 1 ? Integer.toString(output.stackSize) : "", renderer, fontRenderer);
+        this.drawItemStack(output, x+45+76, y+55+23, output.stackSize > 1 ? Integer.toString(output.stackSize) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
-	    for (Tuple3 item : items) {
-	    	int ix = (Integer) item.first;
-	    	int iy = (Integer) item.second;
-	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-	    		fontRenderer.setUnicodeFlag(false);
-	    		book.renderToolTip((ItemStack) item.third, mx, my);
+		 for (Tuple4 item : items) {
+			 int ix = (Integer) item._1();
+			 int iy = (Integer) item._2();
+			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+    			fontRenderer.setUnicodeFlag(false);
+    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
+    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
+        			book.itemClicked((ItemStack) item._3());
+    			}
 	    		fontRenderer.setUnicodeFlag(true);
-	    	}
-	    }
+			 }
+		 }
 	    if (shapeless) {
 	    	int ix = x+120;
 	    	int iy = y+60;
@@ -206,5 +211,10 @@ public class BookPageCrafting extends BookPage {
 	    	}
 	    }
         items.clear();
+	}
+
+	@Override
+	public ItemStack[] getCraftedItem() {
+		return new ItemStack[] {output};
 	}
 }

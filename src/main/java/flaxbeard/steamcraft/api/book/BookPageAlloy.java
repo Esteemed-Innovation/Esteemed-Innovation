@@ -7,12 +7,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+import scala.Tuple4;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
-public class BookPageAlloy extends BookPage {
+public class BookPageAlloy extends BookPage implements ICraftingPage {
 	
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private CrucibleLiquid output;
@@ -35,21 +35,29 @@ public class BookPageAlloy extends BookPage {
         book.drawTexturedModalRect(x+45, y+65, 0, 82, 97, 59);
         fontRenderer.setUnicodeFlag(false);
 		int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item1.length*20.0D))/20.0D);
-        this.drawItemStack(item1[ticks], x+40+19, y+65+2, formula.liquid1num > 1 ? Integer.toString(formula.liquid1num) : "", renderer, fontRenderer);
+        this.drawItemStack(item1[ticks], x+40+19, y+65+2, formula.liquid1num > 1 ? Integer.toString(formula.liquid1num) : "", renderer, fontRenderer, true);
 		ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item2.length*20.0D))/20.0D);
-        this.drawItemStack(item2[ticks], x+40+19, y+65+20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer);
-        this.drawItemStack(output.ingot, x+40+75, y+65+14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer);
+        this.drawItemStack(item2[ticks], x+40+19, y+65+20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer, true);
+        this.drawItemStack(output.ingot, x+40+75, y+65+14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
 		
-	    for (Tuple3 item : items) {
-	    	int ix = (Integer) item.first;
-	    	int iy = (Integer) item.second;
-	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-	    		fontRenderer.setUnicodeFlag(false);
-	    		book.renderToolTip((ItemStack) item.third, mx, my);
+		 for (Tuple4 item : items) {
+			 int ix = (Integer) item._1();
+			 int iy = (Integer) item._2();
+			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+    			fontRenderer.setUnicodeFlag(false);
+    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
+    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
+        			book.itemClicked((ItemStack) item._3());
+    			}
 	    		fontRenderer.setUnicodeFlag(true);
-	    	}
-	    }
+			 }
+		 }
         items.clear();
+	}
+
+	@Override
+	public ItemStack[] getCraftedItem() {
+		return new ItemStack[] {output.ingot, output.nugget, output.plate};
 	}
 }

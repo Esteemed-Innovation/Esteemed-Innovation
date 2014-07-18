@@ -2,9 +2,12 @@ package flaxbeard.steamcraft;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -13,7 +16,9 @@ import flaxbeard.steamcraft.api.book.BookPageCrafting;
 import flaxbeard.steamcraft.api.book.BookPageDip;
 import flaxbeard.steamcraft.api.book.BookPageItem;
 import flaxbeard.steamcraft.api.book.BookPageText;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class SteamcraftBook {
 	public static void registerBookResearch() {
@@ -56,6 +61,8 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.RuptureDisc.name","category.SteamPower.name",new BookPageItem("research.RuptureDisc.name","research.RuptureDisc.0", new ItemStack(SteamcraftBlocks.ruptureDisc)),new BookPageText("research.RuptureDisc.name","research.RuptureDisc.1"),new BookPageCrafting("","disc"));
 		SteamcraftRegistry.addResearch("research.Gauge.name","category.SteamPower.name",new BookPageItem("research.Gauge.name","research.Gauge.0", new ItemStack(SteamcraftBlocks.meter)),new BookPageCrafting("","gauge"));
 		SteamcraftRegistry.addResearch("research.Tank.name","category.SteamPower.name",new BookPageItem("research.Tank.name","research.Tank.0", new ItemStack(SteamcraftBlocks.tank)),new BookPageCrafting("","tank1","tank2"));
+		SteamcraftRegistry.addResearch("research.CreativeTank.name","category.NOTREAL.name",new BookPageItem("research.CreativeTank.name","research.CreativeTank.0", new ItemStack(Items.bowl)));
+		SteamcraftRegistry.bookRecipes.put(new ItemStack(SteamcraftBlocks.tank,1,1), MutablePair.of("research.CreativeTank.name",0));
 		SteamcraftRegistry.addResearch("research.Filler.name","category.SteamPower.name",new BookPageItem("research.Filler.name","research.Filler.0", new ItemStack(SteamcraftBlocks.charger)),new BookPageCrafting("","filler1","filler2"));
 		SteamcraftRegistry.addResearch("research.Heater.name","category.SteamPower.name",new BookPageItem("research.Heater.name","research.Heater.0", new ItemStack(SteamcraftBlocks.heater)),new BookPageCrafting("","heater1","heater2"));
 		SteamcraftRegistry.addResearch("research.ItemMortar.name","category.SteamPower.name",new BookPageItem("research.ItemMortar.name","research.ItemMortar.0", new ItemStack(SteamcraftBlocks.itemMortar)),new BookPageText("research.ItemMortar.name","research.ItemMortar.1"),new BookPageCrafting("","astrolabe"),new BookPageCrafting("","itemMortar2","itemMortar3"));
@@ -74,8 +81,31 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addCategory("category.Exosuit.name");
 		SteamcraftRegistry.addResearch("research.Exosuit.name","category.Exosuit.name",new BookPageItem("research.Exosuit.name","research.Exosuit.0", new ItemStack(SteamcraftItems.exoArmorHead), new ItemStack(SteamcraftItems.exoArmorBody), new ItemStack(SteamcraftItems.exoArmorLegs), new ItemStack(SteamcraftItems.exoArmorFeet)),
 				new BookPageText("research.Exosuit.name","research.Exosuit.1"),new BookPageCrafting("","engineering1","engineering2"),new BookPageCrafting("","exoHead"),new BookPageCrafting("","exoBody"),new BookPageCrafting("","exoLegs"),new BookPageCrafting("","exoFeet"));
-		SteamcraftRegistry.addResearch("research.ExoPlates.name","category.Exosuit.name",new BookPageText("research.ExoPlates.name","research.ExoPlates.0"));
+		ItemStack[] stacks = new ItemStack[4];
+		for (int i = 0; i<4; i++) {
+			ItemStack stack = new ItemStack(SteamcraftItems.exoArmorBody);
+			stack.setTagCompound(new NBTTagCompound());
+			ItemStack plate = null;
+			Object item = SteamcraftRegistry.plates.values().toArray(new ExosuitPlate[0])[i].getItem();
+			if (item instanceof String) {
+				if (OreDictionary.getOres((String)item).size() > 0) {
+					plate = OreDictionary.getOres((String)item).get(0);
+				}
+			}
+			else if (item instanceof ItemStack) {
+				plate = (ItemStack) item;
+			}
+			((ItemExosuitArmor)stack.getItem()).setInventorySlotContents(stack, 1,plate);
+			stacks[i] = stack;
+		}
+		SteamcraftRegistry.addResearch("research.ExoPlates.name","category.Exosuit.name",new BookPageItem("research.ExoPlates.name","research.ExoPlates.0",stacks),new BookPageText("","research.ExoPlates.1"));
 		SteamcraftRegistry.addResearch("research.PlateCopper.name","!research.ExoPlates.name",new BookPageItem("research.PlateCopper.name","research.PlateCopper.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,0)));
+		SteamcraftRegistry.addResearch("research.PlateIron.name","!research.ExoPlates.name",new BookPageItem("research.PlateIron.name","research.PlateIron.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,2)));
+		SteamcraftRegistry.addResearch("research.PlateBrass.name","!research.ExoPlates.name",new BookPageItem("research.PlateBrass.name","research.PlateBrass.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,4)));
+		SteamcraftRegistry.addResearch("research.PlateGold.name","!research.ExoPlates.name",new BookPageItem("research.PlateGold.name","research.PlateGold.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,3)));
+		SteamcraftRegistry.addResearch("research.PlateThaumium.name","!research.ExoPlates.name",new BookPageItem("research.PlateThaumium.name","research.PlateThaumium.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,5)));
+		SteamcraftRegistry.addResearch("research.PlateTerrasteel.name","!research.ExoPlates.name",new BookPageItem("research.PlateTerrasteel.name","research.PlateTerrasteel.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,6)));
+		SteamcraftRegistry.addResearch("research.PlateElementium.name","!research.ExoPlates.name",new BookPageItem("research.PlateElementium.name","research.PlateElementium.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,7)));
 
 		SteamcraftRegistry.addResearch("research.Jetpack.name","category.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
 		SteamcraftRegistry.addResearch("research.Wings.name","category.Exosuit.name",new BookPageItem("research.Wings.name","research.Wings.0", new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));

@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.api.book;
 
 import java.util.ArrayList;
 
+import net.java.games.input.Mouse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -12,12 +13,13 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import scala.Tuple4;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
 public class BookPage {
 	private String name;
-	protected ArrayList<Tuple3> items = new ArrayList<Tuple3>();
+	protected ArrayList<Tuple4> items = new ArrayList<Tuple4>();
 	protected boolean shouldDisplayTitle;
 	
 	public BookPage(String string) {
@@ -35,19 +37,22 @@ public class BookPage {
 		     int l = fontRenderer.getStringWidth(s);
 		     fontRenderer.drawString("\u00A7l"+"\u00A7n"+s, (int) (x + book.bookImageWidth/2 - (l/1.6)-3), y+30, 0x3F3F3F);
 		 }
-		 for (Tuple3 item : items) {
-			 int ix = (Integer) item.first;
-			 int iy = (Integer) item.second;
-	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+		 for (Tuple4 item : items) {
+			 int ix = (Integer) item._1();
+			 int iy = (Integer) item._2();
+			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
     			fontRenderer.setUnicodeFlag(false);
-    			book.renderToolTip((ItemStack) item.third, mx, my);
+    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
+    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
+        			book.itemClicked((ItemStack) item._3());
+    			}
 	    		fontRenderer.setUnicodeFlag(true);
-	    	}
+			 }
 		 }
 		 items.clear();
 	}
 	
-    protected void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj)
+    protected void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj, boolean canHyperlink)
     {
     	GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 32.0F);
@@ -63,7 +68,7 @@ public class BookPage {
         itemRender.renderItemAndEffectIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y);
         itemRender.renderItemOverlayIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y, str);
         itemRender.zLevel = 0.0F;
-        items.add(new Tuple3(x,y,stack));
+        items.add(new Tuple4(x,y,stack,canHyperlink));
         GL11.glPopMatrix();
     }
 }

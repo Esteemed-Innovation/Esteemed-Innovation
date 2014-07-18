@@ -15,14 +15,17 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
+import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 
 public class GuiSteamcraftBook extends GuiScreen {
     private static final ResourceLocation bookGuiTextures = new ResourceLocation("steamcraft:textures/gui/book.png");
@@ -37,9 +40,9 @@ public class GuiSteamcraftBook extends GuiScreen {
     private int updateCount;
     public int bookImageWidth = 192;
     public int bookImageHeight = 192;
-    private int bookTotalPages = 1;
-    private static int currPage = 0;
-    private static int lastIndexPage = 0;
+    public static int bookTotalPages = 1;
+    public static int currPage = 0;
+    public static int lastIndexPage = 0;
     private NBTTagList bookPages;
     private String bookTitle = "";
     private GuiSteamcraftBook.NextPageButton buttonNextPage;
@@ -47,6 +50,8 @@ public class GuiSteamcraftBook extends GuiScreen {
     public static String viewing = "";
     /** The GuiButton to sign this book. */
     private static final String __OBFID = "CL_00000744";
+    private static ItemStack book;
+    private static boolean mustReleaseMouse = false;
     
     class GuiButtonSelect extends GuiButton
     {
@@ -101,6 +106,18 @@ public class GuiSteamcraftBook extends GuiScreen {
 		if (viewing != "") {
     		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
 		}
+		if (par1EntityPlayer.getHeldItem() != null && par1EntityPlayer.getHeldItem().getItem() instanceof ItemSteamcraftBook) {
+			book = par1EntityPlayer.getHeldItem();
+		}
+		else
+		{
+			for (int p = 0; p < par1EntityPlayer.inventory.getSizeInventory(); p++) {
+				if (par1EntityPlayer.inventory.getStackInSlot(p) != null && par1EntityPlayer.inventory.getStackInSlot(p).getItem() instanceof ItemSteamcraftBook) {
+					book = par1EntityPlayer.inventory.getStackInSlot(p);
+					break;
+				}
+			}
+		}
     }
     
     @Override
@@ -134,7 +151,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     }
 
 
-    private void updateButtons()
+    public void updateButtons()
     {
         this.buttonNextPage.visible = (this.currPage < this.bookTotalPages - 1);
         this.buttonPreviousPage.visible = this.currPage > 0;
@@ -180,6 +197,8 @@ public class GuiSteamcraftBook extends GuiScreen {
             	this.currPage = 0;
         		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
                 this.updateButtons();
+            	this.mustReleaseMouse = true;
+
             }
             
 
@@ -247,7 +266,9 @@ public class GuiSteamcraftBook extends GuiScreen {
      */
     public void drawScreen(int par1, int par2, float par3)
     {
-    	
+    	if (mustReleaseMouse && !Mouse.isButtonDown(0)) {
+    		mustReleaseMouse = false;
+    	}
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int k = (this.width - this.bookImageWidth) / 2;
         int b0 = (this.height - this.bookImageHeight) / 2;
@@ -269,7 +290,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         int l;
         
         
-        s = this.editingPlayer.getHeldItem().getDisplayName();
+        s = book.getDisplayName();
         l = this.fontRendererObj.getStringWidth(s);
       
         this.fontRendererObj.drawStringWithShadow(s, k + this.bookImageWidth/2 - l/2 - 3, b0-15, 0xFFFFFF);
@@ -417,7 +438,7 @@ public class GuiSteamcraftBook extends GuiScreen {
             }
         }
     
-    public void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_)
+    public void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_, boolean renderHyperlink)
     {
         List list = p_146285_1_.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
 
@@ -431,6 +452,13 @@ public class GuiSteamcraftBook extends GuiScreen {
             {
                 list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
             }
+        }
+        if (renderHyperlink) {
+        	for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
+        		if (stack.getItem() == p_146285_1_.getItem() && stack.getItemDamage() == p_146285_1_.getItemDamage()) {
+                	list.add(EnumChatFormatting.ITALIC+""+EnumChatFormatting.GRAY+StatCollector.translateToLocal("steamcraft.book.clickme"));
+        		}
+        	}
         }
 
         FontRenderer font = p_146285_1_.getItem().getFontRenderer(p_146285_1_);
@@ -446,5 +474,17 @@ public class GuiSteamcraftBook extends GuiScreen {
         this.func_146283_a(list, p_146285_2_, p_146285_3_);
         drawHoveringText(list, p_146285_2_, p_146285_3_, fontRendererObj);
     }
+
+	public void itemClicked(ItemStack p_146285_1_) {
+		for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
+    		if (!mustReleaseMouse && stack.getItem() == p_146285_1_.getItem() && stack.getItemDamage() == p_146285_1_.getItemDamage()) {
+            	this.viewing = SteamcraftRegistry.bookRecipes.get(stack).left;
+            	this.currPage = MathHelper.floor_float((float)SteamcraftRegistry.bookRecipes.get(stack).right/2.0F);
+            	this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
+            	this.mustReleaseMouse = true;
+            	this.updateButtons();
+    		}
+    	}
+	}
 
 }
