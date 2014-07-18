@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.api.book;
 
+import scala.Tuple4;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -69,18 +70,21 @@ public class BookPageItem extends BookPageText {
 	    int size = item.length;
 	    int i = 0;
 	    for (ItemStack stack : item) {
-	    	this.drawItemStack(stack, (int)( x + book.bookImageWidth/2 - 12 - (size-1)*9 + i*18), isFirstPage || shouldDisplayTitle? y+45 : y+35, "", renderer, fontRenderer);
+	    	this.drawItemStack(stack, (int)( x + book.bookImageWidth/2 - 12 - (size-1)*9 + i*18), isFirstPage || shouldDisplayTitle? y+45 : y+35, "", renderer, fontRenderer, false);
 	    	i++;
 	    }
-	    for (Tuple3 item : items) {
-	    	int ix = (Integer) item.first;
-	    	int iy = (Integer) item.second;
-	    	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-	    		fontRenderer.setUnicodeFlag(false);
-	    		book.renderToolTip((ItemStack) item.third, mx, my);
+		 for (Tuple4 item : items) {
+			 int ix = (Integer) item._1();
+			 int iy = (Integer) item._2();
+			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+    			fontRenderer.setUnicodeFlag(false);
+    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
+    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
+        			book.itemClicked((ItemStack) item._3());
+    			}
 	    		fontRenderer.setUnicodeFlag(true);
-	    	}
-	    }
+			 }
+		 }
         items.clear();
 	}
 	

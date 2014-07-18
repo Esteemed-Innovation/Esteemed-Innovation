@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,12 +17,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -29,6 +32,8 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -43,22 +48,29 @@ import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import vazkii.botania.api.wand.IWandHUD;
+import vazkii.botania.common.item.ModItems;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.book.BookPageCrafting;
-import flaxbeard.steamcraft.api.book.BookPageItem;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
+import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
@@ -72,8 +84,56 @@ public class SteamcraftEventHandler {
 	private static final AttributeModifier exoBoostBad = new AttributeModifier(uuid2,"EXOMODBAD", -0.2D, 2).setSaved(true);
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
+	@SideOnly(Side.CLIENT)
+	private static final RenderItem itemRender = new RenderItem();
 	
-	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
+		if(event.type == ElementType.ALL) {
+			Minecraft mc = Minecraft.getMinecraft();
+			MovingObjectPosition pos = mc.objectMouseOver;
+			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+			if (Loader.isModLoaded("Botania")) {
+				if(pos != null && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
+					if (chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.runAssist)) {
+						Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+						BotaniaIntegration.displayThings(pos, event);
+					}
+				}
+			}
+			if(pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
+				Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+				ItemStack stack = block.getPickBlock(pos,player.worldObj, pos.blockX, pos.blockY, pos.blockZ);
+				if (stack != null) {
+					for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
+			    		if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
+			    			GL11.glPushMatrix();
+			    			int x = event.resolution.getScaledWidth() / 2  -8;
+			    			int y = event.resolution.getScaledHeight() / 2  - 8;
+
+			    			int color = 0x6600FF00;
+
+			    			new RenderItem().renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(SteamcraftItems.book), x, y);
+			    			GL11.glDisable(GL11.GL_LIGHTING);
+			    			mc.fontRenderer.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
+			    			GL11.glPopMatrix();
+			    			GL11.glEnable(GL11.GL_BLEND);
+			    			if (Mouse.isButtonDown(1)) {
+			        			player.openGui(Steamcraft.instance, 1, player.worldObj, 0,0,0);
+			        			GuiSteamcraftBook.viewing = SteamcraftRegistry.bookRecipes.get(stack2).left;	                	
+			        			GuiSteamcraftBook.currPage = MathHelper.floor_float((float)SteamcraftRegistry.bookRecipes.get(stack2).right/2.0F);
+			                	GuiSteamcraftBook.lastIndexPage = 1;
+			                	GuiSteamcraftBook.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length/2F);
+			                	((GuiSteamcraftBook)Minecraft.getMinecraft().currentScreen).updateButtons();
+			    			}
+			    		}
+					}
+				}
+			}
+		}
+	}
 //	@SubscribeEvent
 //	public void handleMobDrop(LivingDropsEvent event) {
 //		if (event.entityLiving instanceof EntityCreeper) {
@@ -112,6 +172,30 @@ public class SteamcraftEventHandler {
 //			}
 //		}
 //	}
+	
+	@SubscribeEvent
+	public void muffleSounds(PlaySoundEvent event) {
+		//System.out.println(event.name);
+	}
+	
+	@SubscribeEvent
+	public void muffleSounds(PlaySoundEvent17 event) {
+		if (event.name.contains("step")) {
+			float x = event.sound.getXPosF();
+			float y = event.sound.getYPosF();
+			float z = event.sound.getZPosF();
+			List entities = Minecraft.getMinecraft().thePlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x-0.5F, y-0.5F, z-0.5F, x+0.5F, y+0.5F, z+0.5F));
+			for (Object obj : entities) {
+				EntityLivingBase entity = (EntityLivingBase) obj;
+				if (entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+					if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
+						event.result = null;
+					}
+				}
+			}
+		}
+	}
 	
 	@SubscribeEvent
 	public void hideCloakedPlayers(LivingUpdateEvent event) {
@@ -183,6 +267,7 @@ public class SteamcraftEventHandler {
 	
 	
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void plateTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.itemStack;
 		if (UtilPlates.getPlate(stack) != null) {
@@ -209,6 +294,30 @@ public class SteamcraftEventHandler {
 				}
 			}
 		}
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
+	    	for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
+	    		if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
+	    			boolean foundBook = false;
+	    			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
+						if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemSteamcraftBook) {
+							foundBook = true;
+						}
+	    			}
+	    			if (foundBook) {
+		    			event.toolTip.add(EnumChatFormatting.ITALIC+""+EnumChatFormatting.GRAY+StatCollector.translateToLocal("steamcraft.book.shiftright"));
+		    			if (Mouse.isButtonDown(0) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+		        			player.openGui(Steamcraft.instance, 1, player.worldObj, 0,0,0);
+		        			GuiSteamcraftBook.viewing = SteamcraftRegistry.bookRecipes.get(stack2).left;	                	
+		        			GuiSteamcraftBook.currPage = MathHelper.floor_float((float)SteamcraftRegistry.bookRecipes.get(stack2).right/2.0F);
+		                	GuiSteamcraftBook.lastIndexPage = 1;
+		                	GuiSteamcraftBook.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length/2F);
+		                	((GuiSteamcraftBook)Minecraft.getMinecraft().currentScreen).updateButtons();
+		    			}
+	    			}
+	    		}
+	    	}
+		}
 	}
 	
 	@SubscribeEvent
@@ -227,22 +336,7 @@ public class SteamcraftEventHandler {
 			event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue*multValu);
 		}
 	}
-	
-	@SubscribeEvent
-	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-		if(event.type == ElementType.ALL) {
-			if (Loader.isModLoaded("Botania")) {
-				Minecraft mc = Minecraft.getMinecraft();
-				MovingObjectPosition pos = mc.objectMouseOver;
-				if(pos != null && !(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == BotaniaIntegration.twigWand()) && mc.thePlayer.getCurrentArmor(3) != null && mc.thePlayer.getCurrentArmor(3).getItem() == SteamcraftItems.exoArmorHead) {
-					if (((ItemExosuitArmor)mc.thePlayer.getCurrentArmor(3).getItem()).hasUpgrade(mc.thePlayer.getCurrentArmor(3), BotaniaIntegration.floralLaurel)) {
-						BotaniaIntegration.displayThings(pos, event);
-					}
-				}
-			}
-		}
-	}
-	
+
 	public static int use = -1;
 	
 	@SubscribeEvent
@@ -519,21 +613,21 @@ public class SteamcraftEventHandler {
 				}
 			}
 		}
-		
-		if (hasPower(entity,100) && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
-			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
-				if (entity.isBurning()) {
-					System.out.println("Y");
-
-					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
-					if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
-
-						entity.worldObj.setBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ, Blocks.water, 1, 1);
-					}
-				}
-			}
-		}
+//		
+//		if (hasPower(entity,100) && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
+//			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+//			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
+//				if (entity.isBurning()) {
+//					System.out.println("Y");
+//
+//					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
+//					if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
+//
+//						entity.worldObj.setBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ, Blocks.water, 1, 1);
+//					}
+//				}
+//			}
+//		}
 	}
 	
 	public HashMap<Integer, Float> prevStep = new HashMap();
@@ -668,8 +762,12 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
-		//SteamcraftRegistry.addResearch("research.Jetpack.name","!research.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
-
+		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+			Minecraft mc = Minecraft.getMinecraft();
+			if(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
+				event.setCanceled(true);
+			}
+		}
 		if (event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).getMaterial() == Material.water) {
 			System.out.println(event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).toString() + " " + event.entityPlayer.worldObj.getBlockMetadata(event.x, event.y+1, event.z));
 		}

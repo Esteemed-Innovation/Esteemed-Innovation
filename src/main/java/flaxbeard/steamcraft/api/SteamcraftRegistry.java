@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +13,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import scala.actors.threadpool.Arrays;
 import flaxbeard.steamcraft.api.book.BookPage;
+import flaxbeard.steamcraft.api.book.ICraftingPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
@@ -28,6 +28,7 @@ public class SteamcraftRegistry {
 	public static ArrayList<String> categories = new ArrayList<String>();
 	public static ArrayList<MutablePair<String, String>> research = new ArrayList<MutablePair<String,String>>();
 	public static HashMap<String,BookPage[]> researchPages = new HashMap<String,BookPage[]>();
+	public static HashMap<ItemStack, MutablePair<String,Integer>> bookRecipes = new HashMap<ItemStack, MutablePair<String,Integer>>();
 	public static HashMap<String,ExosuitPlate> plates = new HashMap<String,ExosuitPlate>();
 	public static HashMap<MutablePair<Integer,ExosuitPlate>,IIcon> plateIcons = new HashMap<MutablePair<Integer,ExosuitPlate>,IIcon>();
 	public static HashMap<MutablePair<Item,Integer>,MutablePair<Item,Integer>> steamedFoods = new HashMap<MutablePair<Item,Integer>,MutablePair<Item,Integer>>();
@@ -57,10 +58,29 @@ public class SteamcraftRegistry {
 		if (!category.substring(0, 1).equals("!")) {
 			research.add(MutablePair.of(string,category));
 			researchPages.put(string, pages);
+			int pageNum = 0;
+			for (BookPage page : pages) {
+				if (page instanceof ICraftingPage) {
+					for (ItemStack craftedItem : ((ICraftingPage)page).getCraftedItem()) {
+						bookRecipes.put(craftedItem, MutablePair.of(string, pageNum));
+					}
+				}
+				pageNum++;
+			}
 		}
 		else
 		{
+			
 			BookPage[] targetPages = researchPages.get(category.substring(1));
+			int pageNum = targetPages.length;
+			for (BookPage page : pages) {
+				if (page instanceof ICraftingPage) {
+					for (ItemStack craftedItem : ((ICraftingPage)page).getCraftedItem()) {
+						bookRecipes.put(craftedItem, MutablePair.of(category.substring(1), pageNum));
+					}
+				}
+				pageNum++;
+			}
 			ArrayList<BookPage> pages2 = new ArrayList<BookPage>(Arrays.asList(targetPages));
 			for (BookPage page : pages) {
 				pages2.add(page);

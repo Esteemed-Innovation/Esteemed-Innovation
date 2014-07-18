@@ -97,8 +97,9 @@ public class SteamcraftItems {
 	public static Item jumpAssist;
 	public static Item runAssist;
 	public static Item doubleJump;
-	public static Item antiFire;
-	
+//	public static Item antiFire;
+	public static Item stealthUpgrade;
+
 	public static Item smashedOre;
 	//public static Item fakeOre;
 	
@@ -146,8 +147,10 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(runAssist, "runAssist");
 	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
 		GameRegistry.registerItem(doubleJump, "doubleJump");
-	 	antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
-		GameRegistry.registerItem(antiFire, "antiFire");
+		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
+		//GameRegistry.registerItem(antiFire, "antiFire");
+	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
+		GameRegistry.registerItem(stealthUpgrade, "stealthUpgrade");
 		
 	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 		GameRegistry.registerItem(astrolabe, "astrolabe");

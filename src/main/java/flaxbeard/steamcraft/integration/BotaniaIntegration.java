@@ -2,28 +2,27 @@ package flaxbeard.steamcraft.integration;
 
 import java.util.UUID;
 
-import com.google.common.collect.Multimap;
-
-import thaumcraft.common.config.ConfigItems;
-import vazkii.botania.common.item.ModItems;
-import cpw.mods.fml.common.registry.GameRegistry;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
-import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
-import flaxbeard.steamcraft.api.exosuit.UtilPlates;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import vazkii.botania.api.wand.IWandHUD;
+import vazkii.botania.common.item.ModItems;
+
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.CrucibleLiquid;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.UtilPlates;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class BotaniaIntegration {
     public static Item floralLaurel;
@@ -34,16 +33,17 @@ public class BotaniaIntegration {
 
     }
 
+    @SideOnly(Side.CLIENT)
 	public static void displayThings(MovingObjectPosition pos, RenderGameOverlayEvent.Post event) {
-//		Minecraft mc = Minecraft.getMinecraft();
-//		Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-//		if(block instanceof IWandHUD)
-//			((IWandHUD) block).renderHUD(mc, event.resolution, mc.theWorld, pos.blockX, pos.blockY, pos.blockZ);
+		Minecraft mc = Minecraft.getMinecraft();
+		Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+		if(block instanceof IWandHUD)
+			((IWandHUD) block).renderHUD(mc, event.resolution, mc.theWorld, pos.blockX, pos.blockY, pos.blockZ);
 	}
 	
 	public static Item twigWand() {
-		return null;
-		//return ModItems.twigWand;
+		//return null;
+		return ModItems.twigWand;
 	}
 
 	public static void addBotaniaLiquid() {
