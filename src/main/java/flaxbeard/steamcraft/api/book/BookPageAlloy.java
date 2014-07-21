@@ -40,20 +40,6 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
         this.drawItemStack(item2[ticks], x+40+19, y+65+20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer, true);
         this.drawItemStack(output.ingot, x+40+75, y+65+14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
-		
-		 for (Tuple4 item : items) {
-			 int ix = (Integer) item._1();
-			 int iy = (Integer) item._2();
-			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-    			fontRenderer.setUnicodeFlag(false);
-    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
-        			book.itemClicked((ItemStack) item._3());
-    			}
-	    		fontRenderer.setUnicodeFlag(true);
-			 }
-		 }
-        items.clear();
 	}
 
 	@Override

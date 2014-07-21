@@ -17,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.util.EnumHelper;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -66,8 +67,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     }
 	
 	public int slot;
-	public ItemExosuitArmor(int i) {
-		super(ItemArmor.ArmorMaterial.CHAIN, 1, i);
+	public ItemExosuitArmor(int i, ArmorMaterial mat) {
+		super(mat, 1, i);
 		slot = i;
 		this.setMaxDamage(0);
 	}

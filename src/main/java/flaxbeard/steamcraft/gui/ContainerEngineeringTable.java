@@ -119,40 +119,21 @@ public class ContainerEngineeringTable extends Container
 //            ItemStack itemstack1 = slot.getStack();
 //            itemstack = itemstack1.copy();
 //
-//            if (par2 == 2)
+//            if (par2 > 10)
 //            {
-//
-//                return null;
-//            }
-//            else if (par2 != 1 && par2 != 0)
-//            {
-//            	if (itemstack1.getItem() ==  Items.water_bucket || (itemstack1.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)itemstack1.getItem()).getFluid(itemstack1).getFluid() == FluidRegistry.WATER))
+//            	if (par2 >= 2 && par2 < 36)
 //                {
-//                    if (!this.mergeItemStack(itemstack1, 0, 1, false))
+//                    if (!this.mergeItemStack(itemstack1, 36, 43, false))
 //                    {
 //                        return null;
 //                    }
 //                }
-//            	else if (TileEntityFurnace.isItemFuel(itemstack1))
-//                {
-//                    if (!this.mergeItemStack(itemstack1, 1, 2, false))
-//                    {
-//                        return null;
-//                    }
-//                }
-//                else if (par2 >= 2 && par2 < 30)
-//                {
-//                    if (!this.mergeItemStack(itemstack1, 30, 38, false))
-//                    {
-//                        return null;
-//                    }
-//                }
-//                else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(itemstack1, 3, 30, false))
+//                else if (par2 >= 36 && par2 < 45 && !this.mergeItemStack(itemstack1, 10, 36, false))
 //                {
 //                    return null;
 //                }
 //            }
-//            else if (!this.mergeItemStack(itemstack1, 3, 38, false))
+//            else if (!this.mergeItemStack(itemstack1, 9, 44, false))
 //            {
 //                return null;
 //            }

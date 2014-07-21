@@ -18,8 +18,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.ArrayUtils;
 
 import scala.Tuple4;
-
-import flaxbeard.steamcraft.api.Tuple3;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
 public class BookPageCrafting extends BookPage implements ICraftingPage {
@@ -28,6 +27,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
     private ItemStack output;
     private Object[] inputs = new Object[9];
     private boolean shapeless = false;
+    private IRecipe[] recipe;
 
 	public BookPageCrafting(String string,ItemStack op, Object... ip) {
 		super(string);
@@ -132,6 +132,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
 				}
 			}
 		}
+		recipe = recipes;
 	}
 
 	@Override
@@ -141,27 +142,34 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         if (shapeless) {
             book.drawTexturedModalRect(x+120, y+60, 100, 0, 17, 13);
         }
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-            	if (inputs.length>(3*i) + j) {
-            		if (!(inputs[(3*i)+j] == null)) {
-            			if (inputs[(3*i)+j] instanceof ItemStack) {
-            				ItemStack item = (ItemStack) inputs[(3*i)+j];
+        int maxX = 3;
+        int maxY = 3;
+        if (recipe[0] instanceof ShapedOreRecipe) {
+        	maxX = (Integer)ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe)recipe[0], 4);
+        	maxY = (Integer)ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe)recipe[0], 5);
+
+        }
+        for (int i = 0; i < maxY; i++) {
+            for (int j = 0; j < maxX; j++) {
+            	if (inputs.length>(maxX*i) + j) {
+            		if (!(inputs[(maxX*i)+j] == null)) {
+            			if (inputs[(maxX*i)+j] instanceof ItemStack) {
+            				ItemStack item = (ItemStack) inputs[(maxX*i)+j];
 				            fontRenderer.setUnicodeFlag(false);
 				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
-            			if (inputs[(3*i)+j] instanceof ItemStack[]) {
-            				ItemStack[] item = (ItemStack[]) inputs[(3*i)+j];
+            			if (inputs[(maxX*i)+j] instanceof ItemStack[]) {
+            				ItemStack[] item = (ItemStack[]) inputs[(maxX*i)+j];
             				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
 				            fontRenderer.setUnicodeFlag(false);
 				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
-            			if (inputs[(3*i)+j] instanceof ArrayList && ((ArrayList)inputs[(3*i)+j]).size() > 0) {
+            			if (inputs[(maxX*i)+j] instanceof ArrayList && ((ArrayList)inputs[(maxX*i)+j]).size() > 0) {
             				
             				ArrayList<ItemStack> list2 = new ArrayList<ItemStack>();
-            				for (ItemStack item : ((ArrayList<ItemStack>)inputs[(3*i)+j])) {
+            				for (ItemStack item : ((ArrayList<ItemStack>)inputs[(maxX*i)+j])) {
             					if (item.getItemDamage() == 32767) {
             						ArrayList list = new ArrayList<ItemStack>();
             						item.getItem().getSubItems(item.getItem(), null, list);
@@ -189,18 +197,6 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         fontRenderer.setUnicodeFlag(false);
         this.drawItemStack(output, x+45+76, y+55+23, output.stackSize > 1 ? Integer.toString(output.stackSize) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
-		 for (Tuple4 item : items) {
-			 int ix = (Integer) item._1();
-			 int iy = (Integer) item._2();
-			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-    			fontRenderer.setUnicodeFlag(false);
-    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
-        			book.itemClicked((ItemStack) item._3());
-    			}
-	    		fontRenderer.setUnicodeFlag(true);
-			 }
-		 }
 	    if (shapeless) {
 	    	int ix = x+120;
 	    	int iy = y+60;
@@ -210,7 +206,6 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
 	    		fontRenderer.setUnicodeFlag(true);
 	    	}
 	    }
-        items.clear();
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.api.book;
 
 import java.util.ArrayList;
 
-import net.java.games.input.Mouse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -14,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import scala.Tuple4;
-import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
 public class BookPage {
@@ -37,19 +35,6 @@ public class BookPage {
 		     int l = fontRenderer.getStringWidth(s);
 		     fontRenderer.drawString("\u00A7l"+"\u00A7n"+s, (int) (x + book.bookImageWidth/2 - (l/1.6)-3), y+30, 0x3F3F3F);
 		 }
-		 for (Tuple4 item : items) {
-			 int ix = (Integer) item._1();
-			 int iy = (Integer) item._2();
-			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-    			fontRenderer.setUnicodeFlag(false);
-    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
-        			book.itemClicked((ItemStack) item._3());
-    			}
-	    		fontRenderer.setUnicodeFlag(true);
-			 }
-		 }
-		 items.clear();
 	}
 	
     protected void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj, boolean canHyperlink)
@@ -71,4 +56,21 @@ public class BookPage {
         items.add(new Tuple4(x,y,stack,canHyperlink));
         GL11.glPopMatrix();
     }
+
+	public void renderPageAfter(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my)
+	{
+		for (Tuple4 item : items) {
+			int ix = (Integer) item._1();
+			int iy = (Integer) item._2();
+		 	if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
+				fontRenderer.setUnicodeFlag(false);
+				book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
+				if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
+	    			book.itemClicked((ItemStack) item._3());
+				}
+				fontRenderer.setUnicodeFlag(true);
+		 	}
+		}
+		items.clear();
+	}
 }

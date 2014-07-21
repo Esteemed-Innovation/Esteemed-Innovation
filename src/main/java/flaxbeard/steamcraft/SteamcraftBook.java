@@ -99,14 +99,24 @@ public class SteamcraftBook {
 			stacks[i] = stack;
 		}
 		SteamcraftRegistry.addResearch("research.ExoPlates.name","category.Exosuit.name",new BookPageItem("research.ExoPlates.name","research.ExoPlates.0",stacks),new BookPageText("","research.ExoPlates.1"));
-		SteamcraftRegistry.addResearch("research.PlateCopper.name","!research.ExoPlates.name",new BookPageItem("research.PlateCopper.name","research.PlateCopper.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,0)));
-		SteamcraftRegistry.addResearch("research.PlateIron.name","!research.ExoPlates.name",new BookPageItem("research.PlateIron.name","research.PlateIron.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,2)));
-		SteamcraftRegistry.addResearch("research.PlateBrass.name","!research.ExoPlates.name",new BookPageItem("research.PlateBrass.name","research.PlateBrass.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,4)));
-		SteamcraftRegistry.addResearch("research.PlateGold.name","!research.ExoPlates.name",new BookPageItem("research.PlateGold.name","research.PlateGold.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,3)));
-		SteamcraftRegistry.addResearch("research.PlateThaumium.name","!research.ExoPlates.name",new BookPageItem("research.PlateThaumium.name","research.PlateThaumium.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,5)));
-		SteamcraftRegistry.addResearch("research.PlateTerrasteel.name","!research.ExoPlates.name",new BookPageItem("research.PlateTerrasteel.name","research.PlateTerrasteel.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,6)));
-		SteamcraftRegistry.addResearch("research.PlateElementium.name","!research.ExoPlates.name",new BookPageItem("research.PlateElementium.name","research.PlateElementium.0", true, new ItemStack(SteamcraftItems.steamcraftPlate,1,7)));
-
+		SteamcraftRegistry.addResearch("research.PlateCopper.name","!research.ExoPlates.name",new BookPageItem("research.PlateCopper.name","research.PlateCopper.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,0)),new BookPageCrafting("","exoCopper"));
+		SteamcraftRegistry.addResearch("research.PlateIron.name","!research.ExoPlates.name",new BookPageItem("research.PlateIron.name","research.PlateIron.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,2)),new BookPageCrafting("","exoIron"));
+		SteamcraftRegistry.addResearch("research.PlateBrass.name","!research.ExoPlates.name",new BookPageItem("research.PlateBrass.name","research.PlateBrass.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,4)),new BookPageCrafting("","exoBrass"));
+		SteamcraftRegistry.addResearch("research.PlateGold.name","!research.ExoPlates.name",new BookPageItem("research.PlateGold.name","research.PlateGold.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,3)),new BookPageCrafting("","exoGold"));
+		if (Loader.isModLoaded("Thaumcraft")) {
+			SteamcraftRegistry.addResearch("research.PlateThaumium.name","!research.ExoPlates.name",new BookPageItem("research.PlateThaumium.name","research.PlateThaumium.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,5)),new BookPageCrafting("","exoThaumium"));
+		}
+		if (Loader.isModLoaded("Botania")) {
+			SteamcraftRegistry.addResearch("research.PlateTerrasteel.name","!research.ExoPlates.name",new BookPageItem("research.PlateTerrasteel.name","research.PlateTerrasteel.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,6)),new BookPageCrafting("","exoTerrasteel"));
+			SteamcraftRegistry.addResearch("research.PlateElementium.name","!research.ExoPlates.name",new BookPageItem("research.PlateElementium.name","research.PlateElementium.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,7)),new BookPageCrafting("","exoElementium"));
+		}
+		if (Loader.isModLoaded("TwilightForest")) {
+			SteamcraftRegistry.addResearch("research.PlateFiery.name","!research.ExoPlates.name",new BookPageItem("research.PlateFiery.name","research.PlateFiery.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,8)),new BookPageCrafting("","exoFiery"));
+			SteamcraftRegistry.addResearch("research.PlateYeti.name","!research.ExoPlates.name",new BookPageItem("research.PlateYeti.name","research.PlateYeti.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,9)),new BookPageCrafting("","exoYeti"));
+		}
+		if (Loader.isModLoaded("AWWayofTime")) {
+			SteamcraftRegistry.addResearch("research.PlateSadist.name","!research.ExoPlates.name",new BookPageItem("research.PlateSadist.name","research.PlateSadist.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,10)),new BookPageCrafting("","exoSadist"));
+		}
 		SteamcraftRegistry.addResearch("research.Jetpack.name","category.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
 		SteamcraftRegistry.addResearch("research.Wings.name","category.Exosuit.name",new BookPageItem("research.Wings.name","research.Wings.0", new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
 		SteamcraftRegistry.addResearch("research.Thrusters.name","category.Exosuit.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters"));

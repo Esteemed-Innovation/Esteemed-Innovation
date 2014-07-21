@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -24,6 +25,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
 import flaxbeard.steamcraft.item.ItemExosuitJetpack;
+import flaxbeard.steamcraft.item.ItemExosuitPlate;
 import flaxbeard.steamcraft.item.ItemExosuitSidepack;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemExosuitWings;
@@ -70,6 +72,7 @@ public class SteamcraftItems {
     public static Item steamcraftIngot;
     public static Item steamcraftNugget;
     public static Item steamcraftPlate;
+    public static Item exosuitPlate;
     public static Item steamcraftCrafting;
     
     public static Item enhancementAblaze;
@@ -163,26 +166,26 @@ public class SteamcraftItems {
 			survivalist = BaublesIntegration.getSurvivalist();
 		}
 		GameRegistry.registerItem(survivalist, "survivalist");
-		
+		ArmorMaterial mat = EnumHelper.addArmorMaterial("exosuit", 15, new int[]{2, 5, 4, 1}, 0);
 		if (Loader.isModLoaded("Thaumcraft")) {
-			exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+			exoArmorHead = new ItemExosuitArmorThaum(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
 			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
-			exoArmorBody = new ItemExosuitArmorThaum(1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
+			exoArmorBody = new ItemExosuitArmorThaum(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
 			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
-			exoArmorLegs = new ItemExosuitArmorThaum(2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
+			exoArmorLegs = new ItemExosuitArmorThaum(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
 			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
-			exoArmorFeet = new ItemExosuitArmorThaum(3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
+			exoArmorFeet = new ItemExosuitArmorThaum(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
 			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
 		}
 		else
 		{
-			exoArmorHead = new ItemExosuitArmor(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+			exoArmorHead = new ItemExosuitArmor(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
 			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
-			exoArmorBody = new ItemExosuitArmor(1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
+			exoArmorBody = new ItemExosuitArmor(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
 			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
-			exoArmorLegs = new ItemExosuitArmor(2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
+			exoArmorLegs = new ItemExosuitArmor(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
 			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
-			exoArmorFeet = new ItemExosuitArmor(3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
+			exoArmorFeet = new ItemExosuitArmor(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
 			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
 		}
 		
@@ -245,7 +248,7 @@ public class SteamcraftItems {
 		OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot,1,2));
 		
 		ToolMaterial brass = EnumHelper.addToolMaterial("BRASS", 2, 191, 7.0F, 2.5F, 14);
-		ItemArmor.ArmorMaterial mat = EnumHelper.addArmorMaterial("BRASS", 11, new int[]{2, 7, 6, 3}, 9);
+		mat = EnumHelper.addArmorMaterial("BRASS", 11, new int[]{2, 7, 6, 3}, 9);
 		registerToolSet(brass, "Brass", "ingotBrass", true);
 		registerArmorSet(mat, "Brass", "ingotBrass", true);
 		registerGildedTools();
@@ -268,11 +271,15 @@ public class SteamcraftItems {
 		OreDictionary.registerOre("plateThaumium", new ItemStack(steamcraftPlate,1,5));
 		OreDictionary.registerOre("plateTerrasteel", new ItemStack(steamcraftPlate,1,6));
 		OreDictionary.registerOre("plateElementium", new ItemStack(steamcraftPlate,1,7));
+		OreDictionary.registerOre("plateFiery", new ItemStack(steamcraftPlate,1,8));
 
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper","plateCopper","Copper","Copper","steamcraft.plate.copper"));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron","plateIron","Iron","Iron","steamcraft.plate.iron"));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold","plateGold","Gold","Gold","steamcraft.plate.gold"));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass","plateBrass","Brass","Brass","steamcraft.plate.brass"));
+		exosuitPlate = new ItemExosuitPlate().setUnlocalizedName("steamcraft:exosuitPlate").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(exosuitPlate, "exosuitPlate");
+
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper",new ItemStack(exosuitPlate,1,0),"Copper","Copper","steamcraft.plate.copper"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron",new ItemStack(exosuitPlate,1,2),"Iron","Iron","steamcraft.plate.iron"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold",new ItemStack(exosuitPlate,1,3),"Gold","Gold","steamcraft.plate.gold"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass",new ItemStack(exosuitPlate,1,4),"Brass","Brass","steamcraft.plate.brass"));
 
     }
     

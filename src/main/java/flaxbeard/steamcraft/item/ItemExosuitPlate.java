@@ -11,10 +11,10 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemSteamcraftPlate extends Item {
-	public IIcon[] icon = new IIcon[9];
+public class ItemExosuitPlate extends Item {
+	public IIcon[] icon = new IIcon[11];
 	
-	public ItemSteamcraftPlate() {
+	public ItemExosuitPlate() {
 		this.setHasSubtypes(true);
 	}
 	
@@ -32,22 +32,22 @@ public class ItemSteamcraftPlate extends Item {
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister ir)
 	{
-		this.icon[0] = ir.registerIcon("steamcraft:plateCopper");
-		this.icon[1] = ir.registerIcon("steamcraft:plateZinc");
-		this.icon[2] = ir.registerIcon("steamcraft:plateIron");
-		this.icon[3] = ir.registerIcon("steamcraft:plateGold");
-		this.icon[4] = ir.registerIcon("steamcraft:plateBrass");
-		this.icon[5] = ir.registerIcon("steamcraft:plateThaumium");
-		this.icon[6] = ir.registerIcon("steamcraft:plateTerrasteel");
-		this.icon[7] = ir.registerIcon("steamcraft:plateElementum");
-		this.icon[8] = ir.registerIcon("steamcraft:plateFiery");
+		this.icon[0] = ir.registerIcon("steamcraft:exosuitPlateCopper");
+		this.icon[2] = ir.registerIcon("steamcraft:exosuitPlateIron");
+		this.icon[3] = ir.registerIcon("steamcraft:exosuitPlateGold");
+		this.icon[4] = ir.registerIcon("steamcraft:exosuitPlateBrass");
+		this.icon[5] = ir.registerIcon("steamcraft:exosuitPlateThaumium");
+		this.icon[6] = ir.registerIcon("steamcraft:exosuitPlateTerrasteel");
+		this.icon[7] = ir.registerIcon("steamcraft:exosuitPlateElementium");
+		this.icon[8] = ir.registerIcon("steamcraft:exosuitPlateFiery");
+		this.icon[9] = ir.registerIcon("steamcraft:exosuitPlateYeti");
+		this.icon[10] = ir.registerIcon("steamcraft:exosuitPlateSadist");
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		par3List.add(new ItemStack(par1, 1, 0));
-		par3List.add(new ItemStack(par1, 1, 1));
 		par3List.add(new ItemStack(par1, 1, 2));
 		par3List.add(new ItemStack(par1, 1, 3));
 		par3List.add(new ItemStack(par1, 1, 4));
@@ -60,6 +60,10 @@ public class ItemSteamcraftPlate extends Item {
 		}
 		if (Loader.isModLoaded("TwilightForest")) {
 			par3List.add(new ItemStack(par1, 1, 8));
+			par3List.add(new ItemStack(par1, 1, 9));
+		}
+		if (Loader.isModLoaded("AWWayofTime")) {
+			par3List.add(new ItemStack(par1, 1, 10));
 		}
 	}
 	

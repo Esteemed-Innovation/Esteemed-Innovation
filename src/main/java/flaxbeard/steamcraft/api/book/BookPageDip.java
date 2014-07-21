@@ -44,20 +44,6 @@ public class BookPageDip extends BookPage implements ICraftingPage {
         //this.drawItemStack(item1[ticks], x+40+19, y+65+2, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer);
 
         fontRenderer.setUnicodeFlag(true);
-		
-		 for (Tuple4 item : items) {
-			 int ix = (Integer) item._1();
-			 int iy = (Integer) item._2();
-			 if (mx >= ix && mx <= ix+16 && my >=iy && my <= iy+16) {
-    			fontRenderer.setUnicodeFlag(false);
-    			book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-    			if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
-        			book.itemClicked((ItemStack) item._3());
-    			}
-	    		fontRenderer.setUnicodeFlag(true);
-			 }
-		 }
-        items.clear();
 	}
 	
 	@Override

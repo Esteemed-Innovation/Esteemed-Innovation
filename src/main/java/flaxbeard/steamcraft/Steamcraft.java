@@ -35,8 +35,10 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.TwilightForestIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
@@ -180,6 +182,12 @@ public class Steamcraft {
 		}
 		if (Loader.isModLoaded("Botania")) {
 			BotaniaIntegration.addBotaniaLiquid();
+		}
+		if (Loader.isModLoaded("TwilightForest")) {
+			TwilightForestIntegration.addTwilightForestLiquid();
+		}
+		if (Loader.isModLoaded("AWWayofTime")) {
+			BloodMagicIntegration.addBloodMagicStuff();
 		}
 		SteamcraftBook.registerBookResearch();
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 

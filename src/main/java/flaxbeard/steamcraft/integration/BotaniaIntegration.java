@@ -15,23 +15,22 @@ import vazkii.botania.common.item.ModItems;
 
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
+import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 
 public class BotaniaIntegration {
     public static Item floralLaurel;
-
-    public static void addItems() {
-    	//floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/floralLaurel.png",null,5).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:floralLaurel").setTextureName("steamcraft:floralLaurel");
-		//GameRegistry.registerItem(floralLaurel, "floralLaurel");
-
-    }
 
     @SideOnly(Side.CLIENT)
 	public static void displayThings(MovingObjectPosition pos, RenderGameOverlayEvent.Post event) {
@@ -47,22 +46,27 @@ public class BotaniaIntegration {
 	}
 
 	public static void addBotaniaLiquid() {
+    	floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/floralLaurel.png",null,5).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:floralLaurel").setTextureName("steamcraft:floralLaurel");
+		GameRegistry.registerItem(floralLaurel, "floralLaurel");
 		CrucibleLiquid liquidTerrasteel = new CrucibleLiquid("terrasteel", new ItemStack(ModItems.manaResource,1,4), new ItemStack(SteamcraftItems.steamcraftPlate,1,6), null, null,64,191,13);
 		SteamcraftRegistry.liquids.add(liquidTerrasteel);
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotTerrasteel", liquidTerrasteel, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateTerrasteel", liquidTerrasteel, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel","plateTerrasteel","Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
-		
-		CrucibleLiquid liquidElementium = new CrucibleLiquid("elementium", new ItemStack(ModItems.manaResource,1,7), new ItemStack(SteamcraftItems.steamcraftPlate,1,7), null, null,230,66,247);
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),"Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
+		SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
+
+		CrucibleLiquid liquidElementium = new CrucibleLiquid("Elementium", new ItemStack(ModItems.manaResource,1,7), new ItemStack(SteamcraftItems.steamcraftPlate,1,7), null, null,230,66,247);
+		SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
+
 		SteamcraftRegistry.liquids.add(liquidElementium);
 
 		SteamcraftRegistry.registerSmeltThing(ModItems.manaResource,7, liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateElementium", liquidElementium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium","plateElementium","Elementum","Elementum","steamcraft.plate.elementum"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),"Elementum","Elementum","steamcraft.plate.elementum"));
 	}
 
 	public static Multimap addModifiers(Multimap map, ItemStack stack, int armorType) {

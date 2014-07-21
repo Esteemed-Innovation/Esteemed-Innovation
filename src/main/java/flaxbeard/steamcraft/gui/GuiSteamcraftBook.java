@@ -384,12 +384,17 @@ public class GuiSteamcraftBook extends GuiScreen {
         	if (SteamcraftRegistry.researchPages.containsKey(this.viewing)) {
         		BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
         		BookPage page = pages[(this.currPage)*2];
+        		GL11.glEnable(GL11.GL_BLEND);
         		page.renderPage(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+        		BookPage originalPage = page;
         		GL11.glEnable(GL11.GL_BLEND);
         		if (pages.length > (this.currPage)*2+1) {
         			page = pages[(this.currPage)*2+1];
             		page.renderPage(k+67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
+            		page.renderPageAfter(k+67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
         		}
+        		originalPage.renderPageAfter(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+
         	}
     		fontRendererObj.setUnicodeFlag(unicode);
         	
@@ -441,7 +446,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     public void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_, boolean renderHyperlink)
     {
         List list = p_146285_1_.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
-
+        this.zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k)
         {
             if (k == 0)
@@ -464,7 +469,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         FontRenderer font = p_146285_1_.getItem().getFontRenderer(p_146285_1_);
         this.func_146283_a(list, p_146285_2_, p_146285_3_);
         drawHoveringText(list, p_146285_2_, p_146285_3_, (font == null ? fontRendererObj : font));
-    
+        this.zLevel = 0.0F;
     }
     
     public void renderText(String str, int p_146285_2_, int p_146285_3_)
