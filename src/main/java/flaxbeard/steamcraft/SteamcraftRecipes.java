@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Loader;
@@ -11,7 +12,6 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
-import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class SteamcraftRecipes {
     
@@ -349,6 +349,41 @@ public class SteamcraftRecipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), "xxx", "xxx", "xxx", 
 		        'x', "nuggetBrass"));
 		
-		
+		addExosuitPlateRecipes("exoCopper","plateCopper",new ItemStack(SteamcraftItems.exosuitPlate,1,0),liquidCopper);
+		addExosuitPlateRecipes("exoIron","plateIron",new ItemStack(SteamcraftItems.exosuitPlate,1,2),liquidIron);
+		addExosuitPlateRecipes("exoGold","plateGold",new ItemStack(SteamcraftItems.exosuitPlate,1,3),liquidGold);
+		addExosuitPlateRecipes("exoBrass","plateBrass",new ItemStack(SteamcraftItems.exosuitPlate,1,4),liquidBrass);
+
+	}
+	
+	public static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate) {
+		BookRecipeRegistry.addRecipe(str,new ShapedOreRecipe(plate, "xx", "xx", 
+		        'x', ingredient));
+		if (ingredient instanceof ItemStack) {
+			ItemStack stack = ((ItemStack) ingredient).copy();
+			stack.stackSize = 4;
+			GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+		}
+		else if (ingredient instanceof String) {
+			ItemStack stack = OreDictionary.getOres((String) ingredient).get(0).copy();
+			stack.stackSize = 4;
+			GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+		}
+	}
+	
+	public static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
+		BookRecipeRegistry.addRecipe(str,new ShapedOreRecipe(plate, "xx", "xx", 
+		        'x', ingredient));
+		if (ingredient instanceof ItemStack) {
+			ItemStack stack = ((ItemStack) ingredient).copy();
+			stack.stackSize = 4;
+			GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+		}
+		else if (ingredient instanceof String) {
+			ItemStack stack = OreDictionary.getOres((String) ingredient).get(0).copy();
+			stack.stackSize = 4;
+			GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+		}
+		SteamcraftRegistry.registerSmeltThing(plate.getItem(),plate.getItemDamage(), liq, 24);
 	}
 }

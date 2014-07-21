@@ -12,6 +12,7 @@ import thaumcraft.common.config.ConfigItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
@@ -35,7 +36,8 @@ public class ThaumcraftIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateThaumium", liquidThaumium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium","plateThaumium","Thaumium","Thaumium","steamcraft.plate.thaumium"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),"Thaumium","Thaumium","steamcraft.plate.thaumium"));
+		SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium","plateThaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),liquidThaumium);
 
 		
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);

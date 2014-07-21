@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -18,15 +19,18 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -35,6 +39,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -52,10 +57,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import vazkii.botania.api.wand.IWandHUD;
-import vazkii.botania.common.item.ModItems;
-
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,6 +72,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
+import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
@@ -84,20 +89,60 @@ public class SteamcraftEventHandler {
 	private static final AttributeModifier exoBoostBad = new AttributeModifier(uuid2,"EXOMODBAD", -0.2D, 2).setSaved(true);
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
+	private static final ResourceLocation icons = new ResourceLocation("steamcraft:textures/gui/icons.png");
+	
 	@SideOnly(Side.CLIENT)
 	private static final RenderItem itemRender = new RenderItem();
 	
+    public void renderTexture(int screenX, int screenY, int screenEndX, int screenEndY, double startU, double startV, double endU, double endV)
+    {
+    	
+    	int zLevel = 1;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(screenX + 0), (double)(screenY + screenEndY), (double)zLevel, (double)startU, (double)endV);
+        tessellator.addVertexWithUV((double)(screenX + screenEndX), (double)(screenY + screenEndY), (double)zLevel, (double)endU, (double)endV);
+        tessellator.addVertexWithUV((double)(screenX + screenEndX), (double)(screenY + 0), (double)zLevel, (double)endU, (double)startV);
+        tessellator.addVertexWithUV((double)(screenX + 0), (double)(screenY + 0), (double)zLevel, (double)startU, (double)startV);
+        tessellator.draw();
+    }
+    
+    
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
+
 		if(event.type == ElementType.ALL) {
 			Minecraft mc = Minecraft.getMinecraft();
+			EntityPlayer player = mc.thePlayer;
+			if (!player.capabilities.isCreativeMode && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() instanceof ItemExosuitArmor) {
+				ItemStack stack = player.inventory.armorItemInSlot(1);
+				ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
+				//if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
+					if (!stack.stackTagCompound.hasKey("aidTicks")) {
+						stack.stackTagCompound.setInteger("aidTicks", -1);
+					}
+					int aidTicks = stack.stackTagCompound.getInteger("aidTicks");
+					
+					int aidTicksScaled = 7-(int)(aidTicks*7.0F / 100.0F);
+					int screenX = event.resolution.getScaledWidth() / 2  - 101;
+					int screenY = event.resolution.getScaledHeight() - 39;
+					mc.getTextureManager().bindTexture(icons);
+					renderTexture(screenX,screenY,9,9,0,0,9D/256D,9D/256D);
+					if (aidTicks > 0) {
+						renderTexture(screenX+1,screenY,aidTicksScaled,9,10D/256D,0,(10D+aidTicksScaled)/256D,9D/256D);
+					}
+					else if (aidTicks == 0) {
+						renderTexture(screenX,screenY,9,9,18D/256D,0,27D/256D,9D/256D);
+					}
+					//}
+					
+			}
 			MovingObjectPosition pos = mc.objectMouseOver;
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 			if (Loader.isModLoaded("Botania")) {
-				if(pos != null && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
-					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
-					if (chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.runAssist)) {
+				if(pos != null && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
+					if (chest.hasUpgrade(player.getEquipmentInSlot(3), BotaniaIntegration.floralLaurel)) {
 						Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 						BotaniaIntegration.displayThings(pos, event);
 					}
@@ -114,7 +159,6 @@ public class SteamcraftEventHandler {
 			    			int y = event.resolution.getScaledHeight() / 2  - 8;
 
 			    			int color = 0x6600FF00;
-
 			    			new RenderItem().renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(SteamcraftItems.book), x, y);
 			    			GL11.glDisable(GL11.GL_LIGHTING);
 			    			mc.fontRenderer.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
@@ -273,7 +317,7 @@ public class SteamcraftEventHandler {
 		if (UtilPlates.getPlate(stack) != null) {
 			event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("steamcraft.plate.bonus") + UtilPlates.getPlate(stack).effect());
 		}
-		if (stack.getItem() instanceof ItemExosuitArmor) {
+		if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ItemSteamShovel) {
 			ArrayList<String> linesToRemove = new ArrayList<String>();
 			for (String str : event.toolTip) {
 				if (str == "") {
@@ -297,7 +341,7 @@ public class SteamcraftEventHandler {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
 	    	for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
-	    		if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
+	    		if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
 	    			boolean foundBook = false;
 	    			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
 						if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemSteamcraftBook) {
@@ -384,8 +428,47 @@ public class SteamcraftEventHandler {
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void handleFallDamage(LivingHurtEvent event) {
+		if (Loader.isModLoaded("AWWayofTime")) {
+			BloodMagicIntegration.handleAttack(event);
+		}
+		
+		if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null))
+	    {
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			int fireLevel = 0;
+			for (int i = 0; i < player.inventory.armorInventory.length; i++) {
+				ItemStack armor = player.inventory.armorInventory[i];
+				if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
+					if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Fiery") {
+						fireLevel+=3;
+					}
+				}
+			}
+			if ((fireLevel > 0) && (player.worldObj.rand.nextInt(25) < fireLevel)) {
+				event.source.getEntity().setFire(fireLevel / 2);
+			}
+	    }
+		if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && 
+			      (event.source.getEntity() != null) && ((event.source.getEntity() instanceof EntityLivingBase)))
+    	{
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			int chillLevel = 0;
+			for (int i = 0; i < player.inventory.armorInventory.length; i++) {
+				ItemStack armor = player.inventory.armorInventory[i];
+				if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
+					if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
+						chillLevel+=1;
+					}
+				}
+			}
+			if (chillLevel > 0) {
+		        ((EntityLivingBase)event.source.getEntity()).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, chillLevel * 3 + 5, MathHelper.ceiling_float_int((float)chillLevel/2F)));
+			}
+	    }
 		if (event.source == DamageSource.fall) {
 			boolean hasPower = hasPower(event.entityLiving,(int)((float)event.ammount/Config.fallAssistDivisor));
 			int armor = getExoArmor(event.entityLiving);
@@ -398,9 +481,39 @@ public class SteamcraftEventHandler {
 			        }
 					event.ammount = event.ammount/3.0F;
 					entity.getEquipmentInSlot(3).damageItem((int)((float)event.ammount/Config.fallAssistDivisor), event.entityLiving);
-
+					if (event.ammount == 0.0F) {
+				        event.setResult(Event.Result.DENY);
+				        event.setCanceled(true);
+					}
 				}
 			}
+		}
+		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1).getItem() instanceof ItemExosuitArmor)) {
+			ItemStack stack = ((EntityPlayer)event.entity).inventory.armorItemInSlot(1);
+			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
+			//if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
+			float amount = event.ammount;
+			EntityPlayer player = ((EntityPlayer)event.entity);
+			DamageSource src = event.source;
+			if (!player.isEntityInvulnerable())
+	        {
+	            if (amount <= 0) return;
+	            if (!src.isUnblockable() && player.isBlocking() && amount > 0.0F)
+	            {
+	                amount = (1.0F + amount) * 0.5F;
+	            }
+
+	            amount = ArmorProperties.ApplyArmor(player, player.inventory.armorInventory, src, amount);
+	            if (amount <= 0) return;
+	            float f1 = amount;
+	            amount = Math.max(amount - player.getAbsorptionAmount(), 0.0F);
+	        }
+			if (amount > 0.0F) {
+				stack.stackTagCompound.setFloat("damageAmount", amount);
+				stack.stackTagCompound.setInteger("aidTicks", 100);
+
+			}
+			//}
 		}
 	}
 	
@@ -556,6 +669,42 @@ public class SteamcraftEventHandler {
 		EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
 		boolean hasPower = hasPower(entity,1);
 
+		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1).getItem() instanceof ItemExosuitArmor)) {
+			ItemStack stack = ((EntityPlayer)event.entity).inventory.armorItemInSlot(1);
+			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
+			//if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
+				if (!stack.stackTagCompound.hasKey("aidTicks")) {
+					stack.stackTagCompound.setInteger("aidTicks", -1);
+				}
+				int aidTicks = stack.stackTagCompound.getInteger("aidTicks");
+
+				if (aidTicks > 0) {
+					aidTicks--;
+				}
+				if (aidTicks == 0) {
+					if (!stack.stackTagCompound.hasKey("ticksNextHeal")) {
+						stack.stackTagCompound.setInteger("ticksNextHeal", 0);
+					}
+					float damageAmount = stack.stackTagCompound.getInteger("damageAmount");
+					int ticksNextHeal = stack.stackTagCompound.getInteger("ticksNextHeal");
+					if (ticksNextHeal > 0) {
+						ticksNextHeal--;
+					}
+					if (ticksNextHeal == 0) {
+						event.entityLiving.heal(1.0F);
+						damageAmount -=1.0F;
+						stack.stackTagCompound.setFloat("damageAmount", damageAmount);
+						ticksNextHeal=5;
+					}
+					if (damageAmount == 0.0F) {
+						aidTicks = -1;
+					}
+					stack.stackTagCompound.setInteger("ticksNextHeal", ticksNextHeal);
+				}
+				stack.stackTagCompound.setInteger("aidTicks", aidTicks);
+			//}
+		}
+		
 		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0).getItem() instanceof ItemExosuitArmor)) {
 			ItemStack stack = ((EntityPlayer)event.entity).inventory.armorItemInSlot(0);
 			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
@@ -762,6 +911,9 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
+		if (Loader.isModLoaded("AWWayofTime")) {
+			BloodMagicIntegration.clickLeft(event);
+		}
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {

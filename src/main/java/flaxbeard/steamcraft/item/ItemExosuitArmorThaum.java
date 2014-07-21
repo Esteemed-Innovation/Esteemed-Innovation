@@ -16,8 +16,8 @@ import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 
 public class ItemExosuitArmorThaum extends ItemExosuitArmor implements IRevealer, IGoggles, IVisDiscountGear {
 
-	public ItemExosuitArmorThaum(int i) {
-		super(i);
+	public ItemExosuitArmorThaum(int i, ArmorMaterial mat) {
+		super(i, mat);
 	}
 
 	@Override
