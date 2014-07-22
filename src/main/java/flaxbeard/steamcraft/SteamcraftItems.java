@@ -36,6 +36,7 @@ import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
+import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
@@ -84,6 +85,8 @@ public class SteamcraftItems {
     public static Item exoArmorBody;
     public static Item exoArmorLegs;
     public static Item exoArmorFeet;
+    
+    public static Item wrench;
     
     public static Item steamDrill;
     public static Item steamAxe;
@@ -172,6 +175,9 @@ public class SteamcraftItems {
 		GameRegistry.registerItem(steamAxe, "steamAxe");
 		steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
 		GameRegistry.registerItem(steamShovel, "steamShovel");
+		
+		wrench = new ItemWrench().setUnlocalizedName("steamcraft:wrench").setTextureName("steamcraft:wrench").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(wrench, "wrench");
 		
 		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
 		GameRegistry.registerItem(ingotMold, "ingotMold");
