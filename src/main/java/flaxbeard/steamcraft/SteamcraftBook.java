@@ -117,6 +117,18 @@ public class SteamcraftBook {
 		if (Loader.isModLoaded("AWWayofTime")) {
 			SteamcraftRegistry.addResearch("research.PlateSadist.name","!research.ExoPlates.name",new BookPageItem("research.PlateSadist.name","research.PlateSadist.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,10)),new BookPageCrafting("","exoSadist"));
 		}
+		ItemStack[] stacks2 = new ItemStack[4];
+		for (int i = 0; i<4; i++) {
+			ItemStack stack = new ItemStack(SteamcraftItems.exoArmorBody);
+			stack.setTagCompound(new NBTTagCompound());
+			ItemStack dye = new ItemStack(Items.dye,1,i);
+			((ItemExosuitArmor)stack.getItem()).setInventorySlotContents(stack, 2, dye);
+			stacks2[i] = stack;
+		}
+		SteamcraftRegistry.addResearch("research.ExoVanity.name","category.Exosuit.name",new BookPageItem("research.ExoVanity.name","research.ExoVanity.0",stacks2));
+		SteamcraftRegistry.addResearch("research.ExoDyes.name","!research.ExoVanity.name",new BookPageItem("research.ExoDyes.name","research.ExoDyes.0", true, new ItemStack(Items.dye,1,0), new ItemStack(Items.dye,1,1), new ItemStack(Items.dye,1,2), new ItemStack(Items.dye,1,3)));
+		SteamcraftRegistry.addResearch("research.EnderShroud.name","!research.ExoVanity.name",new BookPageItem("research.EnderShroud.name","research.EnderShroud.0", true, new ItemStack(SteamcraftItems.enderShroud)),new BookPageCrafting("","enderShroud"));
+
 		SteamcraftRegistry.addResearch("research.Jetpack.name","category.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
 		SteamcraftRegistry.addResearch("research.Wings.name","category.Exosuit.name",new BookPageItem("research.Wings.name","research.Wings.0", new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
 		SteamcraftRegistry.addResearch("research.Thrusters.name","category.Exosuit.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters"));

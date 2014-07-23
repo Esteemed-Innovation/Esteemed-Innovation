@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 	
@@ -22,7 +22,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 	public ItemExosuitUpgrade(ExosuitSlot slot, String loc, String info, int priority) {
 		mySlot = slot;
 		myInfo = info;
-		myOverlay = new ResourceLocation(loc);
+		myOverlay = loc == "" || loc == null ? null : new ResourceLocation(loc);
 		pri = priority;
 	}
 
@@ -33,7 +33,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 
 	@Override
 	public boolean hasOverlay() {
-		return true;
+		return myOverlay != null;
 	}
 
 	@Override

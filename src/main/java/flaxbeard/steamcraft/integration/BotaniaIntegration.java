@@ -24,9 +24,9 @@ import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 
 public class BotaniaIntegration {

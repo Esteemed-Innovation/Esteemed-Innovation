@@ -19,6 +19,23 @@ steamcraft.plate.fiery=Fiery Aura
 steamcraft.plate.yeti=Chill Aura
 steamcraft.plate.sadist=Gain LP When Hurt
 
+steamcraft.color.black=Painted Black
+steamcraft.color.red=Painted Red
+steamcraft.color.green=Painted Green
+steamcraft.color.brown=Painted Brown
+steamcraft.color.blue=Painted Blue
+steamcraft.color.purple=Painted Purple
+steamcraft.color.cyan=Painted Cyan
+steamcraft.color.lightgray=Painted Light Gray
+steamcraft.color.gray=Painted Gray
+steamcraft.color.pink=Painted Pink
+steamcraft.color.lime=Painted Lime
+steamcraft.color.yellow=Painted Yellow
+steamcraft.color.lightblue=Painted Light BLue
+steamcraft.color.magenta=Painted Magenta
+steamcraft.color.orange=Painted Orange
+steamcraft.color.white=Painted White
+
 steamcraft.astrolabe.target=Target:
 steamcraft.astrolabe.noTarget=No target
 steamcraft.astrolabe.dimension=dimension
@@ -36,6 +53,7 @@ steamcraft.waila.mold=Mold:
 
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
+steamcraft.exosuit.shroud=Shrouded
 
 
 category.Basics.name=Basics
@@ -135,6 +153,12 @@ research.PlateYeti.0=My dangerous treks to the snowy ends of the Twilight Forest
 research.PlateSadist.name=Sadistic Exosuit Plate
 research.PlateSadist.0=Combining a few reinforced slates with a rune of self-sacrifice creates a rather powerful exosuit plate. This plate, when installed, adds a small amount of LP to my network whenever I take damage, rewarding me for pain.
 
+research.ExoVanity.name=Vanity Slot
+research.ExoVanity.0=Not only is my exosuit a versitile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
+research.ExoDyes.name=Exosuit Painting
+research.ExoDyes.0=Ordinary dies of all sorts can be placed in the vanity slot in order to paint the exosuit framework to better suit the look I am looking for. Adding paint will not change the color of installed plates or upgrades.
+research.EnderShroud.name=Ender Shroud
+research.EnderShroud.0=The ender shroud, a mysterious device, is able to render exosuit parts completely invisible. This allows me to show off my skin and stay protected. The shroud isn't perfect, of course. When hit, my suit will flicker for a couple seconds.
 research.Jetpack.name=Steam Jetpack
 research.Jetpack.0=I've developed a rather exciting exosuit upgrade that grants me the power of flight.<br>This steam 'jetpack' of sorts consumes a substantial amount of steam, but you can't put a price tag on flight.
 research.Wings.name=Steam Wings
@@ -288,6 +312,8 @@ item.steamcraft:runAssist.name=Modular Accelerator
 item.steamcraft:doubleJump.name=Pulse Nozzle
 item.steamcraft:jumpAssist.name=Leap Actuator
 item.steamcraft:stealthUpgrade.name=Acoustic Dampener
+item.steamcraft:enderShroud.name=Ender Shroud
+
 
 item.steamcraft:steamedChicken.name=Steamed Chicken
 item.steamcraft:steamedBeef.name=Steamed Beef

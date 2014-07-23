@@ -313,6 +313,9 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
 		        'b',Items.leather_boots, 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'s', Items.slime_ball));
 		
+		BookRecipeRegistry.addRecipe("enderShroud",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enderShroud), " g ", "geg", " g " ,
+		        'g',Blocks.glass, 'e', Items.ender_pearl));
+		
 		BookRecipeRegistry.addRecipe("smasher1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",
 		        'i',"plateIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "plateBrass"));
 		BookRecipeRegistry.addRecipe("smasher2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.smasher), "bpi", "bpi", "bpi",

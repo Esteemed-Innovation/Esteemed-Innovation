@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class ItemExosuitWings extends ItemExosuitUpgrade {
 	public static HashMap<Integer,Integer> stuff = new HashMap<Integer,Integer>();

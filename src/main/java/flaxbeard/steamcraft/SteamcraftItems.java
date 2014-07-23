@@ -19,10 +19,10 @@ import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemAstrolabe;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
 import flaxbeard.steamcraft.item.ItemExosuitJetpack;
 import flaxbeard.steamcraft.item.ItemExosuitPlate;
@@ -102,6 +102,7 @@ public class SteamcraftItems {
 	public static Item doubleJump;
 //	public static Item antiFire;
 	public static Item stealthUpgrade;
+	public static Item enderShroud;
 
 	public static Item smashedOre;
 	//public static Item fakeOre;
@@ -154,7 +155,10 @@ public class SteamcraftItems {
 		//GameRegistry.registerItem(antiFire, "antiFire");
 	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
 		GameRegistry.registerItem(stealthUpgrade, "stealthUpgrade");
-		
+
+	 	enderShroud = new ItemExosuitUpgrade(ExosuitSlot.vanity, "",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:enderShroud").setTextureName("steamcraft:enderShroud");
+		GameRegistry.registerItem(enderShroud, "enderShroud");
+
 	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 		GameRegistry.registerItem(astrolabe, "astrolabe");
 		

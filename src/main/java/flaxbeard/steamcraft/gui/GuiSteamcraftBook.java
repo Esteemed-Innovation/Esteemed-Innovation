@@ -385,12 +385,17 @@ public class GuiSteamcraftBook extends GuiScreen {
         		BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
         		BookPage page = pages[(this.currPage)*2];
         		GL11.glEnable(GL11.GL_BLEND);
+        		GL11.glPushMatrix();
         		page.renderPage(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+        		GL11.glPopMatrix();
         		BookPage originalPage = page;
         		GL11.glEnable(GL11.GL_BLEND);
         		if (pages.length > (this.currPage)*2+1) {
         			page = pages[(this.currPage)*2+1];
+            		GL11.glPushMatrix();
             		page.renderPage(k+67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
+            		GL11.glPopMatrix();
+
             		page.renderPageAfter(k+67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
         		}
         		originalPage.renderPageAfter(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);

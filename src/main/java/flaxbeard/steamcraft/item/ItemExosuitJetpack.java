@@ -2,14 +2,13 @@ package flaxbeard.steamcraft.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
