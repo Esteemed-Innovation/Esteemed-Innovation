@@ -9,8 +9,10 @@ import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public interface IExosuitUpgrade {
+	
+	
 	public int renderPriority();
-	public ItemExosuitArmor.ExosuitSlot getSlot();
+	public ExosuitSlot getSlot();
 	public boolean hasOverlay();
 	public ResourceLocation getOverlay();
 	

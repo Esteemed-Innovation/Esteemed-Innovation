@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.item;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -16,8 +19,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -30,11 +34,11 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
@@ -45,28 +49,8 @@ import flaxbeard.steamcraft.integration.BotaniaIntegration;
 @Optional.Interface(iface = "IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecialArmor,IEngineerable,ISteamChargable {
 	
-	public static enum ExosuitSlot
-    {
-		bootsFeet(3,2),
-		bootsTop(3,1),
-		bodyFront(1,1),
-		bodyHand(1,2),
-		bodyTank(1,3),
-		headGoggles(0,2),
-		headHelm(0,1),
-		legsHips(2,1),
-		legsLegs(2,2);
-
-		public int slot;
-		public int armor;
-		private ExosuitSlot(int a, int s)
-        {
-			slot = s;
-			armor = a;
-        }
-    }
-	
 	public int slot;
+	public IIcon grey;
 	public ItemExosuitArmor(int i, ArmorMaterial mat) {
 		super(mat, 1, i);
 		slot = i;
@@ -123,19 +107,81 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     public void registerIcons(IIconRegister par1IconRegister) {
 		super.registerIcons(par1IconRegister);
 		UtilPlates.registerPlatesForItem(par1IconRegister, this);
+		grey = par1IconRegister.registerIcon(this.iconString + "_grey");
+    }
+	
+    public int getRenderPasses(int metadata)
+    {
+        return 3;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack, int pass) {
+        return (this.getStackInSlot(stack, 2) != null && this.getStackInSlot(stack, 2).getItem() == SteamcraftItems.enderShroud);
     }
 	
 	@Override
 	public IIcon getIcon(ItemStack stack, int pass)
     {
-		if (!stack.hasTagCompound()) {
+
+		if (pass == 0) {
 			return this.itemIcon;
 		}
-		if (stack.stackTagCompound.hasKey("plate")) {
-			return pass > 0 ? UtilPlates.getIconFromPlate(stack.stackTagCompound.getString("plate"),this) : this.itemIcon;
+		if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("plate") && pass > 1) {
+			return UtilPlates.getIconFromPlate(stack.stackTagCompound.getString("plate"),this);
+		}
+		else if (this.getStackInSlot(stack, 2) != null) {
+			Item vanity = getStackInSlot(stack, 2).getItem();
+        	int[] ids = OreDictionary.getOreIDs(getStackInSlot(stack, 2));
+        	int dye = -1;
+        	outerloop:
+			for (int id : ids) {
+				String str = OreDictionary.getOreName(id);
+				if (str.contains("dye")) {
+					for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+						if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+							dye = 15-i;
+							break outerloop;
+						}
+					}
+				}
+			}
+        	if (dye != -1) {
+        		return grey;
+        	}
+        	else
+        	{
+        		return this.itemIcon;
+        	}
 		}
 		return this.itemIcon;
     }
+	
+	@Override
+	public int getColorFromItemStack(ItemStack stack, int pass) {
+		if (this.getStackInSlot(stack, 2) != null && (pass == 1 || (pass > 1 && !stack.stackTagCompound.hasKey("plate")))) {
+			Item vanity = getStackInSlot(stack, 2).getItem();
+        	int[] ids = OreDictionary.getOreIDs(getStackInSlot(stack, 2));
+        	int dye = -1;
+        	outerloop:
+			for (int id : ids) {
+				String str = OreDictionary.getOreName(id);
+				if (str.contains("dye")) {
+					for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+						if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+							dye = 15-i;
+							break outerloop;
+						}
+					}
+				}
+			}
+        	if (dye != -1) {
+				float[] color = EntitySheep.fleeceColorTable[dye];
+				return new Color(color[0], color[1], color[2]).getRGB();
+        	}
+		}
+		return super.getColorFromItemStack(stack, pass);
+	}
     
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -196,16 +242,16 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	@Override
 	public MutablePair<Integer, Integer>[] engineerCoordinates() {
 		if (this.slot == 0) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
 		if (this.slot == 2) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
 		if (this.slot == 1) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(29,26),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(29,26),MutablePair.of(49,46) };
 		}
 		if (this.slot == 3) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
 		}
 		return new MutablePair[] { MutablePair.of(49,26) };
 	}
@@ -322,7 +368,16 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 		}
 		if (upgrade.getItem() instanceof IExosuitUpgrade) {
 			IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
-			return upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum;
+			return (upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.vanity && upgradeItem.getSlot().slot == slotNum);
+		}
+		else if (slotNum == ExosuitSlot.vanity.slot) {
+			int[] ids = OreDictionary.getOreIDs(upgrade);
+			for (int id : ids) {
+				String str = OreDictionary.getOreName(id);
+				if (str.contains("dye")) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -378,9 +433,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
 					break;
 				case 1:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 18, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
 				case 2:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 18, 18, 18);
+					break;
+				case 3:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 18, 18, 18);
 					break;
 				default:
@@ -393,12 +451,15 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
 					break;
 				case 1:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 18, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
 				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 18, 18, 18);
 					break;
 				case 3:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
+					break;
+				case 4:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
 					break;
 				default:
@@ -411,12 +472,15 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
 					break;
 				case 1:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 36, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
 				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 36, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 36, 18, 18);
 					break;
 				case 3:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 36, 18, 18);
+					break;
+				case 4:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
 					break;
 				default:
@@ -429,9 +493,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 0, 18, 18);
 					break;
 				case 1:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
 				case 2:
+					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
+					break;
+				case 3:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 0, 18, 18);
 					break;
 				default:
@@ -487,11 +554,41 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 				list.add(EnumChatFormatting.BLUE + UtilPlates.getPlate(me.stackTagCompound.getString("plate")).effect());
 			}
 			if (me.stackTagCompound.hasKey("inv")) {
-				for (int i = 2; i<10; i++) {
+				for (int i = 3; i<10; i++) {
 					if (me.stackTagCompound.getCompoundTag("inv").hasKey(Integer.toString(i))) {
 						ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
 						list.add(EnumChatFormatting.RED + stack.getDisplayName());
 					}	
+				}
+			}
+			if (me.stackTagCompound.getCompoundTag("inv").hasKey("2")) {
+				ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("inv").getCompoundTag("2"));
+				if (stack.getItem() != null && stack.getItem() == SteamcraftItems.enderShroud) {
+					list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.exosuit.shroud"));
+				}
+				else
+				{
+					int[] ids = OreDictionary.getOreIDs(stack);
+		        	int dye = -1;
+		        	outerloop:
+					for (int id : ids) {
+						String str = OreDictionary.getOreName(id);
+						if (str.contains("dye")) {
+							for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+								if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+									dye = 15-i;
+									break outerloop;
+								}
+							}
+						}
+					}
+		        	if (dye != -1) {
+						list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.color." + ModelExosuit.dyes[15-dye].toLowerCase()));
+		        	}
+		        	else
+		        	{
+						list.add(EnumChatFormatting.DARK_GREEN + stack.getDisplayName());
+		        	}
 				}
 			}
 		}

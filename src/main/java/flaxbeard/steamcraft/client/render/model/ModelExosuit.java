@@ -9,14 +9,18 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -32,6 +36,31 @@ public class ModelExosuit extends ModelBiped {
 	private ModelRenderer[] horn1;
 	private ModelRenderer[] horn2;
 	private ModelRenderer[] horn3;
+	
+	public ResourceLocation g1 = new ResourceLocation("steamcraft:textures/models/armor/exo_1_grey.png");
+	public ResourceLocation g2 = new ResourceLocation("steamcraft:textures/models/armor/exo_2_grey.png");
+	public ResourceLocation g3 = new ResourceLocation("steamcraft:textures/models/armor/exo_3_grey.png");
+
+	
+	public static String[] dyes =
+        {
+            "Black",
+            "Red",
+            "Green",
+            "Brown",
+            "Blue",
+            "Purple",
+            "Cyan",
+            "LightGray",
+            "Gray",
+            "Pink",
+            "Lime",
+            "Yellow",
+            "LightBlue",
+            "Magenta",
+            "Orange",
+            "White"
+        };
 
 	private int armor;
 	private ItemStack me;
@@ -68,6 +97,26 @@ public class ModelExosuit extends ModelBiped {
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
         }
+		ItemExosuitArmor item = ((ItemExosuitArmor)me.getItem());
+        if (item.hasUpgrade(me, SteamcraftItems.enderShroud)) {
+	        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).hurtTime != 0) {
+	        	System.out.println(((EntityLivingBase) entity).hurtTime);
+		        GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)((EntityLivingBase) entity).hurtTime/9F);
+		        GL11.glDepthMask(false);
+		        GL11.glEnable(GL11.GL_BLEND);
+		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+	        }
+	        else
+	        {
+		        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.0F);
+		        GL11.glDepthMask(false);
+		        GL11.glEnable(GL11.GL_BLEND);
+		        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+	        }
+        }
+        
 	    this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
 		if (armor == 0) {
 			if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
@@ -104,6 +153,40 @@ public class ModelExosuit extends ModelBiped {
 			this.bipedLeftLeg.render(par7);
 			this.bipedHeadwear.render(par7);
 		}
+		
+        if (item.getStackInSlot(me, 2) != null)
+        {
+        	Item vanity = item.getStackInSlot(me, 2).getItem();
+        	int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(me, 2));
+        	int dye = -1;
+        	outerloop:
+			for (int id : ids) {
+				String str = OreDictionary.getOreName(id);
+				if (str.contains("dye")) {
+					for (int i = 0; i < dyes.length; i++) {
+						if (dyes[i].equals(str.substring(3))) {
+							dye = 15-i;
+							break outerloop;
+						}
+					}
+				}
+			}
+        	if (dye != -1) {
+        		float[] color = EntitySheep.fleeceColorTable[dye];
+        		GL11.glColor3f(color[0],color[1],color[2]);
+        		//GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
+    			Minecraft.getMinecraft().renderEngine.bindTexture(armor == 2 ? g2 : g1);
+        		this.bipedHead.render(par7);
+        		this.bipedBody.render(par7);
+        		this.bipedRightArm.render(par7);
+        		this.bipedLeftArm.render(par7);
+        		this.bipedRightLeg.render(par7);
+        		this.bipedLeftLeg.render(par7);
+        		this.bipedHeadwear.render(par7);
+        		GL11.glColor3f(0.5F, 0.5F, 0.5F);
+        	}
+        }
+        
 		Minecraft.getMinecraft().renderEngine.bindTexture(hornTexture);
 		IExosuitUpgrade[] upgrades = ((ItemExosuitArmor) me.getItem()).getUpgrades(me);
 		ArrayList<IExosuitUpgrade> upgrades2 = new ArrayList<IExosuitUpgrade>(Arrays.asList(upgrades));
@@ -144,6 +227,8 @@ public class ModelExosuit extends ModelBiped {
 				this.bipedHead.render(par7);
 			}
 		}
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDepthMask(true);
 		GL11.glPopMatrix();
 	}
 	

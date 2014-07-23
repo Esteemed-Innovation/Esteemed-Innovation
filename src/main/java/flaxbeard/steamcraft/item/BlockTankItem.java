@@ -6,19 +6,22 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.ModelPointer;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank, IExosuitUpgrade {
 	private static final ResourceLocation gauge = new ResourceLocation("steamcraft:textures/models/pointer.png");
@@ -68,6 +71,36 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 			Tank.addBox(-4.0F, -1F, 2F, 8, 12, 6);
 			model.bipedBody.addChild(Tank);
 			Tank.render(par7);
+			
+			ItemExosuitArmor item = ((ItemExosuitArmor)itemStack.getItem());
+	        if (item.getStackInSlot(itemStack, 2) != null)
+	        {
+	        	Item vanity = item.getStackInSlot(itemStack, 2).getItem();
+	        	int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(itemStack, 2));
+	        	int dye = -1;
+	        	outerloop:
+				for (int id : ids) {
+					String str = OreDictionary.getOreName(id);
+					if (str.contains("dye")) {
+						for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+							if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+								dye = 15-i;
+								break outerloop;
+							}
+						}
+					}
+				}
+	        	if (dye != -1) {
+	        		GL11.glPushMatrix();
+	        		float[] color = EntitySheep.fleeceColorTable[dye];
+	        		GL11.glColor3f(color[0],color[1],color[2]);
+	        		//GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
+	    			Minecraft.getMinecraft().renderEngine.bindTexture(model.g3);
+	    			Tank.render(par7);
+	        		GL11.glColor3f(0.5F, 0.5F, 0.5F);
+	        		GL11.glPopMatrix();
+	        	}
+	        }
 
 			float px = 1.0F/16.0F;
 			GL11.glPushMatrix();

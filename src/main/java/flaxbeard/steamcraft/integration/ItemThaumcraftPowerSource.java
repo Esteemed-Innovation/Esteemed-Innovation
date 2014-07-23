@@ -8,11 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
 
 public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, IExosuitTank {
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/armor/thaumTank.png");
