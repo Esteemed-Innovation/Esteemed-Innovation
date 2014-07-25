@@ -10,8 +10,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.common.item.ModItems;
+
+import WayofTime.alchemicalWizardry.ModBlocks;
 
 import com.google.common.collect.Multimap;
 
@@ -23,6 +26,7 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
@@ -61,7 +65,10 @@ public class BotaniaIntegration {
 		SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
 
 		SteamcraftRegistry.liquids.add(liquidElementium);
-
+		for (int i = 0; i<16; i++) {
+			BookRecipeRegistry.addRecipe("floralLaurel"+i,new ShapedOreRecipe(new ItemStack(floralLaurel), "fff","flf","fff",
+			        'f', new ItemStack(ModItems.petal,1,i), 'l', new ItemStack(ModItems.manaResource,1,3)));
+		}
 		SteamcraftRegistry.registerSmeltThing(ModItems.manaResource,7, liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);

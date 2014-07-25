@@ -315,7 +315,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 		if (stack != null) {
 			stack.writeToNBT(stc);
 			me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
-			if (var1 == 4 && slot == 1) {
+			if (var1 == 5 && slot == 1) {
 				me.setItemDamage(me.getMaxDamage()-1);
 			}
 		}
@@ -511,8 +511,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     {
 		if (this.slot == 1) {
 			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
-			if (item.getStackInSlot(stack, 4) != null && item.getStackInSlot(stack, 4).getItem() instanceof IExosuitTank) {
-				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 4).getItem();
+			if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof IExosuitTank) {
+				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 5).getItem();
 				return tank.getStorage(stack);
 			}
 		}
@@ -528,8 +528,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	public boolean canCharge(ItemStack stack) {
 		if (this.slot == 1) {
 			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
-			if (item.getStackInSlot(stack, 4) != null && item.getStackInSlot(stack, 4).getItem() instanceof IExosuitTank) {
-				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 4).getItem();
+			if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof IExosuitTank) {
+				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 5).getItem();
 				return tank.canFill(stack);
 			}
 		}

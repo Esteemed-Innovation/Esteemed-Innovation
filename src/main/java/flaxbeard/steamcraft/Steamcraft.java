@@ -67,6 +67,7 @@ import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
+import flaxbeard.steamcraft.world.TophatVillagerTradeHandler;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION, dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
 public class Steamcraft {
@@ -111,8 +112,7 @@ public class Steamcraft {
 		VillagerRegistry.instance().registerVillagerId(id);
 		VillagerRegistry.instance().registerVillageTradeHandler(id, new SteampunkVillagerTradeHandler());
 		VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
-		MapGenStructureIO.func_143031_a(ComponentSteamWorkshop.class, "steamcraft:workshop");
-		
+		MapGenStructureIO.func_143031_a(ComponentSteamWorkshop.class, "steamcraft:workshop");		
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
 	  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
@@ -165,6 +165,7 @@ public class Steamcraft {
 
 
 		proxy.registerRenderers();
+		proxy.registerHotkeys();
 		SteamcraftRecipes.registerRecipes();
 
         //FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");

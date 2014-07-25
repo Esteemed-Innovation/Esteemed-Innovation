@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.handler;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +10,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -20,15 +22,22 @@ public class SteamcraftTickHandler {
 	private float fov = 0;
 	private float sensitivity = 0;
 	private static float zoom = 0.0F;
+	private int zoomSettingOn = 0;
+	private boolean lastPressingKey = false;
 	ResourceLocation spyglassfiller = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	ResourceLocation spyglass = new ResourceLocation("steamcraft:textures/gui/spyglassfiller.png");
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void tickStart(TickEvent.ClientTickEvent event) {
 		wasInUse = inUse;
+		Minecraft mc = Minecraft.getMinecraft();
 		inUse = false;
-		if(event.side == Side.CLIENT && Minecraft.getMinecraft().thePlayer != null){
-			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		if(event.side == Side.CLIENT && mc.thePlayer != null){
+			if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiMerchant)) {
+				SteamcraftEventHandler.lastViewVillagerGui = false;
+			}
+		//	System.out.println(Steamcraft.proxy.isKeyPressed());
+			EntityPlayer player = mc.thePlayer;
 			
 			if (SteamcraftEventHandler.hasPower(player, 1) 
 					&& player.getEquipmentInSlot(2) != null 
@@ -46,7 +55,7 @@ public class SteamcraftTickHandler {
 				}
 			}
 			
-			if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed()) {
+			if (mc.gameSettings.keyBindJump.getIsKeyPressed()) {
 				SteamcraftClientPacketHandler.sendSpacePacket(player);
 				if (player != null) {
 					ItemStack armor = player.getCurrentArmor(2);
@@ -96,10 +105,65 @@ public class SteamcraftTickHandler {
 					}
 				}
 			}
-			
+			ItemStack hat = player.inventory.armorInventory[3];
+			boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle || hat.getItem() == SteamcraftItems.goggles || (hat.getItem() == SteamcraftItems.exoArmorHead && (((ItemExosuitArmor)hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) || ((ItemExosuitArmor)hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
+			if (hasHat) {
+				if (mc.gameSettings.thirdPersonView == 0) {
+					if (Steamcraft.proxy.isKeyPressed() && !lastPressingKey) {
+						zoomSettingOn++;
+						zoomSettingOn = zoomSettingOn%4;
+						switch (zoomSettingOn) {
+						case 0:
+							mc.gameSettings.fovSetting = fov;
+							mc.gameSettings.mouseSensitivity = sensitivity;
+							break;
+						case 1:
+							mc.gameSettings.fovSetting = fov;
+							mc.gameSettings.mouseSensitivity = sensitivity;
+							int i = 0;
+							while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F) )/2.0F)) > 2.5F && i < 200) {
+								this.zoom+=1.0F;
+								mc.gameSettings.fovSetting -= 2.5F;
+								mc.gameSettings.mouseSensitivity -= 0.01F;
+								i++;
+							}
+							break;
+						case 2:
+							mc.gameSettings.fovSetting = fov;
+							mc.gameSettings.mouseSensitivity = sensitivity;
+							i = 0;
+							while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F) )/5.0F)) > 2.5F && i < 200) {
+								this.zoom+=1.0F;
+								mc.gameSettings.fovSetting -= 2.5F;
+								mc.gameSettings.mouseSensitivity -= 0.01F;
+								i++;
+							}
+							break;
+						case 3:
+							mc.gameSettings.fovSetting = fov;
+							mc.gameSettings.mouseSensitivity = sensitivity;
+							i = 0;
+							while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F) )/12.0F)) > 2.5F && i < 200) {
+								this.zoom+=1.0F;
+								mc.gameSettings.fovSetting -= 2.5F;
+								mc.gameSettings.mouseSensitivity -= 0.01F;
+								i++;
+							}
+							break;
+						}
+						lastPressingKey = true;
+					}
+					else if (!Steamcraft.proxy.isKeyPressed())
+					{
+						lastPressingKey = false;
+					}
+					inUse = zoomSettingOn != 0;
+
+				}
+			}
 			ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
 			if (item != null && item.getItem() == SteamcraftItems.spyglass) {
-				if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (mc.gameSettings.thirdPersonView == 0) {
 					inUse = true;
 					this.renderTelescopeOverlay();
 				}
@@ -113,35 +177,36 @@ public class SteamcraftTickHandler {
 			            isShooting = true;
 			        }
 				}
-				if (isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+				if (isShooting && mc.gameSettings.thirdPersonView == 0) {
 					inUse = true;
-					Minecraft.getMinecraft().gameSettings.fovSetting -= 30F;
-					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;
+					mc.gameSettings.fovSetting -= 30F;
+					mc.gameSettings.mouseSensitivity -= 0.3F;
 					this.renderTelescopeOverlay();
 				}
 			}
-		}
-		if (!inUse && !wasInUse) {
-			fov = Minecraft.getMinecraft().gameSettings.fovSetting;
-			sensitivity = Minecraft.getMinecraft().gameSettings.mouseSensitivity;
-		}
-		if (!inUse && wasInUse) {
-			Minecraft.getMinecraft().gameSettings.fovSetting = fov;
-			Minecraft.getMinecraft().gameSettings.mouseSensitivity = sensitivity;
-		}
-		if (inUse && !wasInUse) {
-			this.zoom = 0.0F;
-		}
-		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F) {
-			this.zoom-=1.0F;
-			Minecraft.getMinecraft().gameSettings.fovSetting += 2.5F;
-			Minecraft.getMinecraft().gameSettings.mouseSensitivity += 0.01F;
-
-		}
-		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindUseItem.getIsKeyPressed() && Minecraft.getMinecraft().gameSettings.fovSetting > 5F) {
-			this.zoom+=1.0F;
-			Minecraft.getMinecraft().gameSettings.fovSetting -= 2.5F;
-			Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.01F;
+		
+			if (!inUse && !wasInUse) {
+				fov = mc.gameSettings.fovSetting;
+				sensitivity = mc.gameSettings.mouseSensitivity;
+			}
+			if (!inUse && wasInUse) {
+				mc.gameSettings.fovSetting = fov;
+				mc.gameSettings.mouseSensitivity = sensitivity;
+			}
+			if (inUse && !wasInUse) {
+				this.zoom = 0.0F;
+			}
+			if (inUse && mc.gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F && item != null && item.getItem() == SteamcraftItems.spyglass) {
+				this.zoom-=1.0F;
+				mc.gameSettings.fovSetting += 2.5F;
+				mc.gameSettings.mouseSensitivity += 0.01F;
+	
+			}
+			if (inUse && mc.gameSettings.keyBindUseItem.getIsKeyPressed() && mc.gameSettings.fovSetting > 5F && item != null && item.getItem() == SteamcraftItems.spyglass) {
+				this.zoom+=1.0F;
+				mc.gameSettings.fovSetting -= 2.5F;
+				mc.gameSettings.mouseSensitivity -= 0.01F;
+			}
 		}
 	}
 	

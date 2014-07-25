@@ -17,6 +17,7 @@ import flaxbeard.steamcraft.api.book.BookPageDip;
 import flaxbeard.steamcraft.api.book.BookPageItem;
 import flaxbeard.steamcraft.api.book.BookPageText;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
@@ -67,11 +68,11 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Heater.name","category.SteamPower.name",new BookPageItem("research.Heater.name","research.Heater.0", new ItemStack(SteamcraftBlocks.heater)),new BookPageCrafting("","heater1","heater2"));
 		SteamcraftRegistry.addResearch("research.ItemMortar.name","category.SteamPower.name",new BookPageItem("research.ItemMortar.name","research.ItemMortar.0", new ItemStack(SteamcraftBlocks.itemMortar)),new BookPageText("research.ItemMortar.name","research.ItemMortar.1"),new BookPageCrafting("","astrolabe"),new BookPageCrafting("","itemMortar2","itemMortar3"));
 		
-		SteamcraftRegistry.addCategory("category.SteamPower2.name");
-		SteamcraftRegistry.addResearch("research.Hammer.name","category.SteamPower2.name",new BookPageItem("research.Hammer.name","research.Hammer.0", new ItemStack(SteamcraftBlocks.hammer)),new BookPageText("research.Hammer.name","research.Hammer.1"),new BookPageCrafting("","hammer1","hammer2"));
-		SteamcraftRegistry.addResearch("research.Screw.name","category.SteamPower2.name",new BookPageItem("research.Screw.name","research.Screw.0", new ItemStack(SteamcraftBlocks.pump)),new BookPageCrafting("","pump1","pump2"));
-		SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
-		SteamcraftRegistry.addResearch("research.Thumper.name", "category.SteamPower2.name", new BookPageItem("research.Thumper.name","research.Thumper.0", new ItemStack(SteamcraftBlocks.thumper)),new BookPageText("research.Thumper.name","research.Thumper.1"), new BookPageCrafting("","thumper1","thumper2"));
+		//SteamcraftRegistry.addCategory("category.SteamPower.name");
+		SteamcraftRegistry.addResearch("research.Hammer.name","category.SteamPower.name",new BookPageItem("research.Hammer.name","research.Hammer.0", new ItemStack(SteamcraftBlocks.hammer)),new BookPageText("research.Hammer.name","research.Hammer.1"),new BookPageCrafting("","hammer1","hammer2"));
+		SteamcraftRegistry.addResearch("research.Screw.name","category.SteamPower.name",new BookPageItem("research.Screw.name","research.Screw.0", new ItemStack(SteamcraftBlocks.pump)),new BookPageCrafting("","pump1","pump2"));
+		SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
+		SteamcraftRegistry.addResearch("research.Thumper.name", "category.SteamPower.name", new BookPageItem("research.Thumper.name","research.Thumper.0", new ItemStack(SteamcraftBlocks.thumper)),new BookPageText("research.Thumper.name","research.Thumper.1"), new BookPageCrafting("","thumper1","thumper2"));
 		
 		SteamcraftRegistry.addCategory("category.SteamTools.name");
 		SteamcraftRegistry.addResearch("research.SteamTools.name", "category.SteamTools.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
@@ -128,15 +129,25 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.ExoVanity.name","category.Exosuit.name",new BookPageItem("research.ExoVanity.name","research.ExoVanity.0",stacks2));
 		SteamcraftRegistry.addResearch("research.ExoDyes.name","!research.ExoVanity.name",new BookPageItem("research.ExoDyes.name","research.ExoDyes.0", true, new ItemStack(Items.dye,1,0), new ItemStack(Items.dye,1,1), new ItemStack(Items.dye,1,2), new ItemStack(Items.dye,1,3)));
 		SteamcraftRegistry.addResearch("research.EnderShroud.name","!research.ExoVanity.name",new BookPageItem("research.EnderShroud.name","research.EnderShroud.0", true, new ItemStack(SteamcraftItems.enderShroud)),new BookPageCrafting("","enderShroud"));
-
-		SteamcraftRegistry.addResearch("research.Jetpack.name","category.Exosuit.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
-		SteamcraftRegistry.addResearch("research.Wings.name","category.Exosuit.name",new BookPageItem("research.Wings.name","research.Wings.0", new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
-		SteamcraftRegistry.addResearch("research.Thrusters.name","category.Exosuit.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters"));
-		if (Loader.isModLoaded("Thaumcraft")) {
-			SteamcraftRegistry.addResearch("research.Mask.name","category.Exosuit.name",new BookPageItem("research.Mask.name","research.Mask.0", new ItemStack(ThaumcraftIntegration.goggleUpgrade)),new BookPageCrafting("","mask"));
+		SteamcraftRegistry.addResearch("research.ExoHeadHelm.name","category.Exosuit.name");
+		if (Loader.isModLoaded("Botania")) {
+			SteamcraftRegistry.addResearch("research.FloralLaurel.name","!research.ExoHeadHelm.name",new BookPageItem("research.FloralLaurel.name","research.FloralLaurel.0", true, new ItemStack(BotaniaIntegration.floralLaurel)),new BookPageCrafting("","floralLaurel0","floralLaurel1","floralLaurel2","floralLaurel3","floralLaurel4","floralLaurel5","floralLaurel6","floralLaurel7","floralLaurel8","floralLaurel9","floralLaurel0","floralLaurel11","floralLaurel12","floralLaurel13","floralLaurel14","floralLaurel15"));
 		}
-		SteamcraftRegistry.addResearch("research.Fist.name","category.Exosuit.name",new BookPageItem("research.Fist.name","research.Fist.0", new ItemStack(SteamcraftItems.powerFist)),new BookPageCrafting("","powerFist1","powerFist2"));
-		SteamcraftRegistry.addResearch("research.FallAssist.name","category.Exosuit.name",new BookPageItem("research.FallAssist.name","research.FallAssist.0", new ItemStack(SteamcraftItems.fallAssist)),new BookPageCrafting("","noFall"));
+		SteamcraftRegistry.addResearch("research.ExoHeadGoggle.name","category.Exosuit.name");
+		if (Loader.isModLoaded("Thaumcraft")) {
+			SteamcraftRegistry.addResearch("research.Mask.name","!research.ExoHeadGoggle.name",new BookPageItem("research.Mask.name","research.Mask.0", true, new ItemStack(ThaumcraftIntegration.goggleUpgrade)),new BookPageCrafting("","mask"));
+		}
+		SteamcraftRegistry.addResearch("research.ExoBack.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.Jetpack.name","!research.ExoBack.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", true, new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
+		SteamcraftRegistry.addResearch("research.Wings.name","!research.ExoBack.name",new BookPageItem("research.Wings.name","research.Wings.0", true, new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
+		SteamcraftRegistry.addResearch("research.ExoArm.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.Fist.name","!research.ExoArm.name",new BookPageItem("research.Fist.name","research.Fist.0", true, new ItemStack(SteamcraftItems.powerFist)),new BookPageCrafting("","powerFist1","powerFist2"));
+		SteamcraftRegistry.addResearch("research.ExoHip.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.Thrusters.name","!research.ExoHip.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters"));
+		SteamcraftRegistry.addResearch("research.ExoLeg.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.ExoHeel.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.ExoFoot.name","category.Exosuit.name");
+		SteamcraftRegistry.addResearch("research.FallAssist.name","!research.ExoHeel.name",new BookPageItem("research.FallAssist.name","research.FallAssist.0", true, new ItemStack(SteamcraftItems.fallAssist)),new BookPageCrafting("","noFall"));
 	}
 	
 	public static ItemStack[] getOreDict(String str) {

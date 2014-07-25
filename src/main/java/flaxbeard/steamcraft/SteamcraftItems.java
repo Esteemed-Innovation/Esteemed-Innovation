@@ -43,10 +43,12 @@ import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftAxe;
+import flaxbeard.steamcraft.item.tool.ItemSteamcraftGoggles;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftHoe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftPickaxe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftShovel;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftSword;
+import flaxbeard.steamcraft.item.tool.ItemTophat;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
@@ -88,6 +90,11 @@ public class SteamcraftItems {
     public static Item exoArmorBody;
     public static Item exoArmorLegs;
     public static Item exoArmorFeet;
+    
+    public static Item monacle;
+    public static Item goggles;
+    public static Item tophat;
+    public static Item tophatNoEmerald;
     
     public static Item steamDrill;
     public static Item steamAxe;
@@ -257,6 +264,17 @@ public class SteamcraftItems {
 		registerArmorSet(mat, "Brass", "ingotBrass", true);
 		registerGildedTools();
 		registerGildedArmor();
+		
+		ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("MONACLE",5, new int[]{1, 3, 2, 1}, 15);
+
+    	monacle = new ItemSteamcraftGoggles(tool, 2, 0, Items.leather, "Monocle").setUnlocalizedName("steamcraft:monacle").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:monocle");
+ 		GameRegistry.registerItem(monacle, "monacle");
+    	goggles = new ItemSteamcraftGoggles(tool, 2, 0, Items.leather, "Goggles").setUnlocalizedName("steamcraft:goggles").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:goggles");
+ 		GameRegistry.registerItem(goggles, "goggles");
+ 		tophatNoEmerald = new ItemTophat(tool, 2, 0,false).setUnlocalizedName("steamcraft:tophatNoEmerald").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophat");
+ 		GameRegistry.registerItem(tophatNoEmerald, "tophatNoEmerald");
+    	tophat = new ItemTophat(tool, 2, 0, true).setUnlocalizedName("steamcraft:tophat").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophatemerald");
+ 		GameRegistry.registerItem(tophat, "tophat");
 		
 		steamcraftNugget = new ItemSteamcraftNugget().setUnlocalizedName("steamcraft:nugget").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftNugget, "steamcraftNugget");
