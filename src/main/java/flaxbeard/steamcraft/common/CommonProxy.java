@@ -20,4 +20,11 @@ public class CommonProxy
 	}
     
     public void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv) {}
+
+	public void registerHotkeys() {		
+	}
+
+	public boolean isKeyPressed() {
+		return false;
+	}
 }

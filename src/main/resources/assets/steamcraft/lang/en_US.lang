@@ -159,6 +159,19 @@ research.ExoDyes.name=Exosuit Painting
 research.ExoDyes.0=Ordinary dies of all sorts can be placed in the vanity slot in order to paint the exosuit framework to better suit the look I am looking for. Adding paint will not change the color of installed plates or upgrades.
 research.EnderShroud.name=Ender Shroud
 research.EnderShroud.0=The ender shroud, a mysterious device, is able to render exosuit parts completely invisible. This allows me to show off my skin and stay protected. The shroud isn't perfect, of course. When hit, my suit will flicker for a couple seconds.
+
+research.ExoHeadHelm.name=Helmet Slot
+research.FloralLaurel.name=Floral Laurel
+research.FloralLaurel.0=Sometimes I grow tired of pulling out my wand to check how full my mana pools are. I've created a nifty little laurel out of some petals and a livingwood stick, that, when worn, will display information about botanical devices when looked at.
+research.ExoHeadGoggle.name=Mask Slot
+research.ExoBack.name=Back Slot
+research.ExoArm.name=Arm Slot
+research.ExoHip.name=Hip Slot
+research.ExoLeg.name=Leg Slot
+research.ExoHeel.name=Heel Slot
+research.ExoFoot.name=Foot Slot
+
+
 research.Jetpack.name=Steam Jetpack
 research.Jetpack.0=I've developed a rather exciting exosuit upgrade that grants me the power of flight.<br>This steam 'jetpack' of sorts consumes a substantial amount of steam, but you can't put a price tag on flight.
 research.Wings.name=Steam Wings
@@ -207,6 +220,12 @@ item.steamcraft:exoArmorHead.name=Steam Exosuit Headpiece
 item.steamcraft:exoArmorBody.name=Steam Exosuit Chestpiece
 item.steamcraft:exoArmorLegs.name=Steam Exosuit Legpiece
 item.steamcraft:exoArmorFeet.name=Steam Exosuit Footpiece
+
+item.steamcraft:monacle.name=Tinkerer's Monocle
+item.steamcraft:goggles.name=Tinkerer's Goggles
+item.steamcraft:tophatNoEmerald.name=Top Hat
+item.steamcraft:tophat.name=Entrepreneur's Top Hat
+
 
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot

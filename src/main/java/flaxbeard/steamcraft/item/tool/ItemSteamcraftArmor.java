@@ -7,7 +7,7 @@ import flaxbeard.steamcraft.api.UtilMisc;
 
 public class ItemSteamcraftArmor extends ItemArmor {
 	private Object repairMaterial;
-	private String name;
+	protected String name;
 	
 	public ItemSteamcraftArmor(ArmorMaterial p_i45325_1_, int p_i45325_2_,
 			int p_i45325_3_, Object repair, String n) {

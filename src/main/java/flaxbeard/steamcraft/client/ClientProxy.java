@@ -1,10 +1,13 @@
 package flaxbeard.steamcraft.client;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -60,8 +63,21 @@ import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 
 public class ClientProxy extends CommonProxy
 {
+	public KeyBinding zoomKey = new KeyBinding("Zoom using monacle", Keyboard.KEY_Z, "key.categories.misc");
 	public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
-    @Override
+    
+	@Override
+	public void registerHotkeys()
+	{
+		ClientRegistry.registerKeyBinding(this.zoomKey);
+	}
+	
+	@Override
+	public boolean isKeyPressed() {
+		return zoomKey.getIsKeyPressed();
+	}
+	
+	@Override
     public void registerRenderers()
     {
    	 	Steamcraft.channel.register(new SteamcraftClientPacketHandler());

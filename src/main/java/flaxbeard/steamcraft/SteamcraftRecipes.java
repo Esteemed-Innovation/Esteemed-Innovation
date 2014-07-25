@@ -249,6 +249,21 @@ public class SteamcraftRecipes {
 		BookRecipeRegistry.addRecipe("spyglass2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.spyglass), "gb ", "bgb", " bb", 
 		        'b', "plateBrass", 'g', Blocks.glass_pane));
 		
+		BookRecipeRegistry.addRecipe("monocle1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.monacle), " l ", "l l", "btb", 
+		        'b', "ingotBrass", 'l', Items.leather, 't', SteamcraftItems.spyglass));
+		BookRecipeRegistry.addRecipe("monocle2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.monacle), " l ", "l l", "btb", 
+		        'b', "plateBrass", 'l', Items.leather, 't', SteamcraftItems.spyglass));
+		
+		BookRecipeRegistry.addRecipe("goggles1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.goggles), " l ", "l l", "tbg", 
+		        'b', "ingotBrass", 'l', Items.leather, 't', SteamcraftItems.spyglass, 'g', Blocks.glass));
+		BookRecipeRegistry.addRecipe("goggles2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.goggles), " l ", "l l", "tbg", 
+		        'b', "plateBrass", 'l', Items.leather, 't', SteamcraftItems.spyglass, 'g', Blocks.glass));
+		
+		BookRecipeRegistry.addRecipe("hat",new ShapedOreRecipe(new ItemStack(SteamcraftItems.tophatNoEmerald), " l ", " l ", "lll", 
+		        'e', Items.emerald, 'l', new ItemStack(Blocks.wool,1,15)));
+		BookRecipeRegistry.addRecipe("hatEmerald",new ShapedOreRecipe(new ItemStack(SteamcraftItems.tophat), " l ", "ele", "lll", 
+		        'e', Blocks.emerald_block, 'l', new ItemStack(Blocks.wool,1,15)));
+
 		BookRecipeRegistry.addRecipe("boiler1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 
 		        'x', "ingotBrass", 'f', Blocks.furnace));
 		BookRecipeRegistry.addRecipe("boiler2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.boiler), "xxx", "xfx", "xxx", 

@@ -1,14 +1,29 @@
 package flaxbeard.steamcraft.integration;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.relics.ItemThaumonomicon;
+import thaumcraft.common.lib.research.ResearchManager;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -83,6 +98,29 @@ public class ThaumcraftIntegration {
 
 	public static Item gogglesRevealing() {
 		return ConfigItems.itemGoggles;
+	}
+
+	public static void addTooltip(ItemTooltipEvent event) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		Object[] ref = ThaumcraftApi.getCraftingRecipeKey(player, event.itemStack);
+        if ((ref != null))
+        {
+        	ResearchItem research = ResearchCategories.getResearch((String)ref[0]);
+			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(ConfigItems.itemThaumonomicon, player) : false;
+			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
+				if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemThaumonomicon) {
+					foundBook = true;
+					break;
+				}
+			}
+			if (foundBook && ResearchManager.isResearchComplete(player.getCommandSenderName(), research.key)) {
+    			event.toolTip.add(EnumChatFormatting.ITALIC+""+EnumChatFormatting.GRAY+StatCollector.translateToLocal("steamcraft.book.shiftright"));
+    			if (Mouse.isButtonDown(0) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+        			mc.displayGuiScreen(new GuiResearchRecipe(research, ((Integer)ref[1]).intValue(), 0, 0));
+    			}
+			}
+        }
 	}
 	
 	

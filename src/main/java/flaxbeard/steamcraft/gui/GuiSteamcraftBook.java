@@ -21,10 +21,13 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
+import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 
 public class GuiSteamcraftBook extends GuiScreen {
@@ -52,6 +55,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     private static final String __OBFID = "CL_00000744";
     private static ItemStack book;
     private static boolean mustReleaseMouse = false;
+    private ArrayList<String> categories;
     
     class GuiButtonSelect extends GuiButton
     {
@@ -97,12 +101,24 @@ public class GuiSteamcraftBook extends GuiScreen {
 
     public GuiSteamcraftBook(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, boolean par3)
     {
+		categories = new ArrayList<String>();
+		for (String cat : SteamcraftRegistry.categories) {
+			int pages = 0;
+			for (MutablePair research : SteamcraftRegistry.research) {
+				if (research.right.equals(cat) && SteamcraftRegistry.researchPages.get(research.left).length > 0) {
+					pages++;
+				}
+			}
+			for (int s = 0; s<MathHelper.ceiling_float_int(pages/9.0F); s++) {
+				categories.add(cat+(s == 0 ? "" : s));
+			}
+		}
         this.editingPlayer = par1EntityPlayer;
         this.bookObj = par2ItemStack;
     	int i = 0;
 		String lastCategory = "";
 		boolean canDo = true;
-		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.categories.size()/2F)+1;
+		this.bookTotalPages = MathHelper.ceiling_float_int(categories.size()/2F)+1;
 		if (viewing != "") {
     		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
 		}
@@ -111,6 +127,9 @@ public class GuiSteamcraftBook extends GuiScreen {
 		}
 		else
 		{
+			if (Loader.isModLoaded("Enchiridion")) {
+				book = EnchiridionIntegration.findBook(SteamcraftItems.book,par1EntityPlayer);
+			}
 			for (int p = 0; p < par1EntityPlayer.inventory.getSizeInventory(); p++) {
 				if (par1EntityPlayer.inventory.getStackInSlot(p) != null && par1EntityPlayer.inventory.getStackInSlot(p).getItem() instanceof ItemSteamcraftBook) {
 					book = par1EntityPlayer.inventory.getStackInSlot(p);
@@ -118,6 +137,7 @@ public class GuiSteamcraftBook extends GuiScreen {
 				}
 			}
 		}
+
     }
     
     @Override
@@ -252,7 +272,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         	int i = 0;
     		String lastCategory = "";
     		boolean canDo = true;
-    		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.categories.size()/2F)+1;
+    		this.bookTotalPages = MathHelper.ceiling_float_int(categories.size()/2F)+1;
             this.updateButtons();
         }
         else
@@ -345,29 +365,47 @@ public class GuiSteamcraftBook extends GuiScreen {
 				for (Object button : thingsToRemove) {
 					this.buttonList.remove(button);
 				}
-				
-				String category = SteamcraftRegistry.categories.get((currPage-1)*2);
+
+				String category = categories.get((currPage-1)*2);
+				int offset = 0;
+				if (category.substring(category.length()-1, category.length()).matches("-?\\d+")) {
+					offset = 9*Integer.parseInt(category.substring(category.length()-1, category.length()));
+					category = category.substring(0, category.length()-1);
+				}
 		        s = I18n.format(category);
 				int i = 10;
+				int offsetCounter = 0;
 	        	this.fontRendererObj.drawString("\u00A7n"+s, k + 40 -67, 44+b0, 0x3F3F3F);
 				for (MutablePair research : SteamcraftRegistry.research) {
-					if (research.right == category) {
-						s = (String)research.left;
-		        		this.buttonList.add(new GuiButtonSelect(4, k+50-67, b0 + 44 + i, 110, 10, s));
-		        		i+= 10;
+					if (research.right.equals(category) && SteamcraftRegistry.researchPages.get(research.left).length > 0) {
+						offsetCounter++;
+						if (offsetCounter > offset && offsetCounter < offset+10) {
+							s = (String)research.left;
+			        		this.buttonList.add(new GuiButtonSelect(4, k+50-67, b0 + 44 + i, 110, 10, s));
+			        		i+= 10;
+						}
 					}
 				}
 				
-				if (SteamcraftRegistry.categories.size() > 1+((currPage-1)*2)) {
-					category = SteamcraftRegistry.categories.get(((currPage-1)*2)+1);
+				if (categories.size() > 1+((currPage-1)*2)) {
+					category = categories.get(((currPage-1)*2)+1);
+					offset = 0;
+					offsetCounter = 0;
+					if (category.substring(category.length()-1, category.length()).matches("-?\\d+")) {
+						offset = 9*Integer.parseInt(category.substring(category.length()-1, category.length()));
+						category = category.substring(0, category.length()-1);
+					}
 			        s = I18n.format(category);
 					i = 10;
 		        	this.fontRendererObj.drawString("\u00A7n"+s, k + 40 + 67, 44+b0, 0x3F3F3F);
 					for (MutablePair research : SteamcraftRegistry.research) {
-						if (research.right == category) {
-							s = (String)research.left;
-			        		this.buttonList.add(new GuiButtonSelect(4, k+50+67, b0 + 44 + i, 110, 10, s));
-			        		i+= 10;
+						if (research.right.equals(category) && SteamcraftRegistry.researchPages.get(research.left).length > 0) {
+							offsetCounter++;
+							if (offsetCounter > offset && offsetCounter < offset+10) {
+								s = (String)research.left;
+				        		this.buttonList.add(new GuiButtonSelect(4, k+50+67, b0 + 44 + i, 110, 10, s));
+				        		i+= 10;
+							}
 						}
 					}
 				}

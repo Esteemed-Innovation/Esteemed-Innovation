@@ -36,5 +36,4 @@ public class SteampunkVillagerTradeHandler implements IVillageTradeHandler {
 //		recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, 8 + random.nextInt(3)), new ItemStack(ConfigItems.itemAmuletVis, 1, 0)));
 //		recipeList.add(new MerchantRecipe(new ItemStack(Items.emerald, 6 + random.nextInt(3)), new ItemStack(ConfigItems.itemBaubleBlanks, 1, 3 + random.nextInt(6))));
 	}
-
 }

@@ -90,13 +90,13 @@ public class ModelExosuit extends ModelBiped {
 	public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
         GL11.glPushMatrix();
-        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
-	        GL11.glDepthMask(false);
-	        GL11.glEnable(GL11.GL_BLEND);
-	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-        }
+//        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
+//	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
+//	        GL11.glDepthMask(false);
+//	        GL11.glEnable(GL11.GL_BLEND);
+//	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+//        }
 		ItemExosuitArmor item = ((ItemExosuitArmor)me.getItem());
         if (item.hasUpgrade(me, SteamcraftItems.enderShroud)) {
 	        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).hurtTime != 0) {
@@ -183,7 +183,7 @@ public class ModelExosuit extends ModelBiped {
         		this.bipedRightLeg.render(par7);
         		this.bipedLeftLeg.render(par7);
         		this.bipedHeadwear.render(par7);
-        		GL11.glColor3f(0.5F, 0.5F, 0.5F);
+        		GL11.glColor3f(1.0F, 1.0F, 1.0F);
         	}
         }
         

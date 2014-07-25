@@ -25,6 +25,8 @@ public class Config {
 	public static int chance;
 	public static boolean dropItem;
 	public static boolean genPoorOre;
+	public static boolean openThaum;
+
 	
 	public static int villagerId;
 	
@@ -38,6 +40,7 @@ public class Config {
 		genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
 		villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
 		genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
+		openThaum = config.get("Integration", "[Thaumcraft] Show control+click to open Thauminomicon messages on TC4 items", true).getBoolean(true);
 
 		
 		expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
