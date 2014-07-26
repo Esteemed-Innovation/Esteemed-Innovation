@@ -84,7 +84,7 @@ public class TileEntityThumper extends TileEntity implements ISteamTransporter{
 					}
 			      
 			        while (!hasTarget && i < 160) {
-			        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
+			        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && (worldObj.getBlock(target.posX, target.posY, target.posZ).getBlockHardness(worldObj,target.posX, target.posY, target.posZ) != -1.0F) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
 			        		hasTarget = true;
 			        	}
 			        	else
