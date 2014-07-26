@@ -220,6 +220,41 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void updateVillagers(LivingUpdateEvent event) {
+		if (event.entityLiving instanceof EntityVillager) {
+			EntityVillager villager = (EntityVillager) event.entityLiving;
+			int timeUntilReset = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 6);
+			String lastBuyingPlayer = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 9);
+			if (!villager.isTrading() && timeUntilReset == 39 && lastBuyingPlayer != null) {
+				EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
+				if (player != null) {
+					if (player.inventory.armorInventory[3] != null && (player.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat)) {
+						ItemStack hat = player.inventory.armorInventory[3];
+						if (!hat.hasTagCompound()) {
+							hat.setTagCompound(new NBTTagCompound());
+						}
+						if (!hat.stackTagCompound.hasKey("level")) {
+							hat.stackTagCompound.setInteger("level", 0);
+						}
+						int level = hat.stackTagCompound.getInteger("level");
+						level++;
+						hat.stackTagCompound.setInteger("level", level);
+					}
+					else if (player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor)player.inventory.armorInventory[3].getItem()).hasUpgrade(player.inventory.armorInventory[3],SteamcraftItems.tophat)) {
+						ItemStack hat = ((ItemExosuitArmor)player.inventory.armorInventory[3].getItem()).getStackInSlot(player.inventory.armorInventory[3], 3);
+						if (!hat.hasTagCompound()) {
+							hat.setTagCompound(new NBTTagCompound());
+						}
+						if (!hat.stackTagCompound.hasKey("level")) {
+							hat.stackTagCompound.setInteger("level", 0);
+						}
+						int level = hat.stackTagCompound.getInteger("level");
+						level++;
+						hat.stackTagCompound.setInteger("level", level);
+						((ItemExosuitArmor)player.inventory.armorInventory[3].getItem()).setInventorySlotContents(player.inventory.armorInventory[3], 3, hat);
+					}
+				}
+			}
+		}
 		if (event.entityLiving instanceof EntityVillager && event.entityLiving.worldObj.isRemote == false) {
 			EntityVillager villager = (EntityVillager) event.entityLiving;
 			if (!lastHadCustomer.containsKey(villager.getEntityId())) {

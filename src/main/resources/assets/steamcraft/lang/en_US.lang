@@ -54,6 +54,7 @@ steamcraft.waila.mold=Mold:
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 steamcraft.exosuit.shroud=Shrouded
+steamcraft.exosuit.level=Level
 
 
 category.Basics.name=Basics

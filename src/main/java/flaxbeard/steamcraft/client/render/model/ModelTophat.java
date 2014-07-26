@@ -1,34 +1,24 @@
 package flaxbeard.steamcraft.client.render.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
-
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.api.exosuit.UtilPlates;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.misc.ComparatorUpgrade;
 
 public class ModelTophat extends ModelBiped {
 	private ModelRenderer tophatBase;
 	private ModelRenderer tophatHat;
+	private ItemStack me;
 
 	public ModelTophat(ItemStack itemStack,int armorType) {
 		super(1.0F, 0, 64, 32);
@@ -39,6 +29,8 @@ public class ModelTophat extends ModelBiped {
 		tophatHat = new ModelRenderer(this, 64, 32).setTextureOffset(0, 16);
 		tophatHat.addBox(-5.5F, -9.0F, -5.5F, 11, 1, 11);
 		this.bipedHead.addChild(tophatHat);
+		
+		me = itemStack;
 	}
 
 	@Override
@@ -46,8 +38,40 @@ public class ModelTophat extends ModelBiped {
 	{
         
 	    this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
-
+	    
 		this.bipedHead.render(par7);
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(this.bipedHead.rotationPointX, this.bipedHead.rotationPointY, this.bipedHead.rotationPointZ);
+		GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleY), 0, 1, 0);
+		GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleX), 1, 0, 0);
+		GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleZ), 0, 0, 1);
+		GL11.glTranslatef(-this.bipedHead.rotationPointX, -this.bipedHead.rotationPointY, -this.bipedHead.rotationPointZ);
+		int level = 0;
+		if (me.hasTagCompound() && me.stackTagCompound.hasKey("level")) {
+			level = me.stackTagCompound.getInteger("level");
+		}
+		ItemStack itemStack = new ItemStack(Items.emerald);
+		if (level >= 18) {
+			level = 18;
+		}
+		if (level >= 9) {
+			level -= 8;
+			itemStack = new ItemStack(Blocks.emerald_block);
+		}
+		for (int i = 0; i<level; i++) {
+			GL11.glPushMatrix();
+			EntityItem item = new EntityItem(entity.worldObj, 0.0F, 0.0F, 0.0F, itemStack);
+			item.hoverStart = 0.0F;
+			GL11.glRotated((Minecraft.getMinecraft().thePlayer.ticksExisted*10.0D)%360+(360F/level)*i, 0, 1, 0);
+			GL11.glTranslatef(0.75F, 0.0F, 0.0F);
+			GL11.glRotated((Minecraft.getMinecraft().thePlayer.ticksExisted*11D)%360,0, 1, 0);
+			RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, -1.0D + 0.25F*Math.sin(Math.toRadians((Minecraft.getMinecraft().thePlayer.ticksExisted*5)%360)+(360F/level)*i), 0.0D, 0.0F, 0.0F);
+			item = null;
+			GL11.glPopMatrix();
+		}
+		GL11.glPopMatrix();
+
 	}
 
 	@Override
