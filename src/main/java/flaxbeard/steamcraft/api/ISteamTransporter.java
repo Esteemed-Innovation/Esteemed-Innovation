@@ -19,7 +19,7 @@ public interface ISteamTransporter {
 	public boolean doesConnect(ForgeDirection face);
 	public abstract boolean acceptsGauge(ForgeDirection face);
 	public HashSet<ForgeDirection> getConnectionSides();
-	public World getWorldObj();
+	public World getWorld();
 	public String getNetworkName();
 	public SteamNetwork getNetwork();
 	public void setNetworkName(String name);
