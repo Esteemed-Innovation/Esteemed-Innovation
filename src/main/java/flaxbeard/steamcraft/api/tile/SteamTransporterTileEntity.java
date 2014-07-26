@@ -10,6 +10,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.Tuple3;
@@ -274,6 +275,12 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	public int getDimension(){
 		return this.worldObj.provider.dimensionId;
+	}
+
+
+	@Override
+	public World getWorld() {
+		return this.worldObj;
 	}
 	
 	 
