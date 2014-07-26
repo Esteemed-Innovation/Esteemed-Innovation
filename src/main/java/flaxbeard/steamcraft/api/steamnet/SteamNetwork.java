@@ -180,6 +180,7 @@ public class SteamNetwork {
 		HashSet<ISteamTransporter> out = new HashSet();
 		Coord4 transCoords = trans.getCoords(); 
 		for (ForgeDirection d : trans.getConnectionSides()){
+			TileEntity transTE = (TileEntity) trans;
 			TileEntity te = trans.getWorldObj().getTileEntity(transCoords.x + d.offsetX, transCoords.y + d.offsetY, transCoords.z + d.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
 				if (te != trans){
