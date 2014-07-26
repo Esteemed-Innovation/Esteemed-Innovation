@@ -85,10 +85,10 @@ public class SteamNetwork {
 		
 		if (this.getPressure() > 1.2F){
 			for (ISteamTransporter trans : transporters.values()){
-				if (!trans.getWorldObj().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
+				if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 					trans.explode();
 					Coord4 c = trans.getCoords();
-					trans.getWorldObj().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
+					trans.getWorld().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
 				}
 			}
 		}
@@ -180,8 +180,7 @@ public class SteamNetwork {
 		HashSet<ISteamTransporter> out = new HashSet();
 		Coord4 transCoords = trans.getCoords(); 
 		for (ForgeDirection d : trans.getConnectionSides()){
-			TileEntity transTE = (TileEntity) trans;
-			TileEntity te = trans.getWorldObj().getTileEntity(transCoords.x + d.offsetX, transCoords.y + d.offsetY, transCoords.z + d.offsetZ);
+			TileEntity te = trans.getWorld().getTileEntity(transCoords.x + d.offsetX, transCoords.y + d.offsetY, transCoords.z + d.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
 				if (te != trans){
 					ISteamTransporter t = (ISteamTransporter) te;
@@ -324,7 +323,7 @@ public class SteamNetwork {
 		Coord4 coords = trans.getCoords();
 		int x = coords.x, y = coords.y, z = coords.z;
 		for (ForgeDirection dir : trans.getConnectionSides()){
-			TileEntity te = trans.getWorldObj().getTileEntity(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
+			TileEntity te = trans.getWorld().getTileEntity(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ);
 			if (te != null && te instanceof ISteamTransporter){
 				ISteamTransporter neighbor = (ISteamTransporter) te;
 				out.add(neighbor);
@@ -347,7 +346,7 @@ public class SteamNetwork {
 	
 	public World getWorld(){
 		if (transporters.values().iterator().next() != null){
-			return transporters.values().iterator().next().getWorldObj();
+			return transporters.values().iterator().next().getWorld();
 		} else {
 			return null;
 		}
