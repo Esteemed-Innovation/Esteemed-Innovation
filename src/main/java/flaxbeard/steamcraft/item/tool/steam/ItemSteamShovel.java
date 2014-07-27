@@ -26,7 +26,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	private boolean hasBrokenBlock = false;
 	
 	public ItemSteamShovel() {
-		super(EnumHelper.addToolMaterial("SHOVEL", 2, 1600, 1.0F, -1.0F, 0));
+		super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
 	}
 	
 	@Override
@@ -109,7 +109,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player)
     {
     	this.checkNBT(player);
-		if (stack.getItemDamage() < stack.getMaxDamage()-1) {
+		if (stack.getItemDamage() < stack.getMaxDamage()-3) {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
@@ -130,7 +130,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 20;
+		return 80;
 	}
 
 	@Override
