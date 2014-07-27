@@ -26,7 +26,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 	private boolean hasBrokenBlock = false;
 	
 	public ItemSteamAxe() {
-		super(EnumHelper.addToolMaterial("AXE", 2, 1600, 1.0F, -1.0F, 0));
+		super(EnumHelper.addToolMaterial("AXE", 2, 320, 1.0F, -1.0F, 0));
 	}
 	
 	@Override
@@ -130,7 +130,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 20;
+		return 80;
 	}
 
 	@Override
