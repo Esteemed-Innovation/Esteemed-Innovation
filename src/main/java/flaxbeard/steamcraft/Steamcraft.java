@@ -170,6 +170,7 @@ public class Steamcraft {
 		SteamcraftBook.registerBookResearch();
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
 		iso.addSmelting();
+		iso.registerDusts();
 	}
 
 
