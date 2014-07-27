@@ -155,7 +155,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}
@@ -177,7 +178,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}
