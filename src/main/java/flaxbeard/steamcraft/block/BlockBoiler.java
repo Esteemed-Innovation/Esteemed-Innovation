@@ -207,6 +207,7 @@ public class BlockBoiler extends BlockContainer {
 				if (!player.capabilities.isCreativeMode) {
 					player.inventory.consumeInventoryItem(Items.water_bucket);
 					player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
+					player.inventoryContainer.detectAndSendChanges();
 				}
             }
 			return true;
