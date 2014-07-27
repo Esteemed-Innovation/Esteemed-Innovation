@@ -58,8 +58,9 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
         this.open = access.getBoolean("open");
-    	this.changeTicks = access.getInteger("changeTicks");
-
+        if (this.changeTicks == 0) {
+        	this.changeTicks = access.getInteger("changeTicks");
+        }
 
         if (access.hasKey("inventory"))
         {
@@ -236,7 +237,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 	
 	@Override
 	public void updateEntity() {
-		if (this.changeTicks > 0 && !this.worldObj.isRemote) {
+		if (this.changeTicks > 0) {
 			changeTicks--;
 		}
 		if (open &&  inventory[0] != null && changeTicks < 10) {
@@ -245,7 +246,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 			}
 			this.inventory[0] = null;
 		}
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	}
 
