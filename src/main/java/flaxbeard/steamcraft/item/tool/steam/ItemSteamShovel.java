@@ -109,7 +109,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player)
     {
     	this.checkNBT(player);
-		if (stack.getItemDamage() < stack.getMaxDamage()-1) {
+		if (stack.getItemDamage() < stack.getMaxDamage()-3) {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;

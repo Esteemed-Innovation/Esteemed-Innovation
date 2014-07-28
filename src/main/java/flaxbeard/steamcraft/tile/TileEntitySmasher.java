@@ -22,8 +22,8 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter {
-	
-	
+
+
 	private boolean hasBlockUpdate = false;
 	private boolean isActive = false;
 	private boolean isBreaking = false;
@@ -37,13 +37,13 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	public ArrayList<ItemStack> smooshedStack;
 	private boolean running = false;
 	private boolean smashNextRound= false;
-	
+
 	public TileEntitySmasher(){
 		super(ForgeDirection.VALID_DIRECTIONS);
 	}
-	
-	
-	
+
+
+
 	@Override
     public void readFromNBT(NBTTagCompound access)
     {
@@ -85,7 +85,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
         access.setTag("Items", nbttaglist);
     }
-	
+
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -98,8 +98,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         access.setBoolean("running", this.running);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
-	
-	
+
+
 //	private int encodeParticles(){
 //		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
 //		if (!worldObj.isRemote){
@@ -143,15 +143,15 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				}
 				worldObj.spawnParticle("smoke", xCoord+0.5D+xO, y+1.1D, zCoord+0.5D+zO, xV, 0.05F, zV);
 			//	System.out.println("STEAM!");
-				
-				
+
+
 			//}
 			}
 		}
-		
+
 	}
-	
-	
+
+
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
@@ -166,7 +166,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     
     }
-	
+
 	public void updateEntity(){
 		if (!isInitialized){
 			ForgeDirection myDir = myDir();
@@ -184,12 +184,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			if (!worldObj.isRemote){
 				System.out.println(worldObj.getChunkProvider().chunkExists(10, -63));
 			}
-			
+
 		}
 		super.updateEntity();
 		if (!worldObj.isRemote){
 			int[] target = getTarget(1);
-			
+
 			int x = target[0], y = yCoord, z = target[1];
 			if (this.spinup == 1) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
@@ -198,7 +198,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 			}
 			if (extendedTicks == 5) {
-				
+
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.break", 0.5F, (float) (0.75F+(Math.random()*0.1F)));
 			}
 			if (extendedTicks > 0 && extendedTicks < 6) {
@@ -206,11 +206,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, smooshingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
 				}
 			}
-			
+
 			//Remote == client, might as well not run on server
-			
+
 			//Flag does nothing
-			
+
 			//handle state changes
 			if (this.shouldStop){
 				//System.out.println("shouldStop");
@@ -225,13 +225,13 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				return;
 			}	
 			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteam() > 100 && !isActive){
-				
+
 				//System.out.println("Smash next round!");
 				this.smashNextRound = true;
 				return;
 				//System.out.println("I should never get here");
-			
-				
+
+
 			}
 			boolean smashThisRound = false;
 				//System.out.println("Status: isActive: "+isActive+"; isBreaking: "+isBreaking+"; shouldStop: "+shouldStop);
@@ -241,7 +241,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				this.smashNextRound = false;
 			}
 			if (smashThisRound){
-				
+
 				//System.out.println("Smashing!");
 				if (this.hasSomethingToSmash() && !this.isActive){
 					this.decrSteam(100);
@@ -251,7 +251,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 					this.isBreaking = true;
 				}
 			}
-			
+
 			//handle processing
 			if (this.isActive){
 				// if we haven't spun up yet, do it.
@@ -268,14 +268,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 						// spinup complete. SMAASH!
 						if (this.spinup == 40){
 							//System.out.println("SMAAAAASH");
-							
+
 							if (!worldObj.isAirBlock(x, y, z) && worldObj.getBlock(x,y,z) != Blocks.bedrock && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 								this.spinup++;
 								if (this.getBlockMetadata() % 2 == 0) {
 									try{
 										this.smooshingBlock = worldObj.getBlock(x, y, z);
 										this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
-			
+
 										this.smooshedStack = smooshingBlock.getDrops(worldObj, x, y, z, smooshingMeta, 0);
 									} catch (Exception e){
 										System.out.println("================== WOULD HAVE CRASHED ==================");
@@ -306,39 +306,39 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 										this.spinup++;
 										return;
 									}
-										
-										
-									
+
+
+
 								}
-								
-								
+
+
 							}
 						}
 						this.spinup++;
-					
+
 					// if we've spun up, extend
 					} else if (this.extendedLength < 0.5F && !this.shouldStop){
 						//System.out.println("Extending: "+this.extendedLength);
 						this.extendedLength += 0.1F;
 						if (this.extendedTicks == 3){
-							
+
 							if (this.getBlockMetadata() % 2 == 0 && !worldObj.isRemote) spawnItems(x, y, z);
-							
+
 						}
 						this.extendedTicks++;
-					
+
 					// we're done extending. Time to go inactive and start retracting	
 					} else {
 						this.isBreaking = false;
 						this.spinup = 0;
-						
+
 					}
 				} else {
 					// Get back in line!
 					if (this.extendedLength > 0.0F){
 						this.extendedLength -= 0.025F;
 						this.extendedTicks++;
-						
+
 						//System.out.println("Retracting: "+this.extendedLength);
 						if (this.extendedLength < 0F){ this.extendedLength = 0F;}
 					} else {
@@ -350,11 +350,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 						if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy){
 							worldObj.setBlockToAir(x, y, z);
 						}
-						
+
 					}
 				}
 				//Mark for sync
-				
+
 			} else if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.dummy && getBlockMetadata() % 2 == 0){
 				worldObj.setBlockToAir(x, y, z);
 			} 
@@ -375,11 +375,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 								this.smooshingBlock = worldObj.getBlock(x, y, z);
 								this.smooshingMeta = worldObj.getBlockMetadata(x, y, z);
 							} catch (Exception e) {
-								
+
 							}
 						}
 					}
-						
+
 				} else if (this.extendedTicks < 25){
 					this.extendedTicks++;
 				}
@@ -387,21 +387,25 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				this.spinup = 0;
 				this.extendedTicks = 0;
 			}
-			
+
 		}
-		
+
 
 	}
 
 	private void spawnItems(int x, int y, int z){
 		if (smooshedStack != null) {
 			for (ItemStack stack : smooshedStack) {
-				int id = OreDictionary.getOreID(stack);
+				int[] ids = OreDictionary.getOreIDs(stack);
 				boolean isSmashableOre = false;
-				try {
-					isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
-				} catch (Exception e) {
-					
+				int id = 0;
+				if (ids != null && ids.length > 0) {
+					id = OreDictionary.getOreIDs(stack)[0];
+					try {
+						isSmashableOre =  ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
+					} catch (Exception e) {
+						
+					}
 				}
 				if ( isSmashableOre) {
 					//Chance you'll get double
@@ -420,7 +424,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			}
 		}
 	}
-	
+
 	private boolean hasSomethingToSmash() {
 		//System.out.println("Can I smash anything?");
 		int[] target = getTarget(1);
@@ -432,22 +436,22 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			//System.out.println("No =( " + x + ", " + y + ", " + z);
 			return false;
 		}
-		
+
 	}
 
 	public boolean hasPartner(){
 	//	System.out.println("Do I have a partner?");
 		int[] target = getTarget(2);
 		int x = target[0], y=yCoord, z=target[1], opposite=target[2];
-		
+
 		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).getSteam() > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
 		//	System.out.println("I have a partner!");
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	// returns x, z, opposite
 	private int[] getTarget(int distance){
 		int x = xCoord, z = zCoord, opposite = 0, meta = getBlockMetadata();
@@ -459,15 +463,15 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			case 5: x+=distance; opposite=4; break;
 			default: break;
 		}
-		
+
 		return new int[]{x, z, opposite};
 	}
-		
+
 
 	public void blockUpdate() {
 		this.hasBlockUpdate = true;
 	}
-	
+
 	public boolean hasUpdate(){
 		return hasBlockUpdate;
 	}
@@ -487,6 +491,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		}
 		return ForgeDirection.NORTH;
 	}
-	
-	
+
+
 }

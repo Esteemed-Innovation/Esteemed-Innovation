@@ -114,7 +114,7 @@ public class SteamcraftTickHandler {
 				}
 				if (isShooting && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 					inUse = true;
-					Minecraft.getMinecraft().gameSettings.fovSetting = -0.85F;
+					Minecraft.getMinecraft().gameSettings.fovSetting -= 30F;
 					Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.3F;
 					this.renderTelescopeOverlay();
 				}
@@ -133,13 +133,13 @@ public class SteamcraftTickHandler {
 		}
 		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F) {
 			this.zoom-=1.0F;
-			Minecraft.getMinecraft().gameSettings.fovSetting += 0.05F;
+			Minecraft.getMinecraft().gameSettings.fovSetting += 2.5F;
 			Minecraft.getMinecraft().gameSettings.mouseSensitivity += 0.01F;
 
 		}
-		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindUseItem.getIsKeyPressed() && zoom < 34F) {
+		if (inUse && Minecraft.getMinecraft().gameSettings.keyBindUseItem.getIsKeyPressed() && Minecraft.getMinecraft().gameSettings.fovSetting > 5F) {
 			this.zoom+=1.0F;
-			Minecraft.getMinecraft().gameSettings.fovSetting -= 0.05F;
+			Minecraft.getMinecraft().gameSettings.fovSetting -= 2.5F;
 			Minecraft.getMinecraft().gameSettings.mouseSensitivity -= 0.01F;
 		}
 	}

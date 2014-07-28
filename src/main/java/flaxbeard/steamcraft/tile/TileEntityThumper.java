@@ -16,10 +16,10 @@ import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter{
-	
+
 	public int progress = 0;
 	private boolean isRunning = false;
-	
+
 	public TileEntityThumper(){
 		super(new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST});
 		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
@@ -38,7 +38,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 			} else {
 				this.progress = 0;
 			}
-			
+
 		} else {
 			if (this.getSteam() >= 200 && this.progress == 0) {
 				if (! this.isRunning){
@@ -55,7 +55,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 			if (this.progress == 15) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
 			}
-		
+
 			if (progress > 0 && progress < 110) {
 				progress++;
 			}
@@ -84,7 +84,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 							ForgeDirection[] moveDirs2 = { ForgeDirection.DOWN, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.WEST,ForgeDirection.WEST,ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST };
 							ForgeDirection[] moveDirsNotUp2 = { ForgeDirection.DOWN, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.EAST, ForgeDirection.EAST,ForgeDirection.EAST,ForgeDirection.WEST,ForgeDirection.WEST,ForgeDirection.WEST ,ForgeDirection.WEST ,ForgeDirection.WEST };
 							ForgeDirection[] forbiddenDirs2 = { ForgeDirection.NORTH, ForgeDirection.SOUTH };
-	
+
 							moveDirs = moveDirs2;
 							moveDirsNotUp = moveDirsNotUp2;
 							forbiddenDirs = forbiddenDirs2;
@@ -94,12 +94,12 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 							ForgeDirection[] moveDirs2 = { ForgeDirection.DOWN, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH };
 							ForgeDirection[] moveDirsNotUp2 = { ForgeDirection.DOWN, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.NORTH, ForgeDirection.NORTH,ForgeDirection.NORTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH,ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH };
 							ForgeDirection[] forbiddenDirs2 = { ForgeDirection.EAST, ForgeDirection.WEST };
-	
+
 							moveDirs = moveDirs2;
 							moveDirsNotUp = moveDirsNotUp2;
 							forbiddenDirs = forbiddenDirs2;
 						}
-				      
+
 				        while (!hasTarget && i < 160) {
 				        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && (worldObj.getBlock(target.posX, target.posY, target.posZ).getBlockHardness(worldObj,target.posX, target.posY, target.posZ) != -1.0F) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
 				        		hasTarget = true;
@@ -115,7 +115,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 				        		}
 				        		else
 				        		{
-				        			
+
 				        			ForgeDirection direction = moveDirsNotUp[worldObj.rand.nextInt(moveDirsNotUp.length)];
 				        			if (this.worldObj.rand.nextInt(50) == 0) {
 					        			direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
@@ -142,11 +142,11 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	}
-	
-	
+
+
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
-	        return AxisAlignedBB.getAABBPool().getAABB(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 5, this.zCoord + 1);
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 5, this.zCoord + 1);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
         par1NBTTagCompound.setShort("progress",(short) this.progress);
 
     }
-	
+
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -175,7 +175,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
-	    
+
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)

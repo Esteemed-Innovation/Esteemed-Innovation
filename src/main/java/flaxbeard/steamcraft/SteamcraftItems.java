@@ -23,7 +23,6 @@ import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemAstrolabe;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitArmor.ExosuitSlot;
-import flaxbeard.steamcraft.item.ItemExosuitArmorThaum;
 import flaxbeard.steamcraft.item.ItemExosuitJetpack;
 import flaxbeard.steamcraft.item.ItemExosuitSidepack;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
@@ -38,11 +37,9 @@ import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
-import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
-import flaxbeard.steamcraft.item.firearm.ItemEnhancementFireMusket;
-import flaxbeard.steamcraft.item.firearm.ItemEnhancementRevolver;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
+import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftAxe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftHoe;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftPickaxe;
@@ -155,13 +152,13 @@ public class SteamcraftItems {
 		}
 		GameRegistry.registerItem(survivalist, "survivalist");
 		
-		if (Loader.isModLoaded("Thaumcraft")) {
-			exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
-		}
-		else
-		{
+	//	if (Loader.isModLoaded("Thaumcraft")) {
+		//	exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+		//}
+		//else
+		//{
 			exoArmorHead = new ItemExosuitArmor(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
-		}
+		//}
 		GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
 		exoArmorBody = new ItemExosuitArmor(1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
 		GameRegistry.registerItem(exoArmorBody, "exoArmorBody");

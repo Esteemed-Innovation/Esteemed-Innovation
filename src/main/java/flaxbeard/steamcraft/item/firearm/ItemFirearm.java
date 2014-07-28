@@ -400,7 +400,6 @@ public class ItemFirearm extends Item implements IEngineerable
 			enhancements.setString("id", enhancement.getID());
 			me.stackTagCompound.setTag("enhancements", enhancements);
 		}
-
 	}
 
 	@Override

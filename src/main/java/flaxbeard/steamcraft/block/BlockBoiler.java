@@ -305,8 +305,7 @@ public class BlockBoiler extends BlockSteamTransporter {
 
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
-    
-    @Override
+
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     	return new ItemStack(SteamcraftBlocks.boiler);
     }
