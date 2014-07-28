@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -18,57 +17,58 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISteamTransporter {
-	protected int steam;
+public class TileEntitySteamPipe extends SteamTransporterTileEntity implements IFluidHandler,ISteamTransporter {
 	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
-
-	@Override
-	public float getPressure() {
-		return this.getSteam()/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return true;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam += amount;
+	
+	protected boolean isLeaking = false;
+	
+	public TileEntitySteamPipe(){
+		super(ForgeDirection.values());
 	}
 	
-	@Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
-    }
+	public TileEntitySteamPipe(int capacity){
+		this();
+		this.capacity = capacity;
+	}
 
-    @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
-    }
+//	@Override
+//	public int getCapacity() {
+//		return 1000;
+//	}
+
+//	@Override
+//	public int getSteam() {
+//		return super.getSteam();
+//	}
+
+//	@Override
+//	public void insertSteam(int amount, ForgeDirection face) {
+//		this.steam += amount;
+//	}
+	
+//	@Override
+//    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+//    {
+//        super.readFromNBT(par1NBTTagCompound);
+//        this.steam = par1NBTTagCompound.getShort("steam");
+//    }
+
+//    @Override
+//    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+//    {
+//        super.writeToNBT(par1NBTTagCompound);
+//        par1NBTTagCompound.setShort("steam",(short) this.steam);
+//    }
 	
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
+    	NBTTagCompound access = super.getDescriptionTag();
+    	access.setBoolean("isLeaking", this.isLeaking);
+        
         
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -79,9 +79,13 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
+    	this.isLeaking = access.getBoolean("isLeaking");
     	
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+    
+    public void superUpdate(){
+    	super.updateEntity();
     }
 	
 	@Override
@@ -89,10 +93,7 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 		if (Steamcraft.steamRegistered) {
 			this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
 		}
-		if (!this.worldObj.isRemote) {
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		}
+		super.updateEntity();
 
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
 		for (ForgeDirection direction : ForgeDirection.values()) {
@@ -115,39 +116,52 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 		int i = 0;
 		if (myDirections.size() > 0) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
-
-			if (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+			if (!worldObj.isRemote){
+				if (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+					if (!isLeaking){
+						System.out.println("Block is leaking!");
+						isLeaking = true;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						markDirty();
+					}
+					
+				} else {
+					if (isLeaking){
+						System.out.println("Block is no longer leaking!");
+						isLeaking = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						markDirty();
+					}
+				}
+				while (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					if (worldObj.isRemote){
+						System.out.println("I AM THE CLIENT!");
+					}
+					this.decrSteam(1);
+					
+					i++;
+				}
 			}
-			while (myDirections.size() == 2 && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.steam--;
+			if (worldObj.isRemote && this.isLeaking){
 				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
-				i++;
 			}
+			
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		
+		
 	}
 	
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return true;
-	}
-	
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return true;
-	}
+//	@Override
+//	public boolean acceptsGauge(ForgeDirection face) {
+//		return true;
+//	}
 
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		if (resource.amount >= 10) {
 			if (doFill) {
-				this.steam += (resource.amount-resource.amount%10)/10;
+				this.insertSteam((resource.amount-resource.amount%10)/10, from);
 			}
 			FluidStack resource2 = resource.copy();
 			resource2.amount = resource.amount-resource.amount%10;
@@ -186,11 +200,6 @@ public class TileEntitySteamPipe extends TileEntity implements IFluidHandler,ISt
 			return new FluidTankInfo[] {dummyFluidTank.getInfo()};
 		}
 		return null;
-	}
-	
-	public void explode(){
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		this.steam = 0;
 	}
 
 }

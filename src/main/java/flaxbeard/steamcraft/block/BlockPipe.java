@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.block;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -17,9 +16,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
-public class BlockPipe extends BlockContainer {
+public class BlockPipe extends BlockSteamTransporter {
 	
 	public IIcon sideIcon;
 	public IIcon copperIcon;
