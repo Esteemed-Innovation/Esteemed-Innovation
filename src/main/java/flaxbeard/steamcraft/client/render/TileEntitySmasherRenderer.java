@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.client.render;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -17,7 +16,7 @@ import flaxbeard.steamcraft.client.render.model.ModelSmasher;
 import flaxbeard.steamcraft.misc.WorldContainer;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
-public class e extends TileEntitySpecialRenderer implements IInventoryTESR {
+public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 	private static final ModelSmasher model = new ModelSmasher();
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/smasher.png");
 
