@@ -17,6 +17,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -751,7 +752,7 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0 && SteamcraftItems.steamDrill.canHarvestBlock(event.block, player.getHeldItem())) {
+			    	if (speed > 0 && Items.iron_pickaxe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
@@ -761,7 +762,7 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
+			    	if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
@@ -772,7 +773,8 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0 && ForgeHooks.isToolEffective(player.getHeldItem(), event.block, event.metadata)) {
+			    	
+			    	if (speed > 0 && Items.diamond_shovel.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+19.0F*(speed/3000.0F);
 			    	}
 				}

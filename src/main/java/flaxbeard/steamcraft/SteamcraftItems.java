@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.init.Items;
@@ -221,7 +222,6 @@ public class SteamcraftItems {
 		
 		smashedOre = new ItemSmashedOre().setUnlocalizedName("steamcraft:smashedOre").setMaxStackSize(64).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:smashedOre");
 		GameRegistry.registerItem(smashedOre, "smashedOre");
-		((ItemSmashedOre)smashedOre).registerDusts();
 		
 		
 //		fakeOre = new Item().setUnlocalizedName("steamcraft:fakeOre");
@@ -285,15 +285,15 @@ public class SteamcraftItems {
 		
 		steamcraftPlate = new ItemSteamcraftPlate().setUnlocalizedName("steamcraft:plate").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftPlate, "steamcraftPlate");
-		OreDictionary.registerOre("plateCopper", new ItemStack(steamcraftPlate,1,0));
-		OreDictionary.registerOre("plateZinc", new ItemStack(steamcraftPlate,1,1));
-		OreDictionary.registerOre("plateIron", new ItemStack(steamcraftPlate,1,2));
-		OreDictionary.registerOre("plateGold", new ItemStack(steamcraftPlate,1,3));
-		OreDictionary.registerOre("plateBrass", new ItemStack(steamcraftPlate,1,4));
-		OreDictionary.registerOre("plateThaumium", new ItemStack(steamcraftPlate,1,5));
-		OreDictionary.registerOre("plateTerrasteel", new ItemStack(steamcraftPlate,1,6));
-		OreDictionary.registerOre("plateElementium", new ItemStack(steamcraftPlate,1,7));
-		OreDictionary.registerOre("plateFiery", new ItemStack(steamcraftPlate,1,8));
+		OreDictionary.registerOre("plateSteamcraftCopper", new ItemStack(steamcraftPlate,1,0));
+		OreDictionary.registerOre("plateSteamcraftZinc", new ItemStack(steamcraftPlate,1,1));
+		OreDictionary.registerOre("plateSteamcraftIron", new ItemStack(steamcraftPlate,1,2));
+		OreDictionary.registerOre("plateSteamcraftGold", new ItemStack(steamcraftPlate,1,3));
+		OreDictionary.registerOre("plateSteamcraftBrass", new ItemStack(steamcraftPlate,1,4));
+		OreDictionary.registerOre("plateSteamcraftThaumium", new ItemStack(steamcraftPlate,1,5));
+		OreDictionary.registerOre("plateSteamcraftTerrasteel", new ItemStack(steamcraftPlate,1,6));
+		OreDictionary.registerOre("plateSteamcraftElementium", new ItemStack(steamcraftPlate,1,7));
+		OreDictionary.registerOre("plateSteamcraftFiery", new ItemStack(steamcraftPlate,1,8));
 
 		exosuitPlate = new ItemExosuitPlate().setUnlocalizedName("steamcraft:exosuitPlate").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(exosuitPlate, "exosuitPlate");
@@ -302,7 +302,6 @@ public class SteamcraftItems {
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron",new ItemStack(exosuitPlate,1,2),"Iron","Iron","steamcraft.plate.iron"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold",new ItemStack(exosuitPlate,1,3),"Gold","Gold","steamcraft.plate.gold"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass",new ItemStack(exosuitPlate,1,4),"Brass","Brass","steamcraft.plate.brass"));
-
     }
     
     public static void registerToolSet(ToolMaterial tool, String string, Object repair, boolean addRecipes) {
@@ -461,4 +460,16 @@ public class SteamcraftItems {
     public static Item feet(String string) {
     	return tools.get("feet"+string);
     }
+    
+    public static void reregisterPlates(){
+    	String[] plates = {"Iron","Copper","Zinc","Brass","Thaumium","Gold"};
+    	for (String plate : plates){
+    		ArrayList<ItemStack> items = OreDictionary.getOres("plate"+plate);
+    		for (ItemStack item : items){
+    			OreDictionary.registerOre("plateSteamcraft"+plate, item);
+    		}
+    	}
+    	
+    }
+    
 }

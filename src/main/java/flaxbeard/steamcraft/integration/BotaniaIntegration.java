@@ -57,7 +57,7 @@ public class BotaniaIntegration {
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotTerrasteel", liquidTerrasteel, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("plateTerrasteel", liquidTerrasteel, 6);
+		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel, 6);
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),"Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
 		SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
 
