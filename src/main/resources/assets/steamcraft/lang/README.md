@@ -7,6 +7,7 @@ Current translations are:
 <li>English - USA</li>
 <li>Brazilian - Portuguese</li>
 <li>Chinese - China</li>
+<li>Tradtional Chinese - China</li>
 <li>German - Germany</li>
 </ul>
 <br>
@@ -20,4 +21,5 @@ Be sure to credit yourself down here:
 <li>Mrkwtkr: zh_CN</li>
 <li>Gholuk: de_DE</li>
 <li>Vexatos: de_DE</li>
+<li>mymagadsl: zh_TW</li>
 </ul></b>
