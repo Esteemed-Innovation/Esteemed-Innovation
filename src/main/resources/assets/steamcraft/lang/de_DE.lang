@@ -1,6 +1,3 @@
-
-<!-- saved from url=(0051)http://www.loaditup.de/files/822645_u5gq6su4ft.lang -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>img.chromoji { width:1em !important; height:1em !important; }.chromoji-font, #chromoji-font { font-size:1em !important; }</style></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">steamcraft.book.index=Index
 steamcraft.book.info=Leitfaden zum Dampfbetrieb
 steamcraft.book.by=von
 steamcraft.book.shapeless=Formlos
@@ -269,4 +266,4 @@ tile.steamcraft:smasher.name=Zertrümmerer
 tile.steamcraft:thumper.name=Dampf-Bohrhammer
 tile.steamcraft:flashBoiler.name=Schnellheizer
 tile.steamcraft:ruptureDisc.0.name=Überdruckventil
-tile.steamcraft:ruptureDisc.1.name=Gebrochenes Überdruckventil</pre></body></html>
+tile.steamcraft:ruptureDisc.1.name=Gebrochenes Überdruckventil
