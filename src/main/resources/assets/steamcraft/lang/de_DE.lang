@@ -1,0 +1,270 @@
+steamcraft.book.index=Index
+steamcraft.book.info=Leitfaden zum Dampfbetrieb
+steamcraft.book.by=von
+steamcraft.book.shapeless=Formlos
+item.steamcraft:book.name=Geniale Erfindungen
+
+steamcraft.astrolabe.target=Ziel:
+steamcraft.astrolabe.noTarget=Kein Ziel!
+steamcraft.astrolabe.dimension=Dimension
+steamcraft.astrolabe.dimension.overworld=der Oberwelt
+steamcraft.astrolabe.dimension.nether=der Dimension: Nether
+steamcraft.astrolabe.dimension.end=der Dimension: Ende
+steamcraft.astrolabe.in=in
+
+steamcraft.waila.pressure=Druck
+steamcraft.waila.valveOpen=Ventil offen
+steamcraft.waila.valveClosed=Ventil geschlossen
+steamcraft.waila.complete=Fertig
+steamcraft.waila.filling=Füllt
+steamcraft.waila.mold=Form:
+
+steamcraft.exosuit.thrustTick=consumed per tick of thruster use
+steamcraft.exosuit.flyTick=consumed per flying tick
+
+
+category.Basics.name=Grundlagen
+research.Ores.name=Erze
+research.Ores.0=In den Tiefen dieser Welt stieß ich immer wieder auf reiche Kupfer- und Zinkvorkommen.<br>Diese eigenartigen Metalle haben keinen erkennbaren Nutzen, aber ich bin sicher, dass ich in der Zukunft eine Verwendungsmöglichkeit für sie finde.
+research.Book.name=Vorwort
+research.Book.0=Ich habe mich dazu entschieden, die fantastische Welt der Dampftechnologie zu betreten. In diesem Buch werde ich meine spannenden Entdeckungen aufzeichnen.<br>Sobald ich neue Erkenntnisse gewinne, werde ich diese niederschreiben für den späteren Gebrauch.
+research.Bits.name=Dies und Das
+research.Bits.0=Hier dokumentiere ich die verschiedenen Komponenten für die Fertigung<br>Einen Kolben mit Messing zu beschichten, macht ihn widerstandsfähiger und dadurch zum nützlichen Bestandteil vieler Dampfapparaturen.
+research.Bits.1=Eine einfache Turbine aus Messing bewährt sich als wertvolle Komponente - ohne Zweifel für viele Zwecke nützlich, speziell, um Dinge anzutreiben.
+research.Spyglass.name=Fernglas
+research.Spyglass.0=Wär hätte gedacht, dass ein paar Glaslinsen und ein Messinggehäuse als eine Art Lupe dienen können? Jetzt kann ich Schätze schon von einer Meile aus erspähen!<br>Während man das Gerät hält, vergrößert ein Rechtsklick, während ein Linksklick wieder verkleinert.
+research.Survivalist.name=Überlebensausrüstung
+research.Survivalist.0=Zu oft schon habe ich meine kostbaren, verzauberten Werkzeuge zerbrochen. Nun habe ich dieses kleine Werkzeug erfunden, welches ich mit mir herumtragen kann. Solange die Überlebensausrüstung in der Schnellzugriffsleiste ist, wird sie mich davon abhalten, Werkzeug zu benutzen, dass dabei ist, zu zerbrechen.
+research.SurvivalistBaubles.0=Zu oft schon habe ich meine kostbaren, verzauberten Werkzeuge zerbrochen. Nun habe ich dieses kleine Werkzeug erfunden, welches ich mit mir herumtragen kann und solche Vorfälle in Zukunft vermeidet. Solange die Überlebensausrüstung am Gürtel getragen wird, wird sie mich davon abhalten, Werkzeug zu benutzen, dass dabei ist, zu zerbrechen.
+
+research.Plates.name=Bleche
+research.Plates.0=Bei der Arbeit mit meinem neuen Gussform-Aufspanner habe ich einen Weg gefunden, Metalle effizienter zu nutzen. Ich kann Bleche gießen, die nur den Bruchteil eines Barren kosten, aber in vielen Fällen an Stelle eines solchen eingesetzt werden können.
+
+category.MetalCasting.name=Metallguss
+research.Crucible.name=Schmelztiegel
+research.Crucible.0=Endlich habe ich einen Weg gefunden, Legierungen verschiedener Metalle zu erstellen: der Schmelztiegel!<br>Um ihn zu nutzen, platziere ich den Schmelztiegel über einem offenen Feuer. Dann kann ich verschiedene Metalle hineinwerfen, aber keine Erze.
+research.Crucible.1=Das Metall wird flüssig und verschmilzt zu einer Legierung, falls möglich. Rechtsklick auf den Schmelztiegel mit einer leeren Hand kippt den Inhalt des Schmelztiegels in eine angrenzende Gussform.
+research.Mold.name=Gussform-Aufspanner
+research.Mold.0=Der Schmelztiegel ist nutzlos, wenn man das Metall nicht in die benötigte Form bringen kann. Hier kommen der Gussform-Aufspanner in's Spiel.<br>Einfach einen Aufspanner mit der offenen Seite an einen Schmelztiegel stellen.
+research.Mold.1=Rechtsklick auf den Aufspanner wird ihn öffnen und schließen. Die Gussform kann mit Umschalttaste und Rechtsklick entfernt werden.<br>Um Metall zu gießen, schließe ich den Aufspanner und gieße dann flüssigiges Metall hinein. Anschließend öffne ich ihn wieder und entnehme mein gegossenes Metall.
+research.Molds.name=Gussform
+research.Molds.0=Gussformen können im Gussform-Aufspanner platziert werden, um das Erzeugnis festzulegen.<br>Rechtklick mit einer Gussform auf eine Gussformphräse wird alle verschiedenen Gussformen durchlaufen.
+research.Brass.name=Messing
+research.Brass.0=Ich habe eine vielversprechende Legierung entdeckt. Drei Teile Kupfer und ein Teil Zink werden zu Messing, einer gold-gläzenden Legierung.<br>Messing scheint korrosionswiderständig zu sein, was sich als nützlich erweisen wird.
+research.GildedGold.name=Vergoldetes Eisen
+research.GildedGold.0=Ich habe einen Weg gefunden die massive Struktur von Eisen mit den magischen Eigenschaften von Gold zu vereinen: Beschichtung. Ich beschichte Eisenbarren mit Gold, um ihre Eigenarten zu kombinieren.
+research.GildedGold.1=Rechtsklick auf einen mit Gold gefüllten Schmelztiegel mit einem Eisenbarren wird die Menge eines Nuggets and Gold verbrauchen. Es entsteht ein Barren mit der Stärke von Eisen und dem Zauber von Gold.
+category.SteamPower.name=Dampfdruck
+category.SteamPower2.name=Dampfdruck
+
+research.Boiler.name=Boiler
+research.Boiler.0=Ich habe ein Gerät erfunden, das es mir erlaubt, gasförmiges Wasser zu produzieren: Dampf. Ich füge Wasser und einen Brennstoff hinein und Dampf entsteht.<br>Dieser Dampf wird aus der Oberseite der Maschine gepumpt.
+research.FlashBoiler.name=Schnellheizer
+research.FlashBoiler.0=Mein Dampfverbrauch steigt kontinuierlich und ich brauche mehr und mehr Boiler. Ich habe es satt, dass zahllose Boiler meine Werkstatt füllen, also entschloss ich mich dazu, etwas überragendes zu bauen. Das Ergebnis?<br>Der Schnellheizer.
+research.FlashBoiler.1=Der Schnellheizer wird gebaut indem man seine Bestandteile in einem Quarder von 2x2x2 anordnet. Dann kann ich ihn in Betrieb nehmen. Der Schnellheizer verbraucht zehnmal soviel Wasser und Brennstoff wie ein normaler Boiler, aber sein Ausstoß ist ebenfalls das Zehnfache. Der Schnellheizer muss aufwärmen und wird zu Beginn nicht so schnell und effizient produzieren, wie auf Betriebstemperatur.
+research.Tank.name=Dampfkessel
+research.Tank.0=Rohre sind großartig, um Dampf zu transportieren, aber ich bin es müde geworden, jedesmal die Boiler nachzufüllen, wenn ich Dampf brauche. Ich habe Kessel gebaut, um dieses Problem zu lösen. Sie speichern große Mengen Dampf, so dass ich ihn später verwenden kann.
+research.Pipe.name=Rohre
+research.Pipe.0=Dampf ist nutzlos ohne eine Möglichkeit ihn zu transportieren, aber ich habe einen effzienten Weg gefunden.<br>Messingrohre sind korrosionswiderständig und daher die perfekten Leiter für Dampf.
+research.Pipe.1=Ein Rohr mit einem Schalter zu kombinieren, erlaubt es mir den Dampffluss zu regulieren. Rechtsklick auf das Ventil öffnet oder schließt das Rohr.
+research.RuptureDisc.name=Überdruckventil
+research.RuptureDisc.0=Einmal zu oft habe ich einen wertvollen Boiler oder eine Maschine verloren, weil der Dampfdruck zu hoch war. Zeit für das Überdruckventil!<br>Um das Überdruckventil zu verwenden, platziere ich es einfach an einer Maschine oder einem Rohr das explodieren könnte.
+research.RuptureDisc.1=Es wird aufbrechen bevor der Druck kritisch wird und Dampf ablassen. Natürlich wird es solange Dampf ablassen, bis es mit einem Zinkblech repariert wurde oder mit einem Zinkblech rechtsgeklickt wurde.
+research.Gauge.name=Druckmesser
+research.Gauge.0=Ich habe eine einfach Methode gefunden, Dampf in einer Leitung zu messen. Ich kann diese Messgeräte einfach an meine Boiler, Rohre, Kessel und anderen Geräte anschließen und sie zeigen mir den Druck an und geben ein entsprechendes starkes Redstone-Signal von sich.
+research.Heater.name=Dampfheizung
+research.Heater.0=Jetzt kann ich Öfen mit Dampf betreiben in dem ich diese raffinierte Dampfheizung einsetze.<br>Dampf erhitzt die Kupferstangen und ermöglicht es einen Ofen ohne Brennstoff zu nutzen. Mehrere Dampfheizungen beschleunigen den Vorgang, verbrauchen aber auch mehr Dampf.
+research.Filler.name=Dampfinfusor
+research.Filler.0=Rohre sind gut um stationäre Maschinen zu betreiben, aber sie sind nicht geeignet für Werkzeuge und Rüstung. Dafür habe ich nun den Dampfinfusor.<br>Einfach ein dampfbetriebenes Gerät einlegen und abwarten.
+research.ItemMortar.name=Dampfmörser
+research.ItemMortar.0=Ich habe eine geniale Art und Weise erfunden, um Gegenstände zu transportieren - eine Dampfdruckkanone!<br>Dieser Dampfmörser schießt Gegenstände in steilem Winkel zum Himmel, damit sie am Zielort einschlagen.
+research.ItemMortar.1=Gegenstände werden einfach mit einem Trichter eingefüllt, das Ziel wird festgelegt und die Gegenstände fliegen.<br>Ein Astrolabium ist meine Wahl den Mörser zu kalibrieren. Zuerst mit Umschalttaste und Rechtklick auf den Zielort klicken, dann mit Rechtklick auf den Dampfmörser.
+research.Hammer.name=Dampfhammer
+research.Hammer.0=Ich habe eine interessante Erfindung gemacht - den Dampfhammer. Er erlaubt es mir die Funktionen des Amboss mit Dampf anstelle von Erfahung zu nutzen.<br>Der Hammer wird über einem Amboss angebracht.
+research.Hammer.1=Rechtsklick wird seine Eingabemaske öffnen, in der ich einstellen kann, was der Hammer machen soll. Wenn ich alles eingestellt habe, führe ich Dampf zu und warte bis die Reparatur oder Umbenennung abgeschlossen ist.
+research.Screw.name=Archimedische Schraube
+research.Screw.0=Ich habe eine Methode gefunden, um Flüssigkeiten in einen angrenzenden Behälter zu pumpen. Diese Schraube wird Flüßigkeiten von ihrem unterem Ende zum oberen Ende fördern, womit ich meine Boiler und andere Tanks auffüllen kann.
+research.Smasher.name=Dampfstampfer
+research.Smasher.0=Ich habe eine Maschine erfunden, die Erze zertrümmern kann, wobei manchmal kostbare Materialien zum Vorschein kommen, die sonst verloren gegangen wären. Platziere zwei Dampfstampfer einander gegenüber mit einem Abstand von einem Block. Nun kann ein Block dazwischen zertrümmert werden.
+research.Thumper.name=Dampf-Bohrhammer
+research.Thumper.0=Ich muss in neuen Maßstäben denken! Ich verschwende meine Zeit mit kleinen Dingen wie dem Wassertransport und dem Zertrümmern von Erz...<br>Nein. Ich muss das größer aufziehen. Jetzt kommt der Dampf-Bohrhammer!
+research.Thumper.1=Die Kraft des Dampf-Bohrhammers geht direkt in den Boden und höhlt dabei einen Tunnel aus. Dieser Tunnel wird aber nicht bis zur Oberfläche reichen und somit verbleiben die Gesteine und Erze im Boden. Ich muss einen Weg finden, sie zu bergen.<br>Gegebenenfalls wird der Dampf-Bohrhammer langsamer und stoppt. Dann sollte er neu ausgerichtet werden.
+
+category.Exosuit.name=Dampfbetriebene Rüstung
+research.Exosuit.name=Dampfbetriebene Rüstung
+research.Exosuit.0=Ich gestalte mir die Welt nach meinen Vorstellungen durch die Kraft des Dampfes... Was kann ich noch verbessern, wenn nicht mich selbst?<br>Dafür habe ich eine Dampfbetriebene Rüstung entworfen.
+research.Exosuit.1=Der Rüstung können Module hinzugefügt werden an einem Konstruktionstisch. Aber vorerst muss ich einen Kessel in der quadratischen Auslassung platzieren. Dann kann ich die Rüstung mit Dampf versorgen.<br>Eine vollständige Dampfbetriebene Rüstung wird meine Bewegungs- und Abbaugeschwindigkeit erhöhen, aber ohne Dampf wird sie mich ausbremsen.
+research.Jetpack.name=Turbinenrucksack
+research.Jetpack.0=Ich habe ein aufregendes Modul für das Bruststück der Dampfbetriebenen Rüstung entworfen, welches mich fliegen lässt.<br>Dieser dampfbetriebene Raketenrucksack verbraucht enorme Mengen Dampf, aber Fliegen ist unbezahlbar.
+research.Wings.name=Dampfflügel
+research.Wings.0=Ich kann durch die Lüfte gleiten wie ein Huhn und das ohne Dampf!<br>Dieses Modul für das Bruststück der Dampfbetriebenen Rüstung wird aktiv sobald ich stürze und bremst dann meinen Fall. Funktion mit der Umschalttaste deaktivieren.
+research.Thrusters.name=Triebwerke
+research.Thrusters.0=Für die Hose der Dampfbetriebenen Rüstung habe ich ein neues Modul entworfen, das meine Bewegung verbessert. Diese Düsen beschleunigen meine Bewegung durch die Luft, bei entsprechendem Dampfverbrauch. Ich kann nun weiter springen und schneller fliegen.
+research.Fist.name=Dampffaust
+research.Fist.0=Dieses Modul für das Bruststück der Dampfbetriebenen Rüstung ist eine spaßige Erfindung. Meine Schläge werden dadurch zu richtigen... Schlägen.<br>Wann immer ich einen Gegner mit meiner Faust schlage, fliegt er ein ganzes Stück zurück. Dabei wird Dampf verbraucht.
+research.FallAssist.name=Sturzbremse
+research.FallAssist.0=Für gefährliches Terrain habe ich dieses Modul für die Stiefel der Dampfbetriebenen Rüstung erfunden. Es verbraucht Dampf um Sturzschäden zu mildern.
+research.Mask.name=Maske der Enthüllung
+research.Mask.0=Wer sagt, dass Thaumaturgie nicht mit Technologie kombiniert werden kann? Ich nicht! Ich habe eine schicke Maske erfunden, die meiner Dampfbetriebenen Rüstung die Fähigkeiten einer Zauberbrille verleiht.
+
+category.SteamTools.name=Dampf-Werkzeuge
+research.SteamTools.name=Dampf-Werkzeuge
+research.SteamTools.0=Nachdem Erfolg meines Dampfstampfers und des Dampf-Bohrhammers, bin ich dazu übergegangen tragbare Varianten dieser Maschinen zu bauen. Endlich ernte ich die Früchte meiner Arbeit in Form eines Dampfbohrers, einer Dampfsäge und einer Dampfschaufel.
+research.SteamTools.1=Diese drei Werkzeuge sind dampfbetrieben und können nicht zerbrechen.<br>Damit sie effizient eingesetzt werden können, müssen sie warmlaufen. Rechtsklick gedrückthalten lässt die Werkzeuge rotieren. Anders als bei meinen anderen Geräten, verbraucht das Arbeiten selbst keinen Dampf.
+
+category.Flintlock.name=Steinschloss-Feuerwaffen
+research.Parts.name=Waffenteile
+research.Parts.0=Steinschloss-Feuerwaffen sind extrem komplizierte Gerätschaften und es werden komplexe Einzelteile benötigt um sie herzustellen. Dieser Abschnitt beschreibt genau wie das vollbracht wird.
+research.Musket.name=Steinschloss-Muskete
+research.Musket.0=Ich habe eine Möglichkeit gefunden die Kraft des Feuers in ein effizientes Mordwerkzeug zu bündeln: die Muskete. Diese Waffe muss nach jedem Schuss nachgeladen werden mit Treibladungen als Munition. Rechtsklick zum Nachladen und Zielen.
+research.Blunderbuss.name=Steinschluss-Donnerbüchse
+research.Blunderbuss.0=Ein größerer Messinglauf mit einem modifizierten Musketenmechanismus ergibt eine interessante Kombination, die ich Donnerbüchse nenne. Diese Waffe feuert viele, aber ungenaue Projektile, die es ermöglichen mehrere Gegner zu treffen.
+research.Pistol.name=Steinschloss-Pistole
+research.Pistol.0=Ich habe meine Muskete auf eine handlicherere Größe gestaucht, die Steinschloss-Pistole. Sie kann schneller bedient werden. Natürlich bedeutet kleinerer Lauf auch weniger Schaden und Genauigkeit, aber die Geschwindigkeit macht das wieder gut.
+itemGroup.steamcraft=FSP
+itemGroup.steamcraftTools=FSP Werkzeuge
+steamcraft.enhancementText=Verbesserungen:
+
+item.steamcraft:musketCartridge.name=Treibladung
+item.steamcraft:musket.name=Steinschloss-Muskete
+item.steamcraft:pistol.name=Steinschloss-Pistole
+item.steamcraft:revolver.name=Steinschloss-Revolver
+item.steamcraft:blunderbuss.name=Steinschloss-Donnerbüchse
+item.steamcraft:blunderbussAblaze.name=Gezündete Steinschloss-Donnerbüchse
+item.steamcraft:spyglass.name=Fernglas
+item.steamcraft:musketMarksman.name=Scharfschützen-Steinschloss-Muskete
+enhancement.steamcraft:musketMarksman=Zielfernrohr
+item.steamcraft:musketAblaze.name=Gezündete Steinschloss-Muskete
+enhancement.steamcraft:musketAblaze=Gezündete
+enhancement.steamcraft:revolver=Revolver-Teile
+
+item.steamcraft:exoArmorHead.name=Helm der Dampfbetriebenen Rüstung
+item.steamcraft:exoArmorBody.name=Bruststück der Dampfbetriebenen Rüstung
+item.steamcraft:exoArmorLegs.name=Hose der Dampfbetriebenen Rüstung 
+item.steamcraft:exoArmorFeet.name=Stiefel der Dampfbetriebenen Rüstung
+
+item.steamcraft:ingot.0.name=Kupferbarren
+item.steamcraft:ingot.1.name=Zinkbarren
+item.steamcraft:ingot.2.name=Messingbarren
+item.steamcraft:ingot.3.name=Vergoldeter Eisenbarren
+
+item.steamcraft:nugget.0.name=Kupfernugget
+item.steamcraft:nugget.1.name=Zinknugget
+item.steamcraft:nugget.2.name=Eisennugget
+item.steamcraft:nugget.3.name=Messingnugget
+
+item.steamcraft:smashedOre.Iron.name=Zertrümmertes Eisenerz
+item.steamcraft:smashedOre.Gold.name=Zertrümmertes Golderz
+item.steamcraft:smashedOre.Copper.name=Zertrümmertes Kupfererz
+item.steamcraft:smashedOre.Zinc.name=Zertrümmertes Zinkerz
+item.steamcraft:smashedOre.Tin.name=Zertrümmertes Zinnerz
+item.steamcraft:smashedOre.Nickel.name=Zertrümmertes Nickelerz
+item.steamcraft:smashedOre.Silver.name=Zertrümmertes Silbererz
+item.steamcraft:smashedOre.Lead.name=Zertrümmertes Bleierz
+item.steamcraft:smashedOre.Aluminum.name=Zertrümmertes Aluminiumerz
+item.steamcraft:smashedOre.Osmium.name=Zertrümmertes Osmiumerz
+item.steamcraft:smashedOre.Cobalt.name=Zertrümmertes Kobalterz
+item.steamcraft:smashedOre.Ardite.name=Zertrümmertes Arditerz
+item.steamcraft:smashedOre.Cinnabar.name=Zertrümmertes Zinnobererz
+
+item.steamcraft:smashedOre.PoorIron.name=Zertrümmertes minderes Eisenerz
+item.steamcraft:smashedOre.PoorGold.name=Zertrümmertes minderes Golderz
+item.steamcraft:smashedOre.PoorCopper.name=Zertrümmertes minderes Kupfererz
+item.steamcraft:smashedOre.PoorZinc.name=Zertrümmertes minderes Zinkerz
+item.steamcraft:smashedOre.PoorTin.name=Zertrümmertes minderes Zinnerz
+
+item.steamcraft:crafting.0.name=Messingkolben
+item.steamcraft:crafting.1.name=Holzschaft
+item.steamcraft:crafting.2.name=Eisenlauf
+item.steamcraft:crafting.3.name=Donnerbüchsenlauf
+item.steamcraft:crafting.4.name=Steinschloss
+item.steamcraft:crafting.5.name=Messingturbine
+
+item.steamcraft:plate.0.name=Kupferblech
+item.steamcraft:plate.1.name=Zinkblech
+item.steamcraft:plate.2.name=Eisenblech
+item.steamcraft:plate.3.name=Goldblech
+item.steamcraft:plate.4.name=Messingblech
+item.steamcraft:plate.5.name=Thaumiumblech
+
+item.steamcraft:ingotMold.name=Barren-Gussform
+item.steamcraft:nuggetMold.name=Nugget-Gussform
+item.steamcraft:plateMold.name=Blech-Gussform
+item.steamcraft:blankMold.name=Gussform-Rohling
+
+item.steamcraft:helmGildedGold.name=Vergoldeter Eisenhelm
+item.steamcraft:chestGildedGold.name=Vergoldete Eisenrüstung
+item.steamcraft:legsGildedGold.name=Vergoldete Eisenhose
+item.steamcraft:feetGildedGold.name=Vergoldete Eisenstiefel
+
+item.steamcraft:pickGildedGold.name=Vergoldete Eisenspitzhacke
+item.steamcraft:axeGildedGold.name=Vergoldete Eisenaxt
+item.steamcraft:shovelGildedGold.name=Vergoldete Eisenschaufel
+item.steamcraft:hoeGildedGold.name=Vergoldete Eisenhacke
+item.steamcraft:swordGildedGold.name=Vergoldetes Eisenschwert
+
+item.steamcraft:helmBrass.name=Messinghelm
+item.steamcraft:chestBrass.name=Messingrüstung
+item.steamcraft:legsBrass.name=Messinghose
+item.steamcraft:feetBrass.name=Messingstiefel
+
+item.steamcraft:pickBrass.name=Messingspitzhacke
+item.steamcraft:axeBrass.name=Messingaxt
+item.steamcraft:shovelBrass.name=Messingschaufel
+item.steamcraft:hoeBrass.name=Messinghacke
+item.steamcraft:swordBrass.name=Messingschwert
+
+item.steamcraft:steamDrill.name=Dampfbohrer
+item.steamcraft:steamAxe.name=Dampfsäge
+item.steamcraft:steamShovel.name=Dampfschaufel
+item.steamcraft:astrolabe.name=Astrolabium
+
+item.steamcraft:survivalist.name=Überlebensausrüstung
+
+item.steamcraft:powerFist.name=Dampffaust
+item.steamcraft:fallAssist.name=Sturzbremse
+item.steamcraft:jetpack.name=Turbinenrucksack
+item.steamcraft:wings.name=Dampfflügel
+item.steamcraft:goggleUpgrade.name=Maske der Enthüllung
+item.steamcraft:floralLaurel.name=Floral Laurel
+item.steamcraft:thrusters.name=Triebwerke
+
+item.steamcraft:steamedChicken.name=Gedünstetes Huhn
+item.steamcraft:steamedBeef.name=Gedünstetes Rindfleisch
+item.steamcraft:steamedFish.name=Gedünsteter Fisch
+item.steamcraft:steamedPorkchop.name=Gedünstetes Schweinefleisch
+
+tile.steamcraft:blockBrass.name=Messingblock
+tile.steamcraft:blockCopper.name=Kupferblock
+tile.steamcraft:blockZinc.name=Zinkblock
+
+
+
+
+
+
+
+
+tile.steamcraft:charger.name=Dampfinfusor
+tile.steamcraft:crucible.name=Schmelztiegel
+tile.steamcraft:mold.name=Gussform-Aufspanner
+tile.steamcraft:pipe.name=Rohr
+tile.steamcraft:valvePipe.name=Ventil
+tile.steamcraft:boiler.name=Boiler
+tile.steamcraft:heater.name=Dampfheizung
+tile.steamcraft:ore.0.name=Kupfererz
+tile.steamcraft:ore.1.name=Zinkerz
+tile.steamcraft:ore.2.name=Minderes Zinkerz
+tile.steamcraft:carving.name=Gussformphräse
+tile.steamcraft:engineering.name=Konstruktionstisch
+tile.steamcraft:tank.0.name=Dampfkessel
+tile.steamcraft:tank.1.name=Kreativer Dampfkessel
+tile.steamcraft:meter.name=Druckmesser
+tile.steamcraft:hammer.name=Dampfhammer
+tile.steamcraft:itemMortar.name=Dampfmörser
+tile.steamcraft:pump.name=Archimedische Schraube
+tile.steamcraft:smasher.name=Zertrümmerer
+tile.steamcraft:thumper.name=Dampf-Bohrhammer
+tile.steamcraft:flashBoiler.name=Schnellheizer
+tile.steamcraft:ruptureDisc.0.name=Überdruckventil
+tile.steamcraft:ruptureDisc.1.name=Gebrochenes Überdruckventil

@@ -34,8 +34,8 @@ public class ThaumcraftIntegration {
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("plateThaumium", liquidThaumium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium","plateThaumium","Thaumium","Thaumium"));
+		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftThaumium", liquidThaumium, 6);
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium","plateSteamcraftThaumium","Thaumium","Thaumium"));
 
 		
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
