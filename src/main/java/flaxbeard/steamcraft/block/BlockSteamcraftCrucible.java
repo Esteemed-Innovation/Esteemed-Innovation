@@ -132,6 +132,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 			TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
 			if (!tile.isTipping()) {
 				tile.setTipping();
+				tile.needsUpdate = true;
 			}
 		}
 		else if (player.getHeldItem() != null) {
@@ -155,7 +156,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}
@@ -177,7 +179,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}

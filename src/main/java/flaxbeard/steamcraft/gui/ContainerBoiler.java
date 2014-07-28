@@ -10,6 +10,7 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +22,8 @@ public class ContainerBoiler extends Container
     private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
+    private int lastPressure;
+    private int lastWater;
 
     public ContainerBoiler(InventoryPlayer par1InventoryPlayer, TileEntityBoiler par2TileEntityBoiler)
     {
@@ -50,6 +53,7 @@ public class ContainerBoiler extends Container
         par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
         par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.getItemBurnTime(null));
+        par1ICrafting.sendProgressBarUpdate(this, 3, (int)Math.floor((double)this.furnace.getPressure()*1000));
     }
 
     /**
@@ -77,11 +81,21 @@ public class ContainerBoiler extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 2, this.furnace.currentItemBurnTime);
             }
+            
+            if (this.lastPressure != this.furnace.getPressureAsInt()){
+            	icrafting.sendProgressBarUpdate(this, 3, this.furnace.getPressureAsInt());
+            }
+            
+            if (this.lastWater != this.furnace.getTank().getFluidAmount()){
+            	icrafting.sendProgressBarUpdate(this, 4, this.furnace.getTank().getFluidAmount());
+            }
         }
 
         this.lastCookTime = this.furnace.furnaceCookTime;
         this.lastBurnTime = this.furnace.furnaceBurnTime;
         this.lastItemBurnTime = this.furnace.currentItemBurnTime;
+        this.lastPressure = this.furnace.getPressureAsInt();
+        this.lastWater = this.furnace.getTank().getFluidAmount();
     }
 
     @SideOnly(Side.CLIENT)
@@ -100,6 +114,18 @@ public class ContainerBoiler extends Container
         if (par1 == 2)
         {
             this.furnace.currentItemBurnTime = par2;
+        }
+        if (par1 == 3){
+        	this.furnace.pressure = (float)par2 / 1000F;
+        }
+        if (par1 == 4){
+        	int current = this.furnace.getTank().getFluidAmount();
+        	int diff = par2 - current;
+        	if (diff > 0){
+        		this.furnace.getTank().fill(new FluidStack(FluidRegistry.WATER, diff), true);
+        	} else {
+        		this.furnace.getTank().drain(-1 * diff, true);
+        	}
         }
     }
 

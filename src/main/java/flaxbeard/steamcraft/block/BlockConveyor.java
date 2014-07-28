@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,9 +11,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityConveyor;
 
-public class BlockConveyor extends BlockContainer
+public class BlockConveyor extends BlockSteamTransporter
 {
     @SideOnly(Side.CLIENT)
 	public IIcon blank;

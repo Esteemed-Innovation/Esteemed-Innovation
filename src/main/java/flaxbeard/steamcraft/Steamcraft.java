@@ -164,7 +164,6 @@ public class Steamcraft {
 		proxy.registerRenderers();
 		SteamcraftRecipes.registerRecipes();
 
-        //FMLInterModComms.sendMessage("Waila", "register", "flaxbeard.steamcraft.integration.waila.WailaIntegration.callbackRegister");
 		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
 			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE,8, 70, 3, 29));
 		}
@@ -182,7 +181,10 @@ public class Steamcraft {
 		}
 		SteamcraftBook.registerBookResearch();
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
+		iso.registerDusts();
 		iso.addSmelting();
+		iso.registerDusts();
+		SteamcraftItems.reregisterPlates();
 	}
 
 

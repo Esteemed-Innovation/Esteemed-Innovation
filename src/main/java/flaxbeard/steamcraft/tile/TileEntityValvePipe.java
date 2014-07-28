@@ -14,13 +14,22 @@ import net.minecraftforge.fluids.IFluidHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 
 public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	public boolean open = true;
 	private boolean turning;
+	private boolean wasTurning = false;
 	public int turnTicks=0;
 	private boolean redstoneState;
+	private boolean isInitialized = false;
+	private boolean waitingOpen = false;
+	
+	public TileEntityValvePipe(){
+		super(0);
+	}
 	
 	public void updateRedstoneState(boolean flag) {
 		
@@ -36,13 +45,13 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setBoolean("turning", turning);
         access.setBoolean("open", open);
+        access.setBoolean("leaking", isLeaking);
         access.setInteger("turnTicks", turnTicks);
 
-        access.setInteger("steam", steam);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
@@ -53,6 +62,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.turning = access.getBoolean("turning");
+    	this.isLeaking = access.getBoolean("leaking");
     	this.open = access.getBoolean("open");
     	this.turnTicks = access.getInteger("turnTicks");
 
@@ -86,77 +96,183 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
 		return face != dir();
+		
+		
 	}
 	
 	@Override
 	public void updateEntity() {
-		if (!this.worldObj.isRemote) {
-			if (turning && turnTicks < 10) {
+		super.superUpdate();
+		if (worldObj.isRemote){
+			if (turning && turnTicks <10){
 				turnTicks++;
 			}
 			if (turnTicks >= 10) {
 				turning = false;
-				open = !open;
+				this.setOpen(!this.open);
 				turnTicks = 0;
 			}
 			if (!turning) {
 				this.turnTicks = 0;
 			}
-		}
-		ForgeDirection myDir = dir();
-		ForgeDirection[] directions = new ForgeDirection[6];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir) {
-				directions[i] = direction;
-				i++;
+			
+			if (isLeaking){
+				ForgeDirection myDir = dir();
+				ForgeDirection[] directions = new ForgeDirection[6];
+				int i = 0;
+				for (ForgeDirection direction : ForgeDirection.values()) {
+					if (direction != myDir) {
+						directions[i] = direction;
+						i++;
+					}
+				}
+				ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+				for (ForgeDirection direction : directions) {
+					if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
+						TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+						if (tile instanceof ISteamTransporter) {
+							ISteamTransporter target = (ISteamTransporter) tile;
+							if (target.doesConnect(direction.getOpposite())) {
+								myDirections.add(direction);
+							}
+						}
+						else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+							IFluidHandler target = (IFluidHandler) tile;
+							if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
+								myDirections.add(direction);
+							}
+						}
+					}
+				}
+				i = 0;
+				ForgeDirection direction = myDirections.get(0).getOpposite();
+				while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					//this.decrSteam(1);
+					this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
+					i++;
+				}
 			}
-		}
-		if (Steamcraft.steamRegistered) {
-			this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
-		}
-		if (!this.worldObj.isRemote && open) {
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,directions);
-			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		}
-		
+		} else {
+			if (this.waitingOpen){
+				System.out.println("Waiting for open");
+				this.setOpen(!this.open);
+			}
+			if (turning != wasTurning){
+				wasTurning = turning;
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			if (turning && turnTicks < 10) {
+				turnTicks++;
+			}
+			if (turnTicks >= 10) {
+				turning = false;
+				this.setOpen(!this.open);
+				turnTicks = 0;
+			}
+			if (!turning) {
+				if (wasTurning){
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+				this.turnTicks = 0;
+			}
+			ForgeDirection myDir = dir();
+			ForgeDirection[] directions = new ForgeDirection[6];
+			int i = 0;
+			for (ForgeDirection direction : ForgeDirection.values()) {
+				if (direction != myDir) {
+					directions[i] = direction;
+					i++;
+				}
+			}
+			if (Steamcraft.steamRegistered) {
+				this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
+			}
+			
+			
 
-		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
-		for (ForgeDirection direction : directions) {
-			if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
-				TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
-				if (tile instanceof ISteamTransporter) {
-					ISteamTransporter target = (ISteamTransporter) tile;
-					if (target.doesConnect(direction.getOpposite())) {
-						myDirections.add(direction);
+			ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+			for (ForgeDirection direction : directions) {
+				if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
+					TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+					if (tile instanceof ISteamTransporter) {
+						ISteamTransporter target = (ISteamTransporter) tile;
+						if (target.doesConnect(direction.getOpposite())) {
+							myDirections.add(direction);
+						}
+					}
+					else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
+						IFluidHandler target = (IFluidHandler) tile;
+						if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
+							myDirections.add(direction);
+						}
 					}
 				}
-				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-					IFluidHandler target = (IFluidHandler) tile;
-					if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
-						myDirections.add(direction);
+			}
+			i = 0;
+			if (myDirections.size() > 0) {
+				ForgeDirection direction = myDirections.get(0).getOpposite();
+				while (!this.doesConnect(direction)) {
+					direction = ForgeDirection.getOrientation((direction.flag+1)%5);
+				}
+				
+				
+				if (myDirections.size() == 2 && open && this.getNetwork().getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+					//System.out.println("open and should be leaking");
+					if (!isLeaking){
+						isLeaking = true;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
+					this.decrSteam(10);
+					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+				} else {
+					//System.out.println("Probably shouldn't be leaking");
+					if (isLeaking){
+						isLeaking = false;
+						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					}
+				}
+				
+			} else {
+				if (isLeaking){
+					isLeaking = false;
+					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 		}
-		i = 0;
-		if (myDirections.size() > 0) {
-			ForgeDirection direction = myDirections.get(0).getOpposite();
-			while (!this.doesConnect(direction)) {
-				direction = ForgeDirection.getOrientation((direction.flag+1)%5);
-			}
-			if (myDirections.size() == 2 && open && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
-			}
-			while (myDirections.size() == 2 && open && this.steam > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-				this.steam--;
-				this.worldObj.spawnParticle("smoke", xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, direction.offsetX*0.1F, direction.offsetY*0.1F, direction.offsetZ*0.1F);
-				i++;
-			}
-		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+		
+		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
+	private void setOpen(boolean open) {
+		this.open = open;
+		boolean changed = true;
+		if (!worldObj.isRemote){
+			if (open){
+				if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+					SteamNetwork.newOrJoin(this);
+				} else {
+					changed = false;
+					this.waitingOpen=true;
+				}
+			} else {
+				if (this.getNetwork() != null){
+					this.getNetwork().split(this);
+				} else {
+					changed = false;
+					this.waitingOpen = true;
+				}
+				
+			}
+		}
+		if (!changed){
+			this.open=!open;
+		} else {
+			this.waitingOpen = false;
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
 	@Override
 	public boolean canInsert(ForgeDirection face) {
 		return face != dir() && open;
@@ -176,19 +292,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		this.turnTicks = 0;
 	}
 	
-	@Override
-	public void explode() {
-		ForgeDirection myDir = dir();
-		ForgeDirection[] directions = new ForgeDirection[6];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir) {
-				directions[i] = direction;
-				i++;
-			}
-		}
-		if (open) {
-			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
-		}
+	public boolean isOpen(){
+		return this.open;
 	}
 }

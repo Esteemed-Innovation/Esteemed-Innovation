@@ -115,7 +115,6 @@ public class SimplexNoise {
 	    // The result is scaled to return values in the interval [-1,1].
 	    return 70.0 * (n0 + n1 + n2);
 	  }
-	  
 	  private static class Grad
 	  {
 	    double x, y, z, w;
