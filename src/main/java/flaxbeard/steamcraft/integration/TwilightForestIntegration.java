@@ -17,9 +17,9 @@ public class TwilightForestIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("fieryIngot", liquidFiery, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetFiery", liquidFiery, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("fieryNugget", liquidFiery, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("plateFiery", liquidFiery, 6);
+		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftFiery", liquidFiery, 6);
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Fiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),"Fiery","Fiery","steamcraft.plate.fiery"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoFiery","plateFiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),liquidFiery);
+		SteamcraftRecipes.addExosuitPlateRecipes("exoFiery","plateSteamcraftFiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),liquidFiery);
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Yeti",new ItemStack(SteamcraftItems.exosuitPlate,1,9),"Yeti","Yeti","steamcraft.plate.yeti"));
 		SteamcraftRecipes.addExosuitPlateRecipes("exoYeti",new ItemStack(TFItems.alphaFur),new ItemStack(SteamcraftItems.exosuitPlate,1,9));
 

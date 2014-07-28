@@ -1,7 +1,5 @@
 package flaxbeard.steamcraft.client;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelHorse;
@@ -12,6 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
@@ -31,7 +32,6 @@ import flaxbeard.steamcraft.client.render.ItemSteamToolRenderer;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
 import flaxbeard.steamcraft.client.render.RenderMortarItem;
 import flaxbeard.steamcraft.client.render.RenderSteamHorse;
-import flaxbeard.steamcraft.client.render.TileEntityChargingPadRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityConveyorRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityCrucibleRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityItemMortarRenderer;
@@ -47,7 +47,6 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
-import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityConveyor;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
@@ -122,11 +121,11 @@ public class ClientProxy extends CommonProxy
     	TileEntitySpecialRenderer renderThumper = new TileEntityThumperRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThumper.class, new TileEntityThumperRenderer());
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.thumper), new ItemTESRRenderer((IInventoryTESR) renderThumper, new TileEntityThumper()));
-
-    	TileEntitySpecialRenderer renderChargingPad = new TileEntityChargingPadRenderer();
-    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChargingPad.class, new TileEntityChargingPadRenderer());
-    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.chargingPad), new ItemTESRRenderer((IInventoryTESR) renderChargingPad, new TileEntityChargingPad()));
-  	
+//
+//    	TileEntitySpecialRenderer renderChargingPad = new TileEntityChargingPadRenderer();
+//    	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChargingPad.class, new TileEntityChargingPadRenderer());
+//    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.chargingPad), new ItemTESRRenderer((IInventoryTESR) renderChargingPad, new TileEntityChargingPad()));
+//  	
     	
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamDrill, new ItemSteamToolRenderer(0));
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamAxe, new ItemSteamToolRenderer(1));
