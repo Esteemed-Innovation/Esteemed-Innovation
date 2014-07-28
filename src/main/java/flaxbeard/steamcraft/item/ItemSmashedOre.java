@@ -57,12 +57,14 @@ public class ItemSmashedOre extends Item {
 	
 	public void registerDusts(){
 		for (int i = 0; i < oreTypes.size(); i++){
-			if (oreTypes.get(i).getLeft().contains("orePoor")) {
-				OreDictionary.registerOre("dustTiny"+oreTypes.get(i).getRight().getRight().substring(4), new ItemStack(SteamcraftItems.smashedOre,1,i));
-			}
-			else
-			{
-				OreDictionary.registerOre("dust"+oreTypes.get(i).getRight().getRight(), new ItemStack(SteamcraftItems.smashedOre,1,i));
+			if (OreDictionary.getOres(smeltingResult.get(i)).size() > 0){
+				if (oreTypes.get(i).getLeft().contains("orePoor")) {
+					OreDictionary.registerOre("dustTiny"+oreTypes.get(i).getRight().getRight().substring(4), new ItemStack(SteamcraftItems.smashedOre,1,i));
+				}
+				else
+				{
+					OreDictionary.registerOre("dust"+oreTypes.get(i).getRight().getRight(), new ItemStack(SteamcraftItems.smashedOre,1,i));
+				}
 			}
 		}
 	}
@@ -75,9 +77,7 @@ public class ItemSmashedOre extends Item {
 	}
 	
 	public void addSmelting(){
-
-		for (int i = 0; i < oreTypes.size(); i++){
-			
+		for (int i = 0; i < oreTypes.size(); i++){		
 			if (OreDictionary.getOres(smeltingResult.get(i)).size() > 0){
 				ItemStack result = OreDictionary.getOres(smeltingResult.get(i)).get(0);
 				GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,i), result, 0.5F);

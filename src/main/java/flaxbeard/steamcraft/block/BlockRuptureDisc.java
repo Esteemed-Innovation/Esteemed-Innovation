@@ -168,7 +168,7 @@ public class BlockRuptureDisc extends BlockContainer {
 		TileEntityRuptureDisc tile = (TileEntityRuptureDisc) world.getTileEntity(x,y,z);
 		if (world.getBlockMetadata(x, y, z) > 9) {
 			if (player.getHeldItem() != null) {
-				if (UtilMisc.doesMatch(player.getHeldItem(), "plateZinc")) {
+				if (UtilMisc.doesMatch(player.getHeldItem(), "plateSteamcraftZinc")) {
 					world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z)-10, 2);
 					if (!player.capabilities.isCreativeMode) {
 						player.getCurrentEquippedItem().stackSize -= 1;
