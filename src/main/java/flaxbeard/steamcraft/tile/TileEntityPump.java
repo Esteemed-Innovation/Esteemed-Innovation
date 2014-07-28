@@ -1,12 +1,9 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -14,21 +11,52 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTransporter {
+public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler,ISteamTransporter {
 	public FluidTank myTank = new FluidTank(1000);
 	public int progress = 0;
-	public int steam = 0;
 	public int rotateTicks = 0;
+	private boolean running = false;
 	
+	
+	public TileEntityPump(){
+		super(ForgeDirection.VALID_DIRECTIONS);
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
+
+	@Override
+	public Packet getDescriptionPacket(){
+		NBTTagCompound access = super.getDescriptionTag();
+		access.setShort("progress", (short)progress);
+		if (myTank.getFluid() != null){
+			access.setShort("fluid", (short)myTank.getFluid().fluidID);
+		}
+		access.setBoolean("running", this.running);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	
+	@Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
+		super.onDataPacket(net, pkt);
+		NBTTagCompound access = pkt.func_148857_g();
+		this.progress = access.getShort("progress");
+		if (access.hasKey("fluid")){
+			this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getShort("fluid")),access.getShort("water")));
+		}
+		//System.out.println(access.getBoolean("running"));
+		this.running = access.getBoolean("running");
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
 	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         this.progress = par1NBTTagCompound.getShort("progress");
-        this.steam = par1NBTTagCompound.getShort("steam");
-
+    
         if (par1NBTTagCompound.hasKey("fluid")) {
             this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(par1NBTTagCompound.getShort("fluid")),par1NBTTagCompound.getShort("water")));
 
@@ -40,33 +68,12 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	{
 	    super.writeToNBT(par1NBTTagCompound);
 	    par1NBTTagCompound.setShort("progress",(short) progress);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
-
+    
 	    par1NBTTagCompound.setShort("water",(short) myTank.getFluidAmount());
 	    if (myTank.getFluid() != null) {
 	    	par1NBTTagCompound.setShort("fluid",(short)myTank.getFluid().fluidID);
 	    }
 	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
-
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-	}
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-    	super.onDataPacket(net, pkt);
-    	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
-
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
 	    
 	private ForgeDirection getOutputDirection() {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
@@ -129,88 +136,79 @@ public class TileEntityPump extends TileEntity implements IFluidHandler,ISteamTr
 	
 	@Override
 	public void updateEntity() {
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
-		ForgeDirection inputDir = this.getOutputDirection().getOpposite();
-		int x = this.xCoord + inputDir.offsetX;
-		int y = this.yCoord + inputDir.offsetY;
-		int z = this.zCoord + inputDir.offsetZ;
-		if (this.steam >= 10 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
-			Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x,y,z));
-			if (myTank.getFluidAmount() < 1000) {
-				this.myTank.fill(new FluidStack(fluid,1000), true);
-				this.worldObj.setBlockToAir(x,y,z);
-				this.worldObj.markBlockForUpdate(x, y, z);
-				progress = 0;
-				steam-=10;
+		super.updateEntity();
+		if (worldObj.isRemote){
+			if (this.running && progress < 100){
+				//System.out.println("Running!");
+				progress++;
+				rotateTicks++;
+			} else {
 			}
-		}
-		if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
-			progress++;
-			rotateTicks++;
-		}
-		ForgeDirection outputDir = this.getOutputDirection();
-		int x2 = this.xCoord + outputDir.offsetX;
-		int y2 = this.yCoord + outputDir.offsetY;
-		int z2 = this.zCoord + outputDir.offsetZ;
-		if (myTank.getFluidAmount() > 0 && progress == 100 && this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
-			IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
-			if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
-				int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
-				if (amnt > 0) {
-					this.myTank.drain(amnt, true);
-					if (myTank.getFluidAmount()  == 0) {
-						progress = 0;
+		} else {
+			ForgeDirection inputDir = this.getOutputDirection().getOpposite();
+			int x = this.xCoord + inputDir.offsetX;
+			int y = this.yCoord + inputDir.offsetY;
+			int z = this.zCoord + inputDir.offsetZ;
+			if (this.getSteam() >= 10 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
+				Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x,y,z));
+				if (myTank.getFluidAmount() < 1000) {
+					this.myTank.fill(new FluidStack(fluid,1000), true);
+					this.worldObj.setBlockToAir(x,y,z);
+					this.worldObj.markBlockForUpdate(x, y, z);
+					progress = 0;
+					this.decrSteam(10);
+					//System.out.println("cycle start");
+					this.running  = true;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					
+				}
+			}
+			if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
+				progress++;
+				rotateTicks++;
+			}
+			ForgeDirection outputDir = this.getOutputDirection();
+			int x2 = this.xCoord + outputDir.offsetX;
+			int y2 = this.yCoord + outputDir.offsetY;
+			int z2 = this.zCoord + outputDir.offsetZ;
+			if (myTank.getFluidAmount() > 0 && progress == 100){
+				//System.out.println("Should be done");
+				if (this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
+					IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
+					if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
+						int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
+						if (amnt > 0) {
+							this.myTank.drain(amnt, true);
+							if (myTank.getFluidAmount()  == 0) {
+								this.running = false;
+								//System.out.println("cycle complete");
+								progress = 0;
+								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+								
+							}
+						} else {
+							if (running){
+								this.running = false;
+								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+							}
+							
+						}
+					} else {
+						if (running){
+							this.running = false;
+							this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+					}
+				}else {
+					if (running){
+						this.running = false;
+						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 				}
 			}
+				
+			
+			
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-	}
-
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return true;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;	
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return true;
-	}
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-	
-	public void explode(){ 
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,ForgeDirection.values());
-		this.steam = 0;
 	}
 }

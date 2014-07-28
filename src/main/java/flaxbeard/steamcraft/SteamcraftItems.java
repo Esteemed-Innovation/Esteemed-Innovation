@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.init.Items;
@@ -239,15 +240,15 @@ public class SteamcraftItems {
 		
 		steamcraftPlate = new ItemSteamcraftPlate().setUnlocalizedName("steamcraft:plate").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftPlate, "steamcraftPlate");
-		OreDictionary.registerOre("plateCopper", new ItemStack(steamcraftPlate,1,0));
-		OreDictionary.registerOre("plateZinc", new ItemStack(steamcraftPlate,1,1));
-		OreDictionary.registerOre("plateIron", new ItemStack(steamcraftPlate,1,2));
-		OreDictionary.registerOre("plateGold", new ItemStack(steamcraftPlate,1,3));
-		OreDictionary.registerOre("plateBrass", new ItemStack(steamcraftPlate,1,4));
-		OreDictionary.registerOre("plateThaumium", new ItemStack(steamcraftPlate,1,5));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper","plateCopper","Copper","Copper"));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron","plateIron","Iron","Iron"));
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold","plateGold","Gold","Gold"));
+		OreDictionary.registerOre("plateSteamcraftCopper", new ItemStack(steamcraftPlate,1,0));
+		OreDictionary.registerOre("plateSteamcraftZinc", new ItemStack(steamcraftPlate,1,1));
+		OreDictionary.registerOre("plateSteamcraftIron", new ItemStack(steamcraftPlate,1,2));
+		OreDictionary.registerOre("plateSteamcraftGold", new ItemStack(steamcraftPlate,1,3));
+		OreDictionary.registerOre("plateSteamcraftBrass", new ItemStack(steamcraftPlate,1,4));
+		OreDictionary.registerOre("plateSteamcraftThaumium", new ItemStack(steamcraftPlate,1,5));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper","plateSteamcraftCopper","Copper","Copper"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron","plateSteamcraftIron","Iron","Iron"));
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold","plateSteamcraftGold","Gold","Gold"));
 
     }
     
@@ -407,4 +408,16 @@ public class SteamcraftItems {
     public static Item feet(String string) {
     	return tools.get("feet"+string);
     }
+    
+    public static void reregisterPlates(){
+    	String[] plates = {"Iron","Copper","Zinc","Brass","Thaumium","Gold"};
+    	for (String plate : plates){
+    		ArrayList<ItemStack> items = OreDictionary.getOres("plate"+plate);
+    		for (ItemStack item : items){
+    			OreDictionary.registerOre("plateSteamcraft"+plate, item);
+    		}
+    	}
+    	
+    }
+    
 }
