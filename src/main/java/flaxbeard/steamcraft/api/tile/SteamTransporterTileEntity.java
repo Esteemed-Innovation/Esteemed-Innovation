@@ -23,7 +23,7 @@ import flaxbeard.steamcraft.block.BlockSteamGauge;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter{
 
-	public float pressureResistance = 0.5F;
+	public float pressureResistance = 0.8F;
 	public float lastPressure = -1F;
 	public float pressure;
 	private String networkName;

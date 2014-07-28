@@ -62,7 +62,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     public TileEntityFlashBoiler() {
     	super();
     	super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),80000);
-    	this.setPressureResistance(1.0F);
+    	this.setPressureResistance(0.5F);
     }
 	
 	// ====================================================

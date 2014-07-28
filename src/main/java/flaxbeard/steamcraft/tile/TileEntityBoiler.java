@@ -48,7 +48,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     public TileEntityBoiler(){
     	super(5000, new ForgeDirection[]{ForgeDirection.UP});
     	this.addSideToGaugeBlacklist(ForgeDirection.UP);
-    	this.setPressureResistance(0.8F);
+    	this.setPressureResistance(0.5F);
     }
     
 	@Override
