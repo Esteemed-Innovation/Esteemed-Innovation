@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import flaxbeard.steamcraft.Config;
@@ -180,7 +181,8 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
   	    Random rand = new Random(world.getSeed()+x+y+z);
 		TileEntityBoiler furnace = (TileEntityBoiler) world.getTileEntity(x, y, z);
 		if (furnace != null) {
-			furnace.steam = 1000+rand.nextInt(3000);
+			furnace.refresh();
+			furnace.insertSteam(1000+rand.nextInt(3000), ForgeDirection.UP);
 			furnace.myTank.setFluid(new FluidStack(FluidRegistry.WATER,2000+rand.nextInt(3000)));
 		}
 	}

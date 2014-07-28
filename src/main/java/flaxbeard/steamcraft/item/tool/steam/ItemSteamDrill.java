@@ -25,7 +25,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	public static HashMap<Integer,MutablePair<Integer,Integer>> stuff = new HashMap<Integer,MutablePair<Integer,Integer>>();
 	private boolean hasBrokenBlock = false;
 	public ItemSteamDrill() {
-		super(EnumHelper.addToolMaterial("DRILL", 2, 800, 1.0F, -1.0F, 0));
+		super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	    	int speed = (Integer) info.right;
 	    	if (speed <= 1000) {
 	    		speed+=Math.min(90,1000-speed);
-	    		stack.damageItem(3, player);
+	    		stack.damageItem(1, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
 		}
@@ -132,7 +132,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 20;
+		return 80;
 	}
 
 	@Override

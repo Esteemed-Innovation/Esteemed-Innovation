@@ -24,6 +24,7 @@ public class TileEntityCrucible extends TileEntity {
 	public boolean hasUpdated = true;
 	private int targetFill = -1;
 	private boolean tipping;
+	public boolean needsUpdate = false;
 	public int tipTicks=0;
 	private ForgeDirection[] dirs = { ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST };
 	
@@ -95,7 +96,9 @@ public class TileEntityCrucible extends TileEntity {
 
     	contents = new ArrayList<CrucibleLiquid>();
     	number = new HashMap<CrucibleLiquid,Integer>();
-    	this.tipTicks = access.getInteger("tipTicks");
+    	if (this.tipTicks == 0) {
+    		this.tipTicks = access.getInteger("tipTicks");
+    	}
     	this.tipping = access.getBoolean("tipping");
     	for (int i = 0; i < nbttaglist.tagCount(); ++i)
     	{
@@ -104,7 +107,6 @@ public class TileEntityCrucible extends TileEntity {
     		this.contents.add(liquid);
     		this.number.put(liquid, (int) nbttagcompound1.getShort("amount"));
     	}
-    	
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -125,9 +127,9 @@ public class TileEntityCrucible extends TileEntity {
 			hasUpdated = true;
 		}
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		if (this.tipping && !this.worldObj.isRemote) {
+		if (this.tipping) {
 			this.tipTicks++;
-			if (this.tipTicks == 45) {
+			if (this.tipTicks == 45 && !this.worldObj.isRemote) {
 				
 				int posX = this.xCoord+dirs[meta].offsetX;
 				int posZ = this.zCoord+dirs[meta].offsetZ;
@@ -150,7 +152,7 @@ public class TileEntityCrucible extends TileEntity {
 								if (currNum > 0) {
 									number.put(liquid, currNum);
 								}
-						        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+								needsUpdate = true;
 
 							}
 						}
@@ -197,12 +199,15 @@ public class TileEntityCrucible extends TileEntity {
 				//	System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
-			        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+					needsUpdate = true;
 				}
 			}
 		}
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (needsUpdate) {
+			System.out.println("UDPATE");
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			needsUpdate = false;
+		}
 
 	}
 	
@@ -230,11 +235,11 @@ public class TileEntityCrucible extends TileEntity {
 				currAmount += amount;
 				this.number.remove(fluid);
 				this.number.put(fluid, currAmount);
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				stack.stackSize--;
 				this.hasUpdated = false;
 				this.targetFill = fill + amount;
-				//System.out.println(fill + " " +this.hasUpdated);
+				needsUpdate = true;
+
 			}
 		}
 		return stack;
@@ -269,6 +274,7 @@ public class TileEntityCrucible extends TileEntity {
 	}
 
 	public void setTipping() {
+		//needsUpdate = true;
 		this.tipping = true;
 		this.tipTicks = 0;
 	}

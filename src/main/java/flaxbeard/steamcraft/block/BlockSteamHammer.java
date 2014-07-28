@@ -149,7 +149,7 @@ public class BlockSteamHammer extends BlockContainer
     	TileEntitySteamHammer tileentitysteamcharger = (TileEntitySteamHammer)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
         if (tileentitysteamcharger != null)
         {
-            for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory(); ++i1)
+            for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory()-1; ++i1)
             {
                 ItemStack itemstack = tileentitysteamcharger.getStackInSlot(i1);
 
