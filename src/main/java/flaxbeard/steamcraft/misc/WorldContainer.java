@@ -2,9 +2,7 @@ package flaxbeard.steamcraft.misc;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -62,11 +60,6 @@ public class WorldContainer implements IBlockAccess {
 	@SideOnly(Side.CLIENT)
 	public boolean extendedLevelsInChunkCache() {
 		return myWorld.extendedLevelsInChunkCache();
-	}
-
-	@Override
-	public Vec3Pool getWorldVec3Pool() {
-		return myWorld.getWorldVec3Pool();
 	}
 
 	@Override

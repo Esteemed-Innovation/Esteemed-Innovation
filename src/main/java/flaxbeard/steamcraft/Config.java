@@ -4,7 +4,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
-	public static final String VERSION = "{major.minor}.{artifact}";
+	public static final String VERSION = "0.22.8";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;
@@ -17,12 +17,15 @@ public class Config {
 	public static boolean dropItem;
 	public static boolean genPoorOre;
 	
+	public static int villagerId;
+	
 	public static void load(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		
 		genCopper = config.get("World Generation", "Generate Copper", true).getBoolean(true);
 		genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
+		villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
 		genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
 
 		

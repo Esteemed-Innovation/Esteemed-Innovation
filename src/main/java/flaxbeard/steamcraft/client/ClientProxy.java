@@ -6,10 +6,13 @@ import net.minecraft.client.model.ModelHorse;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -55,6 +58,7 @@ import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 
 public class ClientProxy extends CommonProxy
 {
+	public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
     @Override
     public void registerRenderers()
     {
@@ -119,6 +123,8 @@ public class ClientProxy extends CommonProxy
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.pistol, new ItemFirearmRenderer());
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.revolver, new ItemFirearmRenderer());
 
+        int id = Config.villagerId;
+        VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);
     }
     
     @Override
