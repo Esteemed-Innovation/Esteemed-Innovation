@@ -19,4 +19,5 @@ Be sure to credit yourself down here:
 <li>matheusxaviersi: pt_BR</li>
 <li>Mrkwtkr: zh_CN</li>
 <li>Gholuk: de_DE</li>
+<li>Vexatos: de_DE</li>
 </ul></b>
