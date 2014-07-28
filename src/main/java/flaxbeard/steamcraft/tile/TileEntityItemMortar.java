@@ -8,26 +8,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 
-public class TileEntityItemMortar extends TileEntity implements ISteamTransporter,IInventory {
+public class TileEntityItemMortar extends SteamTransporterTileEntity implements ISteamTransporter,IInventory {
 	
-	private int steam = 0;
 	private ItemStack[] inventory = new ItemStack[1];
 	public int xT;
 	public int zT;
 	public boolean hasTarget = false;
 	public int fireTicks = 0;
 	
+	public TileEntityItemMortar(){
+		super(new ForgeDirection[] { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST });
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
+	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
         this.xT = par1NBTTagCompound.getShort("xT");
         this.zT = par1NBTTagCompound.getShort("zT");
         this.fireTicks = par1NBTTagCompound.getShort("fireTicks");
@@ -44,7 +47,6 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
         par1NBTTagCompound.setShort("xT",(short) this.xT);
         par1NBTTagCompound.setShort("zT",(short) this.zT);
         par1NBTTagCompound.setShort("fireTicks",(short) this.fireTicks);
@@ -62,9 +64,8 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
+        NBTTagCompound access = super.getDescriptionTag();
+
         access.setInteger("fireTicks", fireTicks);
         access.setInteger("xT", this.xT);
         access.setInteger("zT", this.zT);
@@ -78,7 +79,6 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
     	this.xT = access.getInteger("xT");
     	this.zT = access.getInteger("zT");
     	this.fireTicks = access.getInteger("fireTicks");
@@ -87,23 +87,24 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 	
 	@Override
 	public void updateEntity() {
-		ForgeDirection[] dirs = { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
-		UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,dirs);
-		UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+		super.updateEntity();
 		if (!this.worldObj.isRemote) {
 			if ((this.getStackInSlot(0) != null && this.worldObj.canBlockSeeTheSky(xCoord, yCoord+1, zCoord)) || this.fireTicks >= 60) {
 				ItemStack stack = null;
 				if (this.fireTicks < 60) {
 					stack = this.getStackInSlot(0).copy();
 				}
-				if (this.steam > 200 && hasTarget) {
+				if (this.getSteam() > 200 && hasTarget) {
+					if (fireTicks == 0) {
+						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					}
 					this.fireTicks++;
 					if (this.fireTicks == 10) {
 						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
 					}
 					if (this.fireTicks == 60) {
 						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.explode", 1.0F, 0.8F);
-						this.steam -= 200;
+						this.decrSteam(200);
 						ItemStack stack2 = stack.copy();
 						stack2.stackSize = 1;
 						EntityMortarItem entityItem = new EntityMortarItem(this.worldObj, this.xCoord+0.5F, this.yCoord + 1.25F, this.zCoord+0.5F, stack2, xT, zT);
@@ -125,51 +126,27 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 				else
 				{
 					this.fireTicks = 0;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 			else
 			{
 				this.fireTicks = 0;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 		}
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		else
+		{
+			if (fireTicks > 0) {
+				fireTicks++;
+				if (fireTicks == 80) {
+					fireTicks = 0;
+				}
+			}
+		}
+		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-	
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
-
 	@Override
 	public int getSizeInventory() {
 		return 1;
@@ -246,19 +223,9 @@ public class TileEntityItemMortar extends TileEntity implements ISteamTransporte
 	@Override
 	public void closeInventory() {}
 	
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-
+	
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return true;
-	}
-
-	public void explode(){
-		ForgeDirection[] dirs = { ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,dirs);
-		this.steam = 0;
 	}
 }

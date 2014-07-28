@@ -22,7 +22,7 @@ public class UtilSteamTransport {
 	public static void generalPressureEvent(World world, int x, int y, int z, float pressure, int capacity) {
 		if (pressure > 1.2F) {
 			ISteamTransporter trans = (ISteamTransporter) world.getTileEntity(x, y, z);
-			float resistance = trans.pressureResistance;
+			float resistance = trans.getPressureResistance();
 			int steam = trans.getSteam();
 			int oneInX = Math.max(1, (int)Math.floor((double)(500.0F  - (pressure / (1.1F + resistance) * 100)) ));
 			//System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
