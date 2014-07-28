@@ -42,7 +42,6 @@ import flaxbeard.steamcraft.integration.TwilightForestIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
-import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
@@ -67,7 +66,6 @@ import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
-import flaxbeard.steamcraft.world.TophatVillagerTradeHandler;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION, dependencies="after:EnderIO;after:Mekanism;after:TConstruct;after:IC2;after:ThermalExpansion")
 public class Steamcraft {
@@ -140,7 +138,6 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
 		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
-		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
 
 
 	}

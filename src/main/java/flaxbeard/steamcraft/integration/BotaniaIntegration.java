@@ -59,10 +59,10 @@ public class BotaniaIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel, 6);
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),"Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
+		SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateSteamcraftTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
 
 		CrucibleLiquid liquidElementium = new CrucibleLiquid("Elementium", new ItemStack(ModItems.manaResource,1,7), new ItemStack(SteamcraftItems.steamcraftPlate,1,7), null, null,230,66,247);
-		SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
+		SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateSteamcraftElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
 
 		SteamcraftRegistry.liquids.add(liquidElementium);
 		for (int i = 0; i<16; i++) {
@@ -72,7 +72,7 @@ public class BotaniaIntegration {
 		SteamcraftRegistry.registerSmeltThing(ModItems.manaResource,7, liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("plateElementium", liquidElementium, 6);
+		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftElementium", liquidElementium, 6);
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),"Elementum","Elementum","steamcraft.plate.elementum"));
 	}
 
