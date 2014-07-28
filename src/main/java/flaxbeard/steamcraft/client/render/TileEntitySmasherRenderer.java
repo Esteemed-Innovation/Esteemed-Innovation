@@ -17,7 +17,7 @@ import flaxbeard.steamcraft.client.render.model.ModelSmasher;
 import flaxbeard.steamcraft.misc.WorldContainer;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
-public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
+public class e extends TileEntitySpecialRenderer implements IInventoryTESR {
 	private static final ModelSmasher model = new ModelSmasher();
 	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/smasher.png");
 
@@ -88,11 +88,9 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer impleme
 					Block block = smasher.smooshingBlock;
 					int blockMetadata = smasher.smooshingMeta;
 					GL11.glPushMatrix();
-					RenderHelper.disableStandardItemLighting();
 					Tessellator tess = Tessellator.instance;
 					tess.startDrawingQuads();
 					Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-					RenderHelper.enableStandardItemLighting();
 					boolean rendered = renderBlocks.renderBlockByRenderType(block, smasher.xCoord, smasher.yCoord, smasher.zCoord);
 					tess.draw();
 					GL11.glPopMatrix();

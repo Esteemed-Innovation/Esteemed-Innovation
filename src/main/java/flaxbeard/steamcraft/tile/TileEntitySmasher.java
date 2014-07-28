@@ -425,7 +425,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		//System.out.println("Can I smash anything?");
 		int[] target = getTarget(1);
 		int x = target[0], y=yCoord, z=target[1];
-		if (!worldObj.isAirBlock(x, y, z) && worldObj.getTileEntity(x, y, z) == null){
+		if (!worldObj.isAirBlock(x, y, z)  && worldObj.getBlock(x,y,z) != Blocks.bedrock && worldObj.getTileEntity(x, y, z) == null && worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) < 50F){
 			//System.out.println("Maybe?");
 			return true;
 		} else {
