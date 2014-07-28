@@ -171,6 +171,7 @@ public class Steamcraft {
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 
 		iso.addSmelting();
 		iso.registerDusts();
+		SteamcraftItems.reregisterPlates();
 	}
 
 
