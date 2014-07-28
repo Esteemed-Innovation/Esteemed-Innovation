@@ -95,6 +95,9 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 					stack = this.getStackInSlot(0).copy();
 				}
 				if (this.getSteam() > 200 && hasTarget) {
+					if (fireTicks == 0) {
+						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					}
 					this.fireTicks++;
 					if (this.fireTicks == 10) {
 						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
@@ -123,11 +126,22 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 				else
 				{
 					this.fireTicks = 0;
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
 			else
 			{
 				this.fireTicks = 0;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+		}
+		else
+		{
+			if (fireTicks > 0) {
+				fireTicks++;
+				if (fireTicks == 80) {
+					fireTicks = 0;
+				}
 			}
 		}
 		//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
