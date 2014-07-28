@@ -1,19 +1,22 @@
 Flaxbeards-Steam-Power Localisation project
 ======================
-If you are native to any language not listed here fork this repo and work on this branch to localise the mod for your country current translations are: <br>
-<b>Make only new ones and add to the list or improve and state changes in the update log of each language<br> the license of those files are the same of the mod<b/>
+If you are native to any language not listed here, fork this repo and work on this branch to localize the mod for your country.<br>
+<b>You may create new translations or work to improve existing ones. Please add the contributions to a changelog.<br>The license of those files are the same of the mod.<b/>
+Current translations are: 
 <ul>
 <li>English - USA</li>
 <li>Brazilian - Portuguese</li>
 <li>Chinese - China</li>
+<li>German - Germany</li>
 </ul>
 <br>
 <b>
-Why to contribute:
-you can give people on your country thath dont understand english very well to play the mod in a more fun way.<br>
-be sure to credit youself down here:
+Why should I contribute?
+You can give people of your country that don't understand English very well the ability to play and understand the mod more fully.<br>
+Be sure to credit yourself down here:
 <ul>
 <li>The original mod team: en_US</li>
 <li>matheusxaviersi: pt_BR</li>
 <li>Mrkwtkr: zh_CN</li>
+<li>Gholuk: de_DE</li>
 </ul></b>
