@@ -292,7 +292,7 @@ public class SteamcraftEventHandler {
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
 			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
-			    	if (speed > 0 && event.block.isToolEffective("axe", event.metadata)) {
+			    	if (speed > 0 && SteamcraftItems.steamAxe.canHarvestBlock(event.block, player.getHeldItem())) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
 				}
