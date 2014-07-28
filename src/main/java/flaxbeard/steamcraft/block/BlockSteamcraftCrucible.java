@@ -132,6 +132,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 			TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
 			if (!tile.isTipping()) {
 				tile.setTipping();
+				tile.needsUpdate = true;
 			}
 		}
 		else if (player.getHeldItem() != null) {
