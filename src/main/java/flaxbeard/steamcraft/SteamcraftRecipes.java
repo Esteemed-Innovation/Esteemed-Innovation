@@ -181,7 +181,17 @@ public class SteamcraftRecipes {
 		        'x', "ingotBrass", 'n', "nuggetBrass"));
 		BookRecipeRegistry.addRecipe("turbine2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,5), " x ", "xnx", " x ", 
 		        'x', "plateSteamcraftBrass", 'n', "nuggetBrass"));
-
+		
+		BookRecipeRegistry.addRecipe("fan1",new ShapedOreRecipe(SteamcraftBlocks.fan, "xxx", "btb", "xxx", 
+		        'x', "ingotBrass", 'b', Blocks.iron_bars, 't', new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)));
+		BookRecipeRegistry.addRecipe("fan2",new ShapedOreRecipe(SteamcraftBlocks.fan, "xxx", "btb", "xxx", 
+		        'x', "plateSteamcraftBrass", 'b', Blocks.iron_bars, 't', new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)));
+		
+		BookRecipeRegistry.addRecipe("vacuum1",new ShapedOreRecipe(SteamcraftBlocks.vacuum, " x ", "pfx", " x ", 
+		        'x', "ingotBrass", 'p', SteamcraftBlocks.pipe, 'f', SteamcraftBlocks.fan));
+		BookRecipeRegistry.addRecipe("vacuum2",new ShapedOreRecipe(SteamcraftBlocks.vacuum, " x ", "pfx", " x ", 
+		        'x', "plateSteamcraftBrass", 'p', SteamcraftBlocks.pipe, 'f', SteamcraftBlocks.fan));
+		
 		BookRecipeRegistry.addRecipe("drill1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamDrill,1,SteamcraftItems.steamDrill.getMaxDamage()-1), "xii", "pti", "xpx", 
 		        'x', "ingotBrass", 'i', "ingotIron", 'p', SteamcraftBlocks.pipe, 't', new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)));
 		BookRecipeRegistry.addRecipe("drill2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamDrill,1,SteamcraftItems.steamDrill.getMaxDamage()-1), "xii", "pti", "xpx", 

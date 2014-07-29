@@ -83,7 +83,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity {
 	
 	@Override
 	public void updateEntity() {
-		super.updateEntity();
 		if (lastSteam != this.getSteam() > steamUsage) {
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
@@ -101,6 +100,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity {
 			this.setDistributionDirections(directions);
 			isInitialized = true;
 		}
+		super.updateEntity();
 		if (active && this.worldObj.isRemote) {
 			rotateTicks++;
 		}
