@@ -20,10 +20,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
-public class BlockSteamCharger extends BlockSteamTransporter
+public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable
 {
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)
@@ -164,4 +165,12 @@ public class BlockSteamCharger extends BlockSteamTransporter
 
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
+
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        int l = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
+        return true;
+	}
 }
