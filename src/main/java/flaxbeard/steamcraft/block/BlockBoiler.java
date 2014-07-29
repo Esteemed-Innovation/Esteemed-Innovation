@@ -24,10 +24,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 
-public class BlockBoiler extends BlockSteamTransporter {
+public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
 	public BlockBoiler(boolean on) {
 		super(Material.iron);
@@ -309,4 +310,15 @@ public class BlockBoiler extends BlockSteamTransporter {
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     	return new ItemStack(SteamcraftBlocks.boiler);
     }
+
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+            world.setBlockMetadataWithNotify(x, y, z, side, 2);
+            return true;
+        }
+        return false;
+	}
 }

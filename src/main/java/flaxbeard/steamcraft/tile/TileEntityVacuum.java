@@ -15,10 +15,13 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntityVacuum extends SteamTransporterTileEntity {
+public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	
 	public boolean active;
 	public boolean powered = false;
@@ -276,5 +279,13 @@ public class TileEntityVacuum extends SteamTransporterTileEntity {
 			this.powered = flag;
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		this.isInitialized = false;
+		this.refresh();
+		return false;
 	}
 }

@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -11,10 +12,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFan;
 
-public class BlockFan extends BlockSteamTransporter {
+public class BlockFan extends BlockSteamTransporter implements IWrenchable {
 	
 	private IIcon iconOn;
 	private IIcon iconOff;
@@ -95,4 +97,11 @@ public class BlockFan extends BlockSteamTransporter {
     {
         return false;
     }
+    
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        world.setBlockMetadataWithNotify(x, y, z, side, 2);
+        return true;
+	}
 }

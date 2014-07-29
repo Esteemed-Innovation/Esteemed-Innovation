@@ -7,17 +7,21 @@ import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	public boolean active;
 	public boolean powered = false;
 	public boolean lastSteam = false;
@@ -135,5 +139,16 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 			this.powered = flag;
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
+	}
+
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		this.isInitialized = false;
+		networkName = null;
+		network = null;
+		this.refresh();
+		SteamNetwork.newOrJoin(this);
+		return false;
 	}
 }

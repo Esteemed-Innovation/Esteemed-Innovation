@@ -3,24 +3,23 @@ package flaxbeard.steamcraft.tile;
 import java.util.ArrayList;
 
 import net.minecraft.block.BlockFurnace;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	
 	public boolean master;
 	private boolean isInitialized = false;
@@ -195,6 +194,14 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 			furnace2.currentItemBurnTime = currentItemBurnTime;
 			furnace2.furnaceCookTime = furnaceCookTime;
 		}
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		this.isInitialized = false;
+		this.refresh();
+		return false;
 	}
 
 }

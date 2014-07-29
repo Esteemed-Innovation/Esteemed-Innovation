@@ -3,16 +3,18 @@ package flaxbeard.steamcraft.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityPump;
 
-public class BlockPump extends BlockSteamTransporter
+public class BlockPump extends BlockSteamTransporter implements IWrenchable
 {
 
 	@Override
@@ -79,5 +81,29 @@ public class BlockPump extends BlockSteamTransporter
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityPump();
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+        	switch (side) {
+        	case 2:
+                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                break;
+        	case 3:
+                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                break;
+        	case 4:
+                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                break;
+        	case 5:
+                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                break;
+        	}
+            return true;
+        }
+        return false;
 	}
 }
