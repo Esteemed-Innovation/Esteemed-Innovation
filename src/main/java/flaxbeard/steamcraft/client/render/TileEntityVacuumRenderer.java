@@ -57,7 +57,7 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implemen
 			
 		}
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(-Minecraft.getMinecraft().thePlayer.ticksExisted*25.0F, 1F, 0F, 0F);
+		GL11.glRotatef(-vacuum.rotateTicks*25.0F, 1F, 0F, 0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
 		model.renderPole();
