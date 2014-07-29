@@ -1,8 +1,7 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -12,17 +11,28 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFan;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
-public class BlockFan extends BlockContainer {
+public class BlockFan extends BlockSteamTransporter {
 	
 	private IIcon iconOn;
 	private IIcon iconOff;
     public BlockFan() {
 		super(Material.iron);
 	}
+    
+	@Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_)
+    {
+        boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+	    if ((tileEntity != null && tileEntity instanceof TileEntityFan))
+	    {
+	    	TileEntityFan ped = (TileEntityFan)tileEntity;
+	    	ped.updateRedstoneState(flag);
+	    }
+    }
     
     public boolean renderAsNormalBlock()
     {

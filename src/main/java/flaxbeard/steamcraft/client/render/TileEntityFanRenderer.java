@@ -46,7 +46,7 @@ public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements 
 		model.renderBase();
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted*25.0F, 1F, 0F, 0F);
+		GL11.glRotatef(fan.rotateTicks*25.0F, 1F, 0F, 0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
 		model.render();
