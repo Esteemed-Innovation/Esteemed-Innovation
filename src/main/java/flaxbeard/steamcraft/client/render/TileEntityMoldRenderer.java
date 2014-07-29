@@ -151,7 +151,6 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 		float pix = 1.0F/16.0F;
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F+4*pix);
 		GL11.glTranslatef(0.0F,0.0F,-0.001F);
-		renderMoldUnder();
 
 		GL11.glPopMatrix();
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
@@ -170,7 +169,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 		GL11.glRotatef(270.0F,1F,0F,0F);
 		GL11.glTranslatef(-0.5F, -0.5F-6*pix, -0.5F+8*pix);
 		GL11.glTranslatef(0.0F,0.0F,-0.001F);
-		
+
 		GL11.glPopMatrix();
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
