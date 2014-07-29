@@ -23,9 +23,9 @@ public class ItemWrench extends Item {
 				boolean result = ((IWrenchable)world.getBlock(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 				if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IWrenchable) {
 					((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
-					((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 
 				}
+
 				return result;
 			}
 			else if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IWrenchable) {

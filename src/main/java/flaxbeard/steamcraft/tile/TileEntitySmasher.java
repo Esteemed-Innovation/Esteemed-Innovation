@@ -21,6 +21,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 
@@ -498,8 +499,21 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-		this.isInitialized = false;
-		this.refresh();
+		int steam = this.getSteam();
+		ForgeDirection myDir = myDir();
+		this.addSideToGaugeBlacklist(myDir);
+		ForgeDirection[] directions = new ForgeDirection[5];
+		int i = 0;
+		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (direction != myDir && direction != ForgeDirection.UP) {
+				directions[i] = direction;
+				i++;
+			}
+		}
+		this.setDistributionDirections(directions);
+		this.getNetwork().split(this);
+		SteamNetwork.newOrJoin(this);
+		this.getNetwork().addSteam(steam);
 		return false;
 	}
 
