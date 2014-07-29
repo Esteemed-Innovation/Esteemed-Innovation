@@ -428,7 +428,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor,IEngine
 
 	@Override
 	public int steamPerDurability() {
-		return 1;
+		return 10;
 	}
 
 	@Override

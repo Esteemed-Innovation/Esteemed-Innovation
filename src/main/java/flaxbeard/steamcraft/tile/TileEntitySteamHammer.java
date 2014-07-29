@@ -71,8 +71,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
 			}
 			if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
 				if (hammerTicks == 0) {
-					if (this.getSteam() > 400) {
-						this.decrSteam(400);
+					if (this.getSteam() > 4000) {
+						this.decrSteam(4000);
 						if (!this.isWorking){
 							this.isWorking = true;
 							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

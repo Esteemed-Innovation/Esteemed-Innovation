@@ -65,7 +65,7 @@ public class TileEntityRuptureDisc extends TileEntity {
 					}
 				}
 				while (this.getSteam() > 0 && i < 10) {
-					this.drainSteam(1);
+					this.drainSteam(10);
 					
 					float offset = 10.0F/16.0F;
 					float xOffset = myDir().getOpposite().offsetX * offset;
