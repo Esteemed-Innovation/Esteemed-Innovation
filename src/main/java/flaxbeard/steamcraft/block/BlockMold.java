@@ -21,10 +21,10 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.tile.TileEntityMold;
-import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
-public class BlockMold extends BlockContainer {
+public class BlockMold extends BlockContainer implements IWrenchable {
 	private static float px = (1.0F/16.0F);
 	public IIcon blank;
     private final Random rand = new Random();
@@ -208,5 +208,28 @@ public class BlockMold extends BlockContainer {
         this.blank =  p_149651_1_.registerIcon("steamcraft:blankTexture");
     }
 
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+        	switch (side) {
+        	case 2:
+                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                break;
+        	case 3:
+                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                break;
+        	case 4:
+                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                break;
+        	case 5:
+                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                break;
+        	}
+            return true;
+        }
+        return false;
+	}
 
 }

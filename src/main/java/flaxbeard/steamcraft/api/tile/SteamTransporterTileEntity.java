@@ -26,8 +26,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public float pressureResistance = 0.8F;
 	public float lastPressure = -1F;
 	public float pressure;
-	private String networkName;
-	private SteamNetwork network;
+	protected String networkName;
+	protected SteamNetwork network;
 	public int capacity;
 	private ForgeDirection[] distributionDirections;
 	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
