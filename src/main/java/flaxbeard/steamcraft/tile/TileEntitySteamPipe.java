@@ -19,8 +19,8 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntitySteamPipe extends SteamTransporterTileEntity implements IFluidHandler,ISteamTransporter {
-	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
+public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter {
+	//protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 
 	
 	protected boolean isLeaking = false;
@@ -90,9 +90,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	
 	@Override
 	public void updateEntity() {
-		if (Steamcraft.steamRegistered) {
-			this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
-		}
 		super.updateEntity();
 
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
@@ -157,49 +154,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 //		return true;
 //	}
 
+	
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if (resource.amount >= 10) {
-			if (doFill) {
-				this.insertSteam((resource.amount-resource.amount%10)/10, from);
-			}
-			FluidStack resource2 = resource.copy();
-			resource2.amount = resource.amount-resource.amount%10;
-			if (resource2 != null) {
-				return dummyFluidTank.fill(resource2, doFill)+resource.amount%10;
-			}
-		}
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource,
-			boolean doDrain) {
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return (Steamcraft.steamRegistered ? fluid == FluidRegistry.getFluid("steam") : false);
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		if (Steamcraft.steamRegistered) {
-			return new FluidTankInfo[] {dummyFluidTank.getInfo()};
-		}
-		return null;
+	public int getSteam(){
+		return this.getNetwork().getSteam();
 	}
 
 }
