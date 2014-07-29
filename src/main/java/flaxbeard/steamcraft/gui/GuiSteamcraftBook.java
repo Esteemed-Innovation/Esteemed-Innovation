@@ -361,6 +361,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     		super.drawScreen(par1, par2, par3);
     		fontRendererObj.setUnicodeFlag(true);
         	if (SteamcraftRegistry.researchPages.containsKey(this.viewing)) {
+        		GL11.glEnable(GL11.GL_BLEND);
         		BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
         		BookPage page = pages[(this.currPage)*2];
         		page.renderPage(k-67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);

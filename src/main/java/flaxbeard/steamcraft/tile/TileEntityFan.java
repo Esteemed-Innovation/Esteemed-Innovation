@@ -66,7 +66,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	
 	@Override
 	public void updateEntity() {
-		super.updateEntity();
 		if (lastSteam != this.getSteam() > 0) {
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
@@ -75,6 +74,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 			isInitialized = true;
 		}
+		super.updateEntity();
 		if (active && this.worldObj.isRemote) {
 			rotateTicks++;
 		}

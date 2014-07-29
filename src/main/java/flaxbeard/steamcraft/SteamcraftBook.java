@@ -63,6 +63,8 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Screw.name","category.SteamPower2.name",new BookPageItem("research.Screw.name","research.Screw.0", new ItemStack(SteamcraftBlocks.pump)),new BookPageCrafting("","pump1","pump2"));
 		SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
 		SteamcraftRegistry.addResearch("research.Thumper.name", "category.SteamPower2.name", new BookPageItem("research.Thumper.name","research.Thumper.0", new ItemStack(SteamcraftBlocks.thumper)),new BookPageText("research.Thumper.name","research.Thumper.1"), new BookPageCrafting("","thumper1","thumper2"));
+		SteamcraftRegistry.addResearch("research.Fan.name", "category.SteamPower2.name", new BookPageItem("research.Fan.name","research.Fan.0", new ItemStack(SteamcraftBlocks.fan)), new BookPageCrafting("","fan1","fan2"));
+		SteamcraftRegistry.addResearch("research.Vacuum.name", "category.SteamPower2.name", new BookPageItem("research.Vacuum.name","research.Vacuum.0", new ItemStack(SteamcraftBlocks.vacuum)), new BookPageCrafting("","vacuum1","vacuum2"));
 		
 		SteamcraftRegistry.addCategory("category.SteamTools.name");
 		SteamcraftRegistry.addResearch("research.SteamTools.name", "category.SteamTools.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
