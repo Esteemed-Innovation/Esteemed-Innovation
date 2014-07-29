@@ -46,7 +46,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     private static final int[] slotsSides = new int[] {0, 1};
     
     public TileEntityBoiler(){
-    	super(5000, new ForgeDirection[]{ForgeDirection.UP});
+    	super(50000, new ForgeDirection[]{ForgeDirection.UP});
     	this.addSideToGaugeBlacklist(ForgeDirection.UP);
     	this.setPressureResistance(0.5F);
     }
@@ -204,7 +204,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                 {
                 	//int i = 0;
                 //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
-                		this.getNetwork().addSteam(1);
+                		this.getNetwork().addSteam(10);
                 		this.myTank.drain(2, true);
                 		///i++;
                 	//}

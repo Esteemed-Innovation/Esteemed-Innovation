@@ -133,9 +133,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				}
 				while (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					if (worldObj.isRemote){
-						System.out.println("I AM THE CLIENT!");
+						//System.out.println("I AM THE CLIENT!");
 					}
-					this.decrSteam(1);
+					this.decrSteam(10);
 					
 					i++;
 				}

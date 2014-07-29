@@ -94,7 +94,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 				if (this.fireTicks < 60) {
 					stack = this.getStackInSlot(0).copy();
 				}
-				if (this.getSteam() > 200 && hasTarget) {
+				if (this.getSteam() > 2000 && hasTarget) {
 					if (fireTicks == 0) {
 						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
@@ -104,7 +104,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 					}
 					if (this.fireTicks == 60) {
 						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.explode", 1.0F, 0.8F);
-						this.decrSteam(200);
+						this.decrSteam(2000);
 						ItemStack stack2 = stack.copy();
 						stack2.stackSize = 1;
 						EntityMortarItem entityItem = new EntityMortarItem(this.worldObj, this.xCoord+0.5F, this.yCoord + 1.25F, this.zCoord+0.5F, stack2, xT, zT);

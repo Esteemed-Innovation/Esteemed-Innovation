@@ -219,7 +219,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 						isLeaking = true;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
-					this.decrSteam(10);
+					this.decrSteam(100);
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 				} else {
 					//System.out.println("Probably shouldn't be leaking");
