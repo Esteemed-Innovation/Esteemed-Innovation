@@ -224,7 +224,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				return;
 			}	
-			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteam() > 100 && !isActive){
+			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteam() > 1000 && !isActive){
 
 				//System.out.println("Smash next round!");
 				this.smashNextRound = true;
@@ -244,7 +244,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
 				//System.out.println("Smashing!");
 				if (this.hasSomethingToSmash() && !this.isActive){
-					this.decrSteam(100);
+					this.decrSteam(1000);
 					this.running = true;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					this.isActive = true;

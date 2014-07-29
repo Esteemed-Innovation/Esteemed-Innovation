@@ -39,7 +39,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	
 	public SteamTransporterTileEntity(ForgeDirection[] distributionDirections){
-		this.capacity = 1000;
+		this.capacity = 10000;
 		this.distributionDirections = distributionDirections;
 	}
 	

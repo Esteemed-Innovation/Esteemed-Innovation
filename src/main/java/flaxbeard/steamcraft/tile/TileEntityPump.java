@@ -149,14 +149,14 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 			int x = this.xCoord + inputDir.offsetX;
 			int y = this.yCoord + inputDir.offsetY;
 			int z = this.zCoord + inputDir.offsetZ;
-			if (this.getSteam() >= 10 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
+			if (this.getSteam() >= 100 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
 				Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x,y,z));
 				if (myTank.getFluidAmount() < 1000) {
 					this.myTank.fill(new FluidStack(fluid,1000), true);
 					this.worldObj.setBlockToAir(x,y,z);
 					this.worldObj.markBlockForUpdate(x, y, z);
 					progress = 0;
-					this.decrSteam(10);
+					this.decrSteam(100);
 					//System.out.println("cycle start");
 					this.running  = true;
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
