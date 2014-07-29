@@ -184,9 +184,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					i++;
 				}
 			}
-			if (Steamcraft.steamRegistered) {
-				this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
-			}
 			
 			
 
