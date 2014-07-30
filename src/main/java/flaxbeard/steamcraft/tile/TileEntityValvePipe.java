@@ -95,9 +95,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
-		return face != dir();
-		
-		
+		return face != dir() ? super.doesConnect(face) : false;
 	}
 	
 	@Override
