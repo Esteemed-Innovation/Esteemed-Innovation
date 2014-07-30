@@ -54,6 +54,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 			}
 			if (this.progress == 15) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 
 			if (progress > 0 && progress < 110) {
