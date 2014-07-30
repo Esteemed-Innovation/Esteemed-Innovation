@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.api.steamnet;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +17,6 @@ import net.minecraftforge.event.world.ChunkEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 
@@ -49,10 +49,14 @@ public class SteamNetworkRegistry {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID){
 		System.out.println("Writing network registry for dimension" + dimID + " to NBT");
 		NBTTagList nets = new NBTTagList();
-		for (SteamNetwork net : networks.get(dimID).values()){
-			nets.appendTag(net.writeToNBT(new NBTTagCompound()));
+		if (networks.get(dimID) != null &&  !networks.get(dimID).isEmpty()){
+			for (SteamNetwork net : networks.get(dimID).values() ){
+				
+				nets.appendTag(net.writeToNBT(new NBTTagCompound()));
+			}
+			nbt.setTag("networks", nets);
 		}
-		nbt.setTag("networks", nets);
+		
 		return nbt;
 	}
 	
@@ -82,11 +86,20 @@ public class SteamNetworkRegistry {
 	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent e){
 		//System.out.println("Tick");
-		for (HashMap<String, SteamNetwork> dimension : networks.values()){
-			for (SteamNetwork net : dimension.values()){
-				net.tick();
+		if (networks.values() != null && networks.values().size() > 0){
+			try{
+				for (HashMap<String, SteamNetwork> dimension : networks.values()){
+					for (SteamNetwork net : dimension.values()){
+						net.tick();
+					}
+				}
+			} catch (ConcurrentModificationException ex){
+				System.out.println("FSP: ConcurrentModificationException in network tick");
+				//ex.printStackTrace();
 			}
+			
 		}
+		
 	}
 	
 	public SteamNetwork getNewNetwork(){
