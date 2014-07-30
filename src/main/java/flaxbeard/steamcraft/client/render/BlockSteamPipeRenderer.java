@@ -144,35 +144,13 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
 	
 		for (ForgeDirection direction : ForgeDirection.values()) {
+			if (!pipe.doesConnect(direction)) {
+			}
 			if (pipe.doesConnect(direction) && world.getTileEntity(pipe.xCoord+direction.offsetX, pipe.yCoord+direction.offsetY, pipe.zCoord+direction.offsetZ) != null) {
 				TileEntity tile = world.getTileEntity(pipe.xCoord+direction.offsetX, pipe.yCoord+direction.offsetY, pipe.zCoord+direction.offsetZ);
 				if (tile instanceof ISteamTransporter) {
 					ISteamTransporter target = (ISteamTransporter) tile;
 					if (target.doesConnect(direction.getOpposite())) {
-						myDirections.add(direction);
-						if (direction.offsetX == 1) {
-							maxX = 1.0F-2*px;
-						}
-						if (direction.offsetY == 1) {
-							maxY = 1.0F-2*px;
-						}
-						if (direction.offsetZ == 1) {
-							maxZ = 1.0F-2*px;
-						}
-						if (direction.offsetX == -1) {
-							minX = 0.0F+2*px;
-						}
-						if (direction.offsetY == -1) {
-							minY = 0.0F+2*px;
-						}
-						if (direction.offsetZ == -1) {
-							minZ = 0.0F+2*px;
-						}
-					}
-				}
-				else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-					IFluidHandler target = (IFluidHandler) tile;
-					if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
 						myDirections.add(direction);
 						if (direction.offsetX == 1) {
 							maxX = 1.0F-2*px;

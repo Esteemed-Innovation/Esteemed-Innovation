@@ -172,6 +172,7 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
 		if (Loader.isModLoaded("Thaumcraft")) {
 			ThaumcraftIntegration.addThaumiumLiquid();
