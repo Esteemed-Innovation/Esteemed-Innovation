@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -173,6 +174,22 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	}
 	
 	@Override
+	public HashSet<ForgeDirection> getConnectionSides() {
+		HashSet<ForgeDirection> out = new HashSet();
+		HashSet<ForgeDirection> blacklist = new HashSet();
+		for (int i : blacklistedSides){
+			blacklist.add(ForgeDirection.getOrientation(i));
+		}
+		for (ForgeDirection d : distributionDirections){
+			if (!blacklist.contains(d)){
+				out.add(d);
+			}
+			
+		}
+		return out;
+	}
+	
+	@Override
 	public boolean doesConnect(ForgeDirection face) {
 		for (int i : blacklistedSides) {
 			if (ForgeDirection.getOrientation(i) == face) {
@@ -264,6 +281,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				SteamNetwork.newOrJoin(this);
 				this.getNetwork().addSteam(steam);
 				System.out.println(hit.subHit);
+				System.out.println(this.getNetworkName());
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	    	}
@@ -275,6 +293,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 					this.getNetwork().split(this);
 					SteamNetwork.newOrJoin(this);
 					this.getNetwork().addSteam(steam);
+					System.out.println(this.getNetworkName());
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	    		}
 	    	}
