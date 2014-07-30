@@ -262,20 +262,27 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
 		MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+		//Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
 	    if (hit == null) {
 	    	return false;
 	    }
+	    //If hit a part from 0 to 5 (direction) and hit me
 	    if ((hit.subHit >= 0) && (hit.subHit < 6) && world.getBlock(hit.blockX, hit.blockY, hit.blockZ) instanceof BlockPipe)
 	    {
+	    	//Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
 	    	int sidesConnect = 0;
 	    	for (int i = 0; i<6; i++) {
 	    		if (this.doesConnect(ForgeDirection.getOrientation(i))) {
 	    			sidesConnect++;
 	    		}
 	    	}
+	    	//If does connect on this side, and has adequate sides left
 	    	if (sidesConnect > 2 && this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
 		    	player.swingItem();
+		    	//add to blacklist
 	    		this.blacklistedSides.add(hit.subHit);
+	    		
+	    		//bad network stuff
 				int steam = this.getSteam();
 				this.getNetwork().split(this);
 				SteamNetwork.newOrJoin(this);
@@ -285,10 +292,14 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	    	}
+	    	//else if doesn't connect
 	    	else if (!this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
 	    		if (this.blacklistedSides.contains(hit.subHit)) {
+	    			//remomve from whitelist
 		    		this.blacklistedSides.remove((Integer)hit.subHit);
 			    	player.swingItem();
+			    	
+			    	//network stuff
 					int steam = this.getSteam();
 					this.getNetwork().split(this);
 					SteamNetwork.newOrJoin(this);
