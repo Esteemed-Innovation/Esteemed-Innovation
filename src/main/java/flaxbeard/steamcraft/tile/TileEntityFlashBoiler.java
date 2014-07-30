@@ -922,7 +922,17 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 	
 	public boolean getBurning(){
-		return this.burning;
+		int meta = getBlockMetadata();
+		if (meta > 0){
+			if (meta == 1){
+				return this.burning;
+			} else {
+				if (this.hasMaster()){
+					return this.getMasterTileEntity().isBurning();
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
