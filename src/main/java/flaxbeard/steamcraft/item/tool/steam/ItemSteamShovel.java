@@ -130,7 +130,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 80;
+		return 800;
 	}
 
 	@Override

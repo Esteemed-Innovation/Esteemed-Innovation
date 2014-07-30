@@ -75,6 +75,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 		}
 		lastSteam = this.getSteam() > 0;
 		if (!isInitialized) {
+			this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 			isInitialized = true;
 		}
