@@ -44,35 +44,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		this.capacity = capacity;
 	}
 
-//	@Override
-//	public int getCapacity() {
-//		return 1000;
-//	}
-
-//	@Override
-//	public int getSteam() {
-//		return super.getSteam();
-//	}
-
-//	@Override
-//	public void insertSteam(int amount, ForgeDirection face) {
-//		this.steam += amount;
-//	}
-	
-//	@Override
-//    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-//    {
-//        super.readFromNBT(par1NBTTagCompound);
-//        this.steam = par1NBTTagCompound.getShort("steam");
-//    }
-
-//    @Override
-//    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-//    {
-//        super.writeToNBT(par1NBTTagCompound);
-//        par1NBTTagCompound.setShort("steam",(short) this.steam);
-//    }
-	
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -105,7 +76,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     	}
     	this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
     	for (int i : blacklistedSides) {
-    		//System.out.println(doesConnect(ForgeDirection.getOrientation(i)));
+    		System.out.println(i);
     	}
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -203,7 +174,12 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
-		return !blacklistedSides.contains(face.flag);
+		for (int i : blacklistedSides) {
+			if (ForgeDirection.getOrientation(i) == face) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 //	@Override
@@ -283,18 +259,24 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    	if (sidesConnect > 2 && this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
 		    	player.swingItem();
 	    		this.blacklistedSides.add(hit.subHit);
+				int steam = this.getSteam();
 				this.getNetwork().split(this);
 				SteamNetwork.newOrJoin(this);
-				System.out.println("adding");
+				this.getNetwork().addSteam(steam);
+				System.out.println(hit.subHit);
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
 	    	}
 	    	else if (!this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
-	    		this.blacklistedSides.remove(hit.subHit);
-		    	player.swingItem();
-				this.getNetwork().split(this);
-				SteamNetwork.newOrJoin(this);
-				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	    		if (this.blacklistedSides.contains(hit.subHit)) {
+		    		this.blacklistedSides.remove((Integer)hit.subHit);
+			    	player.swingItem();
+					int steam = this.getSteam();
+					this.getNetwork().split(this);
+					SteamNetwork.newOrJoin(this);
+					this.getNetwork().addSteam(steam);
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	    		}
 	    	}
 
 	      	return true;
