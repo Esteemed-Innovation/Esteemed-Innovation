@@ -29,7 +29,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	protected String networkName;
 	protected SteamNetwork network;
 	public int capacity;
-	private ForgeDirection[] distributionDirections;
+	protected ForgeDirection[] distributionDirections;
 	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
 	private boolean isInitialized = false;
 	
