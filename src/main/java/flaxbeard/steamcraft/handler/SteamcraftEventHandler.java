@@ -491,7 +491,7 @@ public class SteamcraftEventHandler {
 					System.out.println("I AM THE CLIENT");
 				}
 				//FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
-				System.out.println("trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + "; network: " + trans.getNetworkName() + "; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure());
+				//System.out.println("trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + "; network: " + trans.getNetworkName() + "; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure());
 			}
 		
 		}

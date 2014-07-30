@@ -207,7 +207,14 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	
 	@Override
 	public int getSteam(){
-		return this.getNetwork().getSteam();
+		if (this.getNetwork() == null){
+			this.network = null;
+			this.networkName = null;
+			return 0;
+		} else {
+			return this.getNetwork().getSteam();
+		}
+		
 	}
 	
 	

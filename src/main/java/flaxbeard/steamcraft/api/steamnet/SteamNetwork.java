@@ -81,16 +81,25 @@ public class SteamNetwork {
 		this.name = name;
 	}
 	
-	protected void tick(){
-		
-		if (this.getPressure() > 1.2F){
-			for (ISteamTransporter trans : transporters.values()){
-				if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
-					trans.explode();
-					Coord4 c = trans.getCoords();
-					trans.getWorld().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
+	protected synchronized void tick(){
+		if (this.transporters != null && this.transporters.keySet() != null){
+			if (this.getPressure() > 1.2F){
+				for (Coord4 coords : transporters.keySet()){
+					System.out.println("Iterating!");
+					ISteamTransporter trans = transporters.get(coords);
+					if (trans == null){
+						transporters.remove(coords);
+					} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
+						trans.explode();
+						Coord4 c = trans.getCoords();
+						trans.getWorld().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
+					}
 				}
+		
 			}
+		} else {
+			System.out.println("Empty network: "+ this.name);
+			//SteamNetworkRegistry.getInstance().remove(this);
 		}
 		
 		
