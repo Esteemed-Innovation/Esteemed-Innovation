@@ -92,6 +92,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 		}
 		lastSteam = this.getSteam() > steamUsage;
 		if (!isInitialized) {
+			this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 			ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 			ForgeDirection[] directions = new ForgeDirection[5];
 			int i = 0;
@@ -110,7 +111,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 		}
 		if (active && this.worldObj.isRemote || (this.getSteam() > steamUsage && !this.powered)) {
 			if (!this.worldObj.isRemote) {
-				this.decrSteam(1);
+				this.decrSteam(3);
 			}
 			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 			ForgeDirection dir = ForgeDirection.getOrientation(meta);

@@ -130,7 +130,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 80;
+		return 800;
 	}
 
 	@Override

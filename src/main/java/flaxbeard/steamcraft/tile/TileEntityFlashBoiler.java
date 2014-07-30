@@ -464,7 +464,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)this.heat/1600.0F)));
 	                    	//System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
 	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
-	                    		this.insertSteam(1);
+	                    		this.insertSteam(10);
 	                    		this.myTank.drain(2, true);
 	                    		i++;
 	                    	}
