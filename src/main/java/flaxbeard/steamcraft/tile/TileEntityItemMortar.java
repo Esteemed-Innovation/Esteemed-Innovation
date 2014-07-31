@@ -103,7 +103,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
 					}
 					if (this.fireTicks == 60) {
-						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "random.explode", 1.0F, 0.8F);
+						this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:cannon", 1.0F, 0.8F);
 						this.decrSteam(2000);
 						ItemStack stack2 = stack.copy();
 						stack2.stackSize = 1;

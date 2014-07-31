@@ -25,10 +25,11 @@ public class ItemWrench extends Item {
 					((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 
 				}
-
+				world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
 				return result;
 			}
 			else if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IWrenchable) {
+				world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
 				return ((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 			}
     	}
