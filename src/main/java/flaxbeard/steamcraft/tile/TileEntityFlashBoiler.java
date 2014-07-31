@@ -359,7 +359,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				SteamNetwork.newOrJoin(boiler);
 			} else {
 				if (this.getNetwork()!= null){
-					this.getNetwork().split(boiler);
+					this.getNetwork().split(boiler, true);
 				}
 			}
 		}

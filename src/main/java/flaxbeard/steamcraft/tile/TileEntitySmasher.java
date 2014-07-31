@@ -511,9 +511,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 			}
 		}
 		this.setDistributionDirections(directions);
-		this.getNetwork().split(this);
+		this.getNetwork().split(this, false);
 		SteamNetwork.newOrJoin(this);
-		this.getNetwork().addSteam(steam);
+		//this.getNetwork().addSteam(steam);
 		return false;
 	}
 

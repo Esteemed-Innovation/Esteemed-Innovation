@@ -2,11 +2,14 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -244,6 +247,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		boolean changed = true;
 		if (!worldObj.isRemote){
 			if (open){
+				System.out.println("Joining");
 				if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
 					SteamNetwork.newOrJoin(this);
 				} else {
@@ -251,8 +255,9 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					this.waitingOpen=true;
 				}
 			} else {
+				System.out.println("Splitting");
 				if (this.getNetwork() != null){
-					this.getNetwork().split(this);
+					this.getNetwork().split(this, true);
 				} else {
 					changed = false;
 					this.waitingOpen = true;
@@ -289,5 +294,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	public boolean isOpen(){
 		return this.open;
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) { 
+		return false;
 	}
 }

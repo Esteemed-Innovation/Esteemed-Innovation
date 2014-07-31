@@ -288,6 +288,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 			int x, int y, int z, int side, float xO, float yO, float zO) {
 		int steam = this.getSteam();
 
+		this.getNetwork().split(this, true);
 		ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 		ForgeDirection[] directions = new ForgeDirection[5];
 		int i = 0;
@@ -298,7 +299,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 			}
 		}
 		this.setDistributionDirections(directions);
-		this.getNetwork().split(this);
+		
 		SteamNetwork.newOrJoin(this);
 		this.getNetwork().addSteam(steam);
 		return false;

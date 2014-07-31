@@ -147,74 +147,78 @@ public class BlockPipe extends BlockSteamTransporter {
     
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
-    	TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(i,j, k);
-    	float baseMin = 4.0F/16.0F;
-		float baseMax = 12.0F/16.0F;
-		float ringMin = 4.0F/16.0F;
-		float ringMax = 12.0F/16.0F;
-		float px = 1.0F/16.0F;
-		float minX = baseMin;
-		float maxX = baseMax;
-		float minY = baseMin;
-		float maxY = baseMax;
-		float minZ = baseMin;
-		float maxZ = baseMax;
-    	if (pipe != null) {
-			ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
-			for (ForgeDirection direction : ForgeDirection.values()) {
-				if (pipe.doesConnect(direction) && world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ) != null) {
-					TileEntity tile = world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ);
-					if (tile instanceof ISteamTransporter) {
-						ISteamTransporter target = (ISteamTransporter) tile;
-						if (target.doesConnect(direction.getOpposite())) {
-							myDirections.add(direction);
-							if (direction.offsetX == 1) {
-								maxX = 1.0F;
-							}
-							if (direction.offsetY == 1) {
-								maxY = 1.0F;
-							}
-							if (direction.offsetZ == 1) {
-								maxZ = 1.0F;
-							}
-							if (direction.offsetX == -1) {
-								minX = 0.0F;
-							}
-							if (direction.offsetY == -1) {
-								minY = 0.0F;
-							}
-							if (direction.offsetZ == -1) {
-								minZ = 0.0F;
-							}
-						}
-					}
-				}
-			}
-			if (myDirections.size() == 2) {
-				ForgeDirection direction = myDirections.get(0).getOpposite();
-				while (!pipe.doesConnect(direction) || direction == myDirections.get(0)) {
-					direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
-				}
-				if (direction.offsetX == 1) {
-					maxX = 1.0F;
-				}
-				if (direction.offsetY == 1) {
-					maxY = 1.0F;
-				}
-				if (direction.offsetZ == 1) {
-					maxZ = 1.0F;
-				}
-				if (direction.offsetX == -1) {
-					minX = 0.0F;
-				}
-				if (direction.offsetY == -1) {
-					minY = 0.0F;
-				}
-				if (direction.offsetZ == -1) {
-					minZ = 0.0F;
-				}
-			}
-		}
+    	TileEntity te = world.getTileEntity(i,j, k);
+    	if (te instanceof TileEntitySteamPipe){
+    		TileEntitySteamPipe pipe = (TileEntitySteamPipe) te;
+        	float baseMin = 4.0F/16.0F;
+    		float baseMax = 12.0F/16.0F;
+    		float ringMin = 4.0F/16.0F;
+    		float ringMax = 12.0F/16.0F;
+    		float px = 1.0F/16.0F;
+    		float minX = baseMin;
+    		float maxX = baseMax;
+    		float minY = baseMin;
+    		float maxY = baseMax;
+    		float minZ = baseMin;
+    		float maxZ = baseMax;
+        	if (pipe != null) {
+    			ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+    			for (ForgeDirection direction : ForgeDirection.values()) {
+    				if (pipe.doesConnect(direction) && world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ) != null) {
+    					TileEntity tile = world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ);
+    					if (tile instanceof ISteamTransporter) {
+    						ISteamTransporter target = (ISteamTransporter) tile;
+    						if (target.doesConnect(direction.getOpposite())) {
+    							myDirections.add(direction);
+    							if (direction.offsetX == 1) {
+    								maxX = 1.0F;
+    							}
+    							if (direction.offsetY == 1) {
+    								maxY = 1.0F;
+    							}
+    							if (direction.offsetZ == 1) {
+    								maxZ = 1.0F;
+    							}
+    							if (direction.offsetX == -1) {
+    								minX = 0.0F;
+    							}
+    							if (direction.offsetY == -1) {
+    								minY = 0.0F;
+    							}
+    							if (direction.offsetZ == -1) {
+    								minZ = 0.0F;
+    							}
+    						}
+    					}
+    				}
+    			}
+    			if (myDirections.size() == 2) {
+    				ForgeDirection direction = myDirections.get(0).getOpposite();
+    				while (!pipe.doesConnect(direction) || direction == myDirections.get(0)) {
+    					direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
+    				}
+    				if (direction.offsetX == 1) {
+    					maxX = 1.0F;
+    				}
+    				if (direction.offsetY == 1) {
+    					maxY = 1.0F;
+    				}
+    				if (direction.offsetZ == 1) {
+    					maxZ = 1.0F;
+    				}
+    				if (direction.offsetX == -1) {
+    					minX = 0.0F;
+    				}
+    				if (direction.offsetY == -1) {
+    					minY = 0.0F;
+    				}
+    				if (direction.offsetZ == -1) {
+    					minZ = 0.0F;
+    				}
+    			}
+    		}
+    	}
+    	
         return AxisAlignedBB.getBoundingBox(i+minX, j+minY, k+minZ, i+maxX, j+maxY, k+maxZ);
     }
 
