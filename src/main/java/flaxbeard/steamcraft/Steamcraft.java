@@ -43,6 +43,7 @@ import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 import flaxbeard.steamcraft.tile.TileEntityFan;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
+import flaxbeard.steamcraft.tile.TileEntityFluidSteamConverter;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
@@ -138,6 +139,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
 		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
 		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
+		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
 
 
 	}
@@ -174,6 +176,9 @@ public class Steamcraft {
 	public void postInit(FMLPostInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
+		if (steamRegistered) {
+			SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
+		}
 		if (Loader.isModLoaded("Thaumcraft")) {
 			ThaumcraftIntegration.addThaumiumLiquid();
 		}
