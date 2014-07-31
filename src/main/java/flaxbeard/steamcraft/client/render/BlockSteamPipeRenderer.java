@@ -185,8 +185,8 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 		}
 		if (myDirections.size() == 2) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
-			while (!pipe.doesConnect(direction)) {
-				direction = ForgeDirection.getOrientation((direction.flag+1)%5);
+			while (!pipe.doesConnect(direction) || direction == myDirections.get(0)) {
+				direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
 			}
 			if (direction.offsetX == 1) {
 				maxX = 1.0F-2*px;
