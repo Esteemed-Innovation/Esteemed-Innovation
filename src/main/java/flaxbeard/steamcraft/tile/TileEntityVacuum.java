@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -14,15 +15,23 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
+public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable,IWrenchDisplay {
 	
 	public boolean active;
 	public boolean powered = false;
@@ -30,6 +39,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 	public int rotateTicks = 0;
 	private boolean isInitialized = false;
 	private static int steamUsage = 3;
+	public int range = 9;
 	
 	
 	static public boolean isLyingInCone(float[] x, float[] t, float[] b, 
@@ -116,7 +126,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 			ForgeDirection dir = ForgeDirection.getOrientation(meta);
 			float[] M = { this.xCoord+0.5F,this.yCoord+0.5F,this.zCoord+0.5F };
-			float[] N = { this.xCoord+0.5F+10*dir.offsetX,this.yCoord+0.5F+10*dir.offsetY,this.zCoord+0.5F+10*dir.offsetZ };
+			float[] N = { this.xCoord+0.5F+range*dir.offsetX,this.yCoord+0.5F+range*dir.offsetY,this.zCoord+0.5F+range*dir.offsetZ };
 			float theta = (float)Math.PI/2.0F; //half angle of cone
 			//List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
 			List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-20, yCoord-20, zCoord-20, xCoord+20, yCoord+20, zCoord+20));
@@ -239,12 +249,13 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 		}
 	}
 	
-	
+ 	
  	@Override
     public void writeToNBT(NBTTagCompound access)
     {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
+        access.setShort("range", (short) this.range);
     }
  	
 	@Override
@@ -252,6 +263,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     {
         super.readFromNBT(access);
         this.powered = access.getBoolean("powered");
+        this.range = access.getShort("range");
+        
     }
 	 
 	
@@ -259,7 +272,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 	public Packet getDescriptionPacket()
 	{
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteam() > steamUsage && !this.powered);
+        access.setBoolean("active", this.getSteam() > 0 && !this.powered);
+        access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 
@@ -271,6 +285,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.active = access.getBoolean("active");
+        this.range = access.getShort("range");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     
     }
@@ -286,22 +301,67 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-		int steam = this.getSteam();
-
-		this.getNetwork().split(this, true);
-		ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
-		ForgeDirection[] directions = new ForgeDirection[5];
-		int i = 0;
-		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (direction != myDir && direction != myDir.getOpposite()) {
-				directions[i] = direction;
-				i++;
+		if (player.isSneaking()) {
+			switch (range) {
+			case 9:
+				range = 11;
+				break;
+			case 11:
+				range = 13;
+				break;
+			case 13:
+				range = 15;
+				break;
+			case 15:
+				range = 17;
+				break;
+			case 17:
+				range = 19;
+				break;
+			case 19:
+				range = 5;
+				break;
+			case 5:
+				range = 7;
+				break;
+			case 7:
+				range = 9;
+				break;
 			}
+			System.out.println(range);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			return true;
 		}
-		this.setDistributionDirections(directions);
-		
-		SteamNetwork.newOrJoin(this);
-		this.getNetwork().addSteam(steam);
-		return false;
+		else
+		{
+			int steam = this.getSteam();
+	
+			this.getNetwork().split(this, true);
+			ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+			ForgeDirection[] directions = new ForgeDirection[5];
+			int i = 0;
+			for (ForgeDirection direction : ForgeDirection.values()) {
+				if (direction != myDir && direction != myDir.getOpposite()) {
+					directions[i] = direction;
+					i++;
+				}
+			}
+			this.setDistributionDirections(directions);
+			
+			SteamNetwork.newOrJoin(this);
+			this.getNetwork().addSteam(steam);
+			return false;
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void displayWrench(Post event) {
+		GL11.glPushMatrix();
+		int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
+		int x = event.resolution.getScaledWidth() / 2  -8;
+		int y = event.resolution.getScaledHeight() / 2  - 8;
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("steamcraft.fan.range") + " " + this.range + " " + StatCollector.translateToLocal("steamcraft.fan.blocks"), x + 15, y + 13, color);
+		GL11.glPopMatrix();
 	}
 }

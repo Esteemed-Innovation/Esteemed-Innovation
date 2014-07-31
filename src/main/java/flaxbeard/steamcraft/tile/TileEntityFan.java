@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -13,20 +14,29 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
+public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable,IWrenchDisplay {
 	public boolean active;
 	public boolean powered = false;
 	public boolean lastSteam = false;
 	public int rotateTicks = 0;
 	private boolean isInitialized = false;
+	public int range = 9;
 	
 	public TileEntityFan(){
 		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
@@ -38,6 +48,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
+        access.setShort("range", (short) this.range);
     }
  	
 	@Override
@@ -45,6 +56,8 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     {
         super.readFromNBT(access);
         this.powered = access.getBoolean("powered");
+        this.range = access.getShort("range");
+        
     }
 	 
 	
@@ -53,6 +66,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	{
         NBTTagCompound access = super.getDescriptionTag();
         access.setBoolean("active", this.getSteam() > 0 && !this.powered);
+        access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 
@@ -64,6 +78,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
     	this.active = access.getBoolean("active");
+        this.range = access.getShort("range");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     
     }
@@ -92,7 +107,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 			this.worldObj.spawnParticle("smoke", xCoord+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);
 			int blocksInFront = 0;
 			boolean blocked = false;
-			for (int i = 1; i<9; i++) {
+			for (int i = 1; i<range; i++) {
 				int x = xCoord+dir.offsetX*i;
 				int y = yCoord+dir.offsetY*i;
 				int z = zCoord+dir.offsetZ*i;
@@ -106,7 +121,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 				}
 				if (!blocked && (this.worldObj.getBlock(x,y,z).isReplaceable(worldObj, x,y,z) || this.worldObj.isAirBlock(x,y,z)  || this.worldObj.getBlock(x,y,z) instanceof BlockTrapDoor || this.worldObj.getBlock(x,y,z).getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null || (this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir) && this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir.getOpposite())))) {
 					blocksInFront = i;
-					if (i != 8)
+					if (i != range-1)
 						this.worldObj.spawnParticle("smoke", xCoord+dir.offsetX*i+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+dir.offsetY*i+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+dir.offsetZ*i+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);
 				}
 				else
@@ -145,12 +160,57 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-		int steam = this.getSteam();
-		this.getNetwork().split(this, true);
-		this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
-		
-		SteamNetwork.newOrJoin(this);
-		this.getNetwork().addSteam(steam);
-		return false;
+		if (player.isSneaking()) {
+			switch (range) {
+			case 9:
+				range = 11;
+				break;
+			case 11:
+				range = 13;
+				break;
+			case 13:
+				range = 15;
+				break;
+			case 15:
+				range = 17;
+				break;
+			case 17:
+				range = 19;
+				break;
+			case 19:
+				range = 5;
+				break;
+			case 5:
+				range = 7;
+				break;
+			case 7:
+				range = 9;
+				break;
+			}
+			System.out.println(range);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			return true;
+		}
+		else
+		{
+			int steam = this.getSteam();
+			this.getNetwork().split(this, true);
+			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
+			
+			SteamNetwork.newOrJoin(this);
+			this.getNetwork().addSteam(steam);
+			return true;
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void displayWrench(Post event) {
+		GL11.glPushMatrix();
+		int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
+		int x = event.resolution.getScaledWidth() / 2  -8;
+		int y = event.resolution.getScaledHeight() / 2  - 8;
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("steamcraft.fan.range") + " " + this.range + " " + StatCollector.translateToLocal("steamcraft.fan.blocks"), x + 15, y + 13, color);
+		GL11.glPopMatrix();
 	}
 }
