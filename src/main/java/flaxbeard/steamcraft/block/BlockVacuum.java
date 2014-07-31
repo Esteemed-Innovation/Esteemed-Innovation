@@ -73,7 +73,13 @@ public class BlockVacuum extends BlockSteamTransporter implements IWrenchable{
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-        world.setBlockMetadataWithNotify(x, y, z, side, 2);
-        return true;
+		if (player.isSneaking()) {
+			return true;
+		}
+		else
+		{
+	        world.setBlockMetadataWithNotify(x, y, z, side, 2);
+	        return true;
+		}
 	}
 }

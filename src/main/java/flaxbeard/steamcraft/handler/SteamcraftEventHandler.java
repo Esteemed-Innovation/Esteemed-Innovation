@@ -13,12 +13,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -32,16 +32,18 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
@@ -105,16 +107,18 @@ public class SteamcraftEventHandler {
 //	}
 
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
+
 		if(event.type == ElementType.ALL) {
-			if (Loader.isModLoaded("Botania")) {
-				Minecraft mc = Minecraft.getMinecraft();
-				MovingObjectPosition pos = mc.objectMouseOver;
-				if(pos != null && !(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == BotaniaIntegration.twigWand()) && mc.thePlayer.getCurrentArmor(3) != null && mc.thePlayer.getCurrentArmor(3).getItem() == SteamcraftItems.exoArmorHead) {
-					if (((ItemExosuitArmor)mc.thePlayer.getCurrentArmor(3).getItem()).hasUpgrade(mc.thePlayer.getCurrentArmor(3), BotaniaIntegration.floralLaurel)) {
-						BotaniaIntegration.displayThings(pos, event);
-					}
+			Minecraft mc = Minecraft.getMinecraft();
+			EntityPlayer player = mc.thePlayer;
+			MovingObjectPosition pos = mc.objectMouseOver;
+			if(pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWrench) {
+				TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
+				if (te instanceof IWrenchDisplay) {
+					((IWrenchDisplay)te).displayWrench(event);
 				}
 			}
 		}

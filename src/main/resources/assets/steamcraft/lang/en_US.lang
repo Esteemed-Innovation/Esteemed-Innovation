@@ -12,6 +12,9 @@ steamcraft.astrolabe.dimension.nether=the Nether
 steamcraft.astrolabe.dimension.end=the End
 steamcraft.astrolabe.in=in
 
+steamcraft.fan.range=Range:
+steamcraft.fan.blocks=blocks
+
 steamcraft.waila.pressure=Pressure
 steamcraft.waila.valveOpen=Valve open
 steamcraft.waila.valveClosed=Valve closed
