@@ -138,6 +138,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		int i = 0;
 		if (myDirections.size() > 0) {
 			ForgeDirection direction = myDirections.get(0).getOpposite();
+			while (!doesConnect(direction) || direction == myDirections.get(0)) {
+				direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
+			}
 			if (!worldObj.isRemote){
 				if (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);

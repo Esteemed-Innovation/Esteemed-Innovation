@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockFan;
 import flaxbeard.steamcraft.block.BlockFlashBoiler;
+import flaxbeard.steamcraft.block.BlockFluidSteamConverter;
 import flaxbeard.steamcraft.block.BlockItemMortar;
 import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.block.BlockPipe;
@@ -63,7 +64,8 @@ public class SteamcraftBlocks {
 	public static Block thumperDummy;
 	public static Block fan;
 	public static Block vacuum;
-	
+	public static Block fluidSteamConverter;
+
 	public static Block pump;
 	
 	public static Block smasher;
@@ -159,6 +161,9 @@ public class SteamcraftBlocks {
 		
 		vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
 		GameRegistry.registerBlock(vacuum, "vacuum");
+		
+		fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F);
+		GameRegistry.registerBlock(fluidSteamConverter, "fluidSteamConverter");
 
 //	
 //		steamPiston = (BlockSteamPistonBase) new BlockSteamPistonBase(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:piston");
