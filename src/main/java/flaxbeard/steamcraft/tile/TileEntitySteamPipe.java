@@ -35,6 +35,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	public ArrayList<Integer> blacklistedSides = new ArrayList<Integer>();
 	
 	protected boolean isLeaking = false;
+	private boolean isSplitting = false;
+	private int mySteam = 0;
 	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
@@ -154,7 +156,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 						markDirty();
 					}
 				}
-				while (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+				while (myDirections.size() == 2 && this.getPressure() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					if (worldObj.isRemote){
 						//System.out.println("I AM THE CLIENT!");
 					}
@@ -211,7 +213,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 			this.networkName = null;
 			return 0;
 		} else {
-			return this.getNetwork().getSteam();
+			return (int)Math.floor((double)this.getNetwork().getPressure() * (double)this.capacity);
 		}
 		
 	}
@@ -291,6 +293,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    			sidesConnect++;
 	    		}
 	    	}
+	    	boolean netChange = false;
 	    	//If does connect on this side, and has adequate sides left
 	    	if (this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
 	    		ForgeDirection direction = ForgeDirection.getOrientation(hit.subHit);
@@ -302,13 +305,14 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 			    	player.swingItem();
 			    	
 			    	//network stuff
-			    	System.out.println("netsteam before: "+pipe.getNetwork().getSteam());
-					int steam = pipe.getNetwork().split(pipe);
+			    	//System.out.println("a) netsteam before: "+pipe.getNetwork().getSteam());
+					int steam = pipe.getNetwork().split(pipe, false);
 					SteamNetwork.newOrJoin(pipe);
-					System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
-					//this.getNetwork().addSteam(steam);
-					System.out.println(pipe.getNetworkName());
-					System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
+					//System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
+					//pipe.getNetwork().addSteam(steam);
+					System.out.println("A");
+					//System.out.println(pipe.getNetworkName());
+					//System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
 					this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
 	    		}
 		    	else if (sidesConnect > 2) {
@@ -317,12 +321,13 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		    		this.blacklistedSides.add(hit.subHit);
 		    		
 		    		//bad network stuff
-		    		System.out.println("netsteam before: "+this.getNetwork().getSteam());
-					int steam = this.getNetwork().split(this);
+		    		//System.out.println("b) netsteam before: "+this.getNetwork().getSteam());
+					int steam = this.getNetwork().split(this, false);
 					SteamNetwork.newOrJoin(this);
-					System.out.println("Net steam before add: "+this.getNetwork().getSteam());
-					this.getNetwork().addSteam(steam);
-					System.out.println(this.getNetworkName());
+					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
+					//this.getNetwork().addSteam(steam);
+					System.out.println("B");
+					//System.out.println(this.getNetworkName());
 					System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 					
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -336,12 +341,13 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 			    	player.swingItem();
 			    	
 			    	//network stuff
-			    	System.out.println("netsteam before: "+this.getNetwork().getSteam());
-					int steam = this.getNetwork().split(this);
+			    	//System.out.println("c) netsteam before: "+this.getNetwork().getSteam());
+					int steam = this.getNetwork().split(this, false);
 					SteamNetwork.newOrJoin(this);
-					System.out.println("Net steam before add: "+this.getNetwork().getSteam());
+					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
 					//this.getNetwork().addSteam(steam);
-					System.out.println(this.getNetworkName());
+					System.out.println("C");
+					//System.out.println(this.getNetworkName());
 					System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	    		}

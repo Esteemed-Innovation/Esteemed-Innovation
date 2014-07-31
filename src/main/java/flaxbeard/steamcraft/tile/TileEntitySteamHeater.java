@@ -212,9 +212,9 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 			}
 		}
 		this.setDistributionDirections(directions);
-		this.getNetwork().split(this);
+		this.getNetwork().split(this, false);
 		SteamNetwork.newOrJoin(this);
-		this.getNetwork().addSteam(steam);
+		//this.getNetwork().addSteam(steam);
 		return false;
 	}
 

@@ -103,7 +103,7 @@ public class SteamNetworkRegistry {
 	}
 	
 	public SteamNetwork getNewNetwork(){
-		System.out.println("Returning new network");
+		//System.out.println("Returning new network");
 		SteamNetwork net = new SteamNetwork();
 		String name = UUID.randomUUID().toString();
 		//System.out.println(name);

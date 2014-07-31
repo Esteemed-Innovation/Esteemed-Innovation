@@ -146,8 +146,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
 		int steam = this.getSteam();
+		this.getNetwork().split(this, true);
 		this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
-		this.getNetwork().split(this);
+		
 		SteamNetwork.newOrJoin(this);
 		this.getNetwork().addSteam(steam);
 		return false;
