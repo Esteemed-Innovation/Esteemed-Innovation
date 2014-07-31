@@ -251,27 +251,27 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		float min = 4F/16F;
 		float max = 12F/16F;
 		
-		if (canConnectSide(0) > 0 && (canConnectSide(0) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(0) > 0) {
 			float bottom = canConnectSide(0) == 2 ? -5F/16F : 0.0F;
 			cuboids.add(new IndexedCuboid6(Integer.valueOf(0), new Cuboid6(this.xCoord + min, this.yCoord + bottom, this.zCoord + min, this.xCoord + max, this.yCoord + 5F/16F, this.zCoord + max)));
 	    }
-		if (canConnectSide(1) > 0 && (canConnectSide(1) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(1) > 0) {
 	    	float top = canConnectSide(1) == 2 ? 21F/16F : 1.0F;
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(1), new Cuboid6(this.xCoord + min, this.yCoord + 11F/16F, this.zCoord + min, this.xCoord + max, this.yCoord + top, this.zCoord + max)));
 	    }
-		if (canConnectSide(2) > 0 && (canConnectSide(2) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(2) > 0) {
 			float bottom = canConnectSide(2) == 2 ? -5F/16F : 0.0F;
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(2), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + bottom, this.xCoord + max, this.yCoord + max, this.zCoord + 5F/16F)));
 	    }
-		if (canConnectSide(3) > 0 && (canConnectSide(3) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(3) > 0) {
 	    	float top = canConnectSide(3) == 2 ? 21F/16F : 1.0F;
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(3), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + 11F/16F, this.xCoord + max, this.yCoord + max, this.zCoord + top)));
 	    }
-		if (canConnectSide(4) > 0 && (canConnectSide(4) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(4) > 0) {
 			float bottom = canConnectSide(4) == 2 ? -5F/16F : 0.0F;
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(4), new Cuboid6(this.xCoord + bottom, this.yCoord + min, this.zCoord + min, this.xCoord + 5F/16F, this.yCoord + max, this.zCoord + max)));
 	    }
-		if (canConnectSide(5) > 0 && (canConnectSide(5) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+		if (canConnectSide(5) > 0) {
 	    	float top = canConnectSide(5) == 2 ? 21F/16F : 1.0F;
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(5), new Cuboid6(this.xCoord + 11F/16F, this.yCoord + min, this.zCoord + min, this.xCoord + top, this.yCoord + max, this.zCoord + max)));
 	    }
