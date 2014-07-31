@@ -76,9 +76,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     		sidesInt[i] = sidesList.getInteger(Integer.toString(i));
     	}
     	this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
-    	for (int i : blacklistedSides) {
-    		System.out.println(i);
-    	}
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
@@ -93,7 +90,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     	for (int i = 0; i < length; i++) {
     		sidesInt[i] = sidesList.getInteger(Integer.toString(i));
     	}
-    	//this.blacklistedSides.clear();
     	this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
     }
 
@@ -101,10 +97,13 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     public void writeToNBT(NBTTagCompound access)
     {
         super.writeToNBT(access);
-    	NBTTagList list = new NBTTagList();
+        NBTTagCompound list = new NBTTagCompound();
+    	int g = 0;
     	for (int i : blacklistedSides) {
-    		list.appendTag(new NBTTagInt(i));
+    		list.setInteger(Integer.toString(g), i);
+    		g++;
     	}
+    	list.setInteger("size", g);
     	access.setTag("blacklistedSides", list);
     }
 	    
@@ -118,7 +117,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
 		ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
 		for (ForgeDirection direction : ForgeDirection.values()) {
-			if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
+			if (this.doesConnect(direction) && worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
 				TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
 				if (tile instanceof ISteamTransporter) {
 					ISteamTransporter target = (ISteamTransporter) tile;
@@ -224,7 +223,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		return fullblock;
 	}
 	  
-	private boolean canConnectSide(int side)
+	private int canConnectSide(int side)
 	{
 		ForgeDirection direction = ForgeDirection.getOrientation(side);
 		if (worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) != null) {
@@ -232,35 +231,44 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 			if (tile instanceof ISteamTransporter) {
 				ISteamTransporter target = (ISteamTransporter) tile;
 				if (target.doesConnect(direction.getOpposite())) {
-					return true;
+					return target instanceof TileEntitySteamPipe ? 2 : 1;
+				}
+				if (target instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) target).blacklistedSides.contains(direction.getOpposite().ordinal())) {
+					return 2;
 				}
 			}
 		}
-		return false;
+		return 0;
 	}
-	  
+	
 	public void addTraceableCuboids(List<IndexedCuboid6> cuboids)
 	{
 		float min = 4F/16F;
 		float max = 12F/16F;
 		
-		if (canConnectSide(0)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(0), new Cuboid6(this.xCoord + min, this.yCoord, this.zCoord + min, this.xCoord + max, this.yCoord + 5F/16F, this.zCoord + max)));
+		if (canConnectSide(0) > 0 && (canConnectSide(0) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+			float bottom = canConnectSide(0) == 2 ? -5F/16F : 0.0F;
+			cuboids.add(new IndexedCuboid6(Integer.valueOf(0), new Cuboid6(this.xCoord + min, this.yCoord + bottom, this.zCoord + min, this.xCoord + max, this.yCoord + 5F/16F, this.zCoord + max)));
 	    }
-	    if (canConnectSide(1)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(1), new Cuboid6(this.xCoord + min, this.yCoord + 11F/16F, this.zCoord + min, this.xCoord + max, this.yCoord + 1, this.zCoord + max)));
+		if (canConnectSide(1) > 0 && (canConnectSide(1) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+	    	float top = canConnectSide(1) == 2 ? 21F/16F : 1.0F;
+	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(1), new Cuboid6(this.xCoord + min, this.yCoord + 11F/16F, this.zCoord + min, this.xCoord + max, this.yCoord + top, this.zCoord + max)));
 	    }
-	    if (canConnectSide(2)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(2), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord, this.xCoord + max, this.yCoord + max, this.zCoord + 5F/16F)));
+		if (canConnectSide(2) > 0 && (canConnectSide(2) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+			float bottom = canConnectSide(2) == 2 ? -5F/16F : 0.0F;
+	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(2), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + bottom, this.xCoord + max, this.yCoord + max, this.zCoord + 5F/16F)));
 	    }
-	    if (canConnectSide(3)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(3), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + 11F/16F, this.xCoord + max, this.yCoord + max, this.zCoord + 1)));
+		if (canConnectSide(3) > 0 && (canConnectSide(3) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+	    	float top = canConnectSide(3) == 2 ? 21F/16F : 1.0F;
+	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(3), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + 11F/16F, this.xCoord + max, this.yCoord + max, this.zCoord + top)));
 	    }
-	    if (canConnectSide(4)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(4), new Cuboid6(this.xCoord, this.yCoord + min, this.zCoord + min, this.xCoord + 5F/16F, this.yCoord + max, this.zCoord + max)));
+		if (canConnectSide(4) > 0 && (canConnectSide(4) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+			float bottom = canConnectSide(4) == 2 ? -5F/16F : 0.0F;
+	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(4), new Cuboid6(this.xCoord + bottom, this.yCoord + min, this.zCoord + min, this.xCoord + 5F/16F, this.yCoord + max, this.zCoord + max)));
 	    }
-	    if (canConnectSide(5)) {
-	      cuboids.add(new IndexedCuboid6(Integer.valueOf(5), new Cuboid6(this.xCoord + 11F/16F, this.yCoord + min, this.zCoord + min, this.xCoord + 1, this.yCoord + max, this.zCoord + max)));
+		if (canConnectSide(5) > 0 && (canConnectSide(5) == 1 || (this.xCoord + this.yCoord + this.zCoord) % 2 == 0)) {
+	    	float top = canConnectSide(5) == 2 ? 21F/16F : 1.0F;
+	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(5), new Cuboid6(this.xCoord + 11F/16F, this.yCoord + min, this.zCoord + min, this.xCoord + top, this.yCoord + max, this.zCoord + max)));
 	    }
 	    cuboids.add(new IndexedCuboid6(Integer.valueOf(6), new Cuboid6(this.xCoord + 5F/16F, this.yCoord +  5F/16F, this.zCoord +  5F/16F, this.xCoord + 11F/16F, this.yCoord +  11F/16F, this.zCoord +  11F/16F)));
 	}
@@ -284,22 +292,41 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    		}
 	    	}
 	    	//If does connect on this side, and has adequate sides left
-	    	if (sidesConnect > 2 && this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
-		    	player.swingItem();
-		    	//add to blacklist
-	    		this.blacklistedSides.add(hit.subHit);
-	    		
-	    		//bad network stuff
-	    		System.out.println("netsteam before: "+this.getNetwork().getSteam());
-				int steam = this.getNetwork().split(this);
-				SteamNetwork.newOrJoin(this);
-				System.out.println("Net steam before add: "+this.getNetwork().getSteam());
-				this.getNetwork().addSteam(steam);
-				System.out.println(this.getNetworkName());
-				System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
-				
-				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+	    	if (this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
+	    		ForgeDirection direction = ForgeDirection.getOrientation(hit.subHit);
+	    		TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+	    		if (tile instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) tile).blacklistedSides.contains(direction.getOpposite().ordinal())) {
+	    			System.out.println("K");
+	    			TileEntitySteamPipe pipe = (TileEntitySteamPipe) tile;
+	    			pipe.blacklistedSides.remove((Integer)direction.getOpposite().ordinal());
+			    	player.swingItem();
+			    	
+			    	//network stuff
+			    	System.out.println("netsteam before: "+pipe.getNetwork().getSteam());
+					int steam = pipe.getNetwork().split(pipe);
+					SteamNetwork.newOrJoin(pipe);
+					System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
+					//this.getNetwork().addSteam(steam);
+					System.out.println(pipe.getNetworkName());
+					System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
+					this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+	    		}
+		    	else if (sidesConnect > 2) {
+			    	player.swingItem();
+			    	//add to blacklist
+		    		this.blacklistedSides.add(hit.subHit);
+		    		
+		    		//bad network stuff
+		    		System.out.println("netsteam before: "+this.getNetwork().getSteam());
+					int steam = this.getNetwork().split(this);
+					SteamNetwork.newOrJoin(this);
+					System.out.println("Net steam before add: "+this.getNetwork().getSteam());
+					this.getNetwork().addSteam(steam);
+					System.out.println(this.getNetworkName());
+					System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
+					
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		    	}
 	    	}
 	    	//else if doesn't connect
 	    	else if (!this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
