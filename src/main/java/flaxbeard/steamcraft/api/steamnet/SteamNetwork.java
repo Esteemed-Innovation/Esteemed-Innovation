@@ -234,11 +234,13 @@ public class SteamNetwork {
 		}
 	}
 	
-	public synchronized void split(ISteamTransporter split){
+	public synchronized int split(ISteamTransporter split){
 		//System.out.println("Splitting network: "+ this.name);
+		int steamRemoved = 0;
 		if (this.steam >= split.getCapacity() * this.getPressure()){
 			//System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
-			this.steam -= split.getCapacity() * this.getPressure();
+			steamRemoved = (int)Math.floor((double)split.getCapacity() * (double)this.getPressure());
+			this.steam -= steamRemoved;
 			
 		}
 		//System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
@@ -283,7 +285,7 @@ public class SteamNetwork {
 			//System.out.println("No networks around");
 			SteamNetworkRegistry.getInstance().remove(this);
 		}
-		
+		return steamRemoved;
 	}
 	
 	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
