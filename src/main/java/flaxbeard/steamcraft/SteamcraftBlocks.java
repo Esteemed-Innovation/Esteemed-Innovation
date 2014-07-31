@@ -34,6 +34,7 @@ import flaxbeard.steamcraft.block.BlockThumper;
 import flaxbeard.steamcraft.block.BlockThumperDummy;
 import flaxbeard.steamcraft.block.BlockVacuum;
 import flaxbeard.steamcraft.block.BlockValvePipe;
+import flaxbeard.steamcraft.block.BlockWhistle;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
@@ -57,6 +58,7 @@ public class SteamcraftBlocks {
 	public static Block tank;
 	public static Block meter;
 	public static Block ruptureDisc;
+	public static Block horn;
 	public static Block hammer;
 	public static Block conveyor;
 	public static Block itemMortar;
@@ -150,6 +152,9 @@ public class SteamcraftBlocks {
 		
 		ruptureDisc = new BlockRuptureDisc().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ruptureDisc").setHardness(1.0F);
 		GameRegistry.registerBlock(ruptureDisc, BlockRuptureDiscItem.class, "ruptureDisc");
+		
+		horn = new BlockWhistle().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:horn").setHardness(1.0F);
+		GameRegistry.registerBlock(horn, "horn");
 		
 		thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 		GameRegistry.registerBlock(thumper, BlockThumperItem.class, "thumper");

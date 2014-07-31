@@ -90,24 +90,30 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-        if (side != 0 && side != 1)
-        {
-        	switch (side) {
-        	case 3:
-                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-                break;
-        	case 2:
-                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-                break;
-        	case 5:
-                world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-                break;
-        	case 4:
-                world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-                break;
-        	}
-            return true;
-        }
-        return false;
+		if (player.isSneaking()) {
+			return true;
+		}
+		else
+		{
+	        if (side != 0 && side != 1)
+	        {
+	        	switch (side) {
+	        	case 3:
+	                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+	                break;
+	        	case 2:
+	                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+	                break;
+	        	case 5:
+	                world.setBlockMetadataWithNotify(x, y, z, 5, 2);
+	                break;
+	        	case 4:
+	                world.setBlockMetadataWithNotify(x, y, z, 4, 2);
+	                break;
+	        	}
+	            return true;
+	        }
+	        return false;
+		}
 	}
 }

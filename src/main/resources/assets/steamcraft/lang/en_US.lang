@@ -14,6 +14,8 @@ steamcraft.astrolabe.in=in
 
 steamcraft.fan.range=Range:
 steamcraft.fan.blocks=blocks
+steamcraft.smasher.true=Mode: Block Breaker
+steamcraft.smasher.false=Mode: Smasher
 
 steamcraft.waila.pressure=Pressure
 steamcraft.waila.valveOpen=Valve open

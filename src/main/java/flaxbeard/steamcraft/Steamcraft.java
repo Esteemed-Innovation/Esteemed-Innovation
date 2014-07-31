@@ -60,6 +60,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamTank;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
+import flaxbeard.steamcraft.tile.TileEntityWhistle;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
@@ -84,11 +85,13 @@ public class Steamcraft {
 	public static int genocideRenderID;
 	public static int gaugeRenderID;
 	public static int ruptureDiscRenderID;
+	public static int whistleRenderID;
 
     public static boolean steamRegistered;
     public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType)EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
+
 
 
 	
@@ -140,6 +143,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
 		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
 		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
+		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
 
 
 	}
@@ -161,6 +165,7 @@ public class Steamcraft {
 		genocideRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		gaugeRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		ruptureDiscRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		whistleRenderID  = RenderingRegistry.getNextAvailableRenderId();
 
 
 		proxy.registerRenderers();
