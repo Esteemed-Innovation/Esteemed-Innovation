@@ -207,7 +207,7 @@ public class SteamNetwork {
 	}
 	
 	public void addTransporter(ISteamTransporter trans){
-		if (!this.contains(trans)){
+		if (trans != null && !this.contains(trans)){
 			this.capacity += trans.getCapacity();
 			Coord4 transCoords = trans.getCoords();
 			transporters.put(transCoords, trans);
