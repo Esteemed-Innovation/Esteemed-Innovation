@@ -2,6 +2,10 @@ package flaxbeard.steamcraft.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -18,9 +22,44 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements ISteamTransporter,IFluidHandler,IWrenchable {
 	private FluidTank dummyTank;
 	private boolean isInitialized = false;
+	private boolean lastRunning = false;
+	public int runTicks = 0;
+	
+	@Override
+	public Packet getDescriptionPacket()
+	{
+        NBTTagCompound access = super.getDescriptionTag();
+        access.setShort("runTicks",(short)runTicks);
+        
+
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	    
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
+    {
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	if (runTicks == 0 && access.getShort("runTicks") != 0) {
+    		runTicks = access.getShort("runTicks");
+    	}
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
 	@Override
 	public void updateEntity() {
+		
+
+		if (runTicks > 0) {
+			runTicks--;
+		}
+		if (runTicks > 0 != lastRunning) {
+			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+		lastRunning = runTicks > 0;
+
 		if (!this.isInitialized) {
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 		}
@@ -48,6 +87,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (resource.fluidID == FluidRegistry.getFluid("steam").getID()) {
         	if (doFill) {
         		this.insertSteam(resource.amount, from);
+            	runTicks = runTicks > 0 ? runTicks : 100;
         	}
         	return resource.amount;
         }
@@ -57,6 +97,8 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource,
 			boolean doDrain) {
+		//System.out.println("t");
+
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		if (from.ordinal() != meta) {
 			return null;
@@ -72,6 +114,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (doDrain)
         {
             this.decrSteam(drained);
+        	runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
         return stack;
 	}
@@ -93,6 +136,8 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (doDrain)
         {
             this.decrSteam(drained);
+        	runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
+
         }
         return stack;
 	}
@@ -106,7 +151,6 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		System.out.println(from.ordinal() != meta);
 		return from.ordinal() != meta;
 	}
 

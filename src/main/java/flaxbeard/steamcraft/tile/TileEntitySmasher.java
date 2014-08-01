@@ -305,6 +305,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 										System.out.println("This smasher's meta: "+this.getBlockMetadata());
 										e.printStackTrace();
 									}
+									worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
 									worldObj.setBlock(x, y, z, SteamcraftBlocks.dummy);
 								}
 							} else {
