@@ -198,6 +198,7 @@ public class Steamcraft {
 		iso.addSmelting();
 		iso.registerDusts();
 		SteamcraftItems.reregisterPlates();
+		SteamcraftRecipes.registerDustLiquids();
 	}
 
 

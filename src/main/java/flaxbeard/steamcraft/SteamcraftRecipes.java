@@ -52,12 +52,6 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotCopper", liquidCopper, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("ingotBrass", liquidBrass, 9);
 		
-		SteamcraftRegistry.registerSmeltThingOredict("dustGold", liquidGold, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("dustIron", liquidIron, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("dustZinc", liquidZinc, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
-		SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
-		
 		SteamcraftRegistry.registerSmeltThingOredict("dustTinyGold", liquidGold, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("dustTinyIron", liquidIron, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("dustTinyZinc", liquidZinc, 1);
@@ -467,5 +461,13 @@ public class SteamcraftRecipes {
 		        'x', "nuggetIron"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), "xxx", "xxx", "xxx", 
 		        'x', "nuggetBrass"));
+	}
+	
+	public static void registerDustLiquids(){
+		SteamcraftRegistry.registerSmeltThingOredict("dustGold", liquidGold, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("dustIron", liquidIron, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("dustZinc", liquidZinc, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
+		SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
 	}
 }
