@@ -94,7 +94,7 @@ public class Config {
 		enableRuptureDisc = config.get("SteamSystem", "Enable rupture disc", true).getBoolean(true);
 		enableTank = config.get("SteamSystem", "Enable steam tank (Crucial)", true).getBoolean(true);
 		enableValvePipe = config.get("SteamSystem", "Enable valve pipe", true).getBoolean(true);
-		enableFluidSteamConverter = config.get("Blocks", "Enable steam pressurizer", true).getBoolean(true);
+		//enableFluidSteamConverter = config.get("Blocks", "Enable steam pressurizer", true).getBoolean(true);
 		
 		
 		// BLOCKS
