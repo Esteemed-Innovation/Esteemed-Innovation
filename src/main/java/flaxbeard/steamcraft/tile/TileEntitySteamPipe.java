@@ -307,8 +307,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				if (!player.capabilities.isCreativeMode) {
 					EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock,1,disguiseMeta));
 					world.spawnEntityInWorld(entityItem);
-	                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
 				}
+                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
 				disguiseBlock = null;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				return true;
