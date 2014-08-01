@@ -1,22 +1,126 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFluidSteamConverter;
 
 public class BlockFluidSteamConverter extends BlockSteamTransporter implements IWrenchable{
 	
-    public BlockFluidSteamConverter() {
+    private IIcon sideIcon;
+
+	public BlockFluidSteamConverter() {
 		super(Material.iron);
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta)
+    {
+        return side == meta ? ((BlockBoiler)SteamcraftBlocks.boiler).steamIcon : side == ForgeDirection.getOrientation(meta).getOpposite().ordinal() ? sideIcon : blockIcon;
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
+    {
+		return this.getSelectedBoundingBoxFromPool(world, i, j, k);
+    }
+    
+    @Override
+    @SideOnly (Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) 
+    {
+    	int meta = world.getBlockMetadata(i, j, k);
+		float ringMin = 2.0F/16.0F;
+		float ringMax = 14.0F/16.0F;
+        float px = 1.0F/16.0F;
+		float x = ringMin;
+		float y = ringMin;
+		float z = 0.0F;
+		float x2 = ringMax;
+		float y2 = ringMax;
+		float z2 = 0.999F;
+		ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();        switch (meta) {
+        	case 0:
+        		this.setBlockBounds(x, z, y, x2, z2, y2);
+        		break;
+        	case 1:
+        		this.setBlockBounds(x, z, y, x2, z2, y2);
+        		break;
+			case 5:
+				this.setBlockBounds(z, y, x, z2, y2, x2);
+				break;
+			case 2:
+				this.setBlockBounds(1-x2, y, 1-z2, 1-x, y2, 1-z);
+				break;
+			case 4:
+				this.setBlockBounds(1-z2, y, 1-x2, 1-z, y2, 1-x);
+				break;
+			case 3:
+				this.setBlockBounds(x, y, z, x2, y2, z2);
+				break;
+		}
+		return super.getSelectedBoundingBoxFromPool(world, i, j, k);
+    }
+    
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int xl, int yl, int zl)
+    {
+        int meta = world.getBlockMetadata(xl, yl, zl);
+		float ringMin = 4.0F/16.0F;
+		float ringMax = 12.0F/16.0F;
+        float px = 1.0F/16.0F;
+		float x = ringMin;
+		float y = ringMin;
+		float z = 0.0F;
+		float x2 = ringMax;
+		float y2 = ringMax;
+		float z2 = 0.999F;
+		ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();
+		this.setBlockBounds(z, y, x, z2, y2, x2);
+        switch (meta) {
+        	case 0:
+        		this.setBlockBounds(x, z, y, x2, z2, y2);
+        		break;
+        	case 1:
+        		this.setBlockBounds(x, z, y, x2, z2, y2);
+        		break;
+			case 5:
+				this.setBlockBounds(z, y, x, z2, y2, x2);
+				break;
+			case 2:
+				this.setBlockBounds(1-x2, y, 1-z2, 1-x, y2, 1-z);
+				break;
+			case 4:
+				this.setBlockBounds(1-z2, y, 1-x2, 1-z, y2, 1-x);
+				break;
+			case 3:
+				this.setBlockBounds(x, y, z, x2, y2, z2);
+				break;
+		}
+	}
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_)
+    {
+        this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockBrass");
+        this.sideIcon = p_149651_1_.registerIcon("steamcraft:blockBrass" + "_pipe");
+
+    }
 
 	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
     {
