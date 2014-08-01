@@ -179,7 +179,9 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
+		if (Config.enablePipe){
+			MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
+		}
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
 		if (steamRegistered) {
 			SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
@@ -196,6 +198,7 @@ public class Steamcraft {
 		iso.addSmelting();
 		iso.registerDusts();
 		SteamcraftItems.reregisterPlates();
+		SteamcraftRecipes.registerDustLiquids();
 	}
 
 
