@@ -5,12 +5,16 @@ import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -20,6 +24,12 @@ public class ModelExosuit extends ModelBiped {
 	private boolean hasOverlay;
 	private static final ModelPointer model = new ModelPointer();
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
+	public ResourceLocation test = new ResourceLocation("steamcraft:textures/models/armor/joshiePenguin.png");
+	private ModelRenderer penguinBody; 
+	private ModelRenderer penguinHead; 
+	private ModelRenderer penguinArm1; 
+	private ModelRenderer penguinArm2; 
+	private ModelRenderer penguinNose; 
 	
 	private int armor;
 	private ItemStack me;
@@ -35,7 +45,22 @@ public class ModelExosuit extends ModelBiped {
 				texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(key, (ItemExosuitArmor) itemStack.getItem(), armorType));
 			}
 		}
-//		Jetpack1 = new ModelRenderer(this, 28, 0);
+		
+		penguinBody = new ModelRenderer(this, 0, 16).setTextureSize(64, 32);
+		penguinBody.addBox(-1.5F, -14F, -1.5F, 3, 5, 3);
+		bipedHead.addChild(penguinBody);
+		penguinArm1 = new ModelRenderer(this, 28, 16).setTextureSize(64, 32);
+		penguinArm1.addBox(-2.5F, -14F, -1.0F, 1, 3, 2);
+		bipedHead.addChild(penguinArm1);
+		penguinArm2 = new ModelRenderer(this, 28, 16).setTextureSize(64, 32);
+		penguinArm2.addBox(1.5F, -14F, -1.0F, 1, 3, 2);
+		bipedHead.addChild(penguinArm2);
+		penguinHead = new ModelRenderer(this, 12, 16).setTextureSize(64, 32);
+		penguinHead.addBox(-2.0F, -18F, -2.0F, 4, 4, 4);
+		bipedHead.addChild(penguinHead);
+		penguinNose = new ModelRenderer(this, 34, 16).setTextureSize(64, 32);
+		penguinNose.addBox(-0.5F, -16.5F, -4.0F, 1, 1, 2);
+		bipedHead.addChild(penguinNose);
 //		Jetpack2 = new ModelRenderer(this, 28, 0);
 //		if (itemStack.getItem() == SteamcraftItems.exoArmorBody && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2) != null && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2).getItem() == SteamcraftItems.jetpack) {
 //			Jetpack1.addBox(-7.0F, -2F, 3F, 4, 14, 4);
@@ -50,8 +75,12 @@ public class ModelExosuit extends ModelBiped {
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
-		//this.Jetpack1.showModel = false;
 	//	this.Jetpack2.showModel = false;
+        penguinBody.showModel = false;
+        penguinArm1.showModel = false;
+        penguinArm2.showModel = false;
+        penguinHead.showModel = false;
+        penguinNose.showModel = false;
 
 		this.bipedHead.render(par7);
 		this.bipedBody.render(par7);
@@ -61,6 +90,15 @@ public class ModelExosuit extends ModelBiped {
 		this.bipedLeftLeg.render(par7);
 		this.bipedHeadwear.render(par7);
 		
+		if (par1Entity instanceof EntityPlayer && ((EntityPlayer)par1Entity).getCommandSenderName().equals("joshiejack")) {
+	        penguinBody.showModel = true;
+	        penguinArm1.showModel = true;
+	        penguinArm2.showModel = true;
+	        penguinHead.showModel = true;
+	        penguinNose.showModel = true;
+			Minecraft.getMinecraft().renderEngine.bindTexture(test);
+			this.bipedHead.render(par7);
+		}
 		if (hasOverlay) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			this.bipedHead.render(par7);
