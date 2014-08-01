@@ -86,6 +86,7 @@ public class Steamcraft {
 	public static int gaugeRenderID;
 	public static int ruptureDiscRenderID;
 	public static int whistleRenderID;
+	public static int boilerRenderID;
 
     public static boolean steamRegistered;
     public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType)EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
@@ -166,6 +167,7 @@ public class Steamcraft {
 		gaugeRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		ruptureDiscRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		whistleRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		boilerRenderID  = RenderingRegistry.getNextAvailableRenderId();
 
 
 		proxy.registerRenderers();

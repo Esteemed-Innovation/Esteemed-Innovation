@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import io.netty.buffer.ByteBufInputStream;
@@ -24,7 +25,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
 public class SteamcraftServerPacketHandler {
@@ -92,6 +92,26 @@ public class SteamcraftServerPacketHandler {
 
 					if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
 						TileEntitySteamPipe pipe = ((TileEntitySteamPipe)tile);
+						if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+							if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
+								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));
+								world.spawnEntityInWorld(entityItem);
+								pipe.disguiseBlock = null;
+							}
+	
+							pipe.disguiseBlock = block;
+							if (!player.capabilities.isCreativeMode) {
+								player.inventory.getCurrentItem().stackSize--;
+								player.inventoryContainer.detectAndSendChanges();
+							}
+			                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+	
+							pipe.disguiseMeta = ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+							world.markBlockForUpdate(x, y, z);
+						}
+					}
+					if (!world.isRemote && tile instanceof TileEntityBoiler) {
+						TileEntityBoiler pipe = ((TileEntityBoiler)tile);
 						if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
 							if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
 								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));

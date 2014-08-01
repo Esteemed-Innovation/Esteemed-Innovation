@@ -49,6 +49,20 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     @SideOnly(Side.CLIENT)
 	public static IIcon steamIcon;
     
+	public IIcon camoIcon;
+	public IIcon camoOnIcon;
+
+    
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
+    
+    public int getRenderType()
+    {
+        return Steamcraft.boilerRenderID;
+    }
+    
     public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_)
     {
         int l = p_149931_1_.getBlockMetadata(p_149931_2_, p_149931_3_, p_149931_4_);
@@ -181,6 +195,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
         this.boilerOnIcon = p_149651_1_.registerIcon("steamcraft:boilerOn");
         this.boilerOffIcon = p_149651_1_.registerIcon("steamcraft:boiler");
+        this.camoOnIcon = p_149651_1_.registerIcon("steamcraft:boilerCamoOn");
+        this.camoIcon = p_149651_1_.registerIcon("steamcraft:boilerCamo");
         //this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "steamcraft:boilerOn" : "steamcraft:boiler");
         this.field_149935_N = p_149651_1_.registerIcon("steamcraft:blockBrass");
     }
@@ -314,7 +330,10 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-        if (side != 0 && side != 1)
+		if (player.isSneaking()) {
+			return true;
+		}
+		else if (side != 0 && side != 1)
         {
             world.setBlockMetadataWithNotify(x, y, z, side, 2);
             return true;
