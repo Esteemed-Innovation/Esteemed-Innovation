@@ -94,7 +94,7 @@ public class Config {
 		enableRuptureDisc = config.get("SteamSystem", "Enable rupture disc", true).getBoolean(true);
 		enableTank = config.get("SteamSystem", "Enable steam tank (Crucial)", true).getBoolean(true);
 		enableValvePipe = config.get("SteamSystem", "Enable valve pipe", true).getBoolean(true);
-		//enableFluidSteamConverter = config.get("Blocks", "Enable steam pressurizer", true).getBoolean(true);
+		enableFluidSteamConverter = config.get("Blocks", "Enable steam pressurizer", true).getBoolean(true);
 		
 		
 		// BLOCKS
@@ -128,7 +128,8 @@ public class Config {
 		enableAstrolabe = config.get("Items", "Enable astrolabe", true).getBoolean(true);
 		enableSpyglass = config.get("Items", "Enable spyglass", true).getBoolean(true);
 		enableSteamTools = config.get("Items", "Enable steam tools", true).getBoolean(true);
-		
+		enableSurvivalist = config.get("Items", "Enable survivalist's toolkit", true).getBoolean(true);
+
 		// OTHER
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
 		wimpMode = config.get("Other", "Enable wimp mode (no explosions)",false).getBoolean(false);

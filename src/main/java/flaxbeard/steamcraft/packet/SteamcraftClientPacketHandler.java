@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
@@ -28,6 +29,29 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 	    	out.writeByte(0);
 	    	out.writeInt(player.worldObj.provider.dimensionId);
 	    	out.writeInt(player.getEntityId());
+	    }
+	    catch (IOException e) {}
+	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
+	    Steamcraft.channel.sendToServer(packet);
+	    try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sendCamoPacket(Entity player, MovingObjectPosition pos)
+	{
+		ByteBuf buf = Unpooled.buffer();
+		ByteBufOutputStream out = new ByteBufOutputStream(buf);
+		try
+	    {
+	    	out.writeByte(3);
+	    	out.writeInt(player.worldObj.provider.dimensionId);
+	    	out.writeInt(player.getEntityId());
+	    	out.writeInt(pos.blockX);
+	    	out.writeInt(pos.blockY);
+	    	out.writeInt(pos.blockZ);
 	    }
 	    catch (IOException e) {}
 	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
