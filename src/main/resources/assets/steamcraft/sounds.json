@@ -2,5 +2,6 @@
    "hiss": {"category": "master","sounds": [{"name": "hiss","stream": false}]},
    "wrench": {"category": "master","sounds": [{"name": "wrench","stream": false}]},
    "cannon": {"category": "master","sounds": [{"name": "cannon","stream": false}]},
-   "leaking": {"category": "master","sounds": [{"name": "leaking","stream": false}]}
+   "leaking": {"category": "master","sounds": [{"name": "leaking","stream": false}]},
+   "horn": {"category":"master","sounds":[{"name":"steamwhistle","stream":false}]}
 }
