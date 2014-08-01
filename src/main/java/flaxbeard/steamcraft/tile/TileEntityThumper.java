@@ -34,27 +34,29 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 					progress++;
 				} else {
 					this.progress = 0;
+					this.isRunning = false;
 				}
 			} else {
 				this.progress = 0;
+				this.isRunning = false;
 			}
 
 		} else {
 			if (this.getSteam() >= 2000 && this.progress == 0) {
 				if (! this.isRunning){
 					this.isRunning = true;
-					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 				this.progress++;
 				this.decrSteam(2000);
-
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				
 			} else if (progress > 0 && !this.isRunning){
 				this.isRunning = true;
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 			if (this.progress == 15) {
 				this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				//worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
 
 			if (progress > 0 && progress < 110) {
