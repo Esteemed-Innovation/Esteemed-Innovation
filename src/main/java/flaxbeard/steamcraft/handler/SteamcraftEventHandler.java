@@ -3,13 +3,19 @@ package flaxbeard.steamcraft.handler;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -25,12 +32,14 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,6 +50,7 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
+import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemWrench;
@@ -49,6 +59,7 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class SteamcraftEventHandler {
 	private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -485,6 +496,39 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && event.world.getBlock(event.x, event.y, event.z) instanceof BlockPipe) {
+			
+			World world = event.world;
+			EntityPlayer player = event.entityPlayer;
+			if (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock) {
+//				if (world.isRemote) {
+//					event.setCanceled(true);
+//				}
+				Block block = Block.getBlockFromItem(player.getHeldItem().getItem());
+				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.renderAsNormalBlock())) {
+					TileEntity tile = world.getTileEntity(event.x, event.y, event.z);
+
+					if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
+						TileEntitySteamPipe pipe = ((TileEntitySteamPipe)tile);
+						if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
+							EntityItem entityItem = new EntityItem(world,event.x+0.5F, event.y+ 1.25F, event.z+0.5F, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));
+							world.spawnEntityInWorld(entityItem);
+							pipe.disguiseBlock = null;
+						}
+
+						pipe.disguiseBlock = block;
+						if (!player.capabilities.isCreativeMode) {
+							player.inventory.getCurrentItem().stackSize--;
+							player.inventoryContainer.detectAndSendChanges();
+						}
+						pipe.disguiseMeta = ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+						world.markBlockForUpdate(event.x, event.y, event.z);
+						event.setCanceled(true);
+						event.setResult(Result.DENY);
+					}
+				}
+			}
+		}
 		if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) { 
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
 				//System.out.println(((TileEntitySteamHeater)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).master);

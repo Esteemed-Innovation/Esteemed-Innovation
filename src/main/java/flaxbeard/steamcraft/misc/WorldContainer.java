@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.misc;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -12,10 +13,17 @@ public class WorldContainer implements IBlockAccess {
 	
 	IBlockAccess myWorld;
 	int allMeta;
+	int allBrightness = -1;
 	
 	public WorldContainer(IBlockAccess world, int meta) {
 		this.myWorld = world;
 		this.allMeta = meta;
+	}
+	
+	public WorldContainer(IBlockAccess world, int meta, int brightness) {
+		this.myWorld = world;
+		this.allMeta = meta;
+		this.allBrightness = brightness;
 	}
 
 	@Override
@@ -31,7 +39,8 @@ public class WorldContainer implements IBlockAccess {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
-		return myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
+
+		return allBrightness != -1 ? allBrightness : myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
 	}
 
 	@Override
