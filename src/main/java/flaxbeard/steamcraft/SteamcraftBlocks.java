@@ -19,6 +19,7 @@ import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.block.BlockPump;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSmasher;
+import flaxbeard.steamcraft.block.BlockSpecificMetadataItem;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 import flaxbeard.steamcraft.block.BlockSteamHammer;
