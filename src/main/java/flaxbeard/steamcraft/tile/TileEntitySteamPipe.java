@@ -101,6 +101,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     		sidesInt[i] = sidesList.getInteger(Integer.toString(i));
     	}
     	this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
+    	this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
+    	this.disguiseMeta = access.getInteger("disguiseMeta");
     }
 
     @Override
@@ -115,6 +117,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     	}
     	list.setInteger("size", g);
     	access.setTag("blacklistedSides", list);
+    	access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseMeta", disguiseMeta);
     }
 	    
     public void superUpdate(){
@@ -301,9 +305,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		if (player.isSneaking()) {
 			if (this.disguiseBlock != null) {
 				if (!player.capabilities.isCreativeMode) {
-					EntityItem entityItem = new EntityItem(world,xCoord+0.5F, yCoord+ 1.25F, zCoord+0.5F, new ItemStack(disguiseBlock,1,disguiseMeta));
+					EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock,1,disguiseMeta));
 					world.spawnEntityInWorld(entityItem);
 				}
+                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
 				disguiseBlock = null;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				return true;

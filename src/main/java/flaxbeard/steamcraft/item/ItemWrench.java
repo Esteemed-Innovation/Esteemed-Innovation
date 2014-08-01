@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class ItemWrench extends Item {
 	
@@ -25,12 +26,13 @@ public class ItemWrench extends Item {
 					((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 
 				}
-				world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
+				if (result == true) world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
 				return result;
 			}
 			else if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IWrenchable) {
-				world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
-				return ((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
+				boolean result = ((IWrenchable)world.getTileEntity(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
+				if (result == true && (!player.isSneaking() || !(world.getTileEntity(x, y, z) instanceof TileEntitySteamPipe))) world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
+				return result;
 			}
     	}
 		return false;

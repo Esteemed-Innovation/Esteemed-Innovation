@@ -183,7 +183,7 @@ public class Steamcraft {
 			MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
 		}
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
-		if (steamRegistered) {
+		if (steamRegistered && Config.enableFluidSteamConverter) {
 			SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
 		}
 		if (Loader.isModLoaded("Thaumcraft")) {
