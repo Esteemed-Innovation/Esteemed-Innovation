@@ -43,9 +43,12 @@ public class ItemTESRRenderer implements IItemRenderer {
 		if (type == IItemRenderer.ItemRenderType.ENTITY)
 			GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
 		if (renderBlock) {
-			if (type == IItemRenderer.ItemRenderType.ENTITY)
+			if (type == IItemRenderer.ItemRenderType.ENTITY) {
 				GL11.glTranslatef(0.5F, 0.0F, 0.5F);
-
+			}
+			if (type == IItemRenderer.ItemRenderType.EQUIPPED || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
+				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			}
 	        Block block = Block.getBlockFromItem(item.getItem());
 			float ringMin = 4.0F/16.0F;
 			float ringMax = 12.0F/16.0F;
@@ -56,7 +59,7 @@ public class ItemTESRRenderer implements IItemRenderer {
 			float y2 = ringMax;
 			float z2 = 1.0F;
 			block.setBlockBounds(z, y, x, z2, y2, x2);
-	        this.renderBlocksRi.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
+	        this.renderBlocksRi.renderBlockAsItem(block, 4, 1.0F);
 		}
 		this.render.renderInventoryTileEntityAt(dummytile, 0.0F, 0.0F, 0.0F, 0.0F);
 	}
