@@ -89,11 +89,12 @@ public class SteamNetwork {
 			}
 		} else {
 			if (this.transporters != null && this.transporters.keySet() != null){
-				if (this.getPressure() > 1.02F){
+				if (this.getPressure() > 1.2F){
 					for (Coord4 coords : transporters.keySet()){
 						//System.out.println("Iterating!");
 						ISteamTransporter trans = transporters.get(coords);
-						if (trans == null || ((TileEntity)trans).isInvalid()){
+						if ((trans == null || ((TileEntity)trans).isInvalid())){
+							System.out.println("Invalid TE");
 							transporters.remove(coords);
 						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 							trans.explode();
