@@ -21,8 +21,8 @@ public class SteamcraftBook {
 			registerBasics();
 			registerFirearms();
 			registerCasting();
+			registerGadgets();
 			registerSteamPower();
-			registerSteamTools();
 			registerExosuit();
 		}
 		
@@ -34,6 +34,7 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Book.name","category.Basics.name",new BookPageItem("research.Book.name","research.Book.0", new ItemStack(SteamcraftItems.book)),new BookPageCrafting("","book"));
 		SteamcraftRegistry.addResearch("research.Ores.name","category.Basics.name",new BookPageItem("research.Ores.name","research.Ores.0", new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftBlocks.steamcraftOre,1,1)));
 		SteamcraftRegistry.addResearch("research.Bits.name","category.Basics.name",new BookPageItem("research.Bits.name","research.Bits.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)),new BookPageCrafting("","piston1","piston2"),new BookPageText("research.Bits.name","research.Bits.1"),new BookPageCrafting("","turbine1","turbine2"));
+
 		if (Config.enableSpyglass){
 			SteamcraftRegistry.addResearch("research.Spyglass.name","category.Basics.name",new BookPageItem("research.Spyglass.name","research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)),new BookPageCrafting("","spyglass1","spyglass2"));
 		}
@@ -61,6 +62,7 @@ public class SteamcraftBook {
 				new BookPageText("research.SteamSystem.name", "research.SteamSystem.4"),
 				new BookPageText("research.SteamSystem.name", "research.SteamSystem.5")
 		);
+
 	}
 	
 	public static void registerFirearms(){
@@ -89,6 +91,31 @@ public class SteamcraftBook {
 
 		if (Config.enableCrucible){
 			SteamcraftRegistry.addResearch("research.GildedGold.name","category.MetalCasting.name",new BookPageItem("research.GildedGold.name","research.GildedGold.0", new ItemStack(SteamcraftItems.steamcraftIngot,1,3)),new BookPageText("research.GildedGold.name","research.GildedGold.1"),new BookPageDip("",SteamcraftRecipes.liquidGold,1, new ItemStack(Items.iron_ingot), new ItemStack(SteamcraftItems.steamcraftIngot,1,3)));
+		}
+	}
+	
+	public static void registerGadgets() {
+		SteamcraftRegistry.addCategory("category.Gadgets.name");
+
+		if (Config.enableWrench){
+			SteamcraftRegistry.addResearch("research.Wrench.name","category.Gadgets.name",new BookPageItem("research.Wrench.name","research.Wrench.0", new ItemStack(SteamcraftItems.wrench)),new BookPageText("research.Wrench.name","research.Wrench.1"),new BookPageCrafting("","spyglass1","spyglass2"));
+		}
+		if (Config.enableSteamTools){
+			SteamcraftRegistry.addResearch("research.SteamTools.name", "category.Gadgets.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
+					new BookPageCrafting("","axe1","axe2","axe3","axe4"),
+					new BookPageCrafting("","shovel1","shovel2","shovel3","shovel4"));
+		}
+		if (Config.enableSpyglass){
+			SteamcraftRegistry.addResearch("research.Spyglass.name","category.Gadgets.name",new BookPageItem("research.Spyglass.name","research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)),new BookPageCrafting("","spyglass1","spyglass2"));
+		}
+		if (Config.enableSurvivalist){
+			if (Loader.isModLoaded("Baubles")) {
+				SteamcraftRegistry.addResearch("research.Survivalist.name","category.Gadgets.name",new BookPageItem("research.Survivalist.name","research.SurvivalistBaubles.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
+			}
+			else
+			{
+				SteamcraftRegistry.addResearch("research.Survivalist.name","category.Gadgets.name",new BookPageItem("research.Survivalist.name","research.Survivalist.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
+			}
 		}
 	}
 	
@@ -147,15 +174,6 @@ public class SteamcraftBook {
 		
 		
 		
-	}
-	
-	public static void registerSteamTools(){
-		if (Config.enableSteamTools){
-			SteamcraftRegistry.addCategory("category.SteamTools.name");
-			SteamcraftRegistry.addResearch("research.SteamTools.name", "category.SteamTools.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
-					new BookPageCrafting("","axe1","axe2","axe3","axe4"),
-					new BookPageCrafting("","shovel1","shovel2","shovel3","shovel4"));
-		}
 	}
 	
 	public static void registerExosuit(){

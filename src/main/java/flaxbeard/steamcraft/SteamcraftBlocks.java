@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import flaxbeard.steamcraft.block.BlockBeacon;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockDummy;
@@ -19,7 +20,6 @@ import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.block.BlockPump;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSmasher;
-import flaxbeard.steamcraft.block.BlockSpecificMetadataItem;
 import flaxbeard.steamcraft.block.BlockSteamCharger;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 import flaxbeard.steamcraft.block.BlockSteamHammer;
@@ -28,7 +28,6 @@ import flaxbeard.steamcraft.block.BlockSteamPistonBase;
 import flaxbeard.steamcraft.block.BlockSteamPistonExtension;
 import flaxbeard.steamcraft.block.BlockSteamPistonMoving;
 import flaxbeard.steamcraft.block.BlockSteamTank;
-import flaxbeard.steamcraft.block.BlockSteamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.block.BlockThumper;
@@ -104,15 +103,15 @@ public class SteamcraftBlocks {
 		if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
 			OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre,1,2));
 		}
-		blockBrass = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
+		blockBrass = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockBrass, "blockBrass");
 		OreDictionary.registerOre("blockBrass", blockBrass);
 		
-		blockZinc = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockZinc").setBlockTextureName("steamcraft:blockZinc").setHardness(5.0F).setResistance(10.0F);
+		blockZinc = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockZinc").setBlockTextureName("steamcraft:blockZinc").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockZinc, "blockZinc");
 		OreDictionary.registerOre("blockZinc", blockZinc);
 		
-		blockCopper = new BlockSteamcraft(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockCopper").setBlockTextureName("steamcraft:blockCopper").setHardness(5.0F).setResistance(10.0F);
+		blockCopper = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockCopper").setBlockTextureName("steamcraft:blockCopper").setHardness(5.0F).setResistance(10.0F);
 		GameRegistry.registerBlock(blockCopper, "blockCopper");
 		OreDictionary.registerOre("blockCopper", blockCopper);
 	}
