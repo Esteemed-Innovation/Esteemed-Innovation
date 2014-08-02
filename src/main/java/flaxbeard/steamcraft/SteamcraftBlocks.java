@@ -173,6 +173,7 @@ public class SteamcraftBlocks {
 		}
 		
 		if (Config.enableFluidSteamConverter){
+			//fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F).setCreativeTab(Steamcraft.tab);
 			fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F);
 			GameRegistry.registerBlock(fluidSteamConverter, "fluidSteamConverter");
 		}	
