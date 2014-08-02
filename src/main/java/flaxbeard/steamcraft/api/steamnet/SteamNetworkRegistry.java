@@ -195,24 +195,24 @@ public class SteamNetworkRegistry {
 
 		public synchronized void refreshChunk(Chunk c)
 		{
-			try {
-				if(c != null)
-				{
-					Map copy = (Map)((HashMap)c.chunkTileEntityMap).clone();
-
-					for(Iterator iter = copy.values().iterator(); iter.hasNext();)
-					{
-						Object obj = iter.next();
-
-						if(obj instanceof ISteamTransporter)
-						{
-							((ISteamTransporter)obj).refresh();
-						}
-					}
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+//			try {
+//				if(c != null)
+//				{
+//					Map copy = (Map)((HashMap)c.chunkTileEntityMap).clone();
+//
+//					for(Iterator iter = copy.values().iterator(); iter.hasNext();)
+//					{
+//						Object obj = iter.next();
+//
+//						if(obj instanceof ISteamTransporter)
+//						{
+//							((ISteamTransporter)obj).refresh();
+//						}
+//					}
+//				}
+//			} catch(Exception e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 
