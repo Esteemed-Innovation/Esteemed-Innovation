@@ -139,12 +139,12 @@ public class SteamcraftBook {
 		if (Config.enableHeater){
 			SteamcraftRegistry.addResearch("research.Heater.name","category.SteamPower.name",new BookPageItem("research.Heater.name","research.Heater.0", new ItemStack(SteamcraftBlocks.heater)),new BookPageCrafting("","heater1","heater2"));
 		}
-		
+
+		SteamcraftRegistry.addCategory("category.SteamPower2.name");
 		if (Config.enableMortar && Config.enableAstrolabe){
-			SteamcraftRegistry.addResearch("research.ItemMortar.name","category.SteamPower.name",new BookPageItem("research.ItemMortar.name","research.ItemMortar.0", new ItemStack(SteamcraftBlocks.itemMortar)),new BookPageText("research.ItemMortar.name","research.ItemMortar.1"),new BookPageCrafting("","astrolabe"),new BookPageCrafting("","itemMortar2","itemMortar3"));
+			SteamcraftRegistry.addResearch("research.ItemMortar.name","category.SteamPower2.name",new BookPageItem("research.ItemMortar.name","research.ItemMortar.0", new ItemStack(SteamcraftBlocks.itemMortar)),new BookPageText("research.ItemMortar.name","research.ItemMortar.1"),new BookPageCrafting("","astrolabe"),new BookPageCrafting("","itemMortar2","itemMortar3"));
 		}
 		
-		SteamcraftRegistry.addCategory("category.SteamPower2.name");
 		if (Config.enableHammer){
 			SteamcraftRegistry.addResearch("research.Hammer.name","category.SteamPower2.name",new BookPageItem("research.Hammer.name","research.Hammer.0", new ItemStack(SteamcraftBlocks.hammer)),new BookPageText("research.Hammer.name","research.Hammer.1"),new BookPageCrafting("","hammer1","hammer2"));
 		}
