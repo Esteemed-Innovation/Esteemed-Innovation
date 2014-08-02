@@ -98,7 +98,7 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addCategory("category.Gadgets.name");
 
 		if (Config.enableWrench){
-			SteamcraftRegistry.addResearch("research.Wrench.name","category.Gadgets.name",new BookPageItem("research.Wrench.name","research.Wrench.0", new ItemStack(SteamcraftItems.wrench)),new BookPageText("research.Wrench.name","research.Wrench.1"),new BookPageCrafting("","spyglass1","spyglass2"));
+			SteamcraftRegistry.addResearch("research.Wrench.name","category.Gadgets.name",new BookPageItem("research.Wrench.name","research.Wrench.0", new ItemStack(SteamcraftItems.wrench)),new BookPageText("research.Wrench.name","research.Wrench.1"),new BookPageCrafting("","wrench1","wrench2"));
 		}
 		if (Config.enableSteamTools){
 			SteamcraftRegistry.addResearch("research.SteamTools.name", "category.Gadgets.name", new BookPageItem("research.SteamTools.name","research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)),new BookPageText("research.SteamTools.name","research.SteamTools.1"), new BookPageCrafting("","drill1","drill2","drill3","drill4"),
@@ -130,6 +130,10 @@ public class SteamcraftBook {
 		
 		if (Config.enableRuptureDisc){
 			SteamcraftRegistry.addResearch("research.RuptureDisc.name","category.SteamPower.name",new BookPageItem("research.RuptureDisc.name","research.RuptureDisc.0", new ItemStack(SteamcraftBlocks.ruptureDisc)),new BookPageText("research.RuptureDisc.name","research.RuptureDisc.1"),new BookPageCrafting("","disc"));
+		}
+		
+		if (Config.enableHorn){
+			SteamcraftRegistry.addResearch("research.Whistle.name", "category.SteamPower.name", new BookPageItem("research.Whistle.name","research.Whistle.0", new ItemStack(SteamcraftBlocks.horn)), new BookPageCrafting("","whistle1","whistle2"));
 		}
 		
 		if (Config.enableGauge){

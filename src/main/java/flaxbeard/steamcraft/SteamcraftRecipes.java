@@ -165,6 +165,22 @@ public class SteamcraftRecipes {
 		        'x', "ingotBrass", 'n', "nuggetBrass"));
 		BookRecipeRegistry.addRecipe("turbine2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,5), " x ", "xnx", " x ", 
 		        'x', "plateSteamcraftBrass", 'n', "nuggetBrass"));
+		
+		if (Config.enableWrench){
+			BookRecipeRegistry.addRecipe("wrench1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wrench,1,0), "  i", " bb", "b  ", 
+			        'i', "ingotIron", 'b', "plateSteamcraftBrass"));
+			BookRecipeRegistry.addRecipe("wrench2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wrench,1,0), "  i", " bb", "b  ", 
+			        'i', "ingotIron", 'b', "ingotBrass"));
+		}
+		
+		if (Config.enableHorn){
+			BookRecipeRegistry.addRecipe("whistle1",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.horn,1,0), " bb", " bn", "pp ", 
+			        'n', "nuggetBrass", 'b', "plateSteamcraftBrass", 'p', new ItemStack(SteamcraftBlocks.pipe, 1,0)));
+			BookRecipeRegistry.addRecipe("whistle2",new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.horn,1,0), " bb", " bn", "pp ", 
+			        'n', "nuggetBrass", 'b', "ingotBrass", 'p', new ItemStack(SteamcraftBlocks.pipe, 1,0)));
+		}
+		
+		
 	}
 	
 	public static void registerCasting(){
