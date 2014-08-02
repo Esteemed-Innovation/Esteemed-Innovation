@@ -29,6 +29,13 @@ steamcraft.exosuit.flyTick=consumed per flying tick
 
 
 category.Basics.name=Basics
+research.SteamSystem.name=Steam Systems
+research.SteamSystem.0=In my investigation into the inner-workings of this world, I have happened upon a wondrous discovery! When heated, water becomes gaseous, producing white plumes of steam. Furthermore, when this process takes place in a contained system, the pressure increases.
+research.SteamSystem.1=Using an assortment of pipes, tanks, and various machines, I can create a system to store, measure and regulate this steam pressure in order to harness its potential energy to useful and profitable ends. However, the journey toward the invention of these components forced me to revise the way I thought of steam.
+research.SteamSystem.2=I had to first realize that steam is not a liquid, but a gas. Due to its natural tendency to expand as much as possible, steam quickly flows throughout my entire network of pipes, tanks and other machines when introduced.  Therefore, as system volume increases, the pressure added by inserting a given amount of steam decreases.
+research.SteamSystem.3=It is for this reason that I must balance the size of a given steam system with the rate at which steam can be generated. If the system is too large, the pressure increases too slowly to provide adequate steam to my machines. If the system is too small, I do not have a sufficient buffer of steam to power my machines for long.
+research.SteamSystem.4=No proper process of invention or industry is free of risk, however. The materials at my disposal, while quite durable, can only withstand a finite amount of strain. If I am not diligent, I may create more pressure than the system can handle, resulting in catastrophic failure, destroying components and damaging my surroundings.
+research.SteamSystem.5=Using gauges, I can measure the pressure in the system. I know that if the needle is to the far right and dancing wildly, I am approaching dangerous levels. I could use a valve to release some steam, or, if I have thought ahead, attach rupture discs which will fail before my more fragile components, particularly my boilers.
 research.Ores.name=Ores
 research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find uses for them in the future.
 research.Book.name=Preface

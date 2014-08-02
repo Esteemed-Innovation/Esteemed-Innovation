@@ -83,7 +83,7 @@ public class TileEntityWhistle extends TileEntity {
 			}
 			//volume = 0f;
 		} else {
-			if (getPressure() > 0.00F){
+			if (getPressure() > 1.02F){
 				if (!this.isSounding){
 					this.isSounding = true;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
