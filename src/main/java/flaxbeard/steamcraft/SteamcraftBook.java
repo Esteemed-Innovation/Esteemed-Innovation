@@ -35,18 +35,6 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Ores.name","category.Basics.name",new BookPageItem("research.Ores.name","research.Ores.0", new ItemStack(SteamcraftBlocks.steamcraftOre,1,0), new ItemStack(SteamcraftBlocks.steamcraftOre,1,1)));
 		SteamcraftRegistry.addResearch("research.Bits.name","category.Basics.name",new BookPageItem("research.Bits.name","research.Bits.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)),new BookPageCrafting("","piston1","piston2"),new BookPageText("research.Bits.name","research.Bits.1"),new BookPageCrafting("","turbine1","turbine2"));
 
-		if (Config.enableSpyglass){
-			SteamcraftRegistry.addResearch("research.Spyglass.name","category.Basics.name",new BookPageItem("research.Spyglass.name","research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)),new BookPageCrafting("","spyglass1","spyglass2"));
-		}
-		if (Config.enableSurvivalist){
-			if (Loader.isModLoaded("Baubles")) {
-				SteamcraftRegistry.addResearch("research.Survivalist.name","category.Basics.name",new BookPageItem("research.Survivalist.name","research.SurvivalistBaubles.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
-			}
-			else
-			{
-				SteamcraftRegistry.addResearch("research.Survivalist.name","category.Basics.name",new BookPageItem("research.Survivalist.name","research.Survivalist.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
-			}
-		}
 		SteamcraftRegistry.addResearch(
 				"research.SteamSystem.name", 
 				"category.Basics.name", 
@@ -62,6 +50,9 @@ public class SteamcraftBook {
 				new BookPageText("research.SteamSystem.name", "research.SteamSystem.4"),
 				new BookPageText("research.SteamSystem.name", "research.SteamSystem.5")
 		);
+		
+		SteamcraftRegistry.addResearch("research.Camouflage.name","category.Basics.name",new BookPageItem("research.Camouflage.name","research.Camouflage.0", new ItemStack(SteamcraftBlocks.pipe),new ItemStack(Blocks.stonebrick)),new BookPageText("research.Camouflage.name","research.Camouflage.1"));
+
 
 	}
 	
@@ -162,7 +153,7 @@ public class SteamcraftBook {
 		}
 		
 		if (Config.enableSmasher){
-			SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
+			SteamcraftRegistry.addResearch("research.Smasher.name", "category.SteamPower2.name", new BookPageItem("research.Smasher.name","research.Smasher.0", new ItemStack(SteamcraftBlocks.smasher)),new BookPageText("research.Smasher.name","research.Smasher.1"), new BookPageCrafting("","smasher1","smasher2","smasher3","smasher4"));
 		}
 		
 		if (Config.enableThumper){
@@ -176,7 +167,9 @@ public class SteamcraftBook {
 			}
 		}
 		
-		
+		if (Config.enableFluidSteamConverter){
+			SteamcraftRegistry.addResearch("research.FSC.name", "category.SteamPower2.name", new BookPageItem("research.FSC.name","research.FSC.0", new ItemStack(SteamcraftBlocks.fluidSteamConverter)), new BookPageCrafting("","fsc1","fsc2"));
+		}
 		
 	}
 	

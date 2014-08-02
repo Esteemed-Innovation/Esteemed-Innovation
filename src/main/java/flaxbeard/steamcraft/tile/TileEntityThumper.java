@@ -1,6 +1,9 @@
 package flaxbeard.steamcraft.tile;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -12,13 +15,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter{
 
 	public int progress = 0;
 	private boolean isRunning = false;
+	private Material[] validMaterials = {Material.sand, Material.ground, Material.rock, Material.clay, Material.grass};
 
 	public TileEntityThumper(){
 		super(new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST});
@@ -104,7 +107,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 						}
 
 				        while (!hasTarget && i < 160) {
-				        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && (worldObj.getBlock(target.posX, target.posY, target.posZ).getBlockHardness(worldObj,target.posX, target.posY, target.posZ) != -1.0F) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
+				        	if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && Arrays.asList(this.validMaterials).contains(this.worldObj.getBlock(target.posX, target.posY, target.posZ).getMaterial()) && (worldObj.getBlock(target.posX, target.posY, target.posZ).getBlockHardness(worldObj,target.posX, target.posY, target.posZ) != -1.0F) && !worldObj.canBlockSeeTheSky(target.posX-1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX+1, target.posY+1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ-1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ+1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY+1, target.posZ)) {
 				        		hasTarget = true;
 				        	}
 				        	else
