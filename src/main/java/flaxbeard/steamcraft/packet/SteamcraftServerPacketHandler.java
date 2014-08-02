@@ -87,8 +87,9 @@ public class SteamcraftServerPacketHandler {
 				int y = dat.readInt();
 				int z = dat.readInt();
 				Block block = Block.getBlockFromItem(player.getHeldItem().getItem());
-				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock())) {
-					TileEntity tile = world.getTileEntity(x, y, z);
+				TileEntity tile = world.getTileEntity(x, y, z);
+
+				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && tile instanceof TileEntitySteamPipe))) {
 
 					if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
 						TileEntitySteamPipe pipe = ((TileEntitySteamPipe)tile);
