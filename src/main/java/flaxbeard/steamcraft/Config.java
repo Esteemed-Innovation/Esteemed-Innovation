@@ -43,6 +43,7 @@ public class Config {
 	public static boolean enableThumper;
 	public static boolean enableVacuum;
 	public static boolean enableValvePipe;
+	public static boolean enableWrench;
 	
 	// items
 	public static boolean enableAstrolabe;
@@ -129,6 +130,7 @@ public class Config {
 		enableSpyglass = config.get("Items", "Enable spyglass", true).getBoolean(true);
 		enableSteamTools = config.get("Items", "Enable steam tools", true).getBoolean(true);
 		enableSurvivalist = config.get("Items", "Enable survivalist's toolkit", true).getBoolean(true);
+		enableWrench = config.get("Items", "Enable wrench", true).getBoolean(true);
 
 		// OTHER
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
