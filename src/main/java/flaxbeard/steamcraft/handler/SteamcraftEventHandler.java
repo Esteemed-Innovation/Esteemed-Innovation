@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -491,9 +492,9 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) instanceof BlockPipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
 			Block block = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
-			if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock())) {
+			if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe))) {
 				event.setCanceled(true);
 			}
 		}

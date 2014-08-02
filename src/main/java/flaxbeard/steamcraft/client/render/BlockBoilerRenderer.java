@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockBoiler;
+import flaxbeard.steamcraft.misc.BlockContainer;
 import flaxbeard.steamcraft.misc.WorldContainer;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 
@@ -72,32 +73,36 @@ public class BlockBoilerRenderer implements ISimpleBlockRenderingHandler {
 		}
 		else
 		{
+			GL11.glPushMatrix();
+			GL11.glScalef(0.8F, 0.8F, 0.8F);
+			renderer.renderStandardBlock(block, x, y, z);
+			GL11.glPopMatrix();
+
 			WorldContainer con = new WorldContainer(world,boiler.disguiseMeta);
 			RenderBlocks ren2 = new RenderBlocks(con);
 			ren2.setRenderBoundsFromBlock(block);
-		    if (boiler.disguiseMeta != 0) {
-		    	ren2.setOverrideBlockTexture(boiler.disguiseBlock.getIcon(0, boiler.disguiseMeta));
+			if (boiler.disguiseMeta != 0) {
+		    	BlockContainer cont = null;
+		    	for (int i = 0; i<6; i++) {
+		    		ren2.setOverrideBlockTexture(boiler.disguiseBlock.getIcon(i, boiler.disguiseMeta));
+			    	cont = new BlockContainer(boiler.disguiseBlock,i);
+			    	ren2.renderStandardBlock(cont, x, y, z);
+		    	}
+		    	cont = null;
 		    }
-		    ren2.renderStandardBlock(boiler.disguiseBlock, x, y, z);
+		    else
+		    {
+		    	ren2.renderStandardBlock(boiler.disguiseBlock, x, y, z);
+		    }
 		    ren2.clearOverrideBlockTexture();
 		    ren2 = null;
 		    con = null;
 		    IIcon icon = boiler.isBurning() ? ((BlockBoiler)block).camoOnIcon : ((BlockBoiler)block).camoIcon;
-		    int meta = world.getBlockMetadata(x, y, z);
-		    switch (meta) {
-	    		case 2:
-	    			renderer.renderFaceZNeg(block, x, y, z, icon);
-	    			break;
-		    	case 5:
-		    		renderer.renderFaceXPos(block, x, y, z, icon);
-		    		break;
-	    		case 3:
-	    			renderer.renderFaceZPos(block, x, y, z, icon);
-	    			break;
-		    	case 4:
-		    		renderer.renderFaceXNeg(block, x, y, z, icon);
-		    		break;
-		    }
+		    renderer.setRenderAllFaces(false);
+		    renderer.setOverrideBlockTexture(icon);
+		    renderer.renderStandardBlock(block, x, y, z);
+		    renderer.clearOverrideBlockTexture();
+
 		}
 		return true;
 	}

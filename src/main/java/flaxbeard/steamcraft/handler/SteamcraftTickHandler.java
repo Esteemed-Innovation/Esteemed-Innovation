@@ -42,7 +42,7 @@ public class SteamcraftTickHandler {
 				MovingObjectPosition pos = mc.objectMouseOver;
 				if(pos != null) {
 					TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
-					if (te instanceof TileEntitySteamPipe || mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.boiler) {
+					if (mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.pipe || mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.boiler) {
 						SteamcraftClientPacketHandler.sendCamoPacket(player, pos);
 					}
 				}

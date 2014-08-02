@@ -21,6 +21,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.item.ItemWrench;
+import flaxbeard.steamcraft.misc.BlockContainer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
@@ -133,7 +134,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 			Block block, int modelId, RenderBlocks renderer) {
 		TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(x, y, z);
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		if (updateWrenchStatus() || (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.air)) {
+		if (updateWrenchStatus() || (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.air || !pipe.disguiseBlock.renderAsNormalBlock())) {
 			float baseMin = 5.0F/16.0F;
 			float baseMax = 11.0F/16.0F;
 			float ringMin = 4.0F/16.0F;
@@ -257,15 +258,36 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 			    renderer.renderStandardBlock(block, x, y, z);
 		    }
 		    renderer.clearOverrideBlockTexture();
+		    if (pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.air && !pipe.disguiseBlock.renderAsNormalBlock() && !updateWrenchStatus()) {
+				GL11.glPushMatrix();
+		    	block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+			    renderer.setRenderBoundsFromBlock(block);
+			    if (pipe.disguiseMeta != 0) {
+			    	renderer.setOverrideBlockTexture(pipe.disguiseBlock.getIcon(0, pipe.disguiseMeta));
+			    }
+			    renderer.renderStandardBlock(pipe.disguiseBlock, x, y, z);
+			    renderer.clearOverrideBlockTexture();
+			    GL11.glPopMatrix();
+		    }
 		}
 		else
 		{
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		    renderer.setRenderBoundsFromBlock(block);
+		    renderer.setRenderAllFaces(false);
 		    if (pipe.disguiseMeta != 0) {
-		    	renderer.setOverrideBlockTexture(pipe.disguiseBlock.getIcon(0, pipe.disguiseMeta));
+		    	BlockContainer cont = null;
+		    	for (int i = 0; i<6; i++) {
+			    	renderer.setOverrideBlockTexture(pipe.disguiseBlock.getIcon(i, pipe.disguiseMeta));
+			    	cont = new BlockContainer(pipe.disguiseBlock,i);
+			    	renderer.renderStandardBlock(cont, x, y, z);
+		    	}
+		    	cont = null;
 		    }
-		    renderer.renderStandardBlock(pipe.disguiseBlock, x, y, z);
+		    else
+		    {
+		    	renderer.renderStandardBlock(pipe.disguiseBlock, x, y, z);
+		    }
 		    renderer.clearOverrideBlockTexture();
 
 //		    renderer.renderFaceYPos(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(1, pipe.disguiseMeta));

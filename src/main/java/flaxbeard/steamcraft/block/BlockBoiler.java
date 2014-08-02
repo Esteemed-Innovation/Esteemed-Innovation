@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -61,6 +62,26 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     public int getRenderType()
     {
         return Steamcraft.boilerRenderID;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
+    {
+    	ForgeDirection dir =ForgeDirection.getOrientation(side).getOpposite();
+    	int x2 = x + dir.offsetX;
+    	int y2 = y + dir.offsetY;
+    	int z2 = z + dir.offsetZ;
+
+    	if (world.getTileEntity(x2, y2, z2) instanceof TileEntityBoiler) {
+	    	TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x2, y2, z2);
+	        int l = world.getBlockMetadata(x2, y2, z2);
+	    	if (boiler != null && boiler.disguiseBlock != null && boiler.disguiseBlock != Blocks.air) {
+	    		
+	    		return side == l ? super.shouldSideBeRendered(world, x, y, z, side) : false;
+	    	}
+    	}
+    	return super.shouldSideBeRendered(world, x, y, z, side);
     }
     
     public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_)
