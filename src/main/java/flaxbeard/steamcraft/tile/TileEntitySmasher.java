@@ -438,9 +438,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				else if (Block.getBlockFromItem(stack.getItem()) == Blocks.gravel && !this.noSmashDrops) {
 					stack = new ItemStack(Blocks.sand);
 				}
-				else if (Block.getBlockFromItem(stack.getItem()) == Blocks.sand && !this.noSmashDrops) {
-					stack = new ItemStack(Blocks.clay);
-				}
 				if (isSmashableOre && !this.noSmashDrops) {
 					//Chance you'll get double
 					boolean doubleItems = worldObj.rand.nextInt(Config.chance) == 0;

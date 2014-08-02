@@ -3,6 +3,9 @@ package flaxbeard.steamcraft.handler;
 import java.util.HashMap;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -489,7 +492,10 @@ public class SteamcraftEventHandler {
 	@SubscribeEvent
 	public void clickLeft(PlayerInteractEvent event) {
 		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) instanceof BlockPipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
-			event.setCanceled(true);
+			Block block = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
+			if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock())) {
+				event.setCanceled(true);
+			}
 		}
 		if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) { 
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
@@ -501,7 +507,7 @@ public class SteamcraftEventHandler {
 					System.out.println("I AM THE CLIENT");
 				}
 				//FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
-				System.out.println("trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + "; network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure());
+			//	System.out.println("trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + "; network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure());
 			}
 		
 		}
