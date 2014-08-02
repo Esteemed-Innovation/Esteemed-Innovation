@@ -36,9 +36,10 @@ research.SteamSystem.2=I had to first realize that steam is not a liquid, but a 
 research.SteamSystem.3=It is for this reason that I must balance the size of a given steam system with the rate at which steam can be generated. If the system is too large, the pressure increases too slowly to provide adequate steam to my machines. If the system is too small, I do not have a sufficient buffer of steam to power my machines for long.
 research.SteamSystem.4=No proper process of invention or industry is free of risk, however. The materials at my disposal, while quite durable, can only withstand a finite amount of strain. If I am not diligent, I may create more pressure than the system can handle, resulting in catastrophic failure, destroying components and damaging my surroundings.
 research.SteamSystem.5=Using gauges, I can measure the pressure in the system. I know that if the needle is to the far right and dancing wildly, I am approaching dangerous levels. I could use a valve to release some steam, or, if I have thought ahead, attach rupture discs which will fail before my more fragile components, particularly my boilers.
+
 research.Camouflage.name=Pipe Concealment
 research.Camouflage.0=Sometimes I'd rather keep my piping work out of sight rather than in the open. This is where my new method of pipe concealment comes in. Holding shift and right clicking on a pipe or a boiler with a block will conceal it.
-research.Camouflage.1=Concealed pipes are completely hidden under the concealing block while boilers display a small panel on the side.<br>Holding a wrench will hide these concealments, allowing me to see the exposed pipe, and shift clicking a concealed pipe will remove the concealing block.
+research.Camouflage.1=Concealed pipes are completely hidden under the concealing block while boilers display a small panel on the side.<br>While holding a wrench, I can see through the concealment to the exposed pipe.<br>I can hold shift and right click a concealed pipe to remove the concealing block.
 research.Ores.name=Ores
 research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find uses for them in the future.
 research.Book.name=Preface
