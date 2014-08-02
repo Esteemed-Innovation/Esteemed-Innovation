@@ -389,6 +389,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public void updateEntity(){
 		super.superUpdateOnly();
 		if (this.shouldExplode){
+			this.getNetwork().split(this, true);
 			worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
 			return;
 		}
@@ -872,33 +873,21 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	@Override
 	public void explode(){
-		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 4){ // Only the top layer can distribute, just like the boiler.
-			if (!isInCluster(xCoord-1, yCoord, zCoord)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.WEST });
-			}
-			if (!isInCluster(xCoord + 1, yCoord, zCoord)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.EAST });
-			}
-			if (!isInCluster(xCoord, yCoord, zCoord - 1)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.NORTH });
-			}
-			if (!isInCluster(xCoord, yCoord, zCoord + 1)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.SOUTH });
-			}
-			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
-	    	
-		}
-		
 		
 		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)worldObj.getTileEntity(xCoord, yCoord, zCoord);
-		int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
-		for (int pos = 0; pos < cluster.length; pos++){
-			int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
-			if (!(x==xCoord && y==yCoord && z==zCoord)){
-				TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
-				if (otherBoiler != null) otherBoiler.secondaryExplosion();
+		if (boiler != null){
+			int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
+			for (int pos = 0; pos < cluster.length; pos++){
+				int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
+				if (!(x==xCoord && y==yCoord && z==zCoord)){
+					TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
+					if (otherBoiler != null) otherBoiler.secondaryExplosion();
+				}
 			}
 		}
+		super.explode();
+		
+		
 	}
 	
 	@Override

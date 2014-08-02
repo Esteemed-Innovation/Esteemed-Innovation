@@ -89,16 +89,15 @@ public class SteamNetwork {
 			}
 		} else {
 			if (this.transporters != null && this.transporters.keySet() != null){
-				if (this.getPressure() > 1.2F){
+				if (this.getPressure() > 1.02F){
 					for (Coord4 coords : transporters.keySet()){
-						System.out.println("Iterating!");
+						//System.out.println("Iterating!");
 						ISteamTransporter trans = transporters.get(coords);
-						if (trans == null){
+						if (trans == null || ((TileEntity)trans).isInvalid()){
 							transporters.remove(coords);
 						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 							trans.explode();
-							Coord4 c = trans.getCoords();
-							trans.getWorld().createExplosion(null, c.x+0.5F, c.y+0.5F, c.z+0.5F, 4.0F, true);
+							
 						}
 					}
 			
@@ -108,9 +107,6 @@ public class SteamNetwork {
 				//SteamNetworkRegistry.getInstance().remove(this);
 			}
 		}
-		
-		
-		
 	}
 	
 	public synchronized static SteamNetwork newOrJoin(ISteamTransporter trans){

@@ -82,6 +82,10 @@ research.Pipe.1=Combining a lever with a pipe allows me to toggle the flow of st
 research.RuptureDisc.name=Rupture Disc
 research.RuptureDisc.0=One too many times I've lost a valuable boiler or machine because its pressure was too high. This is where the rupture disc comes in.<br>To use the rupture disc, I simply place one on a machine or pipe that I fear may explode.
 research.RuptureDisc.1=It will pop before a critical pressure is reached, letting steam out. Of course, it will keep letting steam out until repaired by crafting with a zinc plate or right clicking with a zinc plate.
+
+research.Whistle.name=Steam Whistle
+research.Whistle.0=I've devised a gadget to alert me in the event my steam system approaches dangerous levels of pressure. The Steam Whistle will sound even before my rupture discs would pop!
+
 research.Gauge.name=Steam Gauge
 research.Gauge.0=I've created a simple method for measuring steam within a conduit. I can simply slap on one of these to a boiler, pipe, tank, or other device and it will visually display the pressure, outputting a corresponding redstone signal to comparators.
 research.Heater.name=Steam Heater

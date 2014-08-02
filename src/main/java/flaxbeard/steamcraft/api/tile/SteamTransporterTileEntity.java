@@ -145,7 +145,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void explode() {
-    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord, this.distributionDirections);
+		this.network.decrSteam((int)(this.network.getSteam() * 0.1F));
+		this.network.split(this, true);
+		this.worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
 	}
 
 	private boolean isValidSteamSide(ForgeDirection face){
