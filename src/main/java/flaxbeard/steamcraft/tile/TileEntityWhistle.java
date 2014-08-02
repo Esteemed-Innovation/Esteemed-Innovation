@@ -53,10 +53,23 @@ public class TileEntityWhistle extends TileEntity {
 		if (worldObj.isRemote){
 			if (this.isSounding){
 				if (steamTick == 0){
-					worldObj.spawnParticle("smoke", xCoord+0.5D, yCoord+1D, zCoord+0.5D, 0f, 0.05f, 0f);
+					ForgeDirection d = myDir().getOpposite();
+					ISteamTransporter source = null;
+					TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord+ d.offsetZ);
+					float offset = 2.0F/16.0F;
+					if (te != null && te instanceof TileEntitySteamPipe){
+						offset = 6.0F/16.0F;
+					}
+					float offset2 = (2.0F/16.0F/3.0F);
+
+					float xOffset = myDir().getOpposite().offsetX * offset;
+					float zOffset = myDir().getOpposite().offsetZ * offset;
+					float xOffset2 = myDir().getOpposite().offsetX * offset2;
+					float zOffset2 = myDir().getOpposite().offsetZ * offset2;
+					worldObj.spawnParticle("smoke", xCoord+0.5D+xOffset, yCoord+0.7D, zCoord+0.5D+zOffset, 0f-xOffset2, 0.05f, 0f-zOffset2);
 				}
 				steamTick++;
-				if (steamTick >= 1){
+				if (steamTick >= 4){
 					this.steamTick = 0;
 				}
 
@@ -70,7 +83,7 @@ public class TileEntityWhistle extends TileEntity {
 			}
 			//volume = 0f;
 		} else {
-			if (getPressure() > 1.00F){
+			if (getPressure() > 0.00F){
 				if (!this.isSounding){
 					this.isSounding = true;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
