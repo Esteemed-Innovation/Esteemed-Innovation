@@ -250,6 +250,7 @@ item.steamcraft:steamDrill.name=Steam Drill
 item.steamcraft:steamAxe.name=Steam Saw
 item.steamcraft:steamShovel.name=Steam Shovel
 item.steamcraft:astrolabe.name=Astrolabe
+item.steamcraft:wrench.name=Pipe Wrench
 
 item.steamcraft:survivalist.name=Survivalist's Toolkit
 
@@ -294,3 +295,9 @@ tile.steamcraft:flashBoiler.name=Flash Boiler Component
 tile.steamcraft:ruptureDisc.0.name=Rupture Disc
 tile.steamcraft:ruptureDisc.1.name=Burst Rupture Disc
 tile.steamcraft:fan.name=Fan
+tile.steamcraft:vacuum.name=Vacuum
+tile.steamcraft:horn.name=Steam Whistle
+tile.steamcraft:fluidSteamConverter.name=Pressure Converter
+
+
+
