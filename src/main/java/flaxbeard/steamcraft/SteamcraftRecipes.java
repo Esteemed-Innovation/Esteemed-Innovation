@@ -389,6 +389,13 @@ public class SteamcraftRecipes {
 			        'i', "ingotBrass", 'n', "nuggetBrass", 'g', Blocks.glass_pane));
 		}
 		
+		if (Config.enableFluidSteamConverter){
+			BookRecipeRegistry.addRecipe("fsc1",new ShapedOreRecipe(SteamcraftBlocks.fluidSteamConverter, "xlx", "gpp", "xlx", 
+			        'x', "ingotBrass", 'l', Items.leather, 'p', SteamcraftBlocks.pipe, 'g', Blocks.glass_pane));
+			BookRecipeRegistry.addRecipe("fsc1",new ShapedOreRecipe(SteamcraftBlocks.fluidSteamConverter, "xlx", "gpp", "xlx", 
+			        'x', "plateSteamcraftBrass", 'l', Items.leather, 'p', SteamcraftBlocks.pipe, 'g', Blocks.glass_pane));
+		}
+		
 		if (Config.enableFan){
 			BookRecipeRegistry.addRecipe("fan1",new ShapedOreRecipe(SteamcraftBlocks.fan, "xxx", "btb", "xxx", 
 			        'x', "ingotBrass", 'b', Blocks.iron_bars, 't', new ItemStack(SteamcraftItems.steamcraftCrafting,1,5)));
