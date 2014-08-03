@@ -6,14 +6,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import tconstruct.TConstruct;
-import tconstruct.common.TRepo;
-import tconstruct.library.TConstructRegistry;
-import tconstruct.library.crafting.CastingRecipe;
-import tconstruct.library.crafting.LiquidCasting;
+//import tconstruct.TConstruct;
+//import tconstruct.common.TRepo;
+//import tconstruct.library.TConstructRegistry;
+//import tconstruct.library.crafting.CastingRecipe;
+//import tconstruct.library.crafting.LiquidCasting;
 import flaxbeard.steamcraft.SteamcraftItems;
 
 public class TinkersIntegration {
+	/*
 	public static void registerRecipes(String str, ItemStack plate, ItemStack nugget) {
 		 LiquidCasting tableCasting = TConstructRegistry.instance.getTableCasting();
 	     ItemStack scPlatecast = new ItemStack(SteamcraftItems.plateMold, 1, 0);
@@ -37,8 +38,8 @@ public class TinkersIntegration {
 			}
 		}
 		for (CastingRecipe recipe : goodRecipes) {
-			System.out.println("INTEGRATION YUCK JOE");
+			//System.out.println("INTEGRATION YUCK JOE");
 	        tableCasting.addCastingRecipe(recipe.output, recipe.castingMetal, scIngotcast, recipe.coolTime);
 		}
-	}
+	}*/
 }

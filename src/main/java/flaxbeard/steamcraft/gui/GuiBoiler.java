@@ -22,7 +22,7 @@ public class GuiBoiler extends GuiContainer
 {
     private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("steamcraft:textures/gui/boiler.png");
     private TileEntityBoiler furnaceInventory;
-
+    
     public GuiBoiler(InventoryPlayer par1InventoryPlayer, TileEntityBoiler par2TileEntityBoiler)
     {
         super(new ContainerBoiler(par1InventoryPlayer, par2TileEntityBoiler));
@@ -57,13 +57,12 @@ public class GuiBoiler extends GuiContainer
             i1 = this.furnaceInventory.getBurnTimeRemainingScaled(14);
             this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
             GL11.glDisable(3042);
-           // System.out.println(this.furnaceInventory.myTank.getCapacity());
+           // //System.out.println(this.furnaceInventory.myTank.getCapacity());
             float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
             drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58, false);
             this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
             this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
-            
-            fill = (float)this.furnaceInventory.getSteam()/(float)this.furnaceInventory.getCapacity();
+            fill = this.furnaceInventory.pressure;
             fill = Math.min(fill, 1.0F);
             FluidStack stack = new FluidStack(FluidRegistry.WATER,1);
             if (FluidRegistry.isFluidRegistered("steam")) {
@@ -75,7 +74,7 @@ public class GuiBoiler extends GuiContainer
            
             GL11.glDisable(3042);
     	} catch (NullPointerException e){
-    		//System.out.println("Did the boiler explode while the GUI was open?");
+    		////System.out.println("Did the boiler explode while the GUI was open?");
     	}
         
     }

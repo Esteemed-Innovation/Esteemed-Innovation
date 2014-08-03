@@ -26,7 +26,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	private boolean hasBrokenBlock = false;
 	
 	public ItemSteamShovel() {
-		super(EnumHelper.addToolMaterial("SHOVEL", 2, 1600, 1.0F, -1.0F, 0));
+		super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
 	}
 	
 	@Override
@@ -90,7 +90,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	    	}
 	    	int addedTicks = Math.min(((Double)Math.floor((double)speed/1000D*25D)).intValue(), 50);
 	    	ticks += addedTicks;
-	    	//System.out.println("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
+	    	////System.out.println("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
 	    	if (speed > 0) {
 	    		speed--;
 	    	} else if (ticks <= 0){
@@ -109,16 +109,15 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player)
     {
     	this.checkNBT(player);
-		if (stack.getItemDamage() < stack.getMaxDamage()-1) {
+		if (stack.getItemDamage() < stack.getMaxDamage()-3) {
 	    	MutablePair info = stuff.get(player.getEntityId());
 	    	int ticks = (Integer) info.left;
 	    	int speed = (Integer) info.right;
 	    	if (speed <= 1000) {
 	    		speed+=Math.min(90,1000-speed);
-	    		stack.damageItem(3, player);
+	    		stack.damageItem(1, player);
 	    	}
 			stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
-			System.out.println(speed);
 		}
     	return stack;
     }
@@ -131,7 +130,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 
 	@Override
 	public int steamPerDurability() {
-		return 20;
+		return 800;
 	}
 
 	@Override

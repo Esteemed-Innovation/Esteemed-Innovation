@@ -21,11 +21,12 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
-public class BlockSteamcraftCrucible extends BlockContainer {
+public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
 	
 	public IIcon innerIcon;
 	public IIcon topIcon;
@@ -53,7 +54,6 @@ public class BlockSteamcraftCrucible extends BlockContainer {
     {
 
         if (entity instanceof EntityItem) {
-
         	EntityItem item = (EntityItem) entity;
         	if (world.getBlock(x, y-1, z) == Blocks.fire || world.getBlock(x, y-1, z).getMaterial() == Material.lava) {
         		MutablePair output;
@@ -62,6 +62,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		}
         		else if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),-1))) {
         			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),-1));
+        			
         		}
         		else
         		{
@@ -70,20 +71,14 @@ public class BlockSteamcraftCrucible extends BlockContainer {
         		TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
         		int amount = (Integer) output.right;
         		if (crucible != null) {
-        			if (crucible.getFill() + amount <= 90) {
-	        			CrucibleLiquid fluid = (CrucibleLiquid) output.left;
-	        			if (!crucible.contents.contains(fluid)) {
-	        				crucible.contents.add(fluid);
-	        				crucible.number.put(fluid, 0);
-	        			}
-	        			int currAmount = crucible.number.get(fluid);
-	        			currAmount += amount;
-	        			crucible.number.remove(fluid);
-	        			crucible.number.put(fluid, currAmount);
-	        			world.markBlockForUpdate(x, y, z);
-
-	        			entity.setDead();
-	        		}
+        			ItemStack stack = item.getEntityItem();
+    				ItemStack out = crucible.fillWith(stack, amount, output);
+    				
+    				if (out.stackSize <= 0){
+    					entity.setDead();
+    				} else {
+    					item.setEntityItemStack(out);
+    				}
         		}
         	}
         }
@@ -138,6 +133,7 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 			TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
 			if (!tile.isTipping()) {
 				tile.setTipping();
+				tile.needsUpdate = true;
 			}
 		}
 		else if (player.getHeldItem() != null) {
@@ -161,7 +157,8 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}
@@ -183,13 +180,38 @@ public class BlockSteamcraftCrucible extends BlockContainer {
 								player.entityDropItem(result,0.0F);
 							}
 						}
-						
+						tile.needsUpdate = true;
+
 						break;
 					}
 				}
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+        	switch (side) {
+        	case 2:
+                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                break;
+        	case 3:
+                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                break;
+        	case 4:
+                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                break;
+        	case 5:
+                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                break;
+        	}
+            return true;
+        }
+        return false;
 	}
 
 }

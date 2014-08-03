@@ -3,6 +3,8 @@ package flaxbeard.steamcraft.tile;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -19,7 +21,10 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 public class TileEntityCrucible extends TileEntity {
 	public ArrayList<CrucibleLiquid> contents = new ArrayList<CrucibleLiquid>();
 	public HashMap<CrucibleLiquid,Integer> number = new HashMap<CrucibleLiquid,Integer>();
+	public boolean hasUpdated = true;
+	private int targetFill = -1;
 	private boolean tipping;
+	public boolean needsUpdate = false;
 	public int tipTicks=0;
 	private ForgeDirection[] dirs = { ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST };
 	
@@ -91,7 +96,9 @@ public class TileEntityCrucible extends TileEntity {
 
     	contents = new ArrayList<CrucibleLiquid>();
     	number = new HashMap<CrucibleLiquid,Integer>();
-    	this.tipTicks = access.getInteger("tipTicks");
+    	if (this.tipTicks == 0) {
+    		this.tipTicks = access.getInteger("tipTicks");
+    	}
     	this.tipping = access.getBoolean("tipping");
     	for (int i = 0; i < nbttaglist.tagCount(); ++i)
     	{
@@ -100,7 +107,6 @@ public class TileEntityCrucible extends TileEntity {
     		this.contents.add(liquid);
     		this.number.put(liquid, (int) nbttagcompound1.getShort("amount"));
     	}
-    	
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 	
@@ -114,10 +120,16 @@ public class TileEntityCrucible extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		if (targetFill <0){
+			this.targetFill = this.getFill();
+		}
+		if (this.getFill() == targetFill){
+			hasUpdated = true;
+		}
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		if (this.tipping) {
 			this.tipTicks++;
-			if (this.tipTicks == 45) {
+			if (this.tipTicks == 45 && !this.worldObj.isRemote) {
 				
 				int posX = this.xCoord+dirs[meta].offsetX;
 				int posZ = this.zCoord+dirs[meta].offsetZ;
@@ -140,7 +152,7 @@ public class TileEntityCrucible extends TileEntity {
 								if (currNum > 0) {
 									number.put(liquid, currNum);
 								}
-						        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+								needsUpdate = true;
 
 							}
 						}
@@ -184,14 +196,19 @@ public class TileEntityCrucible extends TileEntity {
 					}
 					currNum = number.get(liquid);
 					currNum += recipe.output;
-				//	System.out.println(currNum);
+				//	//System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
-			        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+					needsUpdate = true;
 				}
 			}
 		}
+		if (needsUpdate) {
+			//System.out.println("UDPATE");
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			needsUpdate = false;
+		}
+
 	}
 	
 	public int getFill() {
@@ -199,7 +216,33 @@ public class TileEntityCrucible extends TileEntity {
 		for (CrucibleLiquid liquid : contents) {
 			fill += number.get(liquid);
 		}
+		////System.out.println("fill: " + fill);
 		return fill;
+		
+	}
+	
+	public ItemStack fillWith(ItemStack stack, int amount, MutablePair output){
+		int fill = this.getFill();
+		if (!worldObj.isRemote){
+			if (fill + amount <= 90 && this.hasUpdated) {
+				////System.out.println(fill + " " +this.hasUpdated);
+				CrucibleLiquid fluid = (CrucibleLiquid) output.left;
+				if (!this.contents.contains(fluid)) {
+					this.contents.add(fluid);
+					this.number.put(fluid, 0);
+				}
+				int currAmount = this.number.get(fluid);
+				currAmount += amount;
+				this.number.remove(fluid);
+				this.number.put(fluid, currAmount);
+				stack.stackSize--;
+				this.hasUpdated = false;
+				this.targetFill = fill + amount;
+				needsUpdate = true;
+
+			}
+		}
+		return stack;
 	}
 	
 	public CrucibleLiquid getLiquidFromIngot(ItemStack ingot) {
@@ -231,6 +274,7 @@ public class TileEntityCrucible extends TileEntity {
 	}
 
 	public void setTipping() {
+		//needsUpdate = true;
 		this.tipping = true;
 		this.tipTicks = 0;
 	}

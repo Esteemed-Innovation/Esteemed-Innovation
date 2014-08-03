@@ -1,9 +1,9 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -12,9 +12,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
-public class BlockSteamHeater extends BlockSteamTransporter {
+public class BlockSteamHeater extends BlockSteamTransporter implements IWrenchable {
 	private IIcon iconOn;
 	private IIcon iconOff;
     public BlockSteamHeater() {
@@ -96,5 +98,12 @@ public class BlockSteamHeater extends BlockSteamTransporter {
     {
         return Steamcraft.heaterRenderID;
     }
+    
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        world.setBlockMetadataWithNotify(x, y, z, side, 2);
+        return true;
+	}
     
 }

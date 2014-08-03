@@ -21,7 +21,7 @@ import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 
 public class ThaumcraftIntegration {
     public static Item goggleUpgrade;
-  //  public static Item thaumSource;
+    public static Item thaumSource;
     
 	public static void addThaumiumLiquid() {
 		CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource,1,2), new ItemStack(SteamcraftItems.steamcraftPlate,1,5), new ItemStack(ConfigItems.itemNugget,1,6), null,105,87,163);
@@ -34,8 +34,8 @@ public class ThaumcraftIntegration {
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
-		SteamcraftRegistry.registerSmeltThingOredict("plateThaumium", liquidThaumium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium","plateThaumium","Thaumium","Thaumium"));
+		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftThaumium", liquidThaumium, 6);
+		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium","plateSteamcraftThaumium","Thaumium","Thaumium"));
 
 		
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);

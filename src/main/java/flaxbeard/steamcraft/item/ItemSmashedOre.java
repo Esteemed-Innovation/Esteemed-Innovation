@@ -17,7 +17,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 
 
@@ -27,6 +26,7 @@ public class ItemSmashedOre extends Item {
 	
 	public IIcon theOverlay;
 	public static ArrayList<MutablePair<String,MutablePair<IIcon,String>>> oreTypes = new ArrayList<MutablePair<String,MutablePair<IIcon,String>>>();
+	public static HashMap<Integer,String> smeltingResult = new HashMap<Integer,String>();
 	public static HashMap<String,Integer> oreTypesFromOre = new HashMap<String,Integer>();
 	private static int id = 0;
 	
@@ -34,45 +34,52 @@ public class ItemSmashedOre extends Item {
 		super();
 		this.setHasSubtypes(true);
 		
-		oreTypes.add(getPair("oreIron", null, "Iron", 0));
-		oreTypes.add(getPair("oreGold", null, "Gold", 1));
-		oreTypes.add(getPair("oreCopper", null, "Copper", 2));
-		oreTypes.add(getPair("oreZinc", null, "Zinc", 3));
-		oreTypes.add(getPair("oreTin", null, "Tin", 4));
-		oreTypes.add(getPair("oreNickel", null, "Nickel", 5));
-		oreTypes.add(getPair("oreSilver", null, "Silver", 6));
-		oreTypes.add(getPair("oreLead", null, "Lead", 7));
-		oreTypes.add(getPair("oreAluminum", null, "Aluminum", 8));
-		oreTypes.add(getPair("oreOsmium", null, "Osmium", 9));
-		oreTypes.add(getPair("oreCobalt", null, "Cobalt", 10));
-		oreTypes.add(getPair("oreArdite", null, "Ardite", 11));
-		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar", 12));
+		oreTypes.add(getPair("oreIron", null, "Iron", 0, "ingotIron"));
+		oreTypes.add(getPair("oreGold", null, "Gold", 1, "ingotGold"));
+		oreTypes.add(getPair("oreCopper", null, "Copper", 2, "ingotCopper"));
+		oreTypes.add(getPair("oreZinc", null, "Zinc", 3, "ingotZinc"));
+		oreTypes.add(getPair("oreTin", null, "Tin", 4, "ingotTin"));
+		oreTypes.add(getPair("oreNickel", null, "Nickel", 5, "ingotNickel"));
+		oreTypes.add(getPair("oreSilver", null, "Silver", 6, "ingotSilver"));
+		oreTypes.add(getPair("oreLead", null, "Lead", 7, "ingotLead"));
+		oreTypes.add(getPair("oreAluminum", null, "Aluminum", 8, "ingotAluminum"));
+		oreTypes.add(getPair("oreOsmium", null, "Osmium", 9, "ingotOsmium"));
+		oreTypes.add(getPair("oreCobalt", null, "Cobalt", 10, "ingotCobalt"));
+		oreTypes.add(getPair("oreArdite", null, "Ardite", 11, "ingotArdite"));
+		oreTypes.add(getPair("oreCinnabar", null, "Cinnabar", 12, "quicksilver"));
 
-		oreTypes.add(getPair("orePoorIron", null, "PoorIron", 13));
-		oreTypes.add(getPair("orePoorGold", null, "PoorGold", 14));
-		oreTypes.add(getPair("orePoorCopper", null, "PoorCopper", 15));
-		oreTypes.add(getPair("orePoorZinc", null, "PoorZinc", 16));
-		oreTypes.add(getPair("orePoorTin", null, "PoorTin", 17));
+		oreTypes.add(getPair("orePoorIron", null, "PoorIron", 13, "nuggetIron"));
+		oreTypes.add(getPair("orePoorGold", null, "PoorGold", 14, "nuggetGold"));
+		oreTypes.add(getPair("orePoorCopper", null, "PoorCopper", 15, "nuggetCopper"));
+		oreTypes.add(getPair("orePoorZinc", null, "PoorZinc", 16, "nuggetZinc"));
+		oreTypes.add(getPair("orePoorTin", null, "PoorTin", 17, "nuggetTin"));
 	}
 	
-	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName, int index){
-		oreTypesFromOre.put(oreDict, index);
-		if (OreDictionary.getOres(oreDict).size() > 0) {
-			ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreDict).get(0));
-			System.out.println(result == null ? "NO RESULT" : result.toString());
-
-			System.out.println("Adding smelting recipe for "+uName);
+	public void registerDusts(){
+		for (int i = 0; i < oreTypes.size(); i++){
+			if (OreDictionary.getOres(smeltingResult.get(i)).size() > 0){
+				if (oreTypes.get(i).getLeft().contains("orePoor")) {
+					OreDictionary.registerOre("dustTiny"+oreTypes.get(i).getRight().getRight().substring(4), new ItemStack(SteamcraftItems.smashedOre,1,i));
+				}
+				else
+				{
+					OreDictionary.registerOre("dust"+oreTypes.get(i).getRight().getRight(), new ItemStack(SteamcraftItems.smashedOre,1,i));
+				}
+			}
 		}
+	}
+	
+	private MutablePair<String, MutablePair<IIcon,String>> getPair(String oreDict, IIcon icon, String uName, int index, String oreDictResult){
+		oreTypesFromOre.put(oreDict, index);
+		smeltingResult.put(index, oreDictResult);
 		return new MutablePair<String, MutablePair<IIcon, String>>(oreDict, new MutablePair<IIcon, String>(icon, uName));
 		
 	}
 	
 	public void addSmelting(){
-
-		for (int i = 0; i < oreTypes.size(); i++){
-			OreDictionary.registerOre("dust"+oreTypes.get(i).getLeft(), new ItemStack(SteamcraftItems.smashedOre,1,i));
-			if (OreDictionary.getOres(oreTypes.get(i).getLeft()).size() > 0){
-				ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(OreDictionary.getOres(oreTypes.get(i).getLeft()).get(0));
+		for (int i = 0; i < oreTypes.size(); i++){		
+			if (OreDictionary.getOres(smeltingResult.get(i)).size() > 0){
+				ItemStack result = OreDictionary.getOres(smeltingResult.get(i)).get(0);
 				GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre,1,i), result, 0.5F);
 			}
 		}
@@ -126,11 +133,4 @@ public class ItemSmashedOre extends Item {
 		}
         
     }
-	
-	
-	
-	
-	
-	
-
 }

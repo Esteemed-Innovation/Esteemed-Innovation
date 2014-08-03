@@ -12,6 +12,11 @@ steamcraft.astrolabe.dimension.nether=the Nether
 steamcraft.astrolabe.dimension.end=the End
 steamcraft.astrolabe.in=in
 
+steamcraft.fan.range=Range:
+steamcraft.fan.blocks=blocks
+steamcraft.smasher.true=Mode: Block Breaker
+steamcraft.smasher.false=Mode: Smasher
+
 steamcraft.waila.pressure=Pressure
 steamcraft.waila.valveOpen=Valve open
 steamcraft.waila.valveClosed=Valve closed
@@ -22,8 +27,20 @@ steamcraft.waila.mold=Mold:
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 
+category.RecentCreations.name=Recent Creations
 
 category.Basics.name=Basics
+research.SteamSystem.name=Steam Systems
+research.SteamSystem.0=In my investigation into the inner-workings of this world, I have happened upon a wondrous discovery! When heated, water becomes gaseous, producing white plumes of steam. Furthermore, when this process takes place in a contained system, the pressure increases.
+research.SteamSystem.1=Using an assortment of pipes, tanks, and various machines, I can create a system to store, measure and regulate this steam pressure in order to harness its potential energy to useful and profitable ends. However, the journey toward the invention of these components forced me to revise the way I thought of steam.
+research.SteamSystem.2=I had to first realize that steam is not a liquid, but a gas. Due to its natural tendency to expand as much as possible, steam quickly flows throughout my entire network of pipes, tanks and other machines when introduced.  Therefore, as system volume increases, the pressure added by inserting a given amount of steam decreases.
+research.SteamSystem.3=It is for this reason that I must balance the size of a given steam system with the rate at which steam can be generated. If the system is too large, the pressure increases too slowly to provide adequate steam to my machines. If the system is too small, I do not have a sufficient buffer of steam to power my machines for long.
+research.SteamSystem.4=No proper process of invention or industry is free of risk, however. The materials at my disposal, while quite durable, can only withstand a finite amount of strain. If I am not diligent, I may create more pressure than the system can handle, resulting in catastrophic failure, destroying components and damaging my surroundings.
+research.SteamSystem.5=Using gauges, I can measure the pressure in the system. I know that if the needle is to the far right and dancing wildly, I am approaching dangerous levels. I could use a valve to release some steam, or, if I have thought ahead, attach rupture discs which will fail before my more fragile components, particularly my boilers.
+
+research.Camouflage.name=Pipe Concealment
+research.Camouflage.0=Sometimes I'd rather keep my piping work out of sight rather than in the open. This is where my new method of pipe concealment comes in. Holding shift and right clicking on a pipe or a boiler with a block will conceal it.
+research.Camouflage.1=Concealed pipes are completely hidden under the concealing block while boilers display a small panel on the side.<br>While holding a wrench, I can see through the concealment to the exposed pipe.<br>I can hold shift and right click a concealed pipe to remove the concealing block.
 research.Ores.name=Ores
 research.Ores.0=While delving into the depths of this world, I've found many deposits of zinc and copper.<br>These rather curious metals have no obvious special uses, but I am sure that I will be able to find uses for them in the future.
 research.Book.name=Preface
@@ -39,6 +56,8 @@ research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted t
 
 research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
+
+
 
 category.MetalCasting.name=Metal Casting
 research.Crucible.name=Crucible
@@ -70,6 +89,10 @@ research.Pipe.1=Combining a lever with a pipe allows me to toggle the flow of st
 research.RuptureDisc.name=Rupture Disc
 research.RuptureDisc.0=One too many times I've lost a valuable boiler or machine because its pressure was too high. This is where the rupture disc comes in.<br>To use the rupture disc, I simply place one on a machine or pipe that I fear may explode.
 research.RuptureDisc.1=It will pop before a critical pressure is reached, letting steam out. Of course, it will keep letting steam out until repaired by crafting with a zinc plate or right clicking with a zinc plate.
+
+research.Whistle.name=Steam Whistle
+research.Whistle.0=I've devised a gadget to alert me in the event my steam system approaches dangerous levels of pressure. The Steam Whistle will sound even before my rupture discs would pop!
+
 research.Gauge.name=Steam Gauge
 research.Gauge.0=I've created a simple method for measuring steam within a conduit. I can simply slap on one of these to a boiler, pipe, tank, or other device and it will visually display the pressure, outputting a corresponding redstone signal to comparators.
 research.Heater.name=Steam Heater
@@ -88,7 +111,16 @@ research.Smasher.name=Rock Smasher
 research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
 research.Thumper.name=Thumper
 research.Thumper.0=I need to think bigger. I've wasted my time working on manipulating small things like moving water or smashing rock...<br>No. I need to think on a grander scale. This is where the thumper comes in.
-research.Thumper.1=The thumper is able to fracture the very earth itself, slowly eroding a ravine below it. This ravine won't be exposed to the surface, and the destroyed rock and ore will remain there, so I must find another way to collect the spoils.
+research.Thumper.1=The thumper is able to fracture the very earth itself, slowly eroding a ravine below it. This ravine won't be exposed to the surface, and the destroyed rock and ore will remain there, so I must find another way to collect the spoils.<br>Eventually, the thumper will slow and stop fracturing all together. It should then be moved.
+research.Smasher.name=Rock Smasher
+research.Smasher.0=I've invented a machine that can smash ore in to smaller bits, sometimes exposing usable material that would otherwise be lost. To use the smashers, I place two opposing each other, one block apart. I can then put a block in the middle to smash.
+research.Smasher.1=The rock smasher has two modes, smasher and block breaker, that can be toggled with a wrench.<br>Smasher mode will crush ores, and smash rocks into smaller pebbles.<br>Block breaker mode will simply break blocks without smashing them.
+research.Fan.name=Fan
+research.Fan.0=The fan is one of the most versatile devices I've created. Simply put: It pushes things when supplied with steam. It can be used for elevators or to harvest crops, to move items or push animals. I can adjust the fan's range with a wrench.
+research.Vacuum.name=Vacuum
+research.Vacuum.0=A little tinkering with my fan has rewarded me with a vacuum, a device that will suck in all matter of things, outputting items to inventories placed opposite the mouth of the vacuum. I can adjust the vaccum's range with a wrench.
+research.FSC.name=Pressure Converter
+research.FSC.0=While plenty of my gadgets are built to handle the high pressure of steam created by my boilers, other technology may not be able to. This device allows conduits to pull less dense steam fluid from my network, or add less dense steam back in.
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
@@ -107,10 +139,13 @@ research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be e
 research.Mask.name=Mask of Revealing
 research.Mask.0=Who says thaumaturgy can't mix with technology? Not I! I've developed a snazzy mask that gives my exosuit the same properties as the goggles of revealing.
 
-category.SteamTools.name=Steam Tools
+category.Gadgets.name=Gadgets
 research.SteamTools.name=Steam Tools
 research.SteamTools.0=Following the successes of my rock smasher and thumper, I ventured to make more portable versions of these rock-breaking tools. Finally, my work has come to frutition, in the form of the steam drill, saw, and shovel.
 research.SteamTools.1=These three tools can be filled with steam and do not break.<br>They must be spun up in order to be used effectively. Right clicking while holding a tool will spin it up, using steam, and speed up the tool. Unlike normal tools, mining itself does not use steam.
+research.Wrench.name=Pipe Wrench
+research.Wrench.0=The first tool I'll need when I'm tinkering with steam is a wrench, a gadget that has a multitude of uses.<br>Right clicking on pipes with the wrench will let me disconenct and reconnect them from other pipes and machines.
+research.Wrench.1=Shift-right clicking on a concealed pipe will reveal the pipe.<br>Using a wrench on most machines will allow me to rotate the machine.<br>Shift-right clicking on certain machines with the wrench will allow me to adjust the operating mode of the machine.
 
 category.Flintlock.name=Flintlock Weapons
 research.Parts.name=Weapon Parts
@@ -167,6 +202,12 @@ item.steamcraft:smashedOre.Cobalt.name=Smashed Cobalt Ore
 item.steamcraft:smashedOre.Ardite.name=Smashed Ardite Ore
 item.steamcraft:smashedOre.Cinnabar.name=Smashed Cinnabar Ore
 
+item.steamcraft:smashedOre.PoorIron.name=Smashed Poor Iron Ore
+item.steamcraft:smashedOre.PoorGold.name=Smashed Poor Gold Ore
+item.steamcraft:smashedOre.PoorCopper.name=Smashed Poor Copper Ore
+item.steamcraft:smashedOre.PoorZinc.name=Smashed Poor Zinc Ore
+item.steamcraft:smashedOre.PoorTin.name=Smashed Poor Tin Ore
+
 item.steamcraft:crafting.0.name=Brass Piston
 item.steamcraft:crafting.1.name=Wooden Stock
 item.steamcraft:crafting.2.name=Iron Barrel
@@ -212,6 +253,7 @@ item.steamcraft:steamDrill.name=Steam Drill
 item.steamcraft:steamAxe.name=Steam Saw
 item.steamcraft:steamShovel.name=Steam Shovel
 item.steamcraft:astrolabe.name=Astrolabe
+item.steamcraft:wrench.name=Pipe Wrench
 
 item.steamcraft:survivalist.name=Survivalist's Toolkit
 
@@ -241,6 +283,7 @@ tile.steamcraft:boiler.name=Boiler
 tile.steamcraft:heater.name=Steam Heater
 tile.steamcraft:ore.0.name=Copper Ore
 tile.steamcraft:ore.1.name=Zinc Ore
+tile.steamcraft:ore.2.name=Poor Zinc Ore
 tile.steamcraft:carving.name=Carving Table
 tile.steamcraft:engineering.name=Engineering Table
 tile.steamcraft:tank.0.name=Steam Tank
@@ -254,3 +297,10 @@ tile.steamcraft:thumper.name=Thumper
 tile.steamcraft:flashBoiler.name=Flash Boiler Component
 tile.steamcraft:ruptureDisc.0.name=Rupture Disc
 tile.steamcraft:ruptureDisc.1.name=Burst Rupture Disc
+tile.steamcraft:fan.name=Fan
+tile.steamcraft:vacuum.name=Vacuum
+tile.steamcraft:horn.name=Steam Whistle
+tile.steamcraft:fluidSteamConverter.name=Pressure Converter
+
+
+

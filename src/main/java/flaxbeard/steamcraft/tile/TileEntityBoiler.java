@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -17,7 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -31,14 +32,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
-import flaxbeard.steamcraft.block.BlockBoiler;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 
-public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter {
+public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter,IWrenchable {
 	public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
-	public int steam;
-	public final float pressureResistance = 0.8F;
-    private ItemStack[] furnaceItemStacks = new ItemStack[2];
+	private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
@@ -46,17 +46,26 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
+	public Block disguiseBlock = null;
+	public int disguiseMeta = 0;
+	private boolean lastWrench = false;
+    
+    public TileEntityBoiler(){
+    	super(50000, new ForgeDirection[]{ForgeDirection.UP});
+    	this.addSideToGaugeBlacklist(ForgeDirection.UP);
+    	this.setPressureResistance(0.5F);
+    }
     
 	@Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
+        NBTTagCompound access = super.getDescriptionTag();
         access.setInteger("water",myTank.getFluidAmount());
         access.setShort("BurnTime", (short)this.furnaceBurnTime);
         access.setShort("CookTime", (short)this.furnaceCookTime);
         access.setShort("cIBT", (short)this.currentItemBurnTime);
+    	access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseMeta", disguiseMeta);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -67,11 +76,12 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
     	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,access.getInteger("water")));
     	this.furnaceBurnTime = access.getShort("BurnTime");
     	this.currentItemBurnTime = access.getShort("cIBT");
       	this.furnaceCookTime = access.getShort("CookTime");
+    	this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
+    	this.disguiseMeta = access.getInteger("disguiseMeta");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
@@ -106,11 +116,8 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         {
         	this.myTank.setFluid(new FluidStack(FluidRegistry.WATER,par1NBTTagCompound.getShort("water")));
         }
-        
-        if (par1NBTTagCompound.hasKey("steam"))
-        {
-        	this.steam = par1NBTTagCompound.getShort("steam");
-        }
+    	this.disguiseBlock = Block.getBlockById(par1NBTTagCompound.getInteger("disguiseBlock"));
+    	this.disguiseMeta = par1NBTTagCompound.getInteger("disguiseMeta");
     }
 
     @Override
@@ -119,9 +126,10 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("BurnTime", (short)this.furnaceBurnTime);
         par1NBTTagCompound.setShort("water",(short) myTank.getFluidAmount());
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
         par1NBTTagCompound.setShort("CookTime", (short)this.furnaceCookTime);
         par1NBTTagCompound.setShort("cIBT", (short)this.currentItemBurnTime);
+        par1NBTTagCompound.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        par1NBTTagCompound.setInteger("disguiseMeta", disguiseMeta);
 
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -144,10 +152,20 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         }
     }
     
+    public void superUpdateOnly(){
+    	super.updateEntity();
+    }
+    
     @Override
     public void updateEntity() {
-    	UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
-    	UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+    	super.updateEntity();
+		if (this.worldObj.isRemote) {
+			boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
+			if (hasWrench != lastWrench && !(this.disguiseBlock == null || this.disguiseBlock == Blocks.air)) {
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			lastWrench = hasWrench;
+		}
     	if (this.getStackInSlot(1) != null) {
 	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
 	    		if (canDrainItem(this.getStackInSlot(1))) {
@@ -197,7 +215,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
                 }
             }
 
-            if (this.isBurning() && this.canSmelt())
+            if (this.isBurning() && this.canSmelt() && this.getNetwork() != null)
             {
                 ++this.furnaceCookTime;
 
@@ -205,7 +223,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
                 {
                 	//int i = 0;
                 //	while (i<maxThisTick && this.isBurning() && this.canSmelt()) {
-                		this.steam+=1;
+                		this.getNetwork().addSteam(10);
                 		this.myTank.drain(2, true);
                 		///i++;
                 	//}
@@ -222,13 +240,9 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
             if (flag != this.furnaceBurnTime > 0)
             {
                 flag1 = true;
-                BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
        }
-        if (!this.worldObj.isRemote) {
-        	//System.out.println(this.furnaceBurnTime);
-        }
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     private boolean canSmelt() {
@@ -363,6 +377,10 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
 	@Override
 	public void openInventory() {}
+	
+	public int getPressureAsInt(){
+		return (int)Math.floor((double)this.getPressure()*1000);
+	}
 
 	@Override
 	public void closeInventory() {}
@@ -439,32 +457,7 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
         return this.furnaceCookTime * p_145953_1_ / 200;
     }
 
-	@Override
-	public float getPressure() {
-		return (this.steam/5000.0F);
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		return face==ForgeDirection.UP;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 5000;
-	}
-
-	@Override
-	public int getSteam() {
-		return steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		steam+=amount;
-	}
-
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
     public int getBurnTimeRemainingScaled(int p_145955_1_)
     {
         if (this.currentItemBurnTime == 0)
@@ -474,28 +467,30 @@ public class TileEntityBoiler extends TileEntity implements IFluidHandler,ISided
 
         return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
     }
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam-=i;
+	
+	public FluidTank getTank(){
+		return myTank;
 	}
-
+	
 	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		return face == ForgeDirection.UP;
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		if (player.isSneaking()) {
+			if (this.disguiseBlock != null) {
+				if (!player.capabilities.isCreativeMode) {
+					EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock,1,disguiseMeta));
+					world.spawnEntityInWorld(entityItem);
+				}
+                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
+				disguiseBlock = null;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
+		return false;
 	}
-
-
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return face != ForgeDirection.UP;
-	}
-
-
-	@Override
-	public void explode() {
-    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
-		this.steam = 0;
-	}
-
 }

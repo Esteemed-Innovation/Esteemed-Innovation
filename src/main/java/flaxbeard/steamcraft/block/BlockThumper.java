@@ -1,25 +1,23 @@
 package flaxbeard.steamcraft.block;
 
-import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
 
-public class BlockThumper extends BlockSteamTransporter {
+public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
 
 	public BlockThumper() {
 		super(Material.iron);
@@ -66,5 +64,27 @@ public class BlockThumper extends BlockSteamTransporter {
         return false;
     }
 
-
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+        	switch (side) {
+        	case 2:
+                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                break;
+        	case 3:
+                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                break;
+        	case 4:
+                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                break;
+        	case 5:
+                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                break;
+        	}
+            return true;
+        }
+        return false;
+	}
 }

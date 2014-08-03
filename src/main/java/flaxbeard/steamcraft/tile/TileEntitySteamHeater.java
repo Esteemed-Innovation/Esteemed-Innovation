@@ -3,35 +3,39 @@ package flaxbeard.steamcraft.tile;
 import java.util.ArrayList;
 
 import net.minecraft.block.BlockFurnace;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
-public class TileEntitySteamHeater extends TileEntity implements ISteamTransporter {
+public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	
-	private int steam = 0;
 	public boolean master;
+	private boolean isInitialized = false;
 	private int numHeaters = 0;
 	private boolean prevHadYuck = true;
+	
+	public TileEntitySteamHeater(){
+		super(ForgeDirection.VALID_DIRECTIONS);
+		this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+	}
 	
 	@Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.steam = par1NBTTagCompound.getShort("steam");
         this.prevHadYuck = par1NBTTagCompound.getBoolean("prevHadYuck");
     }
 
@@ -39,37 +43,13 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("steam",(short) this.steam);
         par1NBTTagCompound.setBoolean("prevHadYuck", prevHadYuck);
     }
 	
 	@Override
-	public Packet getDescriptionPacket()
-	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("steam", steam);
-        
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-	}
-	    
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
-    	super.onDataPacket(net, pkt);
-    	NBTTagCompound access = pkt.func_148857_g();
-    	this.steam = access.getInteger("steam");
-    	
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-	
-	
-	@Override
 	public void updateEntity() {
-		if (!this.worldObj.isRemote) {
-			int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		ForgeDirection dir = myDir();
+		if (!this.isInitialized){
 			ForgeDirection[] directions = new ForgeDirection[6];
 			int i = 0;
 			for (ForgeDirection direction : ForgeDirection.values()) {
@@ -78,12 +58,12 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 					i++;
 				}
 			}
-			UtilSteamTransport.generalDistributionEvent(worldObj, xCoord, yCoord, zCoord,directions);
-			UtilSteamTransport.generalPressureEvent(worldObj,xCoord, yCoord, zCoord, this.getPressure(), this.getCapacity());
+			this.setDistributionDirections(directions);
+			this.isInitialized= true;
 		}
+		super.updateEntity();
 		
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
 		ArrayList<TileEntitySteamHeater> slaves = new ArrayList<TileEntitySteamHeater>();
 		if (this.worldObj.getTileEntity(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ) != null) {
 			if (this.worldObj.getTileEntity(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ) instanceof TileEntityFurnace) {
@@ -132,12 +112,12 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 //						furnace.setInventorySlotContents(2, replacement);
 //						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 //					}
-					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.steam >= 2 && canSmelt(furnace)) {
+					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteam() >= 20 && canSmelt(furnace)) {
 						if (furnace.furnaceBurnTime == 0) {
 							BlockFurnace.updateFurnaceBlockState(true, this.worldObj, xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 						}
 						for (TileEntitySteamHeater heater : slaves) {
-							heater.decrSteam(2);
+							heater.decrSteam(20);
 						}
 						furnace.furnaceBurnTime+=3;
 //						if (furnace.furnaceCookTime > 0) {
@@ -148,7 +128,7 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 							furnace.furnaceCookTime = Math.min(furnace.furnaceCookTime,199);
 						}
 						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
-						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						//this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 					this.prevHadYuck = !(furnace.getStackInSlot(2) == null || !SteamcraftRegistry.steamedFoods.containsKey(furnace.getStackInSlot(2).getItem()));
 				}
@@ -195,49 +175,10 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
         }
     }
 
-	@Override
-	public float getPressure() {
-		return this.steam/1000.0F;
-	}
-
-	@Override
-	public boolean canInsert(ForgeDirection face) {
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		return face != dir;
-	}
-
-	@Override
-	public int getCapacity() {
-		return 1000;
-	}
-
-	@Override
-	public int getSteam() {
-		return this.steam;
-	}
-
-	@Override
-	public void insertSteam(int amount, ForgeDirection face) {
-		this.steam+=amount;
-	}
-
-	@Override
-	public void decrSteam(int i) {
-		this.steam -= i;
-	}
-	@Override
-	public boolean doesConnect(ForgeDirection face) {
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
-		return face != dir;
+	public ForgeDirection myDir(){
+		return ForgeDirection.getOrientation(this.getBlockMetadata());
 	}
 	
-	@Override
-	public boolean acceptsGauge(ForgeDirection face) {
-		return false;
-	}
-
 	public static void replace(TileEntitySteamFurnace te) {
 		TileEntitySteamFurnace furnace = (TileEntitySteamFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
 		if (furnace != null) {
@@ -256,9 +197,12 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 		}
 	}
 	
-	public void explode(){
-		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		int steam = this.getSteam();
+		this.getNetwork().split(this, true);
+		ForgeDirection dir = myDir();
 		ForgeDirection[] directions = new ForgeDirection[6];
 		int i = 0;
 		for (ForgeDirection direction : ForgeDirection.values()) {
@@ -267,8 +211,10 @@ public class TileEntitySteamHeater extends TileEntity implements ISteamTransport
 				i++;
 			}
 		}
-		UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,directions);
-		this.steam = 0;
+		this.setDistributionDirections(directions);
+		SteamNetwork.newOrJoin(this);
+		this.getNetwork().addSteam(steam);
+		return true;
 	}
 
 }
