@@ -876,14 +876,18 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		
 		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)worldObj.getTileEntity(xCoord, yCoord, zCoord);
 		if (boiler != null){
-			int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
-			for (int pos = 0; pos < cluster.length; pos++){
-				int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
-				if (!(x==xCoord && y==yCoord && z==zCoord)){
-					TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
-					if (otherBoiler != null) otherBoiler.secondaryExplosion();
+			int clusterIndex = boiler.getValidClusterFromMetadata();
+			if (clusterIndex >= 0){
+				int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
+				for (int pos = 0; pos < cluster.length; pos++){
+					int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
+					if (!(x==xCoord && y==yCoord && z==zCoord)){
+						TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
+						if (otherBoiler != null) otherBoiler.secondaryExplosion();
+					}
 				}
 			}
+			
 		}
 		super.explode();
 		
