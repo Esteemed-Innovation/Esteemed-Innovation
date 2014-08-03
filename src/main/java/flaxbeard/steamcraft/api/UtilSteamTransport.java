@@ -25,11 +25,11 @@ public class UtilSteamTransport {
 			float resistance = trans.getPressureResistance();
 			int steam = trans.getSteam();
 			int oneInX = Math.max(1, (int)Math.floor((double)(500.0F  - (pressure / (1.1F + resistance) * 100)) ));
-			//System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
-			//System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
+			////System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
+			////System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
 			if (oneInX <= 1 ||  world.rand.nextInt(oneInX - 1) == 0) {
 				
-				System.out.println("FSP: "+boom[world.rand.nextInt(boom.length)]);
+				//System.out.println("FSP: "+boom[world.rand.nextInt(boom.length)]);
 				trans.explode();
 				world.createExplosion(null, x+0.5F, y+0.5F, z+0.5F, 4.0F, true);
 			}

@@ -91,10 +91,10 @@ public class SteamNetwork {
 			if (this.transporters != null && this.transporters.keySet() != null){
 				if (this.getPressure() > 1.2F){
 					for (Coord4 coords : transporters.keySet()){
-						////System.out.println("Iterating!");
+						//////System.out.println("Iterating!");
 						ISteamTransporter trans = transporters.get(coords);
 						if ((trans == null || ((TileEntity)trans).isInvalid())){
-							////System.out.println("Invalid TE");
+							//////System.out.println("Invalid TE");
 							transporters.remove(coords);
 						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 							trans.explode();
@@ -104,7 +104,7 @@ public class SteamNetwork {
 			
 				}
 			} else {
-				////System.out.println("Empty network: "+ this.name);
+				//////System.out.println("Empty network: "+ this.name);
 				//SteamNetworkRegistry.getInstance().remove(this);
 			}
 		}
@@ -117,10 +117,10 @@ public class SteamNetwork {
 		boolean hasJoinedNetwork = false;
 		if (others.size() > 0){
 			for (ISteamTransporter t : others){
-				////System.out.println("Checking other!");
+				//////System.out.println("Checking other!");
 				if (!isClosedValvePipe(t)){
 					if (t.getNetwork() != null){
-						////System.out.println(t.getNetwork().name);
+						//////System.out.println(t.getNetwork().name);
 						SteamNetwork net = t.getNetwork();
 						if (net != null){
 							nets.add(net);
@@ -130,14 +130,14 @@ public class SteamNetwork {
 				
 			}
 			if (nets.size() > 0){
-				////System.out.println("Other net(s) found: " + nets.size());
+				//////System.out.println("Other net(s) found: " + nets.size());
 				SteamNetwork main = null;
 				for (SteamNetwork net : nets){
 					if (main != null){
-						////System.out.println(net.name + " will be joining "+main.name);
+						//////System.out.println(net.name + " will be joining "+main.name);
 						main.join(net);
 					} else {
-						////System.out.println("Setting main to network "+net.name);
+						//////System.out.println("Setting main to network "+net.name);
 						main = net;
 					}
 				}
@@ -203,7 +203,7 @@ public class SteamNetwork {
 						out.add(t);
 						isNeighbor = true;
 					}
-					////System.out.println("Side: "+d.offsetX+","+d.offsetY+","+d.offsetZ+"; isNeighbor: "+isNeighbor);
+					//////System.out.println("Side: "+d.offsetX+","+d.offsetY+","+d.offsetZ+"; isNeighbor: "+isNeighbor);
 				}
 				
 			}
@@ -245,15 +245,15 @@ public class SteamNetwork {
 	}
 	
 	public synchronized int split(ISteamTransporter split, boolean removeCapacity){
-		////System.out.println("Splitting network: "+ this.name);
+		//////System.out.println("Splitting network: "+ this.name);
 		int steamRemoved = 0;
 		if (this.steam >= split.getCapacity() * this.getPressure()){
-			////System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
+			//////System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
 			steamRemoved = (int)Math.floor((double)split.getCapacity() * (double)this.getPressure());
 			this.steam -= steamRemoved;
 			
 		}
-		////System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
+		//////System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
 		this.capacity -= split.getCapacity();
 		//World world = split.getWorldObj();
 		//Tuple3<Integer, Integer, Integer> coords = split.getCoords();
@@ -264,50 +264,50 @@ public class SteamNetwork {
 			if (!isClosedValvePipe(trans)){
 				boolean isInNetwork = false;
 				if (newNets.size() > 0){
-					////System.out.println("size: "+newNets.size());
+					//////System.out.println("size: "+newNets.size());
 					for (SteamNetwork net : newNets){
 						if (net.contains(trans)){
-							//System.out.println("In network");
+							////System.out.println("In network");
 							isInNetwork = true;
 							break;
 						}
 					}
 				}
 				if (!isInNetwork){
-					//System.out.println("Not in network!");
+					////System.out.println("Not in network!");
 					SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
-					////System.out.println("Crawling!");
+					//////System.out.println("Crawling!");
 					ISteamTransporter ignore = null;
 					if (removeCapacity){
 						ignore = split;
 					}
 					net.buildFromTransporter(trans, net, ignore);
 					newNets.add(net);
-					////System.out.println(net.getSize());
+					//////System.out.println(net.getSize());
 				}
 			}
 			
 		}
 		if (newNets.size() > 0){
-			//System.out.println("More than one new network found");
-			//System.out.println("old s:"+this.steam+" p:"+this.getPressure() + " c:"+this.capacity);
+			////System.out.println("More than one new network found");
+			////System.out.println("old s:"+this.steam+" p:"+this.getPressure() + " c:"+this.capacity);
 			for (SteamNetwork net : newNets){
 				int steamShare = (int)Math.floor((double)(net.capacity * this.getPressure()));
-				//System.out.println("new s:"+steamShare+" c:"+net.capacity+" n: "+net.getName());
+				////System.out.println("new s:"+steamShare+" c:"+net.capacity+" n: "+net.getName());
 				net.addSteam(steamShare);
 				SteamNetworkRegistry.getInstance().add(net);
 			}
 			SteamNetworkRegistry.getInstance().remove(this);
 		} else {
 			// There's nothing left.
-			//System.out.println("No networks around");
+			////System.out.println("No networks around");
 			SteamNetworkRegistry.getInstance().remove(this);
 		}
 		return steamRemoved;
 	}
 	
 	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
-		////System.out.println("Building network!");
+		//////System.out.println("Building network!");
 		HashSet<ISteamTransporter> checked = new HashSet();
 		HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
 		boolean targetIsThis = target == this;
@@ -333,9 +333,9 @@ public class SteamNetwork {
 		}
 		HashSet<ISteamTransporter> neighbors = getNeighboringTransporters(trans);
 		for (ISteamTransporter neighbor : neighbors){
-			////System.out.println(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
+			//////System.out.println(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
 			if (! checked.contains(neighbor) && neighbor != ignore && !isClosedValvePipe(neighbor)){
-				////System.out.println("Didn't ignore");
+				//////System.out.println("Didn't ignore");
 				checked.add(neighbor);
 				crawlNetwork(neighbor, checked, ignore);
 			}
