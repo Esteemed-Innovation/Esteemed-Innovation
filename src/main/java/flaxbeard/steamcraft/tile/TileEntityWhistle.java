@@ -7,6 +7,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.client.audio.HornSound;
@@ -18,6 +20,7 @@ public class TileEntityWhistle extends TileEntity {
 	private boolean isSounding = false;
 	private int steamTick = 0;
 	private boolean isReallyDead = false;
+	@SideOnly(Side.CLIENT)
 	private HornSound mySound;
 	
 	@Override
@@ -42,47 +45,11 @@ public class TileEntityWhistle extends TileEntity {
     }
 	
 	public void updateEntity(){
-		if (worldObj.isRemote && !isSoundRegistered){
-			if (worldObj.isRemote){
-				mySound = new HornSound(this);
-				Minecraft.getMinecraft().getSoundHandler().playSound(mySound);
-			}
-			isSoundRegistered = true;
+		if (worldObj.isRemote) {
+			this.updateSound();
 		}
-		
-		if (worldObj.isRemote){
-			if (this.isSounding){
-				if (steamTick == 0){
-					ForgeDirection d = myDir().getOpposite();
-					ISteamTransporter source = null;
-					TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord+ d.offsetZ);
-					float offset = 2.0F/16.0F;
-					if (te != null && te instanceof TileEntitySteamPipe){
-						offset = 6.0F/16.0F;
-					}
-					float offset2 = (2.0F/16.0F/3.0F);
-
-					float xOffset = myDir().getOpposite().offsetX * offset;
-					float zOffset = myDir().getOpposite().offsetZ * offset;
-					float xOffset2 = myDir().getOpposite().offsetX * offset2;
-					float zOffset2 = myDir().getOpposite().offsetZ * offset2;
-					worldObj.spawnParticle("smoke", xCoord+0.5D+xOffset, yCoord+0.7D, zCoord+0.5D+zOffset, 0f-xOffset2, 0.05f, 0f-zOffset2);
-				}
-				steamTick++;
-				if (steamTick >= 4){
-					this.steamTick = 0;
-				}
-
-				if (volume < 0.75F){
-					volume += 0.01F;
-				}
-			} else if (volume > 0F){
-				volume -= 0.25F;
-			} else {
-				volume = 0F;
-			}
-			//volume = 0f;
-		} else {
+		else
+		{
 			if (getPressure() > 1.02F){
 				if (!this.isSounding){
 					this.isSounding = true;
@@ -99,6 +66,51 @@ public class TileEntityWhistle extends TileEntity {
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
+	private void updateSound() {
+		if (!isSoundRegistered){
+			if (worldObj.isRemote){
+				mySound = new HornSound(this);
+				Minecraft.getMinecraft().getSoundHandler().playSound(mySound);
+			}
+			isSoundRegistered = true;
+		}
+		
+		if (this.isSounding){
+			if (steamTick == 0){
+				ForgeDirection d = myDir().getOpposite();
+				ISteamTransporter source = null;
+				TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord+ d.offsetZ);
+				float offset = 2.0F/16.0F;
+				if (te != null && te instanceof TileEntitySteamPipe){
+					offset = 6.0F/16.0F;
+				}
+				float offset2 = (2.0F/16.0F/3.0F);
+
+				float xOffset = myDir().getOpposite().offsetX * offset;
+				float zOffset = myDir().getOpposite().offsetZ * offset;
+				float xOffset2 = myDir().getOpposite().offsetX * offset2;
+				float zOffset2 = myDir().getOpposite().offsetZ * offset2;
+				worldObj.spawnParticle("smoke", xCoord+0.5D+xOffset, yCoord+0.7D, zCoord+0.5D+zOffset, 0f-xOffset2, 0.05f, 0f-zOffset2);
+			}
+			steamTick++;
+			if (steamTick >= 4){
+				this.steamTick = 0;
+			}
+
+			if (volume < 0.75F){
+				volume += 0.01F;
+			}
+		} else if (volume > 0F){
+			volume -= 0.25F;
+		} else {
+			volume = 0F;
+		}
+		//volume = 0f;
+		
+	}
+
+
 	private void drainSteam(int s) {
 		ForgeDirection d = myDir().getOpposite();
 		ISteamTransporter source = null;

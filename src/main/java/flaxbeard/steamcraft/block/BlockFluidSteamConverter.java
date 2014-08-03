@@ -36,7 +36,34 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
-		return this.getSelectedBoundingBoxFromPool(world, i, j, k);
+    	int meta = world.getBlockMetadata(i, j, k);
+		float ringMin = 4.0F/16.0F;
+		float ringMax = 12.0F/16.0F;
+        float px = 1.0F/16.0F;
+		float x = ringMin;
+		float y = ringMin;
+		float z = 0.0F;
+		float x2 = ringMax;
+		float y2 = ringMax;
+		float z2 = 0.999F;
+		ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();
+		this.setBlockBounds(z, y, x, z2, y2, x2);
+		System.out.println(meta);
+        switch (meta) {
+        	case 0:
+        		return AxisAlignedBB.getBoundingBox(i+x, j+z, k+y, i+x2, j+z2,k+ y2);
+        	case 1:
+        		return AxisAlignedBB.getBoundingBox(i+x, j+z, k+y, i+x2, j+z2,k+ y2);
+			case 5:
+				return AxisAlignedBB.getBoundingBox(i+z, j+y, k+x, i+z2, j+y2, k+x2);
+			case 2:
+				return AxisAlignedBB.getBoundingBox(i+1-x2, j+y, k+1-z2, i+1-x,  j+y2, k+1-z);
+			case 4:
+				return AxisAlignedBB.getBoundingBox(i+1-z2, j+y, k+1-x2, i+1-z, j+y2, k+1-x);
+			case 3:
+				return AxisAlignedBB.getBoundingBox(i+x, j+y, k+z, i+x2, j+y2, k+z2);
+		}
+        return super.getCollisionBoundingBoxFromPool(world, i, j, k);
     }
     
     @Override
