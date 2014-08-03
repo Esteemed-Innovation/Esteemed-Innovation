@@ -19,6 +19,7 @@ public class SteamcraftBook {
 	public static void registerBookResearch() {
 		if (Config.hasAllCrucial){
 			registerBasics();
+			registerRecentCreations();
 			registerFirearms();
 			registerCasting();
 			registerGadgets();
@@ -54,6 +55,48 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addResearch("research.Camouflage.name","category.Basics.name",new BookPageItem("research.Camouflage.name","research.Camouflage.0", new ItemStack(SteamcraftBlocks.pipe),new ItemStack(Blocks.stonebrick)),new BookPageText("research.Camouflage.name","research.Camouflage.1"));
 
 
+	}
+	
+	public static void registerRecentCreations(){
+		SteamcraftRegistry.addCategory("category.RecentCreations.name");
+		
+		SteamcraftRegistry.addResearch(
+				"research.SteamSystem.name", 
+				"category.RecentCreations.name", 
+				new BookPageItem(
+						"research.SteamSystem.name",
+						"research.SteamSystem.0", 
+						new ItemStack(SteamcraftBlocks.boiler,1,0), 
+						new ItemStack(SteamcraftBlocks.pipe, 1,0)
+				),
+				new BookPageText("research.SteamSystem.name", "research.SteamSystem.1"),
+				new BookPageText("research.SteamSystem.name", "research.SteamSystem.2"),
+				new BookPageText("research.SteamSystem.name", "research.SteamSystem.3"),
+				new BookPageText("research.SteamSystem.name", "research.SteamSystem.4"),
+				new BookPageText("research.SteamSystem.name", "research.SteamSystem.5")
+		);
+		
+		if (Config.enableWrench){
+			SteamcraftRegistry.addResearch("research.Wrench.name","category.RecentCreations.name",new BookPageItem("research.Wrench.name","research.Wrench.0", new ItemStack(SteamcraftItems.wrench)),new BookPageText("research.Wrench.name","research.Wrench.1"),new BookPageCrafting("","wrench1","wrench2"));
+		}
+		
+		SteamcraftRegistry.addResearch("research.Camouflage.name","category.RecentCreations.name",new BookPageItem("research.Camouflage.name","research.Camouflage.0", new ItemStack(SteamcraftBlocks.pipe),new ItemStack(Blocks.stonebrick)),new BookPageText("research.Camouflage.name","research.Camouflage.1"));
+		
+		if (Config.enableHorn){
+			SteamcraftRegistry.addResearch("research.Whistle.name", "category.RecentCreations.name", new BookPageItem("research.Whistle.name","research.Whistle.0", new ItemStack(SteamcraftBlocks.horn)), new BookPageCrafting("","whistle1","whistle2"));
+		}
+		
+		if (Config.enableFan){
+			SteamcraftRegistry.addResearch("research.Fan.name", "category.RecentCreations.name", new BookPageItem("research.Fan.name","research.Fan.0", new ItemStack(SteamcraftBlocks.fan)), new BookPageCrafting("","fan1","fan2"));
+			if (Config.enableVacuum){
+				SteamcraftRegistry.addResearch("research.Vacuum.name", "category.RecentCreations.name", new BookPageItem("research.Vacuum.name","research.Vacuum.0", new ItemStack(SteamcraftBlocks.vacuum)), new BookPageCrafting("","vacuum1","vacuum2"));
+			}
+		}
+		
+		if (Config.enableFluidSteamConverter){
+			SteamcraftRegistry.addResearch("research.FSC.name", "category.RecentCreations.name", new BookPageItem("research.FSC.name","research.FSC.0", new ItemStack(SteamcraftBlocks.fluidSteamConverter)), new BookPageCrafting("","fsc1","fsc2"));
+		}
+		
 	}
 	
 	public static void registerFirearms(){
