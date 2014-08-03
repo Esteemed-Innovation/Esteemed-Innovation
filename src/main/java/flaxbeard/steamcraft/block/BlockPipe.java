@@ -325,7 +325,7 @@ public class BlockPipe extends BlockSteamTransporter {
 							minZ = 0.0F;
 						}
 					}
-					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, k+minZ, i+maxX, j+maxY, k+maxZ);
+					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, j+minZ, i+maxX, j+maxY, k+maxZ);
 		    	}
 	    	}
     	}
@@ -355,11 +355,14 @@ public class BlockPipe extends BlockSteamTransporter {
     	}
     }
     
+    @SideOnly (Side.CLIENT)
+
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end)
     {
     	
+    	EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     	TileEntity tile = world.getTileEntity(x, y, z);
-    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe))) {
+    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof ItemWrench))) {
     		return super.collisionRayTrace(world, x, y, z, start, end);
       	}
     	List<IndexedCuboid6> cuboids = new LinkedList();

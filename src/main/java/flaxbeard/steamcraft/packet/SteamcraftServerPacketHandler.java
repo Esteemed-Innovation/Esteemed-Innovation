@@ -139,6 +139,26 @@ public class SteamcraftServerPacketHandler {
 		}
  	}
 	
+	private void handleDRPacket(ByteBufInputStream dat, World world)
+ 	{
+		try {
+			int id = dat.readInt();
+			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+			if (player != null) {
+				int x = dat.readInt();
+				int y = dat.readInt();
+				int z = dat.readInt();
+				int subHit = dat.readInt();
+				if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntitySteamPipe) {
+					((TileEntitySteamPipe)world.getTileEntity(x, y, z)).connectDisconnect(world, x, y, z, subHit);
+				}
+			}
+		}
+		catch (Exception e) {
+			return;
+		}
+ 	}
+	
 	private void handleNoSpacePacket(ByteBufInputStream dat, World world)
  	{
 //		try {
@@ -209,6 +229,9 @@ public class SteamcraftServerPacketHandler {
             }
             if (packetID == 3) {
             	this.handleCamoPacket(bbis, world);
+            }
+            if (packetID == 4) {
+            	this.handleDRPacket(bbis, world);
             }
             bbis.close();
         }
