@@ -47,7 +47,7 @@ public class SteamNetworkRegistry {
 	
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID){
-		System.out.println("Writing network registry for dimension" + dimID + " to NBT");
+		//System.out.println("Writing network registry for dimension" + dimID + " to NBT");
 		NBTTagList nets = new NBTTagList();
 		if (networks.get(dimID) != null &&  !networks.get(dimID).isEmpty()){
 			for (SteamNetwork net : networks.get(dimID).values() ){
@@ -61,19 +61,19 @@ public class SteamNetworkRegistry {
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt, int dimID){
-		System.out.println("reading network registry for dimension " + dimID + " from NBT");
+		//System.out.println("reading network registry for dimension " + dimID + " from NBT");
 		
 		HashMap<String, SteamNetwork> nets = new HashMap<String, SteamNetwork>();
 		if (nbt.hasKey("networks")){
 			NBTTagList tagNets = (NBTTagList) nbt.getTag("networks");
 			for (int i = 0; i < tagNets.tagCount(); i++){
 				SteamNetwork net = SteamNetwork.readFromNBT(tagNets.getCompoundTagAt(i));
-				//System.out.println("Loaded network "+net.getName());
+				////System.out.println("Loaded network "+net.getName());
 				nets.put(net.getName(), net);
 			}
 			networks.put(dimID, nets);
 		}
-		System.out.println("==================================================Loaded "+dimID);
+		//System.out.println("==================================================Loaded "+dimID);
 		initialized.add(dimID);
 		
 	}
@@ -85,7 +85,7 @@ public class SteamNetworkRegistry {
 
 	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent e){
-		//System.out.println("Tick");
+		////System.out.println("Tick");
 		if (networks.values() != null && networks.values().size() > 0){
 			try{
 				for (HashMap<String, SteamNetwork> dimension : networks.values()){
@@ -94,7 +94,7 @@ public class SteamNetworkRegistry {
 					}
 				}
 			} catch (ConcurrentModificationException ex){
-				System.out.println("FSP: ConcurrentModificationException in network tick");
+				//System.out.println("FSP: ConcurrentModificationException in network tick");
 				//ex.printStackTrace();
 			}
 			
@@ -103,10 +103,10 @@ public class SteamNetworkRegistry {
 	}
 	
 	public SteamNetwork getNewNetwork(){
-		//System.out.println("Returning new network");
+		////System.out.println("Returning new network");
 		SteamNetwork net = new SteamNetwork();
 		String name = UUID.randomUUID().toString();
-		//System.out.println(name);
+		////System.out.println(name);
 		net.setName(name);
 		return net;
 	}
@@ -218,7 +218,7 @@ public class SteamNetworkRegistry {
 
 	public void printNetworks(int dim){
 		for (SteamNetwork net : networks.get(dim).values()){
-			System.out.println(net.getName());
+			//System.out.println(net.getName());
 		}
 	}
 
