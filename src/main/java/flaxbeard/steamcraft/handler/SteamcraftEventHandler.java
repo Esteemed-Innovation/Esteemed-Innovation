@@ -108,7 +108,6 @@ public class SteamcraftEventHandler {
 //				}
 //				baseItem.setEntityItemStack(new ItemStack(SteamcraftItems.steamcraftCrafting,1,5));
 //                event.drops.add(baseItem);
-//				//System.out.println("REMOVED GUNPOWDER");
 //			}
 //		}
 //	}
@@ -293,7 +292,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamDrill.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	////System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && Items.iron_pickaxe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
@@ -303,7 +301,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamAxe.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	////System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
@@ -314,7 +311,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamShovel.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	////System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	
 			    	if (speed > 0 && Items.diamond_shovel.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+19.0F*(speed/3000.0F);
@@ -406,7 +402,6 @@ public class SteamcraftEventHandler {
 				stack.stackTagCompound.setInteger("ticksUntilConsume", 2);
 			}
 			int ticksLeft = stack.stackTagCompound.getInteger("ticksUntilConsume");
-			////System.out.println(ticksLeft);
 
 			if (ticksLeft <= 0) {
 				if (Config.passiveDrain) {
@@ -500,7 +495,6 @@ public class SteamcraftEventHandler {
 		}
 		if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) { 
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
-				////System.out.println(((TileEntitySteamHeater)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).master);
 			}
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
 				ISteamTransporter trans = (ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);

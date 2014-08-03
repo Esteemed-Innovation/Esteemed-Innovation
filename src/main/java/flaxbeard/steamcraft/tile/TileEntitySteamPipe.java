@@ -183,7 +183,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				}
 				while (myDirections.size() == 2 && this.getPressure() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					if (worldObj.isRemote){
-						//System.out.println("I AM THE CLIENT!");
 					}
 					this.decrSteam(10);
 					
@@ -355,13 +354,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    			pipe.blacklistedSides.remove((Integer)direction.getOpposite().ordinal());
 			    	
 			    	//network stuff
-			    	//System.out.println("a) netsteam before: "+pipe.getNetwork().getSteam());
 					int steam = pipe.getNetwork().split(pipe, false);
 					SteamNetwork.newOrJoin(pipe);
-					//System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
 					//pipe.getNetwork().addSteam(steam);
-					//System.out.println(pipe.getNetworkName());
-					//System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
 					this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
 	    		}
 		    	else if (sidesConnect > 2) {
@@ -369,10 +364,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		    		this.blacklistedSides.add(subHit);
 		    		
 		    		//bad network stuff
-		    		//System.out.println("b) netsteam before: "+this.getNetwork().getSteam());
 					int steam = this.getNetwork().split(this, false);
 					SteamNetwork.newOrJoin(this);
-					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
 					//this.getNetwork().addSteam(steam);
 					//System.out.println("B");
 					//System.out.println(this.getNetworkName());
@@ -387,10 +380,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    			//remomve from whitelist
 		    		this.blacklistedSides.remove((Integer)subHit);			    	
 			    	//network stuff
-			    	//System.out.println("c) netsteam before: "+this.getNetwork().getSteam());
 					int steam = this.getNetwork().split(this, false);
 					SteamNetwork.newOrJoin(this);
-					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
 					//this.getNetwork().addSteam(steam);
 					//System.out.println("C");
 					//System.out.println(this.getNetworkName());
