@@ -262,10 +262,11 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 			if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
 				//System.out.println("Null network");
 				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+					System.out.println("I have a network!");
 					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
 					this.network.rejoin(this);
 				} else {
-					//System.out.println("Requesting new network build");
+					System.out.println("Requesting new network or joining existing.");
 					SteamNetwork.newOrJoin(this);
 					
 				}
