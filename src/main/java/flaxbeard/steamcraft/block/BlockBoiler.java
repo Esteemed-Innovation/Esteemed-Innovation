@@ -27,6 +27,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 
 public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
@@ -76,7 +77,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     	if (world.getTileEntity(x2, y2, z2) instanceof TileEntityBoiler) {
 	    	TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x2, y2, z2);
 	        int l = world.getBlockMetadata(x2, y2, z2);
-	    	if (boiler != null && boiler.disguiseBlock != null && boiler.disguiseBlock != Blocks.air) {
+	    	if (boiler != null && boiler.disguiseBlock != null && boiler.disguiseBlock != Blocks.air && !BlockSteamPipeRenderer.updateWrenchStatus()) {
 	    		
 	    		return side == l ? super.shouldSideBeRendered(world, x, y, z, side) : false;
 	    	}

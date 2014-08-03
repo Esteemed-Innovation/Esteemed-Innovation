@@ -74,6 +74,7 @@ public class BlockPipe extends BlockSteamTransporter {
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k)
     {
     	Minecraft mc = Minecraft.getMinecraft();
@@ -249,14 +250,13 @@ public class BlockPipe extends BlockSteamTransporter {
     
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
     {
-    	Minecraft mc = Minecraft.getMinecraft();
     	TileEntity te = world.getTileEntity(i,j, k);
     	if (te instanceof TileEntitySteamPipe) {
     		
     		TileEntitySteamPipe pipe = (TileEntitySteamPipe) te;
     		if (pipe != null && pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.air) {
-    			setBlockBounds(0.0F,0.0F,0.0F,1.0F,1.0F,1.0F);
-        	}
+				return AxisAlignedBB.getBoundingBox(i, j, j, i+1, j+1, k+1);
+    		}
     		else
     		{
 				float baseMin = 4.0F/16.0F;
@@ -325,11 +325,11 @@ public class BlockPipe extends BlockSteamTransporter {
 							minZ = 0.0F;
 						}
 					}
-					setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, k+minZ, i+maxX, j+maxY, k+maxZ);
 		    	}
 	    	}
     	}
-		return super.getSelectedBoundingBoxFromPool(world, i, j, k);
+		return super.getCollisionBoundingBoxFromPool(world, i, j, k);
     }
 
     
@@ -358,9 +358,8 @@ public class BlockPipe extends BlockSteamTransporter {
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end)
     {
     	
-    	EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     	TileEntity tile = world.getTileEntity(x, y, z);
-    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof ItemWrench))) {
+    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe))) {
     		return super.collisionRayTrace(world, x, y, z, start, end);
       	}
     	List<IndexedCuboid6> cuboids = new LinkedList();
