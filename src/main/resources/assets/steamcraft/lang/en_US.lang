@@ -27,6 +27,7 @@ steamcraft.waila.mold=Mold:
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 
+category.RecentCreations.name=Recent Creations
 
 category.Basics.name=Basics
 research.SteamSystem.name=Steam Systems
@@ -55,6 +56,8 @@ research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted t
 
 research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
+
+
 
 category.MetalCasting.name=Metal Casting
 research.Crucible.name=Crucible
