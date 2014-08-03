@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class ItemWrench extends Item {
@@ -20,7 +19,7 @@ public class ItemWrench extends Item {
     
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO)
     {
-    	if (!world.isRemote) {
+    	if (!world.isRemote || (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntitySteamPipe && !player.isSneaking())) {
 			if (world.getBlock(x, y, z) != null && world.getBlock(x, y, z) instanceof IWrenchable) {
 				boolean result = ((IWrenchable)world.getBlock(x, y, z)).onWrench(stack, player, world, x, y, z, side, xO, yO, zO);
 				if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof IWrenchable) {

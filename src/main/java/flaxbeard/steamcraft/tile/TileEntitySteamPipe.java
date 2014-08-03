@@ -15,7 +15,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -32,6 +31,7 @@ import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.codechicken.lib.raytracer.IndexedCuboid6;
 import flaxbeard.steamcraft.codechicken.lib.raytracer.RayTracer;
 import flaxbeard.steamcraft.codechicken.lib.vec.Cuboid6;
+import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 
 public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	//protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
@@ -273,7 +273,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		float min = 4F/16F;
 		float max = 12F/16F;
 		Block block = worldObj.getBlock(xCoord,yCoord,zCoord);
-		AxisAlignedBB bounds = block.getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord);
 		if (canConnectSide(0) > 0) {
 			float bottom = canConnectSide(0) == 2 ? -5F/16F : 0.0F;
 			cuboids.add(new IndexedCuboid6(Integer.valueOf(0), new Cuboid6(this.xCoord + min, this.yCoord + bottom, this.zCoord + min, this.xCoord + max, this.yCoord + 5F/16F, this.zCoord + max)));
@@ -299,14 +298,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    	cuboids.add(new IndexedCuboid6(Integer.valueOf(5), new Cuboid6(this.xCoord + 11F/16F, this.yCoord + min, this.zCoord + min, this.xCoord + top, this.yCoord + max, this.zCoord + max)));
 	    }
 	    cuboids.add(new IndexedCuboid6(Integer.valueOf(6), new Cuboid6(this.xCoord + 5F/16F, this.yCoord +  5F/16F, this.zCoord +  5F/16F, this.xCoord + 11F/16F, this.yCoord +  11F/16F, this.zCoord +  11F/16F)));
-		cuboids.add(new IndexedCuboid6(Integer.valueOf(7), new Cuboid6(
-	    		bounds.minX,
-	    		bounds.minY,
-	    		bounds.minZ,
-	    		bounds.maxX,
-	    		bounds.maxY,
-	    		bounds.maxZ
-	    		)));
 
 	}
 
@@ -327,78 +318,87 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		}
 		else
 		{
-			MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
-			//Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
-		    if (hit == null) {
-		    	return false;
+			if (this.worldObj.isRemote) {
+				MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
+				//Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
+			    if (hit == null) {
+			    	return false;
+			    }
+
+			    SteamcraftClientPacketHandler.sendConnectPacket(player, x, y, z, hit);
 		    }
-		    //If hit a part from 0 to 5 (direction) and hit me
-		    if ((hit.subHit >= 0) && (hit.subHit < 6) && world.getBlock(hit.blockX, hit.blockY, hit.blockZ) instanceof BlockPipe)
-		    {
-		    	//Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
-		    	int sidesConnect = 0;
-		    	for (int i = 0; i<6; i++) {
-		    		if (this.doesConnect(ForgeDirection.getOrientation(i))) {
-		    			sidesConnect++;
-		    		}
-		    	}
-		    	boolean netChange = false;
-		    	//If does connect on this side, and has adequate sides left
-		    	if (this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
-		    		ForgeDirection direction = ForgeDirection.getOrientation(hit.subHit);
-		    		TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
-		    		if (tile instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) tile).blacklistedSides.contains(direction.getOpposite().ordinal())) {
-		    			TileEntitySteamPipe pipe = (TileEntitySteamPipe) tile;
-		    			pipe.blacklistedSides.remove((Integer)direction.getOpposite().ordinal());
-				    	player.swingItem();
-				    	
-				    	//network stuff
-				    	//System.out.println("a) netsteam before: "+pipe.getNetwork().getSteam());
-						int steam = pipe.getNetwork().split(pipe, false);
-						SteamNetwork.newOrJoin(pipe);
-						//System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
-						//pipe.getNetwork().addSteam(steam);
-						//System.out.println(pipe.getNetworkName());
-						//System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
-						this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
-		    		}
-			    	else if (sidesConnect > 2) {
-				    	player.swingItem();
-				    	//add to blacklist
-			    		this.blacklistedSides.add(hit.subHit);
-			    		
-			    		//bad network stuff
-			    		//System.out.println("b) netsteam before: "+this.getNetwork().getSteam());
-						int steam = this.getNetwork().split(this, false);
-						SteamNetwork.newOrJoin(this);
-						//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
-						//this.getNetwork().addSteam(steam);
-						//System.out.println(this.getNetworkName());
-						
-						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			    	}
-		    	}
-		    	//else if doesn't connect
-		    	else if (!this.doesConnect(ForgeDirection.getOrientation(hit.subHit))) {
-		    		if (this.blacklistedSides.contains(hit.subHit)) {
-		    			//remomve from whitelist
-			    		this.blacklistedSides.remove((Integer)hit.subHit);
-				    	player.swingItem();
-				    	
-				    	//network stuff
-				    	//System.out.println("c) netsteam before: "+this.getNetwork().getSteam());
-						int steam = this.getNetwork().split(this, false);
-						SteamNetwork.newOrJoin(this);
-						//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
-						//this.getNetwork().addSteam(steam);
-						//System.out.println(this.getNetworkName());
-						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		    		}
-		    	}
-	
-		      	return true;
-		    }
-	    }
+		}
 	    return false;
+	    
+	}
+	
+	public void connectDisconnect(World world,
+			int x, int y, int z, int subHit) {
+		//Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
+	    //If hit a part from 0 to 5 (direction) and hit me
+	    if ((subHit >= 0) && (subHit < 6) && world.getBlock(x,y,z) instanceof BlockPipe)
+	    {
+	    	//Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
+	    	int sidesConnect = 0;
+	    	for (int i = 0; i<6; i++) {
+	    		if (this.doesConnect(ForgeDirection.getOrientation(i))) {
+	    			sidesConnect++;
+	    		}
+	    	}
+	    	boolean netChange = false;
+	    	//If does connect on this side, and has adequate sides left
+	    	if (this.doesConnect(ForgeDirection.getOrientation(subHit))) {
+	    		ForgeDirection direction = ForgeDirection.getOrientation(subHit);
+	    		TileEntity tile = worldObj.getTileEntity(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+	    		if (tile instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) tile).blacklistedSides.contains(direction.getOpposite().ordinal())) {
+	    			TileEntitySteamPipe pipe = (TileEntitySteamPipe) tile;
+	    			pipe.blacklistedSides.remove((Integer)direction.getOpposite().ordinal());
+			    	
+			    	//network stuff
+			    	//System.out.println("a) netsteam before: "+pipe.getNetwork().getSteam());
+					int steam = pipe.getNetwork().split(pipe, false);
+					SteamNetwork.newOrJoin(pipe);
+					//System.out.println("Net steam before add: "+pipe.getNetwork().getSteam());
+					//pipe.getNetwork().addSteam(steam);
+					//System.out.println(pipe.getNetworkName());
+					//System.out.println("steam: "+steam+"; nw steam: "+pipe.getNetwork().getSteam());
+					this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+	    		}
+		    	else if (sidesConnect > 2) {
+			    	//add to blacklist
+		    		this.blacklistedSides.add(subHit);
+		    		
+		    		//bad network stuff
+		    		//System.out.println("b) netsteam before: "+this.getNetwork().getSteam());
+					int steam = this.getNetwork().split(this, false);
+					SteamNetwork.newOrJoin(this);
+					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
+					//this.getNetwork().addSteam(steam);
+					System.out.println("B");
+					//System.out.println(this.getNetworkName());
+					System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
+					
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		    	}
+	    	}
+	    	//else if doesn't connect
+	    	else if (!this.doesConnect(ForgeDirection.getOrientation(subHit))) {
+	    		if (this.blacklistedSides.contains(subHit)) {
+	    			//remomve from whitelist
+		    		this.blacklistedSides.remove((Integer)subHit);			    	
+			    	//network stuff
+			    	//System.out.println("c) netsteam before: "+this.getNetwork().getSteam());
+					int steam = this.getNetwork().split(this, false);
+					SteamNetwork.newOrJoin(this);
+					//System.out.println("Net steam before add: "+this.getNetwork().getSteam());
+					//this.getNetwork().addSteam(steam);
+					System.out.println("C");
+					//System.out.println(this.getNetworkName());
+					System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	    		}
+	    	}
+	    	world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
+	    }
 	}
 }
