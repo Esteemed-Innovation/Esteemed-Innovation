@@ -38,7 +38,7 @@ public class TinkersIntegration {
 			}
 		}
 		for (CastingRecipe recipe : goodRecipes) {
-			System.out.println("INTEGRATION YUCK JOE");
+			//System.out.println("INTEGRATION YUCK JOE");
 	        tableCasting.addCastingRecipe(recipe.output, recipe.castingMetal, scIngotcast, recipe.coolTime);
 		}
 	}*/

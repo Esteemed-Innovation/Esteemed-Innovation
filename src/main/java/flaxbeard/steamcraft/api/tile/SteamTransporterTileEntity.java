@@ -64,7 +64,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	{
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null){
-        	////System.out.println("Setting pressure!");
+        	//////System.out.println("Setting pressure!");
         	access.setString("networkName", networkName);
             access.setFloat("pressure", this.getPressure());
         }
@@ -79,7 +79,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	if (access.hasKey("networkName")) {
     		this.networkName = access.getString("networkName");
     		this.pressure = access.getFloat("pressure");
-    		////System.out.println("Set pressure to "+this.pressure);
+    		//////System.out.println("Set pressure to "+this.pressure);
     	}
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -118,7 +118,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		if (!worldObj.isRemote){
 			if (this.hasGauge() && this.network != null){
 				if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
-					////System.out.println("Updating PRESHAAA");
+					//////System.out.println("Updating PRESHAAA");
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					this.lastPressure = this.getPressure();
 					this.network.markDirty();
@@ -260,13 +260,13 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		}
 		if (this.network == null && !worldObj.isRemote){
 			if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
-				////System.out.println("Null network");
+				//////System.out.println("Null network");
 				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
-					//System.out.println("I have a network!");
+					////System.out.println("I have a network!");
 					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
 					this.network.rejoin(this);
 				} else {
-					//System.out.println("Requesting new network or joining existing.en");
+					////System.out.println("Requesting new network or joining existing.en");
 					SteamNetwork.newOrJoin(this);
 					
 				}

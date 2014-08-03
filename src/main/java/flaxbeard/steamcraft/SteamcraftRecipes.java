@@ -42,7 +42,7 @@ public class SteamcraftRecipes {
 		
 
 //		if (Loader.isModLoaded("TConstruct")) {
-//			System.out.println("INTEGRATION FUCK YEAH");
+//			//System.out.println("INTEGRATION FUCK YEAH");
 //			TinkersIntegration.addIngotRecipes();
 //		}
 		

@@ -328,7 +328,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 				range = 9;
 				break;
 			}
-			System.out.println(range);
+			//System.out.println(range);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			return true;
 		}

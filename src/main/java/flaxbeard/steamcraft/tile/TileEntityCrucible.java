@@ -196,7 +196,7 @@ public class TileEntityCrucible extends TileEntity {
 					}
 					currNum = number.get(liquid);
 					currNum += recipe.output;
-				//	System.out.println(currNum);
+				//	//System.out.println(currNum);
 					number.remove(liquid);
 					number.put(liquid, currNum);
 					needsUpdate = true;
@@ -204,7 +204,7 @@ public class TileEntityCrucible extends TileEntity {
 			}
 		}
 		if (needsUpdate) {
-			System.out.println("UDPATE");
+			//System.out.println("UDPATE");
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			needsUpdate = false;
 		}
@@ -216,7 +216,7 @@ public class TileEntityCrucible extends TileEntity {
 		for (CrucibleLiquid liquid : contents) {
 			fill += number.get(liquid);
 		}
-		//System.out.println("fill: " + fill);
+		////System.out.println("fill: " + fill);
 		return fill;
 		
 	}
@@ -225,7 +225,7 @@ public class TileEntityCrucible extends TileEntity {
 		int fill = this.getFill();
 		if (!worldObj.isRemote){
 			if (fill + amount <= 90 && this.hasUpdated) {
-				//System.out.println(fill + " " +this.hasUpdated);
+				////System.out.println(fill + " " +this.hasUpdated);
 				CrucibleLiquid fluid = (CrucibleLiquid) output.left;
 				if (!this.contents.contains(fluid)) {
 					this.contents.add(fluid);
