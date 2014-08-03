@@ -325,7 +325,7 @@ public class BlockPipe extends BlockSteamTransporter {
 							minZ = 0.0F;
 						}
 					}
-					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, j+minZ, i+maxX, j+maxY, k+maxZ);
+					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, k+minZ, i+maxX, j+maxY, k+maxZ);
 		    	}
 	    	}
     	}
