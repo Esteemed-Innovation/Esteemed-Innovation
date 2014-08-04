@@ -5,15 +5,24 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import io.netty.buffer.ByteBufInputStream;
 
 import java.io.IOException;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -65,6 +74,88 @@ public class SteamcraftServerPacketHandler {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			return;
+		}
+ 	}
+	
+	private void handleCamoPacket(ByteBufInputStream dat, World world)
+ 	{
+		try {
+			int id = dat.readInt();
+			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+			if (player != null) {
+				int x = dat.readInt();
+				int y = dat.readInt();
+				int z = dat.readInt();
+				Block block = Block.getBlockFromItem(player.getHeldItem().getItem());
+				TileEntity tile = world.getTileEntity(x, y, z);
+
+				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && tile instanceof TileEntitySteamPipe))) {
+
+					if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
+						TileEntitySteamPipe pipe = ((TileEntitySteamPipe)tile);
+						if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+							if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
+								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));
+								world.spawnEntityInWorld(entityItem);
+								pipe.disguiseBlock = null;
+							}
+	
+							pipe.disguiseBlock = block;
+							if (!player.capabilities.isCreativeMode) {
+								player.inventory.getCurrentItem().stackSize--;
+								player.inventoryContainer.detectAndSendChanges();
+							}
+			                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+	
+							pipe.disguiseMeta = ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+							world.markBlockForUpdate(x, y, z);
+						}
+					}
+					if (!world.isRemote && tile instanceof TileEntityBoiler) {
+						TileEntityBoiler pipe = ((TileEntityBoiler)tile);
+						if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+							if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
+								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));
+								world.spawnEntityInWorld(entityItem);
+								pipe.disguiseBlock = null;
+							}
+	
+							pipe.disguiseBlock = block;
+							if (!player.capabilities.isCreativeMode) {
+								player.inventory.getCurrentItem().stackSize--;
+								player.inventoryContainer.detectAndSendChanges();
+							}
+			                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+	
+							pipe.disguiseMeta = ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+							world.markBlockForUpdate(x, y, z);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			return;
+		}
+ 	}
+	
+	private void handleDRPacket(ByteBufInputStream dat, World world)
+ 	{
+		try {
+			int id = dat.readInt();
+			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+			if (player != null) {
+				int x = dat.readInt();
+				int y = dat.readInt();
+				int z = dat.readInt();
+				int subHit = dat.readInt();
+				if (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntitySteamPipe) {
+					((TileEntitySteamPipe)world.getTileEntity(x, y, z)).connectDisconnect(world, x, y, z, subHit);
+				}
+			}
+		}
+		catch (Exception e) {
 			return;
 		}
  	}
@@ -138,6 +229,12 @@ public class SteamcraftServerPacketHandler {
             }
             if (packetID == 1) {
             	this.handleItemNamePacket(bbis, world);
+            }
+            if (packetID == 3) {
+            	this.handleCamoPacket(bbis, world);
+            }
+            if (packetID == 4) {
+            	this.handleDRPacket(bbis, world);
             }
             bbis.close();
         }

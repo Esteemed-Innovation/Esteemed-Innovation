@@ -65,13 +65,13 @@ public class TileEntityRuptureDisc extends TileEntity {
 					}
 				}
 				while (this.getSteam() > 0 && i < 10) {
-					this.drainSteam(1);
+					this.drainSteam(10);
 					
 					float offset = 10.0F/16.0F;
 					float xOffset = myDir().getOpposite().offsetX * offset;
 					float yOffset = myDir().getOpposite().offsetY * offset;
 					float zOffset = myDir().getOpposite().offsetZ * offset;
-					//if (worldObj.isRemote) System.out.println("draining steam");
+					//if (worldObj.isRemote) //System.out.println("draining steam");
 					
 					
 					i++;
@@ -103,7 +103,7 @@ public class TileEntityRuptureDisc extends TileEntity {
 		if (te != null && te instanceof ISteamTransporter){
 			source = (ISteamTransporter) te;
 			if (worldObj.isRemote){
-				System.out.println(source.getSteam());
+				//System.out.println(source.getSteam());
 			}
 			return source.getSteam();
 		}

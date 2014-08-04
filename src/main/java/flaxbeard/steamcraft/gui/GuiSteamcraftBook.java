@@ -415,11 +415,12 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
         else
         {
-        	//System.out.println(SteamcraftRegistry.researchPages.keySet().toArray()[0]);
+        	////System.out.println(SteamcraftRegistry.researchPages.keySet().toArray()[0]);
     		fontRendererObj.setUnicodeFlag(unicode);
     		super.drawScreen(par1, par2, par3);
     		fontRendererObj.setUnicodeFlag(true);
         	if (SteamcraftRegistry.researchPages.containsKey(this.viewing)) {
+        		GL11.glEnable(GL11.GL_BLEND);
         		BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
         		BookPage page = pages[(this.currPage)*2];
         		GL11.glEnable(GL11.GL_BLEND);
