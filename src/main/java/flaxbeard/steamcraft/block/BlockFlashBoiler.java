@@ -2,10 +2,7 @@ package flaxbeard.steamcraft.block;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,9 +19,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.tile.TileEntityBoiler;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
 // Notes:
@@ -36,7 +34,7 @@ import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 
 
 
-public class BlockFlashBoiler extends BlockContainer{
+public class BlockFlashBoiler extends BlockSteamTransporter{
 	
 	private final Random rand = new Random();
 	
@@ -69,9 +67,10 @@ public class BlockFlashBoiler extends BlockContainer{
 	}
 	
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta){
-	//	System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
-		// System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
-     	TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
+	//	//System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
+		// //System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
+     	super.onBlockPreDestroy(world, x, y, z, meta);
+		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
 
          if (boiler != null)
          {
@@ -118,7 +117,7 @@ public class BlockFlashBoiler extends BlockContainer{
 	        
          if (meta > 0){
 				TileEntityFlashBoiler te = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-			//System.out.println(te.getMasterTileEntity().getBlockMetadata());
+			////System.out.println(te.getMasterTileEntity().getBlockMetadata());
 				te.destroyMultiblock();
 			}
 		
@@ -195,7 +194,7 @@ public class BlockFlashBoiler extends BlockContainer{
 	}
 	
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		//System.out.println("onBlockPlacedBy fired");
+		////System.out.println("onBlockPlacedBy fired");
 		int l = MathHelper.floor_double((double)(entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 		int frontSide = -1;
 		switch(l){
@@ -204,7 +203,7 @@ public class BlockFlashBoiler extends BlockContainer{
 		case 2: frontSide = 3; break;
 		case 3: frontSide = 4; break;
 		default: 
-			//System.out.println(l); 
+			////System.out.println(l); 
 		break;
 		}
 
@@ -212,7 +211,7 @@ public class BlockFlashBoiler extends BlockContainer{
 	}
 	
 	public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side){
-		//System.out.println(meta);
+		////System.out.println(meta);
 		int meta = block.getBlockMetadata(x, y, z); 
 		if (meta == 0){
 			return blockIcon;
@@ -317,7 +316,7 @@ public class BlockFlashBoiler extends BlockContainer{
 				}
 			}
 			if (side == boiler.getFront()){
-				if (boiler.isBurning()) {
+				if (boiler.getBurning()) {
 					if (tex == topLeftSide) {
 						return topLeftO;
 					}

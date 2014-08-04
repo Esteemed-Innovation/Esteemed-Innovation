@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.block;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,10 +20,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
-import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
-public class BlockSteamCharger extends BlockContainer
+public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable
 {
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)
@@ -165,4 +165,28 @@ public class BlockSteamCharger extends BlockContainer
 
         super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
     }
+
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+        if (side != 0 && side != 1)
+        {
+        	switch (side) {
+        	case 2:
+                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                break;
+        	case 3:
+                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                break;
+        	case 4:
+                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                break;
+        	case 5:
+                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                break;
+        	}
+            return true;
+        }
+        return false;
+	}
 }

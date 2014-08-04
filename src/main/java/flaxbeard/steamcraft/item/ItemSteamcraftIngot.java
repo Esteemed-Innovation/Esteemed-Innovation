@@ -37,7 +37,7 @@ public class ItemSteamcraftIngot extends Item {
 		this.icon[0] = ir.registerIcon("steamcraft:ingotCopper");
 		this.icon[1] = ir.registerIcon("steamcraft:ingotZinc");
 		this.icon[2] = ir.registerIcon("steamcraft:ingotBrass");
-		this.icon[3] = ir.registerIcon("gold_ingot");
+		this.icon[3] = ir.registerIcon("steamcraft:gilded");
 	}
 	
 	@Override

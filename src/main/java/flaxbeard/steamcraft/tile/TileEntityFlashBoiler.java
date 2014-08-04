@@ -240,10 +240,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 	
 	public void checkMultiblock(boolean isBreaking, int frontSide) {
-		//System.out.println(frontSideIn);
+		////System.out.println(frontSideIn);
 		int x = xCoord, y=yCoord, z=zCoord;
 		
-		//System.out.println("Checking multiblock; frontSide: "+this.frontSide);
+		////System.out.println("Checking multiblock; frontSide: "+this.frontSide);
 		
 		boolean isMultiblock = false;
 		boolean isTooManyBlocks = false;
@@ -251,9 +251,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		
 		if (!worldObj.isRemote){
 			if (!isBreaking){
-				//System.out.println(this.frontSide);
+				////System.out.println(this.frontSide);
 				int[] validClusters = getValidClusters(); 
-				//System.out.println("valid configs found: " +validClusters.length);
+				////System.out.println("valid configs found: " +validClusters.length);
 				
 				if (validClusters.length == 1){
 					
@@ -310,7 +310,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		int[] out;
 		int count = 0;
 		for (int clusterIndex = 0; clusterIndex< 8; clusterIndex++){
-			//System.out.println("Checking cluster "+clusterIndex);
+			////System.out.println("Checking cluster "+clusterIndex);
 			boolean isValid = false;
 			if (checkCluster(validConfigs[clusterIndex])==8){
 				valid[count] = clusterIndex;
@@ -350,7 +350,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				boilers.add(boiler);
 				
 			} else {
-				//System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
+				////System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
 			}
 			
 		}
@@ -359,7 +359,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				SteamNetwork.newOrJoin(boiler);
 			} else {
 				if (this.getNetwork()!= null){
-					this.getNetwork().split(boiler);
+					this.getNetwork().split(boiler, true);
 				}
 			}
 		}
@@ -377,7 +377,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 
 	public void setFront(int frontSide, boolean print) {
-		//if (print) System.out.println("Setting front side to "+frontSide);
+		//if (print) //System.out.println("Setting front side to "+frontSide);
 		if (!worldObj.isRemote)
 			this.frontSide = frontSide;
 	}
@@ -389,10 +389,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public void updateEntity(){
 		super.superUpdateOnly();
 		if (this.shouldExplode){
+			this.getNetwork().split(this, true);
 			worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
 			return;
 		}
-		//System.out.println(this.getFront());
+		////System.out.println(this.getFront());
 		if (waitOneTick)
 			waitOneTick = false;
 		else {
@@ -462,9 +463,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    {
 	                    	int i = 0;
 	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)this.heat/1600.0F)));
-	                    	//System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
+	                    	////System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
 	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
-	                    		this.insertSteam(1);
+	                    		this.insertSteam(10);
 	                    		this.myTank.drain(2, true);
 	                    		i++;
 	                    	}
@@ -493,7 +494,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		}
     	
         if (!this.worldObj.isRemote) {
-        	//System.out.println(this.furnaceBurnTime);
+        	////System.out.println(this.furnaceBurnTime);
         }
         //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
@@ -700,7 +701,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0){
 			
 			if (worldObj.isRemote){
-				//System.out.println("Returning "+this.pressure);
+				////System.out.println("Returning "+this.pressure);
 				return (pressure);
 			} else {
 				if (this.getNetwork() != null)
@@ -834,10 +835,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		if (meta == 1){
-			//System.out.println("Filling master");
+			////System.out.println("Filling master");
 			return myTank.fill(resource,  doFill);
 		} else if (meta > 0 && hasMaster()){
-			//System.out.println("Deferring fill to master");
+			////System.out.println("Deferring fill to master");
 			return getMasterTileEntity().fill(from, resource, doFill);
 		} else {
 			return 0;
@@ -872,33 +873,25 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	@Override
 	public void explode(){
-		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 4){ // Only the top layer can distribute, just like the boiler.
-			if (!isInCluster(xCoord-1, yCoord, zCoord)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.WEST });
-			}
-			if (!isInCluster(xCoord + 1, yCoord, zCoord)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.EAST });
-			}
-			if (!isInCluster(xCoord, yCoord, zCoord - 1)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.NORTH });
-			}
-			if (!isInCluster(xCoord, yCoord, zCoord + 1)){
-				UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.SOUTH });
-			}
-			UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord,new ForgeDirection[] { ForgeDirection.UP });
-	    	
-		}
-		
 		
 		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)worldObj.getTileEntity(xCoord, yCoord, zCoord);
-		int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
-		for (int pos = 0; pos < cluster.length; pos++){
-			int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
-			if (!(x==xCoord && y==yCoord && z==zCoord)){
-				TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
-				if (otherBoiler != null) otherBoiler.secondaryExplosion();
+		if (boiler != null){
+			int clusterIndex = boiler.getValidClusterFromMetadata();
+			if (clusterIndex >= 0){
+				int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
+				for (int pos = 0; pos < cluster.length; pos++){
+					int x=cluster[pos][0], y=cluster[pos][1], z=cluster[pos][2];
+					if (!(x==xCoord && y==yCoord && z==zCoord)){
+						TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler)worldObj.getTileEntity(x, y, z); 
+						if (otherBoiler != null) otherBoiler.secondaryExplosion();
+					}
+				}
 			}
+			
 		}
+		super.explode();
+		
+		
 	}
 	
 	@Override
@@ -922,20 +915,30 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 	
 	public boolean getBurning(){
-		return this.burning;
+		int meta = getBlockMetadata();
+		if (meta > 0){
+			if (meta == 1){
+				return this.burning;
+			} else {
+				if (this.hasMaster()){
+					return this.getMasterTileEntity().isBurning();
+				}
+			}
+		}
+		return false;
 	}
 	
 	@Override
 	public FluidTank getTank(){
-		//System.out.println("Flash boiler tank get!");
+		////System.out.println("Flash boiler tank get!");
 		if (this.getBlockMetadata() > 0){
 			if (this.getBlockMetadata() == 1){
-				//System.out.println("Master returning tank");
-				//System.out.println("Fill = "+myTank.getFluidAmount());
+				////System.out.println("Master returning tank");
+				////System.out.println("Fill = "+myTank.getFluidAmount());
 				return this.myTank;
 			} else {
 				if (this.hasMaster()){
-					//System.out.println("Asking master to return tank");
+					////System.out.println("Asking master to return tank");
 					return this.getMasterTileEntity().getTank();
 				}
 			}

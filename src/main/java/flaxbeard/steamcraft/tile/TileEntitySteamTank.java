@@ -7,6 +7,6 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 public class TileEntitySteamTank extends SteamTransporterTileEntity implements ISteamTransporter {
 	
 	public TileEntitySteamTank(){
-		super(5000, ForgeDirection.VALID_DIRECTIONS);
+		super(50000, ForgeDirection.VALID_DIRECTIONS);
 	}
 }

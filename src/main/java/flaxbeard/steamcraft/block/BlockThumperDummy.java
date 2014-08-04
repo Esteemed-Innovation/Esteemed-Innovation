@@ -4,15 +4,16 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.IWrenchable;
 
-public class BlockThumperDummy extends Block {
+public class BlockThumperDummy extends Block implements IWrenchable {
 
 	public BlockThumperDummy() {
 		super(Material.iron);
@@ -61,5 +62,34 @@ public class BlockThumperDummy extends Block {
     {
         return new ItemStack(Item.getItemFromBlock(SteamcraftBlocks.thumper), 1, 0);
     }
+    
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+    	int meta = world.getBlockMetadata(x, y, z) - 1;
+    	if (world.getBlock(x, y-meta, z) == SteamcraftBlocks.thumper) {
+    		if (side != 0 && side != 1)
+            {
+    			y = y-meta;
+            	switch (side) {
+            	case 2:
+                    world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+                    break;
+            	case 3:
+                    world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+                    break;
+            	case 4:
+                    world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+                    break;
+            	case 5:
+                    world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                    break;
+            	}
+                return true;
+            }
+            return false;
+    	}
+        return false;
+	}
 
 }

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,14 +18,17 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -40,7 +44,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -51,6 +54,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 
@@ -71,6 +75,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
@@ -81,6 +86,7 @@ import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
+import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
@@ -116,7 +122,6 @@ public class SteamcraftEventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-
 		if(event.type == ElementType.ALL) {
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.thePlayer;
@@ -144,6 +149,12 @@ public class SteamcraftEventHandler {
 					
 			}
 			MovingObjectPosition pos = mc.objectMouseOver;
+			if(pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWrench) {
+				TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
+				if (te instanceof IWrenchDisplay) {
+					((IWrenchDisplay)te).displayWrench(event);
+				}
+			}
 			if (Loader.isModLoaded("Botania")) {
 				if(pos != null && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
 					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
@@ -346,11 +357,11 @@ public class SteamcraftEventHandler {
 //				}
 //				baseItem.setEntityItemStack(new ItemStack(SteamcraftItems.steamcraftCrafting,1,5));
 //                event.drops.add(baseItem);
-//				System.out.println("REMOVED GUNPOWDER");
 //			}
 //		}
 //	}
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void muffleSounds(PlaySoundEvent event) {
 		//System.out.println(event.name);
@@ -751,7 +762,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamDrill.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && Items.iron_pickaxe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
@@ -761,7 +771,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamAxe.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+11.0F*(speed/1000.0F);
 			    	}
@@ -772,7 +781,6 @@ public class SteamcraftEventHandler {
 					MutablePair info = ItemSteamShovel.stuff.get(player.getEntityId());
 			    	int ticks = (Integer) info.left;
 			    	int speed = (Integer) info.right;
-			    	//System.out.println(Math.max(1.0F, 12.0F*(speed/100.0F)));
 			    	
 			    	if (speed > 0 && Items.diamond_shovel.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
 			    		event.newSpeed *= 1.0F+19.0F*(speed/3000.0F);
@@ -950,7 +958,6 @@ public class SteamcraftEventHandler {
 				stack.stackTagCompound.setInteger("ticksUntilConsume", 2);
 			}
 			int ticksLeft = stack.stackTagCompound.getInteger("ticksUntilConsume");
-			//System.out.println(ticksLeft);
 			double lastX = lastMotions.get(entity.getEntityId()).left;
 			double lastZ = lastMotions.get(entity.getEntityId()).right;
 			if (ticksLeft <= 0) {
@@ -1059,15 +1066,23 @@ public class SteamcraftEventHandler {
 				event.setCanceled(true);
 			}
 		}
-		if (event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).getMaterial() == Material.water) {
-			System.out.println(event.entityPlayer.worldObj.getBlock(event.x, event.y+1, event.z).toString() + " " + event.entityPlayer.worldObj.getBlockMetadata(event.x, event.y+1, event.z));
+
+		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
+			Block block = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
+			if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe))) {
+				event.setCanceled(true);
+			}
 		}
 		if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) { 
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
-				System.out.println(((TileEntitySteamHeater)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).master);
 			}
 			if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
-				System.out.println(((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getSteam() + " " + ((ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getPressure());
+				ISteamTransporter trans = (ISteamTransporter)event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
+				if (event.entityPlayer.worldObj.isRemote){
+					//////System.out.println("I AM THE CLIENT");
+				}
+				//FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
+			//	////System.out.println("trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + "; network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure());
 			}
 		
 		}

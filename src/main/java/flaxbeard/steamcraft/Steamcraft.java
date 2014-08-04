@@ -45,7 +45,9 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
+import flaxbeard.steamcraft.tile.TileEntityFan;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
+import flaxbeard.steamcraft.tile.TileEntityFluidSteamConverter;
 import flaxbeard.steamcraft.tile.TileEntityItemMortar;
 import flaxbeard.steamcraft.tile.TileEntityMold;
 import flaxbeard.steamcraft.tile.TileEntityPump;
@@ -60,7 +62,9 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntitySteamPiston;
 import flaxbeard.steamcraft.tile.TileEntitySteamTank;
 import flaxbeard.steamcraft.tile.TileEntityThumper;
+import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
+import flaxbeard.steamcraft.tile.TileEntityWhistle;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
@@ -85,12 +89,15 @@ public class Steamcraft {
 	public static int genocideRenderID;
 	public static int gaugeRenderID;
 	public static int ruptureDiscRenderID;
+	public static int whistleRenderID;
+	public static int boilerRenderID;
 
     public static boolean steamRegistered;
     public static Potion semiInvisible;
     public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType)EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	@SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
 	public static CommonProxy proxy;
+
 
 
 	
@@ -138,6 +145,10 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
 		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
 		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
+		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
+		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
+		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
+		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
 
 
 	}
@@ -159,6 +170,8 @@ public class Steamcraft {
 		genocideRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		gaugeRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		ruptureDiscRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		whistleRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		boilerRenderID  = RenderingRegistry.getNextAvailableRenderId();
 
 
 		proxy.registerRenderers();
@@ -173,7 +186,13 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		if (Config.enablePipe){
+			MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
+		}
 		steamRegistered = FluidRegistry.isFluidRegistered("steam");
+		if (steamRegistered && Config.enableFluidSteamConverter) {
+			SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
+		}
 		if (Loader.isModLoaded("Thaumcraft")) {
 			ThaumcraftIntegration.addThaumiumLiquid();
 		}
@@ -192,6 +211,7 @@ public class Steamcraft {
 		iso.addSmelting();
 		iso.registerDusts();
 		SteamcraftItems.reregisterPlates();
+		SteamcraftRecipes.registerDustLiquids();
 	}
 
 

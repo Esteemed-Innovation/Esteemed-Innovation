@@ -26,10 +26,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public float pressureResistance = 0.8F;
 	public float lastPressure = -1F;
 	public float pressure;
-	private String networkName;
-	private SteamNetwork network;
+	protected String networkName;
+	protected SteamNetwork network;
 	public int capacity;
-	private ForgeDirection[] distributionDirections;
+	protected ForgeDirection[] distributionDirections;
 	private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
 	private boolean isInitialized = false;
 	
@@ -39,7 +39,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	
 	public SteamTransporterTileEntity(ForgeDirection[] distributionDirections){
-		this.capacity = 1000;
+		this.capacity = 10000;
 		this.distributionDirections = distributionDirections;
 	}
 	
@@ -64,7 +64,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	{
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null){
-        	//System.out.println("Setting pressure!");
+        	//////System.out.println("Setting pressure!");
         	access.setString("networkName", networkName);
             access.setFloat("pressure", this.getPressure());
         }
@@ -79,7 +79,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     	if (access.hasKey("networkName")) {
     		this.networkName = access.getString("networkName");
     		this.pressure = access.getFloat("pressure");
-    		//System.out.println("Set pressure to "+this.pressure);
+    		//////System.out.println("Set pressure to "+this.pressure);
     	}
     	worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -118,7 +118,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		if (!worldObj.isRemote){
 			if (this.hasGauge() && this.network != null){
 				if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F){
-					//System.out.println("Updating PRESHAAA");
+					//////System.out.println("Updating PRESHAAA");
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					this.lastPressure = this.getPressure();
 					this.network.markDirty();
@@ -145,7 +145,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	
 	@Override
 	public void explode() {
-    	UtilSteamTransport.preExplosion(worldObj, xCoord, yCoord, zCoord, this.distributionDirections);
+		this.network.decrSteam((int)(this.network.getSteam() * 0.1F));
+		this.network.split(this, true);
+		this.worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
 	}
 
 	private boolean isValidSteamSide(ForgeDirection face){
@@ -258,12 +260,13 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 		}
 		if (this.network == null && !worldObj.isRemote){
 			if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
-				//System.out.println("Null network");
+				//////System.out.println("Null network");
 				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+					////System.out.println("I have a network!");
 					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
 					this.network.rejoin(this);
 				} else {
-					//System.out.println("Requesting new network build");
+					////System.out.println("Requesting new network or joining existing.en");
 					SteamNetwork.newOrJoin(this);
 					
 				}

@@ -40,6 +40,7 @@ import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
+import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
@@ -56,37 +57,39 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 
 public class SteamcraftItems {
 	public static HashMap<String,Item> tools = new HashMap<String,Item>();
+	
+	// firearms
 	public static Item musketCartridge;
     public static Item musket;
     public static Item pistol;
     public static Item revolver;
     public static Item blunderbuss;
+    public static Item enhancementAblaze;
+    public static Item enhancementRevolver;
+
+    
+    // misc
+    public static Item book;
     public static Item spyglass;
-    
     public static Item survivalist;
-    
     public static Item astrolabe;
+    public static Item wrench;
+    public static Item smashedOre;
     
+    // molds
     public static Item blankMold;
     public static Item ingotMold;
     public static Item nuggetMold;
     public static Item plateMold;
     
+    // metals
     public static Item steamcraftIngot;
     public static Item steamcraftNugget;
     public static Item steamcraftPlate;
     public static Item exosuitPlate;
     public static Item steamcraftCrafting;
     
-    public static Item enhancementAblaze;
-    
-    public static Item enhancementRevolver;
-
-    
-    public static Item upgradeFlippers;
-    
-    public static Item book;
-
+    // exosuit
     public static Item exoArmorHead;
     public static Item exoArmorBody;
     public static Item exoArmorLegs;
@@ -97,10 +100,9 @@ public class SteamcraftItems {
     public static Item tophat;
     public static Item tophatNoEmerald;
     
-    public static Item steamDrill;
-    public static Item steamAxe;
-    public static Item steamShovel;
-	public static Item jetpack;
+    // exosuit upgrades
+    public static Item upgradeFlippers;
+    public static Item jetpack;
 	public static Item wings;
 	public static Item powerFist;
 	public static Item thrusters;
@@ -112,9 +114,15 @@ public class SteamcraftItems {
 	public static Item stealthUpgrade;
 	public static Item enderShroud;
 
-	public static Item smashedOre;
 	//public static Item fakeOre;
-	
+
+    
+    // steam tools
+	public static Item steamDrill;
+    public static Item steamAxe;
+    public static Item steamShovel;
+    
+	// food
 	public static Item steamedPorkchop;
 	public static Item steamedFish;
 	public static Item steamedBeef;
@@ -122,148 +130,165 @@ public class SteamcraftItems {
     
     public static void registerItems() {
 		
-		book = new ItemSteamcraftBook().setUnlocalizedName("steamcraft:book").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:book");
+		registerMisc();
+    	registerFirearms();
+		registerExosuit();
+		registerExosuitUpgrades();
+		registerSteamTools();
+		registerMolds();
+		registerFood();
+		registerMetals();
+		registerMetalThings();
+		
+    }
+    
+    private static void registerMisc(){
+    	book = new ItemSteamcraftBook().setUnlocalizedName("steamcraft:book").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:book");
 		GameRegistry.registerItem(book, "book");
 		
-    	musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
-		GameRegistry.registerItem(musketCartridge, "musketCartridge");
-		musket = new ItemFirearm(20.0F, 84,0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
-		GameRegistry.registerItem(musket, "musket");
-		pistol = new ItemFirearm(15.0F, 42,0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
-		GameRegistry.registerItem(pistol, "pistol");
-		blunderbuss = new ItemFirearm(25.0F, 95,3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
-		GameRegistry.registerItem(blunderbuss, "blunderbuss");
-		spyglass = new ItemSpyglass().setUnlocalizedName("steamcraft:spyglass").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:spyglass");
-		GameRegistry.registerItem(spyglass, "spyglass");
-		SteamcraftRegistry.registerEnhancement((IEnhancement) spyglass);
-		//enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
-		//GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
-	//	SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
-	//	enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
-		//GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
-		//SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
-		
-	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
-		GameRegistry.registerItem(jetpack, "jetpack");
-	 	wings = new ItemExosuitWings().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:wings").setTextureName("steamcraft:wings");
-		GameRegistry.registerItem(wings, "wings");
-	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
-		GameRegistry.registerItem(powerFist, "powerFist");
-		thrusters = new ItemExosuitSidepack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thrusters").setTextureName("steamcraft:thrusters");
-		GameRegistry.registerItem(thrusters, "thrusters");
-		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
-		GameRegistry.registerItem(fallAssist, "fallAssist");
-		jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/jumpUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
-		GameRegistry.registerItem(jumpAssist, "jumpAssist");
-		runAssist = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/runUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
-		GameRegistry.registerItem(runAssist, "runAssist");
-	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
-		GameRegistry.registerItem(doubleJump, "doubleJump");
-		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
-		//GameRegistry.registerItem(antiFire, "antiFire");
-	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
-		GameRegistry.registerItem(stealthUpgrade, "stealthUpgrade");
-
-	 	enderShroud = new ItemExosuitUpgrade(ExosuitSlot.vanity, "",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:enderShroud").setTextureName("steamcraft:enderShroud");
-		GameRegistry.registerItem(enderShroud, "enderShroud");
-
-	 	astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
-		GameRegistry.registerItem(astrolabe, "astrolabe");
-		
-		if (!Loader.isModLoaded("Baubles")) {
-			survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
-		}
-		else
-		{
-			survivalist = BaublesIntegration.getSurvivalist();
-		}
-		GameRegistry.registerItem(survivalist, "survivalist");
-		ArmorMaterial mat = EnumHelper.addArmorMaterial("exosuit", 15, new int[]{2, 5, 4, 1}, 0);
-		if (Loader.isModLoaded("Thaumcraft")) {
-			exoArmorHead = new ItemExosuitArmorThaum(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
-			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
-			exoArmorBody = new ItemExosuitArmorThaum(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
-			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
-			exoArmorLegs = new ItemExosuitArmorThaum(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
-			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
-			exoArmorFeet = new ItemExosuitArmorThaum(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
-			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
-		}
-		else
-		{
-			exoArmorHead = new ItemExosuitArmor(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
-			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
-			exoArmorBody = new ItemExosuitArmor(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
-			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
-			exoArmorLegs = new ItemExosuitArmor(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
-			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
-			exoArmorFeet = new ItemExosuitArmor(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
-			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
+		if (Config.enableSpyglass){
+			spyglass = new ItemSpyglass().setUnlocalizedName("steamcraft:spyglass").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:spyglass");
+			GameRegistry.registerItem(spyglass, "spyglass");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) spyglass);
 		}
 		
-		steamDrill = new ItemSteamDrill().setUnlocalizedName("steamcraft:steamDrill").setCreativeTab(Steamcraft.tabTools);
-		GameRegistry.registerItem(steamDrill, "steamDrill");
-		steamAxe = new ItemSteamAxe().setUnlocalizedName("steamcraft:steamAxe").setCreativeTab(Steamcraft.tabTools);
-		GameRegistry.registerItem(steamAxe, "steamAxe");
-		steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
-		GameRegistry.registerItem(steamShovel, "steamShovel");
+		if (Config.enableAstrolabe){
+			astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
+			GameRegistry.registerItem(astrolabe, "astrolabe");
+		}
+	 	
+		if (Config.enableSurvivalist){
+			if (!Loader.isModLoaded("Baubles")) {
+				survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
+			}
+			else
+			{
+				survivalist = BaublesIntegration.getSurvivalist();
+			}
+			GameRegistry.registerItem(survivalist, "survivalist");
+		}
 		
-		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
-		GameRegistry.registerItem(ingotMold, "ingotMold");
-		SteamcraftRegistry.addCarvableMold((ICrucibleMold) ingotMold);
-		nuggetMold = new ItemNuggetMold().setUnlocalizedName("steamcraft:nuggetMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldNugget");
-		GameRegistry.registerItem(nuggetMold, "nuggetMold");
-		SteamcraftRegistry.addCarvableMold((ICrucibleMold) nuggetMold);
-		plateMold = new ItemPlateMold().setUnlocalizedName("steamcraft:plateMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldPlate");
-		GameRegistry.registerItem(plateMold, "plateMold");
-		SteamcraftRegistry.addCarvableMold((ICrucibleMold) plateMold);
-		blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
-		GameRegistry.registerItem(blankMold, "blankMold");
+		wrench = new ItemWrench().setUnlocalizedName("steamcraft:wrench").setTextureName("steamcraft:wrench").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(wrench, "wrench");
 		
 		smashedOre = new ItemSmashedOre().setUnlocalizedName("steamcraft:smashedOre").setMaxStackSize(64).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:smashedOre");
 		GameRegistry.registerItem(smashedOre, "smashedOre");
 		
-		
-//		fakeOre = new Item().setUnlocalizedName("steamcraft:fakeOre");
-//		OreDictionary.registerOre("oreTin", new ItemStack(fakeOre,1,0));
-//		OreDictionary.registerOre("oreLead", new ItemStack(fakeOre,1,1));
-//		OreDictionary.registerOre("oreSilver", new ItemStack(fakeOre,1,2));
-//		OreDictionary.registerOre("oreOsmium", new ItemStack(fakeOre, 1,3));
-//		OreDictionary.registerOre("oreNickel", new ItemStack(fakeOre, 1,4));
-//		OreDictionary.registerOre("oreAluminum", new ItemStack(fakeOre, 1,5));
-//		OreDictionary.registerOre("oreCobalt", new ItemStack(fakeOre, 1,6));
-//		OreDictionary.registerOre("oreArdite", new ItemStack(fakeOre, 1,7));
-		
-		
-		steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
-		GameRegistry.registerItem(steamedFish, "steamedFish");
-        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
-		SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
-		steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken).setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
-		GameRegistry.registerItem(steamedChicken, "steamedChicken");
-		SteamcraftRegistry.addSteamFood(Items.cooked_chicken, steamedChicken);
-		steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef).setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
-		GameRegistry.registerItem(steamedBeef, "steamedBeef");
-		SteamcraftRegistry.addSteamFood(Items.cooked_beef, steamedBeef);
-		steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop).setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
-		GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
-		SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
-		
 		steamcraftCrafting = new ItemSteamcraftCrafting().setUnlocalizedName("steamcraft:crafting").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftCrafting, "steamcraftCrafting");
+    }
+    
+    private static void registerFirearms(){
+    	if (Config.enableFirearms){
+			musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
+			GameRegistry.registerItem(musketCartridge, "musketCartridge");
+
+			musket = new ItemFirearm(20.0F, 84,0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
+			GameRegistry.registerItem(musket, "musket");
+
+			pistol = new ItemFirearm(15.0F, 42,0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
+			GameRegistry.registerItem(pistol, "pistol");
+
+			blunderbuss = new ItemFirearm(25.0F, 95,3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
+			GameRegistry.registerItem(blunderbuss, "blunderbuss");
+		}
 		
-		steamcraftIngot = new ItemSteamcraftIngot().setUnlocalizedName("steamcraft:ingot").setCreativeTab(Steamcraft.tab);
+		//enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
+				//GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
+			//	SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
+			//	enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
+				//GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
+				//SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+    }
+    
+    private static void registerExosuit(){
+    	if (Config.enableExosuit){
+    		//if (Loader.isModLoaded("Thaumcraft")) {
+    		//	exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+    		//}
+    		//else
+    		//{
+    		ArmorMaterial mat = EnumHelper.addArmorMaterial("exosuit", 15, new int[]{2, 5, 4, 1}, 0);
+    		if (Loader.isModLoaded("Thaumcraft")) {
+    			exoArmorHead = new ItemExosuitArmorThaum(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+    			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
+    			exoArmorBody = new ItemExosuitArmorThaum(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
+    			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
+    			exoArmorLegs = new ItemExosuitArmorThaum(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
+    			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
+    			exoArmorFeet = new ItemExosuitArmorThaum(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
+    			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
+    		}
+    		else
+    		{
+    			exoArmorHead = new ItemExosuitArmor(0,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
+    			GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
+    			exoArmorBody = new ItemExosuitArmor(1,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
+    			GameRegistry.registerItem(exoArmorBody, "exoArmorBody");
+    			exoArmorLegs = new ItemExosuitArmor(2,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorLegs").setTextureName("steamcraft:exoArmorLegs");
+    			GameRegistry.registerItem(exoArmorLegs, "exoArmorLegs");
+    			exoArmorFeet = new ItemExosuitArmor(3,mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorFeet").setTextureName("steamcraft:exoArmorFeet");
+    			GameRegistry.registerItem(exoArmorFeet, "exoArmorFeet");
+    		}
+    	}
+		
+    }
+    
+    private static void registerExosuitUpgrades(){
+    	if (Config.enableExosuit){
+    	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
+    		GameRegistry.registerItem(jetpack, "jetpack");
+    	 	wings = new ItemExosuitWings().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:wings").setTextureName("steamcraft:wings");
+    		GameRegistry.registerItem(wings, "wings");
+    	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
+    		GameRegistry.registerItem(powerFist, "powerFist");
+    		thrusters = new ItemExosuitSidepack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thrusters").setTextureName("steamcraft:thrusters");
+    		GameRegistry.registerItem(thrusters, "thrusters");
+    		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
+    		GameRegistry.registerItem(fallAssist, "fallAssist");
+    		jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/jumpUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
+    		GameRegistry.registerItem(jumpAssist, "jumpAssist");
+    		runAssist = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/runUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
+    		GameRegistry.registerItem(runAssist, "runAssist");
+    	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+    		GameRegistry.registerItem(doubleJump, "doubleJump");
+    		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
+    		//GameRegistry.registerItem(antiFire, "antiFire");
+    	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
+    		GameRegistry.registerItem(stealthUpgrade, "stealthUpgrade");
+
+    	 	enderShroud = new ItemExosuitUpgrade(ExosuitSlot.vanity, "",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:enderShroud").setTextureName("steamcraft:enderShroud");
+    		GameRegistry.registerItem(enderShroud, "enderShroud");
+    		
+    	 	//doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+    		//GameRegistry.registerItem(doubleJump, "doubleJump");
+    	}
+    	
+    }
+    
+    private static void registerMolds(){
+    	if (Config.enableMold){
+    		ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
+    		GameRegistry.registerItem(ingotMold, "ingotMold");
+    		SteamcraftRegistry.addCarvableMold((ICrucibleMold) ingotMold);
+    		nuggetMold = new ItemNuggetMold().setUnlocalizedName("steamcraft:nuggetMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldNugget");
+    		GameRegistry.registerItem(nuggetMold, "nuggetMold");
+    		SteamcraftRegistry.addCarvableMold((ICrucibleMold) nuggetMold);
+    		plateMold = new ItemPlateMold().setUnlocalizedName("steamcraft:plateMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldPlate");
+    		GameRegistry.registerItem(plateMold, "plateMold");
+    		SteamcraftRegistry.addCarvableMold((ICrucibleMold) plateMold);
+    		blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
+    		GameRegistry.registerItem(blankMold, "blankMold");
+    	}
+    }
+    
+    private static void registerMetals(){
+    	steamcraftIngot = new ItemSteamcraftIngot().setUnlocalizedName("steamcraft:ingot").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftIngot, "steamcraftIngot");
 		OreDictionary.registerOre("ingotCopper", new ItemStack(steamcraftIngot,1,0));
 		OreDictionary.registerOre("ingotZinc", new ItemStack(steamcraftIngot,1,1));
 		OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot,1,2));
 		
-		ToolMaterial brass = EnumHelper.addToolMaterial("BRASS", 2, 191, 7.0F, 2.5F, 14);
-		mat = EnumHelper.addArmorMaterial("BRASS", 11, new int[]{2, 7, 6, 3}, 9);
-		registerToolSet(brass, "Brass", "ingotBrass", true);
-		registerArmorSet(mat, "Brass", "ingotBrass", true);
-		registerGildedTools();
-		registerGildedArmor();
 		
 		ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("MONACLE",5, new int[]{1, 3, 2, 1}, 15);
 
@@ -276,6 +301,7 @@ public class SteamcraftItems {
     	tophat = new ItemTophat(tool, 2, 0, true).setUnlocalizedName("steamcraft:tophat").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophatemerald");
  		GameRegistry.registerItem(tophat, "tophat");
 		
+
 		steamcraftNugget = new ItemSteamcraftNugget().setUnlocalizedName("steamcraft:nugget").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamcraftNugget, "steamcraftNugget");
 		OreDictionary.registerOre("nuggetCopper", new ItemStack(steamcraftNugget,1,0));
@@ -302,6 +328,44 @@ public class SteamcraftItems {
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron",new ItemStack(exosuitPlate,1,2),"Iron","Iron","steamcraft.plate.iron"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gold",new ItemStack(exosuitPlate,1,3),"Gold","Gold","steamcraft.plate.gold"));
 		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass",new ItemStack(exosuitPlate,1,4),"Brass","Brass","steamcraft.plate.brass"));
+    }
+    
+    private static void registerFood(){
+    	steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedFish, "steamedFish");
+        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
+		SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
+		steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken).setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedChicken, "steamedChicken");
+		SteamcraftRegistry.addSteamFood(Items.cooked_chicken, steamedChicken);
+		steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef).setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedBeef, "steamedBeef");
+		SteamcraftRegistry.addSteamFood(Items.cooked_beef, steamedBeef);
+		steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop).setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
+		GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
+		SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
+    }
+    
+    private static void registerSteamTools(){
+    	if (Config.enableSteamTools){
+    		steamDrill = new ItemSteamDrill().setUnlocalizedName("steamcraft:steamDrill").setCreativeTab(Steamcraft.tabTools);
+    		GameRegistry.registerItem(steamDrill, "steamDrill");
+    	
+    		steamAxe = new ItemSteamAxe().setUnlocalizedName("steamcraft:steamAxe").setCreativeTab(Steamcraft.tabTools);
+    		GameRegistry.registerItem(steamAxe, "steamAxe");
+    	
+    		steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
+    		GameRegistry.registerItem(steamShovel, "steamShovel");
+    	}
+	}
+    
+    private static void registerMetalThings(){
+    	ToolMaterial brass = EnumHelper.addToolMaterial("BRASS", 2, 191, 7.0F, 2.5F, 14);
+		ItemArmor.ArmorMaterial mat = EnumHelper.addArmorMaterial("BRASS", 11, new int[]{2, 7, 6, 3}, 9);
+		registerToolSet(brass, "Brass", "ingotBrass", true);
+		registerArmorSet(mat, "Brass", "ingotBrass", true);
+		registerGildedTools();
+		registerGildedArmor();
     }
     
     public static void registerToolSet(ToolMaterial tool, String string, Object repair, boolean addRecipes) {

@@ -521,7 +521,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 
 	@Override
 	public int steamPerDurability() {
-		return 1;
+		return 10;
 	}
 
 	@Override

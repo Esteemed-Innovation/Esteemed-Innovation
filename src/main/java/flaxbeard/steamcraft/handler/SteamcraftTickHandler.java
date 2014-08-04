@@ -3,14 +3,21 @@ package flaxbeard.steamcraft.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.input.Mouse;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -38,7 +45,15 @@ public class SteamcraftTickHandler {
 			}
 		//	System.out.println(Steamcraft.proxy.isKeyPressed());
 			EntityPlayer player = mc.thePlayer;
-			
+			if (Mouse.isButtonDown(1) && player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock) {
+				MovingObjectPosition pos = mc.objectMouseOver;
+				if(pos != null) {
+					TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
+					if (mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.pipe || mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.boiler) {
+						SteamcraftClientPacketHandler.sendCamoPacket(player, pos);
+					}
+				}
+			}
 			if (SteamcraftEventHandler.hasPower(player, 1) 
 					&& player.getEquipmentInSlot(2) != null 
 					&& player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
@@ -212,7 +227,7 @@ public class SteamcraftTickHandler {
 	
 	private void renderTelescopeOverlay() {
 //		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-//        ScaledResolution var5 = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+//        ScaledResolution var5 = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 //        int par1 = var5.getScaledWidth();
 //        int par2 = var5.getScaledHeight();
 //        int par3 = par1-par2;
@@ -222,15 +237,15 @@ public class SteamcraftTickHandler {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        
 //        GL11.glDisable(GL11.GL_ALPHA_TEST);
-//        ITextureObject test = Minecraft.getMinecraft().renderEngine.getTexture(spyglass);
+//        ITextureObject test = mc.renderEngine.getTexture(spyglass);
 //        try {
-//        	IResourceManager resourceManager = ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, Minecraft.getMinecraft().renderEngine, "theResourceManager");
+//        	IResourceManager resourceManager = ObfuscationReflectionHelper.getPrivateValue(TextureManager.class, mc.renderEngine, "theResourceManager");
 //			test.loadTexture(resourceManager);
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
 //        GL11.glBindTexture(GL11.GL_TEXTURE_2D, test.getGlTextureId());
-//        //Minecraft.getMinecraft().renderEngine.bindTexture(spyglass,test.getGlTextureId());
+//        //mc.renderEngine.bindTexture(spyglass,test.getGlTextureId());
 //        Tessellator var3 = Tessellator.instance;
 //        var3.startDrawingQuads();
 //        var3.addVertexWithUV(par3/2, par2, -90.0D, 0.0D, 1.0D);
@@ -239,7 +254,7 @@ public class SteamcraftTickHandler {
 //        var3.addVertexWithUV(par3/2, 0.0D, -90.0D, 0.0D, 0.0D);
 //        var3.draw();
 //
-//        Minecraft.getMinecraft().renderEngine.bindTexture(spyglassfiller);
+//        mc.renderEngine.bindTexture(spyglassfiller);
 //        var3 = Tessellator.instance;
 //        var3.startDrawingQuads();
 //        var3.addVertexWithUV(0, par2, -90.0D, 0.0D, 1.0D);
@@ -249,7 +264,7 @@ public class SteamcraftTickHandler {
 //        var3.draw();
 //
 //
-//        Minecraft.getMinecraft().renderEngine.bindTexture(spyglassfiller);
+//        mc.renderEngine.bindTexture(spyglassfiller);
 //        var3 = Tessellator.instance;
 //        var3.startDrawingQuads();
 //        var3.addVertexWithUV((par3/2)+par2, par2, -90.0D, 0.0D, 1.0D);

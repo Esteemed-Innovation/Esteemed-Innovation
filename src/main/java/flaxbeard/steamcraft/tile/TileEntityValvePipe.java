@@ -2,11 +2,14 @@ package flaxbeard.steamcraft.tile;
 
 import java.util.ArrayList;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -95,9 +98,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	@Override
 	public boolean doesConnect(ForgeDirection face) {
-		return face != dir();
-		
-		
+		return face != dir() ? super.doesConnect(face) : false;
 	}
 	
 	@Override
@@ -154,7 +155,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 			}
 		} else {
 			if (this.waitingOpen){
-				System.out.println("Waiting for open");
+				//System.out.println("Waiting for open");
 				this.setOpen(!this.open);
 			}
 			if (turning != wasTurning){
@@ -183,9 +184,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					directions[i] = direction;
 					i++;
 				}
-			}
-			if (Steamcraft.steamRegistered) {
-				this.dummyFluidTank.setFluid(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteam()*10));
 			}
 			
 			
@@ -217,15 +215,15 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 				
 				
 				if (myDirections.size() == 2 && open && this.getNetwork().getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-					//System.out.println("open and should be leaking");
+					////System.out.println("open and should be leaking");
 					if (!isLeaking){
 						isLeaking = true;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
-					this.decrSteam(10);
+					this.decrSteam(100);
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 				} else {
-					//System.out.println("Probably shouldn't be leaking");
+					////System.out.println("Probably shouldn't be leaking");
 					if (isLeaking){
 						isLeaking = false;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -249,6 +247,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		boolean changed = true;
 		if (!worldObj.isRemote){
 			if (open){
+				//System.out.println("Joining");
 				if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
 					SteamNetwork.newOrJoin(this);
 				} else {
@@ -256,8 +255,9 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					this.waitingOpen=true;
 				}
 			} else {
+				//System.out.println("Splitting");
 				if (this.getNetwork() != null){
-					this.getNetwork().split(this);
+					this.getNetwork().split(this, true);
 				} else {
 					changed = false;
 					this.waitingOpen = true;
@@ -294,5 +294,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 	
 	public boolean isOpen(){
 		return this.open;
+	}
+	
+	@Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) { 
+		return false;
 	}
 }
