@@ -91,8 +91,6 @@ public class SteamcraftEventHandler {
 	public void handleWorldLoad(WorldEvent.Load event) {
 		if (!event.world.isRemote) {
 			ChunkScoreWorldData.get(event.world);
-		}
-		if (!event.world.isRemote) {
 			SteamNetworkData.get(event.world);
 			SteamNetworkRegistry.initialize();
 		}
@@ -188,7 +186,8 @@ public class SteamcraftEventHandler {
 					fspMachines += data.getScore(chunk.xPosition+z,chunk.zPosition+x);
 				}
 			}
-		
+			System.out.println("THERE ARE " + fspMachines + " FSP MACHINES BY THIS MOB");
+
 			EntitySkeleton mob = (EntitySkeleton) event.entity;
 			
 			if (fspMachines > 20 && event.world.rand.nextInt(Math.max(4, 28-fspMachines)) == 0) {
@@ -262,7 +261,6 @@ public class SteamcraftEventHandler {
 			}
 		
 
-			System.out.println("THERE ARE " + fspMachines + " FSP MACHINES BY THIS MOB");
 		
 			EntityZombie mob = (EntityZombie) event.entity;
 			if (fspMachines > 15 && event.world.rand.nextInt(Math.max(2, 22-fspMachines)) == 0) {

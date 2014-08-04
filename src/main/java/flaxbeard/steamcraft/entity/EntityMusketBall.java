@@ -64,6 +64,31 @@ public class EntityMusketBall extends Entity implements IProjectile
         this.setPosition(par2, par4, par6);
         this.yOffset = 0.0F;
     }
+    
+    public EntityMusketBall(World p_i1755_1_, EntityLivingBase p_i1755_2_, EntityLivingBase p_i1755_3_, float p_i1755_4_, float p_i1755_5_)
+    {
+        super(p_i1755_1_);
+        this.renderDistanceWeight = 10.0D;
+        this.shootingEntity = p_i1755_2_;
+
+        this.posY = p_i1755_2_.posY + (double)p_i1755_2_.getEyeHeight() - 0.10000000149011612D;
+        double d0 = p_i1755_3_.posX - p_i1755_2_.posX;
+        double d1 = p_i1755_3_.boundingBox.minY + (double)(p_i1755_3_.height / 3.0F) - this.posY;
+        double d2 = p_i1755_3_.posZ - p_i1755_2_.posZ;
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+
+        if (d3 >= 1.0E-7D)
+        {
+            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+            double d4 = d0 / d3;
+            double d5 = d2 / d3;
+            this.setLocationAndAngles(p_i1755_2_.posX + d4, this.posY, p_i1755_2_.posZ + d5, f2, f3);
+            this.yOffset = 0.0F;
+            float f4 = (float)d3 * 0.2F;
+            this.setThrowableHeading(d0, d1 + (double)f4, d2, p_i1755_4_, p_i1755_5_);
+        }
+    }
 
     public EntityMusketBall(World par1World, EntityLivingBase rangedAttackEntityHost, float par3, float par4, float par5, boolean par6)
     {
@@ -72,10 +97,10 @@ public class EntityMusketBall extends Entity implements IProjectile
         this.damage = par5;
         this.renderDistanceWeight = 10.0D;
         this.shootingEntity = rangedAttackEntityHost;
-
         this.setSize(0.5F, 0.5F);
 		this.setLocationAndAngles(rangedAttackEntityHost.posX, rangedAttackEntityHost.posY + (double)rangedAttackEntityHost.getEyeHeight(), rangedAttackEntityHost.posZ, rangedAttackEntityHost.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), rangedAttackEntityHost.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
-        this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
+
+		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
         this.posY -= 0.10000000149011612D;
         this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
         this.setPosition(this.posX, this.posY, this.posZ);
@@ -234,9 +259,9 @@ public class EntityMusketBall extends Entity implements IProjectile
                 if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5))
                 {
                     var11 = 0.3F;
-                    if (this.shootingEntity instanceof EntityMob) {
-                        var11 = 1.8F;
-                    }
+//                    if (this.shootingEntity instanceof EntityMob) {
+//                        var11 = 1.8F;
+//                    }
                     AxisAlignedBB var12 = var10.boundingBox.expand((double)var11, (double)var11, (double)var11);
                     MovingObjectPosition var13 = var12.calculateIntercept(var17, var3);
 

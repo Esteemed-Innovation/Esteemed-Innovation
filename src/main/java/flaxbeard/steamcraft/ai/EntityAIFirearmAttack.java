@@ -157,9 +157,11 @@ public class EntityAIFirearmAttack extends EntityAIBase
             this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
         }
 
-        this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
+        this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 90.0F, 10.0F);
 
-
+//        for (int i = 0; i<100; i++) {
+//            this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 1.0F, 1.0F);
+//        }
         if (--this.rangedAttackTime <= 0 && !canShoot)
         {
         	entityHost.worldObj.playSoundAtEntity(entityHost, "random.click", 1F, entityHost.worldObj.rand.nextFloat() * 0.1F + 0.9F);
@@ -183,7 +185,8 @@ public class EntityAIFirearmAttack extends EntityAIBase
             {
             	damage = damage * 3.0F / 2.0F;
             }
-	        EntityMusketBall entityMusketBall = new EntityMusketBall(worldObj, rangedAttackEntityHost, 2.0F, ((0.0F + gun.accuracy)), damage, true);
+	       // EntityMusketBall entityMusketBall = new EntityMusketBall(worldObj, rangedAttackEntityHost, 2.0F, ((0.0F + gun.accuracy)), damage, true);
+	        EntityMusketBall entityMusketBall = new EntityMusketBall(worldObj, rangedAttackEntityHost, par1EntityLivingBase, 10F, (float)(14 - worldObj.difficultySetting.getDifficultyId() * 4));
 
 	        worldObj.playSoundAtEntity(rangedAttackEntityHost, "random.explode", ((gun.knockback) * (2F / 5F)), 1.0F / (worldObj.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
             for (int i = 1; i < 16; i++)
