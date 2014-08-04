@@ -12,6 +12,11 @@ steamcraft.astrolabe.dimension.nether=der Dimension: Nether
 steamcraft.astrolabe.dimension.end=der Dimension: Ende
 steamcraft.astrolabe.in=in
 
+steamcraft.fan.range=Reichweite:
+steamcraft.fan.blocks=Blocks
+steamcraft.smasher.true=Modus: Brecher
+steamcraft.smasher.false=Modus: Zertrümmerer
+
 steamcraft.waila.pressure=Druck
 steamcraft.waila.valveOpen=Ventil offen
 steamcraft.waila.valveClosed=Ventil geschlossen
@@ -22,15 +27,27 @@ steamcraft.waila.mold=Form:
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 
+category.RecentCreations.name=Neuentwicklungen
 
 category.Basics.name=Grundlagen
+research.SteamSystem.name=Dampfanlagen
+research.SteamSystem.0=Bei meinen Forschungen zu den grundlegenden Funktionsweisen dieser Welt, machte ich eine wundersame Entdeckung! Beim Erhitzen wird Wasser gasförmig, genauer: zu Dampf.<br>Desweiteren steigt der Druck an, wenn man diesen Prozess in einer geschlossenen Umgebung durchführt.
+research.SteamSystem.1=Mit einem Sortiment aus Rohren, Kesseln und verschiedenen Maschinen, kann ich eine Anlage zum Messen und Regulieren des Dampfdrucks bauen, um dessen Potential praktisch und profitabel zu nutzen.<br>Jedoch zeigten mir meine Erkenntnisse auf, dass ich meine Vorstellung von Dampf überdenken muss.
+research.SteamSystem.2=Zuerst musste ich feststellen, dass Dampf keine Flüßigkeit ist, sondern ein Gas. Aufgrund seiner natürlichen Tendenz so weit wie möglich zu expandieren, breitete sich der Dampf schnell in meiner Anlage aus Rohren, Tanks und anderen Maschinen aus. Daraus resultierend, nimmt der Dampfdruck ab, sobald man das Volumen der Anlage vergrößert.
+research.SteamSystem.3=Es ist daher wichtig, dass ich die Dampfproduktion an die Größe meiner Anlage anpasse. Wenn die Anlage zu groß ist, wird der Druckaufbau zu langsam, um meine Maschinen adäquat zu betreiben. Eine zu kleine Anlage, hat keine ausreichenden Reserven, um die Maschinen lange zu versorgen.
+research.SteamSystem.4=Neue Entwicklungen sind aber nie ohne Risiko. Obwohl die mir zur Verfügung stehenden Materialien sehr robust sind, vertragen sie nur eine begrenzte Last.<br>Wenn ich nicht aufpasse, produziere ich mehr Druck, als meine Anlage aushält. Die Folgen für Maschine und Umgebung sind katastrophal!
+research.SteamSystem.5=Mit Druckmessern, kann ich den Dampfdruck der Anlage kontrollieren.<br>Wenn sich die Nadel zu weit rechts befindet und wild ausschlägt, ist ein gefährliches Niveau erreicht. Mit Ventilen kann ich Dampf ablassen oder, wenn ich vorausgedacht habe, habe ich Berstscheiben verbaut, die nachgeben, bevor meine zerbrechlichen Bauteile Schaden nehmen.
+
+research.Camouflage.name=Rohrverkleidung
+research.Camouflage.0=Manchmal ist es besser, wenn ich meine Rohre verberge, als sie offen zu verlegen. Hier kommt meine neue Rohrverkleidung! Umschalttaste und Rechtsklick mit einem Block auf das Rohr, das ich verbergen will, verkleidet es.
+research.Camouflage.1=Verkleidete Rohre sind vollständig verborgen, während von den Boilern ein Aussparung an der Front zu sehen bleibt.<br>Während ich eine Rohrzange halte, kann ich durch die Verkleidung sehen.<br>Umschalttaste und Rechtsklick mit der Zange entfernt die Verkleidung.
 research.Ores.name=Erze
 research.Ores.0=In den Tiefen dieser Welt stieß ich immer wieder auf reiche Kupfer- und Zinkvorkommen.<br>Diese eigenartigen Metalle haben keinen erkennbaren Nutzen, aber ich bin sicher, dass ich in der Zukunft eine Verwendungsmöglichkeit für sie finde.
 research.Book.name=Vorwort
 research.Book.0=Ich habe mich dazu entschieden, die fantastische Welt der Dampftechnologie zu betreten. In diesem Buch werde ich meine spannenden Entdeckungen aufzeichnen.<br>Sobald ich neue Erkenntnisse gewinne, werde ich diese niederschreiben für den späteren Gebrauch.
 research.Bits.name=Dies und Das
 research.Bits.0=Hier dokumentiere ich die verschiedenen Komponenten für die Fertigung<br>Einen Kolben mit Messing zu beschichten, macht ihn widerstandsfähiger und dadurch zum nützlichen Bestandteil vieler Dampfapparaturen.
-research.Bits.1=Eine einfache Turbine aus Messing bewährt sich als wertvolle Komponente - ohne Zweifel für viele Zwecke nützlich, speziell, um Dinge anzutreiben.
+research.Bits.1=Ein einfacher Rotor aus Messing bewährt sich als wertvolle Komponente - ohne Zweifel für viele Zwecke nützlich, speziell, um Dinge anzutreiben.
 research.Spyglass.name=Fernglas
 research.Spyglass.0=Wär hätte gedacht, dass ein paar Glaslinsen und ein Messinggehäuse als eine Art Lupe dienen können? Jetzt kann ich Schätze schon von einer Meile aus erspähen!<br>Während man das Gerät hält, vergrößert ein Rechtsklick, während ein Linksklick wieder verkleinert.
 research.Survivalist.name=Überlebensausrüstung
@@ -67,11 +84,15 @@ research.Tank.0=Rohre sind großartig, um Dampf zu transportieren, aber ich bin 
 research.Pipe.name=Rohre
 research.Pipe.0=Dampf ist nutzlos ohne eine Möglichkeit ihn zu transportieren, aber ich habe einen effzienten Weg gefunden.<br>Messingrohre sind korrosionswiderständig und daher die perfekten Leiter für Dampf.
 research.Pipe.1=Ein Rohr mit einem Schalter zu kombinieren, erlaubt es mir den Dampffluss zu regulieren. Rechtsklick auf das Ventil öffnet oder schließt das Rohr.
-research.RuptureDisc.name=Überdruckventil
-research.RuptureDisc.0=Einmal zu oft habe ich einen wertvollen Boiler oder eine Maschine verloren, weil der Dampfdruck zu hoch war. Zeit für das Überdruckventil!<br>Um das Überdruckventil zu verwenden, platziere ich es einfach an einer Maschine oder einem Rohr das explodieren könnte.
-research.RuptureDisc.1=Es wird aufbrechen bevor der Druck kritisch wird und Dampf ablassen. Natürlich wird es solange Dampf ablassen, bis es mit einem Zinkblech repariert wurde oder mit einem Zinkblech rechtsgeklickt wurde.
+research.RuptureDisc.name=Berstscheibe
+research.RuptureDisc.0=Einmal zu oft habe ich einen wertvollen Boiler oder eine Maschine verloren, weil der Dampfdruck zu hoch war. Zeit für die Berstscheibe!<br>Um die Berstscheibe zu verwenden, platziere ich sie einfach an einer Maschine oder einem Rohr das explodieren könnte.
+research.RuptureDisc.1=Sie wird aufbrechen bevor der Druck kritisch wird und Dampf ablassen. Natürlich wird sie solange Dampf ablassen, bis sie mit einem Zinkblech repariert wurde oder mit einem Zinkblech rechtsgeklickt wurde.
+
+research.Whistle.name=Dampfpfeife
+research.Whistle.0=Ich habe eine kleine Apparatur entwickelt, die mich alarmiert bevor der Dampfdruck zu groß wird. Die Dampfpfeife ertönt noch bevor eine Berstscheibe nachgeben würde.
+
 research.Gauge.name=Druckmesser
-research.Gauge.0=Ich habe eine einfach Methode gefunden, Dampf in einer Leitung zu messen. Ich kann diese Messgeräte einfach an meine Boiler, Rohre, Kessel und anderen Geräte anschließen und sie zeigen mir den Druck an und geben ein entsprechendes starkes Redstone-Signal von sich.
+research.Gauge.0=Ich habe eine einfach Methode gefunden, Dampf in einer Leitung zu messen. Ich kann diese Messgeräte einfach an meine Boiler, Rohre, Kessel und anderen Geräte anschließen und sie zeigen mir den Druck an und geben ein entsprechendes starkes Redstone-Signal von sich, das ein Komparator aufnehmen kann.
 research.Heater.name=Dampfheizung
 research.Heater.0=Jetzt kann ich Öfen mit Dampf betreiben in dem ich diese raffinierte Dampfheizung einsetze.<br>Dampf erhitzt die Kupferstangen und ermöglicht es einen Ofen ohne Brennstoff zu nutzen. Mehrere Dampfheizungen beschleunigen den Vorgang, verbrauchen aber auch mehr Dampf.
 research.Filler.name=Dampfinfusor
@@ -84,11 +105,18 @@ research.Hammer.0=Ich habe eine interessante Erfindung gemacht - den Dampfhammer
 research.Hammer.1=Rechtsklick wird seine Eingabemaske öffnen, in der ich einstellen kann, was der Hammer machen soll. Wenn ich alles eingestellt habe, führe ich Dampf zu und warte bis die Reparatur oder Umbenennung abgeschlossen ist.
 research.Screw.name=Archimedische Schraube
 research.Screw.0=Ich habe eine Methode gefunden, um Flüssigkeiten in einen angrenzenden Behälter zu pumpen. Diese Schraube wird Flüßigkeiten von ihrem unterem Ende zum oberen Ende fördern, womit ich meine Boiler und andere Tanks auffüllen kann.
-research.Smasher.name=Dampfstampfer
-research.Smasher.0=Ich habe eine Maschine erfunden, die Erze zertrümmern kann, wobei manchmal kostbare Materialien zum Vorschein kommen, die sonst verloren gegangen wären. Platziere zwei Dampfstampfer einander gegenüber mit einem Abstand von einem Block. Nun kann ein Block dazwischen zertrümmert werden.
-research.Thumper.name=Dampf-Bohrhammer
-research.Thumper.0=Ich muss in neuen Maßstäben denken! Ich verschwende meine Zeit mit kleinen Dingen wie dem Wassertransport und dem Zertrümmern von Erz...<br>Nein. Ich muss das größer aufziehen. Jetzt kommt der Dampf-Bohrhammer!
-research.Thumper.1=Die Kraft des Dampf-Bohrhammers geht direkt in den Boden und höhlt dabei einen Tunnel aus. Dieser Tunnel wird aber nicht bis zur Oberfläche reichen und somit verbleiben die Gesteine und Erze im Boden. Ich muss einen Weg finden, sie zu bergen.<br>Gegebenenfalls wird der Dampf-Bohrhammer langsamer und stoppt. Dann sollte er neu ausgerichtet werden.
+research.Smasher.name=Zertrümmerer
+research.Smasher.0=Ich habe eine Maschine erfunden, die Erze zertrümmern kann, wobei manchmal kostbare Materialien zum Vorschein kommen, die sonst verloren gegangen wären. Platziere zwei Dampfstampfer einander gegenüber mit einem Abstand von einem Block. Nun kann ein Block dazwischen
+research.Smasher.1=zertrümmert werden.<br>Der Zertrümmerer hat zwei Modi, die mit einer Rohrzange gewechselt werden können.<br>Zertrümmerer-Modus zerkleinert Erze und Steine zu kleineren Brocken.<br>Brecher-Modus reißt Blöcke ab, ohne sie zu zerkleinern.
+research.Thumper.name=Stampfer
+research.Thumper.0=Ich muss in neuen Maßstäben denken! Ich verschwende meine Zeit mit kleinen Dingen wie dem Wassertransport und dem Zertrümmern von Erz...<br>Nein. Ich muss das größer aufziehen. Jetzt kommt der Stampfer!
+research.Thumper.1=Die Kraft des Stampfers geht direkt in den Boden und höhlt dabei einen Tunnel aus. Dieser Tunnel wird aber nicht bis zur Oberfläche reichen und somit verbleiben die Gesteine und Erze im Boden. Ich muss einen Weg finden, sie zu bergen.<br>Gegebenenfalls wird der Stampfer langsamer und stoppt. Dann sollte er neu ausgerichtet werden.
+research.Fan.name=Gebläse
+research.Fan.0=Das Gebläse ist eine sehr vielseitige Erfindung. Um es einfach auszudrücken: Es schiebt Objekte, wenn es mit Dampf versorgt wird. Es kann als Aufzug dienen, um Getreide zu ernten oder um Gegenstände und Tiere zu bewegen. Mit einer Rohrzange kann ich die Reichweite justieren.
+research.Vacuum.name=Sauger
+research.Vacuum.0=Ein wenig Experimentieren mit dem Gebläse, brachte mir einen Sauger, ein Gerät, das allerlei Gegenstände ansaugt und in einen Behälter auf der entgegengesetzen Seite des Einlasses zieht. Ich kann die Reichweite mit einer Rohrzange einstellen.
+research.FSC.name=Druckwandler
+research.FSC.0=Während die meisten Maschinen dazu gebaut wurden, dem hohen Druck Stand zu halten, den meine Boiler erzeugen, gibt es andere Geräte, die das nicht können. Der Wandler ermöglicht es, weniger Druck aus den Dampfleitungen zu ziehen oder weniger Dampfdruck in die Leitungen einzuspeisen.
 
 category.Exosuit.name=Dampfbetriebene Rüstung
 research.Exosuit.name=Dampfbetriebene Rüstung
@@ -107,10 +135,13 @@ research.FallAssist.0=Für gefährliches Terrain habe ich dieses Modul für die 
 research.Mask.name=Maske der Enthüllung
 research.Mask.0=Wer sagt, dass Thaumaturgie nicht mit Technologie kombiniert werden kann? Ich nicht! Ich habe eine schicke Maske erfunden, die meiner Dampfbetriebenen Rüstung die Fähigkeiten einer Zauberbrille verleiht.
 
-category.SteamTools.name=Dampf-Werkzeuge
+category.Gadgets.name=Gerätschaften
 research.SteamTools.name=Dampf-Werkzeuge
-research.SteamTools.0=Nachdem Erfolg meines Dampfstampfers und des Dampf-Bohrhammers, bin ich dazu übergegangen tragbare Varianten dieser Maschinen zu bauen. Endlich ernte ich die Früchte meiner Arbeit in Form eines Dampfbohrers, einer Dampfsäge und einer Dampfschaufel.
+research.SteamTools.0=Nachdem Erfolg meines Zertrümmerers und des Stampfers, bin ich dazu übergegangen tragbare Varianten dieser Maschinen zu bauen. Endlich ernte ich die Früchte meiner Arbeit in Form eines Dampfbohrers, einer Dampfsäge und einer Dampfschaufel.
 research.SteamTools.1=Diese drei Werkzeuge sind dampfbetrieben und können nicht zerbrechen.<br>Damit sie effizient eingesetzt werden können, müssen sie warmlaufen. Rechtsklick gedrückthalten lässt die Werkzeuge rotieren. Anders als bei meinen anderen Geräten, verbraucht das Arbeiten selbst keinen Dampf.
+research.Wrench.name=Rohrzange
+research.Wrench.0=Das wichtigste Werkzeug, um mit meinen Rohren zu basteln, ist eine Zange, ein Gerät mit vielseitigen Einsatzmöglichkeiten.<br>Rechtsklick auf Rohre verbindet oder trennt die Rohre von anderen Rohren und Maschinen.
+research.Wrench.1=Umschalttaste und Rechtsklick auf ein verkleidetes Rohr, entfernt die Verkleidung<br>Die meisten Maschinen lassen sich mit der Zange ausrichten.<br>Umschalttaste und Rechtsklick ermöglicht es mir bei einigen Maschinen den Betriebsmodus zu wechseln oder sie zu justieren.
 
 category.Flintlock.name=Steinschloss-Feuerwaffen
 research.Parts.name=Waffenteile
@@ -178,7 +209,7 @@ item.steamcraft:crafting.1.name=Holzschaft
 item.steamcraft:crafting.2.name=Eisenlauf
 item.steamcraft:crafting.3.name=Donnerbüchsenlauf
 item.steamcraft:crafting.4.name=Steinschloss
-item.steamcraft:crafting.5.name=Messingturbine
+item.steamcraft:crafting.5.name=Messingrotor
 
 item.steamcraft:plate.0.name=Kupferblech
 item.steamcraft:plate.1.name=Zinkblech
@@ -218,6 +249,7 @@ item.steamcraft:steamDrill.name=Dampfbohrer
 item.steamcraft:steamAxe.name=Dampfsäge
 item.steamcraft:steamShovel.name=Dampfschaufel
 item.steamcraft:astrolabe.name=Astrolabium
+item.steamcraft:wrench.name=Rohrzange
 
 item.steamcraft:survivalist.name=Überlebensausrüstung
 
@@ -238,13 +270,6 @@ tile.steamcraft:blockBrass.name=Messingblock
 tile.steamcraft:blockCopper.name=Kupferblock
 tile.steamcraft:blockZinc.name=Zinkblock
 
-
-
-
-
-
-
-
 tile.steamcraft:charger.name=Dampfinfusor
 tile.steamcraft:crucible.name=Schmelztiegel
 tile.steamcraft:mold.name=Gussform-Aufspanner
@@ -258,13 +283,13 @@ tile.steamcraft:ore.2.name=Minderes Zinkerz
 tile.steamcraft:carving.name=Gussformphräse
 tile.steamcraft:engineering.name=Konstruktionstisch
 tile.steamcraft:tank.0.name=Dampfkessel
-tile.steamcraft:tank.1.name=Kreativer Dampfkessel
+tile.steamcraft:tank.1.name=Dampfkessel [Kreativ-Modus]
 tile.steamcraft:meter.name=Druckmesser
 tile.steamcraft:hammer.name=Dampfhammer
 tile.steamcraft:itemMortar.name=Dampfmörser
 tile.steamcraft:pump.name=Archimedische Schraube
 tile.steamcraft:smasher.name=Zertrümmerer
-tile.steamcraft:thumper.name=Dampf-Bohrhammer
+tile.steamcraft:thumper.name=Stampfer
 tile.steamcraft:flashBoiler.name=Schnellheizer
-tile.steamcraft:ruptureDisc.0.name=Überdruckventil
-tile.steamcraft:ruptureDisc.1.name=Gebrochenes Überdruckventil
+tile.steamcraft:ruptureDisc.0.name=Berstscheibe
+tile.steamcraft:ruptureDisc.1.name=Gebrochene Berstscheibe
