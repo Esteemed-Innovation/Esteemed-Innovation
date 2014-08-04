@@ -286,6 +286,13 @@ public class GuiSteamcraftBook extends GuiScreen {
      */
     public void drawScreen(int par1, int par2, float par3)
     {
+    	int d = Mouse.getDWheel();
+    	if (d < 0 && this.buttonNextPage.visible) {
+    		this.actionPerformed(this.buttonNextPage);
+    	}
+    	if (d > 0 && this.buttonPreviousPage.visible) {
+    		this.actionPerformed(this.buttonPreviousPage);
+    	}
     	if (mustReleaseMouse && !Mouse.isButtonDown(0)) {
     		mustReleaseMouse = false;
     	}
