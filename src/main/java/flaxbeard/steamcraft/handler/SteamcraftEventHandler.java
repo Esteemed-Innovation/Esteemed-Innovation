@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.block.Block;
@@ -12,12 +13,15 @@ import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -29,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -45,6 +50,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -202,6 +208,7 @@ public class SteamcraftEventHandler {
 					}
 				}
 			}
+			
 		}
 	}
 	
@@ -483,7 +490,7 @@ public class SteamcraftEventHandler {
 				}
 			}
 			for (String str : linesToRemove) {
-				if (str.contains("+")) {
+				if (str.contains("+") && !str.contains("+0.25")) {
 					event.toolTip.remove(str);
 					event.toolTip.add(1,str);
 				}
@@ -592,7 +599,127 @@ public class SteamcraftEventHandler {
 		if (Loader.isModLoaded("AWWayofTime")) {
 			BloodMagicIntegration.handleAttack(event);
 		}
-		
+		if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null) && (!event.entityLiving.worldObj.isRemote))
+	    {
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			if (player.getHealth() <= 5.0F) {
+				int vibrantLevel = 0;
+				for (int i = 0; i < player.inventory.armorInventory.length; i++) {
+					ItemStack armor = player.inventory.armorInventory[i];
+					if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
+						ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
+						if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Vibrant") {
+							vibrantLevel+=1;
+						}
+					}
+				}
+				if ((vibrantLevel > 0) && (player.worldObj.rand.nextInt(5-vibrantLevel) == 0)) {
+					int startRotation = player.worldObj.rand.nextInt(360);
+					boolean foundSpot = false;
+					int range = 14;
+					int counter = 0;
+					int yO = 2;
+					int tX = 0;
+					int tY = 0;
+					int tZ = 0;
+					int safeRange = 7;
+					int safe = 0;
+					while (!foundSpot && range < 28 && safe < 10000) {
+						safe++;
+						tX = (int) (player.posX + range*Math.sin(Math.toRadians(startRotation)));
+						tZ = (int) (player.posZ + range*Math.cos(Math.toRadians(startRotation)));
+						tY = (int) player.posY+yO;
+						List mobs = player.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getBoundingBox(tX+0.5F-safeRange, tY+0.5F-safeRange, tZ+0.5F-safeRange, tX+0.5F+safeRange, tY+0.5F+safeRange, tZ+0.5F+safeRange));
+						if (mobs.size() == 0 &&player.worldObj.isSideSolid(tX, tY-1, tZ, ForgeDirection.UP) && !player.worldObj.isAnyLiquid(AxisAlignedBB.getBoundingBox(tX, tY-1, tZ, tX, tY+1, tZ)) && player.worldObj.isAirBlock(tX, tZ, tY) && player.worldObj.isAirBlock(tX, tZ, tY+1)) {
+							foundSpot = true;				
+						}
+						else
+						{
+							if (counter >= 36) {
+								if (yO > -2) {
+									yO--;
+									counter = 0;
+								}
+								else
+								{
+									counter = 0;
+									yO = 2;
+									range += 2;
+								}
+							}
+							else
+							{
+								startRotation+= 10;
+								counter++;
+							}
+						}
+					}
+
+					if (foundSpot) {
+						((EntityPlayerMP) player).playerNetServerHandler.setPlayerLocation(tX, tY, tZ, player.worldObj.rand.nextInt(360), player.rotationPitch);
+					}
+				}
+			}
+	    }
+		if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null) && (!event.entityLiving.worldObj.isRemote))
+	    {
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			Entity mob = event.source.getEntity();
+			int enderiumLevel = 0;
+			for (int i = 0; i < player.inventory.armorInventory.length; i++) {
+				ItemStack armor = player.inventory.armorInventory[i];
+				if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
+					if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Enderium") {
+						enderiumLevel+=1;
+					}
+				}
+			}
+			if ((enderiumLevel > 0) && (player.worldObj.rand.nextFloat() < (enderiumLevel * 0.075F))) {
+				int startRotation = player.worldObj.rand.nextInt(360);
+				boolean foundSpot = false;
+				int range = 8;
+				int counter = 0;
+				int yO = 2;
+				int tX = 0;
+				int tY = 0;
+				int tZ = 0;
+				int safe = 0;
+				while (!foundSpot && range < 16 && safe < 10000) {
+					safe++;
+					tX = (int) (mob.posX + range*Math.sin(Math.toRadians(startRotation)));
+					tZ = (int) (mob.posZ + range*Math.cos(Math.toRadians(startRotation)));
+					tY = (int) mob.posY+yO;
+					if (player.worldObj.isSideSolid(tX, tY-1, tZ, ForgeDirection.UP) && !player.worldObj.isAnyLiquid(AxisAlignedBB.getBoundingBox(tX, tY-1, tZ, tX, tY+1, tZ)) && player.worldObj.isAirBlock(tX, tZ, tY) && player.worldObj.isAirBlock(tX, tZ, tY+1)) {
+						foundSpot = true;				
+					}
+					else
+					{
+						if (counter >= 36) {
+							if (yO > -2) {
+								yO--;
+								counter = 0;
+							}
+							else
+							{
+								counter = 0;
+								yO = 2;
+								range += 2;
+							}
+						}
+						else
+						{
+							startRotation+= 10;
+							counter++;
+						}
+					}
+				}
+
+				if (foundSpot) {
+					mob.setPositionAndRotation(tX, tY, tZ, mob.rotationYaw, mob.rotationPitch);
+				}
+			}
+	    }
 		if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null))
 	    {
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
@@ -848,7 +975,7 @@ public class SteamcraftEventHandler {
 						ticksNextHeal--;
 					}
 					if (ticksNextHeal == 0) {
-						event.entityLiving.heal(1.0F);
+						//event.entityLiving.heal(1.0F);
 						damageAmount -=1.0F;
 						stack.stackTagCompound.setFloat("damageAmount", damageAmount);
 						ticksNextHeal=5;

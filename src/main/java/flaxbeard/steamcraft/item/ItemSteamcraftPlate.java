@@ -7,12 +7,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSteamcraftPlate extends Item {
-	public IIcon[] icon = new IIcon[9];
+	public IIcon[] icon = new IIcon[12];
 	
 	public ItemSteamcraftPlate() {
 		this.setHasSubtypes(true);
@@ -41,6 +42,10 @@ public class ItemSteamcraftPlate extends Item {
 		this.icon[6] = ir.registerIcon("steamcraft:plateTerrasteel");
 		this.icon[7] = ir.registerIcon("steamcraft:plateElementum");
 		this.icon[8] = ir.registerIcon("steamcraft:plateFiery");
+		this.icon[9] = ir.registerIcon("steamcraft:plateLead");
+		this.icon[10] = ir.registerIcon("steamcraft:plateVibrant");
+		this.icon[11] = ir.registerIcon("steamcraft:plateEnderium");
+
 	}
 	
 	@Override
@@ -60,6 +65,15 @@ public class ItemSteamcraftPlate extends Item {
 		}
 		if (Loader.isModLoaded("TwilightForest")) {
 			par3List.add(new ItemStack(par1, 1, 8));
+		}
+		if (OreDictionary.getOres("ingotLead").size() > 0) {
+			par3List.add(new ItemStack(par1, 1, 9));
+		}
+		if (Loader.isModLoaded("EnderIO")) {
+			par3List.add(new ItemStack(par1, 1, 10));
+		}
+		if (Loader.isModLoaded("ThermalFoundation")) {
+			par3List.add(new ItemStack(par1, 1, 11));
 		}
 	}
 	

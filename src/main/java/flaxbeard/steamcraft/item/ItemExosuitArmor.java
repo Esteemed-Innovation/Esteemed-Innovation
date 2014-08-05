@@ -3,12 +3,15 @@ package flaxbeard.steamcraft.item;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -542,6 +545,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 		if (Loader.isModLoaded("Botania")) {
 			map = BotaniaIntegration.addModifiers(map,stack,armorType);
 		}
+		if ((((ItemExosuitArmor)stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Lead")) {
+			map.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(new UUID(776437, armorType), "Lead exosuit " + armorType, 0.25F, 0));
+		}
 		return map;
 	}
 	
@@ -611,4 +617,5 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 		}
 		return 0;
 	}
+    
 }
