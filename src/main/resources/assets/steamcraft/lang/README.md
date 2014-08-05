@@ -9,6 +9,7 @@ Current translations are:
 <li>Chinese - China</li>
 <li>Tradtional Chinese - China</li>
 <li>German - Germany</li>
+<li>Russia - Russian</li>
 </ul>
 <br>
 <b>
@@ -22,4 +23,5 @@ Be sure to credit yourself down here:
 <li>Gholuk: de_DE</li>
 <li>Vexatos: de_DE</li>
 <li>mymagadsl: zh_TW</li>
+<li>Adaptivity: ru_RU</li>
 </ul></b>
