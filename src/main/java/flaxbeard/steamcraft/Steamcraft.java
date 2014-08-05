@@ -2,14 +2,18 @@ package flaxbeard.steamcraft;
 
 
 
+import thaumcraft.common.config.ConfigItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -27,6 +31,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.CrucibleLiquid;
+import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
@@ -37,8 +46,11 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.EnderIOIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.ThermalFoundationIntegration;
 import flaxbeard.steamcraft.integration.TwilightForestIntegration;
+import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
@@ -204,6 +216,23 @@ public class Steamcraft {
 		}
 		if (Loader.isModLoaded("AWWayofTime")) {
 			BloodMagicIntegration.addBloodMagicStuff();
+		}
+		if (Loader.isModLoaded("EnderIO")) {
+			EnderIOIntegration.addEIOLiquid();
+		}
+		if (Loader.isModLoaded("ThermalFoundation")) {
+			ThermalFoundationIntegration.addThermalFoundationLiquid();
+		}
+		if (OreDictionary.getOres("ingotLead").size() > 0) {
+			CrucibleLiquid liquidLead = new CrucibleLiquid("lead", OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate,1,9), OreDictionary.getOres("nuggetLead").size() > 0 ? OreDictionary.getOres("nuggetLead").get(0) : null, null,118,128,157);
+			SteamcraftRegistry.liquids.add(liquidLead);
+			
+			
+			SteamcraftRegistry.registerSmeltThingOredict("ingotLead", liquidLead, 9);
+			SteamcraftRegistry.registerSmeltThingOredict("nuggetLead", liquidLead, 1);
+			SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftLead", liquidLead, 6);
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Lead",new ItemStack(SteamcraftItems.exosuitPlate,1,11),"Lead","Lead","steamcraft.plate.lead"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoLead","plateSteamcraftLead",new ItemStack(SteamcraftItems.exosuitPlate,1,11),liquidLead);
 		}
 		SteamcraftBook.registerBookResearch();
 		ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre; 

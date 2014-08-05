@@ -18,6 +18,9 @@ steamcraft.plate.elementum=Spawns Pixies
 steamcraft.plate.fiery=Fiery Aura
 steamcraft.plate.yeti=Chill Aura
 steamcraft.plate.sadist=Gain LP When Hurt
+steamcraft.plate.lead=Knockback Resistance
+steamcraft.plate.vibrant=Teleport When Hurt
+steamcraft.plate.enderium=Ender Aura
 
 steamcraft.color.black=Painted Black
 steamcraft.color.red=Painted Red
@@ -185,6 +188,12 @@ research.PlateYeti.name=Yeti Hide
 research.PlateYeti.0=My dangerous treks to the snowy ends of the Twilight Forest have rewarded me with valuable alpha yeti fur, which I can stitch together and install in my exosuit to freeze my foes in place if they dare to attack me.
 research.PlateSadist.name=Sadistic Exosuit Plate
 research.PlateSadist.0=Combining a few reinforced slates with a rune of self-sacrifice creates a rather powerful exosuit plate. This plate, when installed, adds a small amount of LP to my network whenever I take damage, rewarding me for pain.
+research.PlateLead.name=Lead Plate
+research.PlateLead.0=Lead is an unusually heavy metal, and while I wouldn't suggest gnawing on it, makes for a good exosuit plating material. Installing lead plates in my exosuit will reduce the knockback that I recieve.
+research.PlateVibrant.name=Vibrant Plate
+research.PlateVibrant.0=Although I'm still not entirely sure how it works, I've been able to harness the mysterious ender properties of vibrant alloy for use in my exosuit. When I reach low health, I have a chance to dodge damage and teleport away.
+research.PlateEnderium.name=Enderium Plate
+research.PlateEnderium.0=Plating my exosuit with this mysterious ender metal has allowed me to harness the teleporting power of endermen as a weapon. Enemies that attack me while I wear an enderium plated exosuit have a chance to be teleported away from me.
 
 research.ExoVanity.name=Vanity Slot
 research.ExoVanity.0=Not only is my exosuit a versitile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
@@ -309,6 +318,9 @@ item.steamcraft:plate.5.name=Thaumium Plate
 item.steamcraft:plate.6.name=Terrasteel Plate
 item.steamcraft:plate.7.name=Elementium Plate
 item.steamcraft:plate.8.name=Fiery Plate
+item.steamcraft:plate.9.name=Lead Plate
+item.steamcraft:plate.10.name=Vibrant Plate
+item.steamcraft:plate.11.name=Enderium Plate
 
 item.steamcraft:exosuitPlate.0.name=Copper Exosuit Plate
 item.steamcraft:exosuitPlate.1.name=Zinc Exosuit Plate
@@ -321,6 +333,9 @@ item.steamcraft:exosuitPlate.7.name=Elementium Exosuit Plate
 item.steamcraft:exosuitPlate.8.name=Fiery Exosuit Plate
 item.steamcraft:exosuitPlate.9.name=Yeti Hide
 item.steamcraft:exosuitPlate.10.name=Sadistic Exosuit Plate
+item.steamcraft:exosuitPlate.11.name=Lead Exosuit Plate
+item.steamcraft:exosuitPlate.12.name=Vibrant Exosuit Plate
+item.steamcraft:exosuitPlate.13.name=Enderium Exosuit Plate
 
 item.steamcraft:ingotMold.name=Ingot Mold
 item.steamcraft:nuggetMold.name=Nugget Mold

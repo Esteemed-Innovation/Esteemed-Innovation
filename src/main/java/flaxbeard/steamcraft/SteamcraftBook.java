@@ -252,6 +252,15 @@ public class SteamcraftBook {
 			SteamcraftRegistry.addResearch("research.PlateIron.name","!research.ExoPlates.name",new BookPageItem("research.PlateIron.name","research.PlateIron.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,2)),new BookPageCrafting("","exoIron"));
 			SteamcraftRegistry.addResearch("research.PlateBrass.name","!research.ExoPlates.name",new BookPageItem("research.PlateBrass.name","research.PlateBrass.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,4)),new BookPageCrafting("","exoBrass"));
 			SteamcraftRegistry.addResearch("research.PlateGold.name","!research.ExoPlates.name",new BookPageItem("research.PlateGold.name","research.PlateGold.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,3)),new BookPageCrafting("","exoGold"));
+			if (OreDictionary.getOres("ingotLead").size() > 0) {
+				SteamcraftRegistry.addResearch("research.PlateLead.name","!research.ExoPlates.name",new BookPageItem("research.PlateLead.name","research.PlateLead.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,11)),new BookPageCrafting("","exoLead"));
+			}
+			if (Loader.isModLoaded("EnderIO")) {
+				SteamcraftRegistry.addResearch("research.PlateVibrant.name","!research.ExoPlates.name",new BookPageItem("research.PlateVibrant.name","research.PlateVibrant.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,12)),new BookPageCrafting("","exoVibrant"));
+			}
+			if (Loader.isModLoaded("ThermalFoundation")) {
+				SteamcraftRegistry.addResearch("research.PlateEnderium.name","!research.ExoPlates.name",new BookPageItem("research.PlateEnderium.name","research.PlateEnderium.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,13)),new BookPageCrafting("","exoEnderium"));
+			}
 			if (Loader.isModLoaded("Thaumcraft")) {
 				SteamcraftRegistry.addResearch("research.PlateThaumium.name","!research.ExoPlates.name",new BookPageItem("research.PlateThaumium.name","research.PlateThaumium.0", true, new ItemStack(SteamcraftItems.exosuitPlate,1,5)),new BookPageCrafting("","exoThaumium"));
 			}

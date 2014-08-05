@@ -7,12 +7,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemExosuitPlate extends Item {
-	public IIcon[] icon = new IIcon[11];
+	public IIcon[] icon = new IIcon[14];
 	
 	public ItemExosuitPlate() {
 		this.setHasSubtypes(true);
@@ -42,6 +43,10 @@ public class ItemExosuitPlate extends Item {
 		this.icon[8] = ir.registerIcon("steamcraft:exosuitPlateFiery");
 		this.icon[9] = ir.registerIcon("steamcraft:exosuitPlateYeti");
 		this.icon[10] = ir.registerIcon("steamcraft:exosuitPlateSadist");
+		this.icon[11] = ir.registerIcon("steamcraft:exosuitPlateLead");
+		this.icon[12] = ir.registerIcon("steamcraft:exosuitPlateVibrant");
+		this.icon[13] = ir.registerIcon("steamcraft:exosuitPlateEnderium");
+
 	}
 	
 	@Override
@@ -64,6 +69,15 @@ public class ItemExosuitPlate extends Item {
 		}
 		if (Loader.isModLoaded("AWWayofTime")) {
 			par3List.add(new ItemStack(par1, 1, 10));
+		}
+		if (OreDictionary.getOres("ingotLead").size() > 0) {
+			par3List.add(new ItemStack(par1, 1, 11));
+		}
+		if (Loader.isModLoaded("EnderIO")) {
+			par3List.add(new ItemStack(par1, 1, 12));
+		}
+		if (Loader.isModLoaded("ThermalFoundation")) {
+			par3List.add(new ItemStack(par1, 1, 13));
 		}
 	}
 	

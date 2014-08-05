@@ -320,6 +320,9 @@ public class SteamcraftItems {
 		OreDictionary.registerOre("plateSteamcraftTerrasteel", new ItemStack(steamcraftPlate,1,6));
 		OreDictionary.registerOre("plateSteamcraftElementium", new ItemStack(steamcraftPlate,1,7));
 		OreDictionary.registerOre("plateSteamcraftFiery", new ItemStack(steamcraftPlate,1,8));
+		OreDictionary.registerOre("plateSteamcraftLead", new ItemStack(steamcraftPlate,1,9));
+		OreDictionary.registerOre("plateSteamcraftVibrant", new ItemStack(steamcraftPlate,1,10));
+		OreDictionary.registerOre("plateSteamcraftEnderium", new ItemStack(steamcraftPlate,1,11));
 
 		exosuitPlate = new ItemExosuitPlate().setUnlocalizedName("steamcraft:exosuitPlate").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(exosuitPlate, "exosuitPlate");
@@ -526,7 +529,7 @@ public class SteamcraftItems {
     }
     
     public static void reregisterPlates(){
-    	String[] plates = {"Iron","Copper","Zinc","Brass","Thaumium","Gold"};
+    	String[] plates = {"Iron","Copper","Zinc","Brass","Thaumium","Gold","Enderium","Vibrant","Lead","Fiery","Terrasteel","Elementium"};
     	for (String plate : plates){
     		ArrayList<ItemStack> items = OreDictionary.getOres("plate"+plate);
     		for (ItemStack item : items){

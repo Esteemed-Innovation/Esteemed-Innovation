@@ -41,11 +41,28 @@ public class ModelExosuit extends ModelBiped {
 	public ResourceLocation g3 = new ResourceLocation("steamcraft:textures/models/armor/exo_3_grey.png");
 
 	public ResourceLocation test = new ResourceLocation("steamcraft:textures/models/armor/joshiePenguin.png");
+	
+	public ResourceLocation horns = new ResourceLocation("steamcraft:textures/models/armor/docHorns.png");
+	public ResourceLocation horns_g = new ResourceLocation("steamcraft:textures/models/armor/docHorns_grey.png");
+
 	private ModelRenderer penguinBody; 
 	private ModelRenderer penguinHead; 
 	private ModelRenderer penguinArm1; 
 	private ModelRenderer penguinArm2; 
 	private ModelRenderer penguinNose; 
+	
+    ModelRenderer hornLeftBase;
+    ModelRenderer hornLeftPart1;
+    ModelRenderer hornLeftPart2;
+    ModelRenderer hornLeftPart3;
+    ModelRenderer hornLeftPart4;
+    ModelRenderer hornLeftPart5;
+    ModelRenderer hornRightBase;
+    ModelRenderer hornRightPart1;
+    ModelRenderer hornRightPart2;
+    ModelRenderer hornRightPart3;
+    ModelRenderer hornRightPart4;
+    ModelRenderer hornRightPart5;
 	
 	public static String[] dyes =
         {
@@ -105,6 +122,44 @@ public class ModelExosuit extends ModelBiped {
 		penguinNose = new ModelRenderer(this, 34, 16).setTextureSize(64, 32);
 		penguinNose.addBox(-0.5F, -16.5F, -4.0F, 1, 1, 2);
 		bipedHead.addChild(penguinNose);
+		
+		hornLeftBase = new ModelRenderer(this, 0, 0);
+        hornLeftBase.addBox(3F, -9F, -2F, 2, 2, 2);
+        hornLeftBase.setRotationPoint(0F, 0F, 0F);
+        hornLeftPart1 = new ModelRenderer(this, 0, 4);
+        hornLeftPart1.addBox(4F, -10F, -1F, 2, 2, 4);
+        hornLeftBase.addChild(hornLeftPart1);
+        hornLeftPart2 = new ModelRenderer(this, 0, 10);
+        hornLeftPart2.addBox(5F, -9F, 1F, 2, 2, 3);
+        hornLeftBase.addChild(hornLeftPart2);
+        hornLeftPart3 = new ModelRenderer(this, 0, 15);
+        hornLeftPart3.addBox(6F, -8F, 2F, 2, 3, 2);
+        hornLeftBase.addChild(hornLeftPart3);
+        hornLeftPart4 = new ModelRenderer(this, 0, 20);
+        hornLeftPart4.addBox(7F, -6F, 1F, 2, 2, 2);
+        hornLeftBase.addChild(hornLeftPart4);
+        hornLeftPart5 = new ModelRenderer(this, 0, 24);
+        hornLeftPart5.addBox(6F, -5F, -2F, 2, 2, 4);
+        hornLeftBase.addChild(hornLeftPart5);
+
+        hornRightBase = new ModelRenderer(this, 0, 0);
+        hornRightBase.addBox(-5F, -9F, -2F, 2, 2, 2);
+        hornRightBase.setRotationPoint(0F, 0F, 0F);
+        hornRightPart1 = new ModelRenderer(this, 0, 4);
+        hornRightPart1.addBox(-6F, -10F, -1F, 2, 2, 4);
+        hornRightBase.addChild(hornRightPart1);
+        hornRightPart2 = new ModelRenderer(this, 0, 10);
+        hornRightPart2.addBox(-7F, -9F, 1F, 2, 2, 3);
+        hornRightBase.addChild(hornRightPart2);
+        hornRightPart3 = new ModelRenderer(this, 0, 15);
+        hornRightPart3.addBox(-8F, -8F, 2F, 2, 3, 2);
+        hornRightBase.addChild(hornRightPart3);
+        hornRightPart4 = new ModelRenderer(this, 0, 20);
+        hornRightPart4.addBox(-9F, -6F, 1F, 2, 2, 2);
+        hornRightBase.addChild(hornRightPart4);
+        hornRightPart5 = new ModelRenderer(this, 0, 24);
+        hornRightPart5.addBox(-8F, -5F, -2F, 2, 2, 4);
+        hornRightBase.addChild(hornRightPart5);
 //		Jetpack2 = new ModelRenderer(this, 28, 0);
 //		if (itemStack.getItem() == SteamcraftItems.exoArmorBody && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2) != null && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2).getItem() == SteamcraftItems.jetpack) {
 //			Jetpack1.addBox(-7.0F, -2F, 3F, 4, 14, 4);
@@ -186,6 +241,15 @@ public class ModelExosuit extends ModelBiped {
 			Minecraft.getMinecraft().renderEngine.bindTexture(test);
 			this.bipedHead.render(par7);
 		}
+		if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer)entity).getCommandSenderName().equals("Succubism")) {
+			 this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
+		        this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
+		        this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
+		        this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
+			Minecraft.getMinecraft().renderEngine.bindTexture(horns);
+	        this.hornLeftBase.render(par7);
+	        this.hornRightBase.render(par7);
+		}
 		if (hasOverlay) {
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			this.bipedHead.render(par7);
@@ -226,6 +290,15 @@ public class ModelExosuit extends ModelBiped {
         		this.bipedRightLeg.render(par7);
         		this.bipedLeftLeg.render(par7);
         		this.bipedHeadwear.render(par7);
+        		if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer)entity).getCommandSenderName().equals("Succubism")) {
+       			 this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
+       		        this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
+       		        this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
+       		        this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
+       			Minecraft.getMinecraft().renderEngine.bindTexture(horns_g);
+       	        this.hornLeftBase.render(par7);
+       	        this.hornRightBase.render(par7);
+        		}
         		GL11.glColor3f(1.0F, 1.0F, 1.0F);
         	}
         }
