@@ -57,7 +57,11 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
 		}
 		float sin = MathHelper.sin((float) Math.toRadians(ticks-60));
 		GL11.glRotatef(40+sin*(42.5F+9.5F*(1-sin))-52F, 1F, 0F, 0F);
+		GL11.glPushMatrix();
+		GL11.glScalef(1.0F,1.0F,(13.0F+((int) (sin*42.5F-42.5F))/9.0F)/13.0F);
 		model.renderConnector((int) (sin*42.5F-42.5F));
+		GL11.glPopMatrix();
+
 		GL11.glRotatef(40+sin*(42.5F+9.5F*(1-sin))-52F, -1F, 0F, 0F);
 		GL11.glTranslatef(0, -6*px, 0);
 		GL11.glRotatef(10+sin*42.5F-42.5F, 1F, 0F, 0F);
@@ -115,7 +119,10 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
 		}
 		float sin = MathHelper.sin((float) Math.toRadians(ticks-60));
 		GL11.glRotatef(40+sin*(42.5F+9.5F*(1-sin))-52F, 1F, 0F, 0F);
+		GL11.glPushMatrix();
+		GL11.glScalef(1.0F,1.0F,(13.0F+((int) (sin*42.5F-42.5F))/9.0F)/13.0F);
 		model.renderConnector((int) (sin*42.5F-42.5F));
+		GL11.glPopMatrix();
 		GL11.glRotatef(40+sin*(42.5F+9.5F*(1-sin))-52F, -1F, 0F, 0F);
 		GL11.glTranslatef(0, -6*px, 0);
 		GL11.glRotatef(10+sin*42.5F-42.5F, 1F, 0F, 0F);
