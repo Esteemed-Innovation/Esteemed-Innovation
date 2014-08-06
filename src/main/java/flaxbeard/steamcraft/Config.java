@@ -76,6 +76,7 @@ public class Config {
 	public static boolean enableThrusters;
 	public static boolean enableWings;
 	public static boolean hasAllCrucial;
+	public static boolean enableCanister;
 	
 	
 	public static void load(FMLPreInitializationEvent event) {
@@ -148,6 +149,7 @@ public class Config {
 		enableSteamTools = config.get("Items", "Enable steam tools", true).getBoolean(true);
 		enableSurvivalist = config.get("Items", "Enable survivalist's toolkit", true).getBoolean(true);
 		enableWrench = config.get("Items", "Enable wrench", true).getBoolean(true);
+		enableCanister = config.get("Items", "Enable canisters", true).getBoolean(true);
 
 		// OTHER
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);

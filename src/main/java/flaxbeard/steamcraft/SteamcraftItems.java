@@ -75,7 +75,8 @@ public class SteamcraftItems {
     public static Item astrolabe;
     public static Item wrench;
     public static Item smashedOre;
-    
+    public static Item canister;
+
     // molds
     public static Item blankMold;
     public static Item ingotMold;
@@ -112,6 +113,7 @@ public class SteamcraftItems {
 	public static Item doubleJump;
 //	public static Item antiFire;
 	public static Item stealthUpgrade;
+	public static Item canner;
 	public static Item enderShroud;
 
 	//public static Item fakeOre;
@@ -155,6 +157,11 @@ public class SteamcraftItems {
 		if (Config.enableAstrolabe){
 			astrolabe = new ItemAstrolabe().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:astrolabe").setTextureName("steamcraft:astrolabe").setMaxStackSize(1);
 			GameRegistry.registerItem(astrolabe, "astrolabe");
+		}
+		
+		if (Config.enableCanister){
+			canister = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canister").setTextureName("steamcraft:canister");
+			GameRegistry.registerItem(canister, "canister");
 		}
 	 	
 		if (Config.enableSurvivalist){
@@ -252,6 +259,9 @@ public class SteamcraftItems {
     		GameRegistry.registerItem(runAssist, "runAssist");
     	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
     		GameRegistry.registerItem(doubleJump, "doubleJump");
+    		
+    		canner = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/canner.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
+    		GameRegistry.registerItem(canner, "canner");
     		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
     		//GameRegistry.registerItem(antiFire, "antiFire");
     	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");

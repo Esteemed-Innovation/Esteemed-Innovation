@@ -2,7 +2,6 @@ package flaxbeard.steamcraft;
 
 
 
-import thaumcraft.common.config.ConfigItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -33,11 +31,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
-import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
+import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
@@ -50,7 +47,6 @@ import flaxbeard.steamcraft.integration.EnderIOIntegration;
 import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.integration.ThermalFoundationIntegration;
 import flaxbeard.steamcraft.integration.TwilightForestIntegration;
-import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
@@ -132,7 +128,9 @@ public class Steamcraft {
 		MapGenStructureIO.func_143031_a(ComponentSteamWorkshop.class, "steamcraft:workshop");		
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
-	  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
+	    EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, Steamcraft.instance, 64, 20, true);
+
+ //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
 	    //EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
 
 		GameRegistry.registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");

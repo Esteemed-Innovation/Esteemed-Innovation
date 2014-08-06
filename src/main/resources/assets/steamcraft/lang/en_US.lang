@@ -6,6 +6,7 @@ steamcraft.book.clickme=Click to go to crafting
 steamcraft.book.shiftright=Control click to go to information
 item.steamcraft:book.name=Esteemed Innovation
 potion.partialInvisible=Cloaking
+steamcraft.canned=Canistered
 
 steamcraft.plate.bonus=Exosuit Effect: 
 steamcraft.plate.copper=Blast Protection
@@ -226,6 +227,8 @@ research.FallAssist.name=Fall Assist
 research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
 research.Mask.name=Mask of Revealing
 research.Mask.0=Who says thaumaturgy can't mix with technology? Not I! I've developed a snazzy mask that gives my exosuit the same properties as the goggles of revealing.
+research.Canner.name=Canning Machine
+research.Canner.0=No longer will I have to manually apply canisters to my valuables, the canning machine will do it for me! Any ingots, ores or gems that I pick up while using this machine will be canned, provided I have the canisters.
 
 category.Gadgets.name=Gadgets
 research.SteamTools.name=Steam Tools
@@ -234,6 +237,8 @@ research.SteamTools.1=These three tools can be filled with steam and do not brea
 research.Wrench.name=Pipe Wrench
 research.Wrench.0=The first tool I'll need when I'm tinkering with steam is a wrench, a gadget that has a multitude of uses.<br>Right clicking on pipes with the wrench will let me disconenct and reconnect them from other pipes and machines.
 research.Wrench.1=Shift-right clicking on a concealed pipe will reveal the pipe.<br>Using a wrench on most machines will allow me to rotate the machine.<br>Shift-right clicking on certain machines with the wrench will allow me to adjust the operating mode of the machine.
+research.Canister.name=Canister
+research.Canister.0=I've finally found a way to protect my dropped items from the elements: Canisters. Canisters can be crafted with any item, rendering them nearly invincible when dropped. Canistered items automatically activate when they leave my inventory.
 
 category.Flintlock.name=Flintlock Weapons
 research.Parts.name=Weapon Parts
@@ -383,7 +388,10 @@ item.steamcraft:runAssist.name=Modular Accelerator
 item.steamcraft:doubleJump.name=Pulse Nozzle
 item.steamcraft:jumpAssist.name=Leap Actuator
 item.steamcraft:stealthUpgrade.name=Acoustic Dampener
+item.steamcraft:canner.name=Canner
 item.steamcraft:enderShroud.name=Ender Shroud
+
+item.steamcraft:canister.name=Item Canister
 
 
 item.steamcraft:steamedChicken.name=Steamed Chicken
