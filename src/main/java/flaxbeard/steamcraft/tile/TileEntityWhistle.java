@@ -130,7 +130,7 @@ public class TileEntityWhistle extends TileEntity {
 			if (worldObj.isRemote){
 				////System.out.println(source.getSteam());
 			}
-			return source.getSteam();
+			return source.getSteamShare();
 		}
 		return 0;
 	}

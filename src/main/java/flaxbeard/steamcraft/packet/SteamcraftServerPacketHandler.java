@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.packet;
 
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
@@ -8,7 +9,10 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 
 import java.io.IOException;
 
@@ -27,6 +31,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
 public class SteamcraftServerPacketHandler {
 
@@ -243,5 +249,30 @@ public class SteamcraftServerPacketHandler {
             e.printStackTrace();
             return;
         }
+	}
+	
+	public static void sendPipeConnectDisconnectPacket(int dimension, double x, double y, double z){
+
+		ByteBuf buf = Unpooled.buffer();
+		ByteBufOutputStream out = new ByteBufOutputStream(buf);
+		try
+	    {
+			out.writeByte(1); //type?
+	    	out.writeInt(dimension);
+	    	out.writeByte(0); //packetID?
+	    	out.writeDouble(x);
+	    	out.writeDouble(y);
+	    	out.writeDouble(z);
+	    }
+	    catch (IOException e) {}
+	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
+	    Steamcraft.channel.sendToAllAround(packet, new TargetPoint(dimension, x, y, z, z));;
+	    try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

@@ -32,6 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
+import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
@@ -85,6 +86,8 @@ public class Steamcraft {
     @Instance("Steamcraft")
     public static Steamcraft instance;
     
+    public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.DEBUG);
+    
     public static FMLEventChannel channel;
     
     
@@ -111,6 +114,7 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		
 		Config.load(event);
 		
 		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false);

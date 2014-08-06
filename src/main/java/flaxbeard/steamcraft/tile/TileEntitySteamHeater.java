@@ -78,7 +78,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 					int y = yCoord+dir.offsetY + dir2.offsetY;
 					int z = zCoord+dir.offsetZ + dir2.offsetZ;
 					if (this.worldObj.getTileEntity(x,y,z) != null) {
-						if (this.worldObj.getTileEntity(x,y,z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater)this.worldObj.getTileEntity(x,y,z)).getSteam() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
+						if (this.worldObj.getTileEntity(x,y,z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater)this.worldObj.getTileEntity(x,y,z)).getSteamShare() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
 							this.master = (x==xCoord && y==yCoord && z==zCoord);
 							slaves.add((TileEntitySteamHeater) this.worldObj.getTileEntity(x,y,z));
 							numHeaters++;
@@ -112,7 +112,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 //						furnace.setInventorySlotContents(2, replacement);
 //						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 //					}
-					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteam() >= 20 && canSmelt(furnace)) {
+					if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteamShare() >= 20 && canSmelt(furnace)) {
 						if (furnace.furnaceBurnTime == 0) {
 							BlockFurnace.updateFurnaceBlockState(true, this.worldObj, xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 						}
@@ -200,7 +200,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-		int steam = this.getSteam();
+		int steam = this.getSteamShare();
 		this.getNetwork().split(this, true);
 		ForgeDirection dir = myDir();
 		ForgeDirection[] directions = new ForgeDirection[6];

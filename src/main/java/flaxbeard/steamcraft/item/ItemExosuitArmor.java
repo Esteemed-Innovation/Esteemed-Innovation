@@ -14,7 +14,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -28,7 +27,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import vazkii.botania.common.core.handler.PixieHandler.IPixieSpawner;
+import vazkii.botania.api.item.IPixieSpawner;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

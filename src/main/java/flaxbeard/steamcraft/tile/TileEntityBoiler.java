@@ -43,6 +43,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 	public int furnaceCookTime;
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;
+	private boolean wasBurning;
     private static final int[] slotsTop = new int[] {0, 1};
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
@@ -50,11 +51,17 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 	public int disguiseMeta = 0;
 	private boolean lastWrench = false;
     
-    public TileEntityBoiler(){
-    	super(50000, new ForgeDirection[]{ForgeDirection.UP});
-    	this.addSideToGaugeBlacklist(ForgeDirection.UP);
+	public TileEntityBoiler(int capacity){
+		super(capacity, new ForgeDirection[]{ForgeDirection.UP});
+		this.addSideToGaugeBlacklist(ForgeDirection.UP);
     	this.setPressureResistance(0.5F);
     }
+	
+	public TileEntityBoiler(){
+    	this(50000);
+    }
+    
+    
     
 	@Override
 	public Packet getDescriptionPacket()
@@ -166,6 +173,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 			}
 			lastWrench = hasWrench;
 		}
+		
     	if (this.getStackInSlot(1) != null) {
 	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
 	    		if (canDrainItem(this.getStackInSlot(1))) {
@@ -213,6 +221,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                         }
                     }
                 }
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
 
             if (this.isBurning() && this.canSmelt() && this.getNetwork() != null)
@@ -243,6 +252,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
        }
+        
+        if (!worldObj.isRemote){
+			if (wasBurning != this.isBurning()){
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				wasBurning = this.isBurning();
+			}
+		}
     }
     
     private boolean canSmelt() {

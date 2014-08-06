@@ -32,6 +32,7 @@ import flaxbeard.steamcraft.codechicken.lib.raytracer.IndexedCuboid6;
 import flaxbeard.steamcraft.codechicken.lib.raytracer.RayTracer;
 import flaxbeard.steamcraft.codechicken.lib.vec.Cuboid6;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
 
 public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter,IWrenchable {
 	//protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
@@ -43,6 +44,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	public Block disguiseBlock = null;
 	public int disguiseMeta = 0;
 	private boolean lastWrench = false;
+	public boolean isOriginalPipe = false;
+	public boolean isOtherPipe = false;
 	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
@@ -164,7 +167,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
 			}
 			if (!worldObj.isRemote){
-				if (myDirections.size() == 2 && this.getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
+				if (myDirections.size() == 2 && this.getSteamShare() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 					if (!isLeaking){
 						////System.out.println("Block is leaking!");
@@ -231,7 +234,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
 	
 	@Override
-	public int getSteam(){
+	public int getSteamShare(){
 		if (this.getNetwork() == null){
 			this.network = null;
 			this.networkName = null;
@@ -354,34 +357,49 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    			pipe.blacklistedSides.remove((Integer)direction.getOpposite().ordinal());
 			    	
 			    	//network stuff
+	    			
 					int steam = pipe.getNetwork().split(pipe, false);
-					SteamNetwork.newOrJoin(pipe);
+					pipe.shouldJoin();
+					pipe.isOtherPipe = true;
 					//pipe.getNetwork().addSteam(steam);
 					this.worldObj.markBlockForUpdate(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
 	    		}
 		    	else if (sidesConnect > 2) {
 			    	//add to blacklist
 		    		this.blacklistedSides.add(subHit);
-		    		
+		    		{
+		    			ForgeDirection d = ForgeDirection.getOrientation(subHit);
+		    			TileEntity te = worldObj.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
+		    			if (te != null && te instanceof TileEntitySteamPipe){
+		    				TileEntitySteamPipe p = (TileEntitySteamPipe)te;
+		    				p.getNetwork().shouldRefresh();
+		    			} else {
+		    				log.error("Error?");
+		    			}
+		    		}
+		    		this.isOriginalPipe = true;
 		    		//bad network stuff
 					int steam = this.getNetwork().split(this, false);
-					SteamNetwork.newOrJoin(this);
+					this.shouldJoin();
 					//this.getNetwork().addSteam(steam);
 					////System.out.println("B");
 					////System.out.println(this.getNetworkName());
 					////System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 					
+					refreshNeighbors();
+					this.network.shouldRefresh();
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					
 		    	}
 	    	}
 	    	//else if doesn't connect
 	    	else if (!this.doesConnect(ForgeDirection.getOrientation(subHit))) {
 	    		if (this.blacklistedSides.contains(subHit)) {
-	    			//remomve from whitelist
+	    			//remove from whitelist
 		    		this.blacklistedSides.remove((Integer)subHit);			    	
 			    	//network stuff
 					int steam = this.getNetwork().split(this, false);
-					SteamNetwork.newOrJoin(this);
+					this.shouldJoin();
 					//this.getNetwork().addSteam(steam);
 					////System.out.println("C");
 					////System.out.println(this.getNetworkName());
@@ -389,7 +407,37 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	    		}
 	    	}
+	    	if (this.getSteamShare() > 0){
+	    		world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+	    		ForgeDirection d = ForgeDirection.getOrientation(subHit);
+	    		SteamcraftServerPacketHandler.sendPipeConnectDisconnectPacket(getDimension(), xCoord+0.5F+(d.offsetX/2F), yCoord+0.5F+(d.offsetY/2F), zCoord+0.5F+(d.offsetZ/2F));
+		    }
 	    	world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:wrench", 2.0F, 0.9F);
+	    	
 	    }
+	}
+	
+	@Override
+	public void refresh() {
+		super.refresh();
+		this.isOriginalPipe = false;
+		this.isOtherPipe = false;
+	}
+	
+	private void refreshNeighbors(){
+		//log.debug("Refreshing neighbors");
+		for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS){
+			TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+			if (te != null && te instanceof ISteamTransporter){
+				//log.debug("    Valid");
+				ISteamTransporter trans = (ISteamTransporter)te;
+				if (trans.getNetwork() != this.getNetwork()){
+					//log.debug("     Different network!");
+					trans.getNetwork().shouldRefresh();
+				} else {
+					//log.debug("SameNet");
+				}
+			}
+		}
 	}
 }
