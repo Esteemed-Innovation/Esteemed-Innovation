@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
@@ -70,15 +71,16 @@ public class BlockVacuum extends BlockSteamTransporter implements IWrenchable{
         return false;
     }
     
-	@Override
+    @Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
+		int meta = world.getBlockMetadata(x, y, z);
 		if (player.isSneaking()) {
 			return true;
 		}
 		else
 		{
-	        world.setBlockMetadataWithNotify(x, y, z, side, 2);
+            world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
 	        return true;
 		}
 	}
