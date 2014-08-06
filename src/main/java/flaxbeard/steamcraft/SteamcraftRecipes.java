@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
+import flaxbeard.steamcraft.handler.CanisterHandler;
 
 public class SteamcraftRecipes {
     
@@ -130,6 +131,10 @@ public class SteamcraftRecipes {
 	
 	public static void registerMisc(){
 		BookRecipeRegistry.addRecipe("book",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.book), Items.book, "oreZinc", "oreCopper"));		
+		if (Config.enableCanister) {
+			GameRegistry.addRecipe(new CanisterHandler());
+		}
+		
 		if (Config.enableSurvivalist){
 			BookRecipeRegistry.addRecipe("survivalist",new ItemStack(SteamcraftItems.survivalist), "b s", "xwx", "xxx", 
 			        'x', Items.leather, 's', Items.string, 'b', Items.brick, 'w', Items.stick);
@@ -169,6 +174,11 @@ public class SteamcraftRecipes {
 			        'i', "ingotIron", 'b', "plateSteamcraftBrass"));
 			BookRecipeRegistry.addRecipe("wrench2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wrench,1,0), "  i", " bb", "b  ", 
 			        'i', "ingotIron", 'b', "ingotBrass"));
+		}
+		
+		if (Config.enableCanister){
+			BookRecipeRegistry.addRecipe("canister",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canister,4,0), " i ", "i i", " i ", 
+			        'i', "nuggetIron"));
 		}
 		
 		if (Config.enableHorn){
@@ -281,6 +291,15 @@ public class SteamcraftRecipes {
 			BookRecipeRegistry.addRecipe("thrusters2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.thrusters), "tnt", "ptp", "tnt" ,
 			        'p', SteamcraftBlocks.pipe, 't', "plateSteamcraftBrass", 'n', "nuggetBrass"));
 		}
+		
+		BookRecipeRegistry.addRecipe("canner1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canner), "bbn", "p p", "i i" ,
+		        'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0), 'b', "ingotBrass", 'n', "nuggetIron", 'i', "ingotIron"));
+		BookRecipeRegistry.addRecipe("canner2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canner), "bbn", "p p", "i i" ,
+		        'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0), 'b', "plateSteamcraftBrass", 'n', "nuggetIron", 'i', "plateSteamcraftIron"));
+		BookRecipeRegistry.addRecipe("canner3",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canner), "bbn", "p p", "i i" ,
+		        'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0), 'b', "ingotBrass", 'n', "nuggetIron", 'i', "ingotIron"));
+		BookRecipeRegistry.addRecipe("canner4",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canner), "bbn", "p p", "i i" ,
+		        'p', new ItemStack(SteamcraftItems.steamcraftCrafting,1,0), 'b', "plateSteamcraftBrass", 'n', "nuggetIron", 'i', "plateSteamcraftIron"));
 		
 		if (Config.enableWings){
 			BookRecipeRegistry.addRecipe("wings1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.wings), "xxx", "ccc", "c c" ,

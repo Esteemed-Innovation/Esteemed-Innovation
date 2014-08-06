@@ -6,6 +6,7 @@ import java.util.Collection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -17,7 +18,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import scala.Tuple4;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
@@ -28,13 +28,22 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
     private Object[] inputs = new Object[9];
     private boolean shapeless = false;
     private IRecipe[] recipe;
+    
+	
+	public BookPageCrafting(String string, boolean shape, ItemStack op, Object... ip) {
+		super(string);
+		output = op;
+		inputs = ip;
+		shapeless = shape;
+	}
+	
 
 	public BookPageCrafting(String string,ItemStack op, Object... ip) {
 		super(string);
 		output = op;
 		inputs = ip;
 	}
-	
+
 	public BookPageCrafting(String string, String... keys) {
 		this(string, getRecipes(keys));
 	}
@@ -144,7 +153,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         }
         int maxX = 3;
         int maxY = 3;
-        if (recipe[0] instanceof ShapedOreRecipe) {
+        if (recipe != null && recipe[0] != null && recipe[0] instanceof ShapedOreRecipe) {
         	maxX = (Integer)ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe)recipe[0], 4);
         	maxY = (Integer)ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe)recipe[0], 5);
 
@@ -153,6 +162,12 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
             for (int j = 0; j < maxX; j++) {
             	if (inputs.length>(maxX*i) + j) {
             		if (!(inputs[(maxX*i)+j] == null)) {
+            			if (inputs[(maxX*i)+j] instanceof Item) {
+            				ItemStack item = new ItemStack((Item) inputs[(maxX*i)+j]);
+				            fontRenderer.setUnicodeFlag(false);
+				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer, true);
+				            fontRenderer.setUnicodeFlag(true);
+            			}
             			if (inputs[(maxX*i)+j] instanceof ItemStack) {
             				ItemStack item = (ItemStack) inputs[(maxX*i)+j];
 				            fontRenderer.setUnicodeFlag(false);

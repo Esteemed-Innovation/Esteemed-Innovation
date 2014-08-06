@@ -32,6 +32,7 @@ import flaxbeard.steamcraft.client.render.IInventoryTESR;
 import flaxbeard.steamcraft.client.render.ItemFirearmRenderer;
 import flaxbeard.steamcraft.client.render.ItemSteamToolRenderer;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
+import flaxbeard.steamcraft.client.render.RenderCanister;
 import flaxbeard.steamcraft.client.render.RenderMortarItem;
 import flaxbeard.steamcraft.client.render.RenderSteamHorse;
 import flaxbeard.steamcraft.client.render.TileEntityConveyorRenderer;
@@ -49,6 +50,7 @@ import flaxbeard.steamcraft.client.render.TileEntityThumperRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityVacuumRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityValvePipeRenderer;
 import flaxbeard.steamcraft.common.CommonProxy;
+import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
@@ -90,6 +92,8 @@ public class ClientProxy extends CommonProxy
    	 	Steamcraft.channel.register(new SteamcraftClientPacketHandler());
    	 	
    	 	RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new RenderMortarItem());
+   	 	RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, new RenderCanister());
+
    	 	RenderingRegistry.registerEntityRenderingHandler(EntitySteamHorse.class, new RenderSteamHorse(new ModelHorse(), 0));
 
     	TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer();

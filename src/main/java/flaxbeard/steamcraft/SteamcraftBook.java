@@ -2,8 +2,6 @@ package flaxbeard.steamcraft;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -159,6 +157,13 @@ public class SteamcraftBook {
 				SteamcraftRegistry.addResearch("research.Survivalist.name","category.Gadgets.name",new BookPageItem("research.Survivalist.name","research.Survivalist.0", new ItemStack(SteamcraftItems.survivalist)),new BookPageCrafting("","survivalist"));
 			}
 		}
+		if (Config.enableCanister){
+			ItemStack output = new ItemStack(Items.diamond_sword);
+			output.setTagCompound(new NBTTagCompound());
+			output.stackTagCompound.setInteger("canned", 0);
+			SteamcraftRegistry.addResearch("research.Canister.name","category.Gadgets.name",new BookPageItem("research.Canister.name","research.Canister.0", new ItemStack(SteamcraftItems.canister)),new BookPageCrafting("","canister")
+			,new BookPageCrafting("", true,output, Items.diamond_sword, SteamcraftItems.canister));
+		}
 	}
 	
 	public static void registerSteamPower(){
@@ -300,7 +305,9 @@ public class SteamcraftBook {
 			SteamcraftRegistry.addResearch("research.ExoArm.name","category.Exosuit.name");
 			SteamcraftRegistry.addResearch("research.Fist.name","!research.ExoArm.name",new BookPageItem("research.Fist.name","research.Fist.0", true, new ItemStack(SteamcraftItems.powerFist)),new BookPageCrafting("","powerFist1","powerFist2"));
 			SteamcraftRegistry.addResearch("research.ExoHip.name","category.Exosuit.name");
-			SteamcraftRegistry.addResearch("research.Thrusters.name","!research.ExoHip.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters"));
+			SteamcraftRegistry.addResearch("research.Thrusters.name","!research.ExoHip.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters2"));
+			SteamcraftRegistry.addResearch("research.Canner.name","!research.ExoHip.name",new BookPageItem("research.Canner.name","research.Canner.0", true, new ItemStack(SteamcraftItems.canner)),new BookPageCrafting("","canner1","canner2","canner3","canner4"));
+
 			SteamcraftRegistry.addResearch("research.ExoLeg.name","category.Exosuit.name");
 			SteamcraftRegistry.addResearch("research.ExoHeel.name","category.Exosuit.name");
 			SteamcraftRegistry.addResearch("research.ExoFoot.name","category.Exosuit.name");

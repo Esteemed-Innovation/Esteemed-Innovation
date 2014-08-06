@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,11 +53,13 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -64,6 +67,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
@@ -87,6 +91,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
+import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
@@ -110,6 +115,94 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 	private static final ResourceLocation icons = new ResourceLocation("steamcraft:textures/gui/icons.png");
+	
+	@SubscribeEvent
+	public void handleCanningMachine(EntityItemPickupEvent event) {
+		if (event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote) {
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			if (hasPower(player,10) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
+				if (chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.canner)) {
+
+					boolean isCannable = false;
+					ItemStack item = event.item.getEntityItem().copy();
+					if (item.hasTagCompound() && item.stackTagCompound.hasKey("canned")) {
+						return;
+					}
+
+					if (item.getItem().getUnlocalizedName(item).toLowerCase().contains("ingot")
+							|| item.getItem().getUnlocalizedName(item).toLowerCase().contains("gem")
+							|| item.getItem().getUnlocalizedName(item).toLowerCase().contains("ore")) {
+						isCannable = true;
+					}
+					for (int id : OreDictionary.getOreIDs(item)) {
+						String str = OreDictionary.getOreName(id);
+						if (str.toLowerCase().contains("ingot")
+								|| str.toLowerCase().contains("gem")
+								|| str.toLowerCase().contains("ore")) {
+							isCannable = true;
+						}
+					}
+					if (isCannable) {
+						int numCans = 0;
+						for (int i = 0; i<player.inventory.getSizeInventory(); i++) {
+							if (player.inventory.getStackInSlot(i) != null) {
+								if (player.inventory.getStackInSlot(i).getItem() == SteamcraftItems.canister) {
+									numCans+=player.inventory.getStackInSlot(i).stackSize;
+								}
+							}
+						}
+						if (numCans >= item.stackSize) {
+							if (!item.hasTagCompound()) {
+								item.setTagCompound(new NBTTagCompound());
+							}
+							item.stackTagCompound.setInteger("canned", 0);
+							event.item.setEntityItemStack(item);
+							for (int i = 0; i<item.stackSize; i++) {
+								player.inventory.consumeInventoryItem(SteamcraftItems.canister);
+								player.inventoryContainer.detectAndSendChanges();
+							}
+						}
+						else if (numCans != 0) {
+							item.stackSize -= numCans;
+							event.item.setEntityItemStack(item);
+							ItemStack item2 = item.copy();
+							item2.stackSize = numCans;
+							if (!item2.hasTagCompound()) {
+								item2.setTagCompound(new NBTTagCompound());
+							}
+							item2.stackTagCompound.setInteger("canned", 0);
+							EntityItem entityItem = new EntityItem(player.worldObj,player.posX, player.posY, player.posZ, item2);
+							player.worldObj.spawnEntityInWorld(entityItem);
+							for (int i = 0; i<numCans; i++) {
+								player.inventory.consumeInventoryItem(SteamcraftItems.canister);
+								player.inventoryContainer.detectAndSendChanges();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void handleCans(EntityJoinWorldEvent event) {
+		if (event.entity instanceof EntityItem && !(event.entity instanceof EntityCanisterItem)) {
+			EntityItem item = (EntityItem) event.entity;
+			if (item.getEntityItem().hasTagCompound() && item.getEntityItem().stackTagCompound.hasKey("canned")) {
+				if (!event.world.isRemote) {
+					EntityCanisterItem item2 = new EntityCanisterItem(item.worldObj, item.posX, item.posY, item.posZ, item);
+					item2.motionX = item.motionX;
+					item2.motionY = item.motionY;
+					item2.motionZ = item.motionZ;
+					item2.delayBeforeCanPickup = item.delayBeforeCanPickup;
+					item.worldObj.spawnEntityInWorld(item2);
+				}
+				item.setDead();
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void handleWorldLoad(WorldEvent.Load event) {
 		if (!event.world.isRemote) {
@@ -478,6 +571,11 @@ public class SteamcraftEventHandler {
 		ItemStack stack = event.itemStack;
 		if (UtilPlates.getPlate(stack) != null) {
 			event.toolTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("steamcraft.plate.bonus") + UtilPlates.getPlate(stack).effect());
+		}
+		if (stack.hasTagCompound()) {
+			if (stack.stackTagCompound.hasKey("canned")) {
+				event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("steamcraft.canned"));
+			}
 		}
 		if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ItemSteamShovel) {
 			ArrayList<String> linesToRemove = new ArrayList<String>();
