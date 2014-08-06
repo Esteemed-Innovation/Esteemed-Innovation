@@ -23,7 +23,7 @@ public class UtilSteamTransport {
 		if (pressure > 1.2F) {
 			ISteamTransporter trans = (ISteamTransporter) world.getTileEntity(x, y, z);
 			float resistance = trans.getPressureResistance();
-			int steam = trans.getSteam();
+			int steam = trans.getSteamShare();
 			int oneInX = Math.max(1, (int)Math.floor((double)(500.0F  - (pressure / (1.1F + resistance) * 100)) ));
 			////System.out.println(steam + "/" + capacity +" = " +(((float)steam) / ((float)capacity)));
 			////System.out.println("100 - (" + pressure + " / (1.1F + "+resistance+") *100 )" + "chance of explosion: 1 in "+oneInX);
@@ -46,9 +46,9 @@ public class UtilSteamTransport {
 					if (tile instanceof ISteamTransporter) {
 						ISteamTransporter target = (ISteamTransporter) tile;
 						if (trans.getPressure() > target.getPressure() && target.canInsert(direction.getOpposite())) {
-							float targetpercent = ((float)trans.getSteam()+target.getSteam())/((float)trans.getCapacity()+target.getCapacity());
-							int change = (int) (Math.floor(trans.getSteam()*target.getCapacity()-target.getSteam()*trans.getCapacity())/(trans.getCapacity()+target.getCapacity()));
-							if (change > 0 && change <= trans.getSteam()) {
+							float targetpercent = ((float)trans.getSteamShare()+target.getSteamShare())/((float)trans.getCapacity()+target.getCapacity());
+							int change = (int) (Math.floor(trans.getSteamShare()*target.getCapacity()-target.getSteamShare()*trans.getCapacity())/(trans.getCapacity()+target.getCapacity()));
+							if (change > 0 && change <= trans.getSteamShare()) {
 								trans.decrSteam(change);
 								target.insertSteam(change, direction.getOpposite());
 							}
@@ -71,9 +71,9 @@ public class UtilSteamTransport {
 						}
 						float pressure = (float)steam/(float)cap;
 						if (target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam")) && trans.getPressure() > pressure) {
-							float targetpercent = ((float)trans.getSteam()+steam)/((float)trans.getCapacity()+cap);
-							int change = (int) (Math.floor(trans.getSteam()*cap-steam*trans.getCapacity())/(trans.getCapacity()+cap));
-							if (change > 0 && change <= trans.getSteam()) {
+							float targetpercent = ((float)trans.getSteamShare()+steam)/((float)trans.getCapacity()+cap);
+							int change = (int) (Math.floor(trans.getSteamShare()*cap-steam*trans.getCapacity())/(trans.getCapacity()+cap));
+							if (change > 0 && change <= trans.getSteamShare()) {
 								trans.decrSteam(change-target.fill(direction.getOpposite(), new FluidStack(FluidRegistry.getFluid("steam"), change*10), true)/10);
 							}
 						}

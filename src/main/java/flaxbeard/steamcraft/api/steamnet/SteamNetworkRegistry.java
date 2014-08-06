@@ -64,15 +64,15 @@ public class SteamNetworkRegistry {
 		////System.out.println("reading network registry for dimension " + dimID + " from NBT");
 		
 		HashMap<String, SteamNetwork> nets = new HashMap<String, SteamNetwork>();
-		if (nbt.hasKey("networks")){
-			NBTTagList tagNets = (NBTTagList) nbt.getTag("networks");
-			for (int i = 0; i < tagNets.tagCount(); i++){
-				SteamNetwork net = SteamNetwork.readFromNBT(tagNets.getCompoundTagAt(i));
-				//////System.out.println("Loaded network "+net.getName());
-				nets.put(net.getName(), net);
-			}
-			networks.put(dimID, nets);
-		}
+//		if (nbt.hasKey("networks")){
+//			NBTTagList tagNets = (NBTTagList) nbt.getTag("networks");
+//			for (int i = 0; i < tagNets.tagCount(); i++){
+//				SteamNetwork net = SteamNetwork.readFromNBT(tagNets.getCompoundTagAt(i));
+//				//////System.out.println("Loaded network "+net.getName());
+//				nets.put(net.getName(), net);
+//			}
+//			networks.put(dimID, nets);
+//		}
 		////System.out.println("==================================================Loaded "+dimID);
 		initialized.add(dimID);
 		
@@ -90,7 +90,9 @@ public class SteamNetworkRegistry {
 			try{
 				for (HashMap<String, SteamNetwork> dimension : networks.values()){
 					for (SteamNetwork net : dimension.values()){
-						net.tick();
+						if (!net.tick()){
+							dimension.remove(net.getName());
+						}
 					}
 				}
 			} catch (ConcurrentModificationException ex){

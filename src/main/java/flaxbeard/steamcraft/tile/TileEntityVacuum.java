@@ -97,10 +97,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 	
 	@Override
 	public void updateEntity() {
-		if (lastSteam != this.getSteam() > steamUsage) {
+		if (lastSteam != this.getSteamShare() > steamUsage) {
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		lastSteam = this.getSteam() > steamUsage;
+		lastSteam = this.getSteamShare() > steamUsage;
 		if (!isInitialized) {
 			this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 			ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
@@ -119,7 +119,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 		if (active && this.worldObj.isRemote) {
 			rotateTicks++;
 		}
-		if (active && this.worldObj.isRemote || (this.getSteam() > steamUsage && !this.powered)) {
+		if (active && this.worldObj.isRemote || (this.getSteamShare() > steamUsage && !this.powered)) {
 			if (!this.worldObj.isRemote) {
 				this.decrSteam(3);
 			}
@@ -272,7 +272,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 	public Packet getDescriptionPacket()
 	{
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteam() > 0 && !this.powered);
+        access.setBoolean("active", this.getSteamShare() > 0 && !this.powered);
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -334,7 +334,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 		}
 		else
 		{
-			int steam = this.getSteam();
+			int steam = this.getSteamShare();
 	
 			this.getNetwork().split(this, true);
 			ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));

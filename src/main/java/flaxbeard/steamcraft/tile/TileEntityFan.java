@@ -65,7 +65,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	public Packet getDescriptionPacket()
 	{
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteam() > 0 && !this.powered);
+        access.setBoolean("active", this.getSteamShare() > 0 && !this.powered);
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -85,10 +85,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	
 	@Override
 	public void updateEntity() {
-		if (lastSteam != this.getSteam() > 0) {
+		if (lastSteam != this.getSteamShare() > 0) {
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		lastSteam = this.getSteam() > 0;
+		lastSteam = this.getSteamShare() > 0;
 		if (!isInitialized) {
 			this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
@@ -98,7 +98,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 		if (active && this.worldObj.isRemote) {
 			rotateTicks++;
 		}
-		if (active && this.worldObj.isRemote || (this.getSteam() > 0 && !this.powered)) {
+		if (active && this.worldObj.isRemote || (this.getSteamShare() > 0 && !this.powered)) {
 			if (!this.worldObj.isRemote) {
 				this.decrSteam(1);
 			}
@@ -193,7 +193,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 		}
 		else
 		{
-			int steam = this.getSteam();
+			int steam = this.getSteamShare();
 			this.getNetwork().split(this, true);
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 			
