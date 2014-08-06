@@ -12,6 +12,11 @@ steamcraft.astrolabe.dimension.nether=下界
 steamcraft.astrolabe.dimension.end=末地
 steamcraft.astrolabe.in=在
 
+steamcraft.fan.range=范围:
+steamcraft.fan.blocks=格
+steamcraft.smasher.true=模式:方块破坏
+steamcraft.smasher.false=模式:矿石粉碎
+
 steamcraft.waila.pressure=压力
 steamcraft.waila.valveOpen=阀门打开
 steamcraft.waila.valveClosed=阀门关闭
@@ -22,8 +27,20 @@ steamcraft.waila.mold=模具:
 steamcraft.exosuit.thrustTick=使用推进时每tick消耗
 steamcraft.exosuit.flyTick=每tick飞行消耗
 
+category.RecentCreations.name=近期作品
 
 category.Basics.name=基础
+research.SteamSystem.name=蒸汽系统
+research.SteamSystem.0=在我深入研究这个世界时,我有了惊奇的发现!水在被加热时会变为气态,产生烟雾一般的白色蒸汽.此外,如果该过程发生在密闭系统内,内部压力就会增大.
+research.SteamSystem.1=使用各种管道,汽罐,和各式机器,我做出了一个能储存,测量和调节这种蒸汽压力的系统,因而能够利用它的潜在能量来做些有益的事.然而,这些组件的发明之路改变了我对蒸汽的看法.
+research.SteamSystem.2=首先我意识到蒸汽不是一种液体而是一种气体.由于它本身快速膨胀的性质,蒸汽在导入后很快就能充满整个管道线,汽罐和其他机器.因此,系统容量增加的同时,因通入定量蒸汽而增加的压力也会减小 .
+research.SteamSystem.3=因为这个原因我就必须平衡好既定的蒸汽系统大小与蒸汽产生的速率.如果系统过大,就会导致压力上升过慢而不能达到机器工作所需的程度.如果系统太小,就没有足够的蒸汽缓存来持续驱动机器.
+research.SteamSystem.4=工业发明的过程中没有什么是无风险的.我所用的原材料尽管很耐用却也只能承受有限的压力.如果我没有这么勤奋的话,就可能制造超出系统承受程度的压力,造成破坏部件和环境的灾难性失败.
+research.SteamSystem.5=使用压力计,我就能测量出系统内的压力.如果指针在最右侧疯狂摆动我就知道它达到了危险的级别.我可以用阀门放出一些蒸汽,或者在我能预知的情况下,先安装能在脆弱组件损坏前破裂的爆破片,尤其是我的锅炉.
+
+research.Camouflage.name=管道伪装
+research.Camouflage.0=又是我更希望这些管道能从我的视线中隐去而不是这样暴露着.这就是隐藏管道方法的由来.手持方块shift右击一个管道就能伪装.
+research.Camouflage.1=伪装管道完全藏在了伪装用的方块中且不影响管道的工作.<br>手持扳手时,我能透过伪装看见内部的管道.<br>shift右击伪装管道就能移除伪装方块.
 research.Ores.name=矿物
 research.Ores.0=探究这个世界的深处时,我找到了许多锡和铜的矿床.<br>这些奇怪的金属看起来没有什么特殊用途,但我确信将来能找出使用它们的方法.
 research.Book.name=前言
@@ -39,6 +56,8 @@ research.SurvivalistBaubles.0=我已经用坏宝贵的附魔工具太多次了.�
 
 research.Plates.name=板材
 research.Plates.0=使用新的金属浇铸装置时,我发明了一种更有效利用金属的方法 .我只需一个锭的一部分就能浇铸金属板,这些板材在很多地方都可以代替锭来使用.
+
+
 
 category.MetalCasting.name=金属浇铸
 research.Crucible.name=坩埚
@@ -70,6 +89,10 @@ research.Pipe.1=将拉杆和管道放在一起使我能控制蒸汽的流向.右
 research.RuptureDisc.name=爆破片
 research.RuptureDisc.0=因压力太大而损失锅炉和机器不止一次了.这就是爆破片的由来.<br>实际使用时,将它安在我觉得可能会爆炸的机器或管道上即可.
 research.RuptureDisc.1=它会在临界压力值到达前爆裂来释放蒸汽.当然,它会一直释放蒸汽直到用锌板合成修复或用锌板右击.
+
+research.Whistle.name=汽笛
+research.Whistle.0=我发明了一个能在系统压力达到危险级时警告我的小器件.汽笛甚至能在爆破片破裂前响起!
+
 research.Gauge.name=蒸汽压力计
 research.Gauge.0=我做出了一个测量管道内蒸汽压力的简单装置.它可以安在锅炉,管道,汽罐或是其他设备上并形象显示其中的压力,利用比较器可以输出与压力相应的红石信号.
 research.Heater.name=蒸汽加热器
@@ -86,9 +109,16 @@ research.Screw.name=阿基米德螺旋泵
 research.Screw.0=我发明了一种方法将液体移至邻近的容器中.放置并驱动这个螺旋泵就会从低的一端将液体移往高的一端,使我能填充锅炉和其他类似的容器.
 research.Smasher.name=碎石机
 research.Smasher.0=我发明了一种能将矿物粉碎成小块的机器,有时可用的材料也会损失.使用粉碎机时,将两个相向距离一格放置.之后将方块放在中间来粉碎.
-research.Thumper.name=锤击器
-research.Thumper.0=我得想点大的东西.我已经将时间浪费在了处理小事情比如移动水和粉碎石头上...<br>不.我得在更大的规模上考虑.这就是锤击器的由来.
-research.Thumper.1=锤击器本身能粉碎地下构造,缓慢侵蚀地下空穴.这个空穴不会在地表暴露,被破坏的岩石和矿物将会留在那里,因此我还要想其他办法来收集这些物品.<br>最终,锤击器会减缓直至停止压裂过程.这时候就可以移走了.
+research.Smasher.1=碎石机有两个模式,矿石粉碎和方块破坏,可用扳手来切换.<br>粉碎模式会粉碎矿石,并将岩石碎为细砂砾.<br>方块破坏模式只会单纯破坏方块而不是粉碎.
+research.Thumper.name=重锤机
+research.Thumper.0=我得想点大的东西.我已经将时间浪费在了处理小事情比如移动水和粉碎石头上...<br>不.我得在更大的规模上考虑.这就是重锤机的由来.
+research.Thumper.1=重锤机本身能粉碎地下构造,缓慢侵蚀地下空穴.这个空穴不会在地表暴露,被破坏的岩石和矿物将会留在那里,因此我还要想其他办法来收集这些物品.<br>最终,重锤机会减缓直至停止压裂过程.这时候就可以移走了.
+research.Fan.name=蒸汽风扇
+research.Fan.0=风扇是我所发明的最万能的设备之一.只要放置下来:它就会在供入蒸汽时推动物品.能用于升降机或收割作物,移动物品或动物.可用扳手调节它的范围.
+research.Vacuum.name=吸力风扇
+research.Vacuum.0=对我的风扇稍加改造就有了吸力风扇,一个会吸引一切的设备,将吸入的物品放入后侧的容器中.可用扳手调节它的范围.
+research.FSC.name=压力转换器
+research.FSC.0=尽管已经用了许多小器件来处理锅炉产生的过高压力,其他的可能就无法做到了.该设备允许管道从线路中输出或向其输入低密度的蒸汽.
 
 category.Exosuit.name=机械护甲
 research.Exosuit.name=机械护甲
@@ -107,10 +137,13 @@ research.FallAssist.0=这个靴子升级在我探索危险地形时是必要的.
 research.Mask.name=揭示之面具
 research.Mask.0=谁说神秘学不能与科技相容?不是我!我开发出了一个炫酷的面具使得机械护甲能拥有揭示护目镜一样的能力.
 
-category.SteamTools.name=蒸汽工具
+category.Gadgets.name=Gadgets
 research.SteamTools.name=蒸汽工具
-research.SteamTools.0=紧随着我碎石机与锤击器的成功,我冒险做出了更多这些岩石破坏工具的便携版本.最终,我的工作完成了,就有了蒸汽钻,蒸汽锯和蒸汽铲.
+research.SteamTools.0=紧随着我碎石机与重锤机的成功,我冒险做出了更多这些岩石破坏工具的便携版本.最终,我的工作完成了,就有了蒸汽钻,蒸汽锯和蒸汽铲.
 research.SteamTools.1=这三样工具能用蒸汽充填并且不会损坏.<br>它们需要转动才能有效工作.手持工具右击就会开启转动并消耗蒸汽,同时加速工具.与普通工具不同,开采本身不消耗蒸汽.
+research.Wrench.name=管道扳手
+research.Wrench.0=处理蒸汽所需的第一个工具就是扳手了,它是个多功能的工具.<br>直接右击管道会让它与其他管道和机器断开或重连.
+research.Wrench.1=Shift右击伪装管道会解除伪装重现管道.<br>对机器使用则能旋转其朝向.<br>Shift右击一些机器能调整其工作模式.
 
 category.Flintlock.name=燧发枪武器
 research.Parts.name=武器部件
@@ -218,6 +251,7 @@ item.steamcraft:steamDrill.name=蒸汽钻
 item.steamcraft:steamAxe.name=蒸汽锯
 item.steamcraft:steamShovel.name=蒸汽铲
 item.steamcraft:astrolabe.name=星盘
+item.steamcraft:wrench.name=管道扳手
 
 item.steamcraft:survivalist.name=求生者工具包
 
@@ -257,7 +291,11 @@ tile.steamcraft:hammer.name=蒸汽锤
 tile.steamcraft:itemMortar.name=物品迫击炮
 tile.steamcraft:pump.name=阿基米德螺旋泵
 tile.steamcraft:smasher.name=碎石机
-tile.steamcraft:thumper.name=锤击器
+tile.steamcraft:thumper.name=重锤机
 tile.steamcraft:flashBoiler.name=快热锅炉组件
 tile.steamcraft:ruptureDisc.0.name=爆破片
 tile.steamcraft:ruptureDisc.1.name=破裂的爆破片
+tile.steamcraft:fan.name=蒸汽风扇
+tile.steamcraft:vacuum.name=吸力风扇
+tile.steamcraft:horn.name=汽笛
+tile.steamcraft:fluidSteamConverter.name=压力转换器
