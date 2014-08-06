@@ -119,7 +119,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 					}
 					this.worldObj.setBlockToAir(x,y,z);
 				}
-				if (!blocked && (this.worldObj.getBlock(x,y,z).isReplaceable(worldObj, x,y,z) || this.worldObj.isAirBlock(x,y,z)  || this.worldObj.getBlock(x,y,z) instanceof BlockTrapDoor || this.worldObj.getBlock(x,y,z).getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null || (this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir) && this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir.getOpposite())))) {
+				if (!blocked && (this.worldObj.getBlock(x,y,z).isReplaceable(worldObj, x,y,z)
+						|| this.worldObj.isAirBlock(x,y,z)
+						|| this.worldObj.getBlock(x,y,z) instanceof BlockTrapDoor
+						|| this.worldObj.getBlock(x,y,z).getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null)) {
 					blocksInFront = i;
 					if (i != range-1)
 						this.worldObj.spawnParticle("smoke", xCoord+dir.offsetX*i+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+dir.offsetY*i+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+dir.offsetZ*i+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);

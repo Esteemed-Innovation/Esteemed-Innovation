@@ -18,8 +18,8 @@ import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 public class SteamcraftBook {
 	public static void registerBookResearch() {
 		if (Config.hasAllCrucial){
-			registerBasics();
 			registerRecentCreations();
+			registerBasics();
 			registerFirearms();
 			registerCasting();
 			registerGadgets();
