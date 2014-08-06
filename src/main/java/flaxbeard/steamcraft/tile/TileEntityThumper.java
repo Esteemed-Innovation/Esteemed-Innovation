@@ -45,7 +45,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 			}
 
 		} else {
-			if (this.getSteam() >= 2000 && this.progress == 0) {
+			if (this.getSteamShare() >= 2000 && this.progress == 0) {
 				if (! this.isRunning){
 					this.isRunning = true;
 				}

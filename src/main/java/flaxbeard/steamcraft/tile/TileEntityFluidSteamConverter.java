@@ -69,7 +69,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-		int steam = this.getSteam();
+		int steam = this.getSteamShare();
 		this.getNetwork().split(this, true);
 		this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 		
@@ -105,9 +105,9 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 		}
 		Fluid fluid = FluidRegistry.getFluid("steam");
         int drained = resource.amount;
-        if (this.getSteam() < drained)
+        if (this.getSteamShare() < drained)
         {
-            drained = this.getSteam();
+            drained = this.getSteamShare();
         }
 
         FluidStack stack = new FluidStack(fluid, drained);
@@ -127,9 +127,9 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 		}
 		Fluid fluid = FluidRegistry.getFluid("steam");
         int drained = maxDrain;
-        if (this.getSteam() < drained)
+        if (this.getSteamShare() < drained)
         {
-            drained = this.getSteam();
+            drained = this.getSteamShare();
         }
 
         FluidStack stack = new FluidStack(fluid, drained);
@@ -156,7 +156,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		dummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"),this.getSteam()), this.getCapacity());
+		dummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"),this.getSteamShare()), this.getCapacity());
 		return new FluidTankInfo[] {dummyTank.getInfo()};
 	}
 

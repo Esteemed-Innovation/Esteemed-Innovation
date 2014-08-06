@@ -5,24 +5,35 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.util.Coord4;
+import flaxbeard.steamcraft.api.util.SPLog;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 
 public class SteamNetwork {
+	
+	protected SPLog log = Steamcraft.log;
+	protected static SPLog slog = Steamcraft.log;
+	private int refreshWaitTicks = 0;
+	private int globalRefreshTicks = 300;
 	
 	private static Random random = new Random();
 	private String name;
 	private int steam;
 	private int capacity;
 	private boolean isPopulated = false;
+	private boolean shouldRefresh = false;
 	private Coord4[] transporterCoords;
+	private int dim = 0;
 	private HashMap<Coord4,ISteamTransporter> transporters = new HashMap<Coord4,ISteamTransporter>();
 	
 	public SteamNetwork(){
@@ -30,13 +41,12 @@ public class SteamNetwork {
 		this.capacity = 0;
 	}
 	
-	public SteamNetwork(int steam, int capacity){
-		this.steam = steam;
+	public SteamNetwork(int capacity){
 		this.capacity = capacity;
 	}
 	
-	public SteamNetwork(int steam, int capacity, String name, ArrayList<Coord4> coordList){
-		this(steam, capacity);
+	public SteamNetwork(int capacity, String name, ArrayList<Coord4> coordList){
+		this(capacity);
 		for (Coord4 c : coordList){
 			this.transporters.put(c, null);
 		}
@@ -50,7 +60,7 @@ public class SteamNetwork {
 		}
 		nbt.setTag("transporters", nbtl);
 		nbt.setString("name", name);
-		nbt.setInteger("steam", steam);
+		//nbt.setInteger("steam", steam);
 		nbt.setInteger("capacity", capacity);
 		return nbt;
 	}
@@ -62,16 +72,10 @@ public class SteamNetwork {
 			NBTTagCompound tag = nbtl.getCompoundTagAt(i);
 			coords.add(Coord4.readFromNBT(tag));
 		}
-		int s = nbt.getInteger("steam");
+		//int s = nbt.getInteger("steam");
 		int c = nbt.getInteger("capacity");
 		String n = nbt.getString("name");
-		return new SteamNetwork(s, c, n, coords);
-	}
-	
-	public void rejoin(ISteamTransporter trans){
-		if (this.transporters.containsKey(trans.getCoords())){
-			this.transporters.put(trans.getCoords(), trans);
-		}
+		return new SteamNetwork(c, n, coords);
 	}
 	
 	public String getName(){
@@ -82,7 +86,26 @@ public class SteamNetwork {
 		this.name = name;
 	}
 	
-	protected synchronized void tick(){
+	protected boolean tick(){
+		if (this.transporters.size() == 0){
+			return false;
+		}
+		if (shouldRefresh){
+			if (this.refreshWaitTicks > 0){
+				this.refreshWaitTicks--;
+			} else {
+				this.refresh();
+				this.shouldRefresh = false;
+			}
+			
+		}
+		
+		if (globalRefreshTicks > 0){
+			globalRefreshTicks--;
+		} else {
+			this.refresh();
+			globalRefreshTicks = 300;
+		}
 		if (Config.wimpMode){
 			if (this.getPressure() > 1.09F){
 				this.steam = (int)Math.floor((double)this.capacity * 1.09D);
@@ -104,10 +127,10 @@ public class SteamNetwork {
 			
 				}
 			} else {
-				//////System.out.println("Empty network: "+ this.name);
-				//SteamNetworkRegistry.getInstance().remove(this);
+				return false;
 			}
 		}
+		return true;
 	}
 	
 	public synchronized static SteamNetwork newOrJoin(ISteamTransporter trans){
@@ -141,6 +164,7 @@ public class SteamNetwork {
 						main = net;
 					}
 				}
+				
 				main.addTransporter(trans);
 				hasJoinedNetwork = true;
 				theNetwork = main;
@@ -150,6 +174,7 @@ public class SteamNetwork {
 		if (!hasJoinedNetwork) {
 			SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
 			net.addTransporter(trans);
+			SteamNetworkRegistry.getInstance().add(net);
 			theNetwork = net;
 		}
 		return theNetwork;
@@ -157,6 +182,7 @@ public class SteamNetwork {
 	
 	public synchronized void addSteam(int amount){
 		this.steam += amount;
+		this.shouldRefresh();
 	}
 	
 	public synchronized void decrSteam(int amount){
@@ -201,9 +227,28 @@ public class SteamNetwork {
 					ISteamTransporter t = (ISteamTransporter) te;
 					if (t.getConnectionSides().contains(d.getOpposite())){
 						out.add(t);
+						if (t instanceof TileEntitySteamPipe){
+							//slog.debug("Is original pipe: "+((TileEntitySteamPipe)t).isOriginalPipe);
+						}
 						isNeighbor = true;
+					} else {
+						//slog.debug("I can't connect");
 					}
-					//////System.out.println("Side: "+d.offsetX+","+d.offsetY+","+d.offsetZ+"; isNeighbor: "+isNeighbor);
+					TileEntitySteamPipe pipe = null;
+					TileEntitySteamPipe other = null;
+					if (trans instanceof TileEntitySteamPipe){
+						pipe = (TileEntitySteamPipe)trans;
+					}
+					if (t instanceof TileEntitySteamPipe){
+						other = (TileEntitySteamPipe)t;
+					}
+					
+					if (pipe != null && other != null){
+						if ((pipe.isOriginalPipe && other.isOtherPipe) || (pipe.isOtherPipe && other.isOriginalPipe)){
+							//slog.debug("These shouldn't connect but do.");
+						}
+					}
+					//slog.debug("Side: "+d.offsetX+","+d.offsetY+","+d.offsetZ+"; isNeighbor: "+isNeighbor);
 				}
 				
 			}
@@ -218,6 +263,7 @@ public class SteamNetwork {
 			transporters.put(transCoords, trans);
 			trans.setNetworkName(this.name);
 			trans.setNetwork(this);
+			this.addSteam(trans.getSteam());
 			SteamNetworkRegistry.markDirty(this);
 		}
 	}
@@ -253,6 +299,9 @@ public class SteamNetwork {
 			this.steam -= steamRemoved;
 			
 		}
+		for (ISteamTransporter trans : this.transporters.values()){
+			trans.updateSteam((int)(trans.getCapacity() * this.getPressure()));
+		}
 		//////System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
 		this.capacity -= split.getCapacity();
 		//World world = split.getWorldObj();
@@ -260,11 +309,12 @@ public class SteamNetwork {
 		//int x = coords.first, y= coords.second, z=coords.third;
 		//HashSet<ForgeDirection> dirs = split.getConnectionSides();
 		HashSet<SteamNetwork> newNets = new HashSet();
+		boolean hasrun = false;
 		for (ISteamTransporter trans : this.getNeighboringTransporters(split)){
 			if (!isClosedValvePipe(trans)){
 				boolean isInNetwork = false;
 				if (newNets.size() > 0){
-					//////System.out.println("size: "+newNets.size());
+					//log.debug("size: "+newNets.size());
 					for (SteamNetwork net : newNets){
 						if (net.contains(trans)){
 							////System.out.println("In network");
@@ -274,36 +324,43 @@ public class SteamNetwork {
 					}
 				}
 				if (!isInNetwork){
-					////System.out.println("Not in network!");
+					//log.debug("Not in network!");
 					SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
 					//////System.out.println("Crawling!");
 					ISteamTransporter ignore = null;
 					if (removeCapacity){
 						ignore = split;
 					}
+
 					net.buildFromTransporter(trans, net, ignore);
 					newNets.add(net);
 					//////System.out.println(net.getSize());
+					hasrun = true;
 				}
 			}
 			
 		}
 		if (newNets.size() > 0){
-			////System.out.println("More than one new network found");
+			//log.debug("More than one new network found");
 			////System.out.println("old s:"+this.steam+" p:"+this.getPressure() + " c:"+this.capacity);
 			for (SteamNetwork net : newNets){
 				int steamShare = (int)Math.floor((double)(net.capacity * this.getPressure()));
-				////System.out.println("new s:"+steamShare+" c:"+net.capacity+" n: "+net.getName());
-				net.addSteam(steamShare);
+				//log.debug("new s:"+steamShare+" c:"+net.capacity+" n: "+net.getName());
+				//net.addSteam(steamShare);
 				SteamNetworkRegistry.getInstance().add(net);
+				net.shouldRefresh();
 			}
-			SteamNetworkRegistry.getInstance().remove(this);
+			
+			
 		} else {
 			// There's nothing left.
 			////System.out.println("No networks around");
-			SteamNetworkRegistry.getInstance().remove(this);
+			
 		}
+		//log.debug("New networks: "+newNets);
+		this.shouldRefresh();
 		return steamRemoved;
+		
 	}
 	
 	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
@@ -333,9 +390,10 @@ public class SteamNetwork {
 		}
 		HashSet<ISteamTransporter> neighbors = getNeighboringTransporters(trans);
 		for (ISteamTransporter neighbor : neighbors){
-			//////System.out.println(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
+			//log.debug(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
+			
 			if (! checked.contains(neighbor) && neighbor != ignore && !isClosedValvePipe(neighbor)){
-				//////System.out.println("Didn't ignore");
+				//log.debug("Didn't ignore");
 				checked.add(neighbor);
 				crawlNetwork(neighbor, checked, ignore);
 			}
@@ -365,12 +423,17 @@ public class SteamNetwork {
 		for (ISteamTransporter trans : other.transporters.values()){
 			this.addTransporter(trans);
 		}
-		this.steam += other.getSteam();
+		//this.steam += other.getSteam();
 		SteamNetworkRegistry.getInstance().remove(other);
 	}
 
 	public int getDimension() {
-		return transporters.keySet().iterator().next().dimension;
+		if (transporters.size() >0){
+			return transporters.keySet().iterator().next().dimension;
+		} else {
+			return -999;
+		}
+		
 	}
 	
 	public World getWorld(){
@@ -386,7 +449,58 @@ public class SteamNetwork {
 		SteamNetworkRegistry.markDirty(this);
 	}
 	
+	public synchronized void refresh(){
+		float press = this.getPressure();
+		int targetCapacity = 0;
+		//log.debug("Refreshing " + this.name + "; size: "+this.transporters.size());
+		if (this.transporters.size() == 0){
+			//log.debug("empty network");
+			SteamNetworkRegistry.getInstance().remove(this);
+			return;
+		}
+		try {
+			HashMap<Coord4, ISteamTransporter> temp = (HashMap<Coord4,ISteamTransporter>)this.transporters.clone();
+			for (Coord4 c : temp.keySet()){
+				TileEntity te = c.getTileEntity(this.getWorld());
+				if (te == null || ! (te instanceof ISteamTransporter)){
+					//log.debug("illegal transporter");
+					this.transporters.remove(c);
+				} else {
+					if (te instanceof ISteamTransporter){
+						ISteamTransporter trans = (ISteamTransporter) te;
+						if (trans.getNetwork() != this){
+							//log.debug("Different network!");
+							this.transporters.remove(c);
+							this.steam -= this.getPressure() * trans.getCapacity();
+							this.transporters.remove(c);
+						} else {
+							//trans.getWorld().setBlock(c.x, c.y+3, c.z, Blocks.brick_block);	
+							targetCapacity += trans.getCapacity();
+						}
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+		if (this.capacity != targetCapacity){
+			//log.debug("target: "+targetCapacity+"; curent: "+this.capacity);
+			//log.debug("steam: "+this.steam+"; pressure: "+this.getPressure());
+			//log.debug("ideal steam: "+(targetCapacity*this.getPressure()));
+			this.steam = (int)(targetCapacity * press);
+			this.capacity = targetCapacity;
+		}
+		
+			
+	}
 	
+	public void shouldRefresh(){
+		//log.debug(this.name+": I should refresh");
+		this.shouldRefresh = true;
+		this.refreshWaitTicks = 40;
+	}
 	
 	
 }

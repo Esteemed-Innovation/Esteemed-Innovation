@@ -12,7 +12,7 @@ public interface ISteamTransporter {
 	public float getPressureResistance();
 	public boolean canInsert(ForgeDirection face);
 	public int getCapacity();
-	public int getSteam();
+	public int getSteamShare();
 	public void explode();
 	public void insertSteam(int amount, ForgeDirection face);
 	public void decrSteam(int i);
@@ -27,4 +27,6 @@ public interface ISteamTransporter {
 	public void refresh();
 	public Coord4 getCoords();
 	public int getDimension();
+	public int getSteam();
+	public void updateSteam(int steam);
 }

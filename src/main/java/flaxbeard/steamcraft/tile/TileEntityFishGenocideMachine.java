@@ -90,7 +90,7 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity im
 	public void updateEntity() {
 		super.updateEntity();
 		int src = calcSourceBlocks();
-		if (this.getSteam() > src) {
+		if (this.getSteamShare() > src) {
 			this.decrSteam(src);
 			if (this.worldObj.rand.nextInt((int) (300.0F/src)) == 0 && !this.worldObj.isRemote) {		
 				ChunkCoordinates loc = randSourceBlock();

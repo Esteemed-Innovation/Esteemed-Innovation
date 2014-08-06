@@ -103,7 +103,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 				}
 				ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
 				ItemStack stack = this.getStackInSlot(0).copy();
-				if (this.getSteam() > 0 && stack.getItemDamage() > 0) {
+				if (this.getSteamShare() > 0 && stack.getItemDamage() > 0) {
 					if (!this.isCharging){
 						//System.out.println("Charging");
 						this.isCharging = true;
@@ -116,9 +116,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 				}
-				if (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0) {
+				if (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
 	 				int i = 0;
-	 				while (i<9 && (this.getSteam() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+	 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
 	 					this.decrSteam(item.steamPerDurability());
 	 					stack.setItemDamage(stack.getItemDamage()-1);
 	 	 				this.setInventorySlotContents(0, stack);

@@ -26,6 +26,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
@@ -73,6 +74,8 @@ public class Steamcraft {
     @Instance("Steamcraft")
     public static Steamcraft instance;
     
+    public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.DEBUG);
+    
     public static FMLEventChannel channel;
     
     
@@ -98,6 +101,7 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		
 		Config.load(event);
 		
 		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false);

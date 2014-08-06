@@ -726,9 +726,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 
 	@Override
-	public int getSteam() {
+	public int getSteamShare() {
 		if (this.getNetwork() != null)
-			return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSteam() : 0);
+			return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSteamShare() : 0);
 		else return 0;
 	}
 

@@ -24,7 +24,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
 			int y = yCoord + dir2.offsetY;
 			int z = zCoord + dir2.offsetZ;
 			if (this.worldObj.getTileEntity(x,y,z) != null) {
-				if (this.worldObj.getTileEntity(x,y,z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater)this.worldObj.getTileEntity(x,y,z)).getSteam() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
+				if (this.worldObj.getTileEntity(x,y,z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater)this.worldObj.getTileEntity(x,y,z)).getSteamShare() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
 					numHeaters++;
 				}
 			}
