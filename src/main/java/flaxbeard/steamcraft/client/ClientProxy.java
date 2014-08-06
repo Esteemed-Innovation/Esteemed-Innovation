@@ -3,19 +3,27 @@ package flaxbeard.steamcraft.client;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelHorse;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
+import vazkii.botania.common.lib.LibObfuscation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
@@ -53,6 +61,8 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntityConveyor;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
@@ -174,4 +184,30 @@ public class ClientProxy extends CommonProxy
     public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {
         Minecraft.getMinecraft().effectRenderer.addEffect((new EntityDiggingFX(world, x, y, z, xv, yv, zv, block, 0)));
     }
+    
+    @Override
+	public void extendRange(Entity entity, float amount) {
+    	super.extendRange(entity, amount);
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		if(entity == player) {
+			if (Loader.isModLoaded("Botania")) {
+				BotaniaIntegration.extendRange(entity,amount);
+			}
+			else
+			{
+				if(!(mc.playerController instanceof SteamcraftPlayerController)) {
+					GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.CURRENT_GAME_TYPE);
+					NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.NET_CLIENT_HANDLER);
+					SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
+					controller.setGameType(type);
+					mc.playerController = controller;
+				}
+
+				((SteamcraftPlayerController) mc.playerController).setReachDistanceExtension(((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() + amount);
+
+			}
+		}
+    }
+    
 }

@@ -8,7 +8,7 @@ public class Config {
 	public static final int jetpackConsumption = 1;
 	public static final int jumpBoostConsumptionShiftJump = 3;
 	public static final int powerFistConsumption = 5;
-
+	public static final float extendedRange = 2.0F; //Range extension in blocks
 	public static final float fallAssistDivisor = 2;
 
 	public static final int basicTankCap = 18000;
@@ -74,8 +74,12 @@ public class Config {
 	public static boolean enableSteamTools;
 	public static boolean enableSurvivalist;
 	public static boolean enableThrusters;
+	public static boolean enableCanningMachine;
+	public static boolean enableExtendoFist;
+
 	public static boolean enableWings;
 	public static boolean hasAllCrucial;
+	
 	public static boolean enableCanister;
 	
 	
@@ -141,6 +145,9 @@ public class Config {
 		enableThrusters = config.get("Exosuit Upgrades", "Enable thrusters", true).getBoolean(true);
 		enableWings = config.get("Exosuit Upgrades", "Enable wings", true).getBoolean(true);
 		enablePowerFist = config.get("Exosuit Upgrades", "Enable power fist", true).getBoolean(true);
+		enableCanningMachine = config.get("Exosuit Upgrades", "Enable canning machine", true).getBoolean(true);
+		enableExtendoFist = config.get("Exosuit Upgrades", "Enable extendo fist", true).getBoolean(true);
+
 		//enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 		
 		// ITEMS

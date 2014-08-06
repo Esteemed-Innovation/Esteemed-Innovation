@@ -213,7 +213,9 @@ public class SteamcraftEventHandler {
 			SteamNetworkData.get(event.world);
 			SteamNetworkRegistry.initialize();
 		}
+
 	}
+
 
 	@SideOnly(Side.CLIENT)
 	private static final RenderItem itemRender = new RenderItem();
@@ -1166,13 +1168,71 @@ public class SteamcraftEventHandler {
 	}
 	
 	public HashMap<Integer, Float> prevStep = new HashMap();
+	public ArrayList<Integer> extendedRange = new ArrayList<Integer>();
+	boolean lastWearing = false;
+	boolean worldStartUpdate = false;
 	
+	@SideOnly(Side.CLIENT)
+	public void updateRangeClient(LivingEvent.LivingUpdateEvent event) {
+		EntityLivingBase entity = event.entityLiving;
+		if (entity == Minecraft.getMinecraft().thePlayer) {
+			if (!worldStartUpdate && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+				}
+			}
+			worldStartUpdate = true;
+			//Steamcraft.proxy.extendRange(entity,1.0F);
+			boolean wearing = false;
+			if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					
+					wearing = true;
+				}
+			}
+			if (wearing && !lastWearing && entity.worldObj.isRemote) {
+				System.out.println("In");
+				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+			}
+			if (!wearing && lastWearing && entity.worldObj.isRemote) {
+				System.out.println("Out");
+				Steamcraft.proxy.extendRange(entity,-Config.extendedRange);
+			}
+			lastWearing = wearing;
+		}
+	}
 	@SubscribeEvent
 	public void handleSteamcraftArmor(LivingEvent.LivingUpdateEvent event) {
 		boolean hasPower = hasPower(event.entityLiving, 1);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
 		ItemStack armor2 = entity.getEquipmentInSlot(1);
+		//Steamcraft.proxy.extendRange(entity,1.0F);
+		
+		if (entity.worldObj.isRemote) {
+			this.updateRangeClient(event);
+		}
+		else
+		{
+			boolean wearing = false;
+	 		if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					if (!extendedRange.contains((Integer)entity.getEntityId())) {
+						wearing = true;
+						extendedRange.add((Integer)entity.getEntityId());
+						Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+					}
+				}
+			}
+			if (!wearing && extendedRange.contains(entity.getEntityId()))
+			{
+				Steamcraft.proxy.extendRange(entity,-Config.extendedRange);
+				extendedRange.remove((Integer)entity.getEntityId());
+			}
+		}
 		
 		if (hasPower) {
 			if (entity.isSneaking()) {
@@ -1180,6 +1240,7 @@ public class SteamcraftEventHandler {
 //					event.entityLiving.addPotionEffect(new PotionEffect(Steamcraft.semiInvisible.id, 2, 0, false));
 //				}
 			}
+
 			if (!lastMotions.containsKey(entity.getEntityId())) {
 				lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX,entity.posZ));
 			}

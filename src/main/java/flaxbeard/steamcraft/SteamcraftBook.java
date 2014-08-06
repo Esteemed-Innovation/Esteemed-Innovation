@@ -300,18 +300,33 @@ public class SteamcraftBook {
 				SteamcraftRegistry.addResearch("research.Mask.name","!research.ExoHeadGoggle.name",new BookPageItem("research.Mask.name","research.Mask.0", true, new ItemStack(ThaumcraftIntegration.goggleUpgrade)),new BookPageCrafting("","mask"));
 			}
 			SteamcraftRegistry.addResearch("research.ExoBack.name","category.Exosuit.name");
-			SteamcraftRegistry.addResearch("research.Jetpack.name","!research.ExoBack.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", true, new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
-			SteamcraftRegistry.addResearch("research.Wings.name","!research.ExoBack.name",new BookPageItem("research.Wings.name","research.Wings.0", true, new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
+			if (Config.enableJetpack){
+				SteamcraftRegistry.addResearch("research.Jetpack.name","!research.ExoBack.name",new BookPageItem("research.Jetpack.name","research.Jetpack.0", true, new ItemStack(SteamcraftItems.jetpack)),new BookPageCrafting("","jetpack1","jetpack2"));
+			}
+			if (Config.enableWings){
+				SteamcraftRegistry.addResearch("research.Wings.name","!research.ExoBack.name",new BookPageItem("research.Wings.name","research.Wings.0", true, new ItemStack(SteamcraftItems.wings)),new BookPageCrafting("","wings1","wings2"));
+			}
 			SteamcraftRegistry.addResearch("research.ExoArm.name","category.Exosuit.name");
-			SteamcraftRegistry.addResearch("research.Fist.name","!research.ExoArm.name",new BookPageItem("research.Fist.name","research.Fist.0", true, new ItemStack(SteamcraftItems.powerFist)),new BookPageCrafting("","powerFist1","powerFist2"));
+			if (Config.enablePowerFist){
+				SteamcraftRegistry.addResearch("research.Fist.name","!research.ExoArm.name",new BookPageItem("research.Fist.name","research.Fist.0", true, new ItemStack(SteamcraftItems.powerFist)),new BookPageCrafting("","powerFist1","powerFist2"));
+			}
+			if (Config.enableExtendoFist){
+				SteamcraftRegistry.addResearch("research.ExtendoFist.name","!research.ExoArm.name",new BookPageItem("research.ExtendoFist.name","research.ExtendoFist.0", true, new ItemStack(SteamcraftItems.extendoFist)),new BookPageCrafting("","extendoFist1","extendoFist2"));
+			}
 			SteamcraftRegistry.addResearch("research.ExoHip.name","category.Exosuit.name");
-			SteamcraftRegistry.addResearch("research.Thrusters.name","!research.ExoHip.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters2"));
-			SteamcraftRegistry.addResearch("research.Canner.name","!research.ExoHip.name",new BookPageItem("research.Canner.name","research.Canner.0", true, new ItemStack(SteamcraftItems.canner)),new BookPageCrafting("","canner1","canner2","canner3","canner4"));
-
+			if (Config.enableThrusters){
+				SteamcraftRegistry.addResearch("research.Thrusters.name","!research.ExoHip.name",new BookPageItem("research.Thrusters.name","research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)),new BookPageCrafting("","thrusters1","thrusters2"));
+			}
+			if (Config.enableCanningMachine){
+				SteamcraftRegistry.addResearch("research.Canner.name","!research.ExoHip.name",new BookPageItem("research.Canner.name","research.Canner.0", true, new ItemStack(SteamcraftItems.canner)),new BookPageCrafting("","canner1","canner2","canner3","canner4"));
+			}
+			
 			SteamcraftRegistry.addResearch("research.ExoLeg.name","category.Exosuit.name");
 			SteamcraftRegistry.addResearch("research.ExoHeel.name","category.Exosuit.name");
 			SteamcraftRegistry.addResearch("research.ExoFoot.name","category.Exosuit.name");
-			SteamcraftRegistry.addResearch("research.FallAssist.name","!research.ExoHeel.name",new BookPageItem("research.FallAssist.name","research.FallAssist.0", true, new ItemStack(SteamcraftItems.fallAssist)),new BookPageCrafting("","noFall"));
+			if (Config.enableFallAssist){
+				SteamcraftRegistry.addResearch("research.FallAssist.name","!research.ExoHeel.name",new BookPageItem("research.FallAssist.name","research.FallAssist.0", true, new ItemStack(SteamcraftItems.fallAssist)),new BookPageCrafting("","noFall"));
+			}
 		}
 	}
 	
