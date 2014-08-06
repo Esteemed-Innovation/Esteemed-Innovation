@@ -189,7 +189,8 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
-        world.setBlockMetadataWithNotify(x, y, z, side, 2);
+		int meta = world.getBlockMetadata(x, y, z);
+        world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
         return true;
 	}
 }

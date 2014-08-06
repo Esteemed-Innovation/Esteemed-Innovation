@@ -37,8 +37,14 @@ public class TileEntitySteamGauge extends TileEntity {
 		ISteamTransporter source = null;
 		TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord+ d.offsetZ);
 		if (te != null && te instanceof ISteamTransporter){
-			source = (ISteamTransporter) te;
-			return source.getPressure();
+			if (te instanceof TileEntitySteamCharger){
+				TileEntitySteamCharger charger = (TileEntitySteamCharger) te;
+				return charger.getSteamInItem();
+			} else {
+				source = (ISteamTransporter) te;
+				return source.getPressure();
+			}
+			
 		}
 		return 0.0F;
 	}
