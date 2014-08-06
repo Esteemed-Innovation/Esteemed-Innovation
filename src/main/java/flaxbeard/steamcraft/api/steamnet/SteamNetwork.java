@@ -293,7 +293,7 @@ public class SteamNetwork {
 	public synchronized int split(ISteamTransporter split, boolean removeCapacity){
 		//////System.out.println("Splitting network: "+ this.name);
 		int steamRemoved = 0;
-		if (this.steam >= split.getCapacity() * this.getPressure()){
+		if (this.steam >= split.getCapacity() * this.getPressure() && removeCapacity){
 			//////System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
 			steamRemoved = (int)Math.floor((double)split.getCapacity() * (double)this.getPressure());
 			this.steam -= steamRemoved;
