@@ -51,6 +51,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     private static final int[] slotsBottom = new int[] {0, 1};
     private static final int[] slotsSides = new int[] {0, 1};
     private boolean shouldExplode = false;
+    private static final int CAPACITY = 12500;
     
     private boolean waitOneTick = true;
     
@@ -60,7 +61,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	private boolean burning;
 	
     public TileEntityFlashBoiler() {
-    	super();
+    	super(CAPACITY);
     	super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),80000);
     	this.setPressureResistance(0.5F);
     }
@@ -388,6 +389,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	public void updateEntity(){
 		super.superUpdateOnly();
+		// fixes existing capacity and prevents explosions
+		if (this.capacity != CAPACITY){
+			int steamToLose = Math.abs(this.capacity - CAPACITY);
+			this.decrSteam(steamToLose);
+			this.capacity = CAPACITY;
+			
+		}
 		if (this.shouldExplode){
 			this.getNetwork().split(this, true);
 			worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
@@ -445,6 +453,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                            }
 	                        }
 	                    }
+	                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	                }
 	                
 	                if (!this.isBurning() && this.heat > 0) {
@@ -722,7 +731,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
 	@Override
 	public int getCapacity() {
-		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? 5000*8 : 0;
+		return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? this.capacity : 0;
 	}
 
 	@Override

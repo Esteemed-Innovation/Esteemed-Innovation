@@ -126,10 +126,6 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         	double y = bbis.readDouble();
         	double z = bbis.readDouble();
         	
-        	log.debug("Got a packet!");
-        	log.debug(packetType + "; " + dimension + "; " + packetID + "; ");
-        	log.debug(x + ", " + y +", " + z);
-  
         	for (int i = 0; i < 3; i++){
         		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
         	}
