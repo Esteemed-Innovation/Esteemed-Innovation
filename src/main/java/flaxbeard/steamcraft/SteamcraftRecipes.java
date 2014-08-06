@@ -315,6 +315,13 @@ public class SteamcraftRecipes {
 			        'i',"plateSteamcraftIron", 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'b', "nuggetBrass"));
 		}
 		
+		if (Config.enableExtendoFist){
+			BookRecipeRegistry.addRecipe("extendoFist1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.extendoFist), " ii", "bbi", "bb " ,
+			        'i',"ingotIron",'b', "nuggetBrass"));
+			BookRecipeRegistry.addRecipe("extendoFist2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.extendoFist), " ii", "bbi", "bb " ,
+			        'i',"plateSteamcraftIron",'b', "nuggetBrass"));		
+		}
+		
 		if (Config.enableFallAssist){
 			BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
 			        'b',Items.leather_boots, 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'s', Items.slime_ball));

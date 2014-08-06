@@ -319,6 +319,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 			me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
 			if (var1 == 5 && slot == 1) {
 				me.setItemDamage(me.getMaxDamage()-1);
+				if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
+					me.setItemDamage(0);
+				}
 			}
 		}
 		this.hasPlates(me);

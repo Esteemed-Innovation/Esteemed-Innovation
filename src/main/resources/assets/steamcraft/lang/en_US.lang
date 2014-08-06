@@ -223,6 +223,8 @@ research.Thrusters.name=Thrusters
 research.Thrusters.0=I have created a new exosuit upgrade for the legpiece to aid with movement.<br>These thrusters will increase my air movement speed, albeit at a steam cost. This lets me jump further and fly faster using a jetpack.
 research.Fist.name=Power Fist
 research.Fist.0=This chestpiece upgrade is one of my more fun inventions. It makes my punches pack a real... punch.<br>Any time I punch an enemy with a bare fist they'll go flying, at the cost of some steam.
+research.ExtendoFist.name=Extendo Fist
+research.ExtendoFist.0=I've found a way to augment my reach to far beyond its normal capacity, using a series of jointed bars. I call it the extendo fist. Installing this upgrade in my exosuit will allow me to reach significantly further.
 research.FallAssist.name=Fall Assist
 research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
 research.Mask.name=Mask of Revealing
@@ -378,6 +380,7 @@ item.steamcraft:wrench.name=Pipe Wrench
 item.steamcraft:survivalist.name=Survivalist's Toolkit
 
 item.steamcraft:powerFist.name=Power Fist
+item.steamcraft:extendoFist.name=Extendo Fist
 item.steamcraft:fallAssist.name=Fall Assist
 item.steamcraft:jetpack.name=Steam Jetpack
 item.steamcraft:wings.name=Steam Wings

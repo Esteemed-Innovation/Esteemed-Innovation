@@ -106,6 +106,7 @@ public class SteamcraftItems {
     public static Item jetpack;
 	public static Item wings;
 	public static Item powerFist;
+	public static Item extendoFist;
 	public static Item thrusters;
 	public static Item fallAssist;
 	public static Item jumpAssist;
@@ -243,25 +244,40 @@ public class SteamcraftItems {
     
     private static void registerExosuitUpgrades(){
     	if (Config.enableExosuit){
-    	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
-    		GameRegistry.registerItem(jetpack, "jetpack");
-    	 	wings = new ItemExosuitWings().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:wings").setTextureName("steamcraft:wings");
-    		GameRegistry.registerItem(wings, "wings");
-    	 	powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
-    		GameRegistry.registerItem(powerFist, "powerFist");
-    		thrusters = new ItemExosuitSidepack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thrusters").setTextureName("steamcraft:thrusters");
-    		GameRegistry.registerItem(thrusters, "thrusters");
-    		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
-    		GameRegistry.registerItem(fallAssist, "fallAssist");
+    		if (Config.enableJetpack) {
+	    	 	jetpack = new ItemExosuitJetpack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jetpack").setTextureName("steamcraft:jetpack");
+	    		GameRegistry.registerItem(jetpack, "jetpack");
+    		}
+    		if (Config.enableWings) {
+	    	 	wings = new ItemExosuitWings().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:wings").setTextureName("steamcraft:wings");
+	    		GameRegistry.registerItem(wings, "wings");
+    		}
+    		if (Config.enablePowerFist) {
+	    		powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
+	    		GameRegistry.registerItem(powerFist, "powerFist");
+    		}
+    		if (Config.enableExtendoFist) {
+	    		extendoFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:extendoFist").setTextureName("steamcraft:extendoFist");
+	    		GameRegistry.registerItem(extendoFist, "extendoFist");
+    		}
+    		if (Config.enableThrusters) {
+	    		thrusters = new ItemExosuitSidepack().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:thrusters").setTextureName("steamcraft:thrusters");
+	    		GameRegistry.registerItem(thrusters, "thrusters");
+    		}
+    		if (Config.enableFallAssist) {
+	    		fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
+	    		GameRegistry.registerItem(fallAssist, "fallAssist");
+    		}
     		jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/jumpUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
     		GameRegistry.registerItem(jumpAssist, "jumpAssist");
     		runAssist = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/runUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
     		GameRegistry.registerItem(runAssist, "runAssist");
     	 	doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
     		GameRegistry.registerItem(doubleJump, "doubleJump");
-    		
-    		canner = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/canner.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
-    		GameRegistry.registerItem(canner, "canner");
+    		if (Config.enableCanningMachine) {
+	    		canner = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/canner.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
+	    		GameRegistry.registerItem(canner, "canner");
+    		}
     		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
     		//GameRegistry.registerItem(antiFire, "antiFire");
     	 	stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");

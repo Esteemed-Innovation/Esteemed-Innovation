@@ -4,21 +4,26 @@ import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import vazkii.botania.api.item.IExtendedPlayerController;
 import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.common.item.ModItems;
-
-import WayofTime.alchemicalWizardry.ModBlocks;
+import vazkii.botania.common.lib.LibObfuscation;
 
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
@@ -32,6 +37,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
+import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 
 public class BotaniaIntegration {
     public static Item floralLaurel;
@@ -95,6 +101,19 @@ public class BotaniaIntegration {
 			map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(new UUID(171328 /** Random number **/, armorType), "Armor modifier" + armorType, hp, 0));
 		}
 		return map;
+	}
+
+	public static void extendRange(Entity entity, float amount) {
+		Minecraft mc = Minecraft.getMinecraft();
+		if(!(mc.playerController instanceof IExtendedPlayerController)) {
+			GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.CURRENT_GAME_TYPE);
+			NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.NET_CLIENT_HANDLER);
+			SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
+			controller.setGameType(type);
+			mc.playerController = controller;
+		}
+		System.out.println(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension());
+		((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
 	}
 
 }
