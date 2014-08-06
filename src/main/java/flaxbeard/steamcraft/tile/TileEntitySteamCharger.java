@@ -18,6 +18,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	
 	private boolean isCharging = false;
 	private boolean hadItem = false;
+	private float prevPercent = 0F;
 	
 	private ItemStack[] inventory = new ItemStack[1];
 	public int randomDegrees;
@@ -124,11 +125,18 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	 	 				this.setInventorySlotContents(0, stack);
 	 					i++;
 	 				}
+	 				float currentPerc = getChargingPercent(stack);
+	 				if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01){
+	 					//log.debug("New percent: "+currentPerc);
+	 					prevPercent = currentPerc;
+	 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	 				}
 				}
 			} else {
 				if (this.hadItem){
 					//System.out.println("No item");
 					this.hadItem = false;
+					this.prevPercent = 0F;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 			}
@@ -181,6 +189,10 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	        return null;
 	    }
 	}
+	
+	private float getChargingPercent(ItemStack stack){
+		return 1.0f - ((float)stack.getItemDamage()/ (float)stack.getMaxDamage() );
+	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int var1) {
@@ -221,6 +233,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return var2.getItem() instanceof ISteamChargable;
+	}
+	
+	public float getSteamInItem(){
+		ItemStack stack = this.getStackInSlot(0);
+		if (stack != null){
+			return getChargingPercent(stack);
+		}
+		return 0.0f;
 	}
 
 }
