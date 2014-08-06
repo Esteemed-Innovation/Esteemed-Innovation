@@ -94,7 +94,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 				if (this.fireTicks < 60) {
 					stack = this.getStackInSlot(0).copy();
 				}
-				if (this.getSteam() > 2000 && hasTarget) {
+				if (this.getSteamShare() > 2000 && hasTarget) {
 					if (fireTicks == 0) {
 						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}

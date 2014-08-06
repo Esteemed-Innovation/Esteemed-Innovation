@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.packet;
 
-import flaxbeard.steamcraft.Steamcraft;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -17,8 +16,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.util.SPLog;
 
 public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler {
+	
+	private static SPLog log = Steamcraft.log;
 	
 	public static void sendSpacePacket(Entity player)
 	{
@@ -110,16 +113,27 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 
 	@SubscribeEvent
 	public void onClientPacket(ClientCustomPacketEvent event) {
+		
 		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 		ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
         byte packetType;
         int dimension;
         byte packetID;
-        try
-        {
+        try {
+        	packetType = bbis.readByte();
+        	dimension = bbis.readInt();
+        	packetID = bbis.readByte();
+        	double x = bbis.readDouble();
+        	double y = bbis.readDouble();
+        	double z = bbis.readDouble();
+        	
+        	for (int i = 0; i < 3; i++){
+        		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
+        	}
+        	
+        	
         	bbis.close();
-        }
-		catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return;
 		}

@@ -65,7 +65,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	public Packet getDescriptionPacket()
 	{
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteam() > 0 && !this.powered);
+        access.setBoolean("active", this.getSteamShare() > 0 && !this.powered);
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
@@ -85,10 +85,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 	
 	@Override
 	public void updateEntity() {
-		if (lastSteam != this.getSteam() > 0) {
+		if (lastSteam != this.getSteamShare() > 0) {
 	        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		lastSteam = this.getSteam() > 0;
+		lastSteam = this.getSteamShare() > 0;
 		if (!isInitialized) {
 			this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
@@ -98,7 +98,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 		if (active && this.worldObj.isRemote) {
 			rotateTicks++;
 		}
-		if (active && this.worldObj.isRemote || (this.getSteam() > 0 && !this.powered)) {
+		if (active && this.worldObj.isRemote || (this.getSteamShare() > 0 && !this.powered)) {
 			if (!this.worldObj.isRemote) {
 				this.decrSteam(1);
 			}
@@ -119,7 +119,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 					}
 					this.worldObj.setBlockToAir(x,y,z);
 				}
-				if (!blocked && (this.worldObj.getBlock(x,y,z).isReplaceable(worldObj, x,y,z) || this.worldObj.isAirBlock(x,y,z)  || this.worldObj.getBlock(x,y,z) instanceof BlockTrapDoor || this.worldObj.getBlock(x,y,z).getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null || (this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir) && this.worldObj.getBlock(x,y,z).isSideSolid(worldObj, x, y, z, dir.getOpposite())))) {
+				if (!blocked && (this.worldObj.getBlock(x,y,z).isReplaceable(worldObj, x,y,z)
+						|| this.worldObj.isAirBlock(x,y,z)
+						|| this.worldObj.getBlock(x,y,z) instanceof BlockTrapDoor
+						|| this.worldObj.getBlock(x,y,z).getCollisionBoundingBoxFromPool(worldObj, x, y, z) == null)) {
 					blocksInFront = i;
 					if (i != range-1)
 						this.worldObj.spawnParticle("smoke", xCoord+dir.offsetX*i+(dir.offsetX == 0 ? Math.random() : 0.5F), yCoord+dir.offsetY*i+(dir.offsetY == 0 ? Math.random() : 0.5F), zCoord+dir.offsetZ*i+(dir.offsetZ == 0 ? Math.random() : 0.5F), dir.offsetX*0.2F, dir.offsetY*0.2F, dir.offsetZ*0.2F);
@@ -193,7 +196,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 		}
 		else
 		{
-			int steam = this.getSteam();
+			int steam = this.getSteamShare();
 			this.getNetwork().split(this, true);
 			this.setDistributionDirections(new ForgeDirection[] { ForgeDirection.getOrientation( this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
 			

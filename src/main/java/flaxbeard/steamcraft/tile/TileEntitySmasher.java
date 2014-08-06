@@ -247,7 +247,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				return;
 			}	
-			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteam() > 1000 && !isActive){
+			if (!this.smashNextRound && this.hasSomethingToSmash() && this.hasPartner() && this.getSteamShare() > 1000 && !isActive){
 
 				////System.out.println("Smash next round!");
 				this.smashNextRound = true;
@@ -475,7 +475,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		int[] target = getTarget(2);
 		int x = target[0], y=yCoord, z=target[1], opposite=target[2];
 
-		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).getSteam() > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
+		if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.smasher &&  ((TileEntitySmasher)worldObj.getTileEntity(x, y, z)).getSteamShare() > 100 && worldObj.getBlockMetadata(x, y, z) == opposite){
 		//	//System.out.println("I have a partner!");
 			TileEntitySmasher partner = ((TileEntitySmasher)worldObj.getTileEntity(x, y, z));
 			if (partner.noSmashDrops != this.noSmashDrops) {
@@ -557,7 +557,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 		}
 		else
 		{
-			int steam = this.getSteam();
+			int steam = this.getSteamShare();
 			this.getNetwork().split(this, true);
 			ForgeDirection[] directions = new ForgeDirection[5];
 			int i = 0;
