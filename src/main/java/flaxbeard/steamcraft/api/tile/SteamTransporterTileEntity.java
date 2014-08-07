@@ -24,6 +24,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
 	protected SPLog log = Steamcraft.log;
 	
+	public String name = "SteamTransporterTileEntity";
 	public float pressureResistance = 0.8F;
 	public float lastPressure = -1F;
 	public float pressure;
@@ -92,10 +93,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     {
 		super.readFromNBT(compound);
         
-        if (compound.hasKey("networkName")){
-        	this.networkName = compound.getString("networkName");
-        }
-   
         if (compound.hasKey("steam")){
         	this.steam = compound.getInteger("steam");
         	//log.debug("Read steam from NBT: "+this.steam);
@@ -108,9 +105,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public void writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        if (networkName != null){
-        	compound.setString("networkName", networkName);
-        }
         //log.debug("writing STTE to NBT with steam: "+this.steam);
         compound.setInteger("steam", this.steam);
     }
@@ -315,5 +309,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	 
 	protected void shouldJoin(){
 		this.shouldJoin = true;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 }

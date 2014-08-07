@@ -47,33 +47,11 @@ public class SteamNetworkRegistry {
 	
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID){
-		////System.out.println("Writing network registry for dimension" + dimID + " to NBT");
-		NBTTagList nets = new NBTTagList();
-		if (networks.get(dimID) != null &&  !networks.get(dimID).isEmpty()){
-			for (SteamNetwork net : networks.get(dimID).values() ){
-				
-				nets.appendTag(net.writeToNBT(new NBTTagCompound()));
-			}
-			nbt.setTag("networks", nets);
-		}
 		
 		return nbt;
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt, int dimID){
-		////System.out.println("reading network registry for dimension " + dimID + " from NBT");
-		
-		HashMap<String, SteamNetwork> nets = new HashMap<String, SteamNetwork>();
-//		if (nbt.hasKey("networks")){
-//			NBTTagList tagNets = (NBTTagList) nbt.getTag("networks");
-//			for (int i = 0; i < tagNets.tagCount(); i++){
-//				SteamNetwork net = SteamNetwork.readFromNBT(tagNets.getCompoundTagAt(i));
-//				//////System.out.println("Loaded network "+net.getName());
-//				nets.put(net.getName(), net);
-//			}
-//			networks.put(dimID, nets);
-//		}
-		////System.out.println("==================================================Loaded "+dimID);
 		initialized.add(dimID);
 		
 	}

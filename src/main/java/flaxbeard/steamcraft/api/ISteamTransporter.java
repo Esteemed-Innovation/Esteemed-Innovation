@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.util.Coord4;
 
 public interface ISteamTransporter {
+	
 	public float getPressure();
 	public float getPressureResistance();
 	public boolean canInsert(ForgeDirection face);
@@ -29,4 +30,7 @@ public interface ISteamTransporter {
 	public int getDimension();
 	public int getSteam();
 	public void updateSteam(int steam);
+	
+	public String getName();
+	
 }
