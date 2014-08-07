@@ -46,6 +46,7 @@ public class EntityMusketBall extends Entity implements IProjectile
 
     /** The amount of knockback an arrow applies when it hits a mob. */
     private int knockbackStrength = 1;
+	public boolean silenced = false;
 
     public EntityMusketBall(World par1World)
     {
@@ -266,7 +267,7 @@ public class EntityMusketBall extends Entity implements IProjectile
 
                     DamageSource var21 = null;
 
-                    if (this.shootingEntity == null)
+                    if (this.shootingEntity == null || this.silenced)
                     {
                         var21 = DamageSource.causeThrownDamage(this, this);
                     }

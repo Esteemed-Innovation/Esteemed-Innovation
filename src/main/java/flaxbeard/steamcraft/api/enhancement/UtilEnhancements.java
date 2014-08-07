@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
@@ -59,7 +60,7 @@ public class UtilEnhancements {
 	
 	public static String getEnhancementDisplayText(ItemStack item) {
 		if (hasEnhancement(item)) {
-			return StatCollector.translateToLocal("steamcraft.enhancementText") + " "  + StatCollector.translateToLocal(getEnhancementNameFromEnhancement(item));
+			return EnumChatFormatting.RED + new ItemStack(((Item)getEnhancementFromItem(item))).getDisplayName();
 		}
 		return "";
 	}

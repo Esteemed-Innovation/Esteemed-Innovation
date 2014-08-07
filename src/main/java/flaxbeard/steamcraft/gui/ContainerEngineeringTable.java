@@ -35,7 +35,7 @@ public class ContainerEngineeringTable extends Container
         
         this.addSlotToContainer(new Slot(entity, 0, 30, 35));
         for (int i = 1; i<10; i++) {
-            this.addSlotToContainer(new SlotLimitedStackSize(entity, i, -100, -100));
+            this.addSlotToContainer(new SlotLimitedStackSize(entity, i, -1000, -1000));
         }
         this.updateSlots();
     	
@@ -183,9 +183,8 @@ public class ContainerEngineeringTable extends Container
         }
     	if (!hasEngineer) {
 	    	for (int i = 1; i<10; i++) {
-	    	//	//System.out.println("KKK");
-	    		this.getSlot(i).xDisplayPosition = -100;
-	    		this.getSlot(i).yDisplayPosition = -100;
+	    		this.getSlot(i).xDisplayPosition = -1000;
+	    		this.getSlot(i).yDisplayPosition = -1000;
 
 	    	}
     	}

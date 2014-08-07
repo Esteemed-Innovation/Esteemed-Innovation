@@ -246,16 +246,16 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	@Override
 	public MutablePair<Integer, Integer>[] engineerCoordinates() {
 		if (this.slot == 0) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(1,19),MutablePair.of(1,1),MutablePair.of(39,16),MutablePair.of(59,36) };
 		}
 		if (this.slot == 2) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(1,19),MutablePair.of(1,1),MutablePair.of(60,12),MutablePair.of(37,40) };
 		}
 		if (this.slot == 1) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(29,26),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(1,19),MutablePair.of(1,1),MutablePair.of(49,33),MutablePair.of(75,26),MutablePair.of(1,37) };
 		}
 		if (this.slot == 3) {
-			return new MutablePair[] { MutablePair.of(49,26),MutablePair.of(1,1),MutablePair.of(49,6),MutablePair.of(49,46) };
+			return new MutablePair[] { MutablePair.of(1,19),MutablePair.of(1,1),MutablePair.of(60,18),MutablePair.of(28,40) };
 		}
 		return new MutablePair[] { MutablePair.of(49,26) };
 	}
@@ -442,12 +442,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 				case 1:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
-				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 18, 18, 18);
-					break;
-				case 3:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 18, 18, 18);
-					break;
+//				case 2:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 18, 18, 18);
+//					break;
+//				case 3:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 18, 18, 18);
+//					break;
 				default:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
@@ -460,12 +460,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 				case 1:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
-				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 18, 18, 18);
-					break;
-				case 3:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
-					break;
+//				case 2:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 18, 18, 18);
+//					break;
+//				case 3:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 18, 18, 18);
+//					break;
 				case 4:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
 					break;
@@ -481,15 +481,15 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 				case 1:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
-				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 36, 18, 18);
-					break;
-				case 3:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 36, 18, 18);
-					break;
-				case 4:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
-					break;
+//				case 2:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 36, 18, 18);
+//					break;
+//				case 3:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 194, 36, 18, 18);
+//					break;
+//				case 4:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 36, 18, 18);
+//					break;
 				default:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
@@ -502,12 +502,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 				case 1:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 36, 18, 18);
 					break;
-				case 2:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
-					break;
-				case 3:
-					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 0, 18, 18);
-					break;
+//				case 2:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 230, 0, 18, 18);
+//					break;
+//				case 3:
+//					guiEngineeringTable.drawTexturedModalRect(i, j, 212, 0, 18, 18);
+//					break;
 				default:
 					guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
 			}
@@ -626,9 +626,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i,
 			int j, int k) {
 		guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
-		//if (this.slot == 0) {
-			guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 0, 0, 64, 64);
-		//}
+		guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 0+64*slot, 0, 64, 64);
 	}
     
 }
