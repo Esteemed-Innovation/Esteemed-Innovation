@@ -45,7 +45,7 @@ public class SteamcraftServerPacketHandler {
 			if (player != null) {
 				if (player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
 					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
-					if (chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					if (chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 						if (player.getEquipmentInSlot(3).stackTagCompound.hasKey("grappled") && player.getEquipmentInSlot(3).stackTagCompound.getBoolean("grappled")) {
 							player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", false);
 						}

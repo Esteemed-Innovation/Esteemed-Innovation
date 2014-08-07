@@ -76,6 +76,7 @@ public class Config {
 	public static boolean enableThrusters;
 	public static boolean enableCanningMachine;
 	public static boolean enableExtendoFist;
+	public static boolean enablePitonDeployer;
 
 	public static boolean enableWings;
 	public static boolean hasAllCrucial;
@@ -147,6 +148,7 @@ public class Config {
 		enablePowerFist = config.get("Exosuit Upgrades", "Enable power fist", true).getBoolean(true);
 		enableCanningMachine = config.get("Exosuit Upgrades", "Enable canning machine", true).getBoolean(true);
 		enableExtendoFist = config.get("Exosuit Upgrades", "Enable extendo fist", true).getBoolean(true);
+		enablePitonDeployer = config.get("Exosuit Upgrades", "Enable piton deployer", true).getBoolean(true);
 
 		//enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 		

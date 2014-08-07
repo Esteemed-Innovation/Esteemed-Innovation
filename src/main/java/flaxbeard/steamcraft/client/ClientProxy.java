@@ -9,6 +9,7 @@ import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +19,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
-import vazkii.botania.common.lib.LibObfuscation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
@@ -197,8 +197,8 @@ public class ClientProxy extends CommonProxy
 			else
 			{
 				if(!(mc.playerController instanceof SteamcraftPlayerController)) {
-					GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.CURRENT_GAME_TYPE);
-					NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.NET_CLIENT_HANDLER);
+					GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[] { "currentGameType", "field_78779_k", "k" });
+					NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[] { "netClientHandler", "field_78774_b", "b" });
 					SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
 					controller.setGameType(type);
 					mc.playerController = controller;
@@ -210,4 +210,27 @@ public class ClientProxy extends CommonProxy
 		}
     }
     
+	public void checkRange(EntityLivingBase entity) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = mc.thePlayer;
+		if(entity == player) {
+			if (Loader.isModLoaded("Botania")) {
+				BotaniaIntegration.checkRange(entity);
+			}
+			else
+			{
+				if(!(mc.playerController instanceof SteamcraftPlayerController)) {
+					GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[] { "currentGameType", "field_78779_k", "k" });
+					NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[] { "netClientHandler", "field_78774_b", "b" });
+					SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
+					controller.setGameType(type);
+					mc.playerController = controller;
+				}
+				if (((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
+					extendRange(entity, 2.0F-((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension());
+				}
+			}
+		}	
+	}
+ 
 }

@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -34,5 +35,10 @@ public class CommonProxy
 	public void extendRange(Entity entity, float amount) {
 		if(entity instanceof EntityPlayerMP)
 			((EntityPlayerMP) entity).theItemInWorldManager.setBlockReachDistance(((EntityPlayerMP) entity).theItemInWorldManager.getBlockReachDistance() + amount);
+	}
+
+	public void checkRange(EntityLivingBase entity) {
+		// TODO Auto-generated method stub
+		
 	}
 }

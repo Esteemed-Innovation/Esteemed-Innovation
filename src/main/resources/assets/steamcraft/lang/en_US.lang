@@ -226,6 +226,8 @@ research.Fist.name=Power Fist
 research.Fist.0=This chestpiece upgrade is one of my more fun inventions. It makes my punches pack a real... punch.<br>Any time I punch an enemy with a bare fist they'll go flying, at the cost of some steam.
 research.ExtendoFist.name=Extendo Fist
 research.ExtendoFist.0=I've found a way to augment my reach to far beyond its normal capacity, using a series of jointed bars. I call it the extendo fist. Installing this upgrade in my exosuit will allow me to reach significantly further.
+research.PitonDeployer.name=Piton Deployer
+research.PitonDeployer.0=This new innovation allows me to get a grip on tricky situations. The piton deployer allows me to grasp walls and ceilings by right clicking, stopping falls and allowing me to dangle and use other items.
 research.FallAssist.name=Fall Assist
 research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
 research.Mask.name=Mask of Revealing
@@ -393,6 +395,7 @@ item.steamcraft:doubleJump.name=Pulse Nozzle
 item.steamcraft:jumpAssist.name=Leap Actuator
 item.steamcraft:stealthUpgrade.name=Acoustic Dampener
 item.steamcraft:canner.name=Canner
+item.steamcraft:pitonDeployer.name=Piton Deployer
 item.steamcraft:enderShroud.name=Ender Shroud
 
 item.steamcraft:canister.name=Item Canister

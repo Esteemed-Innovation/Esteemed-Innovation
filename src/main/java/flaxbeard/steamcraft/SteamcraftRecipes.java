@@ -322,6 +322,11 @@ public class SteamcraftRecipes {
 			        'i',"plateSteamcraftIron",'b', "nuggetBrass"));		
 		}
 		
+		if (Config.enablePitonDeployer){
+			BookRecipeRegistry.addRecipe("pitonDeployer",new ShapedOreRecipe(new ItemStack(SteamcraftItems.pitonDeployer), " i ", "lli", "ll " ,
+			        'l',Items.leather,'i',"nuggetIron"));	
+		}
+		
 		if (Config.enableFallAssist){
 			BookRecipeRegistry.addRecipe("noFall",new ShapedOreRecipe(new ItemStack(SteamcraftItems.fallAssist), "pbp", "sss",
 			        'b',Items.leather_boots, 'p',new ItemStack(SteamcraftItems.steamcraftCrafting,1,0),'s', Items.slime_ball));

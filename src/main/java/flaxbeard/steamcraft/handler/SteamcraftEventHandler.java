@@ -1059,12 +1059,17 @@ public class SteamcraftEventHandler {
 		
 		if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
 			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
-			if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+			if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 				if (entity.getEquipmentInSlot(3).stackTagCompound.hasKey("grappled") && entity.getEquipmentInSlot(3).stackTagCompound.getBoolean("grappled")) {
 
 					double lastX = entity.getEquipmentInSlot(3).stackTagCompound.getFloat("x");
+					double lastY = entity.getEquipmentInSlot(3).stackTagCompound.getFloat("y");
 					double lastZ = entity.getEquipmentInSlot(3).stackTagCompound.getFloat("z");
-					if ((Math.abs(lastX-entity.posX) > 0.1F || Math.abs(lastZ-entity.posZ) > 0.1F || entity.isSneaking())) {
+					int blockX = entity.getEquipmentInSlot(3).stackTagCompound.getInteger("blockX");
+					int blockY = entity.getEquipmentInSlot(3).stackTagCompound.getInteger("blockY");
+					int blockZ = entity.getEquipmentInSlot(3).stackTagCompound.getInteger("blockZ");
+
+					if ((Math.abs(lastX-entity.posX) > 0.1F || Math.abs(lastZ-entity.posZ) > 0.1F || entity.isSneaking() || entity.worldObj.isAirBlock(blockX, blockY, blockZ))) {
 						entity.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", false);
 					}
 					else
@@ -1196,26 +1201,30 @@ public class SteamcraftEventHandler {
 	public void updateRangeClient(LivingEvent.LivingUpdateEvent event) {
 		EntityLivingBase entity = event.entityLiving;
 		if (entity == Minecraft.getMinecraft().thePlayer) {
-			if (!worldStartUpdate && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
-				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
-				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
-					Steamcraft.proxy.extendRange(entity,Config.extendedRange);
-				}
-			}
+//			if (!worldStartUpdate && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+//				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+//				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+//					System.out.println("In");
+//
+//					Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+//				}
+//			}
 			worldStartUpdate = true;
+
 			//Steamcraft.proxy.extendRange(entity,1.0F);
 			boolean wearing = false;
 			if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
 				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
 				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
-					
+					Steamcraft.proxy.checkRange(entity);
+
 					wearing = true;
 				}
 			}
-			if (wearing && !lastWearing && entity.worldObj.isRemote) {
-				System.out.println("In");
-				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
-			}
+//			if (wearing && !lastWearing && entity.worldObj.isRemote) {
+//				System.out.println("In");
+//				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+//			}
 			if (!wearing && lastWearing && entity.worldObj.isRemote) {
 				System.out.println("Out");
 				Steamcraft.proxy.extendRange(entity,-Config.extendedRange);
@@ -1408,10 +1417,14 @@ public class SteamcraftEventHandler {
 							canStick = true;
 						}
 					}
-					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
-			
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockX", event.x);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockY", event.y);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockZ", event.z);
+
 						player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled",true);
 						player.motionX = 0.0F;
 						player.motionY = 0.0F;
@@ -1423,15 +1436,19 @@ public class SteamcraftEventHandler {
 					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
 					boolean canStick = false;
 					ForgeDirection dir = ForgeDirection.getOrientation(event.face);
-					List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x-0.5F, event.y+(dir.offsetY/6F)-0.5F, event.z-0.20F, event.x+0.5F+1, event.y+(dir.offsetY/6F)+1, event.z+0.5F+1));
+					List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x-0.5F, event.y+(dir.offsetY/6F)-0.4F, event.z-0.20F, event.x+0.5F+1, event.y+(dir.offsetY/6F)+1, event.z+0.5F+1));
 					for (Object obj : list) {
 						if (obj == player) {
 							canStick = true;
 						}
 					}
-					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockX", event.x);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockY", event.y);
+						player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockZ", event.z);
 						player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled",true);
 						player.motionX = 0.0F;
 						player.motionY = 0.0F;
