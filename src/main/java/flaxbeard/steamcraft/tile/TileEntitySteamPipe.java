@@ -38,6 +38,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	//protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 	public ArrayList<Integer> blacklistedSides = new ArrayList<Integer>();
 	
+	
+	
 	protected boolean isLeaking = false;
 	private boolean isSplitting = false;
 	private int mySteam = 0;
@@ -49,6 +51,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
+		this.name = "Pipe";
 	}
 	
 	public TileEntitySteamPipe(int capacity){
@@ -370,11 +373,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		    		{
 		    			ForgeDirection d = ForgeDirection.getOrientation(subHit);
 		    			TileEntity te = worldObj.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-		    			if (te != null && te instanceof TileEntitySteamPipe){
-		    				TileEntitySteamPipe p = (TileEntitySteamPipe)te;
+		    			if (te != null && te instanceof ISteamTransporter){
+		    				ISteamTransporter p = (ISteamTransporter)te;
 		    				p.getNetwork().shouldRefresh();
-		    			} else {
-		    				log.error("Error?");
 		    			}
 		    		}
 		    		this.isOriginalPipe = true;
@@ -408,7 +409,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    		}
 	    	}
 	    	if (this.getSteamShare() > 0){
-	    		world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+	    		//world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 	    		ForgeDirection d = ForgeDirection.getOrientation(subHit);
 	    		SteamcraftServerPacketHandler.sendPipeConnectDisconnectPacket(getDimension(), xCoord+0.5F+(d.offsetX/2F), yCoord+0.5F+(d.offsetY/2F), zCoord+0.5F+(d.offsetZ/2F));
 		    }
