@@ -25,15 +25,15 @@ public class HornSound extends MovingSound {
 	@Override
 	public void update() {
 		if (whistle.isInvalid()){
-			//System.out.println("It's dead.");
+			//Steamcraft.log.debug("It's dead.");
 			if (this.volume > 0.0F){
-				//System.out.println("Decreasing volume: "+this.volume);
+				//Steamcraft.log.debug("Decreasing volume: "+this.volume);
 				this.volume -= 0.25F;
 				if (this.volume <= 0){
 					this.volume = 0.0F;
 				}
 			} else {
-				//System.out.println("Killing it.");
+				//Steamcraft.log.debug("Killing it.");
 				this.donePlaying = true;
 			}
 		} else {

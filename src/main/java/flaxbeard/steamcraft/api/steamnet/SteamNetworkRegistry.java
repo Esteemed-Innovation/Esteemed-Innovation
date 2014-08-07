@@ -63,7 +63,7 @@ public class SteamNetworkRegistry {
 
 	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent e){
-		//////System.out.println("Tick");
+		//////Steamcraft.log.debug("Tick");
 		if (networks.values() != null && networks.values().size() > 0){
 			try{
 				for (HashMap<String, SteamNetwork> dimension : networks.values()){
@@ -74,7 +74,7 @@ public class SteamNetworkRegistry {
 					}
 				}
 			} catch (ConcurrentModificationException ex){
-				////System.out.println("FSP: ConcurrentModificationException in network tick");
+				////Steamcraft.log.debug("FSP: ConcurrentModificationException in network tick");
 				//ex.printStackTrace();
 			}
 			
@@ -83,10 +83,10 @@ public class SteamNetworkRegistry {
 	}
 	
 	public SteamNetwork getNewNetwork(){
-		//////System.out.println("Returning new network");
+		//////Steamcraft.log.debug("Returning new network");
 		SteamNetwork net = new SteamNetwork();
 		String name = UUID.randomUUID().toString();
-		//////System.out.println(name);
+		//////Steamcraft.log.debug(name);
 		net.setName(name);
 		return net;
 	}
@@ -198,7 +198,7 @@ public class SteamNetworkRegistry {
 
 	public void printNetworks(int dim){
 		for (SteamNetwork net : networks.get(dim).values()){
-			////System.out.println(net.getName());
+			////Steamcraft.log.debug(net.getName());
 		}
 	}
 

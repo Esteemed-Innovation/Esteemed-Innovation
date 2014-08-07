@@ -46,7 +46,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 		if (access.hasKey("fluid")){
 			this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getShort("fluid")),access.getShort("water")));
 		}
-		////System.out.println(access.getBoolean("running"));
+		////Steamcraft.log.debug(access.getBoolean("running"));
 		this.running = access.getBoolean("running");
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
@@ -139,7 +139,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 		super.updateEntity();
 		if (worldObj.isRemote){
 			if (this.running && progress < 100){
-				////System.out.println("Running!");
+				////Steamcraft.log.debug("Running!");
 				progress++;
 				rotateTicks++;
 			} else {
@@ -157,7 +157,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 					this.worldObj.markBlockForUpdate(x, y, z);
 					progress = 0;
 					this.decrSteam(100);
-					////System.out.println("cycle start");
+					////Steamcraft.log.debug("cycle start");
 					this.running  = true;
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					
@@ -172,7 +172,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 			int y2 = this.yCoord + outputDir.offsetY;
 			int z2 = this.zCoord + outputDir.offsetZ;
 			if (myTank.getFluidAmount() > 0 && progress == 100){
-				////System.out.println("Should be done");
+				////Steamcraft.log.debug("Should be done");
 				if (this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
 					IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2,y2,z2);
 					if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
@@ -181,7 +181,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 							this.myTank.drain(amnt, true);
 							if (myTank.getFluidAmount()  == 0) {
 								this.running = false;
-								////System.out.println("cycle complete");
+								////Steamcraft.log.debug("cycle complete");
 								progress = 0;
 								this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 								

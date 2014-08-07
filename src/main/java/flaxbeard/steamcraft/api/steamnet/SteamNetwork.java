@@ -103,10 +103,10 @@ public class SteamNetwork {
 			if (this.transporters != null && this.transporters.keySet() != null){
 				if (this.getPressure() > 1.2F){
 					for (Coord4 coords : transporters.keySet()){
-						//////System.out.println("Iterating!");
+						//////Steamcraft.log.debug("Iterating!");
 						ISteamTransporter trans = transporters.get(coords);
 						if ((trans == null || ((TileEntity)trans).isInvalid())){
-							//////System.out.println("Invalid TE");
+							//////Steamcraft.log.debug("Invalid TE");
 							transporters.remove(coords);
 						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
 							log.debug(trans.getName() + " is exploding.  ("+this.getSteam()+" "+this.getCapacity()+" "+this.getPressure()+")");
@@ -130,10 +130,10 @@ public class SteamNetwork {
 		boolean hasJoinedNetwork = false;
 		if (others.size() > 0){
 			for (ISteamTransporter t : others){
-				//////System.out.println("Checking other!");
+				//////Steamcraft.log.debug("Checking other!");
 				if (!isClosedValvePipe(t)){
 					if (t.getNetwork() != null){
-						//////System.out.println(t.getNetwork().name);
+						//////Steamcraft.log.debug(t.getNetwork().name);
 						SteamNetwork net = t.getNetwork();
 						if (net != null){
 							nets.add(net);
@@ -143,14 +143,14 @@ public class SteamNetwork {
 				
 			}
 			if (nets.size() > 0){
-				//////System.out.println("Other net(s) found: " + nets.size());
+				//////Steamcraft.log.debug("Other net(s) found: " + nets.size());
 				SteamNetwork main = null;
 				for (SteamNetwork net : nets){
 					if (main != null){
-						//////System.out.println(net.name + " will be joining "+main.name);
+						//////Steamcraft.log.debug(net.name + " will be joining "+main.name);
 						main.join(net);
 					} else {
-						//////System.out.println("Setting main to network "+net.name);
+						//////Steamcraft.log.debug("Setting main to network "+net.name);
 						main = net;
 					}
 				}
@@ -285,10 +285,10 @@ public class SteamNetwork {
 	}
 	
 	public synchronized int split(ISteamTransporter split, boolean removeCapacity){
-		//////System.out.println("Splitting network: "+ this.name);
+		//////Steamcraft.log.debug("Splitting network: "+ this.name);
 		int steamRemoved = 0;
 		if (removeCapacity && this.steam >= split.getCapacity() * this.getPressure() ){
-			//////System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
+			//////Steamcraft.log.debug("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
 			steamRemoved = (int)Math.floor((double)split.getCapacity() * (double)this.getPressure());
 			this.steam -= steamRemoved;
 			this.capacity -= split.getCapacity();
@@ -297,7 +297,7 @@ public class SteamNetwork {
 		for (ISteamTransporter trans : this.transporters.values()){
 			trans.updateSteam((int)(trans.getCapacity() * this.getPressure()));
 		}
-		//////System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
+		//////Steamcraft.log.debug("Subtracting "+split.getCapacity() + " capacity from the network");
 		
 		//World world = split.getWorldObj();
 		//Tuple3<Integer, Integer, Integer> coords = split.getCoords();
@@ -312,7 +312,7 @@ public class SteamNetwork {
 					//log.debug("size: "+newNets.size());
 					for (SteamNetwork net : newNets){
 						if (net.contains(trans)){
-							////System.out.println("In network");
+							////Steamcraft.log.debug("In network");
 							isInNetwork = true;
 							break;
 						}
@@ -321,7 +321,7 @@ public class SteamNetwork {
 				if (!isInNetwork){
 					//log.debug("Not in network!");
 					SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
-					//////System.out.println("Crawling!");
+					//////Steamcraft.log.debug("Crawling!");
 					ISteamTransporter ignore = null;
 					if (removeCapacity){
 						ignore = split;
@@ -329,7 +329,7 @@ public class SteamNetwork {
 
 					net.buildFromTransporter(trans, net, ignore);
 					newNets.add(net);
-					//////System.out.println(net.getSize());
+					//////Steamcraft.log.debug(net.getSize());
 					hasrun = true;
 				}
 			}
@@ -337,7 +337,7 @@ public class SteamNetwork {
 		}
 		if (newNets.size() > 0){
 			//log.debug("More than one new network found");
-			////System.out.println("old s:"+this.steam+" p:"+this.getPressure() + " c:"+this.capacity);
+			////Steamcraft.log.debug("old s:"+this.steam+" p:"+this.getPressure() + " c:"+this.capacity);
 			for (SteamNetwork net : newNets){
 				int steamShare = (int)Math.floor((double)(net.capacity * this.getPressure()));
 				//log.debug("new s:"+steamShare+" c:"+net.capacity+" n: "+net.getName());
@@ -349,7 +349,7 @@ public class SteamNetwork {
 			
 		} else {
 			// There's nothing left.
-			////System.out.println("No networks around");
+			////Steamcraft.log.debug("No networks around");
 			
 		}
 		//log.debug("New networks: "+newNets);
@@ -359,7 +359,7 @@ public class SteamNetwork {
 	}
 	
 	public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
-		//////System.out.println("Building network!");
+		//////Steamcraft.log.debug("Building network!");
 		HashSet<ISteamTransporter> checked = new HashSet();
 		HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
 		boolean targetIsThis = target == this;

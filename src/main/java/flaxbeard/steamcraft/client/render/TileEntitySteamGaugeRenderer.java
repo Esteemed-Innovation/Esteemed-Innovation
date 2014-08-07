@@ -48,7 +48,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer {
 				}
 				GL11.glRotatef(-95.0F, 1, 0, 0);
 				float rand = 0.0F;
-				////System.out.println(trans.getPressure());
+				////Steamcraft.log.debug(trans.getPressure());
 				if (pressure > 0.0F) {
 					rand = (float) ((Math.random()-0.5F)*5.0F);
 					if (pressure >= 1.0F) {
