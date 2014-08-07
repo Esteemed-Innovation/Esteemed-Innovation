@@ -115,6 +115,7 @@ public class SteamcraftItems {
 //	public static Item antiFire;
 	public static Item stealthUpgrade;
 	public static Item canner;
+	public static Item pitonDeployer;
 	public static Item enderShroud;
 
 	//public static Item fakeOre;
@@ -277,6 +278,10 @@ public class SteamcraftItems {
     		if (Config.enableCanningMachine) {
 	    		canner = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/canner.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
 	    		GameRegistry.registerItem(canner, "canner");
+    		}
+    		if (Config.enablePitonDeployer) {
+	    		pitonDeployer = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/pitonDeployer.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:pitonDeployer").setTextureName("steamcraft:pitonDeployer");
+	    		GameRegistry.registerItem(pitonDeployer, "pitonDeployer");
     		}
     		//antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
     		//GameRegistry.registerItem(antiFire, "antiFire");

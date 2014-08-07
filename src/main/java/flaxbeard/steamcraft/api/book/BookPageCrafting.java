@@ -165,20 +165,20 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
             			if (inputs[(maxX*i)+j] instanceof Item) {
             				ItemStack item = new ItemStack((Item) inputs[(maxX*i)+j]);
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer, true);
+				            this.drawItemStack(item, x+49+j*19, y+59+i*19, "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
             			if (inputs[(maxX*i)+j] instanceof ItemStack) {
             				ItemStack item = (ItemStack) inputs[(maxX*i)+j];
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item, x+49+j*19, y+59+i*19, item.stackSize > 1 ? Integer.toString(item.stackSize) : "", renderer, fontRenderer, true);
+				            this.drawItemStack(item, x+49+j*19, y+59+i*19, "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
             			if (inputs[(maxX*i)+j] instanceof ItemStack[]) {
             				ItemStack[] item = (ItemStack[]) inputs[(maxX*i)+j];
             				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer, true);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
             			if (inputs[(maxX*i)+j] instanceof ArrayList && ((ArrayList)inputs[(maxX*i)+j]).size() > 0) {
@@ -200,7 +200,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
             				ItemStack[] item = list2.toArray(new ItemStack[0]);
             				int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length*20.0D))/20.0D);
 				            fontRenderer.setUnicodeFlag(false);
-				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19, item[ticks].stackSize > 1 ? Integer.toString(item[ticks].stackSize) : "", renderer, fontRenderer, true);
+				            this.drawItemStack(item[ticks], x+49+j*19, y+59+i*19,  "", renderer, fontRenderer, true);
 				            fontRenderer.setUnicodeFlag(true);
             			}
 

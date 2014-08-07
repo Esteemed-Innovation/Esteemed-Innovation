@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.Item;
@@ -114,6 +115,20 @@ public class BotaniaIntegration {
 		}
 		System.out.println(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension());
 		((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
+	}
+
+	public static void checkRange(EntityLivingBase entity) {
+		Minecraft mc = Minecraft.getMinecraft();
+		if(!(mc.playerController instanceof IExtendedPlayerController)) {
+			GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.CURRENT_GAME_TYPE);
+			NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, LibObfuscation.NET_CLIENT_HANDLER);
+			SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
+			controller.setGameType(type);
+			mc.playerController = controller;
+		}
+		if (((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
+			extendRange(entity, 2.0F-((IExtendedPlayerController) mc.playerController).getReachDistanceExtension());
+		}
 	}
 
 }
