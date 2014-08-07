@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+
 public interface IEngineerable {
 	public MutablePair<Integer,Integer>[] engineerCoordinates();
 
@@ -19,4 +21,7 @@ public interface IEngineerable {
 	public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i, int j);
 
 	boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade);
+
+	public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i,
+			int j, int k);
 }

@@ -53,6 +53,8 @@ public class GuiEngineeringTable extends GuiContainer
         if (furnaceInventory.getStackInSlot(0) != null) {
         	if (furnaceInventory.getStackInSlot(0).getItem() instanceof IEngineerable) {
         		IEngineerable item = (IEngineerable) furnaceInventory.getStackInSlot(0).getItem();
+        		item.drawBackground(this,0,k+52,l+8);
+
         		int i = 0;
         		for (MutablePair<Integer,Integer> pair : item.engineerCoordinates()) {
         			int x = pair.left;
