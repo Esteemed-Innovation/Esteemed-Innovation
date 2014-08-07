@@ -55,27 +55,15 @@ public class SteamNetwork {
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt){
 		NBTTagList nbtl = new NBTTagList();
-		for (Coord4 c : transporters.keySet()){
-			nbtl.appendTag(c.writeToNBT(new NBTTagCompound()));
-		}
-		nbt.setTag("transporters", nbtl);
-		nbt.setString("name", name);
+		//for (Coord4 c : transporters.keySet()){
+		//	nbtl.appendTag(c.writeToNBT(new NBTTagCompound()));
+		//}
+		//nbt.setTag("transporters", nbtl);
+		//nbt.setString("name", name);
 		//nbt.setInteger("steam", steam);
-		nbt.setInteger("capacity", capacity);
+		//nbt.setInteger("capacity", capacity);
+		
 		return nbt;
-	}
-	
-	public static SteamNetwork readFromNBT(NBTTagCompound nbt){
-		ArrayList<Coord4> coords = new ArrayList();
-		NBTTagList nbtl = (NBTTagList)nbt.getTag("transporters");
-		for (int i = 0; i < nbtl.tagCount(); i ++){
-			NBTTagCompound tag = nbtl.getCompoundTagAt(i);
-			coords.add(Coord4.readFromNBT(tag));
-		}
-		//int s = nbt.getInteger("steam");
-		int c = nbt.getInteger("capacity");
-		String n = nbt.getString("name");
-		return new SteamNetwork(c, n, coords);
 	}
 	
 	public String getName(){
@@ -88,6 +76,7 @@ public class SteamNetwork {
 	
 	protected boolean tick(){
 		if (this.transporters.size() == 0){
+			log.debug("No transporters ("+getShortName()+")");
 			return false;
 		}
 		if (shouldRefresh){
@@ -120,6 +109,7 @@ public class SteamNetwork {
 							//////System.out.println("Invalid TE");
 							transporters.remove(coords);
 						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
+							log.debug(trans.getName() + " is exploding.  ("+this.getSteam()+" "+this.getCapacity()+" "+this.getPressure()+")");
 							trans.explode();
 							
 						}
@@ -209,7 +199,11 @@ public class SteamNetwork {
 	}
 	
 	public float getPressure(){
-		return (float)steam / (float)capacity;
+		if (capacity > 0){
+			return (float)steam / (float)capacity;
+		}
+		return 0;
+		
 	}
 
 	public int getSize() {
@@ -293,17 +287,18 @@ public class SteamNetwork {
 	public synchronized int split(ISteamTransporter split, boolean removeCapacity){
 		//////System.out.println("Splitting network: "+ this.name);
 		int steamRemoved = 0;
-		if (this.steam >= split.getCapacity() * this.getPressure() && removeCapacity){
+		if (removeCapacity && this.steam >= split.getCapacity() * this.getPressure() ){
 			//////System.out.println("Subtracting "+(split.getCapacity() * this.getPressure() )+ " from the network;");
 			steamRemoved = (int)Math.floor((double)split.getCapacity() * (double)this.getPressure());
 			this.steam -= steamRemoved;
+			this.capacity -= split.getCapacity();
 			
 		}
 		for (ISteamTransporter trans : this.transporters.values()){
 			trans.updateSteam((int)(trans.getCapacity() * this.getPressure()));
 		}
 		//////System.out.println("Subtracting "+split.getCapacity() + " capacity from the network");
-		this.capacity -= split.getCapacity();
+		
 		//World world = split.getWorldObj();
 		//Tuple3<Integer, Integer, Integer> coords = split.getCoords();
 		//int x = coords.first, y= coords.second, z=coords.third;
@@ -482,14 +477,15 @@ public class SteamNetwork {
 				
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("SteamNetwork: "+e.getMessage());
 			e.printStackTrace();
 		}
 		if (this.capacity != targetCapacity){
-			//log.debug("target: "+targetCapacity+"; curent: "+this.capacity);
-			//log.debug("steam: "+this.steam+"; pressure: "+this.getPressure());
-			//log.debug("ideal steam: "+(targetCapacity*this.getPressure()));
-			this.steam = (int)(targetCapacity * press);
+			log.debug("target: "+targetCapacity+"; curent: "+this.capacity);
+			log.debug("steam: "+this.steam+"; pressure: "+this.getPressure());
+			int idealSteam = (int)(targetCapacity*press);
+			log.debug("idealSteam: "+idealSteam+"; ideal steam: "+(targetCapacity*this.getPressure()));
+			this.steam = idealSteam;
 			this.capacity = targetCapacity;
 		}
 		
@@ -502,5 +498,8 @@ public class SteamNetwork {
 		this.refreshWaitTicks = 40;
 	}
 	
+	public String getShortName(){
+		return this.name.subSequence(0, 5).toString();
+	}
 	
 }
