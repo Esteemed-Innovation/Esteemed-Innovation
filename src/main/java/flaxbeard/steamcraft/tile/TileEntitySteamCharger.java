@@ -106,13 +106,13 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 				ItemStack stack = this.getStackInSlot(0).copy();
 				if (this.getSteamShare() > 0 && stack.getItemDamage() > 0) {
 					if (!this.isCharging){
-						//System.out.println("Charging");
+						//Steamcraft.log.debug("Charging");
 						this.isCharging = true;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
 				} else {
 					if (this.isCharging){
-						//System.out.println("Not charging");
+						//Steamcraft.log.debug("Not charging");
 						this.isCharging = false;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					}
@@ -134,7 +134,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 				}
 			} else {
 				if (this.hadItem){
-					//System.out.println("No item");
+					//Steamcraft.log.debug("No item");
 					this.hadItem = false;
 					this.prevPercent = 0F;
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

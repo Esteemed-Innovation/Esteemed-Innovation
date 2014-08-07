@@ -90,7 +90,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 	    	}
 	    	int addedTicks = Math.min(((Double)Math.floor((double)speed/1000D*25D)).intValue(), 50);
 	    	ticks += addedTicks;
-	    	////System.out.println("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
+	    	////Steamcraft.log.debug("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
 	    	if (speed > 0) {
 	    		speed--;
 	    	} else if (ticks <= 0){

@@ -71,7 +71,7 @@ public class LightMatrix implements CCRenderState.IVertexOperation
                 for(int b = -1; b <= 1; b++)
                     ssamplem[s][(a+1)*3+b+1] = (d0[1]+d1[1]*a+d2[1]*b)*9+(d0[2]+d1[2]*a+d2[2]*b)*3+(d0[0]+d1[0]*a+d2[0]*b);
         }
-        //System.out.println(Arrays.deepToString(ssamplem));
+        //Steamcraft.log.debug(Arrays.deepToString(ssamplem));
     }*/
 
     public void locate(IBlockAccess a, int x, int y, int z) {

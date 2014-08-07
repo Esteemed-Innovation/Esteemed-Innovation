@@ -35,7 +35,7 @@ public class SteamNetworkData extends WorldSavedData{
 	public static SteamNetworkData get(World world) {
 		SteamNetworkData data = (SteamNetworkData) world.perWorldStorage.loadData(SteamNetworkData.class, ID);
         if (data == null) {
-        	//System.out.println("!!NEED NEW STEAM NETWORK DATA!!");
+        	//Steamcraft.log.debug("!!NEED NEW STEAM NETWORK DATA!!");
             data = new SteamNetworkData(world.provider.dimensionId);
             SteamNetworkRegistry.getInstance().newDimension(world.provider.dimensionId);
             world.perWorldStorage.setData(ID, data);

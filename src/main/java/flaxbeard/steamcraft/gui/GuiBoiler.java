@@ -57,7 +57,7 @@ public class GuiBoiler extends GuiContainer
             i1 = this.furnaceInventory.getBurnTimeRemainingScaled(14);
             this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
             GL11.glDisable(3042);
-           // //System.out.println(this.furnaceInventory.myTank.getCapacity());
+           // //Steamcraft.log.debug(this.furnaceInventory.myTank.getCapacity());
             float fill = (float)(this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount/(float)this.furnaceInventory.myTank.getCapacity());
             drawFluid(new FluidStack(FluidRegistry.WATER,1), (int)(fill*58.0F), k + 81, l + 14, 16, 58, false);
             this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
@@ -74,7 +74,7 @@ public class GuiBoiler extends GuiContainer
            
             GL11.glDisable(3042);
     	} catch (NullPointerException e){
-    		////System.out.println("Did the boiler explode while the GUI was open?");
+    		////Steamcraft.log.debug("Did the boiler explode while the GUI was open?");
     	}
         
     }

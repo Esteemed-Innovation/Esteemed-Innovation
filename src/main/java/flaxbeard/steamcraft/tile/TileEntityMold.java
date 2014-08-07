@@ -102,7 +102,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
         {
         	this.mold[0] = null;
         }
-        ////System.out.println(this.worldObj == null);
+        ////Steamcraft.log.debug(this.worldObj == null);
         //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

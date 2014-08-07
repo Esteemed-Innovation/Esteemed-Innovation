@@ -241,10 +241,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 	
 	public void checkMultiblock(boolean isBreaking, int frontSide) {
-		////System.out.println(frontSideIn);
+		////Steamcraft.log.debug(frontSideIn);
 		int x = xCoord, y=yCoord, z=zCoord;
 		
-		////System.out.println("Checking multiblock; frontSide: "+this.frontSide);
+		////Steamcraft.log.debug("Checking multiblock; frontSide: "+this.frontSide);
 		
 		boolean isMultiblock = false;
 		boolean isTooManyBlocks = false;
@@ -252,9 +252,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		
 		if (!worldObj.isRemote){
 			if (!isBreaking){
-				////System.out.println(this.frontSide);
+				////Steamcraft.log.debug(this.frontSide);
 				int[] validClusters = getValidClusters(); 
-				////System.out.println("valid configs found: " +validClusters.length);
+				////Steamcraft.log.debug("valid configs found: " +validClusters.length);
 				
 				if (validClusters.length == 1){
 					
@@ -311,7 +311,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		int[] out;
 		int count = 0;
 		for (int clusterIndex = 0; clusterIndex< 8; clusterIndex++){
-			////System.out.println("Checking cluster "+clusterIndex);
+			////Steamcraft.log.debug("Checking cluster "+clusterIndex);
 			boolean isValid = false;
 			if (checkCluster(validConfigs[clusterIndex])==8){
 				valid[count] = clusterIndex;
@@ -351,7 +351,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 				boilers.add(boiler);
 				
 			} else {
-				////System.out.println("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
+				////Steamcraft.log.debug("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
 			}
 			
 		}
@@ -378,7 +378,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	}
 
 	public void setFront(int frontSide, boolean print) {
-		//if (print) //System.out.println("Setting front side to "+frontSide);
+		//if (print) //Steamcraft.log.debug("Setting front side to "+frontSide);
 		if (!worldObj.isRemote)
 			this.frontSide = frontSide;
 	}
@@ -401,7 +401,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 			worldObj.createExplosion(null, xCoord+0.5F, yCoord+0.5F, zCoord+0.5F, 4.0F, true);
 			return;
 		}
-		////System.out.println(this.getFront());
+		////Steamcraft.log.debug(this.getFront());
 		if (waitOneTick)
 			waitOneTick = false;
 		else {
@@ -473,7 +473,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                    	int i = 0;
 	                    	//HEAT COMMENTED OUT
 	                    	int maxSteamThisTick = (int)(((float)maxThisTick)*0.7F+(maxThisTick*0.3F*((float)1600.0F/1600.0F)));
-	                    	////System.out.println("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
+	                    	////Steamcraft.log.debug("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
 	                    	while (i<maxSteamThisTick && this.isBurning() && this.canSmelt()) {
 	                    		this.insertSteam(10);
 	                    		this.myTank.drain(2, true);
@@ -504,7 +504,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		}
     	
         if (!this.worldObj.isRemote) {
-        	////System.out.println(this.furnaceBurnTime);
+        	////Steamcraft.log.debug(this.furnaceBurnTime);
         }
         //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
@@ -711,7 +711,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 		if (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0){
 			
 			if (worldObj.isRemote){
-				////System.out.println("Returning "+this.pressure);
+				////Steamcraft.log.debug("Returning "+this.pressure);
 				return (pressure);
 			} else {
 				if (this.getNetwork() != null)
@@ -845,10 +845,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 		int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		if (meta == 1){
-			////System.out.println("Filling master");
+			////Steamcraft.log.debug("Filling master");
 			return myTank.fill(resource,  doFill);
 		} else if (meta > 0 && hasMaster()){
-			////System.out.println("Deferring fill to master");
+			////Steamcraft.log.debug("Deferring fill to master");
 			return getMasterTileEntity().fill(from, resource, doFill);
 		} else {
 			return 0;
@@ -940,15 +940,15 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	
 	@Override
 	public FluidTank getTank(){
-		////System.out.println("Flash boiler tank get!");
+		////Steamcraft.log.debug("Flash boiler tank get!");
 		if (this.getBlockMetadata() > 0){
 			if (this.getBlockMetadata() == 1){
-				////System.out.println("Master returning tank");
-				////System.out.println("Fill = "+myTank.getFluidAmount());
+				////Steamcraft.log.debug("Master returning tank");
+				////Steamcraft.log.debug("Fill = "+myTank.getFluidAmount());
 				return this.myTank;
 			} else {
 				if (this.hasMaster()){
-					////System.out.println("Asking master to return tank");
+					////Steamcraft.log.debug("Asking master to return tank");
 					return this.getMasterTileEntity().getTank();
 				}
 			}
