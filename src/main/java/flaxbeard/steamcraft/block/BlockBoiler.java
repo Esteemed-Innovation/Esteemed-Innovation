@@ -352,12 +352,13 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
+		int meta = world.getBlockMetadata(x, y, z);
 		if (player.isSneaking()) {
 			return true;
 		}
 		else if (side != 0 && side != 1)
         {
-            world.setBlockMetadataWithNotify(x, y, z, side, 2);
+            world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
             return true;
         }
         return false;

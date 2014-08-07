@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -193,25 +194,43 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 	@Override
 	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
 			int x, int y, int z, int side, float xO, float yO, float zO) {
+		int meta = world.getBlockMetadata(x, y, z);
         if (side != 0 && side != 1)
         {
+        	int output = meta;
         	switch (side) {
         	case 2:
-                world.setBlockMetadataWithNotify(x, y, z, 2, 2);
+        		output = 2;
                 break;
         	case 3:
-                world.setBlockMetadataWithNotify(x, y, z, 0, 2);
+        		output = 0;
                 break;
         	case 4:
-                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
+              	 output = 1;
                 break;
         	case 5:
-                world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+              	 output = 3;
                 break;
         	}
+        	if (output == meta && side > 1 && side < 6) {
+        		switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
+            	case 2:
+                 	 output = 2;
+                    break;
+            	case 3:
+            		output = 0;
+                    break;
+            	case 4:
+            		output = 1;
+                    break;
+            	case 5:
+            		output = 3;
+                    break;
+            	}
+        	}
+            world.setBlockMetadataWithNotify(x, y, z, output, 2);
             return true;
         }
         return false;
 	}
-
 }
