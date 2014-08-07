@@ -74,7 +74,7 @@ public class Steamcraft {
     @Instance("Steamcraft")
     public static Steamcraft instance;
     
-    public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.DEBUG);
+    public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
     
     public static FMLEventChannel channel;
     
