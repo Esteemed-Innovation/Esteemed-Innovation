@@ -34,7 +34,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 		
 		TileEntityCrucible crucible = (TileEntityCrucible) var1;
 		int meta = crucible.getWorldObj().getBlockMetadata(var1.xCoord,var1.yCoord,var1.zCoord);
-		////System.out.println(meta);
+		////Steamcraft.log.debug(meta);
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glColor4f(1F, 1F, 1F, 1F);
@@ -69,7 +69,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 		model.renderAll();
 //		ModelRenderer water = (new ModelRenderer(model, 0, 0)).setTextureSize(64, 64);
 		float height = (-5.0F+(crucible.getFill()/90.0F)*11.0F)/16.0F;
-//		//System.out.println(6.0F + (crucible.getFill()/90.0F)*-13.0F);
+//		//Steamcraft.log.debug(6.0F + (crucible.getFill()/90.0F)*-13.0F);
 		if (crucible.getFill() > 0) {
 			GL11.glRotatef(90.0F,1F,0F,0F);
 			GL11.glTranslatef(-0.5F, -0.5F, height);
@@ -95,7 +95,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 	 //   tessellator.setBrightness(brightness);
 		CrucibleLiquid liquid = crucible.contents.get(0);
 		tessellator.setColorRGBA(liquid.cr, liquid.cg, liquid.cb, 256);
-	//	//System.out.println(liquid.cr);
+	//	//Steamcraft.log.debug(liquid.cr);
 	    tessellator.setNormal(0.0F, 0.0F, 1.0F);
 	    tessellator.addVertexWithUV(0.125D, 0.125D, 0.0D, f1, f4);
 	    tessellator.addVertexWithUV(0.875D, 0.125D, 0.0D, f3, f4);

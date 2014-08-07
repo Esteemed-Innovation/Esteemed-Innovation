@@ -65,7 +65,7 @@ public class SteamcraftIslandGen implements IWorldGenerator {
 						if (xOffset + zOffset > 4) {
 							for (int y = 255; y>(minY-bottomOffset); y--) {
 								if (world.getBlock(i+x, y, j+z).getMaterial() != Material.air && world.getBlock(i+x, y, j+z).getMaterial() != Material.water) {
-									////System.out.println("YAY");
+									////Steamcraft.log.debug("YAY");
 		
 									Block block = world.getBlock(i+x, y, j+z);
 									int meta = world.getBlockMetadata(i+x, y, j+z);

@@ -24,7 +24,7 @@ public class TileEntityConveyorRenderer extends TileEntitySpecialRenderer implem
 
 		TileEntityConveyor conveyor = (TileEntityConveyor) var1;
 		int meta = conveyor.getWorldObj().getBlockMetadata(var1.xCoord,var1.yCoord,var1.zCoord);
-		////System.out.println(meta);
+		////Steamcraft.log.debug(meta);
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x, y, z);

@@ -202,7 +202,7 @@ public class ContainerEngineeringTable extends Container
         }
     	if (!hasEngineer) {
 	    	for (int i = 1; i<10; i++) {
-	    	//	//System.out.println("KKK");
+	    	//	//Steamcraft.log.debug("KKK");
 	    		this.getSlot(i).xDisplayPosition = -100;
 	    		this.getSlot(i).yDisplayPosition = -100;
 

@@ -128,7 +128,7 @@ public class TileEntityWhistle extends TileEntity {
 		if (te != null && te instanceof ISteamTransporter){
 			source = (ISteamTransporter) te;
 			if (worldObj.isRemote){
-				////System.out.println(source.getSteam());
+				////Steamcraft.log.debug(source.getSteam());
 			}
 			return source.getSteamShare();
 		}
