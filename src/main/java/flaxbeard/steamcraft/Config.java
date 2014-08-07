@@ -4,7 +4,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
-	public static final String VERSION = "0.25.0";
+	public static final String VERSION = "0.25.1";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;
