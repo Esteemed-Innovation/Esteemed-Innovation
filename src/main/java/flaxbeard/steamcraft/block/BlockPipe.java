@@ -327,13 +327,10 @@ public class BlockPipe extends BlockSteamTransporter {
 							minZ = 0.0F;
 						}
 					}
-			    	System.out.println("FUK");
-
 					return AxisAlignedBB.getBoundingBox(i+minX, j+minY, k+minZ, i+maxX, j+maxY, k+maxZ);
 		    	}
 	    	}
     	}
-    	System.out.println("FUK");
 		return super.getCollisionBoundingBoxFromPool(world, i, j, k);
     }
 
