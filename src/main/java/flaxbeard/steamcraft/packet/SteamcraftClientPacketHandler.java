@@ -126,9 +126,9 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         	double y = bbis.readDouble();
         	double z = bbis.readDouble();
         	
-        	for (int i = 0; i < 3; i++){
-        		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
-        	}
+//        	for (int i = 0; i < 3; i++){
+//        		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
+//        	}
         	
         	
         	bbis.close();
