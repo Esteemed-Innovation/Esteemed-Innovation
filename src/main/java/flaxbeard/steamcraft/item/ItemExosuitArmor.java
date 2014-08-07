@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.oredict.OreDictionary;
@@ -50,7 +51,8 @@ import flaxbeard.steamcraft.integration.BotaniaIntegration;
 
 @Optional.Interface(iface = "IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecialArmor,IEngineerable,ISteamChargable {
-	
+    public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
+
 	public int slot;
 	public IIcon grey;
 	public ItemExosuitArmor(int i, ArmorMaterial mat) {
@@ -618,6 +620,15 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i,
+			int j, int k) {
+		guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
+		//if (this.slot == 0) {
+			guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 0, 0, 64, 64);
+		//}
 	}
     
 }
