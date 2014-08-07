@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -29,6 +30,7 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class ItemFirearm extends Item implements IEngineerable
 {
@@ -173,7 +175,7 @@ public class ItemFirearm extends Item implements IEngineerable
         	}
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-        	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F)), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+        	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F))*(UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.25F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
             for (int i = 1; i < 16; i++)
             {
         		par2World.spawnParticle("smoke", par3EntityPlayer.posX + itemRand.nextFloat() - 0.5F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat() - 0.5F, 0.0D, 0.01D, 0.0D);
@@ -342,6 +344,7 @@ public class ItemFirearm extends Item implements IEngineerable
         else
         {
             return EnumAction.block;
+            
         }
     }
 
@@ -377,7 +380,7 @@ public class ItemFirearm extends Item implements IEngineerable
 
 	@Override
 	public MutablePair<Integer, Integer>[] engineerCoordinates() {
-		return new MutablePair[] { MutablePair.of(49,26) };
+		return new MutablePair[] { MutablePair.of(53,29) };
 	}
 
 	@Override
@@ -441,6 +444,22 @@ public class ItemFirearm extends Item implements IEngineerable
 			}
 		}
 		return super.getIsRepairable(par1ItemStack, par2ItemStack);
+	}
+
+	@Override
+	public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i,
+			int j, int k) {
+		guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
+		if (this == SteamcraftItems.musket) {
+			guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 0, 64, 64, 64);
+		}
+		else if (this == SteamcraftItems.blunderbuss) {
+			guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 64, 64, 64, 64);
+		}
+		else if (this == SteamcraftItems.pistol) {
+			guiEngineeringTable.drawTexturedModalRect(j+26, k+3, 128, 64, 64, 64);
+		}
+		
 	}
 
 }

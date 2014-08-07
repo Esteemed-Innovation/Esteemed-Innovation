@@ -41,6 +41,10 @@ import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
 import flaxbeard.steamcraft.item.ItemWrench;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementFireMusket;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementRevolver;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementSilencer;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementSpeedloader;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
@@ -66,6 +70,8 @@ public class SteamcraftItems {
     public static Item blunderbuss;
     public static Item enhancementAblaze;
     public static Item enhancementRevolver;
+    public static Item enhancementSpeedloader;
+    public static Item enhancementSilencer;
 
     
     // misc
@@ -202,12 +208,26 @@ public class SteamcraftItems {
 			GameRegistry.registerItem(blunderbuss, "blunderbuss");
 		}
 		
-		//enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
-				//GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
-			//	SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
-			//	enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
-				//GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
-				//SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+    	if (Config.enableEnhancementRevolver) {
+			enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
+			GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
+    	}
+    	if (Config.enableEnhancementAblaze) {
+			enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
+			GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+    	}
+    	if (Config.enableEnhancementSpeedloader) {
+			enhancementSpeedloader = new ItemEnhancementSpeedloader().setUnlocalizedName("steamcraft:enhancementSpeedloader").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedloader");
+			GameRegistry.registerItem(enhancementSpeedloader, "enhancementSpeedloader");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedloader);
+    	}
+    	if (Config.enableEnhancementSilencer) {
+			enhancementSilencer = new ItemEnhancementSilencer().setUnlocalizedName("steamcraft:enhancementSilencer").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSilencer");
+			GameRegistry.registerItem(enhancementSilencer, "enhancementSilencer");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSilencer);
+    	}
     }
     
     private static void registerExosuit(){
