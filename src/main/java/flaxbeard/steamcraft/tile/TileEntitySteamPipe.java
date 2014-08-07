@@ -38,6 +38,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	//protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
 	public ArrayList<Integer> blacklistedSides = new ArrayList<Integer>();
 	
+	
+	
 	protected boolean isLeaking = false;
 	private boolean isSplitting = false;
 	private int mySteam = 0;
@@ -49,6 +51,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	
 	public TileEntitySteamPipe(){
 		super(ForgeDirection.values());
+		this.name = "Pipe";
 	}
 	
 	public TileEntitySteamPipe(int capacity){
@@ -370,11 +373,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 		    		{
 		    			ForgeDirection d = ForgeDirection.getOrientation(subHit);
 		    			TileEntity te = worldObj.getTileEntity(x+d.offsetX, y+d.offsetY, z+d.offsetZ);
-		    			if (te != null && te instanceof TileEntitySteamPipe){
-		    				TileEntitySteamPipe p = (TileEntitySteamPipe)te;
+		    			if (te != null && te instanceof ISteamTransporter){
+		    				ISteamTransporter p = (ISteamTransporter)te;
 		    				p.getNetwork().shouldRefresh();
-		    			} else {
-		    				log.error("Error?");
 		    			}
 		    		}
 		    		this.isOriginalPipe = true;
