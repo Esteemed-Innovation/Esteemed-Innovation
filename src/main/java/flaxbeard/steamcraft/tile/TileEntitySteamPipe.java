@@ -173,7 +173,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 				if (myDirections.size() == 2 && this.getSteamShare() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 					if (!isLeaking){
-						////System.out.println("Block is leaking!");
+						////Steamcraft.log.debug("Block is leaking!");
 						isLeaking = true;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 						markDirty();
@@ -181,7 +181,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 					
 				} else {
 					if (isLeaking){
-						////System.out.println("Block is no longer leaking!");
+						////Steamcraft.log.debug("Block is no longer leaking!");
 						isLeaking = false;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 						markDirty();
@@ -383,9 +383,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 					int steam = this.getNetwork().split(this, false);
 					this.shouldJoin();
 					//this.getNetwork().addSteam(steam);
-					////System.out.println("B");
-					////System.out.println(this.getNetworkName());
-					////System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
+					////Steamcraft.log.debug("B");
+					////Steamcraft.log.debug(this.getNetworkName());
+					////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 					
 					refreshNeighbors();
 					this.network.shouldRefresh();
@@ -402,9 +402,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 					int steam = this.getNetwork().split(this, false);
 					this.shouldJoin();
 					//this.getNetwork().addSteam(steam);
-					////System.out.println("C");
-					////System.out.println(this.getNetworkName());
-					////System.out.println("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
+					////Steamcraft.log.debug("C");
+					////Steamcraft.log.debug(this.getNetworkName());
+					////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	    		}
 	    	}

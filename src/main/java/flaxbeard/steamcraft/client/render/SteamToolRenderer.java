@@ -30,10 +30,10 @@
 //    @Override
 //    public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
 //    	if (type == ItemRenderType.EQUIPPED) {
-//    		//System.out.println("TA");
+//    		//Steamcraft.log.debug("TA");
 //
 //	    	IIcon icon = itemStack.getItem().getIconFromDamage(itemStack.getItemDamage());
-//	    		//System.out.println("TA");
+//	    		//Steamcraft.log.debug("TA");
 //	        	EntityPlayer player = (EntityPlayer) data[1];
 //
 //		    	MutablePair info = ItemSteamDrill.stuff.get(player.getEntityId());

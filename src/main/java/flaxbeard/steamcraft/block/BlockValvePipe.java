@@ -42,7 +42,7 @@ public class BlockValvePipe extends BlockPipe {
 			TileEntityValvePipe tile = (TileEntityValvePipe) world.getTileEntity(x, y, z);
 			if (!tile.isTurning()) {
 				tile.setTurining();
-				//System.out.println(tile.getNetworkName());
+				//Steamcraft.log.debug(tile.getNetworkName());
 			}
 		}
 		return true;

@@ -190,7 +190,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 				range = 9;
 				break;
 			}
-			//System.out.println(range);
+			//Steamcraft.log.debug(range);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			return true;
 		}

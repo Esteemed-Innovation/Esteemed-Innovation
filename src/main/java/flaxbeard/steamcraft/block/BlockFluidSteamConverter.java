@@ -48,7 +48,7 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
 		float z2 = 0.999F;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();
 		this.setBlockBounds(z, y, x, z2, y2, x2);
-		//System.out.println(meta);
+		//Steamcraft.log.debug(meta);
         switch (meta) {
         	case 0:
         		return AxisAlignedBB.getBoundingBox(i+x, j+z, k+y, i+x2, j+z2,k+ y2);

@@ -356,7 +356,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
         else
         {
-        	////System.out.println(SteamcraftRegistry.researchPages.keySet().toArray()[0]);
+        	////Steamcraft.log.debug(SteamcraftRegistry.researchPages.keySet().toArray()[0]);
     		fontRendererObj.setUnicodeFlag(unicode);
     		super.drawScreen(par1, par2, par3);
     		fontRendererObj.setUnicodeFlag(true);
