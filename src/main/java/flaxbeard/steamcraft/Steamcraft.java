@@ -80,7 +80,7 @@ import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
 
-@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION, dependencies="")
+@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
 	
     @Instance("Steamcraft")
