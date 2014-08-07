@@ -409,7 +409,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 	    		}
 	    	}
 	    	if (this.getSteamShare() > 0){
-	    		world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+	    		//world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 	    		ForgeDirection d = ForgeDirection.getOrientation(subHit);
 	    		SteamcraftServerPacketHandler.sendPipeConnectDisconnectPacket(getDimension(), xCoord+0.5F+(d.offsetX/2F), yCoord+0.5F+(d.offsetY/2F), zCoord+0.5F+(d.offsetZ/2F));
 		    }
