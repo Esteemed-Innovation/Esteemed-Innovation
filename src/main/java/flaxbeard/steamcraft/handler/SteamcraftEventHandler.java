@@ -1056,6 +1056,26 @@ public class SteamcraftEventHandler {
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
 		boolean hasPower = hasPower(entity,1);
+		
+		if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
+			if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+				if (entity.getEquipmentInSlot(3).stackTagCompound.hasKey("grappled") && entity.getEquipmentInSlot(3).stackTagCompound.getBoolean("grappled")) {
+
+					double lastX = entity.getEquipmentInSlot(3).stackTagCompound.getFloat("x");
+					double lastZ = entity.getEquipmentInSlot(3).stackTagCompound.getFloat("z");
+					if ((Math.abs(lastX-entity.posX) > 0.1F || Math.abs(lastZ-entity.posZ) > 0.1F || entity.isSneaking())) {
+						entity.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", false);
+					}
+					else
+					{
+						entity.motionX = 0.0F;
+						entity.motionY = (entity.motionY > 0) ? entity.motionY : 0.0F;
+						entity.motionZ = 0.0F;
+					}
+				}
+			}
+		}
 
 		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(1).getItem() instanceof ItemExosuitArmor)) {
 			ItemStack stack = ((EntityPlayer)event.entity).inventory.armorItemInSlot(1);
@@ -1205,6 +1225,9 @@ public class SteamcraftEventHandler {
 	}
 	@SubscribeEvent
 	public void handleSteamcraftArmor(LivingEvent.LivingUpdateEvent event) {
+		
+		
+		
 		boolean hasPower = hasPower(event.entityLiving, 1);
 		int armor = getExoArmor(event.entityLiving);
 		EntityLivingBase entity = event.entityLiving;
@@ -1355,16 +1378,69 @@ public class SteamcraftEventHandler {
 		return num;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void clickLeft(PlayerInteractEvent event) {
-		if (Loader.isModLoaded("AWWayofTime")) {
-			BloodMagicIntegration.clickLeft(event);
-		}
+	public void handleBook(PlayerInteractEvent event) {
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if(mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
 				event.setCanceled(true);
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void clickLeft(PlayerInteractEvent event) {
+		if (Loader.isModLoaded("AWWayofTime")) {
+			BloodMagicIntegration.clickLeft(event);
+		}
+		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.face != 1 && event.world.getBlock(event.x, event.y, event.z).isSideSolid(event.world, event.x, event.y, event.z, ForgeDirection.getOrientation(event.face))) {
+			
+			EntityPlayer player = event.entityPlayer;
+			if (player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+				if (event.face != 0) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
+					boolean canStick = false;
+					ForgeDirection dir = ForgeDirection.getOrientation(event.face);
+					List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x+(dir.offsetX/6F), event.y+(dir.offsetY/6F)-1.0F, event.z+(dir.offsetZ/6F), event.x+(dir.offsetX/6F)+1, event.y+(dir.offsetY/6F)+2.0F, event.z+(dir.offsetZ/6F)+1));
+					for (Object obj : list) {
+						if (obj == player) {
+							canStick = true;
+						}
+					}
+					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
+			
+						player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled",true);
+						player.motionX = 0.0F;
+						player.motionY = 0.0F;
+						player.motionZ = 0.0F;
+					}
+				}
+				else
+				{
+					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
+					boolean canStick = false;
+					ForgeDirection dir = ForgeDirection.getOrientation(event.face);
+					List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x-0.5F, event.y+(dir.offsetY/6F)-0.5F, event.z-0.20F, event.x+0.5F+1, event.y+(dir.offsetY/6F)+1, event.z+0.5F+1));
+					for (Object obj : list) {
+						if (obj == player) {
+							canStick = true;
+						}
+					}
+					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
+						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
+						player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled",true);
+						player.motionX = 0.0F;
+						player.motionY = 0.0F;
+						player.motionZ = 0.0F;
+						player.fallDistance = 0.0F;
+					}
+				}
+			}
+			
 		}
 
 		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {

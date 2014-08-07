@@ -43,6 +43,14 @@ public class SteamcraftServerPacketHandler {
 			int id = dat.readInt();
 			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
 			if (player != null) {
+				if (player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
+					if (chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
+						if (player.getEquipmentInSlot(3).stackTagCompound.hasKey("grappled") && player.getEquipmentInSlot(3).stackTagCompound.getBoolean("grappled")) {
+							player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", false);
+						}
+					}
+				}
 				ItemStack armor = player.getCurrentArmor(2);
 				if (armor != null && armor.getItem() == SteamcraftItems.exoArmorBody) {
 					ItemExosuitArmor item = (ItemExosuitArmor) armor.getItem();
