@@ -6,11 +6,11 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
-public class ItemEnhancementSpeedloader extends Item implements IEnhancementFirearm {
+public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
 
 	@Override
 	public boolean canApplyTo(ItemStack stack) {
-		return stack.getItem() == SteamcraftItems.musket || stack.getItem() == SteamcraftItems.blunderbuss;
+		return stack.getItem() == SteamcraftItems.blunderbuss;
 	}
 
 	@Override
@@ -20,29 +20,17 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
 	@Override
 	public String getID() {
-		return "Speedloader";
+		return "Recoil";
 	}
 
 	@Override
 	public String getIcon(Item item) {
-		if (item == SteamcraftItems.musket) {
-			return "steamcraft:weaponMusketSpeedloader";
-		}
-		else
-		{
-			return "steamcraft:weaponBlunderbussSpeedloader";
-		}
+		return "steamcraft:weaponBlunderbussRecoil";
 	}
 
 	@Override
 	public String getName(Item item) {
-		if (item == SteamcraftItems.musket) {
-			return "item.steamcraft:musketSpeedloader";
-		}
-		else
-		{
-			return "item.steamcraft:blunderbussSpeedloader";
-		}
+		return "item.steamcraft:blunderbussRecoil";
 	}
 	
 	
@@ -53,12 +41,12 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
 	@Override
 	public float getAccuracyChange(Item weapon) {
-		return 0;
+		return -1.0F;
 	}
 
 	@Override
 	public float getKnockbackChange(Item weapon) {
-		return 0;
+		return -2.0F;
 	}
 
 	@Override
@@ -68,7 +56,7 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
 	@Override
 	public int getReloadChange(Item weapon) {
-		return -30;
+		return 0;
 	}
 
 	@Override

@@ -6,11 +6,11 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 
-public class ItemEnhancementSpeedloader extends Item implements IEnhancementFirearm {
+public class ItemEnhancementSpeedy extends Item implements IEnhancementFirearm {
 
 	@Override
 	public boolean canApplyTo(ItemStack stack) {
-		return stack.getItem() == SteamcraftItems.musket || stack.getItem() == SteamcraftItems.blunderbuss;
+		return stack.getItem() == SteamcraftItems.pistol;
 	}
 
 	@Override
@@ -20,29 +20,17 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
 	@Override
 	public String getID() {
-		return "Speedloader";
+		return "Speedy";
 	}
 
 	@Override
 	public String getIcon(Item item) {
-		if (item == SteamcraftItems.musket) {
-			return "steamcraft:weaponMusketSpeedloader";
-		}
-		else
-		{
-			return "steamcraft:weaponBlunderbussSpeedloader";
-		}
+		return "steamcraft:weaponPistolSpeedy";
 	}
 
 	@Override
 	public String getName(Item item) {
-		if (item == SteamcraftItems.musket) {
-			return "item.steamcraft:musketSpeedloader";
-		}
-		else
-		{
-			return "item.steamcraft:blunderbussSpeedloader";
-		}
+		return "item.steamcraft:pistolSpeedy";
 	}
 	
 	
@@ -68,7 +56,7 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
 	@Override
 	public int getReloadChange(Item weapon) {
-		return -30;
+		return -8;
 	}
 
 	@Override
