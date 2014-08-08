@@ -32,5 +32,6 @@ public interface ISteamTransporter {
 	public void updateSteam(int steam);
 	
 	public String getName();
+	public void wasAdded();
 	
 }

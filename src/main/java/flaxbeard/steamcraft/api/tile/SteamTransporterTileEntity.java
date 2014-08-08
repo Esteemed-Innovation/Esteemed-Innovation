@@ -314,4 +314,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public String getName(){
 		return this.name;
 	}
+	
+	@Override
+	public void wasAdded(){
+		//this.steam = 0;
+	}
 }

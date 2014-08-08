@@ -34,6 +34,7 @@ public class SteamNetwork {
 	private boolean shouldRefresh = false;
 	private Coord4[] transporterCoords;
 	private int dim = 0;
+	private int initializedTicks = 0;
 	private HashMap<Coord4,ISteamTransporter> transporters = new HashMap<Coord4,ISteamTransporter>();
 	
 	public SteamNetwork(){
@@ -95,30 +96,35 @@ public class SteamNetwork {
 			this.refresh();
 			globalRefreshTicks = 300;
 		}
-		if (Config.wimpMode){
-			if (this.getPressure() > 1.09F){
-				this.steam = (int)Math.floor((double)this.capacity * 1.09D);
-			}
-		} else {
-			if (this.transporters != null && this.transporters.keySet() != null){
-				if (this.getPressure() > 1.2F){
-					for (Coord4 coords : transporters.keySet()){
-						//////Steamcraft.log.debug("Iterating!");
-						ISteamTransporter trans = transporters.get(coords);
-						if ((trans == null || ((TileEntity)trans).isInvalid())){
-							//////Steamcraft.log.debug("Invalid TE");
-							transporters.remove(coords);
-						} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
-							log.debug(trans.getName() + " is exploding.  ("+this.getSteam()+" "+this.getCapacity()+" "+this.getPressure()+")");
-							trans.explode();
-							
-						}
-					}
+		if (this.initializedTicks >= 1200){
 			
+			if (Config.wimpMode){
+				if (this.getPressure() > 1.09F){
+					this.steam = (int)Math.floor((double)this.capacity * 1.09D);
 				}
 			} else {
-				return false;
+				if (this.transporters != null && this.transporters.keySet() != null){
+					if (this.getPressure() > 1.2F){
+						for (Coord4 coords : transporters.keySet()){
+							//////Steamcraft.log.debug("Iterating!");
+							ISteamTransporter trans = transporters.get(coords);
+							if ((trans == null || ((TileEntity)trans).isInvalid())){
+								//////Steamcraft.log.debug("Invalid TE");
+								transporters.remove(coords);
+							} else if (!trans.getWorld().isRemote && shouldExplode(oneInX(this.getPressure(), trans.getPressureResistance()))){
+								log.debug(trans.getName() + " is exploding.  ("+this.getSteam()+" "+this.getCapacity()+" "+this.getPressure()+")");
+								trans.explode();
+								
+							}
+						}
+				
+					}
+				} else {
+					return false;
+				}
 			}
+		} else {
+			initializedTicks++;
 		}
 		return true;
 	}
@@ -250,7 +256,7 @@ public class SteamNetwork {
 		return out;
 	}
 	
-	public void addTransporter(ISteamTransporter trans){
+	public synchronized void addTransporter(ISteamTransporter trans){
 		if (trans != null && !this.contains(trans)){
 			this.capacity += trans.getCapacity();
 			Coord4 transCoords = trans.getCoords();
@@ -258,6 +264,7 @@ public class SteamNetwork {
 			trans.setNetworkName(this.name);
 			trans.setNetwork(this);
 			this.addSteam(trans.getSteam());
+			trans.wasAdded();
 			SteamNetworkRegistry.markDirty(this);
 		}
 	}
