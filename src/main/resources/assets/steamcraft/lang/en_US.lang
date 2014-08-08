@@ -269,11 +269,15 @@ item.steamcraft:spyglass.name=Spyglass
 item.steamcraft:enhancementAblaze.name=Blaze Barrel
 item.steamcraft:enhancementSpeedloader.name=Bolt Action
 item.steamcraft:enhancementRevolver.name=Revolver Chamber
-item.steamcraft:enhancementSilencer.name=Makeshift Silencer
+item.steamcraft:enhancementSilencer.name=Makeshift Suppressor
+item.steamcraft:enhancementRecoil.name=Recoil Pad
+item.steamcraft:enhancementSpeedy.name=Breech
 item.steamcraft:musketMarksman.name=Marksman's Flintlock Musket
 item.steamcraft:musketSpeedloader.name=Bolt Action Flintlock Musket
 item.steamcraft:musketAblaze.name=Blazing Flintlock Musket
 item.steamcraft:pistolSilencer.name=Assassin's Flintlock Pistol
+item.steamcraft:pistolSpeedy.name=Breech-loading Flintlock Pistol
+item.steamcraft:blunderbussRecoil.name=Padded Flintlock Blunderbuss
 
 item.steamcraft:exoArmorHead.name=Steam Exosuit Headpiece
 item.steamcraft:exoArmorBody.name=Steam Exosuit Chestpiece

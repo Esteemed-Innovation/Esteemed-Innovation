@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class Config {
 	public static final int jumpBoostConsumption = 1;
@@ -67,6 +67,8 @@ public class Config {
 	public static boolean enableEnhancementRevolver;
 	public static boolean enableEnhancementSpeedloader;
 	public static boolean enableEnhancementSilencer;
+	public static boolean enableEnhancementRecoil;
+	public static boolean enableEnhancementSpeedy;
 	public static boolean enableExosuit; 
 	public static boolean enableFallAssist; 
 	public static boolean enableJetpack; 
@@ -103,8 +105,11 @@ public class Config {
 		enableEnhancementAblaze = config.get("Weapons", "Enable blaze barrel enhancement", true).getBoolean(true);
 		enableEnhancementRevolver = config.get("Weapons", "Enable revolver enhancement", true).getBoolean(true);
 		enableEnhancementSpeedloader = config.get("Weapons", "Enable bolt action enhancement", true).getBoolean(true);
-		enableEnhancementSilencer = config.get("Weapons", "Enable silencer enhancement", true).getBoolean(true);
+		enableEnhancementSilencer = config.get("Weapons", "Enable makeshift suppressor enhancement", true).getBoolean(true);
+		enableEnhancementRecoil = config.get("Weapons", "Enable recoil pad enhancement", true).getBoolean(true);
+		enableEnhancementSpeedy = config.get("Weapons", "Enable breech loader enhancement", true).getBoolean(true);
 
+		
 		// MACHINES
 		mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
 		chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();

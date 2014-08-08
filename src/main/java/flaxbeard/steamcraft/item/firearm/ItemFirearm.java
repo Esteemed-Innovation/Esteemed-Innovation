@@ -2,10 +2,12 @@ package flaxbeard.steamcraft.item.firearm;
 
 import java.util.List;
 
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -15,7 +17,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -73,6 +74,29 @@ public class ItemFirearm extends Item implements IEngineerable
 		}
 		super.addInformation(stack, player, list, par4);
 	}
+	
+	private boolean wasSprinting = false;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onUpdate (ItemStack stack, World world, Entity entity, int par4, boolean par5)
+    {
+        super.onUpdate(stack, world, entity, par4, par5);
+        if (entity instanceof EntityPlayerSP)
+        {
+            EntityPlayerSP player = (EntityPlayerSP) entity;
+            ItemStack usingItem = player.getItemInUse();
+            if (usingItem != null && usingItem.getItem() == this && UtilEnhancements.hasEnhancement(usingItem) && UtilEnhancements.getEnhancementFromItem(usingItem).getID() == "Speedy")
+            {
+                player.movementInput.moveForward *= 5.0F;
+                player.movementInput.moveStrafe *= 5.0F;
+            }
+            else
+            {
+            	wasSprinting = player.isSprinting();
+            }
+        }
+    }
     
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
@@ -175,7 +199,7 @@ public class ItemFirearm extends Item implements IEngineerable
         	}
 
             par1ItemStack.damageItem(1, par3EntityPlayer);
-        	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F))*(UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.25F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+        	par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F))*(UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.4F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
             for (int i = 1; i < 16; i++)
             {
         		par2World.spawnParticle("smoke", par3EntityPlayer.posX + itemRand.nextFloat() - 0.5F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat() - 0.5F, 0.0D, 0.01D, 0.0D);
@@ -210,7 +234,7 @@ public class ItemFirearm extends Item implements IEngineerable
 
             if (par2World.isRemote && !par3EntityPlayer.capabilities.isCreativeMode)
             {
-                float thiskb = this.knockback;
+                float thiskb = this.knockback + enhancementKnockback;
                 boolean crouching = par3EntityPlayer.isSneaking();
 
                 if (crouching)
@@ -273,7 +297,7 @@ public class ItemFirearm extends Item implements IEngineerable
                 }
 
                 nbt.setBoolean("done", true);
-                par2World.playSoundAtEntity(par3EntityPlayer, "random.click", 1F, par2World.rand.nextFloat() * 0.1F + 0.9F);
+                par2World.playSoundAtEntity(par3EntityPlayer, "random.click", (UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.4F : 1.0F), par2World.rand.nextFloat() * 0.1F + 0.9F);
             }
         }
 

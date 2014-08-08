@@ -42,9 +42,11 @@ import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
 import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementFireMusket;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementRecoil;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementRevolver;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementSilencer;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementSpeedloader;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementSpeedy;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
@@ -72,7 +74,8 @@ public class SteamcraftItems {
     public static Item enhancementRevolver;
     public static Item enhancementSpeedloader;
     public static Item enhancementSilencer;
-
+    public static Item enhancementRecoil;
+    public static Item enhancementSpeedy;
     
     // misc
     public static Item book;
@@ -227,6 +230,16 @@ public class SteamcraftItems {
 			enhancementSilencer = new ItemEnhancementSilencer().setUnlocalizedName("steamcraft:enhancementSilencer").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSilencer");
 			GameRegistry.registerItem(enhancementSilencer, "enhancementSilencer");
 			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSilencer);
+    	}
+    	if (Config.enableEnhancementRecoil) {
+			enhancementRecoil = new ItemEnhancementRecoil().setUnlocalizedName("steamcraft:enhancementRecoil").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRecoil");
+			GameRegistry.registerItem(enhancementRecoil, "enhancementRecoil");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRecoil);
+    	}    	
+    	if (Config.enableEnhancementSpeedy) {
+			enhancementSpeedy = new ItemEnhancementSpeedy().setUnlocalizedName("steamcraft:enhancementSpeedy").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedy");
+			GameRegistry.registerItem(enhancementSpeedy, "enhancementSpeedy");
+			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedy);
     	}
     }
     
