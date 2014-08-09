@@ -64,10 +64,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
+    	if (this.turnTicks == 0) {
+        	this.turnTicks = access.getInteger("turnTicks");
+    	}
     	this.turning = access.getBoolean("turning");
     	this.isLeaking = access.getBoolean("leaking");
     	this.open = access.getBoolean("open");
-    	this.turnTicks = access.getInteger("turnTicks");
 
     }
 	
