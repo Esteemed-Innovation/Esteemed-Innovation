@@ -41,7 +41,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer imple
 			if (meta == 5) {
 				GL11.glRotated(180.0F, 0, 1, 0);
 			}
-			GL11.glRotated((valve.open ? 1 : -1) * (180.0F*valve.turnTicks/10.0F), 1, 0, 0);
+			GL11.glRotated((225.0F*(valve.isOpen() ? valve.turnTicks : 10-valve.turnTicks)/10.0F), 1, 0, 0);
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
 			model.render();
