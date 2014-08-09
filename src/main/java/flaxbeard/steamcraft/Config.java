@@ -81,6 +81,7 @@ public class Config {
 	public static boolean enableCanningMachine;
 	public static boolean enableExtendoFist;
 	public static boolean enablePitonDeployer;
+	public static boolean disableMainBarrelRecipe;
 
 	public static boolean enableWings;
 	public static boolean hasAllCrucial;
@@ -101,6 +102,7 @@ public class Config {
 
 		// WEAPONS
 		expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
+		disableMainBarrelRecipe = config.get("Weapons", "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean(true);
 		enableFirearms = config.get("Weapons", "Enable firearms",true).getBoolean(true);
 		enableEnhancementAblaze = config.get("Weapons", "Enable blaze barrel enhancement", true).getBoolean(true);
 		enableEnhancementRevolver = config.get("Weapons", "Enable revolver enhancement", true).getBoolean(true);

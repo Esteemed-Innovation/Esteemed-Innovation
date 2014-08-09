@@ -11,10 +11,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 
 public class BlockChargingPad extends BlockContainer {
 	
-	private IIcon top;
+	private IIcon[] top = new IIcon[4];
+
 
 	public BlockChargingPad() {
 		super(Material.iron);
@@ -49,7 +51,11 @@ public class BlockChargingPad extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register)
     {
-        top = register.registerIcon("steamcraft:feetIndent");
+        top[0] = register.registerIcon("steamcraft:feetIndent2");
+        top[1] = register.registerIcon("steamcraft:feetIndent3");
+        top[2] = register.registerIcon("steamcraft:feetIndent4");
+        top[3] = register.registerIcon("steamcraft:feetIndent5");
+
         super.registerBlockIcons(register);
     }
 	
@@ -57,8 +63,8 @@ public class BlockChargingPad extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta)
     {
-		if (side == 1) {
-	        return this.top;
+		if (side == 1 && meta > 1) {
+	        return this.top[meta-2];
     	}
         return this.blockIcon;
     }
@@ -67,8 +73,8 @@ public class BlockChargingPad extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-	//	return new TileEntityChargingPad();
-		return null;
+		return new TileEntityChargingPad();
+		//return null;
 	}
 	
     public boolean isOpaqueCube()
