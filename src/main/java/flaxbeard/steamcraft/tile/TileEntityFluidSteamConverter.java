@@ -97,7 +97,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource,
 			boolean doDrain) {
-		////System.out.println("t");
+		////Steamcraft.log.debug("t");
 
 		int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		if (from.ordinal() != meta) {

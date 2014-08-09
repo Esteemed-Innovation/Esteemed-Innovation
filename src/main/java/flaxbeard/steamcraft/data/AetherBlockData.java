@@ -18,7 +18,7 @@ public class AetherBlockData extends WorldSavedData {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-    	//System.out.println("NEED OLD DATA");
+    	//Steamcraft.log.debug("NEED OLD DATA");
 
     	NBTTagList nbtl =  (NBTTagList) nbt.getTag("ccs");
     	for (int i = 0; i < nbtl.tagCount(); ++i)
@@ -53,7 +53,7 @@ public class AetherBlockData extends WorldSavedData {
     public static AetherBlockData get(World world) {
 		AetherBlockData data = (AetherBlockData) world.loadItemData(AetherBlockData.class, ID);
         if (data == null) {
-        	//System.out.println("NEED NEW DATA");
+        	//Steamcraft.log.debug("NEED NEW DATA");
             data = new AetherBlockData();
             world.setItemData(ID, data);
         }

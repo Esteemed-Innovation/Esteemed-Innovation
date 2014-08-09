@@ -31,7 +31,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
 
 		TileEntitySteamHammer hammer = (TileEntitySteamHammer) var1;
 		int meta = hammer.getWorldObj().getBlockMetadata(var1.xCoord,var1.yCoord,var1.zCoord);
-		////System.out.println(meta);
+		////Steamcraft.log.debug(meta);
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x, y, z);
@@ -93,7 +93,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
 			double y, double z, float var8) {
 		TileEntitySteamHammer hammer = (TileEntitySteamHammer) var1;
 		int meta = 3;
-		////System.out.println(meta);
+		////Steamcraft.log.debug(meta);
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glTranslated(x, y, z);

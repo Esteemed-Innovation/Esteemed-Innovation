@@ -51,7 +51,7 @@ public class TileEntitySteamGauge extends TileEntity {
 	
 	public int getComparatorOutput(){
 		int out = (int)(15 * (100*((double)getPressure() * 0.01D) ));
-		////System.out.println(out);
+		////Steamcraft.log.debug(out);
 		return out;
 	}
 	

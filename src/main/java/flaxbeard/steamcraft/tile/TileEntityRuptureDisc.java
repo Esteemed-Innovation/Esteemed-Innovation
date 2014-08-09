@@ -71,7 +71,7 @@ public class TileEntityRuptureDisc extends TileEntity {
 					float xOffset = myDir().getOpposite().offsetX * offset;
 					float yOffset = myDir().getOpposite().offsetY * offset;
 					float zOffset = myDir().getOpposite().offsetZ * offset;
-					//if (worldObj.isRemote) //System.out.println("draining steam");
+					//if (worldObj.isRemote) //Steamcraft.log.debug("draining steam");
 					
 					
 					i++;
@@ -103,7 +103,7 @@ public class TileEntityRuptureDisc extends TileEntity {
 		if (te != null && te instanceof ISteamTransporter){
 			source = (ISteamTransporter) te;
 			if (worldObj.isRemote){
-				//System.out.println(source.getSteam());
+				//Steamcraft.log.debug(source.getSteam());
 			}
 			return source.getSteamShare();
 		}
