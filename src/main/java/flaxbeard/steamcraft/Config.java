@@ -4,6 +4,7 @@ import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class Config {
+<<<<<<< HEAD
 	public static final int jumpBoostConsumption = 1;
 	public static final int jetpackConsumption = 1;
 	public static final int jumpBoostConsumptionShiftJump = 3;
@@ -13,7 +14,7 @@ public class Config {
 
 	public static final int basicTankCap = 18000;
 
-	public static final String VERSION = "0.25.0";
+	public static final String VERSION = "0.25.2";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;

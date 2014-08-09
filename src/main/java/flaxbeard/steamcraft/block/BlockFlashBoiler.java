@@ -67,8 +67,8 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 	}
 	
 	public void onBlockPreDestroy(World world, int x, int y, int z, int meta){
-	//	//System.out.println(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
-		// //System.out.println(world.isRemote ? "Client: " : "Server: "+"breakBlock");
+	//	//Steamcraft.log.debug(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
+		// //Steamcraft.log.debug(world.isRemote ? "Client: " : "Server: "+"breakBlock");
      	super.onBlockPreDestroy(world, x, y, z, meta);
 		TileEntityFlashBoiler boiler = (TileEntityFlashBoiler)world.getTileEntity(x, y, z);
 
@@ -117,7 +117,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 	        
          if (meta > 0){
 				TileEntityFlashBoiler te = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-			////System.out.println(te.getMasterTileEntity().getBlockMetadata());
+			////Steamcraft.log.debug(te.getMasterTileEntity().getBlockMetadata());
 				te.destroyMultiblock();
 			}
 		
@@ -194,7 +194,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 	}
 	
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		////System.out.println("onBlockPlacedBy fired");
+		////Steamcraft.log.debug("onBlockPlacedBy fired");
 		int l = MathHelper.floor_double((double)(entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 		int frontSide = -1;
 		switch(l){
@@ -203,7 +203,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 		case 2: frontSide = 3; break;
 		case 3: frontSide = 4; break;
 		default: 
-			////System.out.println(l); 
+			////Steamcraft.log.debug(l); 
 		break;
 		}
 
@@ -211,7 +211,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter{
 	}
 	
 	public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side){
-		////System.out.println(meta);
+		////Steamcraft.log.debug(meta);
 		int meta = block.getBlockMetadata(x, y, z); 
 		if (meta == 0){
 			return blockIcon;

@@ -64,10 +64,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     {
     	super.onDataPacket(net, pkt);
     	NBTTagCompound access = pkt.func_148857_g();
+    	if (this.turnTicks == 0) {
+        	this.turnTicks = access.getInteger("turnTicks");
+    	}
     	this.turning = access.getBoolean("turning");
     	this.isLeaking = access.getBoolean("leaking");
     	this.open = access.getBoolean("open");
-    	this.turnTicks = access.getInteger("turnTicks");
 
     }
 	
@@ -155,7 +157,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 			}
 		} else {
 			if (this.waitingOpen){
-				//System.out.println("Waiting for open");
+				//Steamcraft.log.debug("Waiting for open");
 				this.setOpen(!this.open);
 			}
 			if (turning != wasTurning){
@@ -215,7 +217,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 				
 				
 				if (myDirections.size() == 2 && open && this.getNetwork().getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ) || !worldObj.isSideSolid(xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ, direction.getOpposite()))) {
-					////System.out.println("open and should be leaking");
+					////Steamcraft.log.debug("open and should be leaking");
 					if (!isLeaking){
 						isLeaking = true;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -223,7 +225,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					this.decrSteam(100);
 					this.worldObj.playSoundEffect(this.xCoord+0.5F, this.yCoord+0.5F, this.zCoord+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
 				} else {
-					////System.out.println("Probably shouldn't be leaking");
+					////Steamcraft.log.debug("Probably shouldn't be leaking");
 					if (isLeaking){
 						isLeaking = false;
 						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -247,7 +249,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 		boolean changed = true;
 		if (!worldObj.isRemote){
 			if (open){
-				//System.out.println("Joining");
+				//Steamcraft.log.debug("Joining");
 				if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
 					SteamNetwork.newOrJoin(this);
 				} else {
@@ -255,7 +257,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 					this.waitingOpen=true;
 				}
 			} else {
-				//System.out.println("Splitting");
+				//Steamcraft.log.debug("Splitting");
 				if (this.getNetwork() != null){
 					this.getNetwork().split(this, true);
 				} else {
