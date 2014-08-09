@@ -37,6 +37,12 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
 	    }
     }
     
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z)
+    {
+    	onNeighborBlockChange(world, x, y, z, null);
+    }
+    
     public boolean renderAsNormalBlock()
     {
         return false;
