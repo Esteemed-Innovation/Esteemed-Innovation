@@ -111,8 +111,35 @@ public class SteamcraftBook {
 			SteamcraftRegistry.addResearch("research.Parts.name","category.Flintlock.name",new BookPageItem("research.Parts.name","research.Parts.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,1), new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), new ItemStack(SteamcraftItems.steamcraftCrafting,1,4)),
 					new BookPageCrafting("","stock"),new BookPageCrafting("","barrel1","barrel2"),new BookPageCrafting("","blunderBarrel1","blunderBarrel2"),new BookPageCrafting("","flintlock1","flintlock2"));
 			SteamcraftRegistry.addResearch("research.Musket.name","category.Flintlock.name",new BookPageItem("research.Musket.name","research.Musket.0", new ItemStack(SteamcraftItems.musket)),new BookPageCrafting("","cartridge1","cartridge2","cartridge3","cartridge4"),new BookPageCrafting("","musket"));
+			if (Config.enableSpyglass){
+				SteamcraftRegistry.addResearch("research.EnhancementSpyglass.name","!research.Musket.name",new BookPageItem("research.EnhancementSpyglass.name","research.EnhancementSpyglass.0", true, new ItemStack(SteamcraftItems.spyglass)));
+			}
+			if (Config.enableEnhancementAblaze){
+				SteamcraftRegistry.addResearch("research.EnhancementAblaze.name","!research.Musket.name",new BookPageItem("research.EnhancementAblaze.name","research.EnhancementAblaze.0", true, new ItemStack(SteamcraftItems.enhancementAblaze)),new BookPageCrafting("","ablaze"));
+			}
+			if (Config.enableEnhancementSpeedloader){
+				SteamcraftRegistry.addResearch("research.EnhancementSpeedloader.name","!research.Musket.name",new BookPageItem("research.EnhancementSpeedloader.name","research.EnhancementSpeedloader.0", true, new ItemStack(SteamcraftItems.enhancementSpeedloader)),new BookPageCrafting("","speedloader1","speedloader2"));
+			}
 			SteamcraftRegistry.addResearch("research.Blunderbuss.name","category.Flintlock.name",new BookPageItem("research.Blunderbuss.name","research.Blunderbuss.0", new ItemStack(SteamcraftItems.blunderbuss)),new BookPageCrafting("","blunderbuss"));
+			if (Config.enableEnhancementAblaze){
+				SteamcraftRegistry.addResearch("research.EnhancementAblaze2.name","!research.Blunderbuss.name",new BookPageItem("research.EnhancementAblaze2.name","research.EnhancementAblaze2.0", true, new ItemStack(SteamcraftItems.enhancementAblaze)),new BookPageCrafting("","ablaze"));
+			}
+			if (Config.enableEnhancementSpeedloader){
+				SteamcraftRegistry.addResearch("research.EnhancementSpeedloader2.name","!research.Blunderbuss.name",new BookPageItem("research.EnhancementSpeedloader2.name","research.EnhancementSpeedloader2.0", true, new ItemStack(SteamcraftItems.enhancementSpeedloader)),new BookPageCrafting("","speedloader1","speedloader2"));
+			}
+			if (Config.enableEnhancementRecoil){
+				SteamcraftRegistry.addResearch("research.EnhancementRecoil.name","!research.Blunderbuss.name",new BookPageItem("research.EnhancementRecoil.name","research.EnhancementRecoil.0", true, new ItemStack(SteamcraftItems.enhancementRecoil)),new BookPageCrafting("","recoil"));
+			}
 			SteamcraftRegistry.addResearch("research.Pistol.name","category.Flintlock.name",new BookPageItem("research.Pistol.name","research.Pistol.0", new ItemStack(SteamcraftItems.pistol)),new BookPageCrafting("","pistol"));
+			if (Config.enableEnhancementRevolver){
+				SteamcraftRegistry.addResearch("research.EnhancementRevolver.name","!research.Pistol.name",new BookPageItem("research.EnhancementRevolver.name","research.EnhancementRevolver.0", true, new ItemStack(SteamcraftItems.enhancementRevolver)),new BookPageCrafting("","revolver1","revolver2"));
+			}
+			if (Config.enableEnhancementSilencer){
+				SteamcraftRegistry.addResearch("research.EnhancementSilencer.name","!research.Pistol.name",new BookPageItem("research.EnhancementSilencer.name","research.EnhancementSilencer.0", true, new ItemStack(SteamcraftItems.enhancementSilencer)),new BookPageCrafting("","silencer"));
+			}
+			if (Config.enableEnhancementSpeedy){
+				SteamcraftRegistry.addResearch("research.EnhancementSpeedy.name","!research.Pistol.name",new BookPageItem("research.EnhancementSpeedy.name","research.EnhancementSpeedy.0", true, new ItemStack(SteamcraftItems.enhancementSpeedy)),new BookPageCrafting("","speedy1","speedy2"));
+			}
 		}
 	}
 	

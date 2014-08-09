@@ -214,8 +214,15 @@ public class SteamcraftRecipes {
 			BookRecipeRegistry.addRecipe("stock",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,1), "p  ", " p ", " pp", 
 			        'p', "plankWood"));
 
-			BookRecipeRegistry.addRecipe("barrel1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), "i  ", " i ", "  i", 
-			        'i', "ingotIron"));
+			if (Config.disableMainBarrelRecipe) {
+				BookRecipeRegistry.addRecipe("barrel1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), "i  ", " i ", "  i", 
+						'i', "ingotIron"));
+			}
+			else
+			{
+				BookRecipeRegistry.addRecipe("barrel1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), "i  ", " i ", "  i", 
+				        'i', "plateSteamcraftIron"));
+			}
 			BookRecipeRegistry.addRecipe("barrel2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), "i  ", " i ", "  i", 
 			        'i', "plateSteamcraftIron"));
 
@@ -251,6 +258,37 @@ public class SteamcraftRecipes {
 
 			BookRecipeRegistry.addRecipe("blunderbuss",new ShapedOreRecipe(new ItemStack(SteamcraftItems.blunderbuss), "b  ", " bf", "  s", 
 			        'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), 'f', new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), 's', new ItemStack(SteamcraftItems.steamcraftCrafting,1,1)));
+		
+			if (Config.enableEnhancementAblaze) {
+				BookRecipeRegistry.addRecipe("ablaze",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementAblaze), "rp ", "pbp", " pr", 
+				        'r', Items.blaze_rod, 'p', Items.blaze_powder, 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2)));
+			}
+			if (Config.enableEnhancementSpeedloader) {
+				BookRecipeRegistry.addRecipe("speedloader1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSpeedloader), "  n", "iii", "iri", 
+						'i', "ingotIron", 'r', Items.redstone, 'n', "nuggetIron"));
+				BookRecipeRegistry.addRecipe("speedloader2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSpeedloader), "  n", "iii", "iri", 
+						'i', "plateSteamcraftIron", 'r', Items.redstone, 'n', "nuggetIron"));
+			}
+			if (Config.enableEnhancementRecoil) {
+				BookRecipeRegistry.addRecipe("recoil",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementRecoil), "ss ", " ss", "ss ", 
+				        's', "slimeball"));
+			}
+			if (Config.enableEnhancementRevolver) {
+				BookRecipeRegistry.addRecipe("revolver1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementRevolver), "ni ", "iii", " in", 
+						'i', "ingotIron", 'n', "nuggetIron"));
+				BookRecipeRegistry.addRecipe("revolver2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementRevolver), "ni ", "iii", " in", 
+						'i', "ingotIron", 'n', "nuggetIron"));
+			}
+			if (Config.enableEnhancementSilencer) {
+				BookRecipeRegistry.addRecipe("silencer",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSilencer), "wls", "lll", "slw", 
+				        'l', Items.leather, 'w', Blocks.wool, 's', Items.string));
+			}
+			if (Config.enableEnhancementSpeedy) {
+				BookRecipeRegistry.addRecipe("speedy1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSpeedy), "iii", "iii", " n ", 
+						'i', "ingotIron", 'n', "nuggetIron"));
+				BookRecipeRegistry.addRecipe("speedy2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSpeedy), "iii", "iii", " n ", 
+						'i', "ingotIron", 'n', "nuggetIron"));
+			}
 		}
 	}
 	
