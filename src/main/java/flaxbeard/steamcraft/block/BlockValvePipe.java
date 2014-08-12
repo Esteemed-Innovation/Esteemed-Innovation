@@ -16,6 +16,7 @@ public class BlockValvePipe extends BlockPipe {
     {
         int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
         p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
+        this.onNeighborBlockChange(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, null);
     }
 	
 	@Override
