@@ -1,7 +1,9 @@
 package flaxbeard.steamcraft.item.firearm;
 
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
@@ -12,6 +14,12 @@ public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
 	public boolean canApplyTo(ItemStack stack) {
 		return stack.getItem() == SteamcraftItems.blunderbuss;
 	}
+	
+	@Override
+    public EnumRarity getRarity(ItemStack p_77613_1_)
+    {
+    	return Steamcraft.upgrade;
+    }
 
 	@Override
 	public int cost(ItemStack stack) {

@@ -24,7 +24,7 @@ import flaxbeard.steamcraft.tile.TileEntityCrucible;
 public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 
 	private static final ModelCrucible model = new ModelCrucible();
-	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible.png");
+	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible2.png");
 	private static final ResourceLocation texture2 = new ResourceLocation("minecraft:textures/blocks/cobblestone.png");
 	private static float px = (1.0F/16.0F);
 	@Override

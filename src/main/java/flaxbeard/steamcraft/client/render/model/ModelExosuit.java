@@ -51,18 +51,18 @@ public class ModelExosuit extends ModelBiped {
 	private ModelRenderer penguinArm2; 
 	private ModelRenderer penguinNose; 
 	
-    ModelRenderer hornLeftBase;
-    ModelRenderer hornLeftPart1;
-    ModelRenderer hornLeftPart2;
-    ModelRenderer hornLeftPart3;
-    ModelRenderer hornLeftPart4;
-    ModelRenderer hornLeftPart5;
-    ModelRenderer hornRightBase;
-    ModelRenderer hornRightPart1;
-    ModelRenderer hornRightPart2;
-    ModelRenderer hornRightPart3;
-    ModelRenderer hornRightPart4;
-    ModelRenderer hornRightPart5;
+	private ModelRenderer hornLeftBase;
+	private ModelRenderer hornLeftPart1;
+	private ModelRenderer hornLeftPart2;
+	private ModelRenderer hornLeftPart3;
+	private ModelRenderer hornLeftPart4;
+	private ModelRenderer hornLeftPart5;
+	private ModelRenderer hornRightBase;
+	private ModelRenderer hornRightPart1;
+	private ModelRenderer hornRightPart2;
+	private ModelRenderer hornRightPart3;
+    private ModelRenderer hornRightPart4;
+    private ModelRenderer hornRightPart5;
 	
 	public static String[] dyes =
         {
@@ -87,7 +87,7 @@ public class ModelExosuit extends ModelBiped {
 	private int armor;
 	private ItemStack me;
 	public ModelExosuit(ItemStack itemStack,int armorType) {
-		super(armorType == 2 || armorType == 1 ? 0.5F : 1.0F, 0, 64, 32);
+		super(armorType == 3 ? 1.0F : 0.5F, 0, 64, 32);
 		hasOverlay = false;
 		armor = armorType;
 		me = itemStack;

@@ -8,11 +8,13 @@ import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
@@ -44,11 +46,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -73,6 +75,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GLContext;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.Event;
@@ -119,6 +122,8 @@ public class SteamcraftEventHandler {
 	private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 	private static final ResourceLocation icons = new ResourceLocation("steamcraft:textures/gui/icons.png");
+	
+
 	
 	@SubscribeEvent
 	public void handleCanningMachine(EntityItemPickupEvent event) {
@@ -479,27 +484,22 @@ public class SteamcraftEventHandler {
 	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void muffleSounds(PlaySoundEvent event) {
-		//System.out.println(event.name);
-	}
-	
-	@SubscribeEvent
 	public void muffleSounds(PlaySoundEvent17 event) {
-//		if (event.name.contains("step")) {
-//			float x = event.sound.getXPosF();
-//			float y = event.sound.getYPosF();
-//			float z = event.sound.getZPosF();
-//			List entities = Minecraft.getMinecraft().thePlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x-0.5F, y-0.5F, z-0.5F, x+0.5F, y+0.5F, z+0.5F));
-//			for (Object obj : entities) {
-//				EntityLivingBase entity = (EntityLivingBase) obj;
-//				if (entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-//					ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-//					if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
-//						event.result = null;
-//					}
-//				}
-//			}
-//		}
+		if (event.name.contains("step")) {
+			float x = event.sound.getXPosF();
+			float y = event.sound.getYPosF();
+			float z = event.sound.getZPosF();
+			List entities = Minecraft.getMinecraft().thePlayer.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(x-0.5F, y-0.5F, z-0.5F, x+0.5F, y+0.5F, z+0.5F));
+			for (Object obj : entities) {
+				EntityLivingBase entity = (EntityLivingBase) obj;
+				if (entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
+					ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+					if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
+						event.result = null;
+					}
+				}
+			}
+		}
 	}
 	
 	@SubscribeEvent
@@ -1475,7 +1475,7 @@ public class SteamcraftEventHandler {
 					//////Steamcraft.log.debug("I AM THE CLIENT");
 				}
 				//FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
-				log.debug("network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure() +"; trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + ";");
+			//	log.debug("network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure() +"; trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + ";");
 			}
 		
 		}
