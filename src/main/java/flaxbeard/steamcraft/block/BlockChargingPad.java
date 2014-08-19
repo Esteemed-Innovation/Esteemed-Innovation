@@ -1,19 +1,22 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 
-public class BlockChargingPad extends BlockContainer {
+public class BlockChargingPad extends BlockSteamTransporter implements IWrenchable {
 	
 	private IIcon[] top = new IIcon[4];
 
@@ -82,5 +85,47 @@ public class BlockChargingPad extends BlockContainer {
         return false;
     }
 	
+    @Override
+	public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float xO, float yO, float zO) {
+		int meta = world.getBlockMetadata(x, y, z);
+        if (side != 0 && side != 1)
+        {
+        	int output = meta;
+        	switch (side) {
+        	case 2:
+        		output = 2;
+                break;
+        	case 3:
+        		output = 0;
+                break;
+        	case 4:
+              	 output = 1;
+                break;
+        	case 5:
+              	 output = 3;
+                break;
+        	}
+        	if (output == meta && side > 1 && side < 6) {
+        		switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
+            	case 2:
+                 	 output = 2;
+                    break;
+            	case 3:
+            		output = 0;
+                    break;
+            	case 4:
+            		output = 1;
+                    break;
+            	case 5:
+            		output = 3;
+                    break;
+            	}
+        	}
+            world.setBlockMetadataWithNotify(x, y, z, output, 2);
+            return true;
+        }
+        return false;
+	}
 
 }

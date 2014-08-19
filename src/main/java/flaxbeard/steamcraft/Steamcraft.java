@@ -3,9 +3,11 @@ package flaxbeard.steamcraft;
 
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -51,6 +53,7 @@ import flaxbeard.steamcraft.integration.TwilightForestIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
+import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
@@ -90,6 +93,7 @@ public class Steamcraft {
     
     public static FMLEventChannel channel;
     
+    public static EnumRarity upgrade;
     
     public static CreativeTabs tab;
     public static CreativeTabs tabTools;
@@ -111,7 +115,7 @@ public class Steamcraft {
 
 
 
-	
+	 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		
@@ -120,6 +124,7 @@ public class Steamcraft {
 		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false);
 		tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 		
+		upgrade = EnumHelper.addRarity("UPGRADE", EnumChatFormatting.RED, "Upgrade");
 		SteamcraftBlocks.registerBlocks();
 		SteamcraftItems.registerItems();
 		
@@ -163,6 +168,7 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
 		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
 		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
+		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
 
 
 	}

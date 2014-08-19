@@ -2,6 +2,8 @@ package flaxbeard.steamcraft;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -215,7 +217,7 @@ public class SteamcraftBook {
 		}
 		SteamcraftRegistry.addResearch("research.Tank.name","category.SteamPower.name",new BookPageItem("research.Tank.name","research.Tank.0", new ItemStack(SteamcraftBlocks.tank)),new BookPageCrafting("","tank1","tank2"));
 		SteamcraftRegistry.addResearch("research.CreativeTank.name","category.NOTREAL.name",new BookPageItem("research.CreativeTank.name","research.CreativeTank.0", new ItemStack(Items.bowl)));
-
+		SteamcraftRegistry.bookRecipes.put(new ItemStack(SteamcraftBlocks.tank,1,1), MutablePair.of("research.CreativeTank.name",0));
 		
 		if (Config.enableCharger){
 			SteamcraftRegistry.addResearch("research.Filler.name","category.SteamPower.name",new BookPageItem("research.Filler.name","research.Filler.0", new ItemStack(SteamcraftBlocks.charger)), new BookPageText("research.Filler.name","research.Filler.1"), new BookPageCrafting("","filler1","filler2"));

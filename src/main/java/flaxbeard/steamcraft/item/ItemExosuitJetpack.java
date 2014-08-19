@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 
 public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
+	public ResourceLocation test = new ResourceLocation("steamcraft:textures/models/mortarItem.png");
 
 	public ItemExosuitJetpack() {
 		super(ExosuitSlot.bodyFront, "","", 0);
@@ -46,6 +47,25 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 			Jetpack2.render(size);
 			Jetpack1 = null;
 			Jetpack2 = null;
+//			Minecraft.getMinecraft().renderEngine.bindTexture(test);
+//			ModelRenderer armGuard1 = new ModelRenderer(model, 28, 0);
+//			armGuard1.addBox(-4.0F, -3F, -3F, 1, 1, 6);
+//			model.bipedBody.addChild(armGuard1);
+//			armGuard1.setRotationPoint(-5.0F, 2.0F, 0.0F);
+//			armGuard1.rotateAngleY = model.bipedRightArm.rotateAngleY;
+//			armGuard1.rotateAngleX = model.bipedRightArm.rotateAngleX;
+//			armGuard1.rotateAngleZ = model.bipedRightArm.rotateAngleZ;
+//			armGuard1.render(size);
+//			ModelRenderer armGuard2 = new ModelRenderer(model, 28, 0);
+//			armGuard2.addBox(-4.0F, -5.0F, -3F, 5, 1,  6);
+//			model.bipedBody.addChild(armGuard2);
+//			armGuard2.setRotationPoint(-5.0F, 2.0F, 0.0F);
+//			armGuard2.rotateAngleY = model.bipedRightArm.rotateAngleY;
+//			armGuard2.rotateAngleX = model.bipedRightArm.rotateAngleX;
+//			armGuard2.rotateAngleZ = model.bipedRightArm.rotateAngleZ+(float)Math.toRadians(-70);
+//			armGuard2.render(size);
+//			armGuard1 = null;
+//			armGuard2 = null;
 		}
 	}
 

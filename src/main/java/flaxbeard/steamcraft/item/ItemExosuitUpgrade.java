@@ -3,11 +3,13 @@ package flaxbeard.steamcraft.item;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
@@ -25,6 +27,12 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
 		myOverlay = loc == "" || loc == null ? null : new ResourceLocation(loc);
 		pri = priority;
 	}
+	
+	@Override
+    public EnumRarity getRarity(ItemStack p_77613_1_)
+    {
+    	return Steamcraft.upgrade;
+    }
 
 	@Override
 	public ExosuitSlot getSlot() {
