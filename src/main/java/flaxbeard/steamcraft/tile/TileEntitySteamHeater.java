@@ -180,7 +180,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 	}
 	
 	public static void replace(TileEntitySteamFurnace te) {
-		TileEntitySteamFurnace furnace = (TileEntitySteamFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
+		TileEntitySteamFurnace furnace = te;
 		if (furnace != null) {
 			ItemStack[] furnaceItemStacks = new ItemStack[]  {furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
 		    int furnaceBurnTime = furnace.furnaceBurnTime;

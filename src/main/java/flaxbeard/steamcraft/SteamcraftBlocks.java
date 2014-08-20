@@ -200,9 +200,10 @@ public class SteamcraftBlocks {
 			GameRegistry.registerBlock(heater, "heater");
 		}
 		
-
-		chargingPad = new BlockChargingPad().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:chargingPad").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
-		GameRegistry.registerBlock(chargingPad, "chargingPad");
+		if (Config.enableChargingPad && Config.enableCharger) {
+			chargingPad = new BlockChargingPad().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:chargingPad").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+			GameRegistry.registerBlock(chargingPad, "chargingPad");
+		}
 		
 		if (Config.enableCharger){
 			charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);

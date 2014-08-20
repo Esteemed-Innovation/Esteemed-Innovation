@@ -12,16 +12,20 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
@@ -41,6 +45,31 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
 		super(p_i45325_1_, p_i45325_2_, p_i45325_3_);
 		emerald = em;
 	}
+	
+	public void onCreated(ItemStack me, World p_77622_2_, EntityPlayer player)
+    {
+		if (player.getDisplayName() == "Flaxbeard" || player.getDisplayName() == "ForgeDevName") {
+			me.setTagCompound(new NBTTagCompound());
+			me.stackTagCompound.setBoolean("Flaxbeard", true);
+		}
+    }
+	
+	@Override
+    public EnumRarity getRarity(ItemStack me)
+    {
+    	if (me.hasTagCompound() && me.stackTagCompound.hasKey("Flaxbeard")) {
+    		return EnumRarity.epic;
+    	}
+		return super.getRarity(me);
+    }
+	
+    public String getUnlocalizedName(ItemStack me)
+    {
+    	if (me.hasTagCompound() && me.stackTagCompound.hasKey("Flaxbeard")) {
+    		return "item.steamcraft:kek";
+    	}
+		return super.getUnlocalizedName(me);
+    }
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {

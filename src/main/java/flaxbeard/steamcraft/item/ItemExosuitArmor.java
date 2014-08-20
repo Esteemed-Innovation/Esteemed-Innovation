@@ -51,7 +51,7 @@ import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 
-@Optional.Interface(iface = "IPixieSpawner", modid = "Botania")
+@Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecialArmor,IEngineerable,ISteamChargable {
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
@@ -530,7 +530,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 
 	@Override
 	public int steamPerDurability() {
-		return 10;
+		return 5;
 	}
 
 	@Override

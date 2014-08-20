@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import net.minecraft.item.Item;
@@ -11,7 +12,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import scala.actors.threadpool.Arrays;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.book.ICraftingPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;

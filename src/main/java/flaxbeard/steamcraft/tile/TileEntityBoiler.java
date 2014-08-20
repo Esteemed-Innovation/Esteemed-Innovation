@@ -178,8 +178,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 	    	if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem)this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
 	    		if (canDrainItem(this.getStackInSlot(1))) {
 	    			if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
-	    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));
-	    				this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000),true);
+	    				int much = this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000),true);
+	    				if (much > 0) {
+		    				this.setInventorySlotContents(1, new ItemStack(Items.bucket));
+	    				}
 	    			}
 	    			if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
 	    				int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;

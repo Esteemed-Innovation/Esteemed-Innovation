@@ -69,17 +69,39 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
 	public void renderInventoryTileEntityAt(TileEntity var1, double x,
 			double y, double z, float var8) {
 		GL11.glPushMatrix();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glTranslated(x, y, z);
+		int meta = 4;
+		int rotation = 0;
+		switch (meta) {
+		case 2:
+			rotation = 90;
+			break;
+		case 3:
+			rotation = 270;
+			break;
+		case 4:
+			rotation = 180;
+			break;
+		case 5:
+			rotation = 0;
+			break;
+		}
+		ForgeDirection dir = ForgeDirection.getOrientation(meta);
+		GL11.glRotatef(90.0F, 0F, 1F, 0F);
 
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+//System.out.println(pad.extendTicks);
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glScalef(0.3F, 0.3F, 0.3F);
-		GL11.glTranslatef(-0.5F, -2.9F, -0.5F);
+		
 
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		
+		GL11.glTranslated(0.0F, 0.32D+0.95D*Math.sin(Math.toRadians((90D/40D)*0)), 0.0F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
 		model.render(0);
-
+		
 		GL11.glPopMatrix();
 
 	}

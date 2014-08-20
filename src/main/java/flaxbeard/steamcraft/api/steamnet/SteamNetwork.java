@@ -439,7 +439,7 @@ public class SteamNetwork {
 	}
 	
 	public World getWorld(){
-		if (transporters.values().iterator().next() != null){
+		if (transporters.values().iterator().hasNext() && transporters.values().iterator().next() != null){
 			return transporters.values().iterator().next().getWorld();
 		} else {
 			return null;

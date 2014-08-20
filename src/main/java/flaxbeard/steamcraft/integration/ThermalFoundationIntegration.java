@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.integration;
 
 import net.minecraft.item.ItemStack;
 import thermalfoundation.item.TFItems;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
@@ -18,9 +19,10 @@ public class ThermalFoundationIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotEnderium", liquidEnderium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetEnderium", liquidEnderium, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftEnderium", liquidEnderium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Enderium",new ItemStack(SteamcraftItems.exosuitPlate,1,13),"Enderium","Enderium","steamcraft.plate.enderium"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoEnderium","plateSteamcraftEnderium",new ItemStack(SteamcraftItems.exosuitPlate,1,13),liquidEnderium);
-
+		if (Config.enableEnderiumPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Enderium",new ItemStack(SteamcraftItems.exosuitPlate,1,13),"Enderium","Enderium","steamcraft.plate.enderium"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoEnderium","plateSteamcraftEnderium",new ItemStack(SteamcraftItems.exosuitPlate,1,13),liquidEnderium);
+		}
 	}
 
 }

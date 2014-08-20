@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.item;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -16,19 +15,26 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.ModelPointer;
 
-public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank, IExosuitUpgrade {
+public class ItemTank extends Item implements IExosuitTank,IExosuitUpgrade {
+	
+	int capacity;
 	private static final ResourceLocation gauge = new ResourceLocation("steamcraft:textures/models/pointer.png");
 	private static final ModelPointer pointer = new ModelPointer();
+	
+	private final ResourceLocation tankTexture;
+	private final ResourceLocation tankTextureGrey;
 
-	public BlockTankItem(Block p_i45328_1_) {
-		super(p_i45328_1_);
+	public ItemTank(int cap, String texLoc, String texLocGrey) {	
+		super();
+		capacity = cap;
+		tankTexture = new ResourceLocation(texLoc);
+		tankTextureGrey = new ResourceLocation(texLocGrey);
 	}
 
 	@Override
@@ -61,7 +67,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 	public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
 			float par7, ItemStack itemStack) {	
 		if (armor == 1) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(model.tankTexture);
+			Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);
 
 			float pressure = 0.0F;
 			if (itemStack.getMaxDamage() != 0) {
@@ -95,7 +101,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 	        		float[] color = EntitySheep.fleeceColorTable[dye];
 	        		GL11.glColor3f(color[0],color[1],color[2]);
 	        		//GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
-	    			Minecraft.getMinecraft().renderEngine.bindTexture(model.g3);
+	    			Minecraft.getMinecraft().renderEngine.bindTexture(tankTextureGrey);
 	    			Tank.render(par7);
 	        		GL11.glColor3f(0.5F, 0.5F, 0.5F);
 	        		GL11.glPopMatrix();
@@ -127,7 +133,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 	@Override
 	public void writeInfo(List list) {
 	}
-
+	
 	@Override
 	public boolean canFill(ItemStack stack) {
 		return true;
@@ -135,11 +141,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 
 	@Override
 	public int getStorage(ItemStack stack) {
-		int cap = Config.basicTankCap;
-		if (((ItemExosuitArmor)stack.getItem()).getStackInSlot(stack, 5).getItemDamage() == 1) {
-			cap = Integer.MAX_VALUE;
-		}
-		return cap;
+		return capacity;
 	}
 
 }

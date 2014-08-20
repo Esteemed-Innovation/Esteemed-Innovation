@@ -27,6 +27,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
@@ -65,9 +66,10 @@ public class BotaniaIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotTerrasteel", liquidTerrasteel, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),"Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateSteamcraftTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
-
+		if (Config.enableTerrasteelPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),"Terrasteel","Terrasteel","steamcraft.plate.terrasteel"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel","plateSteamcraftTerrasteel",new ItemStack(SteamcraftItems.exosuitPlate,1,6),liquidTerrasteel);
+		}
 		CrucibleLiquid liquidElementium = new CrucibleLiquid("Elementium", new ItemStack(ModItems.manaResource,1,7), new ItemStack(SteamcraftItems.steamcraftPlate,1,7), null, null,230,66,247);
 		SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateSteamcraftElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
 
@@ -80,7 +82,10 @@ public class BotaniaIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftElementium", liquidElementium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),"Elementum","Elementum","steamcraft.plate.elementum"));
+		if (Config.enableElementiumPlate) {
+			SteamcraftRecipes.addExosuitPlateRecipes("exoElementium","plateSteamcraftElementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),liquidElementium);
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium",new ItemStack(SteamcraftItems.exosuitPlate,1,7),"Elementum","Elementum","steamcraft.plate.elementum"));
+		}
 	}
 
 	public static Multimap addModifiers(Multimap map, ItemStack stack, int armorType) {
@@ -104,6 +109,7 @@ public class BotaniaIntegration {
 		return map;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void extendRange(Entity entity, float amount) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if(!(mc.playerController instanceof IExtendedPlayerController)) {
@@ -117,6 +123,7 @@ public class BotaniaIntegration {
 		((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void checkRange(EntityLivingBase entity) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if(!(mc.playerController instanceof IExtendedPlayerController)) {
