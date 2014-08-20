@@ -140,6 +140,8 @@ research.Heater.0=Now I can power furnaces using steam power, using this nifty s
 research.Filler.name=Steam Filler
 research.Filler.0=Pipes are great for transporting steam to fixed machines, but they're not much good to supply power to tools or armor. That's where the steam filler comes in.<br>I simply place in a steam-using device and wait.
 research.Filler.1=Furthermore, I do not have to remove the item in order to check its progress. If I attach a gauge to the steam filler, I can measure the current steam level of the item being filled.
+research.FillingPad.name=Filling Pad
+research.FillingPad.0=Filling my exosuit can be extremely time-consuming. I've created a device that allows me to charge my suit much more quickly, and easily. Simply standing on this pad will deploy pipes to charge my exosuit, at around twice the rate of the filler.
 research.ItemMortar.name=Item Mortar
 research.ItemMortar.0=I've found an ingenious way to transport items - a pressurized steam cannon!<br>This mortar will launch items skyward, at a high trajectory, to land at a targeted location.
 research.ItemMortar.1=Simply insert items via a hopper, set a target, and watch items fly.<br>An astrolabe is my device of choice for aiming the mortar. First, I have to shift-right click on the targeted location with an astrolabe, and then right click on the mortar to calibrate it.
@@ -165,6 +167,16 @@ category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
 research.Exosuit.0=I've been able to manipulate the world to my desire using the power of steam... What left is there to improve but me?<br>This is where my exosuit comes in, a versatile armor set powered by steam.
 research.Exosuit.1=Upgrades can be placed in the suit using an engineering table. First things first, I need to place a steam tank in the cuboid shaped slot in the exosuit chestpiece. I then can fill the chestpiece with steam.<br>A full set of exosuit parts will provide a small mining and speed boost, but without steam I will be slowed.
+
+research.ExoTank.name=Exosuit Tanks
+research.ExoTank.0=The most crucial component of an exosuit is the tank. The tank stores the steam to power the motion pistons and various installed upgrades, and is placed in the chestpiece.
+research.ExoTankBase.name=Base Tank
+research.ExoTankBase.0=The most easy to acquire exosuit tank is a simple steam tank that I use in my steam systems. It has the benefit of being cheap and quick to make, but it cannot hold as much steam as other tanks.
+research.ExoTankReinforced.name=Reinforced Tank
+research.ExoTankReinforced.0=I've developed a tank built specifically for use in the exosuit using my steam tank as a base. It has extra layers of reinforcement to allow it to accomodate more steam in less space, holding roughly double that of the base tank.
+research.ExoTankUberReinforced.name=Heavily Reinforced Tank
+research.ExoTankUberReinforced.0=Although it uses large amounts of brass, I've found a way to reinforce a tank even further, allowing it to hold unprecedented levels of steam, roughly twice that of my reinforced tank.
+
 research.ExoPlates.name=Exosuit Plates
 research.ExoPlates.0=The exosuit on its own is a fragile framework for upgrades. One of the most critical upgrades is plates. Various types of plating can be installed in the exosuit, providing the wearer with siginificantly more protection.
 research.ExoPlates.1=All plates provide an equal baseline of protection, equivalent to that of iron armor, but each plate provides a unique proficiency. Iron plating, for example, is better at protecting against projectiles.
@@ -228,6 +240,14 @@ research.PitonDeployer.name=Piton Deployer
 research.PitonDeployer.0=This new innovation allows me to get a grip on tricky situations. The piton deployer allows me to grasp walls and ceilings by right clicking, stopping falls and allowing me to dangle and use other items.
 research.FallAssist.name=Fall Assist
 research.FallAssist.0=This footpiece upgrade is a necessity if I'm going to be exploring dangerous terrain. It uses steam to lower fall damage taken from long drops.
+research.JumpAssist.name=Leap Actuator
+research.JumpAssist.0=Now I can leap to unprecedented heights with the leap actuator. This steam-piston-powered device allows me to launch myself with much more force than usual. Crouching and jumping will launch me in the direction I'm looking.
+research.RunAssist.name=Modular Accelerator
+research.RunAssist.0=Adding additional sets of pistons to my legs allows me to maneuver at speeds before unachievable. The modular accelerator, as I like to call it, allows me to run and walk much more quickly.
+research.DoubleJump.name=Pulse Nozzle
+research.DoubleJump.0=After experimenting with valve pipe applications, I found a way to use them in the exosuit to enhance mobility. The pulse nozzle lets me shoot a controlled burst of steam in midair, propelling me upward, much like a 'double jump'.
+research.StealthUpgrade.name=Acoustic Dampener
+research.StealthUpgrade.0=Sure, the exosuit is dazzling, but sometimes I need to be a bit more stealthy. I've developed a dampener to solve this. The acoustic dampener mutes my movement noises, making it harder for mobs to hear me from far away.
 research.Mask.name=Mask of Revealing
 research.Mask.0=Who says thaumaturgy can't mix with technology? Not I! I've developed a snazzy mask that gives my exosuit the same properties as the goggles of revealing.
 research.Canner.name=Canning Machine
@@ -242,6 +262,18 @@ research.Wrench.0=The first tool I'll need when I'm tinkering with steam is a wr
 research.Wrench.1=Shift-right clicking on a concealed pipe will reveal the pipe.<br>Using a wrench on most machines will allow me to rotate the machine.<br>Shift-right clicking on certain machines with the wrench will allow me to adjust the operating mode of the machine.
 research.Canister.name=Canister
 research.Canister.0=I've finally found a way to protect my dropped items from the elements: Canisters. Canisters can be crafted with any item, rendering them nearly invincible when dropped. Canistered items automatically activate when they leave my inventory.
+research.TopHat.name=Top Hat
+research.TopHat.0=Topping my head with scraps of leather and metal is so... crude. I have created a masterpiece with some spare wool in the lab - a stylish top hat I can don on my head. It provides a small amount of protection and looks simply smashing!
+research.TopHatEmerald.name=Entrepreneur's Top Hat
+research.TopHatEmerald.0=Adorning my top hat with various emeralds seems to trick these oafish 'villagers' into thinking I'm some sort of entrepreneur... They'll give me much better deals, visually upgrading my hat each time I unlock a new trade.
+research.Goggles.name=Tinkerer's Headwear
+research.Goggles.0=It's simply unsafe to tinker with steam apparatus without proper eyewear. I have developed a pair of goggles and a monocle to protect my eyes. Both provide me with the ability to zoom in on far away objects using the 'Z' key.
+research.Goggles.name=Tinkerer's Headwear
+research.Goggles.0=It's simply unsafe to tinker with steam apparatus without proper eyewear. I have developed a pair of goggles and a monocle to protect my eyes. Both provide me with the ability to zoom in on far away objects using the 'Z' key.
+research.ExoGoggles.name=Tinkerer's Headwear
+research.ExoGoggles.0=The monocle and goggles that I developed also function when placed in an exosuit, allowing me to protect my eyes and gain the ability to zoom to see distant objects.
+research.ExoTopHat.name=Top Hat
+research.ExoTopHat.0=Both the plain and emerald-adorned versions of my top hat can be affixed to my exosuit, allowing me a mix between protection and style.
 
 category.Flintlock.name=Flintlock Weapons
 research.Parts.name=Weapon Parts
@@ -371,6 +403,9 @@ item.steamcraft:exosuitPlate.11.name=Lead Exosuit Plate
 item.steamcraft:exosuitPlate.12.name=Vibrant Exosuit Plate
 item.steamcraft:exosuitPlate.13.name=Enderium Exosuit Plate
 
+item.steamcraft:reinforcedTank.name=Reinforced Exosuit Tank
+item.steamcraft:uberReinforcedTank.name=Heavily Reinforced Exosuit Tank
+
 item.steamcraft:ingotMold.name=Ingot Mold
 item.steamcraft:nuggetMold.name=Nugget Mold
 item.steamcraft:plateMold.name=Plate Mold
@@ -424,6 +459,8 @@ item.steamcraft:enderShroud.name=Ender Shroud
 
 item.steamcraft:canister.name=Item Canister
 
+item.steamcraft:kek.name=Toppest of Keks
+
 
 item.steamcraft:steamedChicken.name=Steamed Chicken
 item.steamcraft:steamedBeef.name=Steamed Beef
@@ -435,6 +472,7 @@ tile.steamcraft:blockCopper.name=Block of Copper
 tile.steamcraft:blockZinc.name=Block of Zinc
 
 tile.steamcraft:charger.name=Steam Filler
+tile.steamcraft:chargingPad.name=Filling Pad
 tile.steamcraft:crucible.name=Crucible
 tile.steamcraft:mold.name=Mold
 tile.steamcraft:pipe.name=Pipe

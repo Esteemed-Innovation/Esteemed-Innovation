@@ -8,9 +8,7 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-
-@Optional.Interface(iface = "IExtendedPlayerController", modid = "Botania")
+@Optional.Interface(iface = "vazkii.botania.api.item.IExtendedPlayerController", modid = "Botania")
 public class SteamcraftPlayerController extends PlayerControllerMP implements IExtendedPlayerController {
 
 	private float distance = 0F;
@@ -19,17 +17,14 @@ public class SteamcraftPlayerController extends PlayerControllerMP implements IE
 		super(p_i45062_1_, p_i45062_2_);
 	}
 
-	@Override
 	public float getBlockReachDistance() {
 		return super.getBlockReachDistance() + distance;
 	}
 
-	@Override
 	public void setReachDistanceExtension(float f) {
 		distance = f;
 	}
 
-	@Override
 	public float getReachDistanceExtension() {
 		return distance;
 	}

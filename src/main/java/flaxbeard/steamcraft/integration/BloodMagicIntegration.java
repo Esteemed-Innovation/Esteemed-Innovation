@@ -13,6 +13,7 @@ import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.common.items.EnergyBattery;
 import WayofTime.alchemicalWizardry.common.items.EnergyItems;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
@@ -48,9 +49,11 @@ public class BloodMagicIntegration {
 	}
 	
 	public static void addBloodMagicStuff() {
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Sadist",new ItemStack(SteamcraftItems.exosuitPlate,1,10),"Sadist","Sadist","steamcraft.plate.sadist"));
-		BookRecipeRegistry.addRecipe("exoSadist",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exosuitPlate,1,10), " s ","sbs"," s ",
-		        's', ModItems.reinforcedSlate, 'b', ModBlocks.runeOfSelfSacrifice));
+		if (Config.enableSadistPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Sadist",new ItemStack(SteamcraftItems.exosuitPlate,1,10),"Sadist","Sadist","steamcraft.plate.sadist"));
+			BookRecipeRegistry.addRecipe("exoSadist",new ShapedOreRecipe(new ItemStack(SteamcraftItems.exosuitPlate,1,10), " s ","sbs"," s ",
+			        's', ModItems.reinforcedSlate, 'b', ModBlocks.runeOfSelfSacrifice));
+		}
 	}
 
 	public static void handleAttack(LivingHurtEvent event) {

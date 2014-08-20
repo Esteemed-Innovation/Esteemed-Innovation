@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.integration;
 
 import net.minecraft.item.ItemStack;
 import twilightforest.item.TFItems;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
@@ -18,10 +19,13 @@ public class TwilightForestIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetFiery", liquidFiery, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("fieryNugget", liquidFiery, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftFiery", liquidFiery, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Fiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),"Fiery","Fiery","steamcraft.plate.fiery"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoFiery","plateSteamcraftFiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),liquidFiery);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Yeti",new ItemStack(SteamcraftItems.exosuitPlate,1,9),"Yeti","Yeti","steamcraft.plate.yeti"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoYeti",new ItemStack(TFItems.alphaFur),new ItemStack(SteamcraftItems.exosuitPlate,1,9));
-
+		if (Config.enableFieryPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Fiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),"Fiery","Fiery","steamcraft.plate.fiery"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoFiery","plateSteamcraftFiery",new ItemStack(SteamcraftItems.exosuitPlate,1,8),liquidFiery);
+		}
+		if (Config.enableYetiPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Yeti",new ItemStack(SteamcraftItems.exosuitPlate,1,9),"Yeti","Yeti","steamcraft.plate.yeti"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoYeti",new ItemStack(TFItems.alphaFur),new ItemStack(SteamcraftItems.exosuitPlate,1,9));
+		}
 	}
 }

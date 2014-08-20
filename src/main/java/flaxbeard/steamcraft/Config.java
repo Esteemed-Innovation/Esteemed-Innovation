@@ -1,7 +1,14 @@
 package flaxbeard.steamcraft;
 
+import java.io.File;
+import java.io.IOException;
+
 import net.minecraftforge.common.config.Configuration;
+
+import org.apache.commons.io.FileUtils;
+
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class Config {
 	public static final int jumpBoostConsumption = 1;
@@ -11,9 +18,11 @@ public class Config {
 	public static final float extendedRange = 2.0F; //Range extension in blocks
 	public static final float fallAssistDivisor = 2;
 
-	public static final int basicTankCap = 18000;
+	public static final int basicTankCap = 36000;
+	public static final int reinforcedTankCap = 72000;
+	public static final int uberReinforcedTankCap = 144000;
 
-	public static final String VERSION = "0.25.2";
+	public static final String VERSION = "0.26.0";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;
@@ -58,11 +67,21 @@ public class Config {
 	public static boolean enableThumper;
 	public static boolean enableVacuum;
 	public static boolean enableValvePipe;
+	public static boolean enableChargingPad;
 	public static boolean enableWrench;
 	
 	// items
 	public static boolean enableAstrolabe;
-	public static boolean enableDoubleJump; //NYI
+	
+	public static boolean enableTopHat;
+	public static boolean enableEmeraldHat;
+	public static boolean enableGoggles;
+
+	
+	public static boolean enableDoubleJump;
+	public static boolean enableJumpAssist;
+	public static boolean enableRunAssist;
+	public static boolean enableStealthUpgrade;
 	public static boolean enableEnhancementAblaze;
 	public static boolean enableEnhancementRevolver;
 	public static boolean enableEnhancementSpeedloader;
@@ -82,6 +101,26 @@ public class Config {
 	public static boolean enableExtendoFist;
 	public static boolean enablePitonDeployer;
 	public static boolean disableMainBarrelRecipe;
+	
+	public static boolean enableReinforcedTank;
+	public static boolean enableUberReinforcedTank;
+	
+	public static boolean enableEnderShroud;
+	
+	//plates
+	public static boolean enableCopperPlate;
+	public static boolean enableIronPlate;
+	public static boolean enableGoldPlate;
+	public static boolean enableBrassPlate;
+	public static boolean enableThaumiumPlate;
+	public static boolean enableElementiumPlate;
+	public static boolean enableTerrasteelPlate;
+	public static boolean enableYetiPlate;
+	public static boolean enableFieryPlate;
+	public static boolean enableSadistPlate;
+	public static boolean enableVibrantPlate;
+	public static boolean enableEnderiumPlate;
+
 
 	public static boolean enableWings;
 	public static boolean hasAllCrucial;
@@ -90,7 +129,17 @@ public class Config {
 	
 	
 	public static void load(FMLPreInitializationEvent event) {
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		File configurationDir = ReflectionHelper.getPrivateValue(FMLPreInitializationEvent.class, event, 2);
+		File oldConfigFile = new File(configurationDir, "Steamcraft.cfg");
+		if (oldConfigFile.exists()) {
+			try {
+				FileUtils.copyFile(new File(configurationDir, "Steamcraft.cfg"), new File(configurationDir, "FlaxbeardsSteamPower.cfg"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			oldConfigFile.delete();
+		}
+		Configuration config = new Configuration(new File(configurationDir, "FlaxbeardsSteamPower.cfg"));
 		config.load();
 		
 		// WORLD GEN
@@ -133,6 +182,7 @@ public class Config {
 		
 		// BLOCKS
 		enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
+		enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
 		enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
 		enableEngineering = config.get("Blocks", "Enable engineering table", true).getBoolean(true);
 		enableFan = config.get("Blocks", "Enable fan (disabling this disables vacuum)", true).getBoolean(true);
@@ -152,6 +202,10 @@ public class Config {
 		
 		// EXOSUIT UPGRADES
 		enableFallAssist = config.get("Exosuit Upgrades", "Enable fall assist", true).getBoolean(true);
+		enableJumpAssist = config.get("Exosuit Upgrades", "Enable leap actuator", true).getBoolean(true);
+		enableDoubleJump = config.get("Exosuit Upgrades", "Enable pulse nozzle", true).getBoolean(true);
+		enableRunAssist = config.get("Exosuit Upgrades", "Enable modular accelerator", true).getBoolean(true);
+		enableStealthUpgrade = config.get("Exosuit Upgrades", "Enable acoustic dampener", true).getBoolean(true);
 		enableJetpack = config.get("Exosuit Upgrades", "Enable jetpack", true).getBoolean(true);
 		enableThrusters = config.get("Exosuit Upgrades", "Enable thrusters", true).getBoolean(true);
 		enableWings = config.get("Exosuit Upgrades", "Enable wings", true).getBoolean(true);
@@ -159,6 +213,23 @@ public class Config {
 		enableCanningMachine = config.get("Exosuit Upgrades", "Enable canning machine", true).getBoolean(true);
 		enableExtendoFist = config.get("Exosuit Upgrades", "Enable extendo fist", true).getBoolean(true);
 		enablePitonDeployer = config.get("Exosuit Upgrades", "Enable piton deployer", true).getBoolean(true);
+		enableReinforcedTank = config.get("Exosuit Upgrades", "Enable reinforced tank", true).getBoolean(true);
+		enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable heavily reinforced tank", true).getBoolean(true);
+
+		enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
+		enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
+		enableGoldPlate = config.get("Exosuit Plates", "Enable gold plate", true).getBoolean(true);
+		enableBrassPlate = config.get("Exosuit Plates", "Enable brass plate", true).getBoolean(true);
+		enableThaumiumPlate = config.get("Exosuit Plates", "Enable thaumium plate", true).getBoolean(true);
+		enableElementiumPlate = config.get("Exosuit Plates", "Enable elementium plate", true).getBoolean(true);
+		enableTerrasteelPlate = config.get("Exosuit Plates", "Enable terrasteel plate", true).getBoolean(true);
+		enableYetiPlate = config.get("Exosuit Plates", "Enable yeti plate", true).getBoolean(true);
+		enableFieryPlate = config.get("Exosuit Plates", "Enable fiery plate", true).getBoolean(true);
+		enableSadistPlate = config.get("Exosuit Plates", "Enable sadist plate", true).getBoolean(true);
+		enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
+		enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
+
+		enableEnderShroud = config.get("Exosuit Upgrades", "Enable ender shroud", true).getBoolean(true);
 
 		//enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 		
@@ -169,6 +240,10 @@ public class Config {
 		enableSurvivalist = config.get("Items", "Enable survivalist's toolkit", true).getBoolean(true);
 		enableWrench = config.get("Items", "Enable wrench", true).getBoolean(true);
 		enableCanister = config.get("Items", "Enable canisters", true).getBoolean(true);
+		
+		enableTopHat = config.get("Items", "Enable top hat", true).getBoolean(true);
+		enableEmeraldHat = config.get("Items", "Enable emerald top hat", true).getBoolean(true);
+		enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
 
 		// OTHER
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);

@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.integration;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
@@ -20,8 +21,10 @@ public class EnderIOIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotVibrant", liquidVibrant, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetVibrant", liquidVibrant, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftVibrant", liquidVibrant, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Vibrant",new ItemStack(SteamcraftItems.exosuitPlate,1,12),"Vibrant","Vibrant","steamcraft.plate.vibrant"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoVibrant","plateSteamcraftVibrant",new ItemStack(SteamcraftItems.exosuitPlate,1,12),liquidVibrant);
+		if (Config.enableVibrantPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Vibrant",new ItemStack(SteamcraftItems.exosuitPlate,1,12),"Vibrant","Vibrant","steamcraft.plate.vibrant"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoVibrant","plateSteamcraftVibrant",new ItemStack(SteamcraftItems.exosuitPlate,1,12),liquidVibrant);
+		}
 	}
 
 }

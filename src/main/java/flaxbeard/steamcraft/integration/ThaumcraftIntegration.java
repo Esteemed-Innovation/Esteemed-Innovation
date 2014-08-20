@@ -25,6 +25,7 @@ import thaumcraft.common.items.relics.ItemThaumonomicon;
 import thaumcraft.common.lib.research.ResearchManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
@@ -51,10 +52,10 @@ public class ThaumcraftIntegration {
 		SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
 		SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
 		SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftThaumium", liquidThaumium, 6);
-		SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),"Thaumium","Thaumium","steamcraft.plate.thaumium"));
-		SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium","plateSteamcraftThaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),liquidThaumium);
-
-		
+		if (Config.enableThaumiumPlate) {
+			SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),"Thaumium","Thaumium","steamcraft.plate.thaumium"));
+			SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium","plateSteamcraftThaumium",new ItemStack(SteamcraftItems.exosuitPlate,1,5),liquidThaumium);
+		}
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
 		SteamcraftRegistry.registerSmeltTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);

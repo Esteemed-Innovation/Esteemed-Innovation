@@ -266,8 +266,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 		if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
 			if (tileentityboiler != null)
             {
-				tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
-				if (!player.capabilities.isCreativeMode) {
+				int num = tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000),true);
+				if (!player.capabilities.isCreativeMode && num != 0) {
 					player.inventory.consumeInventoryItem(Items.water_bucket);
 					player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
 					player.inventoryContainer.detectAndSendChanges();
