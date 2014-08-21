@@ -2,6 +2,9 @@ package flaxbeard.steamcraft.item.tool;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -44,6 +47,7 @@ public class ItemSteamcraftGoggles extends ItemSteamcraftArmor implements IExosu
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
 			float par7, ItemStack me) {		
 	}

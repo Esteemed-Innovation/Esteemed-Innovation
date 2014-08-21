@@ -218,10 +218,6 @@ public class SteamcraftEventHandler {
 		}
 
 	}
-
-
-	@SideOnly(Side.CLIENT)
-	private static final RenderItem itemRender = new RenderItem();
 	
     public void renderTexture(int screenX, int screenY, int screenEndX, int screenEndY, double startU, double startV, double endU, double endV)
     {
@@ -1235,7 +1231,6 @@ public class SteamcraftEventHandler {
 //				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
 //			}
 			if (!wearing && lastWearing && entity.worldObj.isRemote) {
-				System.out.println("Out");
 				Steamcraft.proxy.extendRange(entity,-Config.extendedRange);
 			}
 			lastWearing = wearing;

@@ -127,6 +127,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     }
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(ItemStack stack, int pass)
     {
 
@@ -164,6 +165,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     }
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		if (this.getStackInSlot(stack, 2) != null && (pass == 1 || (pass > 1 && !stack.stackTagCompound.hasKey("plate")))) {
 			Item vanity = getStackInSlot(stack, 2).getItem();
@@ -558,6 +560,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4)
 	{
 		super.addInformation(me, player, list, par4);
