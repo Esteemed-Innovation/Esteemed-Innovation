@@ -117,6 +117,7 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     }
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderModel(ModelExosuit model, Entity entity, int armor,
 			float par7, ItemStack me) {
 		
