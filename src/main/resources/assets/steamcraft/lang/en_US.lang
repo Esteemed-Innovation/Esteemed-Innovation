@@ -178,7 +178,7 @@ research.ExoTankUberReinforced.name=Heavily Reinforced Tank
 research.ExoTankUberReinforced.0=Although it uses large amounts of brass, I've found a way to reinforce a tank even further, allowing it to hold unprecedented levels of steam, roughly twice that of my reinforced tank.
 
 research.ExoPlates.name=Exosuit Plates
-research.ExoPlates.0=The exosuit on its own is a fragile framework for upgrades. One of the most critical upgrades is plates. Various types of plating can be installed in the exosuit, providing the wearer with siginificantly more protection.
+research.ExoPlates.0=The exosuit on its own is a fragile framework for upgrades. One of the most critical upgrades is plates. Various types of plating can be installed in the exosuit, providing the wearer with significantly more protection.
 research.ExoPlates.1=All plates provide an equal baseline of protection, equivalent to that of iron armor, but each plate provides a unique proficiency. Iron plating, for example, is better at protecting against projectiles.
 research.PlateCopper.name=Copper Exosuit Plate
 research.PlateCopper.0=I've found that installing copper plates in my exosuit helps to protect me from explosive damage. This exosuit plate is particularly useful for confrontations with creepers and ghasts.
@@ -266,8 +266,6 @@ research.TopHat.name=Top Hat
 research.TopHat.0=Topping my head with scraps of leather and metal is so... crude. I have created a masterpiece with some spare wool in the lab - a stylish top hat I can don on my head. It provides a small amount of protection and looks simply smashing!
 research.TopHatEmerald.name=Entrepreneur's Top Hat
 research.TopHatEmerald.0=Adorning my top hat with various emeralds seems to trick these oafish 'villagers' into thinking I'm some sort of entrepreneur... They'll give me much better deals, visually upgrading my hat each time I unlock a new trade.
-research.Goggles.name=Tinkerer's Headwear
-research.Goggles.0=It's simply unsafe to tinker with steam apparatus without proper eyewear. I have developed a pair of goggles and a monocle to protect my eyes. Both provide me with the ability to zoom in on far away objects using the 'Z' key.
 research.Goggles.name=Tinkerer's Headwear
 research.Goggles.0=It's simply unsafe to tinker with steam apparatus without proper eyewear. I have developed a pair of goggles and a monocle to protect my eyes. Both provide me with the ability to zoom in on far away objects using the 'Z' key.
 research.ExoGoggles.name=Tinkerer's Headwear
