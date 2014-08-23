@@ -49,7 +49,6 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -552,28 +551,28 @@ public class SteamcraftEventHandler {
 			}
 		}
 	}
+//	
+//	@SubscribeEvent
+//	public void preRender(RenderLivingEvent.Pre event) {
+//		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
+//	        GL11.glPushMatrix();
+//	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.10F);
+//	        GL11.glDepthMask(false);
+//	        GL11.glEnable(GL11.GL_BLEND);
+//	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+//		}
+//	}
 	
-	@SubscribeEvent
-	public void preRender(RenderLivingEvent.Pre event) {
-		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
-	        GL11.glPushMatrix();
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.10F);
-	        GL11.glDepthMask(false);
-	        GL11.glEnable(GL11.GL_BLEND);
-	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-		}
-	}
-	
-	@SubscribeEvent
-	public void postRender(RenderLivingEvent.Post event) {
-		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
-	        GL11.glDisable(GL11.GL_BLEND);
-	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-	        GL11.glPopMatrix();
-	        GL11.glDepthMask(true);
-		}
-	}
+//	@SubscribeEvent
+//	public void postRender(RenderLivingEvent.Post event) {
+//		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
+//	        GL11.glDisable(GL11.GL_BLEND);
+//	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+//	        GL11.glPopMatrix();
+//	        GL11.glDepthMask(true);
+//		}
+//	}
 	
 	
 	@SubscribeEvent
