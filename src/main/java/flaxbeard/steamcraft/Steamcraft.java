@@ -56,6 +56,8 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntityChargingPad;
 import flaxbeard.steamcraft.tile.TileEntityCreativeTank;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+import flaxbeard.steamcraft.tile.TileEntityCustomCraftingTable;
+import flaxbeard.steamcraft.tile.TileEntityCustomFurnace;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 import flaxbeard.steamcraft.tile.TileEntityFan;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
@@ -106,6 +108,8 @@ public class Steamcraft {
 	public static int ruptureDiscRenderID;
 	public static int whistleRenderID;
 	public static int boilerRenderID;
+	public static int customCraftingTableRenderID;
+	public static int furnaceRenderID;
 
     public static boolean steamRegistered;
     public static Potion semiInvisible;
@@ -170,6 +174,9 @@ public class Steamcraft {
 		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
 		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
 
+		GameRegistry.registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
+		GameRegistry.registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
+
 
 	}
 	
@@ -192,6 +199,8 @@ public class Steamcraft {
 		ruptureDiscRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		whistleRenderID  = RenderingRegistry.getNextAvailableRenderId();
 		boilerRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		customCraftingTableRenderID  = RenderingRegistry.getNextAvailableRenderId();
+		furnaceRenderID  = RenderingRegistry.getNextAvailableRenderId();
 
 
 		proxy.registerRenderers();
