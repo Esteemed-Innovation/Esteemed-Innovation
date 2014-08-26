@@ -19,6 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
@@ -49,7 +50,7 @@ public class SteamcraftTickHandler {
 				MovingObjectPosition pos = mc.objectMouseOver;
 				if(pos != null) {
 					TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
-					if (mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.pipe || mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.boiler) {
+					if (mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.pipe || (mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ) != null && mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ) instanceof IDisguisableBlock)) {
 						SteamcraftClientPacketHandler.sendCamoPacket(player, pos);
 					}
 				}

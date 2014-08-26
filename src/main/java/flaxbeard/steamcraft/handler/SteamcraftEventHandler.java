@@ -88,6 +88,7 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
@@ -1463,7 +1464,15 @@ public class SteamcraftEventHandler {
 			
 		}
 
-		if (event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.isSneaking() && (event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.boiler || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) && event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
+		if (true &&
+				event.action == Action.RIGHT_CLICK_BLOCK && 
+				event.entityPlayer != null && 
+				event.world != null &&
+				event.entityPlayer.isSneaking() && 
+				((event.world.getTileEntity(event.x, event.y, event.z) != null && 
+				event.world.getTileEntity(event.x, event.y, event.z) instanceof IDisguisableBlock) || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) && 
+				event.entityPlayer.getHeldItem() != null && 
+				event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
 			Block block = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
 			if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe))) {
 				event.setCanceled(true);

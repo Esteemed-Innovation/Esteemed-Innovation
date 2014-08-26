@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.packet;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -104,7 +105,7 @@ public class SteamcraftServerPacketHandler {
 				Block block = Block.getBlockFromItem(player.getHeldItem().getItem());
 				TileEntity tile = world.getTileEntity(x, y, z);
 
-				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && tile instanceof TileEntitySteamPipe))) {
+				if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && block.isOpaqueCube() && (block.renderAsNormalBlock() || (block == Blocks.glass && tile instanceof TileEntitySteamPipe))) {
 
 					if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
 						TileEntitySteamPipe pipe = ((TileEntitySteamPipe)tile);
@@ -126,23 +127,23 @@ public class SteamcraftServerPacketHandler {
 							world.markBlockForUpdate(x, y, z);
 						}
 					}
-					if (!world.isRemote && tile instanceof TileEntityBoiler) {
-						TileEntityBoiler pipe = ((TileEntityBoiler)tile);
-						if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
-							if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
-								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock,1,pipe.disguiseMeta));
+					if (!world.isRemote && tile instanceof IDisguisableBlock) {
+						IDisguisableBlock pipe = ((IDisguisableBlock)tile);
+						if (!(pipe.getDisguiseBlock() == block && pipe.getDisguiseMeta() == ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+							if (pipe.getDisguiseBlock() != Blocks.air && !player.capabilities.isCreativeMode) {
+								EntityItem entityItem = new EntityItem(world,player.posX, player.posY, player.posZ, new ItemStack(pipe.getDisguiseBlock(),1,pipe.getDisguiseMeta()));
 								world.spawnEntityInWorld(entityItem);
-								pipe.disguiseBlock = null;
+								pipe.setDisguiseBlock(null);
 							}
 	
-							pipe.disguiseBlock = block;
+							pipe.setDisguiseBlock(block);
 							if (!player.capabilities.isCreativeMode) {
 								player.inventory.getCurrentItem().stackSize--;
 								player.inventoryContainer.detectAndSendChanges();
 							}
 			                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 	
-							pipe.disguiseMeta = ((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+							pipe.setDisguiseMeta(((ItemBlock)player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()));
 							world.markBlockForUpdate(x, y, z);
 						}
 					}

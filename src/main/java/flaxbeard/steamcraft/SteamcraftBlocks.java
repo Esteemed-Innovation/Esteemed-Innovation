@@ -10,6 +10,8 @@ import flaxbeard.steamcraft.block.BlockBeacon;
 import flaxbeard.steamcraft.block.BlockBoiler;
 import flaxbeard.steamcraft.block.BlockCarvingTable;
 import flaxbeard.steamcraft.block.BlockChargingPad;
+import flaxbeard.steamcraft.block.BlockCustomCraftingTable;
+import flaxbeard.steamcraft.block.BlockCustomFurnace;
 import flaxbeard.steamcraft.block.BlockDummy;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
 import flaxbeard.steamcraft.block.BlockFan;
@@ -88,7 +90,10 @@ public class SteamcraftBlocks {
 	public static BlockSteamPistonBase steamPiston;
 	public static BlockSteamPistonMoving steamPiston_extension;
 	public static BlockSteamPistonExtension steamPiston_head;
-	
+	public static Block customCrafingTable;
+	public static Block customFurnace;
+	public static Block customFurnaceOff;
+
 	public static void registerBlocks() {
 		
 		registerMetals();
@@ -236,6 +241,16 @@ public class SteamcraftBlocks {
 			vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
 			GameRegistry.registerBlock(vacuum, "vacuum");
 		}
+
+		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
+		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
+		
+		customFurnace = new BlockCustomFurnace(true).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(customFurnace, "customFurnace");
+		
+		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
+		
 	}
 
 	public static void registerMisc(){

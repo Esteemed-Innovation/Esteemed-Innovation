@@ -33,10 +33,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 
-public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter,IWrenchable {
+public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler,ISidedInventory,ISteamTransporter,IWrenchable,IDisguisableBlock {
 	public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1),10000);
 	private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String field_145958_o;
@@ -510,5 +511,25 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Block getDisguiseBlock() {
+		return this.disguiseBlock;
+	}
+
+	@Override
+	public int getDisguiseMeta() {
+		return this.disguiseMeta;
+	}
+
+	@Override
+	public void setDisguiseBlock(Block block) {
+		this.disguiseBlock = block;
+	}
+
+	@Override
+	public void setDisguiseMeta(int meta) {
+		this.disguiseMeta = meta;
 	}
 }
