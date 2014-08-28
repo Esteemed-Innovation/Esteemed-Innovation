@@ -119,7 +119,6 @@ public class BotaniaIntegration {
 			controller.setGameType(type);
 			mc.playerController = controller;
 		}
-		System.out.println(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension());
 		((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
 	}
 

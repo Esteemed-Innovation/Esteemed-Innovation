@@ -14,7 +14,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
@@ -49,6 +47,7 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 
 @Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
@@ -221,6 +220,33 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
         }
 		return new ArmorProperties(0, ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(armorType) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(armorType));
 	}
+	
+	@Override
+    public double getDurabilityForDisplay(ItemStack stack)
+    {
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if (!stack.stackTagCompound.hasKey("steamFill")) {
+			stack.stackTagCompound.setInteger("steamFill", 0);
+		}
+		if (!stack.stackTagCompound.hasKey("maxFill")) {
+			stack.stackTagCompound.setInteger("maxFill", 0);
+		}
+		//return 0.9D;
+        return 1.0D-(stack.stackTagCompound.getInteger("steamFill") / (double)stack.stackTagCompound.getInteger("maxFill"));
+    }
+	
+    public boolean showDurabilityBar(ItemStack stack)
+    {
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if (!stack.stackTagCompound.hasKey("maxFill")) {
+			stack.stackTagCompound.setInteger("maxFill", 0);
+		}
+        return stack.stackTagCompound.getInteger("maxFill") > 0;
+    }
 
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int armorType) {
@@ -237,13 +263,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 		if (this.slot == 1) {
-			if (stack.getItemDamage() < stack.getMaxDamage()-40) {
-				stack.damageItem(damage*40, entity);
-			}
-			else
-			{
-				stack.setItemDamage(stack.getMaxDamage()-1);
-			}
+			SteamcraftEventHandler.drainSteam(stack, damage*40);
 		}
 	}
 
@@ -324,9 +344,10 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 			stack.writeToNBT(stc);
 			me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
 			if (var1 == 5 && slot == 1) {
-				me.setItemDamage(me.getMaxDamage()-1);
+				me.stackTagCompound.setInteger("steamFill", 0);
+				me.stackTagCompound.setInteger("maxFill",((IExosuitTank)stack.getItem()).getStorage(me));
 				if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
-					me.setItemDamage(0);
+					me.stackTagCompound.setInteger("steamFill", me.stackTagCompound.getInteger("maxFill"));
 				}
 			}
 		}
@@ -395,7 +416,17 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 	
 	public boolean hasPower(ItemStack me, int powerNeeded) {
 		if (this.slot == 1) {
-			if (me.getItemDamage() < me.getMaxDamage()-powerNeeded) {
+			if (!me.hasTagCompound()) {
+				me.setTagCompound(new NBTTagCompound());
+			}
+			if (!me.stackTagCompound.hasKey("steamFill")) {
+				me.stackTagCompound.setInteger("steamFill", 0);
+			}
+			if (!me.stackTagCompound.hasKey("maxFill")) {
+				me.stackTagCompound.setInteger("maxFill", 0);
+			}
+			if (me.stackTagCompound.getInteger("steamFill") > powerNeeded) {
+
 				return true;
 			}
 		}
@@ -521,13 +552,24 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
     public int getMaxDamage(ItemStack stack)
     {
 		if (this.slot == 1) {
-			ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
-			if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof IExosuitTank) {
-				IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 5).getItem();
-				return tank.getStorage(stack);
-			}
+			return 10000;
 		}
 		return 0;
+    }
+    
+    @Override
+    public int getDamage(ItemStack stack)
+    {
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if (!stack.stackTagCompound.hasKey("steamFill")) {
+			stack.stackTagCompound.setInteger("steamFill", 0);
+		}
+		if (!stack.stackTagCompound.hasKey("maxFill")) {
+			stack.stackTagCompound.setInteger("maxFill", 0);
+		}
+		return (int)(((double)stack.stackTagCompound.getInteger("steamFill"))/((double)(double)stack.stackTagCompound.getInteger("maxFill"))*10000.0D);
     }
 
 	@Override
@@ -606,6 +648,18 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner,ISpecia
 		        	}
 				}
 			}
+		}
+		if (!me.hasTagCompound()) {
+			me.setTagCompound(new NBTTagCompound());
+		}
+		if (!me.stackTagCompound.hasKey("steamFill")) {
+			me.stackTagCompound.setInteger("steamFill", 0);
+		}
+		if (!me.stackTagCompound.hasKey("maxFill")) {
+			me.stackTagCompound.setInteger("maxFill", 0);
+		}
+		if (slot == 1) {
+			list.add(EnumChatFormatting.WHITE + "" + me.stackTagCompound.getInteger("steamFill")*5 + "/" +  me.stackTagCompound.getInteger("maxFill")*5 + " SU");
 		}
 	}
 

@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.item.tool.steam;
 
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,15 +11,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.exosuit.UtilPlates;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 	public IIcon[] icon = new IIcon[2];
@@ -33,6 +40,14 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     {
         return true;
     }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4)
+	{
+		super.addInformation(me, player, list, par4);
+		list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage()-me.getItemDamage())*this.steamPerDurability() + "/" +  me.getMaxDamage()*this.steamPerDurability() + " SU");
+	}
 	
 	
 

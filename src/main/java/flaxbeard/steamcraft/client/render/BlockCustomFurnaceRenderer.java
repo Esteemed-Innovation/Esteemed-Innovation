@@ -30,7 +30,7 @@ public class BlockCustomFurnaceRenderer implements ISimpleBlockRenderingHandler 
 		int y = 0;
 		int z = 0;
 	    Tessellator tessellator = Tessellator.instance;
-		IIcon icon = block.getBlockTextureFromSide(1);
+		IIcon icon = ((BlockCustomFurnace)block).frontIcon;
 
         tessellator.startDrawingQuads();
         tessellator.setNormal(1.0F, 0.0F, 0.0F);

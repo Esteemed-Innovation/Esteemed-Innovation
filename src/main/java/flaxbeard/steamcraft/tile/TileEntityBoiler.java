@@ -224,7 +224,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
                         }
                     }
                 }
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+                //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
 
             if (this.isBurning() && this.canSmelt() && this.getNetwork() != null)
@@ -502,6 +503,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 				}
                 world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
 				disguiseBlock = null;
+
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				return true;
 			}

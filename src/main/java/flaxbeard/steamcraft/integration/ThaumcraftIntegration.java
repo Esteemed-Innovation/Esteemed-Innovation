@@ -25,6 +25,8 @@ import thaumcraft.common.items.relics.ItemThaumonomicon;
 import thaumcraft.common.lib.research.ResearchManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -101,6 +103,7 @@ public class ThaumcraftIntegration {
 		return ConfigItems.itemGoggles;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static void addTooltip(ItemTooltipEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.thePlayer;

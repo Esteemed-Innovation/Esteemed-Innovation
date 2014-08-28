@@ -20,6 +20,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 
 public class EntityMusketBall extends Entity implements IProjectile
 {
@@ -173,6 +174,8 @@ public class EntityMusketBall extends Entity implements IProjectile
 
             if (var2 != null && var2.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))
             {
+            	//if (!this.inGround) {
+            		            	//}
                 this.inGround = true;
             }
         }
@@ -193,6 +196,12 @@ public class EntityMusketBall extends Entity implements IProjectile
 
                 if (this.ticksInGround == 1)
                 {
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
+					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
                     this.setDead();
                 }
             }

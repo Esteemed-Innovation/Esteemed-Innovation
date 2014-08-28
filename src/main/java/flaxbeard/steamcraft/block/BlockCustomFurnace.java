@@ -27,6 +27,7 @@ public class BlockCustomFurnace extends BlockFurnace {
 	
 	public IIcon camoIcon;
 	public IIcon camoOnIcon;
+	public IIcon frontIcon;
     private static boolean field_149934_M;
     private final Random field_149933_a = new Random();
 
@@ -112,7 +113,6 @@ public class BlockCustomFurnace extends BlockFurnace {
 	@Override
 	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
     {
-		System.out.println(field_149934_M);
         if (!field_149934_M)
         {
             TileEntityFurnace tileentityfurnace = (TileEntityFurnace)p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
@@ -166,6 +166,7 @@ public class BlockCustomFurnace extends BlockFurnace {
 	    super.registerBlockIcons(p_149651_1_);
         this.camoOnIcon = p_149651_1_.registerIcon("steamcraft:camoFurnaceOn");
         this.camoIcon = p_149651_1_.registerIcon("steamcraft:camoFurnace");
+        this.frontIcon = p_149651_1_.registerIcon("furnace_front_off");
     }
 
 }

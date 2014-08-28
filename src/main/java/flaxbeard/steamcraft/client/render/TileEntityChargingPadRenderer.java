@@ -47,7 +47,6 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
 		GL11.glRotatef(90.0F, 0F, 1F, 0F);
 
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-//System.out.println(pad.extendTicks);
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 		
 
