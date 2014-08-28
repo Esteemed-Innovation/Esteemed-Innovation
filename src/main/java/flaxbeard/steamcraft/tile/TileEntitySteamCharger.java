@@ -11,8 +11,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilSteamTransport;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter,IInventory {
 	
@@ -104,33 +104,77 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 				}
 				ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
 				ItemStack stack = this.getStackInSlot(0).copy();
-				if (this.getSteamShare() > 0 && stack.getItemDamage() > 0) {
-					if (!this.isCharging){
-						//Steamcraft.log.debug("Charging");
-						this.isCharging = true;
-						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				if (!(item instanceof ItemExosuitArmor)) {
+					if (this.getSteamShare() > 0 && stack.getItemDamage() > 0) {
+						if (!this.isCharging){
+							//Steamcraft.log.debug("Charging");
+							this.isCharging = true;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+					} else {
+						if (this.isCharging){
+							//Steamcraft.log.debug("Not charging");
+							this.isCharging = false;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
 					}
-				} else {
-					if (this.isCharging){
-						//Steamcraft.log.debug("Not charging");
-						this.isCharging = false;
-						worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					if (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
+		 				int i = 0;
+		 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+		 					this.decrSteam(item.steamPerDurability());
+		 					stack.setItemDamage(stack.getItemDamage()-1);
+		 	 				this.setInventorySlotContents(0, stack);
+		 					i++;
+		 				}
+		 				float currentPerc = getChargingPercent(stack);
+		 				if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01){
+		 					//log.debug("New percent: "+currentPerc);
+		 					prevPercent = currentPerc;
+		 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		 				}
 					}
 				}
-				if (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
-	 				int i = 0;
-	 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
-	 					this.decrSteam(item.steamPerDurability());
-	 					stack.setItemDamage(stack.getItemDamage()-1);
-	 	 				this.setInventorySlotContents(0, stack);
-	 					i++;
-	 				}
-	 				float currentPerc = getChargingPercent(stack);
-	 				if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01){
-	 					//log.debug("New percent: "+currentPerc);
-	 					prevPercent = currentPerc;
-	 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	 				}
+				else
+				{
+					
+					if (!stack.hasTagCompound()) {
+						stack.setTagCompound(new NBTTagCompound());
+					}
+					if (!stack.stackTagCompound.hasKey("steamFill")) {
+						stack.stackTagCompound.setInteger("steamFill", 0);
+					}
+					if (!stack.stackTagCompound.hasKey("maxFill")) {
+						stack.stackTagCompound.setInteger("maxFill", 0);
+					}
+					if (this.getSteamShare() > 0 && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill")) {
+						if (!this.isCharging){
+							//Steamcraft.log.debug("Charging");
+							this.isCharging = true;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+					} else {
+						if (this.isCharging){
+							//Steamcraft.log.debug("Not charging");
+							this.isCharging = false;
+							worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						}
+					}
+					if (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill")) {
+		 				int i = 0;
+		 				
+		 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill"))) {
+		 					this.decrSteam(item.steamPerDurability());
+		 					stack.stackTagCompound.setInteger("steamFill", stack.stackTagCompound.getInteger("steamFill") +1);
+		 	 				this.setInventorySlotContents(0, stack);
+		 					i++;
+		 				}
+		 				float currentPerc = getChargingPercent(stack);
+		 				if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01){
+		 					//log.debug("New percent: "+currentPerc);
+		 					prevPercent = currentPerc;
+		 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		 				}
+					}
 				}
 			} else {
 				if (this.hadItem){

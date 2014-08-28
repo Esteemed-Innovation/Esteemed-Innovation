@@ -184,7 +184,6 @@ public class ModelExosuit extends ModelBiped {
 		ItemExosuitArmor item = ((ItemExosuitArmor)me.getItem());
         if (item.hasUpgrade(me, SteamcraftItems.enderShroud)) {
 	        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).hurtTime != 0) {
-	        	System.out.println(((EntityLivingBase) entity).hurtTime);
 		        GL11.glColor4f(1.0F, 1.0F, 1.0F, (float)((EntityLivingBase) entity).hurtTime/9F);
 		        GL11.glDepthMask(false);
 		        GL11.glEnable(GL11.GL_BLEND);

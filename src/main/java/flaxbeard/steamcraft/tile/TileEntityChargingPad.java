@@ -110,11 +110,11 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
 					// && (extendTicks < 14 || Math.abs(entity.renderYawOffset%360 + this.rotation) <= 60 || Math.abs((360-entity.renderYawOffset)%360 + this.rotation) <= 60
 					
 					if (extendTicks == 40) {
-						if (armor.getItemDamage() > 0) {
+						if (armor.stackTagCompound.getInteger("steamFill") < armor.stackTagCompound.getInteger("maxFill")) {
 			 				int i = 0;
-			 				while (i<19 && (this.getSteamShare() > armorItem.steamPerDurability() && armor.getItemDamage() > 0)) {
+			 				while (i<39 && (this.getSteamShare() > armorItem.steamPerDurability() && armor.stackTagCompound.getInteger("steamFill") < armor.stackTagCompound.getInteger("maxFill"))) {
 			 					this.decrSteam(armorItem.steamPerDurability());
-			 					armor.setItemDamage(armor.getItemDamage()-1);
+			 					armor.stackTagCompound.setInteger("steamFill", armor.stackTagCompound.getInteger("steamFill") +1);
 			 					i++;
 			 				}
 							if (entity instanceof EntityPlayer) {
@@ -124,7 +124,6 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
 					}
 					
 		
-					//System.out.println(entity.renderYawOffset + " " + this.rotation);
 					descending = false;
 				}
 				else
@@ -191,7 +190,6 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
 			if (lastDescending != descending) {
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				lastDescending = descending;
-				//System.out.println(descending);
 			}
 
 			if (entity != null && entity == target && this.extendTicks >= 15) {

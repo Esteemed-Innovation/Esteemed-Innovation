@@ -69,7 +69,6 @@ public class BloodMagicIntegration {
 					}
 				}
 			}
-		//	System.out.println(event.ammount);
 			if (bmPlates > 0) {
 				int lp = (int)event.ammount * 12 * bmPlates;
 				EnergyItems.addEssenceToMaximum(player.getCommandSenderName(), lp, getData(player.getCommandSenderName()).cap);

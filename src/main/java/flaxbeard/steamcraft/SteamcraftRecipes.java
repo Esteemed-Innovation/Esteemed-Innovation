@@ -13,6 +13,7 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
+import flaxbeard.steamcraft.integration.TinkersIntegration;
 
 public class SteamcraftRecipes {
     
@@ -43,8 +44,7 @@ public class SteamcraftRecipes {
 		
 
 //		if (Loader.isModLoaded("TConstruct")) {
-//			//System.out.println("INTEGRATION FUCK YEAH");
-//			TinkersIntegration.addIngotRecipes();
+//			TinkersIntegration.registerRecipes("iron", new ItemStack(SteamcraftItems.steamcraftPlate,1,2));
 //		}
 		
 		SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);

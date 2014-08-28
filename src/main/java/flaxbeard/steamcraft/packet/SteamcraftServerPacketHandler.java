@@ -59,7 +59,7 @@ public class SteamcraftServerPacketHandler {
 						if (!player.onGround && !player.capabilities.isFlying) {
 							player.motionY=player.motionY+0.06D;
 							player.fallDistance = 0.0F;
-							player.getCurrentArmor(2).damageItem(Config.jetpackConsumption, player);
+							SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2),Config.jetpackConsumption);
 						}
 					}
 				}
@@ -79,7 +79,7 @@ public class SteamcraftServerPacketHandler {
 							player.motionY=player.motionY+0.3D;
 							double rotation = Math.toRadians(player.renderYawOffset);
 							player.fallDistance = 0.0F;
-							player.getCurrentArmor(2).damageItem(10, player);
+							SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2),10);
 
 						}
 						armor2.stackTagCompound.setBoolean("releasedSpace", false);
@@ -177,7 +177,6 @@ public class SteamcraftServerPacketHandler {
 	
 	private void handleNoSpacePacket(ByteBufInputStream dat, World world)
  	{
-	//	System.out.println("NO SPACE");
 		try {
 			int id = dat.readInt();
 			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
@@ -221,6 +220,39 @@ public class SteamcraftServerPacketHandler {
 			return;
 		}
  	}
+	
+	private void handleGrapplePacket(ByteBufInputStream dat, World world) {
+		try {
+			int id = dat.readInt();
+			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+			int x = dat.readInt();
+			int y = dat.readInt();
+			int z = dat.readInt();
+			double playerX = dat.readDouble();
+			double playerY = dat.readDouble();
+			double playerZ = dat.readDouble();
+
+			if (player != null) {
+				//((EntityPlayerMP)player).playerNetServerHandler.setPlayerLocation(playerX, playerY-1, playerZ, player.rotationYaw, player.rotationPitch);
+				player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) playerX);
+				player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) playerZ);
+				player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) playerY);
+				player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockX", x);
+				player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockY", y);
+				player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockZ", z);
+
+				player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled",true);
+				player.motionX = 0.0F;
+				player.motionY = 0.0F;
+				player.motionZ = 0.0F;
+				player.fallDistance = 0.0F;
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	@SubscribeEvent
 	public void onServerPacket(ServerCustomPacketEvent event) {
@@ -251,6 +283,9 @@ public class SteamcraftServerPacketHandler {
             if (packetID == 4) {
             	this.handleDRPacket(bbis, world);
             }
+            if (packetID == 5) {
+            	this.handleGrapplePacket(bbis, world);
+            }
             bbis.close();
         }
         catch (IOException e)
@@ -260,6 +295,8 @@ public class SteamcraftServerPacketHandler {
         }
 	}
 	
+
+
 	public static void sendPipeConnectDisconnectPacket(int dimension, double x, double y, double z){
 
 		ByteBuf buf = Unpooled.buffer();

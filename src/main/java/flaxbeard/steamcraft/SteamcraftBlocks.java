@@ -242,15 +242,15 @@ public class SteamcraftBlocks {
 			GameRegistry.registerBlock(vacuum, "vacuum");
 		}
 
-		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
-		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
-		
-		customFurnace = new BlockCustomFurnace(true).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
-		GameRegistry.registerBlock(customFurnace, "customFurnace");
-		
-		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
-		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
-		
+//		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
+//		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
+//		
+//		customFurnace = new BlockCustomFurnace(true).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+//		GameRegistry.registerBlock(customFurnace, "customFurnace");
+//		
+//		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+//		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
+//		
 	}
 
 	public static void registerMisc(){

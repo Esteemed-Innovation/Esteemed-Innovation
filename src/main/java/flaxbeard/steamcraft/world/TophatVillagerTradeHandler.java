@@ -15,7 +15,6 @@ public class TophatVillagerTradeHandler implements IVillageTradeHandler {
 	@Override
 	public void manipulateTradesForVillager(EntityVillager villager,
 			MerchantRecipeList recipeList, Random random) {
-		System.out.println(villager.getCustomer().inventory.armorInventory[3] != null && villager.getCustomer().inventory.armorInventory[3].getItem() == SteamcraftItems.tophat);
 		if (villager.getCustomer().inventory.armorInventory[0] != null && (villager.getCustomer().inventory.armorInventory[0].getItem() == SteamcraftItems.tophat
 				|| (villager.getCustomer().inventory.armorInventory[0].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor)villager.getCustomer().inventory.armorInventory[0].getItem()).hasUpgrade(villager.getCustomer().inventory.armorInventory[0],SteamcraftItems.tophat)))) {
 			for (Object obj : recipeList) {

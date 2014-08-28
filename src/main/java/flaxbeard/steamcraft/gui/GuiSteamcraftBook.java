@@ -62,7 +62,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     	public String name;
     	public GuiButtonSelect(int par1, int par2, int par3, int par4, int par5, String par6Str) {
     		
-    		super(par1, par2, par3, par4, par5, I18n.format(par6Str));
+    		super(par1, par2, par3, par4, par5, par6Str.contains("#") ? I18n.format(par6Str.substring(1)) : I18n.format(par6Str));
     		name = par6Str;
     	}
 
@@ -213,12 +213,11 @@ public class GuiSteamcraftBook extends GuiScreen {
             if (p_146284_1_ instanceof GuiButtonSelect) {
             	GuiButtonSelect button = (GuiButtonSelect) p_146284_1_;
             	this.lastIndexPage = currPage;
-            	this.viewing = button.name;
+            	this.viewing = button.name.substring(0, 1).equals("#") ? button.name.substring(1) : button.name;
             	this.currPage = 0;
         		this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length/2F);
                 this.updateButtons();
             	this.mustReleaseMouse = true;
-
             }
             
 

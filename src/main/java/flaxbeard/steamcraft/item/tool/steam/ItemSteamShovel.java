@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.item.tool.steam;
 
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
@@ -28,6 +30,15 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
 	public ItemSteamShovel() {
 		super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4)
+	{
+		super.addInformation(me, player, list, par4);
+		list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage()-me.getItemDamage())*this.steamPerDurability() + "/" +  me.getMaxDamage()*this.steamPerDurability() + " SU");
+	}
+	
 	
 	@Override
     public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase)

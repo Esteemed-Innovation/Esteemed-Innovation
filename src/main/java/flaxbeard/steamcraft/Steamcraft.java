@@ -125,7 +125,7 @@ public class Steamcraft {
 		
 		Config.load(event);
 		
-		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false);
+		tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
 		tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 		
 		upgrade = EnumHelper.addRarity("UPGRADE", EnumChatFormatting.RED, "Upgrade");
@@ -277,5 +277,11 @@ public class Steamcraft {
 			}
 			return SteamcraftItems.book;
 		}	
+		
+		@Override
+	    public boolean hasSearchBar()
+	    {
+			return !tt;
+	    }
 	}
 }

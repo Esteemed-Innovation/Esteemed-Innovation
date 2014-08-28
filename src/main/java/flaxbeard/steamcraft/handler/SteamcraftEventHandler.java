@@ -85,6 +85,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -107,6 +108,7 @@ import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 public class SteamcraftEventHandler {
@@ -576,7 +578,7 @@ public class SteamcraftEventHandler {
 //	}
 	
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	@SideOnly(Side.CLIENT)
 	public void plateTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.itemStack;
@@ -588,13 +590,16 @@ public class SteamcraftEventHandler {
 				event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("steamcraft.canned"));
 			}
 		}
-		if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ItemSteamShovel) {
+		if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ISteamChargable) {
 			ArrayList<String> linesToRemove = new ArrayList<String>();
 			for (String str : event.toolTip) {
 				if (str == "") {
 					linesToRemove.add(str);
 				}
 				if (str.contains("+")) {
+					linesToRemove.add(str);
+				}
+				if (str.contains("/") && !str.contains("SU")) {
 					linesToRemove.add(str);
 				}
 			}
@@ -697,7 +702,7 @@ public class SteamcraftEventHandler {
 				
 					entity.motionX += -0.5F*entity.getLookVec().normalize().xCoord;
 					entity.motionZ += -0.5F*entity.getLookVec().normalize().zCoord;
-					entity.getEquipmentInSlot(3).damageItem(Config.powerFistConsumption,entity);
+					drainSteam(event.entityLiving.getEquipmentInSlot(3),Config.powerFistConsumption);
 				}
 			}
 		}
@@ -875,7 +880,7 @@ public class SteamcraftEventHandler {
 			        	event.ammount = 0.0F;
 			        }
 					event.ammount = event.ammount/3.0F;
-					entity.getEquipmentInSlot(3).damageItem((int)((float)event.ammount/Config.fallAssistDivisor), event.entityLiving);
+					drainSteam(entity.getEquipmentInSlot(3),(int)((float)event.ammount/Config.fallAssistDivisor));
 					if (event.ammount == 0.0F) {
 				        event.setResult(Event.Result.DENY);
 				        event.setCanceled(true);
@@ -910,6 +915,18 @@ public class SteamcraftEventHandler {
 			}
 			//}
 		}
+	}
+	
+	public static void drainSteam(ItemStack stack, int amount) {
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if (!stack.stackTagCompound.hasKey("steamFill")) {
+			stack.stackTagCompound.setInteger("steamFill", 0);
+		}
+		int fill = stack.stackTagCompound.getInteger("steamFill");
+		fill = Math.max(0, fill-amount);
+		stack.stackTagCompound.setInteger("steamFill", fill);
 	}
 	
 	@SubscribeEvent
@@ -949,11 +966,11 @@ public class SteamcraftEventHandler {
 						event.entityLiving.motionY += ((jump+1)*vector.yCoord)/1.5F;
 						event.entityLiving.motionZ += (jump+1)*vector.zCoord*2;
 						event.entityLiving.motionX += (jump+1)*vector.xCoord*2;
-						event.entityLiving.getEquipmentInSlot(3).damageItem(Config.jumpBoostConsumptionShiftJump, event.entityLiving);
+						drainSteam(event.entityLiving.getEquipmentInSlot(3),Config.jumpBoostConsumptionShiftJump);
 					}
 					else
 					{
-						event.entityLiving.getEquipmentInSlot(3).damageItem(Config.jumpBoostConsumption, event.entityLiving);
+						drainSteam(event.entityLiving.getEquipmentInSlot(3),Config.jumpBoostConsumption);
 						event.entityLiving.motionY += 0.2750000059604645D;
 					}
 				}		
@@ -1035,16 +1052,8 @@ public class SteamcraftEventHandler {
 			}
 		}
 		
-		if (entity.getEquipmentInSlot(3) != null) {
-			ItemStack stack = entity.getEquipmentInSlot(3);
 
-			if (stack.getItem() instanceof ItemExosuitArmor) {
-
-				if (stack.getItemDamage() < stack.getMaxDamage()-1) {
-					hasPower = true;
-				}
-			}
-		}
+		hasPower = hasPower(entity,1);
 		if (hasPower) {
 			if (armor == 4) {
 				event.newSpeed = event.newSpeed * 1.2F;
@@ -1155,7 +1164,7 @@ public class SteamcraftEventHandler {
 						event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
 					}
 					if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-						event.entityLiving.getEquipmentInSlot(3).damageItem(1, event.entityLiving);
+						drainSteam(event.entityLiving.getEquipmentInSlot(3),1);
 					}
 				}
 			}
@@ -1175,7 +1184,7 @@ public class SteamcraftEventHandler {
 						event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
 					}
 					if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-						event.entityLiving.getEquipmentInSlot(3).damageItem(1, event.entityLiving);
+						drainSteam(event.entityLiving.getEquipmentInSlot(3),1);
 					}
 				}
 			}
@@ -1185,7 +1194,6 @@ public class SteamcraftEventHandler {
 //			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
 //			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
 //				if (entity.isBurning()) {
-//					System.out.println("Y");
 //
 //					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
 //					if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
@@ -1209,7 +1217,6 @@ public class SteamcraftEventHandler {
 //			if (!worldStartUpdate && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
 //				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
 //				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
-//					System.out.println("In");
 //
 //					Steamcraft.proxy.extendRange(entity,Config.extendedRange);
 //				}
@@ -1227,7 +1234,6 @@ public class SteamcraftEventHandler {
 				}
 			}
 //			if (wearing && !lastWearing && entity.worldObj.isRemote) {
-//				System.out.println("In");
 //				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
 //			}
 			if (!wearing && lastWearing && entity.worldObj.isRemote) {
@@ -1298,7 +1304,7 @@ public class SteamcraftEventHandler {
 			double lastZ = lastMotions.get(entity.getEntityId()).right;
 			if (ticksLeft <= 0) {
 				if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
-					stack.damageItem(1, entity);
+					drainSteam(stack,1);
 				}
 				ticksLeft = 2;
 			}
@@ -1410,7 +1416,7 @@ public class SteamcraftEventHandler {
 		if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.face != 1 && event.world.getBlock(event.x, event.y, event.z).isSideSolid(event.world, event.x, event.y, event.z, ForgeDirection.getOrientation(event.face))) {
 			
 			EntityPlayer player = event.entityPlayer;
-			if (player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
+			if (event.world.isRemote && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
 				if (event.face != 0) {
 					ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
 					boolean canStick = false;
@@ -1421,7 +1427,7 @@ public class SteamcraftEventHandler {
 							canStick = true;
 						}
 					}
-					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
+					if (event.world.isRemote && canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
@@ -1433,6 +1439,8 @@ public class SteamcraftEventHandler {
 						player.motionX = 0.0F;
 						player.motionY = 0.0F;
 						player.motionZ = 0.0F;
+						player.fallDistance = 0.0F;
+						SteamcraftClientPacketHandler.sendGrapplePacket(player,event.x,event.y,event.z);
 					}
 				}
 				else
@@ -1446,7 +1454,7 @@ public class SteamcraftEventHandler {
 							canStick = true;
 						}
 					}
-					if (canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
+					if (canStick && event.world.isRemote && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
 						player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
@@ -1458,6 +1466,7 @@ public class SteamcraftEventHandler {
 						player.motionY = 0.0F;
 						player.motionZ = 0.0F;
 						player.fallDistance = 0.0F;
+						SteamcraftClientPacketHandler.sendGrapplePacket(player,event.x,event.y,event.z);
 					}
 				}
 			}

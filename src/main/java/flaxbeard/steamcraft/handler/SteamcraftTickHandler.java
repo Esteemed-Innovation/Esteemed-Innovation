@@ -44,7 +44,6 @@ public class SteamcraftTickHandler {
 			if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiMerchant)) {
 				SteamcraftEventHandler.lastViewVillagerGui = false;
 			}
-		//	System.out.println(Steamcraft.proxy.isKeyPressed());
 			EntityPlayer player = mc.thePlayer;
 			if (Mouse.isButtonDown(1) && player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock) {
 				MovingObjectPosition pos = mc.objectMouseOver;
@@ -98,7 +97,6 @@ public class SteamcraftTickHandler {
 							if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
 								armor2.stackTagCompound.setBoolean("releasedSpace", false);
 							}
-							//System.out.println(armor2.stackTagCompound.getBoolean("usedJump"));
 							if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
 								armor2.stackTagCompound.setBoolean("usedJump", true);
 								player.motionY=0.65D;
