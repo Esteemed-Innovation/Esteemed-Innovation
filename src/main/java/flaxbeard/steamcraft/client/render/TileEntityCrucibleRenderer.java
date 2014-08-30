@@ -24,9 +24,16 @@ import flaxbeard.steamcraft.tile.TileEntityCrucible;
 public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
 
 	private static final ModelCrucible model = new ModelCrucible();
-	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible2.png");
+	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible.png");
+	private static final ResourceLocation textureHell = new ResourceLocation("steamcraft:textures/models/crucible2.png");
 	private static final ResourceLocation texture2 = new ResourceLocation("minecraft:textures/blocks/cobblestone.png");
 	private static float px = (1.0F/16.0F);
+	private boolean isNether = false;
+	
+	public TileEntityCrucibleRenderer(boolean isHell) {
+		isNether = isHell;
+	}
+	
 	@Override
 	public void renderTileEntityAt(TileEntity var1, double x, double y,
 			double z, float var8) {
@@ -47,7 +54,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 		GL11.glScalef(1F, -1F, -1F);
 		model.renderNoRotate();
 		GL11.glScalef(1F, -1F, -1F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(crucible.getWorldObj().getBlock(crucible.xCoord, crucible.yCoord, crucible.zCoord) == SteamcraftBlocks.hellCrucible ? textureHell : texture);
 		if (ticks > 135) {
 			ticks = (int) ((ticks-90)/5.0F*90);
 			GL11.glRotatef((MathHelper.sin((float) (Math.PI*(ticks/90.0F))))*5.0F, 1F, 0F, 0F);
@@ -118,7 +125,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 		GL11.glScalef(1F, -1F, -1F);
 		model.renderNoRotate();
 		GL11.glScalef(1F, -1F, -1F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(isNether ? textureHell : texture);
 		GL11.glScalef(1F, -1F, -1F);
 		
 		model.renderAll();

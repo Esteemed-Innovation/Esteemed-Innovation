@@ -21,6 +21,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -56,7 +57,7 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
         if (entity instanceof EntityItem) {
         	EntityItem item = (EntityItem) entity;
-        	if (world.getBlock(x, y-1, z) == Blocks.fire || world.getBlock(x, y-1, z).getMaterial() == Material.lava) {
+        	if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y-1, z) == Blocks.fire || world.getBlock(x, y-1, z).getMaterial() == Material.lava) {
         		MutablePair output;
         		if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()))) {
         			output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(),item.getEntityItem().getItemDamage()));

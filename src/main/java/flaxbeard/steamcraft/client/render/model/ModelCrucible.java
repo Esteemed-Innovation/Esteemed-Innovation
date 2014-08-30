@@ -19,14 +19,14 @@ public class ModelCrucible extends ModelBase {
     	this.wall1 = (new ModelRenderer(this, 0, 15)).setTextureSize(64, 64);
     	wall1.addBox(0.0F,0.0F,0.0F, 14, 13, 1);
     	wall1.setRotationPoint(-7.0F, -7.0F, -7.0F);
-    	this.wall2 = (new ModelRenderer(this, 0, 18)).setTextureSize(64, 64);
-    	wall2.addBox(0.0F,0.0F,0.0F, 1, 13, 14);
+    	this.wall2 = (new ModelRenderer(this, 0, 20)).setTextureSize(64, 64);
+    	wall2.addBox(0.0F,0.0F,1.0F, 1, 13, 12);
     	wall2.setRotationPoint(-7.0F, -7.0F, -7.0F);
        	this.wall3 = (new ModelRenderer(this, 0, 15)).setTextureSize(64, 64);
     	wall3.addBox(0.0F,0.0F,13.0F, 14, 13, 1);
     	wall3.setRotationPoint(-7.0F, -7.0F, -7.0F);
-    	this.wall4 = (new ModelRenderer(this, 0, 18)).setTextureSize(64, 64);
-    	wall4.addBox(13.0F,0.0F,0.0F, 1, 13, 14);
+    	this.wall4 = (new ModelRenderer(this, 0, 20)).setTextureSize(64, 64);
+    	wall4.addBox(13.0F,0.0F,1.0F, 1, 13, 12);
     	wall4.setRotationPoint(-7.0F, -7.0F, -7.0F);
     	
     	this.support1 = (new ModelRenderer(this, 0, 0)).setTextureSize(16,16);
@@ -41,6 +41,7 @@ public class ModelCrucible extends ModelBase {
     
     public void renderAll()
     {
+
         this.crucibleBox.render(0.0625F);
         this.wall1.render(0.0625F);
         this.wall2.render(0.0625F);

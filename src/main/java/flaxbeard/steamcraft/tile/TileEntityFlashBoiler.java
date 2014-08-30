@@ -453,7 +453,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 	                            }
 	                        }
 	                    }
-	                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	                   // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	                }
 	                
 	                if (!this.isBurning() && this.heat > 0) {

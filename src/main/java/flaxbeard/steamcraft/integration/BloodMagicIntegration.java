@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.integration;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -24,7 +25,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 public class BloodMagicIntegration {
 
 	public static void clickLeft(PlayerInteractEvent event) {
-		if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
+		if (!event.world.isRemote && event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
 			if (event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof EnergyBattery) {
 				LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
 				EnergyBattery bat = (EnergyBattery) event.entityPlayer.getHeldItem().getItem();
