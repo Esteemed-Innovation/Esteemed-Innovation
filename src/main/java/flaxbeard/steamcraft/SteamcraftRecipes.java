@@ -217,6 +217,10 @@ public class SteamcraftRecipes {
 		if (Config.enableCrucible){
 			BookRecipeRegistry.addRecipe("crucible",new ItemStack(SteamcraftBlocks.crucible), "x x", "x x", "xxx", 
 			        'x', Items.brick);
+			if (Config.enableHellCrucible){
+				BookRecipeRegistry.addRecipe("hellCrucible",new ItemStack(SteamcraftBlocks.hellCrucible), "x x", "x x", "xxx", 
+				        'x', Items.netherbrick);
+			}
 		}
 		
 		if (Config.enableMold){

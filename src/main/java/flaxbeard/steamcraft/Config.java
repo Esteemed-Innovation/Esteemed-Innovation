@@ -22,10 +22,11 @@ public class Config {
 	public static final int reinforcedTankCap = 72000;
 	public static final int uberReinforcedTankCap = 144000;
 
-	public static final String VERSION = "0.26.0";
+	public static final String VERSION = "0.26.1";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;
+	public static boolean disableParticles;
 	
 	public static boolean easterEggs;
 	
@@ -48,6 +49,7 @@ public class Config {
 	public static boolean enableBoiler;
 	public static boolean enableCharger;
 	public static boolean enableCrucible;
+	public static boolean enableHellCrucible;
 	public static boolean enableEngineering;
 	public static boolean enableFan;
 	public static boolean enableFlashBoiler;
@@ -184,6 +186,7 @@ public class Config {
 		enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
 		enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
 		enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
+		enableHellCrucible = config.get("Blocks", "Enable nether crucible", true).getBoolean(true);
 		enableEngineering = config.get("Blocks", "Enable engineering table", true).getBoolean(true);
 		enableFan = config.get("Blocks", "Enable fan (disabling this disables vacuum)", true).getBoolean(true);
 		//enableGenocide = config.get("Blocks", "Enable aquatic genocide machine", true).getBoolean(true);
@@ -248,7 +251,8 @@ public class Config {
 		// OTHER
 		easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
 		wimpMode = config.get("Other", "Enable wimp mode (no explosions)",false).getBoolean(false);
-		
+		disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)",false).getBoolean(false);
+
 		if (enableBoiler && enableGauge && enableTank && enablePipe){
 			hasAllCrucial = true;
 		} else {

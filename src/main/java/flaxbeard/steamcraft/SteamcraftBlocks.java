@@ -53,6 +53,7 @@ public class SteamcraftBlocks {
 	
 	// casting
 	public static Block crucible;
+	public static Block hellCrucible;
 	public static Block mold;
 	public static Block carving;
 	
@@ -128,6 +129,10 @@ public class SteamcraftBlocks {
 		if (Config.enableCrucible){
 			crucible = new BlockSteamcraftCrucible().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:crucible").setBlockTextureName("steamcraft:crucible").setHardness(3.5F);
 			GameRegistry.registerBlock(crucible, "crucible");
+			if (Config.enableHellCrucible){
+				hellCrucible = new BlockSteamcraftCrucible().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hellCrucible").setBlockTextureName("steamcraft:hellCrucible").setHardness(3.5F);
+				GameRegistry.registerBlock(hellCrucible, "hellCrucible");
+			}
 		}
 				
 		if (Config.enableMold){

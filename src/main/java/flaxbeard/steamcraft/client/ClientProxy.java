@@ -110,10 +110,12 @@ public class ClientProxy extends CommonProxy
 
    	 	RenderingRegistry.registerEntityRenderingHandler(EntitySteamHorse.class, new RenderSteamHorse(new ModelHorse(), 0));
 
-    	TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer();
+    	TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer(false);
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, renderCrucible);
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.crucible), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
-    	
+    	renderCrucible = new TileEntityCrucibleRenderer(true);
+    	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hellCrucible), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
+
     	TileEntitySpecialRenderer renderMold = new TileEntityMoldRenderer();
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMold.class, new TileEntityMoldRenderer());
     	MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.mold), new ItemTESRRenderer((IInventoryTESR) renderMold, new TileEntityMold()));
@@ -191,7 +193,9 @@ public class ClientProxy extends CommonProxy
     
     @Override
     public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {
-        Minecraft.getMinecraft().effectRenderer.addEffect((new EntityDiggingFX(world, x, y, z, xv, yv, zv, block, 0)));
+        if (!Config.disableParticles) {
+        	Minecraft.getMinecraft().effectRenderer.addEffect((new EntityDiggingFX(world, x, y, z, xv, yv, zv, block, 0)));
+        }
     }
     
     @Override

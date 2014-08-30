@@ -185,6 +185,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
+		this.inventory[var1] = var2;
 	}
 
 	@Override
@@ -222,7 +223,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
-		return new int[] { 0 };
+		return this.open ? new int[] { 0 } : new int[] {};
 	}
 
 	@Override

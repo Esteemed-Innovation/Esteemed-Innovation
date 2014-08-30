@@ -136,6 +136,9 @@ public class SteamcraftBook {
 		SteamcraftRegistry.addCategory("category.MetalCasting.name");
 		if (Config.enableCrucible){
 			SteamcraftRegistry.addResearch("research.Crucible.name","category.MetalCasting.name",new BookPageItem("research.Crucible.name","research.Crucible.0", new ItemStack(SteamcraftBlocks.crucible)),new BookPageText("research.Crucible.name","research.Crucible.1"),new BookPageCrafting("","crucible"));
+			if (Config.enableHellCrucible){
+				SteamcraftRegistry.addResearch("research.HellCrucible.name","category.MetalCasting.name",new BookPageItem("research.HellCrucible.name","research.HellCrucible.0", new ItemStack(SteamcraftBlocks.hellCrucible)),new BookPageCrafting("","hellCrucible"));
+			}
 		}
 		if (Config.enableMold){
 			SteamcraftRegistry.addResearch("research.Mold.name","category.MetalCasting.name",new BookPageItem("research.Mold.name","research.Mold.0", new ItemStack(SteamcraftBlocks.mold)),new BookPageText("research.Mold.name","research.Mold.1"),new BookPageCrafting("","mold"));
