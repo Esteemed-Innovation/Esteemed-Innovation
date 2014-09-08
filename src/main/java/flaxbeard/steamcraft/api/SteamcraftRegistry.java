@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.book.ICraftingPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
 public class SteamcraftRegistry {
@@ -25,6 +26,7 @@ public class SteamcraftRegistry {
 	public static HashMap<Tuple3,MutablePair<Integer,ItemStack>> dunkThings = new HashMap<Tuple3,MutablePair<Integer,ItemStack>>();
 	public static HashMap<MutablePair<Item,IEnhancement>,IIcon> enhancementIcons = new HashMap<MutablePair<Item,IEnhancement>,IIcon>();
 	public static HashMap<String,IEnhancement> enhancements = new HashMap<String,IEnhancement>();
+	public static ArrayList<IRocket> rockets = new ArrayList<IRocket>();
 	public static ArrayList<String> categories = new ArrayList<String>();
 	public static ArrayList<MutablePair<String, String>> research = new ArrayList<MutablePair<String,String>>();
 	public static HashMap<String,BookPage[]> researchPages = new HashMap<String,BookPage[]>();
@@ -141,5 +143,9 @@ public class SteamcraftRegistry {
 	
 	public static void registerEnhancement(IEnhancement enhancement) {
 		enhancements.put(enhancement.getID(),enhancement);
+	}
+	
+	public static void registerRocket(IRocket rocket) {
+		rockets.add(rocket);
 	}
 }

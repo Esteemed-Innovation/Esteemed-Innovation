@@ -10,7 +10,12 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
+import flaxbeard.steamcraft.api.enhancement.IEnhancementRocketLauncher;
+import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
+import flaxbeard.steamcraft.item.firearm.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 
 public class ItemFirearmRenderer implements IItemRenderer {
 	
@@ -62,6 +67,50 @@ public class ItemFirearmRenderer implements IItemRenderer {
 	        this.renderQuad(tessellator, 2, 10, 13, 2, 0);
 	        this.renderQuad(tessellator, 2, 10, 12, 1, i1);
 	        this.renderQuad(tessellator, 2, 10, j1, 1, l);
+	        GL11.glEnable(GL11.GL_TEXTURE_2D);
+	        GL11.glEnable(GL11.GL_LIGHTING);
+	        GL11.glEnable(GL11.GL_DEPTH_TEST);
+	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	        GL11.glPopMatrix();
+        }
+        int maxAmmo = 1;
+        int currentAmmo = 1;
+        if (itemStack.getItem() instanceof ItemFirearm) {
+            int enhancementShells  = 0;
+         	if (UtilEnhancements.hasEnhancement(itemStack)) {
+         		if (UtilEnhancements.getEnhancementFromItem(itemStack) instanceof IEnhancementFirearm) {
+         			enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(((ItemFirearm)itemStack.getItem()));
+         		}
+         	}
+        	maxAmmo = ((ItemFirearm)itemStack.getItem()).shellCount + enhancementShells;
+        	currentAmmo = itemStack.stackTagCompound.getInteger("loaded");
+        }
+        if (itemStack.getItem() instanceof ItemRocketLauncher) {
+            int enhancementShells = 0;
+         	if (UtilEnhancements.hasEnhancement(itemStack)) {
+         		if (UtilEnhancements.getEnhancementFromItem(itemStack) instanceof IEnhancementRocketLauncher) {
+         			enhancementShells = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(((ItemRocketLauncher)itemStack.getItem()));
+         		}
+         	}
+        	maxAmmo = ((ItemRocketLauncher)itemStack.getItem()).shellCount+enhancementShells;
+        	currentAmmo = itemStack.stackTagCompound.getInteger("loaded");
+        }
+        health = (double)(maxAmmo-currentAmmo)/(double)maxAmmo;
+        if (Minecraft.getMinecraft().thePlayer.getHeldItem() == itemStack && currentAmmo != 0) {
+	        GL11.glPushMatrix();
+	        int j1 = (int)Math.round(13.0D - health * 13.0D);
+	        int k = (int)Math.round(255.0D - health * 255.0D);
+	        GL11.glDisable(GL11.GL_LIGHTING);
+	        GL11.glDisable(GL11.GL_DEPTH_TEST);
+	        GL11.glDisable(GL11.GL_TEXTURE_2D);
+	        GL11.glDisable(GL11.GL_ALPHA_TEST);
+	        GL11.glDisable(GL11.GL_BLEND);
+	        Tessellator tessellator = Tessellator.instance;
+	        int l = 255 - k << 16 | k << 8;
+	        int i1 = (255 - k) / 4 << 16 | 16128;
+	        this.renderQuad(tessellator, 2, 1, 13, 2, 0);
+	        this.renderQuad(tessellator, 2, 1, 12, 1, i1);
+	        this.renderQuad(tessellator, 2, 1, j1, 1, l);
 	        GL11.glEnable(GL11.GL_TEXTURE_2D);
 	        GL11.glEnable(GL11.GL_LIGHTING);
 	        GL11.glEnable(GL11.GL_DEPTH_TEST);

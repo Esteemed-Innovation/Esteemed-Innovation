@@ -21,7 +21,7 @@ public class SteamcraftRecipes {
     public static CrucibleLiquid liquidZinc;
     public static CrucibleLiquid liquidCopper;
     public static CrucibleLiquid liquidGold;
-    public static CrucibleLiquid liquidBrass;
+    public static CrucibleLiquid liquidBrass;    
 	
     
 	public static void registerRecipes() {
@@ -118,7 +118,6 @@ public class SteamcraftRecipes {
 	private static void registerCraftingRecipes() {
 		if (Config.hasAllCrucial){
 			registerMisc();
-			registerCasting();
 			registerFirearms();
 			registerExosuit();
 			registerExoUpgrades();
@@ -200,7 +199,7 @@ public class SteamcraftRecipes {
 		
 		if (Config.enableCanister){
 			BookRecipeRegistry.addRecipe("canister",new ShapedOreRecipe(new ItemStack(SteamcraftItems.canister,4,0), " i ", "i i", " i ", 
-			        'i', "nuggetIron"));
+			        'i', "nuggetZinc"));
 		}
 		
 		if (Config.enableHorn){
@@ -236,7 +235,7 @@ public class SteamcraftRecipes {
 	}
 	
 	public static void registerFirearms(){
-		if (Config.enableFirearms){
+		if (Config.enableFirearms || Config.enableRL){
 			BookRecipeRegistry.addRecipe("stock",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,1), "p  ", " p ", " pp", 
 			        'p', "plankWood"));
 
@@ -261,7 +260,8 @@ public class SteamcraftRecipes {
 			        'i', "ingotIron", 'r', Items.redstone, 'f', Items.flint_and_steel));
 			BookRecipeRegistry.addRecipe("flintlock2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), "f i", "iri",
 			        'i', "plateSteamcraftIron", 'r', Items.redstone, 'f', Items.flint_and_steel));
-
+		}
+		if (Config.enableFirearms){
 			if (!Config.expensiveMusketRecipes) {
 				BookRecipeRegistry.addRecipe("cartridge1",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetIron", "nuggetIron", Items.paper, Items.paper, Items.gunpowder));
 				BookRecipeRegistry.addRecipe("cartridge2",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.musketCartridge,2,0), "nuggetLead", "nuggetLead", Items.paper, Items.paper, Items.gunpowder));
@@ -314,6 +314,64 @@ public class SteamcraftRecipes {
 						'i', "ingotIron", 'n', "nuggetIron"));
 				BookRecipeRegistry.addRecipe("speedy2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementSpeedy), "iii", "iii", " n ", 
 						'i', "ingotIron", 'n', "nuggetIron"));
+			}
+		}
+		if (Config.enableRL) {
+			BookRecipeRegistry.addRecipe("rocket1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketLauncher), "bx ", "fic", " pi", 
+			        'i', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), 'x', "plateSteamcraftBrass", 'c', "plateSteamcraftCopper", 'p', "plankWood", 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), 'f', new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), 's', new ItemStack(SteamcraftItems.steamcraftCrafting,1,1)));
+			BookRecipeRegistry.addRecipe("rocket2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketLauncher), "bx ", "fic", " pi",  
+			        'i', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), 'x', "ingotBrass", 'c', "plateSteamcraftCopper", 'p', "plankWood", 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), 'f', new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), 's', new ItemStack(SteamcraftItems.steamcraftCrafting,1,1)));
+			BookRecipeRegistry.addRecipe("rocket3",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketLauncher), "bx ", "fic", " pi", 
+			        'i', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), 'x', "plateSteamcraftBrass", 'c', "ingotCopper", 'p', "plankWood", 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), 'f', new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), 's', new ItemStack(SteamcraftItems.steamcraftCrafting,1,1)));
+			BookRecipeRegistry.addRecipe("rocket4",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketLauncher), "bx ", "fic", " pi", 
+			        'i', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), 'x', "ingotBrass", 'c', "ingotCopper", 'p', "plankWood", 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), 'f', new ItemStack(SteamcraftItems.steamcraftCrafting,1,4), 's', new ItemStack(SteamcraftItems.steamcraftCrafting,1,1)));
+
+			if (Config.enableRocket) {
+				BookRecipeRegistry.addRecipe("normalRocket1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocket), " i ", "igi", 
+				        'i', "ingotIron", 'g', Items.gunpowder));
+				BookRecipeRegistry.addRecipe("normalRocket2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocket), " i ", "igi", 
+				        'i', "plateSteamcraftIron", 'g', Items.gunpowder));
+			}
+			
+			if (Config.enableRocketConcussive) {
+				if (Config.enableRocket) {
+					BookRecipeRegistry.addRecipe("concussiveRocket",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.rocketConcussive), SteamcraftItems.rocket, Blocks.sand));
+				}
+				else
+				{
+					BookRecipeRegistry.addRecipe("concussiveRocket1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketConcussive), " i ", "igi", 
+					        'i', "ingotIron", 'g', Items.gunpowder));
+					BookRecipeRegistry.addRecipe("concussiveRocket2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.rocketConcussive), " i ", "igi", 
+					        'i', "plateSteamcraftIron", 'g', Items.gunpowder));
+				}
+			}
+			
+			if (Config.enableRocketMining) {
+				if (Config.enableRocket) {
+					BookRecipeRegistry.addRecipe("miningRocket",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.rocketMiner), SteamcraftItems.rocket, Items.string, Items.string, Items.gunpowder));	
+				}
+				else
+				{
+					BookRecipeRegistry.addRecipe("miningRocket",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.rocketMiner), SteamcraftItems.rocketConcussive, Items.string, Items.string, Items.gunpowder));	
+				}
+			}
+			
+			if (Config.enableEnhancementFastRockets) {
+				BookRecipeRegistry.addRecipe("fastRockets",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementFastRockets), "b  ", "gid", "  i", 
+				        'i', new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), 'd', SteamcraftBlocks.ruptureDisc, 'g', SteamcraftBlocks.gauge, 'b', new ItemStack(SteamcraftItems.steamcraftCrafting,1,3)));
+			}
+			
+			if (Config.enableEnhancementAmmo) {
+				BookRecipeRegistry.addRecipe("ammo1",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementAmmo), "icc", "icc", "cc ", 
+				        'i', "nuggetIron", 'c', "plateSteamcraftCopper"));
+				BookRecipeRegistry.addRecipe("ammo2",new ShapedOreRecipe(new ItemStack(SteamcraftItems.enhancementAmmo), "icc", "icc", "cc ", 
+				        'i', "nuggetIron", 'c', "ingotCopper"));
+			}
+			
+			
+			if (Config.enableEnhancementAirStrike) {
+				BookRecipeRegistry.addRecipe("airStrike1",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.enhancementAirStrike), "ingotIron", "ingotIron", "plankWood", "plankWood", new ItemStack(SteamcraftItems.steamcraftCrafting,1,4)));
+				BookRecipeRegistry.addRecipe("airStrike2",new ShapelessOreRecipe(new ItemStack(SteamcraftItems.enhancementAirStrike), "plateSteamcraftIron", "plateSteamcraftIron", "plankWood", "plankWood", new ItemStack(SteamcraftItems.steamcraftCrafting,1,4)));
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public class Config {
 	public static final int reinforcedTankCap = 72000;
 	public static final int uberReinforcedTankCap = 144000;
 
-	public static final String VERSION = "0.26.1";
+	public static final String VERSION = "0.27.0";
 	public static boolean genCopper;
 	public static boolean genZinc;
 	public static boolean passiveDrain;
@@ -35,8 +35,6 @@ public class Config {
 	public static int chance;
 	public static boolean dropItem;
 	public static boolean genPoorOre;
-
-	public static boolean openThaum;
 
 	
 	public static int villagerId;
@@ -90,10 +88,17 @@ public class Config {
 	public static boolean enableEnhancementSilencer;
 	public static boolean enableEnhancementRecoil;
 	public static boolean enableEnhancementSpeedy;
+	public static boolean enableEnhancementFastRockets;
+	public static boolean enableEnhancementAmmo;
+	public static boolean enableEnhancementAirStrike;
 	public static boolean enableExosuit; 
 	public static boolean enableFallAssist; 
 	public static boolean enableJetpack; 
 	public static boolean enableFirearms;
+	public static boolean enableRL;
+	public static boolean enableRocket;
+	public static boolean enableRocketConcussive;
+	public static boolean enableRocketMining;
 	public static boolean enablePowerFist;
 	public static boolean enableSpyglass;
 	public static boolean enableSteamTools;
@@ -149,18 +154,25 @@ public class Config {
 		genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
 		villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
 		genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
-		openThaum = config.get("Integration", "[Thaumcraft] Show control+click to open Thauminomicon messages on TC4 items", true).getBoolean(true);
 
 		// WEAPONS
 		expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
 		disableMainBarrelRecipe = config.get("Weapons", "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean(true);
 		enableFirearms = config.get("Weapons", "Enable firearms",true).getBoolean(true);
+		enableRL = config.get("Weapons", "Enable rocket launcher",true).getBoolean(true);
+		enableRocket = config.get("Weapons", "Enable normal rocket",true).getBoolean(true);
+		enableRocketConcussive = config.get("Weapons", "Enable concussive rocket",true).getBoolean(true);
+		enableRocketMining = config.get("Weapons", "Enable mining charge",true).getBoolean(true);
+
 		enableEnhancementAblaze = config.get("Weapons", "Enable blaze barrel enhancement", true).getBoolean(true);
 		enableEnhancementRevolver = config.get("Weapons", "Enable revolver enhancement", true).getBoolean(true);
 		enableEnhancementSpeedloader = config.get("Weapons", "Enable bolt action enhancement", true).getBoolean(true);
 		enableEnhancementSilencer = config.get("Weapons", "Enable makeshift suppressor enhancement", true).getBoolean(true);
 		enableEnhancementRecoil = config.get("Weapons", "Enable recoil pad enhancement", true).getBoolean(true);
 		enableEnhancementSpeedy = config.get("Weapons", "Enable breech loader enhancement", true).getBoolean(true);
+		enableEnhancementFastRockets = config.get("Weapons", "Enable streamlined barrel enhancement", true).getBoolean(true);
+		enableEnhancementAmmo = config.get("Weapons", "Enable extended magazine enhancement", true).getBoolean(true);
+		enableEnhancementAirStrike = config.get("Weapons", "Enable air strike enhancement", true).getBoolean(true);
 
 		
 		// MACHINES

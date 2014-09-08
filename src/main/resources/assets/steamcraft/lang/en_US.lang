@@ -7,6 +7,7 @@ steamcraft.book.shiftright=Control click to go to information
 item.steamcraft:book.name=Esteemed Innovation
 potion.partialInvisible=Cloaking
 steamcraft.canned=Canistered
+steamcraft.rocket=Rocket Type:
 
 steamcraft.plate.bonus=Exosuit Effect: 
 steamcraft.plate.copper=Blast Protection
@@ -210,9 +211,9 @@ research.PlateEnderium.name=Enderium Plate
 research.PlateEnderium.0=Plating my exosuit with this mysterious ender metal has allowed me to harness the teleporting power of endermen as a weapon. Enemies that attack me while I wear an enderium plated exosuit have a chance to be teleported away from me.
 
 research.ExoVanity.name=Vanity Slot
-research.ExoVanity.0=Not only is my exosuit a versitile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
+research.ExoVanity.0=Not only is my exosuit a versatile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
 research.ExoDyes.name=Exosuit Painting
-research.ExoDyes.0=Ordinary dies of all sorts can be placed in the vanity slot in order to paint the exosuit framework to better suit the look I am looking for. Adding paint will not change the color of installed plates or upgrades.
+research.ExoDyes.0=Ordinary dyes of all sorts can be placed in the vanity slot in order to paint the exosuit framework to better suit the look I am looking for. Adding paint will not change the color of installed plates or upgrades.
 research.EnderShroud.name=Ender Shroud
 research.EnderShroud.0=The ender shroud, a mysterious device, is able to render exosuit parts completely invisible. This allows me to show off my skin and stay protected. The shroud isn't perfect, of course. When hit, my suit will flicker for a couple seconds.
 
@@ -302,12 +303,41 @@ research.Blunderbuss.name=Flintlock Blunderbuss
 research.Blunderbuss.0=Using a larger brass barrel with modified musket mechanisms makes for an interesting combination, I call it a blunderbuss. This device shoots multiple inaccurate shots at once, allowing me to hit many foes.
 research.Pistol.name=Flintlock Pistol
 research.Pistol.0=I've found a way to shrink down my musket to a more manageable size, that can be armed faster. Of course, the smaller barrel means decreased damage and accuracy, but the increased speed is worth it.
+research.RocketLauncher.name=Rocket Launcher
+research.RocketLauncher.0=I've created a new weapon for when I need a bit more... bang. The rocket launcher can fire a variety of rocket types, propelling them at high velocity at unsuspecting targets. Holding shift and right clicking will toggle rocket types.
+research.Rockets.name=Rocket Types
+research.Rocket.name=Rocket
+research.Rocket.0=I can craft a simple rocket with some iron and gunpowder. These rockets destroy blocks and hurt my enemies, but can also launch me flying if fired at my feet.
+research.RocketConcussive.name=Concussive Rocket
+research.RocketConcussive.0=Adding a bit of sand to an existing rocket will help to dampen the explosion, stopping the rockets from breaking blocks but still dealing the same level of damage.
+research.RocketMining.name=Mining Charge
+research.RocketMining.0=I've found that adding a simple fuse and additional explosives to a rocket makes it a powerful mining tool. Smaller explosions stop blocks from being destroyed, though at the cost of less damage to enemies.
+research.EnhancementFastRockets.name=Streamlined Barrel
+research.EnhancementFastRockets.0=Borrowing a few of the pressure-control gadgets from my steam experiments, I've developed a way to perfect the launching of rockets. Equipping my rocket launcher with this barrel will nearly double the flight speed of my rockets.
+research.EnhancementAmmo.name=Extended Magazine
+research.EnhancementAmmo.0=Extending the magazine used in my rocket launcher is a simple but effective enhancement that should give me significantly more burst firepower, albeit with a bit longer reload.
+research.EnhancementAirStrike.name=Air Strike Conversion Kit
+research.EnhancementAirStrike.0=I've developed a modification for my rocket launcher that I call the 'air strike'. This upgrade is much more effective at mid-air combat. While rocket jumping with the air strike, I will be able to fire rockets extremely rapidly.
+
 itemGroup.steamcraft=FSP
 itemGroup.steamcraftTools=FSP Tools
 steamcraft.enhancementText=Enhancements:
 
 item.steamcraft:musketCartridge.name=Musket Cartridge
+item.steamcraft:rocket.name=Rocket
+item.steamcraft:rocket.name.2=Normal Rocket
+item.steamcraft:rocketConcussive.name=Concussive Rocket
+item.steamcraft:rocketMiner.name=Mining Charge
+
 item.steamcraft:musket.name=Flintlock Musket
+item.steamcraft:rocketLauncher.name=Rocket Launcher
+item.steamcraft:rocketLauncherFast.name=Streamlined Rocket Launcher
+item.steamcraft:rocketLauncherAmmo.name=High Capacity Rocket Launcher
+item.steamcraft:rocketLauncherAirStrike.name=Air Strike
+item.steamcraft:enhancementFastRockets.name=Streamlined Barrel
+item.steamcraft:enhancementAmmo.name=Extended Magazine
+item.steamcraft:enhancementAirStrike.name=Air Strike Conversion Kit
+
 item.steamcraft:pistol.name=Flintlock Pistol
 item.steamcraft:revolver.name=Flintlock Revolver
 item.steamcraft:blunderbuss.name=Flintlock Blunderbuss

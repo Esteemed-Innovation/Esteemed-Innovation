@@ -44,6 +44,7 @@ import flaxbeard.steamcraft.client.render.ItemSteamToolRenderer;
 import flaxbeard.steamcraft.client.render.ItemTESRRenderer;
 import flaxbeard.steamcraft.client.render.RenderCanister;
 import flaxbeard.steamcraft.client.render.RenderMortarItem;
+import flaxbeard.steamcraft.client.render.RenderRocket;
 import flaxbeard.steamcraft.client.render.RenderSteamHorse;
 import flaxbeard.steamcraft.client.render.TileEntityChargingPadRenderer;
 import flaxbeard.steamcraft.client.render.TileEntityConveyorRenderer;
@@ -63,6 +64,7 @@ import flaxbeard.steamcraft.client.render.TileEntityValvePipeRenderer;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
+import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
@@ -109,6 +111,7 @@ public class ClientProxy extends CommonProxy
    	 	RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, new RenderCanister());
 
    	 	RenderingRegistry.registerEntityRenderingHandler(EntitySteamHorse.class, new RenderSteamHorse(new ModelHorse(), 0));
+   	 	RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderRocket());
 
     	TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer(false);
     	ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, renderCrucible);
@@ -185,7 +188,7 @@ public class ClientProxy extends CommonProxy
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.musket, new ItemFirearmRenderer());
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.blunderbuss, new ItemFirearmRenderer());
     	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.pistol, new ItemFirearmRenderer());
-    	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.revolver, new ItemFirearmRenderer());
+    	MinecraftForgeClient.registerItemRenderer(SteamcraftItems.rocketLauncher, new ItemFirearmRenderer());
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);

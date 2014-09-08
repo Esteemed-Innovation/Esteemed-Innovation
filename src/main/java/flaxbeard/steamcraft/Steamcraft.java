@@ -40,6 +40,7 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
+import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
@@ -142,6 +143,8 @@ public class Steamcraft {
 	    EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
 	    EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, Steamcraft.instance, 64, 20, true);
+	    EntityRegistry.registerModEntity(EntityRocket.class, "Rocket", 3, Steamcraft.instance, 64, 20, true);
+	   // EntityRegistry.registerModEntity(EntityHarpoon.class, "Harpoon", 4, Steamcraft.instance, 64, 20, true);
 
  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
 	    //EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
@@ -215,6 +218,8 @@ public class Steamcraft {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		SteamcraftRecipes.registerCasting();
+		
 		if (Config.enablePipe){
 			MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
 		}

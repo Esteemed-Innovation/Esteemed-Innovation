@@ -9,7 +9,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -100,11 +102,11 @@ import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.EnchiridionIntegration;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
@@ -123,8 +125,41 @@ public class SteamcraftEventHandler {
 	private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3,"EXOSWIMBOOST", 1.0D, 2).setSaved(true);
 	private static final ResourceLocation icons = new ResourceLocation("steamcraft:textures/gui/icons.png");
 	
-
 	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void handleRocketDisplay(RenderGameOverlayEvent.Post event) {
+		if (event.type == ElementType.ALL && Minecraft.getMinecraft().thePlayer.getHeldItem() != null && Minecraft.getMinecraft().thePlayer.getHeldItem().getItem() == SteamcraftItems.rocketLauncher ) {
+			Minecraft mc = Minecraft.getMinecraft();
+			ScaledResolution var5 = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+			int var6 = var5.getScaledWidth();
+			int var7 = var5.getScaledHeight();
+			FontRenderer var8 = mc.fontRenderer;
+			int selectedRocketType = 0;
+			if (Minecraft.getMinecraft().thePlayer.getHeldItem().hasTagCompound()) {
+				if (Minecraft.getMinecraft().thePlayer.getHeldItem().stackTagCompound.hasKey("rocketType")) {
+					selectedRocketType = Minecraft.getMinecraft().thePlayer.getHeldItem().stackTagCompound.getInteger("rocketType");
+				}
+			}
+			if (selectedRocketType > SteamcraftRegistry.rockets.size()-1) {
+				selectedRocketType = 0;
+			}
+			String tooltip = StatCollector.translateToLocal("steamcraft.rocket") + " " + 
+					(selectedRocketType == 0 ? StatCollector.translateToLocal("item.steamcraft:rocket.name.2") : StatCollector.translateToLocal(((Item)SteamcraftRegistry.rockets.get(selectedRocketType)).getUnlocalizedName()+".name"));
+
+			int tooltipStartX = (var6 - var8.getStringWidth(tooltip)) / 2;
+			int tooltipStartY = var7 - 35 - (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode ? 0 : 35);
+
+			GL11.glPushMatrix();
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			var8.drawStringWithShadow(tooltip, tooltipStartX, tooltipStartY, 0xFFFFFF);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glPopMatrix();
+		}
+	}
+	
+
 	@SubscribeEvent
 	public void handleCanningMachine(EntityItemPickupEvent event) {
 		if (event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote) {
@@ -616,9 +651,7 @@ public class SteamcraftEventHandler {
 		}
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiContainer) {
-			if (Loader.isModLoaded("Thaumcraft") && Config.openThaum) {
-				ThaumcraftIntegration.addTooltip(event);
-			}
+
 	    	for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
 	    		if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
 	    			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(SteamcraftItems.book, player) : false;
@@ -665,21 +698,21 @@ public class SteamcraftEventHandler {
 	
 	@SubscribeEvent
 	public void useItem(PlayerUseItemEvent.Tick event) {
-		if (event.item.getItem() instanceof ItemFirearm) {
+		if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
         	use = event.duration;
 		}
 	}
 	
 	@SubscribeEvent
 	public void useItemEnd(PlayerUseItemEvent.Finish event) {
-		if (event.item.getItem() instanceof ItemFirearm) {
+		if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
 			use = -1;
 		}
 	}
 	
 	@SubscribeEvent
 	public void useItemEnd(PlayerUseItemEvent.Stop event) {
-		if (event.item.getItem() instanceof ItemFirearm) {
+		if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
 			use = -1;
 		}
 	}
@@ -918,15 +951,17 @@ public class SteamcraftEventHandler {
 	}
 	
 	public static void drainSteam(ItemStack stack, int amount) {
-		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
+		if (stack != null) {
+			if (!stack.hasTagCompound()) {
+				stack.setTagCompound(new NBTTagCompound());
+			}
+			if (!stack.stackTagCompound.hasKey("steamFill")) {
+				stack.stackTagCompound.setInteger("steamFill", 0);
+			}
+			int fill = stack.stackTagCompound.getInteger("steamFill");
+			fill = Math.max(0, fill-amount);
+			stack.stackTagCompound.setInteger("steamFill", fill);
 		}
-		if (!stack.stackTagCompound.hasKey("steamFill")) {
-			stack.stackTagCompound.setInteger("steamFill", 0);
-		}
-		int fill = stack.stackTagCompound.getInteger("steamFill");
-		fill = Math.max(0, fill-amount);
-		stack.stackTagCompound.setInteger("steamFill", fill);
 	}
 	
 	@SubscribeEvent
@@ -1062,7 +1097,14 @@ public class SteamcraftEventHandler {
 		}
 	}
 	public static HashMap<Integer,MutablePair<Double,Double>> lastMotions = new HashMap<Integer,MutablePair<Double,Double>>();
-
+	public static HashMap<Integer,Integer> isJumping = new HashMap<Integer,Integer>();
+	
+	public static boolean isJumping(EntityPlayer player) {
+		if (isJumping.containsKey(player.getEntityId())) {
+			return isJumping.get(player.getEntityId()) > 0;
+		}
+		return false;
+	}
 	
 	@SubscribeEvent
 	public void handleFlippers(LivingEvent.LivingUpdateEvent event) {	
@@ -1130,6 +1172,19 @@ public class SteamcraftEventHandler {
 //				}
 //				stack.stackTagCompound.setInteger("aidTicks", aidTicks);
 			//}
+		}
+		
+		if (!event.entity.worldObj.isRemote && ((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).onGround)) {
+			if (isJumping.containsKey(event.entity.getEntityId())) {
+				isJumping.put(event.entity.getEntityId(),Math.max(0,isJumping.get(event.entity.getEntityId())-1));
+            	((EntityPlayer)entity).fallDistance = 0.1F;
+			}
+		}
+		else if (!event.entity.worldObj.isRemote && ((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).fallDistance == 0.0F)) {
+			if (isJumping.containsKey(event.entity.getEntityId())) {
+				isJumping.put(event.entity.getEntityId(),Math.max(0,isJumping.get(event.entity.getEntityId())-1));
+            	((EntityPlayer)entity).fallDistance = 0.1F;
+			}	
 		}
 		
 		if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0) != null) && (((EntityPlayer)event.entity).inventory.armorItemInSlot(0).getItem() instanceof ItemExosuitArmor)) {

@@ -94,10 +94,12 @@ public class SteamcraftBook {
 	}
 	
 	public static void registerFirearms(){
-		if (Config.enableFirearms){
+		if (Config.enableFirearms || Config.enableRL){
 			SteamcraftRegistry.addCategory("category.Flintlock.name");
 			SteamcraftRegistry.addResearch("research.Parts.name","category.Flintlock.name",new BookPageItem("research.Parts.name","research.Parts.0", new ItemStack(SteamcraftItems.steamcraftCrafting,1,1), new ItemStack(SteamcraftItems.steamcraftCrafting,1,2), new ItemStack(SteamcraftItems.steamcraftCrafting,1,3), new ItemStack(SteamcraftItems.steamcraftCrafting,1,4)),
 					new BookPageCrafting("","stock"),new BookPageCrafting("","barrel1","barrel2"),new BookPageCrafting("","blunderBarrel1","blunderBarrel2"),new BookPageCrafting("","flintlock1","flintlock2"));
+		}
+		if (Config.enableFirearms){
 			SteamcraftRegistry.addResearch("research.Musket.name","category.Flintlock.name",new BookPageItem("research.Musket.name","research.Musket.0", new ItemStack(SteamcraftItems.musket)),new BookPageCrafting("","cartridge1","cartridge2","cartridge3","cartridge4"),new BookPageCrafting("","musket"));
 			if (Config.enableSpyglass){
 				SteamcraftRegistry.addResearch("research.EnhancementSpyglass.name","!research.Musket.name",new BookPageItem("research.EnhancementSpyglass.name","research.EnhancementSpyglass.0", true, new ItemStack(SteamcraftItems.spyglass)));
@@ -127,6 +129,34 @@ public class SteamcraftBook {
 			}
 			if (Config.enableEnhancementSpeedy){
 				SteamcraftRegistry.addResearch("research.EnhancementSpeedy.name","!research.Pistol.name",new BookPageItem("research.EnhancementSpeedy.name","research.EnhancementSpeedy.0", true, new ItemStack(SteamcraftItems.enhancementSpeedy)),new BookPageCrafting("","speedy1","speedy2"));
+			}
+		}
+		if (Config.enableRL) {
+			SteamcraftRegistry.addResearch("research.RocketLauncher.name","category.Flintlock.name",new BookPageItem("research.RocketLauncher.name","research.RocketLauncher.0", new ItemStack(SteamcraftItems.rocketLauncher)),new BookPageCrafting("","rocket1","rocket2","rocket3","rocket4"));
+			if (Config.enableEnhancementFastRockets) {
+				SteamcraftRegistry.addResearch("research.EnhancementFastRockets.name","!research.RocketLauncher.name",new BookPageItem("research.EnhancementFastRockets.name","research.EnhancementFastRockets.0", true, new ItemStack(SteamcraftItems.enhancementFastRockets)),new BookPageCrafting("","fastRockets"));
+			}
+			if (Config.enableEnhancementAmmo) {
+				SteamcraftRegistry.addResearch("research.EnhancementAmmo.name","!research.RocketLauncher.name",new BookPageItem("research.EnhancementAmmo.name","research.EnhancementAmmo.0", true, new ItemStack(SteamcraftItems.enhancementAmmo)),new BookPageCrafting("","ammo1","ammo2"));
+			}
+			if (Config.enableEnhancementAirStrike) {
+				SteamcraftRegistry.addResearch("research.EnhancementAirStrike.name","!research.RocketLauncher.name",new BookPageItem("research.EnhancementAirStrike.name","research.EnhancementAirStrike.0", true, new ItemStack(SteamcraftItems.enhancementAirStrike)),new BookPageCrafting("","airStrike1","airStrike2"));
+			}
+			SteamcraftRegistry.addResearch("research.Rockets.name","category.Flintlock.name");
+			if (Config.enableRocket) {
+				SteamcraftRegistry.addResearch("research.Rocket.name","!research.Rockets.name",new BookPageItem("research.Rocket.name","research.Rocket.0", true, new ItemStack(SteamcraftItems.rocket)),new BookPageCrafting("","normalRocket1","normalRocket2"));
+			}
+			if (Config.enableRocketConcussive){
+				if (Config.enableRocket) {
+					SteamcraftRegistry.addResearch("research.RocketConcussive.name","!research.Rockets.name",new BookPageItem("research.RocketConcussive.name","research.RocketConcussive.0", true, new ItemStack(SteamcraftItems.rocketConcussive)),new BookPageCrafting("","concussiveRocket"));
+				}
+				else
+				{
+					SteamcraftRegistry.addResearch("research.RocketConcussive.name","!research.Rockets.name",new BookPageItem("research.RocketConcussive.name","research.RocketConcussive.0", true, new ItemStack(SteamcraftItems.rocketConcussive)),new BookPageCrafting("","concussiveRocket1","concussiveRocket2"));
+				}
+			}
+			if (Config.enableRocketMining) {
+				SteamcraftRegistry.addResearch("research.RocketMining.name","!research.Rockets.name",new BookPageItem("research.RocketMining.name","research.RocketMining.0", true, new ItemStack(SteamcraftItems.rocketMiner)),new BookPageCrafting("","miningRocket"));
 			}
 		}
 	}

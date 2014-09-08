@@ -120,7 +120,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 					}
 					if (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
 		 				int i = 0;
-		 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+		 				while (i<4 && (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
 		 					this.decrSteam(item.steamPerDurability());
 		 					stack.setItemDamage(stack.getItemDamage()-1);
 		 	 				this.setInventorySlotContents(0, stack);
@@ -162,7 +162,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 					if (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill")) {
 		 				int i = 0;
 		 				
-		 				while (i<9 && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill"))) {
+		 				while (i<19 && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill"))) {
 		 					this.decrSteam(item.steamPerDurability());
 		 					stack.stackTagCompound.setInteger("steamFill", stack.stackTagCompound.getInteger("steamFill") +1);
 		 	 				this.setInventorySlotContents(0, stack);
@@ -235,6 +235,21 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 	}
 	
 	private float getChargingPercent(ItemStack stack){
+		
+		if (stack != null && stack.getItem() instanceof ItemExosuitArmor) {
+			if (!stack.hasTagCompound()) {
+				stack.setTagCompound(new NBTTagCompound());
+			}
+			if (!stack.stackTagCompound.hasKey("steamFill")) {
+				stack.stackTagCompound.setInteger("steamFill", 0);
+			}
+			if (!stack.stackTagCompound.hasKey("maxFill")) {
+				stack.stackTagCompound.setInteger("maxFill", 0);
+			}
+			int maxFill = stack.stackTagCompound.getInteger("maxFill");
+			int steamFill = stack.stackTagCompound.getInteger("steamFill");
+			return ((float)steamFill/ (float)maxFill );
+		}
 		return 1.0f - ((float)stack.getItemDamage()/ (float)stack.getMaxDamage() );
 	}
 
