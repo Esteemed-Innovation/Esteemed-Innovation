@@ -19,6 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
+import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
@@ -42,6 +43,9 @@ import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
 import flaxbeard.steamcraft.item.ItemTank;
 import flaxbeard.steamcraft.item.ItemWrench;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementAirStrike;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementAmmo;
+import flaxbeard.steamcraft.item.firearm.ItemEnhancementFastRockets;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementFireMusket;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementRecoil;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementRevolver;
@@ -49,6 +53,10 @@ import flaxbeard.steamcraft.item.firearm.ItemEnhancementSilencer;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementSpeedloader;
 import flaxbeard.steamcraft.item.firearm.ItemEnhancementSpeedy;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemRocketBasic;
+import flaxbeard.steamcraft.item.firearm.ItemRocketConcussive;
+import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
+import flaxbeard.steamcraft.item.firearm.ItemRocketMining;
 import flaxbeard.steamcraft.item.tool.ItemSpyglass;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
 import flaxbeard.steamcraft.item.tool.ItemSteamcraftAxe;
@@ -70,6 +78,7 @@ public class SteamcraftItems {
     public static Item musket;
     public static Item pistol;
     public static Item revolver;
+    public static Item rocketLauncher;
     public static Item blunderbuss;
     public static Item enhancementAblaze;
     public static Item enhancementRevolver;
@@ -77,7 +86,13 @@ public class SteamcraftItems {
     public static Item enhancementSilencer;
     public static Item enhancementRecoil;
     public static Item enhancementSpeedy;
-    
+    public static Item enhancementFastRockets;
+    public static Item enhancementAirStrike;
+    public static Item rocket;
+    public static Item rocketConcussive;
+    public static Item rocketMiner;
+    public static Item enhancementAmmo;
+
     // misc
     public static Item book;
     public static Item spyglass;
@@ -213,37 +228,72 @@ public class SteamcraftItems {
 
 			blunderbuss = new ItemFirearm(25.0F, 95,3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
 			GameRegistry.registerItem(blunderbuss, "blunderbuss");
+			
+			if (Config.enableEnhancementRevolver) {
+				enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
+				GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
+	    	}
+	    	if (Config.enableEnhancementAblaze) {
+				enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
+				GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
+	    	}
+	    	if (Config.enableEnhancementSpeedloader) {
+				enhancementSpeedloader = new ItemEnhancementSpeedloader().setUnlocalizedName("steamcraft:enhancementSpeedloader").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedloader");
+				GameRegistry.registerItem(enhancementSpeedloader, "enhancementSpeedloader");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedloader);
+	    	}
+	    	if (Config.enableEnhancementSilencer) {
+				enhancementSilencer = new ItemEnhancementSilencer().setUnlocalizedName("steamcraft:enhancementSilencer").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSilencer");
+				GameRegistry.registerItem(enhancementSilencer, "enhancementSilencer");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSilencer);
+	    	}
+	    	if (Config.enableEnhancementRecoil) {
+				enhancementRecoil = new ItemEnhancementRecoil().setUnlocalizedName("steamcraft:enhancementRecoil").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRecoil");
+				GameRegistry.registerItem(enhancementRecoil, "enhancementRecoil");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRecoil);
+	    	}    	
+	    	if (Config.enableEnhancementSpeedy) {
+				enhancementSpeedy = new ItemEnhancementSpeedy().setUnlocalizedName("steamcraft:enhancementSpeedy").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedy");
+				GameRegistry.registerItem(enhancementSpeedy, "enhancementSpeedy");
+				SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedy);
+	    	}
 		}
-		
-    	if (Config.enableEnhancementRevolver) {
-			enhancementRevolver = new ItemEnhancementRevolver().setUnlocalizedName("steamcraft:enhancementRevolver").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRevolver");
-			GameRegistry.registerItem(enhancementRevolver, "enhancementRevolver");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRevolver);
-    	}
-    	if (Config.enableEnhancementAblaze) {
-			enhancementAblaze = new ItemEnhancementFireMusket().setUnlocalizedName("steamcraft:enhancementAblaze").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAblaze");
-			GameRegistry.registerItem(enhancementAblaze, "enhancementAblaze");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAblaze);
-    	}
-    	if (Config.enableEnhancementSpeedloader) {
-			enhancementSpeedloader = new ItemEnhancementSpeedloader().setUnlocalizedName("steamcraft:enhancementSpeedloader").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedloader");
-			GameRegistry.registerItem(enhancementSpeedloader, "enhancementSpeedloader");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedloader);
-    	}
-    	if (Config.enableEnhancementSilencer) {
-			enhancementSilencer = new ItemEnhancementSilencer().setUnlocalizedName("steamcraft:enhancementSilencer").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSilencer");
-			GameRegistry.registerItem(enhancementSilencer, "enhancementSilencer");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSilencer);
-    	}
-    	if (Config.enableEnhancementRecoil) {
-			enhancementRecoil = new ItemEnhancementRecoil().setUnlocalizedName("steamcraft:enhancementRecoil").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementRecoil");
-			GameRegistry.registerItem(enhancementRecoil, "enhancementRecoil");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementRecoil);
-    	}    	
-    	if (Config.enableEnhancementSpeedy) {
-			enhancementSpeedy = new ItemEnhancementSpeedy().setUnlocalizedName("steamcraft:enhancementSpeedy").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementSpeedy");
-			GameRegistry.registerItem(enhancementSpeedy, "enhancementSpeedy");
-			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementSpeedy);
+    	
+    	if (Config.enableRL){
+    		rocketLauncher = new ItemRocketLauncher(2.0F, 95, 10,3.5F, 4, "ingotIron").setUnlocalizedName("steamcraft:rocketLauncher").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponRocketLauncher");
+    		GameRegistry.registerItem(rocketLauncher, "rocketLauncher");
+    		if (Config.enableEnhancementFastRockets) {
+    			enhancementFastRockets = new ItemEnhancementFastRockets().setUnlocalizedName("steamcraft:enhancementFastRockets").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementFastRockets");
+    			GameRegistry.registerItem(enhancementFastRockets, "enhancementFastRockets");
+    			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementFastRockets);
+        	}
+    		if (Config.enableEnhancementAirStrike) {
+    			enhancementAirStrike = new ItemEnhancementAirStrike().setUnlocalizedName("steamcraft:enhancementAirStrike").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAirStrike");
+    			GameRegistry.registerItem(enhancementAirStrike, "enhancementAirStrike");
+    			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAirStrike);
+        	}
+        	if (Config.enableEnhancementAmmo) {
+    			enhancementAmmo = new ItemEnhancementAmmo().setUnlocalizedName("steamcraft:enhancementAmmo").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:enhancementAmmo");
+    			GameRegistry.registerItem(enhancementAmmo, "enhancementAmmo");
+    			SteamcraftRegistry.registerEnhancement((IEnhancement) enhancementAmmo);
+        	}
+        	if (Config.enableRocket) {
+    			rocket = new ItemRocketBasic().setUnlocalizedName("steamcraft:rocket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:ammoRocket");
+    			GameRegistry.registerItem(rocket, "rocket");
+    			SteamcraftRegistry.registerRocket((IRocket) rocket);
+        	}
+        	if (Config.enableRocketConcussive) {
+				rocketConcussive = new ItemRocketConcussive().setUnlocalizedName("steamcraft:rocketConcussive").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:ammoRocketConcussive");
+				GameRegistry.registerItem(rocketConcussive, "rocketConcussive");
+				SteamcraftRegistry.registerRocket((IRocket) rocketConcussive);
+	    	}
+	    	if (Config.enableRocketMining) {
+				rocketMiner = new ItemRocketMining().setUnlocalizedName("steamcraft:rocketMiner").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:ammoRocketMiner");
+				GameRegistry.registerItem(rocketMiner, "rocketMiner");
+				SteamcraftRegistry.registerRocket((IRocket) rocketMiner);
+	    	}
     	}
     }
     

@@ -105,26 +105,26 @@ public class ThaumcraftIntegration {
 
 	@SideOnly(Side.CLIENT)
 	public static void addTooltip(ItemTooltipEvent event) {
-		Minecraft mc = Minecraft.getMinecraft();
-		EntityPlayer player = mc.thePlayer;
-		Object[] ref = ThaumcraftApi.getCraftingRecipeKey(player, event.itemStack);
-        if ((ref != null))
-        {
-        	ResearchItem research = ResearchCategories.getResearch((String)ref[0]);
-			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(ConfigItems.itemThaumonomicon, player) : false;
-			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
-				if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemThaumonomicon) {
-					foundBook = true;
-					break;
-				}
-			}
-			if (foundBook && ResearchManager.isResearchComplete(player.getCommandSenderName(), research.key)) {
-    			event.toolTip.add(EnumChatFormatting.ITALIC+""+EnumChatFormatting.GRAY+StatCollector.translateToLocal("steamcraft.book.shiftright"));
-    			if (Mouse.isButtonDown(0) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-        			mc.displayGuiScreen(new GuiResearchRecipe(research, ((Integer)ref[1]).intValue(), 0, 0));
-    			}
-			}
-        }
+//		Minecraft mc = Minecraft.getMinecraft();
+//		EntityPlayer player = mc.thePlayer;
+//		Object[] ref = ThaumcraftApi.getCraftingRecipeKey(player, event.itemStack);
+//        if ((ref != null))
+//        {
+//        	ResearchItem research = ResearchCategories.getResearch((String)ref[0]);
+//			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(ConfigItems.itemThaumonomicon, player) : false;
+//			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
+//				if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemThaumonomicon) {
+//					foundBook = true;
+//					break;
+//				}
+//			}
+//			if (foundBook && ResearchManager.isResearchComplete(player.getCommandSenderName(), research.key)) {
+//    			event.toolTip.add(EnumChatFormatting.ITALIC+""+EnumChatFormatting.GRAY+StatCollector.translateToLocal("steamcraft.book.shiftright"));
+//    			if (Mouse.isButtonDown(0) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+//        			mc.displayGuiScreen(new GuiResearchRecipe(research, ((Integer)ref[1]).intValue(), 0, 0));
+//    			}
+//			}
+//        }
 	}
 	
 	

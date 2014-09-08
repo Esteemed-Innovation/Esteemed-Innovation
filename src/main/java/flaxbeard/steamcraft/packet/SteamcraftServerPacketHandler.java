@@ -4,10 +4,10 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import io.netty.buffer.ByteBuf;
@@ -37,7 +37,9 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
 public class SteamcraftServerPacketHandler {
 
-	  
+
+	
+	
 	private void handleSpacePacket(ByteBufInputStream dat, World world)
  	{
 		try {
@@ -286,6 +288,7 @@ public class SteamcraftServerPacketHandler {
             if (packetID == 5) {
             	this.handleGrapplePacket(bbis, world);
             }
+
             bbis.close();
         }
         catch (IOException e)
@@ -296,6 +299,30 @@ public class SteamcraftServerPacketHandler {
 	}
 	
 
+	public static void sendRocketJumpHackyPacket(EntityPlayerMP player, double xChange, double yChange, double zChange)
+	{
+		ByteBuf buf = Unpooled.buffer();
+		ByteBufOutputStream out = new ByteBufOutputStream(buf);
+		try
+	    {
+	    	out.writeByte(2);
+	    	out.writeInt(player.worldObj.provider.dimensionId);
+	    	out.writeInt(player.getEntityId());
+	    	out.writeDouble(xChange);
+	    	out.writeDouble(yChange);
+	    	out.writeDouble(zChange);
+
+	    }
+	    catch (IOException e) {}
+	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
+	    Steamcraft.channel.sendTo(packet, player);
+	    try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	public static void sendPipeConnectDisconnectPacket(int dimension, double x, double y, double z){
 
@@ -320,5 +347,28 @@ public class SteamcraftServerPacketHandler {
 		}
 		
 		
+	}
+
+	public static void sendExplodePacket(EntityRocket entityRocket) {
+		ByteBuf buf = Unpooled.buffer();
+		ByteBufOutputStream out = new ByteBufOutputStream(buf);
+		try
+	    {
+	    	out.writeByte(3);
+	    	out.writeInt(entityRocket.worldObj.provider.dimensionId);
+	    	out.writeDouble(entityRocket.posX);
+	    	out.writeDouble(entityRocket.posY);
+	    	out.writeDouble(entityRocket.posZ);
+	    	out.writeFloat(entityRocket.explosionSize);
+
+	    }
+	    catch (IOException e) {}
+	    FMLProxyPacket packet = new FMLProxyPacket(buf,"steamcraft");
+	    Steamcraft.channel.sendToDimension(packet, entityRocket.worldObj.provider.dimensionId);
+	    try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

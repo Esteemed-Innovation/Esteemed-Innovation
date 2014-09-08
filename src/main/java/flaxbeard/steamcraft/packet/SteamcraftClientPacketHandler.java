@@ -12,12 +12,16 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.util.SPLog;
+import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.misc.ExplosionRocket;
 
 public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler {
 	
@@ -43,6 +47,8 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 		}
 
 	}
+	
+	
 	
 	public static void sendCamoPacket(Entity player, MovingObjectPosition pos)
 	{
@@ -122,11 +128,13 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         try {
         	packetType = bbis.readByte();
         	dimension = bbis.readInt();
-        	packetID = bbis.readByte();
-        	double x = bbis.readDouble();
-        	double y = bbis.readDouble();
-        	double z = bbis.readDouble();
-        	
+        	World world = DimensionManager.getWorld(dimension);
+            if (packetType == 2) {
+            	this.handleRocketJumpHackyPacket(bbis, world);
+            }
+            if (packetType == 3) {
+            	this.handleExplodePacket(bbis, world);
+            }
 //        	for (int i = 0; i < 3; i++){
 //        		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
 //        	}
@@ -188,4 +196,47 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 			e.printStackTrace();
 		}
 	}
+	
+	private void handleRocketJumpHackyPacket(ByteBufInputStream dat,
+			World world) {
+		try {
+			int id = dat.readInt();
+			EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
+			if (player != null) {
+				double motionX = dat.readDouble();
+				double motionY = dat.readDouble();
+				double motionZ = dat.readDouble();
+
+				Minecraft.getMinecraft().thePlayer.motionX += motionX;
+				Minecraft.getMinecraft().thePlayer.motionY += motionY;
+				Minecraft.getMinecraft().thePlayer.motionZ += motionZ;
+
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	private void handleExplodePacket(ByteBufInputStream dat,
+			World world) {
+		try {
+			newExplosion(world, null, dat.readDouble(), dat.readDouble(), dat.readDouble(), dat.readFloat(), true, world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	 public Explosion newExplosion(World world, Entity p_72885_1_, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_)
+	    {
+	        Explosion explosion = new ExplosionRocket(world, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
+	        explosion.isFlaming = p_72885_9_;
+	        explosion.isSmoking = p_72885_10_;
+	        explosion.doExplosionA();
+	        explosion.doExplosionB(true);
+	        return explosion;
+	    }
 }
