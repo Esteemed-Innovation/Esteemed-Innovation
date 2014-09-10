@@ -7,6 +7,7 @@ steamcraft.book.shiftright=ctrl点击击查看信息
 item.steamcraft:book.name=蒸汽革命
 potion.partialInvisible=隐身
 steamcraft.canned=罐装
+steamcraft.rocket=火箭类型:
 
 steamcraft.plate.bonus=机械护甲效果: 
 steamcraft.plate.copper=爆炸保护
@@ -302,12 +303,41 @@ research.Blunderbuss.name=燧发霰弹枪
 research.Blunderbuss.0=使用大些的黄铜枪管和改良结构的燧发步枪制成了一个有趣的组合,我叫它霰弹枪.这把枪一次会射出许多不精确的射击,使我能击伤许多目标.
 research.Pistol.name=燧发手枪
 research.Pistol.0=我发现了一种方法缩小我的燧发枪至更易控制的大小,武装也会更快.当然,更小的枪管意味着伤害和准度的降低,但增加了速度还是值得的.
+research.RocketLauncher.name=火箭筒
+research.RocketLauncher.0=我做出了个新的武器,当我需要更多...爆炸时就需要它了.. 它能发射各种类型的火箭,将其以高速推向毫无防备的家伙们.按住shift右击会切换火箭类型.
+research.Rockets.name=火箭分类
+research.Rocket.name=火箭
+research.Rocket.0=我可以用铁和火药做个简单的火箭.这些火箭会炸毁方块并炸伤我的敌人,但若在我脚底发射则会将我送到天上.
+research.RocketConcussive.name=冲击火箭
+research.RocketConcussive.0=往现有的火箭里加些沙子会助于抑制爆炸威力,使得火箭难以破坏方块但依然留有伤害能力.
+research.RocketMining.name=采矿火箭
+research.RocketMining.0=我发现给火箭加个保险丝和一些爆炸物能让它变为强力的开矿工具.更小的爆炸威力预防了对方块的破坏,对敌人的伤害也会更低些.
+research.EnhancementFastRockets.name=改良炮筒
+research.EnhancementFastRockets.0=用一些我在蒸汽实验中控制压力的配件,我改进了火箭的发射方法.给我的火箭筒装上这个炮筒时会加倍发射火箭的飞行速度.
+research.EnhancementAmmo.name=扩容弹匣
+research.EnhancementAmmo.0=扩容我在火箭筒中使用的弹匣是个简单有效的强化方法,这能显著增强我的火力,当然也会增长装弹时间.
+research.EnhancementAirStrike.name=空袭者升级组件
+research.EnhancementAirStrike.0=我开发了一个用于火箭筒的改造,我称其为 空袭者.这个升级组件在空中对战中尤为有效.这样我就能极快地发射火箭.
+
 itemGroup.steamcraft=Flaxbeard的蒸汽动力
 itemGroup.steamcraftTools=Flaxbeard的蒸汽动力工具
 steamcraft.enhancementText=增强:
 
 item.steamcraft:musketCartridge.name=步枪弹药
+item.steamcraft:rocket.name=Rocket
+item.steamcraft:rocket.name.2=普通火箭
+item.steamcraft:rocketConcussive.name=冲击火箭
+item.steamcraft:rocketMiner.name=采矿火箭
+
 item.steamcraft:musket.name=燧发步枪
+item.steamcraft:rocketLauncher.name=火箭筒
+item.steamcraft:rocketLauncherFast.name=改良火箭筒
+item.steamcraft:rocketLauncherAmmo.name=增容火箭筒
+item.steamcraft:rocketLauncherAirStrike.name=空袭者
+item.steamcraft:enhancementFastRockets.name=改良炮筒
+item.steamcraft:enhancementAmmo.name=扩容弹匣
+item.steamcraft:enhancementAirStrike.name=空袭者升级组件
+
 item.steamcraft:pistol.name=燧发手枪
 item.steamcraft:revolver.name=燧发左轮
 item.steamcraft:blunderbuss.name=燧发霰弹枪
