@@ -73,11 +73,10 @@ public class ItemRocketLauncher extends Item implements IEngineerable
 	private boolean wasSprinting = false;
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void onUpdate (ItemStack stack, World world, Entity entity, int par4, boolean par5)
     {
         super.onUpdate(stack, world, entity, par4, par5);
-        if (stack.hasTagCompound() && (!(entity instanceof EntityPlayer) || !(((EntityPlayer)entity).getItemInUse() == stack))) {
+        if (stack.hasTagCompound()) {
         	if (stack.stackTagCompound.hasKey("fireDelay")) {
         		int delay = stack.stackTagCompound.getInteger("fireDelay");
         		if (delay > 0) {
@@ -276,9 +275,10 @@ public class ItemRocketLauncher extends Item implements IEngineerable
     @Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+		 System.out.println("1 - "+par3EntityPlayer.worldObj.isRemote);
     	 NBTTagCompound nbt = par1ItemStack.getTagCompound();
          boolean crouched = par3EntityPlayer.isSneaking();
-         
+
          if (!crouched) {
 	         if (!par1ItemStack.hasTagCompound())
 	         {
@@ -288,11 +288,13 @@ public class ItemRocketLauncher extends Item implements IEngineerable
 	        	 nbt.setBoolean("done", false);
 	        	 nbt.setInteger("numloaded", 0);
 	         }
-	         
+	         System.out.println("2 - "+par3EntityPlayer.worldObj.isRemote);
 	         if (nbt.getInteger("loaded") > 0 || par3EntityPlayer.capabilities.isCreativeMode)
 	         {
+	        	 System.out.println("3 - "+par3EntityPlayer.worldObj.isRemote);
 	        	 if (!par1ItemStack.stackTagCompound.hasKey("fireDelay") || par1ItemStack.stackTagCompound.getInteger("fireDelay") == 0) {
-		         	float enhancementAccuracy = 0.0F;
+        		 	System.out.println("4 - "+par3EntityPlayer.worldObj.isRemote);
+	        		float enhancementAccuracy = 0.0F;
 		         	float enhancementExplosionSize = 0.0F;
 		         	int enhancementDelay = 0;
 	

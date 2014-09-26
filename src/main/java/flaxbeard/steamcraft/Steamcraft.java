@@ -7,6 +7,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
@@ -149,38 +150,42 @@ public class Steamcraft {
  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
 	    //EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
 
-		GameRegistry.registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");
-		GameRegistry.registerTileEntity(TileEntityMold.class, "mold");
-		GameRegistry.registerTileEntity(TileEntityBoiler.class, "boiler");
-		GameRegistry.registerTileEntity(TileEntitySteamPipe.class, "pipe");
-		GameRegistry.registerTileEntity(TileEntityValvePipe.class, "valvePipe");
+		registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");
+		registerTileEntity(TileEntityMold.class, "mold");
+		registerTileEntity(TileEntityBoiler.class, "boiler");
+		registerTileEntity(TileEntitySteamPipe.class, "pipe");
+		registerTileEntity(TileEntityValvePipe.class, "valvePipe");
 
-		GameRegistry.registerTileEntity(TileEntitySteamPiston.class, "steamPiston");
-		GameRegistry.registerTileEntity(TileEntitySteamHeater.class, "heater");
-		GameRegistry.registerTileEntity(TileEntityEngineeringTable.class, "engineeringTable");
-		GameRegistry.registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
-		GameRegistry.registerTileEntity(TileEntitySteamTank.class, "steamTank");
-		GameRegistry.registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
-		GameRegistry.registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
-		GameRegistry.registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
-		GameRegistry.registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
-		GameRegistry.registerTileEntity(TileEntityItemMortar.class, "itemMortar");
-		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
-		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
-		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
-		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
-		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
-		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
-		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
-		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
-		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
-		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
-		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
+		registerTileEntity(TileEntitySteamPiston.class, "steamPiston");
+		registerTileEntity(TileEntitySteamHeater.class, "heater");
+		registerTileEntity(TileEntityEngineeringTable.class, "engineeringTable");
+		registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
+		registerTileEntity(TileEntitySteamTank.class, "steamTank");
+		registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
+		registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
+		registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
+		registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
+		registerTileEntity(TileEntityItemMortar.class, "itemMortar");
+		registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
+		registerTileEntity(TileEntityPump.class, "pump");
+		registerTileEntity(TileEntityThumper.class, "thumper");
+		registerTileEntity(TileEntitySmasher.class, "smasher");
+		registerTileEntity(TileEntityDummyBlock.class, "dummy");
+		registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
+		registerTileEntity(TileEntityFan.class, "fan");
+		registerTileEntity(TileEntityVacuum.class, "vacuum");
+		registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
+		registerTileEntity(TileEntityWhistle.class, "whistle");
+		registerTileEntity(TileEntityChargingPad.class, "chargingPad");
 
-		GameRegistry.registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
-		GameRegistry.registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
+		registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
+		registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
 
 
+	}
+	
+	private static void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
+		GameRegistry.registerTileEntityWithAlternatives(clazz, key, "steamcraft:" + key);
 	}
 	
 	@EventHandler
