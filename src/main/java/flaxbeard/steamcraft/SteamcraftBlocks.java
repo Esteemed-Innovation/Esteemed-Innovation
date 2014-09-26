@@ -1,43 +1,12 @@
 package flaxbeard.steamcraft;
 
+import flaxbeard.steamcraft.block.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import flaxbeard.steamcraft.block.BlockBeacon;
-import flaxbeard.steamcraft.block.BlockBoiler;
-import flaxbeard.steamcraft.block.BlockCarvingTable;
-import flaxbeard.steamcraft.block.BlockChargingPad;
-import flaxbeard.steamcraft.block.BlockCustomCraftingTable;
-import flaxbeard.steamcraft.block.BlockCustomFurnace;
-import flaxbeard.steamcraft.block.BlockDummy;
-import flaxbeard.steamcraft.block.BlockEngineeringTable;
-import flaxbeard.steamcraft.block.BlockFan;
-import flaxbeard.steamcraft.block.BlockFlashBoiler;
-import flaxbeard.steamcraft.block.BlockFluidSteamConverter;
-import flaxbeard.steamcraft.block.BlockItemMortar;
-import flaxbeard.steamcraft.block.BlockMold;
-import flaxbeard.steamcraft.block.BlockPipe;
-import flaxbeard.steamcraft.block.BlockPump;
-import flaxbeard.steamcraft.block.BlockRuptureDisc;
-import flaxbeard.steamcraft.block.BlockSmasher;
-import flaxbeard.steamcraft.block.BlockSteamCharger;
-import flaxbeard.steamcraft.block.BlockSteamGauge;
-import flaxbeard.steamcraft.block.BlockSteamHammer;
-import flaxbeard.steamcraft.block.BlockSteamHeater;
-import flaxbeard.steamcraft.block.BlockSteamPistonBase;
-import flaxbeard.steamcraft.block.BlockSteamPistonExtension;
-import flaxbeard.steamcraft.block.BlockSteamPistonMoving;
-import flaxbeard.steamcraft.block.BlockSteamTank;
-import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
-import flaxbeard.steamcraft.block.BlockSteamcraftOre;
-import flaxbeard.steamcraft.block.BlockThumper;
-import flaxbeard.steamcraft.block.BlockThumperDummy;
-import flaxbeard.steamcraft.block.BlockVacuum;
-import flaxbeard.steamcraft.block.BlockValvePipe;
-import flaxbeard.steamcraft.block.BlockWhistle;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
@@ -58,6 +27,7 @@ public class SteamcraftBlocks {
 	public static Block carving;
 	
 	// steam net
+    public static Block blockPlacer;
 	public static Block boiler;
 	public static Block boilerOn;
 	public static Block flashBoiler;
@@ -68,6 +38,8 @@ public class SteamcraftBlocks {
 	public static Block horn;
 	public static Block fluidSteamConverter;
 	public static Block ruptureDisc;
+    public static Block geoBoiler;
+    public static Block geoBoiler_on;
 
 	// steam machines
 	public static Block heater;
@@ -193,6 +165,10 @@ public class SteamcraftBlocks {
 	}
 
 	public static void registerSteamMachines(){
+        if (Config.enableBlockPlacer){
+            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
+            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
+        }
 		if (Config.enablePump){
 			pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
 			GameRegistry.registerBlock(pump,"pump");

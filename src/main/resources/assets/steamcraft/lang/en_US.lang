@@ -162,7 +162,7 @@ research.Smasher.1=The rock smasher has two modes, smasher and block breaker, th
 research.Fan.name=Fan
 research.Fan.0=The fan is one of the most versatile devices I've created. Simply put: It pushes things when supplied with steam. It can be used for elevators or to harvest crops, to move items or push animals. I can adjust the fan's range with a wrench.
 research.Vacuum.name=Vacuum
-research.Vacuum.0=A little tinkering with my fan has rewarded me with a vacuum, a device that will suck in all matter of things, outputting items to inventories placed opposite the mouth of the vacuum. I can adjust the vaccum's range with a wrench.
+research.Vacuum.0=A little tinkering with my fan has rewarded me with a vacuum, a device that will suck in all matter of things, outputting items to inventories placed opposite the mouth of the vacuum. I can adjust the vacuum's range with a wrench.
 research.FSC.name=Pressure Converter
 research.FSC.0=While plenty of my gadgets are built to handle the high pressure of steam created by my boilers, other technology may not be able to. This device allows conduits to pull less dense steam fluid from my network, or add less dense steam back in.
 
@@ -258,10 +258,10 @@ research.Canner.0=No longer will I have to manually apply canisters to my valuab
 
 category.Gadgets.name=Gadgets
 research.SteamTools.name=Steam Tools
-research.SteamTools.0=Following the successes of my rock smasher and thumper, I ventured to make more portable versions of these rock-breaking tools. Finally, my work has come to frutition, in the form of the steam drill, saw, and shovel.
+research.SteamTools.0=Following the successes of my rock smasher and thumper, I ventured to make more portable versions of these rock-breaking tools. Finally, my work has come to fruition, in the form of the steam drill, saw, and shovel.
 research.SteamTools.1=These three tools can be filled with steam and do not break.<br>They must be spun up in order to be used effectively. Right clicking while holding a tool will spin it up, using steam, and speed up the tool. Unlike normal tools, mining itself does not use steam.
 research.Wrench.name=Pipe Wrench
-research.Wrench.0=The first tool I'll need when I'm tinkering with steam is a wrench, a gadget that has a multitude of uses.<br>Right clicking on pipes with the wrench will let me disconenct and reconnect them from other pipes and machines.
+research.Wrench.0=The first tool I'll need when I'm tinkering with steam is a wrench, a gadget that has a multitude of uses.<br>Right clicking on pipes with the wrench will let me disconnect and reconnect them from other pipes and machines.
 research.Wrench.1=Shift-right clicking on a concealed pipe will reveal the pipe.<br>Using a wrench on most machines will allow me to rotate the machine.<br>Shift-right clicking on certain machines with the wrench will allow me to adjust the operating mode of the machine.
 research.Canister.name=Canister
 research.Canister.0=I've finally found a way to protect my dropped items from the elements: Canisters. Canisters can be crafted with any item, rendering them nearly invincible when dropped. Canistered items automatically activate when they leave my inventory.
