@@ -149,38 +149,42 @@ public class Steamcraft {
  //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
 	    //EntityList.addMapping(EntitySteamHorse.class, "SteamHorse", 5, 0xE2B23E, 0xB38E2F);
 
-		GameRegistry.registerTileEntity(TileEntityCrucible.class, "steamcraftCrucible");
-		GameRegistry.registerTileEntity(TileEntityMold.class, "mold");
-		GameRegistry.registerTileEntity(TileEntityBoiler.class, "boiler");
-		GameRegistry.registerTileEntity(TileEntitySteamPipe.class, "pipe");
-		GameRegistry.registerTileEntity(TileEntityValvePipe.class, "valvePipe");
+		registerTile(TileEntityCrucible.class, "steamcraftCrucible");
+		registerTile(TileEntityMold.class, "mold");
+		registerTile(TileEntityBoiler.class, "boiler");
+		registerTile(TileEntitySteamPipe.class, "pipe");
+		registerTile(TileEntityValvePipe.class, "valvePipe");
 
-		GameRegistry.registerTileEntity(TileEntitySteamPiston.class, "steamPiston");
-		GameRegistry.registerTileEntity(TileEntitySteamHeater.class, "heater");
-		GameRegistry.registerTileEntity(TileEntityEngineeringTable.class, "engineeringTable");
-		GameRegistry.registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
-		GameRegistry.registerTileEntity(TileEntitySteamTank.class, "steamTank");
-		GameRegistry.registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
-		GameRegistry.registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
-		GameRegistry.registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
-		GameRegistry.registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
-		GameRegistry.registerTileEntity(TileEntityItemMortar.class, "itemMortar");
-		GameRegistry.registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
-		GameRegistry.registerTileEntity(TileEntityPump.class, "pump");
-		GameRegistry.registerTileEntity(TileEntityThumper.class, "thumper");
-		GameRegistry.registerTileEntity(TileEntitySmasher.class, "smasher");
-		GameRegistry.registerTileEntity(TileEntityDummyBlock.class, "dummy");
-		GameRegistry.registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
-		GameRegistry.registerTileEntity(TileEntityFan.class, "fan");
-		GameRegistry.registerTileEntity(TileEntityVacuum.class, "vacuum");
-		GameRegistry.registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
-		GameRegistry.registerTileEntity(TileEntityWhistle.class, "whistle");
-		GameRegistry.registerTileEntity(TileEntityChargingPad.class, "chargingPad");
+		registerTile(TileEntitySteamPiston.class, "steamPiston");
+		registerTile(TileEntitySteamHeater.class, "heater");
+		registerTile(TileEntityEngineeringTable.class, "engineeringTable");
+		registerTile(TileEntitySteamCharger.class, "steamCharger");
+		registerTile(TileEntitySteamTank.class, "steamTank");
+		registerTile(TileEntitySteamGauge.class, "steamGauge");
+		registerTile(TileEntityRuptureDisc.class, "ruptureDisc");
+		registerTile(TileEntityCreativeTank.class, "creativeSteamTank");
+		registerTile(TileEntitySteamHammer.class, "steamHammer");
+		registerTile(TileEntityItemMortar.class, "itemMortar");
+		registerTile(TileEntitySteamFurnace.class, "steamFurnace");
+		registerTile(TileEntityPump.class, "pump");
+		registerTile(TileEntityThumper.class, "thumper");
+		registerTile(TileEntitySmasher.class, "smasher");
+		registerTile(TileEntityDummyBlock.class, "dummy");
+		registerTile(TileEntityFlashBoiler.class, "flashBoiler");
+		registerTile(TileEntityFan.class, "fan");
+		registerTile(TileEntityVacuum.class, "vacuum");
+		registerTile(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
+		registerTile(TileEntityWhistle.class, "whistle");
+		registerTile(TileEntityChargingPad.class, "chargingPad");
 
-		GameRegistry.registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
-		GameRegistry.registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
+		registerTile(TileEntityCustomCraftingTable.class, "customCraftingTable");
+		registerTile(TileEntityCustomFurnace.class, "customFurnace");
 
 
+	}
+	
+	private static void registerTile(Class<? extends TileEntity> clazz, String key) {
+		GameRegistry.registerTileEntityWithAlternatives(clazz, "FSP:" + key, key);
 	}
 	
 	@EventHandler
