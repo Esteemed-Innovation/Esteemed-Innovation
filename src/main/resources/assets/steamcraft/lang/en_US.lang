@@ -282,7 +282,7 @@ research.Parts.0=Flintlock weapons are extremely intricate devices, and I'll nee
 research.Musket.name=Flintlock Musket
 research.Musket.0=I have found a way to harness the power of fire to make an efficient killing machine: the musket. This device requires reloading between every shot, using musket cartridges as ammunition. Hold right click to reload and to aim.
 research.EnhancementSpyglass.name=Spyglass
-research.EnhancementSpyglass.0=I have found that I can equip my musket with a spyglass in order to more accuratly target foes. This allows me to zoom in while firing and slightly increases my accuracy.
+research.EnhancementSpyglass.0=I have found that I can equip my musket with a spyglass in order to more accurately target foes. This allows me to zoom in while firing and slightly increases my accuracy.
 research.EnhancementAblaze.name=Blaze Barrel
 research.EnhancementAblaze.0=Equipping my musket with a special barrel imbued with the infernal power of the blaze superheats my musket balls, lighting my targets on fire.
 research.EnhancementAblaze2.name=Blaze Barrel
@@ -501,6 +501,7 @@ tile.steamcraft:blockBrass.name=Block of Brass
 tile.steamcraft:blockCopper.name=Block of Copper
 tile.steamcraft:blockZinc.name=Block of Zinc
 
+tile.steamcraft:blockPlacer.name=Block Placer
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:chargingPad.name=Filling Pad
 tile.steamcraft:crucible.name=Crucible
