@@ -263,7 +263,7 @@ public class ModelExosuit extends ModelBiped {
         if (item.getStackInSlot(me, 2) != null)
         {
         	Item vanity = item.getStackInSlot(me, 2).getItem();
-        	int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(me, 2));
+        	int[] ids = OreDictionary.getOreIds(item.getStackInSlot(me, 2));
         	int dye = -1;
         	outerloop:
 			for (int id : ids) {
