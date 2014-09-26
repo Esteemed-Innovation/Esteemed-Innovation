@@ -364,7 +364,7 @@ public class BlockPipe extends BlockSteamTransporter {
     	
     	EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     	TileEntity tile = world.getTileEntity(x, y, z);
-    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof ItemWrench))) {
+    	if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof ItemWrench))) {
     		return super.collisionRayTrace(world, x, y, z, start, end);
       	}
     	List<IndexedCuboid6> cuboids = new LinkedList();
