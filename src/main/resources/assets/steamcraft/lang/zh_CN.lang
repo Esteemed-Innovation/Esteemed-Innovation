@@ -501,6 +501,7 @@ tile.steamcraft:blockBrass.name=黄铜块
 tile.steamcraft:blockCopper.name=铜块
 tile.steamcraft:blockZinc.name=锌块
 
+tile.steamcraft:blockPlacer.name=方块放置器
 tile.steamcraft:charger.name=蒸汽充填台
 tile.steamcraft:chargingPad.name=充汽板
 tile.steamcraft:crucible.name=坩埚
