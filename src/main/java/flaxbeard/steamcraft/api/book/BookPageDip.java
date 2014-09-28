@@ -13,6 +13,9 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookPageDip extends BookPage implements ICraftingPage {
 	
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
@@ -22,10 +25,11 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     private ItemStack inputItem;
     private ItemStack resultItem;
 
+    @SuppressWarnings("deprecated")
 	public BookPageDip(String string,CrucibleLiquid ifluid, int am, ItemStack ip, ItemStack res) {
 		super(string);
 		input = ifluid;
-		item1 = OreDictionary.getOres(OreDictionary.getOreID(input.nugget)).toArray(new ItemStack[0]);
+        item1 = OreDictionary.getOreNames(input.nugget.toArray(new ItemStack[0]));
 		inputItem = ip;
 		resultItem = res;
 		amount = am;
