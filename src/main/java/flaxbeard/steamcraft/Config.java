@@ -44,6 +44,7 @@ public class Config {
 	public static boolean wimpMode;
 	
 	// blocks
+    public static boolean enableBlockPlacer;
 	public static boolean enableBoiler;
 	public static boolean enableCharger;
 	public static boolean enableCrucible;
@@ -195,6 +196,7 @@ public class Config {
 		
 		
 		// BLOCKS
+        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
 		enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
 		enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
 		enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
