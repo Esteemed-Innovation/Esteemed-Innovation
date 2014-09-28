@@ -314,6 +314,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 	public String getName(){
 		return this.name;
 	}
+
+    protected void markForUpdate(){
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 	
 	@Override
 	public void wasAdded(){
