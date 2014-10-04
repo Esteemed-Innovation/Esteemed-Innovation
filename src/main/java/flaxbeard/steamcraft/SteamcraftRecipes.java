@@ -78,7 +78,7 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltTool(Items.iron_hoe, liquidIron, 18);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_shovel, liquidIron, 9);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_boots, liquidIron, 36);
-		SteamcraftRegistry.registerSmeltTool(Items.iron_chestplate, liquidIron, 81);
+		SteamcraftRegistry.registerSmeltTool(Items.iron_chestplate, liquidIron, 72);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_helmet, liquidIron, 45);
 		SteamcraftRegistry.registerSmeltTool(Items.iron_leggings, liquidIron, 63);	
 		
@@ -88,7 +88,7 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltTool(Items.golden_hoe, liquidGold, 18);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_shovel, liquidGold, 9);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_boots, liquidGold, 36);
-		SteamcraftRegistry.registerSmeltTool(Items.golden_chestplate, liquidGold, 81);
+		SteamcraftRegistry.registerSmeltTool(Items.golden_chestplate, liquidGold, 72);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_helmet, liquidGold, 45);
 		SteamcraftRegistry.registerSmeltTool(Items.golden_leggings, liquidGold, 63);
 		
@@ -98,7 +98,7 @@ public class SteamcraftRecipes {
 		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.hoe("Brass"), liquidBrass, 18);
 		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.shovel("Brass"), liquidBrass, 9);
 		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.feet("Brass"), liquidBrass, 36);
-		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.chest("Brass"), liquidBrass, 81);
+		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.chest("Brass"), liquidBrass, 72);
 		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.helm("Brass"), liquidBrass, 45);
 		SteamcraftRegistry.registerSmeltTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
