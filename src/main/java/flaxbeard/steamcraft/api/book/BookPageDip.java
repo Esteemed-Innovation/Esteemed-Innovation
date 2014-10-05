@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.api.book;
 
-import scala.Tuple4;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -8,13 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BookPageDip extends BookPage implements ICraftingPage {
 	
@@ -25,11 +19,10 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     private ItemStack inputItem;
     private ItemStack resultItem;
 
-    @SuppressWarnings("deprecated")
 	public BookPageDip(String string,CrucibleLiquid ifluid, int am, ItemStack ip, ItemStack res) {
 		super(string);
 		input = ifluid;
-        item1 = OreDictionary.getOreNames(input.nugget.toArray(new ItemStack[0]));
+        item1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(this.input.nugget)[0])).toArray(new ItemStack[0]);
 		inputItem = ip;
 		resultItem = res;
 		amount = am;
