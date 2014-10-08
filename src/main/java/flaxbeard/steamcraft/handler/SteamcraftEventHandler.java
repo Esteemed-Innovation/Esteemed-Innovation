@@ -381,12 +381,13 @@ public class SteamcraftEventHandler {
 			}
 		}
 	}
-	
+
+    @SuppressWarnings("unchecked")
 	@SubscribeEvent
 	public void updateVillagers(LivingUpdateEvent event) {
 		if (event.entityLiving instanceof EntityVillager) {
 			EntityVillager villager = (EntityVillager) event.entityLiving;
-			int timeUntilReset = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 6);
+			Integer timeUntilReset = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 6);
 			String lastBuyingPlayer = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 9);
 			if (!villager.isTrading() && timeUntilReset == 39 && lastBuyingPlayer != null) {
 				EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);

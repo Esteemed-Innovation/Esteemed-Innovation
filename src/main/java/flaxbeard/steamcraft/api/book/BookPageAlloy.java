@@ -20,12 +20,13 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
     private ItemStack[] item1;
     private ItemStack[] item2;
 
+    @SuppressWarnings("deprecated")
 	public BookPageAlloy(String string,CrucibleLiquid op, CrucibleFormula form) {
 		super(string);
 		output = op;
 		formula = form;
-		item1 = OreDictionary.getOres(OreDictionary.getOreID(formula.liquid1.ingot)).toArray(new ItemStack[0]);
-		item2 = OreDictionary.getOres(OreDictionary.getOreID(formula.liquid2.ingot)).toArray(new ItemStack[0]);
+		item1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0])).toArray(new ItemStack[0]);
+		item2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0])).toArray(new ItemStack[0]);
 
 	}
 
