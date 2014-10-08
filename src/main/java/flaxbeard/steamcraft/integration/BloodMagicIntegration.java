@@ -23,12 +23,13 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class BloodMagicIntegration {
 
+    @SuppressWarnings("unchecked")
 	public static void clickLeft(PlayerInteractEvent event) {
 		if (!event.world.isRemote && (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) {
 			if (event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof EnergyBattery) {
 				LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
 				EnergyBattery bat = (EnergyBattery) event.entityPlayer.getHeldItem().getItem();
-				int cap = ReflectionHelper.getPrivateValue(EnergyBattery.class, bat, 0);
+				Integer cap = ReflectionHelper.getPrivateValue(EnergyBattery.class, bat, 0);
 				if (cap > data.cap) {
 					data.cap = cap;
 					data.markDirty();
