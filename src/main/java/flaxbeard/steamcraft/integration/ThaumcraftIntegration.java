@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.integration;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
