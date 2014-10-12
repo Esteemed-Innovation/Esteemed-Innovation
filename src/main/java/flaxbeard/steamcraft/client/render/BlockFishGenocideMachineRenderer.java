@@ -13,7 +13,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockFishGenocideMachine;
 
-public class BlockFishGenocideMachineRenderer implements ISimpleBlockRenderingHandler {
+public class BlockFishGenocideMachineRenderer /*implements ISimpleBlockRenderingHandler */{/*
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId,
@@ -88,6 +88,6 @@ public class BlockFishGenocideMachineRenderer implements ISimpleBlockRenderingHa
 	@Override
 	public int getRenderId() {
 		return Steamcraft.genocideRenderID;
-	}
+	}*/
 
 }
