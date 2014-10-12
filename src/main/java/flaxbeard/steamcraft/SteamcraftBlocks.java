@@ -165,10 +165,10 @@ public class SteamcraftBlocks {
 	}
 
 	public static void registerSteamMachines(){
-        if (Config.enableBlockPlacer){
+       /* if (Config.enableBlockPlacer){
             blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
             GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-        }
+        }*/
 		if (Config.enablePump){
 			pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
 			GameRegistry.registerBlock(pump,"pump");

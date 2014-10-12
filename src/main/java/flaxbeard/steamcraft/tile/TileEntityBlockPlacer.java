@@ -20,7 +20,7 @@ import thaumcraft.common.blocks.BlockAiry;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.util.Coord4;
 
-public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements IInventory{
+public class TileEntityBlockPlacer /*extends SteamTransporterTileEntity implements IInventory*/{/*
 
     private ItemStack[] inventory = new ItemStack[1];
     int workingTick = 0;
@@ -274,7 +274,7 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
             return new Coord4(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, getDimension());
         }
         return null;
-    }
+    }*/
 
 
 

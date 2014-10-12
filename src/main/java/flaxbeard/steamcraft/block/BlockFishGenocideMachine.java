@@ -19,8 +19,8 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.tile.TileEntityFishGenocideMachine;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
-public class BlockFishGenocideMachine extends BlockContainer
-{
+public class BlockFishGenocideMachine /*extends BlockContainer*/
+{/*
     @SideOnly(Side.CLIENT)
 	public IIcon top;
     public int pass = 0;
@@ -73,5 +73,5 @@ public class BlockFishGenocideMachine extends BlockContainer
     public int getRenderType()
     {
         return Steamcraft.genocideRenderID;
-    }
+    }*/
 }
