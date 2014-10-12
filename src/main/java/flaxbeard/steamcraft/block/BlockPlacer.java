@@ -19,7 +19,7 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityBlockPlacer;
 
-public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
+public class BlockPlacer /*extends BlockSteamTransporter implements IWrenchable*/ {/*
 
     IIcon frontIcon;
     private final Random rand = new Random();
@@ -127,7 +127,7 @@ public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
         int meta = world.getBlockMetadata(x, y, z);
         world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
         return true;
-    }
+    }*/
 
 }
 

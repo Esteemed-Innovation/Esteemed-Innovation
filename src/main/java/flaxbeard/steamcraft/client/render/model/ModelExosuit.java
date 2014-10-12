@@ -64,25 +64,7 @@ public class ModelExosuit extends ModelBiped {
     private ModelRenderer hornRightPart4;
     private ModelRenderer hornRightPart5;
 	
-	public static String[] dyes =
-        {
-            "Black",
-            "Red",
-            "Green",
-            "Brown",
-            "Blue",
-            "Purple",
-            "Cyan",
-            "LightGray",
-            "Gray",
-            "Pink",
-            "Lime",
-            "Yellow",
-            "LightBlue",
-            "Magenta",
-            "Orange",
-            "White"
-        };
+	public static String[] dyes ={"Black","Red","Green","Brown","Blue","Purple","Cyan","LightGray","Gray","Pink","Lime","Yellow","LightBlue","Magenta","Orange","White"};
 
 	private int armor;
 	private ItemStack me;

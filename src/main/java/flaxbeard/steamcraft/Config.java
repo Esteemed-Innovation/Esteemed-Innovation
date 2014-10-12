@@ -196,7 +196,7 @@ public class Config {
 		
 		
 		// BLOCKS
-        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
+        enableBlockPlacer = config.get("Blocks", "Enable Block Placer [NYI]", true).getBoolean(true);
 		enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
 		enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
 		enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
