@@ -12,8 +12,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -410,7 +412,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     }
 
     public void itemClicked(ItemStack p_146285_1_) {
-        for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
+         for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == p_146285_1_.getItem() && stack.getItemDamage() == p_146285_1_.getItemDamage()) {
                 this.viewing = SteamcraftRegistry.bookRecipes.get(stack).left;
                 this.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack).right / 2.0F);

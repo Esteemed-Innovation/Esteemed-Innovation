@@ -1,10 +1,14 @@
 package flaxbeard.steamcraft.block;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.client.render.TileEntityVacuumRenderer;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,5 +83,10 @@ public class BlockVacuum extends BlockSteamTransporter implements IWrenchable {
             world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
             return true;
         }
+    }
+
+    @Override
+    public boolean renderAsNormalBlock(){
+        return false;
     }
 }
