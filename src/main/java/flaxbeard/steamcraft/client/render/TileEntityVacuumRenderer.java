@@ -1,8 +1,12 @@
 package flaxbeard.steamcraft.client.render;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import flaxbeard.steamcraft.block.BlockVacuum;
 import flaxbeard.steamcraft.client.render.model.ModelVacuum;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -15,8 +19,7 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implemen
     private static final ResourceLocation fanTexture = new ResourceLocation("steamcraft:textures/models/fan.png");
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntityVacuum vacuum = (TileEntityVacuum) var1;
 
         GL11.glPushMatrix();
@@ -79,8 +82,8 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implemen
 
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
+
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
 
