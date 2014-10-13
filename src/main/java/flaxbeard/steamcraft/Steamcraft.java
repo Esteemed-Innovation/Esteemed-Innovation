@@ -185,7 +185,7 @@ public class Steamcraft {
 	}
 	
 	private static void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
-		GameRegistry.registerTileEntityWithAlternatives(clazz, key, "steamcraft:" + key);
+		GameRegistry.registerTileEntityWithAlternatives(clazz, "steamcraft:" + key);
 	}
 	
 	@EventHandler
