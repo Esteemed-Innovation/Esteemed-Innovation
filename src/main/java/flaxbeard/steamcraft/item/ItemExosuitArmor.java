@@ -175,18 +175,22 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return super.getColorFromItemStack(stack, pass);
     }
 
+    private static ModelExosuit modelbiped;
+
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
-        ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
-        modelbiped.bipedHead.showModel = par2 == 0;
-        modelbiped.bipedHeadwear.showModel = par2 == 0;
-        modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
-        modelbiped.bipedRightArm.showModel = par2 == 1;
-        modelbiped.bipedLeftArm.showModel = par2 == 1;
-        modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-        modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-        return modelbiped;
+        if (modelbiped != null){
+            modelbiped.bipedHead.showModel = par2 == 0;
+            modelbiped.bipedHeadwear.showModel = par2 == 0;
+            modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
+            modelbiped.bipedRightArm.showModel = par2 == 1;
+            modelbiped.bipedLeftArm.showModel = par2 == 1;
+            modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
+            modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+            return modelbiped;
+        }
+        return null;
     }
 
     @Override
