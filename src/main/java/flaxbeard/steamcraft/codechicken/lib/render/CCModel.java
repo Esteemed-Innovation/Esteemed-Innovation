@@ -18,14 +18,6 @@ import java.util.regex.Pattern;
 import static flaxbeard.steamcraft.codechicken.lib.vec.Rotation.sideRotations;
 
 public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
-    public static final Matcher vertMatcher = vertPattern.matcher("");
-    public static final Matcher uvwMatcher = uvwPattern.matcher("");
-    public static final Matcher normalMatcher = normalPattern.matcher("");
-    public static final Matcher polyMatcher = polyPattern.matcher("");
-    private static final Pattern vertPattern = Pattern.compile("v(?: ([\\d\\.+-]+))+");
-    private static final Pattern uvwPattern = Pattern.compile("vt(?: ([\\d\\.+-]+))+");
-    private static final Pattern normalPattern = Pattern.compile("vn(?: ([\\d\\.+-]+))+");
-    private static final Pattern polyPattern = Pattern.compile("f(?: ((?:\\d*)(?:/\\d*)?(?:/\\d*)?))+");
     public final int vertexMode;
     public final int vp;
     public Vertex5[] verts;
@@ -73,6 +65,15 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
         m.reset(s);
         illegalAssert(m.matches(), "Malformed line: " + s);
     }
+    private static final Pattern vertPattern = Pattern.compile("v(?: ([\\d\\.+-]+))+");
+    private static final Pattern uvwPattern = Pattern.compile("vt(?: ([\\d\\.+-]+))+");
+    private static final Pattern normalPattern = Pattern.compile("vn(?: ([\\d\\.+-]+))+");
+    private static final Pattern polyPattern = Pattern.compile("f(?: ((?:\\d*)(?:/\\d*)?(?:/\\d*)?))+");
+
+    public static final Matcher vertMatcher = vertPattern.matcher("");
+    public static final Matcher uvwMatcher = uvwPattern.matcher("");
+    public static final Matcher normalMatcher = normalPattern.matcher("");
+    public static final Matcher polyMatcher = polyPattern.matcher("");
 
     /**
      * Parses vertices, texture coords, normals and polygons from a WaveFront Obj file
