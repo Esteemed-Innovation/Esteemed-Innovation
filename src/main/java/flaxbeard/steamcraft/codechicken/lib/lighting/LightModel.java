@@ -4,31 +4,8 @@ import flaxbeard.steamcraft.codechicken.lib.render.CCRenderState;
 import flaxbeard.steamcraft.codechicken.lib.vec.Rotation;
 import flaxbeard.steamcraft.codechicken.lib.vec.Vector3;
 
-public class LightModel implements CCRenderState.IVertexOperation
-{
+public class LightModel implements CCRenderState.IVertexOperation {
     public static final int operationIndex = CCRenderState.registerOperation();
-
-    public static class Light
-    {
-        public Vector3 ambient = new Vector3();
-        public Vector3 diffuse = new Vector3();
-        public Vector3 position;
-
-        public Light(Vector3 pos) {
-            position = pos.copy().normalize();
-        }
-
-        public Light setDiffuse(Vector3 vec) {
-            diffuse.set(vec);
-            return this;
-        }
-
-        public Light setAmbient(Vector3 vec) {
-            ambient.set(vec);
-            return this;
-        }
-    }
-    
     public static LightModel standardLightModel;
     static {
         standardLightModel = new LightModel()
@@ -38,7 +15,6 @@ public class LightModel implements CCRenderState.IVertexOperation
                 .addLight(new Light(new Vector3(-0.2, 1, 0.7))
                         .setDiffuse(new Vector3(0.6, 0.6, 0.6)));
     }
-    
     private Vector3 ambient = new Vector3();
     private Light[] lights = new Light[8];
     private int lightCount;
@@ -82,7 +58,7 @@ public class LightModel implements CCRenderState.IVertexOperation
 
     @Override
     public boolean load() {
-        if(!CCRenderState.computeLighting)
+        if (!CCRenderState.computeLighting)
             return false;
 
         CCRenderState.pipeline.addDependency(CCRenderState.normalAttrib);
@@ -105,5 +81,25 @@ public class LightModel implements CCRenderState.IVertexOperation
         for (int i = 0; i < 6; i++)
             colours[i] = apply(-1, Rotation.axes[i]);
         return new PlanarLightModel(colours);
+    }
+
+    public static class Light {
+        public Vector3 ambient = new Vector3();
+        public Vector3 diffuse = new Vector3();
+        public Vector3 position;
+
+        public Light(Vector3 pos) {
+            position = pos.copy().normalize();
+        }
+
+        public Light setDiffuse(Vector3 vec) {
+            diffuse.set(vec);
+            return this;
+        }
+
+        public Light setAmbient(Vector3 vec) {
+            ambient.set(vec);
+            return this;
+        }
     }
 }

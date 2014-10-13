@@ -18,7 +18,7 @@ public class TinkersIntegration {
 //		     //tableCasting.addCastingRecipe(nugget, new FluidStack(fluid, (int) (TConstruct.ingotLiquidValue/9.0F)), scNuggetcast, 5);
 //		 }
 //	}
-	/*
+    /*
 	public static void addIngotRecipes() {
 		LiquidCasting tableCasting = TConstructRegistry.instance.getTableCasting();
         ItemStack ingotcast = new ItemStack(TRepo.metalPattern, 1, 0);

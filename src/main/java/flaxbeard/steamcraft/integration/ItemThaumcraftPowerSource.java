@@ -1,11 +1,5 @@
 package flaxbeard.steamcraft.integration;
 
-import java.util.List;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
@@ -13,18 +7,24 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 
 public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, IExosuitTank {
-	private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/armor/thaumTank.png");
+    private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/armor/thaumTank.png");
 
-	@Override
-	public boolean canFill(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public boolean canFill(ItemStack stack) {
+        return false;
+    }
 
-	@Override
-	public int getStorage(ItemStack stack) {
-		ItemStack stack2 = ((ItemExosuitArmor)stack.getItem()).getStackInSlot(stack, 4);
+    @Override
+    public int getStorage(ItemStack stack) {
+        ItemStack stack2 = ((ItemExosuitArmor) stack.getItem()).getStackInSlot(stack, 4);
 //		if (stack2.hasTagCompound()) {
 //			if (stack2.stackTagCompound.hasKey("item")) {
 //				ItemStack wand = ItemStack.loadItemStackFromNBT(stack2.stackTagCompound.getCompoundTag("item"));
@@ -34,38 +34,38 @@ public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, 
 //				}
 //			}
 //		}
-		return 0;
-	}
+        return 0;
+    }
 
-	@Override
-	public int renderPriority() {
-		return 0;
-	}
+    @Override
+    public int renderPriority() {
+        return 0;
+    }
 
-	@Override
-	public ExosuitSlot getSlot() {
-		return ExosuitSlot.bodyTank;
-	}
+    @Override
+    public ExosuitSlot getSlot() {
+        return ExosuitSlot.bodyTank;
+    }
 
-	@Override
-	public boolean hasOverlay() {
-		return false;
-	}
+    @Override
+    public boolean hasOverlay() {
+        return false;
+    }
 
-	@Override
-	public ResourceLocation getOverlay() {
-		return null;
-	}
+    @Override
+    public ResourceLocation getOverlay() {
+        return null;
+    }
 
-	@Override
-	public boolean hasModel() {
-		return true;
-	}
+    @Override
+    public boolean hasModel() {
+        return true;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
-			float par7, ItemStack itemStack) {	
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
+                            float par7, ItemStack itemStack) {
 //		if (armor == 1) {
 //			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 //
@@ -108,11 +108,11 @@ public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, 
 //		   
 //		
 //		}
-			
-	}
 
-	@Override
-	public void writeInfo(List list) {
-	}
+    }
+
+    @Override
+    public void writeInfo(List list) {
+    }
 
 }

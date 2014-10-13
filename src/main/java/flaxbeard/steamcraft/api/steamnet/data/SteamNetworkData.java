@@ -5,41 +5,41 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 
-public class SteamNetworkData extends WorldSavedData{
+public class SteamNetworkData extends WorldSavedData {
 
-	private static final String ID = "FSPSteamNetworkData";
-	private int dimID;
+    private static final String ID = "FSPSteamNetworkData";
+    private int dimID;
 
-	public SteamNetworkData(String s){
-		super(ID);
-	}
+    public SteamNetworkData(String s) {
+        super(ID);
+    }
 
-	public SteamNetworkData(int dimension) {
-		super(ID);
-		this.dimID = dimension;
-		markDirty();
-	}
+    public SteamNetworkData(int dimension) {
+        super(ID);
+        this.dimID = dimension;
+        markDirty();
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		dimID = nbt.getInteger("dimID");
-		SteamNetworkRegistry.getInstance().readFromNBT(nbt, dimID);
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("dimID",dimID);
-		SteamNetworkRegistry.getInstance().writeToNBT(nbt, dimID);
-	}
-
-	public static SteamNetworkData get(World world) {
-		SteamNetworkData data = (SteamNetworkData) world.perWorldStorage.loadData(SteamNetworkData.class, ID);
+    public static SteamNetworkData get(World world) {
+        SteamNetworkData data = (SteamNetworkData) world.perWorldStorage.loadData(SteamNetworkData.class, ID);
         if (data == null) {
-        	//Steamcraft.log.debug("!!NEED NEW STEAM NETWORK DATA!!");
+            //Steamcraft.log.debug("!!NEED NEW STEAM NETWORK DATA!!");
             data = new SteamNetworkData(world.provider.dimensionId);
             SteamNetworkRegistry.getInstance().newDimension(world.provider.dimensionId);
             world.perWorldStorage.setData(ID, data);
         }
         return data;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        dimID = nbt.getInteger("dimID");
+        SteamNetworkRegistry.getInstance().readFromNBT(nbt, dimID);
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        nbt.setInteger("dimID", dimID);
+        SteamNetworkRegistry.getInstance().writeToNBT(nbt, dimID);
     }
 }

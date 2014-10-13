@@ -1,19 +1,6 @@
 package flaxbeard.steamcraft.client.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.block.BlockFishGenocideMachine;
-
-public class BlockFishGenocideMachineRenderer /*implements ISimpleBlockRenderingHandler */{/*
+public class BlockFishGenocideMachineRenderer /*implements ISimpleBlockRenderingHandler */ {/*
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId,

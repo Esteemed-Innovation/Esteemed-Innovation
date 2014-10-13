@@ -1,10 +1,10 @@
 package flaxbeard.steamcraft.codechicken.lib.render.uv;
 
+import flaxbeard.steamcraft.codechicken.lib.math.MathHelper;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-
-import flaxbeard.steamcraft.codechicken.lib.math.MathHelper;
 
 public class UVTranslation extends UVTransformation {
     public double du;
@@ -34,8 +34,8 @@ public class UVTranslation extends UVTransformation {
     @Override
     public UVTransformation merge(UVTransformation next) {
         if (next instanceof UVTranslation) {
-            UVTranslation t = (UVTranslation)next;
-            return new UVTranslation(du+t.du, dv+t.dv);
+            UVTranslation t = (UVTranslation) next;
+            return new UVTranslation(du + t.du, dv + t.dv);
         }
 
         return null;

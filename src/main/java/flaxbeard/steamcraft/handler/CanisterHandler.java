@@ -9,101 +9,89 @@ import net.minecraft.world.World;
 
 public class CanisterHandler implements IRecipe {
 
-	@Override
-	public boolean matches(InventoryCrafting inv, World p_77569_2_) {
-		ItemStack output = null;
-		boolean hasCan = false;
-		boolean canCraft = true;
-		for (int i = 0; i< inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) != null) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (stack.getItem() == SteamcraftItems.canister) {
+    @Override
+    public boolean matches(InventoryCrafting inv, World p_77569_2_) {
+        ItemStack output = null;
+        boolean hasCan = false;
+        boolean canCraft = true;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null) {
+                ItemStack stack = inv.getStackInSlot(i);
+                if (stack.getItem() == SteamcraftItems.canister) {
 
-					if (hasCan == false) {
+                    if (hasCan == false) {
 
-						hasCan = true;
-					}
-					else
-					{
-						canCraft = false;
-					}
-				}
-				else
-				{
-					if (output == null) {
-						output = stack.copy();
-					}
-					else
-					{
-						canCraft = false;
-					}
-				}
-			}
-		}
+                        hasCan = true;
+                    } else {
+                        canCraft = false;
+                    }
+                } else {
+                    if (output == null) {
+                        output = stack.copy();
+                    } else {
+                        canCraft = false;
+                    }
+                }
+            }
+        }
 
-		if (canCraft && hasCan && output != null) {
+        if (canCraft && hasCan && output != null) {
 
-			if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+            if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack output = null;
-		boolean hasCan = false;
-		boolean canCraft = true;
-		for (int i = 0; i< inv.getSizeInventory(); i++) {
-			if (inv.getStackInSlot(i) != null) {
-				ItemStack stack = inv.getStackInSlot(i);
-				if (stack.getItem() == SteamcraftItems.canister) {
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting inv) {
+        ItemStack output = null;
+        boolean hasCan = false;
+        boolean canCraft = true;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) != null) {
+                ItemStack stack = inv.getStackInSlot(i);
+                if (stack.getItem() == SteamcraftItems.canister) {
 
-					if (hasCan == false) {
+                    if (hasCan == false) {
 
-						hasCan = true;
-					}
-					else
-					{
-						canCraft = false;
-					}
-				}
-				else
-				{
-					if (output == null) {
-						output = stack.copy();
-					}
-					else
-					{
-						canCraft = false;
-					}
-				}
-			}
-		}
-		if (canCraft && hasCan && output != null) {
-			if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
-				return null;
-			}
-			if (!output.hasTagCompound()) {
-				output.setTagCompound(new NBTTagCompound());
-			}
-			output.stackTagCompound.setInteger("canned", 0);
-			output.stackSize = 1;
-			return output;
-		}
-		return null;
-	}
+                        hasCan = true;
+                    } else {
+                        canCraft = false;
+                    }
+                } else {
+                    if (output == null) {
+                        output = stack.copy();
+                    } else {
+                        canCraft = false;
+                    }
+                }
+            }
+        }
+        if (canCraft && hasCan && output != null) {
+            if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
+                return null;
+            }
+            if (!output.hasTagCompound()) {
+                output.setTagCompound(new NBTTagCompound());
+            }
+            output.stackTagCompound.setInteger("canned", 0);
+            output.stackSize = 1;
+            return output;
+        }
+        return null;
+    }
 
-	@Override
-	public int getRecipeSize() {
-		return 0;
-	}
+    @Override
+    public int getRecipeSize() {
+        return 0;
+    }
 
-	@Override
-	public ItemStack getRecipeOutput() {
-		return null;
-	}
+    @Override
+    public ItemStack getRecipeOutput() {
+        return null;
+    }
 
 }

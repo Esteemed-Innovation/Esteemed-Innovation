@@ -1,52 +1,52 @@
 package flaxbeard.steamcraft.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 
 public class ItemExosuitJetpack extends ItemExosuitUpgrade {
-	public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
-	public ResourceLocation test = new ResourceLocation("steamcraft:textures/models/mortarItem.png");
+    public ResourceLocation tankTexture = new ResourceLocation("steamcraft:textures/models/armor/exo_3.png");
+    public ResourceLocation test = new ResourceLocation("steamcraft:textures/models/mortarItem.png");
 
-	public ItemExosuitJetpack() {
-		super(ExosuitSlot.bodyFront, "","", 0);
-	}
+    public ItemExosuitJetpack() {
+        super(ExosuitSlot.bodyFront, "", "", 0);
+    }
 
 
-	@Override
-	public boolean hasOverlay() {
-		return false;
-	}
+    @Override
+    public boolean hasOverlay() {
+        return false;
+    }
 
-	@Override
-	public boolean hasModel() {
-		return true;
-	}
+    @Override
+    public boolean hasModel() {
+        return true;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void renderModel(ModelExosuit model, Entity entity, int armor, float size, ItemStack me) {
-		if (armor == 1) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);
-			ModelRenderer Jetpack1 = new ModelRenderer(model, 28, 0);
-			ModelRenderer Jetpack2 = new ModelRenderer(model, 28, 0);
-			
-			Jetpack1.addBox(-7.0F, -2F, 3F, 4, 14, 4);
-			model.bipedBody.addChild(Jetpack1);
-			
-			Jetpack2.addBox(3.0F, -2F, 3F, 4, 14, 4);
-			model.bipedBody.addChild(Jetpack2);
-			
-			Jetpack1.render(size);
-			Jetpack2.render(size);
-			Jetpack1 = null;
-			Jetpack2 = null;
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void renderModel(ModelExosuit model, Entity entity, int armor, float size, ItemStack me) {
+        if (armor == 1) {
+            Minecraft.getMinecraft().renderEngine.bindTexture(tankTexture);
+            ModelRenderer Jetpack1 = new ModelRenderer(model, 28, 0);
+            ModelRenderer Jetpack2 = new ModelRenderer(model, 28, 0);
+
+            Jetpack1.addBox(-7.0F, -2F, 3F, 4, 14, 4);
+            model.bipedBody.addChild(Jetpack1);
+
+            Jetpack2.addBox(3.0F, -2F, 3F, 4, 14, 4);
+            model.bipedBody.addChild(Jetpack2);
+
+            Jetpack1.render(size);
+            Jetpack2.render(size);
+            Jetpack1 = null;
+            Jetpack2 = null;
 //			Minecraft.getMinecraft().renderEngine.bindTexture(test);
 //			ModelRenderer armGuard1 = new ModelRenderer(model, 28, 0);
 //			armGuard1.addBox(-4.0F, -3F, -3F, 1, 1, 6);
@@ -66,7 +66,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 //			armGuard2.render(size);
 //			armGuard1 = null;
 //			armGuard2 = null;
-		}
-	}
+        }
+    }
 
 }
