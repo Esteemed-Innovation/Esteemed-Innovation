@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.System.*;
 
 @Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpecialArmor, IEngineerable, ISteamChargable {

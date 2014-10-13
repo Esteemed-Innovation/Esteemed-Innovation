@@ -55,6 +55,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
         }
         model.renderCannon2();
         GL11.glPopMatrix();
+        GL11.glRotated(0, 180, 0, 0);
     }
 
     @Override
