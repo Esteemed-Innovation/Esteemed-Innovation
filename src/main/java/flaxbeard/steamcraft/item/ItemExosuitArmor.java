@@ -39,12 +39,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static java.lang.System.*;
+
 @Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpecialArmor, IEngineerable, ISteamChargable {
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
     public int slot;
     public IIcon grey;
+
+    private Object exoObject;
 
     public ItemExosuitArmor(int i, ArmorMaterial mat) {
         super(mat, 1, i);
@@ -175,18 +179,15 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
-        if (!entityLiving.isPotionActive(Steamcraft.semiInvisible)) {
-            ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
-            modelbiped.bipedHead.showModel = par2 == 0;
-            modelbiped.bipedHeadwear.showModel = par2 == 0;
-            modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
-            modelbiped.bipedRightArm.showModel = par2 == 1;
-            modelbiped.bipedLeftArm.showModel = par2 == 1;
-            modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-            modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-            return modelbiped;
-        }
-        return null;
+        ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
+        modelbiped.bipedHead.showModel = par2 == 0;
+        modelbiped.bipedHeadwear.showModel = par2 == 0;
+        modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
+        modelbiped.bipedRightArm.showModel = par2 == 1;
+        modelbiped.bipedLeftArm.showModel = par2 == 1;
+        modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
+        modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+        return modelbiped;
     }
 
     @Override
