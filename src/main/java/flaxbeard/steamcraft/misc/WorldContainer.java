@@ -1,85 +1,84 @@
 package flaxbeard.steamcraft.misc;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class WorldContainer implements IBlockAccess {
-	
-	IBlockAccess myWorld;
-	int allMeta;
-	int allBrightness = -1;
-	
-	public WorldContainer(IBlockAccess world, int meta) {
-		this.myWorld = world;
-		this.allMeta = meta;
-	}
-	
-	public WorldContainer(IBlockAccess world, int meta, int brightness) {
-		this.myWorld = world;
-		this.allMeta = meta;
-		this.allBrightness = brightness;
-	}
 
-	@Override
-	public Block getBlock(int var1, int var2, int var3) {
-		return myWorld.getBlock(var1, var2, var3);
-	}
+    IBlockAccess myWorld;
+    int allMeta;
+    int allBrightness = -1;
 
-	@Override
-	public TileEntity getTileEntity(int var1, int var2, int var3) {
-		return myWorld.getTileEntity(var1, var2, var3);
-	}
+    public WorldContainer(IBlockAccess world, int meta) {
+        this.myWorld = world;
+        this.allMeta = meta;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
+    public WorldContainer(IBlockAccess world, int meta, int brightness) {
+        this.myWorld = world;
+        this.allMeta = meta;
+        this.allBrightness = brightness;
+    }
 
-		return allBrightness != -1 ? allBrightness : myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
-	}
+    @Override
+    public Block getBlock(int var1, int var2, int var3) {
+        return myWorld.getBlock(var1, var2, var3);
+    }
 
-	@Override
-	public int getBlockMetadata(int var1, int var2, int var3) {
-		return allMeta;
-	}
+    @Override
+    public TileEntity getTileEntity(int var1, int var2, int var3) {
+        return myWorld.getTileEntity(var1, var2, var3);
+    }
 
-	@Override
-	public boolean isAirBlock(int var1, int var2, int var3) {
-		return myWorld.isAirBlock(var1, var2, var3);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BiomeGenBase getBiomeGenForCoords(int var1, int var2) {
-		return myWorld.getBiomeGenForCoords(var1, var2);
-	}
+        return allBrightness != -1 ? allBrightness : myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getHeight() {
-		return myWorld.getHeight();
-	}
+    @Override
+    public int getBlockMetadata(int var1, int var2, int var3) {
+        return allMeta;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean extendedLevelsInChunkCache() {
-		return myWorld.extendedLevelsInChunkCache();
-	}
+    @Override
+    public boolean isAirBlock(int var1, int var2, int var3) {
+        return myWorld.isAirBlock(var1, var2, var3);
+    }
 
-	@Override
-	public int isBlockProvidingPowerTo(int var1, int var2, int var3, int var4) {
-		return myWorld.isBlockProvidingPowerTo(var1, var2, var3, var4);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BiomeGenBase getBiomeGenForCoords(int var1, int var2) {
+        return myWorld.getBiomeGenForCoords(var1, var2);
+    }
 
-	@Override
-	public boolean isSideSolid(int x, int y, int z, ForgeDirection side,
-			boolean _default) {
-		return myWorld.isSideSolid(x, y, z, side, _default);
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getHeight() {
+        return myWorld.getHeight();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean extendedLevelsInChunkCache() {
+        return myWorld.extendedLevelsInChunkCache();
+    }
+
+    @Override
+    public int isBlockProvidingPowerTo(int var1, int var2, int var3, int var4) {
+        return myWorld.isBlockProvidingPowerTo(var1, var2, var3, var4);
+    }
+
+    @Override
+    public boolean isSideSolid(int x, int y, int z, ForgeDirection side,
+                               boolean _default) {
+        return myWorld.isSideSolid(x, y, z, side, _default);
+    }
 
 }

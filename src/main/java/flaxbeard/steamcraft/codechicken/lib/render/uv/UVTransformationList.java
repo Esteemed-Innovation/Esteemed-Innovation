@@ -3,15 +3,13 @@ package flaxbeard.steamcraft.codechicken.lib.render.uv;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class UVTransformationList extends UVTransformation
-{
+public class UVTransformationList extends UVTransformation {
     private ArrayList<UVTransformation> transformations = new ArrayList<UVTransformation>();
 
-    public UVTransformationList(UVTransformation... transforms)
-    {
-        for(UVTransformation t : transforms)
-            if(t instanceof UVTransformationList)
-                transformations.addAll(((UVTransformationList)t).transformations);
+    public UVTransformationList(UVTransformation... transforms) {
+        for (UVTransformation t : transforms)
+            if (t instanceof UVTransformationList)
+                transformations.addAll(((UVTransformationList) t).transformations);
             else
                 transformations.add(t);
 
@@ -19,20 +17,18 @@ public class UVTransformationList extends UVTransformation
     }
 
     @Override
-    public void apply(UV uv)
-    {
-        for(int i = 0; i < transformations.size(); i++)
+    public void apply(UV uv) {
+        for (int i = 0; i < transformations.size(); i++)
             transformations.get(i).apply(uv);
     }
 
     @Override
-    public UVTransformationList with(UVTransformation t)
-    {
-        if(t.isRedundant())
+    public UVTransformationList with(UVTransformation t) {
+        if (t.isRedundant())
             return this;
 
-        if(t instanceof UVTransformationList)
-            transformations.addAll(((UVTransformationList)t).transformations);
+        if (t instanceof UVTransformationList)
+            transformations.addAll(((UVTransformationList) t).transformations);
         else
             transformations.add(t);
 
@@ -40,13 +36,12 @@ public class UVTransformationList extends UVTransformation
         return this;
     }
 
-    public UVTransformationList prepend(UVTransformation t)
-    {
-        if(t.isRedundant())
+    public UVTransformationList prepend(UVTransformation t) {
+        if (t.isRedundant())
             return this;
 
-        if(t instanceof UVTransformationList)
-            transformations.addAll(0, ((UVTransformationList)t).transformations);
+        if (t instanceof UVTransformationList)
+            transformations.addAll(0, ((UVTransformationList) t).transformations);
         else
             transformations.add(0, t);
 
@@ -58,26 +53,26 @@ public class UVTransformationList extends UVTransformation
         ArrayList<UVTransformation> newList = new ArrayList<UVTransformation>(transformations.size());
         Iterator<UVTransformation> iterator = transformations.iterator();
         UVTransformation prev = null;
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             UVTransformation t = iterator.next();
-            if(t.isRedundant())
+            if (t.isRedundant())
                 continue;
 
-            if(prev != null) {
+            if (prev != null) {
                 UVTransformation m = prev.merge(t);
-                if(m == null)
+                if (m == null)
                     newList.add(prev);
-                else if(m.isRedundant())
+                else if (m.isRedundant())
                     t = null;
                 else
                     t = m;
             }
             prev = t;
         }
-        if(prev != null)
+        if (prev != null)
             newList.add(prev);
 
-        if(newList.size() < transformations.size())
+        if (newList.size() < transformations.size())
             transformations = newList;
     }
 
@@ -87,20 +82,18 @@ public class UVTransformationList extends UVTransformation
     }
 
     @Override
-    public UVTransformation inverse()
-    {
+    public UVTransformation inverse() {
         UVTransformationList rev = new UVTransformationList();
-        for(int i = transformations.size()-1; i >= 0; i--)
+        for (int i = transformations.size() - 1; i >= 0; i--)
             rev.with(transformations.get(i).inverse());
         return rev;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String s = "";
-        for(UVTransformation t : transformations)
-            s+="\n"+t.toString();
+        for (UVTransformation t : transformations)
+            s += "\n" + t.toString();
         return s.trim();
     }
 }

@@ -1,24 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import java.util.Random;
-
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
-import flaxbeard.steamcraft.tile.TileEntityBlockPlacer;
-
 public class BlockPlacer /*extends BlockSteamTransporter implements IWrenchable*/ {/*
 
     IIcon frontIcon;

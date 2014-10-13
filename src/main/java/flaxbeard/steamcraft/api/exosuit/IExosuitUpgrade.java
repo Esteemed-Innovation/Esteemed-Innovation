@@ -1,22 +1,26 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import java.util.List;
-
+import flaxbeard.steamcraft.client.render.model.ModelExosuit;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+
+import java.util.List;
 
 public interface IExosuitUpgrade {
-	
-	
-	public int renderPriority();
-	public ExosuitSlot getSlot();
-	public boolean hasOverlay();
-	public ResourceLocation getOverlay();
-	
-	public boolean hasModel();
-	public void renderModel(ModelExosuit model, Entity par1Entity, int armor, float par7, ItemStack me);
-	public void writeInfo(List list);
+
+
+    public int renderPriority();
+
+    public ExosuitSlot getSlot();
+
+    public boolean hasOverlay();
+
+    public ResourceLocation getOverlay();
+
+    public boolean hasModel();
+
+    public void renderModel(ModelExosuit model, Entity par1Entity, int armor, float par7, ItemStack me);
+
+    public void writeInfo(List list);
 }

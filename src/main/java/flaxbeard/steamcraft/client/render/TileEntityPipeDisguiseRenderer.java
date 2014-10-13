@@ -1,25 +1,13 @@
 package flaxbeard.steamcraft.client.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-
-import org.lwjgl.opengl.GL11;
-
-import flaxbeard.steamcraft.item.ItemWrench;
-import flaxbeard.steamcraft.misc.WorldContainer;
-import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class TileEntityPipeDisguiseRenderer extends TileEntitySpecialRenderer {
 
-	@Override
-	public void renderTileEntityAt(TileEntity te, double x,
-			double y, double z, float p_147500_8_) {
+    @Override
+    public void renderTileEntityAt(TileEntity te, double x,
+                                   double y, double z, float p_147500_8_) {
 //		TileEntitySteamPipe pipe = (TileEntitySteamPipe) te;
 //		Minecraft mc = Minecraft.getMinecraft();
 //		GL11.glPushMatrix();
@@ -50,6 +38,6 @@ public class TileEntityPipeDisguiseRenderer extends TileEntitySpecialRenderer {
 //			wc = null;
 //		}
 //		GL11.glPopMatrix();
-	}
+    }
 
 }

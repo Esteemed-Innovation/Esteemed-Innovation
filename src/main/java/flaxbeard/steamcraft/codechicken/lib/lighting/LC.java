@@ -6,9 +6,7 @@ import flaxbeard.steamcraft.codechicken.lib.vec.Rotation;
 import flaxbeard.steamcraft.codechicken.lib.vec.Vector3;
 
 
-
-public class LC implements Copyable<LC>
-{
+public class LC implements Copyable<LC> {
     public int side;
     public float fa;
     public float fb;

@@ -9,13 +9,12 @@ public class RenderSteamHorse extends RenderHorse {
 
     private static final ResourceLocation textures = new ResourceLocation("steamcraft:textures/models/steamHorse.png");
 
-    
-	public RenderSteamHorse(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
-	}
 
-	protected ResourceLocation getEntityTexture(EntityHorse par1EntityHorse)
-    {
+    public RenderSteamHorse(ModelBase par1ModelBase, float par2) {
+        super(par1ModelBase, par2);
+    }
+
+    protected ResourceLocation getEntityTexture(EntityHorse par1EntityHorse) {
         return textures;
     }
 }

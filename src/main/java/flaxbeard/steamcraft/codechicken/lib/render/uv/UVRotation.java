@@ -1,13 +1,12 @@
 package flaxbeard.steamcraft.codechicken.lib.render.uv;
 
+import flaxbeard.steamcraft.codechicken.lib.math.MathHelper;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-import flaxbeard.steamcraft.codechicken.lib.math.MathHelper;
-
-public class UVRotation extends UVTransformation
-{
+public class UVRotation extends UVTransformation {
     public double angle;
 
     /**
@@ -21,8 +20,8 @@ public class UVRotation extends UVTransformation
     public void apply(UV uv) {
         double c = MathHelper.cos(angle);
         double s = MathHelper.sin(angle);
-        double u2 = c*uv.u + s*uv.v;
-        uv.v = - s*uv.u + c*uv.v;
+        double u2 = c * uv.u + s * uv.v;
+        uv.v = -s * uv.u + c * uv.v;
         uv.u = u2;
     }
 
@@ -33,8 +32,8 @@ public class UVRotation extends UVTransformation
 
     @Override
     public UVTransformation merge(UVTransformation next) {
-        if(next instanceof UVRotation)
-            return new UVRotation(angle+((UVRotation)next).angle);
+        if (next instanceof UVRotation)
+            return new UVRotation(angle + ((UVRotation) next).angle);
 
         return null;
     }
@@ -45,8 +44,7 @@ public class UVRotation extends UVTransformation
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
         return "UVRotation(" + new BigDecimal(angle, cont) + ")";
     }

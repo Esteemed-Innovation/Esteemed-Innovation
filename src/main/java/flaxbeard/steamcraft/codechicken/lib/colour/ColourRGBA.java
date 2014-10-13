@@ -17,6 +17,27 @@ public class ColourRGBA extends Colour {
         super(colour);
     }
 
+    public static int pack(Colour colour) {
+        return (colour.r & 0xFF) << 24 | (colour.g & 0xFF) << 16 | (colour.b & 0xFF) << 8 | (colour.a & 0xFF);
+    }
+
+    public static int multiply(int c1, int c2) {
+        if (c1 == -1) return c2;
+        if (c2 == -1) return c1;
+        int r = (((c1 >>> 24) * (c2 >>> 24)) & 0xFF00) << 16;
+        int g = (((c1 >> 16 & 0xFF) * (c2 >> 16 & 0xFF)) & 0xFF00) << 8;
+        int b = ((c1 >> 8 & 0xFF) * (c2 >> 8 & 0xFF)) & 0xFF00;
+        int a = ((c1 & 0xFF) * (c2 & 0xFF)) >> 8;
+        return r | g | b | a;
+    }
+
+    public static int multiplyC(int c, float f) {
+        int r = (int) ((c >>> 24) * f);
+        int g = (int) ((c >> 16 & 0xFF) * f);
+        int b = (int) ((c >> 8 & 0xFF) * f);
+        return r << 24 | g << 16 | b << 8 | c & 0xFF;
+    }
+
     public int pack() {
         return pack(this);
     }
@@ -24,26 +45,5 @@ public class ColourRGBA extends Colour {
     @Override
     public Colour copy() {
         return new ColourRGBA(this);
-    }
-
-    public static int pack(Colour colour) {
-        return (colour.r & 0xFF) << 24 | (colour.g & 0xFF) << 16 | (colour.b & 0xFF) << 8 | (colour.a & 0xFF);
-    }
-
-    public static int multiply(int c1, int c2) {
-        if(c1 == -1) return c2;
-        if(c2 == -1) return c1;
-        int r = (((c1 >>> 24) * (c2 >>> 24)) & 0xFF00) << 16;
-        int g = (((c1 >> 16 & 0xFF) * (c2 >> 16 & 0xFF)) & 0xFF00) << 8;
-        int b = ((c1 >> 8 & 0xFF) * (c2 >> 8 & 0xFF)) & 0xFF00;
-        int a = ((c1 & 0xFF) * (c2 & 0xFF)) >> 8;
-        return r|g|b|a;
-    }
-
-    public static int multiplyC(int c, float f) {
-        int r = (int) ((c >>> 24) * f);
-        int g = (int) ((c >> 16 & 0xFF) * f);
-        int b = (int) ((c >> 8 & 0xFF) * f);
-        return r<<24 | g<<16 | b<<8 | c&0xFF;
     }
 }
