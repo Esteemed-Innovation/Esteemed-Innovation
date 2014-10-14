@@ -64,7 +64,6 @@ public class ModelExosuit extends ModelBiped {
         super(armorType == 3 ? 1.0F : 0.5F, 0, 64, 32);
         hasOverlay = false;
         armor = armorType;
-        me = ItemStack;
         if (ItemStack.hasTagCompound()) {
             if (ItemStack.stackTagCompound.hasKey("plate")) {
                 hasOverlay = true;
