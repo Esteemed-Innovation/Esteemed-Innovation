@@ -60,16 +60,16 @@ public class ModelExosuit extends ModelBiped {
     private int armor;
     private ItemStack me;
 
-    public ModelExosuit(ItemStack itemStack, int armorType) {
+    public ModelExosuit(int armorType) {
         super(armorType == 3 ? 1.0F : 0.5F, 0, 64, 32);
         hasOverlay = false;
         armor = armorType;
-        me = itemStack;
-        if (itemStack.hasTagCompound()) {
-            if (itemStack.stackTagCompound.hasKey("plate")) {
+        me = ItemStack;
+        if (ItemStack.hasTagCompound()) {
+            if (ItemStack.stackTagCompound.hasKey("plate")) {
                 hasOverlay = true;
-                String key = itemStack.stackTagCompound.getString("plate");
-                texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(key, (ItemExosuitArmor) itemStack.getItem(), armorType));
+                String key = ItemStack.stackTagCompound.getString("plate");
+                texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(key, (ItemExosuitArmor) ItemStack.getItem(), armorType));
             }
         }
         if (armor == 0) {
@@ -146,7 +146,12 @@ public class ModelExosuit extends ModelBiped {
 
     @Override
     public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
-        GL11.glPushMatrix();
+        if (!(entity instanceof EntityLivingBase)) {
+            return;
+        }
+        ItemStack me = ((EntityLivingBase)entity).getEquipmentInSlot(this.armor + 1);
+
+            GL11.glPushMatrix();
 //        if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
 //	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
 //	        GL11.glDepthMask(false);
@@ -154,74 +159,45 @@ public class ModelExosuit extends ModelBiped {
 //	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 //	        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
 //        }
-        ItemExosuitArmor item = ((ItemExosuitArmor) me.getItem());
-        if (item.hasUpgrade(me, SteamcraftItems.enderShroud)) {
-            if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).hurtTime != 0) {
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) ((EntityLivingBase) entity).hurtTime / 9F);
-                GL11.glDepthMask(false);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            } else {
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.0F);
-                GL11.glDepthMask(false);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
-            }
-        }
-
-        if (armor == 0) {
-            if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
-                for (ModelRenderer horn : horn1) {
-                    horn.showModel = false;
-                }
-                for (ModelRenderer horn : horn2) {
-                    horn.showModel = false;
-                }
-                for (ModelRenderer horn : horn3) {
-                    horn.showModel = false;
+            ItemExosuitArmor item = ((ItemExosuitArmor) me.getItem());
+            if (item.hasUpgrade(me, SteamcraftItems.enderShroud)) {
+                if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).hurtTime != 0) {
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, (float) ((EntityLivingBase) entity).hurtTime / 9F);
+                    GL11.glDepthMask(false);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+                } else {
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.0F);
+                    GL11.glDepthMask(false);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
                 }
             }
-        }
-        //this.Jetpack1.showModel = false;
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
-        //	this.Jetpack2.showModel = false;
-        penguinBody.showModel = false;
-        penguinArm1.showModel = false;
-        penguinArm2.showModel = false;
-        penguinHead.showModel = false;
-        penguinNose.showModel = false;
 
-        this.bipedHead.render(par7);
-        this.bipedBody.render(par7);
-        this.bipedRightArm.render(par7);
-        this.bipedLeftArm.render(par7);
-        this.bipedRightLeg.render(par7);
-        this.bipedLeftLeg.render(par7);
-        this.bipedHeadwear.render(par7);
+            if (armor == 0) {
+                if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
+                    for (ModelRenderer horn : horn1) {
+                        horn.showModel = false;
+                    }
+                    for (ModelRenderer horn : horn2) {
+                        horn.showModel = false;
+                    }
+                    for (ModelRenderer horn : horn3) {
+                        horn.showModel = false;
+                    }
+                }
+            }
+            //this.Jetpack1.showModel = false;
+            this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+            //	this.Jetpack2.showModel = false;
+            penguinBody.showModel = false;
+            penguinArm1.showModel = false;
+            penguinArm2.showModel = false;
+            penguinHead.showModel = false;
+            penguinNose.showModel = false;
 
-
-        if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("joshiejack")) {
-            penguinBody.showModel = true;
-            penguinArm1.showModel = true;
-            penguinArm2.showModel = true;
-            penguinHead.showModel = true;
-            penguinNose.showModel = true;
-            Minecraft.getMinecraft().renderEngine.bindTexture(test);
-            this.bipedHead.render(par7);
-        }
-        if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("Succubism")) {
-            this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
-            this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
-            this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
-            this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
-            Minecraft.getMinecraft().renderEngine.bindTexture(horns);
-            this.hornLeftBase.render(par7);
-            this.hornRightBase.render(par7);
-        }
-        if (hasOverlay) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             this.bipedHead.render(par7);
             this.bipedBody.render(par7);
             this.bipedRightArm.render(par7);
@@ -229,92 +205,122 @@ public class ModelExosuit extends ModelBiped {
             this.bipedRightLeg.render(par7);
             this.bipedLeftLeg.render(par7);
             this.bipedHeadwear.render(par7);
-        }
 
-        if (item.getStackInSlot(me, 2) != null) {
-            Item vanity = item.getStackInSlot(me, 2).getItem();
-            int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(me, 2));
-            int dye = -1;
-            outerloop:
-            for (int id : ids) {
-                String str = OreDictionary.getOreName(id);
-                if (str.contains("dye")) {
-                    for (int i = 0; i < dyes.length; i++) {
-                        if (dyes[i].equals(str.substring(3))) {
-                            dye = 15 - i;
-                            break outerloop;
+
+            if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("joshiejack")) {
+                penguinBody.showModel = true;
+                penguinArm1.showModel = true;
+                penguinArm2.showModel = true;
+                penguinHead.showModel = true;
+                penguinNose.showModel = true;
+                Minecraft.getMinecraft().renderEngine.bindTexture(test);
+                this.bipedHead.render(par7);
+            }
+            if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("Succubism")) {
+                this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
+                this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
+                this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
+                this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
+                Minecraft.getMinecraft().renderEngine.bindTexture(horns);
+                this.hornLeftBase.render(par7);
+                this.hornRightBase.render(par7);
+            }
+            if (hasOverlay) {
+                Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+                this.bipedHead.render(par7);
+                this.bipedBody.render(par7);
+                this.bipedRightArm.render(par7);
+                this.bipedLeftArm.render(par7);
+                this.bipedRightLeg.render(par7);
+                this.bipedLeftLeg.render(par7);
+                this.bipedHeadwear.render(par7);
+            }
+
+            if (item.getStackInSlot(me, 2) != null) {
+                Item vanity = item.getStackInSlot(me, 2).getItem();
+                int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(me, 2));
+                int dye = -1;
+                outerloop:
+                for (int id : ids) {
+                    String str = OreDictionary.getOreName(id);
+                    if (str.contains("dye")) {
+                        for (int i = 0; i < dyes.length; i++) {
+                            if (dyes[i].equals(str.substring(3))) {
+                                dye = 15 - i;
+                                break outerloop;
+                            }
                         }
                     }
                 }
-            }
-            if (dye != -1) {
-                float[] color = EntitySheep.fleeceColorTable[dye];
-                GL11.glColor3f(color[0], color[1], color[2]);
-                //GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
-                Minecraft.getMinecraft().renderEngine.bindTexture(armor == 2 ? g2 : g1);
-                this.bipedHead.render(par7);
-                this.bipedBody.render(par7);
-                this.bipedRightArm.render(par7);
-                this.bipedLeftArm.render(par7);
-                this.bipedRightLeg.render(par7);
-                this.bipedLeftLeg.render(par7);
-                this.bipedHeadwear.render(par7);
-                if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("Succubism")) {
-                    this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
-                    this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
-                    this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
-                    this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
-                    Minecraft.getMinecraft().renderEngine.bindTexture(horns_g);
-                    this.hornLeftBase.render(par7);
-                    this.hornRightBase.render(par7);
+                if (dye != -1) {
+                    float[] color = EntitySheep.fleeceColorTable[dye];
+                    GL11.glColor3f(color[0], color[1], color[2]);
+                    //GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
+                    Minecraft.getMinecraft().renderEngine.bindTexture(armor == 2 ? g2 : g1);
+                    this.bipedHead.render(par7);
+                    this.bipedBody.render(par7);
+                    this.bipedRightArm.render(par7);
+                    this.bipedLeftArm.render(par7);
+                    this.bipedRightLeg.render(par7);
+                    this.bipedLeftLeg.render(par7);
+                    this.bipedHeadwear.render(par7);
+                    if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("Succubism")) {
+                        this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
+                        this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
+                        this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
+                        this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
+                        Minecraft.getMinecraft().renderEngine.bindTexture(horns_g);
+                        this.hornLeftBase.render(par7);
+                        this.hornRightBase.render(par7);
+                    }
+                    GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 }
-                GL11.glColor3f(1.0F, 1.0F, 1.0F);
             }
-        }
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(hornTexture);
-        IExosuitUpgrade[] upgrades = ((ItemExosuitArmor) me.getItem()).getUpgrades(me);
-        ArrayList<IExosuitUpgrade> upgrades2 = new ArrayList<IExosuitUpgrade>(Arrays.asList(upgrades));
-        Collections.sort(upgrades2, comparator);
-        for (IExosuitUpgrade upgrade : upgrades2) {
-            if (upgrade.hasOverlay()) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(upgrade.getOverlay());
-                this.bipedHead.render(par7);
-                this.bipedBody.render(par7);
-                this.bipedRightArm.render(par7);
-                this.bipedLeftArm.render(par7);
-                this.bipedRightLeg.render(par7);
-                this.bipedLeftLeg.render(par7);
-                this.bipedHeadwear.render(par7);
-            }
-            if (upgrade.hasModel()) {
-                upgrade.renderModel(this, entity, armor, par7, me);
-            }
-        }
-
-
-        if (armor == 0) {
-            if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
-                Minecraft.getMinecraft().renderEngine.bindTexture(hornTexture);
-
-                for (ModelRenderer horn : horn1) {
-                    horn.showModel = true;
-                    //horn.render(par7);
+            Minecraft.getMinecraft().renderEngine.bindTexture(hornTexture);
+            IExosuitUpgrade[] upgrades = ((ItemExosuitArmor) me.getItem()).getUpgrades(me);
+            ArrayList<IExosuitUpgrade> upgrades2 = new ArrayList<IExosuitUpgrade>(Arrays.asList(upgrades));
+            Collections.sort(upgrades2, comparator);
+            for (IExosuitUpgrade upgrade : upgrades2) {
+                if (upgrade.hasOverlay()) {
+                    Minecraft.getMinecraft().renderEngine.bindTexture(upgrade.getOverlay());
+                    this.bipedHead.render(par7);
+                    this.bipedBody.render(par7);
+                    this.bipedRightArm.render(par7);
+                    this.bipedLeftArm.render(par7);
+                    this.bipedRightLeg.render(par7);
+                    this.bipedLeftLeg.render(par7);
+                    this.bipedHeadwear.render(par7);
                 }
-                for (ModelRenderer horn : horn2) {
-                    horn.showModel = true;
-                    //horn.render(par7);
+                if (upgrade.hasModel()) {
+                    upgrade.renderModel(this, entity, armor, par7, me);
                 }
-                for (ModelRenderer horn : horn3) {
-                    horn.showModel = true;
-                    //horn.render(par7);
-                }
-                this.bipedHead.render(par7);
             }
-        }
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDepthMask(true);
-        GL11.glPopMatrix();
+
+
+            if (armor == 0) {
+                if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
+                    Minecraft.getMinecraft().renderEngine.bindTexture(hornTexture);
+
+                    for (ModelRenderer horn : horn1) {
+                        horn.showModel = true;
+                        //horn.render(par7);
+                    }
+                    for (ModelRenderer horn : horn2) {
+                        horn.showModel = true;
+                        //horn.render(par7);
+                    }
+                    for (ModelRenderer horn : horn3) {
+                        horn.showModel = true;
+                        //horn.render(par7);
+                    }
+                    this.bipedHead.render(par7);
+                }
+            }
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDepthMask(true);
+            GL11.glPopMatrix();
+
     }
 
     private ModelRenderer[] addPairHorns(float height, float zangle) {
