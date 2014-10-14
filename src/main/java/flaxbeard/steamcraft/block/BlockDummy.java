@@ -1,11 +1,16 @@
 package flaxbeard.steamcraft.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockDummy extends BlockContainer {
@@ -51,6 +56,16 @@ public class BlockDummy extends BlockContainer {
             world.setBlockToAir(x, y, z);
         }
 
+    }
+
+    @Override
+    public boolean isAir(IBlockAccess world, int x, int y, int z){
+        return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(EntityPlayer player, int meta){
+        return false;
     }
 
 

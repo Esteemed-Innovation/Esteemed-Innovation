@@ -42,6 +42,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -86,6 +87,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +114,7 @@ public class SteamcraftEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
     private HashMap<Integer, Boolean> lastHadCustomer = new HashMap<Integer, Boolean>();
+    private static boolean isShiftDown;
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
@@ -1376,14 +1381,15 @@ public class SteamcraftEventHandler {
         return num;
     }
 
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void handleBook(PlayerInteractEvent event) {
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-            Minecraft mc = Minecraft.getMinecraft();
-            if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
-                event.setCanceled(true);
-            }
+                Minecraft mc = Minecraft.getMinecraft();
+                if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
+                    event.setCanceled(true);
+                }
         }
     }
 
