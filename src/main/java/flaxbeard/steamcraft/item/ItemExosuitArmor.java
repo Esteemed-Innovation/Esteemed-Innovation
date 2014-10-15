@@ -32,13 +32,14 @@ import net.minecraft.util.*;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
+import sun.security.util.Cache;
 import vazkii.botania.api.item.IPixieSpawner;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 @Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpecialArmor, IEngineerable, ISteamChargable {
@@ -173,29 +174,36 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return super.getColorFromItemStack(stack, pass);
     }
 
-    public static final ModelExosuit[] modelbiped = new ModelExosuit[]{new ModelExosuit(0), new ModelExosuit(1), new ModelExosuit(2), new ModelExosuit(3)};
+    @SideOnly(Side.CLIENT)
+    private boolean fixShit(ItemStack stack, int par1){
+        if (stack.hasTagCompound()) {
+            if (stack.stackTagCompound.hasKey("plate")) {
+                return true;
+            }
+            return true;
+        }
+        return false;
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
-        if (modelbiped != null){
-            return modelbiped[par2];
-            /*
-            headModel.bipedHead.showModel = par2 == 0;
-            headModel.bipedHeadwear.showModel = par2 == 0;
-            chestModel.bipedBody.showModel = par2 == 1 || par2 == 2;
+        ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
+        if (fixShit(itemStack, armorType)) {
+            modelbiped.bipedHead.showModel = par2 == 0;
+            modelbiped.bipedHeadwear.showModel = par2 == 0;
+            modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
             modelbiped.bipedRightArm.showModel = par2 == 1;
             modelbiped.bipedLeftArm.showModel = par2 == 1;
             modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
             modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
             return modelbiped;
-            */
-        } return null;
+            }
+        return null;
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player,
-                                         ItemStack armor, DamageSource source, double damage, int armorType) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int armorType) {
         ItemArmor armorStack = (ItemArmor) armor.getItem();
         if (armor.hasTagCompound()) {
             if (armor.stackTagCompound.hasKey("plate")) {
