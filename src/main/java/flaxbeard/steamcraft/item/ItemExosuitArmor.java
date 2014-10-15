@@ -174,7 +174,6 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return super.getColorFromItemStack(stack, pass);
     }
 
-    @SideOnly(Side.CLIENT)
     private boolean fixShit(ItemStack stack, int par1){
         if (stack.hasTagCompound()) {
             if (stack.stackTagCompound.hasKey("plate")) {
