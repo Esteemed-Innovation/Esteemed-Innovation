@@ -174,12 +174,12 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return super.getColorFromItemStack(stack, pass);
     }
 
-    private boolean fixShit(ItemStack stack, int par1){
+    public static boolean hasPlate(ItemStack stack, int par1){
         if (stack.hasTagCompound()) {
             if (stack.stackTagCompound.hasKey("plate")) {
                 return true;
             }
-            return true;
+            return false;
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
         ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
-        if (fixShit(itemStack, armorType)) {
+        if (hasPlate(itemStack, armorType)) {
             modelbiped.bipedHead.showModel = par2 == 0;
             modelbiped.bipedHeadwear.showModel = par2 == 0;
             modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;

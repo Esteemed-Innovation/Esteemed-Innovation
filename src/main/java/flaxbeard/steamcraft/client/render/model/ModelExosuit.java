@@ -65,13 +65,6 @@ public class ModelExosuit extends ModelBiped {
         hasOverlay = false;
         armor = armorType;
         me = itemStack;
-        if (itemStack.hasTagCompound()) {
-            if (itemStack.stackTagCompound.hasKey("plate")) {
-                hasOverlay = true;
-                String key = itemStack.stackTagCompound.getString("plate");
-                texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(key, (ItemExosuitArmor) itemStack.getItem(), armorType));
-            }
-        }
         if (armor == 0) {
             if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
                 horn1 = addPairHorns(-8.0F, 35.0F);
@@ -79,6 +72,10 @@ public class ModelExosuit extends ModelBiped {
                 horn3 = addPairHorns(-4.0F, -5.0F);
 
             }
+        }
+        if (ItemExosuitArmor.hasPlate(itemStack, armorType)){
+            hasOverlay = true;
+            texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(itemStack.stackTagCompound.getString("plate"), (ItemExosuitArmor) itemStack.getItem(), armorType));
         }
 
         penguinBody = new ModelRenderer(this, 0, 16).setTextureSize(64, 32);
@@ -138,7 +135,7 @@ public class ModelExosuit extends ModelBiped {
 //		if (itemStack.getItem() == SteamcraftItems.exoArmorBody && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2) != null && ((ItemExosuitArmor)itemStack.getItem()).getStackInSlot(itemStack, 2).getItem() == SteamcraftItems.jetpack) {
 //			Jetpack1.addBox(-7.0F, -2F, 3F, 4, 14, 4);
 //			bipedBody.addChild(Jetpack1);
-//			
+//
 //			Jetpack2.addBox(3.0F, -2F, 3F, 4, 14, 4);
 //			bipedBody.addChild(Jetpack2);
 //		}
