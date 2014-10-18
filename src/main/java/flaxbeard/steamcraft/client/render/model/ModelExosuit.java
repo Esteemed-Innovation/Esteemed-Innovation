@@ -149,6 +149,7 @@ public class ModelExosuit extends ModelBiped {
     public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
         if (this != null) {
             GL11.glPushMatrix();
+
 //          if ((entity instanceof EntityLivingBase) && ((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
 //	            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.15F);
 //	            GL11.glDepthMask(false);
