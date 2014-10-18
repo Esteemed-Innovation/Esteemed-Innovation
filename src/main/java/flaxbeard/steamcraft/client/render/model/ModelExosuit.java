@@ -73,9 +73,13 @@ public class ModelExosuit extends ModelBiped {
 
             }
         }
-        if (ItemExosuitArmor.hasPlate(itemStack, armorType)){
-            hasOverlay = true;
-            texture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(itemStack.stackTagCompound.getString("plate"), (ItemExosuitArmor) itemStack.getItem(), armorType));
+        if (armor == 0) {
+            if (((ItemExosuitArmor) me.getItem()).hasPlates(me) && UtilPlates.getPlate(me.stackTagCompound.getString("plate")).getIdentifier() == "Yeti") {
+                horn1 = addPairHorns(-8.0F, 35.0F);
+                horn2 = addPairHorns(-6.0F, 15.0F);
+                horn3 = addPairHorns(-4.0F, -5.0F);
+
+            }
         }
 
         penguinBody = new ModelRenderer(this, 0, 16).setTextureSize(64, 32);
