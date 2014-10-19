@@ -62,13 +62,13 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
         return this.blockIcon;
     }
 
-    /*
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         this.blockIcon = register.registerIcon("steamcraft:blankTexture");
     }
-    */
+
 
     public TileEntity createNewTileEntity(World var1, int var2) {
         return new TileEntitySaw();
