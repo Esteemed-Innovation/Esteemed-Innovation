@@ -51,7 +51,6 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
     public void readFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
         this.hasBeenSet = access.getBoolean("hasBeenSet");
-        NBTTagList nbttaglist = (NBTTagList) access.getTag("Items");
     }
 
     @Override
@@ -59,8 +58,6 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
         super.writeToNBT(access);
         access.setBoolean("hasBeenSet", hasBeenSet);
         NBTTagList nbttaglist = new NBTTagList();
-
-        access.setTag("Items", nbttaglist);
     }
 
     @Override
