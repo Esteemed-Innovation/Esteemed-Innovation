@@ -259,7 +259,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
     private boolean hasStuffToSaw(){
         int[] target = getTarget(1);
         int x = target[0], y = yCoord, z = target[1];
-        if (worldObj.getBlock(x, y, z) == Blocks.log && worldObj.getBlock(x, y, z) == Blocks.log2){
+        if (worldObj.getBlock(x, y, z) == Blocks.log){
             return true;
         } else {
             return false;

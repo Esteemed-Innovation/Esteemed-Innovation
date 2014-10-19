@@ -136,6 +136,7 @@ public class Steamcraft {
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
+        registerTileEntity(TileEntitySaw.class, "buzzsaw");
 
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
