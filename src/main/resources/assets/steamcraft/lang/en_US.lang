@@ -501,6 +501,7 @@ tile.steamcraft:blockBrass.name=Block of Brass
 tile.steamcraft:blockCopper.name=Block of Copper
 tile.steamcraft:blockZinc.name=Block of Zinc
 
+tile.steamcraft:saw.name=Buzzsaw
 tile.steamcraft:blockPlacer.name=Block Placer
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:chargingPad.name=Filling Pad

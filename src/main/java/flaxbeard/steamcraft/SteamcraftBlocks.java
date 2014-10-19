@@ -51,6 +51,7 @@ public class SteamcraftBlocks {
     public static Block thumper;
     public static Block thumperDummy;
     public static Block chargingPad;
+    public static Block saw;
 
     public static Block fan;
     public static Block vacuum;
@@ -165,6 +166,10 @@ public class SteamcraftBlocks {
     }
 
     public static void registerSteamMachines() {
+        if (Config.enableSaw){
+            saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(saw, "saw");
+        }
        /* if (Config.enableBlockPlacer){
             blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
             GameRegistry.registerBlock(blockPlacer, "blockPlacer");

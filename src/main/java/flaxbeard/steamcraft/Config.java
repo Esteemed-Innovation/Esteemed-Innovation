@@ -20,7 +20,7 @@ public class Config {
     public static final int reinforcedTankCap = 72000;
     public static final int uberReinforcedTankCap = 144000;
 
-    public static final String VERSION = "0.26.4";
+    public static final String VERSION = "0.27.0";
     public static boolean genCopper;
     public static boolean genZinc;
     public static boolean passiveDrain;
@@ -68,6 +68,7 @@ public class Config {
     public static boolean enableValvePipe;
     public static boolean enableChargingPad;
     public static boolean enableWrench;
+    public static boolean enableSaw;
 
     // items
     public static boolean enableAstrolabe;
@@ -194,6 +195,7 @@ public class Config {
 
 
         // BLOCKS
+        enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean(true);
         enableBlockPlacer = config.get("Blocks", "Enable Block Placer [NYI]", true).getBoolean(true);
         enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
         enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
