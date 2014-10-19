@@ -76,8 +76,8 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
     }
 
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        TileEntitySmasher smasher = (TileEntitySmasher) world.getTileEntity(x, y, z);
-        smasher.blockUpdate();
+        TileEntitySaw saw = (TileEntitySaw) world.getTileEntity(x, y, z);
+        saw.blockUpdate();
     }
 
     public boolean isOpaqueCube() {
