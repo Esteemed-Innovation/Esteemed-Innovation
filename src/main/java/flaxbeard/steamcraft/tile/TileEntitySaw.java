@@ -152,7 +152,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
             ForgeDirection[] directions = new ForgeDirection[5];
             int i = 0;
             for (ForgeDirection direction : ForgeDirection.values()){
-                if (direction != myDir){
+                if (direction != myDir && direction != ForgeDirection.UP){
                     directions[i] = direction;
                     i++;
                 }

@@ -66,7 +66,7 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.blockIcon = register.registerIcon("steamcraft:blankTexture");
+        this.blockIcon = register.registerIcon("steamcraft:blockBrass");
     }
 
 
