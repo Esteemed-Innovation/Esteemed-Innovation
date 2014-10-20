@@ -72,6 +72,7 @@ public class Steamcraft {
     public static int boilerRenderID;
     public static int customCraftingTableRenderID;
     public static int furnaceRenderID;
+    public static int sawRenderID;
     public static boolean steamRegistered;
     public static Potion semiInvisible;
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
@@ -165,6 +166,7 @@ public class Steamcraft {
         boilerRenderID = RenderingRegistry.getNextAvailableRenderId();
         customCraftingTableRenderID = RenderingRegistry.getNextAvailableRenderId();
         furnaceRenderID = RenderingRegistry.getNextAvailableRenderId();
+        sawRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 
         proxy.registerRenderers();

@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySaw;
@@ -25,10 +26,28 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
     @SideOnly(Side.CLIENT)
     public IIcon frontIcon;
 
+    public int pass = 0;
+
 
     public BlockSaw() {
         super(Material.iron);
 
+    }
+
+    public static int determineOrientation(World world, int par1, int par2, int par3, EntityLivingBase par4){
+        if (MathHelper.abs((float) par4.posX - (float) par1) < 2.0F && MathHelper.abs((float) par4.posZ - (float) par3) < 2.0F){
+            double d0 = par4.posY + 1.82D - (double) par4.yOffset;
+
+            if (d0 - (double) par2 > 2.0D){
+                return 1;
+            }
+            if ((double) par2 - 20 > 0.0D){
+                return 0;
+            }
+        }
+
+        int floDub = MathHelper.floor_double((double) (par4.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        return floDub == 0 ? 2 : (floDub == 1 ? 5 : (floDub == 2 ? 3 : (floDub == 3 ? 4 : 0)));
     }
 
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
@@ -69,6 +88,11 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
         this.blockIcon = register.registerIcon("steamcraft:blockBrass");
     }
 
+    @Override
+    public boolean canRenderInPass(int x){
+        pass = x;
+        return x == 0;
+    }
 
     public TileEntity createNewTileEntity(World var1, int var2) {
         return new TileEntitySaw();
@@ -128,5 +152,13 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
             }
             return false;
         }
+    }
+
+    public boolean renderAsNormalBlock(){
+        return false;
+    }
+
+    public int getRenderType(){
+        return Steamcraft.sawRenderID;
     }
 }
