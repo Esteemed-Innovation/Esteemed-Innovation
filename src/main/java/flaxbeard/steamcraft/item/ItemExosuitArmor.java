@@ -10,7 +10,8 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.*;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
@@ -128,8 +129,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.dyes.length; i++) {
-                        if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
+                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }
@@ -156,8 +157,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.dyes.length; i++) {
-                        if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
+                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }
@@ -175,15 +176,10 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
-        ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
-        modelbiped.bipedHead.showModel = par2 == 0;
-        modelbiped.bipedHeadwear.showModel = par2 == 0;
-        modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
-        modelbiped.bipedRightArm.showModel = par2 == 1;
-        modelbiped.bipedLeftArm.showModel = par2 == 1;
-        modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-        modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-        return modelbiped;
+        if (!(entityLiving instanceof EntityPlayer))
+            return null;
+
+        return ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorType);
     }
 
     @Override
@@ -589,8 +585,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                     for (int id : ids) {
                         String str = OreDictionary.getOreName(id);
                         if (str.contains("dye")) {
-                            for (int i = 0; i < ModelExosuit.dyes.length; i++) {
-                                if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+                            for (int i = 0; i < ModelExosuit.DYES.length; i++) {
+                                if (ModelExosuit.DYES[i].equals(str.substring(3))) {
                                     dye = 15 - i;
                                     break outerloop;
                                 }
@@ -598,7 +594,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                         }
                     }
                     if (dye != -1) {
-                        list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.color." + ModelExosuit.dyes[15 - dye].toLowerCase()));
+                        list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.color." + ModelExosuit.DYES[15 - dye].toLowerCase()));
                     } else {
                         list.add(EnumChatFormatting.DARK_GREEN + stack.getDisplayName());
                     }
