@@ -22,20 +22,50 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.config.ConfigItems;
 
 public class ThaumcraftIntegration {
+    
+    // Thaumcraft Items
+    public static Item itemResource;
+    public static Item itemGoggles;
+    public static Item itemNugget;
+    public static Item itemSwordThaumium;
+    public static Item itemPickThaumium;
+    public static Item itemAxeThaumium;
+    public static Item itemHoeThaumium;
+    public static Item itemShovelThaumium;
+    public static Item itemBootsThaumium;
+    public static Item itemChestThaumium;
+    public static Item itemHelmetThaumium;
+    public static Item itemLegsThaumium;
+    
+    // Our Items
     public static Item goggleUpgrade;
     public static Item thaumSource;
 
+    public static void grabItems() {
+        itemResource = GameRegistry.findItem("Thaumcraft", "itemResouce");
+        itemGoggles = GameRegistry.findItem("Thaumcraft", "itemGoggles");
+        itemNugget = GameRegistry.findItem("Thaumcraft", "itemNugget");
+        itemSwordThaumium = GameRegistry.findItem("Thaumcraft", "itemSwordThaumium");
+        itemPickThaumium = GameRegistry.findItem("Thaumcraft", "itemPickThaumium");
+        itemAxeThaumium = GameRegistry.findItem("Thaumcraft", "itemAxeThaumium");
+        itemHoeThaumium = GameRegistry.findItem("Thaumcraft", "itemHoeThaumium");
+        itemShovelThaumium = GameRegistry.findItem("Thaumcraft", "itemShovelThaumium");
+        itemBootsThaumium = GameRegistry.findItem("Thaumcraft", "itemBootsThaumium");
+        itemChestThaumium = GameRegistry.findItem("Thaumcraft", "itemChestThaumium");
+        itemHelmetThaumium = GameRegistry.findItem("Thaumcraft", "itemHelmetThaumium");
+        itemLegsThaumium = GameRegistry.findItem("Thaumcraft", "itemLegsThaumium");
+    }
+
     public static void addThaumiumLiquid() {
-        CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(ConfigItems.itemNugget, 1, 6), null, 105, 87, 163);
+        CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(itemNugget, 1, 6), null, 105, 87, 163);
         SteamcraftRegistry.liquids.add(liquidThaumium);
 
         goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
         GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
         BookRecipeRegistry.addRecipe("mask", new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x ",
-                'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));
+                'x', "nuggetBrass", 'g', itemGoggles));
 
         SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
         SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
@@ -44,15 +74,15 @@ public class ThaumcraftIntegration {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), "Thaumium", "Thaumium", "steamcraft.plate.thaumium"));
             SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium", "plateSteamcraftThaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), liquidThaumium);
         }
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHoeThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemShovelThaumium, liquidThaumium, 9);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemBootsThaumium, liquidThaumium, 36);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
+        SteamcraftRegistry.registerSmeltTool(itemSwordThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerSmeltTool(itemPickThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerSmeltTool(itemAxeThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerSmeltTool(itemHoeThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerSmeltTool(itemShovelThaumium, liquidThaumium, 9);
+        SteamcraftRegistry.registerSmeltTool(itemBootsThaumium, liquidThaumium, 36);
+        SteamcraftRegistry.registerSmeltTool(itemChestThaumium, liquidThaumium, 81);
+        SteamcraftRegistry.registerSmeltTool(itemHelmetThaumium, liquidThaumium, 45);
+        SteamcraftRegistry.registerSmeltTool(itemLegsThaumium, liquidThaumium, 63);
 
 
         AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));
@@ -86,7 +116,7 @@ public class ThaumcraftIntegration {
     }
 
     public static Item gogglesRevealing() {
-        return ConfigItems.itemGoggles;
+        return itemGoggles;
     }
 
     @SideOnly(Side.CLIENT)
@@ -97,7 +127,7 @@ public class ThaumcraftIntegration {
 //        if ((ref != null))
 //        {
 //        	ResearchItem research = ResearchCategories.getResearch((String)ref[0]);
-//			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(ConfigItems.itemThaumonomicon, player) : false;
+//			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(itemThaumonomicon, player) : false;
 //			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
 //				if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemThaumonomicon) {
 //					foundBook = true;
