@@ -191,21 +191,30 @@ public class Steamcraft {
             SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
         }
         if (Loader.isModLoaded("Thaumcraft")) {
+            ThaumcraftIntegration.grabItems();
             ThaumcraftIntegration.addThaumiumLiquid();
         }
         if (Loader.isModLoaded("Botania")) {
+            BotaniaIntegration.grabItems();
             BotaniaIntegration.addBotaniaLiquid();
         }
+        if (Loader.isModLoaded("Enchridion")) {
+            EnchiridionIntegration.grabClass();
+        }
         if (Loader.isModLoaded("TwilightForest")) {
+            TwilightForestIntegration.grabItems();
             TwilightForestIntegration.addTwilightForestLiquid();
         }
         if (Loader.isModLoaded("AWWayofTime")) {
+            BloodMagicIntegration.grabItems();
             BloodMagicIntegration.addBloodMagicStuff();
         }
         if (Loader.isModLoaded("EnderIO")) {
+            EnderIOIntegration.grabItems();
             EnderIOIntegration.addEIOLiquid();
         }
         if (Loader.isModLoaded("ThermalFoundation")) {
+            ThermalFoundationIntegration.grabItems();
             ThermalFoundationIntegration.addThermalFoundationLiquid();
         }
         if (OreDictionary.getOres("ingotLead").size() > 0) {
