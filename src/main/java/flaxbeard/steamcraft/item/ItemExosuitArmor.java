@@ -11,6 +11,7 @@ import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.*;
 import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.PlayerExosuitCache;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
@@ -174,16 +175,21 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
-        ModelExosuit modelbiped = new ModelExosuit(itemStack, par2);
-        modelbiped.bipedHead.showModel = par2 == 0;
-        modelbiped.bipedHeadwear.showModel = par2 == 0;
-        modelbiped.bipedBody.showModel = par2 == 1 || par2 == 2;
-        modelbiped.bipedRightArm.showModel = par2 == 1;
-        modelbiped.bipedLeftArm.showModel = par2 == 1;
-        modelbiped.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-        modelbiped.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-        return modelbiped;
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
+        if (!(entityLiving instanceof EntityPlayer))
+            return null; // Temporary... probably
+
+        ModelExosuit modelExosuit = PlayerExosuitCache.getModel((EntityPlayer) entityLiving, itemStack, armorSlot);
+
+        modelExosuit.bipedHead.showModel = armorSlot == 0;
+        modelExosuit.bipedHeadwear.showModel = armorSlot == 0;
+        modelExosuit.bipedBody.showModel = armorSlot == 1 || armorSlot == 2;
+        modelExosuit.bipedRightArm.showModel = armorSlot == 1;
+        modelExosuit.bipedLeftArm.showModel = armorSlot == 1;
+        modelExosuit.bipedRightLeg.showModel = armorSlot == 2 || armorSlot == 3;
+        modelExosuit.bipedLeftLeg.showModel = armorSlot == 2 || armorSlot == 3;
+
+        return modelExosuit;
     }
 
     @Override
