@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

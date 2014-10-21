@@ -3,7 +3,7 @@ package flaxbeard.steamcraft.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;

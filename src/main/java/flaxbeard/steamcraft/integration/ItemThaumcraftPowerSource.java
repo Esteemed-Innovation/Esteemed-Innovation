@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;

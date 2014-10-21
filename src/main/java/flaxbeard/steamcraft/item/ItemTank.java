@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.ModelPointer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
@@ -84,8 +84,8 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
                 for (int id : ids) {
                     String str = OreDictionary.getOreName(id);
                     if (str.contains("dye")) {
-                        for (int i = 0; i < ModelExosuit.dyes.length; i++) {
-                            if (ModelExosuit.dyes[i].equals(str.substring(3))) {
+                        for (int i = 0; i < ModelExosuit.DYES.length; i++) {
+                            if (ModelExosuit.DYES[i].equals(str.substring(3))) {
                                 dye = 15 - i;
                                 break outerloop;
                             }
