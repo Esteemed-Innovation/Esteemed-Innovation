@@ -6,7 +6,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
@@ -32,18 +31,12 @@ import net.minecraft.util.*;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
-import sun.security.util.Cache;
 import vazkii.botania.api.item.IPixieSpawner;
 
 import java.awt.*;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Optional.Interface(iface = "vazkii.botania.api.item.IPixieSpawner", modid = "Botania")
 public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpecialArmor, IEngineerable, ISteamChargable {

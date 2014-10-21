@@ -14,17 +14,17 @@ import org.lwjgl.opengl.GL11;
  */
 
 public class TileEntitySawRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-        public static final ModelSaw model = new ModelSaw();
+    public static final ModelSaw model = new ModelSaw();
 
-        private static final ResourceLocation textureLoc = new ResourceLocation("steamcraft:textures/models/saw.png");
+    private static final ResourceLocation textureLoc = new ResourceLocation("steamcraft:textures/models/saw.png");
 
-        @Override
-        public void renderTileEntityAt(TileEntity te, double par2, double par3, double par4, float par5){
-            TileEntitySaw saw = (TileEntitySaw) te;
+    @Override
+    public void renderTileEntityAt(TileEntity te, double par2, double par3, double par4, float par5){
+        GL11.glPushMatrix();
+    }
 
-            GL11.glPushMatrix();
-        }
-
-        @Override
-        public void renderInventoryTileEntityAt(TileEntity te, double x, double y, double z, float fl){}
+    @Override
+    public void renderInventoryTileEntityAt(TileEntity te, double x, double y, double z, float fl){
+        Minecraft.getMinecraft().renderEngine.bindTexture(textureLoc);
+    }
 }
