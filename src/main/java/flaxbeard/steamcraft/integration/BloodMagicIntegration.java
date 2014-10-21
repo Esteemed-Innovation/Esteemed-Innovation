@@ -58,7 +58,7 @@ public class BloodMagicIntegration {
 
     public static void grabItems() {
         reinforcedSlate = GameRegistry.findItem("AWWayofTime", "reinforcedSlate");
-        runeOfSelfSacrifice = GameRegistry.findBlock("AWWayOfTime", "runeOfSelfSacrifice");
+        runeOfSelfSacrifice = GameRegistry.findBlock("AWWayofTime", "runeOfSelfSacrifice");
     }
 
     public static void addBloodMagicStuff() {
