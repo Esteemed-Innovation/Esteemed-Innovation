@@ -1,9 +1,6 @@
 package flaxbeard.steamcraft.integration;
 
-import WayofTime.alchemicalWizardry.ModBlocks;
-import WayofTime.alchemicalWizardry.ModItems;
-import WayofTime.alchemicalWizardry.common.items.EnergyBattery;
-import WayofTime.alchemicalWizardry.common.items.EnergyItems;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -12,7 +9,9 @@ import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -21,19 +20,28 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import java.lang.reflect.Method;
+
 public class BloodMagicIntegration {
+
+    public static Item reinforcedSlate;
+    public static Block runeOfSelfSacrifice;
 
     @SuppressWarnings("unchecked")
     public static void clickLeft(PlayerInteractEvent event) {
         if (!event.world.isRemote && (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) {
-            if (event.entityPlayer.getHeldItem() != null && event.entityPlayer.getHeldItem().getItem() instanceof EnergyBattery) {
-                LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
-                EnergyBattery bat = (EnergyBattery) event.entityPlayer.getHeldItem().getItem();
-                Integer cap = ReflectionHelper.getPrivateValue(EnergyBattery.class, bat, 0);
-                if (cap > data.cap) {
-                    data.cap = cap;
-                    data.markDirty();
+            try {
+                Class energyBatteryClass = Class.forName("WayofTime.alchemicalWizardry.common.items.EnergyBattery");
+                if (event.entityPlayer.getHeldItem() != null &&  energyBatteryClass.isInstance(event.entityPlayer.getHeldItem().getItem())) {
+                    LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
+                    int cap = ((Integer)ReflectionHelper.getPrivateValue(energyBatteryClass, event.entityPlayer.getHeldItem().getItem(), 0)).intValue();
+                    if (cap > data.cap) {
+                        data.cap = cap;
+                        data.markDirty();
+                    }
                 }
+            } catch (ClassNotFoundException e) {
+                // Dump, shouldn't ever happen
             }
         }
     }
@@ -48,11 +56,16 @@ public class BloodMagicIntegration {
         return data;
     }
 
+    public static void grabItems() {
+        reinforcedSlate = GameRegistry.findItem("AWWayofTime", "reinforcedSlate");
+        runeOfSelfSacrifice = GameRegistry.findBlock("AWWayOfTime", "runeOfSelfSacrifice");
+    }
+
     public static void addBloodMagicStuff() {
         if (Config.enableSadistPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Sadist", new ItemStack(SteamcraftItems.exosuitPlate, 1, 10), "Sadist", "Sadist", "steamcraft.plate.sadist"));
             BookRecipeRegistry.addRecipe("exoSadist", new ShapedOreRecipe(new ItemStack(SteamcraftItems.exosuitPlate, 1, 10), " s ", "sbs", " s ",
-                    's', ModItems.reinforcedSlate, 'b', ModBlocks.runeOfSelfSacrifice));
+                    's', reinforcedSlate, 'b', runeOfSelfSacrifice));
         }
     }
 
@@ -70,8 +83,14 @@ public class BloodMagicIntegration {
                 }
             }
             if (bmPlates > 0) {
-                int lp = (int) event.ammount * 12 * bmPlates;
-                EnergyItems.addEssenceToMaximum(player.getCommandSenderName(), lp, getData(player.getCommandSenderName()).cap);
+                try {
+                    Class energyItemsClass = Class.forName("WayofTime.alchemicalWizardry.common.items.EnergyItems");
+                    int lp = (int) event.ammount * 12 * bmPlates;
+                    Method addEssence = energyItemsClass.getMethod("addEssenceToMaximum", String.class, int.class, int.class);
+                    addEssence.invoke(energyItemsClass, player.getCommandSenderName(), lp, getData(player.getCommandSenderName()).cap);
+                } catch (Exception ex) {
+                    // Dump, shouldn't every happen
+                }
             }
         }
     }
