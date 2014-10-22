@@ -15,11 +15,13 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 public class ModelTophat extends ModelBiped {
+
     private ModelRenderer tophatBase;
     private ModelRenderer tophatHat;
-    private ItemStack me;
 
-    public ModelTophat(ItemStack itemStack, int armorType) {
+    public int level;
+
+    public ModelTophat() {
         super(1.0F, 0, 64, 32);
         tophatBase = new ModelRenderer(this, 64, 32).setTextureOffset(32, 0);
         tophatBase.addBox(-4.0F, -16.0F, -4.0F, 8, 7, 8);
@@ -28,8 +30,6 @@ public class ModelTophat extends ModelBiped {
         tophatHat = new ModelRenderer(this, 64, 32).setTextureOffset(0, 16);
         tophatHat.addBox(-5.5F, -9.0F, -5.5F, 11, 1, 11);
         this.bipedHead.addChild(tophatHat);
-
-        me = itemStack;
     }
 
     @Override
@@ -45,10 +45,6 @@ public class ModelTophat extends ModelBiped {
         GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleX), 1, 0, 0);
         GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleZ), 0, 0, 1);
         GL11.glTranslatef(-this.bipedHead.rotationPointX, -this.bipedHead.rotationPointY, -this.bipedHead.rotationPointZ);
-        int level = 0;
-        if (me.hasTagCompound() && me.stackTagCompound.hasKey("level")) {
-            level = me.stackTagCompound.getInteger("level");
-        }
         ItemStack itemStack = new ItemStack(Items.emerald);
         if (level >= 18) {
             level = 18;

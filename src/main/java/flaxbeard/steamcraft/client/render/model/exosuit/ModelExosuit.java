@@ -1,8 +1,10 @@
 package flaxbeard.steamcraft.client.render.model.exosuit;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.ExosuitTexture;
 import flaxbeard.steamcraft.client.Texture;
@@ -22,10 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ModelExosuit extends ModelBiped {
 
@@ -33,6 +32,17 @@ public class ModelExosuit extends ModelBiped {
     public static final ComparatorUpgrade COMPARATOR_UPGRADE = new ComparatorUpgrade();
 
     public static String[] DYES = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
+
+    private final Map<Class<? extends ModelExosuitUpgrade>, ModelExosuitUpgrade> internalModelCache = Maps.newHashMap();
+
+    private ModelExosuitUpgrade getModel(Class<? extends ModelExosuitUpgrade> clazz) {
+        if (!internalModelCache.containsKey(clazz))
+            try {
+                internalModelCache.put(clazz, clazz.newInstance());
+            } catch (Exception ex) {}
+
+        return internalModelCache.get(clazz);
+    }
 
     private ModelRenderer[] horn1;
     private ModelRenderer[] horn2;
@@ -57,6 +67,7 @@ public class ModelExosuit extends ModelBiped {
     private ModelRenderer hornRightPart5;
 
     private final List<ResourceLocation> overlayTextures = Lists.newArrayList();
+    private final List<Class<? extends ModelExosuitUpgrade>> modelClasses = Lists.newArrayList();
 
     private ResourceLocation plateOverlayTexture;
 
@@ -185,11 +196,20 @@ public class ModelExosuit extends ModelBiped {
 
         // Upgrades
         overlayTextures.clear();
+        modelClasses.clear();
         ArrayList<IExosuitUpgrade> upgrades = new ArrayList<IExosuitUpgrade>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
         Collections.sort(upgrades, COMPARATOR_UPGRADE);
         for (IExosuitUpgrade upgrade : upgrades) {
-            if (upgrade.hasOverlay()) {
-                overlayTextures.add(upgrade.getOverlay());
+            ResourceLocation overlay = upgrade.getOverlay();
+            Class<? extends ModelExosuitUpgrade> model = upgrade.getModel();
+
+            if (overlay != null) {
+                overlayTextures.add(overlay);
+            }
+
+            if (model != null) {
+                modelClasses.add(model);
+                upgrade.updateModel(this, entityLivingBase, itemStack, getModel(model));
             }
         }
     }
@@ -303,6 +323,10 @@ public class ModelExosuit extends ModelBiped {
             this.bipedRightLeg.render(par7);
             this.bipedLeftLeg.render(par7);
             this.bipedHeadwear.render(par7);
+        }
+
+        for (Class<? extends ModelExosuitUpgrade> modelClass : modelClasses) {
+            getModel(modelClass).renderModel(this, (EntityLivingBase) entity);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
