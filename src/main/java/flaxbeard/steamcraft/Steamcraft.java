@@ -34,7 +34,6 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.*;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
-import flaxbeard.steamcraft.misc.SteamcraftPotion;
 import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -148,7 +147,6 @@ public class Steamcraft {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("steamcraft");
-        semiInvisible = (new SteamcraftPotion(Config.potionId, false, 0)).setIconIndex(0, 1).setPotionName("potion.partialInvisible");
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
