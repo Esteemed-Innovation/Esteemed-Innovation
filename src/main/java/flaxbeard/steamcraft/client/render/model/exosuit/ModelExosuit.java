@@ -135,18 +135,22 @@ public class ModelExosuit extends ModelBiped {
     }
 
     public void updateModel(EntityLivingBase entityLivingBase, ItemStack itemStack) {
+        ItemExosuitArmor exosuitArmor = ((ItemExosuitArmor) itemStack.getItem());
+
         // Yeti Horns
         if (armor == 0) {
-            if (((ItemExosuitArmor) itemStack.getItem()).hasPlates(itemStack) && UtilPlates.getPlate(itemStack.stackTagCompound.getString("plate")).getIdentifier().equals("Yeti")) {
-                yetiHorns = true;
-            } else {
-                yetiHorns = false;
-            }
+            yetiHorns = exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.stackTagCompound.getString("plate")).getIdentifier().equals("Yeti");
         } else {
             yetiHorns = false;
         }
 
-        ItemExosuitArmor exosuitArmor = ((ItemExosuitArmor) itemStack.getItem());
+        // Plates
+        if (exosuitArmor.hasPlates(itemStack)) {
+            hasPlateOverlay = true;
+            plateOverlayTexture = new ResourceLocation(UtilPlates.getPlate(itemStack.getTagCompound().getString("plate")).getArmorLocation(exosuitArmor, armor));
+        } else {
+            hasPlateOverlay = false;
+        }
 
         // Ender Shroud
         if (exosuitArmor.hasUpgrade(itemStack, SteamcraftItems.enderShroud)) {
@@ -161,7 +165,7 @@ public class ModelExosuit extends ModelBiped {
         }
 
         // Dye
-        int dye = -1;
+        dye = -1;
         if (exosuitArmor.getStackInSlot(itemStack, 2) != null) {
             ItemStack vanity = exosuitArmor.getStackInSlot(itemStack, 2);
             int[] ids = OreDictionary.getOreIDs(vanity);
@@ -208,11 +212,13 @@ public class ModelExosuit extends ModelBiped {
         }
 
         // Ender Shroud
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, shroudModifier);
-        GL11.glDepthMask(false);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+        if (shroudEnabled) {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, shroudModifier);
+            GL11.glDepthMask(false);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
+        }
 
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
 
@@ -246,7 +252,7 @@ public class ModelExosuit extends ModelBiped {
         }
         // End special additions
 
-        // Overlay
+        // Plates
         if (hasPlateOverlay) {
             Minecraft.getMinecraft().renderEngine.bindTexture(plateOverlayTexture);
             this.bipedHead.render(par7);
@@ -264,7 +270,8 @@ public class ModelExosuit extends ModelBiped {
 
             GL11.glColor3f(color[0], color[1], color[2]);
 
-            if (armor == 2) ExosuitTexture.EXOSUIT_GREY.bindTexturePart(2); else ExosuitTexture.EXOSUIT_GREY.bindTexturePart(1);
+            if (armor == 2) ExosuitTexture.EXOSUIT_GREY.bindTexturePart(2);
+            else ExosuitTexture.EXOSUIT_GREY.bindTexturePart(1);
 
             this.bipedHead.render(par7);
             this.bipedBody.render(par7);
@@ -321,7 +328,6 @@ public class ModelExosuit extends ModelBiped {
         horn1a.addChild(horn1b);
         hornParts[1] = horn1b;
 
-
         ModelRenderer horn2a = new ModelRenderer(this, 0, 19);
         horn2a.addBox(0.0F, -1.5F, -1.5F, 3, 3, 3);
         horn2a.setRotationPoint(4.5F, height, -1.0F);
@@ -339,7 +345,6 @@ public class ModelExosuit extends ModelBiped {
         hornParts[3] = horn2b;
         return hornParts;
     }
-
 
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {

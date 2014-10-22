@@ -83,16 +83,11 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        //if (!(entity instanceof EntityLivingBase) || !((EntityLivingBase) entity).isPotionActive(Steamcraft.semiInvisible)) {
         if (stack.getItem() == SteamcraftItems.exoArmorLegs) {
             return "steamcraft:textures/models/armor/exo_2.png";
+        } else {
+            return "steamcraft:textures/models/armor/exo_1.png";
         }
-        return "steamcraft:textures/models/armor/exo_1.png";
-//		}
-//		else
-//		{
-//			return "steamcraft:textures/models/armor/blankArmor.png";
-//		}
     }
 
     @Override
@@ -175,11 +170,21 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int par2) {
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
         if (!(entityLiving instanceof EntityPlayer))
             return null;
 
-        return ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorType);
+        ModelExosuit modelExosuit = ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
+
+        modelExosuit.bipedHead.showModel = armorSlot == 0;
+        modelExosuit.bipedHeadwear.showModel = armorSlot == 0;
+        modelExosuit.bipedBody.showModel = armorSlot == 1 || armorSlot == 2;
+        modelExosuit.bipedRightArm.showModel = armorSlot == 1;
+        modelExosuit.bipedLeftArm.showModel = armorSlot == 1;
+        modelExosuit.bipedRightLeg.showModel = armorSlot == 2 || armorSlot == 3;
+        modelExosuit.bipedLeftLeg.showModel = armorSlot == 2 || armorSlot == 3;
+
+        return modelExosuit;
     }
 
     @Override
