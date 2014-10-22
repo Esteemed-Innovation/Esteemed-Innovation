@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.common;
 
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
+import flaxbeard.steamcraft.common.packet.SteamcraftServerPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

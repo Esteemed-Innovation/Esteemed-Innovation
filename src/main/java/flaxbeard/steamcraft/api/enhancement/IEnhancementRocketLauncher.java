@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.api.enhancement;
 
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.common.entity.EntityRocket;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

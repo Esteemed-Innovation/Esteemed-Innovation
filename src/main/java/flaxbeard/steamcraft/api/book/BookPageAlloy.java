@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.api.book;
 
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
+import flaxbeard.steamcraft.client.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;

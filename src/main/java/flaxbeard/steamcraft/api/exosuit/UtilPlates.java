@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft.api.exosuit;
 
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.common.item.exosuit.ItemExosuitArmor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;

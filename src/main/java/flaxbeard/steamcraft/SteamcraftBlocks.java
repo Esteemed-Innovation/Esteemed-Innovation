@@ -2,11 +2,12 @@ package flaxbeard.steamcraft;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import flaxbeard.steamcraft.block.*;
-import flaxbeard.steamcraft.item.BlockManyMetadataItem;
-import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
-import flaxbeard.steamcraft.item.BlockTankItem;
-import flaxbeard.steamcraft.item.BlockThumperItem;
+import flaxbeard.steamcraft.common.block.*;
+import flaxbeard.steamcraft.common.block.prefab.BlockBeacon;
+import flaxbeard.steamcraft.common.item.block.BlockManyMetadataItem;
+import flaxbeard.steamcraft.common.item.block.BlockRuptureDiscItem;
+import flaxbeard.steamcraft.common.item.block.BlockTankItem;
+import flaxbeard.steamcraft.common.item.block.BlockThumperItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;

@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.common.item.exosuit.ItemExosuitArmor;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;

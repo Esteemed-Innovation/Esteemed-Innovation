@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.api.block;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,5 +18,4 @@ public abstract class BlockSteamTransporter extends BlockContainer {
         }
 
     }
-
 }

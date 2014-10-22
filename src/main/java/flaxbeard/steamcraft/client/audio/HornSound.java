@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.client.audio;
 
-import flaxbeard.steamcraft.tile.TileEntityWhistle;
+import flaxbeard.steamcraft.common.tile.TileEntityWhistle;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.util.ResourceLocation;
 
