@@ -5,8 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import net.minecraft.entity.Entity;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
     public ItemExosuitUpgrade(ExosuitSlot slot, String loc, String info, int priority) {
         mySlot = slot;
         myInfo = info;
-        myOverlay = loc == "" || loc == null ? null : new ResourceLocation(loc);
+        myOverlay = loc == null || loc.isEmpty() ? null : new ResourceLocation(loc);
         pri = priority;
     }
 
@@ -39,24 +40,16 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
     }
 
     @Override
-    public boolean hasOverlay() {
-        return myOverlay != null;
-    }
-
-    @Override
     public ResourceLocation getOverlay() {
         return myOverlay;
     }
 
     @Override
-    public boolean hasModel() {
-        return false;
-    }
+    public Class<? extends ModelExosuitUpgrade> getModel() { return null; }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderModel(ModelExosuit model, Entity entity, int armor, float size, ItemStack me) {
-    }
+    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
     public void writeInfo(List list) {

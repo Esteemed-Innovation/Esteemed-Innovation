@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -9,18 +9,15 @@ import java.util.List;
 
 public interface IExosuitUpgrade {
 
-
     public int renderPriority();
 
     public ExosuitSlot getSlot();
 
-    public boolean hasOverlay();
-
     public ResourceLocation getOverlay();
 
-    public boolean hasModel();
+    public Class<? extends ModelExosuitUpgrade> getModel();
 
-    public void renderModel(ModelExosuit model, Entity par1Entity, int armor, float par7, ItemStack me);
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
 
     public void writeInfo(List list);
 }
