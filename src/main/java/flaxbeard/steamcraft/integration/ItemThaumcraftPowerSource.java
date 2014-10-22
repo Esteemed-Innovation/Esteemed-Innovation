@@ -5,9 +5,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
+import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,21 +51,21 @@ public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, 
     }
 
     @Override
-    public boolean hasOverlay() {
-        return false;
-    }
-
-    @Override
     public ResourceLocation getOverlay() {
         return null;
     }
 
     @Override
-    public boolean hasModel() {
-        return true;
+    public Class<? extends ModelExosuitUpgrade> getModel() {
+        return null;
     }
 
+
     @Override
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
+
+    }
+
     @SideOnly(Side.CLIENT)
     public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
                             float par7, ItemStack itemStack) {

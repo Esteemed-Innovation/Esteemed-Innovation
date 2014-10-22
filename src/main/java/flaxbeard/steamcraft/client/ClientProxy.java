@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.client;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -10,6 +11,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.render.*;
+import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
@@ -55,6 +57,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenderers() {
         Steamcraft.channel.register(new SteamcraftClientPacketHandler());
+
+        FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new RenderMortarItem());
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, new RenderCanister());

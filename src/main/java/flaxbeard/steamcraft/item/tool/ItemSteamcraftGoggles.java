@@ -1,11 +1,10 @@
 package flaxbeard.steamcraft.item.tool;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
-import flaxbeard.steamcraft.client.render.model.ModelExosuit;
-import net.minecraft.entity.Entity;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -29,28 +28,21 @@ public class ItemSteamcraftGoggles extends ItemSteamcraftArmor implements IExosu
     }
 
     @Override
-    public boolean hasOverlay() {
-        return true;
-    }
-
-    @Override
     public ResourceLocation getOverlay() {
         return new ResourceLocation("steamcraft:textures/models/armor/" + this.name.substring(0, 1).toLowerCase() + this.name.substring(1) + "Exosuit.png");
     }
 
     @Override
-    public boolean hasModel() {
-        return false;
+    public Class<? extends ModelExosuitUpgrade> getModel() {
+        return null;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
-                            float par7, ItemStack me) {
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
+
     }
 
     @Override
     public void writeInfo(List list) {
     }
-
 }
