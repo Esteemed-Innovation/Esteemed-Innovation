@@ -31,17 +31,17 @@ public enum ExosuitTexture {
     private final ResourceLocation resourceLocation2;
 
     private ExosuitTexture(String file) {
-        resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor" + (String.format(file, "1")) + ".png");
-        resourceLocation2 = new ResourceLocation("steamcraft:textures/models/armor" + (String.format(file, "2")) + ".png");
+        resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor/" + (String.format(file, "1")) + ".png");
+        resourceLocation2 = new ResourceLocation("steamcraft:textures/models/armor/" + (String.format(file, "2")) + ".png");
     }
 
     private ExosuitTexture(String file, int part) {
         if (part == 1) {
-            resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor" + file + ".png");
+            resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor/" + file + ".png");
             resourceLocation2 = null;
         } else {
             resourceLocation1 = null;
-            resourceLocation2 = new ResourceLocation("steamcraft:textures/models/armor" + file + ".png");
+            resourceLocation2 = new ResourceLocation("steamcraft:textures/models/armor/" + file + ".png");
         }
     }
 

@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
+import flaxbeard.steamcraft.client.ExosuitTexture;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.ModelPointer;
 import net.minecraft.block.Block;
@@ -59,7 +60,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
     public void renderModel(ModelExosuit model, Entity par1Entity, int armor,
                             float par7, ItemStack itemStack) {
         if (armor == 1) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(model.tankTexture);
+            ExosuitTexture.TANK.bindTexturePart(1);
 
             float pressure = 0.0F;
             if (itemStack.getMaxDamage() != 0) {
@@ -92,7 +93,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
                     float[] color = EntitySheep.fleeceColorTable[dye];
                     GL11.glColor3f(color[0], color[1], color[2]);
                     //GL11.glColor3f(EntitySheep.fleeceColorTable[dye][0],EntitySheep.fleeceColorTable[dye][1],EntitySheep.fleeceColorTable[dye][2]);
-                    Minecraft.getMinecraft().renderEngine.bindTexture(model.g3);
+                    ExosuitTexture.EXOSUIT_GREY.bindTexturePart(1);
                     Tank.render(par7);
                     GL11.glColor3f(0.5F, 0.5F, 0.5F);
                     GL11.glPopMatrix();
