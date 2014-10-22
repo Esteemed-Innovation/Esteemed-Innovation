@@ -10,7 +10,8 @@ public enum  Texture {
 
     HORNS("armor/horns"),
     TOPHAT("armor/tophat"),
-    TOPHAT_EMERALD("armor/tophatemerald");
+    TOPHAT_EMERALD("armor/tophatemerald"),
+    POINTER("pointer");
 
     private final ResourceLocation resourceLocation;
 
