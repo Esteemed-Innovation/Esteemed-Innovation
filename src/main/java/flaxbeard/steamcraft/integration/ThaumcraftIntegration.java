@@ -44,18 +44,18 @@ public class ThaumcraftIntegration {
     public static Item thaumSource;
 
     public static void grabItems() {
-        itemResource = GameRegistry.findItem("Thaumcraft", "itemResouce");
-        itemGoggles = GameRegistry.findItem("Thaumcraft", "itemGoggles");
-        itemNugget = GameRegistry.findItem("Thaumcraft", "itemNugget");
-        itemSwordThaumium = GameRegistry.findItem("Thaumcraft", "itemSwordThaumium");
-        itemPickThaumium = GameRegistry.findItem("Thaumcraft", "itemPickThaumium");
-        itemAxeThaumium = GameRegistry.findItem("Thaumcraft", "itemAxeThaumium");
-        itemHoeThaumium = GameRegistry.findItem("Thaumcraft", "itemHoeThaumium");
-        itemShovelThaumium = GameRegistry.findItem("Thaumcraft", "itemShovelThaumium");
-        itemBootsThaumium = GameRegistry.findItem("Thaumcraft", "itemBootsThaumium");
-        itemChestThaumium = GameRegistry.findItem("Thaumcraft", "itemChestThaumium");
-        itemHelmetThaumium = GameRegistry.findItem("Thaumcraft", "itemHelmetThaumium");
-        itemLegsThaumium = GameRegistry.findItem("Thaumcraft", "itemLegsThaumium");
+        itemResource = GameRegistry.findItem("Thaumcraft", "ItemResource");
+        itemGoggles = GameRegistry.findItem("Thaumcraft", "ItemGoggles");
+        itemNugget = GameRegistry.findItem("Thaumcraft", "ItemNugget");
+        itemSwordThaumium = GameRegistry.findItem("Thaumcraft", "ItemSwordThaumium");
+        itemPickThaumium = GameRegistry.findItem("Thaumcraft", "ItemPickThaumium");
+        itemAxeThaumium = GameRegistry.findItem("Thaumcraft", "ItemAxeThaumium");
+        itemHoeThaumium = GameRegistry.findItem("Thaumcraft", "ItemHoeThaumium");
+        itemShovelThaumium = GameRegistry.findItem("Thaumcraft", "ItemShovelThaumium");
+        itemBootsThaumium = GameRegistry.findItem("Thaumcraft", "ItemBootsThaumium");
+        itemChestThaumium = GameRegistry.findItem("Thaumcraft", "ItemChestplateThaumium");
+        itemHelmetThaumium = GameRegistry.findItem("Thaumcraft", "ItemHelmetThaumium");
+        itemLegsThaumium = GameRegistry.findItem("Thaumcraft", "ItemLeggingsThaumium");
     }
 
     public static void addThaumiumLiquid() {
