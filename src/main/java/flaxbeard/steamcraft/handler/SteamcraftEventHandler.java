@@ -42,7 +42,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -87,9 +86,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -403,19 +399,11 @@ public class SteamcraftEventHandler {
                             int y = event.resolution.getScaledHeight() / 2 - 8;
 
                             int color = 0x6600FF00;
-                            new RenderItem().renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(SteamcraftItems.book), x, y);
+                            RenderItem.getInstance().renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(SteamcraftItems.book), x, y);
                             GL11.glDisable(GL11.GL_LIGHTING);
                             mc.fontRenderer.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
                             GL11.glPopMatrix();
                             GL11.glEnable(GL11.GL_BLEND);
-                            if (Mouse.isButtonDown(1)) {
-                                player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
-                                GuiSteamcraftBook.viewing = SteamcraftRegistry.bookRecipes.get(stack2).left;
-                                GuiSteamcraftBook.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack2).right / 2.0F);
-                                GuiSteamcraftBook.lastIndexPage = 1;
-                                GuiSteamcraftBook.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length / 2F);
-                                ((GuiSteamcraftBook) Minecraft.getMinecraft().currentScreen).updateButtons();
-                            }
                         }
                     }
                 }
@@ -1379,18 +1367,6 @@ public class SteamcraftEventHandler {
             }
         }
         return num;
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void handleBook(PlayerInteractEvent event) {
-        if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-                Minecraft mc = Minecraft.getMinecraft();
-                if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
-                    event.setCanceled(true);
-                }
-        }
     }
 
     @SubscribeEvent
