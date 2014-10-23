@@ -398,6 +398,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     }
 
     public boolean hasUpgrade(ItemStack me, Item check) {
+        if (check == null)
+            return false;
+
         if (me.hasTagCompound()) {
             if (me.stackTagCompound.hasKey("inv")) {
                 for (int i = 1; i < 10; i++) {
