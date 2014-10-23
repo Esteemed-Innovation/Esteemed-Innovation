@@ -20,6 +20,12 @@ public class ItemSteamcraftBook extends Item {
     }
 
     @Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+        player.openGui(Steamcraft.instance, 1, world, 0, 0, 0);
+        return itemStack;
+    }
+
+    @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
         if(entityPlayer.isSneaking()) {
             Block block = world.getBlock(x, y, z);
