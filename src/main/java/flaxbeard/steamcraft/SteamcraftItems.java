@@ -19,12 +19,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class SteamcraftItems {
     public static HashMap<String, Item> tools = new HashMap<String, Item>();
@@ -109,6 +111,7 @@ public class SteamcraftItems {
     public static Item steamDrill;
     public static Item steamAxe;
     public static Item steamShovel;
+    public static Item modularTool;
 
     // food
     public static Item steamedPorkchop;
@@ -453,6 +456,10 @@ public class SteamcraftItems {
     }
 
     private static void registerSteamTools() {
+        ToolMaterial mat = EnumHelper.addToolMaterial("modular", 15, 0, 0, 0, 0);
+        if (Config.enableModularTool){
+            modularTool = new ItemModularTool().setUnlocalizedName("steamcraft:modularTool").setCreativeTab(Steamcraft.tabTools);
+        }
         if (Config.enableSteamTools) {
             steamDrill = new ItemSteamDrill().setUnlocalizedName("steamcraft:steamDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(steamDrill, "steamDrill");
