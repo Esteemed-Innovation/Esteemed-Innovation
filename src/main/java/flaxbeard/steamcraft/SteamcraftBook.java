@@ -61,27 +61,32 @@ public class SteamcraftBook {
     }
 
     public static void registerRecentCreations() {
+        //There should be 5 recent creations at all times.
         SteamcraftRegistry.addCategory("category.RecentCreations.name");
+
+        if (Config.enableRocket && Config.enableRocketConcussive && Config.enableRocketMining && Config.enableEnhancementFastRockets && Config.enableRL){
+            SteamcraftRegistry.addResearch("#research.RocketLauncher.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+        }
 
         if (Config.enableChargingPad && Config.enableCharger) {
             SteamcraftRegistry.addResearch("#research.FillingPad.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
+
         if (Config.enableFirearms) {
             SteamcraftRegistry.addResearch("#research.Musket.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             SteamcraftRegistry.addResearch("#research.Blunderbuss.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             SteamcraftRegistry.addResearch("#research.Pistol.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
+
         if (Config.enableCanister) {
             SteamcraftRegistry.addResearch("#research.Canister.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
+
         if (Config.enableTopHat) {
             SteamcraftRegistry.addResearch("#research.TopHat.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             if (Config.enableEmeraldHat) {
                 SteamcraftRegistry.addResearch("#research.TopHatEmerald.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             }
-        }
-        if (Config.enableGoggles) {
-            SteamcraftRegistry.addResearch("#research.Goggles.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
     }
 

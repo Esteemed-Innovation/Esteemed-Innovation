@@ -70,6 +70,7 @@ public class Config {
     public static boolean enableChargingPad;
     public static boolean enableWrench;
     public static boolean enableSaw;
+    public static boolean enableModularTool;
 
     // items
     public static boolean enableAstrolabe;
@@ -263,6 +264,8 @@ public class Config {
         enableTopHat = config.get("Items", "Enable top hat", true).getBoolean(true);
         enableEmeraldHat = config.get("Items", "Enable emerald top hat", true).getBoolean(true);
         enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
+
+        enableModularTool = config.get("Items", "Enable the Modular Tool", true).getBoolean(true);
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
