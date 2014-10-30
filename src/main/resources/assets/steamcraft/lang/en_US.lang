@@ -319,6 +319,11 @@ research.EnhancementAmmo.0=Extending the magazine used in my rocket launcher is 
 research.EnhancementAirStrike.name=Air Strike Conversion Kit
 research.EnhancementAirStrike.0=I've developed a modification for my rocket launcher that I call the 'air strike'. This upgrade is much more effective at mid-air combat. While rocket jumping with the air strike, I will be able to fire rockets extremely rapidly.
 
+category.Automation.name=Automation
+research.BlockPlacer.name=Plonker
+research.BlockPlacer.0=I may have a machine that will smash the blocks I place down, but I'm too busy flying around with my exosuit to bother continuously placing blocks down there to keep up with my demands. So, I have created this machine, the Plonker. It will place the block given to it in front of it.
+
+
 itemGroup.steamcraft=FSP
 itemGroup.steamcraftTools=FSP Tools
 steamcraft.enhancementText=Enhancements:
@@ -502,7 +507,7 @@ tile.steamcraft:blockCopper.name=Block of Copper
 tile.steamcraft:blockZinc.name=Block of Zinc
 
 tile.steamcraft:saw.name=Buzzsaw
-tile.steamcraft:blockPlacer.name=Block Placer
+tile.steamcraft:blockPlacer.name=Plonker
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:chargingPad.name=Filling Pad
 tile.steamcraft:crucible.name=Crucible

@@ -28,6 +28,8 @@ public class SteamcraftBook {
             registerGadgets();
             registerSteamPower();
             registerExosuit();
+            registerAuto();
+            /* registerMisc(); Uncomment this when shit is added to it.*/
         }
 
     }
@@ -61,8 +63,12 @@ public class SteamcraftBook {
     }
 
     public static void registerRecentCreations() {
-        //There should be 5 recent creations at all times.
+        //There should be 5 recent creations at all times. Remove the bottom one when you are adding one.
         SteamcraftRegistry.addCategory("category.RecentCreations.name");
+
+        if (Config.enableBlockPlacer){
+            SteamcraftRegistry.addResearch("#research.BlockPlacer.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+        }
 
         if (Config.enableRocket && Config.enableRocketConcussive && Config.enableRocketMining && Config.enableEnhancementFastRockets && Config.enableRL){
             SteamcraftRegistry.addResearch("#research.RocketLauncher.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
@@ -80,13 +86,6 @@ public class SteamcraftBook {
 
         if (Config.enableCanister) {
             SteamcraftRegistry.addResearch("#research.Canister.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-        }
-
-        if (Config.enableTopHat) {
-            SteamcraftRegistry.addResearch("#research.TopHat.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-            if (Config.enableEmeraldHat) {
-                SteamcraftRegistry.addResearch("#research.TopHatEmerald.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-            }
         }
     }
 
@@ -429,6 +428,14 @@ public class SteamcraftBook {
             if (Config.enableDoubleJump) {
                 SteamcraftRegistry.addResearch("research.DoubleJump.name", "!research.ExoFoot.name", new BookPageItem("research.DoubleJump.name", "research.DoubleJump.0", true, new ItemStack(SteamcraftItems.doubleJump)), new BookPageCrafting("", "doubleJump1", "doubleJump2"));
             }
+        }
+    }
+
+    public static  void registerAuto(){
+        SteamcraftRegistry.addCategory("category.Automation.name");
+
+        if (Config.enableBlockPlacer){
+            SteamcraftRegistry.addResearch("research.BlockPlacer.name", "category.Automation.name", new BookPageItem("research.BlockPlacer.name", "research.BlockPlacer.0", true, new ItemStack(SteamcraftBlocks.blockPlacer)), new BookPageCrafting("", "blockPlacer", "blockPlacer1"));
         }
     }
 

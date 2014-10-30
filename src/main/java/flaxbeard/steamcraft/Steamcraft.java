@@ -32,6 +32,7 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.holiday.HolidayObj;
 import flaxbeard.steamcraft.integration.*;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.*;
@@ -140,7 +141,6 @@ public class Steamcraft {
 
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
-
 
     }
 

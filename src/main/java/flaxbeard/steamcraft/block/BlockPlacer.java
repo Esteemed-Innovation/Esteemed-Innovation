@@ -1,6 +1,24 @@
 package flaxbeard.steamcraft.block;
 
-public class BlockPlacer /*extends BlockSteamTransporter implements IWrenchable*/ {/*
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.tile.TileEntityBlockPlacer;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
+
+public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
 
     IIcon frontIcon;
     private final Random rand = new Random();
@@ -79,7 +97,7 @@ public class BlockPlacer /*extends BlockSteamTransporter implements IWrenchable*
 
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase player)
     {
-        if (MathHelper.abs((float)player.posX - (float)x) < 2.0F && MathHelper.abs((float)player.posZ - (float)z) < 2.0F)
+        if (MathHelper.abs((float) player.posX - (float) x) < 2.0F && MathHelper.abs((float)player.posZ - (float)z) < 2.0F)
         {
             double d0 = player.posY + 1.82D - (double)player.yOffset;
 
@@ -108,7 +126,7 @@ public class BlockPlacer /*extends BlockSteamTransporter implements IWrenchable*
         int meta = world.getBlockMetadata(x, y, z);
         world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
         return true;
-    }*/
+    }
 
 }
 

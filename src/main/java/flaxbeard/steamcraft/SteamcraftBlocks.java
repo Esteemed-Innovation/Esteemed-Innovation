@@ -74,6 +74,7 @@ public class SteamcraftBlocks {
         registerCasting();
         registerSteamnet();
         registerSteamMachines();
+        registerAuto();
         registerMisc();
     }
 
@@ -165,14 +166,10 @@ public class SteamcraftBlocks {
         }
     }
 
-    public static void registerSteamMachines() {
+    public static void registerSteamMachines() {/* Uncomment this when doing work on the buzzsaw.
         if (Config.enableSaw){
             saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(saw, "saw");
-        }
-       /* if (Config.enableBlockPlacer){
-            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
-            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
         }*/
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
@@ -237,6 +234,14 @@ public class SteamcraftBlocks {
 //		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
 //		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
 //		
+    }
+
+    public static void registerAuto(){
+
+        if (Config.enableBlockPlacer){
+            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
+            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
+        }
     }
 
     public static void registerMisc() {
