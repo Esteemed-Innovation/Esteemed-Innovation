@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
+import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -124,6 +125,7 @@ public class SteamcraftRecipes {
             registerSteamNet();
             registerSteamMachines();
             registerMetalCrafting();
+            registerAuto();
         }
     }
 
@@ -660,21 +662,32 @@ public class SteamcraftRecipes {
 
     public static void registerMetalCrafting() {
         // metals
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockBrass), "iii", "iii", "iii",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockBrass),
+                "iii",
+                "iii",
+                "iii",
                 'i', "ingotBrass"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 2), "i",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 2),
+                "i",
                 'i', "blockBrass"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockCopper), "iii", "iii", "iii",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockCopper),
+                "iii",
+                "iii",
+                "iii",
                 'i', "ingotCopper"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 0), "i",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 0),
+                "i",
                 'i', "blockCopper"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockZinc), "iii", "iii", "iii",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockZinc),
+                "iii",
+                "iii",
+                "iii",
                 'i', "ingotZinc"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 1), "i",
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(SteamcraftItems.steamcraftIngot, 9, 1),
+                "i",
                 'i', "blockZinc"));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 0), "ingotCopper"));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 1), "ingotZinc"));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 2), "ingotIron"));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 2), new ItemStack(Items.iron_ingot)));
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(SteamcraftItems.steamcraftNugget, 9, 3), "ingotBrass"));
 
@@ -726,5 +739,20 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerSmeltThingOredict("dustZinc", liquidZinc, 9);
         SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
         SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
+    }
+
+    public static void registerAuto(){
+        if (Config.enableBlockPlacer) {
+            BookRecipeRegistry.addRecipe("blockPlacer", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockPlacer),
+                    "ZQZ",
+                    "YXQ",
+                    "ZQZ",
+                    'X', new ItemStack(Blocks.dispenser), 'Z', "plateSteamcraftBrass", 'Q', "plateSteamcraftIron", 'Y', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+            BookRecipeRegistry.addRecipe("blockPlacer1", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockPlacer),
+                    "ZQZ",
+                    "YXQ",
+                    "ZQZ",
+                    'X', new ItemStack(Blocks.dispenser), 'Z', "ingotBrass", 'Q', "ingotIron", 'Y', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
     }
 }

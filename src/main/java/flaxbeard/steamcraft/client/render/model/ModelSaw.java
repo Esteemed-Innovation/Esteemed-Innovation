@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 /**
- * Created by elijahfoster-wysocki on 10/19/14.
+ * @author SatanicSanta
  */
 public class ModelSaw extends ModelBase {
 

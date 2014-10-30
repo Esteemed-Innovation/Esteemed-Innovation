@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 /**
- * Created by elijahfoster-wysocki on 10/19/14.
+ * @author SatanicSanta
  */
 
 public class TileEntitySawRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {

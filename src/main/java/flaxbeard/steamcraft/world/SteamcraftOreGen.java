@@ -13,8 +13,7 @@ import java.util.Random;
 public class SteamcraftOreGen implements IWorldGenerator {
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world,
-                         IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 
         switch (world.provider.dimensionId) {
             case -1:
@@ -30,8 +29,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
     }
 
     private void generateEnd(World world, Random random, int i, int j) {
-        // TODO Auto-generated method stub
-
+            //filler
     }
 
     private void generateSurface(World world, Random random, int i, int j) {
@@ -55,7 +53,6 @@ public class SteamcraftOreGen implements IWorldGenerator {
     }
 
     private void generateNether(World world, Random random, int i, int j) {
-        // TODO Auto-generated method stub
-
+        //filler
     }
 }

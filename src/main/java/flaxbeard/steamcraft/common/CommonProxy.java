@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.common;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
@@ -38,5 +39,9 @@ public class CommonProxy {
     public void checkRange(EntityLivingBase entity) {
         // TODO Auto-generated method stub
 
+    }
+
+    public static void logInfo(String string){
+        FMLLog.info("[FSP]: " + string);
     }
 }

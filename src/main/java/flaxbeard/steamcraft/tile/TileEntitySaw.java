@@ -270,10 +270,11 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
         this.hasBlockUpdate = true;
     }
 
-    public boolean hasUpdate() {
-        return hasBlockUpdate;
-    }
+//    public boolean hasUpdate() {
+//        return hasBlockUpdate;
+//    }
 
+    /*
     private boolean hasWoodToSaw(){
         int[] target = getTarget(1);
         int x = target[0], y = yCoord, z = target[1];
@@ -283,6 +284,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity implements ISteamT
             return false;
         }
     }
+    */
 
 
 }

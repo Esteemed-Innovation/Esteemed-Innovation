@@ -41,6 +41,7 @@ public class Config {
     public static int potionId;
 
     public static boolean wimpMode;
+    public static boolean enableFunDays;
 
     // blocks
     public static boolean enableBlockPlacer;
@@ -199,7 +200,7 @@ public class Config {
 
         // BLOCKS
         enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean(true);
-        enableBlockPlacer = config.get("Blocks", "Enable Block Placer [NYI]", true).getBoolean(true);
+        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
         enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
         enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
         enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
@@ -268,6 +269,7 @@ public class Config {
         enableModularTool = config.get("Items", "Enable the Modular Tool", true).getBoolean(true);
 
         // OTHER
+        enableFunDays = config.get("Other", "Enable days of a lot of fun", true).getBoolean(true);
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
