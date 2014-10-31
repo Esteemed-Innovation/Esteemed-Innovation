@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
+import flaxbeard.steamcraft.api.modulartool.ToolSlot;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
@@ -86,7 +87,7 @@ public class SteamcraftItems {
     public static Item tophatNoEmerald;
 
     // exosuit upgrades
-    public static Item upgradeFlippers;
+    public static Item upgradeFlippers; //nyi
     public static Item jetpack;
     public static Item wings;
     public static Item powerFist;
@@ -112,7 +113,18 @@ public class SteamcraftItems {
     public static Item steamDrill;
     public static Item steamAxe;
     public static Item steamShovel;
+
+    // modular tools
     public static Item modularTool;
+    public static Item drillBit;
+    public static Item chainsawBit;
+    public static Item shovelBit;
+    public static Item speedUpgrade;
+    public static Item waterUpgrade;
+    public static Item diamondUpgrade;
+    public static Item heaterUpgrade;
+    public static Item silkUpgrade;
+    public static Item fortuneUpgrade;
 
     // food
     public static Item steamedPorkchop;
@@ -126,6 +138,8 @@ public class SteamcraftItems {
         registerFirearms();
         registerExosuit();
         registerExosuitUpgrades();
+        registerModularTool();
+        registerModularToolUpgrades();
         registerSteamTools();
         registerMolds();
         registerFood();
@@ -359,6 +373,56 @@ public class SteamcraftItems {
 
     }
 
+    private static void registerModularTool(){
+        ToolMaterial mat = EnumHelper.addToolMaterial("modular", 15, 0, 0, 0, 0);
+        if (Config.enableModularTool){
+            modularTool = new ItemModularTool().setUnlocalizedName("steamcraft:modularTool").setCreativeTab(Steamcraft.tabTools);
+        }
+    }
+
+    private static void registerModularToolUpgrades(){
+        if (Config.enableModularTool){
+            if (Config.enableDrillBit){
+                drillBit = new ItemModularToolUpgrade(ToolSlot.slot1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
+                drillBit = new ItemModularToolUpgrade(ToolSlot.slot2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
+                drillBit = new ItemModularToolUpgrade(ToolSlot.slot3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
+                drillBit = new ItemModularToolUpgrade(ToolSlot.slot4).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
+            }
+
+            if (Config.enableChainsawBit){
+
+            }
+
+            if (Config.enableShovelBit){
+
+            }
+
+            if (Config.enableSpeedUpgrade){
+
+            }
+
+            if (Config.enableWaterUpgrade){
+
+            }
+
+            if (Config.enableHeaterUpgrade){
+
+            }
+
+            if (Config.enableDiamondUpgrade){
+
+            }
+
+            if (Config.enableSilkUpgrade){
+
+            }
+
+            if (Config.enableFortuneUpgrade){
+
+            }
+        }
+    }
+
     private static void registerMolds() {
         if (Config.enableMold) {
             ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
@@ -458,10 +522,6 @@ public class SteamcraftItems {
     }
 
     private static void registerSteamTools() {
-        ToolMaterial mat = EnumHelper.addToolMaterial("modular", 15, 0, 0, 0, 0);
-        if (Config.enableModularTool){
-            modularTool = new ItemModularTool().setUnlocalizedName("steamcraft:modularTool").setCreativeTab(Steamcraft.tabTools);
-        }
         if (Config.enableSteamTools) {
             steamDrill = new ItemSteamDrill().setUnlocalizedName("steamcraft:steamDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(steamDrill, "steamDrill");
