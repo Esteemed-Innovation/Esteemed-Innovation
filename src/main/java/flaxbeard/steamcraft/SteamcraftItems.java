@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -440,6 +441,7 @@ public class SteamcraftItems {
     }
 
     private static void registerFood() {
+
         steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedFish, "steamedFish");
         ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
