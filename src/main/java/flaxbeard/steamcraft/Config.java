@@ -38,10 +38,7 @@ public class Config {
 
     public static int villagerId;
 
-    public static int potionId;
-
     public static boolean wimpMode;
-    public static boolean enableFunDays;
 
     // blocks
     public static boolean enableBlockPlacer;
@@ -71,7 +68,18 @@ public class Config {
     public static boolean enableChargingPad;
     public static boolean enableWrench;
     public static boolean enableSaw;
+
+    // modular tool crap
     public static boolean enableModularTool;
+    public static boolean enableDrillBit;
+    public static boolean enableChainsawBit;
+    public static boolean enableShovelBit;
+    public static boolean enableSpeedUpgrade;
+    public static boolean enableWaterUpgrade;
+    public static boolean enableHeaterUpgrade;
+    public static boolean enableDiamondUpgrade;
+    public static boolean enableSilkUpgrade;
+    public static boolean enableFortuneUpgrade;
 
     // items
     public static boolean enableAstrolabe;
@@ -183,7 +191,6 @@ public class Config {
         chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();
         duplicateLogs = config.get("Machines", "Chance of duplicate drops from Buzzsaw( 1 in X)", 6).getInt();
         dropItem = config.get("Machines", "Thumper drops items (may lag servers)", true).getBoolean(true);
-        potionId = config.get("Exosuit", "Partial Invisibility Potion IDd", 24).getInt(24);
 
         // STEAM SYSTEM
         config.addCustomCategoryComment("SteamSystem", "Disabling any piece marked crucial disables pretty much the whole mod.");
@@ -266,10 +273,21 @@ public class Config {
         enableEmeraldHat = config.get("Items", "Enable emerald top hat", true).getBoolean(true);
         enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
 
-        enableModularTool = config.get("Items", "Enable the Modular Tool", true).getBoolean(true);
+        //MODULAR TOOL
+        enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
+
+        //MODULAR TOOL UPGRADES
+        enableDrillBit = config.get("Modular Tool", "Enable the Drill upgrade", true).getBoolean(true);
+        enableChainsawBit = config.get("Modular Tool", "Enable the Chainsaw upgrade", true).getBoolean(true);
+        enableShovelBit = config.get("Modular Tool", "Enable the Shovel upgrade", true).getBoolean(true);
+        enableSpeedUpgrade = config.get("Modular Tool", "Enable the Speed upgrade", true).getBoolean(true);
+        enableWaterUpgrade = config.get("Modular Tool", "Enable the Water upgrade", true).getBoolean(true);
+        enableHeaterUpgrade = config.get("Modular Tool", "Enable the Heater upgrade", true).getBoolean(true);
+        enableDiamondUpgrade = config.get("Modular Tool", "Enable the Diamond upgrade", true).getBoolean(true);
+        enableSilkUpgrade = config.get("Modular Tool", "Enable the Silk Touch upgrade", true).getBoolean(true);
+        enableFortuneUpgrade = config.get("Modular Tool", "Enable the Fortune upgrade", true).getBoolean(true);
 
         // OTHER
-        enableFunDays = config.get("Other", "Enable days of a lot of fun", true).getBoolean(true);
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
