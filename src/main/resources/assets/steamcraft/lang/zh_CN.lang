@@ -319,12 +319,16 @@ research.EnhancementAmmo.0=扩容我在火箭筒中使用的弹匣是个简单�
 research.EnhancementAirStrike.name=空袭者升级组件
 research.EnhancementAirStrike.0=我开发了一个用于火箭筒的改造,我称其为 空袭者.这个升级组件在空中对战中尤为有效.这样我就能极快地发射火箭.
 
+category.Automation.name=自动化
+research.BlockPlacer.name=方块放置器
+research.BlockPlacer.0=我有了能粉碎我放置的方块的机器,但我总是穿着机甲装到处跑没时间来一直放置方块.因此,我做出了这个放置器.它会将你给它的方块放到它的前方.
+
 itemGroup.steamcraft=Flaxbeard的蒸汽动力
 itemGroup.steamcraftTools=Flaxbeard的蒸汽动力工具
 steamcraft.enhancementText=增强:
 
 item.steamcraft:musketCartridge.name=步枪弹药
-item.steamcraft:rocket.name=Rocket
+item.steamcraft:rocket.name=火箭
 item.steamcraft:rocket.name.2=普通火箭
 item.steamcraft:rocketConcussive.name=冲击火箭
 item.steamcraft:rocketMiner.name=采矿火箭
