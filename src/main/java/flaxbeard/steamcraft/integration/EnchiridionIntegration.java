@@ -20,7 +20,7 @@ public class EnchiridionIntegration {
         boolean foundBook = false;
         for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
             ItemStack binder = player.inventory.getStackInSlot(p);
-            if ((binder != null) && ((itemEnchiridionClass.isInstance(binder.getItem()))) && (binder.getItemDamage() == 1)) {
+            if ((binder != null) && (itemEnchiridionClass != null) && ((itemEnchiridionClass.isInstance(binder.getItem()))) && (binder.getItemDamage() == 1)) {
                 NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound : new NBTTagCompound();
                 NBTTagList nbttaglist = loader.getTagList("Inventory", 10);
                 if (nbttaglist != null) {
