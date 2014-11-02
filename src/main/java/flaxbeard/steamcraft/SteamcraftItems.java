@@ -383,66 +383,39 @@ public class SteamcraftItems {
     private static void registerModularToolUpgrades(){
         if (Config.enableModularTool){
             if (Config.enableDrillBit){
-                drillBit = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:drill", null, 3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
-                drillBit = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:drill", null, 3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
-                drillBit = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:drill", null, 3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
-                drillBit = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:drill", null, 3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
+                drillBit = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:drill", null, 3).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:drillBit").setTextureName("steamcraft:drillBit");
             }
 
             if (Config.enableChainsawBit){
-                chainsawBit = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:chainsaw", null, 2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:chainsawBit").setTextureName("steamcraft:chainsawBit");
-                chainsawBit = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:chainsaw", null, 2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:chainsawBit").setTextureName("steamcraft:chainsawBit");
-                chainsawBit = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:chainsaw", null, 2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:chainsawBit").setTextureName("steamcraft:chainsawBit");
-                chainsawBit = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:chainsaw", null, 2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:chainsawBit").setTextureName("steamcraft:chainsawBit");
+                chainsawBit = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:chainsaw", null, 2).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:chainsawBit").setTextureName("steamcraft:chainsawBit");
             }
 
             if (Config.enableShovelBit){
-                shovelBit = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:shovel", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:shovelBit").setTextureName("steamcraft:shovelBit");
-                shovelBit = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:shovel", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:shovelBit").setTextureName("steamcraft:shovelBit");
-                shovelBit = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:shovel", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:shovelBit").setTextureName("steamcraft:shovelBit");
-                shovelBit = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:shovel", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:shovelBit").setTextureName("steamcraft:shovelBit");
+                shovelBit = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:shovel", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:shovelBit").setTextureName("steamcraft:shovelBit");
             }
 
             if (Config.enableSpeedUpgrade){
-                speedUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:speed", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSpeed").setTextureName("stemacraft:upgradeSpeed");
-                speedUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:speed", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSpeed").setTextureName("stemacraft:upgradeSpeed");
-                speedUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:speed", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSpeed").setTextureName("stemacraft:upgradeSpeed");
-                speedUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:speed", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSpeed").setTextureName("stemacraft:upgradeSpeed");
+                speedUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:speed", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSpeed").setTextureName("stemacraft:upgradeSpeed");
             }
 
             if (Config.enableWaterUpgrade){
-                waterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:water", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeWater").setTextureName("stemacraft:upgradeWater");
-                waterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:water", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeWater").setTextureName("stemacraft:upgradeWater");
-                waterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:water", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeWater").setTextureName("stemacraft:upgradeWater");
-                waterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:water", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeWater").setTextureName("stemacraft:upgradeWater");
+                waterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:water", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeWater").setTextureName("stemacraft:upgradeWater");
             }
 
             if (Config.enableHeaterUpgrade){
-                heaterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:hot", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeHeater").setTextureName("stemacraft:upgradeHeater");
-                heaterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:hot", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeHeater").setTextureName("stemacraft:upgradeHeater");
-                heaterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:hot", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeHeater").setTextureName("stemacraft:upgradeHeater");
-                heaterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:hot", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeHeater").setTextureName("stemacraft:upgradeHeater");
+                heaterUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:hot", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeHeater").setTextureName("stemacraft:upgradeHeater");
             }
 
             if (Config.enableDiamondUpgrade){
-                diamondUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:diamond", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeDiamond").setTextureName("stemacraft:upgradeDiamond");
-                diamondUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:diamond", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeDiamond").setTextureName("stemacraft:upgradeDiamond");
-                diamondUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:diamond", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeDiamond").setTextureName("stemacraft:upgradeDiamond");
-                diamondUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:diamond", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeDiamond").setTextureName("stemacraft:upgradeDiamond");
+                diamondUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:diamond", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeDiamond").setTextureName("stemacraft:upgradeDiamond");
             }
 
             if (Config.enableSilkUpgrade){
-                silkUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:silky", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSilk").setTextureName("stemacraft:upgradeSilk");
-                silkUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:silky", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSilk").setTextureName("stemacraft:upgradeSilk");
-                silkUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:silky", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSilk").setTextureName("stemacraft:upgradeSilk");
-                silkUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:silky", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSilk").setTextureName("stemacraft:upgradeSilk");
+                silkUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:silky", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeSilk").setTextureName("stemacraft:upgradeSilk");
             }
 
             if (Config.enableFortuneUpgrade){
-                fortuneUpgrade = new ItemModularToolUpgrade(ToolSlot.slot1, "steamcraft:fortune", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFortune").setTextureName("stemacraft:upgradeFortune");
-                fortuneUpgrade = new ItemModularToolUpgrade(ToolSlot.slot2, "steamcraft:fortune", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFortune").setTextureName("stemacraft:upgradeFortune");
-                fortuneUpgrade = new ItemModularToolUpgrade(ToolSlot.slot3, "steamcraft:fortune", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFortune").setTextureName("stemacraft:upgradeFortune");
-                fortuneUpgrade = new ItemModularToolUpgrade(ToolSlot.slot4, "steamcraft:fortune", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFortune").setTextureName("stemacraft:upgradeFortune");
+                fortuneUpgrade = new ItemModularToolUpgrade(ToolSlot.slot, "steamcraft:fortune", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:upgradeFortune").setTextureName("stemacraft:upgradeFortune");
             }
         }
     }
