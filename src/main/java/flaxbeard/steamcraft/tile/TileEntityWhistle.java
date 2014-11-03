@@ -4,24 +4,26 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
-import flaxbeard.steamcraft.client.audio.HornSound;
-import net.minecraft.client.Minecraft;
+import flaxbeard.steamcraft.client.audio.ISoundTile;
+import flaxbeard.steamcraft.client.audio.SoundTile;
+import flaxbeard.steamcraft.client.audio.Sounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityWhistle extends TileEntity {
+public class TileEntityWhistle extends TileEntity implements ISoundTile {
+
+    private static final ResourceLocation SOUND = new ResourceLocation("steamcraft:horn");
 
     private float volume = 0F;
     private boolean isSoundRegistered = false;
     private boolean isSounding = false;
     private int steamTick = 0;
     private boolean isReallyDead = false;
-    @SideOnly(Side.CLIENT)
-    private HornSound mySound;
 
     @Override
     public Packet getDescriptionPacket() {
@@ -46,7 +48,7 @@ public class TileEntityWhistle extends TileEntity {
         if (worldObj.isRemote) {
             this.updateSound();
         } else {
-            if (getPressure() > 1.02F) {
+            if (shouldPlay()) {
                 if (!this.isSounding) {
                     this.isSounding = true;
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -66,8 +68,7 @@ public class TileEntityWhistle extends TileEntity {
     private void updateSound() {
         if (!isSoundRegistered) {
             if (worldObj.isRemote) {
-                mySound = new HornSound(this);
-                Minecraft.getMinecraft().getSoundHandler().playSound(mySound);
+                Sounds.addSoundTile(this);
             }
             isSoundRegistered = true;
         }
@@ -150,4 +151,28 @@ public class TileEntityWhistle extends TileEntity {
         return volume;
     }
 
+    @Override
+    public boolean shouldPlay() {
+        return getPressure() > 1.02F;
+    }
+
+    @Override
+    public ResourceLocation getSound() {
+        return SOUND;
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return this;
+    }
+
+    @Override
+    public boolean handleUpdate() {
+        return true;
+    }
+
+    @Override
+    public void update(SoundTile soundTile) {
+        soundTile.volume = getVolume();
+    }
 }
