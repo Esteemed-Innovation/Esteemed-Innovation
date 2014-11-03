@@ -105,7 +105,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                 }
                 if (this.master && numHeaters > 0) {
                     TileEntityFurnace furnace = (TileEntityFurnace) this.worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
-                    if (!(furnace instanceof TileEntitySteamFurnace)) {
+                    if (!(furnace instanceof TileEntitySteamFurnace) && furnace.getClass() == TileEntityFurnace.class) {
                         ItemStack[] furnaceItemStacks = new ItemStack[]{furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
                         int furnaceBurnTime = furnace.furnaceBurnTime;
                         int currentItemBurnTime = furnace.currentItemBurnTime;
