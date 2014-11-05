@@ -14,11 +14,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
+import java.util.ArrayList;
+
 public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements ISteamTransporter, IFluidHandler, IWrenchable {
     public int runTicks = 0;
     private FluidTank dummyTank;
     private boolean isInitialized = false;
     private boolean lastRunning = false;
+    public boolean isLeaking = false;
 
     @Override
     public Packet getDescriptionPacket() {

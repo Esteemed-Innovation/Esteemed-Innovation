@@ -30,6 +30,7 @@ public class ItemSmashedOre extends Item {
         super();
         this.setHasSubtypes(true);
 
+        //standard
         oreTypes.add(getPair("oreIron", null, "Iron", 0, "ingotIron"));
         oreTypes.add(getPair("oreGold", null, "Gold", 1, "ingotGold"));
         oreTypes.add(getPair("oreCopper", null, "Copper", 2, "ingotCopper"));
@@ -44,6 +45,7 @@ public class ItemSmashedOre extends Item {
         oreTypes.add(getPair("oreArdite", null, "Ardite", 11, "ingotArdite"));
         oreTypes.add(getPair("oreCinnabar", null, "Cinnabar", 12, "quicksilver"));
 
+        //me
         oreTypes.add(getPair("orePoorIron", null, "PoorIron", 13, "nuggetIron"));
         oreTypes.add(getPair("orePoorGold", null, "PoorGold", 14, "nuggetGold"));
         oreTypes.add(getPair("orePoorCopper", null, "PoorCopper", 15, "nuggetCopper"));
