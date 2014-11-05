@@ -42,7 +42,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
     @Override
     public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = MathHelper.floor_double((double) (p_149689_5_.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+        int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
         p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
     }
 
@@ -148,9 +148,9 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         int meta = world.getBlockMetadata(x, y, z);
+
         if (side != 0 && side != 1) {
             int output = meta;
             switch (side) {
@@ -187,5 +187,23 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
             return true;
         }
         return false;
+
+    }
+
+    public static int determineOrientation(World world, int int1, int int2, int int3, EntityLivingBase elb){
+        if (MathHelper.abs((float) elb.posX - (float) int1) < 2.0F && MathHelper.abs((float) elb.posZ - (float) int3) < 2.0F){
+            double penetration = elb.posY + 1.82D - (double) elb.yOffset;
+
+            if (penetration - (double) int1 > 2D){
+                return 1;
+            }
+
+            if ((double) int1 - penetration > 0D){
+                return 0;
+            }
+        }
+
+        int fuckmath = MathHelper.floor_double((double) (elb.rotationYaw * 4F / 360F) + 0.5D) & 3;
+        return fuckmath == 0 ? 2 : (fuckmath == 1 ? 5 : (fuckmath == 2 ? 3 : (fuckmath == 3 ? 4 : 0)));
     }
 }
