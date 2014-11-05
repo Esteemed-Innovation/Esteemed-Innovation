@@ -136,7 +136,7 @@ public class Steamcraft {
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
-        registerTileEntity(TileEntitySaw.class, "buzzsaw");
+        //registerTileEntity(TileEntitySaw.class, "buzzsaw");
 
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
@@ -163,7 +163,7 @@ public class Steamcraft {
         boilerRenderID = RenderingRegistry.getNextAvailableRenderId();
         customCraftingTableRenderID = RenderingRegistry.getNextAvailableRenderId();
         furnaceRenderID = RenderingRegistry.getNextAvailableRenderId();
-        sawRenderID = RenderingRegistry.getNextAvailableRenderId();
+        //sawRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 
         proxy.registerRenderers();
