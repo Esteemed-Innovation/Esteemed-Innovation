@@ -74,7 +74,7 @@ public class SteamcraftBlocks {
         registerCasting();
         registerSteamnet();
         registerSteamMachines();
-        registerAuto();
+        //registerAuto();
         registerMisc();
     }
 
@@ -236,6 +236,7 @@ public class SteamcraftBlocks {
 //		
     }
 
+    /*
     public static void registerAuto(){
 
         if (Config.enableBlockPlacer){
@@ -243,6 +244,7 @@ public class SteamcraftBlocks {
             GameRegistry.registerBlock(blockPlacer, "blockPlacer");
         }
     }
+    */
 
     public static void registerMisc() {
         if (Config.enableEngineering) {

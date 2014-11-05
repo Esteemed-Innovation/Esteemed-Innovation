@@ -20,7 +20,7 @@ public class Config {
     public static final int reinforcedTankCap = 72000;
     public static final int uberReinforcedTankCap = 144000;
 
-    public static final String VERSION = "0.27.0";
+    public static final String VERSION = "0.26.5";
     public static boolean genCopper;
     public static boolean genZinc;
     public static boolean passiveDrain;
@@ -206,8 +206,8 @@ public class Config {
 
 
         // BLOCKS
-        enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean(true);
-        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
+        //enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean(true);
+        //enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
         enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
         enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
         enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
@@ -274,7 +274,7 @@ public class Config {
         enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
 
         //MODULAR TOOL
-        enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
+        //enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
 
         //MODULAR TOOL UPGRADES
         enableDrillBit = config.get("Modular Tool", "Enable the Drill upgrade", true).getBoolean(true);
