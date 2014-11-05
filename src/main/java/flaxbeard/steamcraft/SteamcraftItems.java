@@ -138,8 +138,8 @@ public class SteamcraftItems {
         registerFirearms();
         registerExosuit();
         registerExosuitUpgrades();
-        registerModularTool();
-        registerModularToolUpgrades();
+        //registerModularTool();
+        //registerModularToolUpgrades();
         registerSteamTools();
         registerMolds();
         registerFood();
@@ -373,6 +373,7 @@ public class SteamcraftItems {
 
     }
 
+    /*
     private static void registerModularTool(){
         ToolMaterial mat = EnumHelper.addToolMaterial("modular", 15, 0, 0, 0, 0);
         if (Config.enableModularTool){
@@ -419,6 +420,7 @@ public class SteamcraftItems {
             }
         }
     }
+    */
 
     private static void registerMolds() {
         if (Config.enableMold) {
