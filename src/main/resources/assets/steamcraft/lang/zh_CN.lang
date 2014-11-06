@@ -332,6 +332,7 @@ item.steamcraft:rocket.name=火箭
 item.steamcraft:rocket.name.2=普通火箭
 item.steamcraft:rocketConcussive.name=冲击火箭
 item.steamcraft:rocketMiner.name=采矿火箭
+entity.Steamcraft.Rocket.name=火箭
 
 item.steamcraft:musket.name=燧发步枪
 item.steamcraft:rocketLauncher.name=火箭筒
