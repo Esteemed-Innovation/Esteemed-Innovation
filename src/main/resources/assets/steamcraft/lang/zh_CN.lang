@@ -332,7 +332,6 @@ item.steamcraft:rocket.name=火箭
 item.steamcraft:rocket.name.2=普通火箭
 item.steamcraft:rocketConcussive.name=冲击火箭
 item.steamcraft:rocketMiner.name=采矿火箭
-entity.Steamcraft.Rocket.name=火箭
 
 item.steamcraft:musket.name=燧发步枪
 item.steamcraft:rocketLauncher.name=火箭筒
@@ -488,7 +487,7 @@ item.steamcraft:runAssist.name=组合加速器
 item.steamcraft:doubleJump.name=脉冲汽嘴
 item.steamcraft:jumpAssist.name=跳跃辅助器
 item.steamcraft:stealthUpgrade.name=降噪器
-item.steamcraft:canner.name=Canner
+item.steamcraft:canner.name=装罐器
 item.steamcraft:pitonDeployer.name=岩钉安置器
 item.steamcraft:enderShroud.name=末影之幕
 
