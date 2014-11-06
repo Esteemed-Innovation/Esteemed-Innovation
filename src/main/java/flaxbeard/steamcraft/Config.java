@@ -21,8 +21,12 @@ public class Config {
     public static final int uberReinforcedTankCap = 144000;
 
     public static final String VERSION = "0.26.5";
-    public static boolean genCopper;
-    public static boolean genZinc;
+    public static boolean genCopperOverworld;
+    public static boolean genZincOverworld;
+    public static boolean genCopperEnd;
+    public static boolean genZincEnd;
+    public static boolean genCopperNether;
+    public static boolean genZincNether;
     public static boolean passiveDrain;
     public static boolean disableParticles;
 
@@ -161,8 +165,12 @@ public class Config {
         config.load();
 
         // WORLD GEN
-        genCopper = config.get("World Generation", "Generate Copper", true).getBoolean(true);
-        genZinc = config.get("World Generation", "Generate Zinc", true).getBoolean(true);
+        genCopperOverworld = config.get("World Generation", "Generate Overworld Copper", true).getBoolean(true);
+        genZincOverworld = config.get("World Generation", "Generate Overworld Zinc", true).getBoolean(true);
+        genCopperEnd = config.get("World Generation", "Generate End Copper", true).getBoolean(true);
+        genZincEnd = config.get("World Generation", "Generate End Zinc", true).getBoolean(true);
+        genCopperNether = config.get("World Generation", "Generate Nether Copper", true).getBoolean(true);
+        genZincNether = config.get("World Generation", "Generate Nether Zinc", true).getBoolean(true);
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
         genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
 
