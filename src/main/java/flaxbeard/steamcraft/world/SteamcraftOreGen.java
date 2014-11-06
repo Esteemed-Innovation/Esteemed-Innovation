@@ -30,20 +30,20 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private void generateEnd(World world, Random random, int i, int j) {
         if (Config.genCopperEnd) {
-            for (int k = 0; k < 3; k++) {
+            for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
                 int y = random.nextInt(128);
                 int z = j + random.nextInt(16);
-                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 10, Blocks.netherrack)).generate(world, random, x, y, z);
+                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 3, Blocks.netherrack)).generate(world, random, x, y, z);
             }
         }
 
         if (Config.genZincEnd) {
-            for (int k = 0; k < 3; k++) {
+            for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
                 int y = random.nextInt(128);
                 int z = j + random.nextInt(16);
-                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.netherrack)).generate(world, random, x, y, z);
+                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 1, Blocks.netherrack)).generate(world, random, x, y, z);
             }
         }
     }
@@ -70,20 +70,20 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private void generateNether(World world, Random random, int i, int j) {
         if (Config.genCopperNether) {
-            for (int k = 0; k < 5; k++) {
+            for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
                 int y = random.nextInt(128);
                 int z = j + random.nextInt(16);
-                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 10, Blocks.end_stone)).generate(world, random, x, y, z);
+                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 5, Blocks.end_stone)).generate(world, random, x, y, z);
             }
         }
 
         if (Config.genZincNether) {
-            for (int k = 0; k < 5; k++) {
+            for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
                 int y = random.nextInt(128);
                 int z = j + random.nextInt(16);
-                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.end_stone)).generate(world, random, x, y, z);
+                (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 4, Blocks.end_stone)).generate(world, random, x, y, z);
             }
         }
     }
