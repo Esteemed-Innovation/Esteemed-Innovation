@@ -21,10 +21,10 @@ public class ItemModularToolUpgrade extends Item implements IModularToolUpgrade 
     protected int priority;
 
     public ItemModularToolUpgrade(ToolSlot slot, String loc, String info, int priority){
-        slot = slot;
-        info = info;
+        this.slot = slot;
+        this.info = info;
         resourceLoc = loc == null || loc.isEmpty() ? null : new ResourceLocation(loc);
-        priority = priority;
+        this.priority = priority;
     }
 
     @Override
