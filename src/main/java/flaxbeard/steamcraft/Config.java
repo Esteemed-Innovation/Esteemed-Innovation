@@ -167,10 +167,10 @@ public class Config {
         // WORLD GEN
         genCopperOverworld = config.get("World Generation", "Generate Overworld Copper", true).getBoolean(true);
         genZincOverworld = config.get("World Generation", "Generate Overworld Zinc", true).getBoolean(true);
-        genCopperEnd = config.get("World Generation", "Generate End Copper", true).getBoolean(true);
-        genZincEnd = config.get("World Generation", "Generate End Zinc", true).getBoolean(true);
-        genCopperNether = config.get("World Generation", "Generate Nether Copper", true).getBoolean(true);
-        genZincNether = config.get("World Generation", "Generate Nether Zinc", true).getBoolean(true);
+        genCopperEnd = config.get("World Generation", "Generate End Copper", false).getBoolean(false);
+        genZincEnd = config.get("World Generation", "Generate End Zinc", false).getBoolean(false);
+        genCopperNether = config.get("World Generation", "Generate Nether Copper", false).getBoolean(false);
+        genZincNether = config.get("World Generation", "Generate Nether Zinc", false).getBoolean(false);
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
         genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
 
