@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class BlockSteamcraftOre extends Block {
 
-    public IIcon[] icon = new IIcon[3];
+    public IIcon[] icon = new IIcon[7];
 
     public BlockSteamcraftOre() {
         super(Material.rock);
@@ -25,27 +26,54 @@ public class BlockSteamcraftOre extends Block {
         setStepSound(Block.soundTypeStone);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int par1, int par2) {
-        if (par2 == 0) {
-            return this.icon[0];
-        }
-        if (par2 == 1) {
-            return this.icon[1];
-        }
-        if (par2 == 2) {
-            return this.icon[2];
-        }
-        return this.icon[0];
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister ir) {
         this.icon[0] = ir.registerIcon("steamcraft:oreCopper");
         this.icon[1] = ir.registerIcon("steamcraft:oreZinc");
         this.icon[2] = ir.registerIcon("steamcraft:poorOreZinc");
+        this.icon[3] = ir.registerIcon("steamcraft:copper_nether");
+        this.icon[4] = ir.registerIcon("steamcraft:zinc_nether");
+        this.icon[5] = ir.registerIcon("steamcraft:copper_end");
+        this.icon[6] = ir.registerIcon("steamcraft:zinc_end");
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(int par1, int par2) {
+        int dimensionID = Minecraft.getMinecraft().theWorld.provider.dimensionId;
+
+        if (dimensionID == 0) {
+            if (par2 == 0) {
+                return this.icon[0];
+            }
+            if (par2 == 1) {
+                return this.icon[1];
+            }
+            if (par2 == 2) {
+                return this.icon[2];
+            }
+        }
+
+        if (dimensionID == -1){
+            if (par2 == 0){
+                return this.icon[3];
+            }
+            if (par2 == 1){
+                return this.icon[4];
+            }
+        }
+
+        if (dimensionID == 1){
+            if (par2 == 0){
+                return this.icon[5];
+            }
+            if (par2 == 1){
+                return this.icon[6];
+            }
+        }
+        return this.icon[0];
     }
 
     @SideOnly(Side.CLIENT)
