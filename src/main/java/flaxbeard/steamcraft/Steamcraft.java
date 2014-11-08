@@ -187,35 +187,35 @@ public class Steamcraft {
         if (steamRegistered && Config.enableFluidSteamConverter) {
             SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
         }
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (Loader.isModLoaded("Thaumcraft") && Config.enableThaumcraftIntegration) {
             ThaumcraftIntegration.grabItems();
             ThaumcraftIntegration.addThaumiumLiquid();
         }
-        if (Loader.isModLoaded("Botania")) {
+        if (Loader.isModLoaded("Botania") && Config.enableBotaniaIntegration) {
             BotaniaIntegration.grabItems();
             BotaniaIntegration.addBotaniaLiquid();
         }
-        if (Loader.isModLoaded("Enchridion")) {
+        if (Loader.isModLoaded("Enchridion") && Config.enableEnchiridionIntegration) {
             EnchiridionIntegration.grabClass();
         }
-        if (Loader.isModLoaded("TwilightForest")) {
+        if (Loader.isModLoaded("TwilightForest") && Config.enableTwilightForestIntegration) {
             TwilightForestIntegration.grabItems();
             TwilightForestIntegration.addTwilightForestLiquid();
         }
-        if (Loader.isModLoaded("AWWayofTime")) {
+        if (Loader.isModLoaded("AWWayofTime") && Config.enableBloodMagicIntegration) {
             BloodMagicIntegration.grabItems();
             BloodMagicIntegration.addBloodMagicStuff();
         }
-        if (Loader.isModLoaded("EnderIO")) {
+        if (Loader.isModLoaded("EnderIO") && Config.enableEnderIOIntegration) {
             EnderIOIntegration.grabItems();
             EnderIOIntegration.addEIOLiquid();
         }
-        if (Loader.isModLoaded("ThermalFoundation")) {
+        if (Loader.isModLoaded("ThermalFoundation") && Config.enableThermalFoundationIntegration) {
             ThermalFoundationIntegration.grabItems();
             ThermalFoundationIntegration.addThermalFoundationLiquid();
         }
-        if(Loader.isModLoaded("IC2")){
-        	IndustrialCraftIntegration.addIC2Recipes();
+        if(Loader.isModLoaded("IC2") && Config.enableIC2Integration){
+            IndustrialCraftIntegration.addIC2Recipes();
         }
         if (OreDictionary.getOres("ingotLead").size() > 0) {
             CrucibleLiquid liquidLead = new CrucibleLiquid("lead", OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 9), OreDictionary.getOres("nuggetLead").size() > 0 ? OreDictionary.getOres("nuggetLead").get(0) : null, null, 118, 128, 157);

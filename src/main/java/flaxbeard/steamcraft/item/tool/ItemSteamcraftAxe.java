@@ -11,9 +11,9 @@ public class ItemSteamcraftAxe extends ItemAxe {
     private int harvestLevel;
     private Object repairMaterial;
 
-    public ItemSteamcraftAxe(ToolMaterial p_i45347_1_, Object rM) {
-        super(p_i45347_1_);
-        harvestLevel = p_i45347_1_.getHarvestLevel();
+    public ItemSteamcraftAxe(ToolMaterial toolMaterial, Object rM) {
+        super(toolMaterial);
+        harvestLevel = toolMaterial.getHarvestLevel();
         repairMaterial = rM;
     }
 
