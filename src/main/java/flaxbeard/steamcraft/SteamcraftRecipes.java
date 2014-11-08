@@ -7,7 +7,6 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
-import flaxbeard.steamcraft.integration.ToolHeadsIntegration;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,10 +28,6 @@ public class SteamcraftRecipes {
         registerFluid();
         registerCraftingRecipes();
         registerSmeltingRecipes();
-
-        if (Loader.isModLoaded("ToolHeads") && Config.enableToolHeadsIntegration){
-            ToolHeadsIntegration.recipes();
-        }
     }
 
     private static void registerFluid() {
