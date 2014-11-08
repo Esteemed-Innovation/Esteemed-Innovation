@@ -12,7 +12,6 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.modulartool.ToolSlot;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
-import flaxbeard.steamcraft.integration.ToolHeadsIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
 import flaxbeard.steamcraft.item.tool.*;
@@ -149,10 +148,6 @@ public class SteamcraftItems {
         registerFood();
         registerMetals();
         registerMetalThings();
-
-        if (Loader.isModLoaded("ToolHeads") && Config.enableToolHeadsIntegration){
-            ToolHeadsIntegration.register();
-        }
 
     }
 
