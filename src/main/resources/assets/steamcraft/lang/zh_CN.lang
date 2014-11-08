@@ -323,6 +323,7 @@ category.Automation.name=自动化
 research.BlockPlacer.name=方块放置器
 research.BlockPlacer.0=我有了能粉碎我放置的方块的机器,但我总是穿着机甲装到处跑没时间来一直放置方块.因此,我做出了这个放置器.它会将你给它的方块放到它的前方.
 
+
 itemGroup.steamcraft=Flaxbeard的蒸汽动力
 itemGroup.steamcraftTools=Flaxbeard的蒸汽动力工具
 steamcraft.enhancementText=增强:
@@ -502,6 +503,15 @@ item.steamcraft:steamedBeef.name=蒸牛排
 item.steamcraft:steamedFish.name=蒸鱼
 item.steamcraft:steamedPorkchop.name=蒸猪排
 
+item.toolHead.headAxeBrass.name=黄铜斧头
+item.toolHead.headPickaxeBrass.name=黄铜镐头
+item.toolHead.headShovelBrass.name=黄铜铲头
+item.toolHead.headHoeBrass.name=黄铜锄头
+item.toolHead.headAxeGilded.name=镀金铁斧头
+item.toolHead.headPickaxeGilded.name=镀金铁镐头
+item.toolHead.headShovelGilded.name=镀金铁铲头
+item.toolHead.headHoeGilded.name=镀金铁锄头
+
 tile.steamcraft:blockBrass.name=黄铜块
 tile.steamcraft:blockCopper.name=铜块
 tile.steamcraft:blockZinc.name=锌块
@@ -512,7 +522,7 @@ tile.steamcraft:charger.name=蒸汽充填台
 tile.steamcraft:chargingPad.name=充汽板
 tile.steamcraft:crucible.name=坩埚
 tile.steamcraft:hellCrucible.name=下界坩埚
-tile.steamcraft:mold.name=模具
+tile.steamcraft:mold.name=模具夹板
 tile.steamcraft:pipe.name=管道
 tile.steamcraft:valvePipe.name=阀门管道
 tile.steamcraft:boiler.name=锅炉
@@ -529,7 +539,9 @@ tile.steamcraft:hammer.name=蒸汽锤
 tile.steamcraft:itemMortar.name=物品迫击炮
 tile.steamcraft:pump.name=阿基米德螺旋泵
 tile.steamcraft:smasher.name=碎石机
+tile.steamcraft:dummy.name=活塞
 tile.steamcraft:thumper.name=重锤机
+tile.steamcraft:thumperDummy.name=重锤架
 tile.steamcraft:flashBoiler.name=快热锅炉组件
 tile.steamcraft:ruptureDisc.0.name=爆破片
 tile.steamcraft:ruptureDisc.1.name=破裂的爆破片
