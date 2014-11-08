@@ -53,6 +53,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
         return true;
     }
 
+    @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         this.checkNBT(player);
 
@@ -68,6 +69,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
         this.icon[1] = ir.registerIcon("steamcraft:shovel1");
     }
 
+    @Override
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
@@ -107,7 +109,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
         }
     }
 
-
+    @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
         this.checkNBT(player);
         if (stack.getItemDamage() < stack.getMaxDamage() - 3) {

@@ -403,11 +403,13 @@ public class ContainerSteamAnvil extends Container {
         }
     }
 
+    @Override
     public void addCraftingToCrafters(ICrafting par1ICrafting) {
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.hammer.cost);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
@@ -435,6 +437,7 @@ public class ContainerSteamAnvil extends Container {
 //        }
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
         return this.theWorld.getBlock(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.field_82861_i + 0.5D, (double) this.field_82858_j + 0.5D, (double) this.field_82859_k + 0.5D) <= 64.0D;
     }

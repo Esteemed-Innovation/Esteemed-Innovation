@@ -71,6 +71,7 @@ public class BlockRuptureDisc extends BlockContainer {
         }
     }
 
+    @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         return (dir == NORTH && world.getTileEntity(x, y, z + 1) != null && world.getTileEntity(x, y, z + 1) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x, y, z + 1)).acceptsGauge(dir.getOpposite())) ||
@@ -79,26 +80,28 @@ public class BlockRuptureDisc extends BlockContainer {
                 (dir == EAST && world.getTileEntity(x - 1, y, z) != null && world.getTileEntity(x - 1, y, z) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x - 1, y, z)).acceptsGauge(dir.getOpposite()));
     }
 
-    public void onNeighborBlockChange(World world, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_) {
-        if (p_149695_5_ != this) {
-            int l = world.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_);
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        if (neighbor != this) {
+            int l = world.getBlockMetadata(x, y, z);
             l = getMeta(l);
             boolean flag = false;
-            if (!this.canPlaceBlockOnSide(world, p_149695_2_, p_149695_3_, p_149695_4_, l)) {
+            if (!this.canPlaceBlockOnSide(world, x, y, z, l)) {
                 flag = true;
             }
 
             if (flag) {
-                this.dropBlockAsItem(world, p_149695_2_, p_149695_3_, p_149695_4_, l, 0);
-                world.setBlockToAir(p_149695_2_, p_149695_3_, p_149695_4_);
+                this.dropBlockAsItem(world, x, y, z, l, 0);
+                world.setBlockToAir(x, y, z);
             }
         }
     }
 
+    @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta) {
         return (meta == 1 ? side + 10 : side);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         int trueMeta = meta;
@@ -106,38 +109,44 @@ public class BlockRuptureDisc extends BlockContainer {
         return side == meta || side == ForgeDirection.OPPOSITES[meta] ? (side == meta ? (trueMeta > 9 ? backR : back) : front) : ((meta == 5 || meta == 4) ? blockIcon : top2);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:discTop");
-        this.back = p_149651_1_.registerIcon("steamcraft:discFromt");
-        this.backR = p_149651_1_.registerIcon("steamcraft:discFromtRuptured");
-        this.front = p_149651_1_.registerIcon("steamcraft:discBack");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:discTop");
+        this.back = ir.registerIcon("steamcraft:discFromt");
+        this.backR = ir.registerIcon("steamcraft:discFromtRuptured");
+        this.front = ir.registerIcon("steamcraft:discBack");
         this.top = blockIcon;
-        this.top2 = p_149651_1_.registerIcon("steamcraft:discTop2");
+        this.top2 = ir.registerIcon("steamcraft:discTop2");
 
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityRuptureDisc();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_) {
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.ruptureDiscRenderID;
     }
 
+    @Override
     public int damageDropped(int meta) {
         return (meta > 9 ? 1 : 0);
     }

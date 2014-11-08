@@ -113,6 +113,7 @@ public class ContainerBoiler extends Container {
         }
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
         return this.furnace.isUseableByPlayer(par1EntityPlayer);
     }

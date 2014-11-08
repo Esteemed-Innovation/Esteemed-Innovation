@@ -53,6 +53,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
         return true;
     }
 
+    @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         this.checkNBT(player);
 
@@ -68,6 +69,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
         this.icon[1] = ir.registerIcon("steamcraft:drill1");
     }
 
+    @Override
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());

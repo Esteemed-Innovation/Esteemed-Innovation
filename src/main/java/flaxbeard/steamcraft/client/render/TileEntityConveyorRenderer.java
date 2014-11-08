@@ -17,8 +17,7 @@ public class TileEntityConveyorRenderer extends TileEntitySpecialRenderer implem
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
 
         TileEntityConveyor conveyor = (TileEntityConveyor) var1;
         int meta = conveyor.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
@@ -36,8 +35,7 @@ public class TileEntityConveyorRenderer extends TileEntitySpecialRenderer implem
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         TileEntityConveyor conveyor = (TileEntityConveyor) var1;
         int meta = 3;
         GL11.glPushMatrix();

@@ -53,11 +53,11 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
      * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
      * fuel
      */
-    public static int getItemBurnTime(ItemStack p_145952_0_) {
-        if (p_145952_0_ == null) {
+    public static int getItemBurnTime(ItemStack stack) {
+        if (stack == null) {
             return 0;
         } else {
-            Item item = p_145952_0_.getItem();
+            Item item = stack.getItem();
 
             if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air) {
                 Block block = Block.getBlockFromItem(item);
@@ -83,16 +83,16 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
             if (item == Items.lava_bucket) return 20000;
             if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
             if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(p_145952_0_);
+            return GameRegistry.getFuelValue(stack);
         }
     }
 
-    public static boolean isItemFuel(ItemStack p_145954_0_) {
+    public static boolean isItemFuel(ItemStack stack) {
         /**
          * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
          * fuel
          */
-        return getItemBurnTime(p_145954_0_) > 0;
+        return getItemBurnTime(stack) > 0;
     }
 
     /**
@@ -105,27 +105,27 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return this.furnaceItemStacks[p_70301_1_];
+    public ItemStack getStackInSlot(int par1) {
+        return this.furnaceItemStacks[par1];
     }
 
     /**
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        if (this.furnaceItemStacks[p_70298_1_] != null) {
+    public ItemStack decrStackSize(int slot, int num) {
+        if (this.furnaceItemStacks[slot] != null) {
             ItemStack itemstack;
 
-            if (this.furnaceItemStacks[p_70298_1_].stackSize <= p_70298_2_) {
-                itemstack = this.furnaceItemStacks[p_70298_1_];
-                this.furnaceItemStacks[p_70298_1_] = null;
+            if (this.furnaceItemStacks[slot].stackSize <= num) {
+                itemstack = this.furnaceItemStacks[slot];
+                this.furnaceItemStacks[slot] = null;
                 return itemstack;
             } else {
-                itemstack = this.furnaceItemStacks[p_70298_1_].splitStack(p_70298_2_);
+                itemstack = this.furnaceItemStacks[slot].splitStack(num);
 
-                if (this.furnaceItemStacks[p_70298_1_].stackSize == 0) {
-                    this.furnaceItemStacks[p_70298_1_] = null;
+                if (this.furnaceItemStacks[slot].stackSize == 0) {
+                    this.furnaceItemStacks[slot] = null;
                 }
 
                 return itemstack;
@@ -152,11 +152,11 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        this.furnaceItemStacks[p_70299_1_] = p_70299_2_;
+    public void setInventorySlotContents(int p_70299_1_, ItemStack stack) {
+        this.furnaceItemStacks[p_70299_1_] = stack;
 
-        if (p_70299_2_ != null && p_70299_2_.stackSize > this.getInventoryStackLimit()) {
-            p_70299_2_.stackSize = this.getInventoryStackLimit();
+        if (stack != null && stack.stackSize > this.getInventoryStackLimit()) {
+            stack.stackSize = this.getInventoryStackLimit();
         }
     }
 
@@ -192,13 +192,15 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         return this.field_145958_o != null && this.field_145958_o.length() > 0;
     }
 
+    @Override
     public void func_145951_a(String p_145951_1_) {
         this.field_145958_o = p_145951_1_;
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_) {
-        super.readFromNBT(p_145839_1_);
-        NBTTagList nbttaglist = p_145839_1_.getTagList("Items", 10);
+    @Override
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
+        NBTTagList nbttaglist = nbtTagCompound.getTagList("Items", 10);
         this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -210,23 +212,24 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
             }
         }
 
-        this.furnaceBurnTime = p_145839_1_.getShort("BurnTime");
-        this.furnaceCookTime = p_145839_1_.getShort("CookTime");
+        this.furnaceBurnTime = nbtTagCompound.getShort("BurnTime");
+        this.furnaceCookTime = nbtTagCompound.getShort("CookTime");
         this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
-        this.disguiseBlock = Block.getBlockById(p_145839_1_.getInteger("disguiseBlock"));
-        this.disguiseMeta = p_145839_1_.getInteger("disguiseMeta");
+        this.disguiseBlock = Block.getBlockById(nbtTagCompound.getInteger("disguiseBlock"));
+        this.disguiseMeta = nbtTagCompound.getInteger("disguiseMeta");
 
-        if (p_145839_1_.hasKey("CustomName", 8)) {
-            this.field_145958_o = p_145839_1_.getString("CustomName");
+        if (nbtTagCompound.hasKey("CustomName", 8)) {
+            this.field_145958_o = nbtTagCompound.getString("CustomName");
         }
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_) {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setShort("BurnTime", (short) this.furnaceBurnTime);
-        p_145841_1_.setShort("CookTime", (short) this.furnaceCookTime);
-        p_145841_1_.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
-        p_145841_1_.setInteger("disguiseMeta", disguiseMeta);
+    @Override
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        super.writeToNBT(nbtTagCompound);
+        nbtTagCompound.setShort("BurnTime", (short) this.furnaceBurnTime);
+        nbtTagCompound.setShort("CookTime", (short) this.furnaceCookTime);
+        nbtTagCompound.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        nbtTagCompound.setInteger("disguiseMeta", disguiseMeta);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i) {
@@ -238,10 +241,10 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
             }
         }
 
-        p_145841_1_.setTag("Items", nbttaglist);
+        nbtTagCompound.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName()) {
-            p_145841_1_.setString("CustomName", this.field_145958_o);
+            nbtTagCompound.setString("CustomName", this.field_145958_o);
         }
     }
 
@@ -281,6 +284,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         return this.furnaceBurnTime > 0;
     }
 
+    @Override
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
             ReflectionHelper.setPrivateValue(TileEntityFurnace.class, this, this.furnaceBurnTime, 4);
@@ -380,9 +384,11 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : p_70300_1_.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
+    @Override
     public void openInventory() {
     }
 
+    @Override
     public void closeInventory() {
     }
 
@@ -402,19 +408,19 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
     }
 
     /**
-     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
+     * Returns true if automation can insert the given item in the given slot from the given side. Args: slot, item,
      * side
      */
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return this.isItemValidForSlot(p_102007_1_, p_102007_2_);
+    public boolean canInsertItem(int slot, ItemStack item, int side) {
+        return this.isItemValidForSlot(slot, item);
     }
 
     /**
-     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
+     * Returns true if automation can extract the given item in the given slot from the given side. Args: slot, item,
      * side
      */
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return p_102008_3_ != 0 || p_102008_1_ != 1 || p_102008_2_.getItem() == Items.bucket;
+    public boolean canExtractItem(int slot, ItemStack item, int side) {
+        return side != 0 || slot != 1 || item.getItem() == Items.bucket;
     }
 
     @Override

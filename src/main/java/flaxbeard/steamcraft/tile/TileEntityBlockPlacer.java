@@ -106,7 +106,6 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
     // #################################################
     @Override
     public int getSizeInventory() {
-        // TODO Auto-generated method stub
         return this.inventory.length;
     }
     @Override

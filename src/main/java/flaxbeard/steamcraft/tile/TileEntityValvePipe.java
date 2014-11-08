@@ -55,7 +55,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
 
-
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
@@ -68,7 +67,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         this.open = access.getBoolean("open");
 
     }
-
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -85,7 +83,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         par1NBTTagCompound.setBoolean("redstoneState", this.redstoneState);
 
     }
-
 
     public ForgeDirection dir() {
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
@@ -290,8 +287,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         return false;
     }
 }

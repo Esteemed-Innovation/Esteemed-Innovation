@@ -14,6 +14,7 @@ public class TileEntitySteamGauge extends TileEntity {
             ForgeDirection.WEST
     };
 
+    @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
             int compOutput = getComparatorOutput();

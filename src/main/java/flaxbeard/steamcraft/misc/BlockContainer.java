@@ -16,21 +16,25 @@ public class BlockContainer extends Block {
         mySide = side;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int side) {
-        return side == mySide ? super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, side) : false;
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        return side == mySide ? super.shouldSideBeRendered(blockAccess, x, y, z, side) : false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_) {
         return myBlock.getIcon(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_, p_149673_5_);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return myBlock.getIcon(p_149691_1_, p_149691_2_);
+    public IIcon getIcon(int side, int meta) {
+        return myBlock.getIcon(side, meta);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon func_149735_b(int p_149735_1_, int p_149735_2_) {
         return myBlock.getIcon(p_149735_1_, p_149735_2_);

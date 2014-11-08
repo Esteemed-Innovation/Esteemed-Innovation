@@ -26,6 +26,7 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
         return -1;
     }
 
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -48,16 +49,18 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
 
     }
 
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySmasher();
-
     }
 
+    @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         TileEntitySmasher smasher = (TileEntitySmasher) world.getTileEntity(x, y, z);
         smasher.blockUpdate();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }

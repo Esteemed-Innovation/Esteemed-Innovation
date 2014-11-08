@@ -388,8 +388,7 @@ public class ItemFirearm extends Item implements IEngineerable {
     }
 
     @Override
-    public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i,
-                         int j) {
+    public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i, int j) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
         guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
     }
@@ -413,8 +412,7 @@ public class ItemFirearm extends Item implements IEngineerable {
     }
 
     @Override
-    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i,
-                               int j, int k) {
+    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
         if (this == SteamcraftItems.musket) {
             guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 64, 64, 64);

@@ -24,17 +24,18 @@ public class BlockSteamTank extends BlockContainer {
         super(Material.iron);
     }
 
+    @Override
     public int damageDropped(int meta) {
         return meta;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int par1, int par2) {
-        if (par2 == 0) {
+    public IIcon getIcon(int side, int meta) {
+        if (meta == 0) {
             return this.icon[0];
         }
-        if (par2 == 1) {
+        if (meta == 1) {
             return this.icon[1];
         }
         return this.icon[0];
@@ -48,14 +49,15 @@ public class BlockSteamTank extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
-        if (var2 == 1) {
+    public TileEntity createNewTileEntity(World world, int meta) {
+        if (meta == 1) {
             return new TileEntityCreativeTank();
         } else {
             return new TileEntitySteamTank();
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));

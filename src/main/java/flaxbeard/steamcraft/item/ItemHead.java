@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * @author SatanicSanta
+ * Only useful if I can actually get Tool Heads integration to work. If it doesn't work, ignore this class.
  */
 public class ItemHead extends Item {
 

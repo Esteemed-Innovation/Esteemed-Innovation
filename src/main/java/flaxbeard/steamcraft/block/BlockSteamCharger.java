@@ -36,17 +36,19 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         super(Material.iron);
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 0.5F, z + 1);
     }
 
     @Override
-    public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
-        p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
+        int l = determineOrientation(world, x, y, z, elb);
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
     }
 
-    public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         float px = 1.0F / 16.0F;
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
     }
@@ -76,37 +78,43 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         return false;
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.bottom : (p_149691_1_ == 0 ? this.bottom : this.blockIcon);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockCharger");
-        this.top = p_149651_1_.registerIcon("steamcraft:blockChargerTop");
-        this.bottom = p_149651_1_.registerIcon("steamcraft:blockBrass");
+    public IIcon getIcon(int side, int meta) {
+        return side == 1 ? this.bottom : (side == 0 ? this.bottom : this.blockIcon);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:blockCharger");
+        this.top = ir.registerIcon("steamcraft:blockChargerTop");
+        this.bottom = ir.registerIcon("steamcraft:blockBrass");
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySteamCharger();
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.chargerRenderID;
     }
 
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        TileEntitySteamCharger tileentitysteamcharger = (TileEntitySteamCharger) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntitySteamCharger tileentitysteamcharger = (TileEntitySteamCharger) world.getTileEntity(x, y, z);
 
         if (tileentitysteamcharger != null) {
             for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory(); ++i1) {
@@ -125,7 +133,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -135,16 +143,16 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                         entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        p_149749_1_.spawnEntityInWorld(entityitem);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
             }
 
-            p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+            world.func_147453_f(x, y, z, block);
         }
 
 
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
     @Override
@@ -192,7 +200,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
     public static int determineOrientation(World world, int int1, int int2, int int3, EntityLivingBase elb){
         if (MathHelper.abs((float) elb.posX - (float) int1) < 2.0F && MathHelper.abs((float) elb.posZ - (float) int3) < 2.0F){
-            double penetration = elb.posY + 1.82D - (double) elb.yOffset;
+            double penetration /* ouch */ = elb.posY + 1.82D - (double) elb.yOffset;
 
             if (penetration - (double) int1 > 2D){
                 return 1;

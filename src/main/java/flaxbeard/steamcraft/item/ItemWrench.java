@@ -16,6 +16,7 @@ public class ItemWrench extends Item {
         return true;
     }
 
+    @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         if (!world.isRemote || (world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntitySteamPipe && !player.isSneaking())) {
             if (world.getBlock(x, y, z) != null && world.getBlock(x, y, z) instanceof IWrenchable) {
@@ -37,7 +38,7 @@ public class ItemWrench extends Item {
         return false;
     }
 
-
+    @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         return false;
     }

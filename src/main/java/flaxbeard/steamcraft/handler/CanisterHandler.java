@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class CanisterHandler implements IRecipe {
 
     @Override
-    public boolean matches(InventoryCrafting inv, World p_77569_2_) {
+    public boolean matches(InventoryCrafting inv, World world) {
         ItemStack output = null;
         boolean hasCan = false;
         boolean canCraft = true;

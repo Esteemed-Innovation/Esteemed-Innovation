@@ -76,8 +76,7 @@ public class WorldContainer implements IBlockAccess {
     }
 
     @Override
-    public boolean isSideSolid(int x, int y, int z, ForgeDirection side,
-                               boolean _default) {
+    public boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default) {
         return myWorld.isSideSolid(x, y, z, side, _default);
     }
 

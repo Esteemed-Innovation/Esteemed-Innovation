@@ -26,8 +26,7 @@ public class EntityMortarItem extends EntityItem {
         this.renderDistanceWeight *= 3;
     }
 
-    public EntityMortarItem(World par1World, double par2, double par4,
-                            double par6, ItemStack par8ItemStack, int xTarget, int zTarget) {
+    public EntityMortarItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack, int xTarget, int zTarget) {
         super(par1World, par2, par4, par6, par8ItemStack);
         super.delayBeforeCanPickup = 20;
         this.xT = xTarget;

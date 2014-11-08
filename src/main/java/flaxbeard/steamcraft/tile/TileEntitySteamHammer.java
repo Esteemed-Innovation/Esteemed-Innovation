@@ -219,7 +219,6 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     public void closeInventory() {
     }
 
-
     @Override
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
         return true;

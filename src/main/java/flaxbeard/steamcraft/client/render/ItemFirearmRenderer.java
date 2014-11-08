@@ -25,14 +25,12 @@ public class ItemFirearmRenderer implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item,
-                                         ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return false;
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
-
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         IIcon icon = itemStack.getIconIndex();
         renderItem.renderIcon(0, 0, icon, 16, 16);

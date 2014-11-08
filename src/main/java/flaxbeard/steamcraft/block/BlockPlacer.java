@@ -32,24 +32,26 @@ public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
         return new TileEntityBlockPlacer();
     }
 
+    @Override
     public boolean isOpaqueCube()
     {
         return false;
     }
 
-
-
+    @Override
     public IIcon getIcon(int side, int meta)
     {
         return side == meta ? frontIcon : blockIcon;
     }
 
+    @Override
     public void registerBlockIcons(IIconRegister ir)
     {
         this.blockIcon = ir.registerIcon("steamcraft:testSide");
         this.frontIcon = ir.registerIcon("steamcraft:testFront");
     }
 
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack)
     {
         int meta = determineOrientation(world, x, y, z, player);
@@ -115,10 +117,6 @@ public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
         int l = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
     }
-
-
-
-
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world,

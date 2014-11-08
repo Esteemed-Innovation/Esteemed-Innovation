@@ -196,6 +196,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         }
     }
 
+    @Override
     public void sendContainerAndContentsToPlayer(Container par1Container, List par2List) {
         this.sendSlotContents(par1Container, 0, par1Container.getSlot(0).getStack());
     }

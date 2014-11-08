@@ -26,6 +26,7 @@ public class ItemModularTool extends Item implements ISteamChargable {
         super();
     }
 
+    @Override
     public boolean getIsRepairable(ItemStack par1Stack, ItemStack par2Stack){
         return false;
     }
@@ -44,6 +45,7 @@ public class ItemModularTool extends Item implements ISteamChargable {
         return 1.0D - (itemstack.stackTagCompound.getInteger("steamFill") / (double) itemstack.stackTagCompound.getInteger("maxFill"));
     }
 
+    @Override
     public boolean showDurabilityBar(ItemStack stack){
         if (!stack.hasTagCompound()){
             stack.setTagCompound(new NBTTagCompound());

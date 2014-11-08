@@ -8,10 +8,10 @@ public class ItemSteamcraftHoe extends ItemHoe {
     private int harvestLevel;
     private Object repairMaterial;
 
-    public ItemSteamcraftHoe(ToolMaterial p_i45347_1_, Object rM) {
-        super(p_i45347_1_);
-        harvestLevel = p_i45347_1_.getHarvestLevel();
-        repairMaterial = rM;
+    public ItemSteamcraftHoe(ToolMaterial toolMaterial, Object repairMat) {
+        super(toolMaterial);
+        harvestLevel = toolMaterial.getHarvestLevel();
+        repairMaterial = repairMat;
     }
 
     @Override

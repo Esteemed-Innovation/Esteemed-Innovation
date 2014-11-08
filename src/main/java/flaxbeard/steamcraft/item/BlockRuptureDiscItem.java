@@ -11,8 +11,8 @@ import net.minecraft.util.IIcon;
 public class BlockRuptureDiscItem extends ItemBlock {
     public IIcon[] icon = new IIcon[2];
 
-    public BlockRuptureDiscItem(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public BlockRuptureDiscItem(Block block) {
+        super(block);
         this.setHasSubtypes(true);
     }
 
@@ -32,10 +32,12 @@ public class BlockRuptureDiscItem extends ItemBlock {
         this.icon[1] = ir.registerIcon("steamcraft:discFromtRuptured");
     }
 
+    @Override
     public int getMetadata(int par1) {
         return par1;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
     }

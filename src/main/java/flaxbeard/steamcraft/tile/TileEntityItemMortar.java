@@ -203,7 +203,6 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     public void closeInventory() {
     }
 
-
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
         return true;

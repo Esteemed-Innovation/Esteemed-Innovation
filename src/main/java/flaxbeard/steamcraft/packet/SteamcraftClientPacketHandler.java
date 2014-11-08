@@ -44,7 +44,6 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 
     }
 
-
     public static void sendCamoPacket(Entity player, MovingObjectPosition pos) {
         ByteBuf buf = Unpooled.buffer();
         ByteBufOutputStream out = new ByteBufOutputStream(buf);
@@ -106,8 +105,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         }
     }
 
-    public static void sendItemNamePacket(World worldObj, int x,
-                                          int y, int z, String s, EntityPlayer player) {
+    public static void sendItemNamePacket(World worldObj, int x, int y, int z, String s, EntityPlayer player) {
         ByteBuf buf = Unpooled.buffer();
         ByteBufOutputStream out = new ByteBufOutputStream(buf);
         try {
@@ -129,8 +127,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         }
     }
 
-    public static void sendGrapplePacket(EntityPlayer player, int x, int y,
-                                         int z) {
+    public static void sendGrapplePacket(EntityPlayer player, int x, int y, int z) {
         ByteBuf buf = Unpooled.buffer();
         ByteBufOutputStream out = new ByteBufOutputStream(buf);
         try {
@@ -184,8 +181,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         }
     }
 
-    private void handleRocketJumpHackyPacket(ByteBufInputStream dat,
-                                             World world) {
+    private void handleRocketJumpHackyPacket(ByteBufInputStream dat, World world) {
         try {
             int id = dat.readInt();
             EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
@@ -205,8 +201,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         }
     }
 
-    private void handleExplodePacket(ByteBufInputStream dat,
-                                     World world) {
+    private void handleExplodePacket(ByteBufInputStream dat, World world) {
         try {
             newExplosion(world, null, dat.readDouble(), dat.readDouble(), dat.readDouble(), dat.readFloat(), true, world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
         } catch (Exception e) {
@@ -215,8 +210,8 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
         }
     }
 
-    public Explosion newExplosion(World world, Entity p_72885_1_, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
-        Explosion explosion = new ExplosionRocket(world, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
+    public Explosion newExplosion(World world, Entity entity, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
+        Explosion explosion = new ExplosionRocket(world, entity, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
         explosion.isFlaming = p_72885_9_;
         explosion.isSmoking = p_72885_10_;
         explosion.doExplosionA();

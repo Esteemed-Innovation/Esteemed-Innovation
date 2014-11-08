@@ -15,8 +15,7 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer impleme
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/thumper.png");
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntityThumper thumper = (TileEntityThumper) var1;
 
         GL11.glPushMatrix();
@@ -51,8 +50,7 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer impleme
 
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslated(x, y, z);

@@ -14,20 +14,23 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockCustomCraftingTable extends BlockWorkbench implements ITileEntityProvider {
+
     @SideOnly(Side.CLIENT)
     private IIcon field_150035_a;
     @SideOnly(Side.CLIENT)
     private IIcon field_150034_b;
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityCustomCraftingTable();
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.customCraftingTableRenderID;
     }
@@ -50,18 +53,21 @@ public class BlockCustomCraftingTable extends BlockWorkbench implements ITileEnt
         return super.shouldSideBeRendered(world, x, y, z, side);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:customTable1");
-        this.field_150035_a = p_149651_1_.registerIcon("steamcraft:customTable3");
-        this.field_150034_b = p_149651_1_.registerIcon("steamcraft:customTable2");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:customTable1");
+        this.field_150035_a = ir.registerIcon("steamcraft:customTable3");
+        this.field_150034_b = ir.registerIcon("steamcraft:customTable2");
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.field_150035_a : (p_149691_1_ == 0 ? Blocks.planks.getBlockTextureFromSide(p_149691_1_) : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.field_150034_b : this.blockIcon));
+    public IIcon getIcon(int side, int meta) {
+        return side == 1 ? this.field_150035_a : (side == 0 ? Blocks.planks.getBlockTextureFromSide(side) : (side != 2 && side != 4 ? this.field_150034_b : this.blockIcon));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 0;

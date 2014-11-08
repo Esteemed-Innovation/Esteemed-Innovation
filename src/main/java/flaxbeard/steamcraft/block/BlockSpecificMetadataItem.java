@@ -5,10 +5,11 @@ import net.minecraft.item.ItemBlock;
 
 public class BlockSpecificMetadataItem extends ItemBlock {
 
-    public BlockSpecificMetadataItem(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public BlockSpecificMetadataItem(Block block) {
+        super(block);
     }
 
+    @Override
     public int getMetadata(int par1) {
         return 3;
     }

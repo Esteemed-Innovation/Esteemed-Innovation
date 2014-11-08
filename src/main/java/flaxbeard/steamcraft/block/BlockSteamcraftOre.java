@@ -41,41 +41,42 @@ public class BlockSteamcraftOre extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int par1, int par2) {
+    public IIcon getIcon(int side, int meta) {
         int dimensionID = Minecraft.getMinecraft().theWorld.provider.dimensionId;
 
         if (dimensionID == 0) {
-            if (par2 == 0) {
+            if (meta == 0) {
                 return this.icon[0];
             }
-            if (par2 == 1) {
+            if (meta == 1) {
                 return this.icon[1];
             }
-            if (par2 == 2) {
+            if (meta == 2) {
                 return this.icon[2];
             }
         }
 
         if (dimensionID == -1){
-            if (par2 == 0){
+            if (meta == 0){
                 return this.icon[3];
             }
-            if (par2 == 1){
+            if (meta == 1){
                 return this.icon[4];
             }
         }
 
         if (dimensionID == 1){
-            if (par2 == 0){
+            if (meta == 0){
                 return this.icon[5];
             }
-            if (par2 == 1){
+            if (meta == 1){
                 return this.icon[6];
             }
         }
         return this.icon[0];
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
@@ -85,6 +86,7 @@ public class BlockSteamcraftOre extends Block {
         }
     }
 
+    @Override
     public int damageDropped(int meta) {
         return meta;
     }

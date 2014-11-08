@@ -50,11 +50,11 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         this(50000);
     }
 
-    public static int getItemBurnTime(ItemStack p_145952_0_) {
-        if (p_145952_0_ == null) {
+    public static int getItemBurnTime(ItemStack stack) {
+        if (stack == null) {
             return 0;
         } else {
-            Item item = p_145952_0_.getItem();
+            Item item = stack.getItem();
 
             if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air) {
                 Block block = Block.getBlockFromItem(item);
@@ -80,7 +80,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
             if (item == Items.lava_bucket) return 20000;
             if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
             if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(p_145952_0_);
+            return GameRegistry.getFuelValue(stack);
         }
     }
 
@@ -280,8 +280,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource,
-                            boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
@@ -395,10 +394,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         return par1 == 0 ? getItemBurnTime(par2ItemStack) > 0 : (par2ItemStack.getItem() == Items.water_bucket || FluidContainerRegistry.isEmptyContainer(par2ItemStack) || par2ItemStack.getItem() instanceof IFluidContainerItem);
     }
 
+    @Override
     public int[] getAccessibleSlotsFromSide(int par1) {
         return par1 == 0 ? slotsBottom : (par1 == 1 ? slotsTop : slotsSides);
     }
-
 
     @Override
     public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {

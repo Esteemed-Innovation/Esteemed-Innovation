@@ -25,25 +25,25 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
         super(Material.iron);
     }
 
-    public static int determineOrientation(World p_150071_0_, int p_150071_1_, int p_150071_2_, int p_150071_3_, EntityLivingBase p_150071_4_) {
-        if (MathHelper.abs((float) p_150071_4_.posX - (float) p_150071_1_) < 2.0F && MathHelper.abs((float) p_150071_4_.posZ - (float) p_150071_3_) < 2.0F) {
-            double d0 = p_150071_4_.posY + 1.82D - (double) p_150071_4_.yOffset;
+    public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {
+        if (MathHelper.abs((float) elb.posX - (float) x) < 2.0F && MathHelper.abs((float) elb.posZ - (float) z) < 2.0F) {
+            double d0 = elb.posY + 1.82D - (double) elb.yOffset;
 
-            if (d0 - (double) p_150071_2_ > 2.0D) {
+            if (d0 - (double) y > 2.0D) {
                 return 1;
             }
 
-            if ((double) p_150071_2_ - d0 > 0.0D) {
+            if ((double) y - d0 > 0.0D) {
                 return 0;
             }
         }
 
-        int l = MathHelper.floor_double((double) (p_150071_4_.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if ((tileEntity != null && tileEntity instanceof TileEntityFan)) {
@@ -57,14 +57,17 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
         onNeighborBlockChange(world, x, y, z, null);
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return -1;
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
         int meta = world.getBlockMetadata(i, j, k);
         ForgeDirection dir = ForgeDirection.getOrientation(meta);
@@ -79,16 +82,18 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
     }
 
-    public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
-        p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
+        int l = determineOrientation(world, x, y, z, elb);
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityFan();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }

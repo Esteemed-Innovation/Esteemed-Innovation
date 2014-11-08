@@ -12,9 +12,8 @@ import java.util.List;
 
 public class ItemSteamcraftGoggles extends ItemSteamcraftArmor implements IExosuitUpgrade {
 
-    public ItemSteamcraftGoggles(ArmorMaterial p_i45325_1_, int p_i45325_2_,
-                                 int p_i45325_3_, Object repair, String n) {
-        super(p_i45325_1_, p_i45325_2_, p_i45325_3_, repair, n);
+    public ItemSteamcraftGoggles(ArmorMaterial armorMaterial, int renderIndex, int armorType, Object repair, String n) {
+        super(armorMaterial, renderIndex, armorType, repair, n);
     }
 
     @Override

@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 
 public class BlockManyMetadataItem extends ItemBlock {
 
-    public BlockManyMetadataItem(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public BlockManyMetadataItem(Block block) {
+        super(block);
         this.setHasSubtypes(true);
     }
 

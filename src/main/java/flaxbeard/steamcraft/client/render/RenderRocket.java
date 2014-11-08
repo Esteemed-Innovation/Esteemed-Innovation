@@ -24,11 +24,11 @@ public class RenderRocket extends Render {
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
 
-    public void doRender(EntityRocket p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-        this.bindEntityTexture(p_76986_1_);
+    public void doRender(EntityRocket rocket, double d, double d1, double d2, float f, float f1) {
+        this.bindEntityTexture(rocket);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) p_76986_2_, (float) p_76986_4_, (float) p_76986_6_);
-        Vec3 vec = Vec3.createVectorHelper(p_76986_1_.motionX, p_76986_1_.motionY, p_76986_1_.motionZ);
+        GL11.glTranslatef((float) d, (float) d1, (float) d2);
+        Vec3 vec = Vec3.createVectorHelper(rocket.motionX, rocket.motionY, rocket.motionZ);
         vec = vec.normalize();
         float distance = (float) Math.sqrt(vec.zCoord * vec.zCoord + vec.xCoord * vec.xCoord);
         float pitch = (float) Math.asin(vec.yCoord);
@@ -47,7 +47,7 @@ public class RenderRocket extends Render {
         float f9 = (float) (10 + b0 * 10) / 32.0F;
         float f10 = 0.05625F;
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        float f11 = 0 - p_76986_9_;
+        float f11 = 0 - f1;
 
         if (f11 > 0.0F) {
             float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
@@ -90,15 +90,15 @@ public class RenderRocket extends Render {
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityRocket p_110775_1_) {
+    protected ResourceLocation getEntityTexture(EntityRocket rocket) {
         return arrowTextures;
     }
 
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-        return this.getEntityTexture((EntityRocket) p_110775_1_);
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return this.getEntityTexture((EntityRocket) entity);
     }
 
     /**
@@ -107,7 +107,7 @@ public class RenderRocket extends Render {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-        this.doRender((EntityRocket) p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
+    public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
+        this.doRender((EntityRocket) entity, d, d1, d2, f, f1);
     }
 }

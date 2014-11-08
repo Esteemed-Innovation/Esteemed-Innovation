@@ -13,13 +13,12 @@ import java.util.Iterator;
 
 public class EntityMiningRocket extends EntityRocket {
 
-    public EntityMiningRocket(World p_i1759_1_) {
-        super(p_i1759_1_);
+    public EntityMiningRocket(World world) {
+        super(world);
     }
 
-    public EntityMiningRocket(World p_i1761_1_,
-                              EntityPlayer par3EntityPlayer, float par4, float size) {
-        super(p_i1761_1_, par3EntityPlayer, par4, size);
+    public EntityMiningRocket(World world, EntityPlayer par3EntityPlayer, float par4, float size) {
+        super(world, par3EntityPlayer, par4, size);
         this.explosionSize += 1.0F;
     }
 

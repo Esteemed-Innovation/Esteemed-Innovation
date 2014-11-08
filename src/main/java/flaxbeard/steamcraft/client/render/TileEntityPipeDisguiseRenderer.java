@@ -6,8 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityPipeDisguiseRenderer extends TileEntitySpecialRenderer {
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x,
-                                   double y, double z, float p_147500_8_) {
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_) {
 //		TileEntitySteamPipe pipe = (TileEntitySteamPipe) te;
 //		Minecraft mc = Minecraft.getMinecraft();
 //		GL11.glPushMatrix();

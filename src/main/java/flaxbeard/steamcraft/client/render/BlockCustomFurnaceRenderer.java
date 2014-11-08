@@ -21,8 +21,7 @@ public class BlockCustomFurnaceRenderer implements ISimpleBlockRenderingHandler 
     private RenderBlocks renderBlocks = new RenderBlocks();
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId,
-                                     RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         int x = 0;
@@ -67,8 +66,7 @@ public class BlockCustomFurnaceRenderer implements ISimpleBlockRenderingHandler 
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         TileEntityCustomFurnace boiler = (TileEntityCustomFurnace) world.getTileEntity(x, y, z);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (BlockSteamPipeRenderer.updateWrenchStatus() || (boiler.disguiseBlock == null || boiler.disguiseBlock == Blocks.air)) {

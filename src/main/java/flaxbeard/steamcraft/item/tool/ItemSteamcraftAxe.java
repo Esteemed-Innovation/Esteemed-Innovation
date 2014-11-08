@@ -11,10 +11,10 @@ public class ItemSteamcraftAxe extends ItemAxe {
     private int harvestLevel;
     private Object repairMaterial;
 
-    public ItemSteamcraftAxe(ToolMaterial toolMaterial, Object rM) {
+    public ItemSteamcraftAxe(ToolMaterial toolMaterial, Object repairMat) {
         super(toolMaterial);
         harvestLevel = toolMaterial.getHarvestLevel();
-        repairMaterial = rM;
+        repairMaterial = repairMat;
     }
 
     @Override

@@ -49,18 +49,21 @@ public class BlockPipe extends BlockSteamTransporter {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySteamPipe();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.tubeRenderID;
     }
@@ -237,6 +240,7 @@ public class BlockPipe extends BlockSteamTransporter {
         }
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
         TileEntity te = world.getTileEntity(i, j, k);
         if (te instanceof TileEntitySteamPipe) {
@@ -320,10 +324,10 @@ public class BlockPipe extends BlockSteamTransporter {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockBrass");
-        this.sideIcon = p_149651_1_.registerIcon("steamcraft:blockBrass" + "_pipe");
-        this.copperIcon = p_149651_1_.registerIcon("steamcraft:blockCopper");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:blockBrass");
+        this.sideIcon = ir.registerIcon("steamcraft:blockBrass" + "_pipe");
+        this.copperIcon = ir.registerIcon("steamcraft:blockCopper");
 
     }
 
@@ -336,8 +340,8 @@ public class BlockPipe extends BlockSteamTransporter {
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;

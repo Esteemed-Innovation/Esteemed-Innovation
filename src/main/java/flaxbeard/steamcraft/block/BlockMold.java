@@ -35,8 +35,9 @@ public class BlockMold extends BlockContainer implements IWrenchable {
         super(Material.rock);
     }
 
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        TileEntityMold tileentitymold = (TileEntityMold) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntityMold tileentitymold = (TileEntityMold) world.getTileEntity(x, y, z);
 
         if (tileentitymold != null) {
             for (int i1 = 0; i1 < tileentitymold.getSizeInventory(); ++i1) {
@@ -55,7 +56,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -65,7 +66,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                         entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        p_149749_1_.spawnEntityInWorld(entityitem);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
                 itemstack = tileentitymold.mold[0];
@@ -83,7 +84,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -93,37 +94,36 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                         entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        p_149749_1_.spawnEntityInWorld(entityitem);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
             }
 
-            p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+            world.func_147453_f(x, y, z, block);
         }
-
-
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityMold();
     }
 
     @Override
-    public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = MathHelper.floor_double((double) (p_149689_5_.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
+        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
+    public IIcon getIcon(int side, int meta) {
         return blank;
 
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -190,13 +190,12 @@ public class BlockMold extends BlockContainer implements IWrenchable {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blank = p_149651_1_.registerIcon("steamcraft:blankTexture");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blank = ir.registerIcon("steamcraft:blankTexture");
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         int meta = world.getBlockMetadata(x, y, z);
         if (side != 0 && side != 1) {
             int output = meta;

@@ -14,8 +14,7 @@ public class TileEntitySteamChargerRenderer extends TileEntitySpecialRenderer {
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntitySteamCharger charger = (TileEntitySteamCharger) var1;
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
         int meta = charger.getWorldObj().getBlockMetadata(charger.xCoord, charger.yCoord, charger.zCoord);
