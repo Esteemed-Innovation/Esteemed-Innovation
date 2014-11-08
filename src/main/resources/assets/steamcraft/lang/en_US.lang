@@ -502,6 +502,15 @@ item.steamcraft:steamedBeef.name=Steamed Beef
 item.steamcraft:steamedFish.name=Steamed Fish
 item.steamcraft:steamedPorkchop.name=Steamed Porkchop
 
+item.toolHead.headAxeBrass.name=Brass Axe Head
+item.toolHead.headPickaxeBrass.name=Brass Pickaxe Head
+item.toolHead.headShovelBrass.name=Brass Shovel Head
+item.toolHead.headHoeBrass.name=Brass Hoe Head
+item.toolHead.headAxeGilded.name=Gilded Iron Axe Head
+item.toolHead.headPickaxeGilded.name=Gilded Iron Pickaxe Head
+item.toolHead.headShovelGilded.name=Gilded Iron Shovel Head
+item.toolHead.headHoeGilded.name=Gilded Iron Hoe Head
+
 tile.steamcraft:blockBrass.name=Block of Brass
 tile.steamcraft:blockCopper.name=Block of Copper
 tile.steamcraft:blockZinc.name=Block of Zinc

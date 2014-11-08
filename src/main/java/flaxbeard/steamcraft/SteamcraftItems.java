@@ -2,6 +2,8 @@ package flaxbeard.steamcraft;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import duke605.ms.toolheads.api.ToolHeadsAPI;
+import duke605.ms.toolheads.api.head.Head;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
@@ -10,6 +12,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.modulartool.ToolSlot;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
+import flaxbeard.steamcraft.integration.ToolHeadsIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
 import flaxbeard.steamcraft.item.tool.*;
@@ -146,6 +149,10 @@ public class SteamcraftItems {
         registerFood();
         registerMetals();
         registerMetalThings();
+
+        if (Loader.isModLoaded("ToolHeads") && Config.enableToolHeadsIntegration){
+            ToolHeadsIntegration.register();
+        }
 
     }
 

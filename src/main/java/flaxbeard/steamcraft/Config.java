@@ -32,6 +32,20 @@ public class Config {
 
     public static boolean easterEggs;
 
+    public static boolean enableThaumcraftIntegration;
+    public static boolean enableBotaniaIntegration;
+    public static boolean enableEnchiridionIntegration;
+    public static boolean enableTwilightForestIntegration;
+    public static boolean enableBloodMagicIntegration;
+    public static boolean enableEnderIOIntegration;
+    public static boolean enableThermalFoundationIntegration;
+    public static boolean enableIC2Integration;
+
+    public static boolean enableToolHeadsIntegration;
+    public static int brassChance;
+    public static int gildedChance;
+
+
     public static int mortarRadius;
     public static boolean expensiveMusketRecipes;
     public static int chance;
@@ -87,12 +101,9 @@ public class Config {
 
     // items
     public static boolean enableAstrolabe;
-
     public static boolean enableTopHat;
     public static boolean enableEmeraldHat;
     public static boolean enableGoggles;
-
-
     public static boolean enableDoubleJump;
     public static boolean enableJumpAssist;
     public static boolean enableRunAssist;
@@ -123,10 +134,8 @@ public class Config {
     public static boolean enableExtendoFist;
     public static boolean enablePitonDeployer;
     public static boolean disableMainBarrelRecipe;
-
     public static boolean enableReinforcedTank;
     public static boolean enableUberReinforcedTank;
-
     public static boolean enableEnderShroud;
 
     //plates
@@ -282,7 +291,7 @@ public class Config {
         enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
 
         //MODULAR TOOL
-        //enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
+        enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
 
         //MODULAR TOOL UPGRADES
         enableDrillBit = config.get("Modular Tool", "Enable the Drill upgrade", true).getBoolean(true);
@@ -299,6 +308,22 @@ public class Config {
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
+
+        //INTEGRATION
+        enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean(true);
+        enableBotaniaIntegration = config.get("Integration", "Enable Botania", true).getBoolean(true);
+        enableEnchiridionIntegration = config.get("Integration", "Enable Enchiridion", true).getBoolean(true);
+        enableTwilightForestIntegration = config.get("Integration", "Enable Twilight Forest", true).getBoolean(true);
+        enableBloodMagicIntegration = config.get("Integration", "Enable Blood Magic", true).getBoolean(true);
+        enableEnderIOIntegration = config.get("Integration", "Enable Ender IO", true).getBoolean(true);
+        enableThermalFoundationIntegration = config.get("Integration", "Enable Thermal Foundation", true).getBoolean(true);
+        enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean(true);
+        enableToolHeadsIntegration = config.get("Integration", "Enable Tool Heads", true).getBoolean(true);
+
+        //TOOL HEADS
+        config.addCustomCategoryComment("Tool Heads", "These are only used if you have Tool Heads integration enabled, and the Tool Heads mod installed");
+        brassChance = config.getInt("brassChance", "Tool Heads", 20, 1, 100, "What is the chance of a brass tool head being dropped? 20 default. High is higher chance. 1-100");
+        gildedChance = config.getInt("gildedChance", "Tool Heads", 15, 1, 100, "What is the cnace of a gilded tool head being dropped? 15 default. High is higher chance. 1-100");
 
         if (enableBoiler && enableGauge && enableTank && enablePipe) {
             hasAllCrucial = true;
