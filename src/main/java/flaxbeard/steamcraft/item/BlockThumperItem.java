@@ -10,8 +10,8 @@ import net.minecraft.world.World;
 
 public class BlockThumperItem extends ItemBlock {
 
-    public BlockThumperItem(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public BlockThumperItem(Block block) {
+        super(block);
     }
 
     @Override

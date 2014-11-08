@@ -25,40 +25,42 @@ import java.util.Random;
 
 public class BlockCustomFurnace extends BlockFurnace {
 
-    private static boolean field_149934_M;
+    private static boolean fieldIsOn;
     private final Random field_149933_a = new Random();
     public IIcon camoIcon;
     public IIcon camoOnIcon;
     public IIcon frontIcon;
 
-    public BlockCustomFurnace(boolean p_i45407_1_) {
-        super(p_i45407_1_);
+    public BlockCustomFurnace(boolean on) {
+        super(on);
     }
 
-    public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_) {
-        int l = p_149931_1_.getBlockMetadata(p_149931_2_, p_149931_3_, p_149931_4_);
-        TileEntity tileentity = p_149931_1_.getTileEntity(p_149931_2_, p_149931_3_, p_149931_4_);
-        field_149934_M = true;
+    public static void updateFurnaceBlockState(boolean isOn, World world, int x, int y, int z) {
+        int l = world.getBlockMetadata(x, y, z);
+        TileEntity tileentity = world.getTileEntity(x, y, z);
+        fieldIsOn = true;
 
-        if (p_149931_0_) {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, SteamcraftBlocks.customFurnace);
+        if (isOn) {
+            world.setBlock(x, y, z, SteamcraftBlocks.customFurnace);
         } else {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, SteamcraftBlocks.customFurnaceOff);
+            world.setBlock(x, y, z, SteamcraftBlocks.customFurnaceOff);
         }
 
-        field_149934_M = false;
-        p_149931_1_.setBlockMetadataWithNotify(p_149931_2_, p_149931_3_, p_149931_4_, l, 2);
+        fieldIsOn = false;
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
 
         if (tileentity != null) {
             tileentity.validate();
-            p_149931_1_.setTileEntity(p_149931_2_, p_149931_3_, p_149931_4_, tileentity);
+            world.setTileEntity(x, y, z, tileentity);
         }
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.furnaceRenderID;
     }
@@ -88,20 +90,20 @@ public class BlockCustomFurnace extends BlockFurnace {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityCustomFurnace();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
+    public Item getItem(World world, int x, int y, int z) {
         return Item.getItemFromBlock(SteamcraftBlocks.customFurnaceOff);
     }
 
     @Override
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        if (!field_149934_M) {
-            TileEntityFurnace tileentityfurnace = (TileEntityFurnace) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (!fieldIsOn) {
+            TileEntityFurnace tileentityfurnace = (TileEntityFurnace) world.getTileEntity(x, y, z);
 
             if (tileentityfurnace != null) {
                 for (int i1 = 0; i1 < tileentityfurnace.getSizeInventory(); ++i1) {
@@ -120,7 +122,7 @@ public class BlockCustomFurnace extends BlockFurnace {
                             }
 
                             itemstack.stackSize -= j1;
-                            EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                            EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if (itemstack.hasTagCompound()) {
                                 entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -130,22 +132,23 @@ public class BlockCustomFurnace extends BlockFurnace {
                             entityitem.motionX = (double) ((float) this.field_149933_a.nextGaussian() * f3);
                             entityitem.motionY = (double) ((float) this.field_149933_a.nextGaussian() * f3 + 0.2F);
                             entityitem.motionZ = (double) ((float) this.field_149933_a.nextGaussian() * f3);
-                            p_149749_1_.spawnEntityInWorld(entityitem);
+                            world.spawnEntityInWorld(entityitem);
                         }
                     }
                 }
 
-                p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+                world.func_147453_f(x, y, z, block);
             }
         }
-        p_149749_1_.removeTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+        world.removeTileEntity(x, y, z);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
-        this.camoOnIcon = p_149651_1_.registerIcon("steamcraft:camoFurnaceOn");
-        this.camoIcon = p_149651_1_.registerIcon("steamcraft:camoFurnace");
-        this.frontIcon = p_149651_1_.registerIcon("furnace_front_off");
+    @Override
+    public void registerBlockIcons(IIconRegister ir) {
+        super.registerBlockIcons(ir);
+        this.camoOnIcon = ir.registerIcon("steamcraft:camoFurnaceOn");
+        this.camoIcon = ir.registerIcon("steamcraft:camoFurnace");
+        this.frontIcon = ir.registerIcon("furnace_front_off");
     }
 
 }

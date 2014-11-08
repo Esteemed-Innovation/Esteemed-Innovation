@@ -16,7 +16,7 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack p_77613_1_) {
+    public EnumRarity getRarity(ItemStack stack) {
         return Steamcraft.upgrade;
     }
 

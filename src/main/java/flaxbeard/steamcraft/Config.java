@@ -41,6 +41,7 @@ public class Config {
     public static boolean enableThermalFoundationIntegration;
     public static boolean enableIC2Integration;
 
+
     public static boolean enableToolHeadsIntegration;
     public static int brassChance;
     public static int gildedChance;
@@ -86,6 +87,7 @@ public class Config {
     public static boolean enableChargingPad;
     public static boolean enableWrench;
     public static boolean enableSaw;
+    public static boolean enableBloodBoiler;
 
     // modular tool crap
     public static boolean enableModularTool;
@@ -181,85 +183,86 @@ public class Config {
         genCopperNether = config.get("World Generation", "Generate Nether Copper", false).getBoolean(false);
         genZincNether = config.get("World Generation", "Generate Nether Zinc", false).getBoolean(false);
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
-        genPoorOre = config.get("Integration", "[Railcraft] Generate Poor Zinc when RC is installed", true).getBoolean(true);
+        genPoorOre = config.get("Integration", "Railcraft Poor Ore", true).getBoolean(true);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
         disableMainBarrelRecipe = config.get("Weapons", "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean(true);
         enableFirearms = config.get("Weapons", "Enable firearms", true).getBoolean(true);
-        enableRL = config.get("Weapons", "Enable rocket launcher", true).getBoolean(true);
-        enableRocket = config.get("Weapons", "Enable normal rocket", true).getBoolean(true);
-        enableRocketConcussive = config.get("Weapons", "Enable concussive rocket", true).getBoolean(true);
-        enableRocketMining = config.get("Weapons", "Enable mining charge", true).getBoolean(true);
+        enableRL = config.get("Weapons", "Enable Rocket Launcher", true).getBoolean(true);
+        enableRocket = config.get("Weapons", "Enable Normal Rocket", true).getBoolean(true);
+        enableRocketConcussive = config.get("Weapons", "Enable Concussive Rocket", true).getBoolean(true);
+        enableRocketMining = config.get("Weapons", "Enable Mining Charge", true).getBoolean(true);
 
-        enableEnhancementAblaze = config.get("Weapons", "Enable blaze barrel enhancement", true).getBoolean(true);
-        enableEnhancementRevolver = config.get("Weapons", "Enable revolver enhancement", true).getBoolean(true);
-        enableEnhancementSpeedloader = config.get("Weapons", "Enable bolt action enhancement", true).getBoolean(true);
-        enableEnhancementSilencer = config.get("Weapons", "Enable makeshift suppressor enhancement", true).getBoolean(true);
-        enableEnhancementRecoil = config.get("Weapons", "Enable recoil pad enhancement", true).getBoolean(true);
-        enableEnhancementSpeedy = config.get("Weapons", "Enable breech loader enhancement", true).getBoolean(true);
-        enableEnhancementFastRockets = config.get("Weapons", "Enable streamlined barrel enhancement", true).getBoolean(true);
-        enableEnhancementAmmo = config.get("Weapons", "Enable extended magazine enhancement", true).getBoolean(true);
-        enableEnhancementAirStrike = config.get("Weapons", "Enable air strike enhancement", true).getBoolean(true);
+        enableEnhancementAblaze = config.get("Weapons", "Enable Blaze Barrel enhancement", true).getBoolean(true);
+        enableEnhancementRevolver = config.get("Weapons", "Enable Revolver enhancement", true).getBoolean(true);
+        enableEnhancementSpeedloader = config.get("Weapons", "Enable Bolt Action enhancement", true).getBoolean(true);
+        enableEnhancementSilencer = config.get("Weapons", "Enable Makeshift Suppressor enhancement", true).getBoolean(true);
+        enableEnhancementRecoil = config.get("Weapons", "Enable Recoil Pad enhancement", true).getBoolean(true);
+        enableEnhancementSpeedy = config.get("Weapons", "Enable Breech Loader enhancement", true).getBoolean(true);
+        enableEnhancementFastRockets = config.get("Weapons", "Enable Streamlined Barrel enhancement", true).getBoolean(true);
+        enableEnhancementAmmo = config.get("Weapons", "Enable extended Magazine enhancement", true).getBoolean(true);
+        enableEnhancementAirStrike = config.get("Weapons", "Enable Air Strike enhancement", true).getBoolean(true);
 
 
         // MACHINES
         mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
         chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();
-        duplicateLogs = config.get("Machines", "Chance of duplicate drops from Buzzsaw( 1 in X)", 6).getInt();
+        duplicateLogs = config.get("Machines", "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
         dropItem = config.get("Machines", "Thumper drops items (may lag servers)", true).getBoolean(true);
 
         // STEAM SYSTEM
         config.addCustomCategoryComment("SteamSystem", "Disabling any piece marked crucial disables pretty much the whole mod.");
-        enableBoiler = config.get("SteamSystem", "Enable boiler (Crucial)", true).getBoolean(true);
-        enableFlashBoiler = config.get("SteamSystem", "Enable flash boiler", true).getBoolean(true);
-        enableHorn = config.get("SteamSystem", "Enable horn", true).getBoolean(true);
-        enableGauge = config.get("SteamSystem", "Enable pressure gauge (Crucial)", true).getBoolean(true);
-        enablePipe = config.get("SteamSystem", "Enable steam pipe (Crucial)", true).getBoolean(true);
-        enableRuptureDisc = config.get("SteamSystem", "Enable rupture disc", true).getBoolean(true);
-        enableTank = config.get("SteamSystem", "Enable steam tank (Crucial)", true).getBoolean(true);
-        enableValvePipe = config.get("SteamSystem", "Enable valve pipe", true).getBoolean(true);
-        enableFluidSteamConverter = config.get("Blocks", "Enable steam pressurizer", true).getBoolean(true);
+        enableBoiler = config.get("SteamSystem", "Enable Boiler (Crucial)", true).getBoolean(true);
+        enableFlashBoiler = config.get("SteamSystem", "Enable Flash Boiler", true).getBoolean(true);
+        enableHorn = config.get("SteamSystem", "Enable Horn", true).getBoolean(true);
+        enableGauge = config.get("SteamSystem", "Enable Pressure Gauge (Crucial)", true).getBoolean(true);
+        enablePipe = config.get("SteamSystem", "Enable Steam Pipe (Crucial)", true).getBoolean(true);
+        enableRuptureDisc = config.get("SteamSystem", "Enable Rupture Disc", true).getBoolean(true);
+        enableTank = config.get("SteamSystem", "Enable Steam Tank (Crucial)", true).getBoolean(true);
+        enableValvePipe = config.get("SteamSystem", "Enable Valve Pipe", true).getBoolean(true);
+        enableFluidSteamConverter = config.get("Blocks", "Enable Steam Converter", true).getBoolean(true);
+        //enableBloodBoiler = config.get("SteamSystem", "Enable Blood Boiler", true).getBoolean(true);
 
 
         // BLOCKS
         //enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean(true);
         //enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
-        enableCharger = config.get("Blocks", "Enable steam filler", true).getBoolean(true);
-        enableChargingPad = config.get("Blocks", "Enable filling pad", true).getBoolean(true);
-        enableCrucible = config.get("Blocks", "Enable crucible", true).getBoolean(true);
-        enableHellCrucible = config.get("Blocks", "Enable nether crucible", true).getBoolean(true);
-        enableEngineering = config.get("Blocks", "Enable engineering table", true).getBoolean(true);
-        enableFan = config.get("Blocks", "Enable fan (disabling this disables vacuum)", true).getBoolean(true);
-        //enableGenocide = config.get("Blocks", "Enable aquatic genocide machine", true).getBoolean(true);
-        enableMortar = config.get("Blocks", "Enable item mortar", true).getBoolean(true);
-        enableHammer = config.get("Blocks", "Enable steam hammer", true).getBoolean(true);
-        enableHeater = config.get("Blocks", "Enable steam heater", true).getBoolean(true);
-        enableMold = config.get("Blocks", "Enable mold block", true).getBoolean(true);
+        enableCharger = config.get("Blocks", "Enable Steam Filler", true).getBoolean(true);
+        enableChargingPad = config.get("Blocks", "Enable Filling Pad", true).getBoolean(true);
+        enableCrucible = config.get("Blocks", "Enable Crucible", true).getBoolean(true);
+        enableHellCrucible = config.get("Blocks", "Enable Nether Crucible", true).getBoolean(true);
+        enableEngineering = config.get("Blocks", "Enable Engineering Table", true).getBoolean(true);
+        enableFan = config.get("Blocks", "Enable Fan (disabling this disables Vacuum)", true).getBoolean(true);
+        //enableGenocide = config.get("Blocks", "Enable Aquatic Genocide Machine", true).getBoolean(true);
+        enableMortar = config.get("Blocks", "Enable Item Mortar", true).getBoolean(true);
+        enableHammer = config.get("Blocks", "Enable Steam Hammer", true).getBoolean(true);
+        enableHeater = config.get("Blocks", "Enable Steam Heater", true).getBoolean(true);
+        enableMold = config.get("Blocks", "Enable Mold block", true).getBoolean(true);
         enablePump = config.get("Blocks", "Enable Archimedes Screw", true).getBoolean(true);
-        enableSmasher = config.get("Blocks", "Enable rock smasher", true).getBoolean(true);
-        enableThumper = config.get("Blocks", "Enable thumper", true).getBoolean(true);
-        enableVacuum = config.get("Blocks", "Enable vacuum", true).getBoolean(true);
+        enableSmasher = config.get("Blocks", "Enable Rock Smasher", true).getBoolean(true);
+        enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean(true);
+        enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean(true);
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
-        enableExosuit = config.get("Exosuit", "Enable exosuit (disabling also disables all upgrades)", true).getBoolean(true);
+        enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
 
         // EXOSUIT UPGRADES
-        enableFallAssist = config.get("Exosuit Upgrades", "Enable fall assist", true).getBoolean(true);
-        enableJumpAssist = config.get("Exosuit Upgrades", "Enable leap actuator", true).getBoolean(true);
-        enableDoubleJump = config.get("Exosuit Upgrades", "Enable pulse nozzle", true).getBoolean(true);
-        enableRunAssist = config.get("Exosuit Upgrades", "Enable modular accelerator", true).getBoolean(true);
-        enableStealthUpgrade = config.get("Exosuit Upgrades", "Enable acoustic dampener", true).getBoolean(true);
-        enableJetpack = config.get("Exosuit Upgrades", "Enable jetpack", true).getBoolean(true);
-        enableThrusters = config.get("Exosuit Upgrades", "Enable thrusters", true).getBoolean(true);
-        enableWings = config.get("Exosuit Upgrades", "Enable wings", true).getBoolean(true);
-        enablePowerFist = config.get("Exosuit Upgrades", "Enable power fist", true).getBoolean(true);
-        enableCanningMachine = config.get("Exosuit Upgrades", "Enable canning machine", true).getBoolean(true);
-        enableExtendoFist = config.get("Exosuit Upgrades", "Enable extendo fist", true).getBoolean(true);
-        enablePitonDeployer = config.get("Exosuit Upgrades", "Enable piton deployer", true).getBoolean(true);
-        enableReinforcedTank = config.get("Exosuit Upgrades", "Enable reinforced tank", true).getBoolean(true);
-        enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable heavily reinforced tank", true).getBoolean(true);
+        enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
+        enableJumpAssist = config.get("Exosuit Upgrades", "Enable Leap Actuator", true).getBoolean(true);
+        enableDoubleJump = config.get("Exosuit Upgrades", "Enable Pulse Nozzle", true).getBoolean(true);
+        enableRunAssist = config.get("Exosuit Upgrades", "Enable Modular Accelerator", true).getBoolean(true);
+        enableStealthUpgrade = config.get("Exosuit Upgrades", "Enable Acoustic Dampener", true).getBoolean(true);
+        enableJetpack = config.get("Exosuit Upgrades", "Enable Steam Jetpack", true).getBoolean(true);
+        enableThrusters = config.get("Exosuit Upgrades", "Enable Thrusters", true).getBoolean(true);
+        enableWings = config.get("Exosuit Upgrades", "Enable Wings", true).getBoolean(true);
+        enablePowerFist = config.get("Exosuit Upgrades", "Enable Power Fist", true).getBoolean(true);
+        enableCanningMachine = config.get("Exosuit Upgrades", "Enable Canner", true).getBoolean(true);
+        enableExtendoFist = config.get("Exosuit Upgrades", "Enable Extendo Fist", true).getBoolean(true);
+        enablePitonDeployer = config.get("Exosuit Upgrades", "Enable Piton Deployer", true).getBoolean(true);
+        enableReinforcedTank = config.get("Exosuit Upgrades", "Enable Reinforced Tank", true).getBoolean(true);
+        enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
@@ -274,21 +277,21 @@ public class Config {
         enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
         enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
 
-        enableEnderShroud = config.get("Exosuit Upgrades", "Enable ender shroud", true).getBoolean(true);
+        enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
 
         //enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 
         // ITEMS
-        enableAstrolabe = config.get("Items", "Enable astrolabe", true).getBoolean(true);
-        enableSpyglass = config.get("Items", "Enable spyglass", true).getBoolean(true);
+        enableAstrolabe = config.get("Items", "Enable Astrolabe", true).getBoolean(true);
+        enableSpyglass = config.get("Items", "Enable Spyglass", true).getBoolean(true);
         enableSteamTools = config.get("Items", "Enable steam tools", true).getBoolean(true);
-        enableSurvivalist = config.get("Items", "Enable survivalist's toolkit", true).getBoolean(true);
-        enableWrench = config.get("Items", "Enable wrench", true).getBoolean(true);
-        enableCanister = config.get("Items", "Enable canisters", true).getBoolean(true);
+        enableSurvivalist = config.get("Items", "Enable Survivalist's Toolkit", true).getBoolean(true);
+        enableWrench = config.get("Items", "Enable Pipe Wrench", true).getBoolean(true);
+        enableCanister = config.get("Items", "Enable Canisters", true).getBoolean(true);
 
-        enableTopHat = config.get("Items", "Enable top hat", true).getBoolean(true);
-        enableEmeraldHat = config.get("Items", "Enable emerald top hat", true).getBoolean(true);
-        enableGoggles = config.get("Items", "Enable goggles/monacle", true).getBoolean(true);
+        enableTopHat = config.get("Items", "Enable Top Hat", true).getBoolean(true);
+        enableEmeraldHat = config.get("Items", "Enable Emerald Top Hat", true).getBoolean(true);
+        enableGoggles = config.get("Items", "Enable Goggles/Monacle", true).getBoolean(true);
 
         //MODULAR TOOL
         enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);

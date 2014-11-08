@@ -195,6 +195,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
     }
 
+    @Override
     public void updateEntity() {
         if (!isInitialized) {
             ForgeDirection myDir = myDir();
@@ -526,7 +527,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         return new int[]{x, z, opposite};
     }
 
-
     public void blockUpdate() {
         this.hasBlockUpdate = true;
     }
@@ -534,7 +534,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     public boolean hasUpdate() {
         return hasBlockUpdate;
     }
-
 
     public ForgeDirection myDir() {
         int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);

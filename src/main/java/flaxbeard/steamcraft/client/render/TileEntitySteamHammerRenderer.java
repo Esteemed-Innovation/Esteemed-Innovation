@@ -22,8 +22,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
 
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
@@ -84,8 +83,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         TileEntitySteamHammer hammer = (TileEntitySteamHammer) var1;
         int meta = 3;
         ////Steamcraft.log.debug(meta);

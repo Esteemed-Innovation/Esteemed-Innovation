@@ -19,8 +19,7 @@ public class BlockCustomCraftingTableRenderer implements ISimpleBlockRenderingHa
     private RenderBlocks renderBlocks = new RenderBlocks();
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId,
-                                     RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         int x = 0;
@@ -99,13 +98,12 @@ public class BlockCustomCraftingTableRenderer implements ISimpleBlockRenderingHa
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
-        TileEntityCustomCraftingTable boiler = (TileEntityCustomCraftingTable) world.getTileEntity(x, y, z);
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+        TileEntityCustomCraftingTable table = (TileEntityCustomCraftingTable) world.getTileEntity(x, y, z);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        int disguiseMeta = boiler.disguiseMeta;
-        Block disguiseBlock = boiler.disguiseBlock;
-        if (BlockSteamPipeRenderer.updateWrenchStatus() || (boiler.disguiseBlock == null || boiler.disguiseBlock == Blocks.air)) {
+        int disguiseMeta = table.disguiseMeta;
+        Block disguiseBlock = table.disguiseBlock;
+        if (BlockSteamPipeRenderer.updateWrenchStatus() || (table.disguiseBlock == null || table.disguiseBlock == Blocks.air)) {
             disguiseMeta = 0;
             disguiseBlock = Blocks.planks;
 

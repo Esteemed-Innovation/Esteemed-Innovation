@@ -61,7 +61,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityFlashBoiler();
     }
 
@@ -124,29 +124,31 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:flashBoiler");
-        this.otherIcon = p_149651_1_.registerIcon("steamcraft:testFront");
-        this.specialIcon = p_149651_1_.registerIcon("steamcraft:testSpecial");
+    @Override
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:flashBoiler");
+        this.otherIcon = ir.registerIcon("steamcraft:testFront");
+        this.specialIcon = ir.registerIcon("steamcraft:testSpecial");
 
-        this.topLeft = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeft");
-        this.topLeftSide = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftSide");
-        this.bottomLeft = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeft");
-        this.topRight = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRight");
-        this.topRightSide = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightSide");
+        this.topLeft = ir.registerIcon("steamcraft:flashBoilerTopLeft");
+        this.topLeftSide = ir.registerIcon("steamcraft:flashBoilerTopLeftSide");
+        this.bottomLeft = ir.registerIcon("steamcraft:flashBoilerBottomLeft");
+        this.topRight = ir.registerIcon("steamcraft:flashBoilerTopRight");
+        this.topRightSide = ir.registerIcon("steamcraft:flashBoilerTopRightSide");
 
-        this.bottomRight = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRight");
-        this.topLeftF = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftO");
-        this.bottomLeftF = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeftO");
-        this.topRightF = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightO");
-        this.bottomRightF = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRightO");
-        this.topLeftO = p_149651_1_.registerIcon("steamcraft:flashBoilerTopLeftT");
-        this.bottomLeftO = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomLeftT");
-        this.topRightO = p_149651_1_.registerIcon("steamcraft:flashBoilerTopRightT");
-        this.bottomRightO = p_149651_1_.registerIcon("steamcraft:flashBoilerBottomRightT");
+        this.bottomRight = ir.registerIcon("steamcraft:flashBoilerBottomRight");
+        this.topLeftF = ir.registerIcon("steamcraft:flashBoilerTopLeftO");
+        this.bottomLeftF = ir.registerIcon("steamcraft:flashBoilerBottomLeftO");
+        this.topRightF = ir.registerIcon("steamcraft:flashBoilerTopRightO");
+        this.bottomRightF = ir.registerIcon("steamcraft:flashBoilerBottomRightO");
+        this.topLeftO = ir.registerIcon("steamcraft:flashBoilerTopLeftT");
+        this.bottomLeftO = ir.registerIcon("steamcraft:flashBoilerBottomLeftT");
+        this.topRightO = ir.registerIcon("steamcraft:flashBoilerTopRightT");
+        this.bottomRightO = ir.registerIcon("steamcraft:flashBoilerBottomRightT");
 
     }
 
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf) {
         if (world.getBlockMetadata(x, y, z) > 0) {
 
@@ -179,6 +181,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
     }
 
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         ////Steamcraft.log.debug("onBlockPlacedBy fired");
         int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
@@ -204,6 +207,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
         checkMultiblock(world, x, y, z, false, frontSide);
     }
 
+    @Override
     public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side) {
         ////Steamcraft.log.debug(meta);
         int meta = block.getBlockMetadata(x, y, z);
@@ -317,6 +321,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         if (world.getBlockMetadata(x, y, z) < 5) {
@@ -400,6 +405,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
         return random.nextFloat() * 0.8F - 0.4F;
     }
 
+    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 
         super.breakBlock(world, x, y, z, block, meta);

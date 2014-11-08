@@ -76,16 +76,12 @@ public class ContainerEngineeringTable extends Container {
         }
     }
 
+    @Override
     public void addCraftingToCrafters(ICrafting par1ICrafting) {
         super.addCraftingToCrafters(par1ICrafting);
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int par1, int par2) {
-
-    }
-
+    @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
         return true;
     }
@@ -173,6 +169,7 @@ public class ContainerEngineeringTable extends Container {
         }
     }
 
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
     }

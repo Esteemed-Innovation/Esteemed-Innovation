@@ -13,9 +13,8 @@ public class TileEntityFluidSteamRenderer extends TileEntitySpecialRenderer impl
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/fluidSteam.png");
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
-        TileEntityFluidSteamConverter conduit = (TileEntityFluidSteamConverter) var1;
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
+        TileEntityFluidSteamConverter converter = (TileEntityFluidSteamConverter) var1;
         GL11.glPushMatrix();
         GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
         int meta = var1.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
@@ -42,20 +41,19 @@ public class TileEntityFluidSteamRenderer extends TileEntitySpecialRenderer impl
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glTranslatef(0.25F, 0.0F, 0.0F);
-        GL11.glScaled((0.2F + (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - conduit.runTicks)))) * 0.13F) / 0.2F, 1.0D, 1.0D);
+        GL11.glScaled((0.2F + (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.13F) / 0.2F, 1.0D, 1.0D);
         //	GL11.glTranslatef(-1.00F, 0.0F, 0.0F);
         //GL11.glTranslatef(0.5F, 0.0F, 0.0F);
 
         model.renderSquish();
         GL11.glPopMatrix();
-        GL11.glTranslated(0.2F - (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - conduit.runTicks)))) * 0.2F, 0.0F, 0.0F);
+        GL11.glTranslated(0.2F - (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.2F, 0.0F, 0.0F);
         model.renderMoving();
         GL11.glPopMatrix();
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double var2,
-                                            double var4, double var6, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 

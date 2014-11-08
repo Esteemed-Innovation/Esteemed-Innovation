@@ -15,8 +15,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer imple
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntityValvePipe valve = (TileEntityValvePipe) var1;
         GL11.glPushMatrix();
         GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
@@ -49,9 +48,8 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer imple
 
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
-
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
+        //filler
     }
 
 }

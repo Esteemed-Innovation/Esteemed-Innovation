@@ -40,6 +40,8 @@ public class SteamcraftBlocks {
     public static Block ruptureDisc;
     public static Block geoBoiler;
     public static Block geoBoiler_on;
+    public static Block bloodBoiler;
+    public static Block bloodBoiler_on;
 
     // steam machines
     public static Block heater;
@@ -164,6 +166,15 @@ public class SteamcraftBlocks {
             fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(fluidSteamConverter, "fluidSteamConverter");
         }
+
+        /*
+        if (Loader.isModLoaded("AWayofTime") && Config.enableBloodMagicIntegration && Config.enableBloodBoiler){
+            bloodBoiler = new BlockBloodBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(bloodBoiler, "bloodBoiler");
+            bloodBoiler_on = new BlockBloodBoiler(true).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(bloodBoiler_on, "bloodBoiler_on");
+        }
+        */
     }
 
     public static void registerSteamMachines() {/* Uncomment this when doing work on the buzzsaw.

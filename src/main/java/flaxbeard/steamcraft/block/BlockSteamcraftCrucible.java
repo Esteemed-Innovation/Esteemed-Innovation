@@ -39,15 +39,17 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         super(Material.rock);
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
         return AxisAlignedBB.getBoundingBox(i + px, j + 0.0F + px, k + px, i + 1.0F - px, j + 1.0F - px, k + 1.0F - px);
     }
 
-
+    @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 
         if (entity instanceof EntityItem) {
@@ -89,10 +91,12 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
         setBlockBounds(px, 0.0F + px, px, 1.0F - px, 1.0F - px, 1.0F - px);
         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
@@ -100,19 +104,19 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
+    public IIcon getIcon(int side, int meta) {
         return blank;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.innerIcon = p_149651_1_.registerIcon(this.getTextureName() + "_" + "inner");
-        this.topIcon = p_149651_1_.registerIcon(this.getTextureName() + "_top");
-        this.bottomIcon = p_149651_1_.registerIcon(this.getTextureName() + "_" + "bottom");
-        this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
-        this.liquidIcon = p_149651_1_.registerIcon(this.getTextureName() + "_liquid");
-        this.blank = p_149651_1_.registerIcon("steamcraft:blankTexture");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.innerIcon = ir.registerIcon(this.getTextureName() + "_" + "inner");
+        this.topIcon = ir.registerIcon(this.getTextureName() + "_top");
+        this.bottomIcon = ir.registerIcon(this.getTextureName() + "_" + "bottom");
+        this.blockIcon = ir.registerIcon(this.getTextureName() + "_side");
+        this.liquidIcon = ir.registerIcon(this.getTextureName() + "_liquid");
+        this.blank = ir.registerIcon("steamcraft:blankTexture");
     }
 
     @Override

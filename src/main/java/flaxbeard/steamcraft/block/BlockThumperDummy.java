@@ -25,11 +25,13 @@ public class BlockThumperDummy extends Block implements IWrenchable {
         setBlockBounds(0.0F, 0.0F - meta, 0.0F, 1.0F, 4.0F - meta, 1.0F);
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block p_149695_5_) {
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         int meta = world.getBlockMetadata(x, y, z) - 1;
         if (world.getBlock(x, y - meta, z) != SteamcraftBlocks.thumper) {
             world.setBlockToAir(x, y, z);
@@ -50,11 +52,12 @@ public class BlockThumperDummy extends Block implements IWrenchable {
         }
     }
 
-
-    public int quantityDropped(Random p_149745_1_) {
+    @Override
+    public int quantityDropped(Random rand) {
         return 0;
     }
 
+    @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         return new ItemStack(Item.getItemFromBlock(SteamcraftBlocks.thumper), 1, 0);
     }

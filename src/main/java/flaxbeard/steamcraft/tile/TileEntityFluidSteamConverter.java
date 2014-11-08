@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.tile;
 
+import cpw.mods.fml.common.Loader;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
@@ -124,12 +126,10 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (this.getSteamShare() < drained) {
             drained = this.getSteamShare();
         }
-
         FluidStack stack = new FluidStack(fluid, drained);
         if (doDrain) {
             this.decrSteam(drained);
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
-
         }
         return stack;
     }

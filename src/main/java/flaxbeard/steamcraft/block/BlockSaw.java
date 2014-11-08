@@ -89,16 +89,19 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
         return x == 0;
     }
 
+    @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
         return new TileEntitySaw();
 
     }
 
+    @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
         TileEntitySaw saw = (TileEntitySaw) world.getTileEntity(x, y, z);
         saw.blockUpdate();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -149,10 +152,12 @@ public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
         }
     }
 
+    @Override
     public boolean renderAsNormalBlock(){
         return false;
     }
 
+    @Override
     public int getRenderType(){
         return Steamcraft.sawRenderID;
     }

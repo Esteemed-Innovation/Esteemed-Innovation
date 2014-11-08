@@ -64,8 +64,7 @@ public class BlockBoilerRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (BlockSteamPipeRenderer.updateWrenchStatus() || (boiler.disguiseBlock == null || boiler.disguiseBlock == Blocks.air)) {

@@ -15,10 +15,8 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/charger.png");
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntityChargingPad pad = (TileEntityChargingPad) var1;
-
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
@@ -38,6 +36,7 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
                 rotation = 0;
                 break;
         }
+
         ForgeDirection dir = ForgeDirection.getOrientation(meta);
         GL11.glRotatef(90.0F, 0F, 1F, 0F);
 
@@ -60,8 +59,7 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
 
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GL11.glPushMatrix();
         int meta = 4;
         int rotation = 0;
@@ -83,7 +81,7 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
         GL11.glRotatef(90.0F, 0F, 1F, 0F);
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-//System.out.println(pad.extendTicks);
+        //System.out.println(pad.extendTicks);
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
 

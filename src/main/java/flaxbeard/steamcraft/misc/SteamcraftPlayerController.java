@@ -11,8 +11,8 @@ public class SteamcraftPlayerController extends PlayerControllerMP implements IE
 
     private float distance = 0F;
 
-    public SteamcraftPlayerController(Minecraft p_i45062_1_, NetHandlerPlayClient p_i45062_2_) {
-        super(p_i45062_1_, p_i45062_2_);
+    public SteamcraftPlayerController(Minecraft minecraft, NetHandlerPlayClient nhpc) {
+        super(minecraft, nhpc);
     }
 
     public float getBlockReachDistance() {

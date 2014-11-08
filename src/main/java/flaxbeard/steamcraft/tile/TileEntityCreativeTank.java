@@ -16,6 +16,7 @@ public class TileEntityCreativeTank extends TileEntitySteamTank {
         return 0;
     }
 
+    @Override
     public void updateEntity() {
         super.updateEntity();
         if (this.getNetwork() != null && this.getNetwork().getCapacity() > 100) {

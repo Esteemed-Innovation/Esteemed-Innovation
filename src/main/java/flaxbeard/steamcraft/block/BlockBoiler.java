@@ -45,35 +45,38 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     private IIcon field_149936_O;
     private IIcon boilerOnIcon;
     private IIcon boilerOffIcon;
+
     public BlockBoiler(boolean on) {
         super(Material.iron);
         this.field_149932_b = on;
     }
 
-    public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_) {
-        int l = p_149931_1_.getBlockMetadata(p_149931_2_, p_149931_3_, p_149931_4_);
-        TileEntity tileentity = p_149931_1_.getTileEntity(p_149931_2_, p_149931_3_, p_149931_4_);
+    public static void updateFurnaceBlockState(boolean isOn, World world, int x, int y, int z) {
+        int l = world.getBlockMetadata(x,y, z);
+        TileEntity tileentity = world.getTileEntity(x, y, z);
         field_149934_M = true;
 
-        if (p_149931_0_) {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, SteamcraftBlocks.boilerOn);
+        if (isOn) {
+            world.setBlock(x, y, z, SteamcraftBlocks.boilerOn);
         } else {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, SteamcraftBlocks.boiler);
+            world.setBlock(x, y, x, SteamcraftBlocks.boiler);
         }
 
         field_149934_M = false;
-        p_149931_1_.setBlockMetadataWithNotify(p_149931_2_, p_149931_3_, p_149931_4_, l, 2);
+        world.setBlockMetadataWithNotify(x, y, x, l, 2);
 
         if (tileentity != null) {
             tileentity.validate();
-            p_149931_1_.setTileEntity(p_149931_2_, p_149931_3_, p_149931_4_, tileentity);
+            world.setTileEntity(x, y, x, tileentity);
         }
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.boilerRenderID;
     }
@@ -97,6 +100,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         return super.shouldSideBeRendered(world, x, y, z, side);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
         TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
@@ -124,17 +128,18 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         }
     }
 
-    public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_) {
-        super.onBlockAdded(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
-        this.func_149930_e(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x, y, z);
+        this.func_149930_e(world, x, y, z);
     }
 
-    private void func_149930_e(World p_149930_1_, int p_149930_2_, int p_149930_3_, int p_149930_4_) {
-        if (!p_149930_1_.isRemote) {
-            Block block = p_149930_1_.getBlock(p_149930_2_, p_149930_3_, p_149930_4_ - 1);
-            Block block1 = p_149930_1_.getBlock(p_149930_2_, p_149930_3_, p_149930_4_ + 1);
-            Block block2 = p_149930_1_.getBlock(p_149930_2_ - 1, p_149930_3_, p_149930_4_);
-            Block block3 = p_149930_1_.getBlock(p_149930_2_ + 1, p_149930_3_, p_149930_4_);
+    private void func_149930_e(World world, int x, int y, int z) {
+        if (!world.isRemote) {
+            Block block = world.getBlock(x, y, z - 1);
+            Block block1 = world.getBlock(x, y, z + 1);
+            Block block2 = world.getBlock(x - 1, y, z);
+            Block block3 = world.getBlock(x + 1, y, z);
             byte b0 = 3;
 
             if (block.func_149730_j() && !block1.func_149730_j()) {
@@ -153,10 +158,11 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
                 b0 = 4;
             }
 
-            p_149930_1_.setBlockMetadataWithNotify(p_149930_2_, p_149930_3_, p_149930_4_, b0, 2);
+            world.setBlockMetadataWithNotify(x, y, z, b0, 2);
         }
     }
 
+    @Override
     public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side) {
         int meta = block.getBlockMetadata(x, y, z);
         if (meta == 0) {
@@ -172,46 +178,49 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
     }
 
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        if (p_149691_2_ == 0) {
-            p_149691_2_ = 3;
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        if (meta == 0) {
+            meta = 3;
         }
-        return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.boilerOffIcon));
+        return side == 1 ? this.field_149935_N : (side == 0 ? this.field_149935_N : (side != meta ? this.blockIcon : this.boilerOffIcon));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:blockBrass");
-        this.steamIcon = p_149651_1_.registerIcon("steamcraft:steam");
+    @Override
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:blockBrass");
+        this.steamIcon = ir.registerIcon("steamcraft:steam");
 
-        this.boilerOnIcon = p_149651_1_.registerIcon("steamcraft:boilerOn");
-        this.boilerOffIcon = p_149651_1_.registerIcon("steamcraft:boiler");
-        this.camoOnIcon = p_149651_1_.registerIcon("steamcraft:boilerCamoOn");
-        this.camoIcon = p_149651_1_.registerIcon("steamcraft:boilerCamo");
+        this.boilerOnIcon = ir.registerIcon("steamcraft:boilerOn");
+        this.boilerOffIcon = ir.registerIcon("steamcraft:boiler");
+        this.camoOnIcon = ir.registerIcon("steamcraft:boilerCamoOn");
+        this.camoIcon = ir.registerIcon("steamcraft:boilerCamo");
         //this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "steamcraft:boilerOn" : "steamcraft:boiler");
-        this.field_149935_N = p_149651_1_.registerIcon("steamcraft:blockBrass");
+        this.field_149935_N = ir.registerIcon("steamcraft:blockBrass");
     }
 
-    public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = MathHelper.floor_double((double) (p_149689_5_.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
+        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
         if (l == 0) {
-            p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 2, 2);
+            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
         }
 
         if (l == 1) {
-            p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 5, 2);
+            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
         }
 
         if (l == 2) {
-            p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 3, 2);
+            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
         }
 
         if (l == 3) {
-            p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 4, 2);
+            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
         }
 
-        if (p_149689_6_.hasDisplayName()) {
-            // ((TileEntityBoiler)p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).func_145951_a(p_149689_6_.getDisplayName());
+        if (stack.hasDisplayName()) {
+            // ((TileEntityBoiler)world.getTileEntity(x, y, z)).func_145951_a(stack.getDisplayName());
         }
     }
 
@@ -248,9 +257,10 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         }
     }
 
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         if (!field_149934_M) {
-            TileEntityBoiler tileentityboiler = (TileEntityBoiler) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+            TileEntityBoiler tileentityboiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
 
             if (tileentityboiler != null) {
                 for (int i1 = 0; i1 < tileentityboiler.getSizeInventory(); ++i1) {
@@ -269,7 +279,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
                             }
 
                             itemstack.stackSize -= j1;
-                            EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                            EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if (itemstack.hasTagCompound()) {
                                 entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -279,18 +289,19 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
                             entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                             entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                             entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                            p_149749_1_.spawnEntityInWorld(entityitem);
+                            world.spawnEntityInWorld(entityitem);
                         }
                     }
                 }
 
-                p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+                world.func_147453_f(x, y, z, block);
             }
         }
 
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
+    @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         return new ItemStack(SteamcraftBlocks.boiler);
     }

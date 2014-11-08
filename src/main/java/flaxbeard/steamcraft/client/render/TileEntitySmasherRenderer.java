@@ -20,8 +20,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer impleme
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntitySmasher smasher = (TileEntitySmasher) var1;
         GL11.glPushMatrix();
         GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
@@ -97,8 +96,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer impleme
 
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y - 0.1F, (float) z);
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);

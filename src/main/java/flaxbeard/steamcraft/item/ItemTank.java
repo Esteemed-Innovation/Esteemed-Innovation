@@ -77,6 +77,7 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
 
     @Override
     public void writeInfo(List list) {
+        //filler
     }
 
     @Override

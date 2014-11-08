@@ -17,8 +17,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer {
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4,
-                                   double var6, float var8) {
+    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
         int meta = var1.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);

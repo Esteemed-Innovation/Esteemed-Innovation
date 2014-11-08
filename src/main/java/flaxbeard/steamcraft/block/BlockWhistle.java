@@ -58,6 +58,7 @@ public class BlockWhistle extends BlockContainer {
         }
     }
 
+    @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         return (dir == NORTH && world.getTileEntity(x, y, z + 1) != null && world.getTileEntity(x, y, z + 1) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x, y, z + 1)).acceptsGauge(dir.getOpposite())) ||
@@ -66,21 +67,23 @@ public class BlockWhistle extends BlockContainer {
                 (dir == EAST && world.getTileEntity(x - 1, y, z) != null && world.getTileEntity(x - 1, y, z) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x - 1, y, z)).acceptsGauge(dir.getOpposite()));
     }
 
-    public void onNeighborBlockChange(World world, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_) {
-        if (p_149695_5_ != this) {
-            int l = world.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_);
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        if (neighbor != this) {
+            int l = world.getBlockMetadata(x, y, z);
             boolean flag = false;
-            if (!this.canPlaceBlockOnSide(world, p_149695_2_, p_149695_3_, p_149695_4_, l)) {
+            if (!this.canPlaceBlockOnSide(world, x, y, z, l)) {
                 flag = true;
             }
 
             if (flag) {
-                this.dropBlockAsItem(world, p_149695_2_, p_149695_3_, p_149695_4_, l, 0);
-                world.setBlockToAir(p_149695_2_, p_149695_3_, p_149695_4_);
+                this.dropBlockAsItem(world, x, y, z, l, 0);
+                world.setBlockToAir(x, y, z);
             }
         }
     }
 
+    @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta) {
         return (meta == 1 ? side + 10 : side);
     }
@@ -91,23 +94,24 @@ public class BlockWhistle extends BlockContainer {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon("steamcraft:yellow");
-        this.alt = p_149651_1_.registerIcon("steamcraft:blockBrassHorn");
+    public void registerBlockIcons(IIconRegister ir) {
+        this.blockIcon = ir.registerIcon("steamcraft:yellow");
+        this.alt = ir.registerIcon("steamcraft:blockBrassHorn");
 
     }
 
-
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityWhistle();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_) {
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
     }
 
@@ -116,11 +120,12 @@ public class BlockWhistle extends BlockContainer {
         return "steamcraft:horn";
     }
 
-
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public int getRenderType() {
         return Steamcraft.whistleRenderID;
     }

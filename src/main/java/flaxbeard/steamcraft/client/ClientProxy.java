@@ -177,6 +177,7 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @Override
     public void checkRange(EntityLivingBase entity) {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;

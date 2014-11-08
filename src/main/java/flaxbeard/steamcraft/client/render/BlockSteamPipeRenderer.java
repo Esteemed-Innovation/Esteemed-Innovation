@@ -30,8 +30,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId,
-                                     RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         float x = 0;
@@ -133,8 +132,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(x, y, z);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (updateWrenchStatus() || (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.air || !pipe.disguiseBlock.renderAsNormalBlock())) {

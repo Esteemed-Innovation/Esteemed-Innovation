@@ -6,8 +6,8 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockBeacon extends Block {
 
-    public BlockBeacon(Material p_i45394_1_) {
-        super(p_i45394_1_);
+    public BlockBeacon(Material material) {
+        super(material);
     }
 
     public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {

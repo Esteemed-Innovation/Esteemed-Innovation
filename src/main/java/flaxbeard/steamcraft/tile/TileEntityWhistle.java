@@ -44,6 +44,7 @@ public class TileEntityWhistle extends TileEntity implements ISoundTile {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
+    @Override
     public void updateEntity() {
         if (worldObj.isRemote) {
             this.updateSound();

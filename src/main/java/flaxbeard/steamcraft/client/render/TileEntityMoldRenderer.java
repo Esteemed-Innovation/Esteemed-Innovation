@@ -24,9 +24,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
     private static float px = (1.0F / 16.0F);
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
-
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
 
         TileEntityMold mold = (TileEntityMold) var1;
         int meta = mold.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
@@ -128,8 +126,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         TileEntityMold mold = (TileEntityMold) var1;
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

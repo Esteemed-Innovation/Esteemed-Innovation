@@ -11,10 +11,10 @@ public class ItemSteamcraftPickaxe extends ItemPickaxe {
     private int harvestLevel;
     private Object repairMaterial;
 
-    public ItemSteamcraftPickaxe(ToolMaterial p_i45347_1_, Object rM) {
-        super(p_i45347_1_);
-        harvestLevel = p_i45347_1_.getHarvestLevel();
-        repairMaterial = rM;
+    public ItemSteamcraftPickaxe(ToolMaterial toolMaterial, Object repairMat) {
+        super(toolMaterial);
+        harvestLevel = toolMaterial.getHarvestLevel();
+        repairMaterial = repairMat;
     }
 
     @Override

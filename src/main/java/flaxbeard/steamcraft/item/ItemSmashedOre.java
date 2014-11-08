@@ -19,7 +19,6 @@ import java.util.List;
 
 public class ItemSmashedOre extends Item {
 
-
     public static ArrayList<MutablePair<String, MutablePair<IIcon, String>>> oreTypes = new ArrayList<MutablePair<String, MutablePair<IIcon, String>>>();
     public static HashMap<Integer, String> smeltingResult = new HashMap<Integer, String>();
     public static HashMap<String, Integer> oreTypesFromOre = new HashMap<String, Integer>();
@@ -97,20 +96,21 @@ public class ItemSmashedOre extends Item {
         return super.getUnlocalizedName() + "." + oreTypes.get(stack.getItemDamage()).getRight().getRight();
     }
 
-
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return false;
 
     }
 
-
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta) {
         return oreTypes.get(meta).getRight().getLeft();
 
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
         for (int i = 0; i < oreTypes.size(); i++) {

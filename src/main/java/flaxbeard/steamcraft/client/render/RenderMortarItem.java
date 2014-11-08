@@ -25,8 +25,7 @@ public class RenderMortarItem extends Render {
     private static final ModelMortarItem model = new ModelMortarItem();
 
     @Override
-    public void doRender(Entity var1, double x, double y, double z,
-                         float var8, float var9) {
+    public void doRender(Entity var1, double x, double y, double z, float var8, float var9) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
         EntityMortarItem myItem = (EntityMortarItem) var1;
@@ -71,7 +70,6 @@ public class RenderMortarItem extends Render {
 
     @Override
     protected ResourceLocation getEntityTexture(Entity var1) {
-        // TODO Auto-generated method stub
         return null;
     }
 

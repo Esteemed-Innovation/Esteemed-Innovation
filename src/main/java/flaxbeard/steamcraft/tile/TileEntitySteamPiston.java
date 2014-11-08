@@ -132,6 +132,7 @@ public class TileEntitySteamPiston extends TileEntity {
         }
     }
 
+    @Override
     public void updateEntity() {
         this.lastProgress = this.progress;
 
@@ -157,21 +158,23 @@ public class TileEntitySteamPiston extends TileEntity {
         }
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_) {
-        super.readFromNBT(p_145839_1_);
-        this.storedBlock = Block.getBlockById(p_145839_1_.getInteger("blockId"));
-        this.storedMetadata = p_145839_1_.getInteger("blockData");
-        this.storedOrientation = p_145839_1_.getInteger("facing");
-        this.lastProgress = this.progress = p_145839_1_.getFloat("progress");
-        this.extending = p_145839_1_.getBoolean("extending");
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.storedBlock = Block.getBlockById(nbt.getInteger("blockId"));
+        this.storedMetadata = nbt.getInteger("blockData");
+        this.storedOrientation = nbt.getInteger("facing");
+        this.lastProgress = this.progress = nbt.getFloat("progress");
+        this.extending = nbt.getBoolean("extending");
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_) {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setInteger("blockId", Block.getIdFromBlock(this.storedBlock));
-        p_145841_1_.setInteger("blockData", this.storedMetadata);
-        p_145841_1_.setInteger("facing", this.storedOrientation);
-        p_145841_1_.setFloat("progress", this.lastProgress);
-        p_145841_1_.setBoolean("extending", this.extending);
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setInteger("blockId", Block.getIdFromBlock(this.storedBlock));
+        nbt.setInteger("blockData", this.storedMetadata);
+        nbt.setInteger("facing", this.storedOrientation);
+        nbt.setFloat("progress", this.lastProgress);
+        nbt.setBoolean("extending", this.extending);
     }
 }

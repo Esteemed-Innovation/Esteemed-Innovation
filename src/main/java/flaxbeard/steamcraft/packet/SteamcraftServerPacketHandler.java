@@ -36,7 +36,6 @@ import java.io.IOException;
 
 public class SteamcraftServerPacketHandler {
 
-
     public static void sendRocketJumpHackyPacket(EntityPlayerMP player, double xChange, double yChange, double zChange) {
         ByteBuf buf = Unpooled.buffer();
         ByteBufOutputStream out = new ByteBufOutputStream(buf);

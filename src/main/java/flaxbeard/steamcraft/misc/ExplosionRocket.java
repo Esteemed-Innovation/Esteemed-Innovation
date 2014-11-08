@@ -49,20 +49,20 @@ public class ExplosionRocket extends Explosion {
     private Map field_77288_k = new HashMap();
     private boolean dropAllBlocks = false;
 
-    public ExplosionRocket(World p_i1948_1_, Entity p_i1948_2_, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_) {
-        super(p_i1948_1_, p_i1948_2_, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
-        this.worldObj = p_i1948_1_;
-        this.exploder = p_i1948_2_;
+    public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_) {
+        super(world, entity, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
+        this.worldObj = world;
+        this.exploder = entity;
         this.explosionSize = p_i1948_9_;
         this.explosionX = p_i1948_3_;
         this.explosionY = p_i1948_5_;
         this.explosionZ = p_i1948_7_;
     }
 
-    public ExplosionRocket(World p_i1948_1_, Entity p_i1948_2_, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_, boolean blocks) {
-        super(p_i1948_1_, p_i1948_2_, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
-        this.worldObj = p_i1948_1_;
-        this.exploder = p_i1948_2_;
+    public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_, boolean blocks) {
+        super(world, entity, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
+        this.worldObj = world;
+        this.exploder = entity;
         this.explosionSize = p_i1948_9_;
         this.explosionX = p_i1948_3_;
         this.explosionY = p_i1948_5_;
@@ -70,10 +70,10 @@ public class ExplosionRocket extends Explosion {
         this.destroyBlocks = blocks;
     }
 
-    public ExplosionRocket(World p_i1948_1_, Entity p_i1948_2_, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_, boolean blocks, boolean allBlocks) {
-        super(p_i1948_1_, p_i1948_2_, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
-        this.worldObj = p_i1948_1_;
-        this.exploder = p_i1948_2_;
+    public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_, boolean blocks, boolean allBlocks) {
+        super(world, entity, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
+        this.worldObj = world;
+        this.exploder = entity;
         this.explosionSize = p_i1948_9_;
         this.explosionX = p_i1948_3_;
         this.explosionY = p_i1948_5_;

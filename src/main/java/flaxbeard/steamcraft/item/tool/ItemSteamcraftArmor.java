@@ -9,9 +9,8 @@ public class ItemSteamcraftArmor extends ItemArmor {
     protected String name;
     private Object repairMaterial;
 
-    public ItemSteamcraftArmor(ArmorMaterial p_i45325_1_, int p_i45325_2_,
-                               int p_i45325_3_, Object repair, String n) {
-        super(p_i45325_1_, p_i45325_2_, p_i45325_3_);
+    public ItemSteamcraftArmor(ArmorMaterial armorMat, int renderIndex, int armorType, Object repair, String n) {
+        super(armorMat, renderIndex, armorType);
         this.repairMaterial = repair;
         this.name = n;
     }

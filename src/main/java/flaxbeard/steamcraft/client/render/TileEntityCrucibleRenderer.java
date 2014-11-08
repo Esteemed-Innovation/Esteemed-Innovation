@@ -33,9 +33,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
-
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
 
         TileEntityCrucible crucible = (TileEntityCrucible) var1;
         int meta = crucible.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
@@ -106,8 +104,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         TileEntityCrucible crucible = (TileEntityCrucible) var1;
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

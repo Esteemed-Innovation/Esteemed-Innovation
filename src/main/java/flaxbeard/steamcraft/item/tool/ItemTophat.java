@@ -28,10 +28,9 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
 
     boolean emerald;
 
-    public ItemTophat(ArmorMaterial p_i45325_1_, int p_i45325_2_,
-                      int p_i45325_3_, boolean em) {
-        super(p_i45325_1_, p_i45325_2_, p_i45325_3_);
-        emerald = em;
+    public ItemTophat(ArmorMaterial armorMaterial, int renderIndex, int armorType, boolean isEmerald) {
+        super(armorMaterial, renderIndex, armorType);
+        emerald = isEmerald;
     }
 
     public void onCreated(ItemStack me, World p_77622_2_, EntityPlayer player) {
@@ -49,6 +48,7 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
         return super.getRarity(me);
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack me) {
         if (me.hasTagCompound() && me.stackTagCompound.hasKey("Flaxbeard")) {
             return "item.steamcraft:kek";

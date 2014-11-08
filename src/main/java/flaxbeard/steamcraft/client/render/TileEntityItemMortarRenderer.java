@@ -18,9 +18,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
 
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
-
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
         TileEntityItemMortar mortar = (TileEntityItemMortar) var1;
@@ -59,8 +57,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x,
-                                            double y, double z, float var8) {
+    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
         //TileEntityItemMortar mortar = (TileEntityItemMortar) var1;

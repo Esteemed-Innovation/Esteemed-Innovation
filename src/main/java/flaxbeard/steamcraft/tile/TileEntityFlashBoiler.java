@@ -110,11 +110,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         this.setPressureResistance(0.5F);
     }
 
-    public static int getItemBurnTime(ItemStack p_145952_0_) {
-        if (p_145952_0_ == null) {
+    public static int getItemBurnTime(ItemStack stack) {
+        if (stack == null) {
             return 0;
         } else {
-            Item item = p_145952_0_.getItem();
+            Item item = stack.getItem();
 
             if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air) {
                 Block block = Block.getBlockFromItem(item);
@@ -140,7 +140,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             if (item == Items.lava_bucket) return 20000;
             if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
             if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(p_145952_0_);
+            return GameRegistry.getFuelValue(stack);
         }
     }
 
@@ -398,6 +398,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         return this.frontSide;
     }
 
+    @Override
     public void updateEntity() {
         super.superUpdateOnly();
         // fixes existing capacity and prevents explosions
@@ -524,6 +525,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         return stack.stackSize == 1;
     }
 
+    @Override
     public boolean isBurning() {
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
             return this.furnaceBurnTime > 0;
@@ -765,6 +767,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         return ForgeDirection.NORTH;
     }
 
+    @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         return side == 0 ? slotsBottom : (side == 1 ? slotsTop : slotsSides);
     }

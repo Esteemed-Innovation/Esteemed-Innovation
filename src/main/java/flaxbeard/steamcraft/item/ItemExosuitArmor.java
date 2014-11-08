@@ -53,6 +53,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         this.setMaxDamage(0);
     }
 
+    @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return false;
     }
@@ -76,6 +77,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return this.iconString;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
@@ -98,6 +100,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         grey = par1IconRegister.registerIcon(this.iconString + "_grey");
     }
 
+    @Override
     public int getRenderPasses(int metadata) {
         return 3;
     }
@@ -214,6 +217,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return 1.0D - (stack.stackTagCompound.getInteger("steamFill") / (double) stack.stackTagCompound.getInteger("maxFill"));
     }
 
+    @Override
     public boolean showDurabilityBar(ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
@@ -516,6 +520,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         }
     }
 
+    @Override
     public int getMaxDamage(ItemStack stack) {
         if (this.slot == 1) {
             return 10000;

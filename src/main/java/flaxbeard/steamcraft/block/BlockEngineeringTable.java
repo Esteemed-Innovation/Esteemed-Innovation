@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockEngineeringTable extends BlockContainer {
+
     @SideOnly(Side.CLIENT)
     private IIcon top;
     private IIcon bottom;
@@ -21,11 +22,13 @@ public class BlockEngineeringTable extends BlockContainer {
         super(Material.wood);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return p_149691_1_ == 1 ? this.top : (p_149691_1_ == 0 ? this.bottom : this.blockIcon);
+    public IIcon getIcon(int side, int meta) {
+        return side == 1 ? this.top : (side == 0 ? this.bottom : this.blockIcon);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         this.blockIcon = p_149651_1_.registerIcon("furnace_side");
@@ -49,7 +52,7 @@ public class BlockEngineeringTable extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityEngineeringTable();
     }
 }

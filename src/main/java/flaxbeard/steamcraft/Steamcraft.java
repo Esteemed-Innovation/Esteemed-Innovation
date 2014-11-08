@@ -56,11 +56,16 @@ public class Steamcraft {
     public static final OreGenEvent.GenerateMinable.EventType EVENT_TYPE = (OreGenEvent.GenerateMinable.EventType) EnumHelper.addEnum(OreGenEvent.GenerateMinable.EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
     @Instance("Steamcraft")
     public static Steamcraft instance;
+
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
+
     public static FMLEventChannel channel;
+
     public static EnumRarity upgrade;
+
     public static CreativeTabs tab;
     public static CreativeTabs tabTools;
+
     public static int tubeRenderID;
     public static int heaterRenderID;
     public static int chargerRenderID;
@@ -72,8 +77,12 @@ public class Steamcraft {
     public static int customCraftingTableRenderID;
     public static int furnaceRenderID;
     public static int sawRenderID;
+    public static int bloodBoilerRenderID;
+
     public static boolean steamRegistered;
+
     public static Potion semiInvisible;
+
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
 
@@ -164,6 +173,7 @@ public class Steamcraft {
         customCraftingTableRenderID = RenderingRegistry.getNextAvailableRenderId();
         furnaceRenderID = RenderingRegistry.getNextAvailableRenderId();
         //sawRenderID = RenderingRegistry.getNextAvailableRenderId();
+        //bloodBoilerRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 
         proxy.registerRenderers();

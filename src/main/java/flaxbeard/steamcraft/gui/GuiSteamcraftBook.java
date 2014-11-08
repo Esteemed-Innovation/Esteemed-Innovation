@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.gui;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -133,20 +134,21 @@ public class GuiSteamcraftBook extends GuiScreen {
         this.buttonPreviousPage.visible = this.currPage > 0;
     }
 
-    protected void actionPerformed(GuiButton p_146284_1_) {
-        if (p_146284_1_.enabled) {
-            if (p_146284_1_.id == 0) {
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (button.enabled) {
+            if (button.id == 0) {
                 this.mc.displayGuiScreen((GuiScreen) null);
-            } else if (p_146284_1_.id == 1) {
+            } else if (button.id == 1) {
                 if (this.currPage < this.bookTotalPages - 1) {
                     ++this.currPage;
                 }
-            } else if (p_146284_1_.id == 2) {
+            } else if (button.id == 2) {
                 if (this.currPage > 0) {
                     --this.currPage;
                 }
             }
-//            else if (p_146284_1_.id == 3)
+//            else if (button.id == 3)
 //            {
 //            	this.viewing = "";
 //            	this.currPage = lastIndexPage;
@@ -157,10 +159,10 @@ public class GuiSteamcraftBook extends GuiScreen {
 //                this.updateButtons();
 //            }
 
-            if (p_146284_1_ instanceof GuiButtonSelect) {
-                GuiButtonSelect button = (GuiButtonSelect) p_146284_1_;
+            if (button instanceof GuiButtonSelect) {
+                GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
                 this.lastIndexPage = currPage;
-                this.viewing = button.name.substring(0, 1).equals("#") ? button.name.substring(1) : button.name;
+                this.viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
                 this.currPage = 0;
                 this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length / 2F);
                 this.updateButtons();
@@ -201,6 +203,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
     }
 
+    @Override
     protected void keyTyped(char par1, int par2) {
         if (par2 == 1 && this.viewing != "") {
             this.viewing = "";
@@ -380,25 +383,25 @@ public class GuiSteamcraftBook extends GuiScreen {
 
     }
 
-    public void renderToolTip(ItemStack p_146285_1_, int p_146285_2_, int p_146285_3_, boolean renderHyperlink) {
-        List list = p_146285_1_.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+    public void renderToolTip(ItemStack stack0, int p_146285_2_, int p_146285_3_, boolean renderHyperlink) {
+        List list = stack0.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
         this.zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k) {
             if (k == 0) {
-                list.set(k, p_146285_1_.getRarity().rarityColor + (String) list.get(k));
+                list.set(k, stack0.getRarity().rarityColor + (String) list.get(k));
             } else {
                 list.set(k, EnumChatFormatting.GRAY + (String) list.get(k));
             }
         }
         if (renderHyperlink) {
             for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
-                if (stack.getItem() == p_146285_1_.getItem() && stack.getItemDamage() == p_146285_1_.getItemDamage()) {
+                if (stack.getItem() == stack0.getItem() && stack.getItemDamage() == stack0.getItemDamage()) {
                     list.add(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + StatCollector.translateToLocal("steamcraft.book.clickme"));
                 }
             }
         }
 
-        FontRenderer font = p_146285_1_.getItem().getFontRenderer(p_146285_1_);
+        FontRenderer font = stack0.getItem().getFontRenderer(stack0);
         this.func_146283_a(list, p_146285_2_, p_146285_3_);
         drawHoveringText(list, p_146285_2_, p_146285_3_, (font == null ? fontRendererObj : font));
         this.zLevel = 0.0F;
@@ -411,9 +414,9 @@ public class GuiSteamcraftBook extends GuiScreen {
         drawHoveringText(list, p_146285_2_, p_146285_3_, fontRendererObj);
     }
 
-    public void itemClicked(ItemStack p_146285_1_) {
+    public void itemClicked(ItemStack itemStack) {
          for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
-            if (!mustReleaseMouse && stack.getItem() == p_146285_1_.getItem() && stack.getItemDamage() == p_146285_1_.getItemDamage()) {
+            if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
                 this.viewing = SteamcraftRegistry.bookRecipes.get(stack).left;
                 this.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack).right / 2.0F);
                 this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length / 2F);
@@ -424,8 +427,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     }
 
     @SideOnly(Side.CLIENT)
-    public
-    static class NextPageButton extends GuiButton {
+    public static class NextPageButton extends GuiButton {
         private static final String __OBFID = "CL_00000745";
         private final boolean field_146151_o;
 
@@ -437,11 +439,11 @@ public class GuiSteamcraftBook extends GuiScreen {
         /**
          * Draws this button to the screen.
          */
-        public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_) {
+        public void drawButton(Minecraft minecraft, int p_146112_2_, int p_146112_3_) {
             if (this.visible) {
                 boolean flag = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                p_146112_1_.getTextureManager().bindTexture(GuiSteamcraftBook.bookGuiTextures);
+                minecraft.getTextureManager().bindTexture(GuiSteamcraftBook.bookGuiTextures);
                 int k = 0;
                 int l = 192;
 

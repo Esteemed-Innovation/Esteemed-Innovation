@@ -27,12 +27,13 @@ public class BlockItemMortar extends BlockContainer {
         return new TileEntityItemMortar();
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         TileEntityItemMortar tile = (TileEntityItemMortar) world.getTileEntity(x, y, z);
 
         if (player.getHeldItem() != null) {
@@ -50,11 +51,12 @@ public class BlockItemMortar extends BlockContainer {
         return false;
     }
 
-    public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_) {
-        TileEntityItemMortar tileentitysteamcharger = (TileEntityItemMortar) p_149749_1_.getTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
-        if (tileentitysteamcharger != null) {
-            for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory(); ++i1) {
-                ItemStack itemstack = tileentitysteamcharger.getStackInSlot(i1);
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntityItemMortar tileentitymortar = (TileEntityItemMortar) world.getTileEntity(x, y, z);
+        if (tileentitymortar != null) {
+            for (int i1 = 0; i1 < tileentitymortar.getSizeInventory(); ++i1) {
+                ItemStack itemstack = tileentitymortar.getStackInSlot(i1);
 
                 if (itemstack != null) {
                     float f = this.rand.nextFloat() * 0.8F + 0.1F;
@@ -69,7 +71,7 @@ public class BlockItemMortar extends BlockContainer {
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(p_149749_1_, (double) ((float) p_149749_2_ + f), (double) ((float) p_149749_3_ + f1), (double) ((float) p_149749_4_ + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
@@ -79,14 +81,14 @@ public class BlockItemMortar extends BlockContainer {
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                         entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        p_149749_1_.spawnEntityInWorld(entityitem);
+                        world.spawnEntityInWorld(entityitem);
                     }
                 }
             }
 
-            p_149749_1_.func_147453_f(p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_);
+            world.func_147453_f(x, y, z, block);
         }
-        super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
+        super.breakBlock(world, x, y, z, block, meta);
     }
 
 }

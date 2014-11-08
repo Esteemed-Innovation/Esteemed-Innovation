@@ -29,14 +29,12 @@ public class ItemSteamToolRenderer implements IItemRenderer {
     }
 
     @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item,
-                                         ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
         return false;
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... data) {
-
         if (!itemStack.hasTagCompound()) {
             itemStack.setTagCompound(new NBTTagCompound());
             itemStack.stackTagCompound.setInteger("player", -1);

@@ -18,14 +18,17 @@ public class BlockDummy extends BlockContainer {
         setLightOpacity(0);
     }
 
+    @Override
     public int getRenderType() {
         return -1;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -36,14 +39,12 @@ public class BlockDummy extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
         return true;
-
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
-
+    public TileEntity createNewTileEntity(World world, int metadata){
         return new TileEntityDummyBlock();
     }
 

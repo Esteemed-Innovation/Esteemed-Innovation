@@ -19,9 +19,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
     private static float px = (1.0F / 16.0F);
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y,
-                                   double z, float var8) {
-
+    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         TileEntityPump pump = (TileEntityPump) var1;
         int meta = pump.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
         GL11.glPushMatrix();

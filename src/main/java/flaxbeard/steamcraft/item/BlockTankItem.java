@@ -26,8 +26,8 @@ import java.util.List;
 
 public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank, IExosuitUpgrade {
 
-    public BlockTankItem(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public BlockTankItem(Block block) {
+        super(block);
     }
 
     @Override

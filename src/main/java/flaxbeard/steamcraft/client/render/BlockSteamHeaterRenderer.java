@@ -20,8 +20,7 @@ import java.util.ArrayList;
 public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId,
-                                     RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         float x = 0;
         float y = 0;
@@ -129,9 +128,8 @@ public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-                                    Block block, int modelId, RenderBlocks renderer) {
-        TileEntitySteamHeater pipe = (TileEntitySteamHeater) world.getTileEntity(x, y, z);
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+        TileEntitySteamHeater heater = (TileEntitySteamHeater) world.getTileEntity(x, y, z);
         float baseMin = 5.0F / 16.0F;
         float baseMax = 11.0F / 16.0F;
         float ringMin = 4.0F / 16.0F;
@@ -148,8 +146,8 @@ public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
         ForgeDirection direction = ForgeDirection.getOrientation(meta).getOpposite();
         for (ForgeDirection dir : ForgeDirection.values()) {
             if (dir != direction.getOpposite()) {
-                if (world.getTileEntity(pipe.xCoord + dir.offsetX, pipe.yCoord + dir.offsetY, pipe.zCoord + dir.offsetZ) != null) {
-                    TileEntity tile = world.getTileEntity(pipe.xCoord + dir.offsetX, pipe.yCoord + dir.offsetY, pipe.zCoord + dir.offsetZ);
+                if (world.getTileEntity(heater.xCoord + dir.offsetX, heater.yCoord + dir.offsetY, heater.zCoord + dir.offsetZ) != null) {
+                    TileEntity tile = world.getTileEntity(heater.xCoord + dir.offsetX, heater.yCoord + dir.offsetY, heater.zCoord + dir.offsetZ);
                     if (tile instanceof ISteamTransporter) {
                         ISteamTransporter target = (ISteamTransporter) tile;
                         if (target.doesConnect(dir.getOpposite())) {

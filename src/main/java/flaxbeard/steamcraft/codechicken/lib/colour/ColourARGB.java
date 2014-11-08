@@ -17,10 +17,12 @@ public class ColourARGB extends Colour {
         return (colour.a & 0xFF) << 24 | (colour.r & 0xFF) << 16 | (colour.g & 0xFF) << 8 | (colour.b & 0xFF);
     }
 
+    @Override
     public ColourARGB copy() {
         return new ColourARGB(this);
     }
 
+    @Override
     public int pack() {
         return pack(this);
     }

@@ -31,7 +31,7 @@ public class SteamcraftIslandGen implements IWorldGenerator {
     }
 
     private void generateEnd(World world, Random random, int i, int j) {
-        // TODO Auto-generated method stub
+        //filler
 
     }
 
@@ -85,7 +85,7 @@ public class SteamcraftIslandGen implements IWorldGenerator {
     }
 
     private void generateNether(World world, Random random, int i, int j) {
-        // TODO Auto-generated method stub
+        // filler
 
     }
 }

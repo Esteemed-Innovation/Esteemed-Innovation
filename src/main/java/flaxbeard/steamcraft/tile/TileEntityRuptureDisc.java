@@ -28,6 +28,7 @@ public class TileEntityRuptureDisc extends TileEntity {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
+    @Override
     public void updateEntity() {
         if (worldObj.isRemote) {
             if (this.isLeaking) {
