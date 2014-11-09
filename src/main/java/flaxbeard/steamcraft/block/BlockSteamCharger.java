@@ -43,7 +43,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
-        int l = determineOrientation(world, x, y, z, elb);
+        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4F / 360F) + 2.5D) & 3;
         world.setBlockMetadataWithNotify(x, y, z, l, 2);
     }
 
@@ -196,22 +196,5 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         }
         return false;
 
-    }
-
-    public static int determineOrientation(World world, int int1, int int2, int int3, EntityLivingBase elb){
-        if (MathHelper.abs((float) elb.posX - (float) int1) < 2.0F && MathHelper.abs((float) elb.posZ - (float) int3) < 2.0F){
-            double penetration /* ouch */ = elb.posY + 1.82D - (double) elb.yOffset;
-
-            if (penetration - (double) int1 > 2D){
-                return 1;
-            }
-
-            if ((double) int1 - penetration > 0D){
-                return 0;
-            }
-        }
-
-        int fuckmath = MathHelper.floor_double((double) (elb.rotationYaw * 4F / 360F) + 0.5D) & 3;
-        return fuckmath == 0 ? 2 : (fuckmath == 1 ? 5 : (fuckmath == 2 ? 3 : (fuckmath == 3 ? 4 : 0)));
     }
 }
