@@ -42,7 +42,7 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
-    public KeyBinding zoomKey = new KeyBinding("Zoom using monacle", Keyboard.KEY_Z, "key.categories.misc");
+    public KeyBinding zoomKey = new KeyBinding("Zoom using monocle", Keyboard.KEY_Z, "key.categories.misc");
 
     @Override
     public void registerHotkeys() {
