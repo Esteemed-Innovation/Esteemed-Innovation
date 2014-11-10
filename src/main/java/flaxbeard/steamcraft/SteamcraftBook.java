@@ -64,9 +64,9 @@ public class SteamcraftBook {
 
     public static void registerRecentCreations() {
         //There should be 5 recent creations at all times. Remove the bottom one when you are adding one.
-        /*
-        SteamcraftRegistry.addCategory("category.RecentCreations.name");
 
+        SteamcraftRegistry.addCategory("category.RecentCreations.name");
+        /*
         if (Config.enableBlockPlacer){
             SteamcraftRegistry.addResearch("#research.BlockPlacer.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
@@ -398,12 +398,16 @@ public class SteamcraftBook {
             if (Config.enableWings) {
                 SteamcraftRegistry.addResearch("research.Wings.name", "!research.ExoBack.name", new BookPageItem("research.Wings.name", "research.Wings.0", true, new ItemStack(SteamcraftItems.wings)), new BookPageCrafting("", "wings1", "wings2"));
             }
+
             SteamcraftRegistry.addResearch("research.ExoArm.name", "category.Exosuit.name");
             if (Config.enablePowerFist) {
                 SteamcraftRegistry.addResearch("research.Fist.name", "!research.ExoArm.name", new BookPageItem("research.Fist.name", "research.Fist.0", true, new ItemStack(SteamcraftItems.powerFist)), new BookPageCrafting("", "powerFist1", "powerFist2"));
             }
             if (Config.enableExtendoFist) {
                 SteamcraftRegistry.addResearch("research.ExtendoFist.name", "!research.ExoArm.name", new BookPageItem("research.ExtendoFist.name", "research.ExtendoFist.0", true, new ItemStack(SteamcraftItems.extendoFist)), new BookPageCrafting("", "extendoFist1", "extendoFist2"));
+            }
+            if (Config.enableBrassKnuckles){
+                SteamcraftRegistry.addResearch("research.Knuckles.name", "!research.ExoArm.name", new BookPageItem("research.Knuckles.name", "research.Knuckles.0", true, new ItemStack(SteamcraftItems.brassKnuckles)), new BookPageCrafting("", "brassKnuckles1", "brassKnuckles2"));
             }
             if (Config.enablePitonDeployer) {
                 SteamcraftRegistry.addResearch("research.PitonDeployer.name", "!research.ExoArm.name", new BookPageItem("research.PitonDeployer.name", "research.PitonDeployer.0", true, new ItemStack(SteamcraftItems.pitonDeployer)), new BookPageCrafting("", "pitonDeployer"));

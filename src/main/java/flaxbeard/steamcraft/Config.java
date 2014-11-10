@@ -13,6 +13,7 @@ public class Config {
     public static final int jetpackConsumption = 1;
     public static final int jumpBoostConsumptionShiftJump = 3;
     public static final int powerFistConsumption = 5;
+    public static final int brassKnucklesConsumption = 6;
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
 
@@ -139,6 +140,7 @@ public class Config {
     public static boolean enableReinforcedTank;
     public static boolean enableUberReinforcedTank;
     public static boolean enableEnderShroud;
+    public static boolean enableBrassKnuckles;
 
     //plates
     public static boolean enableCopperPlate;
@@ -263,6 +265,7 @@ public class Config {
         enablePitonDeployer = config.get("Exosuit Upgrades", "Enable Piton Deployer", true).getBoolean(true);
         enableReinforcedTank = config.get("Exosuit Upgrades", "Enable Reinforced Tank", true).getBoolean(true);
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
+        enableBrassKnuckles = config.get("Exosuit Upgrades", "Enable Brass Knuckles", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
@@ -291,7 +294,7 @@ public class Config {
 
         enableTopHat = config.get("Items", "Enable Top Hat", true).getBoolean(true);
         enableEmeraldHat = config.get("Items", "Enable Emerald Top Hat", true).getBoolean(true);
-        enableGoggles = config.get("Items", "Enable Goggles/Monacle", true).getBoolean(true);
+        enableGoggles = config.get("Items", "Enable Goggles/Monocle", true).getBoolean(true);
 
         //MODULAR TOOL
         enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
