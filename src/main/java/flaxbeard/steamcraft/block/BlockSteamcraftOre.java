@@ -63,6 +63,9 @@ public class BlockSteamcraftOre extends Block {
             if (meta == 1){
                 return this.icon[4];
             }
+            if (meta == 2){
+            return this.icon[2];
+            }
         }
 
         if (dimensionID == 1){
@@ -71,6 +74,9 @@ public class BlockSteamcraftOre extends Block {
             }
             if (meta == 1){
                 return this.icon[6];
+            }
+            if (meta == 2){
+                return this.icon[2];
             }
         }
         return this.icon[0];
