@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.api.util;
 
 /**
  * Used for xbony2's debugging purposes. This is a very serious class, do not
- * make jokes about it. /me makes jokes about it, Kappa.
+ * make jokes about it.
  * 
  * @author xbony2
  */
