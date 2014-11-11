@@ -12,30 +12,9 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-
     }
 }
 
 apply plugin: 'forge'
 
-version = newFSPVersion
-group= "com.flaxbeard.Steamcraft"
-archivesBaseName = "Steamcraft"
-
-
-minecraft {
-    version = forgeVersion
-    assetDir = "eclipse/assets"
-}
-processResources
-{
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
+apply from: "https://raw.githubusercontent.com/dmillerw/MainGradle/master/main.gradle"
