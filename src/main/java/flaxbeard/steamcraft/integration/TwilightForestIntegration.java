@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.integration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.SteamcraftRecipes;
@@ -16,8 +15,13 @@ public class TwilightForestIntegration {
     public static Item alphaFur;
 
     public static void grabItems() {
-        fieryIngot = GameRegistry.findItem("TwilightForest", "fieryIngot");
-        alphaFur = GameRegistry.findItem("TwilightForest", "alphaFur");
+        try {
+            Class clazz = Class.forName("twilightforest.item.TFItems");
+            fieryIngot = (Item) clazz.getDeclaredField("fieryIngot").get(clazz);
+            alphaFur = (Item) clazz.getDeclaredField("alphaFur").get(clazz);
+        } catch (Exception ex) {
+            // Should probably log something here
+        }
     }
 
     public static void addTwilightForestLiquid() {
