@@ -494,8 +494,8 @@ public class SteamcraftRecipes {
                     'v', SteamcraftBlocks.valvePipe, 's', "plateSteamcraftBrass"));
         }
         if (Config.enableBrassKnuckles){
-            BookRecipeRegistry.addRecipe("brassKnuckles1", new ShapedOreRecipe(new ItemStack(SteamcraftItems.brassKnuckles), "BBB", "BPB", 'P', SteamcraftItems.powerFist, 'B', "ingotBrass"));
-            BookRecipeRegistry.addRecipe("brassKnuckles2", new ShapedOreRecipe(new ItemStack(SteamcraftItems.brassKnuckles), "BBB", "BPB", 'P', SteamcraftItems.powerFist, 'B', "plateSteamcraftBrass"));
+            BookRecipeRegistry.addRecipe("brassKnuckles1", new ShapedOreRecipe(new ItemStack(SteamcraftItems.brassKnuckles), "BBB", "BPB", "BQB", 'P', SteamcraftItems.powerFist, 'B', "ingotBrass", 'Q', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+            BookRecipeRegistry.addRecipe("brassKnuckles2", new ShapedOreRecipe(new ItemStack(SteamcraftItems.brassKnuckles), "BBB", "BPB", "BQB", 'P', SteamcraftItems.powerFist, 'B', "plateSteamcraftBrass", 'Q', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
         }
     }
 
