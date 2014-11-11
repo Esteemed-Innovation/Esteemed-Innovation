@@ -737,7 +737,7 @@ public class SteamcraftEventHandler {
             if (hasPower && elb.getEquipmentInSlot(3) != null && elb.getHeldItem() == null){
                 ItemExosuitArmor exo = (ItemExosuitArmor) elb.getEquipmentInSlot(3).getItem();
                 if (exo.hasUpgrade(elb.getEquipmentInSlot(3), SteamcraftItems.brassKnuckles)){
-                    event.entityLiving.attackEntityFrom(DamageSource.generic, 4.5F);
+                    event.entityLiving.attackEntityFrom(DamageSource.generic, 1.5F);
                     event.entityLiving.performHurtAnimation();
                     elb.worldObj.playSoundEffect(elb.posX, elb.posY, elb.posZ, "random.explode", 4F, (1F + (elb.worldObj.rand.nextFloat() - elb.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
                     event.entityLiving.motionX += 3.0F * elb.getLookVec().normalize().xCoord;
