@@ -9,6 +9,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class Config {
+
+    //EDIT THIS BEFORE RELEASING, JEEZ. HOW HARD IS IT, SANTA!? -Santa
+    //////////////////////////////////////////////
+    public static final String VERSION = "0.27.0";
+    //////////////////////////////////////////////
+
     public static final int jumpBoostConsumption = 1;
     public static final int jetpackConsumption = 1;
     public static final int jumpBoostConsumptionShiftJump = 3;
@@ -21,7 +27,6 @@ public class Config {
     public static final int reinforcedTankCap = 72000;
     public static final int uberReinforcedTankCap = 144000;
 
-    public static final String VERSION = "0.26.5";
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;
     public static boolean genCopperEnd;
