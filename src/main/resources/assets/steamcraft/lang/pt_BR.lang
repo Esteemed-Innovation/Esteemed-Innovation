@@ -96,6 +96,8 @@ research.SurvivalistBaubles.0=Muitas vezes perdi minhas valiosas ferramentas enc
 research.Plates.name=Chapas de Metal
 research.Plates.0=Usando meu novo aparelho de fundição de metal, eu desenvolvi uma maneira de usar metais de uma maneira mais eficiente. Eu sou capaz de fundir chapas de metal a uma fracção do custo de um lingote, e estas chapas podem ser usadas no lugar de lingotes em quase todos os casos.
 
+
+
 category.MetalCasting.name=Fundição de Metal
 research.Crucible.name=Cadinho
 research.Crucible.0=Eu finalmente encontrei uma forma de criar ligas metálicas, o cadinho! Para usá-lo, eu coloco o cadinho de cerâmica sobre fogo alto. E posso, então, obter vários tipos de metais processados. Estes metais irão liquefazer-se, e se a mistura for possível formarão uma liga.
@@ -123,8 +125,8 @@ research.FlashBoiler.1=A caldeira relâmpago é construída colocando seus compo
 research.FlashBoiler.2=e não vai produzir vapor tão rapidamente ou tão eficiente até estar totalmente aquecida.
 research.Tank.name=Tanques
 research.Tank.0=Tubos são excelentes para o transporte de vapor, mas eu estou cansado de abaster a caldeira toda vez que eu preciso de mais vapor. Então criei os tanques para resolver este problema. Eles armazenam grandes quantidades de vapor, para que eu possa guardar e usar depois.
-research.CreativeTank.name=página sekrit
-research.CreativeTank.0=encontrar sekrit
+research.CreativeTank.name=página ´sekrit´
+research.CreativeTank.0=vc encontrou ´sekrit´
 research.Pipe.name=Tubulações
 research.Pipe.0=Vapor é inútil sem uma forma de transportá-lo, eu tenho me esforçado bastante para encontrar uma maneira de transportá-lo eficazmente. Os tubos de bronze são capazes de resistir à pressão e, assim, fazer a canalização perfeita para o vapor.
 research.Pipe.1=Combinando uma alavanca com um tubo me permite controlar o fluxo de vapor. Clicando com o botão direito sobre esta válvula vai abri-la ou fecha-la.
@@ -178,6 +180,7 @@ research.ExoTankReinforced.name=Tanque Reforçado
 research.ExoTankReinforced.0=Eu desenvolvi um tanque construído especificamente para o uso no exoesqueleto, usando o meu tanque de vapor como base. Ele tem camadas extras de reforço para permitir guardar mais vapor no mesmo espaço, mais ou menos o dobro de um tanque de vapor normal.
 research.ExoTankUberReinforced.name=Tanque Fortemente Reforçado
 research.ExoTankUberReinforced.0=Apesar, do tanque, usar grandes quantidades de bronze, descobri uma maneira de reforça-lo ainda mais, permitindo que armazene níveis sem precedentes de vapor, cerca de duas vezes a do meu tanque reforçado.
+
 research.ExoPlates.name=Placas para Exoesqueleto
 research.ExoPlates.0=O exoesqueleto em si é só uma estrutura frágil. Uma das melhorias mais importantes são as placas. Vários tipos de placas podem ser instaladas no exoesqueleto, proporcionando ao utilizador significativamente mais proteção.
 research.ExoPlates.1=Todas as placas fornecem uma proteção base, equivalente a da armadura de ferro, mas cada tipo de placa tem uma característica única. Placas de ferro, por exemplo, são melhorer para se proteger contra projéteis.
@@ -207,16 +210,17 @@ research.PlateVibrant.name=Placa Ressonante
 research.PlateVibrant.0=Embora eu ainda não esteja completamente seguro de como funciona, eu fui capaz de aproveitar as propriedades misteriosas da minério de ´vibrant´ para usar em meu exoesqueleto. Quando estou com a saúde baixa, tenho chances esquivar de danos e teleportar.
 research.PlateEnderium.name=Placa de Enderium
 research.PlateEnderium.0=Chapear meu exoesqueleto com este misterioso metal do ender me permitiu aproveitar o poder de teletransporte do Endermen como uma arma. Inimigos que me atacam, enquanto  uso um exoesqueleto banhado de ´enderium´ tem a chance de serem teletransportado para longe de mim.
+
 research.ExoVanity.name=Slot da Vaidade
 research.ExoVanity.0=O meu exoesqueleto não é só uma estrutura versátil, é também um personalizável. Cada peça exoesqueleto inclui um compartimento que pode ser utilizado para ajustar a aparência do exoesqueleto, conforme a minha vaidade.
 research.ExoDyes.name=Pintura do Exoesqueleto
 research.ExoDyes.0=Tintas de todos os tipos podem ser colocadas nos compartimentos, como numa quadro posso de pintar o exoesqueleto com a cor que mais agradar o meu olhar. Adicionar tinta não vai mudar a cor das placas ou atualizações instaladas.
 research.EnderShroud.name=Mortalha do `Fim`
 research.EnderShroud.0=A mortalha de `Fim`, é um misterioso dispositivo, capaz de tornar as peças do exoesqueleto completamente invisíveis. Isso me permite mostrar minha `SKIN` e ficar protegido. A mortalha não é perfeita. Quando algo me acertar, o exoesqueleto piscará por alguns segundos.
+
 research.ExoHeadHelm.name=Slot de Capacete
 research.FloralLaurel.name=Coroa de Louros 
 research.FloralLaurel.0=Às vezes eu me canso de empunhar minha varinha para verificar como estão minhas reservas de mana. Eu criei uma bela coroa de louros apenas com algumas pétalas e uma vara de ´livingwood´. Quando usado, e ao olhar sobre dispositivos ´botanical´ irá me exibir informações sobre ele.
-
 research.ExoHeadGoggle.name=Slot do Rosto
 research.ExoBack.name=Slot das Costas
 research.ExoArm.name=Slot para os Braços
@@ -224,6 +228,7 @@ research.ExoHip.name=Slot para o Quadril
 research.ExoLeg.name=Slot para as Pernas
 research.ExoHeel.name=Slot dos Calcanhares
 research.ExoFoot.name=Slot dos Pés
+
 
 research.Jetpack.name=`Jetpack` a Vapor
 research.Jetpack.0=Eu desenvolvi uma atualização para o exoesqueleto bastante emocionante que me concede o poder de voar. Essa espécie de Mochila a jato de vapor consome uma quantidade substancial de vapor, mas não se pode por um preço na capacidade de voar.
@@ -235,18 +240,18 @@ research.Fist.name=Punho do poder
 research.Fist.0=Esta melhoria para peitoral é uma das minhas invenções mais divertidas. Faz meus socos serem realmente... violentos. Qualquer soco em um inimigo com as mãos limpas vão fazé-los voar longe, ao custo de vapor.
 research.ExtendoFist.name=Punho Extensor
 research.ExtendoFist.0=Eu encontrei uma maneira de aumentar meu alcance para muito além de minha capacidade normal, utilizando uma série de barras articuladas. Eu a chamo de o punho extensor. Instalando esta atualização no meu exoesqueleto posso alcançar muito mais longe.
+research.Knuckles.name=Brass Knuckles
+research.Knuckles.0=The Power Fist is alright, but I want something with a little more oomph. Any time I punch an enemy with a bare fist they'll go flying and get a bit of damage done to them, at the cost of some steam.
 research.PitonDeployer.name=Enroscador
 research.PitonDeployer.0=Esta inovação me permite ter controle sobre situações complicadas. O enroscador permite me agarrar com botão direito em paredes e tetos, parando quedas e permitindo-me usar outros itens enquanto me balanço.
 research.FallAssist.name=Atenuador de Queda
 research.FallAssist.0=Esse dispositivo para as botas é necessário quando estou explorando terrenos perigosos. Ele usa vapor para evitar danos de queda até uma certa altura.
 research.JumpAssist.name=Assistente de Salto
 research.JumpAssist.0=Agora eu posso saltar para alturas sem precedentes com o Assistente de Salto. Este dispositivo com pistões a vapor permite que eu salte com muito mais força do que o normal. É só agachar e pular, e me lançarei na direção que quiser.
-
 research.RunAssist.name=Acelerador Modular
 research.RunAssist.0=Adicionando um conjunto a mais de pistões nas minhas pernas posso manobrar em velocidades antes inatingível. O acelerador modular, como gosto de chamá-lo, permite-me correr e caminhar muito mais depressa.
 research.DoubleJump.name=Impulsionador
 research.DoubleJump.0=Depois de experimentar com aplicações de tubos e válvulas, eu encontrei uma maneira de usá-los no exosuit para aumentar a mobilidade. O impulsionador permite disparar uma jato controlado de vapor, que me jogará para cima, como se fosse um "salto duplo".
-
 research.StealthUpgrade.name=Atenuador Acústico
 research.StealthUpgrade.0=Claro, o exoesqueleto é deslumbrante, mas às vezes eu preciso ser um pouco mais furtivo. Eu desenvolvi amortecedores para resolver isso. O atenuador acústico silencia os ruídos dos meus movimento, tornando mais difícil para os mobs me ouvirem.
 research.Mask.name=Máscara da Revelação
@@ -317,8 +322,13 @@ research.EnhancementAmmo.0=O pente usado na minha bazuca é um acessório simple
 research.EnhancementAirStrike.name=Kit para Ataque Aéreo
 research.EnhancementAirStrike.0=Eu desenvolvi um kit para a minha bazuca que chamo de 'ataque aéreo'. Esta melhoria é muito eficaz para combater em pleno ar. Com o 'ataque aéreo' instalado, posso usar projéteis para dar grandes saltos, e serei capaz de disparar projéteis de forma extremamente rápida.
 
-itemGroup.steamcraft=SteamPower
-itemGroup.steamcraftTools=SteamPower, Ferramentas
+category.Automation.name=Automation
+research.BlockPlacer.name=Plonker
+research.BlockPlacer.0=I may have a machine that will smash the blocks I place down, but I'm too busy flying around with my exosuit to bother continuously placing blocks down there to keep up with my demands. So, I have created this machine, the Plonker. It will place the block given to it in front of it.
+
+
+itemGroup.steamcraft=FSP
+itemGroup.steamcraftTools=FSP, Ferramentas
 steamcraft.enhancementText=Aprimoramentos:
 
 item.steamcraft:musketCartridge.name=Cartucho
@@ -364,6 +374,7 @@ item.steamcraft:monacle.name=Monóculo do Mecânico
 item.steamcraft:goggles.name=Óculos do Mecânico
 item.steamcraft:tophatNoEmerald.name=Cartola
 item.steamcraft:tophat.name=Cartola do Empresário
+
 
 item.steamcraft:ingot.0.name=Lingote de Cobre
 item.steamcraft:ingot.1.name=Lingote de Zinco
@@ -483,20 +494,32 @@ item.steamcraft:stealthUpgrade.name=Atenuador Acústico
 item.steamcraft:canner.name=Enlatadora
 item.steamcraft:pitonDeployer.name=Enroscador
 item.steamcraft:enderShroud.name=Mortalha do `Ender`
+item.steamcraft:brassKnuckles.name=Soco-inglês de Bronze
 
-item.steamcraft:canister.name=Lata
+item.steamcraft:canister.name=Lata de Itens
 
 item.steamcraft:kek.name=´Toppest of Keks´
+
 
 item.steamcraft:steamedChicken.name=Frango Cozido
 item.steamcraft:steamedBeef.name=Carne Cozida
 item.steamcraft:steamedFish.name=Peixe Cozido
 item.steamcraft:steamedPorkchop.name=Porco Cozido
 
+item.toolHead.headAxeBrass.name=Cabeça do Machado de Bronze
+item.toolHead.headPickaxeBrass.name=Cabeça da Picareta de Bronze
+item.toolHead.headShovelBrass.name=Cabeça da Pá de Bronze
+item.toolHead.headHoeBrass.name=Cabeça da Enxada de Bronze
+item.toolHead.headAxeGilded.name=Cabeça do Machado de Ferro Galvanizado
+item.toolHead.headPickaxeGilded.name=Cabeça da Picareta de Ferro Galvanizado
+item.toolHead.headShovelGilded.name=Cabeça da Pá de Ferro Galvanizado
+item.toolHead.headHoeGilded.name=Cabeça da Enxada de Ferro Galvanizado
+
 tile.steamcraft:blockBrass.name=Bloco de Bronze
 tile.steamcraft:blockCopper.name=Bloco de Cobre
 tile.steamcraft:blockZinc.name=Bloco de Zinco
 
+tile.steamcraft:saw.name=Serra Circular
 tile.steamcraft:blockPlacer.name=Colocador de Bloco
 tile.steamcraft:charger.name=Preenchedor de Vapor
 tile.steamcraft:chargingPad.name=Base de Enchimento
@@ -527,3 +550,6 @@ tile.steamcraft:fan.name=Ventilador
 tile.steamcraft:vacuum.name=Exaustor
 tile.steamcraft:horn.name=Apito da Caldeira
 tile.steamcraft:fluidSteamConverter.name=Conversor de Pressão
+
+
+
