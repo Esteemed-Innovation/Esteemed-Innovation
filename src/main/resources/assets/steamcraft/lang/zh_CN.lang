@@ -239,6 +239,8 @@ research.Fist.name=动力拳套
 research.Fist.0=这个胸甲升级是我发明的最有趣的一个了.它让我的拳击变成真正的... 重击.<br>当我用空手击打敌人时他们就会被击飞,这会消耗一些蒸汽.
 research.ExtendoFist.name=机械伸缩拳
 research.ExtendoFist.0=我发现了一种方法增大我所能触及的范围,使用一系列连接杆.我称它为机械伸缩拳.装上该升级后就能让我触及更远的地方.
+research.Knuckles.name=黄铜指虎
+research.Knuckles.0=动力拳套虽然不错,但我还想要点更吸引人的.有了这个指虎,每当我用空手击打敌人时,它们都会被打飞并受到少量伤害,当然这会消耗一些蒸汽.
 research.PitonDeployer.name=岩钉安置器
 research.PitonDeployer.0=这项新发明让我能应付棘手的情况.右击抓住墙壁和天花板阻止下落,使我能来回摇摆并能使用其他物品.
 research.FallAssist.name=缓冲器
@@ -492,6 +494,7 @@ item.steamcraft:stealthUpgrade.name=降噪器
 item.steamcraft:canner.name=装罐器
 item.steamcraft:pitonDeployer.name=岩钉安置器
 item.steamcraft:enderShroud.name=末影之幕
+item.steamcraft:brassKnuckles.name=黄铜指虎
 
 item.steamcraft:canister.name=物品罐
 
