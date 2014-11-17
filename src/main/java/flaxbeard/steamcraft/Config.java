@@ -270,7 +270,7 @@ public class Config {
         enablePitonDeployer = config.get("Exosuit Upgrades", "Enable Piton Deployer", true).getBoolean(true);
         enableReinforcedTank = config.get("Exosuit Upgrades", "Enable Reinforced Tank", true).getBoolean(true);
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
-        enableBrassKnuckles = config.get("Exosuit Upgrades", "Enable Brass Knuckles", true).getBoolean(true);
+        enableBrassKnuckles = config.get("Exosuit Upgrades", "Enable Brass Knuckles (these could be seen as going against the FSP theme)", false).getBoolean(false);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);

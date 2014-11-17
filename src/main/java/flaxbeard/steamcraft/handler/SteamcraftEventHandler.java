@@ -20,6 +20,7 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
+import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BaublesIntegration;
@@ -64,6 +65,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -729,8 +731,7 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void handleKnuckles(LivingAttackEvent event){
-
+    public void handleKnuckles(LivingAttackEvent event, World world){
         if (event.source.getSourceOfDamage() instanceof EntityLivingBase){
             EntityLivingBase elb = (EntityLivingBase) event.source.getSourceOfDamage();
             boolean hasPower = hasPower(elb, Config.powerFistConsumption);
@@ -738,7 +739,11 @@ public class SteamcraftEventHandler {
                 ItemExosuitArmor exo = (ItemExosuitArmor) elb.getEquipmentInSlot(3).getItem();
                 if (exo.hasUpgrade(elb.getEquipmentInSlot(3), SteamcraftItems.brassKnuckles)){
                     event.entityLiving.attackEntityFrom(DamageSource.generic, 1.5F);
-                    event.entityLiving.performHurtAnimation();
+
+                    if (world.isRemote) {
+                        event.entityLiving.performHurtAnimation();
+                    }
+
                     elb.worldObj.playSoundEffect(elb.posX, elb.posY, elb.posZ, "random.explode", 4F, (1F + (elb.worldObj.rand.nextFloat() - elb.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
                     event.entityLiving.motionX += 3.0F * elb.getLookVec().normalize().xCoord;
                     event.entityLiving.motionY += (elb.getLookVec().normalize().yCoord > 0.0F ? 2.0F * elb.getLookVec().normalize().yCoord : 0.0F) + 1.5F;
