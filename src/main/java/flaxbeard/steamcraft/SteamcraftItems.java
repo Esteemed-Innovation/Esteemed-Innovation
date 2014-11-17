@@ -314,10 +314,6 @@ public class SteamcraftItems {
                 powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
                 GameRegistry.registerItem(powerFist, "powerFist");
             }
-            if (Config.enableBrassKnuckles){
-                brassKnuckles = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/brass_knuckles.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:brassKnuckles").setTextureName("steamcraft:brass_knuckles");
-                GameRegistry.registerItem(brassKnuckles, "brassKnuckles");
-            }
             if (Config.enableExtendoFist) {
                 extendoFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/extendoFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:extendoFist").setTextureName("steamcraft:extendoFist");
                 GameRegistry.registerItem(extendoFist, "extendoFist");
