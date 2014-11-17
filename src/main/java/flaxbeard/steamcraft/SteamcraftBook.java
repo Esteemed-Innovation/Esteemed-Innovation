@@ -406,9 +406,6 @@ public class SteamcraftBook {
             if (Config.enableExtendoFist) {
                 SteamcraftRegistry.addResearch("research.ExtendoFist.name", "!research.ExoArm.name", new BookPageItem("research.ExtendoFist.name", "research.ExtendoFist.0", true, new ItemStack(SteamcraftItems.extendoFist)), new BookPageCrafting("", "extendoFist1", "extendoFist2"));
             }
-            if (Config.enableBrassKnuckles){
-                SteamcraftRegistry.addResearch("research.Knuckles.name", "!research.ExoArm.name", new BookPageItem("research.Knuckles.name", "research.Knuckles.0", true, new ItemStack(SteamcraftItems.brassKnuckles)), new BookPageCrafting("", "brassKnuckles1", "brassKnuckles2"));
-            }
             if (Config.enablePitonDeployer) {
                 SteamcraftRegistry.addResearch("research.PitonDeployer.name", "!research.ExoArm.name", new BookPageItem("research.PitonDeployer.name", "research.PitonDeployer.0", true, new ItemStack(SteamcraftItems.pitonDeployer)), new BookPageCrafting("", "pitonDeployer"));
             }

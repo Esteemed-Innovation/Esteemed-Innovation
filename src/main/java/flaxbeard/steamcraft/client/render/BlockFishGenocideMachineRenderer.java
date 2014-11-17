@@ -1,6 +1,17 @@
 package flaxbeard.steamcraft.client.render;
 
-public class BlockFishGenocideMachineRenderer /*implements ISimpleBlockRenderingHandler */ {/*
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.block.BlockFishGenocideMachine;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import org.lwjgl.opengl.GL11;
+
+public class BlockFishGenocideMachineRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId,
@@ -75,6 +86,6 @@ public class BlockFishGenocideMachineRenderer /*implements ISimpleBlockRendering
 	@Override
 	public int getRenderId() {
 		return Steamcraft.genocideRenderID;
-	}*/
+	}
 
 }
