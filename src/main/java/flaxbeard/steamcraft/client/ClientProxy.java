@@ -18,6 +18,7 @@ import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.*;
@@ -33,10 +34,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import org.lwjgl.input.Keyboard;
 
 

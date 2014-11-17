@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.block.BlockMold;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,6 +12,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMold extends TileEntity implements ISidedInventory {
     public boolean open = true;
