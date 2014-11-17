@@ -731,7 +731,7 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void handleKnuckles(LivingAttackEvent event, World world){
+    public void handleKnuckles(LivingAttackEvent event){
         if (event.source.getSourceOfDamage() instanceof EntityLivingBase){
             EntityLivingBase elb = (EntityLivingBase) event.source.getSourceOfDamage();
             boolean hasPower = hasPower(elb, Config.powerFistConsumption);
@@ -740,7 +740,7 @@ public class SteamcraftEventHandler {
                 if (exo.hasUpgrade(elb.getEquipmentInSlot(3), SteamcraftItems.brassKnuckles)){
                     event.entityLiving.attackEntityFrom(DamageSource.generic, 1.5F);
 
-                    if (world.isRemote) {
+                    if (elb.isClientWorld()){
                         event.entityLiving.performHurtAnimation();
                     }
 
