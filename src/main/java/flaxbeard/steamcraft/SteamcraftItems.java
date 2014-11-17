@@ -100,7 +100,6 @@ public class SteamcraftItems {
     public static Item canner;
     public static Item pitonDeployer;
     public static Item enderShroud;
-    public static Item brassKnuckles;
 
     //public static Item fakeOre;
 

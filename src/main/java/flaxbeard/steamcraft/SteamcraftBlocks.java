@@ -235,6 +235,10 @@ public class SteamcraftBlocks {
             vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(vacuum, "vacuum");
         }
+        if (Config.enableGenocide){
+            genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:genocide").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+            GameRegistry.registerBlock(genocide, "genocide");
+        }
 
 //		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
 //		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
