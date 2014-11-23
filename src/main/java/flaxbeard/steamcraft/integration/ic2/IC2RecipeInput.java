@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.integration.ic2;
 
 import java.util.Arrays;
 import java.util.List;

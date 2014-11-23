@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.integration.thaumcraft;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
