@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft.item;
 
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
