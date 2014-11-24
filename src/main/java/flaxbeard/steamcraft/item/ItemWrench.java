@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.IPipeWrench;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemWrench extends Item {
+public class ItemWrench extends Item implements IPipeWrench{
 
     @SideOnly(Side.CLIENT)
     public boolean isFull3D() {
@@ -41,5 +42,15 @@ public class ItemWrench extends Item {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         return false;
+    }
+
+    @Override
+    public boolean canWrench(EntityPlayer player, int x, int y, int z){
+        return true;
+    }
+
+    @Override
+    public void wrenchUsed(EntityPlayer player, int x, int y, int z){
+        player.swingItem();
     }
 }
