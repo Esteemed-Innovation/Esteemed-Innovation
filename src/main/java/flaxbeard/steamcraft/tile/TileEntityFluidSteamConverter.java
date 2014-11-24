@@ -23,7 +23,6 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     private FluidTank dummyTank;
     private boolean isInitialized = false;
     private boolean lastRunning = false;
-    public boolean isLeaking = false;
 
     @Override
     public Packet getDescriptionPacket() {
@@ -65,8 +64,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
         int steam = this.getSteamShare();
         this.getNetwork().split(this, true);
         this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
@@ -79,6 +77,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+
         if (from.ordinal() != meta) {
             return 0;
         }
@@ -93,8 +92,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource,
-                            boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         ////Steamcraft.log.debug("t");
 
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
