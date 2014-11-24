@@ -30,7 +30,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
     public static boolean updateWrenchStatus() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-        return (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemWrench && ((IPipeWrench) equipped).canWrench(player, (int) player.posX, (int) player.posY, (int) player.posZ) && !player.isSneaking());
+        return (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, (int) player.posX, (int) player.posY, (int) player.posZ) && !player.isSneaking());
     }
 
     @Override

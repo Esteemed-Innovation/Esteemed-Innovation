@@ -335,7 +335,7 @@ public class BlockPipe extends BlockSteamTransporter {
     public void onBlockHighlight(DrawBlockHighlightEvent event) {
         Item equipped = event.player.getCurrentEquippedItem() != null ? event.player.getCurrentEquippedItem().getItem() : null;
         if ((event.target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) && (event.player.worldObj.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) instanceof BlockPipe)
-                && (event.player.getCurrentEquippedItem() != null) && ((event.player.getCurrentEquippedItem().getItem() instanceof ItemWrench && ((IPipeWrench) equipped).canWrench(event.player, event.target.blockX, event.target.blockY, event.target.blockZ)))) {
+                && (event.player.getCurrentEquippedItem() != null) && ((event.player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(event.player, event.target.blockX, event.target.blockY, event.target.blockZ)))) {
             RayTracer.retraceBlock(event.player.worldObj, event.player, event.target.blockX, event.target.blockY, event.target.blockZ);
         }
     }
@@ -347,7 +347,7 @@ public class BlockPipe extends BlockSteamTransporter {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
         TileEntity tile = world.getTileEntity(x, y, z);
-        if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof ItemWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
+        if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
             return super.collisionRayTrace(world, x, y, z, start, end);
         }
         List<IndexedCuboid6> cuboids = new LinkedList();
