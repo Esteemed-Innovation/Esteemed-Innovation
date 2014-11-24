@@ -11,10 +11,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.ISteamChargable;
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.IWrenchDisplay;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.*;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
@@ -375,8 +372,9 @@ public class SteamcraftEventHandler {
 //					//}
 //
 //			}
+            Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
             MovingObjectPosition pos = mc.objectMouseOver;
-            if (pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWrench) {
+            if (pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemWrench && ((IPipeWrench) equipped).canWrench(player, pos.blockX, pos.blockY, pos.blockZ)) {
                 TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
                 if (te instanceof IWrenchDisplay) {
                     ((IWrenchDisplay) te).displayWrench(event);

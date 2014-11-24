@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.client.render;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.IPipeWrench;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.item.ItemWrench;
@@ -14,9 +15,11 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
@@ -26,7 +29,8 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
 
     public static boolean updateWrenchStatus() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        return (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemWrench && !player.isSneaking());
+        Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
+        return (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemWrench && ((IPipeWrench) equipped).canWrench(player, (int) player.posX, (int) player.posY, (int) player.posZ) && !player.isSneaking());
     }
 
     @Override
