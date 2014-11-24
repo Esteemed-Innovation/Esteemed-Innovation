@@ -33,12 +33,16 @@ public class SteamcraftRecipes {
     private static void registerFluid() {
         liquidIron = new CrucibleLiquid("iron", new ItemStack(Items.iron_ingot), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 2), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 2), null, 200, 200, 200);
         SteamcraftRegistry.liquids.add(liquidIron);
+
         liquidGold = new CrucibleLiquid("gold", new ItemStack(Items.gold_ingot), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 3), new ItemStack(Items.gold_nugget), null, 220, 157, 11);
         SteamcraftRegistry.liquids.add(liquidGold);
+
         liquidZinc = new CrucibleLiquid("zinc", new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 1), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 1), null, 225, 225, 225);
         SteamcraftRegistry.liquids.add(liquidZinc);
+
         liquidCopper = new CrucibleLiquid("copper", new ItemStack(SteamcraftItems.steamcraftIngot, 1, 0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 0), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 0), null, 140, 66, 12);
         SteamcraftRegistry.liquids.add(liquidCopper);
+
         liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 4), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4), 242, 191, 66);
         SteamcraftRegistry.liquids.add(liquidBrass);
 
