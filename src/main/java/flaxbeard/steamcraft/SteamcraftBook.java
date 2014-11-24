@@ -5,13 +5,14 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.*;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;

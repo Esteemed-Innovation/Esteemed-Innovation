@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
+import flaxbeard.steamcraft.integration.thaumcraft.LifeEssenceCap;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
