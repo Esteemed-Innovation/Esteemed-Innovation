@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.integration.thaumcraft;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;

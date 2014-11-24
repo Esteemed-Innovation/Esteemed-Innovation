@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.integration.ic2;
 
 import ic2.api.item.IC2Items;
 import ic2.api.recipe.Recipes;
