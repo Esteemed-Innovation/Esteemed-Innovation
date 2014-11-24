@@ -13,7 +13,7 @@ public class Config {
 
     //EDIT THIS BEFORE RELEASING, JEEZ. HOW HARD IS IT, SANTA!? -Santa
     //////////////////////////////////////////////
-    public static final String VERSION = "0.27.0";
+    public static final String VERSION = "0.27.2";
     //////////////////////////////////////////////
 
     public static final int jumpBoostConsumption = 1;
