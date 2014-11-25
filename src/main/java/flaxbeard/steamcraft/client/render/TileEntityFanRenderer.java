@@ -1,14 +1,18 @@
 package flaxbeard.steamcraft.client.render;
 
+import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.block.BlockFan;
 import flaxbeard.steamcraft.client.render.model.ModelFan;
 import flaxbeard.steamcraft.tile.TileEntityFan;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
+
     private static final ModelFan model = new ModelFan();
 
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/fan.png");
