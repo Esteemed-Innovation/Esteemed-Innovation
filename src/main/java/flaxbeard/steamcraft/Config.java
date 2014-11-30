@@ -46,6 +46,7 @@ public class Config {
     public static boolean enableEnderIOIntegration;
     public static boolean enableThermalFoundationIntegration;
     public static boolean enableIC2Integration;
+    public static boolean enableNaturaIntegration;
 
 
     public static boolean enableToolHeadsIntegration;
@@ -327,6 +328,7 @@ public class Config {
         enableEnderIOIntegration = config.get("Integration", "Enable Ender IO", true).getBoolean(true);
         enableThermalFoundationIntegration = config.get("Integration", "Enable Thermal Foundation", true).getBoolean(true);
         enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean(true);
+        enableNaturaIntegration = config.get("Integration", "Enable Natura", true).getBoolean(true);
         //enableToolHeadsIntegration = config.get("Integration", "Enable Tool Heads", true).getBoolean(true);
 
         /*//TOOL HEADS
