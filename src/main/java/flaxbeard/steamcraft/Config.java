@@ -12,8 +12,9 @@ import java.io.IOException;
 public class Config {
 
     //EDIT THIS BEFORE RELEASING, JEEZ. HOW HARD IS IT, SANTA!? -Santa
+	//fuck that shit -xbony2
     //////////////////////////////////////////////
-    public static final String VERSION = "0.27.2";
+    public static final String VERSION = "@VERSION@";
     //////////////////////////////////////////////
 
     public static final int jumpBoostConsumption = 1;
