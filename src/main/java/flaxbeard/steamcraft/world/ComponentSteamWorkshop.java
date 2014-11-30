@@ -170,11 +170,11 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
 
     private void populateBoiler(World world, int x, int y, int z) {
         Random rand = new Random(world.getSeed() + x + y + z);
-        TileEntityBoiler furnace = (TileEntityBoiler) world.getTileEntity(x, y, z);
-        if (furnace != null) {
-            furnace.refresh();
-            furnace.insertSteam(1000 + rand.nextInt(3000), ForgeDirection.UP);
-            furnace.myTank.setFluid(new FluidStack(FluidRegistry.WATER, 2000 + rand.nextInt(3000)));
+        TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
+        if (boiler != null) {
+            boiler.refresh();
+            boiler.insertSteam(1000 + rand.nextInt(3000), ForgeDirection.UP);
+            boiler.myTank.setFluid(new FluidStack(FluidRegistry.WATER, 2000 + rand.nextInt(3000)));
         }
     }
 
