@@ -12,13 +12,6 @@ steamcraft.astrolabe.dimension.nether=the Nether
 steamcraft.astrolabe.dimension.end=the End
 steamcraft.astrolabe.in=in
 
-steamcraft.waila.pressure=Pressure
-steamcraft.waila.valveOpen=Valve open
-steamcraft.waila.valveClosed=Valve closed
-steamcraft.waila.complete=Complete
-steamcraft.waila.filling=Filling
-steamcraft.waila.mold=Mold:
-
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 

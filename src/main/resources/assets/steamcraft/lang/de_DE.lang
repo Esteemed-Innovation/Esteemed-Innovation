@@ -17,13 +17,6 @@ steamcraft.fan.blocks=Blocks
 steamcraft.smasher.true=Modus: Brecher
 steamcraft.smasher.false=Modus: Zertrümmerer
 
-steamcraft.waila.pressure=Druck
-steamcraft.waila.valveOpen=Ventil offen
-steamcraft.waila.valveClosed=Ventil geschlossen
-steamcraft.waila.complete=Fertig
-steamcraft.waila.filling=Füllt
-steamcraft.waila.mold=Form:
-
 steamcraft.exosuit.thrustTick=consumed per tick of thruster use
 steamcraft.exosuit.flyTick=consumed per flying tick
 

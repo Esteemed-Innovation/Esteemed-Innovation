@@ -17,13 +17,6 @@ steamcraft.fan.blocks=Bloques
 steamcraft.smasher.true=Mode: Destructor de bloques
 steamcraft.smasher.false=Mode: Aplastador
 
-steamcraft.waila.pressure=Pression
-steamcraft.waila.valveOpen=Válvula abierta
-steamcraft.waila.valveClosed=Válvula cerrada
-steamcraft.waila.complete=Completo
-steamcraft.waila.filling=Llenando
-steamcraft.waila.mold=Molde:
-
 steamcraft.exosuit.thrustTick=consumido por tick del uso del motor
 steamcraft.exosuit.flyTick=consumido por tick al volar
 

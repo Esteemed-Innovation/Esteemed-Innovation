@@ -17,13 +17,6 @@ steamcraft.fan.blocks=блоков
 steamcraft.smasher.true=Режим: Разрушение блоков
 steamcraft.smasher.false=Режим: Дробление
 
-steamcraft.waila.pressure=Давление
-steamcraft.waila.valveOpen=Клапан открыт
-steamcraft.waila.valveClosed=Клапан закрыт
-steamcraft.waila.complete=Завершено
-steamcraft.waila.filling=Заполнение
-steamcraft.waila.mold=Форма:
-
 steamcraft.exosuit.thrustTick=потребляется за тик использования двигателя
 steamcraft.exosuit.flyTick=потребляется за летающий тик
 
