@@ -34,7 +34,6 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.*;
 import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
-import flaxbeard.steamcraft.integration.natura.NaturaIntegration;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.*;
