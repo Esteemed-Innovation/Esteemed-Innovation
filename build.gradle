@@ -26,6 +26,7 @@ archivesBaseName = "Steamcraft"
 minecraft {
     version = forgeVersion
     assetDir = "eclipse/assets"
+	replace "@VERSION@", project.version
 }
 processResources
 {
