@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration.natura;
+package flaxbeard.steamcraft.integration;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
