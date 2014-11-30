@@ -34,6 +34,7 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.*;
 import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
+import flaxbeard.steamcraft.integration.natura.NaturaIntegration;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.tile.*;
@@ -228,6 +229,10 @@ public class Steamcraft {
         }
         if(Loader.isModLoaded("IC2") && Config.enableIC2Integration){
             IndustrialCraftIntegration.addIC2Recipes();
+        }
+        if(Loader.isModLoaded("Natura") && Config.enableNaturaIntegration){
+        	NaturaIntegration.grabItems();
+        	NaturaIntegration.registerStuff();
         }
         if (OreDictionary.getOres("ingotLead").size() > 0) {
             CrucibleLiquid liquidLead = new CrucibleLiquid("lead", OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 9), OreDictionary.getOres("nuggetLead").size() > 0 ? OreDictionary.getOres("nuggetLead").get(0) : null, null, 118, 128, 157);
