@@ -17,13 +17,6 @@ steamcraft.fan.blocks=格
 steamcraft.smasher.true=模式:方塊破壞
 steamcraft.smasher.false=模式:礦石粉碎
 
-steamcraft.waila.pressure=壓力
-steamcraft.waila.valveOpen=閥門開啟
-steamcraft.waila.valveClosed=閥門關閉
-steamcraft.waila.complete=完成
-steamcraft.waila.filling=填充中
-steamcraft.waila.mold=模具:
-
 steamcraft.exosuit.thrustTick=使用推進器時每tick消耗刻度
 steamcraft.exosuit.flyTick=飛行時每tick消耗刻度
 

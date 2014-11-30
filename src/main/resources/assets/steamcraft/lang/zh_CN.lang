@@ -54,13 +54,6 @@ steamcraft.fan.blocks=格
 steamcraft.smasher.true=模式:方块破坏
 steamcraft.smasher.false=模式:矿石粉碎
 
-steamcraft.waila.pressure=压力
-steamcraft.waila.valveOpen=阀门打开
-steamcraft.waila.valveClosed=阀门关闭
-steamcraft.waila.complete=完成
-steamcraft.waila.filling=充填中
-steamcraft.waila.mold=模具:
-
 steamcraft.exosuit.thrustTick=使用推进时每tick消耗
 steamcraft.exosuit.flyTick=每tick飞行消耗
 steamcraft.exosuit.shroud=末影之幕
