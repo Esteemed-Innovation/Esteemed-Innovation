@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.gui.ContainerSteamAnvil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -108,9 +109,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 }
             }
         }
-
-        //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
     }
 
     private ForgeDirection myDir() {
@@ -131,12 +131,13 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         return dir;
     }
 
-//	@Override
-//	public void markDirty()
-//	{
-//		super.markDirty();
-//		ContainerSteamAnvil.this.onCraftMatrixChanged(this);
-//	}
+	@Override
+	public void markDirty(){
+        if (worldObj != null) {
+            super.markDirty();
+            worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        }
+	}
 
     @Override
     public int getSizeInventory() {
