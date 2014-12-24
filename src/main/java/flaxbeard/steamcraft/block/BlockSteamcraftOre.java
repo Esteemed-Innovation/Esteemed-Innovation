@@ -43,43 +43,33 @@ public class BlockSteamcraftOre extends Block {
     @Override
     public IIcon getIcon(int side, int meta) {
         int dimensionID = Minecraft.getMinecraft().theWorld.provider.dimensionId;
-
-        if (dimensionID == 0) {
-            if (meta == 0) {
-                return this.icon[0];
-            }
-            if (meta == 1) {
-                return this.icon[1];
-            }
-            if (meta == 2) {
-                return this.icon[2];
-            }
+        switch(dimensionID){
+        case 0:	//Overworld
+        	switch(meta){
+        	case 0: return this.icon[0];
+        	case 1: return this.icon[1];
+        	case 2: return this.icon[2];
+        	}			
+        case -1: //End
+        	switch(meta){
+        	case 0: return this.icon[3];
+        	case 1: return this.icon[4];
+        	case 2: return this.icon[2];
+        	}
+        case 1:	//Nether
+        	switch(meta){
+        	case 0: return this.icon[5];
+        	case 1: return this.icon[6];
+        	case 2: return this.icon[2];
+        	}
+        default: //Same as overworld
+        	switch(meta){
+        	case 0: return this.icon[0];
+        	case 1: return this.icon[1];
+        	case 2: return this.icon[2];
+        	}
         }
-
-        if (dimensionID == -1){
-            if (meta == 0){
-                return this.icon[3];
-            }
-            if (meta == 1){
-                return this.icon[4];
-            }
-            if (meta == 2){
-            return this.icon[2];
-            }
-        }
-
-        if (dimensionID == 1){
-            if (meta == 0){
-                return this.icon[5];
-            }
-            if (meta == 1){
-                return this.icon[6];
-            }
-            if (meta == 2){
-                return this.icon[2];
-            }
-        }
-        return this.icon[0];
+		return this.icon[0]; //Shouldn't happen, but whatever.
     }
 
     @Override
