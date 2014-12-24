@@ -24,12 +24,11 @@ archivesBaseName = "Steamcraft"
 
 
 minecraft {
-    version = "1.7.10-10.13.2.1277"
+    version = forgeVersion
     assetDir = "eclipse/assets"
 	replace "@VERSION@", project.version
 }
-processResources
-{
+processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
