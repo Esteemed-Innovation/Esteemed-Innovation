@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements ISteamTransporter, IFluidHandler, IWrenchable {
     public int runTicks = 0;
     private FluidTank dummyTank;
+    private FluidTank ic2DummyTank;
     private boolean isInitialized = false;
     private boolean lastRunning = false;
 
@@ -88,6 +89,14 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             }
             return resource.amount;
         }
+
+        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration && resource.fluidID == FluidRegistry.getFluid("ic2steam").getID()){
+            if (doFill){
+                this.insertSteam(resource.amount, from);
+                runTicks = runTicks > 0 ? runTicks : 100;
+            }
+            return resource.amount;
+        }
         return 0;
     }
 
@@ -110,6 +119,20 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             this.decrSteam(drained);
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
+
+        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
+            Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
+            int ic2Drained = resource.amount;
+            if (this.getSteamShare() < ic2Drained){
+                ic2Drained = this.getSteamShare();
+            }
+
+            FluidStack ic2Stack = new FluidStack(ic2Fluid, ic2Drained);
+            if (doDrain){
+                this.decrSteam(ic2Drained);
+                runTicks = ic2Stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
+            }
+        }
         return stack;
     }
 
@@ -129,6 +152,19 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             this.decrSteam(drained);
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
+
+        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
+            Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
+            int ic2Drained = maxDrain;
+            if (this.getSteamShare() > ic2Drained){
+                ic2Drained = this.getSteamShare();
+            }
+            FluidStack ic2Stack = new FluidStack(ic2Fluid, ic2Drained);
+            if (doDrain){
+                this.decrSteam(ic2Drained);
+                runTicks = ic2Stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
+            }
+        }
         return stack;
     }
 
@@ -147,7 +183,8 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         dummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteamShare()), this.getCapacity());
-        return new FluidTankInfo[]{dummyTank.getInfo()};
+        ic2DummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("ic2steam"), this.getSteamShare()), this.getCapacity());
+        return new FluidTankInfo[]{dummyTank.getInfo(), ic2DummyTank.getInfo()};
     }
 
 }
