@@ -1,6 +1,8 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.integration.natura;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.item.ItemSteamedFood;
@@ -21,5 +23,8 @@ public class NaturaIntegration {
 		steamedImphide = new ItemSteamedFood((ItemFood) imphide).setUnlocalizedName("steamcraft:steamedImphide").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamedImphide, "steamedImphide");
 		SteamcraftRegistry.addSteamFood(imphide, steamedImphide);
+		
+		if(Loader.isModLoaded("IC2") && Config.enableIC2Integration) 
+			IC2NaturaIntegration.addIC2Recipes();
 	}
 }
