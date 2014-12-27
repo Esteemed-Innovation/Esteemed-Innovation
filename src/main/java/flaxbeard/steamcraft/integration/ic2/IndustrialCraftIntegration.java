@@ -6,10 +6,11 @@ import net.minecraft.item.ItemStack;
 import flaxbeard.steamcraft.SteamcraftItems;
 
 public class IndustrialCraftIntegration {
+	public static IC2RecipeInput tincanx10 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 10));
+	public static IC2RecipeInput tincanx8 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 8));
+	public static IC2RecipeInput tincanx7 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 7));
+	
 	public static void addIC2Recipes(){
-		IC2RecipeInput tincanx10 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 10));
-		IC2RecipeInput tincanx8 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 8));
-		IC2RecipeInput tincanx7 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 7));
 		
 		IC2RecipeInput input1 = new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedBeef));
 		Recipes.cannerBottle.addRecipe(tincanx10, input1, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 10));
