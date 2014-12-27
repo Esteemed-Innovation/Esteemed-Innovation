@@ -14,5 +14,9 @@ public interface IEnhancementFirearm extends IEnhancement {
 
     public int getClipSizeChange(Item weapon);
 
+    /**
+     * Called to make the upgrade use shots
+     * This can be used to change features of the base EntityMusketBall bullet
+     */
     public EntityMusketBall changeBullet(EntityMusketBall bullet);
 }
