@@ -256,26 +256,25 @@ public class Steamcraft {
 
 
     private class SCTab extends CreativeTabs {
-        boolean tt;
+        boolean isToolTab;
 
         public SCTab(int par1, String par2Str, boolean toolTab) {
             super(par1, par2Str);
-            tt = toolTab;
+            isToolTab = toolTab;
         }
 
 
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            if (tt) {
+            if (isToolTab)
                 return SteamcraftItems.pick("Brass");
-            }
             return SteamcraftItems.book;
         }
 
         @Override
         public boolean hasSearchBar() {
-            return !tt;
+            return !isToolTab;
         }
     }
 }

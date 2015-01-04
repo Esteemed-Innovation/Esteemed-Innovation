@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.item;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.IPipeWrench;
