@@ -181,30 +181,29 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 
             ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
             for (ForgeDirection direction : directions) {
-                if (worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
-                    TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+            	final TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+                if (tile != null) {
                     if (tile instanceof ISteamTransporter) {
-                        ISteamTransporter target = (ISteamTransporter) tile;
+                        final ISteamTransporter target = (ISteamTransporter) tile;
                         if (target.doesConnect(direction.getOpposite())) {
                             myDirections.add(direction);
                         }
                     } else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-                        IFluidHandler target = (IFluidHandler) tile;
+                        final IFluidHandler target = (IFluidHandler) tile;
                         if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
                             myDirections.add(direction);
                         }
                     }
                 }
             }
-            i = 0;
+            
             if (myDirections.size() > 0) {
                 ForgeDirection direction = myDirections.get(0).getOpposite();
                 while (!this.doesConnect(direction)) {
                     direction = ForgeDirection.getOrientation((direction.flag + 1) % 5);
                 }
 
-
-                if (myDirections.size() == 2 && open && this.getNetwork().getSteam() > 0 && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
+                if (myDirections.size() == 2 && open && this.getNetwork() != null && this.getNetwork().getSteam() > 0 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
                     ////Steamcraft.log.debug("open and should be leaking");
                     if (!isLeaking) {
                         isLeaking = true;
