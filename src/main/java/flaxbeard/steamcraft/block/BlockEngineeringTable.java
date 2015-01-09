@@ -19,7 +19,7 @@ public class BlockEngineeringTable extends BlockContainer {
     private IIcon bottom;
 
     public BlockEngineeringTable() {
-        super(Material.wood);
+        super(Material.rock);
     }
 
     @Override
