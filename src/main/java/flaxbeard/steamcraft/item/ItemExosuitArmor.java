@@ -2,10 +2,12 @@ package flaxbeard.steamcraft.item;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
@@ -31,7 +33,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.tuple.MutablePair;
+
 import vazkii.botania.api.item.IPixieSpawner;
 
 import java.awt.*;
@@ -544,7 +548,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
 
     @Override
     public int steamPerDurability() {
-        return 5;
+        return Config.exoConsumption;
     }
 
     @Override

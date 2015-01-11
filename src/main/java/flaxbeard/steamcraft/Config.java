@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Config {
 
-    //Don't change this number. - @xbony2
+    //Don't change this string. - @xbony2
     public static final String VERSION = "@VERSION@";
 
     public static final int jumpBoostConsumption = 1;
@@ -20,6 +20,7 @@ public class Config {
     public static final int powerFistConsumption = 5;
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
+    public static final int EXO_CONSUMPTION_DEFAULT = 5;
 
     public static final int basicTankCap = 36000;
     public static final int reinforcedTankCap = 72000;
@@ -58,6 +59,7 @@ public class Config {
     public static boolean dropItem;
     public static boolean genPoorOre;
     public static int duplicateLogs;
+    public static int exoConsumption;
 
 
     public static int villagerId;
@@ -252,6 +254,7 @@ public class Config {
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
         enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
+        exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes (5 per default)", EXO_CONSUMPTION_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
