@@ -159,6 +159,8 @@ research.Vacuum.name=Exautor
 research.Vacuum.0=Com alguns ajustes no meu ventilador, consegui um dispositivo que vai sugar todas as coisas próximas a ele, e colocar os itens em um bau adjacente. Posso ajustar a força do vácuo com uma chave de grifo.
 research.FSC.name=Conversor de Pressão
 research.FSC.0=Enquanto a maioria das minhas máquinas forão feitas para trabalhar com a alta pressão do vapor criada nas caldeiras, outras tecnologias podem não ser capazes de faze-lo. Então, este dispositivo me permite retirar ou por vapor, com baixa pressão, no meu sistema.
+research.FSC.1=As an alternative to manually extracting liquid steam, I can disengage the pump ring of the Pressure Converter by using a wrench while sneaking. This will use the systems high pressure to force fluid steam into nearby tanks. However, doing so will prevent the Pressure Converter from accepting liquid steam from coming in.
+research.FSC.2=The rate as which the Pressure Converter ejects fluid steam depends on the pressure in the system. Operating at high pressure, I have witnessed no less than 4 buckets of steam per second.
 
 category.Exosuit.name=Exoesqueleto a Vapor
 research.Exosuit.name=Exoesqueleto a Vapor
