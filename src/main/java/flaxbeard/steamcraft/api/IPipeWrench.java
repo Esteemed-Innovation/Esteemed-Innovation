@@ -3,9 +3,9 @@ package flaxbeard.steamcraft.api;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * @author SatanicSanta
- *
  * Implement this interface on subclasses of Item to have the item work as pipe wrench.
+ * 
+ * @author SatanicSanta
  */
 public interface IPipeWrench {
 
