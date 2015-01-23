@@ -158,6 +158,8 @@ research.Vacuum.name=Vacuum
 research.Vacuum.0=A little tinkering with my fan has rewarded me with a vacuum, a device that will suck in all matter of things, outputting items to inventories placed opposite the mouth of the vacuum. I can adjust the vacuum's range with a wrench.
 research.FSC.name=Pressure Converter
 research.FSC.0=While plenty of my gadgets are built to handle the high pressure of steam created by my boilers, other technology may not be able to. This device allows conduits to pull less dense steam fluid from my network, or add less dense steam back in.
+research.FSC.1=As an alternative to manually extracting liquid steam, I can disengage the pump ring of the Pressure Converter by using a wrench while sneaking. This will use the systems high pressure to force fluid steam into nearby tanks. However, doing so will prevent the Pressure Converter from accepting liquid steam from coming in.
+research.FSC.2=The rate as which the Pressure Converter ejects fluid steam depends on the pressure in the system. Operating at high pressure, I have witnessed no less than 4 buckets of steam per second.
 
 category.Exosuit.name=Exosuit
 research.Exosuit.name=Exosuit
