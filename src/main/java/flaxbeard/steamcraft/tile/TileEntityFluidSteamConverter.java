@@ -16,8 +16,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+
+import static org.apache.commons.lang3.ArrayUtils.add;
 
 public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements ISteamTransporter, IFluidHandler, IWrenchable {
     public int runTicks = 0;
@@ -241,9 +244,21 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        dummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), this.getSteamShare()), this.getCapacity());
-        ic2DummyTank = new FluidTank(new FluidStack(FluidRegistry.getFluid("ic2steam"), this.getSteamShare()), this.getCapacity());
-        return new FluidTankInfo[]{dummyTank.getInfo(), ic2DummyTank.getInfo()};
+        int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        FluidTankInfo[] fti = {};
+        if(from.ordinal() != meta)
+            return fti;
+
+        Fluid steam;
+        steam = FluidRegistry.getFluid("steam");
+        if(steam != null)
+            fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
+
+        steam = FluidRegistry.getFluid("ic2steam");
+        if(steam != null)
+            fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
+
+        return fti;
     }
 
 }
