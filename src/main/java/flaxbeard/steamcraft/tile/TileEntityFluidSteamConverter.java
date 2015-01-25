@@ -16,9 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.ArrayList;
 
 import static org.apache.commons.lang3.ArrayUtils.add;
 
@@ -30,15 +27,13 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     private boolean lastRunning = false;
 
     public boolean pushing = false; // Indicates that converter is pushing steam actively.
-    private static final int PUSH_FREQ = 5;  // how many ticks to attempt a push
     private static final int PUSH_MAX = 250; // in mb a tick
-    private int pushTicks = 0; //So we don't spam fluid updates.
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setShort("runTicks", (short) runTicks);
-        access.setByte("pushing", pushing ? (byte)pushTicks: (byte)-1);
+        access.setBoolean("pushing", pushing);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
@@ -51,24 +46,21 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (runTicks == 0 && access.getShort("runTicks") != 0) {
             runTicks = access.getShort("runTicks");
         }
-        pushing = access.getByte("pushing") >= 0;
-        if(pushing) pushTicks = access.getByte("pushing");
-
+        pushing = access.getBoolean("pushing");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setByte("pushing", pushing ? (byte)pushTicks: (byte)-1);
+        par1NBTTagCompound.setBoolean("pushing", pushing);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
 
-        pushing = par1NBTTagCompound.getByte("pushing") >= 0;
-        if(pushing) pushTicks = par1NBTTagCompound.getByte("pushing");
+        pushing = par1NBTTagCompound.getBoolean("pushing");
     }
 
     @Override
@@ -85,8 +77,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
         }
 
-        if (pushing) if(pushTicks <= 0){
-            pushTicks = PUSH_FREQ;
+        if (pushing){
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);
 
@@ -100,16 +91,13 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
                 //todo: apply limiting mechanism to non-pushing state?
 
                 IFluidHandler tank = (IFluidHandler) tileEntity;
-                int maxDrain = PUSH_MAX * PUSH_FREQ;
-                maxDrain *= steamNetwork.getPressure();
+                int maxDrain = (int)(PUSH_MAX * steamNetwork.getPressure());
                 if(maxDrain > 0) {
                     FluidStack avail = drain(dir, maxDrain, false);
-                    int taken = tank.fill(dir, avail, true);
+                    int taken = tank.fill(dir.getOpposite(), avail, true);
                     steamNetwork.decrSteam(taken);
                 }
             }
-        }else {
-            pushTicks--;
         }
 
         super.updateEntity();
