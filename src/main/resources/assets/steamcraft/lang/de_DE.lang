@@ -110,6 +110,8 @@ research.Vacuum.name=Sauger
 research.Vacuum.0=Ein wenig Experimentieren mit dem Gebläse, brachte mir einen Sauger, ein Gerät, das allerlei Gegenstände ansaugt und in einen Behälter auf der entgegengesetzen Seite des Einlasses zieht. Ich kann die Reichweite mit einer Rohrzange einstellen.
 research.FSC.name=Druckwandler
 research.FSC.0=Während die meisten Maschinen dazu gebaut wurden, dem hohen Druck Stand zu halten, den meine Boiler erzeugen, gibt es andere Geräte, die das nicht können. Der Wandler ermöglicht es, weniger Druck aus den Dampfleitungen zu ziehen oder weniger Dampfdruck in die Leitungen einzuspeisen.
+research.FSC.1=As an alternative to manually extracting liquid steam, I can disengage the pump ring of the Pressure Converter by using a wrench while sneaking. This will use the system's high pressure to force fluid steam into nearby tanks. However, doing so will prevent the Pressure Converter from converting liquid steam back into high pressure.
+research.FSC.2=The rate at which the Pressure Converter ejects fluid steam depends on the pressure in the system. Operating at high pressure, I have witnessed no less than 4 buckets of steam per second.
 
 category.Exosuit.name=Dampfbetriebene Rüstung
 research.Exosuit.name=Dampfbetriebene Rüstung
