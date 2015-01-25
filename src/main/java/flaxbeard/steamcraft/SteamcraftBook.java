@@ -285,7 +285,7 @@ public class SteamcraftBook {
         }
 
         if (Config.enableFluidSteamConverter) {
-            SteamcraftRegistry.addResearch("research.FSC.name", "category.SteamPower.name", new BookPageItem("research.FSC.name", "research.FSC.0", new ItemStack(SteamcraftBlocks.fluidSteamConverter)), new BookPageCrafting("", "fsc1", "fsc2"));
+            SteamcraftRegistry.addResearch("research.FSC.name", "category.SteamPower.name", new BookPageItem("research.FSC.name", "research.FSC.0", new ItemStack(SteamcraftBlocks.fluidSteamConverter)), new BookPageCrafting("", "fsc1", "fsc2"), new BookPageText("", "research.FSC.1"), new BookPageText("", "research.FSC.2"));
         }
 
     }

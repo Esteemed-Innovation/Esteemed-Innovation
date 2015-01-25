@@ -41,13 +41,19 @@ public class TileEntityFluidSteamRenderer extends TileEntitySpecialRenderer impl
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glTranslatef(0.25F, 0.0F, 0.0F);
-        GL11.glScaled((0.2F + (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.13F) / 0.2F, 1.0D, 1.0D);
+        if(converter.pushing)
+            GL11.glScaled(0.4f, 1.0D, 1.0D);
+        else
+            GL11.glScaled((0.2F + (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.13F) / 0.2F, 1.0D, 1.0D);
         //	GL11.glTranslatef(-1.00F, 0.0F, 0.0F);
         //GL11.glTranslatef(0.5F, 0.0F, 0.0F);
 
         model.renderSquish();
         GL11.glPopMatrix();
-        GL11.glTranslated(0.2F - (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.2F, 0.0F, 0.0F);
+        if(converter.pushing)
+            GL11.glTranslated(-0.2F, 0.0F, 0.0F);
+        else
+            GL11.glTranslated(0.2F - (Math.cos(Math.toRadians(-90.0F + (360.0F / 100.0F) * (100 - converter.runTicks)))) * 0.2F, 0.0F, 0.0F);
         model.renderMoving();
         GL11.glPopMatrix();
     }
