@@ -53,6 +53,7 @@ public class SteamNetwork {
     }
 
     public synchronized static SteamNetwork newOrJoin(ISteamTransporter trans) {
+        if (isClosedValvePipe(trans)) { return null; }
         HashSet<ISteamTransporter> others = getNeighboringTransporters(trans);
         HashSet<SteamNetwork> nets = new HashSet();
         SteamNetwork theNetwork = null;
