@@ -159,8 +159,8 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
 
     private void populateFurnace(World world, int x, int y, int z) {
         Random rand = new Random(world.getSeed() + x + y + z);
-        TileEntityFurnace furnace = (TileEntityFurnace) world.getTileEntity(x, y, z);
-        if (furnace != null) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityFurnace) {
+            TileEntityFurnace furnace = (TileEntityFurnace) world.getTileEntity(x, y, z);
             ItemStack[] possibleLoot = {new ItemStack(SteamcraftItems.steamedBeef), new ItemStack(SteamcraftItems.steamedPorkchop), new ItemStack(SteamcraftItems.steamedChicken)};
             ItemStack loot = possibleLoot[rand.nextInt(possibleLoot.length)];
             loot.stackSize = rand.nextInt(3) + 1;
@@ -170,8 +170,8 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
 
     private void populateBoiler(World world, int x, int y, int z) {
         Random rand = new Random(world.getSeed() + x + y + z);
-        TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
-        if (boiler != null) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityBoiler) {
+            TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
             boiler.refresh();
             boiler.insertSteam(1000 + rand.nextInt(3000), ForgeDirection.UP);
             boiler.myTank.setFluid(new FluidStack(FluidRegistry.WATER, 2000 + rand.nextInt(3000)));
