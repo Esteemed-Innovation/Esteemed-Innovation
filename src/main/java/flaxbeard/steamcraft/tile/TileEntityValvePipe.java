@@ -138,11 +138,13 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                     }
                 }
                 i = 0;
-                ForgeDirection direction = myDirections.get(0).getOpposite();
-                while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
-                    //this.decrSteam(1);
-                    this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, direction.offsetX * 0.1F, direction.offsetY * 0.1F, direction.offsetZ * 0.1F);
-                    i++;
+                if (myDirections.size() > 0) {
+                    ForgeDirection direction = myDirections.get(0).getOpposite();
+                    while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
+                        //this.decrSteam(1);
+                        this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, direction.offsetX * 0.1F, direction.offsetY * 0.1F, direction.offsetZ * 0.1F);
+                        i++;
+                    }
                 }
             }
         } else {
