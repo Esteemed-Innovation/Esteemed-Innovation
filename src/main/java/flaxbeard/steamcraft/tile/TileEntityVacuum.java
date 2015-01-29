@@ -113,12 +113,18 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
             isInitialized = true;
         }
         super.updateEntity();
-        if (active && this.worldObj.isRemote) {
-            rotateTicks++;
+        if (!this.worldObj.isRemote) {
+        	if ((this.getSteamShare() < this.steamUsage) || this.powered) {
+        		this.active = false;
+        	}
+        	else {
+        		this.active = true;
+        		this.decrSteam(steamUsage);
+        	}        	
         }
-        if (active && this.worldObj.isRemote || (this.getSteamShare() > steamUsage && !this.powered)) {
-            if (!this.worldObj.isRemote) {
-                this.decrSteam(3);
+        if (active) {
+            if (this.worldObj.isRemote) {
+                rotateTicks++;
             }
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);
@@ -261,7 +267,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteamShare() > 0 && !this.powered);
+        access.setBoolean("active", this.getSteamShare() > this.steamUsage && !this.powered);
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
