@@ -34,7 +34,8 @@ public class Config {
     public static boolean genZincNether;
     public static boolean passiveDrain;
     public static boolean disableParticles;
-
+    public static boolean enableRedstoneValvePipe;
+    
     public static boolean easterEggs;
 
     public static boolean enableThaumcraftIntegration;
@@ -319,7 +320,8 @@ public class Config {
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
-
+        enableRedstoneValvePipe = config.get("Other", "Enable Redstone support for Valve Pipe", false).getBoolean(false);
+        
         //INTEGRATION
         enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean(true);
         enableBotaniaIntegration = config.get("Integration", "Enable Botania", true).getBoolean(true);
