@@ -1,20 +1,16 @@
 package flaxbeard.steamcraft.tile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.IWrenchDisplay;
-import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
-import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.item.ItemSmashedOre;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,13 +22,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
+import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
 
-
+	public static final SmashablesRegistry REGISTRY = new SmashablesRegistry(); 
+	
     public int spinup = 0;
     public float extendedLength = 0.0F;
     public Block smooshingBlock;
@@ -52,7 +56,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     public TileEntitySmasher() {
         super(ForgeDirection.VALID_DIRECTIONS);
     }
-
 
     @Override
     public void readFromNBT(NBTTagCompound access) {
@@ -428,31 +431,23 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     private void spawnItems(int x, int y, int z) {
         if (smooshedStack != null) {
             for (ItemStack stack : smooshedStack) {
-                int[] ids = OreDictionary.getOreIDs(stack);
-                boolean isSmashableOre = false;
-                int id = 0;
-                if (ids != null && ids.length > 0) {
-                    id = OreDictionary.getOreIDs(stack)[0];
-                    try {
-                        isSmashableOre = ItemSmashedOre.oreTypesFromOre.containsKey(OreDictionary.getOreName(id));
-                    } catch (Exception e) {
-
-                    }
-                }
+            	ItemStack output = REGISTRY.getOutput(stack);
+                boolean isSmashableOre = output != null;
+                
                 if (Block.getBlockFromItem(stack.getItem()) == Blocks.cobblestone && !this.noSmashDrops) {
-                    stack = new ItemStack(Blocks.gravel);
+                	output = new ItemStack(Blocks.gravel);
                 } else if (Block.getBlockFromItem(stack.getItem()) == Blocks.gravel && !this.noSmashDrops) {
-                    stack = new ItemStack(Blocks.sand);
+                	output = new ItemStack(Blocks.sand);
                 }
                 if (isSmashableOre && !this.noSmashDrops) {
                     //Chance you'll get double
-                    boolean doubleItems = worldObj.rand.nextInt(Config.chance) == 0;
-                    ItemStack items = new ItemStack(SteamcraftItems.smashedOre, doubleItems ? 2 : 1, ItemSmashedOre.oreTypesFromOre.get(OreDictionary.getOreName(id)));
-                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, items);
+                    if (worldObj.rand.nextInt(Config.chance) == 0)
+                    	output.stackSize *= 2;
+                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
                 } else {
-                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, stack);
+                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
                 }
@@ -595,4 +590,57 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         GL11.glPopMatrix();
     }
 
+    public static class SmashablesRegistry {
+    	
+    	private final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
+    	private final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
+    	private final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
+    	
+    	public ItemStack getOutput(ItemStack input) {
+    		ItemStack output = null;
+    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+    			output = wildcards.get(input.getItem());
+    		} else {
+    			int[] ids = OreDictionary.getOreIDs(input);
+    			if (ids != null && ids.length > 0) {
+    				for (int id : ids) {
+    					output = oreDicts.get(OreDictionary.getOreName(id));
+    					if (output != null)
+    						break;
+    				}
+    			}
+    			
+    			if (output == null) {
+    				for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
+    					if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
+    						output = entry.getValue();
+    						if (output != null)
+    							break;
+    					}
+    				}
+    			}
+    		}
+    		
+    		return ItemStack.copyItemStack(output);
+    	}
+    	
+    	public void registerSmashable(String input, ItemStack output) {
+    		oreDicts.put(input, output);
+    	}
+    	
+    	public void registerSmashable(Block input, ItemStack output) {
+    		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+    	}
+    	
+    	public void registerSmashable(Item input, ItemStack output) {
+    		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+    	}
+    	
+    	public void registerSmashable(ItemStack input, ItemStack output) {
+    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+    			wildcards.put(input.getItem(), output);
+    		else
+    			registry.put(input, output);
+    	}
+    }
 }
