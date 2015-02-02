@@ -446,7 +446,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
-                } else {
+                } else if (output != null) {
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
@@ -597,6 +597,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	private final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
     	
     	public ItemStack getOutput(ItemStack input) {
+    		if (input == null)
+    			return null;
     		ItemStack output = null;
     		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
     			output = wildcards.get(input.getItem());
