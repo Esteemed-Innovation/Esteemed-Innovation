@@ -14,13 +14,16 @@ public class Config {
     //Don't change this string. - @xbony2
     public static final String VERSION = "@VERSION@";
 
-    public static final int jumpBoostConsumption = 1;
-    public static final int jetpackConsumption = 1;
-    public static final int jumpBoostConsumptionShiftJump = 3;
+    public static final int jumpBoostConsumption_DEFAULT = 10;
+    public static final int jetpackConsumption_DEFAULT = 10;
+    public static final int jumpBoostConsumptionShiftJump_DEFAULT = 10;
     public static final int powerFistConsumption = 5;
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
+    public static final int thrusterConsumption_DEFAULT = 5;
+    public static final int runAssistConsumption_DEFAULT = 5;
     public static final int EXO_CONSUMPTION_DEFAULT = 5;
+    
 
     public static final int basicTankCap = 36000;
     public static final int reinforcedTankCap = 72000;
@@ -60,6 +63,13 @@ public class Config {
     public static boolean genPoorOre;
     public static int duplicateLogs;
     public static int exoConsumption;
+    //Madrealms edits
+    public static int jumpBoostConsumption;
+    public static int jetpackConsumption;
+    public static int jumpBoostConsumptionShiftJump;
+    public static int thrusterConsumption;
+    public static int runAssistConsumption;
+
 
 
     public static int villagerId;
@@ -255,6 +265,11 @@ public class Config {
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
         enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
         exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes (5 per default)", EXO_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes (5 per default)", jumpBoostConsumption_DEFAULT).getInt();
+        jetpackConsumption = config.get("Exosuit", "The amount of steam the jetpack consumes (10 per default)", jetpackConsumption_DEFAULT).getInt();
+        jumpBoostConsumptionShiftJump = config.get("Exosuit", "The amount of steam the jump boost shift jump consumes (10 per default)",jumpBoostConsumptionShiftJump_DEFAULT).getInt();
+        thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit thrusters consumes (5 per default)", thrusterConsumption_DEFAULT).getInt();
+        runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit run assist consumes (5 per default)", runAssistConsumption_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
