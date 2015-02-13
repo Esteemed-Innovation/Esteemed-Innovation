@@ -1160,7 +1160,7 @@ public class SteamcraftEventHandler {
                         event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
                     }
                     if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), 1);
+                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.thrusterConsumption);
                     }
                 }
             }
@@ -1180,7 +1180,7 @@ public class SteamcraftEventHandler {
                         event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
                     }
                     if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), 1);
+                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.runAssistConsumption);
                     }
                 }
             }
