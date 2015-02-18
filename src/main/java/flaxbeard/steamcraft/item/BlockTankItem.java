@@ -92,7 +92,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 
     @Override
     public int getStorage(ItemStack stack) {
-        int cap = Config.basicTankCap;
+        int cap = Config.basicTankCapacity;
         if (((ItemExosuitArmor) stack.getItem()).getStackInSlot(stack, 5).getItemDamage() == 1) {
             cap = Integer.MAX_VALUE;
         }
