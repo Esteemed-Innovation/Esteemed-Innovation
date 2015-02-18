@@ -25,9 +25,9 @@ public class Config {
     public static final int EXO_CONSUMPTION_DEFAULT = 5;
     
 
-    public static final int basicTankCap = 36000;
-    public static final int reinforcedTankCap = 72000;
-    public static final int uberReinforcedTankCap = 144000;
+    public static final int basicTankCapacity_DEFAULT = 36000;
+    public static final int reinforcedTankCapacity_DEFAULT = 72000;
+    public static final int uberReinforcedTankCapacity_DEFAULT = 144000;
 
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;
@@ -63,6 +63,9 @@ public class Config {
     public static boolean genPoorOre;
     public static int duplicateLogs;
     public static int exoConsumption;
+    public static int basicTankCapacity;
+    public static int reinforcedTankCapacity;
+    public static int uberReinforcedTankCapacity;
     //Madrealms edits
     public static int jumpBoostConsumption;
     public static int jetpackConsumption;
@@ -286,6 +289,7 @@ public class Config {
         enablePitonDeployer = config.get("Exosuit Upgrades", "Enable Piton Deployer", true).getBoolean(true);
         enableReinforcedTank = config.get("Exosuit Upgrades", "Enable Reinforced Tank", true).getBoolean(true);
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
+        enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
@@ -300,8 +304,9 @@ public class Config {
         enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
         enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
 
-        enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
-
+        basicTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the basic tank can hold (36000 default)", basicTankCapacity_DEFAULT).getInt();
+        reinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the reinforced tank can hold (54000 default)", reinforcedTankCapacity_DEFAULT).getInt();
+        uberReinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the heavily reinforced tank can hold (90000 default)", reinforcedTankCapacity_DEFAULT).getInt();
         //enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 
         // ITEMS

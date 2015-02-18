@@ -359,11 +359,11 @@ public class SteamcraftItems {
             }
 
             if (Config.enableReinforcedTank) {
-                reinforcedTank = new ItemTank(Config.reinforcedTankCap, "steamcraft:textures/models/armor/reinforcedTank.png", "steamcraft:textures/models/armor/reinforcedTank_grey.png").setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:reinforcedTank").setTextureName("steamcraft:reinforcedTank");
+                reinforcedTank = new ItemTank(Config.reinforcedTankCapacity, "steamcraft:textures/models/armor/reinforcedTank.png", "steamcraft:textures/models/armor/reinforcedTank_grey.png").setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:reinforcedTank").setTextureName("steamcraft:reinforcedTank");
                 GameRegistry.registerItem(reinforcedTank, "reinforcedTank");
             }
             if (Config.enableUberReinforcedTank) {
-                uberReinforcedTank = new ItemTank(Config.uberReinforcedTankCap, "steamcraft:textures/models/armor/uberReinforcedTank.png", "steamcraft:textures/models/armor/uberReinforcedTank_grey.png").setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:uberReinforcedTank").setTextureName("steamcraft:uberReinforcedTank");
+                uberReinforcedTank = new ItemTank(Config.uberReinforcedTankCapacity, "steamcraft:textures/models/armor/uberReinforcedTank.png", "steamcraft:textures/models/armor/uberReinforcedTank_grey.png").setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:uberReinforcedTank").setTextureName("steamcraft:uberReinforcedTank");
                 GameRegistry.registerItem(uberReinforcedTank, "uberReinforcedTank");
             }
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
