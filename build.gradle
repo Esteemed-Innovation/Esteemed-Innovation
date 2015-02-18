@@ -19,13 +19,13 @@ buildscript {
 apply plugin: 'forge'
 
 version = newFSPVersion
-group= "com.flaxbeard.Steamcraft"
+group = "com.flaxbeard.Steamcraft"
 archivesBaseName = "Steamcraft"
 
 
 minecraft {
     version = forgeVersion
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
 	replace "@VERSION@", project.version
 }
 processResources {
