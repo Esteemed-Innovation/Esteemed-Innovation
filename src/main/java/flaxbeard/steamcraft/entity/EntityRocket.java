@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 public class EntityRocket extends Entity {
-    private static final String __OBFID = "CL_00001717";
+    private static final String __OBFID = "CL_00001717"; //<- wtf is that? -xbony2
     protected static Random itemRand = new Random();
     public boolean inGround;
     public EntityLivingBase shootingEntity;
@@ -36,35 +36,35 @@ public class EntityRocket extends Entity {
     private int ticksInAir;
 
 
-    public EntityRocket(World p_i1759_1_) {
-        super(p_i1759_1_);
+    public EntityRocket(World world) {
+        super(world);
         this.setSize(1.0F, 1.0F);
     }
 
-    public EntityRocket(World p_i1760_1_, double p_i1760_2_, double p_i1760_4_, double p_i1760_6_, double p_i1760_8_, double p_i1760_10_, double p_i1760_12_) {
-        super(p_i1760_1_);
+    public EntityRocket(World world, double p_i1760_2_, double p_i1760_4_, double p_i1760_6_, double p_i1760_8_, double p_i1760_10_, double p_i1760_12_) {
+        super(world);
         this.setSize(1.0F, 1.0F);
         this.setLocationAndAngles(p_i1760_2_, p_i1760_4_, p_i1760_6_, this.rotationYaw, this.rotationPitch);
         this.setPosition(p_i1760_2_, p_i1760_4_, p_i1760_6_);
         double d6 = (double) MathHelper.sqrt_double(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
     }
 
-    public EntityRocket(World p_i1761_1_, EntityPlayer par3EntityPlayer, float par4, float size) {
-        super(p_i1761_1_);
+    public EntityRocket(World world, EntityPlayer player, float par4, float size) {
+        super(world);
         this.inputParam4 = par4;
-        this.shootingEntity = par3EntityPlayer;
+        this.shootingEntity = player;
         this.explosionSize = size;
         this.setSize(0.25F, 0.25F);
-        this.setLocationAndAngles(par3EntityPlayer.posX, par3EntityPlayer.posY + (double) par3EntityPlayer.getEyeHeight(), par3EntityPlayer.posZ, par3EntityPlayer.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), par3EntityPlayer.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
+        this.setLocationAndAngles(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ, player.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), player.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
         this.setPosition(this.posX, this.posY, this.posZ);
         this.posX -= 1.0D * (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         this.posZ -= 1.0D * (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 
         this.yOffset = 0.0F;
         this.motionX = this.motionY = this.motionZ = 0.0D;
-        double p_i1760_8_ = par3EntityPlayer.getLookVec().xCoord;
-        double p_i1760_10_ = par3EntityPlayer.getLookVec().yCoord;
-        double p_i1760_12_ = par3EntityPlayer.getLookVec().zCoord;
+        double p_i1760_8_ = player.getLookVec().xCoord;
+        double p_i1760_10_ = player.getLookVec().yCoord;
+        double p_i1760_12_ = player.getLookVec().zCoord;
 
         double d6 = (double) MathHelper.sqrt_double(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
         this.motionX = p_i1760_8_ / d6 * 1.0D;
@@ -80,18 +80,19 @@ public class EntityRocket extends Entity {
 
     }
 
-    protected void entityInit() {
-    }
+    protected void entityInit() {}
 
     /**
      * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge
-     * length * 64 * renderDistanceWeight Args: distance
+     * length * 64 * renderDistanceWeight
+     * 
+     * @param distance
      */
     @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double p_70112_1_) {
+    public boolean isInRangeToRenderDist(double distance) {
         double d1 = this.boundingBox.getAverageEdgeLength() * 4.0D;
         d1 *= 64.0D;
-        return p_70112_1_ < d1 * d1;
+        return distance < d1 * d1;
     }
 
     /**
@@ -230,7 +231,7 @@ public class EntityRocket extends Entity {
     /**
      * Called when this EntityFireball hits a block or entity.
      */
-    protected void onImpact(MovingObjectPosition p_70227_1_) {
+    protected void onImpact(MovingObjectPosition position) {
         if (!this.worldObj.isRemote) {
             //newExplosion(world, (Entity)null, this.posX, this.posY, this.posZ, (float)2.0F, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
 
@@ -239,8 +240,8 @@ public class EntityRocket extends Entity {
         }
     }
 
-    public Explosion newExplosion(World world, Entity p_72885_1_, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
-        Explosion explosion = new ExplosionRocket(world, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
+    public Explosion newExplosion(World world, Entity entity, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
+        Explosion explosion = new ExplosionRocket(world, entity, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
         explosion.isFlaming = p_72885_9_;
         explosion.isSmoking = p_72885_10_;
         explosion.doExplosionA();
@@ -266,27 +267,27 @@ public class EntityRocket extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {
-        p_70014_1_.setShort("xTile", (short) this.field_145795_e);
-        p_70014_1_.setShort("yTile", (short) this.field_145793_f);
-        p_70014_1_.setShort("zTile", (short) this.field_145794_g);
-        p_70014_1_.setByte("inTile", (byte) Block.getIdFromBlock(this.field_145796_h));
-        p_70014_1_.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-        p_70014_1_.setTag("direction", this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
+    public void writeEntityToNBT(NBTTagCompound nbt) {
+    	nbt.setShort("xTile", (short) this.field_145795_e);
+    	nbt.setShort("yTile", (short) this.field_145793_f);
+    	nbt.setShort("zTile", (short) this.field_145794_g);
+    	nbt.setByte("inTile", (byte) Block.getIdFromBlock(this.field_145796_h));
+    	nbt.setByte("inGround", (byte) (this.inGround ? 1 : 0));
+    	nbt.setTag("direction", this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    public void readEntityFromNBT(NBTTagCompound p_70037_1_) {
-        this.field_145795_e = p_70037_1_.getShort("xTile");
-        this.field_145793_f = p_70037_1_.getShort("yTile");
-        this.field_145794_g = p_70037_1_.getShort("zTile");
-        this.field_145796_h = Block.getBlockById(p_70037_1_.getByte("inTile") & 255);
-        this.inGround = p_70037_1_.getByte("inGround") == 1;
+    public void readEntityFromNBT(NBTTagCompound nbt) {
+        this.field_145795_e = nbt.getShort("xTile");
+        this.field_145793_f = nbt.getShort("yTile");
+        this.field_145794_g = nbt.getShort("zTile");
+        this.field_145796_h = Block.getBlockById(nbt.getByte("inTile") & 255);
+        this.inGround = nbt.getByte("inGround") == 1;
 
-        if (p_70037_1_.hasKey("direction", 9)) {
-            NBTTagList nbttaglist = p_70037_1_.getTagList("direction", 6);
+        if (nbt.hasKey("direction", 9)) {
+            NBTTagList nbttaglist = nbt.getTagList("direction", 6);
             this.motionX = nbttaglist.func_150309_d(0);
             this.motionY = nbttaglist.func_150309_d(1);
             this.motionZ = nbttaglist.func_150309_d(2);
@@ -309,14 +310,14 @@ public class EntityRocket extends Entity {
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource p_70097_1_, float p_70097_2_) {
+    public boolean attackEntityFrom(DamageSource source, float p_70097_2_) {
         if (this.isEntityInvulnerable()) {
             return false;
         } else {
             this.setBeenAttacked();
 
-            if (p_70097_1_.getEntity() != null) {
-                Vec3 vec3 = p_70097_1_.getEntity().getLookVec();
+            if (source.getEntity() != null) {
+                Vec3 vec3 = source.getEntity().getLookVec();
 
                 if (vec3 != null) {
                     this.motionX = vec3.xCoord;
@@ -324,8 +325,8 @@ public class EntityRocket extends Entity {
                     this.motionZ = vec3.zCoord;
                 }
 
-                if (p_70097_1_.getEntity() instanceof EntityLivingBase) {
-                    this.shootingEntity = (EntityLivingBase) p_70097_1_.getEntity();
+                if (source.getEntity() instanceof EntityLivingBase) {
+                    this.shootingEntity = (EntityLivingBase) source.getEntity();
                 }
 
                 return true;
@@ -343,12 +344,12 @@ public class EntityRocket extends Entity {
     /**
      * Gets how bright this entity is.
      */
-    public float getBrightness(float p_70013_1_) {
+    public float getBrightness(float par1) {
         return 1.0F;
     }
 
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float p_70070_1_) {
+    public int getBrightnessForRender(float par1) {
         return 15728880;
     }
 }
