@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.entity;
 
+import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,15 +25,11 @@ public class EntityMiningRocket extends EntityRocket {
 
     @Override
     public Explosion newExplosion(World world, Entity p_72885_1_, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
-        Explosion explosion = new ExplosionRocket(world, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_, true, true);
+        Explosion explosion = new ExplosionRocket(world, p_72885_1_, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_, p_72885_10_, true);
         explosion.isFlaming = p_72885_9_;
         explosion.isSmoking = p_72885_10_;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
-
-        if (!p_72885_10_) {
-            explosion.affectedBlockPositions.clear();
-        }
 
         Iterator iterator = world.playerEntities.iterator();
 

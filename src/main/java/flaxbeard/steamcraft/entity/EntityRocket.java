@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -241,15 +242,11 @@ public class EntityRocket extends Entity {
     }
 
     public Explosion newExplosion(World world, Entity entity, double p_72885_2_, double p_72885_4_, double p_72885_6_, float p_72885_8_, boolean p_72885_9_, boolean p_72885_10_) {
-        Explosion explosion = new ExplosionRocket(world, entity, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_);
+        Explosion explosion = new ExplosionRocket(world, entity, p_72885_2_, p_72885_4_, p_72885_6_, p_72885_8_, p_72885_10_);
         explosion.isFlaming = p_72885_9_;
         explosion.isSmoking = p_72885_10_;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
-
-        if (!p_72885_10_) {
-            explosion.affectedBlockPositions.clear();
-        }
 
         Iterator iterator = world.playerEntities.iterator();
 
