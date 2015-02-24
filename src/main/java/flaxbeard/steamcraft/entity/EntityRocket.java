@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.entity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.entity;
 
-import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,12 +28,6 @@ public class EntityConcussiveRocket extends EntityRocket {
         explosion.isSmoking = p_72885_10_;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
-
-        BonyDebugger.debug();
-        System.out.println(p_72885_10_);
-        if (!p_72885_10_) {
-            explosion.affectedBlockPositions.clear();
-        }
 
         Iterator iterator = world.playerEntities.iterator();
 
