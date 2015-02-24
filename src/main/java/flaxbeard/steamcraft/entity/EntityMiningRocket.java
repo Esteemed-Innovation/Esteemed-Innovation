@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.entity;
 
-import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
