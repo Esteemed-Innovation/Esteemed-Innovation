@@ -47,8 +47,8 @@ public class BlockPlacer extends BlockSteamTransporter implements IWrenchable {
     @Override
     public void registerBlockIcons(IIconRegister ir)
     {
-        this.blockIcon = ir.registerIcon("steamcraft:testSide");
-        this.frontIcon = ir.registerIcon("steamcraft:testFront");
+        this.blockIcon = ir.registerIcon("steamcraft:blockPlacerSide");
+        this.frontIcon = ir.registerIcon("steamcraft:blockPlacerFront");
     }
 
     @Override
