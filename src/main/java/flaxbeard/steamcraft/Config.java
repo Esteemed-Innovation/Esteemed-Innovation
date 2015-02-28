@@ -263,6 +263,7 @@ public class Config {
         enableSmasher = config.get("Blocks", "Enable Rock Smasher", true).getBoolean(true);
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean(true);
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean(true);
+        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);

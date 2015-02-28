@@ -175,8 +175,7 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
         if (item instanceof ItemBlock){
             //log.debug("it's a block");
             Block b = Block.getBlockFromItem(item);
-            if (b.isNormalCube() && b.renderAsNormalBlock()){
-
+            if (b.isNormalCube() && b.renderAsNormalBlock() && !b.hasTileEntity(stack.getItemDamage())){
                 return true;
             }
         }
@@ -269,6 +268,4 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
         }
         return null;
     }
-
-
 }

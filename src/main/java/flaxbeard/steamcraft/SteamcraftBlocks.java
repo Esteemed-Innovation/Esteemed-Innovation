@@ -182,6 +182,10 @@ public class SteamcraftBlocks {
             saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(saw, "saw");
         }*/
+    	if(Config.enableBlockPlacer){
+    		blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
+    		GameRegistry.registerBlock(blockPlacer, "blockPlacer");
+    	}
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(pump, "pump");
