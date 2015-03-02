@@ -80,7 +80,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
         }
     }
 
-    private boolean canSmelt() {
+    public boolean canSmelt() {
         if (this.getStackInSlot(0) == null) {
             return false;
         } else {

@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

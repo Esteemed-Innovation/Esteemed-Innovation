@@ -35,6 +35,10 @@ public class Config {
     public static boolean genZincEnd;
     public static boolean genCopperNether;
     public static boolean genZincNether;
+    public static String zincDims;
+    public static String copperDims;
+    public static boolean genZincExtras;
+    public static boolean genCopperExtras;
     public static boolean passiveDrain;
     public static boolean disableParticles;
 
@@ -202,6 +206,10 @@ public class Config {
         genZincEnd = config.get("World Generation", "Generate End Zinc", false).getBoolean(false);
         genCopperNether = config.get("World Generation", "Generate Nether Copper", false).getBoolean(false);
         genZincNether = config.get("World Generation", "Generate Nether Zinc", false).getBoolean(false);
+        zincDims = config.get("World Generation", "Extra dimensions to generate Zinc in, separate by ;", "").getString();
+        copperDims = config.get("World Generation", "Extra dimension to generate Copper in, spearate by ;", "").getString();
+        genZincExtras = config.get("World Generation", "Generate Zinc in the above extra dimensions", true).getBoolean();
+        genCopperExtras = config.get("World Generation", "Generate Copper in the above extra dimensions", true).getBoolean();
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
         genPoorOre = config.get("Integration", "Railcraft Poor Ore", true).getBoolean(true);
 
