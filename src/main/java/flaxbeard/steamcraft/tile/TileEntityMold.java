@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.block.BlockMold;
@@ -201,17 +202,17 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int var1) {
-        return this.open ? new int[]{0} : new int[]{};
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return new int[]{0};
     }
 
     @Override
-    public boolean canInsertItem(int var1, ItemStack var2, int var3) {
+    public boolean canInsertItem(int slot, ItemStack item, int side) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int var1, ItemStack var2, int var3) {
+    public boolean canExtractItem(int side, ItemStack item, int slot) {
         return this.open;
     }
 
