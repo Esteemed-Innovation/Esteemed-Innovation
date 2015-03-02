@@ -16,10 +16,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMold extends TileEntity implements ISidedInventory {
+    private static final int[] moldSlots = new int[] {0};
+
     public boolean open = true;
     public ItemStack[] mold = new ItemStack[1];
     public int changeTicks = 0;
-    ;
+
     public boolean needsToUpdate = true;
     private ItemStack[] inventory = new ItemStack[1];
 
@@ -72,17 +74,17 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.open = par1NBTTagCompound.getBoolean("open");
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.open = nbt.getBoolean("open");
 
-        if (par1NBTTagCompound.hasKey("inventory")) {
-            this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
+        if (nbt.hasKey("inventory")) {
+            this.inventory[0] = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
         }
 
-        if (par1NBTTagCompound.hasKey("mold")) {
+        if (nbt.hasKey("mold")) {
 
-            this.mold[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("mold"));
+            this.mold[0] = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("mold"));
         } else {
             this.mold[0] = null;
         }
@@ -91,22 +93,22 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("open", this.open);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("open", this.open);
 
 
         NBTTagCompound nbttagcompound1;
         if (this.mold[0] != null) {
             nbttagcompound1 = new NBTTagCompound();
             this.mold[0].writeToNBT(nbttagcompound1);
-            par1NBTTagCompound.setTag("mold", nbttagcompound1);
+            nbt.setTag("mold", nbttagcompound1);
         }
 
         if (this.inventory[0] != null) {
             nbttagcompound1 = new NBTTagCompound();
             this.inventory[0].writeToNBT(nbttagcompound1);
-            par1NBTTagCompound.setTag("inventory", nbttagcompound1);
+            nbt.setTag("inventory", nbttagcompound1);
         }
     }
 
@@ -127,7 +129,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
 
     @Override
     public int getSizeInventory() {
-        return 1;
+        return inventory.length;
     }
 
     @Override
@@ -136,36 +138,33 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        if (open) {
-            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            if (this.inventory[var1].stackSize <= var2) {
-                ItemStack itemstack = this.inventory[var1];
-                this.inventory[var1] = null;
-                return itemstack;
-            }
-            ItemStack itemstack = this.inventory[var1].splitStack(var2);
-            if (this.inventory[var1].stackSize == 0) {
-                this.inventory[var1] = null;
-            }
+    public ItemStack decrStackSize(int slot, int amt) {
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        if (this.inventory[slot].stackSize <= amt) {
+            ItemStack itemstack = this.inventory[slot];
+            this.inventory[slot] = null;
+            return itemstack;
+        }
+        ItemStack itemstack = this.inventory[slot].splitStack(amt);
+        if (this.inventory[slot].stackSize == 0) {
+            this.inventory[slot] = null;
+        }
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        if (this.inventory[slot] != null) {
+            ItemStack itemstack = this.inventory[slot];
+            this.inventory[slot] = null;
             return itemstack;
         }
         return null;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        if (this.inventory[var1] != null) {
-            ItemStack itemstack = this.inventory[var1];
-            this.inventory[var1] = null;
-            return itemstack;
-        }
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        this.inventory[var1] = var2;
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        this.inventory[slot] = stack;
     }
 
     @Override
@@ -184,7 +183,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return this.open;
     }
 
@@ -197,13 +196,16 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return false;
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[]{0};
+        if (side == 0){
+            return moldSlots;
+        }
+        return new int[0];
     }
 
     @Override
@@ -212,8 +214,8 @@ public class TileEntityMold extends TileEntity implements ISidedInventory {
     }
 
     @Override
-    public boolean canExtractItem(int side, ItemStack item, int slot) {
-        return this.open;
+    public boolean canExtractItem(int slot, ItemStack item, int side) {
+        return true;
     }
 
     @Override
