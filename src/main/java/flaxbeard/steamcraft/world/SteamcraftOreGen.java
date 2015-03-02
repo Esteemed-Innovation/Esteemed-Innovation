@@ -37,7 +37,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
         for (int id : copperIDs) {
             generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
         }
-        
+
         for (int id : zincIDs) {
             generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
         }
