@@ -66,7 +66,6 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
             if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y - 1, z) == Blocks.fire || world.getBlock(x, y - 1, z).getMaterial() == Material.lava) {
@@ -81,19 +80,21 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
                 }
                 TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
                 int amount = (Integer) output.right;
-                if (crucible != null && item.delayBeforeCanPickup > 2 && crucible.getFill() + amount <= 90) {
-                    item.delayBeforeCanPickup = 2;
-                } else if (crucible != null && item.delayBeforeCanPickup == 1) {
-                    ItemStack stack = item.getEntityItem();
-                    ItemStack out = crucible.fillWith(stack, amount, output);
-                    if (crucible.getFill() + amount <= 90) {
+                if (crucible != null){
+                    if (item.delayBeforeCanPickup > 2){
                         item.delayBeforeCanPickup = 2;
-                    }
+                    } else if (item.delayBeforeCanPickup <= 1) {
+                        ItemStack stack = item.getEntityItem();
+                        ItemStack out = crucible.fillWith(stack, amount, output);
+                        if (crucible.getFill() + amount <= 90) {
+                            item.delayBeforeCanPickup = 2;
+                        }
 
-                    if (out.stackSize <= 0) {
-                        entity.setDead();
-                    } else {
-                        item.setEntityItemStack(out);
+                        if (out.stackSize <= 0) {
+                            entity.setDead();
+                        } else {
+                            item.setEntityItemStack(out);
+                        }
                     }
                 }
             }
