@@ -11,6 +11,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -26,12 +27,14 @@ public class TileEntityCrucible extends TileEntity {
     private int targetFill = -1;
     private boolean tipping;
     private ForgeDirection[] dirs = {ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
+    public boolean isPowered;
 
     public TileEntityCrucible() {
         //contents.add(Steamcraft.liquidCopper);
         //number.put(Steamcraft.liquidCopper, 90);
         //contents.add(Steamcraft.liquidGold);
         //number.put(Steamcraft.liquidGold, 27);
+        isPowered = false;
     }
 
     @Override
@@ -116,7 +119,11 @@ public class TileEntityCrucible extends TileEntity {
             hasUpdated = true;
         }
         int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-        if (this.tipping) {
+
+        if (worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) {
+            isPowered = true;
+        }
+        if (this.tipping || isPowered) {
             this.tipTicks++;
             if (this.tipTicks == 45 && !this.worldObj.isRemote) {
 
@@ -151,7 +158,8 @@ public class TileEntityCrucible extends TileEntity {
             if (this.tipTicks > 140) {
                 this.tipTicks = 0;
                 this.tipping = false;
-            }
+                isPowered = false;
+            } // Can someone please explain why this code is here twice? Like seriously what the fuck. That sort of shit needs some explanation, bro. - <3 Santa
             if (this.tipTicks > 140) {
                 this.tipTicks = 0;
                 this.tipping = false;
