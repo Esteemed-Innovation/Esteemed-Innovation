@@ -28,6 +28,7 @@ public class TileEntityCrucible extends TileEntity {
     private boolean tipping;
     private ForgeDirection[] dirs = {ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.NORTH, ForgeDirection.EAST};
     public boolean isPowered;
+    private int lastComparatorOutput = 0;
 
     public TileEntityCrucible() {
         //contents.add(Steamcraft.liquidCopper);
@@ -198,6 +199,10 @@ public class TileEntityCrucible extends TileEntity {
                 }
             }
         }
+        if (this.getComparatorOutput() != this.lastComparatorOutput){
+            this.lastComparatorOutput = this.getComparatorOutput();
+            this.markDirty();
+        }
         if (needsUpdate) {
             //Steamcraft.log.debug("UDPATE");
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -272,5 +277,11 @@ public class TileEntityCrucible extends TileEntity {
         //needsUpdate = true;
         this.tipping = true;
         this.tipTicks = 0;
+    }
+
+    public int getComparatorOutput() {
+        int out = (int) ((double) 15 * (((double) getFill() / 90D)));
+        ////Steamcraft.log.debug(out);
+        return out;
     }
 }

@@ -50,6 +50,21 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te != null && te instanceof TileEntityCrucible) {
+            TileEntityCrucible crucible = (TileEntityCrucible) te;
+            return crucible.getComparatorOutput();
+        }
+        return 0;
+    }
+
+    @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 
         if (entity instanceof EntityItem) {
