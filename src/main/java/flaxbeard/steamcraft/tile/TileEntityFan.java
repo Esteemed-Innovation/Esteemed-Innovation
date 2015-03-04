@@ -38,7 +38,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     public  int     rotateTicks   = 0;
     public  int     range         = 9;
     private boolean isInitialized = false;
-    private static AxisAlignedBB aabb;
 
     public TileEntityFan() {
         this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
