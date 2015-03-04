@@ -450,6 +450,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
+                } else if (output == null) {
+                    output = stack;
+                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
+                    this.worldObj.spawnEntityInWorld(entityItem);
                 }
             }
         }
