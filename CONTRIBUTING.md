@@ -30,6 +30,7 @@ The actual Unicode character or the equivalent Unicode escape character should b
 
 ##Source file structure
 A source file consists of, in order:
+
 1. Package statement
 2. Import statements
 3. Two or less top-level classes
@@ -46,6 +47,7 @@ Import statements must not be line-wrapped.
 
 ####Ordering and spacing
 Import statements are divided into the following groups, in this order, with each group separated by a single black line:
+
 1. All static imports in a single group
 2. `flaxbeard.steamcraft` imports
 3. Third-part imports, for example, from Minecraft Forge or Minecraft.
@@ -70,7 +72,7 @@ Braces are used with `if`, `else`, `for`, `do`, and `while` statements, even whe
 ####Nonempty blocks
 For nonempty blocks and block-like constructs:
 - No line break before the opening brace
--- Space before the opening brace
+  - Space before the opening brace
 - Line break after the opening brace
 - Line break before the closing brace
 - Line break after the closing brace *if* that brace terminates a statement or the body of a method, constructor, or *named* class. For example, there is *no* line break after the brace if it is followed by `else`.
@@ -88,6 +90,7 @@ Each statement is followed by a line break.
 Any line that would exceed the limit of 100 characters must be line-wrapped.
 
 Exceptions:
+
 1. Lines where obeying the column limit is impossible (for example, long URL in Javadoc)
 2. `package` and `import` statements
 3. Command lines in a comment that may be cut-and-pasted into a shell.
@@ -95,10 +98,11 @@ Exceptions:
 
 ###Line-wrapping
 ####Where to break
+
 1. When a line is broken at a non-assignment operator the break comes before the symbol.
--- This applies to the following operator-like symbols: ., &, |
+  - This applies to the following operator-like symbols: ., &, |
 2. When a line is broken at an assignment operator the break typically comes after the symbol.
--- This also applies to the assignment-operator-like colon in an enhanced `for` statement.
+  - This also applies to the assignment-operator-like colon in an enhanced `for` statement.
 3. A comma stays attached to the token that precedes it.
 
 ####Indent continuation lines
@@ -108,7 +112,7 @@ When line-wrapping, each line after the first (each continuation line) is indent
 ####Vertical whitespace
 A single blank line appears:
 - Between consecutive members of a class: fields, constructors, methods, nested classes, static initializers, instance initializers.
--- Exception: A blank line between two consecutive fields is optional. Such blank lines are used as needed to create logical groupings of fields. Logical grouping is never chronilogical.
+  - Exception: A blank line between two consecutive fields is optional. Such blank lines are used as needed to create logical groupings of fields. Logical grouping is never chronilogical.
 - Within method bodies, as needed to create logical groupings of statements.
 - Optionally before the first member or after the last member of the class.
 - As required by other sections of this style guide.
@@ -118,17 +122,17 @@ Beyond where required by the language or other style rules, and apart from liter
 - Separating any reserved word, such as `if`, `for`, or `catch` from an open parenthesis that followes it on that line
 - Separating any reserved word, such as `else` or `catch` from a closing curly brace that precedes it on that line.
 - Before any open curly brace, with two exceptions
--- @SomeAnnotation({foo, bar}) (no space used)
--- String[][] x = {{"foo"}}; (no space is required between {{)
+  - @SomeAnnotation({foo, bar}) (no space used)
+  - String[][] x = {{"foo"}}; (no space is required between {{)
 - On both sides of any binary or ternary operator. This also applies to the following operator-like symbols:
--- & in connjunctive type bound
--- | for a catch block that handles multiple exceptions
--- : in an enhanced `for` statement
+  - & in connjunctive type bound
+  - | for a catch block that handles multiple exceptions
+  - : in an enhanced `for` statement
 - After `,:'` or the closing parenthesis of a cast
 - On both sides of the double slash that begins an end-of-line comment. Having multiple spaces are allowed but not required.
 - Between the type and variable of a declaration.
 - Optionally inside both braces of an array initializer
--- `new int[] {5, 6}` and `new int[] { 5, 6 }` are both valid
+  - `new int[] {5, 6}` and `new int[] { 5, 6 }` are both valid
 
 This rule never requires or forbids additional space at the start or end of a line, only interior space.
 
