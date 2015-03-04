@@ -986,8 +986,6 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void handleSteamcraftArmorMining(PlayerEvent.BreakSpeed event) {
-
-
         boolean hasPower = hasPower(event.entityLiving, 1);
         int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;
@@ -1239,8 +1237,6 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void handleSteamcraftArmor(LivingEvent.LivingUpdateEvent event) {
-
-
         boolean hasPower = hasPower(event.entityLiving, 1);
         int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;

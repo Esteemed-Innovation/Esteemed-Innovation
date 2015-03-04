@@ -66,6 +66,7 @@ public class ContainerSteamAnvil extends Container {
 
             /**
              * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
+             * GG Flax^
              */
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return false;
