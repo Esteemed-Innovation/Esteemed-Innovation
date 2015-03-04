@@ -543,7 +543,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         if (!stack.stackTagCompound.hasKey("maxFill")) {
             stack.stackTagCompound.setInteger("maxFill", 0);
         }
-        return (int) (((double) stack.stackTagCompound.getInteger("steamFill")) / ((double) (double) stack.stackTagCompound.getInteger("maxFill")) * 10000.0D);
+        return (int) (((double) stack.stackTagCompound.getInteger("steamFill")) /
+          (double) stack.stackTagCompound.getInteger("maxFill") * 10000.0D);
     }
 
     @Override

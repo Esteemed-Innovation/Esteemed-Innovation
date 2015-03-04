@@ -74,7 +74,8 @@ public class ItemFirearmRenderer implements IItemRenderer {
             int enhancementShells = 0;
             if (UtilEnhancements.hasEnhancement(itemStack)) {
                 if (UtilEnhancements.getEnhancementFromItem(itemStack) instanceof IEnhancementFirearm) {
-                    enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(((ItemFirearm) itemStack.getItem()));
+                    enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(
+                      itemStack.getItem());
                 }
             }
             maxAmmo = ((ItemFirearm) itemStack.getItem()).shellCount + enhancementShells;
@@ -84,7 +85,8 @@ public class ItemFirearmRenderer implements IItemRenderer {
             int enhancementShells = 0;
             if (UtilEnhancements.hasEnhancement(itemStack)) {
                 if (UtilEnhancements.getEnhancementFromItem(itemStack) instanceof IEnhancementRocketLauncher) {
-                    enhancementShells = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(((ItemRocketLauncher) itemStack.getItem()));
+                    enhancementShells = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(itemStack)).getClipSizeChange(
+                      itemStack.getItem());
                 }
             }
             maxAmmo = ((ItemRocketLauncher) itemStack.getItem()).shellCount + enhancementShells;

@@ -45,7 +45,7 @@ public class ContainerBoiler extends Container {
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.furnace.furnaceCookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.furnace.furnaceBurnTime);
-        par1ICrafting.sendProgressBarUpdate(this, 2, this.furnace.getItemBurnTime(null));
+        par1ICrafting.sendProgressBarUpdate(this, 2, TileEntityBoiler.getItemBurnTime(null));
         par1ICrafting.sendProgressBarUpdate(this, 3, (int) Math.floor((double) this.furnace.getPressure() * 1000));
     }
 
@@ -153,7 +153,7 @@ public class ContainerBoiler extends Container {
             }
 
             if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }

@@ -56,7 +56,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        this.checkNBT(player);
+        checkNBT(player);
 
         MutablePair info = stuff.get(player.getEntityId());
         int ticks = (Integer) info.left;
@@ -84,7 +84,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
         }
         if (player instanceof EntityPlayer) {
-            this.checkNBT((EntityPlayer) player);
+            checkNBT((EntityPlayer) player);
             MutablePair info = stuff.get(player.getEntityId());
             int ticks = (Integer) info.left;
             int speed = (Integer) info.right;
@@ -112,7 +112,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
 
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-        this.checkNBT(player);
+        checkNBT(player);
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
             MutablePair info = stuff.get(player.getEntityId());
             int ticks = (Integer) info.left;

@@ -133,7 +133,7 @@ public class SteamcraftTickHandler {
                                 mc.gameSettings.mouseSensitivity = sensitivity;
                                 int i = 0;
                                 while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F)) / 2.0F)) > 2.5F && i < 200) {
-                                    this.zoom += 1.0F;
+                                    zoom += 1.0F;
                                     mc.gameSettings.fovSetting -= 2.5F;
                                     mc.gameSettings.mouseSensitivity -= 0.01F;
                                     i++;
@@ -144,7 +144,7 @@ public class SteamcraftTickHandler {
                                 mc.gameSettings.mouseSensitivity = sensitivity;
                                 i = 0;
                                 while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F)) / 5.0F)) > 2.5F && i < 200) {
-                                    this.zoom += 1.0F;
+                                    zoom += 1.0F;
                                     mc.gameSettings.fovSetting -= 2.5F;
                                     mc.gameSettings.mouseSensitivity -= 0.01F;
                                     i++;
@@ -155,7 +155,7 @@ public class SteamcraftTickHandler {
                                 mc.gameSettings.mouseSensitivity = sensitivity;
                                 i = 0;
                                 while (Math.abs((mc.gameSettings.fovSetting - ((fov + 5F)) / 12.0F)) > 2.5F && i < 200) {
-                                    this.zoom += 1.0F;
+                                    zoom += 1.0F;
                                     mc.gameSettings.fovSetting -= 2.5F;
                                     mc.gameSettings.mouseSensitivity -= 0.01F;
                                     i++;
@@ -202,16 +202,16 @@ public class SteamcraftTickHandler {
                 mc.gameSettings.mouseSensitivity = sensitivity;
             }
             if (inUse && !wasInUse) {
-                this.zoom = 0.0F;
+                zoom = 0.0F;
             }
             if (inUse && mc.gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F && item != null && item.getItem() == SteamcraftItems.spyglass) {
-                this.zoom -= 1.0F;
+                zoom -= 1.0F;
                 mc.gameSettings.fovSetting += 2.5F;
                 mc.gameSettings.mouseSensitivity += 0.01F;
 
             }
             if (inUse && mc.gameSettings.keyBindUseItem.getIsKeyPressed() && mc.gameSettings.fovSetting > 5F && item != null && item.getItem() == SteamcraftItems.spyglass) {
-                this.zoom += 1.0F;
+                zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;
             }

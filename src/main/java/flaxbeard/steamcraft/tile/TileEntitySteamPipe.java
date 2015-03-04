@@ -67,7 +67,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         }
         list.setInteger("size", g);
         access.setTag("blacklistedSides", list);
-        access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
@@ -116,7 +116,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         }
         list.setInteger("size", g);
         access.setTag("blacklistedSides", list);
-        access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
     }
 

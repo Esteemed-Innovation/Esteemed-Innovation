@@ -81,9 +81,9 @@ public class GuiSteamcraftBook extends GuiScreen {
         int i = 0;
         String lastCategory = "";
         boolean canDo = true;
-        this.bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
+        bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
         if (viewing != "") {
-            this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length / 2F);
+            bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(viewing).length / 2F);
         }
         if (par1EntityPlayer.getHeldItem() != null && par1EntityPlayer.getHeldItem().getItem() instanceof ItemSteamcraftBook) {
             book = par1EntityPlayer.getHeldItem();
@@ -130,22 +130,22 @@ public class GuiSteamcraftBook extends GuiScreen {
     }
 
     public void updateButtons() {
-        this.buttonNextPage.visible = (this.currPage < this.bookTotalPages - 1);
-        this.buttonPreviousPage.visible = this.currPage > 0;
+        this.buttonNextPage.visible = (currPage < bookTotalPages - 1);
+        this.buttonPreviousPage.visible = currPage > 0;
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.enabled) {
             if (button.id == 0) {
-                this.mc.displayGuiScreen((GuiScreen) null);
+                this.mc.displayGuiScreen(null);
             } else if (button.id == 1) {
-                if (this.currPage < this.bookTotalPages - 1) {
-                    ++this.currPage;
+                if (currPage < bookTotalPages - 1) {
+                    ++currPage;
                 }
             } else if (button.id == 2) {
-                if (this.currPage > 0) {
-                    --this.currPage;
+                if (currPage > 0) {
+                    --currPage;
                 }
             }
 //            else if (button.id == 3)
@@ -161,12 +161,12 @@ public class GuiSteamcraftBook extends GuiScreen {
 
             if (button instanceof GuiButtonSelect) {
                 GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
-                this.lastIndexPage = currPage;
-                this.viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
-                this.currPage = 0;
-                this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length / 2F);
+                lastIndexPage = currPage;
+                viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
+                currPage = 0;
+                bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(viewing).length / 2F);
                 this.updateButtons();
-                this.mustReleaseMouse = true;
+                mustReleaseMouse = true;
             }
 
 
@@ -177,18 +177,19 @@ public class GuiSteamcraftBook extends GuiScreen {
     private void addNewPage() {
         if (this.bookPages != null && this.bookPages.tagCount() < 50) {
             this.bookPages.appendTag(new NBTTagString(""));
-            ++this.bookTotalPages;
+            ++bookTotalPages;
             this.field_146481_r = true;
         }
     }
 
     private String func_146456_p() {
-        return this.bookPages != null && this.currPage >= 0 && this.currPage < this.bookPages.tagCount() ? this.bookPages.getStringTagAt(this.currPage) : "";
+        return this.bookPages != null && currPage >= 0 && currPage < this.bookPages.tagCount() ? this.bookPages.getStringTagAt(
+          currPage) : "";
     }
 
     private void func_146457_a(String p_146457_1_) {
-        if (this.bookPages != null && this.currPage >= 0 && this.currPage < this.bookPages.tagCount()) {
-            this.bookPages.func_150304_a(this.currPage, new NBTTagString(p_146457_1_));
+        if (this.bookPages != null && currPage >= 0 && currPage < this.bookPages.tagCount()) {
+            this.bookPages.func_150304_a(currPage, new NBTTagString(p_146457_1_));
             this.field_146481_r = true;
         }
     }
@@ -205,13 +206,13 @@ public class GuiSteamcraftBook extends GuiScreen {
 
     @Override
     protected void keyTyped(char par1, int par2) {
-        if (par2 == 1 && this.viewing != "") {
-            this.viewing = "";
-            this.currPage = lastIndexPage;
+        if (par2 == 1 && viewing != "") {
+            viewing = "";
+            currPage = lastIndexPage;
             int i = 0;
             String lastCategory = "";
             boolean canDo = true;
-            this.bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
+            bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
             this.updateButtons();
         } else {
             super.keyTyped(par1, par2);
@@ -259,16 +260,20 @@ public class GuiSteamcraftBook extends GuiScreen {
         boolean unicode = fontRendererObj.getUnicodeFlag();
         fontRendererObj.setUnicodeFlag(true);
         if (!(currPage == 0 && viewing == "")) {
-            s = I18n.format("book.pageIndicator", new Object[]{Integer.valueOf((this.currPage - 1) * 2 + 4), Integer.valueOf(this.bookTotalPages * 2)});
-            if (this.viewing == "") {
-                s = I18n.format("book.pageIndicator", new Object[]{Integer.valueOf((this.currPage - 1) * 2 + 2), Integer.valueOf(this.bookTotalPages * 2 - 2)});
+            s = I18n.format("book.pageIndicator", Integer.valueOf((currPage - 1) * 2 + 4),
+              Integer.valueOf(bookTotalPages * 2));
+            if (viewing == "") {
+                s = I18n.format("book.pageIndicator", Integer.valueOf((currPage - 1) * 2 + 2),
+                  Integer.valueOf(bookTotalPages * 2 - 2));
             }
             l = this.fontRendererObj.getStringWidth(s);
             this.fontRendererObj.drawString(s, k - l + this.bookImageWidth - 44 + 67, b0 + 16, 0x3F3F3F);
 
-            s = I18n.format("book.pageIndicator", new Object[]{Integer.valueOf((this.currPage - 1) * 2 + 3), Integer.valueOf(this.bookTotalPages * 2)});
-            if (this.viewing == "") {
-                s = I18n.format("book.pageIndicator", new Object[]{Integer.valueOf((this.currPage - 1) * 2 + 1), Integer.valueOf(this.bookTotalPages * 2 - 2)});
+            s = I18n.format("book.pageIndicator", Integer.valueOf((currPage - 1) * 2 + 3),
+              Integer.valueOf(bookTotalPages * 2));
+            if (viewing == "") {
+                s = I18n.format("book.pageIndicator", Integer.valueOf((currPage - 1) * 2 + 1),
+                  Integer.valueOf(bookTotalPages * 2 - 2));
             }
             this.fontRendererObj.drawString(s, k + l - this.bookImageWidth + 54 + 67, b0 + 16, 0x3F3F3F);
 
@@ -285,8 +290,8 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
 
 
-        if (this.viewing == "") {
-            if (this.currPage > 0) {
+        if (viewing == "") {
+            if (currPage > 0) {
                 s = I18n.format("steamcraft.book.index");
                 l = this.fontRendererObj.getStringWidth(s);
                 this.fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k - 67 + this.bookImageWidth / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
@@ -356,25 +361,25 @@ public class GuiSteamcraftBook extends GuiScreen {
             fontRendererObj.setUnicodeFlag(unicode);
             super.drawScreen(par1, par2, par3);
             fontRendererObj.setUnicodeFlag(true);
-            if (SteamcraftRegistry.researchPages.containsKey(this.viewing)) {
+            if (SteamcraftRegistry.researchPages.containsKey(viewing)) {
                 GL11.glEnable(GL11.GL_BLEND);
-                BookPage[] pages = SteamcraftRegistry.researchPages.get(this.viewing);
-                BookPage page = pages[(this.currPage) * 2];
+                BookPage[] pages = SteamcraftRegistry.researchPages.get(viewing);
+                BookPage page = pages[(currPage) * 2];
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glPushMatrix();
-                page.renderPage(k - 67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+                page.renderPage(k - 67, b0, this.fontRendererObj, this, itemRender, currPage == 0, par1, par2);
                 GL11.glPopMatrix();
                 BookPage originalPage = page;
                 GL11.glEnable(GL11.GL_BLEND);
-                if (pages.length > (this.currPage) * 2 + 1) {
-                    page = pages[(this.currPage) * 2 + 1];
+                if (pages.length > (currPage) * 2 + 1) {
+                    page = pages[(currPage) * 2 + 1];
                     GL11.glPushMatrix();
-                    page.renderPage(k + 67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
+                    page.renderPage(k + 67, b0, this.fontRendererObj, this, itemRender, false, par1, par2);
                     GL11.glPopMatrix();
 
-                    page.renderPageAfter(k + 67, b0, this.fontRendererObj, this, this.itemRender, false, par1, par2);
+                    page.renderPageAfter(k + 67, b0, this.fontRendererObj, this, itemRender, false, par1, par2);
                 }
-                originalPage.renderPageAfter(k - 67, b0, this.fontRendererObj, this, this.itemRender, this.currPage == 0, par1, par2);
+                originalPage.renderPageAfter(k - 67, b0, this.fontRendererObj, this, itemRender, currPage == 0, par1, par2);
 
             }
             fontRendererObj.setUnicodeFlag(unicode);
@@ -417,10 +422,10 @@ public class GuiSteamcraftBook extends GuiScreen {
     public void itemClicked(ItemStack itemStack) {
          for (ItemStack stack : SteamcraftRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
-                this.viewing = SteamcraftRegistry.bookRecipes.get(stack).left;
-                this.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack).right / 2.0F);
-                this.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(this.viewing).length / 2F);
-                this.mustReleaseMouse = true;
+                viewing = SteamcraftRegistry.bookRecipes.get(stack).left;
+                currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack).right / 2.0F);
+                bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(viewing).length / 2F);
+                mustReleaseMouse = true;
                 this.updateButtons();
             }
         }

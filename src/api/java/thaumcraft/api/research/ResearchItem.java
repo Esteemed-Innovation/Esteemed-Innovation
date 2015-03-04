@@ -359,8 +359,8 @@ public class ResearchItem
 			if (tags.getAmount(tag)>highest) {
 				aspect=tag;
 				highest=tags.getAmount(tag);
-			};
-		}
+			}
+        }
 		return aspect;
 	}
 	

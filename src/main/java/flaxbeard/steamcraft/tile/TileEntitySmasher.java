@@ -74,7 +74,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         this.smooshedStack = new ArrayList<ItemStack>();
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             this.smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
         }
     }

@@ -175,11 +175,11 @@ public class ExplosionRocket extends Explosion {
                     if (entity instanceof EntityPlayer) {
                         SteamcraftEventHandler.isJumping.put(entity.getEntityId(), 5);
                         if (((EntityPlayer) entity).capabilities.isCreativeMode) {
-                            SteamcraftServerPacketHandler.sendRocketJumpHackyPacket((EntityPlayerMP) ((EntityPlayer) entity), d5 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d6 * d8 * (entity == this.exploder ? 2.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F));
+                            SteamcraftServerPacketHandler.sendRocketJumpHackyPacket((EntityPlayerMP) entity, d5 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d6 * d8 * (entity == this.exploder ? 2.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F));
                         }
                         ((EntityPlayer) entity).fallDistance = 0.1F;
 
-                        this.field_77288_k.put((EntityPlayer) entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
+                        this.field_77288_k.put(entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
                     }
                 }
             }

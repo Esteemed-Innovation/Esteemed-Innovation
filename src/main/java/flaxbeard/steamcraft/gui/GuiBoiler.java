@@ -52,7 +52,8 @@ public class GuiBoiler extends GuiContainer {
             this.drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
             GL11.glDisable(3042);
             // //Steamcraft.log.debug(this.furnaceInventory.myTank.getCapacity());
-            float fill = (float) (this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount / (float) this.furnaceInventory.myTank.getCapacity());
+            float fill =
+              this.furnaceInventory.getTankInfo(ForgeDirection.UP)[0].fluid.amount / (float) this.furnaceInventory.myTank.getCapacity();
             drawFluid(new FluidStack(FluidRegistry.WATER, 1), (int) (fill * 58.0F), k + 81, l + 14, 16, 58, false);
             this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
             this.drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);

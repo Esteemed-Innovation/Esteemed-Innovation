@@ -23,7 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {
-    private static final List field_146036_f = Arrays.asList(new WeightedRandomFishable[]{new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.func_150976_a()), 60), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.func_150976_a()), 25), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.func_150976_a()), 2), new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()), 13)});
+    private static final List field_146036_f = Arrays
+      .asList(new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.func_150976_a()), 60),
+        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.func_150976_a()), 25),
+        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.func_150976_a()), 2),
+        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()), 13));
 
     public TileEntityFishGenocideMachine() {
         super(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
@@ -46,7 +50,6 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity im
         NBTTagCompound access = new NBTTagCompound();
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
-
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {

@@ -47,7 +47,7 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return side == meta ? ((BlockBoiler) SteamcraftBlocks.boiler).steamIcon : side == ForgeDirection.getOrientation(meta).getOpposite().ordinal() ? sideIcon : blockIcon;
+        return side == meta ? BlockBoiler.steamIcon : side == ForgeDirection.getOrientation(meta).getOpposite().ordinal() ? sideIcon : blockIcon;
     }
 
     @Override

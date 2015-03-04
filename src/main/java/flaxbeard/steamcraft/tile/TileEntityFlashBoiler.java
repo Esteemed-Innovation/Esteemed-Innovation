@@ -151,7 +151,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         this.furnaceItemStacks = new ItemStack[2];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound compound = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
             byte b0 = compound.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.furnaceItemStacks.length) {
@@ -476,7 +476,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                         if (this.furnaceCookTime > 0) {
                             int i = 0;
                             //HEAT COMMENTED OUT
-                            int maxSteamThisTick = (int) (((float) maxThisTick) * 0.7F + (maxThisTick * 0.3F * ((float) 1600.0F / 1600.0F)));
+                            int maxSteamThisTick = (int) (((float) maxThisTick) * 0.7F + (maxThisTick * 0.3F * (
+                              1600.0F / 1600.0F)));
                             ////Steamcraft.log.debug("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
                             while (i < maxSteamThisTick && this.isBurning() && this.canSmelt()) {
                                 this.insertSteam(10);
