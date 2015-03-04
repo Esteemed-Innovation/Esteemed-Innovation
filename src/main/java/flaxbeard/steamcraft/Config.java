@@ -14,20 +14,20 @@ public class Config {
     //Don't change this string. - @xbony2
     public static final String VERSION = "@VERSION@";
 
-    public static final int jumpBoostConsumption_DEFAULT = 10;
-    public static final int jetpackConsumption_DEFAULT = 10;
-    public static final int jumpBoostConsumptionShiftJump_DEFAULT = 10;
-    public static final int powerFistConsumption = 5;
+    public static final int JUMP_BOOST_CONSUMPTION_DEFAULT = 10;
+    public static final int JETPACK_CONSUMPTION_DEFAULT = 10;
+    public static final int JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT = 10;
+    public static final int POWER_FIST_CONSUMPTION_DEFAULT = 5;
+    public static final int THRUSTER_CONSUMPTION_DEFAULT = 5;
+    public static final int RUN_ASSIST_CONSUMPTION_DEFAULT = 5;
+    public static final int EXO_CONSUMPTION_DEFAULT = 5;
+    public static final int STEAM_TOOL_CONSUMPTION_DEFAULT = 800;
+    public static final int BASIC_TANK_CAPACITY_DEFAULT = 36000;
+    public static final int REINFORCED_TANK_CAPACITY_DEFAULT = 72000;
+    public static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
+
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
-    public static final int thrusterConsumption_DEFAULT = 5;
-    public static final int runAssistConsumption_DEFAULT = 5;
-    public static final int EXO_CONSUMPTION_DEFAULT = 5;
-    
-
-    public static final int basicTankCapacity_DEFAULT = 36000;
-    public static final int reinforcedTankCapacity_DEFAULT = 72000;
-    public static final int uberReinforcedTankCapacity_DEFAULT = 144000;
 
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;
@@ -70,7 +70,9 @@ public class Config {
     public static int basicTankCapacity;
     public static int reinforcedTankCapacity;
     public static int uberReinforcedTankCapacity;
-    //Madrealms edits
+    public static int steamToolConsumptionDrill;
+    public static int steamToolConsumptionAxe;
+    public static int steamToolConsumptionShovel;
     public static int jumpBoostConsumption;
     public static int jetpackConsumption;
     public static int jumpBoostConsumptionShiftJump;
@@ -112,18 +114,6 @@ public class Config {
     public static boolean enableWrench;
     public static boolean enableSaw;
     public static boolean enableBloodBoiler;
-
-    // modular tool crap
-    public static boolean enableModularTool;
-    public static boolean enableDrillBit;
-    public static boolean enableChainsawBit;
-    public static boolean enableShovelBit;
-    public static boolean enableSpeedUpgrade;
-    public static boolean enableWaterUpgrade;
-    public static boolean enableHeaterUpgrade;
-    public static boolean enableDiamondUpgrade;
-    public static boolean enableSilkUpgrade;
-    public static boolean enableFortuneUpgrade;
 
     // items
     public static boolean enableAstrolabe;
@@ -277,11 +267,11 @@ public class Config {
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
         enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
         exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes (5 per default)", EXO_CONSUMPTION_DEFAULT).getInt();
-        jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes (5 per default)", jumpBoostConsumption_DEFAULT).getInt();
-        jetpackConsumption = config.get("Exosuit", "The amount of steam the jetpack consumes (10 per default)", jetpackConsumption_DEFAULT).getInt();
-        jumpBoostConsumptionShiftJump = config.get("Exosuit", "The amount of steam the jump boost shift jump consumes (10 per default)",jumpBoostConsumptionShiftJump_DEFAULT).getInt();
-        thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit thrusters consumes (5 per default)", thrusterConsumption_DEFAULT).getInt();
-        runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit run assist consumes (5 per default)", runAssistConsumption_DEFAULT).getInt();
+        jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes (5 per default)", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
+        jetpackConsumption = config.get("Exosuit", "The amount of steam the jetpack consumes (10 per default)", JETPACK_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumptionShiftJump = config.get("Exosuit", "The amount of steam the jump boost shift jump consumes (10 per default)", JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT).getInt();
+        thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit thrusters consumes (5 per default)", THRUSTER_CONSUMPTION_DEFAULT).getInt();
+        runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit run assist consumes (5 per default)", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
@@ -313,9 +303,9 @@ public class Config {
         enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
         enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
 
-        basicTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the basic tank can hold (36000 default)", basicTankCapacity_DEFAULT).getInt();
-        reinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the reinforced tank can hold (54000 default)", reinforcedTankCapacity_DEFAULT).getInt();
-        uberReinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the heavily reinforced tank can hold (90000 default)", reinforcedTankCapacity_DEFAULT).getInt();
+        basicTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the basic tank can hold", BASIC_TANK_CAPACITY_DEFAULT).getInt();
+        reinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
+        uberReinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         //enableDoubleJump = config.get("Exosuit Upgrades", "Enable double jump", true).getBoolean(true);
 
         // ITEMS
@@ -325,26 +315,12 @@ public class Config {
         enableSurvivalist = config.get("Items", "Enable Survivalist's Toolkit", true).getBoolean(true);
         enableWrench = config.get("Items", "Enable Pipe Wrench", true).getBoolean(true);
         enableCanister = config.get("Items", "Enable Canisters", true).getBoolean(true);
-
         enableTopHat = config.get("Items", "Enable Top Hat", true).getBoolean(true);
         enableEmeraldHat = config.get("Items", "Enable Emerald Top Hat", true).getBoolean(true);
         enableGoggles = config.get("Items", "Enable Goggles/Monocle", true).getBoolean(true);
-
-        /*
-        //MODULAR TOOL
-        enableModularTool = config.get("Modular Tool", "Enable the Modular Tool", true).getBoolean(true);
-
-        //MODULAR TOOL UPGRADES
-        enableDrillBit = config.get("Modular Tool", "Enable the Drill upgrade", true).getBoolean(true);
-        enableChainsawBit = config.get("Modular Tool", "Enable the Chainsaw upgrade", true).getBoolean(true);
-        enableShovelBit = config.get("Modular Tool", "Enable the Shovel upgrade", true).getBoolean(true);
-        enableSpeedUpgrade = config.get("Modular Tool", "Enable the Speed upgrade", true).getBoolean(true);
-        enableWaterUpgrade = config.get("Modular Tool", "Enable the Water upgrade", true).getBoolean(true);
-        enableHeaterUpgrade = config.get("Modular Tool", "Enable the Heater upgrade", true).getBoolean(true);
-        enableDiamondUpgrade = config.get("Modular Tool", "Enable the Diamond upgrade", true).getBoolean(true);
-        enableSilkUpgrade = config.get("Modular Tool", "Enable the Silk Touch upgrade", true).getBoolean(true);
-        enableFortuneUpgrade = config.get("Modular Tool", "Enable the Fortune upgrade", true).getBoolean(true);
-        */
+        steamToolConsumptionAxe = config.get("Items", "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        steamToolConsumptionDrill = config.get("Items", "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        steamToolConsumptionShovel = config.get("Items", "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
