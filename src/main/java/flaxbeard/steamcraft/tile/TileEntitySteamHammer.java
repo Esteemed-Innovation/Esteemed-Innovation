@@ -51,9 +51,10 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 hammerTicks = (hammerTicks + 5) % 360;
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
-                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F * dir.offsetX, yCoord,
-                          zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil, (float) (Math.random() - 0.5F) / 12.0F,
-                          0.0F, (float) (Math.random() - 0.5F) / 12.0F);
+                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F *
+                          dir.offsetX, yCoord, zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil,
+                          (float) (Math.random() - 0.5F) / 12.0F, 0.0F, (float)
+                          (Math.random() - 0.5F) / 12.0F);
                     }
                 }
             } else {
@@ -91,15 +92,18 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                     }
                 }
                 hammerTicks = (hammerTicks + 5) % 360;
-                if (hammerTicks == 15) {
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "random.anvil_land", 0.2F, (float) (0.75F + (Math.random() * 0.1F)));
-                }
-
-                if (hammerTicks == 40) {
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "random.anvil_land", 0.075F, (float) (0.75F + (Math.random() * 0.1F)));
-                }
-                if (hammerTicks == 170) {
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+                switch (hammerTicks) {
+                    case 15:
+                        playHammerSound("random.anvil_land", Block.soundTypeAnvil.getVolume(),
+                          (float) (0.75F + (Math.random() * 0.1F)));
+                        break;
+                    case 40:
+                        playHammerSound("random.anvil_land", Block.soundTypeAnvil.getVolume(),
+                          (float) (0.75 + (Math.random() * 0.1F)));
+                        break;
+                    case 170:
+                        playHammerSound("steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+                        break;
                 }
             } else {
                 if (this.isWorking) {
@@ -111,8 +115,11 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 }
             }
         }
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        markDirty();
+    }
+
+    private void playHammerSound(String sound, float volume, float par3) {
+        this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F,
+          sound, 0.2F, (float) (0.75F + (Math.random() * 0.1F)));
     }
 
     private ForgeDirection myDir() {
@@ -132,14 +139,6 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         }
         return dir;
     }
-
-	@Override
-	public void markDirty(){
-        if (worldObj != null) {
-            super.markDirty();
-            worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        }
-	}
 
     @Override
     public int getSizeInventory() {
@@ -211,7 +210,9 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : var1.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false :
+          var1.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D,
+          (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
     @Override
