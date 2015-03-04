@@ -78,6 +78,7 @@ public class Config {
     public static int jumpBoostConsumptionShiftJump;
     public static int thrusterConsumption;
     public static int runAssistConsumption;
+    public static int powerFistConsumption;
 
 
 
@@ -266,12 +267,13 @@ public class Config {
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
         enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
-        exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes (5 per default)", EXO_CONSUMPTION_DEFAULT).getInt();
-        jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes (5 per default)", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
-        jetpackConsumption = config.get("Exosuit", "The amount of steam the jetpack consumes (10 per default)", JETPACK_CONSUMPTION_DEFAULT).getInt();
-        jumpBoostConsumptionShiftJump = config.get("Exosuit", "The amount of steam the jump boost shift jump consumes (10 per default)", JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT).getInt();
-        thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit thrusters consumes (5 per default)", THRUSTER_CONSUMPTION_DEFAULT).getInt();
-        runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit run assist consumes (5 per default)", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
+        exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes", EXO_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
+        jetpackConsumption = config.get("Exosuit", "The amount of steam the Jetpack consumes", JETPACK_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumptionShiftJump = config.get("Exosuit", "The amount of steam the jump boost shift jump consumes", JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT).getInt();
+        thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit Thrusters consumes", THRUSTER_CONSUMPTION_DEFAULT).getInt();
+        runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Run Assist consumes", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
+        powerFistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);

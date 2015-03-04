@@ -451,8 +451,8 @@ public class ThaumcraftApi {
 			if (in instanceof ItemStack && warpMap.containsKey(Arrays.asList(((ItemStack)in).getItem(),((ItemStack)in).getItemDamage()))) {
 				return warpMap.get(Arrays.asList(((ItemStack)in).getItem(),((ItemStack)in).getItemDamage()));
 			} else
-			if (in instanceof String && warpMap.containsKey((String)in)) {
-				return warpMap.get((String)in);
+			if (in instanceof String && warpMap.containsKey(in)) {
+				return warpMap.get(in);
 			}
 			return 0;
 		}

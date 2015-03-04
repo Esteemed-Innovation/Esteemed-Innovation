@@ -114,7 +114,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         }
         super.updateEntity();
         if (!this.worldObj.isRemote) {
-        	if ((this.getSteamShare() < this.steamUsage) || this.powered) {
+        	if ((this.getSteamShare() < steamUsage) || this.powered) {
         		this.active = false;
         	}
         	else {
@@ -267,7 +267,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteamShare() > this.steamUsage && !this.powered);
+        access.setBoolean("active", this.getSteamShare() > steamUsage && !this.powered);
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }

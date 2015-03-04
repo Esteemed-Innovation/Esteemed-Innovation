@@ -74,7 +74,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
         float f1 = (float) (icon.getMinU() + (icon.getMaxU() - icon.getMinU()) * 0.6);
         float f2 = icon.getMinV();
         float f3 = icon.getMinU();
-        float f4 = (float) (icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * scaledProgress);
+        float f4 = icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * scaledProgress;
         float pix2 = 2.0F / 16.0F;
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, 1.0F);

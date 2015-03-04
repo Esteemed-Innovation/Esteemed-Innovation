@@ -44,7 +44,7 @@ public class TileEntityCrucible extends TileEntity {
         NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getTag("liquids");
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             CrucibleLiquid liquid = SteamcraftRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
             if (liquid != null) {
                 this.contents.add(liquid);
@@ -103,7 +103,7 @@ public class TileEntityCrucible extends TileEntity {
         }
         this.tipping = access.getBoolean("tipping");
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             CrucibleLiquid liquid = SteamcraftRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
             this.contents.add(liquid);
             this.number.put(liquid, (int) nbttagcompound1.getShort("amount"));

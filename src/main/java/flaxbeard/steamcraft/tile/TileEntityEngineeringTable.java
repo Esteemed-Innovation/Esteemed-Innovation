@@ -19,7 +19,7 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
         NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getTag("Items");
         this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
 
-        NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(0);
+        NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
         byte b0 = nbttagcompound1.getByte("Slot");
 
         if (b0 >= 0 && b0 < this.furnaceItemStacks.length) {

@@ -257,7 +257,7 @@ public class ModelExosuit extends ModelBiped {
         penguinNose.showModel = false;
 
         // Begin special additions
-        if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().equals("joshiejack")) {
+        if (entity instanceof EntityPlayer && entity.getCommandSenderName().equals("joshiejack")) {
             penguinBody.showModel = true;
             penguinArm1.showModel = true;
             penguinArm2.showModel = true;

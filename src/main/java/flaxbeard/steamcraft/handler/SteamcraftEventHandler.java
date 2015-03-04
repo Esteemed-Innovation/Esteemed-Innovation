@@ -336,10 +336,13 @@ public class SteamcraftEventHandler {
         int zLevel = 1;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double) (screenX + 0), (double) (screenY + screenEndY), (double) zLevel, (double) startU, (double) endV);
-        tessellator.addVertexWithUV((double) (screenX + screenEndX), (double) (screenY + screenEndY), (double) zLevel, (double) endU, (double) endV);
-        tessellator.addVertexWithUV((double) (screenX + screenEndX), (double) (screenY + 0), (double) zLevel, (double) endU, (double) startV);
-        tessellator.addVertexWithUV((double) (screenX + 0), (double) (screenY + 0), (double) zLevel, (double) startU, (double) startV);
+        tessellator.addVertexWithUV((double) (screenX + 0), (double) (screenY + screenEndY), (double) zLevel, startU,
+          endV);
+        tessellator.addVertexWithUV((double) (screenX + screenEndX), (double) (screenY + screenEndY), (double) zLevel,
+          endU, endV);
+        tessellator.addVertexWithUV((double) (screenX + screenEndX), (double) (screenY + 0), (double) zLevel, endU,
+          startV);
+        tessellator.addVertexWithUV((double) (screenX + 0), (double) (screenY + 0), (double) zLevel, startU, startV);
         tessellator.draw();
     }
 
@@ -875,7 +878,7 @@ public class SteamcraftEventHandler {
             }
         }
         if (event.source == DamageSource.fall) {
-            boolean hasPower = hasPower(event.entityLiving, (int) ((float) event.ammount / Config.fallAssistDivisor));
+            boolean hasPower = hasPower(event.entityLiving, (int) (event.ammount / Config.fallAssistDivisor));
             int armor = getExoArmor(event.entityLiving);
             EntityLivingBase entity = event.entityLiving;
             if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
@@ -885,7 +888,7 @@ public class SteamcraftEventHandler {
                         event.ammount = 0.0F;
                     }
                     event.ammount = event.ammount / 3.0F;
-                    drainSteam(entity.getEquipmentInSlot(3), (int) ((float) event.ammount / Config.fallAssistDivisor));
+                    drainSteam(entity.getEquipmentInSlot(3), (int) (event.ammount / Config.fallAssistDivisor));
                     if (event.ammount == 0.0F) {
                         event.setResult(Event.Result.DENY);
                         event.setCanceled(true);
@@ -939,10 +942,10 @@ public class SteamcraftEventHandler {
             ItemStack stack = ((EntityPlayer) event.entity).inventory.armorItemInSlot(0);
             ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
 
-            if ((((EntityPlayer) event.entity).isSneaking() && hasPower) || hasPower(event.entityLiving, Config.jumpBoostConsumption)) {
+            if ((event.entity.isSneaking() && hasPower) || hasPower(event.entityLiving, Config.jumpBoostConsumption)) {
 
                 if (item.hasUpgrade(stack, SteamcraftItems.jumpAssist)) {
-                    if (((EntityPlayer) event.entity).isSneaking()) {
+                    if (event.entity.isSneaking()) {
                         Vec3 vector = event.entityLiving.getLook(0.5F);
                         double total = Math.abs(vector.zCoord + vector.xCoord);
                         EntityPlayer player = (EntityPlayer) event.entity;
@@ -1054,7 +1057,7 @@ public class SteamcraftEventHandler {
     public void handleFlippers(LivingEvent.LivingUpdateEvent event) {
 
         int armor = getExoArmor(event.entityLiving);
-        EntityLivingBase entity = (EntityLivingBase) event.entityLiving;
+        EntityLivingBase entity = event.entityLiving;
         boolean hasPower = hasPower(entity, 1);
 
         if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
@@ -1251,9 +1254,9 @@ public class SteamcraftEventHandler {
             if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
                 if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
-                    if (!extendedRange.contains((Integer) entity.getEntityId())) {
+                    if (!extendedRange.contains(entity.getEntityId())) {
                         wearing = true;
-                        extendedRange.add((Integer) entity.getEntityId());
+                        extendedRange.add(entity.getEntityId());
                         Steamcraft.proxy.extendRange(entity, Config.extendedRange);
                     }
                 }
@@ -1338,7 +1341,7 @@ public class SteamcraftEventHandler {
             entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoost);
         }
         if (this.prevStep.containsKey(Integer.valueOf(entity.getEntityId()))) {
-            entity.stepHeight = ((Float) this.prevStep.get(Integer.valueOf(entity.getEntityId()))).floatValue();
+            entity.stepHeight = this.prevStep.get(Integer.valueOf(entity.getEntityId())).floatValue();
             this.prevStep.remove(Integer.valueOf(entity.getEntityId()));
         }
     }

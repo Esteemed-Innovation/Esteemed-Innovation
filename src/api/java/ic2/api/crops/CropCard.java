@@ -334,7 +334,7 @@ public abstract class CropCard {
 	 */
 	public boolean onEntityCollision(ICropTile crop, Entity entity) {
 		if (entity instanceof EntityLivingBase) {
-			return ((EntityLivingBase) entity).isSprinting();
+			return entity.isSprinting();
 		}
 		return false;
 	}

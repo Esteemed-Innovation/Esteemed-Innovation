@@ -21,7 +21,8 @@ public class GuiButtonUpdate extends GuiButton {
      */
     public void drawButton(Minecraft mc, int x, int y) {
         super.drawButton(mc, x, y);
-        mc.getMinecraft().getTextureManager().bindTexture(mc.getMinecraft().getTextureManager().getResourceLocation(SteamcraftItems.book.getSpriteNumber()));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(
+          Minecraft.getMinecraft().getTextureManager().getResourceLocation(SteamcraftItems.book.getSpriteNumber()));
         this.drawTexturedModelRectFromIcon(this.xPosition + 2, this.yPosition + 2, SteamcraftItems.book.getIconFromDamage(0), 16, 16);
     }
 }

@@ -57,7 +57,7 @@ public class BlockSteamPistonBase extends Block {
 
     @SideOnly(Side.CLIENT)
     public static IIcon getPistonBaseIcon(String p_150074_0_) {
-        return p_150074_0_ == "piston_side" ? SteamcraftBlocks.steamPiston.blockIcon : (p_150074_0_ == "piston_top_normal" ? ((BlockSteamPistonBase) SteamcraftBlocks.steamPiston).topIcon : (p_150074_0_ == "piston_top_sticky" ? ((BlockSteamPistonBase) SteamcraftBlocks.steamPiston).topIcon : (p_150074_0_ == "piston_inner" ? ((BlockSteamPistonBase) SteamcraftBlocks.steamPiston).innerTopIcon : null)));
+        return p_150074_0_ == "piston_side" ? SteamcraftBlocks.steamPiston.blockIcon : (p_150074_0_ == "piston_top_normal" ? SteamcraftBlocks.steamPiston.topIcon : (p_150074_0_ == "piston_top_sticky" ? SteamcraftBlocks.steamPiston.topIcon : (p_150074_0_ == "piston_inner" ? SteamcraftBlocks.steamPiston.innerTopIcon : null)));
     }
 
     public static int getPistonOrientation(int p_150076_0_) {

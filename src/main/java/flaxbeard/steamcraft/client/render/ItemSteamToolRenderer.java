@@ -68,7 +68,7 @@ public class ItemSteamToolRenderer implements IItemRenderer {
                         break;
                 }
 
-                double health = (double) (1000.0D - use) / 1000.0D;
+                double health = (1000.0D - use) / 1000.0D;
                 if (use > 0 && itemStack == Minecraft.getMinecraft().thePlayer.getHeldItem()) {
                     GL11.glPushMatrix();
                     int j1 = (int) Math.round(13.0D - health * 13.0D);

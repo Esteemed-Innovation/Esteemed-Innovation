@@ -91,7 +91,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         access.setShort("BurnTime", (short) this.furnaceBurnTime);
         access.setShort("CookTime", (short) this.furnaceCookTime);
         access.setShort("cIBT", (short) this.currentItemBurnTime);
-        access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
@@ -117,7 +117,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         this.furnaceItemStacks = new ItemStack[2];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.furnaceItemStacks.length) {
@@ -147,7 +147,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         par1NBTTagCompound.setShort("water", (short) myTank.getFluidAmount());
         par1NBTTagCompound.setShort("CookTime", (short) this.furnaceCookTime);
         par1NBTTagCompound.setShort("cIBT", (short) this.currentItemBurnTime);
-        par1NBTTagCompound.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        par1NBTTagCompound.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         par1NBTTagCompound.setInteger("disguiseMeta", disguiseMeta);
 
         NBTTagList nbttaglist = new NBTTagList();

@@ -108,7 +108,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
                     int tMeta = this.worldObj.getBlockMetadata(x, y, z);
                     this.worldObj.getBlock(x, y, z).dropBlockAsItem(worldObj, x, y, z, tMeta, 0);
                     for (int v = 0; v < 5; v++) {
-                        Steamcraft.instance.proxy.spawnBreakParticles(worldObj, xCoord + dir.offsetX * i + 0.5F, yCoord + dir.offsetY * i + 0.5F, zCoord + dir.offsetZ * i + 0.5F, this.worldObj.getBlock(x, y, z), 0.0F, 0.0F, 0.0F);
+                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + dir.offsetX * i + 0.5F,
+                          yCoord + dir.offsetY * i + 0.5F, zCoord + dir.offsetZ * i + 0.5F,
+                          this.worldObj.getBlock(x, y, z), 0.0F, 0.0F, 0.0F);
                     }
                     this.worldObj.setBlockToAir(x, y, z);
                 }
@@ -127,7 +129,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
             for (Object obj : entities) {
                 Entity entity = (Entity) obj;
                 if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
-                    if (entity instanceof EntityPlayer && ((EntityPlayer) entity).isSneaking()) {
+                    if (entity instanceof EntityPlayer && entity.isSneaking()) {
                         entity.motionX += dir.offsetX * 0.025F;
                         entity.motionY += dir.offsetY * 0.05F;
                         entity.motionZ += dir.offsetZ * 0.025F;

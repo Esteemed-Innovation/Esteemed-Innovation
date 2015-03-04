@@ -82,10 +82,12 @@ public class TileEntitySteamPiston extends TileEntity {
             --p_145863_1_;
         }
 
-        AxisAlignedBB axisalignedbb = ((BlockSteamPistonMoving) SteamcraftBlocks.steamPiston_extension).func_149964_a(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.storedBlock, p_145863_1_, this.storedOrientation);
+        AxisAlignedBB axisalignedbb = SteamcraftBlocks.steamPiston_extension
+          .func_149964_a(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.storedBlock, p_145863_1_,
+            this.storedOrientation);
 
         if (axisalignedbb != null) {
-            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) null, axisalignedbb);
+            List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(null, axisalignedbb);
 
             if (!list.isEmpty()) {
                 this.pushedObjects.addAll(list);

@@ -23,7 +23,7 @@ public class TileEntityCustomCraftingTable extends TileEntity implements IWrench
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
@@ -49,7 +49,7 @@ public class TileEntityCustomCraftingTable extends TileEntity implements IWrench
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        par1NBTTagCompound.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         par1NBTTagCompound.setInteger("disguiseMeta", disguiseMeta);
     }
 

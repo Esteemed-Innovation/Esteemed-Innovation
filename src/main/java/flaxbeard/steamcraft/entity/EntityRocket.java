@@ -181,7 +181,6 @@ public class EntityRocket extends Entity {
             this.rotationYaw = (float) (Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) + 90.0F;
 
             for (this.rotationPitch = (float) (Math.atan2((double) f1, this.motionY) * 180.0D / Math.PI) - 90.0F; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-                ;
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
@@ -235,7 +234,7 @@ public class EntityRocket extends Entity {
         if (!this.worldObj.isRemote) {
             //newExplosion(world, (Entity)null, this.posX, this.posY, this.posZ, (float)2.0F, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
 
-            newExplosion(worldObj, (Entity) this.shootingEntity, this.posX, this.posY, this.posZ, this.explosionSize, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            newExplosion(worldObj, this.shootingEntity, this.posX, this.posY, this.posZ, this.explosionSize, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
             this.setDead();
         }
     }
@@ -269,7 +268,7 @@ public class EntityRocket extends Entity {
     	nbt.setShort("zTile", (short) this.field_145794_g);
     	nbt.setByte("inTile", (byte) Block.getIdFromBlock(this.field_145796_h));
     	nbt.setByte("inGround", (byte) (this.inGround ? 1 : 0));
-    	nbt.setTag("direction", this.newDoubleNBTList(new double[]{this.motionX, this.motionY, this.motionZ}));
+    	nbt.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
     }
 
     /**

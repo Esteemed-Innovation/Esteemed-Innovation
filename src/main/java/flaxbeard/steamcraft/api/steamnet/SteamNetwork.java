@@ -315,7 +315,7 @@ public class SteamNetwork {
         //HashSet<ForgeDirection> dirs = split.getConnectionSides();
         HashSet<SteamNetwork> newNets = new HashSet();
         boolean hasrun = false;
-        for (ISteamTransporter trans : this.getNeighboringTransporters(split)) {
+        for (ISteamTransporter trans : getNeighboringTransporters(split)) {
             if (!isClosedValvePipe(trans)) {
                 boolean isInNetwork = false;
                 if (newNets.size() > 0) {

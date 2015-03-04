@@ -163,7 +163,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
 
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
@@ -228,7 +228,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         super.writeToNBT(nbtTagCompound);
         nbtTagCompound.setShort("BurnTime", (short) this.furnaceBurnTime);
         nbtTagCompound.setShort("CookTime", (short) this.furnaceCookTime);
-        nbtTagCompound.setInteger("disguiseBlock", disguiseBlock.getIdFromBlock(disguiseBlock));
+        nbtTagCompound.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         nbtTagCompound.setInteger("disguiseMeta", disguiseMeta);
         NBTTagList nbttaglist = new NBTTagList();
 

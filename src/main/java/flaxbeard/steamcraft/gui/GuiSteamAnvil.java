@@ -79,16 +79,16 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
-        this.fontRendererObj.drawString(I18n.format("container.repair", new Object[0]), 60, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.repair"), 60, 6, 4210752);
 
 
         if (this.field_147092_v.hammer.cost > 0) {
             int k = 8453920;
             boolean flag = true;
-            String s = I18n.format("container.repair.cost", new Object[]{Integer.valueOf(this.field_147092_v.hammer.cost)});
+            String s = I18n.format("container.repair.cost", Integer.valueOf(this.field_147092_v.hammer.cost));
 
             if (this.field_147092_v.hammer.cost >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode) {
-                s = I18n.format("container.repair.expensive", new Object[0]);
+                s = I18n.format("container.repair.expensive");
                 k = 16736352;
             } else if (!this.field_147092_v.getSlot(2).getHasStack()) {
                 flag = false;

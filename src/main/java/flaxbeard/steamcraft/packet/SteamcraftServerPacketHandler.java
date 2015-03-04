@@ -74,7 +74,6 @@ public class SteamcraftServerPacketHandler {
         }
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToAllAround(packet, new TargetPoint(dimension, x, y, z, z));
-        ;
         try {
             out.close();
         } catch (IOException e) {
@@ -174,7 +173,8 @@ public class SteamcraftServerPacketHandler {
 
                     if (!world.isRemote && tile instanceof TileEntitySteamPipe) {
                         TileEntitySteamPipe pipe = ((TileEntitySteamPipe) tile);
-                        if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == ((ItemBlock) player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+                        if (!(pipe.disguiseBlock == block && pipe.disguiseMeta == player.getHeldItem().getItem()
+                          .getMetadata(player.getHeldItem().getItemDamage()))) {
                             if (pipe.disguiseBlock != Blocks.air && !player.capabilities.isCreativeMode) {
                                 EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(pipe.disguiseBlock, 1, pipe.disguiseMeta));
                                 world.spawnEntityInWorld(entityItem);
@@ -188,13 +188,15 @@ public class SteamcraftServerPacketHandler {
                             }
                             world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
-                            pipe.disguiseMeta = ((ItemBlock) player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage());
+                            pipe.disguiseMeta = player.getHeldItem().getItem()
+                              .getMetadata(player.getHeldItem().getItemDamage());
                             world.markBlockForUpdate(x, y, z);
                         }
                     }
                     if (!world.isRemote && tile instanceof IDisguisableBlock) {
                         IDisguisableBlock pipe = ((IDisguisableBlock) tile);
-                        if (!(pipe.getDisguiseBlock() == block && pipe.getDisguiseMeta() == ((ItemBlock) player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()))) {
+                        if (!(pipe.getDisguiseBlock() == block && pipe.getDisguiseMeta() == player.getHeldItem().getItem()
+                          .getMetadata(player.getHeldItem().getItemDamage()))) {
                             if (pipe.getDisguiseBlock() != Blocks.air && !player.capabilities.isCreativeMode) {
                                 EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(pipe.getDisguiseBlock(), 1, pipe.getDisguiseMeta()));
                                 world.spawnEntityInWorld(entityItem);
@@ -208,7 +210,8 @@ public class SteamcraftServerPacketHandler {
                             }
                             world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), block.stepSound.func_150496_b(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 
-                            pipe.setDisguiseMeta(((ItemBlock) player.getHeldItem().getItem()).getMetadata(player.getHeldItem().getItemDamage()));
+                            pipe.setDisguiseMeta(
+                              player.getHeldItem().getItem().getMetadata(player.getHeldItem().getItemDamage()));
                             world.markBlockForUpdate(x, y, z);
                         }
                     }

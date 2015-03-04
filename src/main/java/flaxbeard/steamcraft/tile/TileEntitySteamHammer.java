@@ -51,7 +51,9 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 hammerTicks = (hammerTicks + 5) % 360;
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
-                        Steamcraft.instance.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F * dir.offsetX, yCoord, zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil, (float) (Math.random() - 0.5F) / 12.0F, 0.0F, (float) (Math.random() - 0.5F) / 12.0F);
+                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F * dir.offsetX, yCoord,
+                          zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil, (float) (Math.random() - 0.5F) / 12.0F,
+                          0.0F, (float) (Math.random() - 0.5F) / 12.0F);
                     }
                 }
             } else {
@@ -256,7 +258,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         this.inventory = new ItemStack[this.getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.inventory.length) {

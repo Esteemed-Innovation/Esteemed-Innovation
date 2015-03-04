@@ -189,7 +189,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     @Override
     public void registerBlockIcons(IIconRegister ir) {
         this.blockIcon = ir.registerIcon("steamcraft:blockBrass");
-        this.steamIcon = ir.registerIcon("steamcraft:steam");
+        steamIcon = ir.registerIcon("steamcraft:steam");
 
         this.boilerOnIcon = ir.registerIcon("steamcraft:boilerOn");
         this.boilerOffIcon = ir.registerIcon("steamcraft:boiler");
