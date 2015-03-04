@@ -134,10 +134,14 @@ public class BlockMold extends BlockContainer implements IWrenchable {
         super.setBlockBoundsBasedOnState(iba, x, y, z);
     }
 
-
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
         return AxisAlignedBB.getBoundingBox(i + 2 * px, j + 0.0F, k + 2 * px, i + 1.0F - 2 * px, j + 1.0F - 8 * px, k + 1.0F - 2 * px);
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
     }
 
     @Override
