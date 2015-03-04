@@ -24,17 +24,21 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.BlockFluidFinite;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-    public boolean active;
-    public boolean powered = false;
-    public boolean lastSteam = false;
-    public int rotateTicks = 0;
-    public int range = 9;
+    public  boolean active;
+    public  boolean powered       = false;
+    public  boolean lastSteam     = false;
+    public  int     rotateTicks   = 0;
+    public  int     range         = 9;
     private boolean isInitialized = false;
+    private static AxisAlignedBB aabb;
 
     public TileEntityFan() {
         this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
@@ -56,7 +60,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 
     }
 
-
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
@@ -64,7 +67,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
-
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
@@ -106,11 +108,17 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
                 int z = zCoord + dir.offsetZ * i;
                 if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(20) == 0 && !blocked && this.worldObj.getBlock(x, y, z) != Blocks.air && this.worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z) || this.worldObj.getBlock(x, y, z) instanceof BlockCrops) {
                     int tMeta = this.worldObj.getBlockMetadata(x, y, z);
-                    this.worldObj.getBlock(x, y, z).dropBlockAsItem(worldObj, x, y, z, tMeta, 0);
-                    for (int v = 0; v < 5; v++) {
-                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + dir.offsetX * i + 0.5F,
-                          yCoord + dir.offsetY * i + 0.5F, zCoord + dir.offsetZ * i + 0.5F,
-                          this.worldObj.getBlock(x, y, z), 0.0F, 0.0F, 0.0F);
+                    if (//...
+                      !(this.worldObj.getBlock(x, y, z) instanceof BlockFluidBase)    ||
+                      !(this.worldObj.getBlock(x, y, z) instanceof BlockFluidClassic) ||
+                      !(this.worldObj.getBlock(x, y, z) instanceof BlockFluidFinite)) {
+                        this.worldObj.getBlock(x, y, z).dropBlockAsItem(worldObj, x, y, z, tMeta, 0);
+                        for (int v = 0; v < 5; v++) {
+                            Steamcraft.proxy
+                              .spawnBreakParticles(worldObj, xCoord + dir.offsetX * i + 0.5F,
+                                yCoord + dir.offsetY * i + 0.5F, zCoord + dir.offsetZ * i + 0.5F,
+                                this.worldObj.getBlock(x, y, z), 0.0F, 0.0F, 0.0F);
+                        }
                     }
                     this.worldObj.setBlockToAir(x, y, z);
                 }
