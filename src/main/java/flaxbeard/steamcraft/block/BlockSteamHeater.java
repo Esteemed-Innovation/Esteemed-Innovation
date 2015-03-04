@@ -7,6 +7,8 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamFurnace;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -24,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockSteamHeater extends BlockSteamTransporter implements IWrenchable {
     private IIcon iconOn;
-    private IIcon iconOff;
 
     public BlockSteamHeater() {
         super(Material.iron);
@@ -70,7 +71,6 @@ public class BlockSteamHeater extends BlockSteamTransporter implements IWrenchab
     public void registerBlockIcons(IIconRegister ir) {
         super.registerBlockIcons(ir);
         this.iconOn = ir.registerIcon("steamcraft:heaterOn");
-        this.iconOff = ir.registerIcon("steamcraft:heaterOff");
     }
 
     @Override
