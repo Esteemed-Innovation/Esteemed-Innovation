@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.item.tool.steam;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -130,7 +131,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable {
 
     @Override
     public int steamPerDurability() {
-        return 800;
+        return Config.steamToolConsumptionAxe;
     }
 
     @Override
