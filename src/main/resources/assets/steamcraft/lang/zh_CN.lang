@@ -158,8 +158,8 @@ research.Vacuum.name=吸力风扇
 research.Vacuum.0=对我的风扇稍加改造就有了吸力风扇,一个会吸引一切的设备,将吸入的物品放入后侧的容器中.可用扳手调节它的范围.
 research.FSC.name=压力转换器
 research.FSC.0=尽管已经用了许多小器件来处理锅炉产生的过高压力,其他的可能就无法做到了.该设备允许管道从线路中输出或向其输入低密度的蒸汽.
-research.FSC.1=As an alternative to manually extracting liquid steam, I can disengage the pump ring of the Pressure Converter by using a wrench while sneaking. This will use the system's high pressure to force fluid steam into nearby tanks. However, doing so will prevent the Pressure Converter from converting liquid steam back into high pressure.
-research.FSC.2=The rate at which the Pressure Converter ejects fluid steam depends on the pressure in the system. Operating at high pressure, I have witnessed no less than 4 buckets of steam per second.
+research.FSC.1=提取流体蒸汽也可手动切换,潜行时用扳手调节即可.接着它就会利用系统中的压力来向邻近的储罐输入流体蒸汽.这样也会阻止压力转换器将流体蒸汽转回压力.
+research.FSC.2=压力转换器输出流体蒸汽的速率取决于系统中的压强.压强较高的情况下1秒可以产生不少于4桶的蒸汽.
 
 category.Exosuit.name=机械护甲
 research.Exosuit.name=机械护甲
