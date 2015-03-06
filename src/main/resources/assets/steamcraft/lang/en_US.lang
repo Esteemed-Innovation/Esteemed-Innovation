@@ -89,8 +89,6 @@ research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted t
 research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
 
-
-
 category.MetalCasting.name=Metal Casting
 research.Crucible.name=Crucible
 research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!<br>To use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.
@@ -223,7 +221,6 @@ research.ExoLeg.name=Leg Slot
 research.ExoHeel.name=Heel Slot
 research.ExoFoot.name=Foot Slot
 
-
 research.Jetpack.name=Steam Jetpack
 research.Jetpack.0=I've developed a rather exciting exosuit upgrade that grants me the power of flight.<br>This steam 'jetpack' of sorts consumes a substantial amount of steam, but you can't put a price tag on flight.
 research.Wings.name=Steam Wings
@@ -320,7 +317,6 @@ category.Automation.name=Automation
 research.BlockPlacer.name=Plonker
 research.BlockPlacer.0=I may have a machine that will smash the blocks I place down, but I'm too busy flying around with my exosuit to bother continuously placing blocks down there to keep up with my demands. So, I have created this machine, the Plonker. It will place the block given to it in front of it.
 
-
 itemGroup.steamcraft=FSP
 itemGroup.steamcraftTools=FSP Tools
 steamcraft.enhancementText=Enhancements:
@@ -368,7 +364,6 @@ item.steamcraft:monacle.name=Tinkerer's Monocle
 item.steamcraft:goggles.name=Tinkerer's Goggles
 item.steamcraft:tophatNoEmerald.name=Top Hat
 item.steamcraft:tophat.name=Entrepreneur's Top Hat
-
 
 item.steamcraft:ingot.0.name=Copper Ingot
 item.steamcraft:ingot.1.name=Zinc Ingot
@@ -494,12 +489,12 @@ item.steamcraft:canister.name=Item Canister
 
 item.steamcraft:kek.name=Toppest of Keks
 
-
 item.steamcraft:steamedChicken.name=Steamed Chicken
 item.steamcraft:steamedBeef.name=Steamed Beef
 item.steamcraft:steamedFish.name=Steamed Fish
 item.steamcraft:steamedPorkchop.name=Steamed Porkchop
 item.steamcraft:steamedImphide.name=Steamed Imphide
+item.steamcraft:steamedSalmon.name=Steamed Salmon
 
 item.toolHead.headAxeBrass.name=Brass Axe Head
 item.toolHead.headPickaxeBrass.name=Brass Pickaxe Head
