@@ -26,15 +26,15 @@ public class ItemSteamcraftBook extends Item {
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
-        if(entityPlayer.isSneaking()) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
+        if(player.isSneaking() && !world.isRemote) {
             Block block = world.getBlock(x, y, z);
-            ItemStack stack = block.getPickBlock(new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(fx, fy, fz)), world, x, y, z);
+            ItemStack stack = block.getPickBlock(new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(fx, fy, fz)), world, x, y, z, player);
 
             if (stack != null) {
                 for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
                     if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
-                        entityPlayer.openGui(Steamcraft.instance, 1, entityPlayer.worldObj, 0, 0, 0);
+                        player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
                         GuiSteamcraftBook.viewing = SteamcraftRegistry.bookRecipes.get(stack2).left;
                         GuiSteamcraftBook.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack2).right / 2.0F);
                         GuiSteamcraftBook.lastIndexPage = 1;
