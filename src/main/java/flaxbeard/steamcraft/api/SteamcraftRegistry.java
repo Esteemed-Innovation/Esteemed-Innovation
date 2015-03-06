@@ -33,8 +33,7 @@ public class SteamcraftRegistry {
     public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamedFoods = new HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>>();
     private static int nextEnhancementID = 0;
 
-    public static void addSteamFood(Item food1, int i,
-                                    Item food2, int j) {
+    public static void addSteamFood(Item food1, int i, Item food2, int j) {
         steamedFoods.put(MutablePair.of(food1, i), MutablePair.of(food2, j));
     }
 

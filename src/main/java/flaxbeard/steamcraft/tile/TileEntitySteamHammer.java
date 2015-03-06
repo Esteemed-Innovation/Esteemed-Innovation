@@ -94,16 +94,18 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 hammerTicks = (hammerTicks + 5) % 360;
                 switch (hammerTicks) {
                     case 15:
-                        playHammerSound("random.anvil_land", Block.soundTypeAnvil.getVolume(),
-                          (float) (0.75F + (Math.random() * 0.1F)));
-                        break;
-                    case 40:
+                    case 40: {
                         playHammerSound("random.anvil_land", Block.soundTypeAnvil.getVolume(),
                           (float) (0.75 + (Math.random() * 0.1F)));
                         break;
-                    case 170:
+                    }
+                    case 170: {
                         playHammerSound("steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
                         break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
             } else {
                 if (this.isWorking) {

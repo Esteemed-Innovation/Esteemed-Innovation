@@ -398,7 +398,6 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                 me.stackTagCompound.setInteger("maxFill", 0);
             }
             if (me.stackTagCompound.getInteger("steamFill") > powerNeeded) {
-
                 return true;
             }
         }
@@ -406,8 +405,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     }
 
     public boolean hasUpgrade(ItemStack me, Item check) {
-        if (check == null)
+        if (check == null) {
             return false;
+        }
 
         if (me.hasTagCompound()) {
             if (me.stackTagCompound.hasKey("inv")) {
