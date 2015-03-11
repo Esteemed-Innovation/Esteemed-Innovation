@@ -4,12 +4,8 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.IWorldGenerator;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.api.util.SPLog;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -20,17 +16,35 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        String[] zincArray = Config.zincDims.split(";");
-        final int[] zincIDs = new int[zincArray.length];
-        for (int i = 0; i < zincArray.length; i++) {
-            zincIDs[i] = Integer.parseInt(zincArray[i]);
-        }
+        try {
+            String zincDims = Config.zincDims.replaceAll("[a-zA-Z\\s]", "");
+            String[] zincArray = zincDims.split(";");
+            final int[] zincIDs = new int[zincArray.length];
+            for (int i = 0; i < zincArray.length; i++) {
+                zincIDs[i] = Integer.parseInt(zincArray[i]);
+            }
+            for (int id : zincIDs) {
+                if (id == world.provider.dimensionId) {
+                    generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
+                }
+            }
+        } catch (NumberFormatException exception) {} //This exception needs to be ignored for when
+                                                     //the value is empty/null/nada.
 
-        String[] copperArray = Config.copperDims.split(";");
-        final int[] copperIDs = new int[copperArray.length];
-        for (int i = 0; i < copperArray.length; i++) {
-            copperIDs[i] = Integer.parseInt(copperArray[i]);
-        }
+        try {
+            String copperDims = Config.copperDims.replaceAll("[a-zA-Z\\s]", "");
+            String[] copperArray = copperDims.split(";");
+            final int[] copperIDs = new int[copperArray.length];
+            for (int i = 0; i < copperArray.length; i++) {
+                copperIDs[i] = Integer.parseInt(copperArray[i]);
+            }
+            for (int id : copperIDs) {
+                if (id == world.provider.dimensionId) {
+                    generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
+                }
+            }
+        } catch (NumberFormatException exception) {} //This exception needs to be ignored for when
+                                                     //the value is empty/null/nada.
 
         switch (world.provider.dimensionId) {
             case -1: {
@@ -44,18 +58,6 @@ public class SteamcraftOreGen implements IWorldGenerator {
             case 1: {
                 generateEnd(world, random, chunkX * 16, chunkZ * 16);
                 break;
-            }
-        }
-
-        for (int id : copperIDs) {
-            if (id == world.provider.dimensionId) {
-                generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
-            }
-        }
-
-        for (int id : zincIDs) {
-            if (id == world.provider.dimensionId) {
-                generateExtra(world, random, chunkX * 16, chunkZ * 16, id);
             }
         }
     }
@@ -139,10 +141,13 @@ public class SteamcraftOreGen implements IWorldGenerator {
                     (new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 7, Blocks.stone)).generate(world, random, x, y, z);
                 }
             }
-        //} else {
-        //    String error = "THE FLAXBEARD'S STEAM POWER CONFIG OPTION FOR ADDITIONAL DIMENSIONS TO GENERATE ZINC AND COPPER CANNOT HAVE 0, -1, OR 1. PLEASE FIX THIS, THEN CONTINUE. THANK YOU.";
-        //    FMLLog.bigWarning(error);
+        /*
+        } else {
+            String error = "THE FLAXBEARD'S STEAM POWER CONFIG OPTION FOR ADDITIONAL DIMENSIONS TO GENERATE ZINC AND COPPER CANNOT HAVE 0, -1, OR 1. PLEASE FIX THIS, THEN CONTINUE. THANK YOU.";
+            FMLLog.bigWarning(error);
+        */
         }
+
     }
 
     public boolean checkConfigForInvalidIntegers(int id) {
