@@ -85,6 +85,7 @@ public class Config {
     public static int villagerId;
 
     public static boolean wimpMode;
+    public static boolean enableRedstoneValvePipe;
 
     // blocks
     public static boolean enableBlockPlacer;
@@ -327,6 +328,7 @@ public class Config {
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
+        enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
 
         //INTEGRATION
