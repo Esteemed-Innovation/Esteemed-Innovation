@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
