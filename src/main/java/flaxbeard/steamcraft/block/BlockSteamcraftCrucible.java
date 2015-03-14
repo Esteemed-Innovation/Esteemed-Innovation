@@ -1,13 +1,18 @@
 package flaxbeard.steamcraft.block;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -25,7 +31,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.MutablePair;
+import thaumcraft.api.ItemApi;
 
+@Optional.Interface(iface = "thaumcraft.api.ItemApi", modid = "Thaumcraft")
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
 
     private static float px = (1.0F / 16.0F);
@@ -64,11 +72,28 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         return 0;
     }
 
+    public boolean isCrucibleHeated(World world, int x, int y, int z) {
+        if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y - 1, z) == Blocks.fire ||
+          world.getBlock(x, y - 1, z).getMaterial() == Material.lava) {
+            return true;
+        }
+        if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible) {
+            ItemStack block = new ItemStack(world.getBlock(x, y - 1, z));
+            ItemStack nitor = ItemApi.getBlock("itemResource", 1);
+            if (block == nitor) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y - 1, z) == Blocks.fire || world.getBlock(x, y - 1, z).getMaterial() == Material.lava) {
+            if (isCrucibleHeated(world, x, y, z)) {
                 MutablePair output;
                 if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
                     output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
