@@ -44,6 +44,7 @@ public class Config {
 
     public static boolean easterEggs;
 
+    public static boolean enableNitorPoweredCrucible;
     public static boolean enableThaumcraftIntegration;
     public static boolean enableBotaniaIntegration;
     public static boolean enableEnchiridionIntegration;
@@ -333,6 +334,7 @@ public class Config {
 
         //INTEGRATION
         enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean(true);
+        enableNitorPoweredCrucible = config.get("Integration", "Allow the Thaumcraft Nitor to power the Crucible", true).getBoolean(true);
         enableBotaniaIntegration = config.get("Integration", "Enable Botania", true).getBoolean(true);
         enableEnchiridionIntegration = config.get("Integration", "Enable Enchiridion", true).getBoolean(true);
         enableTwilightForestIntegration = config.get("Integration", "Enable Twilight Forest", true).getBoolean(true);

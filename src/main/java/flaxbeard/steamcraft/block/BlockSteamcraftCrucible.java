@@ -2,12 +2,17 @@ package flaxbeard.steamcraft.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
+import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -64,11 +69,24 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         return 0;
     }
 
+    public boolean isCrucibleHeated(World world, int x, int y, int z) {
+        Block blockUnderCrucible = world.getBlock(x, y - 1, z);
+        if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
+          blockUnderCrucible.getMaterial() == Material.lava) {
+            return true;
+        } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible &&
+          ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y - 1, z) == Blocks.fire || world.getBlock(x, y - 1, z).getMaterial() == Material.lava) {
+            if (isCrucibleHeated(world, x, y, z)) {
                 MutablePair output;
                 if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
                     output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
