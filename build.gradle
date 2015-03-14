@@ -20,7 +20,7 @@ apply plugin: 'forge'
 
 version = newFSPVersion
 group = "com.flaxbeard.Steamcraft"
-archivesBaseName = "Flaxbeard'sSteamPower"
+archivesBaseName = "Flaxbeard'sSteamPower-1.7.10"
 
 
 minecraft {
