@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -10,6 +9,7 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
+import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 
 import net.minecraft.block.Block;
@@ -21,8 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -32,9 +30,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.MutablePair;
-import thaumcraft.api.ItemApi;
 
-@Optional.Interface(iface = "thaumcraft.api.ItemApi", modid = "Thaumcraft")
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
 
     private static float px = (1.0F / 16.0F);
@@ -78,18 +74,9 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
           blockUnderCrucible.getMaterial() == Material.lava) {
             return true;
-        } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible) {
-            ItemStack nitorStack = ItemApi.getBlock("blockAiry", 1);
-            if (nitorStack.getItem() instanceof ItemBlock) {
-                Block nitorBlock = ((ItemBlock)nitorStack.getItem()).field_150939_a;
-                if (blockUnderCrucible == nitorBlock) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
+        } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible &&
+          ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
+            return true;
         } else {
             return false;
         }
