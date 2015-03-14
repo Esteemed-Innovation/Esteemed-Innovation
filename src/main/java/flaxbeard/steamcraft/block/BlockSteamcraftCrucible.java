@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -73,20 +74,25 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     public boolean isCrucibleHeated(World world, int x, int y, int z) {
-        if (this == SteamcraftBlocks.hellCrucible || world.getBlock(x, y - 1, z) == Blocks.fire ||
-          world.getBlock(x, y - 1, z).getMaterial() == Material.lava) {
+        Block blockUnderCrucible = world.getBlock(x, y - 1, z);
+        if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
+          blockUnderCrucible.getMaterial() == Material.lava) {
             return true;
-        }
-        if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible) {
-            ItemStack block = new ItemStack(world.getBlock(x, y - 1, z));
-            ItemStack nitor = ItemApi.getBlock("itemResource", 1);
-            if (block == nitor) {
-                return true;
+        } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible) {
+            ItemStack nitorStack = ItemApi.getBlock("blockAiry", 1);
+            if (nitorStack.getItem() instanceof ItemBlock) {
+                Block nitorBlock = ((ItemBlock)nitorStack.getItem()).field_150939_a;
+                if (blockUnderCrucible == nitorBlock) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override
