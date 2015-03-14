@@ -13,11 +13,16 @@ import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
+
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import thaumcraft.api.ItemApi;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
@@ -44,6 +49,7 @@ public class ThaumcraftIntegration {
     public static Item thaumSource;
 
     public static void grabItems() {
+        //This is a really dumb way to do this.
         itemResource = GameRegistry.findItem("Thaumcraft", "ItemResource");
         itemGoggles = GameRegistry.findItem("Thaumcraft", "ItemGoggles");
         itemNugget = GameRegistry.findItem("Thaumcraft", "ItemNugget");
@@ -117,6 +123,21 @@ public class ThaumcraftIntegration {
 
     public static Item gogglesRevealing() {
         return itemGoggles;
+    }
+
+    public static boolean isNitorUnderBlock(World world, int x, int y, int z) {
+        Block blockUnder = world.getBlock(x, y - 1, z);
+        ItemStack nitorStack = ItemApi.getBlock("blockAiry", 1);
+        if (nitorStack.getItem() instanceof ItemBlock) {
+            Block nitorBlock = ((ItemBlock)nitorStack.getItem()).field_150939_a;
+            if (blockUnder == nitorBlock) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     @SideOnly(Side.CLIENT)
