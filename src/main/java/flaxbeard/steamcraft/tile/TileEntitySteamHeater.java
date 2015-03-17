@@ -3,12 +3,9 @@ package flaxbeard.steamcraft.tile;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.block.BlockSteamHeater;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -157,7 +154,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
         }
     }
 
-    private boolean canSmelt(TileEntityFurnace furnace) {
+    public boolean canSmelt(TileEntityFurnace furnace) {
         if (furnace.getStackInSlot(0) == null) {
             return false;
         } else {

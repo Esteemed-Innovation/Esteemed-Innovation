@@ -39,11 +39,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     public int range = 9;
     private boolean isInitialized = false;
 
-    static public boolean isLyingInCone(float[] x, float[] t, float[] b,
-                                        float aperture) {
+    public static boolean isLyingInCone(float[] x, float[] t, float[] b, float aperture) {
 
         // This is for our convenience
-        float halfAperture = aperture / 2.f;
+        float halfAperture = aperture / 2.F;
 
         // Vector pointing to X point from apex
         float[] apexToXVect = dif(t, x);
@@ -57,14 +56,16 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         // We'll use dotProd() to
         // determine angle between apexToXVect and axis.
         boolean isInInfiniteCone = dotProd(apexToXVect, axisVect)
-                / magn(apexToXVect) / magn(axisVect)
+          / magn(apexToXVect) / magn(axisVect)
                 >
                 // We can safely compare cos() of angles
                 // between vectors instead of bare angles.
                 Math.cos(halfAperture);
 
 
-        if (!isInInfiniteCone) return false;
+        if (!isInInfiniteCone) {
+            return false;
+        }
 
         // X is contained in cone only if projection of apexToXVect to axis
         // is shorter than axis.
@@ -76,11 +77,11 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         return isUnderRoundCap;
     }
 
-    static public float dotProd(float[] a, float[] b) {
+    public static float dotProd(float[] a, float[] b) {
         return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
     }
 
-    static public float[] dif(float[] a, float[] b) {
+    public static float[] dif(float[] a, float[] b) {
         return (new float[]{
                 a[0] - b[0],
                 a[1] - b[1],
@@ -88,7 +89,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         });
     }
 
-    static public float magn(float[] a) {
+    public static float magn(float[] a) {
         return (float) (Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]));
     }
 
