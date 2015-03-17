@@ -11,6 +11,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -71,11 +72,18 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     public boolean isCrucibleHeated(World world, int x, int y, int z) {
         Block blockUnderCrucible = world.getBlock(x, y - 1, z);
+        TileEntity tileUnderCrucible = world.getTileEntity(x, y - 1, z);
+        TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
+
         if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
           blockUnderCrucible.getMaterial() == Material.lava) {
             return true;
         } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible &&
           ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
+            return true;
+        } else if (tileUnderCrucible instanceof TileEntitySteamHeater &&
+          steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() > 20) {
+            steamHeater.decrSteam(20);
             return true;
         } else {
             return false;

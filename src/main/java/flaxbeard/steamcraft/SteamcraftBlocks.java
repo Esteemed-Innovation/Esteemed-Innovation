@@ -182,10 +182,15 @@ public class SteamcraftBlocks {
             saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(saw, "saw");
         }*/
-    	if(Config.enableBlockPlacer){
+    	if (Config.enableBlockPlacer) {
     		blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
     		GameRegistry.registerBlock(blockPlacer, "blockPlacer");
     	}
+        if (Config.enableGenocide) {
+            genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab)
+              .setBlockName("steamcraft:genocide").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(genocide, "genocide");
+        }
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(pump, "pump");
@@ -239,10 +244,6 @@ public class SteamcraftBlocks {
             vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(vacuum, "vacuum");
         }
-        if (Config.enableGenocide){
-            genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:genocide").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
-            GameRegistry.registerBlock(genocide, "genocide");
-        }
 
 //		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
 //		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
@@ -254,16 +255,6 @@ public class SteamcraftBlocks {
 //		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
 //		
     }
-
-    /*
-    public static void registerAuto(){
-
-        if (Config.enableBlockPlacer){
-            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
-            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-        }
-    }
-    */
 
     public static void registerMisc() {
         if (Config.enableEngineering) {
