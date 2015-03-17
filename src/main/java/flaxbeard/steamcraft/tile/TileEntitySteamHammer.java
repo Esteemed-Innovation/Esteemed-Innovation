@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
@@ -19,14 +21,15 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory, ISteamTransporter {
-    public int hammerTicks = 0;
-    public String itemName = "";
-    public int cost = 0;
-    public int progress = 0;
-    private boolean isInitialized = false;
-    private boolean isWorking = false;
-    private boolean hadItem = false;
-    private ItemStack[] inventory = new ItemStack[3];
+    public  int         hammerTicks      = 0;
+    public  String      itemName         = "";
+    public  int         cost             = 0;
+    public  int         progress         = 0;
+    private boolean     isInitialized    = false;
+    private boolean     isWorking        = false;
+    private boolean     hadItem          = false;
+    private ItemStack[] inventory        = new ItemStack[3];
+    private int         steamConsumption = Config.hammerConsumption;
 
     public TileEntitySteamHammer() {
         super(ForgeDirection.VALID_DIRECTIONS);
@@ -52,7 +55,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
                         Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F *
-                          dir.offsetX, yCoord, zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil,
+                            dir.offsetX, yCoord, zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil,
                           (float) (Math.random() - 0.5F) / 12.0F, 0.0F, (float)
                           (Math.random() - 0.5F) / 12.0F);
                     }
@@ -76,8 +79,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             }
             if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
                 if (hammerTicks == 0) {
-                    if (this.getSteamShare() > 4000) {
-                        this.decrSteam(4000);
+                    if (this.getSteamShare() >= steamConsumption) {
+                        this.decrSteam(steamConsumption);
                         if (!this.isWorking) {
                             this.isWorking = true;
                             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
