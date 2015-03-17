@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,11 +11,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler, ISteamTransporter {
-    public FluidTank myTank = new FluidTank(1000);
-    public int progress = 0;
-    public int rotateTicks = 0;
-    private boolean running = false;
 
+    public  FluidTank myTank           = new FluidTank(1000);
+    public  int       progress         = 0;
+    public  int       rotateTicks      = 0;
+    private boolean   running          = false;
+    private int       steamConsumption = Config.screwConsumption;
 
     public TileEntityPump() {
         super(ForgeDirection.VALID_DIRECTIONS);
@@ -140,14 +142,14 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             int x = this.xCoord + inputDir.offsetX;
             int y = this.yCoord + inputDir.offsetY;
             int z = this.zCoord + inputDir.offsetZ;
-            if (this.getSteamShare() >= 100 && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
+            if (this.getSteamShare() >= steamConsumption && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
                 Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z));
                 if (myTank.getFluidAmount() < 1000) {
                     this.myTank.fill(new FluidStack(fluid, 1000), true);
                     this.worldObj.setBlockToAir(x, y, z);
                     this.worldObj.markBlockForUpdate(x, y, z);
                     progress = 0;
-                    this.decrSteam(100);
+                    this.decrSteam(steamConsumption);
                     ////Steamcraft.log.debug("cycle start");
                     this.running = true;
                     this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

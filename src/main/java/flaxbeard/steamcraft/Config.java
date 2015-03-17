@@ -80,7 +80,11 @@ public class Config {
     public static int thrusterConsumption;
     public static int runAssistConsumption;
     public static int powerFistConsumption;
-
+    public static int hammerConsumption;
+    public static int fanConsumption;
+    public static int screwConsumption;
+    public static int heaterConsumption;
+    public static int vacuumConsumption;
 
 
     public static int villagerId;
@@ -265,6 +269,13 @@ public class Config {
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean(true);
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean(true);
         enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
+
+        // BLOCK CONSUMPTION RATES
+        hammerConsumption = config.get("Consumption", "Steam Hammer consumption", 4000).getInt();
+        fanConsumption = config.get("Consumption", "Fan consumption", 1).getInt();
+        screwConsumption = config.get("Consumption", "Archimedes Screw consumption", 100).getInt();
+        heaterConsumption = config.get("Consumption", "Steam Heater consumption", 20).getInt();
+        vacuumConsumption = config.get("Consumption", "Vacuum consumption", 3).getInt();
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);

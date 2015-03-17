@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
@@ -31,12 +33,13 @@ import java.util.List;
 
 public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
 
-    private static int steamUsage = 3;
+
+    private static int steamUsage = Config.vacuumConsumption;
     public boolean active;
-    public boolean powered = false;
-    public boolean lastSteam = false;
-    public int rotateTicks = 0;
-    public int range = 9;
+    public  boolean powered       = false;
+    public  boolean lastSteam     = false;
+    public  int     rotateTicks   = 0;
+    public  int     range         = 9;
     private boolean isInitialized = false;
 
     public static boolean isLyingInCone(float[] x, float[] t, float[] b, float aperture) {
@@ -57,10 +60,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         // determine angle between apexToXVect and axis.
         boolean isInInfiniteCone = dotProd(apexToXVect, axisVect)
           / magn(apexToXVect) / magn(axisVect)
-                >
-                // We can safely compare cos() of angles
-                // between vectors instead of bare angles.
-                Math.cos(halfAperture);
+          >
+          // We can safely compare cos() of angles
+          // between vectors instead of bare angles.
+          Math.cos(halfAperture);
 
 
         if (!isInInfiniteCone) {

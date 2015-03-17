@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.block;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -74,16 +75,16 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         Block blockUnderCrucible = world.getBlock(x, y - 1, z);
         TileEntity tileUnderCrucible = world.getTileEntity(x, y - 1, z);
         TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
+        int steam = Config.heaterConsumption;
 
         if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
-          blockUnderCrucible.getMaterial() == Material.lava) {
-            return true;
-        } else if (Config.enableThaumcraftIntegration && Config.enableNitorPoweredCrucible &&
+          blockUnderCrucible.getMaterial() == Material.lava || Config.enableThaumcraftIntegration &&
+          Config.enableNitorPoweredCrucible && Loader.isModLoaded("Thaumcraft") &&
           ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
             return true;
         } else if (tileUnderCrucible instanceof TileEntitySteamHeater &&
-          steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() > 20) {
-            steamHeater.decrSteam(20);
+          steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() >= steam) {
+            steamHeater.decrSteam(steam);
             return true;
         } else {
             return false;
