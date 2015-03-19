@@ -71,12 +71,11 @@ public class SteamcraftBlocks {
     public static Block customFurnaceOff;
 
     public static void registerBlocks() {
-
         registerMetals();
         registerCasting();
         registerSteamnet();
         registerSteamMachines();
-        //registerAuto();
+        registerAdvancedAutomationMachines();
         registerMisc();
     }
 
@@ -177,20 +176,24 @@ public class SteamcraftBlocks {
         */
     }
 
-    public static void registerSteamMachines() {/* Uncomment this when doing work on the buzzsaw.
-        if (Config.enableSaw){
-            saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
+    public static void registerAdvancedAutomationMachines() {
+        if (Config.enableSaw) {
+            saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw")
+              .setHardness(5.0F).setResistance(10.F);
             GameRegistry.registerBlock(saw, "saw");
-        }*/
-    	if (Config.enableBlockPlacer) {
-    		blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
-    		GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-    	}
+        }
+        if (Config.enableBlockPlacer) {
+            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
+        }
         if (Config.enableGenocide) {
             genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab)
               .setBlockName("steamcraft:genocide").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(genocide, "genocide");
         }
+    }
+
+    public static void registerSteamMachines() {
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(pump, "pump");
