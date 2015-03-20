@@ -28,14 +28,20 @@ minecraft {
     runDir = "eclipse"
 	replace "@VERSION@", project.version
 }
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+            exclude 'assets/baubles'
+            exclude 'baubles'
+            exclude 'duke605'
+            exclude 'ic2'
+            exclude 'META-INF'
+            exclude 'thaumcraft'
+            exclude 'vazkii'
+            exclude 'changelog.txt'
+            exclude 'BLogo.png'
+            exclude 'pack.mcmeta'
+       }
+   }
 }
