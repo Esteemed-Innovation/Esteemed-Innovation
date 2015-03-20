@@ -27,7 +27,6 @@ public class SteamcraftBlocks {
     public static Block carving;
 
     // steam net
-    public static Block blockPlacer;
     public static Block boiler;
     public static Block boilerOn;
     public static Block flashBoiler;
@@ -46,14 +45,11 @@ public class SteamcraftBlocks {
     // steam machines
     public static Block heater;
     public static Block charger;
-    public static Block genocide;
     public static Block hammer;
-    public static Block conveyor;
     public static Block itemMortar;
     public static Block thumper;
     public static Block thumperDummy;
     public static Block chargingPad;
-    public static Block saw;
 
     public static Block fan;
     public static Block vacuum;
@@ -71,12 +67,10 @@ public class SteamcraftBlocks {
     public static Block customFurnaceOff;
 
     public static void registerBlocks() {
-
         registerMetals();
         registerCasting();
         registerSteamnet();
         registerSteamMachines();
-        //registerAuto();
         registerMisc();
     }
 
@@ -177,20 +171,7 @@ public class SteamcraftBlocks {
         */
     }
 
-    public static void registerSteamMachines() {/* Uncomment this when doing work on the buzzsaw.
-        if (Config.enableSaw){
-            saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
-            GameRegistry.registerBlock(saw, "saw");
-        }*/
-    	if (Config.enableBlockPlacer) {
-    		blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
-    		GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-    	}
-        if (Config.enableGenocide) {
-            genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab)
-              .setBlockName("steamcraft:genocide").setHardness(5.0F).setResistance(10.0F);
-            GameRegistry.registerBlock(genocide, "genocide");
-        }
+    public static void registerSteamMachines() {
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(pump, "pump");
