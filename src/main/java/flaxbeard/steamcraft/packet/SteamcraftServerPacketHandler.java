@@ -254,7 +254,9 @@ public class SteamcraftServerPacketHandler {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e.getClass() != NullPointerException.class) {
+                e.printStackTrace();
+            }
             return;
         }
     }
