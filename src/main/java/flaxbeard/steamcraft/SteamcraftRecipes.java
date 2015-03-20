@@ -129,7 +129,6 @@ public class SteamcraftRecipes {
             registerSteamNet();
             registerSteamMachines();
             registerMetalCrafting();
-            registerAuto();
         }
     }
 
@@ -743,20 +742,5 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerSmeltThingOredict("dustZinc", liquidZinc, 9);
         SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
         SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
-    }
-
-    public static void registerAuto(){
-        if (Config.enableBlockPlacer) {
-            BookRecipeRegistry.addRecipe("blockPlacer", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockPlacer),
-                    "ZQZ",
-                    "YXQ",
-                    "ZQZ",
-                    'X', new ItemStack(Blocks.dispenser), 'Z', "plateSteamcraftBrass", 'Q', "plateSteamcraftIron", 'Y', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
-            BookRecipeRegistry.addRecipe("blockPlacer1", new ShapedOreRecipe(new ItemStack(SteamcraftBlocks.blockPlacer),
-                    "ZQZ",
-                    "YXQ",
-                    "ZQZ",
-                    'X', new ItemStack(Blocks.dispenser), 'Z', "ingotBrass", 'Q', "ingotIron", 'Y', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
-        }
     }
 }
