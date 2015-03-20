@@ -87,10 +87,6 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
 
-        TileEntitySpecialRenderer renderConveyor = new TileEntityConveyorRenderer();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConveyor.class, new TileEntityConveyorRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.conveyor), new ItemTESRRenderer((IInventoryTESR) renderConveyor, new TileEntityConveyor()));
-
         TileEntitySpecialRenderer renderItemMortar = new TileEntityItemMortarRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.itemMortar), new ItemTESRRenderer((IInventoryTESR) renderItemMortar, new TileEntityItemMortar()));
