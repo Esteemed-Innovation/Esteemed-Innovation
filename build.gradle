@@ -32,16 +32,7 @@ sourceSets {
     main {
         java {
             srcDir 'src'
-            exclude 'assets/baubles'
-            exclude 'baubles'
-            exclude 'duke605'
-            exclude 'ic2'
-            exclude 'META-INF'
-            exclude 'thaumcraft'
-            exclude 'vazkii'
-            exclude 'changelog.txt'
-            exclude 'BLogo.png'
-            exclude 'pack.mcmeta'
+            exclude 'api'
        }
    }
 }
