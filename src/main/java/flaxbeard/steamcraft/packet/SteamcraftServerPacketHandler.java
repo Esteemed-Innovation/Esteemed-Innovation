@@ -47,8 +47,7 @@ public class SteamcraftServerPacketHandler {
             out.writeDouble(yChange);
             out.writeDouble(zChange);
 
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendTo(packet, player);
         try {
@@ -70,8 +69,7 @@ public class SteamcraftServerPacketHandler {
             out.writeDouble(x);
             out.writeDouble(y);
             out.writeDouble(z);
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToAllAround(packet, new TargetPoint(dimension, x, y, z, z));
         try {
@@ -94,8 +92,7 @@ public class SteamcraftServerPacketHandler {
             out.writeDouble(entityRocket.posZ);
             out.writeFloat(entityRocket.explosionSize);
 
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToDimension(packet, entityRocket.worldObj.provider.dimensionId);
         try {
@@ -152,10 +149,9 @@ public class SteamcraftServerPacketHandler {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return;
-        }
+		}
     }
 
     private void handleCamoPacket(ByteBufInputStream dat, World world) {
@@ -217,9 +213,7 @@ public class SteamcraftServerPacketHandler {
                     }
                 }
             }
-        } catch (Exception e) {
-            return;
-        }
+        } catch (IOException ignored) {}
     }
 
     private void handleDRPacket(ByteBufInputStream dat, World world) {
@@ -235,9 +229,7 @@ public class SteamcraftServerPacketHandler {
                     ((TileEntitySteamPipe) world.getTileEntity(x, y, z)).connectDisconnect(world, x, y, z, subHit);
                 }
             }
-        } catch (Exception e) {
-            return;
-        }
+        } catch (IOException ignored) {}
     }
 
     private void handleNoSpacePacket(ByteBufInputStream dat, World world) {
@@ -253,12 +245,9 @@ public class SteamcraftServerPacketHandler {
                     }
                 }
             }
-        } catch (Exception e) {
-            if (e.getClass() != NullPointerException.class) {
-                e.printStackTrace();
-            }
-            return;
-        }
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     private void handleItemNamePacket(ByteBufInputStream dat, World world) {
@@ -278,10 +267,9 @@ public class SteamcraftServerPacketHandler {
                     anvil.updateItemName(s);
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return;
-        }
+		}
     }
 
     private void handleGrapplePacket(ByteBufInputStream dat, World world) {
@@ -310,10 +298,9 @@ public class SteamcraftServerPacketHandler {
                 player.motionZ = 0.0F;
                 player.fallDistance = 0.0F;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return;
-        }
+		}
     }
 
     @SubscribeEvent
@@ -351,7 +338,6 @@ public class SteamcraftServerPacketHandler {
             bbis.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return;
-        }
+		}
     }
 }
