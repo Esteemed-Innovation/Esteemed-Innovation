@@ -77,7 +77,8 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
         int steam = Config.heaterConsumption;
 
-        if (this == SteamcraftBlocks.hellCrucible || blockUnderCrucible == Blocks.fire ||
+        if (this == SteamcraftBlocks.hellCrucible ||
+          blockUnderCrucible.getMaterial() == Material.fire ||
           blockUnderCrucible.getMaterial() == Material.lava || Config.enableThaumcraftIntegration &&
           Config.enableNitorPoweredCrucible && Loader.isModLoaded("Thaumcraft") &&
           ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
