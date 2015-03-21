@@ -28,6 +28,7 @@ minecraft {
     runDir = "eclipse"
 	replace "@VERSION@", project.version
 }
+
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
@@ -35,4 +36,8 @@ processResources {
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'api'
+        include 'steamcraft/api'
     }
+}
+
