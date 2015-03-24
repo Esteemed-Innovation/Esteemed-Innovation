@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.api.util.Coord4;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -25,10 +26,6 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
 
     Block placingBlock;
     int placingMeta;
-
-    // #################################################
-    // #              NBT/Packet Stuff                 #
-    // #################################################
     @Override
     public void readFromNBT(NBTTagCompound access)
     {
@@ -100,10 +97,6 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
         this.placingMeta = access.getInteger("placingMeta");
     }
 
-
-    // #################################################
-    // #              IInventory stuff                 #
-    // #################################################
     @Override
     public int getSizeInventory() {
         return this.inventory.length;
@@ -182,11 +175,6 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
         return false;
     }
 
-
-    // #################################################
-    // #                   Custom                      #
-    // #################################################
-
     private boolean hasItem(){
         if (this.getStackInSlot(0) != null){
             return true;
@@ -216,14 +204,15 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
             }
         } else {
             if (this.hasItem() &&
-                    worldObj.isAirBlock(target.x, target.y, target.z) &&
-                    worldObj.getTileEntity(target.x, target.y, target.z) == null
-                    ){
-                if (workingTick == 0){
-                    if (this.getSteamShare() > 100){
+              worldObj.isAirBlock(target.x, target.y, target.z) &&
+              worldObj.getTileEntity(target.x, target.y, target.z) == null
+              ) {
+                if (workingTick == 0) {
+                    if (this.getSteamShare() > 100) {
                         this.decrSteam(100);
-                        worldObj.playSoundEffect(xCoord + 0.5D, yCoord+0.5D, zCoord + 0.5D, "steamcraft:hiss", 0.3F, 1.5F);
-                        if (!wasRunning){
+                        worldObj.playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D,
+                          "steamcraft:hiss", 0.3F, 1.5F);
+                        if (!wasRunning) {
                             //log.debug("is now running");
                             this.wasRunning = true;
                         }
@@ -236,14 +225,16 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
                         this.workingTick++;
                         this.markForUpdate();
                     }
-
-                } else if (workingTick < 20){
+                } else if (workingTick < 20) {
                     this.workingTick++;
                 } else {
                     this.decrStackSize(0, 1);
-                    worldObj.playSoundEffect(target.x+0.5D, target.y+0.5D, target.z+0.5D, this.placingBlock.stepSound.getBreakSound(), 0.5F, (float) (0.75F+(Math.random()*0.1F)));
+                    worldObj.playSoundEffect(target.x + 0.5D, target.y + 0.5D, target.z + 0.5D,
+                      this.placingBlock.stepSound.getBreakSound(), 0.5F,
+                      (float) (0.75F + (Math.random() * 0.1F)));
                     worldObj.setBlock(target.x, target.y, target.z, this.placingBlock);
-                    worldObj.setBlockMetadataWithNotify(target.x, target.y, target.z, placingMeta, 2);
+                    worldObj
+                      .setBlockMetadataWithNotify(target.x, target.y, target.z, placingMeta, 2);
                     this.workingTick = 0;
 
                 }
@@ -254,11 +245,16 @@ public class TileEntityBlockPlacer extends SteamTransporterTileEntity implements
                     this.wasRunning = false;
                     this.markForUpdate();
                 }
+            }
 
+            if (this.hasItem() && worldObj.getBlock(target.x, target.y, target.z)
+              .isReplaceable(worldObj, target.x, target.y, target.z)) {
+                if (worldObj.getTileEntity(target.x, target.y, target.z) != null) {
+                    worldObj.setTileEntity(target.x, target.y, target.z, null);
+                }
+                worldObj.setBlock(target.x, target.y, target.z, Blocks.air);
             }
         }
-
-
     }
 
     private Coord4 getTarget(){

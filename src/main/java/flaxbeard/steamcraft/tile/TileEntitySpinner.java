@@ -23,6 +23,8 @@ public class TileEntitySpinner extends SteamTransporterTileEntity {
 
 	@Override
 	public void updateEntity() {
+		super.updateEntity();
+
 		int x = xCoord;
 		int y = yCoord;
 		int z = zCoord;
@@ -32,8 +34,7 @@ public class TileEntitySpinner extends SteamTransporterTileEntity {
 			isPowered = true;
 		}
 
-
-		if (isPowered && !worldObj.isRemote && getSteamShare() >= cost && spinTicks == 15) {
+		if (isPowered && !worldObj.isRemote && getSteamShare() > cost && spinTicks == 15) {
 			Block blockAboveSpinner = worldObj.getBlock(x, y + 1, z);
 
 			if (blockAboveSpinner.getValidRotations(worldObj, x, y, z) != null) {
