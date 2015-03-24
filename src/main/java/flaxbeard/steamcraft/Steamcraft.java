@@ -149,8 +149,8 @@ public class Steamcraft {
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
         registerTileEntity(TileEntityBlockPlacer.class, "blockPlacer");
-        //registerTileEntity(TileEntitySaw.class, "buzzsaw");
-
+        registerTileEntity(TileEntitySaw.class, "buzzsaw");
+        registerTileEntity(TileEntitySpinner.class, "spinner");
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
 
@@ -245,7 +245,7 @@ public class Steamcraft {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Lead", new ItemStack(SteamcraftItems.exosuitPlate, 1, 11), "Lead", "Lead", "steamcraft.plate.lead"));
             SteamcraftRecipes.addExosuitPlateRecipes("exoLead", "plateSteamcraftLead", new ItemStack(SteamcraftItems.exosuitPlate, 1, 11), liquidLead);
         }
-        
+
         SteamcraftBook.registerBookResearch();
         ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre;
         iso.registerDusts();

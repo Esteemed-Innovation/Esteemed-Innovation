@@ -516,6 +516,7 @@ tile.steamcraft:blockZinc.name=Block of Zinc
 
 tile.steamcraft:saw.name=Buzzsaw
 tile.steamcraft:blockPlacer.name=Block Placer
+tile.steamcraft:spinner.name=Block Spinner
 tile.steamcraft:charger.name=Steam Filler
 tile.steamcraft:chargingPad.name=Filling Pad
 tile.steamcraft:crucible.name=Crucible

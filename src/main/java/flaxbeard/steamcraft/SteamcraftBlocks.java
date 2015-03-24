@@ -54,7 +54,7 @@ public class SteamcraftBlocks {
     public static Block thumperDummy;
     public static Block chargingPad;
     public static Block saw;
-
+    public static Block spinner;
     public static Block fan;
     public static Block vacuum;
     public static Block pump;
@@ -190,6 +190,11 @@ public class SteamcraftBlocks {
             genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab)
               .setBlockName("steamcraft:genocide").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(genocide, "genocide");
+        }
+        if (Config.enableSpinner) {
+            spinner = new BlockSpinner().setCreativeTab(Steamcraft.tab)
+              .setBlockName("steamcraft:spinner").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(spinner, "spinner");
         }
     }
 
