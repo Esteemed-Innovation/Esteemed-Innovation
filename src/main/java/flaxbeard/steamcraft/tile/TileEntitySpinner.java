@@ -34,7 +34,7 @@ public class TileEntitySpinner extends SteamTransporterTileEntity {
 			isPowered = true;
 		}
 
-		if (isPowered && !worldObj.isRemote && getSteamShare() > cost && spinTicks == 15) {
+		if (isPowered && !worldObj.isRemote && getSteamShare() > cost) {
 			Block blockAboveSpinner = worldObj.getBlock(x, y + 1, z);
 
 			if (blockAboveSpinner.getValidRotations(worldObj, x, y, z) != null) {
