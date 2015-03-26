@@ -7,8 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockSpinner extends BlockSteamTransporter {
@@ -20,9 +22,6 @@ public class BlockSpinner extends BlockSteamTransporter {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		if (meta == 0) {
-			meta = 3;
-		}
 		return this.blockIcon;
 	}
 

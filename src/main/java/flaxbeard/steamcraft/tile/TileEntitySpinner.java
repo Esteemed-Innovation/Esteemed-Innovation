@@ -5,6 +5,8 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntitySpinner extends SteamTransporterTileEntity {
@@ -29,36 +31,35 @@ public class TileEntitySpinner extends SteamTransporterTileEntity {
 		int y = yCoord;
 		int z = zCoord;
 
-		ForgeDirection never = ForgeDirection.NORTH;
-		ForgeDirection eat = ForgeDirection.EAST;
-		ForgeDirection soggy = ForgeDirection.SOUTH;
-		ForgeDirection waffles = ForgeDirection.WEST;
-		ForgeDirection[] nesw = {never, eat, soggy, waffles};
-
 		Block blockAbove = worldObj.getBlock(x, y + 1, z);
+
+		ForgeDirection[] nesw = {
+		  ForgeDirection.NORTH,
+		  ForgeDirection.EAST,
+		  ForgeDirection.SOUTH,
+		  ForgeDirection.WEST
+		};
 
 		if (worldObj.isBlockIndirectlyGettingPowered(x, y, z)) {
 			isPowered = true;
 		}
 
-		if (isPowered && !worldObj.isRemote && getSteamShare() > cost && blockAbove != null &&
-		  blockAbove != null && !blockAbove.isAir(worldObj, x, y, z)) {
-			if (blockAbove.getValidRotations(worldObj, x, y, z) != null) {
-				System.out.println(
-				  String.format("%1$s can rotate.", blockAbove.getLocalizedName()));
+		ForgeDirection[] validRotations = blockAbove.getValidRotations(worldObj, x, y, z);
 
-				if (blockAbove.rotateBlock(worldObj, x, y, z, never)) {
+		if (!worldObj.isRemote && getSteamShare() > cost && isPowered &&
+		  !blockAbove.isAir(worldObj, x, y, z) && validRotations != null) {
+			System.out.println(
+			  String.format("%1$s can rotate.", blockAbove.getLocalizedName()));
+			isPowered = false;
+
+			for (ForgeDirection axis : validRotations) {
+				if (blockAbove.rotateBlock(worldObj, x, y, z, axis)) {
 					worldObj.markBlockForUpdate(x, y + 1, z);
-					System.out.println(String.format("Block was rotated to %1$s.", never));
+					System.out.println("Block was rotated");
 					this.decrSteam(cost);
-					isPowered = false;
 				} else {
-					isPowered = false;
 					System.out.println("Block was not rotated.");
 				}
-			} else {
-				System.out.println(
-				  String.format("%1$s cannot rotate.", blockAbove.getLocalizedName()));
 			}
 		}
 	}
