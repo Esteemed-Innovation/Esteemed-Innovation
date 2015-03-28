@@ -74,7 +74,6 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     public boolean isCrucibleHeated(World world, int x, int y, int z) {
         Block blockUnderCrucible = world.getBlock(x, y - 1, z);
         TileEntity tileUnderCrucible = world.getTileEntity(x, y - 1, z);
-        TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
         int steam = Config.heaterConsumption;
 
         if (this == SteamcraftBlocks.hellCrucible ||
@@ -83,13 +82,20 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
           Config.enableNitorPoweredCrucible && Loader.isModLoaded("Thaumcraft") &&
           ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
             return true;
-        } else if (tileUnderCrucible instanceof TileEntitySteamHeater &&
-          steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() >= steam) {
-            steamHeater.decrSteam(steam);
-            return true;
-        } else {
-            return false;
         }
+
+        if (tileUnderCrucible instanceof TileEntitySteamHeater) {
+            TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
+
+            if (steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() >= steam) {
+                steamHeater.decrSteam(steam);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     @Override
