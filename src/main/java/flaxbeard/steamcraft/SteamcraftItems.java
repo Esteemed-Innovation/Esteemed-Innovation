@@ -177,13 +177,13 @@ public class SteamcraftItems {
             musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
             GameRegistry.registerItem(musketCartridge, "musketCartridge");
 
-            musket = new ItemFirearm(20.0F, 84, 0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
+            musket = new ItemFirearm(Float.valueOf(Config.musketDamage), 84, 0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
             GameRegistry.registerItem(musket, "musket");
 
-            pistol = new ItemFirearm(15.0F, 42, 0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
+            pistol = new ItemFirearm(Float.valueOf(Config.pistolDamage), 42, 0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
             GameRegistry.registerItem(pistol, "pistol");
 
-            blunderbuss = new ItemFirearm(25.0F, 95, 3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
+            blunderbuss = new ItemFirearm(Float.valueOf(Config.blunderbussDamage), 95, 3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
             GameRegistry.registerItem(blunderbuss, "blunderbuss");
 
             if (Config.enableEnhancementRevolver) {

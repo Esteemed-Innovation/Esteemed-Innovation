@@ -85,6 +85,9 @@ public class Config {
     public static int screwConsumption;
     public static int heaterConsumption;
     public static int vacuumConsumption;
+    public static String musketDamage;
+    public static String pistolDamage;
+    public static String blunderbussDamage;
 
 
     public static int villagerId;
@@ -218,7 +221,6 @@ public class Config {
         enableRocket = config.get("Weapons", "Enable Normal Rocket", true).getBoolean(true);
         enableRocketConcussive = config.get("Weapons", "Enable Concussive Rocket", true).getBoolean(true);
         enableRocketMining = config.get("Weapons", "Enable Mining Charge", true).getBoolean(true);
-
         enableEnhancementAblaze = config.get("Weapons", "Enable Blaze Barrel enhancement", true).getBoolean(true);
         enableEnhancementRevolver = config.get("Weapons", "Enable Revolver enhancement", true).getBoolean(true);
         enableEnhancementSpeedloader = config.get("Weapons", "Enable Bolt Action enhancement", true).getBoolean(true);
@@ -228,7 +230,9 @@ public class Config {
         enableEnhancementFastRockets = config.get("Weapons", "Enable Streamlined Barrel enhancement", true).getBoolean(true);
         enableEnhancementAmmo = config.get("Weapons", "Enable extended Magazine enhancement", true).getBoolean(true);
         enableEnhancementAirStrike = config.get("Weapons", "Enable Air Strike enhancement", true).getBoolean(true);
-
+        musketDamage = config.get("Weapons", "Musket damage", "20.0F").getString();
+        pistolDamage = config.get("Weapons", "Pistol damage", "15.0F").getString();
+        blunderbussDamage = config.get("Weapons", "Blunderbuss damage", "25.0F").getString();
 
         // MACHINES
         mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
