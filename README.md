@@ -5,4 +5,4 @@ Professor Flaxbeard's Wondrous Steam Power Mod (Flaxbeard's Steam Power, or FSP 
 Information can be found on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power).
 A changelog can be found also on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power/Changelog)
 
-Downloads after xbony and Santa began maintaining the mod can be found on [CurseForge](http://minecraft.curseforge.com/mc-mods/224867-flaxbeards-steam-power/)
+Downloads after xbony2 and Santa began maintaining the mod can be found on [CurseForge](http://minecraft.curseforge.com/mc-mods/224867-flaxbeards-steam-power/)
