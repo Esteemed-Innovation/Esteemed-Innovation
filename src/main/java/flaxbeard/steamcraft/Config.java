@@ -85,7 +85,7 @@ public class Config {
     public static int screwConsumption;
     public static int heaterConsumption;
     public static int vacuumConsumption;
-    public static int spinnerConsumption;
+    public static int distributorConsumption;
 
     public static int villagerId;
 
@@ -121,7 +121,7 @@ public class Config {
     public static boolean enableWrench;
     public static boolean enableSaw;
     public static boolean enableBloodBoiler;
-    public static boolean enableSpinner;
+    public static boolean enableDistributor;
 
     // items
     public static boolean enableAstrolabe;
@@ -270,7 +270,7 @@ public class Config {
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean(true);
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean(true);
         enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
-        enableSpinner = config.get("Blocks", "Enable Spinner", true).getBoolean(true);
+        enableDistributor = config.get("Blocks", "Enable Steam Distributor", true).getBoolean(true);
 
         // BLOCK CONSUMPTION RATES
         hammerConsumption = config.get("Consumption", "Steam Hammer consumption", 4000).getInt();
@@ -278,7 +278,7 @@ public class Config {
         screwConsumption = config.get("Consumption", "Archimedes Screw consumption", 100).getInt();
         heaterConsumption = config.get("Consumption", "Steam Heater consumption", 20).getInt();
         vacuumConsumption = config.get("Consumption", "Vacuum consumption", 3).getInt();
-        spinnerConsumption = config.get("Consumption", "Spinner consumption", 20).getInt();
+        distributorConsumption = config.get("Consumption", "Spinner consumption", 20).getInt();
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
