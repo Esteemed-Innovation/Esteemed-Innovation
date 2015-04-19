@@ -1,6 +1,8 @@
 package flaxbeard.steamcraft.item.tool;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.UtilMisc;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
@@ -12,6 +14,8 @@ public class ItemSteamcraftSword extends ItemSword {
         super(toolMaterial);
         harvestLevel = toolMaterial.getHarvestLevel();
         repairMaterial = repairMat;
+        this.setCreativeTab(Steamcraft.tabTools);
+        this.setHarvestLevel(this.getClass().getName(), toolMaterial.getHarvestLevel());
     }
 
     @Override
