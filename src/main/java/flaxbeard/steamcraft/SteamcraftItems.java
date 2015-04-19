@@ -482,23 +482,23 @@ public class SteamcraftItems {
     }
 
     public static void registerToolSet(ToolMaterial tool, String string, Object repair, boolean addRecipes) {
-        Item pick = new ItemSteamcraftPickaxe(tool, repair).setUnlocalizedName("steamcraft:pick" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:pick" + string);
+        Item pick = new ItemSteamcraftPickaxe(tool, repair).setUnlocalizedName("steamcraft:pick" + string).setTextureName("steamcraft:pick" + string);
         GameRegistry.registerItem(pick, "pick" + string);
         tools.put("pick" + string, pick);
 
-        Item axe = new ItemSteamcraftAxe(tool, repair).setUnlocalizedName("steamcraft:axe" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:axe" + string);
+        Item axe = new ItemSteamcraftAxe(tool, repair).setUnlocalizedName("steamcraft:axe" + string).setTextureName("steamcraft:axe" + string);
         GameRegistry.registerItem(axe, "axe" + string);
         tools.put("axe" + string, axe);
 
-        Item shovel = new ItemSteamcraftShovel(tool, repair).setUnlocalizedName("steamcraft:shovel" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:shovel" + string);
+        Item shovel = new ItemSteamcraftShovel(tool, repair).setUnlocalizedName("steamcraft:shovel" + string).setTextureName("steamcraft:shovel" + string);
         GameRegistry.registerItem(shovel, "shovel" + string);
         tools.put("shovel" + string, shovel);
 
-        Item hoe = new ItemSteamcraftHoe(tool, repair).setUnlocalizedName("steamcraft:hoe" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:hoe" + string);
+        Item hoe = new ItemSteamcraftHoe(tool, repair).setUnlocalizedName("steamcraft:hoe" + string).setTextureName("steamcraft:hoe" + string);
         GameRegistry.registerItem(hoe, "hoe" + string);
         tools.put("hoe" + string, hoe);
 
-        Item sword = new ItemSteamcraftSword(tool, repair).setUnlocalizedName("steamcraft:sword" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:sword" + string);
+        Item sword = new ItemSteamcraftSword(tool, repair).setUnlocalizedName("steamcraft:sword" + string).setTextureName("steamcraft:sword" + string);
         GameRegistry.registerItem(sword, "sword" + string);
         tools.put("sword" + string, sword);
         if (addRecipes) {
