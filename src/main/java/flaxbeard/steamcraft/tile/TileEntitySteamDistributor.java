@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author SatanicSanta
@@ -35,7 +37,7 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
     private boolean isActive;
     private int range = 9;
     private int steamUsage = Config.distributorConsumption;
-    private Material[] validMaterials = {
+    public Material[] validMaterials = {
       Material.grass,
       Material.sand,
       Material.ground,
@@ -65,15 +67,36 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
         //Same loops and shit as above
         for (int x = 0; x < range; x++) {
             for (int z = 0; z < range; z++) {
-                Block b = this.worldObj.getBlock(this.xCoord + x, this.yCoord + 1, this.zCoord + z);
+                int newX = this.xCoord + x;
+                int newY = this.yCoord + 1;
+                int newZ = this.zCoord + z;
+                Block dirt = this.worldObj.getBlock(newX, xCoord, newZ);
+                Block b = this.worldObj.getBlock(newX, newY, newZ);
                 for (int i = 0; i < validMaterials.length; i++) {
-                    if (b.getMaterial().equals(validMaterials[i])) {
+                    if (dirt.getMaterial().equals(validMaterials[i]) &&
+                      worldObj.getTileEntity(newX, newY, newZ) == null) {
+                        makeParticles(newX, newY, newZ); //Make particles while we have these coords
                         return b;
                     }
                 }
             }
         }
         return null;
+    }
+
+    public void makeParticles(int x, int y, int z) {
+        if (!worldObj.isRemote) {
+            double posX = (double) x;
+            double posY = (double) y;
+            double posZ = (double) z;
+
+            Random rand = new Random();
+            double motionX = rand.nextGaussian() * 0.2D;
+            double motionY = rand.nextGaussian() * 0.2D;
+            double motionZ = rand.nextGaussian() * 0.2D;
+            this.worldObj.spawnParticle("minecraft:splash", posX, posY, posZ, motionX, motionY,
+              motionZ);
+        }
     }
 
     public boolean isAbleToWork(int multiplier) {
@@ -96,8 +119,10 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
         if (!this.worldObj.isRemote) {
             if (isAbleToWork(dirts)) {
                 this.isActive = true;
+                markDirty();
             } else if (!isAbleToWork(dirts)) {
                 this.isActive = false;
+                markDirty();
             }
         }
 
@@ -157,7 +182,7 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
-        if (player.isSneaking()) {
+        if (!player.isSneaking()) {
             switch (range) {
                 case 3: {
                     range = 5;
@@ -190,11 +215,6 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
             }
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             return true;
-        } else {
-            Block block = worldObj.getBlock(x, y, z);
-            int meta = worldObj.getBlockMetadata(x, y, z);
-            ForgeDirection opposite = ForgeDirection.getOrientation(meta);
-            block.rotateBlock(worldObj, x, y, z, opposite);
         }
         return false;
     }
