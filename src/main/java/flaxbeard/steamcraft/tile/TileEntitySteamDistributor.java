@@ -11,55 +11,101 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
 
 /**
  * @author SatanicSanta
  */
 public class TileEntitySteamDistributor extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay{
 
-    private boolean isPowered = false; //Referring to redstone power
+    private boolean isRedstonePowered = false;
     private boolean isActive;
     private int range = 9;
     private int steamUsage = Config.distributorConsumption;
+    private Material[] validMaterials = {
+      Material.grass,
+      Material.sand,
+      Material.ground,
+      Material.water,
+      Material.vine,
+      Material.coral,
+      Material.gourd,
+      Material.leaves
+    };
 
     public int calcDirtBlocks() {
         int dirt = 0;
-        for (int x = 0; x < 15; x++) {
-            for (int z = 0; z < 15; z++) {
+        for (int x = 0; x < range; x++) {
+            for (int z = 0; z < range; z++) {
                 Block b = this.worldObj.getBlock(this.xCoord + x, this.yCoord + 1, this.zCoord + z);
-                if (b.getMaterial() == Material.grass || b.getMaterial() == Material.ground ||
-                  b.getMaterial() == Material.water || b.getMaterial() == Material.sand) {
-                    dirt++;
+                for (int i = 0; i < validMaterials.length; i++) {
+                    if (b.getMaterial().equals(validMaterials[i])) {
+                        dirt++;
+                    }
                 }
             }
         }
         return dirt;
     }
 
+    public Block getPlantBlockAboveDirt() {
+        //Same loops and shit as above
+        for (int x = 0; x < range; x++) {
+            for (int z = 0; z < range; z++) {
+                Block b = this.worldObj.getBlock(this.xCoord + x, this.yCoord + 1, this.zCoord + z);
+                for (int i = 0; i < validMaterials.length; i++) {
+                    if (b.getMaterial().equals(validMaterials[i])) {
+                        return b;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isAbleToWork(int multiplier) {
+        int powerNeeded = steamUsage * multiplier;
+        if (this.getSteamShare() < powerNeeded || this.isRedstonePowered) {
+            return false;
+        }
+
+        if (this.getSteamShare() > powerNeeded && !this.isRedstonePowered) {
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void updateEntity() {
-        this.isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+        this.isRedstonePowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+        int dirts = calcDirtBlocks();
         if (!this.worldObj.isRemote) {
-            if (this.getSteamShare() < steamUsage || !this.isPowered) {
-                this.isActive = false;
-            } else {
+            if (isAbleToWork(dirts)) {
                 this.isActive = true;
-                this.decrSteam(steamUsage);
+            } else if (!isAbleToWork(dirts)) {
+                this.isActive = false;
             }
         }
 
         if (isActive) {
-            if (this.worldObj.isRemote) {
-
+            if (!worldObj.isRemote) {
+                Block block = getPlantBlockAboveDirt();
+                block.setTickRandomly(true);
+                this.decrSteam(steamUsage * dirts);
             }
         }
     }
@@ -67,21 +113,21 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setBoolean("isPowered", isPowered);
+        nbt.setBoolean("isRedstonePowered", isRedstonePowered);
         nbt.setShort("range", (short) this.range);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        this.isPowered = nbt.getBoolean("isPowered");
+        this.isRedstonePowered = nbt.getBoolean("isRedstonePowered");
         this.range = nbt.getShort("range");
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbt = super.getDescriptionTag();
-        nbt.setBoolean("isActive", this.getSteamShare() > steamUsage && !this.isPowered);
+        nbt.setBoolean("isActive", this.getSteamShare() > steamUsage && !this.isRedstonePowered);
         nbt.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, zCoord, zCoord, 1, nbt);
     }
@@ -145,7 +191,11 @@ public class TileEntitySteamDistributor extends SteamTransporterTileEntity imple
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             return true;
         } else {
-            return false;
+            Block block = worldObj.getBlock(x, y, z);
+            int meta = worldObj.getBlockMetadata(x, y, z);
+            ForgeDirection opposite = ForgeDirection.getOrientation(meta);
+            block.rotateBlock(worldObj, x, y, z, opposite);
         }
+        return false;
     }
 }

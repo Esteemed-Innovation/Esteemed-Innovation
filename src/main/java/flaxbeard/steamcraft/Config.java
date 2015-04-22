@@ -278,7 +278,8 @@ public class Config {
         screwConsumption = config.get("Consumption", "Archimedes Screw consumption", 100).getInt();
         heaterConsumption = config.get("Consumption", "Steam Heater consumption", 20).getInt();
         vacuumConsumption = config.get("Consumption", "Vacuum consumption", 3).getInt();
-        distributorConsumption = config.get("Consumption", "Spinner consumption", 20).getInt();
+        distributorConsumption = config.get("Consumption", "Spinner consumption multiplier " +
+          "(multiplies by number of blocks)", 5).getInt();
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
