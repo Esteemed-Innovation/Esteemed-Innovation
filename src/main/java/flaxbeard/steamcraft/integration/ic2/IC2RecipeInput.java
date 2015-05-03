@@ -1,10 +1,11 @@
 package flaxbeard.steamcraft.integration.ic2;
 
+import ic2.api.recipe.IRecipeInput;
+
+import net.minecraft.item.ItemStack;
+
 import java.util.Arrays;
 import java.util.List;
-
-import ic2.api.recipe.IRecipeInput;
-import net.minecraft.item.ItemStack;
 
 /**
  * Part/parts of this code was taken from IndustrialEx, which was taken from Bluepower, I 

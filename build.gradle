@@ -29,6 +29,24 @@ minecraft {
 	replace "@VERSION@", project.version
 }
 
+repositories {
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+	maven {
+		name "progwml6"
+		url 'http://dvs1.progwml6.com/files/maven'
+	}
+}
+
+dependencies {
+	compile ic2Version
+	compile mantleVersion
+	compile ticVersion
+	compile naturaVersion
+}
+
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
