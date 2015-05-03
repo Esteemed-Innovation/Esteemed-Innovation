@@ -55,10 +55,7 @@ public class CrossMod{
 		
 		if(INDUSTRIALCRAFT) IndustrialCraftIntegration.postInit();
 		
-		if(NATURA){
-			NaturaIntegration.grabItems();
-			NaturaIntegration.registerStuff();
-		}
+		if(NATURA) NaturaIntegration.postInit();
 		
 		if(THAUMCRAFT){
 			ThaumcraftIntegration.grabItems();

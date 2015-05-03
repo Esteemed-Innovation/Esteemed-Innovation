@@ -13,7 +13,7 @@ import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
  */
 public class IC2NaturaIntegration {
 	public static void addIC2Recipes(){
-		IC2RecipeInput input1 = new IC2RecipeInput(new ItemStack(NaturaIntegration.steamedImphide));
-		Recipes.cannerBottle.addRecipe(IndustrialCraftIntegration.tincanx10, input1, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 10));
+		Recipes.cannerBottle.addRecipe(IndustrialCraftIntegration.EMPTY_X10, 
+				new IC2RecipeInput(new ItemStack(NaturaIntegration.steamedImphide)), IndustrialCraftIntegration.FILLED_X10);
 	}
 }
