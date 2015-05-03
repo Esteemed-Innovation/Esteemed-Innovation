@@ -54,6 +54,9 @@ public class Config {
     public static boolean enableThermalFoundationIntegration;
     public static boolean enableIC2Integration;
     public static boolean enableNaturaIntegration;
+    public static boolean enableTinkersConstruct;
+    public static boolean enableBaublesIntegration;
+    public static boolean enableRailcraftIntegration;
 
 
     public static boolean enableToolHeadsIntegration;
@@ -359,6 +362,9 @@ public class Config {
         enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean(true);
         enableNaturaIntegration = config.get("Integration", "Enable Natura", true).getBoolean(true);
         //enableToolHeadsIntegration = config.get("Integration", "Enable Tool Heads", true).getBoolean(true);
+        enableTinkersConstruct = config.get("Integration", "Enable Tinker's Construct", true).getBoolean(true);
+        enableBaublesIntegration = config.get("Integration", "Enable Baubles", true).getBoolean(true);
+        enableRailcraftIntegration = config.get("Integration", "Enable Railcraft", true).getBoolean(true);
 
         /*//TOOL HEADS
         config.addCustomCategoryComment("Tool Heads", "These are only used if you have Tool Heads integration enabled, and the Tool Heads mod installed");
