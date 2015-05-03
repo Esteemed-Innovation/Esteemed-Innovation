@@ -53,9 +53,7 @@ public class CrossMod{
             EnderIOIntegration.addEIOLiquid();
 		}
 		
-		if(INDUSTRIALCRAFT){
-			IndustrialCraftIntegration.addIC2Recipes();
-		}
+		if(INDUSTRIALCRAFT) IndustrialCraftIntegration.postInit();
 		
 		if(NATURA){
 			NaturaIntegration.grabItems();
