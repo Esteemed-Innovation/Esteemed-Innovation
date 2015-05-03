@@ -6,21 +6,18 @@ import net.minecraft.item.ItemStack;
 import flaxbeard.steamcraft.SteamcraftItems;
 
 public class IndustrialCraftIntegration {
-	public static IC2RecipeInput tincanx10 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 10));
-	public static IC2RecipeInput tincanx8 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 8));
-	public static IC2RecipeInput tincanx7 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 7));
-	//TODO: refactor
-	public static void addIC2Recipes(){
-		IC2RecipeInput input1 = new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedBeef));
-		Recipes.cannerBottle.addRecipe(tincanx10, input1, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 10));
-		
-		IC2RecipeInput input2 = new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedChicken));
-		Recipes.cannerBottle.addRecipe(tincanx8, input2, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 8));
-		
-		IC2RecipeInput input3 = new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedFish));
-		Recipes.cannerBottle.addRecipe(tincanx7, input3, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 7));
-		
-		IC2RecipeInput input4 = new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedPorkchop));
-		Recipes.cannerBottle.addRecipe(tincanx10, input4, new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 10));
+	public final static IC2RecipeInput EMPTY_X10 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 10));
+	public final static IC2RecipeInput EMPTY_X8 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 8));
+	public final static IC2RecipeInput EMPTY_X7 = new IC2RecipeInput(new ItemStack(IC2Items.getItem("tinCan").getItem(), 7));
+	
+	public final static ItemStack FILLED_X10 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 10);
+	public final static ItemStack FILLED_X8 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 8);
+	public final static ItemStack FILLED_X7 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 7);
+	
+	public static void postInit(){
+		Recipes.cannerBottle.addRecipe(EMPTY_X10, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedBeef)), FILLED_X10);
+		Recipes.cannerBottle.addRecipe(EMPTY_X8, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedChicken)), FILLED_X8);
+		Recipes.cannerBottle.addRecipe(EMPTY_X7, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedFish)), FILLED_X7);
+		Recipes.cannerBottle.addRecipe(EMPTY_X10, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedPorkchop)), FILLED_X10);
 	}
 }
