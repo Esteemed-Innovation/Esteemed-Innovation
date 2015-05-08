@@ -1,9 +1,6 @@
 package flaxbeard.steamcraft;
 
 
-import flaxbeard.steamcraft.api.CrucibleLiquid;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.common.CommonProxy;
@@ -42,15 +39,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
@@ -190,20 +184,6 @@ public class Steamcraft {
 
         if (Config.enablePipe) {
             MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
-        }
-        steamRegistered = FluidRegistry.isFluidRegistered("steam");
-        if (steamRegistered && Config.enableFluidSteamConverter) {
-            SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
-        }
-        if (OreDictionary.getOres("ingotLead").size() > 0) {
-            CrucibleLiquid liquidLead = new CrucibleLiquid("lead", OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 9), OreDictionary.getOres("nuggetLead").size() > 0 ? OreDictionary.getOres("nuggetLead").get(0) : null, null, 118, 128, 157);
-            SteamcraftRegistry.liquids.add(liquidLead);
-
-            SteamcraftRegistry.registerSmeltThingOredict("ingotLead", liquidLead, 9);
-            SteamcraftRegistry.registerSmeltThingOredict("nuggetLead", liquidLead, 1);
-            SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftLead", liquidLead, 6);
-            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Lead", new ItemStack(SteamcraftItems.exosuitPlate, 1, 11), "Lead", "Lead", "steamcraft.plate.lead"));
-            SteamcraftRecipes.addExosuitPlateRecipes("exoLead", "plateSteamcraftLead", new ItemStack(SteamcraftItems.exosuitPlate, 1, 11), liquidLead);
         }
         
         SteamcraftBook.registerBookResearch();
