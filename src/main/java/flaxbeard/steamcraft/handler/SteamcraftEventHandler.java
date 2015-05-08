@@ -7,6 +7,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
@@ -22,6 +23,7 @@ import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -34,6 +36,7 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -80,7 +83,6 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -383,8 +385,8 @@ public class SteamcraftEventHandler {
                     ((IWrenchDisplay) te).displayWrench(event);
                 }
             }
-            if (Loader.isModLoaded("Botania")) {
-                if (pos != null && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
+            if (CrossMod.BOTANIA) {
+                if (pos != null && player.getEquipmentInSlot(4) != null && player.getEquipmentInSlot(4).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
                     ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
                     if (chest.hasUpgrade(player.getEquipmentInSlot(3), BotaniaIntegration.floralLaurel)) {
                         Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
