@@ -45,6 +45,8 @@ dependencies {
 	compile mantleVersion
 	compile ticVersion
 	compile naturaVersion
+	
+	compile fileTree(dir: 'fsplib', include: '*.jar') // Not using 'lib' since I got a lot of crap in there.
 }
 
 processResources {
