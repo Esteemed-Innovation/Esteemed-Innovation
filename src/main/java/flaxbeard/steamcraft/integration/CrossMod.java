@@ -28,16 +28,11 @@ public class CrossMod{
 	public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	
 	public static void init(){
-		if(RAILCRAFT && Config.genPoorOre){
-			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
-		}
+		if(RAILCRAFT && Config.genPoorOre) MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
 	}
 	
 	public static void postInit(){
-		if(BOTANIA){
-			BotaniaIntegration.grabItems();
-			BotaniaIntegration.addBotaniaLiquid();
-		}
+		if(BOTANIA) BotaniaIntegration.postInit();
 		
 		if(BLOOD_MAGIC){
 			BloodMagicIntegration.grabItems();
