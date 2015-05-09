@@ -396,7 +396,7 @@ public class SteamcraftEventHandler {
             }
             if (pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
                 Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-                ItemStack stack = block.getPickBlock(pos, player.worldObj, pos.blockX, pos.blockY, pos.blockZ);
+                ItemStack stack = block.getPickBlock(pos, player.worldObj, pos.blockX, pos.blockY, pos.blockZ, player);
                 if (stack != null) {
                     for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
                         if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
@@ -425,7 +425,8 @@ public class SteamcraftEventHandler {
         if (event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) event.gui;
             if (mc.thePlayer.inventory.armorInventory[3] != null && (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
-                    || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor) mc.thePlayer.inventory.armorInventory[3].getItem()).hasUpgrade(mc.thePlayer.inventory.armorInventory[3], SteamcraftItems.tophat)))) {
+                    || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead 
+                    && ((ItemExosuitArmor) mc.thePlayer.inventory.armorInventory[3].getItem()).hasUpgrade(mc.thePlayer.inventory.armorInventory[3], SteamcraftItems.tophat)))) {
                 IMerchant merch = ReflectionHelper.getPrivateValue(GuiMerchant.class, gui, 2);
                 MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
                 if (recipeList != null) {
@@ -652,7 +653,7 @@ public class SteamcraftEventHandler {
 
             for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
                 if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
-                    boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(SteamcraftItems.book, player) : false;
+                    boolean foundBook = CrossMod.ENCHIRIDION ? EnchiridionIntegration.hasBook(SteamcraftItems.book, player) : false;
                     for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
                         if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemSteamcraftBook) {
                             foundBook = true;
@@ -716,7 +717,6 @@ public class SteamcraftEventHandler {
     @SubscribeEvent
     public void handleFirePunch(LivingAttackEvent event) {
         if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
-
             EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
             boolean hasPower = hasPower(entity, Config.powerFistConsumption);
             if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getHeldItem() == null) {
@@ -736,7 +736,7 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleFallDamage(LivingHurtEvent event) {
-        if (Loader.isModLoaded("AWWayofTime")) {
+        if (CrossMod.BLOOD_MAGIC) {
             BloodMagicIntegration.handleAttack(event);
         }
         if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null) && (!event.entityLiving.worldObj.isRemote)) {
@@ -752,6 +752,7 @@ public class SteamcraftEventHandler {
                         }
                     }
                 }
+                
                 if ((vibrantLevel > 0) && (player.worldObj.rand.nextInt(5 - vibrantLevel) == 0)) {
                     int startRotation = player.worldObj.rand.nextInt(360);
                     boolean foundSpot = false;
@@ -794,6 +795,7 @@ public class SteamcraftEventHandler {
                 }
             }
         }
+        
         if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null) && (!event.entityLiving.worldObj.isRemote)) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             Entity mob = event.source.getEntity();
@@ -1044,18 +1046,13 @@ public class SteamcraftEventHandler {
         }
 
 
-        hasPower = hasPower(entity, 1);
-        if (hasPower) {
-            if (armor == 4) {
-                event.newSpeed = event.newSpeed * 1.2F;
-            }
-
+        if (hasPower && armor == 4) {
+        	event.newSpeed = event.newSpeed * 1.2F;
         }
     }
 
     @SubscribeEvent
     public void handleFlippers(LivingEvent.LivingUpdateEvent event) {
-
         int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;
         boolean hasPower = hasPower(entity, 1);
@@ -1372,7 +1369,7 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void clickLeft(PlayerInteractEvent event) {
-        if (Loader.isModLoaded("AWWayofTime")) {
+        if (CrossMod.BLOOD_MAGIC) {
             BloodMagicIntegration.clickLeft(event);
         }
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.face != 1 && event.world.getBlock(event.x, event.y, event.z).isSideSolid(event.world, event.x, event.y, event.z, ForgeDirection.getOrientation(event.face))) {
