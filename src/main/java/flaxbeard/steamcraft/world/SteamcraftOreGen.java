@@ -14,6 +14,13 @@ import java.util.Random;
 
 public class SteamcraftOreGen implements IWorldGenerator {
 
+//Support for World Generation Manager
+public String getName()
+ {
+ return "FlaxbeardsSteamPower";
+ }
+//Support for World Generation Manager END
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         try {
