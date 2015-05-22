@@ -36,9 +36,7 @@ public class CrossMod{
 		
 		if(BLOOD_MAGIC) BloodMagicIntegration.postInit();
 		
-		if(ENCHIRIDION){
-			EnchiridionIntegration.grabClass();
-		}
+		//TODO: re-add ENCHIDIDION integration
 		
 		if(ENDER_IO){
 			EnderIOIntegration.grabItems();
