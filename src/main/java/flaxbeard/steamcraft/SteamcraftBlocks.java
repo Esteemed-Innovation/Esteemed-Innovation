@@ -79,7 +79,7 @@ public class SteamcraftBlocks {
         GameRegistry.registerBlock(steamcraftOre, BlockManyMetadataItem.class, "steamcraftOre");
         OreDictionary.registerOre("oreCopper", new ItemStack(steamcraftOre, 1, 0));
         OreDictionary.registerOre("oreZinc", new ItemStack(steamcraftOre, 1, 1));
-        if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+        if (Loader.isModLoaded("Railcraft") && Config.genPoorZincOre) {
             OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre, 1, 2));
         }
         blockBrass = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);

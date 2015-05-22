@@ -41,6 +41,7 @@ public class Config {
     public static boolean genCopperExtras;
     public static boolean passiveDrain;
     public static boolean disableParticles;
+    public static boolean genPoorZincOre;
 
     public static boolean easterEggs;
 
@@ -65,7 +66,6 @@ public class Config {
     public static boolean expensiveMusketRecipes;
     public static int chance;
     public static boolean dropItem;
-    public static boolean genPoorOre;
     public static int duplicateLogs;
     public static int exoConsumption;
     public static int basicTankCapacity;
@@ -211,7 +211,7 @@ public class Config {
         genZincExtras = config.get("World Generation", "Generate Zinc in the above extra dimensions", true).getBoolean();
         genCopperExtras = config.get("World Generation", "Generate Copper in the above extra dimensions", true).getBoolean();
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
-        genPoorOre = config.get("Integration", "Railcraft Poor Ore", true).getBoolean(true);
+        genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean(true);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);

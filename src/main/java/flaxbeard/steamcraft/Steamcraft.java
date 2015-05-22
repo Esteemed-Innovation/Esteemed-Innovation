@@ -182,7 +182,7 @@ public class Steamcraft {
         proxy.registerHotkeys();
         SteamcraftRecipes.registerRecipes();
 
-        if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+        if (Loader.isModLoaded("Railcraft") && Config.genPoorZincOre) {
             MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
         }
     }
