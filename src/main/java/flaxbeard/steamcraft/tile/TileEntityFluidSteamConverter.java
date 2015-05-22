@@ -130,7 +130,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             return 0;
         }
 
-        if (resource.fluidID == FluidRegistry.getFluid("steam").getID()) {
+        if (resource.getFluidID() == FluidRegistry.getFluid("steam").getID()) {
             if (doFill) {
                 this.insertSteam(resource.amount, from);
                 runTicks = runTicks > 0 ? runTicks : 100;
@@ -138,7 +138,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             return resource.amount;
         }
 
-        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration && resource.fluidID == FluidRegistry.getFluid("ic2steam").getID()){
+        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration && resource.getFluidID() == FluidRegistry.getFluid("ic2steam").getID()){
             if (doFill){
                 this.insertSteam(resource.amount, from);
                 runTicks = runTicks > 0 ? runTicks : 100;
