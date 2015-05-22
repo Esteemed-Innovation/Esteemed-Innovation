@@ -34,10 +34,7 @@ public class CrossMod{
 	public static void postInit(){
 		if(BOTANIA) BotaniaIntegration.postInit();
 		
-		if(BLOOD_MAGIC){
-			BloodMagicIntegration.grabItems();
-            BloodMagicIntegration.addBloodMagicStuff();
-		}
+		if(BLOOD_MAGIC) BloodMagicIntegration.postInit();
 		
 		if(ENCHIRIDION){
 			EnchiridionIntegration.grabClass();
