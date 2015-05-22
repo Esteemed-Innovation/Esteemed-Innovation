@@ -38,6 +38,10 @@ repositories {
 		name "progwml6"
 		url 'http://dvs1.progwml6.com/files/maven'
 	}
+	maven {
+		name "tterrag Repo"
+		url "http://maven.tterrag.com"
+	}
 }
 
 dependencies {
@@ -45,6 +49,7 @@ dependencies {
 	compile mantleVersion
 	compile ticVersion
 	compile naturaVersion
+	compile eioVersion
 	
 	compile fileTree(dir: 'fsplib', include: '*.jar') // Not using 'lib' since I got a lot of crap in there.
 }
