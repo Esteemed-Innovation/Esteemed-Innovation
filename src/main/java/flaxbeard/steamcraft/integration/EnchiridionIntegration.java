@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class EnchiridionIntegration {
 
-    /*public static boolean hasBook(Item class1, EntityPlayer player) {
+    public static boolean hasBook(Item class1, EntityPlayer player) {
         boolean foundBook = false;
         for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
             ItemStack binder = player.inventory.getStackInSlot(p);
@@ -47,6 +47,5 @@ public class EnchiridionIntegration {
             }
         }
         return null;
-    }*/
-
+    }
 }

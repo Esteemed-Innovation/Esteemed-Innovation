@@ -36,11 +36,8 @@ public class CrossMod{
 		
 		if(BLOOD_MAGIC) BloodMagicIntegration.postInit();
 		
-		//TODO: re-add ENCHIDIDION integration
-		
 		if(ENDER_IO){
-			EnderIOIntegration.grabItems();
-            EnderIOIntegration.addEIOLiquid();
+			EnderIOIntegration.postInit();
 		}
 		
 		if(INDUSTRIALCRAFT) IndustrialCraftIntegration.postInit();
