@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.integration.thaumcraft;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -13,6 +14,8 @@ import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.item.ItemExosuitUpgrade;
+
+import thaumcraft.common.config.ConfigItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -30,48 +33,18 @@ import thaumcraft.api.aspects.AspectList;
 
 public class ThaumcraftIntegration {
     
-    // Thaumcraft Items
-    public static Item itemResource;
-    public static Item itemGoggles;
-    public static Item itemNugget;
-    public static Item itemSwordThaumium;
-    public static Item itemPickThaumium;
-    public static Item itemAxeThaumium;
-    public static Item itemHoeThaumium;
-    public static Item itemShovelThaumium;
-    public static Item itemBootsThaumium;
-    public static Item itemChestThaumium;
-    public static Item itemHelmetThaumium;
-    public static Item itemLegsThaumium;
-    
     // Our Items
     public static Item goggleUpgrade;
     public static Item thaumSource;
 
-    public static void grabItems() {
-        //This is a really dumb way to do this.
-        itemResource = GameRegistry.findItem("Thaumcraft", "ItemResource");
-        itemGoggles = GameRegistry.findItem("Thaumcraft", "ItemGoggles");
-        itemNugget = GameRegistry.findItem("Thaumcraft", "ItemNugget");
-        itemSwordThaumium = GameRegistry.findItem("Thaumcraft", "ItemSwordThaumium");
-        itemPickThaumium = GameRegistry.findItem("Thaumcraft", "ItemPickThaumium");
-        itemAxeThaumium = GameRegistry.findItem("Thaumcraft", "ItemAxeThaumium");
-        itemHoeThaumium = GameRegistry.findItem("Thaumcraft", "ItemHoeThaumium");
-        itemShovelThaumium = GameRegistry.findItem("Thaumcraft", "ItemShovelThaumium");
-        itemBootsThaumium = GameRegistry.findItem("Thaumcraft", "ItemBootsThaumium");
-        itemChestThaumium = GameRegistry.findItem("Thaumcraft", "ItemChestplateThaumium");
-        itemHelmetThaumium = GameRegistry.findItem("Thaumcraft", "ItemHelmetThaumium");
-        itemLegsThaumium = GameRegistry.findItem("Thaumcraft", "ItemLeggingsThaumium");
-    }
-
-    public static void addThaumiumLiquid() {
-        CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(itemNugget, 1, 6), null, 105, 87, 163);
+    public static void postInit() {
+        CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(ConfigItems.itemNugget, 1, 6), null, 105, 87, 163);
         SteamcraftRegistry.liquids.add(liquidThaumium);
 
         goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
         GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
         BookRecipeRegistry.addRecipe("mask", new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x ",
-                'x', "nuggetBrass", 'g', itemGoggles));
+                'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));
 
         SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
         SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
@@ -80,15 +53,15 @@ public class ThaumcraftIntegration {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), "Thaumium", "Thaumium", "steamcraft.plate.thaumium"));
             SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium", "plateSteamcraftThaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), liquidThaumium);
         }
-        SteamcraftRegistry.registerSmeltTool(itemSwordThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(itemPickThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(itemAxeThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(itemHoeThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(itemShovelThaumium, liquidThaumium, 9);
-        SteamcraftRegistry.registerSmeltTool(itemBootsThaumium, liquidThaumium, 36);
-        SteamcraftRegistry.registerSmeltTool(itemChestThaumium, liquidThaumium, 81);
-        SteamcraftRegistry.registerSmeltTool(itemHelmetThaumium, liquidThaumium, 45);
-        SteamcraftRegistry.registerSmeltTool(itemLegsThaumium, liquidThaumium, 63);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHoeThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemShovelThaumium, liquidThaumium, 9);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemBootsThaumium, liquidThaumium, 36);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
+        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
 
 
         AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));
@@ -122,7 +95,7 @@ public class ThaumcraftIntegration {
     }
 
     public static Item gogglesRevealing() {
-        return itemGoggles;
+        return ConfigItems.itemGoggles;
     }
 
     public static boolean isNitorUnderBlock(World world, int x, int y, int z) {
