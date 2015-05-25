@@ -45,8 +45,7 @@ public class CrossMod{
 		if(NATURA) NaturaIntegration.postInit();
 		
 		if(THAUMCRAFT){
-			ThaumcraftIntegration.grabItems();
-            ThaumcraftIntegration.addThaumiumLiquid();
+			ThaumcraftIntegration.postInit();
 		}
 		
 		if(THERMAL_FOUNDATION){
