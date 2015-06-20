@@ -42,8 +42,10 @@ import java.util.UUID;
 public class BotaniaIntegration {
 
     // PlayerControllerMP
-    public static final String[] NET_CLIENT_HANDLER = new String[] { "netClientHandler", "field_78774_b", "b" };
-    public static final String[] CURRENT_GAME_TYPE = new String[] { "currentGameType", "field_78779_k", "k" };
+    public static final String[] NET_CLIENT_HANDLER = new String[] { "netClientHandler",
+      "field_78774_b", "b" };
+    public static final String[] CURRENT_GAME_TYPE = new String[] { "currentGameType",
+      "field_78779_k", "k" };
 
     // Our Items
     public static Item floralLaurel;
@@ -52,8 +54,10 @@ public class BotaniaIntegration {
     public static void displayThings(MovingObjectPosition pos, RenderGameOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getMinecraft();
         Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-        if (block instanceof IWandHUD)
-            ((IWandHUD) block).renderHUD(mc, event.resolution, mc.theWorld, pos.blockX, pos.blockY, pos.blockZ);
+        if (block instanceof IWandHUD) {
+            ((IWandHUD) block).renderHUD(mc, event.resolution, mc.theWorld, pos.blockX, pos.blockY,
+              pos.blockZ);
+        }
     }
 
     public static Item twigWand() {
@@ -61,38 +65,59 @@ public class BotaniaIntegration {
     }
 
     public static void postInit() {
-        floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/floralLaurel.png", null, 5).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:floralLaurel").setTextureName("steamcraft:floralLaurel");
+        floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.headHelm,
+          "steamcraft:textures/models/armor/floralLaurel.png", null, 5)
+          .setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:floralLaurel")
+          .setTextureName("steamcraft:floralLaurel");
         GameRegistry.registerItem(floralLaurel, "floralLaurel");
-        CrucibleLiquid liquidTerrasteel = new CrucibleLiquid("terrasteel", new ItemStack(ModItems.manaResource, 1, 4), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 6), null, null, 64, 191, 13);
+        CrucibleLiquid liquidTerrasteel = new CrucibleLiquid("terrasteel",
+          new ItemStack(ModItems.manaResource, 1, 4),
+          new ItemStack(SteamcraftItems.steamcraftPlate, 1, 6), null, null, 64, 191, 13);
         SteamcraftRegistry.liquids.add(liquidTerrasteel);
 
         SteamcraftRegistry.registerSmeltThingOredict("ingotTerrasteel", liquidTerrasteel, 9);
         SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel, 6);
+        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel,
+          6);
         if (Config.enableTerrasteelPlate) {
-            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel", new ItemStack(SteamcraftItems.exosuitPlate, 1, 6), "Terrasteel", "Terrasteel", "steamcraft.plate.terrasteel"));
-            SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel", "plateSteamcraftTerrasteel", new ItemStack(SteamcraftItems.exosuitPlate, 1, 6), liquidTerrasteel);
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 6), "Terrasteel", "Terrasteel",
+              "steamcraft.plate.terrasteel"));
+            SteamcraftRecipes.addExosuitPlateRecipes("exoTerrasteel", "plateSteamcraftTerrasteel",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 6), liquidTerrasteel);
         }
-        CrucibleLiquid liquidElementium = new CrucibleLiquid("Elementium", new ItemStack(ModItems.manaResource, 1, 7), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 7), null, null, 230, 66, 247);
-        SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), liquidElementium);
+        CrucibleLiquid liquidElementium = new CrucibleLiquid("Elementium",
+          new ItemStack(ModItems.manaResource, 1, 7), new ItemStack(SteamcraftItems.steamcraftPlate,
+          1, 7), null, null, 230, 66, 247);
+        SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium",
+          new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), liquidElementium);
 
         SteamcraftRegistry.liquids.add(liquidElementium);
         for (int i = 0; i < 16; i++) {
-            BookRecipeRegistry.addRecipe("floralLaurel" + i, new ShapedOreRecipe(new ItemStack(floralLaurel), "fff", "flf", "fff",
-                    'f', new ItemStack(ModItems.petal, 1, i), 'l', new ItemStack(ModItems.manaResource, 1, 3)));
+            BookRecipeRegistry.addRecipe("floralLaurel" + i, new ShapedOreRecipe(
+              new ItemStack(floralLaurel), "fff", "flf", "fff",
+              'f', new ItemStack(ModItems.petal, 1, i),
+              'l', new ItemStack(ModItems.manaResource, 1, 3)));
         }
         SteamcraftRegistry.registerSmeltThing(ModItems.manaResource, 7, liquidElementium, 9);
         SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
         SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftElementium", liquidElementium, 6);
+        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftElementium", liquidElementium,
+          6);
         if (Config.enableElementiumPlate) {
-            SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), liquidElementium);
-            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), "Elementum", "Elementum", "steamcraft.plate.elementum"));
+            SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), liquidElementium);
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Elementium",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), "Elementum", "Elementum",
+              "steamcraft.plate.elementum"));
         }
     }
 
     public static Multimap addModifiers(Multimap map, ItemStack stack, int armorType) {
-        if ((((ItemExosuitArmor) stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Terrasteel")) {
+      int numberRandom = 171328 //Consider making this number actually random. Unsure if thatll work
+        if ((((ItemExosuitArmor) stack.getItem()).hasPlates(stack) &&
+          UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() ==
+          "Terrasteel")) {
             int hp = 1;
             switch (armorType) {
                 case 0:
@@ -107,7 +132,9 @@ public class BotaniaIntegration {
                 case 4:
                     hp = 2;
             }
-            map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(new UUID(171328 /** Random number **/, armorType), "Armor modifier" + armorType, hp, 0));
+            map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(),
+              new AttributeModifier(new UUID(numberRandom, armorType),
+              "Armor modifier" + armorType, hp, 0));
         }
         return map;
     }
@@ -116,27 +143,34 @@ public class BotaniaIntegration {
     public static void extendRange(Entity entity, float amount) {
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.playerController instanceof IExtendedPlayerController)) {
-            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, CURRENT_GAME_TYPE);
-            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, NET_CLIENT_HANDLER);
+            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
+              mc.playerController, CURRENT_GAME_TYPE);
+            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,\
+              mc.playerController, NET_CLIENT_HANDLER);
             SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
             controller.setGameType(type);
             mc.playerController = controller;
         }
-        ((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
+        ((IExtendedPlayerController) mc.playerController).setReachDistanceExtension(
+          ((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() + amount);
     }
 
     @SideOnly(Side.CLIENT)
     public static void checkRange(EntityLivingBase entity) {
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.playerController instanceof IExtendedPlayerController)) {
-            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, CURRENT_GAME_TYPE);
-            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, NET_CLIENT_HANDLER);
+            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
+              mc.playerController, CURRENT_GAME_TYPE);
+            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
+              mc.playerController, NET_CLIENT_HANDLER);
             SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
             controller.setGameType(type);
             mc.playerController = controller;
         }
+
         if (((IExtendedPlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
-            extendRange(entity, 2.0F - ((IExtendedPlayerController) mc.playerController).getReachDistanceExtension());
+            extendRange(entity, 2.0F - ((IExtendedPlayerController) mc.playerController)
+              .getReachDistanceExtension());
         }
     }
 }
