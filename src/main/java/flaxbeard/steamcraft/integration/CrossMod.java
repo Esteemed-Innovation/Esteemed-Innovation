@@ -61,8 +61,7 @@ public class CrossMod {
 		}
 		
 		if(TWILIGHT_FOREST) {
-			TwilightForestIntegration.grabItems();
-			TwilightForestIntegration.addTwilightForestLiquid();
+			TwilightForestIntegration.postInit();
 		}
 		
 		MiscIntegration.postInit();
