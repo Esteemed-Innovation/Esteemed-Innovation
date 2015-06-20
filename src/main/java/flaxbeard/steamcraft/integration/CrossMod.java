@@ -11,7 +11,7 @@ import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Loader;
 
-public class CrossMod{
+public class CrossMod {
 	public static final boolean BAUBLES = Loader.isModLoaded("Baubles") && Config.enableBaublesIntegration;
 	public static final boolean BLOOD_MAGIC = Loader.isModLoaded("AWWayofTime") && Config.enableBloodMagicIntegration;
 	public static final boolean BOTANIA = Loader.isModLoaded("Botania") && Config.enableBotaniaIntegration;
@@ -27,33 +27,40 @@ public class CrossMod{
 	
 	public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 	
-	public static void init(){
+	public static void init() {
 		if(RAILCRAFT && Config.genPoorOre) MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
 	}
 	
-	public static void postInit(){
-		if(BOTANIA) BotaniaIntegration.postInit();
+	public static void postInit() {
+		if(BOTANIA) {
+			BotaniaIntegration.postInit();
+		}
 		
-		if(BLOOD_MAGIC) BloodMagicIntegration.postInit();
+		if(BLOOD_MAGIC) {
+			BloodMagicIntegration.postInit();
+		}
 		
-		if(ENDER_IO){
+		if(ENDER_IO) {
 			EnderIOIntegration.postInit();
 		}
 		
-		if(INDUSTRIALCRAFT) IndustrialCraftIntegration.postInit();
+		if(INDUSTRIALCRAFT) {
+			IndustrialCraftIntegration.postInit();
+		}
 		
-		if(NATURA) NaturaIntegration.postInit();
+		if(NATURA) {
+			NaturaIntegration.postInit();
+		}
 		
-		if(THAUMCRAFT){
+		if(THAUMCRAFT) {
 			ThaumcraftIntegration.postInit();
 		}
 		
-		if(THERMAL_FOUNDATION){
-			ThermalFoundationIntegration.grabItems();
-        	ThermalFoundationIntegration.addThermalFoundationLiquid();
+		if(THERMAL_FOUNDATION) {
+			ThermalFoundationIntegration.postInit();
 		}
 		
-		if(TWILIGHT_FOREST){
+		if(TWILIGHT_FOREST) {
 			TwilightForestIntegration.grabItems();
 			TwilightForestIntegration.addTwilightForestLiquid();
 		}
