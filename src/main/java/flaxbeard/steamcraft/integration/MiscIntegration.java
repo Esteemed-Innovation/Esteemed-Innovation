@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class MiscIntegration{
-	public static void postInit(){
+public class MiscIntegration {
+	public static void postInit() {
 		if (FluidRegistry.isFluidRegistered("steam") && Config.enableFluidSteamConverter) {
             SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
         }

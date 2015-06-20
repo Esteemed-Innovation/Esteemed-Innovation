@@ -16,25 +16,25 @@ import java.util.List;
  * @author xbony2, MineMaarten
  *
  */
-public class IC2RecipeInput implements IRecipeInput{
+public class IC2RecipeInput implements IRecipeInput {
 	private final ItemStack input;
 
-	public IC2RecipeInput(ItemStack input){
+	public IC2RecipeInput(ItemStack input) {
         this.input = input;
     }
 
 	@Override
-    public boolean matches(ItemStack subject){
+    public boolean matches(ItemStack subject) {
         return subject != null && input.isItemEqual(subject) && input.getItemDamage() == subject.getItemDamage();
     }
 
     @Override
-    public int getAmount(){
+    public int getAmount() {
         return input.stackSize;
     }
 
     @Override
-    public List<ItemStack> getInputs(){
+    public List<ItemStack> getInputs() {
     	List<ItemStack> list = Arrays.asList(input);
         return list;
     }
