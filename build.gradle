@@ -44,16 +44,6 @@ repositories {
 		name "tterrag Repo"
 		url "http://maven.tterrag.com"
 	}
-	
-	ivy {
-		name "CoFHCore"
-		artifactPattern 'http://addons.cursecdn.com/files/2221/835/[module]-[revision].[ext]'
-	}
-	
-	ivy {
-		name "ThermalFoundation"
-		artifactPattern "http://addons-origin.cursecdn.com/files/2233/780/[module]-[revision].[ext]"
-	}
 }
 
 dependencies {
@@ -62,8 +52,6 @@ dependencies {
 	compile ticVersion
 	compile naturaVersion
 	compile eioVersion
-	compile name: 'CoFHCore', version: cofhCoreVersion, ext: 'jar'
-	compile name: 'ThermalFoundation', version: thermalFoundVersion, ext: 'jar'
 	
 	compile fileTree(dir: 'fsplib', include: '*.jar') // Not using 'lib' since I got a lot of crap in there.
 }
