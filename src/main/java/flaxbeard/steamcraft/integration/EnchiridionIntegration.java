@@ -13,13 +13,16 @@ public class EnchiridionIntegration {
         boolean foundBook = false;
         for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
             ItemStack binder = player.inventory.getStackInSlot(p);
-            if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) && (binder.getItemDamage() == 1)) {
-                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound : new NBTTagCompound();
+            if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) &&
+              (binder.getItemDamage() == 1)) {
+                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound :
+                  new NBTTagCompound();
                 NBTTagList nbttaglist = loader.getTagList("Inventory", 10);
                 if (nbttaglist != null) {
                     for (int i = 0; i < nbttaglist.tagCount(); i++) {
                         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null && ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
+                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null &&
+                          ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
                             foundBook = true;
                             break;
                         }
@@ -33,13 +36,16 @@ public class EnchiridionIntegration {
     public static ItemStack findBook(Item class1, EntityPlayer player) {
         for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
             ItemStack binder = player.inventory.getStackInSlot(p);
-            if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) && (binder.getItemDamage() == 1)) {
-                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound : new NBTTagCompound();
+            if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) &&
+              (binder.getItemDamage() == 1)) {
+                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound :
+                  new NBTTagCompound();
                 NBTTagList nbttaglist = loader.getTagList("Inventory", 10);
                 if (nbttaglist != null) {
                     for (int i = 0; i < nbttaglist.tagCount(); i++) {
                         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null && ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
+                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null &&
+                          ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
                             return ItemStack.loadItemStackFromNBT(nbttagcompound1);
                         }
                     }

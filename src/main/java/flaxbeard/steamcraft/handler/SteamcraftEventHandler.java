@@ -215,7 +215,7 @@ public class SteamcraftEventHandler {
             GL11.glPopMatrix();
         }
     }
-//	
+//
 //	@SubscribeEvent
 //	public void preRender(RenderLivingEvent.Pre event) {
 //		if (event.entity.isPotionActive(Steamcraft.semiInvisible)) {
@@ -425,7 +425,7 @@ public class SteamcraftEventHandler {
         if (event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) event.gui;
             if (mc.thePlayer.inventory.armorInventory[3] != null && (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
-                    || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead 
+                    || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead
                     && ((ItemExosuitArmor) mc.thePlayer.inventory.armorInventory[3].getItem()).hasUpgrade(mc.thePlayer.inventory.armorInventory[3], SteamcraftItems.tophat)))) {
                 IMerchant merch = ReflectionHelper.getPrivateValue(GuiMerchant.class, gui, 2);
                 MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
@@ -752,7 +752,7 @@ public class SteamcraftEventHandler {
                         }
                     }
                 }
-                
+
                 if ((vibrantLevel > 0) && (player.worldObj.rand.nextInt(5 - vibrantLevel) == 0)) {
                     int startRotation = player.worldObj.rand.nextInt(360);
                     boolean foundSpot = false;
@@ -795,7 +795,7 @@ public class SteamcraftEventHandler {
                 }
             }
         }
-        
+
         if (((event.entityLiving instanceof EntityPlayer)) && (event.source.damageType.equals("mob")) && (event.source.getEntity() != null) && (!event.entityLiving.worldObj.isRemote)) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             Entity mob = event.source.getEntity();
@@ -1047,7 +1047,7 @@ public class SteamcraftEventHandler {
 
 
         if (hasPower && armor == 4) {
-        	event.newSpeed = event.newSpeed * 1.2F;
+            event.newSpeed = event.newSpeed * 1.2F;
         }
     }
 
