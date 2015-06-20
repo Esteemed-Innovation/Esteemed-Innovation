@@ -44,6 +44,10 @@ repositories {
 		name "tterrag Repo"
 		url "http://maven.tterrag.com"
 	}
+	maven {
+		name = "chickenbones"
+		url = 'http://chickenbones.net/maven/'
+	}
 }
 
 dependencies {
@@ -52,6 +56,9 @@ dependencies {
 	compile ticVersion
 	compile naturaVersion
 	compile eioVersion
+	compile codeChickenCoreVersion
+	compile notEnoughItemsVersion
+	compile codeChickenLibVersion
 	
 	compile fileTree(dir: 'fsplib', include: '*.jar') // Not using 'lib' since I got a lot of crap in there.
 }
