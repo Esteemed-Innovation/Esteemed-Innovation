@@ -14,7 +14,7 @@ public class IndustrialCraftIntegration {
 	public final static ItemStack FILLED_X8 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 8);
 	public final static ItemStack FILLED_X7 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 7);
 	
-	public static void postInit(){
+	public static void postInit() {
 		Recipes.cannerBottle.addRecipe(EMPTY_X10, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedBeef)), FILLED_X10);
 		Recipes.cannerBottle.addRecipe(EMPTY_X8, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedChicken)), FILLED_X8);
 		Recipes.cannerBottle.addRecipe(EMPTY_X7, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedFish)), FILLED_X7);
