@@ -13,9 +13,7 @@ import net.minecraft.item.ItemStack;
 public class EnderIOIntegration {
 
     public static void postInit() {
-        CrucibleLiquid liquidVibrant = new CrucibleLiquid("vibrant",
-          new ItemStack(EnderIO.itemAlloy, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate,
-          1, 10), new ItemStack(EnderIO.itemMaterial, 1, 4), null, 124, 179, 56);
+        CrucibleLiquid liquidVibrant = new CrucibleLiquid("vibrant", new ItemStack(EnderIO.itemAlloy, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 10), new ItemStack(EnderIO.itemMaterial, 1, 4), null, 124, 179, 56);
         SteamcraftRegistry.liquids.add(liquidVibrant);
 
         SteamcraftRegistry.registerSmeltThing(EnderIO.itemAlloy, 2, liquidVibrant, 9);
@@ -25,11 +23,8 @@ public class EnderIOIntegration {
         SteamcraftRegistry.registerSmeltThingOredict("nuggetVibrant", liquidVibrant, 1);
         SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftVibrant", liquidVibrant, 6);
         if (Config.enableVibrantPlate) {
-            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Vibrant",
-              new ItemStack(SteamcraftItems.exosuitPlate, 1, 12), "Vibrant", "Vibrant",
-              "steamcraft.plate.vibrant"));
-            SteamcraftRecipes.addExosuitPlateRecipes("exoVibrant", "plateSteamcraftVibrant",
-              new ItemStack(SteamcraftItems.exosuitPlate, 1, 12), liquidVibrant);
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Vibrant", new ItemStack(SteamcraftItems.exosuitPlate, 1, 12), "Vibrant", "Vibrant", "steamcraft.plate.vibrant"));
+            SteamcraftRecipes.addExosuitPlateRecipes("exoVibrant", "plateSteamcraftVibrant", new ItemStack(SteamcraftItems.exosuitPlate, 1, 12), liquidVibrant);
         }
     }
 
