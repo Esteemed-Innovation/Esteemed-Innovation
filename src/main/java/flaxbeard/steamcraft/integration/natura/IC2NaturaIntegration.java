@@ -14,7 +14,7 @@ import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
 public class IC2NaturaIntegration {
 	public static void addIC2Recipes() {
 		Recipes.cannerBottle.addRecipe(IndustrialCraftIntegration.EMPTY_X10,
-			new IC2RecipeInput(new ItemStack(NaturaIntegration.steamedImphide)),
-			IndustrialCraftIntegration.FILLED_X10);
+		  new IC2RecipeInput(new ItemStack(NaturaIntegration.steamedImphide)),
+		  IndustrialCraftIntegration.FILLED_X10);
 	}
 }

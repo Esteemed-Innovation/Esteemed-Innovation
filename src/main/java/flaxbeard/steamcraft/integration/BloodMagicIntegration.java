@@ -35,10 +35,10 @@ public class BloodMagicIntegration {
 	public static void postInit() {
         if (Config.enableSadistPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Sadist",
-							new ItemStack(SteamcraftItems.exosuitPlate, 1, 10), "Sadist", "Sadist",
-							"steamcraft.plate.sadist"));
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 10), "Sadist", "Sadist",
+              "steamcraft.plate.sadist"));
             BookRecipeRegistry.addRecipe("exoSadist", new ShapedOreRecipe(new ItemStack(
-							SteamcraftItems.exosuitPlate, 1, 10), " s ", "sbs", " s ",
+              SteamcraftItems.exosuitPlate, 1, 10), " s ", "sbs", " s ",
               's', ModItems.reinforcedSlate, 'b', ModBlocks.runeOfSelfSacrifice));
         }
     }
@@ -46,15 +46,15 @@ public class BloodMagicIntegration {
     @SuppressWarnings("unchecked")
     public static void clickLeft(PlayerInteractEvent event) {
         if (!event.world.isRemote && (event.action == Action.RIGHT_CLICK_AIR || event.action ==
-					Action.RIGHT_CLICK_BLOCK)) {
+          Action.RIGHT_CLICK_BLOCK)) {
             try {
                 Class energyBatteryClass = Class.forName(
-									"WayofTime.alchemicalWizardry.common.items.EnergyBattery");
+                  "WayofTime.alchemicalWizardry.common.items.EnergyBattery");
                 if (event.entityPlayer.getHeldItem() != null &&
-									energyBatteryClass.isInstance(event.entityPlayer.getHeldItem().getItem())) {
+                  energyBatteryClass.isInstance(event.entityPlayer.getHeldItem().getItem())) {
                     LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
                     int cap = ((Integer)ReflectionHelper.getPrivateValue(energyBatteryClass,
-											event.entityPlayer.getHeldItem().getItem(), 0)).intValue();
+                      event.entityPlayer.getHeldItem().getItem(), 0)).intValue();
                     if (cap > data.cap) {
                         data.cap = cap;
                         data.markDirty();
@@ -69,7 +69,7 @@ public class BloodMagicIntegration {
     public static LifeEssenceCap getData(String name) {
         World world = MinecraftServer.getServer().worldServers[0];
         LifeEssenceCap data = (LifeEssenceCap) world.loadItemData(LifeEssenceCap.class, name +
-					"cap");
+          "cap");
         if (data == null) {
             data = new LifeEssenceCap(name + "cap");
             world.setItemData(name + "cap", data);
@@ -86,7 +86,7 @@ public class BloodMagicIntegration {
                 if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
                     ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
                     if (armorItem.hasPlates(armor) && UtilPlates.getPlate(
-											armor.stackTagCompound.getString("plate")).getIdentifier() == "Sadist") {
+                      armor.stackTagCompound.getString("plate")).getIdentifier() == "Sadist") {
                         bmPlates++;
                     }
                 }
@@ -94,7 +94,7 @@ public class BloodMagicIntegration {
             if (bmPlates > 0) {
 	        	int lp = (int) event.ammount * 12 * bmPlates;
                 EnergyItems.addEssenceToMaximum(player.getCommandSenderName(),  lp, getData(
-									player.getCommandSenderName()).cap);
+                  player.getCommandSenderName()).cap);
             }
         }
     }

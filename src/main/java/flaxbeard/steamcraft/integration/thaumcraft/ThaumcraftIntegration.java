@@ -42,7 +42,7 @@ public class ThaumcraftIntegration {
         goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
         GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
         BookRecipeRegistry.addRecipe("mask", new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x ",
-                'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));
+          'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));
 
         SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
         SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
