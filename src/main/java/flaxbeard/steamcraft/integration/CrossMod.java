@@ -51,7 +51,7 @@ public class CrossMod {
 	public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
 
 	public static void init() {
-		if (RAILCRAFT && Config.genPoorZincOre) {
+		if (RAILCRAFT && Config.genPoorZincOre && Config.enablePoorZincOreBlock) {
 			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
 		}
 	}
