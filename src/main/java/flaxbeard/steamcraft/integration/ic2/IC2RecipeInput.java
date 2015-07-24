@@ -1,10 +1,11 @@
 package flaxbeard.steamcraft.integration.ic2;
 
+import ic2.api.recipe.IRecipeInput;
+
+import net.minecraft.item.ItemStack;
+
 import java.util.Arrays;
 import java.util.List;
-
-import ic2.api.recipe.IRecipeInput;
-import net.minecraft.item.ItemStack;
 
 /**
  * Part/parts of this code was taken from IndustrialEx, which was taken from Bluepower, I 
@@ -15,25 +16,25 @@ import net.minecraft.item.ItemStack;
  * @author xbony2, MineMaarten
  *
  */
-public class IC2RecipeInput implements IRecipeInput{
+public class IC2RecipeInput implements IRecipeInput {
 	private final ItemStack input;
 
-	public IC2RecipeInput(ItemStack input){
+	public IC2RecipeInput(ItemStack input) {
         this.input = input;
     }
 
 	@Override
-    public boolean matches(ItemStack subject){
+    public boolean matches(ItemStack subject) {
         return subject != null && input.isItemEqual(subject) && input.getItemDamage() == subject.getItemDamage();
     }
 
     @Override
-    public int getAmount(){
+    public int getAmount() {
         return input.stackSize;
     }
 
     @Override
-    public List<ItemStack> getInputs(){
+    public List<ItemStack> getInputs() {
     	List<ItemStack> list = Arrays.asList(input);
         return list;
     }
