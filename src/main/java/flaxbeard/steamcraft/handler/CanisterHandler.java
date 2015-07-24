@@ -6,8 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.RecipeSorter;
 
 public class CanisterHandler implements IRecipe {
+
+	static {
+		RecipeSorter.register("Steamcraft:canisterHandler", CanisterHandler.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+	}
 
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
