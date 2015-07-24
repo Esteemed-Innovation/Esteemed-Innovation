@@ -23,9 +23,7 @@ public class CanisterHandler implements IRecipe {
             if (inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i);
                 if (stack.getItem() == SteamcraftItems.canister) {
-
                     if (hasCan == false) {
-
                         hasCan = true;
                     } else {
                         canCraft = false;
@@ -41,7 +39,6 @@ public class CanisterHandler implements IRecipe {
         }
 
         if (canCraft && hasCan && output != null) {
-
             if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
                 return false;
             }
@@ -59,9 +56,7 @@ public class CanisterHandler implements IRecipe {
             if (inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i);
                 if (stack.getItem() == SteamcraftItems.canister) {
-
                     if (hasCan == false) {
-
                         hasCan = true;
                     } else {
                         canCraft = false;
