@@ -28,7 +28,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
         NBTTagCompound access = super.getDescriptionTag();
         access.setShort("progress", (short) progress);
         if (myTank.getFluid() != null) {
-            access.setShort("fluid", (short) myTank.getFluid().fluidID);
+            access.setShort("fluid", (short) myTank.getFluid().getFluidID());
         }
         access.setBoolean("running", this.running);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
@@ -65,7 +65,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 
         par1NBTTagCompound.setShort("water", (short) myTank.getFluidAmount());
         if (myTank.getFluid() != null) {
-            par1NBTTagCompound.setShort("fluid", (short) myTank.getFluid().fluidID);
+            par1NBTTagCompound.setShort("fluid", (short) myTank.getFluid().getFluidID());
         }
     }
 
