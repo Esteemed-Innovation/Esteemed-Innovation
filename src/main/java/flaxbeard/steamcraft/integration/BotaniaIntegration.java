@@ -114,7 +114,7 @@ public class BotaniaIntegration {
     }
 
     public static Multimap addModifiers(Multimap map, ItemStack stack, int armorType) {
-      int numberRandom = 171328 //Consider making this number actually random. Unsure if thatll work
+      int numberRandom = 171328; //Consider making this number actually random. Unsure if thatll work
         if ((((ItemExosuitArmor) stack.getItem()).hasPlates(stack) &&
           UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() ==
           "Terrasteel")) {
@@ -145,7 +145,7 @@ public class BotaniaIntegration {
         if (!(mc.playerController instanceof IExtendedPlayerController)) {
             GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
               mc.playerController, CURRENT_GAME_TYPE);
-            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,\
+            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
               mc.playerController, NET_CLIENT_HANDLER);
             SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
             controller.setGameType(type);
