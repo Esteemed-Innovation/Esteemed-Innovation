@@ -42,6 +42,9 @@ public class Config {
     public static boolean passiveDrain;
     public static boolean disableParticles;
     public static boolean genPoorZincOre;
+    public static boolean enableCopperOreBlock;
+    public static boolean enableZincOreBlock;
+    public static boolean enablePoorZincOreBlock;
 
     public static boolean easterEggs;
 
@@ -215,6 +218,9 @@ public class Config {
         genCopperExtras = config.get("World Generation", "Generate Copper in the above extra dimensions", true).getBoolean();
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
         genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean(true);
+        enableCopperOreBlock = config.get("World Generation", "Enable Copper Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
+        enableZincOreBlock = config.get("World Generation", "Enable Zinc Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
+        enablePoorZincOreBlock = config.get("World Generation", "Enable Poor Zinc Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);

@@ -29,14 +29,21 @@ public class BlockSteamcraftOre extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister ir) {
-        this.icon[0] = ir.registerIcon("steamcraft:oreCopper");
-        this.icon[1] = ir.registerIcon("steamcraft:oreZinc");
-        this.icon[2] = ir.registerIcon("steamcraft:poorOreZinc");
-        this.icon[3] = ir.registerIcon("steamcraft:copper_nether");
-        this.icon[4] = ir.registerIcon("steamcraft:zinc_nether");
-        this.icon[5] = ir.registerIcon("steamcraft:copper_end");
-        this.icon[6] = ir.registerIcon("steamcraft:zinc_end");
+        if (Config.enableCopperOreBlock) {
+            this.icon[0] = ir.registerIcon("steamcraft:oreCopper");
+            this.icon[3] = ir.registerIcon("steamcraft:copper_nether");
+            this.icon[5] = ir.registerIcon("steamcraft:copper_end");
+        }
 
+        if (Config.enableZincOreBlock) {
+            this.icon[1] = ir.registerIcon("steamcraft:oreZinc");
+            this.icon[4] = ir.registerIcon("steamcraft:zinc_nether");
+            this.icon[6] = ir.registerIcon("steamcraft:zinc_end");
+        }
+
+        if (Config.enablePoorZincOreBlock) {
+            this.icon[2] = ir.registerIcon("steamcraft:poorOreZinc");
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -75,9 +82,14 @@ public class BlockSteamcraftOre extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        if (Loader.isModLoaded("Railcraft") && Config.genPoorZincOre) {
+        if (Config.enableCopperOreBlock) {
+            par3List.add(new ItemStack(par1, 1, 0));
+        }
+
+        if (Config.enableZincOreBlock) {
+            par3List.add(new ItemStack(par1, 1, 1));
+        }
+        if (Loader.isModLoaded("Railcraft") && Config.enablePoorZincOreBlock) {
             par3List.add(new ItemStack(par1, 1, 2));
         }
     }
@@ -86,5 +98,4 @@ public class BlockSteamcraftOre extends Block {
     public int damageDropped(int meta) {
         return meta;
     }
-
 }
