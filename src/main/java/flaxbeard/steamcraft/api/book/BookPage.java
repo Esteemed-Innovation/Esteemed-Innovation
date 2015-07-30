@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import scala.Tuple4;
@@ -62,8 +61,7 @@ public class BookPage {
             if (mx >= ix && mx <= ix + 16 && my >= iy && my <= iy + 16) {
                 fontRenderer.setUnicodeFlag(false);
                 book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-                if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4() &&
-                  (!Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))) {
+                if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4() &&) {
                     book.itemClicked((ItemStack) item._3());
                 }
                 fontRenderer.setUnicodeFlag(true);
