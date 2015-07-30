@@ -6,8 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.RecipeSorter;
 
 public class CanisterHandler implements IRecipe {
+
+    static {
+        RecipeSorter.register("Steamcraft:canisterHandler", CanisterHandler.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+    }
 
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
@@ -18,9 +23,7 @@ public class CanisterHandler implements IRecipe {
             if (inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i);
                 if (stack.getItem() == SteamcraftItems.canister) {
-
                     if (hasCan == false) {
-
                         hasCan = true;
                     } else {
                         canCraft = false;
@@ -36,7 +39,6 @@ public class CanisterHandler implements IRecipe {
         }
 
         if (canCraft && hasCan && output != null) {
-
             if (output.hasTagCompound() && output.stackTagCompound.hasKey("canned")) {
                 return false;
             }
@@ -54,9 +56,7 @@ public class CanisterHandler implements IRecipe {
             if (inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i);
                 if (stack.getItem() == SteamcraftItems.canister) {
-
                     if (hasCan == false) {
-
                         hasCan = true;
                     } else {
                         canCraft = false;
