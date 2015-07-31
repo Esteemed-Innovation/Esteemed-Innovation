@@ -61,7 +61,7 @@ public class BookPage {
             if (mx >= ix && mx <= ix + 16 && my >= iy && my <= iy + 16) {
                 fontRenderer.setUnicodeFlag(false);
                 book.renderToolTip((ItemStack) item._3(), mx, my, (Boolean) item._4());
-                if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4() &&) {
+                if (org.lwjgl.input.Mouse.isButtonDown(0) && (Boolean) item._4()) {
                     book.itemClicked((ItemStack) item._3());
                 }
                 fontRenderer.setUnicodeFlag(true);
