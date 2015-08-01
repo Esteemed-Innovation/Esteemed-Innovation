@@ -92,7 +92,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
                 IFluidHandler tank = (IFluidHandler) tileEntity;
                 int maxDrain = (int)(PUSH_MAX * steamNetwork.getPressure());
-                if(maxDrain > 0) {
+                if (maxDrain > 0) {
                     FluidStack avail = drain(dir, maxDrain, false);
                     int taken = tank.fill(dir.getOpposite(), avail, true);
                     steamNetwork.decrSteam(taken);
@@ -171,7 +171,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
             Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
             int ic2Drained = resource.amount;
-            if (this.getSteamShare() < ic2Drained){
+            if (this.getSteamShare() > ic2Drained){
                 ic2Drained = this.getSteamShare();
             }
 
@@ -191,13 +191,12 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             return null;
         }
         Fluid fluid = FluidRegistry.getFluid("steam");
-        int drained = maxDrain;
-        if (this.getSteamShare() < drained) {
-            drained = this.getSteamShare();
+        if (this.getSteamShare() < maxDrain) {
+            maxDrain = this.getSteamShare();
         }
-        FluidStack stack = new FluidStack(fluid, drained);
+        FluidStack stack = new FluidStack(fluid, maxDrain);
         if (doDrain) {
-            this.decrSteam(drained);
+            this.decrSteam(maxDrain);
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
 
