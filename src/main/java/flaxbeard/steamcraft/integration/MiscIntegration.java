@@ -16,7 +16,7 @@ public class MiscIntegration {
             SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);
         }
 
-        if (OreDictionary.getOres("ingotLead").size() > 0) {
+        if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0) {
             CrucibleLiquid liquidLead = new CrucibleLiquid("lead",
               OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 9),
               OreDictionary.getOres("nuggetLead").size() > 0 ?

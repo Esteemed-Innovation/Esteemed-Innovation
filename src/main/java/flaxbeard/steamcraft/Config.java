@@ -175,6 +175,7 @@ public class Config {
     public static boolean enableIronPlate;
     public static boolean enableGoldPlate;
     public static boolean enableBrassPlate;
+    public static boolean enableLeadPlate;
     public static boolean enableThaumiumPlate;
     public static boolean enableElementiumPlate;
     public static boolean enableTerrasteelPlate;
@@ -322,6 +323,7 @@ public class Config {
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
         enableGoldPlate = config.get("Exosuit Plates", "Enable gold plate", true).getBoolean(true);
         enableBrassPlate = config.get("Exosuit Plates", "Enable brass plate", true).getBoolean(true);
+        enableLeadPlate = config.get("Exosuit Plates", "Enable lead plate", true).getBoolean(true);
         enableThaumiumPlate = config.get("Exosuit Plates", "Enable thaumium plate", true).getBoolean(true);
         enableElementiumPlate = config.get("Exosuit Plates", "Enable elementium plate", true).getBoolean(true);
         enableTerrasteelPlate = config.get("Exosuit Plates", "Enable terrasteel plate", true).getBoolean(true);

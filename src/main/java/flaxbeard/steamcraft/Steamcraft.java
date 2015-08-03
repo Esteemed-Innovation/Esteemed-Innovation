@@ -185,16 +185,15 @@ public class Steamcraft {
         if (Config.enablePipe) {
             MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
         }
-        
-        SteamcraftBook.registerBookResearch();
+
         ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre;
         iso.registerDusts();
         iso.addSmelting();
         iso.registerDusts();
         SteamcraftItems.reregisterPlates();
         SteamcraftRecipes.registerDustLiquids();
-        
         CrossMod.postInit();
+        SteamcraftBook.registerBookResearch();
     }
 
 

@@ -334,7 +334,7 @@ public class SteamcraftBook {
             if (Config.enableGoldPlate) {
                 SteamcraftRegistry.addResearch("research.PlateGold.name", "!research.ExoPlates.name", new BookPageItem("research.PlateGold.name", "research.PlateGold.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 3)), new BookPageCrafting("", "exoGold"));
             }
-            if (Config.enableGoldPlate && OreDictionary.getOres("ingotLead").size() > 0) {
+            if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0) {
                 SteamcraftRegistry.addResearch("research.PlateLead.name", "!research.ExoPlates.name", new BookPageItem("research.PlateLead.name", "research.PlateLead.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 11)), new BookPageCrafting("", "exoLead"));
             }
             if (Config.enableVibrantPlate && Loader.isModLoaded("EnderIO")) {
