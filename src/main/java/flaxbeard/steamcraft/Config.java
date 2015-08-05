@@ -369,16 +369,9 @@ public class Config {
         enableThermalFoundationIntegration = config.get("Integration", "Enable Thermal Foundation", true).getBoolean(true);
         enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean(true);
         enableNaturaIntegration = config.get("Integration", "Enable Natura", true).getBoolean(true);
-        //enableToolHeadsIntegration = config.get("Integration", "Enable Tool Heads", true).getBoolean(true);
         enableTinkersConstruct = config.get("Integration", "Enable Tinker's Construct", true).getBoolean(true);
         enableBaublesIntegration = config.get("Integration", "Enable Baubles", true).getBoolean(true);
         enableRailcraftIntegration = config.get("Integration", "Enable Railcraft", true).getBoolean(true);
-
-        /*//TOOL HEADS
-        config.addCustomCategoryComment("Tool Heads", "These are only used if you have Tool Heads integration enabled, and the Tool Heads mod installed");
-        brassChance = config.getInt("brassChance", "Tool Heads", 20, 1, 100, "What is the chance of a brass tool head being dropped? 20 default. High is higher chance. 1-100");
-        gildedChance = config.getInt("gildedChance", "Tool Heads", 15, 1, 100, "What is the cnace of a gilded tool head being dropped? 15 default. High is higher chance. 1-100");
-        */
 
         if (enableBoiler && enableGauge && enableTank && enablePipe) {
             hasAllCrucial = true;
