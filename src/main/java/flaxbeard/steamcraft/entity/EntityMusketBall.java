@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IProjectile;
@@ -34,7 +35,6 @@ public class EntityMusketBall extends Entity implements IProjectile {
     private int yTile = -1;
     private int zTile = -1;
 
-    /** 1 if the player can pick up the arrow */
     private Block inTile = null;
     private int inData = 0;
     private boolean inGround = false;
@@ -45,6 +45,8 @@ public class EntityMusketBall extends Entity implements IProjectile {
      * The amount of knockback an arrow applies when it hits a mob.
      */
     private int knockbackStrength = 1;
+
+    public Material[] validMaterialsForTravel = {Material.air, Material.coral, Material.vine, Material.water, Material.fire, Material.web, Material.plants};
 
     public EntityMusketBall(World par1World) {
         super(par1World);
@@ -154,14 +156,16 @@ public class EntityMusketBall extends Entity implements IProjectile {
 
         Block var16 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
-        if (var16 != Blocks.air && var16 != null) {
-            var16.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-            AxisAlignedBB var2 = var16.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+        if (var16 != null) {
+            for (Material mat : validMaterialsForTravel) {
+                if (var16.getMaterial() != mat) {
+                    var16.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+                    AxisAlignedBB var2 = var16.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-            if (var2 != null && var2.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
-                //if (!this.inGround) {
-                //}
-                this.inGround = true;
+                    if (var2 != null && var2.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
+                        this.inGround = true;
+                    }
+                }
             }
         }
 
@@ -176,7 +180,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             if (var18 == this.inTile && var19 == this.inData) {
                 ++this.ticksInGround;
 
-                if (this.ticksInGround == 1) {
+                if (this.ticksInGround == 1200) {
 //					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
 //					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
 //					Steamcraft.instance.proxy.spawnBreakParticles(worldObj, (float)this.posX,(float)this.posY, (float)this.posZ, var16, (float)(Math.random()-0.5F)/12.0F, 0.3F, (float)(Math.random()-0.5F)/12.0F);
