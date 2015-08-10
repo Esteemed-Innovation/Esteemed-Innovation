@@ -386,9 +386,9 @@ public class SteamcraftEventHandler {
                 }
             }
             if (CrossMod.BOTANIA) {
-                if (pos != null && player.getEquipmentInSlot(4) != null && player.getEquipmentInSlot(4).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
+                if (pos != null && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor && player.getEquipmentInSlot(4) != null && player.getEquipmentInSlot(4).getItem() instanceof ItemExosuitArmor && (player.getHeldItem() == null || player.getHeldItem().getItem() != BotaniaIntegration.twigWand())) {
                     ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
-                    if (chest.hasUpgrade(player.getEquipmentInSlot(3), BotaniaIntegration.floralLaurel)) {
+                    if (chest.hasUpgrade(player.getEquipmentInSlot(4), BotaniaIntegration.floralLaurel)) {
                         Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
                         BotaniaIntegration.displayThings(pos, event);
                     }
