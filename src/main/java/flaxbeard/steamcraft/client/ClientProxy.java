@@ -155,13 +155,15 @@ public class ClientProxy extends CommonProxy {
     }
     
     @Override
-	public void blockHitEffect(int x, int y, int z, MovingObjectPosition movingobjectposition) {	
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
-    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	public void blockHitEffect(int x, int y, int z, MovingObjectPosition movingobjectposition) {
+    	if (!Config.disableParticles) {
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	}
 	}
 
     @Override
