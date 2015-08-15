@@ -35,6 +35,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
@@ -152,6 +153,16 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getMinecraft().effectRenderer.addEffect((new EntityDiggingFX(world, x, y, z, xv, yv, zv, block, 0)));
         }
     }
+    
+    @Override
+	public void blockHitEffect(int x, int y, int z, MovingObjectPosition movingobjectposition) {	
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+    	Minecraft.getMinecraft().effectRenderer.addBlockHitEffects(x, y, z, movingobjectposition);
+	}
 
     @Override
     public void extendRange(Entity entity, float amount) {
