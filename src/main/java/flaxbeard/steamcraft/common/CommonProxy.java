@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
@@ -25,6 +26,9 @@ public class CommonProxy {
     public void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv) {
     }
 
+    public void blockHitEffect(int x, int y, int z, MovingObjectPosition movingobjectposition) {	
+    }
+	
     public void registerHotkeys() {
     }
 
@@ -45,4 +49,5 @@ public class CommonProxy {
     public static void logInfo(String string){
         FMLLog.info("[FSP]: " + string);
     }
+
 }
