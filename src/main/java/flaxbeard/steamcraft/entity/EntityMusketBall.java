@@ -46,8 +46,6 @@ public class EntityMusketBall extends Entity implements IProjectile {
      */
     private int knockbackStrength = 1;
 
-    public Material[] validMaterialsForTravel = {Material.air, Material.coral, Material.vine, Material.water, Material.fire, Material.web, Material.plants};
-
     public EntityMusketBall(World par1World) {
         super(par1World);
         this.renderDistanceWeight = 10.0D;
@@ -157,14 +155,12 @@ public class EntityMusketBall extends Entity implements IProjectile {
         Block var16 = this.worldObj.getBlock(this.xTile, this.yTile, this.zTile);
 
         if (var16 != null) {
-            for (Material mat : validMaterialsForTravel) {
-                if (var16.getMaterial() != mat) {
-                    var16.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-                    AxisAlignedBB var2 = var16.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+            if (var16.getMaterial() != Material.air) {
+                var16.setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+                AxisAlignedBB var2 = var16.getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
 
-                    if (var2 != null && var2.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
-                        this.inGround = true;
-                    }
+                if (var2 != null && var2.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
+                    this.inGround = true;
                 }
             }
         }
@@ -201,7 +197,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             ++this.ticksInAir;
             Vec3 var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
             Vec3 var3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            MovingObjectPosition var4 = this.worldObj.rayTraceBlocks(var17, var3, false);
+            MovingObjectPosition var4 = this.worldObj.func_147447_a(var17, var3, false, true, false);
             var17 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
             var3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
