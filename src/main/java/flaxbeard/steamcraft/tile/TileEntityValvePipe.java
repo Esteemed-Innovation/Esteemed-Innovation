@@ -34,14 +34,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     public void updateRedstoneState(boolean flag) {
-
 		if (Config.enableRedstoneValvePipe && (flag != redstoneState)) {
 			if (!this.turning) {
 				this.setTurining();
 			}
 		}
         redstoneState = flag;
-
     }
 
     @Override
@@ -277,7 +275,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                     changed = false;
                     this.waitingOpen = true;
                 }
-
             }
         }
         if (!changed) {

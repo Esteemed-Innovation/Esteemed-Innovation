@@ -1,15 +1,14 @@
 package flaxbeard.steamcraft;
 
-
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
+import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
-import flaxbeard.steamcraft.handler.MechHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
@@ -152,7 +151,7 @@ public class Steamcraft {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
-        MinecraftForge.EVENT_BUS.register(new MechHandler());
+        MinecraftForge.EVENT_BUS.register(new ExosuitModelCache());
 
         FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
 
