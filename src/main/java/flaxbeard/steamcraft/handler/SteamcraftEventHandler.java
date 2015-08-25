@@ -396,7 +396,7 @@ public class SteamcraftEventHandler {
             }
             if (pos != null && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().getItem() == SteamcraftItems.book) {
                 Block block = mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-                ItemStack stack = block.getPickBlock(pos, player.worldObj, pos.blockX, pos.blockY, pos.blockZ);
+                ItemStack stack = block.getPickBlock(pos, player.worldObj, pos.blockX, pos.blockY, pos.blockZ, player);
                 if (stack != null) {
                     for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
                         if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
