@@ -178,8 +178,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        if (!(entityLiving instanceof EntityPlayer))
+        if (!(entityLiving instanceof EntityPlayer)) {
             return null;
+        }
 
         ModelExosuit modelExosuit = ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
 

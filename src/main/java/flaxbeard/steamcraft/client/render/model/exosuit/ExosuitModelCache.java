@@ -36,13 +36,15 @@ public class ExosuitModelCache {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START) {
             return;
+        }
 
-        if (!(event.player instanceof EntityClientPlayerMP))
+        if (!(event.player instanceof EntityClientPlayerMP)) {
             return;
+        }
 
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             ItemStack itemStack = event.player.inventory.armorInventory[3 - i];
 
             if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
