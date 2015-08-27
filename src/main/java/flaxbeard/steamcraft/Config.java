@@ -45,6 +45,8 @@ public class Config {
     public static boolean enableCopperOreBlock;
     public static boolean enableZincOreBlock;
     public static boolean enablePoorZincOreBlock;
+    public static int workshopLimit;
+    public static int workshopWeight;
 
     public static boolean easterEggs;
 
@@ -222,6 +224,8 @@ public class Config {
         enableCopperOreBlock = config.get("World Generation", "Enable Copper Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
         enableZincOreBlock = config.get("World Generation", "Enable Zinc Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
         enablePoorZincOreBlock = config.get("World Generation", "Enable Poor Zinc Ore. This does not enable world generation of the ore, but will disable it if false.", true).getBoolean(true);
+        workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt(1);
+        workshopWeight = config.get("World Generation", "Workshop spawn weight", 7).getInt(7);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);

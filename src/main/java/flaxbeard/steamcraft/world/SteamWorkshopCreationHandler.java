@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.world;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import flaxbeard.steamcraft.Config;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
 import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
@@ -12,7 +13,7 @@ public class SteamWorkshopCreationHandler implements VillagerRegistry.IVillageCr
 
     @Override
     public PieceWeight getVillagePieceWeight(Random random, int i) {
-        return new StructureVillagePieces.PieceWeight(ComponentSteamWorkshop.class, 4, 1);
+        return new StructureVillagePieces.PieceWeight(ComponentSteamWorkshop.class, Config.workshopWeight, Config.workshopLimit);
     }
 
     @Override
