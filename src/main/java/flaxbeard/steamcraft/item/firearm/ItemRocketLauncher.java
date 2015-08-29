@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.api.UtilMisc;
+import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementRocketLauncher;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
