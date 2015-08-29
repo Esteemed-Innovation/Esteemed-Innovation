@@ -189,6 +189,13 @@ public class Config {
     public static boolean enableFrequencyShifter;
     public static boolean enableDragonRoar;
 
+    // steam tool upgrades
+    public static boolean enableDiamondHead;
+    public static boolean enableHammerHead;
+    public static boolean enableLeafBlower;
+    public static boolean enableCultivator;
+    public static boolean enableRotaryBlades;
+
     //plates
     public static boolean enableCopperPlate;
     public static boolean enableIronPlate;
@@ -388,6 +395,13 @@ public class Config {
         steamToolConsumptionAxe = config.get("Items", "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionDrill = config.get("Items", "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionShovel = config.get("Items", "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+
+        // STEAM TOOL UPGRADES
+        enableDiamondHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Diamond Head upgrade", true).getBoolean(true);
+        enableHammerHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean(true);
+        enableLeafBlower = config.get("Steam Tool Upgrades", "Enable Steam Axe's Leaf Blower upgrade", true).getBoolean(true);
+        enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
+        enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);

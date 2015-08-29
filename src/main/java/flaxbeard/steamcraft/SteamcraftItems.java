@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -118,6 +119,13 @@ public class SteamcraftItems {
     public static Item steamAxe;
     public static Item steamShovel;
 
+    // steam tool upgrades
+    public static Item diamondHead;
+    public static Item hammerHead;
+    public static Item leafBlower;
+    public static Item cultivator;
+    public static Item rotaryBlades;
+
     // food
     public static Item steamedPorkchop;
     public static Item steamedFish;
@@ -131,6 +139,7 @@ public class SteamcraftItems {
         registerExosuit();
         registerExosuitUpgrades();
         registerSteamTools();
+        registerSteamToolUpgrades();
         registerMolds();
         registerFood();
         registerMetals();
@@ -549,6 +558,35 @@ public class SteamcraftItems {
 
             steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(steamShovel, "steamShovel");
+        }
+    }
+
+    private static void registerSteamToolUpgrades() {
+        if (Config.enableSteamTools) {
+            if (Config.enableDiamondHead) {
+                diamondHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead, "steamcraft:diamondHead", null, 1);
+                GameRegistry.registerItem(diamondHead, "diamondHead");
+            }
+
+            if (Config.enableHammerHead) {
+                hammerHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead, "steamcraft:hammerHead", null, 1);
+                GameRegistry.registerItem(hammerHead, "hammerHead");
+            }
+
+            if (Config.enableLeafBlower) {
+                leafBlower = new ItemSteamToolUpgrade(SteamToolSlot.sawAttachment, "steamcraft:leafBlower", null, 1);
+                GameRegistry.registerItem(leafBlower, "leafBlower");
+            }
+
+            if (Config.enableCultivator) {
+                cultivator = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead, "steamcraft:cultivator", null, 1);
+                GameRegistry.registerItem(cultivator, "cultivator");
+            }
+
+            if (Config.enableRotaryBlades) {
+                rotaryBlades = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead, "steamcraft:rotaryBlades", null, 1);
+                GameRegistry.registerItem(rotaryBlades, "rotaryBlades");
+            }
         }
     }
 
