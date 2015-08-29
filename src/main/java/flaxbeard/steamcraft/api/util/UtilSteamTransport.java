@@ -1,6 +1,7 @@
-package flaxbeard.steamcraft.api;
+package flaxbeard.steamcraft.api.util;
 
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

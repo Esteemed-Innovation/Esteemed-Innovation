@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.api;
+package flaxbeard.steamcraft.api.util;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

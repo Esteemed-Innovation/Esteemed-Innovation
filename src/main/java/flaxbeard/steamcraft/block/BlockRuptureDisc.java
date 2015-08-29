@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.UtilMisc;
+import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.tile.TileEntityRuptureDisc;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;

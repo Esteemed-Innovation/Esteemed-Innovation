@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft.item.tool;
 
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.api.UtilMisc;
+import flaxbeard.steamcraft.api.util.UtilMisc;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
