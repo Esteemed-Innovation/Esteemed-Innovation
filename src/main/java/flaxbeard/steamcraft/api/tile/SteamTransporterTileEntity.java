@@ -143,7 +143,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
     @Override
     public void decrSteam(int i) {
-        if (this.network != null) {
+        if (this.network != null && this.network.getSteam() != 0) {
             this.network.decrSteam(i);
         }
     }
