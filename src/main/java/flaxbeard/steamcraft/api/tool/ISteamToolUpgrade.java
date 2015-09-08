@@ -19,7 +19,7 @@ public interface ISteamToolUpgrade {
      *
      * See SteamToolSlot.java for the list of slots.
      */
-    public SteamToolSlot getSlot();
+    public SteamToolSlot getToolSlot();
 
     public ResourceLocation getOverlay();
 

@@ -564,28 +564,23 @@ public class SteamcraftItems {
     private static void registerSteamToolUpgrades() {
         if (Config.enableSteamTools) {
             if (Config.enableDiamondHead) {
-                diamondHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead, "steamcraft:diamondHead", null, 1);
-                GameRegistry.registerItem(diamondHead, "diamondHead");
+                SteamcraftRegistry.registerSteamToolUpgrade(diamondHead, SteamToolSlot.drillHead, null, 1, "diamondHead");
             }
 
             if (Config.enableHammerHead) {
-                hammerHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead, "steamcraft:hammerHead", null, 1);
-                GameRegistry.registerItem(hammerHead, "hammerHead");
+                SteamcraftRegistry.registerSteamToolUpgrade(hammerHead, SteamToolSlot.drillHead, null, 1, "hammerHead");
             }
 
             if (Config.enableLeafBlower) {
-                leafBlower = new ItemSteamToolUpgrade(SteamToolSlot.sawAttachment, "steamcraft:leafBlower", null, 1);
-                GameRegistry.registerItem(leafBlower, "leafBlower");
+                SteamcraftRegistry.registerSteamToolUpgrade(leafBlower, SteamToolSlot.sawAttachment, null, 1, "leafBlower");
             }
 
             if (Config.enableCultivator) {
-                cultivator = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead, "steamcraft:cultivator", null, 1);
-                GameRegistry.registerItem(cultivator, "cultivator");
+                SteamcraftRegistry.registerSteamToolUpgrade(cultivator, SteamToolSlot.shovelHead, null, 1, "cultivator");
             }
 
             if (Config.enableRotaryBlades) {
-                rotaryBlades = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead, "steamcraft:rotaryBlades", null, 1);
-                GameRegistry.registerItem(rotaryBlades, "rotaryBlades");
+                SteamcraftRegistry.registerSteamToolUpgrade(rotaryBlades, SteamToolSlot.shovelHead, null, 1, "rotaryBlades");
             }
         }
     }

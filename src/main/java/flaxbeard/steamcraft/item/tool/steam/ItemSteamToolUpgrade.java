@@ -27,7 +27,7 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public SteamToolSlot getSlot() {
+    public SteamToolSlot getToolSlot() {
         return mySlot;
     }
 
