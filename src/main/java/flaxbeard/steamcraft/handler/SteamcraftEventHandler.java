@@ -64,6 +64,7 @@ import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -333,7 +334,6 @@ public class SteamcraftEventHandler {
     }
 
     public void renderTexture(int screenX, int screenY, int screenEndX, int screenEndY, double startU, double startV, double endU, double endV) {
-
         int zLevel = 1;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
@@ -1538,5 +1538,30 @@ public class SteamcraftEventHandler {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void disableFog(EntityViewRenderEvent.FogDensity event) {
+        EntityLivingBase entity = event.entity;
+        ItemStack equipment = entity.getEquipmentInSlot(4);
+        if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
+            ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
+            if (hasPower(entity, 1) && helmet.hasUpgrade(equipment, SteamcraftItems.foggles)) {
+                event.density = (float) 0;
+                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void handleEnhancement(AnvilUpdateEvent event) {
+//		if (event.right.getItem() instanceof IEnhancement) {
+//			IEnhancement enhancement = (IEnhancement) event.right.getItem();
+//			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
+//				event.cost = enhancement.cost(event.left);
+//				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
+//			}
+//		}
     }
 }
