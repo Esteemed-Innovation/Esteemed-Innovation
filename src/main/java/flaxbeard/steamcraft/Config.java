@@ -3,7 +3,6 @@ package flaxbeard.steamcraft;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
