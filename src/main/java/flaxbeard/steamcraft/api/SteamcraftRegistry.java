@@ -16,7 +16,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class SteamcraftRegistry {
     public static ArrayList<ICrucibleMold> molds = new ArrayList<ICrucibleMold>();
