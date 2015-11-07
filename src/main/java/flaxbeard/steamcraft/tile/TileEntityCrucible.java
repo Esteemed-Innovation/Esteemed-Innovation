@@ -160,10 +160,6 @@ public class TileEntityCrucible extends TileEntity {
                 this.tipTicks = 0;
                 this.tipping = false;
                 isPowered = false;
-            } // Can someone please explain why this code is here twice? Like seriously what the fuck. That sort of shit needs some explanation, bro. - <3 Santa
-            if (this.tipTicks > 140) {
-                this.tipTicks = 0;
-                this.tipping = false;
             }
         }
         for (CrucibleLiquid liquid : SteamcraftRegistry.liquids) {
