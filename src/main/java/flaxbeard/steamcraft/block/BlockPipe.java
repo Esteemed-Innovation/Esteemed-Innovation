@@ -345,7 +345,7 @@ public class BlockPipe extends BlockSteamTransporter {
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if(player!=null){
+        if(player != null) {
             Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
             TileEntity tile = world.getTileEntity(x, y, z);
             if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
