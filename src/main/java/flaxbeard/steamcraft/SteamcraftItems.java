@@ -1,19 +1,5 @@
 package flaxbeard.steamcraft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemFishFood;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.ICrucibleMold;
@@ -26,7 +12,19 @@ import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
 import flaxbeard.steamcraft.item.tool.*;
-import flaxbeard.steamcraft.item.tool.steam.*;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import net.minecraft.init.Items;
+import net.minecraft.item.*;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SteamcraftItems {
     public static HashMap<String, Item> tools = new HashMap<String, Item>();
@@ -100,6 +98,7 @@ public class SteamcraftItems {
     public static Item canner;
     public static Item pitonDeployer;
     public static Item enderShroud;
+    public static Item foggles;
 
     //public static Item fakeOre;
 
@@ -354,6 +353,10 @@ public class SteamcraftItems {
             }
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
+            if (Config.enableFoggles) {
+                foggles = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:foggles").setTextureName("steamcraft:foggles");
+                GameRegistry.registerItem(foggles, "foggles");
+            }
         }
 
     }

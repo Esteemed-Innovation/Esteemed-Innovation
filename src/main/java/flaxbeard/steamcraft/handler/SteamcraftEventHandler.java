@@ -7,36 +7,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.*;
-import flaxbeard.steamcraft.api.block.IDisguisableBlock;
-import flaxbeard.steamcraft.api.exosuit.UtilPlates;
-import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
-import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
-import flaxbeard.steamcraft.api.util.SPLog;
-import flaxbeard.steamcraft.client.ClientProxy;
-import flaxbeard.steamcraft.entity.EntityCanisterItem;
-import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import flaxbeard.steamcraft.integration.BloodMagicIntegration;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.CrossMod;
-import flaxbeard.steamcraft.integration.EnchiridionIntegration;
-import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.ItemSteamcraftBook;
-import flaxbeard.steamcraft.item.ItemWrench;
-import flaxbeard.steamcraft.item.firearm.ItemFirearm;
-import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -65,7 +35,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
-import net.minecraft.world.World;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -87,6 +57,33 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.*;
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.api.exosuit.UtilPlates;
+import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
+import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
+import flaxbeard.steamcraft.api.util.SPLog;
+import flaxbeard.steamcraft.entity.EntityCanisterItem;
+import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
+import flaxbeard.steamcraft.integration.BloodMagicIntegration;
+import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.integration.EnchiridionIntegration;
+import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemSteamcraftBook;
+import flaxbeard.steamcraft.item.firearm.ItemFirearm;
+import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -334,7 +331,6 @@ public class SteamcraftEventHandler {
     }
 
     public void renderTexture(int screenX, int screenY, int screenEndX, int screenEndY, double startU, double startV, double endU, double endV) {
-
         int zLevel = 1;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
@@ -1456,6 +1452,20 @@ public class SteamcraftEventHandler {
                 //	log.debug("network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure() +"; trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + ";");
             }
 
+        }
+    }
+
+    @SubscribeEvent
+    public void disableFog(EntityViewRenderEvent.FogDensity event) {
+        EntityLivingBase entity = event.entity;
+        ItemStack equipment = entity.getEquipmentInSlot(4);
+        if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
+            ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
+            if (hasPower(entity, 1) && helmet.hasUpgrade(equipment, SteamcraftItems.foggles)) {
+                event.density = (float) 0;
+                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
+                event.setCanceled(true);
+            }
         }
     }
 
