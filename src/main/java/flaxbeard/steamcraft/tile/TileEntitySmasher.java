@@ -596,9 +596,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
     public static class SmashablesRegistry {
     	
-    	private final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
-    	private final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
-    	private final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
+    	public final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
+    	public final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
+    	public final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
     	
     	public ItemStack getOutput(ItemStack input) {
     		if (input == null)

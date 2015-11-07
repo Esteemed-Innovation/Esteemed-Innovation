@@ -25,10 +25,10 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 
     //When multiple heaters are used on a furnace, there is a single master heater
     public boolean isMasterHeater;
-    private boolean isInitialized    = false;
-    private int     numHeaters       = 0;
-    private boolean prevHadYuck      = true;
-    public  int     steamConsumption = Config.heaterConsumption;
+    private boolean isInitialized = false;
+    private int numHeaters = 0;
+    private boolean prevHadYuck = true;
+    public int steamConsumption = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
         super(ForgeDirection.VALID_DIRECTIONS);

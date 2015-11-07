@@ -48,6 +48,9 @@ public class ItemSmashedOre extends Item {
         registerEntry(15, "PoorCopper", "nuggetCopper");
         registerEntry(16, "PoorZinc",   "nuggetZinc");
         registerEntry(17, "PoorTin",    "nuggetTin");
+        
+        //Potentially removes a recipe
+        //TileEntitySmasher.REGISTRY.oreDicts.remove("oreIron");
     }
     
     private void registerEntry(int meta, String name, String smeltingResult) {
