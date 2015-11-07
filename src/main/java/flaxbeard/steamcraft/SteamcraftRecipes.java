@@ -2,12 +2,16 @@ package flaxbeard.steamcraft;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
+
+import java.util.Iterator;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -45,11 +49,6 @@ public class SteamcraftRecipes {
 
         liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 4), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4), 242, 191, 66);
         SteamcraftRegistry.registerLiquid(liquidBrass);
-
-
-//		if (Loader.isModLoaded("TConstruct")) {
-//			TinkersIntegration.registerRecipes("iron", new ItemStack(SteamcraftItems.steamcraftPlate,1,2));
-//		}
 
         SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
         SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
@@ -107,6 +106,15 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerSmeltTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
         SteamcraftRegistry.registerDunkThingOredict("ingotIron", liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot, 1, 3));
+        
+        //Potentially removes the iron liquid (this would break recipes trying to use it though)
+        /*Iterator i = SteamcraftRegistry.liquids.iterator();
+        for(int j = 0; i.hasNext(); j++){
+        	CrucibleLiquid liquid = (CrucibleLiquid) i.next();
+        	if(liquid.name.equals("iron")){
+        		SteamcraftRegistry.liquids.remove(j);
+        	}
+        }*/
     }
 
 
