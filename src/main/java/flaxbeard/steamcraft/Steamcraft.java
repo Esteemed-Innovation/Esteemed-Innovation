@@ -1,5 +1,21 @@
 package flaxbeard.steamcraft;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.FMLEventChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
@@ -18,23 +34,6 @@ import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
 import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
-
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -86,7 +85,6 @@ public class Steamcraft {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-
         Config.load(event);
 
         tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
@@ -151,9 +149,12 @@ public class Steamcraft {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
-        MinecraftForge.EVENT_BUS.register(new ExosuitModelCache());
 
         FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
+
+        if (event.getSide() == Side.CLIENT) {
+            FMLCommonHandler.instance().bus().register(new ExosuitModelCache());
+        }
 
         tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
         heaterRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -167,7 +168,6 @@ public class Steamcraft {
         furnaceRenderID = RenderingRegistry.getNextAvailableRenderId();
         //sawRenderID = RenderingRegistry.getNextAvailableRenderId();
         //bloodBoilerRenderID = RenderingRegistry.getNextAvailableRenderId();
-
 
         proxy.registerRenderers();
         proxy.registerHotkeys();

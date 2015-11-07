@@ -3,7 +3,10 @@ package flaxbeard.steamcraft.client.render.model.exosuit;
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -35,20 +38,24 @@ public class ExosuitModelCache {
     }
 
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START) {
-            return;
-        }
+    @SideOnly(Side.CLIENT)
+    public void onPlayerTick(TickEvent.ClientTickEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (event.side == Side.CLIENT && mc.thePlayer != null) {
+            if (event.phase == TickEvent.Phase.START) {
+                return;
+            }
 
-        if (!(event.player instanceof EntityClientPlayerMP)) {
-            return;
-        }
+            if (!(mc.thePlayer instanceof EntityClientPlayerMP)) {
+                return;
+            }
 
-        for (int i = 0; i < 4; i++) {
-            ItemStack itemStack = event.player.inventory.armorInventory[3 - i];
+            for (int i = 0; i < 4; i++) {
+                ItemStack itemStack = mc.thePlayer.inventory.armorInventory[3 - i];
 
-            if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
-                getModel(event.player, i).updateModel(event.player, itemStack);
+                if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
+                    getModel(mc.thePlayer, i).updateModel(mc.thePlayer, itemStack);
+                }
             }
         }
     }
