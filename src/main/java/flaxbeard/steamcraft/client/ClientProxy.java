@@ -45,16 +45,16 @@ import org.lwjgl.input.Keyboard;
 
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
-    public KeyBinding zoomKey = new KeyBinding("Zoom using monocle", Keyboard.KEY_Z, "key.categories.misc");
+    public static KeyBinding[] keyBindings;
 
     @Override
     public void registerHotkeys() {
-        ClientRegistry.registerKeyBinding(this.zoomKey);
-    }
-
-    @Override
-    public boolean isKeyPressed() {
-        return zoomKey.getIsKeyPressed();
+        keyBindings = new KeyBinding[2];
+        keyBindings[0] = new KeyBinding("key.foggles.desc", Keyboard.KEY_SEMICOLON, "key.flaxbeard.category.name");
+        keyBindings[1] = new KeyBinding("Zoom using monocle", Keyboard.KEY_Z, "key.categories.misc");
+        for (int i = 0; i < keyBindings.length; i++) {
+            ClientRegistry.registerKeyBinding(keyBindings[i]);
+        }
     }
 
     @Override

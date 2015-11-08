@@ -25,12 +25,7 @@ public class CommonProxy {
     public void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv) {
     }
 
-    public void registerHotkeys() {
-    }
-
-    public boolean isKeyPressed() {
-        return false;
-    }
+    public void registerHotkeys() {}
 
     public void extendRange(Entity entity, float amount) {
         if (entity instanceof EntityPlayerMP)
@@ -39,7 +34,6 @@ public class CommonProxy {
 
     public void checkRange(EntityLivingBase entity) {
         // TODO Auto-generated method stub
-
     }
 
     public static void logInfo(String string){

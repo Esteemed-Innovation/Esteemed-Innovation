@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
+import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
@@ -25,6 +26,7 @@ import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
+import flaxbeard.steamcraft.handler.FogglesHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
@@ -78,6 +80,7 @@ public class Steamcraft {
 
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
+    public static ClientProxy clientProxy;
 
     private static void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
         GameRegistry.registerTileEntityWithAlternatives(clazz, "steamcraft:" + key);
@@ -148,7 +151,12 @@ public class Steamcraft {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("steamcraft");
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
+        FogglesHandler fogglesHandler = new FogglesHandler();
+
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
+
+        MinecraftForge.EVENT_BUS.register(fogglesHandler);
+        FMLCommonHandler.instance().bus().register(fogglesHandler);
 
         FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
 

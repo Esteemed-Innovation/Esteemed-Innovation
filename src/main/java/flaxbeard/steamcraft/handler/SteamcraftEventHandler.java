@@ -1,9 +1,11 @@
 package flaxbeard.steamcraft.handler;
 
+import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -67,6 +69,7 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
+import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
@@ -1452,20 +1455,6 @@ public class SteamcraftEventHandler {
                 //	log.debug("network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure() +"; trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + ";");
             }
 
-        }
-    }
-
-    @SubscribeEvent
-    public void disableFog(EntityViewRenderEvent.FogDensity event) {
-        EntityLivingBase entity = event.entity;
-        ItemStack equipment = entity.getEquipmentInSlot(4);
-        if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
-            if (hasPower(entity, 1) && helmet.hasUpgrade(equipment, SteamcraftItems.foggles)) {
-                event.density = (float) 0;
-                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-                event.setCanceled(true);
-            }
         }
     }
 

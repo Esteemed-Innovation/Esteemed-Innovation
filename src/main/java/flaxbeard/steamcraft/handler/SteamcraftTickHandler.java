@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,6 +10,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import net.minecraft.client.Minecraft;
@@ -120,7 +122,7 @@ public class SteamcraftTickHandler {
             boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle || hat.getItem() == SteamcraftItems.goggles || (hat.getItem() == SteamcraftItems.exoArmorHead && (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) || ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
-                    if (Steamcraft.proxy.isKeyPressed() && !lastPressingKey) {
+                    if (ClientProxy.keyBindings[1].isPressed() && !lastPressingKey) {
                         zoomSettingOn++;
                         zoomSettingOn = zoomSettingOn % 4;
                         switch (zoomSettingOn) {
@@ -163,7 +165,7 @@ public class SteamcraftTickHandler {
                                 break;
                         }
                         lastPressingKey = true;
-                    } else if (!Steamcraft.proxy.isKeyPressed()) {
+                    } else if (ClientProxy.keyBindings[1].isPressed()) {
                         lastPressingKey = false;
                     }
                     inUse = zoomSettingOn != 0;
