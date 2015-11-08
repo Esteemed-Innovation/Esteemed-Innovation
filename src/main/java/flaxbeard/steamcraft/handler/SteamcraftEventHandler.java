@@ -1541,20 +1541,6 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void disableFog(EntityViewRenderEvent.FogDensity event) {
-        EntityLivingBase entity = event.entity;
-        ItemStack equipment = entity.getEquipmentInSlot(4);
-        if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
-            if (hasPower(entity, 1) && helmet.hasUpgrade(equipment, SteamcraftItems.foggles)) {
-                event.density = (float) 0;
-                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void handleEnhancement(AnvilUpdateEvent event) {
 //		if (event.right.getItem() instanceof IEnhancement) {
 //			IEnhancement enhancement = (IEnhancement) event.right.getItem();

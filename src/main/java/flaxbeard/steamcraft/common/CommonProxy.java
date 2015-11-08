@@ -24,7 +24,9 @@ public class CommonProxy {
             ((EntityPlayerMP) entity).theItemInWorldManager.setBlockReachDistance(((EntityPlayerMP) entity).theItemInWorldManager.getBlockReachDistance() + amount);
     }
 
-    public void checkRange(EntityLivingBase entity) {}
+    public void checkRange(EntityLivingBase entity) {
+        // TODO Auto-generated method stub
+    }
 
     public static void logInfo(String string){
         FMLLog.info("[FSP]: " + string);

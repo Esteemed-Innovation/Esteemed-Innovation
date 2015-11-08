@@ -46,6 +46,8 @@ public class ClientProxy extends CommonProxy {
     public void registerHotkeys() {
         keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z,
           "key.flaxbeard.category"));
+        keyBindings.put("foggles", new KeyBinding("key.foggles.desc", Keyboard.KEY_SEMICOLON,
+          "key.flaxbeard.category"));
 
         for (KeyBinding bind : keyBindings.values()) {
             ClientRegistry.registerKeyBinding(bind);
