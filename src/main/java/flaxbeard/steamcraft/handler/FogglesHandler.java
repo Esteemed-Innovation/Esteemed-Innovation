@@ -17,8 +17,8 @@ import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class FogglesHandler {
-    public int currentFogPosition = 0;
     public int maximumFogPosition = 16;
+    public int currentFogPosition = maximumFogPosition;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
