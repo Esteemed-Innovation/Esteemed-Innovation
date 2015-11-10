@@ -99,6 +99,7 @@ public class SteamcraftItems {
     public static Item pitonDeployer;
     public static Item enderShroud;
     public static Item foggles;
+    public static Item rainAway;
 
     //public static Item fakeOre;
 
@@ -356,6 +357,11 @@ public class SteamcraftItems {
             if (Config.enableFoggles) {
                 foggles = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:foggles").setTextureName("steamcraft:foggles");
                 GameRegistry.registerItem(foggles, "foggles");
+            }
+
+            if (Config.enableRainAway) {
+                rainAway = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rainAway").setTextureName("steamcraft:rainAway");
+                GameRegistry.registerItem(rainAway, "rainAway");
             }
         }
 

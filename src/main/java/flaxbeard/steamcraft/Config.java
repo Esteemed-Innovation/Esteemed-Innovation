@@ -171,6 +171,7 @@ public class Config {
     public static boolean enableUberReinforcedTank;
     public static boolean enableEnderShroud;
     public static boolean enableFoggles;
+    public static boolean enableRainAway;
 
     //plates
     public static boolean enableCopperPlate;
@@ -323,6 +324,7 @@ public class Config {
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
         enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
         enableFoggles = config.get("Exosuit Upgrades", "Enable Foggles", true).getBoolean(true);
+        enableRainAway = config.get("Exosuit Upgrades", "Enable Rain-Away", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
