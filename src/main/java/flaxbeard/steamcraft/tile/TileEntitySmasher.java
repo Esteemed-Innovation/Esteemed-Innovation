@@ -596,13 +596,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
     public static class SmashablesRegistry {
     	
-    	private final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
-    	private final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
-    	private final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
+    	public final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
+    	public final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
+    	public final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
     	
     	public ItemStack getOutput(ItemStack input) {
-    		if (input == null)
+    		if (input == null) {
     			return null;
+    		}
     		ItemStack output = null;
     		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
     			output = wildcards.get(input.getItem());
@@ -611,8 +612,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     			if (ids != null && ids.length > 0) {
     				for (int id : ids) {
     					output = oreDicts.get(OreDictionary.getOreName(id));
-    					if (output != null)
+    					if (output != null) {
     						break;
+    					}
     				}
     			}
     			
@@ -620,8 +622,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     				for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
     					if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
     						output = entry.getValue();
-    						if (output != null)
+    						if (output != null) {
     							break;
+    						}
     					}
     				}
     			}
@@ -643,10 +646,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	}
     	
     	public void registerSmashable(ItemStack input, ItemStack output) {
-    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE)
+    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
     			wildcards.put(input.getItem(), output);
-    		else
+    		} else {
     			registry.put(input, output);
+    		}
     	}
     }
 }
