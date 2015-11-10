@@ -144,6 +144,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
         this.frontSide = access.getInteger("frontSide");
@@ -414,9 +415,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             return;
         }
         ////Steamcraft.log.debug(this.getFront());
-        if (waitOneTick)
-            waitOneTick = false;
-        else {
+       if (waitOneTick) {
+           waitOneTick = false;
+       } else {
             if (!worldObj.isRemote && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
                 if (this.getStackInSlot(1) != null) {
                     if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
@@ -478,7 +479,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                             //HEAT COMMENTED OUT
                             int maxSteamThisTick = (int) (((float) maxThisTick) * 0.7F + (maxThisTick * 0.3F * (
                               1600.0F / 1600.0F)));
-                            ////Steamcraft.log.debug("HEAT IS: " + heat + "MAX STEAM IS: " + maxSteamThisTick);
+//                            System.out.println("HEAT IS: " + heat + " MAX STEAM IS: " + maxSteamThisTick);
                             while (i < maxSteamThisTick && this.isBurning() && this.canSmelt()) {
                                 this.insertSteam(10);
                                 this.myTank.drain(2, true);
@@ -497,6 +498,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                         //BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
                     }
                 }
+
                 if (this.isBurning() != this.wasBurning) {
                     this.wasBurning = this.isBurning();
                     this.burning = this.isBurning();
@@ -713,6 +715,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public int getBurnTimeRemainingScaled(int scale) {
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
             if (this.currentItemBurnTime == 0) {
@@ -793,6 +796,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public int getCookProgressScaled(int scale) {
         return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceCookTime * scale / 200 : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getCookProgressScaled(scale) : 0);
     }
@@ -839,7 +843,6 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public void explode() {
-
         TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(xCoord, yCoord, zCoord);
         if (boiler != null) {
             int clusterIndex = boiler.getValidClusterFromMetadata();
