@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import org.lwjgl.opengl.GL11;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
@@ -41,7 +40,7 @@ public class FogglesHandler {
      * @return boolean
      */
     private boolean canFogify(Entity entity, ItemStack helmet) {
-        if (entity != null && helmet != null &&helmet.getItem() instanceof ItemExosuitArmor &&
+        if (entity != null && helmet != null && helmet.getItem() instanceof ItemExosuitArmor &&
           (entity instanceof EntityLivingBase || entity instanceof EntityPlayer)) {
             ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet.getItem();
             EntityLivingBase elb = (EntityLivingBase) entity;

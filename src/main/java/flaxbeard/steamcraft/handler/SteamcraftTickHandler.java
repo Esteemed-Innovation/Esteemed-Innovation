@@ -16,6 +16,8 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -24,7 +26,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.input.Mouse;
 
 public class SteamcraftTickHandler {
     private static float zoom = 0.0F;
@@ -257,6 +258,35 @@ public class SteamcraftTickHandler {
                 zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void takeRainAway(TickEvent.PlayerTickEvent event) {
+        EntityLivingBase player = event.player;
+        ItemStack equipment = player.getEquipmentInSlot(4);
+        WorldClient world = Minecraft.getMinecraft().theWorld;
+        if (world != null) {
+            if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
+                ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
+                if (player.worldObj.isRaining()) {
+                    if (SteamcraftEventHandler.hasPower(player, 1) &&
+                      helmet.hasUpgrade(equipment, SteamcraftItems.rainAway)) {
+                        world.setRainStrength(0.0F);
+                        world.setThunderStrength(0.0F);
+                    } else {
+                        world.setRainStrength(1.0F);
+                        if (player.worldObj.isThundering()) {
+                            world.setThunderStrength(1.0F);
+                        }
+                    }
+                }
+            } else {
+                world.setRainStrength(1.0F);
+                if (player.worldObj.isThundering()) {
+                    world.setThunderStrength(1.0F);
+                }
             }
         }
     }
