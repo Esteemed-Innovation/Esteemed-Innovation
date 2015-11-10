@@ -495,6 +495,29 @@ public class SteamcraftRecipes {
             BookRecipeRegistry.addRecipe("doubleJump2", new ShapedOreRecipe(new ItemStack(SteamcraftItems.doubleJump), "s s", "v v",
                     'v', SteamcraftBlocks.valvePipe, 's', "plateSteamcraftBrass"));
         }
+
+        if (Config.enableFoggles) {
+            BookRecipeRegistry.addRecipe("foggles1", new ShapedOreRecipe(
+              new ItemStack(SteamcraftItems.foggles),
+              "BDB",
+              "GFG",
+              "BDB",
+              'B', "ingotBrass",
+              'D', "dye",
+              'G', "paneGlass",
+              'F', SteamcraftBlocks.fan
+            ));
+            BookRecipeRegistry.addRecipe("foggles2", new ShapedOreRecipe(
+              new ItemStack(SteamcraftItems.foggles),
+              "BDB",
+              "GFG",
+              "DBD",
+              'B', "plateSteamcraftBrass",
+              'D', "dye",
+              'G', "paneGlass",
+              'F', SteamcraftBlocks.fan
+            ));
+        }
     }
 
     public static void registerSteamTools() {

@@ -67,11 +67,14 @@ public class SteamcraftBook {
         //There should be 5 recent creations at all times. Remove the bottom one when you are adding one.
 
         SteamcraftRegistry.addCategory("category.RecentCreations.name");
-        /*
-        if (Config.enableBlockPlacer){
-            SteamcraftRegistry.addResearch("#research.BlockPlacer.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+
+        if (Config.enableRainAway && Config.enableExosuit) {
+            SteamcraftRegistry.addResearch("#research.RainAway.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
-        */
+
+        if (Config.enableFoggles && Config.enableExosuit) {
+            SteamcraftRegistry.addResearch("#research.Foggles.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+        }
 
         if (Config.enableRocket && Config.enableRocketConcussive && Config.enableRocketMining && Config.enableEnhancementFastRockets && Config.enableRL){
             SteamcraftRegistry.addResearch("#research.RocketLauncher.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
@@ -85,14 +88,6 @@ public class SteamcraftBook {
             SteamcraftRegistry.addResearch("#research.Musket.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             SteamcraftRegistry.addResearch("#research.Blunderbuss.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
             SteamcraftRegistry.addResearch("#research.Pistol.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-        }
-
-        if (Config.enableCanister) {
-            SteamcraftRegistry.addResearch("#research.Canister.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-        }
-
-        if (Config.enableGoggles) {
-            SteamcraftRegistry.addResearch("#research.Goggles.name","category.RecentCreations.name",new BookPageItem("","", new ItemStack(Items.apple)));
         }
     }
 
@@ -385,12 +380,20 @@ public class SteamcraftBook {
             if (Config.enableTopHat) {
                 SteamcraftRegistry.addResearch("research.ExoTopHat.name", "!research.ExoHeadHelm.name", new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(SteamcraftItems.tophatNoEmerald), new ItemStack(SteamcraftItems.tophat)));
             }
+
+            if (Config.enableRainAway) {
+                SteamcraftRegistry.addResearch("research.RainAway.name", "!research.ExoHeadHelm.name", new BookPageItem("research.RainAway.name", "research.RainAway.0", true, new ItemStack(SteamcraftItems.rainAway)));
+            }
             SteamcraftRegistry.addResearch("research.ExoHeadGoggle.name", "category.Exosuit.name");
             if (Loader.isModLoaded("Thaumcraft")) {
                 SteamcraftRegistry.addResearch("research.Mask.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.Mask.name", "research.Mask.0", true, new ItemStack(ThaumcraftIntegration.goggleUpgrade)), new BookPageCrafting("", "mask"));
             }
             if (Config.enableGoggles) {
                 SteamcraftRegistry.addResearch("research.ExoGoggles.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.ExoGoggles.name", "research.ExoGoggles.0", true, new ItemStack(SteamcraftItems.goggles), new ItemStack(SteamcraftItems.monacle)));
+            }
+
+            if (Config.enableFoggles) {
+                SteamcraftRegistry.addResearch("research.Foggles.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.Foggles.name", "research.Foggles.0", true, new ItemStack(SteamcraftItems.foggles)), new BookPageCrafting("", "foggles1", "foggles2"));
             }
             SteamcraftRegistry.addResearch("research.ExoBack.name", "category.Exosuit.name");
             if (Config.enableJetpack) {
