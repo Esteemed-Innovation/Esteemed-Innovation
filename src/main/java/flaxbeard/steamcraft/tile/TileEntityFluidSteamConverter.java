@@ -77,7 +77,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
         }
 
-        if (pushing){
+        if (pushing) {
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);
 
@@ -105,9 +105,9 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
-        if(player.isSneaking()) {
+        if (player.isSneaking()) {
             pushing = !pushing;
-        }else {
+        } else {
             int steam = this.getSteamShare();
             this.getNetwork().split(this, true);
             this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
@@ -126,7 +126,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             return 0;
         }
 
-        if(pushing) {
+        if (pushing) {
             return 0;
         }
 
@@ -139,7 +139,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         }
 
         if (Loader.isModLoaded("IC2") && Config.enableIC2Integration && resource.getFluid().getID() == FluidRegistry.getFluid("ic2steam").getID()){
-            if (doFill){
+            if (doFill) {
                 this.insertSteam(resource.amount, from);
                 runTicks = runTicks > 0 ? runTicks : 100;
             }
@@ -171,12 +171,12 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
             Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
             int ic2Drained = resource.amount;
-            if (this.getSteamShare() > ic2Drained){
+            if (this.getSteamShare() > ic2Drained) {
                 ic2Drained = this.getSteamShare();
             }
 
             FluidStack ic2Stack = new FluidStack(ic2Fluid, ic2Drained);
-            if (doDrain){
+            if (doDrain) {
                 this.decrSteam(ic2Drained);
                 runTicks = ic2Stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
             }
@@ -203,11 +203,11 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
             Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
             int ic2Drained = maxDrain;
-            if (this.getSteamShare() > ic2Drained){
+            if (this.getSteamShare() > ic2Drained) {
                 ic2Drained = this.getSteamShare();
             }
             FluidStack ic2Stack = new FluidStack(ic2Fluid, ic2Drained);
-            if (doDrain){
+            if (doDrain) {
                 this.decrSteam(ic2Drained);
                 runTicks = ic2Stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
             }
@@ -217,7 +217,9 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        if(pushing) return false; //steam is blasting out! You can't put it back in!
+        if (pushing) {
+            return false; //steam is blasting out! You can't put it back in!
+        }
 
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
         return from.ordinal() != meta;
@@ -233,17 +235,20 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
         FluidTankInfo[] fti = {};
-        if(from.ordinal() != meta)
+        if (from.ordinal() != meta) {
             return fti;
+        }
 
         Fluid steam;
         steam = FluidRegistry.getFluid("steam");
-        if(steam != null)
+        if (steam != null) {
             fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
+        }
 
         steam = FluidRegistry.getFluid("ic2steam");
-        if(steam != null)
+        if (steam != null) {
             fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
+        }
 
         return fti;
     }

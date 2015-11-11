@@ -175,9 +175,9 @@ public class SteamcraftEventHandler {
 
     public static boolean hasPower(EntityLivingBase entityLiving, int i) {
         if (entityLiving.getEquipmentInSlot(3) != null) {
-            ItemStack stack = entityLiving.getEquipmentInSlot(3);
-            if (stack.getItem() instanceof ItemExosuitArmor) {
-                return ((ItemExosuitArmor) stack.getItem()).hasPower(stack, i);
+            ItemStack chestStack = entityLiving.getEquipmentInSlot(3);
+            if (chestStack.getItem() instanceof ItemExosuitArmor) {
+                return ((ItemExosuitArmor) chestStack.getItem()).hasPower(chestStack, i);
             }
         }
         return false;
@@ -243,8 +243,8 @@ public class SteamcraftEventHandler {
         if (event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
             if (hasPower(player, 10) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
-                if (chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.canner)) {
+                ItemExosuitArmor leggings = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
+                if (leggings.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.canner)) {
 
                     boolean isCannable = false;
                     ItemStack item = event.item.getEntityItem().copy();
@@ -548,8 +548,8 @@ public class SteamcraftEventHandler {
             for (Object obj : entities) {
                 EntityLivingBase entity = (EntityLivingBase) obj;
                 if (entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-                    if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
+                    ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+                    if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
                         event.result = null;
                     }
                 }
@@ -563,8 +563,8 @@ public class SteamcraftEventHandler {
             EntityLiving entity = (EntityLiving) event.entityLiving;
             if (entity.getAttackTarget() != null) {
                 if (entity.getAttackTarget().getEquipmentInSlot(2) != null && entity.getAttackTarget().getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor chest = (ItemExosuitArmor) entity.getAttackTarget().getEquipmentInSlot(2).getItem();
-                    if (chest.hasUpgrade(entity.getAttackTarget().getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
+                    ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getAttackTarget().getEquipmentInSlot(2).getItem();
+                    if (leggings.hasUpgrade(entity.getAttackTarget().getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
                         IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.followRange);
                         double d0 = iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
                         d0 = d0 / 1.5D;
@@ -592,8 +592,8 @@ public class SteamcraftEventHandler {
             EntityLiving entity = (EntityLiving) event.entityLiving;
             if (event.target != null) {
                 if (event.target.getEquipmentInSlot(2) != null && event.target.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor chest = (ItemExosuitArmor) event.target.getEquipmentInSlot(2).getItem();
-                    if (chest.hasUpgrade(event.target.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
+                    ItemExosuitArmor leggings = (ItemExosuitArmor) event.target.getEquipmentInSlot(2).getItem();
+                    if (leggings.hasUpgrade(event.target.getEquipmentInSlot(2), SteamcraftItems.stealthUpgrade)) {
                         IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.followRange);
                         double d0 = iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
                         d0 = d0 / 1.5D;
@@ -1147,8 +1147,8 @@ public class SteamcraftEventHandler {
         }
 
         if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-            if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
+            ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+            if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
                 if (!lastMotions.containsKey(entity.getEntityId())) {
                     lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX, entity.posZ));
                 }
@@ -1167,8 +1167,8 @@ public class SteamcraftEventHandler {
         }
 
         if (hasPower && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-            if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.runAssist)) {
+            ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+            if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.runAssist)) {
                 if (!lastMotions.containsKey(entity.getEntityId())) {
                     lastMotions.put(entity.getEntityId(), MutablePair.of(entity.posX, entity.posZ));
                 }
@@ -1187,8 +1187,8 @@ public class SteamcraftEventHandler {
         }
 //
 //		if (hasPower(entity,100) && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
-//			ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-//			if (chest.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
+//			ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+//			if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
 //				if (entity.isBurning()) {
 //
 //					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
