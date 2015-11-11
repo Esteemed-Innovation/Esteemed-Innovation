@@ -437,11 +437,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 boolean flag = this.furnaceBurnTime > 0;
                 boolean flag1 = false;
                 int maxThisTick = 10;
-                if (this.furnaceBurnTime > 0) {
-                    maxThisTick = Math.min(furnaceBurnTime, 10);
-                    this.furnaceBurnTime -= maxThisTick;
+//                if (this.furnaceBurnTime > 0) {
+//                    maxThisTick = Math.min(furnaceBurnTime, 10);
+//                    this.furnaceBurnTime -= maxThisTick;
 
-                }
+//                }
 
 
                 if (!this.worldObj.isRemote) {
@@ -505,6 +505,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                     this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 }
             }
+        }
+
+        if (this.furnaceBurnTime > 0) {
+            this.furnaceBurnTime -= 1;
         }
 
         if (!this.worldObj.isRemote) {
