@@ -6,28 +6,58 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
+import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.IEngineerable;
+import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
+import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
+import java.util.HashMap;
 
-public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
+public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable {
+    public static HashMap<Integer, MutablePair<Integer, Integer>> stuff = new HashMap<Integer, MutablePair<Integer, Integer>>();
     public IIcon[] icon = new IIcon[2];
     private boolean hasBrokenBlock = false;
+    public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
     public ItemSteamDrill() {
         super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack stack, String toolClass) {
+        if (stack != null && stack.getItem() == SteamcraftItems.steamDrill &&
+          stack.hasTagCompound() && stack.getTagCompound().hasKey("upgrades")) {
+            // The 1 represents the amount of slots the tool has, defined by SteamToolSlot.
+            // Be sure to change this to a for loop if there are ever more than one slots in this
+            // tool.
+
+            ItemStack upgrade = ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag(Integer.toString(1)));
+            if (upgrade != null && upgrade.getItem() instanceof ItemSteamToolUpgrade) {
+                ItemSteamToolUpgrade upgradeItem = (ItemSteamToolUpgrade) upgrade.getItem();
+                if (upgradeItem.basicEffects.containsKey("miningLevel")) {
+                    return upgradeItem.basicEffects.get("miningLevel");
+                }
+            }
+        }
+        return 2;
     }
 
     public static void checkNBT(EntityPlayer player) {
@@ -139,5 +169,114 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     @Override
     public boolean canCharge(ItemStack me) {
         return true;
+    }
+
+    // Start IEngineerable stuff
+    @Override
+    public MutablePair<Integer, Integer>[] engineerCoordinates() {
+        return new MutablePair[]{MutablePair.of(49, 26)};
+    }
+
+    @Override
+    public ItemStack getStackInSlot(ItemStack me, int var1) {
+        if (me.hasTagCompound()) {
+            if (me.stackTagCompound.hasKey("upgrades")) {
+                if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(var1))) {
+                    return ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(var1)));
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+        if (!me.hasTagCompound()) {
+            me.setTagCompound(new NBTTagCompound());
+        }
+        if (!me.stackTagCompound.hasKey("upgrades")) {
+            me.stackTagCompound.setTag("upgrades", new NBTTagCompound());
+        }
+        if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(var1))) {
+            me.stackTagCompound.getCompoundTag("upgrades").removeTag(Integer.toString(var1));
+        }
+        NBTTagCompound stc = new NBTTagCompound();
+        if (stack != null) {
+            stack.writeToNBT(stc);
+            me.stackTagCompound.getCompoundTag("upgrades").setTag(Integer.toString(var1), stc);
+        }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(ItemStack me, int var1, ItemStack var2) {
+        return true;
+    }
+
+    @Override
+    public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
+        if (this.getStackInSlot(me, var1) != null) {
+            ItemStack stack;
+            if (this.getStackInSlot(me, var1).stackSize <= var2) {
+                stack = this.getStackInSlot(me, var1);
+                this.setInventorySlotContents(me, var1, null);
+            } else {
+                stack = this.getStackInSlot(me, var1).splitStack(var2);
+                this.setInventorySlotContents(me, var1, this.getStackInSlot(me, var1));
+
+                if (this.getStackInSlot(me, var1).stackSize == 0) {
+                    this.setInventorySlotContents(me, var1, null);
+                }
+            }
+            return stack;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void drawSlot(GuiContainer gui, int slotnum, int i, int j) {
+        gui.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
+        gui.drawTexturedModalRect(i, j, 230, 36, 18, 18);
+    }
+
+    @Override
+    public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
+        if (upgrade != null && upgrade.getItem() instanceof ISteamToolUpgrade) {
+            ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
+            return (upgradeItem.getToolSlot().tool == 0 && upgradeItem.getToolSlot().slot == slotNum);
+        }
+        return false;
+    }
+
+    @Override
+    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+        guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 0, 64, 64);
+    }
+
+    /**
+     * Checks if the drill has a particular upgrade.
+     * @param me The ItemStack version of the drill
+     * @param check The item that is being checked against, or the upgrade
+     * @return
+     */
+    public boolean hasUpgrade(ItemStack me, Item check) {
+        if (check == null) {
+            return false;
+        }
+
+        if (me.hasTagCompound()) {
+            if (me.stackTagCompound.hasKey("upgrades")) {
+                for (int i = 1; i < 10; i++) {
+                    if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
+                        ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
+                        if (stack.getItem() == check) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

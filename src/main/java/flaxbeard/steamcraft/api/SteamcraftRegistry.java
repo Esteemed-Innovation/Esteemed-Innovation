@@ -412,9 +412,9 @@ public class SteamcraftRegistry {
         rockets.add(rocket);
     }
 
-    public static void registerSteamToolUpgrade(Item upgrade, SteamToolSlot slot, String info, int priority, String unlocalized) {
+    public static void registerSteamToolUpgrade(Item upgrade, SteamToolSlot slot, String info, int priority, String unlocalized, HashMap<String, Integer> basicEffects) {
         String resource = String.format("steamcraft:%s", unlocalized);
-        upgrade = new ItemSteamToolUpgrade(slot, resource, info, priority);
+        upgrade = new ItemSteamToolUpgrade(slot, resource, info, priority, basicEffects);
         GameRegistry.registerItem(upgrade, unlocalized);
         upgrades.add(upgrade);
     }
