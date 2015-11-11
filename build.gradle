@@ -22,6 +22,8 @@ version = newFSPVersion
 group = "com.flaxbeard.Steamcraft"
 archivesBaseName = "Flaxbeard'sSteamPower-1.7.10"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 minecraft {
     version = forgeVersion
