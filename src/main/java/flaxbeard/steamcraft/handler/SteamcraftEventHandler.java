@@ -41,6 +41,7 @@ import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
@@ -87,9 +88,11 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -99,6 +102,9 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class SteamcraftEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -1740,6 +1746,48 @@ public class SteamcraftEventHandler {
         }
     }
 
+    // Consider putting the validMaterials into an API so that other mods can add their own.
+    // Or even ModTweaker could potentially add custom materials. Wouldn't that be crazy?
+    public static Material[] validMiningMaterials = {
+      Material.iron,
+      Material.ice,
+      Material.rock,
+      Material.anvil,
+      Material.packedIce,
+      Material.piston,
+      Material.redstoneLight,
+      Material.tnt
+    };
+
+    @SubscribeEvent
+    public void onBlockBreak(BlockEvent.BreakEvent event) {
+        EntityPlayer player = event.getPlayer();
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped != null && equipped.getItem() != null &&
+          equipped.getItem() instanceof ItemSteamDrill && event.block != null &&
+          event.block.getHarvestTool(event.blockMetadata) != null &&
+          event.block.getHarvestTool(event.blockMetadata).equals("pickaxe") &&
+          ArrayUtils.contains(validMiningMaterials, event.block.getMaterial())) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (drill.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
+              event.block.getHarvestLevel(event.blockMetadata) < 4 && drill.isWound(player)) {
+                ArrayList<ItemStack> drops = event.block.getDrops(event.world, event.x, event.y,
+                  event.z, event.blockMetadata, 0);
+
+                for (ItemStack itemStack : drops) {
+                    event.world.spawnEntityInWorld(new EntityItem(event.world, (double) event.x,
+                      (double) event.y, (double) event.z, itemStack));
+                }
+            }
+
+            if (drill.hasUpgrade(equipped, SteamcraftItems.hammerHead) && drill.isWound(player)) {
+                mineExtraBlocks(getExtraBlockCoordinates(
+                  Minecraft.getMinecraft().objectMouseOver.sideHit), event.x, event.y, event.z,
+                  event.world);
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void openMerchant(EntityInteractEvent event) {
         EntityPlayer player = event.entityPlayer;
@@ -1771,6 +1819,23 @@ public class SteamcraftEventHandler {
                 merchant.setCustomer(player);
                 player.displayGUIMerchant(merchant, name);
                 nbt.totalTrades += 1;
+            }
+        }
+    }
+    @SubscribeEvent
+    public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
+        ItemStack equipped = event.entityPlayer.getCurrentEquippedItem();
+        if (equipped != null && equipped.getItem() != null &&
+          equipped.getItem() instanceof ItemSteamDrill && event.block != null &&
+          event.block.getHarvestTool(event.metadata) != null &&
+          event.block.getHarvestTool(event.metadata).equals("pickaxe")) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (drill.hasUpgrade(equipped, SteamcraftItems.hammerHead) &&
+              drill.isWound(event.entityPlayer)) {
+                float hardness = event.block.getBlockHardness(event.entityPlayer.worldObj, event.x,
+                  event.y, event.z);
+                event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                System.out.println(event.newSpeed);
             }
         }
     }
@@ -1819,5 +1884,59 @@ public class SteamcraftEventHandler {
             }
         }
         return false;
+    }
+
+    private static int[][] extraBlocksSide = {
+      { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 },
+      { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 },
+      { 0, -1, 0 }, { 0, -1, 0 }, { 0, -1, 1 }
+    };
+
+    private static int[][] extraBlocksForward = {
+      { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 },
+      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
+      { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }
+    };
+
+    private static int[][] extraBlocksVertical = {
+      { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 },
+      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
+      { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }
+    };
+
+    private int[][] getExtraBlockCoordinates(int sideHit) {
+        System.out.println(sideHit);
+        switch (sideHit) {
+            case 5: return extraBlocksSide;
+            case 4: return extraBlocksSide;
+            case 3: return extraBlocksForward;
+            case 1: return extraBlocksVertical;
+            case 0: return extraBlocksVertical;
+            default: return extraBlocksForward;
+        }
+    }
+
+    private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world) {
+        Map<Block, Integer> blocks = new HashMap<Block, Integer>();
+        for (int i = 0; i < coordinateArray.length; i++) {
+            int thisX = x + coordinateArray[i][0];
+            int thisY = y + coordinateArray[i][1];
+            int thisZ = z + coordinateArray[i][2];
+
+            Block block = world.getBlock(thisX, thisY, thisZ);
+            int meta = world.getBlockMetadata(thisX, thisY, thisZ);
+            if (block != null && !block.isAir(world, thisX, thisY, thisZ) &&
+              block.getHarvestTool(meta).equals("pickaxe") &&
+              ArrayUtils.contains(validMiningMaterials, (block.getMaterial()))) {
+                if (block.getHarvestLevel(meta) < 3) {
+                    List<ItemStack> drops = block.getDrops(world, thisX, thisY, thisZ, meta, 0);
+                    world.setBlockToAir(thisX, thisY, thisZ);
+                    for (ItemStack stack : drops) {
+                        world.spawnEntityInWorld(new EntityItem(world, (double) x, (double) y,
+                          (double) z, stack));
+                    }
+                }
+            }
+        }
     }
 }

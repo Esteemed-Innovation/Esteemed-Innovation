@@ -6,7 +6,6 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
@@ -39,25 +38,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     public ItemSteamDrill() {
         super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
-    }
-
-    @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass) {
-        if (stack != null && stack.getItem() == SteamcraftItems.steamDrill &&
-          stack.hasTagCompound() && stack.getTagCompound().hasKey("upgrades")) {
-            // The 1 represents the amount of slots the tool has, defined by SteamToolSlot.
-            // Be sure to change this to a for loop if there are ever more than one slots in this
-            // tool.
-
-            ItemStack upgrade = ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag(Integer.toString(1)));
-            if (upgrade != null && upgrade.getItem() instanceof ItemSteamToolUpgrade) {
-                ItemSteamToolUpgrade upgradeItem = (ItemSteamToolUpgrade) upgrade.getItem();
-                if (upgradeItem.basicEffects.containsKey("miningLevel")) {
-                    return upgradeItem.basicEffects.get("miningLevel");
-                }
-            }
-        }
-        return 2;
     }
 
     public static void checkNBT(EntityPlayer player) {
@@ -122,7 +102,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
             int addedTicks = Math.min(((Double) Math.floor((double) speed / 1000D * 25D)).intValue(), 50);
             ticks += addedTicks;
             ////Steamcraft.log.debug("speed: "+speed + "; ticks: "+ticks + "; added: "+addedTicks);
-            if (speed > 0) {
+            if (isWound((EntityPlayer) player)) {
                 speed--;
             } else if (ticks <= 0) {
                 ticks = 0;
@@ -130,13 +110,12 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 ticks--;
             }
 
-
             ticks = ticks % 100;
             nbt.drillInfo = MutablePair.of(ticks, speed);
         }
     }
 
-
+    @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
         checkNBT(player);
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
@@ -278,5 +257,20 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the drill is wound up.
+     * @param player The player to get the info for.
+     * @return
+     */
+    public boolean isWound(EntityPlayer player) {
+        checkNBT(player);
+        MutablePair info = stuff.get(player.getEntityId());
+        if ((int) info.right > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
