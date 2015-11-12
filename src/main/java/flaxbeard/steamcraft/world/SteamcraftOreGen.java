@@ -21,7 +21,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        if (Config.enableCopperOreBlock && Config.copperDims != "")
+        if (Config.copperDims != "")
             try {
                 String copperDims = Config.copperDims.replaceAll("[a-zA-Z\\s]", "");
                 String[] copperArray = copperDims.split(";");
@@ -37,7 +37,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
                 //This exception needs to be ignored for when the value is empty/null/nada.
             } catch (NumberFormatException exception) {}
 
-        if (Config.enableZincOreBlock && Config.zincDims != "") {
+        if (Config.zincDims != "") {
             try {
                 String zincDims = Config.zincDims.replaceAll("[a-zA-Z\\s]", "");
                 String[] zincArray = zincDims.split(";");
@@ -72,7 +72,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
     }
 
     private void generateEnd(World world, Random random, int i, int j) {
-        if (Config.genCopperEnd && Config.enableCopperOreBlock) {
+        if (Config.genCopperEnd) {
             WorldGenMinable copper = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 10, Blocks.end_stone);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -82,7 +82,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
             }
         }
 
-        if (Config.genZincEnd && Config.enableZincOreBlock) {
+        if (Config.genZincEnd) {
             WorldGenMinable zinc = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.end_stone);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -94,7 +94,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
     }
 
     private void generateSurface(World world, Random random, int i, int j) {
-        if (Config.genCopperOverworld && Config.enableCopperOreBlock) {
+        if (Config.genCopperOverworld) {
             WorldGenMinable copper = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 10, Blocks.stone);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -104,7 +104,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
             }
         }
 
-        if (Config.genZincOverworld && Config.enableZincOreBlock) {
+        if (Config.genZincOverworld) {
             WorldGenMinable zinc = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.stone);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -116,7 +116,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
     }
 
     private void generateNether(World world, Random random, int i, int j) {
-        if (Config.genCopperNether && Config.enableCopperOreBlock) {
+        if (Config.genCopperNether) {
             WorldGenMinable copper = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 10, Blocks.netherrack);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -126,7 +126,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
             }
         }
 
-        if (Config.genZincNether && Config.enableZincOreBlock) {
+        if (Config.genZincNether) {
             WorldGenMinable zinc = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.netherrack);
             for (int k = 0; k < 10; k++) {
                 int x = i + random.nextInt(16);
@@ -139,7 +139,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private void generateExtra(World world, Random random, int i, int j, int id) {
         if (checkConfigForInvalidIntegers(id)) {
-            if (Config.genCopperExtras && Config.enableCopperOreBlock) {
+            if (Config.genCopperExtras) {
                 WorldGenMinable copper = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 0, 7, Blocks.stone);
                 for (int k = 0; k < 10; k++) {
                     int x = i + random.nextInt(16);
@@ -149,7 +149,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
                 }
             }
 
-            if (Config.genZincExtras && Config.enableZincOreBlock) {
+            if (Config.genZincExtras) {
                 WorldGenMinable zinc = new WorldGenMinable(SteamcraftBlocks.steamcraftOre, 1, 7, Blocks.stone);
                 for (int k = 0; k < 10; k++) {
                     int x = i + random.nextInt(16);
