@@ -168,7 +168,7 @@ public class SteamcraftBlocks {
         }
 
         /*
-        if (Loader.isModLoaded("AWayofTime") && Config.enableBloodMagicIntegration && Config.enableBloodBoiler){
+        if (CrossMod.BLOOD_MAGIC && Config.enableBloodBoiler){
             bloodBoiler = new BlockBloodBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(bloodBoiler, "bloodBoiler");
             bloodBoiler_on = new BlockBloodBoiler(true).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);

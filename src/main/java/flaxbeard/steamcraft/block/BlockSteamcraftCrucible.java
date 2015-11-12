@@ -10,6 +10,7 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
@@ -79,7 +80,7 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         if (this == SteamcraftBlocks.hellCrucible ||
           blockUnderCrucible.getMaterial() == Material.fire ||
           blockUnderCrucible.getMaterial() == Material.lava || Config.enableThaumcraftIntegration &&
-          Config.enableNitorPoweredCrucible && Loader.isModLoaded("Thaumcraft") &&
+          Config.enableNitorPoweredCrucible && CrossMod.THAUMCRAFT &&
           ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
             return true;
         }

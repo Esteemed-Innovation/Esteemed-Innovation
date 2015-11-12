@@ -257,7 +257,7 @@ public class SteamcraftItems {
 
     private static void registerExosuit() {
         if (Config.enableExosuit) {
-            //if (Loader.isModLoaded("Thaumcraft")) {
+            //if (CrossMod.THAUMCRAFT) {
             //	exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
             //}
             //else

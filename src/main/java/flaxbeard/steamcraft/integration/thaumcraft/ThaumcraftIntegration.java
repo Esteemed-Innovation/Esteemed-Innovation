@@ -119,7 +119,7 @@ public class ThaumcraftIntegration {
 //        if ((ref != null))
 //        {
 //        	ResearchItem research = ResearchCategories.getResearch((String)ref[0]);
-//			boolean foundBook = Loader.isModLoaded("Enchiridion") ? EnchiridionIntegration.hasBook(itemThaumonomicon, player) : false;
+//			boolean foundBook = CrossMod.ENCHIRIDION ? EnchiridionIntegration.hasBook(itemThaumonomicon, player) : false;
 //			for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
 //				if (player.inventory.getStackInSlot(p) != null && player.inventory.getStackInSlot(p).getItem() instanceof ItemThaumonomicon) {
 //					foundBook = true;
