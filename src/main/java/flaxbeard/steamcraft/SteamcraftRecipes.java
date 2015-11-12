@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 
 import java.util.Iterator;
@@ -121,7 +122,7 @@ public class SteamcraftRecipes {
     private static void registerSmeltingRecipes() {
         GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre, 1, 0), new ItemStack(SteamcraftItems.steamcraftIngot, 1, 0), 0.5F);
         GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre, 1, 1), new ItemStack(SteamcraftItems.steamcraftIngot, 1, 1), 0.5F);
-        if (Loader.isModLoaded("Railcraft")) {
+        if (CrossMod.RAILCRAFT) {
             GameRegistry.addSmelting(new ItemStack(SteamcraftBlocks.steamcraftOre, 1, 2), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 1), 0.5F);
         }
     }

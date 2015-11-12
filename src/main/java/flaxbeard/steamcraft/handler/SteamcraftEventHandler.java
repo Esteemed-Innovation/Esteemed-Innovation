@@ -995,7 +995,7 @@ public class SteamcraftEventHandler {
         EntityLivingBase entity = event.entityLiving;
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
-            if (Loader.isModLoaded("Baubles")) {
+            if (CrossMod.BAUBLES) {
                 if (player.getHeldItem() != null && BaublesIntegration.checkForSurvivalist(player)) {
                     if (player.getHeldItem().getItem() instanceof ItemTool) {
                         if (player.getHeldItem().getItemDamage() >= player.getHeldItem().getMaxDamage() - 1) {

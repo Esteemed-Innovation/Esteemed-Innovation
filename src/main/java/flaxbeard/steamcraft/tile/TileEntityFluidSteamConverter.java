@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,7 +139,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             return resource.amount;
         }
 
-        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration && resource.getFluid().getID() == FluidRegistry.getFluid("ic2steam").getID()){
+        if (CrossMod.INDUSTRIALCRAFT && resource.getFluid().getID() == FluidRegistry.getFluid("ic2steam").getID()){
             if (doFill) {
                 this.insertSteam(resource.amount, from);
                 runTicks = runTicks > 0 ? runTicks : 100;
@@ -168,7 +169,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
 
-        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
+        if (CrossMod.INDUSTRIALCRAFT) {
             Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
             int ic2Drained = resource.amount;
             if (this.getSteamShare() > ic2Drained) {
@@ -200,7 +201,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
         }
 
-        if (Loader.isModLoaded("IC2") && Config.enableIC2Integration) {
+        if (CrossMod.INDUSTRIALCRAFT) {
             Fluid ic2Fluid = FluidRegistry.getFluid("ic2steam");
             int ic2Drained = maxDrain;
             if (this.getSteamShare() > ic2Drained) {

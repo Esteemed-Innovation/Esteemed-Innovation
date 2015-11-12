@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -79,7 +80,7 @@ public class BlockSteamcraftOre extends Block {
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
-        if (Loader.isModLoaded("Railcraft") && Config.enableRailcraftIntegration) {
+        if (CrossMod.RAILCRAFT) {
             par3List.add(new ItemStack(par1, 1, 2));
         }
     }

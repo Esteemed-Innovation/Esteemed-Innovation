@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.*;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
@@ -83,7 +84,7 @@ public class SteamcraftBlocks {
         OreDictionary.registerOre("oreCopper", new ItemStack(steamcraftOre, 1, 0));
         OreDictionary.registerOre("oreZinc", new ItemStack(steamcraftOre, 1, 1));
 
-        if (Loader.isModLoaded("Railcraft") && Config.enableRailcraftIntegration) {
+        if (CrossMod.RAILCRAFT) {
             OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre, 1, 2));
         }
 

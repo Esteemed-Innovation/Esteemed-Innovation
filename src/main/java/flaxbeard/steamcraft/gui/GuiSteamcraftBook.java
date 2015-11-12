@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import net.minecraft.client.Minecraft;
@@ -89,7 +90,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         if (par1EntityPlayer.getHeldItem() != null && par1EntityPlayer.getHeldItem().getItem() instanceof ItemSteamcraftBook) {
             book = par1EntityPlayer.getHeldItem();
         } else {
-            if (Loader.isModLoaded("Enchiridion")) {
+            if (CrossMod.ENCHIRIDION) {
                 book = EnchiridionIntegration.findBook(SteamcraftItems.book, par1EntityPlayer);
             }
             for (int p = 0; p < par1EntityPlayer.inventory.getSizeInventory(); p++) {

@@ -5,6 +5,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.*;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.init.Blocks;
@@ -198,7 +199,7 @@ public class SteamcraftBook {
             SteamcraftRegistry.addResearch("research.Spyglass.name", "category.Gadgets.name", new BookPageItem("research.Spyglass.name", "research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)), new BookPageCrafting("", "spyglass1", "spyglass2"));
         }
         if (Config.enableSurvivalist) {
-            if (Loader.isModLoaded("Baubles")) {
+            if (CrossMod.BAUBLES) {
                 SteamcraftRegistry.addResearch("research.Survivalist.name", "category.Gadgets.name", new BookPageItem("research.Survivalist.name", "research.SurvivalistBaubles.0", new ItemStack(SteamcraftItems.survivalist)), new BookPageCrafting("", "survivalist"));
             } else {
                 SteamcraftRegistry.addResearch("research.Survivalist.name", "category.Gadgets.name", new BookPageItem("research.Survivalist.name", "research.Survivalist.0", new ItemStack(SteamcraftItems.survivalist)), new BookPageCrafting("", "survivalist"));
@@ -337,16 +338,16 @@ public class SteamcraftBook {
             if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0) {
                 SteamcraftRegistry.addResearch("research.PlateLead.name", "!research.ExoPlates.name", new BookPageItem("research.PlateLead.name", "research.PlateLead.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 11)), new BookPageCrafting("", "exoLead"));
             }
-            if (Config.enableVibrantPlate && Loader.isModLoaded("EnderIO")) {
+            if (Config.enableVibrantPlate && CrossMod.ENDER_IO) {
                 SteamcraftRegistry.addResearch("research.PlateVibrant.name", "!research.ExoPlates.name", new BookPageItem("research.PlateVibrant.name", "research.PlateVibrant.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 12)), new BookPageCrafting("", "exoVibrant"));
             }
-            if (Config.enableEnderiumPlate && Loader.isModLoaded("ThermalFoundation")) {
+            if (Config.enableEnderiumPlate && CrossMod.THERMAL_FOUNDATION) {
                 SteamcraftRegistry.addResearch("research.PlateEnderium.name", "!research.ExoPlates.name", new BookPageItem("research.PlateEnderium.name", "research.PlateEnderium.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 13)), new BookPageCrafting("", "exoEnderium"));
             }
-            if (Config.enableThaumiumPlate && Loader.isModLoaded("Thaumcraft")) {
+            if (Config.enableThaumiumPlate && CrossMod.THAUMCRAFT) {
                 SteamcraftRegistry.addResearch("research.PlateThaumium.name", "!research.ExoPlates.name", new BookPageItem("research.PlateThaumium.name", "research.PlateThaumium.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 5)), new BookPageCrafting("", "exoThaumium"));
             }
-            if (Loader.isModLoaded("Botania")) {
+            if (CrossMod.BOTANIA) {
                 if (Config.enableTerrasteelPlate) {
                     SteamcraftRegistry.addResearch("research.PlateTerrasteel.name", "!research.ExoPlates.name", new BookPageItem("research.PlateTerrasteel.name", "research.PlateTerrasteel.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 6)), new BookPageCrafting("", "exoTerrasteel"));
                 }
@@ -354,7 +355,7 @@ public class SteamcraftBook {
                     SteamcraftRegistry.addResearch("research.PlateElementium.name", "!research.ExoPlates.name", new BookPageItem("research.PlateElementium.name", "research.PlateElementium.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 7)), new BookPageCrafting("", "exoElementium"));
                 }
             }
-            if (Loader.isModLoaded("TwilightForest")) {
+            if (CrossMod.TWILIGHT_FOREST) {
                 if (Config.enableFieryPlate) {
                     SteamcraftRegistry.addResearch("research.PlateFiery.name", "!research.ExoPlates.name", new BookPageItem("research.PlateFiery.name", "research.PlateFiery.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 8)), new BookPageCrafting("", "exoFiery"));
                 }
@@ -362,7 +363,7 @@ public class SteamcraftBook {
                     SteamcraftRegistry.addResearch("research.PlateYeti.name", "!research.ExoPlates.name", new BookPageItem("research.PlateYeti.name", "research.PlateYeti.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 9)), new BookPageCrafting("", "exoYeti"));
                 }
             }
-            if (Config.enableSadistPlate && Loader.isModLoaded("AWWayofTime")) {
+            if (Config.enableSadistPlate && CrossMod.BLOOD_MAGIC) {
                 SteamcraftRegistry.addResearch("research.PlateSadist.name", "!research.ExoPlates.name", new BookPageItem("research.PlateSadist.name", "research.PlateSadist.0", true, new ItemStack(SteamcraftItems.exosuitPlate, 1, 10)), new BookPageCrafting("", "exoSadist"));
             }
             ItemStack[] stacks2 = new ItemStack[4];
@@ -379,14 +380,14 @@ public class SteamcraftBook {
                 SteamcraftRegistry.addResearch("research.EnderShroud.name", "!research.ExoVanity.name", new BookPageItem("research.EnderShroud.name", "research.EnderShroud.0", true, new ItemStack(SteamcraftItems.enderShroud)), new BookPageCrafting("", "enderShroud"));
             }
             SteamcraftRegistry.addResearch("research.ExoHeadHelm.name", "category.Exosuit.name");
-            if (Loader.isModLoaded("Botania")) {
+            if (CrossMod.BOTANIA) {
                 SteamcraftRegistry.addResearch("research.FloralLaurel.name", "!research.ExoHeadHelm.name", new BookPageItem("research.FloralLaurel.name", "research.FloralLaurel.0", true, new ItemStack(BotaniaIntegration.floralLaurel)), new BookPageCrafting("", "floralLaurel0", "floralLaurel1", "floralLaurel2", "floralLaurel3", "floralLaurel4", "floralLaurel5", "floralLaurel6", "floralLaurel7", "floralLaurel8", "floralLaurel9", "floralLaurel0", "floralLaurel11", "floralLaurel12", "floralLaurel13", "floralLaurel14", "floralLaurel15"));
             }
             if (Config.enableTopHat) {
                 SteamcraftRegistry.addResearch("research.ExoTopHat.name", "!research.ExoHeadHelm.name", new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(SteamcraftItems.tophatNoEmerald), new ItemStack(SteamcraftItems.tophat)));
             }
             SteamcraftRegistry.addResearch("research.ExoHeadGoggle.name", "category.Exosuit.name");
-            if (Loader.isModLoaded("Thaumcraft")) {
+            if (CrossMod.THAUMCRAFT) {
                 SteamcraftRegistry.addResearch("research.Mask.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.Mask.name", "research.Mask.0", true, new ItemStack(ThaumcraftIntegration.goggleUpgrade)), new BookPageCrafting("", "mask"));
             }
             if (Config.enableGoggles) {

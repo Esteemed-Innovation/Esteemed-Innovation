@@ -22,6 +22,7 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
@@ -154,10 +155,10 @@ public class SteamcraftItems {
         }
 
         if (Config.enableSurvivalist) {
-            if (!Loader.isModLoaded("Baubles")) {
-                survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
-            } else {
+            if (CrossMod.BAUBLES) {
                 survivalist = BaublesIntegration.getSurvivalist();
+            } else {
+                survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
             }
             GameRegistry.registerItem(survivalist, "survivalist");
         }
@@ -262,7 +263,7 @@ public class SteamcraftItems {
             //else
             //{
             ArmorMaterial mat = EnumHelper.addArmorMaterial("exosuit", 15, new int[]{2, 5, 4, 1}, 0);
-            if (Loader.isModLoaded("Thaumcraft")) {
+            if (CrossMod.THAUMCRAFT) {
                 exoArmorHead = new ItemExosuitArmorThaum(0, mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
                 GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
                 exoArmorBody = new ItemExosuitArmorThaum(1, mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
