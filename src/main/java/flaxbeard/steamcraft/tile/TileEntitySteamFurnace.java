@@ -86,22 +86,21 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
         } else {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.getStackInSlot(0));
             if (itemstack == null) return false;
-            if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
-                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).right;
-                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).left;
-                if (meta == -1) {
-                    itemstack = new ItemStack(item);
-                } else {
-                    itemstack = new ItemStack(item, 0, meta);
-                }
-            }
             if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
                 int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
                 Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
                 if (meta == -1) {
                     itemstack = new ItemStack(item);
                 } else {
-                    itemstack = new ItemStack(item, 0, meta);
+                    itemstack = new ItemStack(item, 1, meta);
+                }
+            } else if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
+                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).right;
+                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).left;
+                if (meta == -1) {
+                    itemstack = new ItemStack(item);
+                } else {
+                    itemstack = new ItemStack(item, 1, meta);
                 }
             }
             if (this.getStackInSlot(2) == null) return true;
@@ -116,22 +115,21 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
     public void smeltItem() {
         if (this.canSmelt()) {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.getStackInSlot(0));
-            if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
-                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).right;
-                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).left;
-                if (meta == -1) {
-                    itemstack = new ItemStack(item);
-                } else {
-                    itemstack = new ItemStack(item, 0, meta);
-                }
-            }
             if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
                 int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
                 Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
                 if (meta == -1) {
                     itemstack = new ItemStack(item);
                 } else {
-                    itemstack = new ItemStack(item, 0, meta);
+                    itemstack = new ItemStack(item, 1, meta);
+                }
+            } else if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
+                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).right;
+                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).left;
+                if (meta == -1) {
+                    itemstack = new ItemStack(item);
+                } else {
+                    itemstack = new ItemStack(item, 1, meta);
                 }
             }
             if (this.getStackInSlot(2) == null) {

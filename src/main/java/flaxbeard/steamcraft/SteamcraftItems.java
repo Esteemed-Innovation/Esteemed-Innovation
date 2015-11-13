@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
@@ -446,10 +445,10 @@ public class SteamcraftItems {
 
         steamedSalmon = new ItemSteamedFood((ItemFood)
           new ItemStack(Items.cooked_fished, 1, 1).getItem())
-          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab);
+          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab)
+          .setTextureName("minecraft:fish_salmon_cooked");
         GameRegistry.registerItem(steamedSalmon, "steamedSalmon");
-        SteamcraftRegistry.addSteamFood(new ItemStack(Items.cooked_fished, 1, 1).getItem(),
-          steamedSalmon);
+        SteamcraftRegistry.addSteamFood(Items.cooked_fished, 1, steamedSalmon, -1);
 
         steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken)
           .setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
