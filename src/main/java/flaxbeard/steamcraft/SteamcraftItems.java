@@ -121,7 +121,6 @@ public class SteamcraftItems {
     public static Item steamedSalmon;
 
     public static void registerItems() {
-
         registerMisc();
         registerFirearms();
         registerExosuit();
@@ -131,7 +130,6 @@ public class SteamcraftItems {
         registerFood();
         registerMetals();
         registerMetalThings();
-
     }
 
     private static void registerMisc() {
@@ -441,23 +439,17 @@ public class SteamcraftItems {
     }
 
     private static void registerFood() {
-
         steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished)
           .setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedFish, "steamedFish");
-        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
         SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
 
-
         steamedSalmon = new ItemSteamedFood((ItemFood)
-          new ItemStack(Items.cooked_fished, 1, 1).getItem());
-        steamedSalmon.setUnlocalizedName("steamcraft:steamedSalmon");
-        steamedSalmon.setCreativeTab(Steamcraft.tab);
+          new ItemStack(Items.cooked_fished, 1, 1).getItem())
+          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedSalmon, "steamedSalmon");
-        ItemFishFood.FishType[] salmonType = ItemFishFood.FishType.values();
         SteamcraftRegistry.addSteamFood(new ItemStack(Items.cooked_fished, 1, 1).getItem(),
           steamedSalmon);
-        steamedSalmon.setTextureName("minecraft:fish_salmon_cooked");
 
         steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken)
           .setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
