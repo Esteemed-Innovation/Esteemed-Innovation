@@ -1,10 +1,12 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,11 +22,13 @@ import java.util.ArrayList;
 
 public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
 
+
     //When multiple heaters are used on a furnace, there is a single master heater
     public boolean isMasterHeater;
     private boolean isInitialized = false;
     private int numHeaters = 0;
     private boolean prevHadYuck = true;
+    public int steamConsumption = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
         super(ForgeDirection.VALID_DIRECTIONS);
@@ -34,12 +38,16 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
     public static void replace(TileEntitySteamFurnace te) {
         TileEntitySteamFurnace furnace = te;
         if (furnace != null) {
-            ItemStack[] furnaceItemStacks = new ItemStack[]{furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
+            ItemStack[] furnaceItemStacks =
+              new ItemStack[]{furnace.getStackInSlot(0), furnace.getStackInSlot(1),
+                furnace.getStackInSlot(2)};
             int furnaceBurnTime = furnace.furnaceBurnTime;
             int currentItemBurnTime = furnace.currentItemBurnTime;
             int furnaceCookTime = furnace.furnaceCookTime;
-            te.getWorldObj().setTileEntity(te.xCoord, te.yCoord, te.zCoord, new TileEntityFurnace());
-            TileEntityFurnace furnace2 = (TileEntityFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
+            te.getWorldObj()
+              .setTileEntity(te.xCoord, te.yCoord, te.zCoord, new TileEntityFurnace());
+            TileEntityFurnace furnace2 =
+              (TileEntityFurnace) te.getWorldObj().getTileEntity(te.xCoord, te.yCoord, te.zCoord);
             furnace2.setInventorySlotContents(0, furnaceItemStacks[0]);
             furnace2.setInventorySlotContents(1, furnaceItemStacks[1]);
             furnace2.setInventorySlotContents(2, furnaceItemStacks[2]);
@@ -93,7 +101,10 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                     int y = yCoord + dir.offsetY + dir2.offsetY;
                     int z = zCoord + dir.offsetZ + dir2.offsetZ;
                     if (this.worldObj.getTileEntity(x, y, z) != null) {
-                        if (this.worldObj.getTileEntity(x, y, z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z)).getSteamShare() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
+                        if (this.worldObj.getTileEntity(x, y, z) instanceof TileEntitySteamHeater &&
+                          ((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z))
+                          .getSteamShare() >= steamConsumption && this.worldObj.getBlockMetadata
+                          (x, y, z) == ForgeDirection.OPPOSITES[i]) {
                             this.isMasterHeater = (x == xCoord && y == yCoord && z == zCoord);
                             slaves.add((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z));
                             numHeaters++;
@@ -102,6 +113,8 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                             }
                             numHeaters = Math.min(4, numHeaters);
                         }
+                    } else {
+                        worldObj.addTileEntity(this);
                     }
                 }
                 if (this.isMasterHeater && numHeaters > 0) {
@@ -127,12 +140,12 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 //						furnace.setInventorySlotContents(2, replacement);
 //						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
 //					}
-                    if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteamShare() >= 20 && canSmelt(furnace)) {
+                    if ((furnace.furnaceBurnTime == 1 || furnace.furnaceBurnTime == 0) && this.getSteamShare() >= steamConsumption && canSmelt(furnace)) {
                         if (furnace.furnaceBurnTime == 0) {
                             BlockFurnace.updateFurnaceBlockState(true, this.worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
                         }
                         for (TileEntitySteamHeater heater : slaves) {
-                            heater.decrSteam(20);
+                            heater.decrSteam(steamConsumption);
                         }
                         furnace.furnaceBurnTime += 3;
 //						if (furnace.furnaceCookTime > 0) {
@@ -151,7 +164,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
         }
     }
 
-    private boolean canSmelt(TileEntityFurnace furnace) {
+    public boolean canSmelt(TileEntityFurnace furnace) {
         if (furnace.getStackInSlot(0) == null) {
             return false;
         } else {

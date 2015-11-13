@@ -1,3 +1,6 @@
+*.iml
+*.ipr
+*.iws
 .git/
 .gradle/
 .idea/
@@ -8,14 +11,14 @@ eclipse/
 idea/
 libs/
 .classpath
-.DS_Store
 .project
 CREDITS-fml.txt
 forge-1.7.10-10.13.0.1180-changelog.txt
-forge-1.7.10-10.13.0.1180-src.iml
-forge-1.7.10-10.13.0.1180-src.ipr
-forge-1.7.10-10.13.0.1180-src.iws
 LICENSE-fml.txt
 MinecraftForge-Credits.txt
 MinecraftForge-License.txt
 README.txt
+out/
+
+# Who made this messy crap? Whatever.
+!/fsplib/*.jar

@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.item.tool;
 
-import flaxbeard.steamcraft.api.UtilMisc;
+import flaxbeard.steamcraft.api.util.UtilMisc;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;

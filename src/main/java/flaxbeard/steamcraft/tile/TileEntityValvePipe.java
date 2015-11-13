@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
@@ -33,14 +34,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     public void updateRedstoneState(boolean flag) {
-
-//		if (flag != redstoneState) {
-//			if (!this.turning) {
-//				this.setTurining();
-//			}
-//		}
+		if (Config.enableRedstoneValvePipe && (flag != redstoneState)) {
+			if (!this.turning) {
+				this.setTurining();
+			}
+		}
         redstoneState = flag;
-
     }
 
     @Override
@@ -276,7 +275,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                     changed = false;
                     this.waitingOpen = true;
                 }
-
             }
         }
         if (!changed) {

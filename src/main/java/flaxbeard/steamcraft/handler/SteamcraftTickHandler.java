@@ -56,8 +56,8 @@ public class SteamcraftTickHandler {
             if (SteamcraftEventHandler.hasPower(player, 1)
                     && player.getEquipmentInSlot(2) != null
                     && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
-                if (player.worldObj.isRemote && chest.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
+                ItemExosuitArmor leggings = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
+                if (player.worldObj.isRemote && leggings.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
                     if (!player.onGround && Math.abs(player.motionX) + Math.abs(player.motionZ) > 0.0F && !player.isInWater() && !(player.capabilities.isFlying)) {
                         double rotation = Math.toRadians(player.renderYawOffset + 90.0F);
                         double rotation2 = Math.toRadians(player.renderYawOffset + 270.0F);

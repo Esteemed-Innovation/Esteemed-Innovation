@@ -345,15 +345,19 @@ public class BlockPipe extends BlockSteamTransporter {
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-        TileEntity tile = world.getTileEntity(x, y, z);
-        if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
-            return super.collisionRayTrace(world, x, y, z, start, end);
+        if(player != null) {
+            Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
+                return super.collisionRayTrace(world, x, y, z, start, end);
+            }
+            List<IndexedCuboid6> cuboids = new LinkedList();
+            ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
+            MovingObjectPosition mop = this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(x, y, z), this);
+            return mop;
         }
-        List<IndexedCuboid6> cuboids = new LinkedList();
-        ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
-        MovingObjectPosition mop = this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(x, y, z), this);
-        return mop;
+        
+        return null;
     }
 
 }

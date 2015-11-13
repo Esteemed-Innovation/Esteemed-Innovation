@@ -45,7 +45,7 @@ public class BookPage {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         itemRender.zLevel = 200.0F;
         FontRenderer font = null;
-        if (stack != null) font = stack.getItem().getFontRenderer(stack);
+        if (stack != null && stack.getItem() != null) font = stack.getItem().getFontRenderer(stack);
         if (font == null) font = fontRendererObj;
         itemRender.renderItemAndEffectIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y);
         itemRender.renderItemOverlayIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y, str);

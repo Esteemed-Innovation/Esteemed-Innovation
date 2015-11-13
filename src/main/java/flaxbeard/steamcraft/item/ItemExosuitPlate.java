@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -61,27 +62,27 @@ public class ItemExosuitPlate extends Item {
         par3List.add(new ItemStack(par1, 1, 2));
         par3List.add(new ItemStack(par1, 1, 3));
         par3List.add(new ItemStack(par1, 1, 4));
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (CrossMod.THAUMCRAFT) {
             par3List.add(new ItemStack(par1, 1, 5));
         }
-        if (Loader.isModLoaded("Botania")) {
+        if (CrossMod.BOTANIA) {
             par3List.add(new ItemStack(par1, 1, 6));
             par3List.add(new ItemStack(par1, 1, 7));
         }
-        if (Loader.isModLoaded("TwilightForest")) {
+        if (CrossMod.TWILIGHT_FOREST) {
             par3List.add(new ItemStack(par1, 1, 8));
             par3List.add(new ItemStack(par1, 1, 9));
         }
-        if (Loader.isModLoaded("AWWayofTime")) {
+        if (CrossMod.BLOOD_MAGIC) {
             par3List.add(new ItemStack(par1, 1, 10));
         }
         if (OreDictionary.getOres("ingotLead").size() > 0) {
             par3List.add(new ItemStack(par1, 1, 11));
         }
-        if (Loader.isModLoaded("EnderIO")) {
+        if (CrossMod.ENDER_IO) {
             par3List.add(new ItemStack(par1, 1, 12));
         }
-        if (Loader.isModLoaded("ThermalFoundation")) {
+        if (CrossMod.THERMAL_FOUNDATION) {
             par3List.add(new ItemStack(par1, 1, 13));
         }
     }

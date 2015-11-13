@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.tile;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
@@ -32,12 +34,14 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-    public  boolean active;
-    public  boolean powered       = false;
-    public  boolean lastSteam     = false;
-    public  int     rotateTicks   = 0;
-    public  int     range         = 9;
-    private boolean isInitialized = false;
+
+    public boolean active;
+    public  boolean powered          = false;
+    public  boolean lastSteam        = false;
+    public  int     rotateTicks      = 0;
+    public  int     range            = 9;
+    private boolean isInitialized    = false;
+    private int     steamConsumption = Config.fanConsumption;
 
     public TileEntityFan() {
         this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
@@ -79,10 +83,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 
     @Override
     public void updateEntity() {
-        if (lastSteam != this.getSteamShare() > 0) {
+        if (lastSteam != this.getSteamShare() >= steamConsumption) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        lastSteam = this.getSteamShare() > 0;
+        lastSteam = this.getSteamShare() > steamConsumption;
         if (!isInitialized) {
             this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
             this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
@@ -92,9 +96,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
         if (active && this.worldObj.isRemote) {
             rotateTicks++;
         }
-        if (active && this.worldObj.isRemote || (this.getSteamShare() > 0 && !this.powered)) {
+        if (active && this.worldObj.isRemote || (this.getSteamShare() >= steamConsumption && !this.powered)) {
             if (!this.worldObj.isRemote) {
-                this.decrSteam(1);
+                this.decrSteam(steamConsumption);
             }
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);

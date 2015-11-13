@@ -1,7 +1,10 @@
 package flaxbeard.steamcraft.item.tool;
 
 import com.google.common.collect.ImmutableSet;
-import flaxbeard.steamcraft.api.UtilMisc;
+
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.util.UtilMisc;
+
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 
@@ -15,6 +18,8 @@ public class ItemSteamcraftShovel extends ItemSpade {
         super(toolMaterial);
         harvestLevel = toolMaterial.getHarvestLevel();
         repairMaterial = repairMat;
+        this.setCreativeTab(Steamcraft.tabTools);
+        this.setHarvestLevel(this.getClass().getName(), toolMaterial.getHarvestLevel());
     }
 
     @Override

@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.block.*;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.item.BlockTankItem;
@@ -27,7 +28,6 @@ public class SteamcraftBlocks {
     public static Block carving;
 
     // steam net
-    public static Block blockPlacer;
     public static Block boiler;
     public static Block boilerOn;
     public static Block flashBoiler;
@@ -46,14 +46,11 @@ public class SteamcraftBlocks {
     // steam machines
     public static Block heater;
     public static Block charger;
-    public static Block genocide;
     public static Block hammer;
-    public static Block conveyor;
     public static Block itemMortar;
     public static Block thumper;
     public static Block thumperDummy;
     public static Block chargingPad;
-    public static Block saw;
 
     public static Block fan;
     public static Block vacuum;
@@ -71,23 +68,26 @@ public class SteamcraftBlocks {
     public static Block customFurnaceOff;
 
     public static void registerBlocks() {
-
         registerMetals();
         registerCasting();
         registerSteamnet();
         registerSteamMachines();
-        //registerAuto();
         registerMisc();
     }
 
     public static void registerMetals() {
-        steamcraftOre = new BlockSteamcraftOre().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ore").setHardness(3.0F).setResistance(5.0F);
+        steamcraftOre =
+          new BlockSteamcraftOre().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:ore")
+            .setHardness(3.0F).setResistance(5.0F);
         GameRegistry.registerBlock(steamcraftOre, BlockManyMetadataItem.class, "steamcraftOre");
+
         OreDictionary.registerOre("oreCopper", new ItemStack(steamcraftOre, 1, 0));
         OreDictionary.registerOre("oreZinc", new ItemStack(steamcraftOre, 1, 1));
-        if (Loader.isModLoaded("Railcraft") && Config.genPoorOre) {
+
+        if (CrossMod.RAILCRAFT) {
             OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre, 1, 2));
         }
+
         blockBrass = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
         GameRegistry.registerBlock(blockBrass, "blockBrass");
         OreDictionary.registerOre("blockBrass", blockBrass);
@@ -168,7 +168,7 @@ public class SteamcraftBlocks {
         }
 
         /*
-        if (Loader.isModLoaded("AWayofTime") && Config.enableBloodMagicIntegration && Config.enableBloodBoiler){
+        if (CrossMod.BLOOD_MAGIC && Config.enableBloodBoiler){
             bloodBoiler = new BlockBloodBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(bloodBoiler, "bloodBoiler");
             bloodBoiler_on = new BlockBloodBoiler(true).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
@@ -177,15 +177,7 @@ public class SteamcraftBlocks {
         */
     }
 
-    public static void registerSteamMachines() {/* Uncomment this when doing work on the buzzsaw.
-        if (Config.enableSaw){
-            saw = new BlockSaw().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:saw").setHardness(5.0F).setResistance(10.0F);
-            GameRegistry.registerBlock(saw, "saw");
-        }*/
-    	if(Config.enableBlockPlacer){
-    		blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(5.0F).setResistance(10.0F);
-    		GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-    	}
+    public static void registerSteamMachines() {
         if (Config.enablePump) {
             pump = new BlockPump().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:pump").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(pump, "pump");
@@ -239,10 +231,6 @@ public class SteamcraftBlocks {
             vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(vacuum, "vacuum");
         }
-        if (Config.enableGenocide){
-            genocide = new BlockFishGenocideMachine().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:genocide").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
-            GameRegistry.registerBlock(genocide, "genocide");
-        }
 
 //		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
 //		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
@@ -254,16 +242,6 @@ public class SteamcraftBlocks {
 //		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
 //		
     }
-
-    /*
-    public static void registerAuto(){
-
-        if (Config.enableBlockPlacer){
-            blockPlacer = new BlockPlacer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockPlacer").setHardness(0.5F).setResistance(10F);
-            GameRegistry.registerBlock(blockPlacer, "blockPlacer");
-        }
-    }
-    */
 
     public static void registerMisc() {
         if (Config.enableEngineering) {

@@ -22,6 +22,7 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.*;
 import flaxbeard.steamcraft.item.firearm.*;
@@ -154,10 +155,10 @@ public class SteamcraftItems {
         }
 
         if (Config.enableSurvivalist) {
-            if (!Loader.isModLoaded("Baubles")) {
-                survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
-            } else {
+            if (CrossMod.BAUBLES) {
                 survivalist = BaublesIntegration.getSurvivalist();
+            } else {
+                survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
             }
             GameRegistry.registerItem(survivalist, "survivalist");
         }
@@ -177,13 +178,13 @@ public class SteamcraftItems {
             musketCartridge = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:musketCartridge").setTextureName("steamcraft:cartridge");
             GameRegistry.registerItem(musketCartridge, "musketCartridge");
 
-            musket = new ItemFirearm(20.0F, 84, 0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
+            musket = new ItemFirearm(Float.valueOf(Config.musketDamage), 84, 0.2F, 5.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:musket").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponMusket");
             GameRegistry.registerItem(musket, "musket");
 
-            pistol = new ItemFirearm(15.0F, 42, 0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
+            pistol = new ItemFirearm(Float.valueOf(Config.pistolDamage), 42, 0.5F, 2.0F, false, 1, "ingotIron").setUnlocalizedName("steamcraft:pistol").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponPistol");
             GameRegistry.registerItem(pistol, "pistol");
 
-            blunderbuss = new ItemFirearm(25.0F, 95, 3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
+            blunderbuss = new ItemFirearm(Float.valueOf(Config.blunderbussDamage), 95, 3.5F, 7.5F, true, 1, "ingotBrass").setUnlocalizedName("steamcraft:blunderbuss").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:weaponBlunderbuss");
             GameRegistry.registerItem(blunderbuss, "blunderbuss");
 
             if (Config.enableEnhancementRevolver) {
@@ -256,13 +257,13 @@ public class SteamcraftItems {
 
     private static void registerExosuit() {
         if (Config.enableExosuit) {
-            //if (Loader.isModLoaded("Thaumcraft")) {
+            //if (CrossMod.THAUMCRAFT) {
             //	exoArmorHead = new ItemExosuitArmorThaum(0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
             //}
             //else
             //{
             ArmorMaterial mat = EnumHelper.addArmorMaterial("exosuit", 15, new int[]{2, 5, 4, 1}, 0);
-            if (Loader.isModLoaded("Thaumcraft")) {
+            if (CrossMod.THAUMCRAFT) {
                 exoArmorHead = new ItemExosuitArmorThaum(0, mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorHead").setTextureName("steamcraft:exoArmorHead");
                 GameRegistry.registerItem(exoArmorHead, "exoArmorHead");
                 exoArmorBody = new ItemExosuitArmorThaum(1, mat).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:exoArmorBody").setTextureName("steamcraft:exoArmorBody");
@@ -497,23 +498,23 @@ public class SteamcraftItems {
     }
 
     public static void registerToolSet(ToolMaterial tool, String string, Object repair, boolean addRecipes) {
-        Item pick = new ItemSteamcraftPickaxe(tool, repair).setUnlocalizedName("steamcraft:pick" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:pick" + string);
+        Item pick = new ItemSteamcraftPickaxe(tool, repair).setUnlocalizedName("steamcraft:pick" + string).setTextureName("steamcraft:pick" + string);
         GameRegistry.registerItem(pick, "pick" + string);
         tools.put("pick" + string, pick);
 
-        Item axe = new ItemSteamcraftAxe(tool, repair).setUnlocalizedName("steamcraft:axe" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:axe" + string);
+        Item axe = new ItemSteamcraftAxe(tool, repair).setUnlocalizedName("steamcraft:axe" + string).setTextureName("steamcraft:axe" + string);
         GameRegistry.registerItem(axe, "axe" + string);
         tools.put("axe" + string, axe);
 
-        Item shovel = new ItemSteamcraftShovel(tool, repair).setUnlocalizedName("steamcraft:shovel" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:shovel" + string);
+        Item shovel = new ItemSteamcraftShovel(tool, repair).setUnlocalizedName("steamcraft:shovel" + string).setTextureName("steamcraft:shovel" + string);
         GameRegistry.registerItem(shovel, "shovel" + string);
         tools.put("shovel" + string, shovel);
 
-        Item hoe = new ItemSteamcraftHoe(tool, repair).setUnlocalizedName("steamcraft:hoe" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:hoe" + string);
+        Item hoe = new ItemSteamcraftHoe(tool, repair).setUnlocalizedName("steamcraft:hoe" + string).setTextureName("steamcraft:hoe" + string);
         GameRegistry.registerItem(hoe, "hoe" + string);
         tools.put("hoe" + string, hoe);
 
-        Item sword = new ItemSteamcraftSword(tool, repair).setUnlocalizedName("steamcraft:sword" + string).setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:sword" + string);
+        Item sword = new ItemSteamcraftSword(tool, repair).setUnlocalizedName("steamcraft:sword" + string).setTextureName("steamcraft:sword" + string);
         GameRegistry.registerItem(sword, "sword" + string);
         tools.put("sword" + string, sword);
         if (addRecipes) {

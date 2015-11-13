@@ -20,22 +20,63 @@ apply plugin: 'forge'
 
 version = newFSPVersion
 group = "com.flaxbeard.Steamcraft"
-archivesBaseName = "Flaxbeard'sSteamPower"
+archivesBaseName = "Flaxbeard'sSteamPower-1.7.10"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 minecraft {
     version = forgeVersion
     runDir = "eclipse"
 	replace "@VERSION@", project.version
 }
+
+repositories {
+	maven {
+		name = "ic2"
+		url = "http://maven.ic2.player.to/"
+	}
+
+	maven {
+		name "progwml6"
+		url 'http://dvs1.progwml6.com/files/maven'
+	}
+
+	maven {
+		name "tterrag Repo"
+		url "http://maven.tterrag.com"
+	}
+	maven {
+		name = "chickenbones"
+		url = 'http://chickenbones.net/maven/'
+	}
+    maven {
+        name "ProfMobius"
+        url "http://mobiusstrip.eu/maven"
+    }
+}
+
+dependencies {
+	compile ic2Version
+	compile mantleVersion
+	compile ticVersion
+	compile naturaVersion
+	compile eioVersion
+	compile codeChickenCoreVersion
+	compile notEnoughItemsVersion
+	compile codeChickenLibVersion
+
+	compile fileTree(dir: 'fsplib', include: '*.jar') // Not using 'lib' since I got a lot of crap in there.
+}
+
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+        exclude 'api'
+        include 'steamcraft/api'
     }
 }

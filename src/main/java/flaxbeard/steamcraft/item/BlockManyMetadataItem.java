@@ -11,10 +11,12 @@ public class BlockManyMetadataItem extends ItemBlock {
         this.setHasSubtypes(true);
     }
 
+    @Override
     public int getMetadata(int par1) {
         return par1;
     }
 
+    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
         return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
     }

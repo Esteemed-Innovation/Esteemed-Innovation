@@ -3,7 +3,6 @@ package flaxbeard.steamcraft;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -41,9 +40,13 @@ public class Config {
     public static boolean genCopperExtras;
     public static boolean passiveDrain;
     public static boolean disableParticles;
+    public static boolean genPoorZincOre;
+    public static int workshopLimit;
+    public static int workshopWeight;
 
     public static boolean easterEggs;
 
+    public static boolean enableNitorPoweredCrucible;
     public static boolean enableThaumcraftIntegration;
     public static boolean enableBotaniaIntegration;
     public static boolean enableEnchiridionIntegration;
@@ -53,6 +56,9 @@ public class Config {
     public static boolean enableThermalFoundationIntegration;
     public static boolean enableIC2Integration;
     public static boolean enableNaturaIntegration;
+    public static boolean enableTinkersConstruct;
+    public static boolean enableBaublesIntegration;
+    public static boolean enableRailcraftIntegration;
 
 
     public static boolean enableToolHeadsIntegration;
@@ -64,7 +70,6 @@ public class Config {
     public static boolean expensiveMusketRecipes;
     public static int chance;
     public static boolean dropItem;
-    public static boolean genPoorOre;
     public static int duplicateLogs;
     public static int exoConsumption;
     public static int basicTankCapacity;
@@ -79,12 +84,20 @@ public class Config {
     public static int thrusterConsumption;
     public static int runAssistConsumption;
     public static int powerFistConsumption;
-
+    public static int hammerConsumption;
+    public static int fanConsumption;
+    public static int screwConsumption;
+    public static int heaterConsumption;
+    public static int vacuumConsumption;
+    public static String musketDamage;
+    public static String pistolDamage;
+    public static String blunderbussDamage;
 
 
     public static int villagerId;
 
     public static boolean wimpMode;
+    public static boolean enableRedstoneValvePipe;
 
     // blocks
     public static boolean enableBlockPlacer;
@@ -160,6 +173,7 @@ public class Config {
     public static boolean enableIronPlate;
     public static boolean enableGoldPlate;
     public static boolean enableBrassPlate;
+    public static boolean enableLeadPlate;
     public static boolean enableThaumiumPlate;
     public static boolean enableElementiumPlate;
     public static boolean enableTerrasteelPlate;
@@ -202,7 +216,9 @@ public class Config {
         genZincExtras = config.get("World Generation", "Generate Zinc in the above extra dimensions", true).getBoolean();
         genCopperExtras = config.get("World Generation", "Generate Copper in the above extra dimensions", true).getBoolean();
         villagerId = config.get("World Generation", "FSP Villager ID", 694).getInt(694);
-        genPoorOre = config.get("Integration", "Railcraft Poor Ore", true).getBoolean(true);
+        genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean(true);
+        workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt(1);
+        workshopWeight = config.get("World Generation", "Workshop spawn weight", 7).getInt(7);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean(true);
@@ -212,7 +228,6 @@ public class Config {
         enableRocket = config.get("Weapons", "Enable Normal Rocket", true).getBoolean(true);
         enableRocketConcussive = config.get("Weapons", "Enable Concussive Rocket", true).getBoolean(true);
         enableRocketMining = config.get("Weapons", "Enable Mining Charge", true).getBoolean(true);
-
         enableEnhancementAblaze = config.get("Weapons", "Enable Blaze Barrel enhancement", true).getBoolean(true);
         enableEnhancementRevolver = config.get("Weapons", "Enable Revolver enhancement", true).getBoolean(true);
         enableEnhancementSpeedloader = config.get("Weapons", "Enable Bolt Action enhancement", true).getBoolean(true);
@@ -222,7 +237,9 @@ public class Config {
         enableEnhancementFastRockets = config.get("Weapons", "Enable Streamlined Barrel enhancement", true).getBoolean(true);
         enableEnhancementAmmo = config.get("Weapons", "Enable extended Magazine enhancement", true).getBoolean(true);
         enableEnhancementAirStrike = config.get("Weapons", "Enable Air Strike enhancement", true).getBoolean(true);
-
+        musketDamage = config.get("Weapons", "Musket damage", "20.0F").getString();
+        pistolDamage = config.get("Weapons", "Pistol damage", "15.0F").getString();
+        blunderbussDamage = config.get("Weapons", "Blunderbuss damage", "25.0F").getString();
 
         // MACHINES
         mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
@@ -264,6 +281,13 @@ public class Config {
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean(true);
         enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean(true);
 
+        // BLOCK CONSUMPTION RATES
+        hammerConsumption = config.get("Consumption", "Steam Hammer consumption", 4000).getInt();
+        fanConsumption = config.get("Consumption", "Fan consumption", 1).getInt();
+        screwConsumption = config.get("Consumption", "Archimedes Screw consumption", 100).getInt();
+        heaterConsumption = config.get("Consumption", "Steam Heater consumption", 20).getInt();
+        vacuumConsumption = config.get("Consumption", "Vacuum consumption", 3).getInt();
+
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean(true);
         enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean(true);
@@ -296,6 +320,7 @@ public class Config {
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
         enableGoldPlate = config.get("Exosuit Plates", "Enable gold plate", true).getBoolean(true);
         enableBrassPlate = config.get("Exosuit Plates", "Enable brass plate", true).getBoolean(true);
+        enableLeadPlate = config.get("Exosuit Plates", "Enable lead plate", true).getBoolean(true);
         enableThaumiumPlate = config.get("Exosuit Plates", "Enable thaumium plate", true).getBoolean(true);
         enableElementiumPlate = config.get("Exosuit Plates", "Enable elementium plate", true).getBoolean(true);
         enableTerrasteelPlate = config.get("Exosuit Plates", "Enable terrasteel plate", true).getBoolean(true);
@@ -327,10 +352,12 @@ public class Config {
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
+        enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", false).getBoolean(false);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
 
         //INTEGRATION
         enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean(true);
+        enableNitorPoweredCrucible = config.get("Integration", "Allow the Thaumcraft Nitor to power the Crucible", true).getBoolean(true);
         enableBotaniaIntegration = config.get("Integration", "Enable Botania", true).getBoolean(true);
         enableEnchiridionIntegration = config.get("Integration", "Enable Enchiridion", true).getBoolean(true);
         enableTwilightForestIntegration = config.get("Integration", "Enable Twilight Forest", true).getBoolean(true);
@@ -339,13 +366,9 @@ public class Config {
         enableThermalFoundationIntegration = config.get("Integration", "Enable Thermal Foundation", true).getBoolean(true);
         enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean(true);
         enableNaturaIntegration = config.get("Integration", "Enable Natura", true).getBoolean(true);
-        //enableToolHeadsIntegration = config.get("Integration", "Enable Tool Heads", true).getBoolean(true);
-
-        /*//TOOL HEADS
-        config.addCustomCategoryComment("Tool Heads", "These are only used if you have Tool Heads integration enabled, and the Tool Heads mod installed");
-        brassChance = config.getInt("brassChance", "Tool Heads", 20, 1, 100, "What is the chance of a brass tool head being dropped? 20 default. High is higher chance. 1-100");
-        gildedChance = config.getInt("gildedChance", "Tool Heads", 15, 1, 100, "What is the cnace of a gilded tool head being dropped? 15 default. High is higher chance. 1-100");
-        */
+        enableTinkersConstruct = config.get("Integration", "Enable Tinker's Construct", true).getBoolean(true);
+        enableBaublesIntegration = config.get("Integration", "Enable Baubles", true).getBoolean(true);
+        enableRailcraftIntegration = config.get("Integration", "Enable Railcraft", true).getBoolean(true);
 
         if (enableBoiler && enableGauge && enableTank && enablePipe) {
             hasAllCrucial = true;

@@ -17,6 +17,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -178,8 +179,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        if (!(entityLiving instanceof EntityPlayer))
+        if (!(entityLiving instanceof EntityPlayer)) {
             return null;
+        }
 
         ModelExosuit modelExosuit = ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
 
@@ -567,7 +569,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap map = HashMultimap.create();
-        if (Loader.isModLoaded("Botania")) {
+        if (CrossMod.BOTANIA) {
             map = BotaniaIntegration.addModifiers(map, stack, armorType);
         }
         if ((((ItemExosuitArmor) stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Lead")) {

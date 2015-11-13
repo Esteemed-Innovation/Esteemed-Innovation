@@ -1,7 +1,10 @@
 package flaxbeard.steamcraft.item.tool;
 
 import com.google.common.collect.ImmutableSet;
-import flaxbeard.steamcraft.api.UtilMisc;
+
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.util.UtilMisc;
+
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
@@ -15,6 +18,8 @@ public class ItemSteamcraftPickaxe extends ItemPickaxe {
         super(toolMaterial);
         harvestLevel = toolMaterial.getHarvestLevel();
         repairMaterial = repairMat;
+        this.setCreativeTab(Steamcraft.tabTools);
+        this.setHarvestLevel(this.getClass().getName(), toolMaterial.getHarvestLevel());
     }
 
     @Override

@@ -18,6 +18,7 @@ import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
@@ -86,10 +87,6 @@ public class ClientProxy extends CommonProxy {
         TileEntitySpecialRenderer renderSteamHammer = new TileEntitySteamHammerRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
-
-        TileEntitySpecialRenderer renderConveyor = new TileEntityConveyorRenderer();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConveyor.class, new TileEntityConveyorRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.conveyor), new ItemTESRRenderer((IInventoryTESR) renderConveyor, new TileEntityConveyor()));
 
         TileEntitySpecialRenderer renderItemMortar = new TileEntityItemMortarRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());
@@ -163,7 +160,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
         if (entity == player) {
-            if (Loader.isModLoaded("Botania")) {
+            if (CrossMod.BOTANIA) {
                 BotaniaIntegration.extendRange(entity, amount);
             } else {
                 if (!(mc.playerController instanceof SteamcraftPlayerController)) {
@@ -185,7 +182,7 @@ public class ClientProxy extends CommonProxy {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
         if (entity == player) {
-            if (Loader.isModLoaded("Botania")) {
+            if (CrossMod.BOTANIA) {
                 BotaniaIntegration.checkRange(entity);
             } else {
                 if (!(mc.playerController instanceof SteamcraftPlayerController)) {
