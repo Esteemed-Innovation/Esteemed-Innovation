@@ -443,10 +443,9 @@ public class SteamcraftItems {
         GameRegistry.registerItem(steamedFish, "steamedFish");
         SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
 
-        steamedSalmon = new ItemSteamedFood((ItemFood)
-          new ItemStack(Items.cooked_fished, 1, 1).getItem())
-          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab)
-          .setTextureName("minecraft:fish_salmon_cooked");
+        ItemStack salmonStack = new ItemStack(Items.cooked_fished, 1, 1);
+        steamedSalmon = new ItemSteamedFood((ItemFood) salmonStack.getItem(), salmonStack)
+          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedSalmon, "steamedSalmon");
         SteamcraftRegistry.addSteamFood(Items.cooked_fished, 1, steamedSalmon, -1);
 
