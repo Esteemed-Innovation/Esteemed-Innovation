@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
@@ -121,7 +120,6 @@ public class SteamcraftItems {
     public static Item steamedSalmon;
 
     public static void registerItems() {
-
         registerMisc();
         registerFirearms();
         registerExosuit();
@@ -131,7 +129,6 @@ public class SteamcraftItems {
         registerFood();
         registerMetals();
         registerMetalThings();
-
     }
 
     private static void registerMisc() {
@@ -441,21 +438,29 @@ public class SteamcraftItems {
     }
 
     private static void registerFood() {
-
-        steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished).setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
+        steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished)
+          .setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedFish, "steamedFish");
-        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
         SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
 
-        steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken).setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
+        ItemStack salmonStack = new ItemStack(Items.cooked_fished, 1, 1);
+        steamedSalmon = new ItemSteamedFood((ItemFood) salmonStack.getItem(), salmonStack)
+          .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab);
+        GameRegistry.registerItem(steamedSalmon, "steamedSalmon");
+        SteamcraftRegistry.addSteamFood(Items.cooked_fished, 1, steamedSalmon, -1);
+
+        steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken)
+          .setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedChicken, "steamedChicken");
         SteamcraftRegistry.addSteamFood(Items.cooked_chicken, steamedChicken);
 
-        steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef).setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
+        steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef)
+          .setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedBeef, "steamedBeef");
         SteamcraftRegistry.addSteamFood(Items.cooked_beef, steamedBeef);
 
-        steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop).setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
+        steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop)
+          .setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
         SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
     }
