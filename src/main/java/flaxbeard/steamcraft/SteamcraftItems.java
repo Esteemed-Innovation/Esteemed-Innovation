@@ -98,6 +98,7 @@ public class SteamcraftItems {
     public static Item canner;
     public static Item pitonDeployer;
     public static Item enderShroud;
+    public static Item rebreather;
 
     //public static Item fakeOre;
 
@@ -350,6 +351,10 @@ public class SteamcraftItems {
             }
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
+            if (Config.enableRebreather) {
+                rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
+                GameRegistry.registerItem(rebreather, "rebreather");
+            }
         }
 
     }
