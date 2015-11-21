@@ -46,4 +46,19 @@ public class UtilPlates {
     public static ExosuitPlate getPlate(String string) {
         return SteamcraftRegistry.plates.get(string);
     }
+
+    /**
+     * Removes Exosuit Plates from the given Exosuit piece.
+     *
+     * @param exosuitPiece The Exosuit Piece to remove the plates from.
+     * @param identifier The plate type to remove.
+     */
+    public static void removePlate(ItemStack exosuitPiece, String identifier) {
+        if (exosuitPiece.hasTagCompound() && exosuitPiece.hasTag("plate")) {
+            NBTTagCompound tagCompound = exosuitPiece.stackTagCompound;
+            if (getPlate(tagCompound.getString("plate")) == identifier) {
+                tagCompound.removeTag("plate");
+            }
+        }
+    }
 }

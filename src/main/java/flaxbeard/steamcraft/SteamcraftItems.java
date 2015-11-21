@@ -437,6 +437,10 @@ public class SteamcraftItems {
         if (Config.enableBrassPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass", new ItemStack(exosuitPlate, 1, 4), "Brass", "Brass", "steamcraft.plate.brass"));
         }
+        if (Config.enableZincPlate) {
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Zinc",
+                    new ItemStack(exosuitPlate, 1, 5), "Zinc", "Zinc", "steamcraft.plate.zinc"));
+        }
     }
 
     private static void registerFood() {
