@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -54,9 +55,10 @@ public class UtilPlates {
      * @param identifier The plate type to remove.
      */
     public static void removePlate(ItemStack exosuitPiece, String identifier) {
-        if (exosuitPiece.hasTagCompound() && exosuitPiece.hasTag("plate")) {
+        if (exosuitPiece.hasTagCompound()) {
             NBTTagCompound tagCompound = exosuitPiece.stackTagCompound;
-            if (getPlate(tagCompound.getString("plate")) == identifier) {
+            if (tagCompound.hasKey("plate") && getPlate(tagCompound.getString("plate"))
+              .getIdentifier() == identifier) {
                 tagCompound.removeTag("plate");
             }
         }

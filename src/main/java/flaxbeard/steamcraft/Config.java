@@ -299,7 +299,7 @@ public class Config {
         thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit Thrusters consumes", THRUSTER_CONSUMPTION_DEFAULT).getInt();
         runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Run Assist consumes", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
         powerFistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
-        zincPlateConsumption = config.get("Exosuit", "The amount of steam the Exosuit Zinc Plate consumes". ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
+        zincPlateConsumption = config.get("Exosuit", "The amount of steam the Exosuit Zinc Plate consumes", ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);

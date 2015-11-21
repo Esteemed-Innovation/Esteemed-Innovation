@@ -1546,35 +1546,33 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void burstZincPlate(LivingHurtEvent event) {
-        EntityLivingBase entity = event.entity;
+        EntityLivingBase entity = event.entityLiving;
         int consumption = Config.zincPlateConsumption;
         if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
             EntityPlayer player = (EntityPlayer) entity;
             float health = player.getHealth();
             if (event.ammount >= 5.0F || health <= 5.0F) {
-                boolean hasZincPlate = false;
-                ItemStack stackWithPlate;
+                ItemStack stackWithPlate = null;
                 for (int i = 1; i < 5; i++) {
                     ItemStack equipment = player.getEquipmentInSlot(i);
                     Item item = equipment.getItem();
                     if (item instanceof ItemExosuitArmor) {
                         ItemExosuitArmor armor = (ItemExosuitArmor) item;
-                        if (armor.hasPlates(equipment) && armor.
-                                UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier == "Zinc") {
-                            hasZincPlate = true;
+                        if (armor.hasPlates(equipment) &&
+                          UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier() == "Zinc") {
                             stackWithPlate = equipment;
                             break;
                         }
                     }
                 }
-                if (hasZincPlate) {
-                    ItemStack zincPlates = new ItemStack(steamcraftPlate, 2, 1));
+                if (stackWithPlate != null) {
+                    ItemStack zincPlates = new ItemStack(SteamcraftItems.steamcraftPlate, 2, 1);
                     World world = player.worldObj;
                     player.setHealth(health + 5.0F);
                     drainSteam(player.getEquipmentInSlot(3), consumption);
                     UtilPlates.removePlate(stackWithPlate, "Zinc");
                     EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
-                            player.posZ, zincPlates);
+                      player.posZ, zincPlates);
                     world.spawnEntityInWorld(entityItem);
                 }
             }
