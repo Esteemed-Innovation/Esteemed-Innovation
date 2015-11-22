@@ -11,6 +11,7 @@ public enum ExosuitTexture {
     EXOSUIT("exo_%s"),
     EXOSUIT_GREY("exo_%s_grey"),
     PLATE_BRASS("exoPlateBrass_%s"),
+    PLATE_ZINC("exoPlateZinc_%s"),
     PLATE_COPPER("exoPlateCopper_%s"),
     PLATE_ELEMENTUM("exoPlateElementum_%s"),
     PLATE_ENDERIUM("exoPlateEnderium_%s"),

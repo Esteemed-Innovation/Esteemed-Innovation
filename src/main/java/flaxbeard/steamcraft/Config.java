@@ -323,6 +323,7 @@ public class Config {
         enableRebreather = config.get("Exosuit Upgrades", "Enable Rebreather", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
+        enableZincPlate = config.get("Exosuit Plates", "Enable zinc plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
         enableGoldPlate = config.get("Exosuit Plates", "Enable gold plate", true).getBoolean(true);
         enableBrassPlate = config.get("Exosuit Plates", "Enable brass plate", true).getBoolean(true);

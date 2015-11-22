@@ -281,18 +281,14 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                 me.stackTagCompound.setString("plate", UtilPlates.getPlate(clone).getIdentifier());
                 return true;
             } else {
-                if (me.stackTagCompound.hasKey("plate")) {
-                    me.stackTagCompound.removeTag("plate");
-                }
+                UtilPlates.removePlate(me);
                 return false;
             }
         } else {
             if (!me.hasTagCompound()) {
                 me.setTagCompound(new NBTTagCompound());
             }
-            if (me.stackTagCompound.hasKey("plate")) {
-                me.stackTagCompound.removeTag("plate");
-            }
+            UtilPlates.removePlate(me);
             return false;
         }
     }

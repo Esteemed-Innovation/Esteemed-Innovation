@@ -352,7 +352,7 @@ public class SteamcraftItems {
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
             if (Config.enableRebreather) {
-                rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
+                rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
                 GameRegistry.registerItem(rebreather, "rebreather");
             }
         }
@@ -433,6 +433,10 @@ public class SteamcraftItems {
         if (Config.enableCopperPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper", new ItemStack(exosuitPlate, 1, 0), "Copper", "Copper", "steamcraft.plate.copper"));
         }
+        if (Config.enableZincPlate) {
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Zinc",
+              new ItemStack(exosuitPlate, 1, 1), "Zinc", "Zinc", "steamcraft.plate.zinc"));
+        }
         if (Config.enableIronPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron", new ItemStack(exosuitPlate, 1, 2), "Iron", "Iron", "steamcraft.plate.iron"));
         }
@@ -441,10 +445,6 @@ public class SteamcraftItems {
         }
         if (Config.enableBrassPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass", new ItemStack(exosuitPlate, 1, 4), "Brass", "Brass", "steamcraft.plate.brass"));
-        }
-        if (Config.enableZincPlate) {
-            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Zinc",
-                    new ItemStack(exosuitPlate, 1, 5), "Zinc", "Zinc", "steamcraft.plate.zinc"));
         }
     }
 

@@ -52,14 +52,11 @@ public class UtilPlates {
      * Removes Exosuit Plates from the given Exosuit piece.
      *
      * @param exosuitPiece The Exosuit Piece to remove the plates from.
-     * @param identifier The plate type to remove.
      */
-    public static void removePlate(ItemStack exosuitPiece, String identifier) {
+    public static void removePlate(ItemStack exosuitPiece) {
         if (exosuitPiece.hasTagCompound()) {
-            NBTTagCompound tagCompound = exosuitPiece.stackTagCompound;
-            if (tagCompound.hasKey("plate") && getPlate(tagCompound.getString("plate"))
-              .getIdentifier() == identifier) {
-                tagCompound.removeTag("plate");
+            if (exosuitPiece.stackTagCompound.hasKey("plate")) {
+                exosuitPiece.stackTagCompound.removeTag("plate");
             }
         }
     }

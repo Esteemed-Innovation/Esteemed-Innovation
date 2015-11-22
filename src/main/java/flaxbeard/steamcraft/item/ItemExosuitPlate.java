@@ -40,6 +40,7 @@ public class ItemExosuitPlate extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         this.icon[0] = ir.registerIcon("steamcraft:exosuitPlateCopper");
+        this.icon[1] = ir.registerIcon("steamcraft:exosuitPlateZinc");
         this.icon[2] = ir.registerIcon("steamcraft:exosuitPlateIron");
         this.icon[3] = ir.registerIcon("steamcraft:exosuitPlateGold");
         this.icon[4] = ir.registerIcon("steamcraft:exosuitPlateBrass");

@@ -1548,21 +1548,24 @@ public class SteamcraftEventHandler {
     public void burstZincPlate(LivingHurtEvent event) {
         EntityLivingBase entity = event.entityLiving;
         int consumption = Config.zincPlateConsumption;
+        float amount = event.ammount;
         if (event.source != DamageSource.drown) {
             if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
                 EntityPlayer player = (EntityPlayer) entity;
                 float health = player.getHealth();
-                if (event.ammount >= 5.0F || health <= 5.0F) {
+                if (amount >= 10.0F || health <= 10.0F) {
                     ItemStack stackWithPlate = null;
                     for (int i = 1; i < 5; i++) {
                         ItemStack equipment = player.getEquipmentInSlot(i);
-                        Item item = equipment.getItem();
-                        if (item instanceof ItemExosuitArmor) {
-                            ItemExosuitArmor armor = (ItemExosuitArmor) item;
-                            if (armor.hasPlates(equipment) &&
-                              UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier() == "Zinc") {
-                                stackWithPlate = equipment;
-                                break;
+                        if (equipment != null) {
+                            Item item = equipment.getItem();
+                            if (item instanceof ItemExosuitArmor) {
+                                ItemExosuitArmor armor = (ItemExosuitArmor) item;
+                                if (armor.hasPlates(equipment) &&
+                                  UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier() == "Zinc") {
+                                    stackWithPlate = equipment;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1571,10 +1574,14 @@ public class SteamcraftEventHandler {
                         World world = player.worldObj;
                         player.setHealth(health + 5.0F);
                         drainSteam(player.getEquipmentInSlot(3), consumption);
-                        UtilPlates.removePlate(stackWithPlate, "Zinc");
+                        UtilPlates.removePlate(stackWithPlate);
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, zincPlates);
                         world.spawnEntityInWorld(entityItem);
+//                        player.setHealth(health - (amount - 10.0F));
+                        player.setHealth(health);
+                        player.performHurtAnimation();
+                        event.setCanceled(true);
                     }
                 }
             }

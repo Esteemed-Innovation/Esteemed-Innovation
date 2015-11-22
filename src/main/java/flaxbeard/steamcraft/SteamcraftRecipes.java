@@ -387,6 +387,9 @@ public class SteamcraftRecipes {
         if (Config.enableCopperPlate) {
             addExosuitPlateRecipes("exoCopper", "plateSteamcraftCopper", new ItemStack(SteamcraftItems.exosuitPlate, 1, 0), liquidCopper);
         }
+        if (Config.enableZincPlate) {
+            addExosuitPlateRecipes("exoZinc", "plateSteamcraftZinc", new ItemStack(SteamcraftItems.exosuitPlate, 1, 1), liquidZinc);
+        }
         if (Config.enableIronPlate) {
             addExosuitPlateRecipes("exoIron", "plateSteamcraftIron", new ItemStack(SteamcraftItems.exosuitPlate, 1, 2), liquidIron);
         }
