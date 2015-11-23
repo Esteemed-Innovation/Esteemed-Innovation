@@ -89,6 +89,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -1549,12 +1550,21 @@ public class SteamcraftEventHandler {
         EntityLivingBase entity = event.entityLiving;
         int consumption = Config.zincPlateConsumption;
         float amount = event.ammount;
-        if (event.source != DamageSource.drown) {
+        List<DamageSource> invalidSources = Arrays.asList(
+          DamageSource.drown,
+          DamageSource.outOfWorld,
+          DamageSource.starve,
+          DamageSource.wither
+        );
+
+        if (!invalidSources.contains(event.source)) {
             if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
                 EntityPlayer player = (EntityPlayer) entity;
                 float health = player.getHealth();
                 if (amount >= 10.0F || health <= 10.0F) {
                     ItemStack stackWithPlate = null;
+                    int slotWithPlate = 0;
+                    boolean hasZincPlate = false;
                     for (int i = 1; i < 5; i++) {
                         ItemStack equipment = player.getEquipmentInSlot(i);
                         if (equipment != null) {
@@ -1562,14 +1572,16 @@ public class SteamcraftEventHandler {
                             if (item instanceof ItemExosuitArmor) {
                                 ItemExosuitArmor armor = (ItemExosuitArmor) item;
                                 if (armor.hasPlates(equipment) &&
-                                  UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier() == "Zinc") {
+                                  UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier().equals("Zinc")) {
                                     stackWithPlate = equipment;
+                                    slotWithPlate = i;
+                                    hasZincPlate = true;
                                     break;
                                 }
                             }
                         }
                     }
-                    if (stackWithPlate != null) {
+                    if (hasZincPlate) {
                         ItemStack zincPlates = new ItemStack(SteamcraftItems.steamcraftPlate, 2, 1);
                         World world = player.worldObj;
                         player.setHealth(health + 5.0F);
@@ -1581,6 +1593,8 @@ public class SteamcraftEventHandler {
 //                        player.setHealth(health - (amount - 10.0F));
                         player.setHealth(health);
                         player.performHurtAnimation();
+                        world.playSoundEffect(player.posX, player.posY, player.posZ,
+                          "steamcraft:hiss", 2.0F, 0.9F);
                         event.setCanceled(true);
                     }
                 }
