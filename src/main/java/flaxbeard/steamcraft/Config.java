@@ -25,6 +25,8 @@ public class Config {
     public static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
     public static final int ZINC_PLATE_CONSUMPTION_DEFAULT = 30;
     public static final int REBREATHER_CONSUMPTION_DEFAULT = 5;
+    public static final int PYROPHOBIC_CONSUMPTION_DEFAULT = 5;
+    public static final int HYDROPHOBIC_CONSUMPTION_DEFAULT = 10;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -92,6 +94,8 @@ public class Config {
     public static int vacuumConsumption;
     public static int zincPlateConsumption;
     public static int rebreatherConsumption;
+    public static int hydrophobicConsumption;
+    public static int pyrophobicConsumption;
     public static String musketDamage;
     public static String pistolDamage;
     public static String blunderbussDamage;
@@ -171,6 +175,8 @@ public class Config {
     public static boolean enableUberReinforcedTank;
     public static boolean enableEnderShroud;
     public static boolean enableRebreather;
+    public static boolean enableHydrophobic;
+    public static boolean enablePyrophobic;
 
     //plates
     public static boolean enableCopperPlate;
@@ -304,6 +310,9 @@ public class Config {
         powerFistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
         zincPlateConsumption = config.get("Exosuit", "The amount of steam the Exosuit Zinc Plate consumes", ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
         rebreatherConsumption = config.get("Exosuit", "The amount of steam the Rebreather consumes", REBREATHER_CONSUMPTION_DEFAULT).getInt();
+        hydrophobicConsumption = config.get("Exosuit", "The amount of steam the Hydrophobic Coatings consume", HYDROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+        pyrophobicConsumption = config.get("Exosuit", "The amount of steam the Pyrophobic Coatings consume", PYROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
         enableJumpAssist = config.get("Exosuit Upgrades", "Enable Leap Actuator", true).getBoolean(true);
@@ -321,6 +330,8 @@ public class Config {
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
         enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
         enableRebreather = config.get("Exosuit Upgrades", "Enable Rebreather", true).getBoolean(true);
+        enableHydrophobic = config.get("Exosuit Upgrades", "Enable Hydrophobic Coatings", true).getBoolean(true);
+        enablePyrophobic = config.get("Exosuit Upgrades", "Enable Pyrophobic Coatings", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableZincPlate = config.get("Exosuit Plates", "Enable zinc plate", true).getBoolean(true);

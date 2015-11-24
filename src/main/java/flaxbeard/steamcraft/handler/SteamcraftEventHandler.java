@@ -1603,19 +1603,21 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void rebreath(LivingHurtEvent event) {
+    public void rebreath(LivingAttackEvent event) {
         int consumption = Config.rebreatherConsumption;
         if (event.source == DamageSource.drown) {
             EntityLivingBase entity = event.entityLiving;
             if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
                 EntityPlayer player = (EntityPlayer) entity;
                 ItemStack equipment = player.getEquipmentInSlot(4);
-                Item helmet = equipment.getItem();
-                if (helmet instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
-                    if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.rebreather)) {
-                        drainSteam(player.getEquipmentInSlot(3), consumption);
-                        event.setCanceled(true);
+                if (equipment != null) {
+                    Item helmet = equipment.getItem();
+                    if (helmet instanceof ItemExosuitArmor) {
+                        ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
+                        if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.rebreather)) {
+                            drainSteam(player.getEquipmentInSlot(3), consumption);
+                            event.setCanceled(true);
+                        }
                     }
                 }
             }

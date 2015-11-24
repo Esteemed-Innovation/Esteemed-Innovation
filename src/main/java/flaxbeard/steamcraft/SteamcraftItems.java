@@ -99,6 +99,8 @@ public class SteamcraftItems {
     public static Item pitonDeployer;
     public static Item enderShroud;
     public static Item rebreather;
+    public static Item coatingsHydrophobic;
+    public static Item coatingsPyrophobic;
 
     //public static Item fakeOre;
 
@@ -354,6 +356,20 @@ public class SteamcraftItems {
             if (Config.enableRebreather) {
                 rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
                 GameRegistry.registerItem(rebreather, "rebreather");
+            }
+            if (Config.enableHydrophobic) {
+                coatingsHydrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:coatingsHydrophobic")
+                  .setTextureName("steamcraft:coatingsHydrophobic");
+                GameRegistry.registerItem(coatingsHydrophobic, "coatingsHydrophobic");
+            }
+            if (Config.enablePyrophobic) {
+                coatingsPyrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:coatingsPyrophobic")
+                  .setTextureName("steamcraft:coatingsPyrophobic");
+                GameRegistry.registerItem(coatingsPyrophobic, "coatingsPyrophobic");
             }
         }
 

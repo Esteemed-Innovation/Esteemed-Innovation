@@ -25,6 +25,7 @@ import flaxbeard.steamcraft.entity.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.EntityMortarItem;
 import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
+import flaxbeard.steamcraft.handler.PhobicCoatingHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
@@ -158,8 +159,10 @@ public class Steamcraft {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
+        MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
 
         FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
+        FMLCommonHandler.instance().bus().register(new PhobicCoatingHandler());
 
         if (event.getSide() == Side.CLIENT) {
             FMLCommonHandler.instance().bus().register(new ExosuitModelCache());
