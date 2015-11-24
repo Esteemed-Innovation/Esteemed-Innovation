@@ -32,6 +32,7 @@ public class PhobicCoatingHandler {
     public void preventLavaDamage(LivingAttackEvent event) {
         if (isWalkingInLava && (event.source == DamageSource.lava ||
           event.source == DamageSource.inFire || event.source == DamageSource.onFire)) {
+            event.entity.motionY = 0.5D;
             event.setCanceled(true);
         }
     }
@@ -82,6 +83,7 @@ public class PhobicCoatingHandler {
             if (entity.isBurning()) {
                 isWalkingInLava = true;
                 entity.extinguish();
+                entity.motionY = 0.5;
             }
 
             if (blockUnder == Blocks.lava || blockUnder == Blocks.flowing_lava) {
@@ -100,7 +102,8 @@ public class PhobicCoatingHandler {
 
             if (entity.handleLavaMovement()) {
                 isWalkingInLava = true;
-                entity.jump();
+                entity.motionY = 0.5;
+//                entity.jump();
                 entity.fallDistance = 0;
             }
         } else if (modifierLava != null) {
