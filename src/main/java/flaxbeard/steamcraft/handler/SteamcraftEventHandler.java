@@ -81,6 +81,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
@@ -838,9 +839,13 @@ public class SteamcraftEventHandler {
                     int y = event.y;
                     int z = event.z;
                     if (face == 0) {
-                        y += 1;
+                        if (y != 256) {
+                            y += 1;
+                        }
                     } else if (face == 1) {
-                        y -= 1;
+                        if (y != 0) {
+                            y -= 1;
+                        }
                     } else if (face == 2) {
                         if (z < 0) {
                             z += 1;
@@ -866,18 +871,21 @@ public class SteamcraftEventHandler {
                             x -= 1;
                         }
                     }
-                    if (world.getBlock(x, y, z) == null || world.getBlock(x, y, z) == Blocks.air) {
-                        int i = event.x;
-                        int j = event.y;
-                        int k = event.z;
-                        Block clickedBlock = world.getBlock(i, j, k);
-                        int meta = world.getBlockMetadata(i, j, k);
-                        if (!clickedBlock.hasTileEntity(meta)) {
-                            world.setBlockToAir(i, j, k);
-                            world.setBlock(x, y, z, clickedBlock, meta, 3);
-                            world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z +
-                              0.5D, "tile.piston.out", 0.5F, world.rand.nextFloat() * 0.25F + 0.6F);
-                        }
+                    int i = event.x;
+                    int j = event.y;
+                    int k = event.z;
+                    Block clickedBlock = world.getBlock(i, j, k);
+                    Block blockInPlace = world.getBlock(x, y, z);
+                    int clickedMeta = world.getBlockMetadata(i, j, k);
+                    if ((blockInPlace == null || blockInPlace == Blocks.air ||
+                      blockInPlace instanceof BlockFluidBase) &&
+                      clickedBlock.getBlockHardness(world, x, y, z) >= 0.0F &&
+                      clickedBlock.getMobilityFlag() != 2 && clickedBlock != Blocks.obsidian &&
+                      j >= 0 && !clickedBlock.hasTileEntity(clickedMeta)) {
+                        world.setBlockToAir(i, j, k);
+                        world.setBlock(x, y, z, clickedBlock, clickedMeta, 3);
+                        world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z +
+                          0.5D, "tile.piston.out", 0.5F, world.rand.nextFloat() * 0.25F + 0.6F);
                     }
                 }
             }
