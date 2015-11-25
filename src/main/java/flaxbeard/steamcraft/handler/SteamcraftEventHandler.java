@@ -839,38 +839,32 @@ public class SteamcraftEventHandler {
                     int z = event.z;
                     if (face == 0) {
                         y += 1;
-                        System.out.println("case 0");
                     } else if (face == 1) {
                         y -= 1;
-                        System.out.println("case 1");
                     } else if (face == 2) {
                         if (z < 0) {
                             z += 1;
                         } else {
                             z -= 1;
                         }
-                        System.out.println("case 2");
                     } else if (face == 3) {
                         if (z < 0) {
                             z -= 1;
                         } else {
                             z += 1;
                         }
-                        System.out.println("case 3");
                     } else if (face == 4) {
                         if (x < 0) {
                             x -= 1;
                         } else {
                             x += 1;
                         }
-                        System.out.println("case 4");
                     } else if (face == 5) {
                         if (x < 0) {
                             x += 1;
                         } else {
                             x -= 1;
                         }
-                        System.out.println("case 5");
                     }
                     if (world.getBlock(x, y, z) == null || world.getBlock(x, y, z) == Blocks.air) {
                         int i = event.x;
