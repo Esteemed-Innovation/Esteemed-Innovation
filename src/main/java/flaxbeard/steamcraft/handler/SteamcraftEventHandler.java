@@ -820,6 +820,76 @@ public class SteamcraftEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public void handlePistonPunch(PlayerInteractEvent event) {
+        EntityPlayer entity = event.entityPlayer;
+        int consumption = Config.pistonPushConsumption;
+        boolean hasPower = hasPower(entity, consumption);
+        ItemStack heldItem = entity.getHeldItem();
+        if (hasPower && heldItem == null) {
+            ItemStack chestStack = entity.getEquipmentInSlot(3);
+            Item chest = chestStack.getItem();
+            if (chest instanceof ItemExosuitArmor) {
+                ItemExosuitArmor armor = (ItemExosuitArmor) chest;
+                if (armor.hasUpgrade(chestStack, SteamcraftItems.pistonPush)) {
+                    World world = event.world;
+                    int face = event.face;
+                    int x = event.x;
+                    int y = event.y;
+                    int z = event.z;
+                    if (face == 0) {
+                        y += 1;
+                        System.out.println("case 0");
+                    } else if (face == 1) {
+                        y -= 1;
+                        System.out.println("case 1");
+                    } else if (face == 2) {
+                        if (z < 0) {
+                            z += 1;
+                        } else {
+                            z -= 1;
+                        }
+                        System.out.println("case 2");
+                    } else if (face == 3) {
+                        if (z < 0) {
+                            z -= 1;
+                        } else {
+                            z += 1;
+                        }
+                        System.out.println("case 3");
+                    } else if (face == 4) {
+                        if (x < 0) {
+                            x -= 1;
+                        } else {
+                            x += 1;
+                        }
+                        System.out.println("case 4");
+                    } else if (face == 5) {
+                        if (x < 0) {
+                            x += 1;
+                        } else {
+                            x -= 1;
+                        }
+                        System.out.println("case 5");
+                    }
+                    if (world.getBlock(x, y, z) == null || world.getBlock(x, y, z) == Blocks.air) {
+                        int i = event.x;
+                        int j = event.y;
+                        int k = event.z;
+                        Block clickedBlock = world.getBlock(i, j, k);
+                        int meta = world.getBlockMetadata(i, j, k);
+                        if (!clickedBlock.hasTileEntity(meta)) {
+                            world.setBlockToAir(i, j, k);
+                            world.setBlock(x, y, z, clickedBlock, meta, 3);
+                            world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z +
+                              0.5D, "tile.piston.out", 0.5F, world.rand.nextFloat() * 0.25F + 0.6F);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleFallDamage(LivingHurtEvent event) {
         if (CrossMod.BLOOD_MAGIC) {

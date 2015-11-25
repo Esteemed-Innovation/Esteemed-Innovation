@@ -101,6 +101,8 @@ public class SteamcraftItems {
     public static Item rebreather;
     public static Item coatingsHydrophobic;
     public static Item coatingsPyrophobic;
+    public static Item anchorHeels;
+    public static Item pistonPush;
 
     //public static Item fakeOre;
 
@@ -370,6 +372,20 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:coatingsPyrophobic")
                   .setTextureName("steamcraft:coatingsPyrophobic");
                 GameRegistry.registerItem(coatingsPyrophobic, "coatingsPyrophobic");
+            }
+            if (Config.enableAnchorHeels) {
+                anchorHeels = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:anchorHeels")
+                  .setTextureName("steamcraft:anchorHeels");
+                GameRegistry.registerItem(anchorHeels, "anchorHeels");
+            }
+            if (Config.enablePistonPush) {
+                pistonPush = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:pistonPush")
+                  .setTextureName("steamcraft:pistonPush");
+                GameRegistry.registerItem(pistonPush, "pistonPush");
             }
         }
 

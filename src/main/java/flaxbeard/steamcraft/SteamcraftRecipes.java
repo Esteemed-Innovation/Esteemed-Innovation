@@ -495,6 +495,27 @@ public class SteamcraftRecipes {
             BookRecipeRegistry.addRecipe("doubleJump2", new ShapedOreRecipe(new ItemStack(SteamcraftItems.doubleJump), "s s", "v v",
                     'v', SteamcraftBlocks.valvePipe, 's', "plateSteamcraftBrass"));
         }
+        if (Config.enableAnchorHeels) {
+            if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0 &&
+              !Config.enableAnchorAnvilRecipe) {
+                BookRecipeRegistry.addRecipe("anchorHeels", new ShapedOreRecipe(
+                  new ItemStack(SteamcraftItems.anchorHeels),
+                  "p p",
+                  "e e",
+                  'p', "plateSteamcraftLead",
+                  'e', new ItemStack(SteamcraftItems.exosuitPlate, 1, 11)
+                ));
+            } else {
+                BookRecipeRegistry.addRecipe("anchorHeels", new ShapedOreRecipe(
+                  new ItemStack(SteamcraftItems.anchorHeels),
+                  "p p",
+                  "eae",
+                  'p', "plateSteamcraftIron",
+                  'e', new ItemStack(SteamcraftItems.exosuitPlate, 1, 2),
+                  'a', Blocks.anvil
+                ));
+            }
+        }
     }
 
     public static void registerSteamTools() {
