@@ -71,6 +71,7 @@ public class ModelTophat extends ModelBiped {
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
         EntityLivingBase living = (EntityLivingBase) par7Entity;
+        aimedBow = false;
         isSneak = living != null ? living.isSneaking() : false;
         if (living != null && living instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) living;
@@ -80,11 +81,11 @@ public class ModelTophat extends ModelBiped {
 
             if (itemstack != null && player.getItemInUseCount() > 0) {
                 EnumAction enumaction = itemstack.getItemUseAction();
-
-                if (enumaction == EnumAction.block)
+                if (enumaction == EnumAction.block) {
                     heldItemRight = 3;
-                else if (enumaction == EnumAction.bow)
+                } else if (enumaction == EnumAction.bow) {
                     aimedBow = true;
+                }
             }
         }
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
