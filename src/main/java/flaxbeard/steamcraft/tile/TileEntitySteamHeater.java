@@ -23,8 +23,8 @@ import java.util.ArrayList;
 public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
 
 
-    //When multiple heaters are used on a furnace, there is a single master heater
-    public boolean isMasterHeater;
+    //When multiple heaters are used on a furnace, there is a single primary heater
+    public boolean isPrimaryHeater;
     private boolean isInitialized = false;
     private int numHeaters = 0;
     private boolean prevHadYuck = true;
@@ -87,14 +87,14 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
         super.updateEntity();
 
         int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        ArrayList<TileEntitySteamHeater> slaves = new ArrayList<TileEntitySteamHeater>();
+        ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<TileEntitySteamHeater>();
         if (this.worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) != null) {
             if (this.worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ) instanceof TileEntityFurnace) {
                 numHeaters = 0;
-                if (!this.isMasterHeater) {
+                if (!this.isPrimaryHeater) {
                     prevHadYuck = true;
                 }
-                this.isMasterHeater = false;
+                this.isPrimaryHeater = false;
                 for (int i = 0; i < 6; i++) {
                     ForgeDirection dir2 = ForgeDirection.getOrientation(i);
                     int x = xCoord + dir.offsetX + dir2.offsetX;
@@ -105,11 +105,11 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                           ((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z))
                           .getSteamShare() >= steamConsumption && this.worldObj.getBlockMetadata
                           (x, y, z) == ForgeDirection.OPPOSITES[i]) {
-                            this.isMasterHeater = (x == xCoord && y == yCoord && z == zCoord);
-                            slaves.add((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z));
+                            this.isPrimaryHeater = (x == xCoord && y == yCoord && z == zCoord);
+                            secondaryHeaters.add((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z));
                             numHeaters++;
-                            if (slaves.size() > 4) {
-                                slaves.remove(0);
+                            if (secondaryHeaters.size() > 4) {
+                                secondaryHeaters.remove(0);
                             }
                             numHeaters = Math.min(4, numHeaters);
                         }
@@ -117,7 +117,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                         worldObj.addTileEntity(this);
                     }
                 }
-                if (this.isMasterHeater && numHeaters > 0) {
+                if (this.isPrimaryHeater && numHeaters > 0) {
                     TileEntityFurnace furnace = (TileEntityFurnace) this.worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
                     if (!(furnace instanceof TileEntitySteamFurnace) && furnace.getClass() == TileEntityFurnace.class) {
                         ItemStack[] furnaceItemStacks = new ItemStack[]{furnace.getStackInSlot(0), furnace.getStackInSlot(1), furnace.getStackInSlot(2)};
@@ -144,7 +144,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                         if (furnace.furnaceBurnTime == 0) {
                             BlockFurnace.updateFurnaceBlockState(true, this.worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
                         }
-                        for (TileEntitySteamHeater heater : slaves) {
+                        for (TileEntitySteamHeater heater : secondaryHeaters) {
                             heater.decrSteam(steamConsumption);
                         }
                         furnace.furnaceBurnTime += 3;
