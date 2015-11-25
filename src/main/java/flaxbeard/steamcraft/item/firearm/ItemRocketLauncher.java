@@ -25,6 +25,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
@@ -237,7 +239,6 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
      */
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        System.out.println("1 - " + par3EntityPlayer.worldObj.isRemote);
         NBTTagCompound nbt = par1ItemStack.getTagCompound();
         boolean crouched = par3EntityPlayer.isSneaking();
 
@@ -249,11 +250,8 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                 nbt.setBoolean("done", false);
                 nbt.setInteger("numloaded", 0);
             }
-            System.out.println("2 - " + par3EntityPlayer.worldObj.isRemote);
             if (nbt.getInteger("loaded") > 0 || par3EntityPlayer.capabilities.isCreativeMode) {
-                System.out.println("3 - " + par3EntityPlayer.worldObj.isRemote);
                 if (!par1ItemStack.stackTagCompound.hasKey("fireDelay") || par1ItemStack.stackTagCompound.getInteger("fireDelay") == 0) {
-                    System.out.println("4 - " + par3EntityPlayer.worldObj.isRemote);
                     float enhancementAccuracy = 0.0F;
                     float enhancementExplosionSize = 0.0F;
                     int enhancementDelay = 0;
@@ -299,6 +297,8 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                     if (!par2World.isRemote) {
                         par2World.spawnEntityInWorld(var8);
                     }
+                    ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, 1);
+                    MinecraftForge.EVENT_BUS.post(event);
 
                     nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
 
