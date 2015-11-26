@@ -33,7 +33,7 @@ import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+import flaxbeard.steamcraft.misc.FrequencyMerchant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -50,7 +50,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -64,6 +66,7 @@ import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -89,10 +92,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SteamcraftEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -109,6 +111,46 @@ public class SteamcraftEventHandler {
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
     public int resyncExoBoostTicks = 0;
+    public static final String[] merchantNames = {
+      "Jose",
+      "Jaunita",
+      "Olga",
+      "Benito",
+      "Bagwis",
+      "Jon",
+      "Clifford",
+      "Garfield",
+      "Pilar",
+      "Francisco",
+      "Peter",
+      "Will",
+      "Eric",
+      "Emilio",
+      "George",
+      "Ricardo",
+      "Arizbeth",
+      "Robert",
+      "Roberto",
+      "Cornelius",
+      "Claritia",
+      "Paskal",
+      "Aydan",
+      "Jaida",
+      "Dorean",
+      "Hana",
+      "Kalyani",
+      "Iria",
+      "Raimundo",
+      "Yenifer",
+      "Tung",
+      "Talia",
+      "Lana",
+      "Mila",
+      "Bobby",
+      "Tru",
+      "Sammie",
+      "Miranda"
+    };
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
@@ -1694,5 +1736,60 @@ public class SteamcraftEventHandler {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void openMerchant(EntityInteractEvent event) {
+        EntityPlayer player = event.entityPlayer;
+        Entity target = event.target;
+        if (playerHasFrequencyShifter(player) && (target instanceof EntityWolf ||
+          target instanceof EntityOcelot)) {
+            EntityLiving living = (EntityLiving) target;
+            String merchantName;
+            if (living.getEntityData().hasKey("merchantName")) {
+                merchantName = living.getEntityData().getString("merchantName");
+            } else {
+                merchantName = merchantNames[new Random().nextInt(merchantNames.length)];
+            }
+            FrequencyMerchant merchant = new FrequencyMerchant(living, merchantName);
+            merchant.setCustomer(player);
+            player.displayGUIMerchant(merchant, merchantName);
+        }
+    }
+
+    @SubscribeEvent
+    public void ignoreChatMessage(ClientChatReceivedEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.thePlayer;
+        World world = mc.theWorld;
+        String message = event.message.getUnformattedText();
+        Pattern pattern = Pattern.compile("<(.+?)>");
+        Matcher matcher = pattern.matcher(message);
+        if (matcher.find()) {
+            EntityPlayer messager = world.getPlayerEntityByName(matcher.group(0));
+            if (!messager.getDisplayName().equals(player.getDisplayName()) &&
+              playerHasFrequencyShifter(messager) && playerHasFrequencyShifter(player)) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    /**
+     * Checks whether the given player has the Frequency Shifter upgrade, and enough steam in their suit.
+     * @param player The player to check.
+     * @return
+     */
+    private boolean playerHasFrequencyShifter(EntityPlayer player) {
+        ItemStack helmet = player.getEquipmentInSlot(4);
+        if (helmet != null && hasPower(player, 1)) {
+            Item helmetItem = helmet.getItem();
+            if (helmetItem instanceof ItemExosuitArmor) {
+                ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmetItem;
+                if (helmetArmor.hasUpgrade(helmet, SteamcraftItems.frequencyShifter)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

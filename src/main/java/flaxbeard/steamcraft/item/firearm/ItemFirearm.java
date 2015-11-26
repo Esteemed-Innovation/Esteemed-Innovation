@@ -112,6 +112,8 @@ public class ItemFirearm extends Item implements IEngineerable {
                         SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3),
                           Config.reloadingConsumption);
                         this.ticksSinceReload = 0;
+                        // TODO: Reload sound
+                        // TODO: Out of ammo- cannot reload sound
                     }
                 }
             }

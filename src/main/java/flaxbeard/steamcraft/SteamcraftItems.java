@@ -104,6 +104,7 @@ public class SteamcraftItems {
     public static Item anchorHeels;
     public static Item pistonPush;
     public static Item reloadingHolsters;
+    public static Item frequencyShifter;
 
     //public static Item fakeOre;
 
@@ -394,6 +395,13 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:reloadingHolsters")
                   .setTextureName("steamcraft:reloadingHolsters");
                 GameRegistry.registerItem(reloadingHolsters, "reloadingHolsters");
+            }
+            if (Config.enableFrequencyShifter) {
+                frequencyShifter = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:frequencyShifter")
+                  .setTextureName("steamcraft:frequencyShifter");
+                GameRegistry.registerItem(frequencyShifter, "frequencyShifter");
             }
         }
 

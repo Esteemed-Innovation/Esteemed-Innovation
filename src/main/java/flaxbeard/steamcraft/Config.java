@@ -184,6 +184,7 @@ public class Config {
     public static boolean enableAnchorHeels;
     public static boolean enablePistonPush;
     public static boolean enableReloadingHolsters;
+    public static boolean enableFrequencyShifter;
 
     //plates
     public static boolean enableCopperPlate;
@@ -345,6 +346,7 @@ public class Config {
         enableAnchorHeels = config.get("Exosuit Upgrades", "Enable Anchor Heels", true).getBoolean(true);
         enablePistonPush = config.get("Exosuit Upgrades", "Enable Piston Push", true).getBoolean(true);
         enableReloadingHolsters = config.get("Exosuit Upgrades", "Enable Reloading Holsters", true).getBoolean(true);
+        enableFrequencyShifter = config.get("Exosuit Upgrades", "Enable Frequency Shifter", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
         enableZincPlate = config.get("Exosuit Plates", "Enable zinc plate", true).getBoolean(true);
