@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.item.firearm;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.util.UtilMisc;
@@ -10,6 +11,7 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.entity.EntityMusketBall;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -39,6 +41,11 @@ public class ItemFirearm extends Item implements IEngineerable {
     public float knockback;
     public boolean shotgun;
     public Object repairMaterial = null;
+    /**
+     * Used only for the Reloading Holsters, hence why it is private. Don't make it public, as that
+     * could confuse other developers into thinking they should use it for things.
+     */
+    private int ticksSinceReload;
     private boolean wasSprinting = false;
 
     public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7) {
@@ -73,8 +80,8 @@ public class ItemFirearm extends Item implements IEngineerable {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5) {
-        super.onUpdate(stack, world, entity, par4, par5);
+    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean isCurrentItem) {
+        super.onUpdate(stack, world, entity, par4, isCurrentItem);
         if (entity instanceof EntityPlayerSP) {
             EntityPlayerSP player = (EntityPlayerSP) entity;
             ItemStack usingItem = player.getItemInUse();
@@ -83,6 +90,30 @@ public class ItemFirearm extends Item implements IEngineerable {
                 player.movementInput.moveStrafe *= 5.0F;
             } else {
                 wasSprinting = player.isSprinting();
+            }
+        }
+
+        // Reloading Holster code.
+        if (!isCurrentItem && entity instanceof EntityPlayer && stack.hasTagCompound()) {
+            this.ticksSinceReload += 1;
+            NBTTagCompound nbt = stack.getTagCompound();
+            EntityPlayer player = (EntityPlayer) entity;
+            ItemStack legs = player.getEquipmentInSlot(2);
+            if (legs != null && nbt.getInteger("loaded") < 1 &&
+              this.ticksSinceReload >= (this.reloadTime + 10)) {
+                Item legsItem = legs.getItem();
+                if (legsItem instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
+                    if (legsArmor.hasUpgrade(legs, SteamcraftItems.reloadingHolsters) &&
+                      SteamcraftEventHandler.hasPower(player, Config.reloadingConsumption) &&
+                      player.inventory.hasItem(SteamcraftItems.musketCartridge)) {
+                        this.onEaten(stack, world, player);
+                        this.onItemRightClick(stack, world, player);
+                        SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3),
+                          Config.reloadingConsumption);
+                        this.ticksSinceReload = 0;
+                    }
+                }
             }
         }
     }

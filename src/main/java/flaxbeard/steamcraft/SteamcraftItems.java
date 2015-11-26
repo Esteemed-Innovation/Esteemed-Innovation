@@ -103,6 +103,7 @@ public class SteamcraftItems {
     public static Item coatingsPyrophobic;
     public static Item anchorHeels;
     public static Item pistonPush;
+    public static Item reloadingHolsters;
 
     //public static Item fakeOre;
 
@@ -386,6 +387,13 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:pistonPush")
                   .setTextureName("steamcraft:pistonPush");
                 GameRegistry.registerItem(pistonPush, "pistonPush");
+            }
+            if (Config.enableReloadingHolsters && Config.enableFirearms) {
+                reloadingHolsters = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:reloadingHolsters")
+                  .setTextureName("steamcraft:reloadingHolsters");
+                GameRegistry.registerItem(reloadingHolsters, "reloadingHolsters");
             }
         }
 
