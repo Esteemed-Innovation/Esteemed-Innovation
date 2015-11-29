@@ -262,7 +262,7 @@ public class SteamcraftTickHandler {
     }
 
     @SubscribeEvent
-    public void falLFast(TickEvent.PlayerTickEvent event) {
+    public void fallFast(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
         if (SteamcraftEventHandler.hasPower(player, 1)) {
             ItemStack equipment = player.getEquipmentInSlot(1);

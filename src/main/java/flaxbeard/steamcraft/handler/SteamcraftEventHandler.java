@@ -13,6 +13,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.*;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.api.event.AnimalTradeEvent;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
@@ -46,6 +47,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
@@ -934,6 +936,41 @@ public class SteamcraftEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public void hearMeRoar(LivingAttackEvent event) {
+        System.out.println("event");
+        // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
+        if (event.source.getSourceOfDamage() instanceof EntityLivingBase &&
+          !event.source.isExplosion()) {
+            EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
+            World world = entity.worldObj;
+            ItemStack equipment = entity.getEquipmentInSlot(4);
+            // TODO: Consume over half of the tank rather than a smidgen of it. Also figure out why
+            //       the tank capacity seems to be completely incorrect from the defaults in the config.
+            int consumption = Config.dragonRoarConsumption;
+            if (entity.getHeldItem() == null && entity.isSneaking() && equipment != null &&
+              hasPower(entity, consumption)) {
+                System.out.println("things");
+                Item helmet = equipment.getItem();
+                if (helmet instanceof ItemExosuitArmor) {
+                    System.out.println("armor");
+                    ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
+                    if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.dragonRoar)) {
+                        System.out.println(world.isRemote);
+                        if (world.isRemote) {
+                            world.playSound(entity.posX, entity.posY, entity.posZ,
+                              "mob.enderdragon.growl", 5.0F, 0.8F + world.rand.nextFloat() * 0.3F,
+                              false);
+                        } else {
+                            world.createExplosion(entity, entity.posX + 0.5F, entity.posY,
+                              entity.posZ + 0.5F, 10.0F, false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleFallDamage(LivingHurtEvent event) {
         if (CrossMod.BLOOD_MAGIC) {
@@ -1746,14 +1783,46 @@ public class SteamcraftEventHandler {
           target instanceof EntityOcelot)) {
             EntityLiving living = (EntityLiving) target;
             String merchantName;
-            if (living.getEntityData().hasKey("merchantName")) {
-                merchantName = living.getEntityData().getString("merchantName");
-            } else {
-                merchantName = merchantNames[new Random().nextInt(merchantNames.length)];
+            int maximumTrades;
+            NBTTagCompound entityNBT = living.getEntityData();
+            if (!entityNBT.hasKey("maximumTrades")) {
+                Random random = new Random();
+                entityNBT.setInteger("maximumTrades", random.nextInt(7));
             }
-            FrequencyMerchant merchant = new FrequencyMerchant(living, merchantName);
-            merchant.setCustomer(player);
-            player.displayGUIMerchant(merchant, merchantName);
+            if (!entityNBT.hasKey("totalTrades")) {
+                entityNBT.setInteger("totalTrades", 0);
+            }
+            maximumTrades = entityNBT.getInteger("maximumTrades");
+            int totalTrades = entityNBT.getInteger("totalTrades");
+            if (totalTrades > maximumTrades) {
+                if (living instanceof EntityWolf) {
+                    EntityWolf wolf = (EntityWolf) living;
+                    wolf.setAngry(true);
+                } else {
+                    EntityOcelot cat = (EntityOcelot) living;
+                    living.targetTasks.addTask(3, new EntityAIHurtByTarget(cat, true));
+                }
+            } else {
+                if (entityNBT.hasKey("merchantName")) {
+                    merchantName = entityNBT.getString("merchantName");
+                } else {
+                    merchantName = merchantNames[new Random().nextInt(merchantNames.length)];
+                }
+                FrequencyMerchant merchant = new FrequencyMerchant(living, merchantName);
+                merchant.setCustomer(player);
+                player.displayGUIMerchant(merchant, merchantName);
+                entityNBT.setInteger("totalTrades", entityNBT.getInteger("totalTrades") + 1);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void handlePainfulFrequencies(AnimalTradeEvent event) {
+        System.out.println("event");
+        EntityLiving entity = event.salesperson;
+        NBTTagCompound nbt = entity.getEntityData();
+        if (nbt.getInteger("totalTrades") > nbt.getInteger("maximumTrades")) {
+            entity.setAttackTarget(event.customer);
         }
     }
 
@@ -1767,9 +1836,11 @@ public class SteamcraftEventHandler {
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
             EntityPlayer messager = world.getPlayerEntityByName(matcher.group(0));
-            if (!messager.getDisplayName().equals(player.getDisplayName()) &&
-              playerHasFrequencyShifter(messager) && playerHasFrequencyShifter(player)) {
-                event.setCanceled(true);
+            if (messager != null) {
+                if (!messager.getDisplayName().equals(player.getDisplayName()) &&
+                  playerHasFrequencyShifter(messager) && playerHasFrequencyShifter(player)) {
+                    event.setCanceled(true);
+                }
             }
         }
     }

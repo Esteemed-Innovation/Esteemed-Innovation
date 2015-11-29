@@ -105,6 +105,7 @@ public class SteamcraftItems {
     public static Item pistonPush;
     public static Item reloadingHolsters;
     public static Item frequencyShifter;
+    public static Item dragonRoar;
 
     //public static Item fakeOre;
 
@@ -381,6 +382,7 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:anchorHeels")
                   .setTextureName("steamcraft:anchorHeels");
                 GameRegistry.registerItem(anchorHeels, "anchorHeels");
+                // TODO: Knockback resistance.
             }
             if (Config.enablePistonPush) {
                 pistonPush = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "", null, 0)
@@ -402,6 +404,13 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:frequencyShifter")
                   .setTextureName("steamcraft:frequencyShifter");
                 GameRegistry.registerItem(frequencyShifter, "frequencyShifter");
+            }
+            if (Config.enableDragonRoar) {
+                dragonRoar = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:dragonRoar")
+                  .setTextureName("steamcraft:dragonRoar");
+                GameRegistry.registerItem(dragonRoar, "dragonRoar");
             }
         }
 
