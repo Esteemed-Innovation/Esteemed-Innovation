@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -25,8 +26,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.Random;
 
@@ -230,31 +233,18 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
-        TileEntityBoiler tileentityboiler = (TileEntityBoiler) par1World.getTileEntity(par2, par3, par4);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf) {
+    	TileEntityBoiler tileEntity = (TileEntityBoiler) world.getTileEntity(x, y, z);
 
-        if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
-            if (tileentityboiler != null) {
-                int num = tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000), true);
-                if (!player.capabilities.isCreativeMode && num != 0) {
-                    player.inventory.consumeInventoryItem(Items.water_bucket);
-                    player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
-                    player.inventoryContainer.detectAndSendChanges();
-                }
-            }
-            return true;
+        boolean isClient = !world.isRemote;
+        
+		if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
+    		player.openGui(Steamcraft.instance, 0, world, x, y, z);
         } else {
-            if (par1World.isRemote) {
-                return true;
-            } else {
-
-                if (tileentityboiler != null) {
-                    player.openGui(Steamcraft.instance, 0, par1World, par2, par3, par4);
-                }
-
-                return true;
-            }
+        	FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
         }
+
+        return true;
     }
 
     @Override

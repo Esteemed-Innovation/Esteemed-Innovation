@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -137,7 +138,7 @@ public class ContainerBoiler extends Container {
 
                 return null;
             } else if (par2 != 1 && par2 != 0) {
-                if (itemstack1.getItem() == Items.water_bucket || (itemstack1.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) itemstack1.getItem()).getFluid(itemstack1).getFluid() == FluidRegistry.WATER)) {
+                if (FluidHelper.itemStackIsWaterContainer(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return null;
                     }
