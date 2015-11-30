@@ -771,7 +771,7 @@ public class SteamcraftEventHandler {
                 }
             }
             for (String str : linesToRemove) {
-                if (str.contains("+") && !str.contains("+0.25")) {
+                if (str.contains("+") && (!str.contains("+0.25"))) {
                     event.toolTip.remove(str);
                     event.toolTip.add(1, str);
                 } else {
@@ -945,18 +945,16 @@ public class SteamcraftEventHandler {
             EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
             World world = entity.worldObj;
             ItemStack equipment = entity.getEquipmentInSlot(4);
-            // TODO: Consume over half of the tank rather than a smidgen of it. Also figure out why
-            //       the tank capacity seems to be completely incorrect from the defaults in the config.
-            int consumption = Config.dragonRoarConsumption;
+            ItemStack chest = entity.getEquipmentInSlot(3);
             if (entity.getHeldItem() == null && entity.isSneaking() && equipment != null &&
-              hasPower(entity, consumption)) {
-                System.out.println("things");
+              chest != null && chest.getItem() instanceof ItemExosuitArmor &&
+              chest.hasTagCompound()) {
+                int consumption = (chest.stackTagCompound.getInteger("maxFill") / 2) +
+                  Config.dragonRoarConsumption;
                 Item helmet = equipment.getItem();
-                if (helmet instanceof ItemExosuitArmor) {
-                    System.out.println("armor");
+                if (hasPower(entity, consumption) && helmet instanceof ItemExosuitArmor) {
                     ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
                     if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.dragonRoar)) {
-                        System.out.println(world.isRemote);
                         if (world.isRemote) {
                             world.playSound(entity.posX, entity.posY, entity.posZ,
                               "mob.enderdragon.growl", 5.0F, 0.8F + world.rand.nextFloat() * 0.3F,
@@ -965,6 +963,7 @@ public class SteamcraftEventHandler {
                             world.createExplosion(entity, entity.posX + 0.5F, entity.posY,
                               entity.posZ + 0.5F, 10.0F, false);
                         }
+                        drainSteam(chest, consumption);
                     }
                 }
             }

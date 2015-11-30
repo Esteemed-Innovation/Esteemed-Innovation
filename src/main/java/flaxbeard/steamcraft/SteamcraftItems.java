@@ -382,7 +382,6 @@ public class SteamcraftItems {
                   .setUnlocalizedName("steamcraft:anchorHeels")
                   .setTextureName("steamcraft:anchorHeels");
                 GameRegistry.registerItem(anchorHeels, "anchorHeels");
-                // TODO: Knockback resistance.
             }
             if (Config.enablePistonPush) {
                 pistonPush = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "", null, 0)
