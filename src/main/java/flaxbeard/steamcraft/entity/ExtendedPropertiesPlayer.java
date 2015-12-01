@@ -16,22 +16,17 @@ public class ExtendedPropertiesPlayer implements IExtendedEntityProperties {
     @Override
     public void saveNBTData(NBTTagCompound compound) {
         NBTTagCompound nbt = new NBTTagCompound();
-        if (lastMotions != null) {
-            nbt.setDouble("left", lastMotions.left);
-            nbt.setDouble("right", lastMotions.right);
-            compound.setTag("lastMotions", nbt);
-        }
-
-        if (prevStep != null) {
-            compound.setFloat("prevStep", prevStep);
-        }
+        nbt.setDouble("left", lastMotions.left);
+        nbt.setDouble("right", lastMotions.right);
+        compound.setTag("lastMotions", nbt);
+        compound.setFloat("prevStep", prevStep);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
         NBTTagCompound nbt = compound.getCompoundTag("lastMotions");
-        lastMotions.setLeft(nbt.getDouble("left"));
-        lastMotions.setRight(nbt.getDouble("right"));
+        lastMotions.left = nbt.getDouble("left");
+        lastMotions.right = nbt.getDouble("right");
         prevStep = nbt.getFloat("prevStep");
     }
 
