@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -419,19 +420,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
            waitOneTick = false;
        } else {
             if (!worldObj.isRemote && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-                if (this.getStackInSlot(1) != null) {
-                    if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
-                        if (canDrainItem(this.getStackInSlot(1))) {
-                            if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
-                                this.setInventorySlotContents(1, new ItemStack(Items.bucket));
-                                this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
-                            }
-                            if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
-                                int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;
-                                this.myTank.fill(new FluidStack(FluidRegistry.WATER, ((IFluidContainerItem) this.getStackInSlot(1).getItem()).drain(this.getStackInSlot(1), maxDrain, true).amount), true);
-                            }
-                        }
-                    }
+            	ItemStack stackInInput = this.getStackInSlot(1);
+        		if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+            		ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
+            		setInventorySlotContents(1, drainedItemStack);
                 }
 
                 boolean flag = this.furnaceBurnTime > 0;
@@ -658,7 +650,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return slot == 0 ? getItemBurnTime(stack) > 0 : (stack.getItem() == Items.water_bucket || FluidContainerRegistry.isEmptyContainer(stack) || stack.getItem() instanceof IFluidContainerItem);
+    	return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
     }
 
     @Override

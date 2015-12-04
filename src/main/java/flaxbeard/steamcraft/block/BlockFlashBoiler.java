@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.Random;
 
@@ -150,35 +152,21 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf) {
-        if (world.getBlockMetadata(x, y, z) > 0) {
+    	if (world.getBlockMetadata(x, y, z) <= 0) {
+    		return false;
+    	}
+    	
+    	TileEntityFlashBoiler tileEntity = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
 
-            TileEntityFlashBoiler tileentityboiler = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-
-            if (player.getHeldItem() != null && player.getHeldItem().getItem() == Items.water_bucket) {
-                if (tileentityboiler != null) {
-                    tileentityboiler.fill(ForgeDirection.UP, new FluidStack(FluidRegistry.WATER, 1000), true);
-                    if (!player.capabilities.isCreativeMode) {
-                        player.inventory.consumeInventoryItem(Items.water_bucket);
-                        player.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
-                    }
-                }
-                return true;
-            } else {
-                if (world.isRemote) {
-                    return true;
-                } else {
-
-                    if (tileentityboiler != null) {
-                        player.openGui(Steamcraft.instance, 0, world, x, y, z);
-                    }
-
-                    return true;
-                }
-            }
+        boolean isClient = !world.isRemote;
+        
+		if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
+    		player.openGui(Steamcraft.instance, 0, world, x, y, z);
         } else {
-            return false;
+        	FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
         }
 
+        return true;
     }
 
     @Override

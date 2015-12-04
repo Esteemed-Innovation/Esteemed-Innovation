@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
@@ -183,21 +184,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
             lastWrench = hasWrench;
         }
 
-        if (this.getStackInSlot(1) != null) {
-            if (this.getStackInSlot(1).getItem() == Items.water_bucket || (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)) != null && ((IFluidContainerItem) this.getStackInSlot(1).getItem()).getFluid(this.getStackInSlot(1)).getFluid() == FluidRegistry.WATER)) {
-                if (canDrainItem(this.getStackInSlot(1))) {
-                    if (this.getStackInSlot(1).getItem() == Items.water_bucket) {
-                        int much = this.myTank.fill(new FluidStack(FluidRegistry.WATER, 1000), true);
-                        if (much > 0) {
-                            this.setInventorySlotContents(1, new ItemStack(Items.bucket));
-                        }
-                    }
-                    if (this.getStackInSlot(1).getItem() instanceof IFluidContainerItem) {
-                        int maxDrain = this.getTankInfo(ForgeDirection.UP)[0].capacity - this.getTankInfo(ForgeDirection.UP)[0].fluid.amount;
-                        this.myTank.fill(new FluidStack(FluidRegistry.WATER, ((IFluidContainerItem) this.getStackInSlot(1).getItem()).drain(this.getStackInSlot(1), maxDrain, true).amount), true);
-                    }
-                }
-            }
+        ItemStack stackInInput = this.getStackInSlot(1);
+		if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+    		ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
+    		setInventorySlotContents(1, drainedItemStack);
         }
 
         boolean flag = this.furnaceBurnTime > 0;
@@ -390,8 +380,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     }
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-        return par1 == 0 ? getItemBurnTime(par2ItemStack) > 0 : (par2ItemStack.getItem() == Items.water_bucket || FluidContainerRegistry.isEmptyContainer(par2ItemStack) || par2ItemStack.getItem() instanceof IFluidContainerItem);
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+    	return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
     }
 
     @Override
