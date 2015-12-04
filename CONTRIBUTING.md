@@ -15,10 +15,43 @@ Bug reports should include the Minecraft Forge version, the Flaxbeard's Steam Po
 Feature suggestions are pretty loose. They should be as detailed as the feature is complicated.
 
 ##Pull requests
-Pull requests can be made to submit code snippets to the mod to either fix bugs or add features. Pull requests should always match the style guide (below), and ones that do not will be rejected.
+Pull requests can be made to submit code snippets to the mod to either fix bugs, add features, or just generally improve it. Pull requests should always match the style guide (below), and ones that do not will be rejected.
+
+## Commit messages
+We're pretty lenient about these guidelines, so it's not a huge deal if it's not followed. However, following it definitely improves the cleanliness of the project, and promotes good style! Try your best to follow this!
+* Use the present tense (fix not fixed).
+* Use the imperative mood (fix not fixes).
+* Limit the first line to 72 characters or less. If you need to provide more information, use the first line for a summary, then describe in great detail in the next lines.
+* Mention issues and pull requests liberally, unless closing or "opening" (GitHub does not support re-opening issues in commits, but if you state "Open #5" and then manually open it, it will achieve the same thing).
+* Consider prefixing your commits with emojis:
+  * :art: `:art:` when dealing with textures, either loading them or adding new ones.
+  * :saxophone: `:saxophone:` when dealing with sounds, either loading them or adding new ones.
+  * :hatching_chick: `:hatching_chick:` when finishing an unfinished feature.
+  * :seedling: `:seedling:` when starting a feature, but not finishing it.
+  * :fu: `:fu:` when fixing code format or style.
+  * :birthday: `:birthday:` when updating the mod version number.
+  * :arrow_up: `:arrow_up:` when upgrading dependency versions.
+  * :arrow_down: `:arrow_down:` when downgrading dependency versions.
+  * :white_check_mark: `:white_check_mark:` when adding tests.
+  * :broken_heart: `:broken_heart:` when deleting code or files.
+  * :apple: `:apple:` when dealing with OS X specifically.
+  * :penguin: `:penguin:` when dealing with Linux specifically.
+  * :checkered_flag: `:checkered_flag:` when dealing with Windows specifically.
+  * :racehorse: `:racehorse:` when improving performance.
+  * :non-potable_water: `:non-potable_water:` when fixing memory leaks.
+  * :book: `:book:` when updating or adding docs.
+  * :bug: `:bug:` when fixing a bug.
+  * :shirt: `:shirt:` when resolving linter warnings.
+  * :gem: `:gem:` when adding a fully fleshed out feature.
+  * :moneybag: `:moneybag:` when improving balance.
+  * :notebook: `:notebook:` when adding Esteemed Innovation journal entries.
+
+You are not required to use emojis, but it is allowed and encouraged, as it allows for quickly knowing the purpose of a commit.
 
 #Java Style Guide
-This Java Style Guide applies to Flaxbeard's Steam Power, and associated (by developer team) projects. All pull requests must meet this criteria for them to be merged with master. This Style Guide applies to Java only; Groovy, Scala, CSS, and any other languages that Flaxbeard's Steam Power may have in its associated projects are not effected. This Style Guide is a modified version of the [Google Java Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javaguide.html).
+**Please note that this style guide is still being implemented in the codebase, and code may or may not actually follow it. If you see code that does not follow it, please let a developer know, or simply submit a pull request. Thanks.**
+
+This Java Style Guide applies to Flaxbeard's Steam Power, and associated projects. All pull requests must meet this criteria for them to be merged with master. This Style Guide applies to Java only; Groovy, Scala, CSS, and any other languages that Flaxbeard's Steam Power may have in its associated projects are not effected. This Style Guide is a modified version of the [Google Java Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javaguide.html).
 
 ##Source file basics
 
