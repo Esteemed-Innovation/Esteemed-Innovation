@@ -238,7 +238,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
         boolean isClient = !world.isRemote;
         
-		if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
+	if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
     		player.openGui(Steamcraft.instance, 0, world, x, y, z);
         } else {
         	FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
