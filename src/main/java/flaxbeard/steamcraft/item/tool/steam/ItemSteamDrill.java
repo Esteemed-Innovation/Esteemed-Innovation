@@ -153,7 +153,10 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     // Start IEngineerable stuff
     @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
-        return new MutablePair[]{MutablePair.of(49, 26)};
+        return new MutablePair[]{
+          MutablePair.of(60, 12),
+          MutablePair.of(37, 40)
+        };
     }
 
     @Override
@@ -215,7 +218,16 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @Override
     public void drawSlot(GuiContainer gui, int slotnum, int i, int j) {
         gui.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
-        gui.drawTexturedModalRect(i, j, 230, 36, 18, 18);
+        switch (slotnum) {
+            case 0: {
+                gui.drawTexturedModalRect(i, j, 176, 0, 18, 18);
+                break;
+            }
+            case 1: {
+                gui.drawTexturedModalRect(i, j, 176, 0, 18, 18);
+                break;
+            }
+        }
     }
 
     @Override
@@ -230,7 +242,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 0, 64, 64);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 64, 64);
     }
 
     /**
