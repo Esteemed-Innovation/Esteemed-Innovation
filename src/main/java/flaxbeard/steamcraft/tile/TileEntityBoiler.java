@@ -185,7 +185,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         }
 
         ItemStack stackInInput = this.getStackInSlot(1);
-	if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+	    if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
     		ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
     		setInventorySlotContents(1, drainedItemStack);
         }
