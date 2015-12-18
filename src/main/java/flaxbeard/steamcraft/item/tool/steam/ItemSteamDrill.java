@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.HashMap;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable {
-    public static HashMap<Integer, MutablePair<Integer, Integer>> stuff = new HashMap<Integer, MutablePair<Integer, Integer>>();
+    public static HashMap<Integer, MutablePair<Integer, Integer>> stuff = new HashMap<>();
     public IIcon[] icon = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
@@ -279,10 +279,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public boolean isWound(EntityPlayer player) {
         checkNBT(player);
         MutablePair info = stuff.get(player.getEntityId());
-        if ((int) info.right > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((int) info.right > 0);
     }
 }

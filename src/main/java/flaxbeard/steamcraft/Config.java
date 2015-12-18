@@ -30,6 +30,7 @@ public class Config {
     public static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
     public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
     public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
+    public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -190,9 +191,16 @@ public class Config {
     public static boolean enableDragonRoar;
 
     // steam tool upgrades
+    // drill
     public static boolean enableDiamondHead;
     public static boolean enableHammerHead;
+    public static boolean enableBattleDrill;
+    public static int battleDrillConsumption;
+
+    // saw
     public static boolean enableLeafBlower;
+
+    // shovel
     public static boolean enableCultivator;
     public static boolean enableRotaryBlades;
 
@@ -402,6 +410,10 @@ public class Config {
         enableLeafBlower = config.get("Steam Tool Upgrades", "Enable Steam Axe's Leaf Blower upgrade", true).getBoolean(true);
         enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
         enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);
+        enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
+        battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
+          "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
+          BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);

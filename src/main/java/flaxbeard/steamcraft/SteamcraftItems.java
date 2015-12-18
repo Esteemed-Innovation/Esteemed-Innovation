@@ -120,9 +120,15 @@ public class SteamcraftItems {
     public static Item steamShovel;
 
     // steam tool upgrades
+    // drill
     public static Item diamondHead;
     public static Item hammerHead;
+    public static Item battleDrill;
+
+    // axe
     public static Item leafBlower;
+
+    // shovel
     public static Item cultivator;
     public static Item rotaryBlades;
 
@@ -573,6 +579,13 @@ public class SteamcraftItems {
                 hammerHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
                   "steamcraft:hammerHead", null, 1).setUnlocalizedName("steamcraft:hammerHead").setCreativeTab(Steamcraft.tabTools);
                 GameRegistry.registerItem(hammerHead, "hammerHead");
+            }
+
+            if (Config.enableBattleDrill) {
+                battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+                  "steamcraft:battleDrill", null, 1).setUnlocalizedName("steamcraft:battleDrill")
+                  .setCreativeTab(Steamcraft.tabTools);
+                GameRegistry.registerItem(battleDrill, "battleDrill");
             }
 
             if (Config.enableLeafBlower) {

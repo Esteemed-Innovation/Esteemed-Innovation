@@ -1822,6 +1822,32 @@ public class SteamcraftEventHandler {
             }
         }
     }
+
+    // TODO: Use a keybind instead of jump-sprint-attacks.
+    @SubscribeEvent
+    public void toggleDrillDash(LivingAttackEvent event) {
+        if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
+            EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
+                ItemStack equipment = player.getCurrentEquippedItem();
+                if (equipment != null) {
+                    Item item = equipment.getItem();
+                    if (item != null && item instanceof ItemSteamDrill) {
+                        ItemSteamDrill drill = (ItemSteamDrill) item;
+                        int consumption = Config.battleDrillConsumption;
+                        if (drill.hasUpgrade(equipment, SteamcraftItems.battleDrill) &&
+                          player.isSprinting() && (player.motionY > 0 || player.motionY < 0) &&
+                          drill.isWound(player) && equipment.getItemDamage() >= consumption) {
+                            event.entityLiving.attackEntityFrom(DamageSource.generic, 9.0F);
+                            equipment.setItemDamage(consumption);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack equipped = event.entityPlayer.getCurrentEquippedItem();
