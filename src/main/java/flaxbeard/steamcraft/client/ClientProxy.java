@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.client;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.Config;
@@ -19,7 +18,6 @@ import flaxbeard.steamcraft.entity.EntityRocket;
 import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.CrossMod;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.*;
@@ -35,27 +33,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import org.lwjgl.input.Keyboard;
 
+import java.util.HashMap;
 
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
-    public KeyBinding zoomKey = new KeyBinding("Zoom using monocle", Keyboard.KEY_Z, "key.categories.misc");
+    public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
 
     @Override
     public void registerHotkeys() {
-        ClientRegistry.registerKeyBinding(this.zoomKey);
-    }
+        keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z,
+          "key.flaxbeard.category"));
 
-    @Override
-    public boolean isKeyPressed() {
-        return zoomKey.getIsKeyPressed();
+        keyBindings.values().forEach(ClientRegistry::registerKeyBinding);
     }
 
     @Override
