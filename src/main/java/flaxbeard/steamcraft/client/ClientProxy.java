@@ -39,18 +39,18 @@ import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
-
+import java.util.HashMap;
 
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation villagerTexture = new ResourceLocation("steamcraft:textures/models/villager.png");
-    public static ArrayList<KeyBinding> keyBindings = new ArrayList<>();
+    public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
 
     @Override
     public void registerHotkeys() {
-        keyBindings.add(new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key.flaxbeard.cat"));
+        keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z,
+          "key.flaxbeard.category"));
 
-        keyBindings.forEach(ClientRegistry::registerKeyBinding);
+        keyBindings.values().forEach(ClientRegistry::registerKeyBinding);
     }
 
     @Override

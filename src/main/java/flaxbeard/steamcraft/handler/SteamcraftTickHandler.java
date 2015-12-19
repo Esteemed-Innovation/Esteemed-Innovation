@@ -121,7 +121,7 @@ public class SteamcraftTickHandler {
             boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle || hat.getItem() == SteamcraftItems.goggles || (hat.getItem() == SteamcraftItems.exoArmorHead && (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) || ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
-                    if (ClientProxy.keyBindings.get(0).isPressed() && !lastPressingKey) {
+                    if (ClientProxy.keyBindings.get("monocle").isPressed() && !lastPressingKey) {
                         zoomSettingOn++;
                         zoomSettingOn = zoomSettingOn % 4;
                         switch (zoomSettingOn) {
@@ -164,7 +164,7 @@ public class SteamcraftTickHandler {
                                 break;
                         }
                         lastPressingKey = true;
-                    } else if (!ClientProxy.keyBindings.get(0).isPressed()) {
+                    } else if (!ClientProxy.keyBindings.get("monocle").isPressed()) {
                         lastPressingKey = false;
                     }
                     inUse = zoomSettingOn != 0;
