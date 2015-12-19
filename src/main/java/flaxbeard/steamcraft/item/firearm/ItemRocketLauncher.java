@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -314,7 +316,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                         //                 par3EntityPlayer.motionZ = -MathHelper.cos((par3EntityPlayer.rotationYaw) * (float)Math.PI / 180.0F) * (thiskb * (4F / 50F));
                         //                 par3EntityPlayer.motionX = MathHelper.sin((par3EntityPlayer.rotationYaw) * (float)Math.PI / 180.0F) * (thiskb * (4F / 50F));
                     }
-                    if (!(SteamcraftEventHandler.isJumping(par3EntityPlayer) && !par3EntityPlayer.capabilities.isFlying && UtilEnhancements.hasEnhancement(par1ItemStack) && UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof ItemEnhancementAirStrike)) {
+                    if (!par3EntityPlayer.onGround && !par3EntityPlayer.capabilities.isFlying && UtilEnhancements.hasEnhancement(par1ItemStack) && UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof ItemEnhancementAirStrike) {
                         par1ItemStack.stackTagCompound.setInteger("fireDelay", this.timeBetweenFire + enhancementDelay);
                     }
                 }

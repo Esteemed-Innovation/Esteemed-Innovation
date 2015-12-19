@@ -1,33 +1,33 @@
 package flaxbeard.steamcraft.item;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelWings;
+import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
-
 public class ItemExosuitWings extends ItemExosuitUpgrade {
-
-    public static HashMap<Integer, Integer> tickCache = new HashMap<Integer, Integer>();
-
     public ItemExosuitWings() {
         super(ExosuitSlot.bodyFront, "", "", 0);
     }
 
     public static int getTicks(Entity entity) {
-        if (!tickCache.containsKey(entity.getEntityId())) {
-            tickCache.put(entity.getEntityId(), 0);
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        if (nbt.tickCache < 0) {
+            nbt.tickCache = 0;
         }
-        return tickCache.get(entity.getEntityId());
+        return nbt.tickCache;
     }
 
     public static void updateTicks(Entity entity, int ticks) {
-        tickCache.remove(entity.getEntityId());
-        tickCache.put(entity.getEntityId(), ticks);
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        nbt.tickCache = ticks;
     }
 
     @Override

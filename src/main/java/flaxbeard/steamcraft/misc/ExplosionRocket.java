@@ -173,7 +173,6 @@ public class ExplosionRocket extends Explosion {
                     entity.motionZ += d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.1F : 1.0F);
 
                     if (entity instanceof EntityPlayer) {
-                        SteamcraftEventHandler.isJumping.put(entity.getEntityId(), 5);
                         if (((EntityPlayer) entity).capabilities.isCreativeMode) {
                             SteamcraftServerPacketHandler.sendRocketJumpHackyPacket((EntityPlayerMP) entity, d5 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d6 * d8 * (entity == this.exploder ? 2.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F));
                         }

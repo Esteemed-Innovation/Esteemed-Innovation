@@ -3,7 +3,9 @@ package flaxbeard.steamcraft.item.tool.steam;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -18,11 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
-    public static HashMap<Integer, MutablePair<Integer, Integer>> stuff = new HashMap<Integer, MutablePair<Integer, Integer>>();
     public IIcon[] icon = new IIcon[2];
     private boolean hasBrokenBlock = false;
 
@@ -31,8 +31,10 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     }
 
     public static void checkNBT(EntityPlayer player) {
-        if (!stuff.containsKey(player.getEntityId())) {
-            stuff.put(player.getEntityId(), MutablePair.of(0, 0));
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        if (nbt.drillInfo == null) {
+            nbt.drillInfo = MutablePair.of(0, 0);
         }
     }
 
@@ -57,8 +59,10 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         checkNBT(player);
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
 
-        MutablePair info = stuff.get(player.getEntityId());
+        MutablePair info = nbt.drillInfo;
         int ticks = (Integer) info.left;
         return this.icon[ticks > 50 ? 0 : 1];
     }
@@ -72,20 +76,12 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
     @Override
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        if (!stack.stackTagCompound.hasKey("player")) {
-            stack.stackTagCompound.setInteger("player", -1);
-        }
-        int oldPlayer = stack.stackTagCompound.getInteger("player");
-        if (oldPlayer != player.getEntityId()) {
-            stack.stackTagCompound.setInteger("player", player.getEntityId());
-
-        }
         if (player instanceof EntityPlayer) {
             checkNBT((EntityPlayer) player);
-            MutablePair info = stuff.get(player.getEntityId());
+            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+
+            MutablePair info = nbt.drillInfo;
             int ticks = (Integer) info.left;
             int speed = (Integer) info.right;
 
@@ -106,22 +102,25 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
 
 
             ticks = ticks % 100;
-            stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
+            nbt.drillInfo = MutablePair.of(ticks, speed);
         }
     }
 
 
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
         checkNBT(player);
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
-            MutablePair info = stuff.get(player.getEntityId());
+            MutablePair info = nbt.drillInfo;
             int ticks = (Integer) info.left;
             int speed = (Integer) info.right;
             if (speed <= 1000) {
                 speed += Math.min(90, 1000 - speed);
                 stack.damageItem(1, player);
             }
-            stuff.put(player.getEntityId(), MutablePair.of(ticks, speed));
+            nbt.drillInfo = MutablePair.of(ticks, speed);
         }
         return stack;
 
@@ -141,5 +140,4 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable {
     public boolean canCharge(ItemStack me) {
         return true;
     }
-
 }
