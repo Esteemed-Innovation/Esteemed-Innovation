@@ -5,10 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
-import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.MutablePair;
-
-import java.util.ArrayList;
 
 public class ExtendedPropertiesPlayer implements IExtendedEntityProperties {
     public World world;

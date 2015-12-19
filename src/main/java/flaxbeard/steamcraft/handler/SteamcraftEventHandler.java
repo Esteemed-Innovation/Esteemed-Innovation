@@ -21,6 +21,7 @@ import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
+import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import flaxbeard.steamcraft.integration.BloodMagicIntegration;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
@@ -71,7 +72,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
-import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -110,7 +110,6 @@ public class SteamcraftEventHandler {
     boolean lastWearing = false;
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
-    private HashMap<Integer, Boolean> lastHadCustomer = new HashMap<Integer, Boolean>();
     private static boolean isShiftDown;
 
     public static void drainSteam(ItemStack stack, int amount) {
@@ -176,11 +175,14 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void initializePlayerProperties(EntityEvent.EntityConstructing event) {
+    public void initializeEntityProperties(EntityEvent.EntityConstructing event) {
         Entity entity = event.entity;
         if (entity instanceof EntityPlayer) {
             entity.registerExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID,
               new ExtendedPropertiesPlayer());
+        } else if (entity instanceof EntityVillager) {
+            entity.registerExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID,
+              new ExtendedPropertiesVillager());
         }
     }
 
@@ -488,17 +490,18 @@ public class SteamcraftEventHandler {
         }
         if (event.entityLiving instanceof EntityVillager && !event.entityLiving.worldObj.isRemote) {
             EntityVillager villager = (EntityVillager) event.entityLiving;
-            if (!lastHadCustomer.containsKey(villager.getEntityId())) {
-                lastHadCustomer.put(villager.getEntityId(), false);
+            ExtendedPropertiesVillager nbt = (ExtendedPropertiesVillager)
+              villager.getExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID);
+            if (nbt.lastHadCustomer == null) {
+                nbt.lastHadCustomer = false;
             }
-            boolean hadCustomer = lastHadCustomer.get(villager.getEntityId());
             boolean hasCustomer = false;
             if (villager.getCustomer() != null && villager.getCustomer().inventory.armorInventory[3] != null && (villager.getCustomer().inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
                     || (villager.getCustomer().inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor) villager.getCustomer().inventory.armorInventory[3].getItem()).hasUpgrade(villager.getCustomer().inventory.armorInventory[3], SteamcraftItems.tophat)))) {
                 EntityPlayer customer = villager.getCustomer();
                 hasCustomer = true;
 
-                if (!hadCustomer) {
+                if (!nbt.lastHadCustomer) {
                     MerchantRecipeList recipeList = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 5);
                     for (Object obj : recipeList) {
                         MerchantRecipe recipe = (MerchantRecipe) obj;
@@ -516,7 +519,7 @@ public class SteamcraftEventHandler {
                 }
             }
 
-            if (!hasCustomer && hadCustomer) {
+            if (!hasCustomer && nbt.lastHadCustomer) {
                 MerchantRecipeList recipeList = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 5);
                 if (recipeList != null) {
                     for (Object obj : recipeList) {
@@ -533,8 +536,7 @@ public class SteamcraftEventHandler {
                 ReflectionHelper.setPrivateValue(EntityVillager.class, villager, recipeList, 5);
             }
 
-            lastHadCustomer.remove(villager.getEntityId());
-            lastHadCustomer.put(villager.getEntityId(), hasCustomer);
+            nbt.lastHadCustomer = hasCustomer;
         }
     }
 

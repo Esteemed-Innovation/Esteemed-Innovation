@@ -77,6 +77,7 @@ public class Steamcraft {
     public static Potion semiInvisible;
 
     public static String PLAYER_PROPERTY_ID = "FSPPlayerProperties";
+    public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
 
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
