@@ -4,14 +4,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.misc.ExplosionRocket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MovingObjectPosition;
@@ -22,9 +19,6 @@ import net.minecraftforge.common.DimensionManager;
 import java.io.IOException;
 
 public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler {
-
-    private static SPLog log = Steamcraft.log;
-
     public static void sendSpacePacket(Entity player) {
         ByteBuf buf = Unpooled.buffer();
         ByteBufOutputStream out = new ByteBufOutputStream(buf);
@@ -32,8 +26,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeByte(0);
             out.writeInt(player.worldObj.provider.dimensionId);
             out.writeInt(player.getEntityId());
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -54,8 +47,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeInt(pos.blockX);
             out.writeInt(pos.blockY);
             out.writeInt(pos.blockZ);
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -76,8 +68,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeInt(y);
             out.writeInt(z);
             out.writeInt(pos.subHit);
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -94,8 +85,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeByte(2);
             out.writeInt(player.worldObj.provider.dimensionId);
             out.writeInt(player.getEntityId());
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -116,8 +106,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeInt(z);
             out.writeUTF(s);
             out.writeInt(player.getEntityId());
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -140,8 +129,7 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             out.writeDouble(player.posX);
             out.writeDouble(player.posY);
             out.writeDouble(player.posZ);
-        } catch (IOException e) {
-        }
+        } catch (IOException ignored) {}
         FMLProxyPacket packet = new FMLProxyPacket(buf, "steamcraft");
         Steamcraft.channel.sendToServer(packet);
         try {
@@ -153,51 +141,46 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
 
     @SubscribeEvent
     public void onClientPacket(ClientCustomPacketEvent event) {
-
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
         ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
         byte packetType;
         int dimension;
-        byte packetID;
         try {
             packetType = bbis.readByte();
             dimension = bbis.readInt();
             World world = DimensionManager.getWorld(dimension);
-            if (packetType == 2) {
-                this.handleRocketJumpHackyPacket(bbis, world);
-            }
-            if (packetType == 3) {
-                this.handleExplodePacket(bbis, world);
+            switch (packetType) {
+                case 2: {
+                    this.handleRocketJumpHackyPacket(bbis, world);
+                }
+                case 3: {
+                    this.handleExplodePacket(bbis, world);
+                }
             }
 //        	for (int i = 0; i < 3; i++){
 //        		player.worldObj.spawnParticle("smoke", x, y, z, -0.005D+(Math.random()*0.01D), 0.025D, -0.005D+(Math.random()*0.01D));
 //        	}
-
-
             bbis.close();
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
     private void handleRocketJumpHackyPacket(ByteBufInputStream dat, World world) {
         try {
             int id = dat.readInt();
-            EntityPlayer player = (EntityPlayer) world.getEntityByID(id);
-            if (player != null) {
-                double motionX = dat.readDouble();
-                double motionY = dat.readDouble();
-                double motionZ = dat.readDouble();
-
-                Minecraft.getMinecraft().thePlayer.motionX += motionX;
-                Minecraft.getMinecraft().thePlayer.motionY += motionY;
-                Minecraft.getMinecraft().thePlayer.motionZ += motionZ;
-
+            Entity entity = world.getEntityByID(id);
+            if (entity == null || !(entity instanceof EntityPlayer)) {
+                return;
             }
+            EntityPlayer player = (EntityPlayer) entity;
+            double motionX = dat.readDouble();
+            double motionY = dat.readDouble();
+            double motionZ = dat.readDouble();
+            player.motionX += motionX;
+            player.motionY += motionY;
+            player.motionZ += motionZ;
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -206,7 +189,6 @@ public class SteamcraftClientPacketHandler extends SteamcraftServerPacketHandler
             newExplosion(world, null, dat.readDouble(), dat.readDouble(), dat.readDouble(), dat.readFloat(), true, world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
     }
 
