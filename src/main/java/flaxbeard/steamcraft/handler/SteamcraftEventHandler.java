@@ -938,7 +938,6 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void hearMeRoar(LivingAttackEvent event) {
-        System.out.println("event");
         // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
         if (event.source.getSourceOfDamage() instanceof EntityLivingBase &&
           !event.source.isExplosion()) {
@@ -1695,25 +1694,27 @@ public class SteamcraftEventHandler {
         }
     }
 
+    List<DamageSource> invalidSources = Arrays.asList(
+      DamageSource.drown,
+      DamageSource.outOfWorld,
+      DamageSource.starve,
+      DamageSource.wither
+    );
+
     @SubscribeEvent
     public void burstZincPlate(LivingHurtEvent event) {
         EntityLivingBase entity = event.entityLiving;
         int consumption = Config.zincPlateConsumption;
         float amount = event.ammount;
-        List<DamageSource> invalidSources = Arrays.asList(
-          DamageSource.drown,
-          DamageSource.outOfWorld,
-          DamageSource.starve,
-          DamageSource.wither
-        );
 
         if (!invalidSources.contains(event.source)) {
             if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
                 EntityPlayer player = (EntityPlayer) entity;
                 float health = player.getHealth();
-                if (amount >= 10.0F || health <= 10.0F) {
+                float maxHealth = player.getMaxHealth();
+                float halfOfMax = maxHealth / 2;
+                if (amount >= halfOfMax || health <= halfOfMax) {
                     ItemStack stackWithPlate = null;
-                    int slotWithPlate = 0;
                     boolean hasZincPlate = false;
                     for (int i = 1; i < 5; i++) {
                         ItemStack equipment = player.getEquipmentInSlot(i);
@@ -1724,7 +1725,6 @@ public class SteamcraftEventHandler {
                                 if (armor.hasPlates(equipment) &&
                                   UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier().equals("Zinc")) {
                                     stackWithPlate = equipment;
-                                    slotWithPlate = i;
                                     hasZincPlate = true;
                                     break;
                                 }
@@ -1734,7 +1734,6 @@ public class SteamcraftEventHandler {
                     if (hasZincPlate) {
                         ItemStack zincPlates = new ItemStack(SteamcraftItems.steamcraftPlate, 2, 1);
                         World world = player.worldObj;
-                        player.setHealth(health + 5.0F);
                         drainSteam(player.getEquipmentInSlot(3), consumption);
                         UtilPlates.removePlate(stackWithPlate);
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
@@ -1817,7 +1816,6 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void handlePainfulFrequencies(AnimalTradeEvent event) {
-        System.out.println("event");
         EntityLiving entity = event.salesperson;
         NBTTagCompound nbt = entity.getEntityData();
         if (nbt.getInteger("totalTrades") > nbt.getInteger("maximumTrades")) {
@@ -1831,8 +1829,7 @@ public class SteamcraftEventHandler {
         EntityPlayer player = mc.thePlayer;
         World world = mc.theWorld;
         String message = event.message.getUnformattedText();
-        Pattern pattern = Pattern.compile("<(.+?)>");
-        Matcher matcher = pattern.matcher(message);
+        Matcher matcher = Pattern.compile("<(.+?)>").matcher(message);
         if (matcher.find()) {
             EntityPlayer messager = world.getPlayerEntityByName(matcher.group(0));
             if (messager != null) {

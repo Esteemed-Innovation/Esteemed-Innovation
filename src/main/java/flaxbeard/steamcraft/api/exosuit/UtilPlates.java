@@ -4,7 +4,6 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;

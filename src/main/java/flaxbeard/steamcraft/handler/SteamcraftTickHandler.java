@@ -271,8 +271,9 @@ public class SteamcraftTickHandler {
                 if (boots instanceof ItemExosuitArmor) {
                     ItemExosuitArmor bootArmor = (ItemExosuitArmor) boots;
                     if (bootArmor.hasUpgrade(equipment, SteamcraftItems.anchorHeels)) {
-                        if (player.motionY < -0.3 && player.motionY != -0.6) {
-                            player.motionY = -0.6;
+                        double newY = player.isInWater() ? -0.6 : -1.1;
+                        if (player.motionY < -0.3 && player.motionY != newY) {
+                            player.motionY = newY;
                         }
                     }
                 }
