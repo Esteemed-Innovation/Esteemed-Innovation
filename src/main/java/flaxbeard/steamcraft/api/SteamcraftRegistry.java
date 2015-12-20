@@ -18,20 +18,20 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class SteamcraftRegistry {
-    public static ArrayList<ICrucibleMold> molds = new ArrayList<ICrucibleMold>();
-    public static ArrayList<CrucibleLiquid> liquids = new ArrayList<CrucibleLiquid>();
-    public static HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> smeltThings = new HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>>();
-    public static HashMap<Tuple3, MutablePair<Integer, ItemStack>> dunkThings = new HashMap<Tuple3, MutablePair<Integer, ItemStack>>();
-    public static HashMap<MutablePair<Item, IEnhancement>, IIcon> enhancementIcons = new HashMap<MutablePair<Item, IEnhancement>, IIcon>();
-    public static HashMap<String, IEnhancement> enhancements = new HashMap<String, IEnhancement>();
-    public static ArrayList<IRocket> rockets = new ArrayList<IRocket>();
-    public static ArrayList<String> categories = new ArrayList<String>();
-    public static ArrayList<MutablePair<String, String>> research = new ArrayList<MutablePair<String, String>>();
-    public static HashMap<String, BookPage[]> researchPages = new HashMap<String, BookPage[]>();
-    public static HashMap<ItemStack, MutablePair<String, Integer>> bookRecipes = new HashMap<ItemStack, MutablePair<String, Integer>>();
-    public static HashMap<String, ExosuitPlate> plates = new HashMap<String, ExosuitPlate>();
-    public static HashMap<MutablePair<Integer, ExosuitPlate>, IIcon> plateIcons = new HashMap<MutablePair<Integer, ExosuitPlate>, IIcon>();
-    public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamedFoods = new HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>>();
+    public static ArrayList<ICrucibleMold> molds = new ArrayList<>();
+    public static ArrayList<CrucibleLiquid> liquids = new ArrayList<>();
+    public static HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> smeltThings = new HashMap<>();
+    public static HashMap<Tuple3, MutablePair<Integer, ItemStack>> dunkThings = new HashMap<>();
+    public static HashMap<MutablePair<Item, IEnhancement>, IIcon> enhancementIcons = new HashMap<>();
+    public static HashMap<String, IEnhancement> enhancements = new HashMap<>();
+    public static ArrayList<IRocket> rockets = new ArrayList<>();
+    public static ArrayList<String> categories = new ArrayList<>();
+    public static ArrayList<MutablePair<String, String>> research = new ArrayList<>();
+    public static HashMap<String, BookPage[]> researchPages = new HashMap<>();
+    public static HashMap<ItemStack, MutablePair<String, Integer>> bookRecipes = new HashMap<>();
+    public static HashMap<String, ExosuitPlate> plates = new HashMap<>();
+    public static HashMap<MutablePair<Integer, ExosuitPlate>, IIcon> plateIcons = new HashMap<>();
+    public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamedFoods = new HashMap<>();
     private static int nextEnhancementID = 0;
 
     /**
@@ -91,11 +91,9 @@ public class SteamcraftRegistry {
                 }
                 pageNum++;
             }
-            ArrayList<BookPage> pages2 = new ArrayList<BookPage>(Arrays.asList(targetPages));
-            for (BookPage page : pages) {
-                pages2.add(page);
-            }
-            researchPages.put(category.substring(1), (BookPage[]) pages2.toArray(new BookPage[0]));
+            ArrayList<BookPage> pages2 = new ArrayList<>(Arrays.asList(targetPages));
+            pages2.addAll(Arrays.asList(pages));
+            researchPages.put(category.substring(1), pages2.toArray(new BookPage[pages2.size()]));
         }
     }
 

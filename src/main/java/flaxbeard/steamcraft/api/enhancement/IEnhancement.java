@@ -4,15 +4,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public interface IEnhancement {
-    public boolean canApplyTo(ItemStack stack);
+    boolean canApplyTo(ItemStack stack);
 
-    public int cost(ItemStack stack);
+    int cost(ItemStack stack);
 
-    public String getID();
+    String getID();
 
-    public String getIcon(Item item);
+    String getIcon(Item item);
 
-    public String getName(Item item);
+    String getName(Item item);
 
-    public String getEnhancementName(Item item);
+    String getEnhancementName(Item item);
 }

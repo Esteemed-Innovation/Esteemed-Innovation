@@ -18,10 +18,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter {
-
     public String name = "SteamTransporterTileEntity";
     public float pressureResistance = 0.8F;
     public float lastPressure = -1F;
@@ -33,13 +33,12 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     protected ForgeDirection[] distributionDirections;
     protected boolean shouldJoin = false;
     private int steam = 0;
-    private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<ForgeDirection>();
+    private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<>();
     private boolean isInitialized = false;
 
     public SteamTransporterTileEntity() {
         this(ForgeDirection.VALID_DIRECTIONS);
     }
-
 
     public SteamTransporterTileEntity(ForgeDirection[] distributionDirections) {
         this.capacity = 10000;
@@ -65,7 +64,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public NBTTagCompound getDescriptionTag() {
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null) {
-            //////Steamcraft.log.debug("Setting pressure!");
+//            Steamcraft.log.debug("Setting pressure!");
             access.setString("networkName", networkName);
             access.setFloat("pressure", this.getPressure());
         }
@@ -79,7 +78,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         if (access.hasKey("networkName")) {
             this.networkName = access.getString("networkName");
             this.pressure = access.getFloat("pressure");
-            //////Steamcraft.log.debug("Set pressure to "+this.pressure);
+//            Steamcraft.log.debug("Set pressure to "+this.pressure);
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -87,12 +86,13 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-
         if (compound.hasKey("steam")) {
             this.steam = compound.getInteger("steam");
-            //log.debug("Read steam from NBT: "+this.steam);
+            /*
+            log.debug("Read steam from NBT: "+this.steam);
         } else {
-            //log.debug("Didn't read steam from NBT.");
+            log.debug("Didn't read steam from NBT.");
+            */
         }
     }
 
@@ -108,7 +108,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     public float getPressure() {
-        return (this.network != null) ? (float) this.network.getPressure() : this.pressure;
+        return (this.network != null) ? this.network.getPressure() : this.pressure;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
             }
             if (this.hasGauge() && this.network != null) {
                 if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F) {
-                    //////Steamcraft.log.debug("Updating PRESHAAA");
+                    //Steamcraft.log.debug("Updating PRESHAAA");
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     this.lastPressure = this.getPressure();
                     this.network.markDirty();
@@ -145,8 +145,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public void decrSteam(int i) {
         if (this.network != null && this.network.getSteam() != 0) {
             this.network.decrSteam(i);
-        } else {
-            return;
         }
     }
 
@@ -166,12 +164,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         return false;
     }
 
-
     @Override
     public boolean canInsert(ForgeDirection face) {
         return isValidSteamSide(face);
     }
-
 
     public void addSideToGaugeBlacklist(ForgeDirection face) {
         gaugeSideBlacklist.add(face);
@@ -209,19 +205,15 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 
     @Override
     public HashSet<ForgeDirection> getConnectionSides() {
-        HashSet<ForgeDirection> out = new HashSet();
-        for (ForgeDirection d : distributionDirections) {
-            out.add(d);
-        }
+        HashSet<ForgeDirection> out = new HashSet<>();
+        out.addAll(Arrays.asList(distributionDirections));
         return out;
     }
-
 
     @Override
     public Coord4 getCoords() {
         return new Coord4(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
     }
-
 
     @Override
     public String getNetworkName() {
@@ -243,8 +235,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     @Override
     public int getSteamShare() {
         if (this.network != null) {
-            int mySteam = (int) (Math.floor((double) this.getCapacity() * (double) this.network.getPressure()));
-            return mySteam;
+            return (int) (Math.floor((double) this.getCapacity() * (double) this.network.getPressure()));
         }
         return 0;
     }
@@ -265,23 +256,25 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         return false;
     }
 
-
     public void refresh() {
+        /*
         if (!worldObj.isRemote) {
-            //FMLRelaunchLog.info("Refreshing", null);
+            FMLRelaunchLog.info("Refreshing", null);
         }
+        */
         if (this.network == null && !worldObj.isRemote) {
             if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())) {
-                //////Steamcraft.log.debug("Null network");
-//				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
-//					////Steamcraft.log.debug("I have a network!");
-//					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
-//					this.network.rejoin(this);
-//				} else {
-                ////Steamcraft.log.debug("Requesting new network or joining existing.en");
-                SteamNetwork.newOrJoin(this);
-
-//				}
+                /*
+                Steamcraft.log.debug("Null network");
+				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+					Steamcraft.log.debug("I have a network!");
+					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
+					this.network.rejoin(this);
+				} else {
+                    Steamcraft.log.debug("Requesting new network or joining existing.en");
+                    SteamNetwork.newOrJoin(this);
+				}
+				*/
                 this.isInitialized = true;
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }

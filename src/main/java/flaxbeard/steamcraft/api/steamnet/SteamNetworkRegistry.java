@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.api.steamnet;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,12 +19,11 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class SteamNetworkRegistry {
-
     private static boolean loaderRegistered = false;
 
     private static SteamNetworkRegistry INSTANCE = new SteamNetworkRegistry();
-    private HashSet<Integer> initialized = new HashSet<Integer>();
-    private HashMap<Integer, HashMap<String, SteamNetwork>> networks = new HashMap<Integer, HashMap<String, SteamNetwork>>();
+    private HashSet<Integer> initialized = new HashSet<>();
+    private HashMap<Integer, HashMap<String, SteamNetwork>> networks = new HashMap<>();
 
 
     public static SteamNetworkRegistry getInstance() {
@@ -44,17 +44,14 @@ public class SteamNetworkRegistry {
         if (world != null) {
             SteamNetworkData.get(world).markDirty();
         }
-
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt, int dimID) {
-
         return nbt;
     }
 
     public void readFromNBT(NBTTagCompound nbt, int dimID) {
         initialized.add(dimID);
-
     }
 
     public boolean isInitialized(int dim) {
@@ -64,7 +61,7 @@ public class SteamNetworkRegistry {
     @SubscribeEvent
     public void onTick(TickEvent.ServerTickEvent e) {
         //////Steamcraft.log.debug("Tick");
-        if (networks.values() != null && networks.values().size() > 0) {
+        if (networks.values().size() > 0) {
             try {
                 for (HashMap<String, SteamNetwork> dimension : networks.values()) {
                     for (SteamNetwork net : dimension.values()) {
@@ -73,13 +70,11 @@ public class SteamNetworkRegistry {
                         }
                     }
                 }
-            } catch (ConcurrentModificationException ex) {
+            } catch (ConcurrentModificationException ignore) {
                 ////Steamcraft.log.debug("FSP: ConcurrentModificationException in network tick");
                 //ex.printStackTrace();
             }
-
         }
-
     }
 
     public SteamNetwork getNewNetwork() {
@@ -93,7 +88,7 @@ public class SteamNetworkRegistry {
 
     public void add(SteamNetwork network) {
         if (!networks.containsKey(network.getDimension())) {
-            networks.put(network.getDimension(), new HashMap<String, SteamNetwork>());
+            networks.put(network.getDimension(), new HashMap<>());
         }
         HashMap<String, SteamNetwork> dimension = networks.get(network.getDimension());
         dimension.put(network.getName(), network);
@@ -133,18 +128,14 @@ public class SteamNetworkRegistry {
 
     public void printNetworks(int dim) {
         for (SteamNetwork net : networks.get(dim).values()) {
-            ////Steamcraft.log.debug(net.getName());
+            Steamcraft.log.debug(net.getName());
         }
     }
 
     public void newDimension(int dimensionId) {
         initialized.add(dimensionId);
-
     }
 
-    /**
-     * @author zenith (adapted from aidancbrady)
-     */
     public static class NetworkLoader {
         @SubscribeEvent
         public void onChunkLoad(ChunkEvent.Load event) {
@@ -189,5 +180,4 @@ public class SteamNetworkRegistry {
 //			}
         }
     }
-
 }

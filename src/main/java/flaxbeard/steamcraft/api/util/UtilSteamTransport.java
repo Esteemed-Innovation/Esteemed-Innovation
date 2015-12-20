@@ -12,7 +12,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class UtilSteamTransport {
-
     private static String[] boom = new String[]{
             "It can't withstand that kind of pressure!",
             "She's holding all she can, cap'n!",
@@ -37,8 +36,7 @@ public class UtilSteamTransport {
         }
     }
 
-    public static void generalDistributionEvent(World worldObj, int xCoord,
-                                                int yCoord, int zCoord, ForgeDirection[] values) {
+    public static void generalDistributionEvent(World worldObj, int xCoord, int yCoord, int zCoord, ForgeDirection[] values) {
         if (!worldObj.isRemote) {
             ISteamTransporter trans = (ISteamTransporter) worldObj.getTileEntity(xCoord, yCoord, zCoord);
             for (ForgeDirection direction : values) {
@@ -47,7 +45,6 @@ public class UtilSteamTransport {
                     if (tile instanceof ISteamTransporter) {
                         ISteamTransporter target = (ISteamTransporter) tile;
                         if (trans.getPressure() > target.getPressure() && target.canInsert(direction.getOpposite())) {
-                            float targetpercent = ((float) trans.getSteamShare() + target.getSteamShare()) / ((float) trans.getCapacity() + target.getCapacity());
                             int change = (int) (Math.floor(trans.getSteamShare() * target.getCapacity() - target.getSteamShare() * trans.getCapacity()) / (trans.getCapacity() + target.getCapacity()));
                             if (change > 0 && change <= trans.getSteamShare()) {
                                 trans.decrSteam(change);
@@ -70,7 +67,6 @@ public class UtilSteamTransport {
                         }
                         float pressure = (float) steam / (float) cap;
                         if (target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam")) && trans.getPressure() > pressure) {
-                            float targetpercent = ((float) trans.getSteamShare() + steam) / ((float) trans.getCapacity() + cap);
                             int change = (int) (Math.floor(trans.getSteamShare() * cap - steam * trans.getCapacity()) / (trans.getCapacity() + cap));
                             if (change > 0 && change <= trans.getSteamShare()) {
                                 trans.decrSteam(change - target.fill(direction.getOpposite(), new FluidStack(FluidRegistry.getFluid("steam"), change * 10), true) / 10);
@@ -83,8 +79,7 @@ public class UtilSteamTransport {
 
     }
 
-    public static void preExplosion(World worldObj, int xCoord,
-                                    int yCoord, int zCoord, ForgeDirection[] values) {
+    public static void preExplosion(World worldObj, int xCoord, int yCoord, int zCoord, ForgeDirection[] values) {
         ISteamTransporter trans = (ISteamTransporter) worldObj.getTileEntity(xCoord, yCoord, zCoord);
         for (ForgeDirection direction : values) {
             if (worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {

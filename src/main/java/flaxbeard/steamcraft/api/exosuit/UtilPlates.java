@@ -9,7 +9,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilPlates {
-
     public static ExosuitPlate getPlate(ItemStack item) {
         for (ExosuitPlate plate : SteamcraftRegistry.plates.values()) {
             if (plate.getItem() instanceof ItemStack) {

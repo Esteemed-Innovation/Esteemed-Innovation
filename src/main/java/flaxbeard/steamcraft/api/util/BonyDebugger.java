@@ -9,8 +9,6 @@ package flaxbeard.steamcraft.api.util;
 public class BonyDebugger {
 	/**
 	 * Debugs stuff.
-	 * 
-	 * @author xbony2
 	 */
 	public static void debug() {
 		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");

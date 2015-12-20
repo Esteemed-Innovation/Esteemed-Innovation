@@ -27,22 +27,20 @@ public class BookPageText extends BookPage {
     @Override
     public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         super.renderPage(x, y, fontRenderer, book, renderer, isFirstPage, mx, my);
-        if (!BookPageItem.lastViewing.equals(book.viewing)) {
+        if (!BookPageItem.lastViewing.equals(GuiSteamcraftBook.viewing)) {
             BookPageItem.abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
-            BookPageItem.lastViewing = book.viewing;
+            BookPageItem.lastViewing = GuiSteamcraftBook.viewing;
         }
         int yOffset = y + 30;
         if (isFirstPage || shouldDisplayTitle) {
             yOffset = y + 40;
         }
-        String s = I18n.format(text);
-        String stringLeft = s;
-        while (stringLeft.indexOf("<br>") != -1) {
+        String stringLeft = I18n.format(text);
+        while (stringLeft.contains("<br>")) {
             String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
             if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
                 output = BookPageItem.doLizbeth(output);
             }
-            int l = fontRenderer.splitStringWidth(output, 110);
             fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
             yOffset += this.getSplitStringHeight(fontRenderer, output, x + 40, yOffset, 110);
             yOffset += 10;
@@ -53,7 +51,6 @@ public class BookPageText extends BookPage {
         if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
             output = BookPageItem.doLizbeth(output);
         }
-        int l = fontRenderer.splitStringWidth(output, 110);
         fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
     }
 

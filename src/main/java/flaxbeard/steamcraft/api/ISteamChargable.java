@@ -6,7 +6,7 @@ public interface ISteamChargable {
     /**
      * How much steam is used per use
      */
-    public int steamPerDurability();
+    int steamPerDurability();
 
     /**
      * Called to ensure the item can be charged with steam devices
@@ -15,5 +15,5 @@ public interface ISteamChargable {
      *
      * @return true if the item can charge
      */
-    public boolean canCharge(ItemStack me);
+    boolean canCharge(ItemStack me);
 }

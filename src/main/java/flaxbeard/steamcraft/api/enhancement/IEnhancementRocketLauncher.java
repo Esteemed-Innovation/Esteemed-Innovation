@@ -5,19 +5,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public interface IEnhancementRocketLauncher extends IEnhancement {
-    public float getAccuracyChange(Item weapon);
+    float getAccuracyChange(Item weapon);
 
-    public float getExplosionChange(Item weapon);
+    float getExplosionChange(Item weapon);
 
-    public int getReloadChange(Item weapon);
+    int getReloadChange(Item weapon);
 
-    public int getFireDelayChange(ItemStack weapon);
+    int getFireDelayChange(ItemStack weapon);
 
-    public int getClipSizeChange(Item weapon);
+    int getClipSizeChange(Item weapon);
 
     /**
     * Called to make the upgrade use shots
     * This can be used to change features of the base EntityMusketBall bullet
     */
-    public EntityRocket changeBullet(EntityRocket bullet);
+    EntityRocket changeBullet(EntityRocket bullet);
 }

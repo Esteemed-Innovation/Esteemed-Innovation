@@ -48,15 +48,11 @@ public class Coord4 {
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Coord4 &&
-                this.x == ((Coord4) other).x &&
-                this.y == ((Coord4) other).y &&
-                this.z == ((Coord4) other).z &&
-                this.dimension == ((Coord4) other).dimension
-                ) {
-            return true;
-        }
-        return false;
+        return other instanceof Coord4 &&
+          this.x == ((Coord4) other).x &&
+          this.y == ((Coord4) other).y &&
+          this.z == ((Coord4) other).z &&
+          this.dimension == ((Coord4) other).dimension;
     }
 
     @Override

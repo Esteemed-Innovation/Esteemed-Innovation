@@ -12,12 +12,12 @@ public interface ISteamTransporter {
     /**
      * The pressure of the device
      */
-    public float getPressure();
+    float getPressure();
 
     /**
      * How resistant the device is to pressure meltdowns
      */
-    public float getPressureResistance();
+    float getPressureResistance();
 
     /**
      * Called to ensure that the device can have steam put into it
@@ -26,26 +26,26 @@ public interface ISteamTransporter {
      *
      * @return true if steam can be inserted
      */
-    public boolean canInsert(ForgeDirection face);
+    boolean canInsert(ForgeDirection face);
 
     /**
      * How much steam the device can store
      */
-    public int getCapacity();
+    int getCapacity();
 
-    public int getSteamShare();
+    int getSteamShare();
 
-    public void explode();
+    void explode();
 
     /**
      * @param amount - How much steam can be inserted per
      * @param face   - The side of the device
      */
-    public void insertSteam(int amount, ForgeDirection face);
+    void insertSteam(int amount, ForgeDirection face);
 
-    public void decrSteam(int i);
+    void decrSteam(int i);
 
-    public boolean doesConnect(ForgeDirection face);
+    boolean doesConnect(ForgeDirection face);
 
     /**
      * Called to ensure that the device can have a steam gauge put on it to check how much steam it has
@@ -54,32 +54,31 @@ public interface ISteamTransporter {
      *
      * @return true if steam gauges can be put on it
      */
-    public abstract boolean acceptsGauge(ForgeDirection face);
+    boolean acceptsGauge(ForgeDirection face);
 
-    public HashSet<ForgeDirection> getConnectionSides();
+    HashSet<ForgeDirection> getConnectionSides();
 
-    public World getWorld();
+    World getWorld();
 
-    public String getNetworkName();
+    String getNetworkName();
 
-    public void setNetworkName(String name);
+    void setNetworkName(String name);
 
-    public SteamNetwork getNetwork();
+    SteamNetwork getNetwork();
 
-    public void setNetwork(SteamNetwork steamNetwork);
+    void setNetwork(SteamNetwork steamNetwork);
 
-    public void refresh();
+    void refresh();
 
-    public Coord4 getCoords();
+    Coord4 getCoords();
 
-    public int getDimension();
+    int getDimension();
 
-    public int getSteam();
+    int getSteam();
 
-    public void updateSteam(int steam);
+    void updateSteam(int steam);
 
-    public String getName();
+    String getName();
 
-    public void wasAdded();
-
+    void wasAdded();
 }

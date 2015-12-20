@@ -63,13 +63,7 @@ public class UtilEnhancements {
     }
 
     public static boolean canEnhance(ItemStack item) {
-        if (!item.hasTagCompound()) {
-            return true;
-        }
-        if (!item.stackTagCompound.hasKey("enhancements")) {
-            return true;
-        }
-        return false;
+        return !item.hasTagCompound() || !item.stackTagCompound.hasKey("enhancements");
     }
 
     public static ItemStack getEnhancedItem(ItemStack item, ItemStack enhancement) {

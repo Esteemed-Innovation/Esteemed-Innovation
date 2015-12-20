@@ -10,8 +10,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BookPageDip extends BookPage implements ICraftingPage {
+import java.util.ArrayList;
 
+public class BookPageDip extends BookPage implements ICraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private CrucibleLiquid input;
     private int amount;
@@ -22,7 +23,8 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     public BookPageDip(String string, CrucibleLiquid ifluid, int am, ItemStack ip, ItemStack res) {
         super(string);
         input = ifluid;
-        item1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(this.input.nugget)[0])).toArray(new ItemStack[0]);
+        ArrayList<ItemStack> ores = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(this.input.nugget)[0]));
+        item1 = ores.toArray(new ItemStack[ores.size()]);
         inputItem = ip;
         resultItem = res;
         amount = am;

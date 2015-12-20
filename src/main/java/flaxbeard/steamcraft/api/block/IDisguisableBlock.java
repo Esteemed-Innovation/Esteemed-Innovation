@@ -3,11 +3,11 @@ package flaxbeard.steamcraft.api.block;
 import net.minecraft.block.Block;
 
 public interface IDisguisableBlock {
-    public Block getDisguiseBlock();
+    Block getDisguiseBlock();
 
-    public void setDisguiseBlock(Block block);
+    void setDisguiseBlock(Block block);
 
-    public int getDisguiseMeta();
+    int getDisguiseMeta();
 
-    public void setDisguiseMeta(int meta);
+    void setDisguiseMeta(int meta);
 }

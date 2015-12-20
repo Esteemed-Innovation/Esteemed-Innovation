@@ -20,13 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class BookPageCrafting extends BookPage implements ICraftingPage {
-
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private ItemStack output;
     private Object[] inputs = new Object[9];
     private boolean shapeless = false;
     private IRecipe[] recipe;
-
 
     public BookPageCrafting(String string, boolean shape, ItemStack op, Object... ip) {
         super(string);
@@ -34,7 +32,6 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         inputs = ip;
         shapeless = shape;
     }
-
 
     public BookPageCrafting(String string, ItemStack op, Object... ip) {
         super(string);
@@ -88,7 +85,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                 }
             } else if (recipe instanceof ShapelessRecipes) {
                 shapeless = true;
-                inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipe).recipeItems.toArray(new Object[0]));
+                inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipe).recipeItems.toArray(new Object[((ShapelessRecipes) recipe).recipeItems.size()]));
             } else if (recipe instanceof ShapelessOreRecipe) {
                 shapeless = true;
                 for (int i = 0; i < 9; i++) {
@@ -111,23 +108,15 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                 }
             }
         }
-        for (int i = 0; i < 9; i++) {
-            if (inputs[i] instanceof ArrayList) {
-                ArrayList<ItemStack> seen = new ArrayList<ItemStack>();
-                for (ItemStack input : ((ArrayList<ItemStack>) inputs[i])) {
-
-                }
-            }
-        }
         recipe = recipes;
     }
 
     public static IRecipe[] getRecipes(String... keys) {
-        ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
+        ArrayList<IRecipe> recipes = new ArrayList<>();
         for (String key : keys) {
             recipes.add(BookRecipeRegistry.getRecipe(key));
         }
-        return recipes.toArray(new IRecipe[0]);
+        return recipes.toArray(new IRecipe[recipes.size()]);
     }
 
     @Override
@@ -140,8 +129,8 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         int maxX = 3;
         int maxY = 3;
         if (recipe != null && recipe[0] != null && recipe[0] instanceof ShapedOreRecipe) {
-            maxX = (Integer) ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe) recipe[0], 4);
-            maxY = (Integer) ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe) recipe[0], 5);
+            maxX = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe) recipe[0], 4);
+            maxY = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, (ShapedOreRecipe) recipe[0], 5);
 
         }
         for (int i = 0; i < maxY; i++) {
@@ -169,7 +158,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                         }
                         if (inputs[(maxX * i) + j] instanceof ArrayList && ((ArrayList) inputs[(maxX * i) + j]).size() > 0) {
 
-                            ArrayList<ItemStack> list2 = new ArrayList<ItemStack>();
+                            ArrayList<ItemStack> list2 = new ArrayList<>();
                             for (ItemStack item : ((ArrayList<ItemStack>) inputs[(maxX * i) + j])) {
                                 if (item.getItemDamage() == 32767) {
                                     ArrayList list = new ArrayList<ItemStack>();
@@ -181,7 +170,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                                     list2.add(item);
                                 }
                             }
-                            ItemStack[] item = list2.toArray(new ItemStack[0]);
+                            ItemStack[] item = list2.toArray(new ItemStack[list2.size()]);
                             int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item.length * 20.0D)) / 20.0D);
                             fontRenderer.setUnicodeFlag(false);
                             this.drawItemStack(item[ticks], x + 49 + j * 19, y + 59 + i * 19, "", renderer, fontRenderer, true);

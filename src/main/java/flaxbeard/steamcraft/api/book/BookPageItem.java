@@ -3,9 +3,11 @@ package flaxbeard.steamcraft.api.book;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
 
 public class BookPageItem extends BookPageText {
@@ -50,9 +52,9 @@ public class BookPageItem extends BookPageText {
 
     @Override
     public void renderPage(int x, int y, FontRenderer fontRenderer, GuiSteamcraftBook book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
-        if (!lastViewing.equals(book.viewing)) {
+        if (!lastViewing.equals(GuiSteamcraftBook.viewing)) {
             abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
-            lastViewing = book.viewing;
+            lastViewing = GuiSteamcraftBook.viewing;
         }
         String s;
         int l;
@@ -64,31 +66,37 @@ public class BookPageItem extends BookPageText {
             fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3), y + 30, 0x3F3F3F);
         }
 
+        GameSettings settings = Minecraft.getMinecraft().gameSettings;
+        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
         s = I18n.format(text);
         String stringLeft = s;
-        while (stringLeft.indexOf("<br>") != -1) {
+        while (stringLeft.contains("<br>")) {
             String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
-            if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+            if (shouldDoLizbeth(settings.thirdPersonView, player)) {
                 output = doLizbeth(output);
             }
-            l = fontRenderer.splitStringWidth(output, 110);
             fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
             yOffset += this.getSplitStringHeight(fontRenderer, output, x + 40, yOffset, 110);
             yOffset += 10;
             stringLeft = stringLeft.substring(stringLeft.indexOf("<br>") + 4, stringLeft.length());
         }
         String output = stringLeft;
-        if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+        if (shouldDoLizbeth(settings.thirdPersonView, player)) {
             output = doLizbeth(output);
         }
-        l = fontRenderer.splitStringWidth(output, 110);
         fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
 
         int size = item.length;
         int i = 0;
         for (ItemStack stack : item) {
-            this.drawItemStack(stack.copy(), (int) (x + book.bookImageWidth / 2 - 12 - (size - 1) * 9 + i * 18), isFirstPage || shouldDisplayTitle ? y + 45 : y + 35, "", renderer, fontRenderer, false);
+            this.drawItemStack(stack.copy(), x + book.bookImageWidth / 2 - 12 - (size - 1) * 9 + i * 18, isFirstPage || shouldDisplayTitle ? y + 45 : y + 35, "", renderer, fontRenderer, false);
             i++;
         }
+    }
+
+    private boolean shouldDoLizbeth(int view, EntityClientPlayerMP player) {
+        return ((view != 0 || player.getCommandSenderName().equals("MasterAbdoTGM50")) &&
+          Config.easterEggs);
     }
 }

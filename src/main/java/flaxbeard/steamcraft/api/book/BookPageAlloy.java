@@ -11,8 +11,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class BookPageAlloy extends BookPage implements ICraftingPage {
+import java.util.ArrayList;
 
+public class BookPageAlloy extends BookPage implements ICraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
     private CrucibleLiquid output;
     private CrucibleFormula formula;
@@ -24,9 +25,10 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
         super(string);
         output = op;
         formula = form;
-        item1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0])).toArray(new ItemStack[0]);
-        item2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0])).toArray(new ItemStack[0]);
-
+        ArrayList<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0]));
+        item1 = ores1.toArray(new ItemStack[ores1.size()]);
+        ArrayList<ItemStack> ores2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0]));
+        item2 = ores2.toArray(new ItemStack[ores2.size()]);
     }
 
     @Override

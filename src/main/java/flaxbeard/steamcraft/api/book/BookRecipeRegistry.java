@@ -8,7 +8,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import java.util.HashMap;
 
 public class BookRecipeRegistry {
-    public static HashMap<String, IRecipe> recipes = new HashMap<String, IRecipe>();
+    public static HashMap<String, IRecipe> recipes = new HashMap<>();
 
     public static void addRecipe(String key, IRecipe recipe) {
         GameRegistry.addRecipe(recipe);

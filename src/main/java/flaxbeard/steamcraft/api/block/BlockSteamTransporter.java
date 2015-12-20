@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
 public abstract class BlockSteamTransporter extends BlockContainer {
-
     public BlockSteamTransporter(Material material) {
         super(material);
     }
@@ -18,5 +17,4 @@ public abstract class BlockSteamTransporter extends BlockContainer {
         }
         te.refresh();
     }
-
 }

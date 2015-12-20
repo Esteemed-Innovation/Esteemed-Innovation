@@ -8,27 +8,26 @@ import net.minecraft.util.ResourceLocation;
 import java.util.List;
 
 public interface IExosuitUpgrade {
-
     /**
      * The priority of the upgrade's rendering
      *
      * Use 1 if it should overwrite the exosuit's rendering
      * Use 0 if it should not overwrite the exosuit's rendering
      */
-    public int renderPriority();
+    int renderPriority();
 
     /**
      * The slot that the upgrade can be used on
      *
      * See ExosuitSlot.java for the list of slots.
      */
-    public ExosuitSlot getSlot();
+    ExosuitSlot getSlot();
 
-    public ResourceLocation getOverlay();
+    ResourceLocation getOverlay();
 
-    public Class<? extends ModelExosuitUpgrade> getModel();
+    Class<? extends ModelExosuitUpgrade> getModel();
 
-    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
+    void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
 
-    public void writeInfo(List list);
+    void writeInfo(List list);
 }

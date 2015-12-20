@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.api;
 import net.minecraft.item.ItemStack;
 
 public class CrucibleLiquid {
-
     public ItemStack ingot;
     public ItemStack plate;
     public ItemStack nugget;

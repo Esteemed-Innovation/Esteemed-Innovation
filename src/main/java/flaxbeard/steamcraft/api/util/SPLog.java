@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.api.util;
 
 public class SPLog {
-
     public static final int NONE = 0;
     public static final int ERROR = 1;
     public static final int INFO = 2;
@@ -46,5 +45,4 @@ public class SPLog {
     private void print(String msg) {
         System.out.println("[FSP] " + msg);
     }
-
 }

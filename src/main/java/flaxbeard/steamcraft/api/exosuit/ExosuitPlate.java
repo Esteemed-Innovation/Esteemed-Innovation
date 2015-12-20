@@ -6,7 +6,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
 
 public class ExosuitPlate {
-
     private String identifier;
     private String invMod;
     private String armorMod;
@@ -44,17 +43,17 @@ public class ExosuitPlate {
     }
 
     public int getDamageReductionAmount(int slot, DamageSource source) {
-        if (this.identifier == "Copper") {
+        if (this.identifier.equals("Copper")) {
             if (source.isExplosion()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
         }
-        if (this.identifier == "Iron") {
+        if (this.identifier.equals("Iron")) {
             if (source.isProjectile()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
         }
-        if (this.identifier == "Brass") {
+        if (this.identifier.equals("Brass")) {
             if (source.isFireDamage()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }

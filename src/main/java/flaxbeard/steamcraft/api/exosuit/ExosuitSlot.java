@@ -15,7 +15,7 @@ public enum ExosuitSlot {
     public int slot;
     public int armor;
 
-    private ExosuitSlot(int a, int s) {
+    ExosuitSlot(int a, int s) {
         slot = s;
         armor = a;
     }
