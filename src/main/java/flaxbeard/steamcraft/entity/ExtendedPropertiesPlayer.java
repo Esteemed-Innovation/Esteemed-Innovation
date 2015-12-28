@@ -20,18 +20,32 @@ public class ExtendedPropertiesPlayer implements IExtendedEntityProperties {
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
-        NBTTagCompound motionList = new NBTTagCompound();
-        motionList.setDouble("left", this.lastMotions.left);
-        motionList.setDouble("right", this.lastMotions.right);
+        if (this.lastMotions != null) {
+            NBTTagCompound motionList = new NBTTagCompound();
+            motionList.setDouble("left", this.lastMotions.left);
+            motionList.setDouble("right", this.lastMotions.right);
+            compound.setTag("lastMotions", motionList);
+        }
 
         compound.setInteger("tickCache", this.tickCache);
-        compound.setTag("lastMotions", motionList);
-        compound.setFloat("prevStep", this.prevStep);
+
+        if (this.prevStep != null) {
+            compound.setFloat("prevStep", this.prevStep);
+        }
+
         compound.setBoolean("isRangeExtended", this.isRangeExtended);
 
-        compound.setTag("axeInfo", setToolData(this.axeInfo));
-        compound.setTag("drillInfo", setToolData(this.drillInfo));
-        compound.setTag("shovelInfo", setToolData(this.shovelInfo));
+        if (this.axeInfo != null) {
+            compound.setTag("axeInfo", setToolData(this.axeInfo));
+        }
+
+        if (this.drillInfo != null) {
+            compound.setTag("drillInfo", setToolData(this.drillInfo));
+        }
+
+        if (this.shovelInfo != null) {
+            compound.setTag("shovelInfo", setToolData(this.shovelInfo));
+        }
     }
 
     /**
@@ -59,17 +73,30 @@ public class ExtendedPropertiesPlayer implements IExtendedEntityProperties {
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
-        NBTTagCompound motionList = compound.getCompoundTag("lastMotions");
-        this.lastMotions.left = motionList.getDouble("left");
-        this.lastMotions.right = motionList.getDouble("right");
+        if (compound.hasKey("lastMotions")) {
+            NBTTagCompound motionList = compound.getCompoundTag("lastMotions");
+            this.lastMotions.left = motionList.getDouble("left");
+            this.lastMotions.right = motionList.getDouble("right");
+        }
 
-        this.prevStep = compound.getFloat("prevStep");
+        if (compound.hasKey("prevStep")) {
+            this.prevStep = compound.getFloat("prevStep");
+        }
+
         this.isRangeExtended = compound.getBoolean("isRangeExtended");
         this.tickCache = compound.getInteger("tickCache");
 
-        this.axeInfo = getToolData("axeInfo", compound);
-        this.drillInfo = getToolData("drillInfo", compound);
-        this.shovelInfo = getToolData("shovelInfo", compound);
+        if (compound.hasKey("axeInfo")) {
+            this.axeInfo = getToolData("axeInfo", compound);
+        }
+
+        if (compound.hasKey("drillInfo")) {
+            this.drillInfo = getToolData("drillInfo", compound);
+        }
+
+        if (compound.hasKey("shovelInfo")) {
+            this.shovelInfo = getToolData("shovelInfo", compound);
+        }
     }
 
     @Override

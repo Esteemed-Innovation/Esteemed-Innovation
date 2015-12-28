@@ -1232,6 +1232,10 @@ public class SteamcraftEventHandler {
         ItemStack armor2 = entity.getEquipmentInSlot(1);
         //Steamcraft.proxy.extendRange(entity,1.0F);
 
+        if (!(entity instanceof EntityPlayer)) {
+            return;
+        }
+
         ExtendedPropertiesPlayer tag =
           (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
 
