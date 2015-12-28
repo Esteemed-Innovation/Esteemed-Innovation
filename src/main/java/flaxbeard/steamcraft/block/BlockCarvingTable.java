@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,9 +17,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockCarvingTable extends Block {
-
     @SideOnly(Side.CLIENT)
-    private IIcon field_150035_a;
+    private IIcon topIcon;
 
     public BlockCarvingTable() {
         super(Material.wood);
@@ -27,24 +27,34 @@ public class BlockCarvingTable extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return side == 1 ? this.field_150035_a : (side == 0 ? Blocks.planks.getBlockTextureFromSide(side) : this.blockIcon);
+        if (side == 1) {
+            return this.topIcon;
+        } else {
+            if (side == 0) {
+                return Blocks.planks.getBlockTextureFromSide(side);
+            } else {
+                return this.blockIcon;
+            }
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister ir) {
         this.blockIcon = ir.registerIcon(this.getTextureName() + "_side");
-        this.field_150035_a = ir.registerIcon(this.getTextureName() + "_top");
+        this.topIcon = ir.registerIcon(this.getTextureName() + "_top");
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int int0, float float0, float float1, float float2) {
-        if (player.getHeldItem() != null) {
-            if (player.getHeldItem().getItem() instanceof ICrucibleMold || player.getHeldItem().getItem() == SteamcraftItems.blankMold) {
+        ItemStack held = player.getHeldItem();
+        if (held != null) {
+            Item heldItem = held.getItem();
+            if (SteamcraftRegistry.molds.contains(heldItem)) {
                 int index = 0;
                 int i = 0;
-                for (ICrucibleMold mold : SteamcraftRegistry.molds) {
-                    if (mold == player.getHeldItem().getItem()) {
+                for (Item item : SteamcraftRegistry.molds) {
+                    if (heldItem == item) {
                         index = i;
                     }
                     i++;
@@ -52,8 +62,10 @@ public class BlockCarvingTable extends Block {
                 if (index + 1 == SteamcraftRegistry.molds.size()) {
                     index = -1;
                 }
-                ICrucibleMold next = SteamcraftRegistry.molds.get(index + 1);
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack((Item) next));
+                Item next = SteamcraftRegistry.molds.get(index + 1);
+                InventoryPlayer inventory = player.inventory;
+                ItemStack stack = new ItemStack(next);
+                inventory.setInventorySlotContents(inventory.currentItem, stack);
                 return true;
             }
         }

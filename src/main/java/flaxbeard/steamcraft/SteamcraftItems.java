@@ -360,15 +360,19 @@ public class SteamcraftItems {
         if (Config.enableMold) {
             ingotMold = new ItemIngotMold().setUnlocalizedName("steamcraft:ingotMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldIngot");
             GameRegistry.registerItem(ingotMold, "ingotMold");
-            SteamcraftRegistry.addCarvableMold((ICrucibleMold) ingotMold);
+            SteamcraftRegistry.addCarvableMold(ingotMold);
+
             nuggetMold = new ItemNuggetMold().setUnlocalizedName("steamcraft:nuggetMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldNugget");
             GameRegistry.registerItem(nuggetMold, "nuggetMold");
-            SteamcraftRegistry.addCarvableMold((ICrucibleMold) nuggetMold);
+            SteamcraftRegistry.addCarvableMold(nuggetMold);
+
             plateMold = new ItemPlateMold().setUnlocalizedName("steamcraft:plateMold").setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldPlate");
             GameRegistry.registerItem(plateMold, "plateMold");
-            SteamcraftRegistry.addCarvableMold((ICrucibleMold) plateMold);
+            SteamcraftRegistry.addCarvableMold(plateMold);
+
             blankMold = new Item().setUnlocalizedName("steamcraft:blankMold").setMaxStackSize(1).setCreativeTab(Steamcraft.tab).setTextureName("steamcraft:moldBlank");
             GameRegistry.registerItem(blankMold, "blankMold");
+            SteamcraftRegistry.addCarvableMold(blankMold);
         }
     }
 

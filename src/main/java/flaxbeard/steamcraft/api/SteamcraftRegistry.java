@@ -18,7 +18,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class SteamcraftRegistry {
-    public static ArrayList<ICrucibleMold> molds = new ArrayList<>();
+    /**
+     * The Items that can be used on the Carving Table.
+     */
+    public static ArrayList<Item> molds = new ArrayList<>();
+
     public static ArrayList<CrucibleLiquid> liquids = new ArrayList<>();
     public static HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> smeltThings = new HashMap<>();
     public static HashMap<Tuple3, MutablePair<Integer, ItemStack>> dunkThings = new HashMap<>();
@@ -58,8 +62,22 @@ public class SteamcraftRegistry {
         plates.put(plate.getIdentifier(), plate);
     }
 
-    public static void addCarvableMold(ICrucibleMold mold) {
+    /**
+     * Allows the mold to be used on the Carving Table.
+     * @param mold The item
+     */
+    public static void addCarvableMold(Item mold) {
         molds.add(mold);
+    }
+
+    /**
+     * Removes the mold from the list of Items that can be used on the Carving Table.
+     * @param mold The item
+     * @return The return value of ArrayList#add.
+     * @see ArrayList#add(Object)
+     */
+    public static boolean removeMold(Item mold) {
+        return molds.remove(mold);
     }
 
     public static void addCategory(String string) {
