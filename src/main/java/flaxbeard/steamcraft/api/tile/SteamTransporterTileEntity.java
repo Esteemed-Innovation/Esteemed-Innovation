@@ -272,9 +272,9 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 					this.network.rejoin(this);
 				} else {
                     Steamcraft.log.debug("Requesting new network or joining existing.en");
-                    SteamNetwork.newOrJoin(this);
 				}
 				*/
+                SteamNetwork.newOrJoin(this);
                 this.isInitialized = true;
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
