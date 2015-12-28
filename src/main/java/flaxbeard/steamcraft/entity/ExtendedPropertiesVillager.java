@@ -13,12 +13,18 @@ public class ExtendedPropertiesVillager implements IExtendedEntityProperties {
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
-        compound.setBoolean("lastHadCustomer", this.lastHadCustomer);
+        if (this.lastHadCustomer != null) {
+            compound.setBoolean("lastHadCustomer", this.lastHadCustomer);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
-        this.lastHadCustomer = compound.getBoolean("lastHadCustomer");
+        if (compound.hasKey("lastHadCustomer")) {
+            this.lastHadCustomer = compound.getBoolean("lastHadCustomer");
+        } else {
+            this.lastHadCustomer = null;
+        }
     }
 
     @Override
