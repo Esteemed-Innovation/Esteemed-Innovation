@@ -4,6 +4,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
@@ -11,7 +12,7 @@ import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,9 +49,14 @@ public class SteamcraftTickHandler {
             if (Mouse.isButtonDown(1) && player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock) {
                 MovingObjectPosition pos = mc.objectMouseOver;
                 if (pos != null) {
-                    TileEntity te = mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
-                    if (mc.theWorld.getBlock(pos.blockX, pos.blockY, pos.blockZ) == SteamcraftBlocks.pipe || (mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ) != null && mc.theWorld.getTileEntity(pos.blockX, pos.blockY, pos.blockZ) instanceof IDisguisableBlock)) {
-                        SteamcraftClientPacketHandler.sendCamoPacket(player, pos);
+                    int x = pos.blockX;
+                    int y = pos.blockY;
+                    int z = pos.blockZ;
+                    TileEntity te = mc.theWorld.getTileEntity(x, y, z);
+                    if (mc.theWorld.getBlock(x, y, z) == SteamcraftBlocks.pipe ||
+                      (te != null && te instanceof IDisguisableBlock)) {
+                        CamoPacket packet = new CamoPacket(x, y, z);
+                        Steamcraft.channel.sendToServer(packet);
                     }
                 }
             }
@@ -71,49 +77,53 @@ public class SteamcraftTickHandler {
             }
 
             if (mc.gameSettings.keyBindJump.getIsKeyPressed()) {
-                SteamcraftClientPacketHandler.sendSpacePacket(player);
-                if (player != null) {
-                    ItemStack armor = player.getCurrentArmor(2);
-                    if (armor != null && armor.getItem() == SteamcraftItems.exoArmorBody) {
-                        ItemExosuitArmor item = (ItemExosuitArmor) armor.getItem();
-                        if (item.hasUpgrade(armor, SteamcraftItems.jetpack) && SteamcraftEventHandler.hasPower(player, 5)) {
-                            if (!player.onGround && !player.capabilities.isFlying) {
-                                player.motionY = player.motionY + 0.06D;
-                                double rotation = Math.toRadians(player.renderYawOffset);
+                ItemStack chest = player.getCurrentArmor(2);
+                if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
+                    if (item.hasUpgrade(chest, SteamcraftItems.jetpack) && SteamcraftEventHandler.hasPower(player, 5)) {
+                        if (!player.onGround && !player.capabilities.isFlying) {
+                            player.motionY += 0.06D;
+                            double rotation = Math.toRadians(player.renderYawOffset);
+                            player.fallDistance = 0;
 
-                                player.worldObj.spawnParticle("smoke", player.posX + 0.4 * Math.sin(rotation + 0.9F), player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation + 0.9F), 0.0F, -1.0F, 0.0F);
-                                player.worldObj.spawnParticle("smoke", player.posX + 0.4 * Math.sin(rotation - 0.9F), player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation - 0.9F), 0.0F, -1.0F, 0.0F);
-                            }
+                            player.worldObj.spawnParticle("smoke", player.posX + 0.4 * Math.sin(rotation + 0.9F), player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation + 0.9F), 0.0F, -1.0F, 0.0F);
+                            player.worldObj.spawnParticle("smoke", player.posX + 0.4 * Math.sin(rotation - 0.9F), player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation - 0.9F), 0.0F, -1.0F, 0.0F);
+                            SteamcraftEventHandler.drainSteam(chest, Config.jetpackConsumption);
                         }
                     }
-
-                    ItemStack armor2 = player.getCurrentArmor(0);
-                    if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-                        ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-                        if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
-                            if (!armor2.stackTagCompound.hasKey("usedJump")) {
-                                armor2.stackTagCompound.setBoolean("usedJump", false);
-                            }
-                            if (!armor2.stackTagCompound.hasKey("releasedSpace")) {
-                                armor2.stackTagCompound.setBoolean("releasedSpace", false);
-                            }
-                            if (!player.onGround && armor2.stackTagCompound.getBoolean("releasedSpace") && !armor2.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
-                                armor2.stackTagCompound.setBoolean("usedJump", true);
-                                player.motionY = 0.65D;
-                            }
-                            armor2.stackTagCompound.setBoolean("releasedSpace", false);
+                    if (item.hasUpgrade(chest, SteamcraftItems.pitonDeployer)) {
+                        if (chest.stackTagCompound.hasKey("grappled") &&
+                          chest.stackTagCompound.getBoolean("grappled")) {
+                            chest.stackTagCompound.setBoolean("grappled", false);
                         }
                     }
                 }
-            } else {
-                SteamcraftClientPacketHandler.sendNoSpacePacket(player);
-                if (player != null) {
-                    ItemStack armor2 = player.getCurrentArmor(0);
-                    if (armor2 != null && armor2.getItem() == SteamcraftItems.exoArmorFeet) {
-                        ItemExosuitArmor item = (ItemExosuitArmor) armor2.getItem();
-                        if (item.hasUpgrade(armor2, SteamcraftItems.doubleJump) && !player.onGround) {
-                            armor2.stackTagCompound.setBoolean("releasedSpace", true);
+
+                ItemStack boots = player.getCurrentArmor(0);
+                if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
+                    if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) && SteamcraftEventHandler.hasPower(player, 15)) {
+                        if (!boots.stackTagCompound.hasKey("usedJump")) {
+                            boots.stackTagCompound.setBoolean("usedJump", false);
                         }
+                        if (!boots.stackTagCompound.hasKey("releasedSpace")) {
+                            boots.stackTagCompound.setBoolean("releasedSpace", false);
+                        }
+                        if (!player.onGround && boots.stackTagCompound.getBoolean("releasedSpace") && !boots.stackTagCompound.getBoolean("usedJump") && !player.capabilities.isFlying) {
+                            boots.stackTagCompound.setBoolean("usedJump", true);
+                            player.motionY = 0.65D;
+                            player.fallDistance = 0;
+                            SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2), 10);
+                        }
+                        boots.stackTagCompound.setBoolean("releasedSpace", false);
+                    }
+                }
+            } else {
+                ItemStack boots = player.getCurrentArmor(0);
+                if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
+                    if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) && !player.onGround) {
+                        boots.stackTagCompound.setBoolean("releasedSpace", true);
                     }
                 }
             }

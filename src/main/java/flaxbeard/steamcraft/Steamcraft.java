@@ -9,8 +9,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
@@ -29,6 +29,7 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
+import flaxbeard.steamcraft.network.*;
 import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
@@ -52,7 +53,7 @@ public class Steamcraft {
 
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
-    public static FMLEventChannel channel;
+    public static SimpleNetworkWrapper channel;
 
     public static EnumRarity upgrade;
 
@@ -98,6 +99,11 @@ public class Steamcraft {
         SteamcraftItems.registerItems();
 
         GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
+
+        channel = NetworkRegistry.INSTANCE.newSimpleChannel("fspChannel");
+        channel.registerMessage(CamoPacketHandler.class, CamoPacket.class, 0, Side.SERVER);
+        channel.registerMessage(ItemNamePacketHandler.class, ItemNamePacket.class, 1, Side.SERVER);
+        channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerId(id);
@@ -148,7 +154,6 @@ public class Steamcraft {
 
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        channel = NetworkRegistry.INSTANCE.newEventDrivenChannel("steamcraft");
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());

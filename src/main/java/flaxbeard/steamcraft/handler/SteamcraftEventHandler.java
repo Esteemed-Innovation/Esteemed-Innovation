@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.handler;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -18,7 +17,6 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
-import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
@@ -30,13 +28,11 @@ import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
-import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 import net.minecraft.block.Block;
@@ -67,7 +63,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -92,7 +87,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -1400,7 +1394,6 @@ public class SteamcraftEventHandler {
                         player.motionY = 0.0F;
                         player.motionZ = 0.0F;
                         player.fallDistance = 0.0F;
-                        SteamcraftClientPacketHandler.sendGrapplePacket(player, event.x, event.y, event.z);
                     }
                 } else {
                     ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
@@ -1424,7 +1417,6 @@ public class SteamcraftEventHandler {
                         player.motionY = 0.0F;
                         player.motionZ = 0.0F;
                         player.fallDistance = 0.0F;
-                        SteamcraftClientPacketHandler.sendGrapplePacket(player, event.x, event.y, event.z);
                     }
                 }
             }

@@ -2,7 +2,8 @@ package flaxbeard.steamcraft.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.network.ItemNamePacket;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
@@ -25,7 +26,6 @@ import java.util.List;
 public class GuiSteamAnvil extends GuiContainer implements ICrafting {
     private static final ResourceLocation field_147093_u = new ResourceLocation("textures/gui/container/anvil.png");
     private static final ResourceLocation arrow = new ResourceLocation("textures/gui/container/furnace.png");
-    private static final String __OBFID = "CL_00000738";
     private ContainerSteamAnvil field_147092_v;
     private GuiTextField field_147091_w;
     private InventoryPlayer field_147094_x;
@@ -60,7 +60,9 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
             this.field_147091_w.setText("");
             hammer.itemName = "";
             this.field_147092_v.updateItemName("");
-            SteamcraftClientPacketHandler.sendItemNamePacket(hammer.getWorldObj(), hammer.xCoord, hammer.yCoord, hammer.zCoord, "", field_147094_x.player);
+            ItemNamePacket packet = new ItemNamePacket(hammer.getWorldObj(), hammer.xCoord,
+              hammer.yCoord, hammer.zCoord, "", field_147094_x.player);
+            Steamcraft.channel.sendToServer(packet);
         }
     }
 
@@ -141,10 +143,12 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
 //        if (slot.getStack() == null) {
 //        	s = "";
 //        }
-        if (s != "" && canEdit) {
+        if (!s.equals("") && canEdit) {
             hammer.itemName = s;
             this.field_147092_v.updateItemName(s);
-            SteamcraftClientPacketHandler.sendItemNamePacket(hammer.getWorldObj(), hammer.xCoord, hammer.yCoord, hammer.zCoord, s, field_147094_x.player);
+            ItemNamePacket packet = new ItemNamePacket(hammer.getWorldObj(), hammer.xCoord,
+              hammer.yCoord, hammer.zCoord, s, field_147094_x.player);
+            Steamcraft.channel.sendToServer(packet);
         }
 //        this.mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MC|ItemName", s.getBytes(Charsets.UTF_8)));
     }

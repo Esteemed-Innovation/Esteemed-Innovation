@@ -2,8 +2,6 @@ package flaxbeard.steamcraft.common;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,9 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 public class CommonProxy {
-    public void registerRenderers() {
-        Steamcraft.channel.register(new SteamcraftServerPacketHandler());
-    }
+    public void registerRenderers() {}
 
     public void serverStarting(FMLServerStartingEvent event) {
         //event.registerServerCommand(new CommandUpdateSteamcraft());

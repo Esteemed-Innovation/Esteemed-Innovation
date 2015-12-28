@@ -1,8 +1,6 @@
 package flaxbeard.steamcraft.misc;
 
 import flaxbeard.steamcraft.entity.EntityRocket;
-import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
-import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -11,7 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -173,10 +170,19 @@ public class ExplosionRocket extends Explosion {
                     entity.motionZ += d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.1F : 1.0F);
 
                     if (entity instanceof EntityPlayer) {
-                        if (((EntityPlayer) entity).capabilities.isCreativeMode) {
-                            SteamcraftServerPacketHandler.sendRocketJumpHackyPacket((EntityPlayerMP) entity, d5 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d6 * d8 * (entity == this.exploder ? 2.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F), d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) * (this.dropAllBlocks ? 0.15F : 1.0F));
+                        EntityPlayer player = (EntityPlayer) entity;
+                        if (player.capabilities.isCreativeMode) {
+                            double xChange = d5 * d8 * (entity == this.exploder ? 3.0F : 1.0F) *
+                              (this.dropAllBlocks ? 0.15F : 1.0F);
+                            double yChange = d6 * d8 * (entity == this.exploder ? 2.0F : 1.0F) *
+                              (this.dropAllBlocks ? 0.15F : 1.0F);
+                            double zChange = d7 * d8 * (entity == this.exploder ? 3.0F : 1.0F) *
+                              (this.dropAllBlocks ? 0.15F : 1.0F);
+                            player.motionX += xChange;
+                            player.motionY += yChange;
+                            player.motionZ += zChange;
                         }
-                        ((EntityPlayer) entity).fallDistance = 0.1F;
+                        player.fallDistance = 0.1F;
 
                         this.field_77288_k.put(entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
                     }
