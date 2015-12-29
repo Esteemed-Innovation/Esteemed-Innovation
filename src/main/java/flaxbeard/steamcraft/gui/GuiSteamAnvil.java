@@ -14,9 +14,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import org.apache.commons.io.Charsets;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -56,14 +58,13 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         this.inventorySlots.addCraftingToCrafters(this);
         this.field_147091_w.setText(hammer.itemName);
         canEdit = true;
+        /*
         if (!this.field_147092_v.getSlot(0).getHasStack()) {
             this.field_147091_w.setText("");
             hammer.itemName = "";
             this.field_147092_v.updateItemName("");
-            ItemNamePacket packet = new ItemNamePacket(hammer.getWorldObj(), hammer.xCoord,
-              hammer.yCoord, hammer.zCoord, "", field_147094_x.player);
-            Steamcraft.channel.sendToServer(packet);
         }
+        */
     }
 
     /**
@@ -136,21 +137,14 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         String s = this.field_147091_w.getText();
         Slot slot = this.field_147092_v.getSlot(0);
 
-//        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName()))
-//        {
-//            s = "";
-//        }
-//        if (slot.getStack() == null) {
-//        	s = "";
-//        }
+        if ((slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() &&
+          s.equals(slot.getStack().getDisplayName())) || slot != null && slot.getStack() == null) {
+            s = "";
+        }
         if (!s.equals("") && canEdit) {
-            hammer.itemName = s;
-            this.field_147092_v.updateItemName(s);
-            ItemNamePacket packet = new ItemNamePacket(hammer.getWorldObj(), hammer.xCoord,
-              hammer.yCoord, hammer.zCoord, s, field_147094_x.player);
+            ItemNamePacket packet = new ItemNamePacket(hammer.xCoord, hammer.yCoord, hammer.zCoord, s);
             Steamcraft.channel.sendToServer(packet);
         }
-//        this.mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MC|ItemName", s.getBytes(Charsets.UTF_8)));
     }
 
     /**

@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +15,12 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.helpers.Charsets;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -62,14 +65,11 @@ public class ContainerSteamAnvil extends Container {
             }
         });
         this.addSlotToContainer(new Slot(hammer, 2, 134, 47) {
-            private static final String __OBFID = "CL_00001734";
-
             /**
-             * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-             * GG Flax^
+             * Check if the stack is a valid item for this slot.
              */
             public boolean isItemValid(ItemStack par1ItemStack) {
-                return false;
+                return true;
             }
 
             /**
@@ -487,13 +487,13 @@ public class ContainerSteamAnvil extends Container {
     /**
      * used by the Anvil GUI to update the Item Name being typed by the player
      */
-    public void updateItemName(String par1Str) {
-        //  hammer.itemName = par1Str;
+    public void updateItemName(String s) {
+        hammer.itemName = s;
 
         if (this.getSlot(2).getHasStack()) {
             ItemStack itemstack = this.getSlot(2).getStack();
 
-            if (StringUtils.isBlank(par1Str)) {
+            if (StringUtils.isBlank(s)) {
                 itemstack.func_135074_t();
             } else {
                 itemstack.setStackDisplayName(hammer.itemName);

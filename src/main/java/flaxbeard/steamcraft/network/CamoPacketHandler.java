@@ -18,7 +18,6 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> {
     @Override
     public IMessage onMessage(CamoPacket message, MessageContext context) {
-        System.out.println("doing camo shit");
         EntityPlayerMP player = context.getServerHandler().playerEntity;
         World world = player.worldObj;
         int x = message.blockX;
@@ -27,7 +26,6 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
 
         ItemStack held = player.getHeldItem();
         if (held == null || held.getItem() == null) {
-            System.out.println("null");
             return null;
         }
         int heldMeta = held.getItem().getMetadata(held.getItemDamage());
@@ -38,11 +36,12 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
           (renderType == 0 || renderType == 39 || renderType == 31) && block.isOpaqueCube() &&
           (block.renderAsNormalBlock() || (block == Blocks.glass &&
           tile instanceof TileEntitySteamPipe))) {
-            System.out.println("1");
             if (tile instanceof TileEntitySteamPipe) {
                 TileEntitySteamPipe pipe = ((TileEntitySteamPipe) tile);
-                if (pipe.disguiseBlock != block && pipe.disguiseMeta != heldMeta) {
-                    if (!player.capabilities.isCreativeMode) {
+                if (pipe.disguiseBlock == null || (pipe.disguiseBlock != block) ||
+                  pipe.disguiseMeta != heldMeta) {
+                    if (!player.capabilities.isCreativeMode && pipe.disguiseBlock != null &&
+                      !pipe.disguiseBlock.isAir(world, x, y, z)) {
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, new ItemStack(pipe.disguiseBlock, 1, pipe.disguiseMeta));
                         world.spawnEntityInWorld(entityItem);
@@ -65,8 +64,11 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
             }
             if (tile instanceof IDisguisableBlock) {
                 IDisguisableBlock pipe = ((IDisguisableBlock) tile);
-                if (pipe.getDisguiseBlock() != block && pipe.getDisguiseMeta() != heldMeta) {
-                    if (pipe.getDisguiseBlock() != Blocks.air && !player.capabilities.isCreativeMode) {
+                if (pipe.getDisguiseBlock() == null || pipe.getDisguiseBlock() != block ||
+                  pipe.getDisguiseMeta() != heldMeta) {
+                    if (pipe.getDisguiseBlock() != null &&
+                      !pipe.getDisguiseBlock().isAir(world, x, y, z)
+                      && !player.capabilities.isCreativeMode) {
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, new ItemStack(pipe.getDisguiseBlock(), 1,
                           pipe.getDisguiseMeta()));

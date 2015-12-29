@@ -3,12 +3,8 @@ package flaxbeard.steamcraft.network;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 public class ItemNamePacket implements IMessage {
-    public World world;
-    public EntityPlayer player;
     public int x;
     public int y;
     public int z;
@@ -16,9 +12,7 @@ public class ItemNamePacket implements IMessage {
 
     public ItemNamePacket() {}
 
-    public ItemNamePacket(World world, int x, int y, int z, String name, EntityPlayer player) {
-        this.world = world;
-        this.player = player;
+    public ItemNamePacket(int x, int y, int z, String name) {
         this.x = x;
         this.y = y;
         this.z = z;
