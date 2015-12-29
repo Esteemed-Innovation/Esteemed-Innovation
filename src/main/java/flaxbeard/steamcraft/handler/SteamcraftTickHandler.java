@@ -41,11 +41,10 @@ public class SteamcraftTickHandler {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
         World world = player.worldObj;
-        boolean isClient = event.side == Side.CLIENT;
         boolean isServer = event.side == Side.SERVER;
         ItemStack chest = player.getCurrentArmor(2);
         ItemStack boots = player.getCurrentArmor(0);
-        if (isClient) {
+        if (!isServer) {
             this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
         }
         if (isJumping) {
@@ -83,7 +82,7 @@ public class SteamcraftTickHandler {
                     if (!player.onGround && !player.capabilities.isFlying) {
                         player.motionY += 0.06D;
                         player.fallDistance = 0.0F;
-                        if (isClient) {
+                        if (!isServer) {
                             double rotation = Math.toRadians(player.renderYawOffset);
                             world.spawnParticle("smoke",
                               player.posX + 0.4 * Math.sin(rotation + 0.9F),
