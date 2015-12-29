@@ -69,7 +69,7 @@ public class ContainerSteamAnvil extends Container {
              * Check if the stack is a valid item for this slot.
              */
             public boolean isItemValid(ItemStack par1ItemStack) {
-                return true;
+                return false;
             }
 
             /**
