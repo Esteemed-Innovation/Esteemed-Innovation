@@ -19,7 +19,6 @@ import flaxbeard.steamcraft.entity.EntitySteamHorse;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -55,8 +54,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderers() {
-        Steamcraft.channel.register(new SteamcraftClientPacketHandler());
-
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new RenderMortarItem());

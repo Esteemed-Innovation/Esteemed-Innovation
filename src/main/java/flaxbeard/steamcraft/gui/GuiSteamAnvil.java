@@ -2,7 +2,8 @@ package flaxbeard.steamcraft.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.network.ItemNamePacket;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,9 +14,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import org.apache.commons.io.Charsets;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -25,7 +28,6 @@ import java.util.List;
 public class GuiSteamAnvil extends GuiContainer implements ICrafting {
     private static final ResourceLocation field_147093_u = new ResourceLocation("textures/gui/container/anvil.png");
     private static final ResourceLocation arrow = new ResourceLocation("textures/gui/container/furnace.png");
-    private static final String __OBFID = "CL_00000738";
     private ContainerSteamAnvil field_147092_v;
     private GuiTextField field_147091_w;
     private InventoryPlayer field_147094_x;
@@ -56,12 +58,13 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         this.inventorySlots.addCraftingToCrafters(this);
         this.field_147091_w.setText(hammer.itemName);
         canEdit = true;
+        /*
         if (!this.field_147092_v.getSlot(0).getHasStack()) {
             this.field_147091_w.setText("");
             hammer.itemName = "";
             this.field_147092_v.updateItemName("");
-            SteamcraftClientPacketHandler.sendItemNamePacket(hammer.getWorldObj(), hammer.xCoord, hammer.yCoord, hammer.zCoord, "", field_147094_x.player);
         }
+        */
     }
 
     /**
@@ -134,19 +137,14 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         String s = this.field_147091_w.getText();
         Slot slot = this.field_147092_v.getSlot(0);
 
-//        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName()))
-//        {
-//            s = "";
-//        }
-//        if (slot.getStack() == null) {
-//        	s = "";
-//        }
-        if (s != "" && canEdit) {
-            hammer.itemName = s;
-            this.field_147092_v.updateItemName(s);
-            SteamcraftClientPacketHandler.sendItemNamePacket(hammer.getWorldObj(), hammer.xCoord, hammer.yCoord, hammer.zCoord, s, field_147094_x.player);
+        if ((slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() &&
+          s.equals(slot.getStack().getDisplayName())) || slot != null && slot.getStack() == null) {
+            s = "";
         }
-//        this.mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MC|ItemName", s.getBytes(Charsets.UTF_8)));
+        if (!s.equals("") && canEdit) {
+            ItemNamePacket packet = new ItemNamePacket(hammer.xCoord, hammer.yCoord, hammer.zCoord, s);
+            Steamcraft.channel.sendToServer(packet);
+        }
     }
 
     /**

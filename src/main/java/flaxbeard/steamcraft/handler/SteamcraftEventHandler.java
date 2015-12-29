@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.handler;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -18,7 +17,6 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
-import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
@@ -30,13 +28,11 @@ import flaxbeard.steamcraft.integration.EnchiridionIntegration;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
-import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 import net.minecraft.block.Block;
@@ -92,7 +88,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -1373,90 +1368,69 @@ public class SteamcraftEventHandler {
         if (CrossMod.BLOOD_MAGIC) {
             BloodMagicIntegration.clickLeft(event);
         }
-        if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.face != 1 && event.world.getBlock(event.x, event.y, event.z).isSideSolid(event.world, event.x, event.y, event.z, ForgeDirection.getOrientation(event.face))) {
-
-            EntityPlayer player = event.entityPlayer;
-            if (event.world.isRemote && player.getEquipmentInSlot(3) != null && player.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
-                if (event.face != 0) {
-                    ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
+        int x = event.x;
+        int y = event.y;
+        int z = event.z;
+        World world = event.world;
+        int face = event.face;
+        Action action = event.action;
+        EntityPlayer player = event.entityPlayer;
+        ItemStack chest = player.getEquipmentInSlot(3);
+        if (action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
+            Block block = world.getBlock(x, y, z);
+            if (face != 1 &&
+              block.isSideSolid(world, x, y, z, ForgeDirection.getOrientation(face))) {
+                if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
+                    AxisAlignedBB aabb;
+                    ForgeDirection dir = ForgeDirection.getOrientation(face);
+                    if (face == 0) {
+                        aabb = AxisAlignedBB.getBoundingBox(x - 0.5F, y + (dir.offsetY / 6F) - 0.4F,
+                          z - 0.20F, x + 0.5F + 1, y + (dir.offsetY / 6F) + 1, z + 0.5F + 1);
+                    } else {
+                        aabb = AxisAlignedBB.getBoundingBox(x + (dir.offsetX / 6F),
+                          y + (dir.offsetY / 6F) - 1.0F, z + (dir.offsetZ / 6F),
+                          x + (dir.offsetX / 6F) + 1, y + (dir.offsetY / 6F) + 2.0F,
+                          z + (dir.offsetZ / 6F) + 1);
+                    }
+                    ItemExosuitArmor chestArmor = (ItemExosuitArmor) chest.getItem();
                     boolean canStick = false;
-                    ForgeDirection dir = ForgeDirection.getOrientation(event.face);
-                    List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x + (dir.offsetX / 6F), event.y + (dir.offsetY / 6F) - 1.0F, event.z + (dir.offsetZ / 6F), event.x + (dir.offsetX / 6F) + 1, event.y + (dir.offsetY / 6F) + 2.0F, event.z + (dir.offsetZ / 6F) + 1));
+                    List list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                     for (Object obj : list) {
                         if (obj == player) {
                             canStick = true;
                         }
                     }
-                    if (event.world.isRemote && canStick && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockX", event.x);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockY", event.y);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockZ", event.z);
-
-                        player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", true);
-                        player.motionX = 0.0F;
-                        player.motionY = 0.0F;
-                        player.motionZ = 0.0F;
-                        player.fallDistance = 0.0F;
-                        SteamcraftClientPacketHandler.sendGrapplePacket(player, event.x, event.y, event.z);
-                    }
-                } else {
-                    ItemExosuitArmor chest = (ItemExosuitArmor) player.getEquipmentInSlot(3).getItem();
-                    boolean canStick = false;
-                    ForgeDirection dir = ForgeDirection.getOrientation(event.face);
-                    List list = event.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(event.x - 0.5F, event.y + (dir.offsetY / 6F) - 0.4F, event.z - 0.20F, event.x + 0.5F + 1, event.y + (dir.offsetY / 6F) + 1, event.z + 0.5F + 1));
-                    for (Object obj : list) {
-                        if (obj == player) {
-                            canStick = true;
+                    if (canStick && chestArmor.hasUpgrade(chest, SteamcraftItems.pitonDeployer)) {
+                        if (!world.isRemote) {
+                            chest.stackTagCompound.setFloat("x", (float) player.posX);
+                            chest.stackTagCompound.setFloat("z", (float) player.posZ);
+                            chest.stackTagCompound.setFloat("y", (float) player.posY);
+                            chest.stackTagCompound.setInteger("blockX", event.x);
+                            chest.stackTagCompound.setInteger("blockY", event.y);
+                            chest.stackTagCompound.setInteger("blockZ", event.z);
+                            chest.stackTagCompound.setBoolean("grappled", true);
                         }
-                    }
-                    if (canStick && event.world.isRemote && chest.hasUpgrade(player.getEquipmentInSlot(3), SteamcraftItems.pitonDeployer)) {
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("x", (float) player.posX);
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("z", (float) player.posZ);
-                        player.getEquipmentInSlot(3).stackTagCompound.setFloat("y", (float) player.posY);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockX", event.x);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockY", event.y);
-                        player.getEquipmentInSlot(3).stackTagCompound.setInteger("blockZ", event.z);
-                        player.getEquipmentInSlot(3).stackTagCompound.setBoolean("grappled", true);
                         player.motionX = 0.0F;
                         player.motionY = 0.0F;
                         player.motionZ = 0.0F;
                         player.fallDistance = 0.0F;
-                        SteamcraftClientPacketHandler.sendGrapplePacket(player, event.x, event.y, event.z);
                     }
                 }
             }
 
-        }
-
-        if (true &&
-                event.action == Action.RIGHT_CLICK_BLOCK &&
-                event.entityPlayer != null &&
-                event.world != null &&
-                event.entityPlayer.isSneaking() &&
-                ((event.world.getTileEntity(event.x, event.y, event.z) != null &&
-                        event.world.getTileEntity(event.x, event.y, event.z) instanceof IDisguisableBlock) || event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe) &&
-                event.entityPlayer.getHeldItem() != null &&
-                event.entityPlayer.getHeldItem().getItem() instanceof ItemBlock) {
-            Block block = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
-            if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) && (block.getRenderType() == 0 || block.getRenderType() == 39 || block.getRenderType() == 31) && (block.renderAsNormalBlock() || (block == Blocks.glass && event.world.getBlock(event.x, event.y, event.z) == SteamcraftBlocks.pipe))) {
-                event.setCanceled(true);
-            }
-        }
-        if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && !event.entityPlayer.worldObj.isRemote) {
-            if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntitySteamHeater) {
-            }
-            if (event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof ISteamTransporter) {
-                ISteamTransporter trans = (ISteamTransporter) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
-                if (event.entityPlayer.worldObj.isRemote) {
-                    //////Steamcraft.log.debug("I AM THE CLIENT");
+            TileEntity tile = world.getTileEntity(x, y, z);
+            ItemStack held = player.getHeldItem();
+            if (player.isSneaking() && ((tile != null && tile instanceof IDisguisableBlock) ||
+              block == SteamcraftBlocks.pipe) && held != null &&
+              held.getItem() instanceof ItemBlock) {
+                Block block1 = Block.getBlockFromItem(event.entityPlayer.getHeldItem().getItem());
+                if (!(block1 instanceof BlockContainer) && !(block1 instanceof ITileEntityProvider) &&
+                  (block1.getRenderType() == 0 || block1.getRenderType() == 39 ||
+                    block1.getRenderType() == 31) && (block1.renderAsNormalBlock() ||
+                  (block1 == Blocks.glass && block == SteamcraftBlocks.pipe))) {
+                    event.setCanceled(true);
                 }
-                //FMLRelaunchLog.info(trans.getSteam() + " " + trans.getPressure() + " " + trans.getNetworkName() + "; " + trans.getNetwork(), "Snap");
-                //	log.debug("network: " + trans.getNetworkName() + "; net cap: "+trans.getNetwork().getCapacity()+"; net steam: " + trans.getNetwork().getSteam()+"; net press: "+trans.getNetwork().getPressure() +"; trans cap: "+trans.getCapacity()+" trans steam: "+trans.getSteam() + "; trans press: " + trans.getPressure() + ";");
             }
-
         }
     }
 

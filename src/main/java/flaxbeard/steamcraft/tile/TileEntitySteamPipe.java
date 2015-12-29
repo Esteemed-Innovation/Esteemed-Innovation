@@ -9,8 +9,7 @@ import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.codechicken.lib.raytracer.IndexedCuboid6;
 import flaxbeard.steamcraft.codechicken.lib.raytracer.RayTracer;
 import flaxbeard.steamcraft.codechicken.lib.vec.Cuboid6;
-import flaxbeard.steamcraft.packet.SteamcraftClientPacketHandler;
-import flaxbeard.steamcraft.packet.SteamcraftServerPacketHandler;
+import flaxbeard.steamcraft.network.ConnectPacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -315,15 +314,14 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     return false;
                 }
 
-                SteamcraftClientPacketHandler.sendConnectPacket(player, x, y, z, hit);
+                ConnectPacket packet = new ConnectPacket(world, x, y, z, hit.subHit);
+                Steamcraft.channel.sendToServer(packet);
             }
         }
         return false;
-
     }
 
-    public void connectDisconnect(World world,
-                                  int x, int y, int z, int subHit) {
+    public void connectDisconnect(World world, int x, int y, int z, int subHit) {
         //Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
         //If hit a part from 0 to 5 (direction) and hit me
         if ((subHit >= 0) && (subHit < 6) && world.getBlock(x, y, z) instanceof BlockPipe) {
@@ -394,7 +392,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             if (this.getSteamShare() > 0) {
                 //world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
                 ForgeDirection d = ForgeDirection.getOrientation(subHit);
-                SteamcraftServerPacketHandler.sendPipeConnectDisconnectPacket(getDimension(), xCoord + 0.5F + (d.offsetX / 2F), yCoord + 0.5F + (d.offsetY / 2F), zCoord + 0.5F + (d.offsetZ / 2F));
             }
             world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, "steamcraft:wrench", 2.0F, 0.9F);
 
