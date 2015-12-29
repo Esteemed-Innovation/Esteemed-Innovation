@@ -11,7 +11,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockValvePipe extends BlockPipe {
-
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {
         if (MathHelper.abs((float) elb.posX - (float) x) < 2.0F && MathHelper.abs((float) elb.posZ - (float) z) < 2.0F) {
             double d0 = elb.posY + 1.82D - (double) elb.yOffset;
@@ -37,10 +36,11 @@ public class BlockValvePipe extends BlockPipe {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if ((tileEntity != null && tileEntity instanceof TileEntityValvePipe)) {
+        if ((tileEntity != null && tileEntity instanceof TileEntityValvePipe) &&
+          neighbor.canProvidePower()) {
             TileEntityValvePipe valve = (TileEntityValvePipe) tileEntity;
+            boolean flag = !world.isBlockIndirectlyGettingPowered(x, y, z);
             valve.updateRedstoneState(flag);
         }
     }
@@ -55,7 +55,7 @@ public class BlockValvePipe extends BlockPipe {
         if (player.getHeldItem() == null || !(player.getHeldItem().getItem() instanceof ItemBlock)) {
             TileEntityValvePipe tile = (TileEntityValvePipe) world.getTileEntity(x, y, z);
             if (!tile.isTurning()) {
-                tile.setTurining();
+                tile.setTurning();
                 //Steamcraft.log.debug(tile.getNetworkName());
             }
         }

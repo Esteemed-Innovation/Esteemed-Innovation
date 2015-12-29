@@ -20,24 +20,26 @@ import net.minecraftforge.fluids.IFluidHandler;
 import java.util.ArrayList;
 
 public class TileEntityValvePipe extends TileEntitySteamPipe {
-
     public boolean open = true;
     public int turnTicks = 0;
     private boolean turning;
     private boolean wasTurning = false;
     private boolean redstoneState;
-    private boolean isInitialized = false;
     private boolean waitingOpen = false;
 
     public TileEntityValvePipe() {
         super(0);
     }
 
+    /**
+     * Updates the valve's redstone state, and opens/closes it accordingly.
+     * @param flag True to open it, false to close it.
+     */
     public void updateRedstoneState(boolean flag) {
-		if (Config.enableRedstoneValvePipe && (flag != redstoneState)) {
-			if (!this.turning) {
-				this.setTurining();
-			}
+		if (Config.enableRedstoneValvePipe) {
+			if (!this.isTurning()) {
+                this.setOpen(flag);
+            }
 		}
         redstoneState = flag;
     }
@@ -90,7 +92,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 
     @Override
     public boolean doesConnect(ForgeDirection face) {
-        return face != dir() ? super.doesConnect(face) : false;
+        return face != dir() && super.doesConnect(face);
     }
 
     @Override
@@ -119,7 +121,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                         i++;
                     }
                 }
-                ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+                ArrayList<ForgeDirection> myDirections = new ArrayList<>();
                 for (ForgeDirection direction : directions) {
                     if (worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
                         TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
@@ -180,7 +182,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
 
 
-            ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+            ArrayList<ForgeDirection> myDirections = new ArrayList<>();
             for (ForgeDirection direction : directions) {
             	final TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
                 if (tile != null) {
@@ -246,7 +248,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         return turning;
     }
 
-    public void setTurining() {
+    public void setTurning() {
         this.turning = true;
         this.turnTicks = 0;
     }
