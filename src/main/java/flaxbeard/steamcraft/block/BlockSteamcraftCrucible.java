@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -35,7 +33,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
-
     private static float px = (1.0F / 16.0F);
     public IIcon innerIcon;
     public IIcon topIcon;
@@ -105,10 +102,10 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
             EntityItem item = (EntityItem) entity;
             if (isCrucibleHeated(world, x, y, z)) {
                 MutablePair output;
-                if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
-                    output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
-                } else if (SteamcraftRegistry.smeltThings.containsKey(MutablePair.of(item.getEntityItem().getItem(), -1))) {
-                    output = SteamcraftRegistry.smeltThings.get(MutablePair.of(item.getEntityItem().getItem(), -1));
+                if (SteamcraftRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
+                    output = SteamcraftRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
+                } else if (SteamcraftRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), -1))) {
+                    output = SteamcraftRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), -1));
 
                 } else {
                     return;
@@ -187,9 +184,9 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
             TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
             for (CrucibleLiquid liquid : tile.contents) {
                 Tuple3 tuple = new Tuple3(player.getHeldItem().getItem(), player.getHeldItem().getItemDamage(), liquid);
-                if (SteamcraftRegistry.dunkThings.get(tuple) != null) {
-                    int needed = SteamcraftRegistry.dunkThings.get(tuple).left;
-                    ItemStack result = SteamcraftRegistry.dunkThings.get(tuple).right.copy();
+                if (SteamcraftRegistry.dunkRecipes.containsKey(tuple)) {
+                    int needed = SteamcraftRegistry.dunkRecipes.get(tuple).left;
+                    ItemStack result = SteamcraftRegistry.dunkRecipes.get(tuple).right.copy();
                     if (tile.number.get(liquid) >= needed) {
                         player.inventory.decrStackSize(player.inventory.currentItem, 1);
                         int currNum = tile.number.get(liquid);
@@ -208,27 +205,29 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
                         break;
                     }
-                } else if (SteamcraftRegistry.dunkThings.get(new Tuple3(player.getHeldItem().getItem(), -1, liquid)) != null) {
-                    tuple = new Tuple3(player.getHeldItem().getItem(), -1, liquid);
-                    int needed = SteamcraftRegistry.dunkThings.get(tuple).left;
-                    ItemStack result = SteamcraftRegistry.dunkThings.get(tuple).right.copy();
-                    if (tile.number.get(liquid) >= needed) {
-                        player.inventory.decrStackSize(player.inventory.currentItem, 1);
-                        int currNum = tile.number.get(liquid);
-                        currNum -= needed;
-                        if (currNum == 0) {
-                            tile.contents.remove(liquid);
-                        }
-                        tile.number.remove(liquid);
-                        tile.number.put(liquid, currNum);
-                        if (!player.inventory.addItemStackToInventory(result)) {
-                            if (!player.worldObj.isRemote) {
-                                player.entityDropItem(result, 0.0F);
+                } else {
+                    Tuple3 tuple1 = new Tuple3(player.getHeldItem(), -1, liquid);
+                    if (SteamcraftRegistry.dunkRecipes.containsKey(tuple1)) {
+                        int needed = SteamcraftRegistry.dunkRecipes.get(tuple1).left;
+                        ItemStack result = SteamcraftRegistry.dunkRecipes.get(tuple1).right.copy();
+                        if (tile.number.get(liquid) >= needed) {
+                            player.inventory.decrStackSize(player.inventory.currentItem, 1);
+                            int currNum = tile.number.get(liquid);
+                            currNum -= needed;
+                            if (currNum == 0) {
+                                tile.contents.remove(liquid);
                             }
-                        }
-                        tile.needsUpdate = true;
+                            tile.number.remove(liquid);
+                            tile.number.put(liquid, currNum);
+                            if (!player.inventory.addItemStackToInventory(result)) {
+                                if (!player.worldObj.isRemote) {
+                                    player.entityDropItem(result, 0.0F);
+                                }
+                            }
+                            tile.needsUpdate = true;
 
-                        break;
+                            break;
+                        }
                     }
                 }
             }

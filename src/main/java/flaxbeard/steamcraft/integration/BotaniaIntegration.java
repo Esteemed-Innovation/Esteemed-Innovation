@@ -73,11 +73,11 @@ public class BotaniaIntegration {
         CrucibleLiquid liquidTerrasteel = new CrucibleLiquid("terrasteel",
           new ItemStack(ModItems.manaResource, 1, 4),
           new ItemStack(SteamcraftItems.steamcraftPlate, 1, 6), null, null, 64, 191, 13);
-        SteamcraftRegistry.liquids.add(liquidTerrasteel);
+        SteamcraftRegistry.registerLiquid(liquidTerrasteel);
 
-        SteamcraftRegistry.registerSmeltThingOredict("ingotTerrasteel", liquidTerrasteel, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetTerrasteel", liquidTerrasteel, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftTerrasteel", liquidTerrasteel,
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotTerrasteel", liquidTerrasteel, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetTerrasteel", liquidTerrasteel, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftTerrasteel", liquidTerrasteel,
           6);
         if (Config.enableTerrasteelPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Terrasteel",
@@ -92,17 +92,17 @@ public class BotaniaIntegration {
         SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium",
           new ItemStack(SteamcraftItems.exosuitPlate, 1, 7), liquidElementium);
 
-        SteamcraftRegistry.liquids.add(liquidElementium);
+        SteamcraftRegistry.registerLiquid(liquidElementium);
         for (int i = 0; i < 16; i++) {
             BookRecipeRegistry.addRecipe("floralLaurel" + i, new ShapedOreRecipe(
               new ItemStack(floralLaurel), "fff", "flf", "fff",
               'f', new ItemStack(ModItems.petal, 1, i),
               'l', new ItemStack(ModItems.manaResource, 1, 3)));
         }
-        SteamcraftRegistry.registerSmeltThing(ModItems.manaResource, 7, liquidElementium, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("ingotElementium", liquidElementium, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetElementium", liquidElementium, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftElementium", liquidElementium,
+        SteamcraftRegistry.registerMeltRecipe(ModItems.manaResource, 7, liquidElementium, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotElementium", liquidElementium, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetElementium", liquidElementium, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftElementium", liquidElementium,
           6);
         if (Config.enableElementiumPlate) {
             SteamcraftRecipes.addExosuitPlateRecipes("exoElementium", "plateSteamcraftElementium",

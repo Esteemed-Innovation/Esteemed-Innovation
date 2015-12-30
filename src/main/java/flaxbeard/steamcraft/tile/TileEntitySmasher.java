@@ -595,11 +595,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     }
 
     public static class SmashablesRegistry {
-    	
-    	public final Map<Item, ItemStack> wildcards = new HashMap<Item, ItemStack>();
-    	public final Map<String, ItemStack> oreDicts = new HashMap<String, ItemStack>();
-    	public final Map<ItemStack, ItemStack> registry = new HashMap<ItemStack, ItemStack>();
-    	
+    	public final Map<Item, ItemStack> wildcards = new HashMap<>();
+    	public final Map<String, ItemStack> oreDicts = new HashMap<>();
+    	public final Map<ItemStack, ItemStack> registry = new HashMap<>();
+
     	public ItemStack getOutput(ItemStack input) {
     		if (input == null) {
     			return null;
@@ -617,7 +616,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     					}
     				}
     			}
-    			
+
     			if (output == null) {
     				for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
     					if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
@@ -629,22 +628,21 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     				}
     			}
     		}
-    		
     		return ItemStack.copyItemStack(output);
     	}
-    	
+
     	public void registerSmashable(String input, ItemStack output) {
     		oreDicts.put(input, output);
     	}
-    	
+
     	public void registerSmashable(Block input, ItemStack output) {
     		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
     	}
-    	
+
     	public void registerSmashable(Item input, ItemStack output) {
     		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
     	}
-    	
+
     	public void registerSmashable(ItemStack input, ItemStack output) {
     		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
     			wildcards.put(input.getItem(), output);
@@ -652,5 +650,25 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     			registry.put(input, output);
     		}
     	}
+
+        public void removeSmashable(String input, ItemStack output) {
+            oreDicts.remove(input, output);
+        }
+
+        public void removeSmashable(Block input, ItemStack output) {
+            oreDicts.remove(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+        }
+
+        public void removeSmashable(Item input, ItemStack output) {
+            oreDicts.remove(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+        }
+
+        public void removeSmashable(ItemStack input, ItemStack output) {
+            if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                wildcards.remove(input.getItem(), output);
+            } else {
+                registry.remove(input, output);
+            }
+        }
     }
 }

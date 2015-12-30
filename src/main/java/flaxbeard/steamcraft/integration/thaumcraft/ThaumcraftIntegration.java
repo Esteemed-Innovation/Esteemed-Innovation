@@ -37,29 +37,29 @@ public class ThaumcraftIntegration {
 
     public static void postInit() {
         CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(ConfigItems.itemNugget, 1, 6), null, 105, 87, 163);
-        SteamcraftRegistry.liquids.add(liquidThaumium);
+        SteamcraftRegistry.registerLiquid(liquidThaumium);
 
         goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
         GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
         BookRecipeRegistry.addRecipe("mask", new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x ",
           'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));
 
-        SteamcraftRegistry.registerSmeltThingOredict("ingotThaumium", liquidThaumium, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetThaumium", liquidThaumium, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftThaumium", liquidThaumium, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotThaumium", liquidThaumium, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetThaumium", liquidThaumium, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftThaumium", liquidThaumium, 6);
         if (Config.enableThaumiumPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Thaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), "Thaumium", "Thaumium", "steamcraft.plate.thaumium"));
             SteamcraftRecipes.addExosuitPlateRecipes("exoThaumium", "plateSteamcraftThaumium", new ItemStack(SteamcraftItems.exosuitPlate, 1, 5), liquidThaumium);
         }
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHoeThaumium, liquidThaumium, 18);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemShovelThaumium, liquidThaumium, 9);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemBootsThaumium, liquidThaumium, 36);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
-        SteamcraftRegistry.registerSmeltTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemSwordThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemPickThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemAxeThaumium, liquidThaumium, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemHoeThaumium, liquidThaumium, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemShovelThaumium, liquidThaumium, 9);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemBootsThaumium, liquidThaumium, 36);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemChestThaumium, liquidThaumium, 81);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemHelmetThaumium, liquidThaumium, 45);
+        SteamcraftRegistry.registerMeltRecipeTool(ConfigItems.itemLegsThaumium, liquidThaumium, 63);
 
 
         AspectList list = ThaumcraftApiHelper.getObjectAspects(new ItemStack(SteamcraftItems.steamcraftPlate, 1, OreDictionary.WILDCARD_VALUE));

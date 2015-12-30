@@ -133,9 +133,9 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                         furnace2.currentItemBurnTime = currentItemBurnTime;
                         furnace2.furnaceCookTime = furnaceCookTime;
                     }
-//					if (!prevHadYuck && furnace.getStackInSlot(2) != null && SteamcraftRegistry.steamedFoods.containsKey(furnace.getStackInSlot(2).getItem())) {
+//					if (!prevHadYuck && furnace.getStackInSlot(2) != null && SteamcraftRegistry.steamingRecipes.containsKey(furnace.getStackInSlot(2).getItem())) {
 //						int size = furnace.getStackInSlot(2).stackSize;
-//						ItemStack replacement = new ItemStack(SteamcraftRegistry.steamedFoods.get(furnace.getStackInSlot(2).getItem()));
+//						ItemStack replacement = new ItemStack(SteamcraftRegistry.steamingRecipes.get(furnace.getStackInSlot(2).getItem()));
 //						replacement.stackSize = size;
 //						furnace.setInventorySlotContents(2, replacement);
 //						this.worldObj.markBlockForUpdate(xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ);
@@ -158,7 +158,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
                         this.worldObj.markBlockForUpdate(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
                         //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     }
-                    this.prevHadYuck = !(furnace.getStackInSlot(2) == null || !SteamcraftRegistry.steamedFoods.containsKey(furnace.getStackInSlot(2).getItem()));
+                    this.prevHadYuck = !(furnace.getStackInSlot(2) == null || !SteamcraftRegistry.steamingRecipes.containsKey(furnace.getStackInSlot(2).getItem()));
                 }
             }
         }
@@ -170,18 +170,18 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
         } else {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(furnace.getStackInSlot(0));
             if (itemstack == null) return false;
-            if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
-                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).right;
-                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), -1)).left;
+            if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
+                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).right;
+                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).left;
                 if (meta == -1) {
                     itemstack = new ItemStack(item);
                 } else {
                     itemstack = new ItemStack(item, 0, meta);
                 }
             }
-            if (SteamcraftRegistry.steamedFoods.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
-                int meta = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
-                Item item = SteamcraftRegistry.steamedFoods.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
+            if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
+                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
+                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
                 if (meta == -1) {
                     itemstack = new ItemStack(item);
                 } else {

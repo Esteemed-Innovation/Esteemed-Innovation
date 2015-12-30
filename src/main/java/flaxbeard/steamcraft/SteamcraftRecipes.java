@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import flaxbeard.steamcraft.api.CrucibleFormula;
@@ -9,9 +8,6 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
-import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
-
-import java.util.Iterator;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,7 +17,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class SteamcraftRecipes {
-
     public static CrucibleLiquid liquidIron;
     public static CrucibleLiquid liquidZinc;
     public static CrucibleLiquid liquidCopper;
@@ -51,71 +46,62 @@ public class SteamcraftRecipes {
         liquidBrass = new CrucibleLiquid("brass", new ItemStack(SteamcraftItems.steamcraftIngot, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 4), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 3), new CrucibleFormula(liquidZinc, 1, liquidCopper, 3, 4), 242, 191, 66);
         SteamcraftRegistry.registerLiquid(liquidBrass);
 
-        SteamcraftRegistry.registerSmeltThingOredict("ingotGold", liquidGold, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("ingotIron", liquidIron, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("ingotZinc", liquidZinc, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("ingotCopper", liquidCopper, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("ingotBrass", liquidBrass, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotGold", liquidGold, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotIron", liquidIron, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotZinc", liquidZinc, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotCopper", liquidCopper, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotBrass", liquidBrass, 9);
 
-        SteamcraftRegistry.registerSmeltThingOredict("dustTinyGold", liquidGold, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("dustTinyIron", liquidIron, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("dustTinyZinc", liquidZinc, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("dustTinyCopper", liquidCopper, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("dustTinyBrass", liquidBrass, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustTinyGold", liquidGold, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustTinyIron", liquidIron, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustTinyZinc", liquidZinc, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustTinyCopper", liquidCopper, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustTinyBrass", liquidBrass, 1);
 
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftGold", liquidGold, 6);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftIron", liquidIron, 6);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftZinc", liquidZinc, 6);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftCopper", liquidCopper, 6);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftBrass", liquidBrass, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftGold", liquidGold, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftIron", liquidIron, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftZinc", liquidZinc, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftCopper", liquidCopper, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftBrass", liquidBrass, 6);
 
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetGold", liquidGold, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetIron", liquidIron, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetZinc", liquidZinc, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetCopper", liquidCopper, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetBrass", liquidBrass, 1);
-        SteamcraftRegistry.registerSmeltThing(Items.gold_nugget, liquidGold, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetGold", liquidGold, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetIron", liquidIron, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetZinc", liquidZinc, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetCopper", liquidCopper, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetBrass", liquidBrass, 1);
+        SteamcraftRegistry.registerMeltRecipe(Items.gold_nugget, liquidGold, 1);
 
-        SteamcraftRegistry.registerSmeltTool(Items.iron_sword, liquidIron, 18);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_pickaxe, liquidIron, 27);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_axe, liquidIron, 27);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_hoe, liquidIron, 18);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_shovel, liquidIron, 9);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_boots, liquidIron, 36);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_chestplate, liquidIron, 72);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_helmet, liquidIron, 45);
-        SteamcraftRegistry.registerSmeltTool(Items.iron_leggings, liquidIron, 63);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_sword, liquidIron, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_pickaxe, liquidIron, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_axe, liquidIron, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_hoe, liquidIron, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_shovel, liquidIron, 9);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_boots, liquidIron, 36);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_chestplate, liquidIron, 72);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_helmet, liquidIron, 45);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.iron_leggings, liquidIron, 63);
 
-        SteamcraftRegistry.registerSmeltTool(Items.golden_sword, liquidGold, 18);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_pickaxe, liquidGold, 27);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_axe, liquidGold, 27);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_hoe, liquidGold, 18);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_shovel, liquidGold, 9);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_boots, liquidGold, 36);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_chestplate, liquidGold, 72);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_helmet, liquidGold, 45);
-        SteamcraftRegistry.registerSmeltTool(Items.golden_leggings, liquidGold, 63);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_sword, liquidGold, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_pickaxe, liquidGold, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_axe, liquidGold, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_hoe, liquidGold, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_shovel, liquidGold, 9);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_boots, liquidGold, 36);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_chestplate, liquidGold, 72);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_helmet, liquidGold, 45);
+        SteamcraftRegistry.registerMeltRecipeTool(Items.golden_leggings, liquidGold, 63);
 
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.sword("Brass"), liquidBrass, 18);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.pick("Brass"), liquidBrass, 27);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.axe("Brass"), liquidBrass, 27);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.hoe("Brass"), liquidBrass, 18);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.shovel("Brass"), liquidBrass, 9);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.feet("Brass"), liquidBrass, 36);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.chest("Brass"), liquidBrass, 72);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.helm("Brass"), liquidBrass, 45);
-        SteamcraftRegistry.registerSmeltTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.sword("Brass"), liquidBrass, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.pick("Brass"), liquidBrass, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.axe("Brass"), liquidBrass, 27);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.hoe("Brass"), liquidBrass, 18);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.shovel("Brass"), liquidBrass, 9);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.feet("Brass"), liquidBrass, 36);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.chest("Brass"), liquidBrass, 72);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.helm("Brass"), liquidBrass, 45);
+        SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
-        SteamcraftRegistry.registerDunkThingOredict("ingotIron", liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot, 1, 3));
-        
-        //Potentially removes the iron liquid (this would break recipes trying to use it though)
-        /*Iterator i = SteamcraftRegistry.liquids.iterator();
-        for(int j = 0; i.hasNext(); j++){
-        	CrucibleLiquid liquid = (CrucibleLiquid) i.next();
-        	if(liquid.name.equals("iron")){
-        		SteamcraftRegistry.liquids.remove(j);
-        	}
-        }*/
+        SteamcraftRegistry.registerOreDictDunkRecipe("ingotIron", liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot, 1, 3));
     }
 
 
@@ -741,14 +727,14 @@ public class SteamcraftRecipes {
             stack.stackSize = 4;
             GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
         }
-        SteamcraftRegistry.registerSmeltThing(plate.getItem(), plate.getItemDamage(), liq, 24);
+        SteamcraftRegistry.registerMeltRecipe(plate.getItem(), plate.getItemDamage(), liq, 24);
     }
 
     public static void registerDustLiquids() {
-        SteamcraftRegistry.registerSmeltThingOredict("dustGold", liquidGold, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("dustIron", liquidIron, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("dustZinc", liquidZinc, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("dustCopper", liquidCopper, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("dustBrass", liquidBrass, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustGold", liquidGold, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustIron", liquidIron, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustZinc", liquidZinc, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustCopper", liquidCopper, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("dustBrass", liquidBrass, 9);
     }
 }

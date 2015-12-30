@@ -21,11 +21,11 @@ public class MiscIntegration {
               OreDictionary.getOres("ingotLead").get(0), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 9),
               OreDictionary.getOres("nuggetLead").size() > 0 ?
               OreDictionary.getOres("nuggetLead").get(0) : null, null, 118, 128, 157);
-            SteamcraftRegistry.liquids.add(liquidLead);
+            SteamcraftRegistry.registerLiquid(liquidLead);
 
-            SteamcraftRegistry.registerSmeltThingOredict("ingotLead", liquidLead, 9);
-            SteamcraftRegistry.registerSmeltThingOredict("nuggetLead", liquidLead, 1);
-            SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftLead", liquidLead, 6);
+            SteamcraftRegistry.registerMeltRecipeOreDict("ingotLead", liquidLead, 9);
+            SteamcraftRegistry.registerMeltRecipeOreDict("nuggetLead", liquidLead, 1);
+            SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftLead", liquidLead, 6);
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Lead",
               new ItemStack(SteamcraftItems.exosuitPlate, 1, 11), "Lead", "Lead", "steamcraft.plate.lead"));
             SteamcraftRecipes.addExosuitPlateRecipes("exoLead", "plateSteamcraftLead",

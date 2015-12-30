@@ -13,9 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
@@ -445,28 +443,28 @@ public class SteamcraftItems {
         steamedFish = new ItemSteamedFood((ItemFood) Items.cooked_fished)
           .setUnlocalizedName("steamcraft:steamedFish").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedFish, "steamedFish");
-        SteamcraftRegistry.addSteamFood(Items.cooked_fished, steamedFish);
+        SteamcraftRegistry.addSteamingRecipe(Items.cooked_fished, steamedFish);
 
         ItemStack salmonStack = new ItemStack(Items.cooked_fished, 1, 1);
         steamedSalmon = new ItemSteamedFood((ItemFood) salmonStack.getItem(), salmonStack)
           .setUnlocalizedName("steamcraft:steamedSalmon").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedSalmon, "steamedSalmon");
-        SteamcraftRegistry.addSteamFood(Items.cooked_fished, 1, steamedSalmon, -1);
+        SteamcraftRegistry.addSteamingRecipe(Items.cooked_fished, 1, steamedSalmon, -1);
 
         steamedChicken = new ItemSteamedFood((ItemFood) Items.cooked_chicken)
           .setUnlocalizedName("steamcraft:steamedChicken").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedChicken, "steamedChicken");
-        SteamcraftRegistry.addSteamFood(Items.cooked_chicken, steamedChicken);
+        SteamcraftRegistry.addSteamingRecipe(Items.cooked_chicken, steamedChicken);
 
         steamedBeef = new ItemSteamedFood((ItemFood) Items.cooked_beef)
           .setUnlocalizedName("steamcraft:steamedBeef").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedBeef, "steamedBeef");
-        SteamcraftRegistry.addSteamFood(Items.cooked_beef, steamedBeef);
+        SteamcraftRegistry.addSteamingRecipe(Items.cooked_beef, steamedBeef);
 
         steamedPorkchop = new ItemSteamedFood((ItemFood) Items.cooked_porkchop)
           .setUnlocalizedName("steamcraft:steamedPorkchop").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(steamedPorkchop, "steamedPorkchop");
-        SteamcraftRegistry.addSteamFood(Items.cooked_porkchop, steamedPorkchop);
+        SteamcraftRegistry.addSteamingRecipe(Items.cooked_porkchop, steamedPorkchop);
     }
 
     private static void registerSteamTools() {

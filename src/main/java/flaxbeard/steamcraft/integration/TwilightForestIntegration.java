@@ -9,7 +9,6 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
 import twilightforest.item.TFItems;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class TwilightForestIntegration {
@@ -17,12 +16,12 @@ public class TwilightForestIntegration {
     public static void postInit() {
         CrucibleLiquid liquidFiery = new CrucibleLiquid("fiery", new ItemStack(TFItems.fieryIngot),
           new ItemStack(SteamcraftItems.steamcraftPlate, 1, 8), null, null, 91, 69, 69);
-        SteamcraftRegistry.liquids.add(liquidFiery);
+        SteamcraftRegistry.registerLiquid(liquidFiery);
 
-        SteamcraftRegistry.registerSmeltThingOredict("fieryIngot", liquidFiery, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetFiery", liquidFiery, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("fieryNugget", liquidFiery, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftFiery", liquidFiery, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("fieryIngot", liquidFiery, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetFiery", liquidFiery, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("fieryNugget", liquidFiery, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftFiery", liquidFiery, 6);
         if (Config.enableFieryPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Fiery",
               new ItemStack(SteamcraftItems.exosuitPlate, 1, 8), "Fiery", "Fiery",

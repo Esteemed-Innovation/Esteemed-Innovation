@@ -16,14 +16,14 @@ public class EnderIOIntegration {
         CrucibleLiquid liquidVibrant = new CrucibleLiquid("vibrant",
           new ItemStack(EnderIO.itemAlloy, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate,
           1, 10), new ItemStack(EnderIO.itemMaterial, 1, 4), null, 124, 179, 56);
-        SteamcraftRegistry.liquids.add(liquidVibrant);
+        SteamcraftRegistry.registerLiquid(liquidVibrant);
 
-        SteamcraftRegistry.registerSmeltThing(EnderIO.itemAlloy, 2, liquidVibrant, 9);
-        SteamcraftRegistry.registerSmeltThing(EnderIO.itemMaterial, 4, liquidVibrant, 1);
+        SteamcraftRegistry.registerMeltRecipe(EnderIO.itemAlloy, 2, liquidVibrant, 9);
+        SteamcraftRegistry.registerMeltRecipe(EnderIO.itemMaterial, 4, liquidVibrant, 1);
 
-        SteamcraftRegistry.registerSmeltThingOredict("ingotVibrant", liquidVibrant, 9);
-        SteamcraftRegistry.registerSmeltThingOredict("nuggetVibrant", liquidVibrant, 1);
-        SteamcraftRegistry.registerSmeltThingOredict("plateSteamcraftVibrant", liquidVibrant, 6);
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotVibrant", liquidVibrant, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetVibrant", liquidVibrant, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftVibrant", liquidVibrant, 6);
         if (Config.enableVibrantPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Vibrant",
               new ItemStack(SteamcraftItems.exosuitPlate, 1, 12), "Vibrant", "Vibrant",
