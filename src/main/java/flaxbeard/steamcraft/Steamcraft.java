@@ -80,6 +80,7 @@ public class Steamcraft {
 
     public static String PLAYER_PROPERTY_ID = "FSPPlayerProperties";
     public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
+    public static String MERCHANT_PROPERTY_ID = "FSPMerchantProperties";
 
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;

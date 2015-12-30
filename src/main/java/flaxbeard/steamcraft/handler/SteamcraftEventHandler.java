@@ -19,6 +19,7 @@ import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
+import flaxbeard.steamcraft.entity.ExtendedPropertiesMerchant;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
@@ -225,6 +226,9 @@ public class SteamcraftEventHandler {
         } else if (entity instanceof EntityVillager) {
             entity.registerExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID,
               new ExtendedPropertiesVillager());
+        } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
+            entity.registerExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID,
+              new ExtendedPropertiesMerchant());
         }
     }
 
@@ -1780,19 +1784,9 @@ public class SteamcraftEventHandler {
         if (playerHasFrequencyShifter(player) && (target instanceof EntityWolf ||
           target instanceof EntityOcelot)) {
             EntityLiving living = (EntityLiving) target;
-            String merchantName;
-            int maximumTrades;
-            NBTTagCompound entityNBT = living.getEntityData();
-            if (!entityNBT.hasKey("maximumTrades")) {
-                Random random = new Random();
-                entityNBT.setInteger("maximumTrades", random.nextInt(7));
-            }
-            if (!entityNBT.hasKey("totalTrades")) {
-                entityNBT.setInteger("totalTrades", 0);
-            }
-            maximumTrades = entityNBT.getInteger("maximumTrades");
-            int totalTrades = entityNBT.getInteger("totalTrades");
-            if (totalTrades > maximumTrades) {
+            ExtendedPropertiesMerchant nbt = (ExtendedPropertiesMerchant)
+              living.getExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID);
+            if (nbt.totalTrades > nbt.maximumTrades) {
                 if (living instanceof EntityWolf) {
                     EntityWolf wolf = (EntityWolf) living;
                     wolf.setAngry(true);
@@ -1801,15 +1795,14 @@ public class SteamcraftEventHandler {
                     living.targetTasks.addTask(3, new EntityAIHurtByTarget(cat, true));
                 }
             } else {
-                if (entityNBT.hasKey("merchantName")) {
-                    merchantName = entityNBT.getString("merchantName");
-                } else {
-                    merchantName = merchantNames[new Random().nextInt(merchantNames.length)];
+                if (living.hasCustomNameTag()) {
+                    nbt.merchantName = living.getCustomNameTag();
                 }
-                FrequencyMerchant merchant = new FrequencyMerchant(living, merchantName);
+                String name = nbt.merchantName;
+                FrequencyMerchant merchant = new FrequencyMerchant(living, name);
                 merchant.setCustomer(player);
-                player.displayGUIMerchant(merchant, merchantName);
-                entityNBT.setInteger("totalTrades", entityNBT.getInteger("totalTrades") + 1);
+                player.displayGUIMerchant(merchant, name);
+                nbt.totalTrades += 1;
             }
         }
     }
