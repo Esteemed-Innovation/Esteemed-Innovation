@@ -24,6 +24,7 @@ public enum ExosuitTexture {
     PLATE_THAUMIUM("exoPlateThaumium_%s"),
     PLATE_VIBRANT("exoPlateVibrant_%s"),
     PLATE_YETI("exoPlateYeti_%s"),
+    PLATE_GILDED("exoPlateGilded_%s"),
     TANK("exo_3", 1),
     TANK_GREY("exo_3_grey", 1),
     WINGS("wings", 1);
