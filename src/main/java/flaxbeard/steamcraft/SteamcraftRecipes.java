@@ -104,6 +104,8 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
         SteamcraftRegistry.registerOreDictDunkRecipe("ingotIron", liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot, 1, 3));
+        SteamcraftRegistry.registerOreDictDunkRecipe("plateSteamcraftIron", liquidGold, 1,
+          new ItemStack(SteamcraftItems.steamcraftPlate, 1, 12));
     }
 
 
@@ -398,6 +400,10 @@ public class SteamcraftRecipes {
         }
         if (Config.enableBrassPlate) {
             addExosuitPlateRecipes("exoBrass", "plateSteamcraftBrass", new ItemStack(SteamcraftItems.exosuitPlate, 1, 4), liquidBrass);
+        }
+        if (Config.enableGildedIronPlate) {
+            addExosuitPlateRecipes("exoGildedIron", "plateSteamcraftGildedIron",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 14));
         }
         if (Config.enableEnderShroud) {
             BookRecipeRegistry.addRecipe("enderShroud", new ShapedOreRecipe(new ItemStack(SteamcraftItems.enderShroud), " g ", "geg", " g ",

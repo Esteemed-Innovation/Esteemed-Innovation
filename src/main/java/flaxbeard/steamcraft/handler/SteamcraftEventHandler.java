@@ -14,6 +14,7 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.*;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.event.AnimalTradeEvent;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
@@ -815,16 +816,23 @@ public class SteamcraftEventHandler {
     public void doubleExp(PlayerPickupXpEvent event) {
         EntityPlayer player = event.entityPlayer;
         for (int i = 1; i < 5; i++) {
-            float multValu = 1;
+            float multiplier = 1;
             if (player.getEquipmentInSlot(i) != null) {
                 ItemStack stack = player.getEquipmentInSlot(i);
                 if (stack.getItem() instanceof ItemExosuitArmor) {
-                    if (((ItemExosuitArmor) stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Gold") {
-                        multValu *= 1.25F;
+                    ItemExosuitArmor armor = (ItemExosuitArmor) stack.getItem();
+                    if (armor.hasPlates(stack)) {
+                        ExosuitPlate plate = UtilPlates.getPlate(stack.stackTagCompound.getString("plate"));
+                        String id = plate.getIdentifier();
+                        if (id.equals("Gold")) {
+                            multiplier *= 1.25F;
+                        } else if (id.equals("Gilded Iron")) {
+                            multiplier *= 1.125;
+                        }
                     }
                 }
             }
-            event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue * multValu);
+            event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue * multiplier);
         }
     }
 

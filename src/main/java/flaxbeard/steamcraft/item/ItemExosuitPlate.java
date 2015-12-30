@@ -16,7 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 public class ItemExosuitPlate extends Item {
-    public IIcon[] icon = new IIcon[14];
+    public IIcon[] icon = new IIcon[15];
 
     public ItemExosuitPlate() {
         this.setHasSubtypes(true);
@@ -53,7 +53,7 @@ public class ItemExosuitPlate extends Item {
         this.icon[11] = ir.registerIcon("steamcraft:exosuitPlateLead");
         this.icon[12] = ir.registerIcon("steamcraft:exosuitPlateVibrant");
         this.icon[13] = ir.registerIcon("steamcraft:exosuitPlateEnderium");
-
+        this.icon[14] = ir.registerIcon("steamcraft:exosuitPlateGildedIron");
     }
 
     @Override
@@ -64,6 +64,7 @@ public class ItemExosuitPlate extends Item {
         par3List.add(new ItemStack(par1, 1, 2));
         par3List.add(new ItemStack(par1, 1, 3));
         par3List.add(new ItemStack(par1, 1, 4));
+        par3List.add(new ItemStack(par1, 1, 14));
         if (CrossMod.THAUMCRAFT) {
             par3List.add(new ItemStack(par1, 1, 5));
         }

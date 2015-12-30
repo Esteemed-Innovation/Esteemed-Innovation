@@ -16,7 +16,7 @@ import flaxbeard.steamcraft.integration.CrossMod;
 import java.util.List;
 
 public class ItemSteamcraftPlate extends Item {
-    public IIcon[] icon = new IIcon[12];
+    public IIcon[] icon = new IIcon[13];
 
     public ItemSteamcraftPlate() {
         this.setHasSubtypes(true);
@@ -46,7 +46,7 @@ public class ItemSteamcraftPlate extends Item {
         this.icon[9] = ir.registerIcon("steamcraft:plateLead");
         this.icon[10] = ir.registerIcon("steamcraft:plateVibrant");
         this.icon[11] = ir.registerIcon("steamcraft:plateEnderium");
-
+        this.icon[12] = ir.registerIcon("steamcraft:plateGildedIron");
     }
 
     @Override
@@ -76,6 +76,7 @@ public class ItemSteamcraftPlate extends Item {
         if (CrossMod.THERMAL_FOUNDATION) {
             par3List.add(new ItemStack(par1, 1, 11));
         }
+        par3List.add(new ItemStack(par1, 1, 12));
     }
 
     @Override

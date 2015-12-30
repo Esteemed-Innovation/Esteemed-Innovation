@@ -441,6 +441,7 @@ public class SteamcraftItems {
         OreDictionary.registerOre("ingotCopper", new ItemStack(steamcraftIngot, 1, 0));
         OreDictionary.registerOre("ingotZinc", new ItemStack(steamcraftIngot, 1, 1));
         OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot, 1, 2));
+        OreDictionary.registerOre("ingotGildedIron", new ItemStack(steamcraftIngot, 1, 3));
 
 
         ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("MONACLE", 5, new int[]{1, 3, 2, 1}, 15);
@@ -482,6 +483,7 @@ public class SteamcraftItems {
         OreDictionary.registerOre("plateSteamcraftLead", new ItemStack(steamcraftPlate, 1, 9));
         OreDictionary.registerOre("plateSteamcraftVibrant", new ItemStack(steamcraftPlate, 1, 10));
         OreDictionary.registerOre("plateSteamcraftEnderium", new ItemStack(steamcraftPlate, 1, 11));
+        OreDictionary.registerOre("plateSteamcraftGildedIron", new ItemStack(steamcraftPlate, 1, 12));
 
         exosuitPlate = new ItemExosuitPlate().setUnlocalizedName("steamcraft:exosuitPlate").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(exosuitPlate, "exosuitPlate");
@@ -501,6 +503,11 @@ public class SteamcraftItems {
         }
         if (Config.enableBrassPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass", new ItemStack(exosuitPlate, 1, 4), "Brass", "Brass", "steamcraft.plate.brass"));
+        }
+        if (Config.enableGildedIronPlate) {
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gilded Iron",
+              new ItemStack(exosuitPlate, 1, 14), "GildedIron", "GildedIron",
+              "steamcraft.plate.gilded"));
         }
     }
 
