@@ -1777,12 +1777,17 @@ public class SteamcraftEventHandler {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void openMerchant(EntityInteractEvent event) {
         EntityPlayer player = event.entityPlayer;
         Entity target = event.target;
+        ItemStack held = player.getHeldItem();
         if (playerHasFrequencyShifter(player) && (target instanceof EntityWolf ||
           target instanceof EntityOcelot)) {
+            boolean flag = held == null || !(held.getItem() instanceof ItemNameTag);
+            if (!flag) {
+                return;
+            }
             EntityLiving living = (EntityLiving) target;
             ExtendedPropertiesMerchant nbt = (ExtendedPropertiesMerchant)
               living.getExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID);
@@ -1837,7 +1842,7 @@ public class SteamcraftEventHandler {
     /**
      * Checks whether the given player has the Frequency Shifter upgrade, and enough steam in their suit.
      * @param player The player to check.
-     * @return
+     * @return True if the player has the Frequency Shifter upgrade.
      */
     private boolean playerHasFrequencyShifter(EntityPlayer player) {
         ItemStack helmet = player.getEquipmentInSlot(4);
