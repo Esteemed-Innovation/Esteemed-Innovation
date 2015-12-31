@@ -4,7 +4,6 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
@@ -23,7 +22,6 @@ import flaxbeard.steamcraft.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelHorse;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -156,8 +154,8 @@ public class ClientProxy extends CommonProxy {
                 BotaniaIntegration.extendRange(entity, amount);
             } else {
                 if (!(mc.playerController instanceof SteamcraftPlayerController)) {
-                    GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[]{"currentGameType", "field_78779_k", "k"});
-                    NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[]{"netClientHandler", "field_78774_b", "b"});
+                    GameType type = mc.theWorld.getWorldInfo().getGameType();
+                    NetHandlerPlayClient net = mc.getNetHandler();
                     SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
                     controller.setGameType(type);
                     mc.playerController = controller;
@@ -178,8 +176,8 @@ public class ClientProxy extends CommonProxy {
                 BotaniaIntegration.checkRange(entity);
             } else {
                 if (!(mc.playerController instanceof SteamcraftPlayerController)) {
-                    GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[]{"currentGameType", "field_78779_k", "k"});
-                    NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class, mc.playerController, new String[]{"netClientHandler", "field_78774_b", "b"});
+                    GameType type = mc.theWorld.getWorldInfo().getGameType();
+                    NetHandlerPlayClient net = mc.getNetHandler();
                     SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
                     controller.setGameType(type);
                     mc.playerController = controller;

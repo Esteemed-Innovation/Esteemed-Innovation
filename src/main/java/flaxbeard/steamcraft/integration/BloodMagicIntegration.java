@@ -1,8 +1,5 @@
 package flaxbeard.steamcraft.integration;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -12,12 +9,10 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.integration.thaumcraft.LifeEssenceCap;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
-import WayofTime.alchemicalWizardry.common.items.EnergyBattery;
-
 import WayofTime.alchemicalWizardry.common.items.EnergyItems;
 import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.ModItems;
-import net.minecraft.block.Block;
+import WayofTime.alchemicalWizardry.api.items.interfaces.IBloodOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,8 +22,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import java.lang.reflect.Method;
 
 public class BloodMagicIntegration {
 
@@ -43,25 +36,20 @@ public class BloodMagicIntegration {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static void clickLeft(PlayerInteractEvent event) {
         if (!event.world.isRemote && (event.action == Action.RIGHT_CLICK_AIR || event.action ==
           Action.RIGHT_CLICK_BLOCK)) {
-            try {
-                Class energyBatteryClass = Class.forName(
-                  "WayofTime.alchemicalWizardry.common.items.EnergyBattery");
-                if (event.entityPlayer.getHeldItem() != null &&
-                  energyBatteryClass.isInstance(event.entityPlayer.getHeldItem().getItem())) {
+            ItemStack stack = event.entityPlayer.getHeldItem();
+            if (stack != null) {
+                Item item = stack.getItem();
+                if (item != null && item instanceof IBloodOrb) {
                     LifeEssenceCap data = getData(event.entityPlayer.getCommandSenderName());
-                    int cap = ((Integer)ReflectionHelper.getPrivateValue(energyBatteryClass,
-                      event.entityPlayer.getHeldItem().getItem(), 0)).intValue();
+                    int cap = ((IBloodOrb) item).getMaxEssence();
                     if (cap > data.cap) {
                         data.cap = cap;
                         data.markDirty();
                     }
                 }
-            } catch (ClassNotFoundException e) {
-                // Dump, shouldn't ever happen
             }
         }
     }

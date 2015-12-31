@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.commons.io.FileUtils;
 
@@ -191,7 +190,7 @@ public class Config {
 
 
     public static void load(FMLPreInitializationEvent event) {
-        File configurationDir = ReflectionHelper.getPrivateValue(FMLPreInitializationEvent.class, event, 2);
+        File configurationDir = event.getModConfigurationDirectory();
         File oldConfigFile = new File(configurationDir, "Steamcraft.cfg");
         if (oldConfigFile.exists()) {
             try {

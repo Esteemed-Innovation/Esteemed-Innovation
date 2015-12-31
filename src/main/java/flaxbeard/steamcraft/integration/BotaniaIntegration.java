@@ -143,10 +143,8 @@ public class BotaniaIntegration {
     public static void extendRange(Entity entity, float amount) {
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.playerController instanceof IExtendedPlayerController)) {
-            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
-              mc.playerController, CURRENT_GAME_TYPE);
-            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
-              mc.playerController, NET_CLIENT_HANDLER);
+            GameType type = Minecraft.getMinecraft().theWorld.getWorldInfo().getGameType();
+            NetHandlerPlayClient net = Minecraft.getMinecraft().getNetHandler();
             SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
             controller.setGameType(type);
             mc.playerController = controller;
@@ -159,10 +157,8 @@ public class BotaniaIntegration {
     public static void checkRange(EntityLivingBase entity) {
         Minecraft mc = Minecraft.getMinecraft();
         if (!(mc.playerController instanceof IExtendedPlayerController)) {
-            GameType type = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
-              mc.playerController, CURRENT_GAME_TYPE);
-            NetHandlerPlayClient net = ReflectionHelper.getPrivateValue(PlayerControllerMP.class,
-              mc.playerController, NET_CLIENT_HANDLER);
+            GameType type = Minecraft.getMinecraft().theWorld.getWorldInfo().getGameType();
+            NetHandlerPlayClient net = Minecraft.getMinecraft().getNetHandler();
             SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
             controller.setGameType(type);
             mc.playerController = controller;

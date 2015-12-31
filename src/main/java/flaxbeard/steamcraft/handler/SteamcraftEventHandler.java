@@ -425,7 +425,7 @@ public class SteamcraftEventHandler {
             if (mc.thePlayer.inventory.armorInventory[3] != null && (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
                     || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead
                     && ((ItemExosuitArmor) mc.thePlayer.inventory.armorInventory[3].getItem()).hasUpgrade(mc.thePlayer.inventory.armorInventory[3], SteamcraftItems.tophat)))) {
-                IMerchant merch = ReflectionHelper.getPrivateValue(GuiMerchant.class, gui, 2);
+                IMerchant merch = gui.func_147035_g();
                 MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
                 if (recipeList != null) {
                     for (Object obj : recipeList) {
@@ -446,7 +446,6 @@ public class SteamcraftEventHandler {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public void updateVillagers(LivingUpdateEvent event) {
         if (event.entityLiving instanceof EntityVillager) {
@@ -497,7 +496,7 @@ public class SteamcraftEventHandler {
                 hasCustomer = true;
 
                 if (!nbt.lastHadCustomer) {
-                    MerchantRecipeList recipeList = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 5);
+                    MerchantRecipeList recipeList = villager.getRecipes(customer);
                     for (Object obj : recipeList) {
                         MerchantRecipe recipe = (MerchantRecipe) obj;
                         if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F)) {

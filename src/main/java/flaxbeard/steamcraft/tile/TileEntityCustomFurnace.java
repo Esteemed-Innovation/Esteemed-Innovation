@@ -287,9 +287,9 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
     @Override
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
-            ReflectionHelper.setPrivateValue(TileEntityFurnace.class, this, this.furnaceBurnTime, 4);
-            ReflectionHelper.setPrivateValue(TileEntityFurnace.class, this, this.currentItemBurnTime, 5);
-            ReflectionHelper.setPrivateValue(TileEntityFurnace.class, this, this.furnaceCookTime, 6);
+            super.furnaceBurnTime = this.furnaceBurnTime;
+            super.currentItemBurnTime = this.currentItemBurnTime;
+            super.furnaceCookTime = this.furnaceCookTime;
         }
         boolean flag = this.furnaceBurnTime > 0;
         boolean flag1 = false;
