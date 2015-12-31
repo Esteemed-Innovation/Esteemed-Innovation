@@ -195,6 +195,7 @@ public class Config {
     public static boolean enableDiamondHead;
     public static boolean enableHammerHead;
     public static boolean enableBattleDrill;
+    public static boolean enableStoneGrinder;
     public static int battleDrillConsumption;
 
     // saw
@@ -411,6 +412,7 @@ public class Config {
         enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
         enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);
         enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
+        enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();

@@ -124,6 +124,7 @@ public class SteamcraftItems {
     public static Item diamondHead;
     public static Item hammerHead;
     public static Item battleDrill;
+    public static Item stoneGrinder;
 
     // axe
     public static Item leafBlower;
@@ -586,6 +587,13 @@ public class SteamcraftItems {
                   "steamcraft:battleDrill", null, 1).setUnlocalizedName("steamcraft:battleDrill")
                   .setCreativeTab(Steamcraft.tabTools);
                 GameRegistry.registerItem(battleDrill, "battleDrill");
+            }
+
+            if (Config.enableStoneGrinder) {
+                stoneGrinder = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+                  "steamcraft:stoneGrinder", null, 1).setUnlocalizedName("steamcraft:stoneGrinder")
+                  .setCreativeTab(Steamcraft.tabTools);
+                GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
             }
 
             if (Config.enableLeafBlower) {

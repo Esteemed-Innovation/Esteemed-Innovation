@@ -28,10 +28,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
-import java.util.HashMap;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable {
-    public static HashMap<Integer, MutablePair<Integer, Integer>> stuff = new HashMap<>();
     public IIcon[] icon = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
@@ -40,12 +38,19 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static void checkNBT(EntityPlayer player) {
+    /**
+     * Checks if the player's ExtendedProperties drillInfo has been initialized. If it isn't, it
+     * creates it with the default values of 0, 0.
+     * @param player The player.
+     * @return The ExtendedPropertiesPlayer instance for the player.
+     */
+    public static ExtendedPropertiesPlayer checkNBT(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
           player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
         if (nbt.drillInfo == null) {
             nbt.drillInfo = MutablePair.of(0, 0);
         }
+        return nbt;
     }
 
     @Override
@@ -68,9 +73,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        checkNBT(player);
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.drillInfo;
         int ticks = (Integer) info.left;
@@ -87,10 +90,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @Override
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            checkNBT((EntityPlayer) player);
-            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-
+            ExtendedPropertiesPlayer nbt = checkNBT((EntityPlayer) player);
             MutablePair info = nbt.drillInfo;
             int ticks = (Integer) info.left;
             int speed = (Integer) info.right;
@@ -117,9 +117,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-        checkNBT(player);
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
             MutablePair info = nbt.drillInfo;
@@ -277,8 +275,8 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
      * @return
      */
     public boolean isWound(EntityPlayer player) {
-        checkNBT(player);
-        MutablePair info = stuff.get(player.getEntityId());
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        MutablePair info = nbt.drillInfo;
         return ((int) info.right > 0);
     }
 }

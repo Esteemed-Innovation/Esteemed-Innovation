@@ -37,7 +37,7 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.misc.FrequencyMerchant;
-
+import flaxbeard.steamcraft.misc.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -1718,6 +1718,48 @@ public class SteamcraftEventHandler {
                         world.playSoundEffect(player.posX, player.posY, player.posZ,
                           "steamcraft:hiss", 2.0F, 0.9F);
                         event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void grindStone(BlockEvent.HarvestDropsEvent event) {
+        if (event.harvester != null) {
+            EntityPlayer player = event.harvester;
+            ItemStack equipped = player.getCurrentEquippedItem();
+            if (equipped != null && equipped.getItem() != null) {
+                Item equippedItem = equipped.getItem();
+                if (equippedItem instanceof ItemSteamDrill) {
+                    ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
+                    if (event.block != null && !OreDictHelper.cobblestones.contains(
+                      MutablePair.of(Item.getItemFromBlock(event.block), event.blockMetadata)) &&
+                      drill.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
+                      drill.isWound(player)) {
+                        String harvestTool = event.block.getHarvestTool(event.blockMetadata);
+                        if (harvestTool != null && harvestTool.equals("pickaxe")) {
+                            boolean addedNugget = false;
+                            for (int i = 0; i < event.drops.size(); i++) {
+                                ItemStack drop = event.drops.get(i);
+                                MutablePair item = MutablePair.of(drop.getItem(), drop.getItemDamage());
+                                if (OreDictHelper.stones.contains(item) ||
+                                  OreDictHelper.cobblestones.contains(item)) {
+                                    event.drops.remove(i);
+                                    Random rand = new Random();
+                                    int chance = rand.nextInt(5);
+                                    if (chance == 3 && !addedNugget) {
+                                        int index = rand.nextInt(OreDictHelper.nuggets.size());
+                                        MutablePair pair = OreDictHelper.nuggets.get(index);
+                                        int size = rand.nextInt(3) + 1;
+                                        ItemStack nugget = new ItemStack((Item) pair.left,
+                                          size, (int) pair.right);
+                                        event.drops.add(nugget);
+                                        addedNugget = true;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
