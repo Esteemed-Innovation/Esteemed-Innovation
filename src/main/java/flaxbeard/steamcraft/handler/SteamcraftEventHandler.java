@@ -1,9 +1,9 @@
 package flaxbeard.steamcraft.handler;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -87,12 +87,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class SteamcraftEventHandler {
-
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
     private static final AttributeModifier exoBoost = new AttributeModifier(uuid, "EXOMOD", 0.2D, 2).setSaved(true);
     private static final UUID uuid2 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e6");
@@ -416,11 +416,66 @@ public class SteamcraftEventHandler {
         }
     }
 
+    private static Field lastBuyingPlayerField = null;
+    private static Field timeUntilResetField = null;
+    private static Field merchantField = null;
+    private static Field buyingListField = null;
+
+    private static Field getField(String fieldName, String obfName, Class clazz) {
+        Field field = null;
+        try {
+            field = clazz.getDeclaredField(obfName);
+        } catch (NoSuchFieldException e) {
+            FMLLog.warning("[FSP] Unable to find field " + fieldName + " with its obfuscated " +
+              "name. Trying to find it by its name " + fieldName);
+            try {
+                field = clazz.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e1) {
+                e1.printStackTrace();
+                String fields = "";
+                for (Field field1 : clazz.getDeclaredFields()) {
+                    if (fields.isEmpty()) {
+                        fields += field1.getName();
+                    } else {
+                        fields += ", " + field1.getName();
+                    }
+                }
+                FMLLog.warning("Unable to find " + fieldName + " field in " + clazz.getName() +
+                  "class. Available fields are: " + fields + ". Things are not going to work right.");
+            }
+        }
+        return field;
+    }
+
+    static {
+        FMLLog.info("[FSP] Getting some fields through reflection.");
+        lastBuyingPlayerField = getField("lastBuyingPlayer", "field_82189_bL", EntityVillager.class);
+        timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
+        merchantField = getField("field_147037_w", "field_147037_w", GuiMerchant.class);
+        buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
+
+        if (lastBuyingPlayerField != null) {
+            lastBuyingPlayerField.setAccessible(true);
+        }
+
+        if (timeUntilResetField != null) {
+            timeUntilResetField.setAccessible(true);
+        }
+
+        if (merchantField != null) {
+            merchantField.setAccessible(true);
+        }
+
+        if (buyingListField != null) {
+            buyingListField.setAccessible(true);
+        }
+    }
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void updateVillagersClientside(GuiScreenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        if (event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
+        if (merchantField != null && event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) event.gui;
             if (mc.thePlayer.inventory.armorInventory[3] != null && (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
                     || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead
@@ -441,18 +496,30 @@ public class SteamcraftEventHandler {
                     lastViewVillagerGui = true;
                 }
                 merch.setRecipes(recipeList);
-                ReflectionHelper.setPrivateValue(GuiMerchant.class, gui, merch, 2);
+                try {
+                    merchantField.set(gui, merch);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     @SubscribeEvent
     public void updateVillagers(LivingUpdateEvent event) {
-        if (event.entityLiving instanceof EntityVillager) {
+        if (event.entityLiving instanceof EntityVillager && timeUntilResetField != null &&
+          lastBuyingPlayerField != null) {
             EntityVillager villager = (EntityVillager) event.entityLiving;
-            Integer timeUntilReset = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 6);
-            String lastBuyingPlayer = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 9);
-            if (!villager.isTrading() && timeUntilReset == 39 && lastBuyingPlayer != null) {
+            Integer timeUntilReset = null;
+            String lastBuyingPlayer = null;
+            try {
+                timeUntilReset = timeUntilResetField.getInt(villager);
+                lastBuyingPlayer = (String) lastBuyingPlayerField.get(villager);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            if (!villager.isTrading() && timeUntilReset != null && timeUntilReset == 39 &&
+              lastBuyingPlayer != null) {
                 EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
                 if (player != null) {
                     if (player.inventory.armorInventory[3] != null && (player.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat)) {
@@ -482,7 +549,8 @@ public class SteamcraftEventHandler {
                 }
             }
         }
-        if (event.entityLiving instanceof EntityVillager && !event.entityLiving.worldObj.isRemote) {
+        if (event.entityLiving instanceof EntityVillager && !event.entityLiving.worldObj.isRemote &&
+          buyingListField != null) {
             EntityVillager villager = (EntityVillager) event.entityLiving;
             ExtendedPropertiesVillager nbt = (ExtendedPropertiesVillager)
               villager.getExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID);
@@ -507,14 +575,25 @@ public class SteamcraftEventHandler {
                             recipe.getSecondItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F);
                         }
                     }
-                    ReflectionHelper.setPrivateValue(EntityVillager.class, villager, recipeList, 5);
+
+                    try {
+                        buyingListField.set(villager, recipeList);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                     //customer.closeScreen();
                     //customer.displayGUIMerchant(villager, villager.getCustomNameTag());
                 }
             }
 
             if (!hasCustomer && nbt.lastHadCustomer) {
-                MerchantRecipeList recipeList = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, 5);
+                // We need to do reflection because we do not have the customer in this case.
+                MerchantRecipeList recipeList = null;
+                try {
+                    recipeList = (MerchantRecipeList) buyingListField.get(villager);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
                 if (recipeList != null) {
                     for (Object obj : recipeList) {
                         MerchantRecipe recipe = (MerchantRecipe) obj;
@@ -527,7 +606,11 @@ public class SteamcraftEventHandler {
                         }
                     }
                 }
-                ReflectionHelper.setPrivateValue(EntityVillager.class, villager, recipeList, 5);
+                try {
+                    buyingListField.set(villager, recipeList);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
 
             nbt.lastHadCustomer = hasCustomer;
