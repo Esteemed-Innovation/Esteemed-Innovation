@@ -106,6 +106,7 @@ public class SteamcraftEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
+    public int resyncExoBoostTicks = 0;
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
@@ -1070,69 +1071,83 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void handleSteamcraftArmorMining(PlayerEvent.BreakSpeed event) {
-        boolean hasPower = hasPower(event.entityLiving, 1);
-        int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-            if (CrossMod.BAUBLES) {
-                if (player.getHeldItem() != null && BaublesIntegration.checkForSurvivalist(player)) {
-                    if (player.getHeldItem().getItem() instanceof ItemTool) {
-                        if (player.getHeldItem().getItemDamage() >= player.getHeldItem().getMaxDamage() - 1) {
+        if (!(entity instanceof EntityPlayer)) {
+            return;
+        }
 
-                            event.newSpeed = 0.0F;
-                        }
-                    }
+        boolean hasPower = hasPower(entity, 1);
+        int armor = getExoArmor(entity);
+        if (hasPower && armor == 4) {
+            event.newSpeed = event.newSpeed * 1.2F;
+        }
+        EntityPlayer player = (EntityPlayer) entity;
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        ItemStack heldItemStack = player.getHeldItem();
+        if (heldItemStack == null) {
+            return;
+        }
+        Item heldItem = heldItemStack.getItem();
+        int itemDamage = heldItemStack.getItemDamage();
+        int maxDamage = heldItemStack.getMaxDamage();
 
-                }
-            } else if (player.getHeldItem() != null && hasItemInHotbar(player, SteamcraftItems.survivalist)) {
-                if (player.getHeldItem().getItem() instanceof ItemTool) {
-                    if (player.getHeldItem().getItemDamage() >= player.getHeldItem().getMaxDamage() - 1) {
+        /*
+        Survivalist's Toolkit
+         */
+        if (CrossMod.BAUBLES) {
+            if (BaublesIntegration.checkForSurvivalist(player)) {
+                if (heldItem instanceof ItemTool) {
+                    if (itemDamage >= maxDamage - 1) {
                         event.newSpeed = 0.0F;
                     }
                 }
-            }
-            if (player.getHeldItem() != null) {
-                if (player.getHeldItem().getItem() instanceof ItemSteamDrill) {
-                    ItemSteamDrill.checkNBT(player);
-                    MutablePair info = nbt.drillInfo;
-                    int speed = (Integer) info.right;
-                    if (speed > 0 && Items.iron_pickaxe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
-                        event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
-                    }
-                }
-                if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
-                    ItemSteamAxe.checkNBT(player);
-                    MutablePair info = nbt.axeInfo;
-                    int speed = (Integer) info.right;
-                    if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
-                        event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
-                    }
-                }
-                if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
-                    ItemSteamShovel.checkNBT(player);
-                    MutablePair info = nbt.shovelInfo;
-                    int speed = (Integer) info.right;
 
-                    if (speed > 0 && Items.diamond_shovel.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
-                        event.newSpeed *= 1.0F + 19.0F * (speed / 3000.0F);
-                    }
+            }
+        } else if (hasItemInHotbar(player, SteamcraftItems.survivalist)) {
+            if (heldItem instanceof ItemTool) {
+                if (itemDamage >= maxDamage - 1) {
+                    event.newSpeed = 0.0F;
                 }
             }
         }
 
+        /*
+        Steam Tools
+         */
+        if (player.getHeldItem().getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill.checkNBT(player);
+            MutablePair info = nbt.drillInfo;
+            int speed = (Integer) info.right;
+            if (speed > 0 && Items.iron_pickaxe.func_150893_a(heldItemStack, event.block) != 1.0F) {
+                event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
+            }
+        }
+        if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
+            ItemSteamAxe.checkNBT(player);
+            MutablePair info = nbt.axeInfo;
+            int speed = (Integer) info.right;
+            if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
+                event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
+            }
+        }
+        if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
+            ItemSteamShovel.checkNBT(player);
+            MutablePair info = nbt.shovelInfo;
+            int speed = (Integer) info.right;
 
-        if (hasPower && armor == 4) {
-            event.newSpeed = event.newSpeed * 1.2F;
+            if (speed > 0 && Items.diamond_shovel.func_150893_a(heldItemStack, event.block) != 1.0F) {
+                event.newSpeed *= 1.0F + 19.0F * (speed / 3000.0F);
+            }
         }
     }
 
     @SubscribeEvent
     public void handleFlippers(LivingEvent.LivingUpdateEvent event) {
-        int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;
+        if (!(entity instanceof EntityPlayer)) {
+            return;
+        }
         boolean hasPower = hasPower(entity, 1);
 
         if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
@@ -1158,114 +1173,115 @@ public class SteamcraftEventHandler {
             }
         }
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-            ItemStack armorItem1 = player.inventory.armorItemInSlot(1);
-            ItemStack armorItem0 = player.inventory.armorItemInSlot(0);
-            ItemStack chest = player.getEquipmentInSlot(3);
-            ItemStack leggings = player.getEquipmentInSlot(2);
-            if (armorItem1 != null && armorItem1.getItem() instanceof ItemExosuitArmor) {
-                //if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
-//				if (!stack.stackTagCompound.hasKey("aidTicks")) {
-//					stack.stackTagCompound.setInteger("aidTicks", -1);
-//				}
-//				int aidTicks = stack.stackTagCompound.getInteger("aidTicks");
-//
-//				if (aidTicks > 0) {
-//					aidTicks--;
-//				}
-//				if (aidTicks == 0) {
-//					if (!stack.stackTagCompound.hasKey("ticksNextHeal")) {
-//						stack.stackTagCompound.setInteger("ticksNextHeal", 0);
-//					}
-//					float damageAmount = stack.stackTagCompound.getInteger("damageAmount");
-//					int ticksNextHeal = stack.stackTagCompound.getInteger("ticksNextHeal");
-//					if (ticksNextHeal > 0) {
-//						ticksNextHeal--;
-//					}
-//					if (ticksNextHeal == 0) {
-//						//event.entityLiving.heal(1.0F);
-//						damageAmount -=1.0F;
-//						stack.stackTagCompound.setFloat("damageAmount", damageAmount);
-//						ticksNextHeal=5;
-//					}
-//					if (damageAmount == 0.0F) {
-//						aidTicks = -1;
-//					}
-//					stack.stackTagCompound.setInteger("ticksNextHeal", ticksNextHeal);
-//				}
-//				stack.stackTagCompound.setInteger("aidTicks", aidTicks);
-                //}
-            }
+        EntityPlayer player = (EntityPlayer) entity;
+        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
+          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+        ItemStack boots = player.inventory.armorItemInSlot(0);
+        ItemStack chest = player.getEquipmentInSlot(3);
+        ItemStack leggings = player.getEquipmentInSlot(2);
+        /*
+        if (armorItem1 != null && armorItem1.getItem() instanceof ItemExosuitArmor) {
+            if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
+				if (!stack.stackTagCompound.hasKey("aidTicks")) {
+					stack.stackTagCompound.setInteger("aidTicks", -1);
+				}
+				int aidTicks = stack.stackTagCompound.getInteger("aidTicks");
 
-            if (armorItem0 != null && armorItem0.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) armorItem0.getItem();
-                if (item.hasUpgrade(armorItem0, SteamcraftItems.doubleJump) && event.entity.onGround) {
-                    armorItem0.stackTagCompound.setBoolean("usedJump", false);
+				if (aidTicks > 0) {
+					aidTicks--;
+				}
+				if (aidTicks == 0) {
+					if (!stack.stackTagCompound.hasKey("ticksNextHeal")) {
+						stack.stackTagCompound.setInteger("ticksNextHeal", 0);
+					}
+					float damageAmount = stack.stackTagCompound.getInteger("damageAmount");
+					int ticksNextHeal = stack.stackTagCompound.getInteger("ticksNextHeal");
+					if (ticksNextHeal > 0) {
+						ticksNextHeal--;
+					}
+					if (ticksNextHeal == 0) {
+						//event.entityLiving.heal(1.0F);
+						damageAmount -=1.0F;
+						stack.stackTagCompound.setFloat("damageAmount", damageAmount);
+						ticksNextHeal=5;
+					}
+					if (damageAmount == 0.0F) {
+						aidTicks = -1;
+					}
+					stack.stackTagCompound.setInteger("ticksNextHeal", ticksNextHeal);
+				}
+				stack.stackTagCompound.setInteger("aidTicks", aidTicks);
+            }
+        }
+        */
+
+        if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
+            ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
+            if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) && event.entity.onGround) {
+                boots.stackTagCompound.setBoolean("usedJump", false);
+            }
+        }
+        if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
+            ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
+            if (item.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.wings)) {
+                if (entity.fallDistance > 1.5F && !entity.isSneaking()) {
+                    entity.fallDistance = 1.5F;
+                    entity.motionY = Math.max(entity.motionY, -0.1F);
+                    entity.moveEntity(entity.motionX, 0, entity.motionZ);
                 }
             }
-            if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
-                if (item.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.wings)) {
-                    if (entity.fallDistance > 1.5F && !entity.isSneaking()) {
-                        entity.fallDistance = 1.5F;
-                        entity.motionY = Math.max(entity.motionY, -0.1F);
-                        entity.moveEntity(entity.motionX, 0, entity.motionZ);
+        }
+
+        if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
+            ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
+            if (item.hasUpgrade(leggings, SteamcraftItems.thrusters)) {
+                if (nbt.lastMotions == null) {
+                    nbt.lastMotions = MutablePair.of(entity.posX, entity.posZ);
+                }
+                double lastX = nbt.lastMotions.left;
+                double lastZ = nbt.lastMotions.right;
+                if ((lastX != entity.posX || lastZ != entity.posZ) && !entity.onGround && !entity.isInWater() && !player.capabilities.isFlying) {
+                    entity.moveEntity(entity.motionX, 0, entity.motionZ);
+                    if (!event.entityLiving.getEquipmentInSlot(3).stackTagCompound.hasKey("ticksUntilConsume")) {
+                        event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
+                    }
+                    if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
+                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.thrusterConsumption);
                     }
                 }
-            }
-
-            if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
-                if (item.hasUpgrade(leggings, SteamcraftItems.thrusters)) {
-                    if (nbt.lastMotions == null) {
-                        nbt.lastMotions = MutablePair.of(entity.posX, entity.posZ);
+            } else if (item.hasUpgrade(leggings, SteamcraftItems.runAssist)) {
+                if (nbt.lastMotions == null) {
+                    nbt.lastMotions = MutablePair.of(entity.posX, entity.posZ);
+                }
+                double lastX = nbt.lastMotions.left;
+                double lastZ = nbt.lastMotions.right;
+                if ((entity.moveForward > 0.0F) && (lastX != entity.posX || lastZ != entity.posZ) && entity.onGround && !entity.isInWater()) {
+                    entity.moveFlying(0.0F, 1.0F, 0.075F);
+                    if (!event.entityLiving.getEquipmentInSlot(3).stackTagCompound.hasKey("ticksUntilConsume")) {
+                        event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
                     }
-                    double lastX = nbt.lastMotions.left;
-                    double lastZ = nbt.lastMotions.right;
-                    if ((lastX != entity.posX || lastZ != entity.posZ) && !entity.onGround && !entity.isInWater() && !player.capabilities.isFlying) {
-                        entity.moveEntity(entity.motionX, 0, entity.motionZ);
-                        if (!event.entityLiving.getEquipmentInSlot(3).stackTagCompound.hasKey("ticksUntilConsume")) {
-                            event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
-                        }
-                        if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                            drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.thrusterConsumption);
-                        }
-                    }
-                } else if (item.hasUpgrade(leggings, SteamcraftItems.runAssist)) {
-                    if (nbt.lastMotions == null) {
-                        nbt.lastMotions = MutablePair.of(entity.posX, entity.posZ);
-                    }
-                    double lastX = nbt.lastMotions.left;
-                    double lastZ = nbt.lastMotions.right;
-                    if ((entity.moveForward > 0.0F) && (lastX != entity.posX || lastZ != entity.posZ) && entity.onGround && !entity.isInWater()) {
-                        entity.moveFlying(0.0F, 1.0F, 0.075F);
-                        if (!event.entityLiving.getEquipmentInSlot(3).stackTagCompound.hasKey("ticksUntilConsume")) {
-                            event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
-                        }
-                        if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                            drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.runAssistConsumption);
-                        }
+                    if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
+                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.runAssistConsumption);
                     }
                 }
             }
         }
-//
-//		if (hasPower(entity,100) && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
-//			ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
-//			if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
-//				if (entity.isBurning()) {
-//
-//					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
-//					if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
-//
-//						entity.worldObj.setBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ, Blocks.water, 1, 1);
-//					}
-//				}
-//			}
-//		}
+
+        /*
+		if (hasPower(entity,100) && entity.getEquipmentInSlot(2) != null && entity.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
+			ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getEquipmentInSlot(2).getItem();
+			if (leggings.hasUpgrade(entity.getEquipmentInSlot(2), SteamcraftItems.antiFire)) {
+				if (entity.isBurning()) {
+
+					event.entityLiving.getEquipmentInSlot(3).damageItem(10, event.entityLiving);
+					if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
+
+						entity.worldObj.setBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ, Blocks.water, 1, 1);
+					}
+				}
+			}
+		}
+		*/
     }
 
     @SideOnly(Side.CLIENT)
@@ -1303,15 +1319,15 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void handleSteamcraftArmor(LivingEvent.LivingUpdateEvent event) {
-        boolean hasPower = hasPower(event.entityLiving, 1);
-        int armor = getExoArmor(event.entityLiving);
         EntityLivingBase entity = event.entityLiving;
-        ItemStack armor2 = entity.getEquipmentInSlot(1);
-        //Steamcraft.proxy.extendRange(entity,1.0F);
-
         if (!(entity instanceof EntityPlayer)) {
             return;
         }
+        resyncExoBoostTicks++;
+        boolean hasPower = hasPower(entity, 1);
+        int armor = getExoArmor(entity);
+//        ItemStack armor2 = entity.getEquipmentInSlot(1);
+        //Steamcraft.proxy.extendRange(entity,1.0F);
 
         ExtendedPropertiesPlayer tag =
           (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
@@ -1337,11 +1353,13 @@ public class SteamcraftEventHandler {
         }
 
         if (hasPower) {
+            /*
             if (entity.isSneaking()) {
-//				if ((!event.entityLiving.isPotionActive(Steamcraft.semiInvisible) || event.entityLiving.getActivePotionEffect(Steamcraft.semiInvisible).getDuration() < 2)) {
-//					event.entityLiving.addPotionEffect(new PotionEffect(Steamcraft.semiInvisible.id, 2, 0, false));
-//				}
+				if ((!event.entityLiving.isPotionActive(Steamcraft.semiInvisible) || event.entityLiving.getActivePotionEffect(Steamcraft.semiInvisible).getDuration() < 2)) {
+					event.entityLiving.addPotionEffect(new PotionEffect(Steamcraft.semiInvisible.id, 2, 0, false));
+				}
             }
+            */
 
             if (tag.lastMotions == null) {
                 tag.lastMotions = MutablePair.of(entity.posX, entity.posZ);
@@ -1403,19 +1421,22 @@ public class SteamcraftEventHandler {
     }
 
     private void removeGoodExoBoost(EntityLivingBase entity) {
-        if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid) != null) {
-            entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoost);
-        }
-        if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid) != null) {
-            entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoost);
-        }
-        if (entity instanceof EntityPlayer) {
-            ExtendedPropertiesPlayer tag =
-              (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-            if (tag.prevStep != null) {
-                entity.stepHeight = tag.prevStep;
-                tag.prevStep = null;
+        if (resyncExoBoostTicks > 4) {
+            if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid) != null) {
+                entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoost);
             }
+            if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid) != null) {
+                entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoost);
+            }
+            if (entity instanceof EntityPlayer) {
+                ExtendedPropertiesPlayer tag =
+                  (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+                if (tag.prevStep != null) {
+                    entity.stepHeight = tag.prevStep;
+                    tag.prevStep = null;
+                }
+            }
+            resyncExoBoostTicks = 0;
         }
     }
 
@@ -1424,11 +1445,14 @@ public class SteamcraftEventHandler {
 //	}
 
     private void removeBadExoBoost(EntityLivingBase entity) {
-        if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid2) != null) {
-            entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoostBad);
-        }
-        if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid2) != null) {
-            entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoostBad);
+        if (resyncExoBoostTicks > 4) {
+            if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid2) != null) {
+                entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoostBad);
+            }
+            if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid2) != null) {
+                entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoostBad);
+            }
+            resyncExoBoostTicks = 0;
         }
     }
 
