@@ -127,16 +127,16 @@ public class SteamcraftRegistry {
      * Removes a steaming recipe.
      * @see #addSteamingRecipe(Item, int, Item, int) for params.
      */
-    public static void removeSteamingRecipe(Item food1, int i, Item food2, int j) {
-        steamingRecipes.remove(MutablePair.of(food1, i), MutablePair.of(food2, j));
+    public static void removeSteamingRecipe(Item food1, int i) {
+        steamingRecipes.remove(MutablePair.of(food1, i));
     }
 
     /**
      * Removes a steaming recipe with no specific metadata.
      * @see #addSteamingRecipe(Item, Item) for params.
      */
-    public static void removeSteamingRecipe(Item food1, Item food2) {
-        steamingRecipes.remove(MutablePair.of(food1, -1), MutablePair.of(food2, -1));
+    public static void removeSteamingRecipe(Item food1) {
+        removeSteamingRecipe(food1, -1);
     }
 
     /**
@@ -258,7 +258,7 @@ public class SteamcraftRegistry {
             for (Map.Entry<Tuple3, MutablePair<Integer, ItemStack>> entry : dunkRecipes.entrySet()) {
                 Tuple3 tuple = entry.getKey();
                 if (tuple.first == item && (int) tuple.second == meta && tuple.third == liquid) {
-                    dunkRecipes.remove(tuple, entry.getValue());
+                    dunkRecipes.remove(tuple);
                 }
             }
         }
@@ -384,9 +384,11 @@ public class SteamcraftRegistry {
     public static void removeLiquid(CrucibleLiquid liquid) {
         liquids.remove(liquid);
         if (liquidRecipes != null) {
-            liquidRecipes.entrySet().stream().filter(
-              entry -> entry.getValue().left == liquid).forEach(
-              entry -> liquidRecipes.remove(entry.getKey(), entry.getValue()));
+            for (Map.Entry entry : liquidRecipes.entrySet()) {
+                if (((MutablePair) entry.getValue()).left == liquid) {
+                    liquidRecipes.remove(entry.getKey());
+                }
+            }
         }
     }
 

@@ -47,7 +47,9 @@ public class ClientProxy extends CommonProxy {
         keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z,
           "key.flaxbeard.category"));
 
-        keyBindings.values().forEach(ClientRegistry::registerKeyBinding);
+        for (KeyBinding bind : keyBindings.values()) {
+            ClientRegistry.registerKeyBinding(bind);
+        }
     }
 
     @Override

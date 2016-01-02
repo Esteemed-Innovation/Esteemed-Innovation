@@ -652,22 +652,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	}
 
         public void removeSmashable(String input, ItemStack output) {
-            oreDicts.remove(input, output);
-        }
-
-        public void removeSmashable(Block input, ItemStack output) {
-            oreDicts.remove(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
-        }
-
-        public void removeSmashable(Item input, ItemStack output) {
-            oreDicts.remove(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+            oreDicts.remove(input);
         }
 
         public void removeSmashable(ItemStack input, ItemStack output) {
             if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                wildcards.remove(input.getItem(), output);
+                wildcards.remove(input.getItem());
             } else {
-                registry.remove(input, output);
+                registry.remove(input);
             }
         }
     }

@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class BlockSteamPistonBase extends Block {
-    private static final String __OBFID = "CL_00000366";
     /**
      * This piston is the sticky one?
      */
@@ -455,7 +454,7 @@ public class BlockSteamPistonBase extends Block {
             Block[] ablock;
             int k2;
             int l2;
-            int i3;
+            int i3 = 0;
 
             for (ablock = new Block[13]; i1 != p_150079_2_ || j1 != p_150079_3_ || k1 != p_150079_4_; k1 = i3) {
                 k2 = i1 - Facing.offsetsXForSide[p_150079_5_];
