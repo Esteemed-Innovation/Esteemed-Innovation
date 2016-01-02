@@ -1432,15 +1432,4 @@ public class SteamcraftEventHandler {
             }
         }
     }
-
-    @SubscribeEvent
-    public void handleEnhancement(AnvilUpdateEvent event) {
-//		if (event.right.getItem() instanceof IEnhancement) {
-//			IEnhancement enhancement = (IEnhancement) event.right.getItem();
-//			if (enhancement.canApplyTo(event.left) && UtilEnhancements.canEnhance(event.left)) {
-//				event.cost = enhancement.cost(event.left);
-//				event.output = UtilEnhancements.getEnhancedItem(event.left, event.right);
-//			}
-//		}
-    }
 }

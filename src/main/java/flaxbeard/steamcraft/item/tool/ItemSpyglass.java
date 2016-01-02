@@ -35,11 +35,6 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
     }
 
     @Override
-    public int cost(ItemStack stack) {
-        return 8;
-    }
-
-    @Override
     public String getID() {
         return "scope";
     }
@@ -52,11 +47,6 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
     @Override
     public String getName(Item item) {
         return "item.steamcraft:musketMarksman";
-    }
-
-    @Override
-    public String getEnhancementName(Item item) {
-        return "enhancement.steamcraft:musketMarksman";
     }
 
     @Override

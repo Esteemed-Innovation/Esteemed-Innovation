@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemEnhancementAirStrike extends Item implements IEnhancementRocketLauncher {
-
     @Override
     public boolean canApplyTo(ItemStack stack) {
         return stack.getItem() == SteamcraftItems.rocketLauncher;
@@ -18,11 +17,6 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
     @Override
     public EnumRarity getRarity(ItemStack stack) {
         return Steamcraft.upgrade;
-    }
-
-    @Override
-    public int cost(ItemStack stack) {
-        return 8;
     }
 
     @Override
@@ -40,11 +34,6 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
         return "item.steamcraft:rocketLauncherAirStrike";
     }
 
-
-    @Override
-    public String getEnhancementName(Item item) {
-        return "enhancement.steamcraft:rocketLauncherAirStrike";
-    }
 
     @Override
     public float getAccuracyChange(Item weapon) {

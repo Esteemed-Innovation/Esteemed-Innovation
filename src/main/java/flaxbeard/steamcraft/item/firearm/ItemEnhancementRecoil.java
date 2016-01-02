@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
-
     @Override
     public boolean canApplyTo(ItemStack stack) {
         return stack.getItem() == SteamcraftItems.blunderbuss;
@@ -18,11 +17,6 @@ public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
     @Override
     public EnumRarity getRarity(ItemStack stack) {
         return Steamcraft.upgrade;
-    }
-
-    @Override
-    public int cost(ItemStack stack) {
-        return 8;
     }
 
     @Override
@@ -38,12 +32,6 @@ public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
     @Override
     public String getName(Item item) {
         return "item.steamcraft:blunderbussRecoil";
-    }
-
-
-    @Override
-    public String getEnhancementName(Item item) {
-        return "enhancement.steamcraft:musketAblaze";
     }
 
     @Override

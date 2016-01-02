@@ -47,14 +47,6 @@ public class UtilEnhancements {
         return getNameFromEnhancement(item, getEnhancementFromItem(item));
     }
 
-    public static String getEnhancementNameFromEnhancement(ItemStack item, IEnhancement enhancement) {
-        return enhancement.getEnhancementName(item.getItem());
-    }
-
-    public static String getEnhancementNameFromEnhancement(ItemStack item) {
-        return getEnhancementNameFromEnhancement(item, getEnhancementFromItem(item));
-    }
-
     public static String getEnhancementDisplayText(ItemStack item) {
         if (hasEnhancement(item)) {
             return EnumChatFormatting.RED + new ItemStack(((Item) getEnhancementFromItem(item))).getDisplayName();

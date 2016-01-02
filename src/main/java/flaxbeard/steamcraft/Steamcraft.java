@@ -149,7 +149,6 @@ public class Steamcraft {
 
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
-
     }
 
     @EventHandler
