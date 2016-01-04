@@ -122,7 +122,7 @@ public class SteamcraftItems {
     // steam tool upgrades
     // drill
     public static Item diamondHead;
-    public static Item hammerHead;
+    public static Item bigDrill;
     public static Item battleDrill;
     public static Item stoneGrinder;
 
@@ -572,26 +572,29 @@ public class SteamcraftItems {
         if (Config.enableSteamTools) {
             if (Config.enableDiamondHead) {
                 diamondHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-                  "steamcraft:diamondHead", null, 1).setUnlocalizedName("steamcraft:diamondHead").setCreativeTab(Steamcraft.tabTools);
+                  "steamcraft:toolUpgrade/drillDiamond", null, 1)
+                  .setUnlocalizedName("steamcraft:diamondHead")
+                  .setCreativeTab(Steamcraft.tabTools);
                 GameRegistry.registerItem(diamondHead, "diamondHead");
             }
 
-            if (Config.enableHammerHead) {
-                hammerHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-                  "steamcraft:hammerHead", null, 1).setUnlocalizedName("steamcraft:hammerHead").setCreativeTab(Steamcraft.tabTools);
-                GameRegistry.registerItem(hammerHead, "hammerHead");
+            if (Config.enableBigDrill) {
+                bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+                  "steamcraft:toolUpgrade/drillBig", null, 1).setUnlocalizedName("steamcraft:bigDrill")
+                  .setCreativeTab(Steamcraft.tabTools);
+                GameRegistry.registerItem(bigDrill, "bigDrill");
             }
 
             if (Config.enableBattleDrill) {
                 battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-                  "steamcraft:battleDrill", null, 1).setUnlocalizedName("steamcraft:battleDrill")
+                  "steamcraft:toolUpgade/battleDrill", null, 1).setUnlocalizedName("steamcraft:battleDrill")
                   .setCreativeTab(Steamcraft.tabTools);
                 GameRegistry.registerItem(battleDrill, "battleDrill");
             }
 
             if (Config.enableStoneGrinder) {
                 stoneGrinder = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-                  "steamcraft:stoneGrinder", null, 1).setUnlocalizedName("steamcraft:stoneGrinder")
+                  "steamcraft:toolUpgrade/stoneGrinder", null, 1).setUnlocalizedName("steamcraft:stoneGrinder")
                   .setCreativeTab(Steamcraft.tabTools);
                 GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
             }

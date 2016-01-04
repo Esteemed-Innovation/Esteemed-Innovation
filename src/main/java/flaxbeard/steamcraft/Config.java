@@ -193,7 +193,7 @@ public class Config {
     // steam tool upgrades
     // drill
     public static boolean enableDiamondHead;
-    public static boolean enableHammerHead;
+    public static boolean enableBigDrill;
     public static boolean enableBattleDrill;
     public static boolean enableStoneGrinder;
     public static int battleDrillConsumption;
@@ -407,7 +407,7 @@ public class Config {
 
         // STEAM TOOL UPGRADES
         enableDiamondHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Diamond Head upgrade", true).getBoolean(true);
-        enableHammerHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean(true);
+        enableBigDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean(true);
         enableLeafBlower = config.get("Steam Tool Upgrades", "Enable Steam Axe's Leaf Blower upgrade", true).getBoolean(true);
         enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
         enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);

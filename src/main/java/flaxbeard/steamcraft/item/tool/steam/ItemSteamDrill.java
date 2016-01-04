@@ -27,6 +27,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable {
@@ -58,6 +60,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4) {
@@ -72,12 +75,34 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     }
 
     @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getRenderPasses(int meta) {
+        return 3;
+    }
+
+    @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.drillInfo;
         int ticks = (Integer) info.left;
-        return this.icon[ticks > 50 ? 0 : 1];
+        int which = ticks > 50 ? 0 : 1;
+        ArrayList<ISteamToolUpgrade> upgrades = getUpgrades(stack);
+        if (upgrades != null) {
+            for (ISteamToolUpgrade upgrade : upgrades) {
+                if (renderPass == upgrade.renderPriority()) {
+                    IIcon[] icons = upgrade.getIIcons();
+                    if (icons != null && icons.length >= which + 1 && icons[which] != null) {
+                        return icons[which];
+                    }
+                }
+            }
+        }
+        return this.icon[which];
     }
 
     @Override
@@ -149,6 +174,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     }
 
     // Start IEngineerable stuff
+    @SuppressWarnings("unchecked")
     @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
         return new MutablePair[]{
@@ -247,21 +273,19 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
      * Checks if the drill has a particular upgrade.
      * @param me The ItemStack version of the drill
      * @param check The item that is being checked against, or the upgrade
-     * @return
+     * @return Whether it has any upgrades.
      */
     public boolean hasUpgrade(ItemStack me, Item check) {
         if (check == null) {
             return false;
         }
 
-        if (me.hasTagCompound()) {
-            if (me.stackTagCompound.hasKey("upgrades")) {
-                for (int i = 1; i < 10; i++) {
-                    if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                        ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
-                        if (stack.getItem() == check) {
-                            return true;
-                        }
+        if (me.hasTagCompound() && me.stackTagCompound.hasKey("upgrades")) {
+            for (int i = 1; i < 10; i++) {
+                if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
+                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
+                    if (stack.getItem() == check) {
+                        return true;
                     }
                 }
             }
@@ -269,10 +293,32 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return false;
     }
 
+    public ArrayList<ISteamToolUpgrade> getUpgrades(ItemStack me) {
+        ArrayList<ISteamToolUpgrade> upgrades = new ArrayList<>();
+        for (int i = 1; i < 10; i++) {
+            if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(
+                  me.stackTagCompound.getCompoundTag("upgrades")
+                  .getCompoundTag(Integer.toString(i)));
+                if (stack != null) {
+                    Item item = stack.getItem();
+                    if (item != null && item instanceof ISteamToolUpgrade) {
+                        upgrades.add((ISteamToolUpgrade) item);
+                    }
+                }
+            }
+        }
+
+        if (upgrades.isEmpty()) {
+            return null;
+        }
+
+        return upgrades;
+    }
     /**
      * Checks if the drill is wound up.
      * @param player The player to get the info for.
-     * @return
+     * @return Whether the drill has been wound by the player.
      */
     public boolean isWound(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);

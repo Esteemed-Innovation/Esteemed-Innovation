@@ -2,23 +2,27 @@ package flaxbeard.steamcraft.item.tool.steam;
 
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.IIcon;
 
-
-import java.util.HashMap;
 import java.util.List;
 
 public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
-    protected ResourceLocation myOverlay;
+    protected String[] myOverlays;
     protected String myInfo;
     protected int prio;
     private SteamToolSlot mySlot;
+    public IIcon[] icons;
 
     public ItemSteamToolUpgrade(SteamToolSlot slot, String resourceLocation, String info, int priority) {
         mySlot = slot;
         myInfo = info;
-        myOverlay = resourceLocation == null || resourceLocation.isEmpty() ? null : new ResourceLocation(resourceLocation);
+        if (resourceLocation.isEmpty()) {
+            myOverlays = new String[]{ resourceLocation + "0", resourceLocation + "1"};
+        } else {
+            myOverlays = null;
+        }
         prio = priority;
     }
 
@@ -33,8 +37,12 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public ResourceLocation getOverlay() {
-        return myOverlay;
+    public void registerIcons(IIconRegister ir) {
+        if (myOverlays != null) {
+            for (int i = 0; i < myOverlays.length; i++) {
+                icons[i] = ir.registerIcon(myOverlays[i]);
+            }
+        }
     }
 
     @Override
@@ -42,5 +50,10 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
         if (myInfo != null) {
             list.add(myInfo);
         }
+    }
+
+    @Override
+    public IIcon[] getIIcons() {
+        return icons;
     }
 }

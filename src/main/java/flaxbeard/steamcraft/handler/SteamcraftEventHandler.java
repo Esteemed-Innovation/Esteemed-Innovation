@@ -78,7 +78,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -1822,7 +1821,7 @@ public class SteamcraftEventHandler {
                 }
             }
 
-            if (drill.hasUpgrade(equipped, SteamcraftItems.hammerHead) && drill.isWound(player)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) && drill.isWound(player)) {
                 mineExtraBlocks(getExtraBlockCoordinates(
                   Minecraft.getMinecraft().objectMouseOver.sideHit), event.x, event.y, event.z,
                   event.world);
@@ -1898,7 +1897,7 @@ public class SteamcraftEventHandler {
           event.block.getHarvestTool(event.metadata) != null &&
           event.block.getHarvestTool(event.metadata).equals("pickaxe")) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.hammerHead) &&
+            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
               drill.isWound(event.entityPlayer)) {
                 float hardness = event.block.getBlockHardness(event.entityPlayer.worldObj, event.x,
                   event.y, event.z);
