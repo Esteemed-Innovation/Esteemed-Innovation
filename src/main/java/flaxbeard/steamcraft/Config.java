@@ -351,7 +351,7 @@ public class Config {
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
-        enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", false).getBoolean(false);
+        enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean(true);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
 
         //INTEGRATION
