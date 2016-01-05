@@ -105,8 +105,6 @@ public class SteamcraftRegistry {
      */
     public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamingRecipes = new HashMap<>();
 
-    public static List upgrades = new ArrayList<ItemSteamToolUpgrade>();
-
     /**
      * Adds a steaming recipe.
      * @param food1 The output of the input item (eg: cooked porkchop).

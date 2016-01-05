@@ -41,6 +41,7 @@ import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -1865,9 +1866,37 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void setSideHit(PlayerInteractEvent event) {
+    public void onLeftClickBlock(PlayerInteractEvent event) {
         if (event.action == Action.LEFT_CLICK_BLOCK) {
             sideHit = event.face;
+            World world = event.world;
+            if (world.isRemote) {
+                return;
+            }
+            EntityPlayer player = event.entityPlayer;
+            ItemStack equipped = player.getCurrentEquippedItem();
+            if (equipped == null || !(equipped.getItem() instanceof ItemSteamAxe)) {
+                return;
+            }
+            ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
+            if (!axe.isWound(player) || !UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                return;
+            }
+
+            // We don't want to use mineExtraBlocks because it is more tuned to work with the
+            // Big Drill by design. We'd have to parameter-ify the fuck out of it to change that.
+            int[][] coords = getExtraBlockCoordinates(sideHit);
+            for (int[] coordinateArray : coords) {
+                int thisX = event.x + coordinateArray[0];
+                int thisY = event.y + coordinateArray[1];
+                int thisZ = event.z + coordinateArray[2];
+                Block block = world.getBlock(thisX, thisY, thisZ);
+                int meta = world.getBlockMetadata(thisX, thisY, thisZ);
+                MutablePair item = MutablePair.of(block.getItem(world, thisX, thisY, thisZ), meta);
+                if (OreDictHelper.leaves.contains(item)) {
+                    world.func_147480_a(thisX, thisY, thisZ, true);
+                }
+            }
         }
     }
 
@@ -1934,17 +1963,27 @@ public class SteamcraftEventHandler {
     @SubscribeEvent
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack equipped = event.entityPlayer.getCurrentEquippedItem();
-        if (equipped != null && equipped.getItem() != null &&
-          equipped.getItem() instanceof ItemSteamDrill && event.block != null &&
-          event.block.getHarvestTool(event.metadata) != null &&
-          event.block.getHarvestTool(event.metadata).equals("pickaxe")) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-              drill.isWound(event.entityPlayer)) {
-                float hardness = event.block.getBlockHardness(event.entityPlayer.worldObj, event.x,
-                  event.y, event.z);
-                // This might be a little too slow. It still needs some tweaking.
-                event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+        Block block = event.block;
+        int meta = event.metadata;
+        EntityPlayer player = event.entityPlayer;
+        if (equipped != null && equipped.getItem() != null) {
+            if (block != null) {
+                if (block.getHarvestTool(meta) != null &&
+                  block.getHarvestTool(meta).equals("pickaxe")) {
+                    if (equipped.getItem() instanceof ItemSteamDrill) {
+                        ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+                        if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+                          drill.isWound(player)) {
+                            float hardness = block.getBlockHardness(player.worldObj, event.x, event.y, event.z);
+                            event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                        }
+                    }
+                } else if (equipped.getItem() instanceof ItemSteamAxe) {
+                    ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
+                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                        event.newSpeed = event.originalSpeed / 5F;
+                    }
+                }
             }
         }
     }
@@ -2024,6 +2063,14 @@ public class SteamcraftEventHandler {
         }
     }
 
+    /**
+     * This mines the extra blocks within the coordinate array.
+     * @param coordinateArray The array of arrays containing the coordinates to add to x, y, z.
+     * @param x The start X coordinate.
+     * @param y The start Y coordinate.
+     * @param z The start Z coordinate.
+     * @param world The world.
+     */
     private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world) {
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = x + aCoordinateArray[0];
@@ -2035,12 +2082,7 @@ public class SteamcraftEventHandler {
               block.getHarvestTool(meta).equals("pickaxe") &&
               ArrayUtils.contains(validMiningMaterials, (block.getMaterial()))) {
                 if (block.getHarvestLevel(meta) < 3) {
-                    List<ItemStack> drops = block.getDrops(world, thisX, thisY, thisZ, meta, 0);
-                    world.setBlockToAir(thisX, thisY, thisZ);
-                    for (ItemStack stack : drops) {
-                        world.spawnEntityInWorld(new EntityItem(world, (double) x, (double) y,
-                          (double) z, stack));
-                    }
+                    world.func_147480_a(thisX, thisY, thisZ, true);
                 }
             }
         }

@@ -254,4 +254,15 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 128, 64, 64);
     }
+
+    /**
+     * Checks if the axe is wound up.
+     * @param player The player to get the info for.
+     * @return Whether the axe has been wound by the player.
+     */
+    public boolean isWound(EntityPlayer player) {
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        MutablePair info = nbt.axeInfo;
+        return ((int) info.right > 0);
+    }
 }
