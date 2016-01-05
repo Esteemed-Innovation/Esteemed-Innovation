@@ -93,7 +93,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
             }
         }
 
-        // Prevent rendering the drill over the upgrades if there's only 1.
+        // Prevent rendering the shovel over the upgrades if there's only 1.
         return this.transparentIcon;
     }
 
@@ -249,6 +249,17 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 128, 64);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 128, 128, 64, 64);
+    }
+
+    /**
+     * Checks if the drill is wound up.
+     * @param player The player to get the info for.
+     * @return Whether the drill has been wound by the player.
+     */
+    public boolean isWound(EntityPlayer player) {
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        MutablePair info = nbt.shovelInfo;
+        return ((int) info.right > 0);
     }
 }

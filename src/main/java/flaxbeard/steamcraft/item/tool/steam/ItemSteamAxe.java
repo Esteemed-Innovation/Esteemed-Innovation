@@ -70,6 +70,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
         // We cannot use the method that passes the player because it is only called on item use.
@@ -93,7 +94,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
             }
         }
 
-        // Prevent rendering the drill over the upgrades if there's only 1.
+        // Prevent rendering the axe over the upgrades if there's only 1.
         return this.transparentIcon;
     }
 
@@ -251,6 +252,6 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 128, 64);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 128, 64, 64);
     }
 }
