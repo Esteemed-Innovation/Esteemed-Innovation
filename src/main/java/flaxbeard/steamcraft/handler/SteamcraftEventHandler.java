@@ -18,6 +18,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
+import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesMerchant;
@@ -1734,7 +1735,7 @@ public class SteamcraftEventHandler {
                     ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
                     if (event.block != null && !OreDictHelper.cobblestones.contains(
                       MutablePair.of(Item.getItemFromBlock(event.block), event.blockMetadata)) &&
-                      drill.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
+                      UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
                       drill.isWound(player)) {
                         String harvestTool = event.block.getHarvestTool(event.blockMetadata);
                         if (harvestTool != null && harvestTool.equals("pickaxe")) {
@@ -1810,7 +1811,7 @@ public class SteamcraftEventHandler {
           event.block.getHarvestTool(event.blockMetadata).equals("pickaxe") &&
           ArrayUtils.contains(validMiningMaterials, event.block.getMaterial())) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
               event.block.getHarvestLevel(event.blockMetadata) < 4 && drill.isWound(player)) {
                 ArrayList<ItemStack> drops = event.block.getDrops(event.world, event.x, event.y,
                   event.z, event.blockMetadata, 0);
@@ -1821,7 +1822,7 @@ public class SteamcraftEventHandler {
                 }
             }
 
-            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) && drill.isWound(player)) {
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) && drill.isWound(player)) {
                 mineExtraBlocks(getExtraBlockCoordinates(
                   Minecraft.getMinecraft().objectMouseOver.sideHit), event.x, event.y, event.z,
                   event.world);
@@ -1877,7 +1878,7 @@ public class SteamcraftEventHandler {
                     if (item != null && item instanceof ItemSteamDrill) {
                         ItemSteamDrill drill = (ItemSteamDrill) item;
                         int consumption = Config.battleDrillConsumption;
-                        if (drill.hasUpgrade(equipment, SteamcraftItems.battleDrill) &&
+                        if (UtilSteamTool.hasUpgrade(equipment, SteamcraftItems.battleDrill) &&
                           player.isSprinting() && (player.motionY > 0 || player.motionY < 0) &&
                           drill.isWound(player) && equipment.getItemDamage() >= consumption) {
                             event.entityLiving.attackEntityFrom(DamageSource.generic, 9.0F);
@@ -1897,7 +1898,7 @@ public class SteamcraftEventHandler {
           event.block.getHarvestTool(event.metadata) != null &&
           event.block.getHarvestTool(event.metadata).equals("pickaxe")) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
               drill.isWound(event.entityPlayer)) {
                 float hardness = event.block.getBlockHardness(event.entityPlayer.worldObj, event.x,
                   event.y, event.z);

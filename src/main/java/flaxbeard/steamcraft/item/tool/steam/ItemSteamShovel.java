@@ -4,40 +4,53 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
+import flaxbeard.steamcraft.api.tool.SteamToolSlot;
+import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
+import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
-    public IIcon[] icon = new IIcon[2];
+public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngineerable {
+    public IIcon[] shovelIcons = new IIcon[2];
+    public IIcon transparentIcon;
     private boolean hasBrokenBlock = false;
+    public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
+
 
     public ItemSteamShovel() {
         super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static void checkNBT(EntityPlayer player) {
+    public static ExtendedPropertiesPlayer checkNBT(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
           player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
         if (nbt.shovelInfo == null) {
             nbt.shovelInfo = MutablePair.of(0, 0);
         }
+        return nbt;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4) {
@@ -56,24 +69,43 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        checkNBT(player);
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+    public IIcon getIcon(ItemStack stack, int renderPass) {
+        // We cannot use the method that passes the player because it is only called on item use.
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.shovelInfo;
-        int ticks = (Integer) info.left;
-        return this.icon[ticks > 50 ? 0 : 1];
+        int which = (Integer) info.left > 50 ? 0 : 1;
+        if (renderPass == 0) {
+            return this.shovelIcons[which];
+        } else {
+            ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
+            if (upgrades != null) {
+                for (ISteamToolUpgrade upgrade : upgrades) {
+                    IIcon[] icons = upgrade.getIIcons();
+                    if (renderPass == upgrade.renderPriority() && icons != null &&
+                      icons.length >= which + 1 && icons[which] != null) {
+                        return icons[which];
+                    }
+                }
+            }
+        }
+
+        // Prevent rendering the drill over the upgrades if there's only 1.
+        return this.transparentIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.icon[0] = this.itemIcon = ir.registerIcon("steamcraft:shovel0");
-        this.icon[1] = ir.registerIcon("steamcraft:shovel1");
+        this.shovelIcons[0] = this.itemIcon = ir.registerIcon("steamcraft:shovel0");
+        this.shovelIcons[1] = ir.registerIcon("steamcraft:shovel1");
+        this.transparentIcon = ir.registerIcon("steamcraft:transparent");
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
@@ -138,4 +170,85 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable {
         return true;
     }
 
+    @Override
+    public MutablePair<Integer, Integer>[] engineerCoordinates() {
+        return SteamToolHelper.ENGINEER_COORDINATES;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(ItemStack me, int var1) {
+        if (me.hasTagCompound()) {
+            if (me.stackTagCompound.hasKey("upgrades")) {
+                if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(var1))) {
+                    return ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(var1)));
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+        SteamToolHelper.setNBTInventory(me, var1, stack);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(ItemStack me, int var1, ItemStack var2) {
+        return true;
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
+        if (this.getStackInSlot(me, var1) != null) {
+            ItemStack stack;
+            if (this.getStackInSlot(me, var1).stackSize <= var2) {
+                stack = this.getStackInSlot(me, var1);
+                this.setInventorySlotContents(me, var1, null);
+            } else {
+                stack = this.getStackInSlot(me, var1).splitStack(var2);
+                this.setInventorySlotContents(me, var1, this.getStackInSlot(me, var1));
+
+                if (this.getStackInSlot(me, var1).stackSize == 0) {
+                    this.setInventorySlotContents(me, var1, null);
+                }
+            }
+            return stack;
+        } else {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("Duplicates")
+    @Override
+    public void drawSlot(GuiContainer gui, int slotnum, int i, int j) {
+        gui.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
+        switch (slotnum) {
+            case 0: {
+                gui.drawTexturedModalRect(i, j, 176, 0, 18, 18);
+                break;
+            }
+            case 1: {
+                gui.drawTexturedModalRect(i, j, 176, 0, 18, 18);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
+        if (upgrade != null && upgrade.getItem() instanceof ISteamToolUpgrade) {
+            ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
+            return ((upgradeItem.getToolSlot().tool == 2 &&
+              upgradeItem.getToolSlot().slot == slotNum) ||
+              upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+        }
+        return false;
+    }
+
+    @Override
+    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+        guiEngineeringTable.mc.getTextureManager().bindTexture(largeIcons);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 128, 64);
+    }
 }

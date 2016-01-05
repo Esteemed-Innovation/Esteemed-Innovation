@@ -5,9 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.SteamToolSlot;
+import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.api.IEngineerable;
-import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import net.minecraft.block.Block;
@@ -16,10 +17,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -66,6 +65,15 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4) {
         super.addInformation(me, player, list, par4);
         list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * this.steamPerDurability() + "/" + me.getMaxDamage() * this.steamPerDurability() + " SU");
+        ArrayList<String> upgradeStrings = SteamToolHelper.getInformation(UtilSteamTool.getUpgrades(me),
+          SteamToolSlot.drillHead);
+        if (upgradeStrings == null) {
+            return;
+        }
+
+        for (String string : upgradeStrings) {
+            list.add(string);
+        }
     }
 
     @Override
@@ -84,6 +92,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return 3;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);
@@ -173,14 +182,9 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return true;
     }
 
-    // Start IEngineerable stuff
-    @SuppressWarnings("unchecked")
     @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
-        return new MutablePair[]{
-          MutablePair.of(60, 12),
-          MutablePair.of(37, 40)
-        };
+        return SteamToolHelper.ENGINEER_COORDINATES;
     }
 
     @Override
@@ -197,20 +201,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
-        if (!me.hasTagCompound()) {
-            me.setTagCompound(new NBTTagCompound());
-        }
-        if (!me.stackTagCompound.hasKey("upgrades")) {
-            me.stackTagCompound.setTag("upgrades", new NBTTagCompound());
-        }
-        if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(var1))) {
-            me.stackTagCompound.getCompoundTag("upgrades").removeTag(Integer.toString(var1));
-        }
-        NBTTagCompound stc = new NBTTagCompound();
-        if (stack != null) {
-            stack.writeToNBT(stc);
-            me.stackTagCompound.getCompoundTag("upgrades").setTag(Integer.toString(var1), stc);
-        }
+        SteamToolHelper.setNBTInventory(me, var1, stack);
     }
 
     @Override
@@ -218,6 +209,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
         if (this.getStackInSlot(me, var1) != null) {
@@ -239,6 +231,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         }
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void drawSlot(GuiContainer gui, int slotnum, int i, int j) {
         gui.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
@@ -258,7 +251,9 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
         if (upgrade != null && upgrade.getItem() instanceof ISteamToolUpgrade) {
             ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
-            return (upgradeItem.getToolSlot().tool == 0 && upgradeItem.getToolSlot().slot == slotNum);
+            return ((upgradeItem.getToolSlot().tool == 0 &&
+              upgradeItem.getToolSlot().slot == slotNum) ||
+              upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
         }
         return false;
     }
@@ -269,52 +264,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 64, 64);
     }
 
-    /**
-     * Checks if the drill has a particular upgrade.
-     * @param me The ItemStack version of the drill
-     * @param check The item that is being checked against, or the upgrade
-     * @return Whether it has any upgrades.
-     */
-    public boolean hasUpgrade(ItemStack me, Item check) {
-        if (check == null) {
-            return false;
-        }
-
-        if (me.hasTagCompound() && me.stackTagCompound.hasKey("upgrades")) {
-            for (int i = 1; i < 10; i++) {
-                if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
-                    if (stack.getItem() == check) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public ArrayList<ISteamToolUpgrade> getUpgrades(ItemStack me) {
-        ArrayList<ISteamToolUpgrade> upgrades = new ArrayList<>();
-        for (int i = 1; i < 10; i++) {
-            if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(
-                  me.stackTagCompound.getCompoundTag("upgrades")
-                  .getCompoundTag(Integer.toString(i)));
-                if (stack != null) {
-                    Item item = stack.getItem();
-                    if (item != null && item instanceof ISteamToolUpgrade) {
-                        upgrades.add((ISteamToolUpgrade) item);
-                    }
-                }
-            }
-        }
-
-        if (upgrades.isEmpty()) {
-            return null;
-        }
-
-        return upgrades;
-    }
     /**
      * Checks if the drill is wound up.
      * @param player The player to get the info for.

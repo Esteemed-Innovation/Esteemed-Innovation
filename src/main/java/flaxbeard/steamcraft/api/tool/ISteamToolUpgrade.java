@@ -22,7 +22,11 @@ public interface ISteamToolUpgrade {
      */
     SteamToolSlot getToolSlot();
 
-    void writeInfo(List list);
+    /**
+     * The information added to the tool's tooltip. If it is null it will simply use the item's name
+     * @return The information string. Can be null, expect null.
+     */
+    String getInformation();
 
     /**
      * The two icons for the upgrade.
