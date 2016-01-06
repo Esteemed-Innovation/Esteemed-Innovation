@@ -69,6 +69,16 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         return true;
     }
 
+    @Override
+    public boolean requiresMultipleRenderPasses() {
+        return true;
+    }
+
+    @Override
+    public int getRenderPasses(int meta) {
+        return 2;
+    }
+
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {

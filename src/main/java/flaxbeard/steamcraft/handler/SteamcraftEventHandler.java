@@ -1791,19 +1791,6 @@ public class SteamcraftEventHandler {
 
     private int sideHit;
 
-    // Consider putting the validMaterials into an API so that other mods can add their own.
-    // Or even ModTweaker could potentially add custom materials. Wouldn't that be crazy?
-    public static Material[] validMiningMaterials = {
-      Material.iron,
-      Material.ice,
-      Material.rock,
-      Material.anvil,
-      Material.packedIce,
-      Material.piston,
-      Material.redstoneLight,
-      Material.tnt
-    };
-
     @SubscribeEvent
     public void onBlockBreak(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
@@ -1818,24 +1805,18 @@ public class SteamcraftEventHandler {
             ItemStack equipped = player.getCurrentEquippedItem();
             if (equipped != null && equipped.getItem() != null && block != null) {
                 if (equipped.getItem() instanceof ItemSteamDrill) {
-                    if (block.getHarvestTool(meta) != null &&
-                      block.getHarvestTool(meta).equals("pickaxe") &&
-                      ArrayUtils.contains(validMiningMaterials, block.getMaterial())) {
-                        ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                        if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
-                          block.getHarvestLevel(meta) < 4 && drill.isWound(player)) {
-                            ArrayList<ItemStack> drops = block.getDrops(world, x, y, z, meta, 0);
+                    ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
+                      block.getHarvestLevel(meta) <= 4 && drill.isWound(player)) {
+                        ArrayList<ItemStack> drops = block.getDrops(world, x, y, z, meta, 0);
 
-                            for (ItemStack itemStack : drops) {
-                                world.spawnEntityInWorld(new EntityItem(world, (double) x,
-                                  (double) y, (double) z, itemStack));
-                            }
+                        for (ItemStack itemStack : drops) {
+                            world.spawnEntityInWorld(new EntityItem(world, (double) x,
+                              (double) y, (double) z, itemStack));
                         }
-
-                        if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-                          drill.isWound(player)) {
-                            mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world);
-                        }
+                    } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+                      drill.isWound(player)) {
+                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped);
                     }
                 } else if (equipped.getItem() instanceof ItemSteamShovel) {
                     ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -1854,12 +1835,24 @@ public class SteamcraftEventHandler {
                             }
                             event.setCanceled(true);
                         }
+                    } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
+                      shovel.isWound(player)) {
+                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped);
                     }
                 }
             }
         }
     }
 
+    /**
+     * Gets whether the block can be tilled into farmland.
+     * @param world The world
+     * @param block The block to check
+     * @param x The block's X coordinate
+     * @param y The block's Y coordinate
+     * @param z The block's Z coordinate
+     * @return True if it is dirt or grass, else false.
+     */
     private boolean isFarmable(World world, Block block, int x, int y, int z) {
         return (block != null && !block.isAir(world, x, y, z) &&
           (block == Blocks.dirt || block == Blocks.grass));
@@ -1883,20 +1876,8 @@ public class SteamcraftEventHandler {
                 return;
             }
 
-            // We don't want to use mineExtraBlocks because it is more tuned to work with the
-            // Big Drill by design. We'd have to parameter-ify the fuck out of it to change that.
-            int[][] coords = getExtraBlockCoordinates(sideHit);
-            for (int[] coordinateArray : coords) {
-                int thisX = event.x + coordinateArray[0];
-                int thisY = event.y + coordinateArray[1];
-                int thisZ = event.z + coordinateArray[2];
-                Block block = world.getBlock(thisX, thisY, thisZ);
-                int meta = world.getBlockMetadata(thisX, thisY, thisZ);
-                MutablePair item = MutablePair.of(block.getItem(world, thisX, thisY, thisZ), meta);
-                if (OreDictHelper.leaves.contains(item)) {
-                    world.func_147480_a(thisX, thisY, thisZ, true);
-                }
-            }
+            mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
+              axe, equipped);
         }
     }
 
@@ -1964,25 +1945,22 @@ public class SteamcraftEventHandler {
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack equipped = event.entityPlayer.getCurrentEquippedItem();
         Block block = event.block;
-        int meta = event.metadata;
         EntityPlayer player = event.entityPlayer;
-        if (equipped != null && equipped.getItem() != null) {
-            if (block != null) {
-                if (block.getHarvestTool(meta) != null &&
-                  block.getHarvestTool(meta).equals("pickaxe")) {
-                    if (equipped.getItem() instanceof ItemSteamDrill) {
-                        ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                        if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-                          drill.isWound(player)) {
-                            float hardness = block.getBlockHardness(player.worldObj, event.x, event.y, event.z);
-                            event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
-                        }
-                    }
-                } else if (equipped.getItem() instanceof ItemSteamAxe) {
-                    ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
-                        event.newSpeed = event.originalSpeed / 5F;
-                    }
+        if (equipped != null && equipped.getItem() != null && block != null) {
+            float hardness = block.getBlockHardness(player.worldObj, event.x, event.y, event.z);
+            if (equipped.getItem() instanceof ItemSteamDrill) {
+                ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+                if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+                  drill.isWound(player)) {
+                    event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                }
+            } else if (equipped.getItem() instanceof ItemSteamAxe) {
+                if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                    event.newSpeed = event.originalSpeed / 5F;
+                }
+            } else if (equipped.getItem() instanceof ItemSteamShovel) {
+                if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
+                    event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
                 }
             }
         }
@@ -2070,20 +2048,31 @@ public class SteamcraftEventHandler {
      * @param y The start Y coordinate.
      * @param z The start Z coordinate.
      * @param world The world.
+     * @param tool The tool mining.
+     * @param toolStack The ItemStack of the tool.
      */
-    private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world) {
+    private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world, ItemTool tool, ItemStack toolStack) {
+//        boolean isDrill = tool instanceof ItemSteamDrill;
+        boolean isAxe = tool instanceof ItemSteamAxe;
+        boolean isShovel = tool instanceof ItemSteamShovel;
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = x + aCoordinateArray[0];
             int thisY = y + aCoordinateArray[1];
             int thisZ = z + aCoordinateArray[2];
             Block block = world.getBlock(thisX, thisY, thisZ);
             int meta = world.getBlockMetadata(thisX, thisY, thisZ);
-            if (block != null && !block.isAir(world, thisX, thisY, thisZ) &&
-              block.getHarvestTool(meta).equals("pickaxe") &&
-              ArrayUtils.contains(validMiningMaterials, (block.getMaterial()))) {
-                if (block.getHarvestLevel(meta) < 3) {
-                    world.func_147480_a(thisX, thisY, thisZ, true);
-                }
+            boolean flag = tool.canHarvestBlock(block, toolStack);
+            if (!flag && isShovel) {
+                // For some reason, flag is false when using the Steam Shovel.
+                String toolClass = block.getHarvestTool(meta);
+                flag = ((toolClass != null) && toolClass.equals("shovel"));
+            }
+            if (isAxe) {
+                MutablePair item = MutablePair.of(block.getItem(world, thisX, thisY, thisZ), meta);
+                flag = OreDictHelper.leaves.contains(item);
+            }
+            if (block != null && !block.isAir(world, thisX, thisY, thisZ) && flag) {
+                world.func_147480_a(thisX, thisY, thisZ, true);
             }
         }
     }
