@@ -122,7 +122,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
+    public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
             ExtendedPropertiesPlayer nbt = checkNBT((EntityPlayer) player);
             MutablePair info = nbt.drillInfo;
@@ -142,6 +142,10 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 ticks = 0;
             } else {
                 ticks--;
+            }
+
+            if (ticks <= 50 && speed > 0) {
+                world.playSoundAtEntity(player, "minecraft:note.bassattack", 1.0F, 1.0F);
             }
 
             ticks = ticks % 100;

@@ -41,9 +41,7 @@ import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
@@ -93,7 +91,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -1726,41 +1723,105 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void grindStone(BlockEvent.HarvestDropsEvent event) {
-        if (event.harvester != null) {
-            EntityPlayer player = event.harvester;
-            ItemStack equipped = player.getCurrentEquippedItem();
-            if (equipped != null && equipped.getItem() != null) {
-                Item equippedItem = equipped.getItem();
-                if (equippedItem instanceof ItemSteamDrill) {
-                    ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
-                    if (event.block != null && !OreDictHelper.cobblestones.contains(
-                      MutablePair.of(Item.getItemFromBlock(event.block), event.blockMetadata)) &&
-                      UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
-                      drill.isWound(player)) {
-                        String harvestTool = event.block.getHarvestTool(event.blockMetadata);
-                        if (harvestTool != null && harvestTool.equals("pickaxe")) {
-                            boolean addedNugget = false;
-                            for (int i = 0; i < event.drops.size(); i++) {
-                                ItemStack drop = event.drops.get(i);
-                                MutablePair item = MutablePair.of(drop.getItem(), drop.getItemDamage());
-                                if (OreDictHelper.stones.contains(item) ||
-                                  OreDictHelper.cobblestones.contains(item)) {
-                                    event.drops.remove(i);
-                                    Random rand = new Random();
-                                    int chance = rand.nextInt(5);
-                                    if (chance == 3 && !addedNugget) {
-                                        int index = rand.nextInt(OreDictHelper.nuggets.size());
-                                        MutablePair pair = OreDictHelper.nuggets.get(index);
-                                        int size = rand.nextInt(3) + 1;
-                                        ItemStack nugget = new ItemStack((Item) pair.left,
-                                          size, (int) pair.right);
-                                        event.drops.add(nugget);
-                                        addedNugget = true;
-                                    }
-                                }
-                            }
-                        }
+    public void dropDrops(BlockEvent.HarvestDropsEvent event) {
+        if (event.harvester == null || event.block == null) {
+            return;
+        }
+
+        Random rand = new Random();
+        EntityPlayer player = event.harvester;
+        Block block = event.block;
+        int meta = event.blockMetadata;
+        Item otherBlockItem = block.getItemDropped(meta, rand, 0);
+        Item blockItem = Item.getItemFromBlock(block);
+        MutablePair pair = MutablePair.of(blockItem, meta);
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null) {
+            return;
+        }
+
+        if (equipped.getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (OreDictHelper.cobblestones.contains(pair)) {
+                return;
+            }
+
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
+              drill.isWound(player)) {
+                String harvestTool = block.getHarvestTool(meta);
+                if (harvestTool == null || !harvestTool.equals("pickaxe")) {
+                    return;
+                }
+                boolean addedNugget = false;
+                for (int i = 0; i < event.drops.size(); i++) {
+                    ItemStack drop = event.drops.get(i);
+                    MutablePair item = MutablePair.of(drop.getItem(), drop.getItemDamage());
+                    if (!OreDictHelper.stones.contains(item) && !OreDictHelper.cobblestones.contains(item)) {
+                        continue;
+                    }
+
+                    event.drops.remove(i);
+                    int chance = rand.nextInt(5);
+                    if (chance != 3 || addedNugget) {
+                        continue;
+                    }
+
+                    int index = rand.nextInt(OreDictHelper.nuggets.size());
+                    MutablePair nuggetPair = OreDictHelper.nuggets.get(index);
+                    int size = rand.nextInt(3) + 1;
+                    ItemStack nugget = new ItemStack((Item) nuggetPair.left,
+                      size, (int) nuggetPair.right);
+                    event.drops.add(nugget);
+                    addedNugget = true;
+                }
+            }
+        } else if (equipped.getItem() instanceof ItemSteamShovel) {
+            ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
+            if (!UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.sifter) || !shovel.isWound(player)) {
+                return;
+            }
+
+            for (int i = 0; i < event.drops.size(); i++) {
+                Item item = event.drops.get(i).getItem();
+                if (item == blockItem || item == otherBlockItem) {
+                    event.drops.remove(i);
+                }
+            }
+
+            if (OreDictHelper.sands.contains(pair)) {
+                int chance = rand.nextInt(8);
+                if (chance == 5) {
+                    int index = rand.nextInt(OreDictHelper.goldNuggets.size());
+                    MutablePair nuggetPair = OreDictHelper.goldNuggets.get(index);
+                    int size = rand.nextInt(3) + 1;
+                    ItemStack nugget = new ItemStack((Item) nuggetPair.left, size, (int) nuggetPair.right);
+                    event.drops.add(nugget);
+                    return;
+                }
+            }
+
+            if (block == Blocks.dirt || block == Blocks.grass || block == Blocks.farmland) {
+                int chance = rand.nextInt(6);
+                if (chance == 4) {
+                    int boneOrSeeds = rand.nextInt(2);
+                    int stackSize = rand.nextInt(3) + 1;
+                    ItemStack itemstack;
+                    if (boneOrSeeds == 1) {
+                        itemstack = new ItemStack(Items.bone);
+                    } else {
+                        itemstack = new ItemStack(Items.wheat_seeds);
+                    }
+                    itemstack.stackSize = stackSize;
+                    event.drops.add(itemstack);
+                    return;
+                }
+            }
+
+            if (event.block == Blocks.gravel) {
+                for (int i = 0; i < event.drops.size(); i++) {
+                    if (event.drops.get(i).getItem() == Items.flint) {
+                        event.dropChance = 90;
+                        return;
                     }
                 }
             }
@@ -1816,28 +1877,13 @@ public class SteamcraftEventHandler {
                         }
                     } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
                       drill.isWound(player)) {
-                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped);
+                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped, player);
                     }
                 } else if (equipped.getItem() instanceof ItemSteamShovel) {
                     ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.cultivator) &&
+                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
                       shovel.isWound(player)) {
-                        int[][] coords = extraBlocksVertical;
-                        for (int[] aCoordinateArray : coords) {
-                            int thisX = x + aCoordinateArray[0];
-                            int thisY = y + aCoordinateArray[1];
-                            int thisZ = z + aCoordinateArray[2];
-
-                            Block block1 = world.getBlock(thisX, thisY, thisZ);
-                            if (isFarmable(world, block1, thisX, thisY, thisZ)) {
-                                world.setBlockToAir(thisX, thisY, thisZ);
-                                world.setBlock(thisX, thisY, thisZ, Blocks.farmland);
-                            }
-                            event.setCanceled(true);
-                        }
-                    } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
-                      shovel.isWound(player)) {
-                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped);
+                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
                     }
                 }
             }
@@ -1868,16 +1914,35 @@ public class SteamcraftEventHandler {
             }
             EntityPlayer player = event.entityPlayer;
             ItemStack equipped = player.getCurrentEquippedItem();
-            if (equipped == null || !(equipped.getItem() instanceof ItemSteamAxe)) {
+            if (equipped == null) {
                 return;
             }
-            ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-            if (!axe.isWound(player) || !UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
-                return;
-            }
+            if (equipped.getItem() instanceof ItemSteamAxe) {
+                ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
+                if (!axe.isWound(player) || !UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                    return;
+                }
 
-            mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
-              axe, equipped);
+                mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
+                  axe, equipped, player);
+            } else if (equipped.getItem() instanceof ItemSteamShovel) {
+                ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
+                if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.cultivator) &&
+                  shovel.isWound(player)) {
+                    int[][] coords = extraBlocksVertical;
+                    for (int[] aCoordinateArray : coords) {
+                        int thisX = event.x + aCoordinateArray[0];
+                        int thisY = event.y + aCoordinateArray[1];
+                        int thisZ = event.z + aCoordinateArray[2];
+
+                        Block block1 = world.getBlock(thisX, thisY, thisZ);
+                        if (isFarmable(world, block1, thisX, thisY, thisZ)) {
+                            world.setBlockToAir(thisX, thisY, thisZ);
+                            world.setBlock(thisX, thisY, thisZ, Blocks.farmland);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1960,7 +2025,7 @@ public class SteamcraftEventHandler {
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
-                    event.newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                    event.newSpeed = event.originalSpeed * ((hardness * 1.8F) / 8);
                 }
             }
         }
@@ -2051,7 +2116,7 @@ public class SteamcraftEventHandler {
      * @param tool The tool mining.
      * @param toolStack The ItemStack of the tool.
      */
-    private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world, ItemTool tool, ItemStack toolStack) {
+    private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
 //        boolean isDrill = tool instanceof ItemSteamDrill;
         boolean isAxe = tool instanceof ItemSteamAxe;
         boolean isShovel = tool instanceof ItemSteamShovel;
@@ -2072,7 +2137,10 @@ public class SteamcraftEventHandler {
                 flag = OreDictHelper.leaves.contains(item);
             }
             if (block != null && !block.isAir(world, thisX, thisY, thisZ) && flag) {
-                world.func_147480_a(thisX, thisY, thisZ, true);
+//                world.spawnParticle("")
+//                world.func_147480_a(thisX, thisY, thisZ, false);
+                world.setBlockToAir(thisX, thisY, thisZ);
+                block.harvestBlock(world, player, thisX, thisY, thisZ, meta);
             }
         }
     }

@@ -117,7 +117,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
+    public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
             checkNBT((EntityPlayer) player);
             ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
@@ -141,6 +141,9 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
                 ticks--;
             }
 
+            if (ticks <= 50 && speed > 0) {
+                world.playSoundAtEntity(player, "minecraft:note.bassattack", 1.0F, 1.0F);
+            }
 
             ticks = ticks % 100;
             nbt.shovelInfo = MutablePair.of(ticks, speed);

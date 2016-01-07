@@ -118,7 +118,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
 
     @SuppressWarnings("Duplicates")
     @Override
-    public void onUpdate(ItemStack stack, World par2World, Entity player, int par4, boolean par5) {
+    public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
             checkNBT((EntityPlayer) player);
             ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
@@ -143,6 +143,9 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
                 ticks--;
             }
 
+            if (ticks <= 50 && speed > 0) {
+                world.playSoundAtEntity(player, "minecraft:note.bassattack", 1.0F, 1.0F);
+            }
 
             ticks = ticks % 100;
             nbt.axeInfo = MutablePair.of(ticks, speed);

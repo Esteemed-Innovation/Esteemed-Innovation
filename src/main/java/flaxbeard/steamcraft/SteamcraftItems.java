@@ -132,6 +132,7 @@ public class SteamcraftItems {
     // shovel
     public static Item cultivator;
     public static Item rotaryBlades;
+    public static Item sifter;
 
     // food
     public static Item steamedPorkchop;
@@ -587,15 +588,15 @@ public class SteamcraftItems {
 
         if (Config.enableBattleDrill) {
             battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-              "steamcraft:toolUpgades/battleDrill", null, 1).setUnlocalizedName("steamcraft:battleDrill")
-              .setCreativeTab(Steamcraft.tabTools);
+              "steamcraft:toolUpgades/battleDrill", null, 1)
+              .setUnlocalizedName("steamcraft:battleDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(battleDrill, "battleDrill");
         }
 
         if (Config.enableStoneGrinder) {
             stoneGrinder = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-              "steamcraft:toolUpgrades/stoneGrinder", null, 1).setUnlocalizedName("steamcraft:stoneGrinder")
-              .setCreativeTab(Steamcraft.tabTools);
+              "steamcraft:toolUpgrades/stoneGrinder", null, 1)
+              .setUnlocalizedName("steamcraft:stoneGrinder").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
         }
 
@@ -620,6 +621,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/shovelRotary", null, 1)
               .setUnlocalizedName("steamcraft:rotaryBlades").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(rotaryBlades, "rotaryBlades");
+        }
+
+        if (Config.enableSifter) {
+            sifter = new ItemSteamToolUpgrade(SteamToolSlot.shovelCore,
+              "steamcraft:toolUpgrades/shovelSifter", null, 1)
+              .setUnlocalizedName("steamcraft:sifter").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(sifter, "sifter");
         }
     }
 

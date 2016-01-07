@@ -223,10 +223,7 @@ public class Steamcraft {
         }
         long end = System.nanoTime();
         int time = (int) (end - start) / 1000000;
-        FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper with %s stones," +
-          " %s nuggets, %s ingots, and %s leaves. It took %s ms", OreDictHelper.stones.size(),
-          OreDictHelper.nuggets.size(), OreDictHelper.ingots.size(), OreDictHelper.leaves.size(),
-          time);
+        FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
     }
 
 

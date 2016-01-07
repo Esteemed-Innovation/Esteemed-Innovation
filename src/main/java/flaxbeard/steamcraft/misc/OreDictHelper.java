@@ -13,6 +13,8 @@ public class OreDictHelper {
     public static ArrayList<MutablePair<Item, Integer>> nuggets = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> ingots = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> leaves = new ArrayList<>();
+    public static ArrayList<MutablePair<Item, Integer>> goldNuggets = new ArrayList<>();
+    public static ArrayList<MutablePair<Item, Integer>> sands = new ArrayList<>();
 
     public static void initializeOreDicts(String name, ItemStack stack) {
         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
@@ -32,14 +34,21 @@ public class OreDictHelper {
 
         if (name.startsWith("nugget")) {
             nuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            if (name.endsWith("Gold")) {
+                goldNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            }
         }
 
         if (name.startsWith("ingot")) {
             ingots.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.startsWith("treeLeaves")) {
+        if (name.equals("treeLeaves")) {
             leaves.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+        }
+
+        if (name.equals("sand")) {
+            sands.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
     }
 }

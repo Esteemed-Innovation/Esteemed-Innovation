@@ -204,6 +204,7 @@ public class Config {
     // shovel
     public static boolean enableCultivator;
     public static boolean enableRotaryBlades;
+    public static boolean enableSifter;
 
     //plates
     public static boolean enableCopperPlate;
@@ -412,6 +413,7 @@ public class Config {
         enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
         enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);
         enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
+        enableSifter = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Sifter upgrade", true).getBoolean(true);
         enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
