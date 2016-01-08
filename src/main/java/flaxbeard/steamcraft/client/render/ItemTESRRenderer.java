@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.client.render;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
@@ -38,8 +39,12 @@ public class ItemTESRRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        if (type == IItemRenderer.ItemRenderType.ENTITY)
+        Block block = Block.getBlockFromItem(item.getItem());
+        if (type == IItemRenderer.ItemRenderType.ENTITY && (RenderItem.renderInFrame &&
+          block != SteamcraftBlocks.fan && block != SteamcraftBlocks.vacuum &&
+          block != SteamcraftBlocks.hammer)) {
             GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
+        }
         if (renderBlock) {
             if (type == IItemRenderer.ItemRenderType.ENTITY) {
                 GL11.glTranslatef(0.5F, 0.0F, 0.5F);
@@ -47,7 +52,6 @@ public class ItemTESRRenderer implements IItemRenderer {
             if (type == IItemRenderer.ItemRenderType.EQUIPPED || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
-            Block block = Block.getBlockFromItem(item.getItem());
             if (block == SteamcraftBlocks.fluidSteamConverter) {
                 float ringMin = 4.0F / 16.0F;
                 float ringMax = 12.0F / 16.0F;
