@@ -6,6 +6,7 @@ package flaxbeard.steamcraft.codechicken.lib.vec;
  * @param <Vector>         The vector type
  * @param <Transformation> The transformation type
  */
+@SuppressWarnings("hiding")
 public abstract class ITransformation<Vector, Transformation extends ITransformation> {
     /**
      * Applies this transformation to vec

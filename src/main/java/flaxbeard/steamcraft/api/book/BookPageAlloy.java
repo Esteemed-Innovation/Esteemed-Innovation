@@ -20,7 +20,7 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
     private ItemStack[] item1;
     private ItemStack[] item2;
 
-    @SuppressWarnings("deprecated")
+    @SuppressWarnings("deprecation")
     public BookPageAlloy(String string, CrucibleLiquid op, CrucibleFormula form) {
         super(string);
         output = op;
