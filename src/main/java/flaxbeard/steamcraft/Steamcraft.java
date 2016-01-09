@@ -180,7 +180,7 @@ public class Steamcraft {
         proxy.registerHotkeys();
         SteamcraftRecipes.registerRecipes();
 
-        CrossMod.init();
+        CrossMod.init(event);
     }
 
 
@@ -198,7 +198,7 @@ public class Steamcraft {
         iso.registerDusts();
         SteamcraftItems.reregisterPlates();
         SteamcraftRecipes.registerDustLiquids();
-        CrossMod.postInit();
+        CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
     }
 

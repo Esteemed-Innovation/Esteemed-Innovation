@@ -3,9 +3,15 @@ package flaxbeard.steamcraft.integration;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
 import flaxbeard.steamcraft.integration.natura.NaturaIntegration;
+import flaxbeard.steamcraft.integration.nei.NEIIntegration;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
 
+import cpw.mods.fml.relauncher.Side;
+
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,6 +38,9 @@ public class CrossMod {
 
 	public static final boolean NATURA = Loader.isModLoaded("Natura") &&
 	  Config.enableNaturaIntegration;
+	
+	public static final boolean NEI = Loader.isModLoaded("NotEnoughItems") &&
+		Config.enableNEIIntegration;
 
 	public static final boolean RAILCRAFT = Loader.isModLoaded("Railcraft") &&
 	  Config.enableRailcraftIntegration;
@@ -49,14 +58,20 @@ public class CrossMod {
 	  Config.enableTwilightForestIntegration;
 
 	public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class, "FSP_POOR_ZINC", new Class[0], new Object[0]);
-
-	public static void init() {
+	
+	public static void preInit(FMLPreInitializationEvent event) {
+		if (NEI && event.getSide() == Side.CLIENT) {
+			NEIIntegration.preInit();
+		}
+	}
+	
+	public static void init(FMLInitializationEvent event) {
 		if (RAILCRAFT && Config.genPoorZincOre) {
 			MinecraftForge.ORE_GEN_BUS.register(new PoorOreGeneratorZinc(EVENT_TYPE, 8, 70, 3, 29));
 		}
 	}
 
-	public static void postInit() {
+	public static void postInit(FMLPostInitializationEvent event) {
 		if (BOTANIA) {
 			BotaniaIntegration.postInit();
 		}

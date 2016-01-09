@@ -58,7 +58,7 @@ public class Config {
     public static boolean enableTinkersConstruct;
     public static boolean enableBaublesIntegration;
     public static boolean enableRailcraftIntegration;
-
+    public static boolean enableNEIIntegration;
 
     public static boolean enableToolHeadsIntegration;
     public static int brassChance;
@@ -181,7 +181,6 @@ public class Config {
     public static boolean enableSadistPlate;
     public static boolean enableVibrantPlate;
     public static boolean enableEnderiumPlate;
-
 
     public static boolean enableWings;
     public static boolean hasAllCrucial;
@@ -368,6 +367,7 @@ public class Config {
         enableTinkersConstruct = config.get("Integration", "Enable Tinker's Construct", true).getBoolean(true);
         enableBaublesIntegration = config.get("Integration", "Enable Baubles", true).getBoolean(true);
         enableRailcraftIntegration = config.get("Integration", "Enable Railcraft", true).getBoolean(true);
+        enableNEIIntegration = config.get("Integration", "Enable NEI", true).getBoolean(true);
 
         if (enableBoiler && enableGauge && enableTank && enablePipe) {
             hasAllCrucial = true;
