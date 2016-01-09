@@ -1,9 +1,12 @@
 package flaxbeard.steamcraft.tile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.IWrenchDisplay;
+import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -22,16 +25,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.lwjgl.opengl.GL11;
 
-import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.IWrenchDisplay;
-import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
-import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
 

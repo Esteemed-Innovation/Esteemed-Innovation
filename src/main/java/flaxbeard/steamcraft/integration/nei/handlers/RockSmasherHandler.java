@@ -1,23 +1,15 @@
 package flaxbeard.steamcraft.integration.nei.handlers;
 
-import flaxbeard.steamcraft.api.util.BonyDebugger;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
-import flaxbeard.steamcraft.tile.TileEntitySmasher.SmashablesRegistry;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import codechicken.nei.PositionedStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.item.ItemStack;
 import codechicken.lib.gui.GuiDraw;
-import org.lwjgl.opengl.GL11;
-import net.minecraft.util.StatCollector;
+import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Map;
 
 public class RockSmasherHandler extends TemplateRecipeHandler {
 
@@ -51,12 +43,6 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		/*BonyDebugger.debug();
-		//Testing:
-		if(result.getItem().equals(Item.getItemFromBlock(Blocks.cobblestone))){
-			this.arecipes.add(new CachedRockSmasherRecipe(new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand)));
-		}*/
-		
 		Map<ItemStack, ItemStack> recipes = TileEntitySmasher.REGISTRY.registry;
 		for(Map.Entry<ItemStack, ItemStack> recipe : recipes.entrySet()){
 			ItemStack input = recipe.getKey();
