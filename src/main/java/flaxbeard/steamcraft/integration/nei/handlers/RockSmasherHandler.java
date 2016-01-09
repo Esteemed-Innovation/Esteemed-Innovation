@@ -55,13 +55,9 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		Map<ItemStack, ItemStack> recipes = TileEntitySmasher.REGISTRY.registry;
-		for(Map.Entry<ItemStack, ItemStack> recipe : recipes.entrySet()){
-			ItemStack input = recipe.getKey();
-			ItemStack output = recipe.getValue();
-			if(ingredient.isItemEqual(input)){
-				this.arecipes.add(new CachedRockSmasherRecipe(input, output));
-			}
+		ItemStack output = TileEntitySmasher.REGISTRY.getOutput(ingredient);
+		if(output != null){
+			this.arecipes.add(new CachedRockSmasherRecipe(ingredient, output));
 		}
 	}
 	
