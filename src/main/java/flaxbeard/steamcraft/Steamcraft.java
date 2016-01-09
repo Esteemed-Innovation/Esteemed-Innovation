@@ -149,6 +149,8 @@ public class Steamcraft {
 
         registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
         registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
+        
+        CrossMod.preInit(event);
     }
 
     @EventHandler
