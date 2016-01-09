@@ -636,11 +636,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	}
 
     	public void registerSmashable(Block input, ItemStack output) {
-    		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+    		registerSmashable(new ItemStack(input), output);
     	}
 
     	public void registerSmashable(Item input, ItemStack output) {
-    		registerSmashable(new ItemStack(input, 1, OreDictionary.WILDCARD_VALUE), output);
+    		registerSmashable(new ItemStack(input), output);
     	}
 
     	public void registerSmashable(ItemStack input, ItemStack output) {

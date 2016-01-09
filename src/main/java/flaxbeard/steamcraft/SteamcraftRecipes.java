@@ -741,7 +741,7 @@ public class SteamcraftRecipes {
     }
     
     private static void registerSmashingRecipes(){
-		TileEntitySmasher.REGISTRY.registerSmashable(new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.gravel));
-		TileEntitySmasher.REGISTRY.registerSmashable(new ItemStack(Blocks.gravel), new ItemStack(Blocks.sand));
+		TileEntitySmasher.REGISTRY.registerSmashable(Blocks.cobblestone, new ItemStack(Blocks.gravel));
+		TileEntitySmasher.REGISTRY.registerSmashable(Blocks.gravel, new ItemStack(Blocks.sand));
 	}
 }
