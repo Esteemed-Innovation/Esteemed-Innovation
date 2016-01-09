@@ -432,28 +432,28 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         if (smooshedStack != null) {
             for (ItemStack stack : smooshedStack) {
             	ItemStack output = REGISTRY.getOutput(stack);
-                boolean isSmashableOre = output != null;
                 
-                if (Block.getBlockFromItem(stack.getItem()) == Blocks.cobblestone && !this.noSmashDrops) {
+                /*if (Block.getBlockFromItem(stack.getItem()) == Blocks.cobblestone && !this.noSmashDrops) {
                 	output = new ItemStack(Blocks.gravel);
                 } else if (Block.getBlockFromItem(stack.getItem()) == Blocks.gravel && !this.noSmashDrops) {
                 	output = new ItemStack(Blocks.sand);
-                }
-                if (isSmashableOre && !this.noSmashDrops) {
+                }*/
+                if (output != null && !this.noSmashDrops) {
                     //Chance you'll get double
                     if (worldObj.rand.nextInt(Config.chance) == 0)
                     	output.stackSize *= 2;
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
-                } else if (output != null) {
-                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
-                    this.worldObj.spawnEntityInWorld(entityItem);
-                    this.smooshedStack = null;
                 } else if (output == null) {
+                	System.out.println("it null");
                     output = stack;
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
+                } else {
+                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
+                    this.worldObj.spawnEntityInWorld(entityItem);
+                    this.smooshedStack = null;
                 }
             }
         }

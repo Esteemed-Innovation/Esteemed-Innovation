@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -28,9 +29,10 @@ public class SteamcraftRecipes {
         registerFluid();
         registerCraftingRecipes();
         registerSmeltingRecipes();
+        registerSmashingRecipes();
     }
 
-    private static void registerFluid() {
+	private static void registerFluid() {
         liquidIron = new CrucibleLiquid("iron", new ItemStack(Items.iron_ingot), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 2), new ItemStack(SteamcraftItems.steamcraftNugget, 1, 2), null, 200, 200, 200);
         SteamcraftRegistry.registerLiquid(liquidIron);
 
@@ -737,4 +739,9 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerMeltRecipeOreDict("dustCopper", liquidCopper, 9);
         SteamcraftRegistry.registerMeltRecipeOreDict("dustBrass", liquidBrass, 9);
     }
+    
+    private static void registerSmashingRecipes(){
+		TileEntitySmasher.REGISTRY.registerSmashable(new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.gravel));
+		TileEntitySmasher.REGISTRY.registerSmashable(new ItemStack(Blocks.gravel), new ItemStack(Blocks.sand));
+	}
 }
