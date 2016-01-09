@@ -433,27 +433,18 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
             for (ItemStack stack : smooshedStack) {
             	ItemStack output = REGISTRY.getOutput(stack);
                 
-                /*if (Block.getBlockFromItem(stack.getItem()) == Blocks.cobblestone && !this.noSmashDrops) {
-                	output = new ItemStack(Blocks.gravel);
-                } else if (Block.getBlockFromItem(stack.getItem()) == Blocks.gravel && !this.noSmashDrops) {
-                	output = new ItemStack(Blocks.sand);
-                }*/
-                if (output != null && !this.noSmashDrops) {
-                    //Chance you'll get double
-                    if (worldObj.rand.nextInt(Config.chance) == 0)
-                    	output.stackSize *= 2;
-                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
+                if(output != null && !this.noSmashDrops) {
+                	if (worldObj.rand.nextInt(Config.chance) == 0) {
+                    	output.stackSize *= 2; //doubling
+                    }
+                	
+                	EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
                     this.smooshedStack = null;
-                } else if (output == null) {
-                	System.out.println("it null");
-                    output = stack;
+                } else { //Drops itself
+                	output = stack;
                     EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
                     this.worldObj.spawnEntityInWorld(entityItem);
-                } else {
-                    EntityItem entityItem = new EntityItem(this.worldObj, x + 0.5F, y + 0.1F, z + 0.5F, output);
-                    this.worldObj.spawnEntityInWorld(entityItem);
-                    this.smooshedStack = null;
                 }
             }
         }
@@ -595,7 +586,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     }
 
     public static class SmashablesRegistry {
-    	public final Map<Item, ItemStack> wildcards = new HashMap<>();
     	public final Map<String, ItemStack> oreDicts = new HashMap<>();
     	public final Map<ItemStack, ItemStack> registry = new HashMap<>();
 
@@ -604,30 +594,28 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     			return null;
     		}
     		ItemStack output = null;
-    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-    			output = wildcards.get(input.getItem());
-    		} else {
-    			int[] ids = OreDictionary.getOreIDs(input);
-    			if (ids != null && ids.length > 0) {
-    				for (int id : ids) {
-    					output = oreDicts.get(OreDictionary.getOreName(id));
+    		int[] ids = OreDictionary.getOreIDs(input);
+    		
+    		if (ids != null && ids.length > 0) {
+    			for (int id : ids) {
+    				output = oreDicts.get(OreDictionary.getOreName(id));
+    				if (output != null) {
+    					break;
+    				}
+    			}
+    		}
+
+    		if (output == null) {
+    			for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
+    				if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
+    					output = entry.getValue();
     					if (output != null) {
     						break;
     					}
     				}
     			}
-
-    			if (output == null) {
-    				for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
-    					if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
-    						output = entry.getValue();
-    						if (output != null) {
-    							break;
-    						}
-    					}
-    				}
-    			}
     		}
+    		
     		return ItemStack.copyItemStack(output);
     	}
 
@@ -644,11 +632,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     	}
 
     	public void registerSmashable(ItemStack input, ItemStack output) {
-    		if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-    			wildcards.put(input.getItem(), output);
-    		} else {
-    			registry.put(input, output);
-    		}
+    		registry.put(input, output);
     	}
 
         public void removeSmashable(String input, ItemStack output) {
@@ -656,11 +640,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         }
 
         public void removeSmashable(ItemStack input, ItemStack output) {
-            if (input.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                wildcards.remove(input.getItem());
-            } else {
-                registry.remove(input);
-            }
+            registry.remove(input);
         }
     }
 }
