@@ -120,7 +120,7 @@ public class SteamcraftRegistry {
      * @param food2 The output item
      */
     public static void addSteamingRecipe(Item food1, Item food2) {
-        steamingRecipes.put(MutablePair.of(food1, -1), MutablePair.of(food2, -1));
+        steamingRecipes.put(MutablePair.of(food1, 0), MutablePair.of(food2, 0));
     }
 
     /**
@@ -136,7 +136,7 @@ public class SteamcraftRegistry {
      * @see #addSteamingRecipe(Item, Item) for params.
      */
     public static void removeSteamingRecipe(Item food1) {
-        removeSteamingRecipe(food1, -1);
+        removeSteamingRecipe(food1, 0);
     }
 
     /**
