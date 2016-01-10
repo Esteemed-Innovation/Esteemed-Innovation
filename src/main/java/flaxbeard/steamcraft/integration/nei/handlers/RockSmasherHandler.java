@@ -47,7 +47,7 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 		List<ItemStack> inputs = TileEntitySmasher.REGISTRY.getInputs(output);
 		if(inputs != null){
 			for(ItemStack input : inputs){
-				this.arecipes.add(new CachedRockSmasherRecipe(input, output));
+				this.arecipes.add(new CachedRockSmasherRecipe(input, TileEntitySmasher.REGISTRY.getOutput(input))); //For proper stacking support
 			}
 		}
 	}
