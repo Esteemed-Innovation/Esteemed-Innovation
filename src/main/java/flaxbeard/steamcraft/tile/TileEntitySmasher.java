@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -627,13 +628,13 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     		List<ItemStack> inputs = new ArrayList<ItemStack>();
     		
     		for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
-    			if(ItemStack.areItemStacksEqual(entry.getValue(), output)){
+    			if(ItemStackUtility.areItemStacksMostlyEqual(entry.getValue(), output)){
     				inputs.add(entry.getKey());
     			}
     		}
     		
     		for (Entry<String, ItemStack> entry : oreDicts.entrySet()) {
-    			if(ItemStack.areItemStacksEqual(entry.getValue(), output)){
+    			if(ItemStackUtility.areItemStacksMostlyEqual(entry.getValue(), output)){
     				inputs.addAll(OreDictionary.getOres(entry.getKey()));
     			}
     		}

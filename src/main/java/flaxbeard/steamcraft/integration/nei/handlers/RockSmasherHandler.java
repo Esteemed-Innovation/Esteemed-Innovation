@@ -44,7 +44,6 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadCraftingRecipes(ItemStack output) {
-		output.stackSize = 1;
 		List<ItemStack> inputs = TileEntitySmasher.REGISTRY.getInputs(output);
 		if(inputs != null){
 			for(ItemStack input : inputs){
