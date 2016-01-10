@@ -29,6 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -616,6 +617,32 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     		}
     		
     		return ItemStack.copyItemStack(output);
+    	}
+    	
+    	public List<ItemStack> getInputs(ItemStack output) {
+    		if(output == null) {
+    			return null;
+    		}
+    		
+    		List<ItemStack> inputs = new ArrayList<ItemStack>();
+    		
+    		for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
+    			if(ItemStack.areItemStacksEqual(entry.getValue(), output)){
+    				inputs.add(entry.getKey());
+    			}
+    		}
+    		
+    		for (Entry<String, ItemStack> entry : oreDicts.entrySet()) {
+    			if(ItemStack.areItemStacksEqual(entry.getValue(), output)){
+    				inputs.addAll(OreDictionary.getOres(entry.getKey()));
+    			}
+    		}
+    		
+    		if(inputs.isEmpty()){
+    			return null;
+    		}
+    		
+    		return inputs;
     	}
 
     	public void registerSmashable(String input, ItemStack output) {

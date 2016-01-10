@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
+import java.util.List;
 import java.util.Map;
 
 public class RockSmasherHandler extends TemplateRecipeHandler {
@@ -42,22 +43,22 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 	}
 	
 	@Override
-	public void loadCraftingRecipes(ItemStack result) {
-		Map<ItemStack, ItemStack> recipes = TileEntitySmasher.REGISTRY.registry;
-		for(Map.Entry<ItemStack, ItemStack> recipe : recipes.entrySet()){
-			ItemStack input = recipe.getKey();
-			ItemStack output = recipe.getValue();
-			if(result.isItemEqual(output)){
+	public void loadCraftingRecipes(ItemStack output) {
+		output.stackSize = 1;
+		List<ItemStack> inputs = TileEntitySmasher.REGISTRY.getInputs(output);
+		if(inputs != null){
+			for(ItemStack input : inputs){
 				this.arecipes.add(new CachedRockSmasherRecipe(input, output));
 			}
 		}
 	}
 	
 	@Override
-	public void loadUsageRecipes(ItemStack ingredient) {
-		ItemStack output = TileEntitySmasher.REGISTRY.getOutput(ingredient);
+	public void loadUsageRecipes(ItemStack input) {
+		input.stackSize = 1;
+		ItemStack output = TileEntitySmasher.REGISTRY.getOutput(input);
 		if(output != null){
-			this.arecipes.add(new CachedRockSmasherRecipe(ingredient, output));
+			this.arecipes.add(new CachedRockSmasherRecipe(input, output));
 		}
 	}
 	
