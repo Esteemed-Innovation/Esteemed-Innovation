@@ -18,6 +18,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
+import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
@@ -39,6 +40,7 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import flaxbeard.steamcraft.misc.OreDictHelper;
+import flaxbeard.steamcraft.misc.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -1861,31 +1863,39 @@ public class SteamcraftEventHandler {
         int y = event.y;
         int z = event.z;
         World world = event.world;
-        if (player != null) {
+        if (player == null) {
+            return;
+        }
 //            Vec3 vec = player.getLookVec();
-            ItemStack equipped = player.getCurrentEquippedItem();
-            if (equipped != null && equipped.getItem() != null && block != null) {
-                if (equipped.getItem() instanceof ItemSteamDrill) {
-                    ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.diamondHead) &&
-                      block.getHarvestLevel(meta) <= 4 && drill.isWound(player)) {
-                        ArrayList<ItemStack> drops = block.getDrops(world, x, y, z, meta, 0);
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null || block == null) {
+            return;
+        }
 
-                        for (ItemStack itemStack : drops) {
-                            world.spawnEntityInWorld(new EntityItem(world, (double) x,
-                              (double) y, (double) z, itemStack));
-                        }
-                    } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-                      drill.isWound(player)) {
-                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped, player);
+        if (equipped.getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            ArrayList<Item> upgrades = UtilSteamTool.getHarvestLevelModifiers(equipped);
+            if (upgrades != null && drill.isWound(player)) {
+                for (Item upgrade : upgrades) {
+                    if (upgrade == null) {
+                        continue;
                     }
-                } else if (equipped.getItem() instanceof ItemSteamShovel) {
-                    ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-                    if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
-                      shovel.isWound(player)) {
-                        mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
+                    if (RecipeHelper.blockMaterials.get(upgrade).right >= block.getHarvestLevel(meta)) {
+                        block.harvestBlock(world, player, x, y, z, meta);
+                        world.setBlockToAir(x, y, z);
                     }
+                    event.setCanceled(true);
                 }
+            }
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+              drill.isWound(player)) {
+                mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped, player);
+            }
+        } else if (equipped.getItem() instanceof ItemSteamShovel) {
+            ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
+              shovel.isWound(player)) {
+                mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
             }
         }
     }

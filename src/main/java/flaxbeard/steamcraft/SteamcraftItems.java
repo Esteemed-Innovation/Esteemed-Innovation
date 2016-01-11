@@ -121,7 +121,6 @@ public class SteamcraftItems {
 
     // steam tool upgrades
     // drill
-    public static Item diamondHead;
     public static Item bigDrill;
     public static Item battleDrill;
     public static Item stoneGrinder;
@@ -570,14 +569,6 @@ public class SteamcraftItems {
     }
 
     private static void registerSteamToolUpgrades() {
-        // Drill!
-        if (Config.enableDiamondHead) {
-            diamondHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-              "steamcraft:toolUpgrades/drillDiamond", null, 1)
-              .setUnlocalizedName("steamcraft:diamondHead")
-              .setCreativeTab(Steamcraft.tabTools);
-            GameRegistry.registerItem(diamondHead, "diamondHead");
-        }
 
         if (Config.enableBigDrill) {
             bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,

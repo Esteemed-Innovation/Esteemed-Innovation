@@ -32,6 +32,7 @@ import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.OreDictHelper;
+import flaxbeard.steamcraft.misc.RecipeHelper;
 import flaxbeard.steamcraft.network.*;
 import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
@@ -54,7 +55,6 @@ import java.util.ArrayList;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
-    
     @Instance("Steamcraft")
     public static Steamcraft instance;
 
@@ -213,7 +213,7 @@ public class Steamcraft {
         CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
 
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
         String[] ores = OreDictionary.getOreNames();
         for (String s : ores) {
             ArrayList<ItemStack> stacks = OreDictionary.getOres(s);
@@ -221,9 +221,14 @@ public class Steamcraft {
                 OreDictHelper.initializeOreDicts(s, stack);
             }
         }
-        long end = System.nanoTime();
-        int time = (int) (end - start) / 1000000;
+        long end = System.currentTimeMillis();
+        int time = (int) (end - start);
         FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
+        long start1 = System.currentTimeMillis();
+        RecipeHelper.initializeRecipes();
+        long end1 = System.currentTimeMillis();
+        int time1 = (int) (end1 - start1);
+        FMLLog.info("Finished initializing Flaxbeard's Steam Power RecipeHelper in %s ms", time1);
     }
 
 

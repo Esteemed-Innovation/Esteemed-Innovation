@@ -11,6 +11,8 @@ import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.misc.OreDictHelper;
+import flaxbeard.steamcraft.misc.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -253,11 +255,16 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
-        if (upgrade != null && upgrade.getItem() instanceof ISteamToolUpgrade) {
-            ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
-            return ((upgradeItem.getToolSlot().tool == 0 &&
-              upgradeItem.getToolSlot().slot == slotNum) ||
-              upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+        if (upgrade != null) {
+            if (upgrade.getItem() instanceof ISteamToolUpgrade) {
+                ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
+                return ((upgradeItem.getToolSlot().tool == 0 &&
+                  upgradeItem.getToolSlot().slot == slotNum) ||
+                  upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+            }
+            if (RecipeHelper.blockMaterials.keySet().contains(upgrade.getItem())) {
+                return true;
+            }
         }
         return false;
     }
