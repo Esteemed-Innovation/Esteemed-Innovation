@@ -46,6 +46,11 @@ public class SteamToolHelper {
                 strings.add(EnumChatFormatting.DARK_GREEN + "" + info);
             }
         }
+
+        if (strings.isEmpty()) {
+            return null;
+        }
+
         return strings;
     }
 

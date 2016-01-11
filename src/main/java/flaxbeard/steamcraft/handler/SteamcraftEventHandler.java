@@ -1893,9 +1893,26 @@ public class SteamcraftEventHandler {
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
-              shovel.isWound(player)) {
+            if (!shovel.isWound(player)) {
+                return;
+            }
+            if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
+            } else if (UtilSteamTool.hasUpgrade(equipped, SteamcraftItems.gravityDigging)) {
+                for (int i = y - Config.gravityDiggingRange; i < y + Config.gravityDiggingRange; i++) {
+                    if (i < 0) {
+                        continue;
+                    }
+                    Block block1 = world.getBlock(x, i, z);
+                    int meta1 = world.getBlockMetadata(x, i, z);
+                    if (!block1.isToolEffective("shovel", meta) || !block1.canHarvestBlock(player, meta)) {
+                        continue;
+                    }
+                    if (Item.getItemFromBlock(block) == Item.getItemFromBlock(block1)) {
+                        world.setBlockToAir(x, i, z);
+                        block.harvestBlock(world, player,x, i, z, meta1);
+                    }
+                }
             }
         }
     }

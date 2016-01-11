@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.api.tool;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.misc.RecipeHelper;
@@ -41,11 +42,15 @@ public class UtilSteamTool {
      */
     public static ArrayList<ISteamToolUpgrade> getUpgrades(ItemStack me) {
         ArrayList<ISteamToolUpgrade> upgrades = new ArrayList<>();
+        if (me.stackTagCompound == null || !me.stackTagCompound.hasKey("upgrades")) {
+            return null;
+        }
+
+        NBTTagCompound unbt = me.stackTagCompound.getCompoundTag("upgrades");
+
         for (int i = 1; i < 10; i++) {
-            if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(
-                  me.stackTagCompound.getCompoundTag("upgrades")
-                    .getCompoundTag(Integer.toString(i)));
+            if (unbt.hasKey(Integer.toString(i))) {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(unbt.getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
                     if (item != null && item instanceof ISteamToolUpgrade) {

@@ -34,6 +34,7 @@ public class Config {
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
+    public static int gravityDiggingRange;
 
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;
@@ -204,6 +205,7 @@ public class Config {
     public static boolean enableCultivator;
     public static boolean enableRotaryBlades;
     public static boolean enableSifter;
+    public static boolean enableGravityDigging;
 
     //plates
     public static boolean enableCopperPlate;
@@ -413,6 +415,9 @@ public class Config {
         enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
         enableSifter = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Sifter upgrade", true).getBoolean(true);
         enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
+        enableGravityDigging = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Gravity Digging upgrade", true).getBoolean(true);
+
+        gravityDiggingRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Gravity Digging upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();

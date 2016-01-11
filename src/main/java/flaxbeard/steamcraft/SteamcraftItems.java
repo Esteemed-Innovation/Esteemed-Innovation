@@ -132,6 +132,7 @@ public class SteamcraftItems {
     public static Item cultivator;
     public static Item rotaryBlades;
     public static Item sifter;
+    public static Item gravityDigging;
 
     // food
     public static Item steamedPorkchop;
@@ -569,7 +570,6 @@ public class SteamcraftItems {
     }
 
     private static void registerSteamToolUpgrades() {
-
         if (Config.enableBigDrill) {
             bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
               "steamcraft:toolUpgrades/drillBig", "steamcraft.drill.big", 1)
@@ -619,6 +619,14 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/shovelSifter", null, 1)
               .setUnlocalizedName("steamcraft:sifter").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(sifter, "sifter");
+        }
+
+        // TODO: Better name.
+        if (Config.enableGravityDigging) {
+            gravityDigging = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead,
+              "steamcraft:toolUpgrades/shovelGravity", null, 1)
+              .setUnlocalizedName("steamcraft:gravityDigging").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(gravityDigging, "gravityDigging");
         }
     }
 
