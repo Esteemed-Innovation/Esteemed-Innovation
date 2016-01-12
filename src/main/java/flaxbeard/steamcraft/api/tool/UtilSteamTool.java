@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 public class UtilSteamTool {
     /**
-     * Checks if the drill has a particular upgrade.
+     * Checks if the ItemStack has a particular upgrade. Note that you can also call directly on
+     * the ISteamTool item rather than this. This is only used internally by FSP for the actual
+     * ISteamTool#hasUpgrade(ItemStack, Item) overrides in the steam tool classes.
      * @param me The ItemStack version of the drill
      * @param check The item that is being checked against, or the upgrade
      * @return Whether it has any upgrades.

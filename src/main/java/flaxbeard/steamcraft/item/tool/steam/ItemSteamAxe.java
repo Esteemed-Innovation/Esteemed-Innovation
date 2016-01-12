@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.ISteamTool;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
@@ -18,6 +19,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,7 +32,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineerable {
+public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineerable, ISteamTool {
     public IIcon[] axeIcons = new IIcon[2];
     public IIcon transparentIcon;
     private boolean hasBrokenBlock = false;
@@ -152,6 +154,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         }
     }
 
+    @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
         checkNBT(player);
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
@@ -268,14 +271,15 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 128, 64, 64);
     }
 
-    /**
-     * Checks if the axe is wound up.
-     * @param player The player to get the info for.
-     * @return Whether the axe has been wound by the player.
-     */
+    @Override
     public boolean isWound(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);
         MutablePair info = nbt.axeInfo;
         return ((int) info.right > 0);
+    }
+
+    @Override
+    public boolean hasUpgrade(ItemStack me, Item check) {
+        return UtilSteamTool.hasUpgrade(me, check);
     }
 }

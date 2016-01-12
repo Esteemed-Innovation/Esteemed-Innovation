@@ -34,7 +34,6 @@ public class Config {
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
-    public static int gravityDiggingRange;
 
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;
@@ -192,6 +191,9 @@ public class Config {
     public static boolean enableDragonRoar;
 
     // steam tool upgrades
+    // core
+    public static boolean enableTheVoid;
+
     // drill
     public static boolean enableBigDrill;
     public static boolean enableBattleDrill;
@@ -206,6 +208,7 @@ public class Config {
     public static boolean enableRotaryBlades;
     public static boolean enableSifter;
     public static boolean enableGravityDigging;
+    public static int gravityDiggingRange;
 
     //plates
     public static boolean enableCopperPlate;
@@ -416,6 +419,7 @@ public class Config {
         enableSifter = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Sifter upgrade", true).getBoolean(true);
         enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
         enableGravityDigging = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Gravity Digging upgrade", true).getBoolean(true);
+        enableTheVoid = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade the Void", true).getBoolean(true);
 
         gravityDiggingRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Gravity Digging upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +

@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.ISteamTool;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable {
+public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable, ISteamTool {
     public IIcon[] icon = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
@@ -275,14 +277,15 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 128, 64, 64);
     }
 
-    /**
-     * Checks if the drill is wound up.
-     * @param player The player to get the info for.
-     * @return Whether the drill has been wound by the player.
-     */
+    @Override
     public boolean isWound(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);
         MutablePair info = nbt.drillInfo;
         return ((int) info.right > 0);
+    }
+
+    @Override
+    public boolean hasUpgrade(ItemStack me, Item check) {
+        return UtilSteamTool.hasUpgrade(me, check);
     }
 }

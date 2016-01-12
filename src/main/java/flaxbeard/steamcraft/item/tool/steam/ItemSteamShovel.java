@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.tool.ISteamTool;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
@@ -18,6 +19,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -30,12 +32,11 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngineerable {
+public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngineerable, ISteamTool {
     public IIcon[] shovelIcons = new IIcon[2];
     public IIcon transparentIcon;
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
-
 
     public ItemSteamShovel() {
         super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
@@ -151,7 +152,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         checkNBT(player);
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
           player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
@@ -265,14 +266,15 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 128, 128, 64, 64);
     }
 
-    /**
-     * Checks if the drill is wound up.
-     * @param player The player to get the info for.
-     * @return Whether the drill has been wound by the player.
-     */
+    @Override
     public boolean isWound(EntityPlayer player) {
         ExtendedPropertiesPlayer nbt = checkNBT(player);
         MutablePair info = nbt.shovelInfo;
         return ((int) info.right > 0);
+    }
+
+    @Override
+    public boolean hasUpgrade(ItemStack me, Item check) {
+        return UtilSteamTool.hasUpgrade(me, check);
     }
 }

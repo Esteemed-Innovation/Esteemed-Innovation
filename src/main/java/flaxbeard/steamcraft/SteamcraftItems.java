@@ -134,6 +134,9 @@ public class SteamcraftItems {
     public static Item sifter;
     public static Item gravityDigging;
 
+    // core
+    public static Item theVoid;
+
     // food
     public static Item steamedPorkchop;
     public static Item steamedFish;
@@ -570,6 +573,15 @@ public class SteamcraftItems {
     }
 
     private static void registerSteamToolUpgrades() {
+        // General core!
+        if (Config.enableTheVoid) {
+            theVoid = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
+              "steamcraft:toolUpgrades/coreVoid", null, 1)
+              .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(theVoid, "theVoid");
+        }
+
+        // Drill!
         if (Config.enableBigDrill) {
             bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
               "steamcraft:toolUpgrades/drillBig", "steamcraft.drill.big", 1)
