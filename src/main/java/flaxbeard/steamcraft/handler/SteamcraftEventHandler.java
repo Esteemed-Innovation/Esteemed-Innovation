@@ -45,6 +45,7 @@ import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.misc.RecipeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -69,6 +70,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -1892,7 +1894,9 @@ public class SteamcraftEventHandler {
             if (shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
             } else if (shovel.hasUpgrade(equipped, SteamcraftItems.gravityDigging)) {
-                for (int i = y - Config.gravityDiggingRange; i < y + Config.gravityDiggingRange; i++) {
+                boolean isFalling = block instanceof BlockFalling;
+                int end = isFalling ? y + Config.gravityDiggingRange : y;
+                for (int i = y - Config.gravityDiggingRange; i < end; i++) {
                     if (i < 0) {
                         continue;
                     }
@@ -1904,9 +1908,56 @@ public class SteamcraftEventHandler {
                     if (Item.getItemFromBlock(block) == Item.getItemFromBlock(block1)) {
                         world.setBlockToAir(x, i, z);
                         block.harvestBlock(world, player, x, i, z, meta1);
+                    } else {
+                        break;
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void autosmelt(BlockEvent.HarvestDropsEvent event) {
+        if (event.harvester == null || event.block == null) {
+            return;
+        }
+        EntityPlayer player = event.harvester;
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ISteamTool)) {
+            return;
+        }
+        ISteamTool tool = (ISteamTool) equipped.getItem();
+        if (!tool.hasUpgrade(equipped, SteamcraftItems.autosmelting) || !tool.isWound(player) ||
+          event.drops.isEmpty()) {
+            return;
+        }
+        int itemsSmelted = 0;
+        for (int i = 0; i < event.drops.size(); i++) {
+            ItemStack drop = event.drops.get(i);
+            if (drop == null || drop.getItem() == null) {
+                continue;
+            }
+
+            int meta = drop.getItemDamage() == OreDictionary.WILDCARD_VALUE ? -1 : drop.getItemDamage();
+            MutablePair<Item, Integer> input = MutablePair.of(drop.getItem(), meta);
+            if (SteamcraftRegistry.steamingRecipes.containsKey(input)) {
+                event.drops.remove(i);
+                MutablePair<Item, Integer> output = SteamcraftRegistry.steamingRecipes.get(input);
+                ItemStack stack = new ItemStack(output.left, drop.stackSize, output.right);
+                event.drops.add(stack);
+                itemsSmelted += 1;
+            } else {
+                ItemStack output = FurnaceRecipes.smelting().getSmeltingResult(drop);
+                if (output == null || output.getItem() == null) {
+                    continue;
+                }
+                event.drops.remove(i);
+                event.drops.add(i, output.copy());
+                itemsSmelted += 1;
+            }
+        }
+        if (itemsSmelted > 0) {
+            equipped.damageItem(itemsSmelted, player);
         }
     }
 

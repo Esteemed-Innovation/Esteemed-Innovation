@@ -193,6 +193,7 @@ public class Config {
     // steam tool upgrades
     // core
     public static boolean enableTheVoid;
+    public static boolean enableAutosmelting;
 
     // drill
     public static boolean enableBigDrill;
@@ -420,6 +421,7 @@ public class Config {
         enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
         enableGravityDigging = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Gravity Digging upgrade", true).getBoolean(true);
         enableTheVoid = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade the Void", true).getBoolean(true);
+        enableAutosmelting = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade autosmelting", true).getBoolean(true);
 
         gravityDiggingRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Gravity Digging upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +

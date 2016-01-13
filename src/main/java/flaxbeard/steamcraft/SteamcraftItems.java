@@ -136,6 +136,7 @@ public class SteamcraftItems {
 
     // core
     public static Item theVoid;
+    public static Item autosmelting;
 
     // food
     public static Item steamedPorkchop;
@@ -579,6 +580,14 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/coreVoid", null, 1)
               .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(theVoid, "theVoid");
+        }
+
+        if (Config.enableAutosmelting) {
+            // TODO: Change the name of the texture to fit the "core" aspect.
+            autosmelting = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
+              "steamcraft:toolUpgrades/drillFurnace", null, 1)
+              .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(autosmelting, "autosmelting");
         }
 
         // Drill!
