@@ -19,4 +19,9 @@ public interface ISteamTool {
      * @return Whether it has any upgrades.
      */
     boolean hasUpgrade(ItemStack me, Item check);
+
+    /**
+     * @return The Vanilla tool class associated with this tool.
+     */
+    String toolClass();
 }

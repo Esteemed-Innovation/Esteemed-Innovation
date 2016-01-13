@@ -77,7 +77,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
 
     @Override
     public int getRenderPasses(int meta) {
-        return 2;
+        return 3;
     }
 
     @SuppressWarnings("Duplicates")
@@ -276,5 +276,10 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @Override
     public boolean hasUpgrade(ItemStack me, Item check) {
         return UtilSteamTool.hasUpgrade(me, check);
+    }
+
+    @Override
+    public String toolClass() {
+        return "shovel";
     }
 }

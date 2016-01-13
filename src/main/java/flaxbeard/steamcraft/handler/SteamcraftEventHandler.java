@@ -1744,7 +1744,7 @@ public class SteamcraftEventHandler {
             if (drill.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
               drill.isWound(player)) {
                 String harvestTool = block.getHarvestTool(meta);
-                if (harvestTool == null || !harvestTool.equals("pickaxe")) {
+                if (harvestTool == null || !harvestTool.equals(((ISteamTool) drill).toolClass())) {
                     return;
                 }
                 boolean addedNugget = false;
@@ -1900,7 +1900,7 @@ public class SteamcraftEventHandler {
                     }
                     Block block1 = world.getBlock(x, i, z);
                     int meta1 = world.getBlockMetadata(x, i, z);
-                    if (!block1.isToolEffective("shovel", meta) || !block1.canHarvestBlock(player, meta)) {
+                    if (!block1.isToolEffective(((ISteamTool) shovel).toolClass(), meta) || !block1.canHarvestBlock(player, meta)) {
                         continue;
                     }
                     if (Item.getItemFromBlock(block) == Item.getItemFromBlock(block1)) {
@@ -1920,13 +1920,14 @@ public class SteamcraftEventHandler {
             return;
         }
         EntityPlayer player = event.harvester;
+        Block block = event.block;
         ItemStack equipped = player.getCurrentEquippedItem();
         if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ISteamTool)) {
             return;
         }
         ISteamTool tool = (ISteamTool) equipped.getItem();
         if (!tool.hasUpgrade(equipped, SteamcraftItems.autosmelting) || !tool.isWound(player) ||
-          event.drops.isEmpty()) {
+          event.drops.isEmpty() || !block.isToolEffective(tool.toolClass(), event.blockMetadata)) {
             return;
         }
         int itemsSmelted = 0;
@@ -2328,7 +2329,7 @@ public class SteamcraftEventHandler {
             if (!flag && isShovel) {
                 // For some reason, flag is false when using the Steam Shovel.
                 String toolClass = block.getHarvestTool(meta);
-                flag = ((toolClass != null) && toolClass.equals("shovel"));
+                flag = ((toolClass != null) && toolClass.equals(((ISteamTool) tool).toolClass()));
             }
             if (isAxe) {
                 MutablePair item = MutablePair.of(block.getItem(world, thisX, thisY, thisZ), meta);

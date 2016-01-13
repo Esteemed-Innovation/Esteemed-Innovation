@@ -577,7 +577,7 @@ public class SteamcraftItems {
         // General core!
         if (Config.enableTheVoid) {
             theVoid = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
-              "steamcraft:toolUpgrades/coreVoid", null, 1)
+              "steamcraft:toolUpgrades/coreVoid", null, 2)
               .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(theVoid, "theVoid");
         }
@@ -585,7 +585,7 @@ public class SteamcraftItems {
         if (Config.enableAutosmelting) {
             // TODO: Change the name of the texture to fit the "core" aspect.
             autosmelting = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
-              "steamcraft:toolUpgrades/drillFurnace", null, 1)
+              "steamcraft:toolUpgrades/drillFurnace", null, 2)
               .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(autosmelting, "autosmelting");
         }
@@ -593,7 +593,7 @@ public class SteamcraftItems {
         // Drill!
         if (Config.enableBigDrill) {
             bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
-              "steamcraft:toolUpgrades/drillBig", "steamcraft.drill.big", 1)
+              "steamcraft:toolUpgrades/drillBig", null, 1)
               .setUnlocalizedName("steamcraft:bigDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(bigDrill, "bigDrill");
         }

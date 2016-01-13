@@ -288,4 +288,9 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public boolean hasUpgrade(ItemStack me, Item check) {
         return UtilSteamTool.hasUpgrade(me, check);
     }
+
+    @Override
+    public String toolClass() {
+        return "pickaxe";
+    }
 }
