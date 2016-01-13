@@ -132,7 +132,7 @@ public class SteamcraftItems {
     public static Item cultivator;
     public static Item rotaryBlades;
     public static Item sifter;
-    public static Item gravityDigging;
+    public static Item backhoe;
 
     // core
     public static Item theVoid;
@@ -642,12 +642,11 @@ public class SteamcraftItems {
             GameRegistry.registerItem(sifter, "sifter");
         }
 
-        // TODO: Better name.
-        if (Config.enableGravityDigging) {
-            gravityDigging = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead,
-              "steamcraft:toolUpgrades/shovelGravity", null, 1)
-              .setUnlocalizedName("steamcraft:gravityDigging").setCreativeTab(Steamcraft.tabTools);
-            GameRegistry.registerItem(gravityDigging, "gravityDigging");
+        if (Config.enableBackhoe) {
+            backhoe = new ItemSteamToolUpgrade(SteamToolSlot.shovelHead,
+              "steamcraft:toolUpgrades/shovelBackhoe", null, 1)
+              .setUnlocalizedName("steamcraft:backhoe").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(backhoe, "backhoe");
         }
     }
 

@@ -208,8 +208,8 @@ public class Config {
     public static boolean enableCultivator;
     public static boolean enableRotaryBlades;
     public static boolean enableSifter;
-    public static boolean enableGravityDigging;
-    public static int gravityDiggingRange;
+    public static boolean enableBackhoe;
+    public static int backhoeRange;
 
     //plates
     public static boolean enableCopperPlate;
@@ -419,11 +419,11 @@ public class Config {
         enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
         enableSifter = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Sifter upgrade", true).getBoolean(true);
         enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
-        enableGravityDigging = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Gravity Digging upgrade", true).getBoolean(true);
+        enableBackhoe = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Backhoe upgrade", true).getBoolean(true);
         enableTheVoid = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade the Void", true).getBoolean(true);
         enableAutosmelting = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade autosmelting", true).getBoolean(true);
 
-        gravityDiggingRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Gravity Digging upgrade effects", 16).getInt();
+        backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();

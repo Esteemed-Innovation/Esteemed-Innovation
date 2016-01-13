@@ -4,7 +4,6 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,7 +19,6 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.tool.ISteamTool;
-import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
@@ -1893,10 +1891,10 @@ public class SteamcraftEventHandler {
             }
             if (shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
-            } else if (shovel.hasUpgrade(equipped, SteamcraftItems.gravityDigging)) {
+            } else if (shovel.hasUpgrade(equipped, SteamcraftItems.backhoe)) {
                 boolean isFalling = block instanceof BlockFalling;
-                int end = isFalling ? y + Config.gravityDiggingRange : y;
-                for (int i = y - Config.gravityDiggingRange; i < end; i++) {
+                int end = isFalling ? y + Config.backhoeRange : y;
+                for (int i = y - Config.backhoeRange; i < end; i++) {
                     if (i < 0) {
                         continue;
                     }
