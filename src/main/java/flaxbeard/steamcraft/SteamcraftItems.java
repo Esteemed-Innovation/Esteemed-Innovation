@@ -137,6 +137,7 @@ public class SteamcraftItems {
     // core
     public static Item theVoid;
     public static Item autosmelting;
+    public static Item overclocker;
 
     // food
     public static Item steamedPorkchop;
@@ -588,6 +589,14 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/drillFurnace", null, 2)
               .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(autosmelting, "autosmelting");
+        }
+
+        if (Config.enableOverclocker) {
+            // TODO: Change the name of the texture to fit the "core" aspect.
+            overclocker = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
+              "steamcraft:toolUpgrades/drillOverclocker", null, 2)
+              .setUnlocalizedName("steamcraft:overclocker").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(overclocker, "overclocker");
         }
 
         // Drill!
