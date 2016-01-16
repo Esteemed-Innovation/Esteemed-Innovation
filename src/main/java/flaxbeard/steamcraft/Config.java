@@ -200,6 +200,7 @@ public class Config {
     public static boolean enableBigDrill;
     public static boolean enableBattleDrill;
     public static boolean enableStoneGrinder;
+    public static boolean enablePreciseCuttingHead;
     public static int battleDrillConsumption;
 
     // saw
@@ -424,6 +425,7 @@ public class Config {
         enableTheVoid = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade the Void", true).getBoolean(true);
         enableAutosmelting = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade autosmelting", true).getBoolean(true);
         enableOverclocker = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade overclocker", true).getBoolean(true);
+        enablePreciseCuttingHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Precise Cutting Head", true).getBoolean(true);
         backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",

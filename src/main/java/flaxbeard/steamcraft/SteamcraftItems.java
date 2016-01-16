@@ -124,6 +124,7 @@ public class SteamcraftItems {
     public static Item bigDrill;
     public static Item battleDrill;
     public static Item stoneGrinder;
+    public static Item preciseCuttingHead;
 
     // axe
     public static Item leafBlower;
@@ -619,6 +620,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/stoneGrinder", null, 1)
               .setUnlocalizedName("steamcraft:stoneGrinder").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
+        }
+
+        if (Config.enablePreciseCuttingHead) {
+            preciseCuttingHead = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+              "steamcraft:toolUpgrades/preciseCuttingHead", null, 1)
+              .setUnlocalizedName("steamcraft:preciseCuttingHead").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(preciseCuttingHead, "preciseCuttingHead");
         }
 
         // Saw!

@@ -1743,14 +1743,13 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (OreDictHelper.cobblestones.contains(pair)) {
+            if (OreDictHelper.cobblestones.contains(pair) || !drill.isWound(player)) {
                 return;
             }
 
-            if (drill.hasUpgrade(equipped, SteamcraftItems.stoneGrinder) &&
-              drill.isWound(player)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.stoneGrinder)) {
                 String harvestTool = block.getHarvestTool(meta);
-                if (harvestTool == null || !harvestTool.equals(((ISteamTool) drill).toolClass())) {
+                if (harvestTool == null || !harvestTool.equals(drill.toolClass())) {
                     return;
                 }
                 boolean addedNugget = false;
@@ -1775,6 +1774,16 @@ public class SteamcraftEventHandler {
                     event.drops.add(nugget);
                     addedNugget = true;
                 }
+            }
+
+            if (drill.hasUpgrade(equipped, SteamcraftItems.preciseCuttingHead) &&
+              block.isToolEffective(drill.toolClass(), meta) &&
+              block.canSilkHarvest(event.world, player, event.x, event.y, event.z, meta) &&
+              drill.canHarvestBlock(block, equipped)) {
+                for (int i = 0; i < event.drops.size(); i++) {
+                    event.drops.remove(i);
+                }
+                event.drops.add(new ItemStack(block, 1, meta));
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -1873,22 +1882,23 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            ArrayList<Item> upgrades = UtilSteamTool.getHarvestLevelModifiers(equipped);
-            if (upgrades != null && drill.isWound(player)) {
-                for (Item upgrade : upgrades) {
-                    if (upgrade == null) {
-                        continue;
-                    }
-                    if (RecipeHelper.blockMaterials.get(upgrade).right >= block.getHarvestLevel(meta)) {
-                        block.harvestBlock(world, player, x, y, z, meta);
-                        world.setBlockToAir(x, y, z);
-                    }
+            Item upgrade = UtilSteamTool.getHarvestLevelModifier(equipped);
+            if (!drill.isWound(player)) {
+                return;
+            }
+            if (upgrade != null && RecipeHelper.blockMaterials.containsKey(upgrade)) {
+                if (RecipeHelper.blockMaterials.get(upgrade).right > block.getHarvestLevel(meta)) {
+                    block.harvestBlock(world, player, x, y, z, meta);
+                    world.setBlockToAir(x, y, z);
+                } else {
                     event.setCanceled(true);
                 }
             }
-            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-              drill.isWound(player)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped, player);
+            }
+            if (drill.hasUpgrade(equipped, SteamcraftItems.preciseCuttingHead)) {
+                event.setExpToDrop(0);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();

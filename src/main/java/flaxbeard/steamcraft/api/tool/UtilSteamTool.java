@@ -73,10 +73,9 @@ public class UtilSteamTool {
      * Gets the Harvest Level upgrade installed in the tool. Though it returns an arraylist for
      * ultimate mod compatibility, chances are it will be of size 1 or null.
      * @param me The tool ItemStack.
-     * @return null if there is no harvest level modifier, otherwise the ArrayList of the Items.
+     * @return null if there is no harvest level modifier, otherwise the Item.
      */
-    public static ArrayList<Item> getHarvestLevelModifiers(ItemStack me) {
-        ArrayList<Item> ret = new ArrayList<>();
+    public static Item getHarvestLevelModifier(ItemStack me) {
         for (int i = 0; i < 10; i++) {
             if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(
@@ -84,16 +83,11 @@ public class UtilSteamTool {
                 if (stack != null) {
                     Item item = stack.getItem();
                     if (item != null && RecipeHelper.blockMaterials.keySet().contains(item)) {
-                        ret.add(item);
+                        return item;
                     }
                 }
             }
         }
-
-        if (ret.isEmpty()) {
-            return null;
-        }
-
-        return ret;
+        return null;
     }
 }
