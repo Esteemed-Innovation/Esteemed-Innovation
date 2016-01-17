@@ -41,6 +41,7 @@ import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.misc.RecipeHelper;
+import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockFalling;
@@ -1715,12 +1716,6 @@ public class SteamcraftEventHandler {
                 }
             }
         }
-        if (equipped.getItem() instanceof ISteamTool) {
-            ISteamTool tool = (ISteamTool) equipped.getItem();
-            if (tool.isWound(player) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
-                equipped.damageItem(1, player);
-            }
-        }
     }
 
     @SubscribeEvent
@@ -1784,6 +1779,20 @@ public class SteamcraftEventHandler {
                     event.drops.remove(i);
                 }
                 event.drops.add(new ItemStack(block, 1, meta));
+            }
+
+            if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
+                ItemStack out = TileEntitySmasher.REGISTRY.getOutput(new ItemStack(block, 1, meta));
+                if (rand.nextInt(Config.chance) == 0) {
+                    out.stackSize *= 2;
+                }
+                for (int i = 0; i < event.drops.size(); i++) {
+                    ItemStack drop = event.drops.get(i);
+                    if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
+                        event.drops.remove(i);
+                    }
+                }
+                event.drops.add(out);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -1926,6 +1935,13 @@ public class SteamcraftEventHandler {
                         break;
                     }
                 }
+            }
+        }
+        
+        if (equipped.getItem() instanceof ISteamTool) {
+            ISteamTool tool = (ISteamTool) equipped.getItem();
+            if (tool.isWound(player) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
+                equipped.damageItem(1, player);
             }
         }
     }

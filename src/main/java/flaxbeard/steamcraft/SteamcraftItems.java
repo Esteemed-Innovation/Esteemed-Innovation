@@ -125,6 +125,7 @@ public class SteamcraftItems {
     public static Item battleDrill;
     public static Item stoneGrinder;
     public static Item preciseCuttingHead;
+    public static Item internalProcessingUnit;
 
     // axe
     public static Item leafBlower;
@@ -627,6 +628,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/preciseCuttingHead", null, 1)
               .setUnlocalizedName("steamcraft:preciseCuttingHead").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(preciseCuttingHead, "preciseCuttingHead");
+        }
+
+        if (Config.enableInternalProcessingUnit) {
+            internalProcessingUnit = new ItemSteamToolUpgrade(SteamToolSlot.drillCore,
+              "steamcraft:toolUpgrades/drillProcessor", null, 2)
+              .setUnlocalizedName("steamcraft:internalProcessor").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(internalProcessingUnit, "internalProcessor");
         }
 
         // Saw!
