@@ -1783,16 +1783,19 @@ public class SteamcraftEventHandler {
 
             if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
                 ItemStack out = TileEntitySmasher.REGISTRY.getOutput(new ItemStack(block, 1, meta));
-                if (rand.nextInt(Config.chance) == 0) {
-                    out.stackSize *= 2;
-                }
-                for (int i = 0; i < event.drops.size(); i++) {
-                    ItemStack drop = event.drops.get(i);
-                    if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
-                        event.drops.remove(i);
+                if (out != null && out.getItem() != null) {
+                    if (rand.nextInt(Config.chance) == 0) {
+                        out.stackSize *= 2;
                     }
+                    for (int i = 0; i < event.drops.size(); i++) {
+                        ItemStack drop = event.drops.get(i);
+                        if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
+                            event.drops.remove(i);
+                        }
+                    }
+                    event.drops.add(out);
+                    equipped.damageItem(2, player);
                 }
-                event.drops.add(out);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -2245,9 +2248,17 @@ public class SteamcraftEventHandler {
             float newSpeed = 0.0F;
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                if (drill.isWound(player) && drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
-                  drill.isWound(player)) {
-                    newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                if (drill.isWound(player)) {
+                    if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
+                        newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                    }
+                    if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
+                        if (newSpeed == 0.0F) {
+                            newSpeed = event.originalSpeed / 2;
+                        } else {
+                            newSpeed /= 2;
+                        }
+                    }
                 }
             } else if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();

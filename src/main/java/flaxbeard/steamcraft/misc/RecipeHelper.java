@@ -146,10 +146,6 @@ public class RecipeHelper {
             }
         }
         FMLLog.info("Finished initializing block materials for FSP with " + blockMaterials.size() + " entries");
-        for (Map.Entry<Item, MutablePair<Integer, Integer>> entry : blockMaterials.entrySet()) {
-            System.out.println("key: " + entry.getKey().getUnlocalizedName());
-            System.out.println("value: " + entry.getValue().left + ", " + entry.getValue().right);
-        }
     }
 
     /**
