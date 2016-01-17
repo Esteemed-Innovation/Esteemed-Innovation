@@ -19,6 +19,7 @@ public class OreDictHelper {
     public static HashMap<MutablePair<Item, Integer>, String> blocks = new HashMap<>();
     public static HashMap<MutablePair<Item, Integer>, String> gems = new HashMap<>();
     public static ArrayList<MutablePair<Item, Integer>> sticks = new ArrayList<>();
+    public static ArrayList<MutablePair<Item, Integer>> logs = new ArrayList<>();
 
     public static void initializeOreDicts(String name, ItemStack stack) {
         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
@@ -65,6 +66,10 @@ public class OreDictHelper {
 
         if (name.equals("stickWood")) {
             sticks.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+        }
+
+        if (name.startsWith("log")) {
+            logs.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
     }
 

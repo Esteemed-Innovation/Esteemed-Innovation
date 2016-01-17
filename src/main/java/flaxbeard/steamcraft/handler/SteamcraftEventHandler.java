@@ -1939,12 +1939,47 @@ public class SteamcraftEventHandler {
                     }
                 }
             }
+        } else if (equipped.getItem() instanceof ItemSteamAxe) {
+            ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
+            if (!axe.isWound(player)) {
+                return;
+            }
+            if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
+                fellBlocks(world, x, y, z, player, equipped);
+            }
         }
-        
+
         if (equipped.getItem() instanceof ISteamTool) {
             ISteamTool tool = (ISteamTool) equipped.getItem();
             if (tool.isWound(player) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
                 equipped.damageItem(1, player);
+            }
+        }
+    }
+
+    public boolean drainFelling = false;
+    /**
+     * Mines all of the log blocks above the starting coordinate.
+     * @param world The world instance.
+     * @param startX The starting X coordinate.
+     * @param startY The starting Y coordinate.
+     * @param startZ The starting Z coordinate.
+     * @param player The player doing the felling.
+     * @param axe The axe's ItemStack
+     */
+    private void fellBlocks(World world, int startX, int startY, int startZ, EntityPlayer player, ItemStack axe) {
+        for (int y = startY; y < 256; y++) {
+            Block block = world.getBlock(startX, y, startZ);
+            if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
+                int meta = world.getBlockMetadata(startX, y, startZ);
+                world.setBlockToAir(startX, y, startZ);
+                block.harvestBlock(world, player, startX, y, startZ, meta);
+                if (drainFelling) {
+                    axe.damageItem(1, player);
+                }
+                drainFelling = !drainFelling;
+            } else {
+                break;
             }
         }
     }
@@ -2264,6 +2299,13 @@ public class SteamcraftEventHandler {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
                 if (axe.isWound(player) && axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
                     newSpeed = event.originalSpeed / 5F;
+                }
+                if (axe.isWound(player) && axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
+                    if (newSpeed == 0.0F) {
+                        newSpeed = event.originalSpeed * ((hardness * 1.8F) / 12);
+                    } else {
+                        newSpeed *= (hardness * 1.8F) / 12;
+                    }
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();

@@ -129,6 +129,7 @@ public class SteamcraftItems {
 
     // axe
     public static Item leafBlower;
+    public static Item treeFeller;
 
     // shovel
     public static Item cultivator;
@@ -643,6 +644,14 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/axeBlower", null, 1)
               .setUnlocalizedName("steamcraft:leafBlower").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(leafBlower, "leafBlower");
+        }
+
+        if (Config.enableTreeFeller) {
+            // TODO: Name
+            treeFeller = new ItemSteamToolUpgrade(SteamToolSlot.sawHead,
+              "steamcraft:toolUpgrades/axeFeller", null, 1)
+              .setUnlocalizedName("steamcraft:feller").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(treeFeller, "feller");
         }
 
         // Shovel!
