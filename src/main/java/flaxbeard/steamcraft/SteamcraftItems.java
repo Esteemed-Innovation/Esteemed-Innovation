@@ -130,6 +130,7 @@ public class SteamcraftItems {
     // axe
     public static Item leafBlower;
     public static Item treeFeller;
+    public static Item chainsaw;
 
     // shovel
     public static Item cultivator;
@@ -652,6 +653,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/axeFeller", null, 1)
               .setUnlocalizedName("steamcraft:feller").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(treeFeller, "feller");
+        }
+
+        if (Config.enableChainsaw) {
+            chainsaw = new ItemSteamToolUpgrade(SteamToolSlot.sawHead,
+              "steamcraft:toolUpgrades/chainsaw", null, 1)
+              .setUnlocalizedName("steamcraft:chainsaw").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(chainsaw, "chainsaw");
         }
 
         // Shovel!

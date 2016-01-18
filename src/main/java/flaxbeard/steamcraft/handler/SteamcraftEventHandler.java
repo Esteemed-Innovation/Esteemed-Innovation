@@ -73,6 +73,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
@@ -2186,12 +2187,14 @@ public class SteamcraftEventHandler {
             }
             if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                if (!axe.isWound(player) || !axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                if (!axe.isWound(player)) {
                     return;
                 }
 
-                mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
-                  axe, equipped, player);
+                if (axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                    mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
+                      axe, equipped, player);
+                }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.hasUpgrade(equipped, SteamcraftItems.cultivator) &&
@@ -2245,6 +2248,27 @@ public class SteamcraftEventHandler {
                 player.displayGUIMerchant(merchant, name);
                 nbt.totalTrades += 1;
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void doChainsaw(LivingAttackEvent event) {
+        if (!(event.source.getSourceOfDamage() instanceof EntityPlayer)) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) event.source.getSourceOfDamage();
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ItemSteamAxe)) {
+            return;
+        }
+        ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
+        if (!axe.isWound(player) || !axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
+            return;
+        }
+
+        if (!player.worldObj.isRemote) {
+            event.entityLiving.attackEntityFrom(DamageSource.generic, 9.0F);
+            event.entityLiving.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 10, 10));
         }
     }
 

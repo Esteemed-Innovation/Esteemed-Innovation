@@ -207,6 +207,7 @@ public class Config {
     // saw
     public static boolean enableLeafBlower;
     public static boolean enableTreeFeller;
+    public static boolean enableChainsaw;
 
     // shovel
     public static boolean enableCultivator;
@@ -430,6 +431,7 @@ public class Config {
         enablePreciseCuttingHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Precise Cutting Head", true).getBoolean(true);
         enableInternalProcessingUnit = config.get("Steam Tool Upgrades", "Enable Steam Drill's Internal Processing Unit", true).getBoolean(true);
         enableTreeFeller = config.get("Steam Tool Upgrades", "Enable Steam Axe's Tree Felling upgrade", true).getBoolean(true);
+        enableChainsaw = config.get("Steam Tool Upgrades", "Enable Steam Axe's Chainsaw upgrade", true).getBoolean(true);
         backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
