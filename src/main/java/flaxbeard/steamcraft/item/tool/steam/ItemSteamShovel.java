@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngineerable, ISteamTool {
-    public IIcon[] shovelIcons = new IIcon[2];
-    public IIcon transparentIcon;
+    public IIcon[] coreIcons = new IIcon[2];
+    public IIcon[] headIcons = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
@@ -77,43 +77,42 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
 
     @Override
     public int getRenderPasses(int meta) {
-        return 3;
+        return 2;
     }
 
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        // We cannot use the method that passes the player because it is only called on item use.
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.shovelInfo;
         int which = (Integer) info.left > 50 ? 0 : 1;
-        if (renderPass == 0) {
-            return this.shovelIcons[which];
-        } else {
-            ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-            if (upgrades != null) {
-                for (ISteamToolUpgrade upgrade : upgrades) {
-                    IIcon[] icons = upgrade.getIIcons();
-                    if (renderPass == upgrade.renderPriority() && icons != null &&
-                      icons.length >= which + 1 && icons[which] != null) {
-                        return icons[which];
-                    }
+        ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
+        if (upgrades != null) {
+            for (ISteamToolUpgrade upgrade : upgrades) {
+                IIcon[] icons = upgrade.getIIcons();
+                if (renderPass == upgrade.renderPriority() && icons != null &&
+                  icons.length >= which + 1 && icons[which] != null) {
+                    return icons[which];
                 }
             }
         }
 
-        // Prevent rendering the shovel over the upgrades if there's only 1.
-        return this.transparentIcon;
+        if (renderPass == 0) {
+            return this.coreIcons[which];
+        } else {
+            return this.headIcons[which];
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.shovelIcons[0] = this.itemIcon = ir.registerIcon("steamcraft:shovel0");
-        this.shovelIcons[1] = ir.registerIcon("steamcraft:shovel1");
-        this.transparentIcon = ir.registerIcon("steamcraft:transparent");
+        this.coreIcons[0] = ir.registerIcon("steamcraft:shovelBaseCore0");
+        this.coreIcons[1] = ir.registerIcon("steamcraft:shovelBaseCore1");
+        this.headIcons[0] = ir.registerIcon("steamcraft:shovelBaseHead0");
+        this.headIcons[1] = ir.registerIcon("steamcraft:shovelBaseHead1");
     }
 
     @SuppressWarnings("Duplicates")

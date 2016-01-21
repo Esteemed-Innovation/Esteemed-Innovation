@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineerable, ISteamTool {
-    public IIcon[] axeIcons = new IIcon[2];
-    public IIcon transparentIcon;
+    public IIcon[] coreIcons = new IIcon[2];
+    public IIcon[] headIcons = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
@@ -79,43 +79,42 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
 
     @Override
     public int getRenderPasses(int meta) {
-        return 3;
+        return 2;
     }
 
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        // We cannot use the method that passes the player because it is only called on item use.
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.axeInfo;
         int which = (Integer) info.left > 50 ? 0 : 1;
-        if (renderPass == 0) {
-            return this.axeIcons[which];
-        } else {
-            ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-            if (upgrades != null) {
-                for (ISteamToolUpgrade upgrade : upgrades) {
-                    IIcon[] icons = upgrade.getIIcons();
-                    if (renderPass == upgrade.renderPriority() && icons != null &&
-                      icons.length >= which + 1 && icons[which] != null) {
-                        return icons[which];
-                    }
+        ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
+        if (upgrades != null) {
+            for (ISteamToolUpgrade upgrade : upgrades) {
+                IIcon[] icons = upgrade.getIIcons();
+                if (renderPass == upgrade.renderPriority() && icons != null &&
+                  icons.length >= which + 1 && icons[which] != null) {
+                    return icons[which];
                 }
             }
         }
 
-        // Prevent rendering the axe over the upgrades if there's only 1.
-        return this.transparentIcon;
+        if (renderPass == 0) {
+            return this.coreIcons[which];
+        } else {
+            return this.headIcons[which];
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.axeIcons[0] = this.itemIcon = ir.registerIcon("steamcraft:axe0");
-        this.axeIcons[1] = ir.registerIcon("steamcraft:axe1");
-        this.transparentIcon = ir.registerIcon("steamcraft:transparent");
+        this.coreIcons[0] = ir.registerIcon("steamcraft:axeBaseCore0");
+        this.coreIcons[1] = ir.registerIcon("steamcraft:axeBaseCore1");
+        this.headIcons[0] = ir.registerIcon("steamcraft:axeBaseHead0");
+        this.headIcons[1] = ir.registerIcon("steamcraft:axeBaseHead1");
     }
 
     @SuppressWarnings("Duplicates")

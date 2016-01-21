@@ -12,9 +12,9 @@ import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
-import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.misc.RecipeHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -35,7 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable, ISteamTool {
-    public IIcon[] icon = new IIcon[2];
+    public IIcon[] coreIcons = new IIcon[2];
+    public IIcon[] headIcons = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
@@ -93,36 +94,42 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public int getRenderPasses(int meta) {
-        return 3;
+        return 2;
     }
 
     @SuppressWarnings("Duplicates")
     @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+    public IIcon getIcon(ItemStack stack, int renderPass) {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         ExtendedPropertiesPlayer nbt = checkNBT(player);
 
         MutablePair info = nbt.drillInfo;
-        int ticks = (Integer) info.left;
-        int which = ticks > 50 ? 0 : 1;
-        ArrayList<ISteamToolUpgrade> upgrades = getUpgrades(stack);
+        int which = (Integer) info.left > 50 ? 0 : 1;
+        ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
         if (upgrades != null) {
             for (ISteamToolUpgrade upgrade : upgrades) {
-                if (renderPass == upgrade.renderPriority()) {
-                    IIcon[] icons = upgrade.getIIcons();
-                    if (icons != null && icons.length >= which + 1 && icons[which] != null) {
-                        return icons[which];
-                    }
+                IIcon[] icons = upgrade.getIIcons();
+                if (renderPass == upgrade.renderPriority() && icons != null &&
+                  icons.length >= which + 1 && icons[which] != null) {
+                    return icons[which];
                 }
             }
         }
-        return this.icon[which];
+
+        if (renderPass == 0) {
+            return this.coreIcons[which];
+        } else {
+            return this.headIcons[which];
+        }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.icon[0] = this.itemIcon = ir.registerIcon("steamcraft:drill0");
-        this.icon[1] = ir.registerIcon("steamcraft:drill1");
+        this.coreIcons[0] = ir.registerIcon("steamcraft:drillBaseCore0");
+        this.coreIcons[1] = ir.registerIcon("steamcraft:drillBaseCore1");
+        this.headIcons[0] = ir.registerIcon("steamcraft:drillBaseHead0");
+        this.headIcons[1] = ir.registerIcon("steamcraft:drillBaseHead1");
     }
 
     @Override

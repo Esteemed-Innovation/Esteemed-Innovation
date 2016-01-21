@@ -582,7 +582,7 @@ public class SteamcraftItems {
         // General core!
         if (Config.enableTheVoid) {
             theVoid = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
-              "steamcraft:toolUpgrades/coreVoid", null, 2)
+              "steamcraft:toolUpgrades/coreVoid", null, 0)
               .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(theVoid, "theVoid");
         }
@@ -590,7 +590,7 @@ public class SteamcraftItems {
         if (Config.enableAutosmelting) {
             // TODO: Change the name of the texture to fit the "core" aspect.
             autosmelting = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
-              "steamcraft:toolUpgrades/drillFurnace", null, 2)
+              "steamcraft:toolUpgrades/drillFurnace", null, 0)
               .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(autosmelting, "autosmelting");
         }
@@ -598,7 +598,7 @@ public class SteamcraftItems {
         if (Config.enableOverclocker) {
             // TODO: Change the name of the texture to fit the "core" aspect.
             overclocker = new ItemSteamToolUpgrade(SteamToolSlot.toolCore,
-              "steamcraft:toolUpgrades/drillOverclocker", null, 2)
+              "steamcraft:toolUpgrades/drillOverclocker", null, 0)
               .setUnlocalizedName("steamcraft:overclocker").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(overclocker, "overclocker");
         }
@@ -634,7 +634,7 @@ public class SteamcraftItems {
 
         if (Config.enableInternalProcessingUnit) {
             internalProcessingUnit = new ItemSteamToolUpgrade(SteamToolSlot.drillCore,
-              "steamcraft:toolUpgrades/drillProcessor", null, 2)
+              "steamcraft:toolUpgrades/drillProcessor", null, 0)
               .setUnlocalizedName("steamcraft:internalProcessor").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(internalProcessingUnit, "internalProcessor");
         }
@@ -679,7 +679,7 @@ public class SteamcraftItems {
 
         if (Config.enableSifter) {
             sifter = new ItemSteamToolUpgrade(SteamToolSlot.shovelCore,
-              "steamcraft:toolUpgrades/shovelSifter", null, 1)
+              "steamcraft:toolUpgrades/shovelSifter", null, 0)
               .setUnlocalizedName("steamcraft:sifter").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(sifter, "sifter");
         }
