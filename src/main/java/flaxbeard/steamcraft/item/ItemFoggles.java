@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.item;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +19,6 @@ public class ItemFoggles extends ItemSteamcraftArmor implements IExosuitUpgrade 
 
     @Override
     public int renderPriority() {
-        // TODO
         return 0;
     }
 
@@ -29,8 +29,12 @@ public class ItemFoggles extends ItemSteamcraftArmor implements IExosuitUpgrade 
 
     @Override
     public ResourceLocation getOverlay() {
-        // TODO
-        return null;
+        return new ResourceLocation("steamcraft:textures/models/armor/fogglesExosuit.png");
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
+        return "steamcraft:textures/models/armor/fogglesArmor.png";
     }
 
     @Override
