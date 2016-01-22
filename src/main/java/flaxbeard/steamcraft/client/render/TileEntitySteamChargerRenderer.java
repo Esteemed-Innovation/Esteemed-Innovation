@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.client.render;
 
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.GameSettings;
@@ -11,14 +12,13 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntitySteamChargerRenderer extends TileEntitySpecialRenderer {
-
-
     @Override
     public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
         TileEntitySteamCharger charger = (TileEntitySteamCharger) var1;
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
         int meta = charger.getWorldObj().getBlockMetadata(charger.xCoord, charger.yCoord, charger.zCoord);
         if (charger.getStackInSlot(0) != null) {
+            RenderItem.renderInFrame = true;
             GL11.glPushMatrix();
             GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F + (1.0F / 16.0F) - 0.02F, (float) var6 + 0.5F);
             GL11.glScalef(2.0F, 2.0F, 2.0F);
@@ -34,6 +34,7 @@ public class TileEntitySteamChargerRenderer extends TileEntitySpecialRenderer {
             RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
             settings.fancyGraphics = fancy;
             GL11.glPopMatrix();
+            RenderItem.renderInFrame = false;
         }
     }
 
