@@ -119,6 +119,8 @@ public class SteamcraftItems {
     public static Item steamedChicken;
     public static Item steamedSalmon;
 
+    public static ItemArmor.ArmorMaterial monacleMaterial = EnumHelper.addArmorMaterial("MONACLE", 5, new int[]{1, 3, 2, 1}, 15);
+
     public static void registerItems() {
         registerMisc();
         registerFirearms();
@@ -353,7 +355,9 @@ public class SteamcraftItems {
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
             if (Config.enableFoggles) {
-                foggles = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:foggles").setTextureName("steamcraft:foggles");
+                foggles = new ItemFoggles(monacleMaterial, 2, 0, Items.leather, "Foggles")
+                  .setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:foggles")
+                  .setTextureName("steamcraft:foggles");
                 GameRegistry.registerItem(foggles, "foggles");
             }
 
@@ -392,20 +396,17 @@ public class SteamcraftItems {
         OreDictionary.registerOre("ingotZinc", new ItemStack(steamcraftIngot, 1, 1));
         OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot, 1, 2));
 
-
-        ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("MONACLE", 5, new int[]{1, 3, 2, 1}, 15);
-
         if (Config.enableGoggles) {
-            monacle = new ItemSteamcraftGoggles(tool, 2, 0, Items.leather, "Monocle").setUnlocalizedName("steamcraft:monacle").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:monocle");
+            monacle = new ItemSteamcraftGoggles(monacleMaterial, 2, 0, Items.leather, "Monocle").setUnlocalizedName("steamcraft:monacle").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:monocle");
             GameRegistry.registerItem(monacle, "monacle");
-            goggles = new ItemSteamcraftGoggles(tool, 2, 0, Items.leather, "Goggles").setUnlocalizedName("steamcraft:goggles").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:goggles");
+            goggles = new ItemSteamcraftGoggles(monacleMaterial, 2, 0, Items.leather, "Goggles").setUnlocalizedName("steamcraft:goggles").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:goggles");
             GameRegistry.registerItem(goggles, "goggles");
         }
         if (Config.enableTopHat) {
-            tophatNoEmerald = new ItemTophat(tool, 2, 0, false).setUnlocalizedName("steamcraft:tophatNoEmerald").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophat");
+            tophatNoEmerald = new ItemTophat(monacleMaterial, 2, 0, false).setUnlocalizedName("steamcraft:tophatNoEmerald").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophat");
             GameRegistry.registerItem(tophatNoEmerald, "tophatNoEmerald");
             if (Config.enableEmeraldHat) {
-                tophat = new ItemTophat(tool, 2, 0, true).setUnlocalizedName("steamcraft:tophat").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophatemerald");
+                tophat = new ItemTophat(monacleMaterial, 2, 0, true).setUnlocalizedName("steamcraft:tophat").setCreativeTab(Steamcraft.tabTools).setTextureName("steamcraft:tophatemerald");
                 GameRegistry.registerItem(tophat, "tophat");
             }
         }

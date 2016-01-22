@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemFoggles;
 
 public class FogglesHandler {
     public int maximumFogPosition = 16;
@@ -40,12 +41,15 @@ public class FogglesHandler {
      * @return boolean
      */
     private boolean canFogify(Entity entity, ItemStack helmet) {
-        if (entity != null && helmet != null && helmet.getItem() instanceof ItemExosuitArmor &&
-          (entity instanceof EntityLivingBase || entity instanceof EntityPlayer)) {
-            ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet.getItem();
-            EntityLivingBase elb = (EntityLivingBase) entity;
-            if (SteamcraftEventHandler.hasPower(elb, 1) &&
-              helmetArmor.hasUpgrade(helmet, SteamcraftItems.foggles)) {
+        if (entity != null && helmet != null && entity instanceof EntityPlayer) {
+            if (helmet.getItem() instanceof ItemExosuitArmor) {
+                ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet.getItem();
+                EntityLivingBase elb = (EntityLivingBase) entity;
+                if (SteamcraftEventHandler.hasPower(elb, 1) &&
+                  helmetArmor.hasUpgrade(helmet, SteamcraftItems.foggles)) {
+                    return true;
+                }
+            } else if (helmet.getItem() instanceof ItemFoggles) {
                 return true;
             }
         }
@@ -71,101 +75,119 @@ public class FogglesHandler {
         ItemStack equipment = entity.getEquipmentInSlot(4);
         if (canFogify(entity, equipment)) {
             // These colors were based off of the dye hex codes from the Minecraft Wiki.
-            // Black #191919
-            if (currentFogPosition == 0) {
-                event.red = 0.098F;
-                event.green = 0.098F;
-                event.blue = 0.098F;
-            }
-            // Red #993333
-            if (currentFogPosition == 1) {
-                event.red = 0.6F;
-                event.green = 0.2F;
-                event.blue = 0.2F;
-            }
-            // Green #667F33
-            if (currentFogPosition == 2) {
-                event.red = 0.4F;
-                event.green = 0.498F;
-                event.blue = 0.2F;
-            }
-            // Brown #664C33
-            if (currentFogPosition == 3) {
-                event.red = 0.4F;
-                event.green = 0.298F;
-                event.blue = 0.2F;
-            }
-            // Blue #334CB2
-            if (currentFogPosition == 4) {
-                event.red = 0.2F;
-                event.green = 0.298F;
-                event.blue = 0.698F;
-            }
-            // Purple #7F3FB2
-            if (currentFogPosition == 5) {
-                event.red = 0.498F;
-                event.green = 0.247F;
-                event.blue = 0.698F;
-            }
-            // Cyan #4C7F99
-            if (currentFogPosition == 6) {
-                event.red = 0.298F;
-                event.green = 0.498F;
-                event.blue = 0.6F;
-            }
-            // Light Gray #999999
-            if (currentFogPosition == 7) {
-                event.red = 0.6F;
-                event.green = 0.6F;
-                event.blue = 0.6F;
-            }
-            // Gray #4C4C4C
-            if (currentFogPosition == 8) {
-                event.red = 0.298F;
-                event.green = 0.298F;
-                event.blue = 0.298F;
-            }
-            // Pink #F27FA5
-            if (currentFogPosition == 9) {
-                event.red = 0.949F;
-                event.green = 0.498F;
-                event.blue = 0.647F;
-            }
-            // Lime #7FCC19
-            if (currentFogPosition == 10) {
-                event.red = 0.498F;
-                event.green = 0.8F;
-                event.blue = 0.098F;
-            }
-            // Dandelion #E5E533
-            if (currentFogPosition == 11) {
-                event.red = 0.898F;
-                event.green = 0.898F;
-                event.blue = 0.2F;
-            }
-            // Light Blue #6699D8
-            if (currentFogPosition == 12) {
-                event.red = 0.4F;
-                event.green = 0.6F;
-                event.blue = 0.847F;
-            }
-            // Magenta #B24CD8
-            if (currentFogPosition == 13) {
-                event.red = 0.698F;
-                event.green = 0.298F;
-                event.blue = 0.847F;
-            }
-            // Orange #D87F33
-            if (currentFogPosition == 14) {
-                event.red = 0.847F;
-                event.green = 0.498F;
-                event.blue = 0.2F;
-            }
-            // White #FFFFFF
-            if (currentFogPosition == 15) {
-                event.red = 1F;
-                event.green = 1F;
-                event.blue = 1F;
+            switch (currentFogPosition) {
+                // Black #191919
+                case 0: {
+                    event.red = 0.098F;
+                    event.green = 0.098F;
+                    event.blue = 0.098F;
+                    break;
+                }
+                // Red #993333
+                case 1: {
+                    event.red = 0.6F;
+                    event.green = 0.2F;
+                    event.blue = 0.2F;
+                    break;
+                }
+                // Green #667F33
+                case 2: {
+                    event.red = 0.4F;
+                    event.green = 0.498F;
+                    event.blue = 0.2F;
+                    break;
+                }
+                // Brown #664C33
+                case 3: {
+                    event.red = 0.4F;
+                    event.green = 0.298F;
+                    event.blue = 0.2F;
+                    break;
+                }
+                // Blue #334CB2
+                case 4: {
+                    event.red = 0.2F;
+                    event.green = 0.298F;
+                    event.blue = 0.698F;
+                    break;
+                }
+                // Purple #7F3FB2
+                case 5: {
+                    event.red = 0.498F;
+                    event.green = 0.247F;
+                    event.blue = 0.698F;
+                    break;
+                }
+                // Cyan #4C7F99
+                case 6: {
+                    event.red = 0.298F;
+                    event.green = 0.498F;
+                    event.blue = 0.6F;
+                    break;
+                }
+                // Light Gray #999999
+                case 7: {
+                    event.red = 0.6F;
+                    event.green = 0.6F;
+                    event.blue = 0.6F;
+                    break;
+                }
+                // Gray #4C4C4C
+                case 8: {
+                    event.red = 0.298F;
+                    event.green = 0.298F;
+                    event.blue = 0.298F;
+                    break;
+                }
+                // Pink #F27FA5
+                case 9: {
+                    event.red = 0.949F;
+                    event.green = 0.498F;
+                    event.blue = 0.647F;
+                    break;
+                }
+                // Lime #7FCC19
+                case 10: {
+                    event.red = 0.498F;
+                    event.green = 0.8F;
+                    event.blue = 0.098F;
+                    break;
+                }
+                // Dandelion #E5E533
+                case 11: {
+                    event.red = 0.898F;
+                    event.green = 0.898F;
+                    event.blue = 0.2F;
+                    break;
+                }
+                // Light Blue #6699D8
+                case 12: {
+                    event.red = 0.4F;
+                    event.green = 0.6F;
+                    event.blue = 0.847F;
+                    break;
+                }
+                // Magenta #B24CD8
+                case 13: {
+                    event.red = 0.698F;
+                    event.green = 0.298F;
+                    event.blue = 0.847F;
+                    break;
+                }
+                // Orange #D87F33
+                case 14: {
+                    event.red = 0.847F;
+                    event.green = 0.498F;
+                    event.blue = 0.2F;
+                    break;
+                }
+                // White #FFFFFF
+                case 15: {
+                    event.red = 1F;
+                    event.green = 1F;
+                    event.blue = 1F;
+                    break;
+                }
             }
         }
     }
