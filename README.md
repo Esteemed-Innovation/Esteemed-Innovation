@@ -1,6 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power.png?label=ready&title=Ready)](https://waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power)
-Flaxbeard's Steam Power
-==============
+# Flaxbeard's Steam Power
+
+[![Ready Issues](https://badge.waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power.png?label=ready&title=Ready)](https://waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power)
+[![Build Status](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power.svg?branch=master)](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power)
+
 Professor Flaxbeard's Wondrous Steam Power Mod (Flaxbeard's Steam Power, or FSP for short) is a tech mod based on steam power as its core. The mod includes a variety of steam tech that enhance your abilities. The goal of FSP is innovative content that encourages fun play rather than trying to one-up other tech mods. FSP is currently in development.
 
 Information can be found on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power).

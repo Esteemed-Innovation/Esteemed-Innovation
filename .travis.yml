@@ -1,0 +1,18 @@
+language: java
+install: chmod +x ./gradlew
+before_script: ./gradlew setupDecompWorkspace
+script: ./gradlew build
+notifications:
+  email: false
+  irc:
+    on_success: change
+    on_failure: always
+    channels:
+      - "irc.esper.net#TheSteamTank"
+    template:
+      - "%{reposiory_name}/%{branch}#{build_number} (%{commit}): %{message}"
+    use_notice: true
+    skip_join: true
+branches:
+  only:
+    - master
