@@ -104,6 +104,11 @@ public class SteamcraftRegistry {
     public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamingRecipes = new HashMap<>();
 
     /**
+     * All of the registered thinking cap upgrades as mutable pairs. Left is item, right is meta.
+     */
+    public static ArrayList<MutablePair<Item, Integer>> thinkingCapUpgrades = new ArrayList<>();
+
+    /**
      * Adds a steaming recipe.
      * @param food1 The input item
      * @param i The input item metadata
@@ -406,5 +411,29 @@ public class SteamcraftRegistry {
      */
     public static void registerRocket(IRocket rocket) {
         rockets.add(rocket);
+    }
+
+    /**
+     * Registers a thinking cap upgrade by its item and meta.
+     * @param item The item to register
+     * @param meta The meta to register.
+     */
+    public static void registerThinkingCapUpgrade(Item item, int meta) {
+        thinkingCapUpgrades.add(MutablePair.of(item, meta));
+    }
+
+    /**
+     * Removes a registered thinking cap upgrade by its item and meta.
+     * @param item The Item to remove
+     * @param meta The meta to remove
+     */
+    public static void removeThinkingCapUpgrade(Item item, int meta) {
+        for (int i = 0; i < thinkingCapUpgrades.size(); i++) {
+            MutablePair<Item, Integer> pair = thinkingCapUpgrades.get(i);
+            if (pair.left == item && pair.right == meta) {
+                thinkingCapUpgrades.remove(i);
+                return;
+            }
+        }
     }
 }

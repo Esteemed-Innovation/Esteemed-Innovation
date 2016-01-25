@@ -71,6 +71,14 @@ public class SteamcraftBook {
         /*
         if (Config.enableBlockPlacer){
             SteamcraftRegistry.addResearch("#research.BlockPlacer.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+=======
+
+        if (Config.enableThinkingCap && Config.enableExosuit) {
+            SteamcraftRegistry.addResearch("#research.RainAway.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
+        }
+
+        if (Config.enableFoggles && Config.enableExosuit) {
+            SteamcraftRegistry.addResearch("#research.Foggles.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
         }
         */
 
@@ -385,6 +393,9 @@ public class SteamcraftBook {
             }
             if (Config.enableTopHat) {
                 SteamcraftRegistry.addResearch("research.ExoTopHat.name", "!research.ExoHeadHelm.name", new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(SteamcraftItems.tophatNoEmerald), new ItemStack(SteamcraftItems.tophat)));
+            }
+            if (Config.enableThinkingCap) {
+                SteamcraftRegistry.addResearch("research.RainAway.name", "!research.ExoHeadHelm.name", new BookPageItem("research.RainAway.name", "research.RainAway.0", true, new ItemStack(SteamcraftItems.thinkingCap)));
             }
             SteamcraftRegistry.addResearch("research.ExoHeadGoggle.name", "category.Exosuit.name");
             if (CrossMod.THAUMCRAFT) {

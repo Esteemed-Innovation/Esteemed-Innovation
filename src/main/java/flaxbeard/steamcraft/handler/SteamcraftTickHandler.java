@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,14 +10,17 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.client.ClientProxy;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.network.CamoPacket;
+import flaxbeard.steamcraft.item.ItemThinkingCap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -160,7 +162,11 @@ public class SteamcraftTickHandler {
             }
 
             ItemStack hat = player.inventory.armorInventory[3];
-            boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle || hat.getItem() == SteamcraftItems.goggles || (hat.getItem() == SteamcraftItems.exoArmorHead && (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) || ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
+            boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle ||
+              hat.getItem() == SteamcraftItems.goggles ||
+              (hat.getItem() == SteamcraftItems.exoArmorHead &&
+              (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) ||
+              ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
                     if (ClientProxy.keyBindings.get("monocle").getIsKeyPressed()
@@ -268,11 +274,33 @@ public class SteamcraftTickHandler {
         ItemStack equipment = player.getEquipmentInSlot(4);
         WorldClient world = Minecraft.getMinecraft().theWorld;
         if (world != null) {
-            if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
+            if (equipment != null) {
+                boolean canTakeRainAway = false;
+                if (equipment.getItem() != null && equipment.getItem() instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor helmet = (ItemExosuitArmor) equipment.getItem();
+                    if (helmet.hasUpgrade(equipment, SteamcraftItems.thinkingCap) &&
+                      SteamcraftEventHandler.hasPower(player, 1)) {
+                        for (IExosuitUpgrade upgrade : helmet.getUpgrades(equipment)) {
+                            if (upgrade == null) {
+                                continue;
+                            }
+                            if (upgrade instanceof ItemThinkingCap) {
+                                System.out.println(equipment.stackTagCompound.toString());
+                                ItemThinkingCap cap = (ItemThinkingCap) upgrade;
+                                ItemStack helmetUpgrade = helmet.getStackInSlot(equipment, 3);
+                                ItemStack capUpgrade = cap.getStackInSlot(helmetUpgrade, 1);
+                                canTakeRainAway = capUpgrade != null && capUpgrade.getItem() == Items.potionitem;
+                                break;
+                            }
+                        }
+                    }
+                } else if (equipment.getItem() instanceof ItemThinkingCap) {
+                    ItemThinkingCap cap = (ItemThinkingCap) equipment.getItem();
+                    ItemStack capUpgrade = cap.getStackInSlot(equipment, 1);
+                    canTakeRainAway = capUpgrade != null && capUpgrade.getItem() == Items.potionitem;
+                }
                 if (player.worldObj.isRaining()) {
-                    if (SteamcraftEventHandler.hasPower(player, 1) &&
-                      helmet.hasUpgrade(equipment, SteamcraftItems.rainAway)) {
+                    if (canTakeRainAway) {
                         world.setRainStrength(0.0F);
                         world.setThunderStrength(0.0F);
                     } else {

@@ -99,7 +99,8 @@ public class SteamcraftItems {
     public static Item pitonDeployer;
     public static Item enderShroud;
     public static Item foggles;
-    public static Item rainAway;
+
+    public static Item thinkingCap;
 
     //public static Item fakeOre;
 
@@ -361,9 +362,14 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(foggles, "foggles");
             }
 
-            if (Config.enableRainAway) {
-                rainAway = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rainAway").setTextureName("steamcraft:rainAway");
-                GameRegistry.registerItem(rainAway, "rainAway");
+            if (Config.enableThinkingCap) {
+                ArmorMaterial mat = EnumHelper.addArmorMaterial("thinking", 15, new int[]{1, 3, 2, 1}, 0);
+                thinkingCap = new ItemThinkingCap(mat, 0, 0).setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:thinkingCap");
+                GameRegistry.registerItem(thinkingCap, "thinkingCap");
+                SteamcraftRegistry.registerThinkingCapUpgrade(Items.potionitem, 0);
+                SteamcraftRegistry.registerThinkingCapUpgrade(Items.lava_bucket, 0);
+                SteamcraftRegistry.registerThinkingCapUpgrade(Items.water_bucket, 0);
             }
         }
 
