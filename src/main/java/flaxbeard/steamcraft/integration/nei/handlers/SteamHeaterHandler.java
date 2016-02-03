@@ -41,7 +41,18 @@ public class SteamHeaterHandler extends TemplateRecipeHandler {
 	
 	@Override
 	public void loadCraftingRecipes(ItemStack output) {
+		output.stackSize = 0;
+		Map<ItemStack, ItemStack> list = FurnaceRecipes.smelting().getSmeltingList();
 		
+		for(Map.Entry<MutablePair<Item, Integer>, MutablePair<Item, Integer>> recipe : SteamcraftRegistry.steamingRecipes.entrySet()){
+			if(recipe.getValue().getKey().equals(output.getItem()) && recipe.getValue().getValue().equals(output.getItemDamage())){
+				for(Map.Entry<ItemStack, ItemStack> frecipe : list.entrySet()){
+					if(frecipe.getValue().getItem().equals(recipe.getKey().getKey()) && frecipe.getValue().getItemDamage() == recipe.getKey().getValue()){
+						this.arecipes.add(new CachedSteamHeaterRecipe(frecipe.getKey(), output));
+					}
+				}	
+			}
+		}
 	}
 	
 	@Override
@@ -55,6 +66,7 @@ public class SteamHeaterHandler extends TemplateRecipeHandler {
 		for(Map.Entry<MutablePair<Item, Integer>, MutablePair<Item, Integer>> recipe : SteamcraftRegistry.steamingRecipes.entrySet()){
 			if(recipe.getKey().getKey().equals(itemstack.getItem()) && recipe.getKey().getValue().equals(itemstack.getItemDamage())){
 				this.arecipes.add(new CachedSteamHeaterRecipe(input, new ItemStack(recipe.getValue().getKey(), 1, recipe.getValue().getValue())));
+				return; //There can only be one usage recipe.
 			}
 		}
 	}
