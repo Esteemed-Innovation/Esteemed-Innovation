@@ -2,18 +2,15 @@ package flaxbeard.steamcraft.integration.nei.handlers;
 
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
-import net.minecraft.client.gui.inventory.GuiFurnace;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Map;
 
