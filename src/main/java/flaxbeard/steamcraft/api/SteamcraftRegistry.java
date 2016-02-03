@@ -98,17 +98,17 @@ public class SteamcraftRegistry {
 
     /**
      * All of the custom steaming recipes for the Steam Heater.
-     * Key: A pair of the input item and its metadata.
-     * Value: A pair of the output item and its metadata.
+     * Key: A pair of the output of the input item and its metadata (eg: cooked porkchop).
+     * Value: A pair of the output item and its metadata (eg: steamed porkchop).
      */
     public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamingRecipes = new HashMap<>();
 
     /**
      * Adds a steaming recipe.
-     * @param food1 The input item
-     * @param i The input item metadata
-     * @param food2 The output item
-     * @param j The output item metadata
+     * @param food1 The output of the input item (eg: cooked porkchop).
+     * @param i The output of the input item metadata.
+     * @param food2 The output item (eg: steamed porkchop).
+     * @param j The output item metadata.
      */
     public static void addSteamingRecipe(Item food1, int i, Item food2, int j) {
         steamingRecipes.put(MutablePair.of(food1, i), MutablePair.of(food2, j));
@@ -116,8 +116,8 @@ public class SteamcraftRegistry {
 
     /**
      * Adds a steaming recipe that does not take metadata.
-     * @param food1 The input item
-     * @param food2 The output item
+     * @param food1 output of the The input item (eg: cooked porkchop).
+     * @param food2 The output item (eg: steamed porkchop).
      */
     public static void addSteamingRecipe(Item food1, Item food2) {
         steamingRecipes.put(MutablePair.of(food1, 0), MutablePair.of(food2, 0));
