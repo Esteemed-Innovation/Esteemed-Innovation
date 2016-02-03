@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.integration.nei.handlers;
 
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
+import net.minecraft.item.crafting.FurnaceRecipes;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -51,16 +53,16 @@ public class SteamHeaterHandler extends TemplateRecipeHandler {
 	@Override
 	public void loadUsageRecipes(ItemStack input) {
 		input.stackSize = 1;
+		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(input);
+		if(itemstack == null){
+			return;
+		}
+		
 		for(Map.Entry<MutablePair<Item, Integer>, MutablePair<Item, Integer>> recipe : SteamcraftRegistry.steamingRecipes.entrySet()){
-			System.out.println("Interating");
-			if(recipe.getKey().getKey().equals(input.getItem()) && recipe.getKey().getValue().equals(input.getItemDamage())){
-				this.arecipes.add(new CachedSteamHeaterRecipe(input, new ItemStack(recipe.getKey().getKey(), 1, recipe.getKey().getValue())));
+			if(recipe.getKey().getKey().equals(itemstack.getItem()) && recipe.getKey().getValue().equals(itemstack.getItemDamage())){
+				this.arecipes.add(new CachedSteamHeaterRecipe(input, new ItemStack(recipe.getValue().getKey(), 1, recipe.getValue().getValue())));
 			}
 		}
-		/*if(SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(input.getItem(), input.getItemDamage()))){
-			MutablePair<Item, Integer> output = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(input.getItem(), input.getItemDamage()));
-			this.arecipes.add(new CachedSteamHeaterRecipe(input, new ItemStack(output.getKey(), 1, output.getValue())));
-		}*/
 	}
 	
 	public class CachedSteamHeaterRecipe extends CachedRecipe {
