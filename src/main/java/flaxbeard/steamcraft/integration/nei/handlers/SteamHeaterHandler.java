@@ -2,8 +2,10 @@ package flaxbeard.steamcraft.integration.nei.handlers;
 
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.client.gui.inventory.GuiFurnace;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -28,22 +30,14 @@ public class SteamHeaterHandler extends TemplateRecipeHandler {
 	}
 	
 	@Override
-	public void drawBackground(int recipe) {
-		GL11.glColor4f(1, 1, 1, 1);
-		GuiDraw.changeTexture(getGuiTexture());
-		GuiDraw.drawTexturedModalRect(0, 0, 11, 10, 123, 126);
-		GuiDraw.drawTexturedModalRect(126, 0, 147, 10, 75, 100);
-	}
+    public Class<? extends GuiContainer> getGuiClass() {
+        return GuiFurnace.class;
+    }
 	
 	@Override
-	public void drawForeground(int recipe) {
-		super.drawForeground(recipe);
-	}
-	
-	/*@Override
 	public int recipiesPerPage() {
-		return 1; //I guess
-	}*/
+		return 1;
+	}
 	
 	@Override
 	public void loadCraftingRecipes(ItemStack output) {
