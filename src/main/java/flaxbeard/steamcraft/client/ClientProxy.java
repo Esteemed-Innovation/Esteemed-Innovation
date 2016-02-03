@@ -29,11 +29,13 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
@@ -139,6 +141,10 @@ public class ClientProxy extends CommonProxy {
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);
+
+        // See BlockLiquid#getRenderType
+//        RenderingRegistry.registerBlockHandler(4, new InvisibleFluidRenderer());
+        RenderingRegistry.registerBlockHandler(FluidRegistry.renderIdFluid, new InvisibleFluidRenderer());
     }
 
     @Override
