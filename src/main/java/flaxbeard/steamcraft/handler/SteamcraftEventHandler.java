@@ -452,7 +452,6 @@ public class SteamcraftEventHandler {
         FMLLog.info("[FSP] Getting some fields through reflection.");
         lastBuyingPlayerField = getField("lastBuyingPlayer", "field_82189_bL", EntityVillager.class);
         timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
-        merchantField = getField("field_147037_w", "field_147037_w", GuiMerchant.class);
         buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
 
         if (lastBuyingPlayerField != null) {
@@ -463,12 +462,17 @@ public class SteamcraftEventHandler {
             timeUntilResetField.setAccessible(true);
         }
 
-        if (merchantField != null) {
-            merchantField.setAccessible(true);
-        }
-
         if (buyingListField != null) {
             buyingListField.setAccessible(true);
+        }
+
+        try {
+            merchantField = getField("field_147037_w", "field_147037_w", GuiMerchant.class);
+            if (merchantField != null) {
+                merchantField.setAccessible(true);
+            }
+        } catch (NoClassDefFoundError ignore) {
+            FMLLog.warning("[FSP] GuiMerchant class not found. You are probably a server.");
         }
     }
 
