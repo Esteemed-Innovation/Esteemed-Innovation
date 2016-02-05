@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
+import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -150,19 +151,31 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         }
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        checkNBT(player);
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-        if (stack.getItemDamage() < stack.getMaxDamage() - 3) {
+        ExtendedPropertiesPlayer nbt = checkNBT(player);
+
+        int flag = -1;
+        if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
+            flag = 0;
+        } else if (SteamcraftEventHandler.hasPower(player, 1)) {
+            flag = 1;
+        }
+
+        if (flag >= 0) {
             MutablePair info = nbt.shovelInfo;
             int ticks = (Integer) info.left;
             int speed = (Integer) info.right;
             if (speed <= 1000) {
                 speed += Math.min(90, 1000 - speed);
-                stack.damageItem(1, player);
+                if (flag == 0) {
+                    stack.damageItem(1, player);
+                } else if (flag == 1) {
+                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), 1);
+                }
             }
+
             nbt.shovelInfo = MutablePair.of(ticks, speed);
         }
         return stack;
