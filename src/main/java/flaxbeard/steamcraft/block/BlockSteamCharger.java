@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.block;
 
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -55,6 +57,19 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
     }
 
+    /**
+     * Whether the item is chargeable (and can be charged) or it is an empty cell item.
+     * @param item The ItemStack to check.
+     * @return Whether the item can be placed in the TileEntity's inventory.
+     */
+    private boolean canItemBeCharged(ItemStack item) {
+        if (item.getItem() instanceof ISteamChargable) {
+            return ((ISteamChargable) item.getItem()).canCharge(item);
+        } else {
+            return item.getItem() == SteamcraftItems.steamcellEmpty;
+        }
+    }
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         TileEntitySteamCharger tile = (TileEntitySteamCharger) world.getTileEntity(x, y, z);
@@ -65,26 +80,12 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
             tile.setInventorySlotContents(0, null);
         } else {
             if (player.getHeldItem() != null) {
-                if (player.getHeldItem().getItem() instanceof ISteamChargable) {
-                    ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
-                    if (item.canCharge(player.getHeldItem())) {
-                        ItemStack copy = player.getCurrentEquippedItem().copy();
-                        copy.stackSize = 1;
-                        tile.setInventorySlotContents(0, copy);
-                        player.getCurrentEquippedItem().stackSize -= 1;
-                        tile.randomDegrees = world.rand.nextInt(361);
-                    }
-                } else if (CrossMod.TINKERS_CONSTRUCT
-                    && player.getHeldItem().getItem() instanceof ToolCore) {
-                    ItemStack item = player.getHeldItem();
-                    NBTTagCompound tags = item.getTagCompound();
-                    if (tags.getCompoundTag("InfiTool").hasKey("Steam")) {
-                        ItemStack copy = player.getCurrentEquippedItem().copy();
-                        copy.stackSize = 1;
-                        tile.setInventorySlotContents(0, copy);
-                        player.getCurrentEquippedItem().stackSize -= 1;
-                        tile.randomDegrees = world.rand.nextInt(361);
-                    }
+                if (canItemBeCharged(player.getHeldItem())) {
+                    ItemStack copy = player.getCurrentEquippedItem().copy();
+                    copy.stackSize = 1;
+                    tile.setInventorySlotContents(0, copy);
+                    player.getCurrentEquippedItem().stackSize -= 1;
+                    tile.randomDegrees = world.rand.nextInt(361);
                 }
             }
         }

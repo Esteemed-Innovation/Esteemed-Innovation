@@ -173,7 +173,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
             if (speed <= 1000) {
                 speed += Math.min(90, 1000 - speed);
                 if (flag == 0) {
-                    stack.damageItem(1, player);
+                    addSteam(stack, -steamPerDurability(), player);
                 } else if (flag == 1) {
                     SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), 1);
                 }
@@ -197,6 +197,17 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @Override
     public boolean canCharge(ItemStack me) {
         return true;
+    }
+
+    @Override
+    public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
+        int trueAmount = steamPerDurability() / (-amount);
+        int newAmount = me.getItemDamage() + trueAmount;
+        if (me.getMaxDamage() >= newAmount) {
+            me.setItemDamage(newAmount);
+            return true;
+        }
+        return false;
     }
 
     @Override

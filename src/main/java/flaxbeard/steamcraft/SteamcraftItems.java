@@ -58,6 +58,9 @@ public class SteamcraftItems {
     public static Item wrench;
     public static Item smashedOre;
     public static Item canister;
+    public static Item steamcellEmpty;
+    public static Item steamcellFull;
+    public static Item steamcellBauble;
 
     // molds
     public static Item blankMold;
@@ -189,6 +192,21 @@ public class SteamcraftItems {
                 survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
             }
             GameRegistry.registerItem(survivalist, "survivalist");
+        }
+
+        if (Config.enableSteamCell) {
+            steamcellEmpty = new Item().setCreativeTab(Steamcraft.tab)
+              .setUnlocalizedName("steamcraft:steamcellEmpty")
+              .setTextureName("steamcraft:steamcellEmpty");
+            steamcellFull = new ItemSteamCell().setCreativeTab(Steamcraft.tab)
+              .setUnlocalizedName("steamcraft:steamcellFull")
+              .setTextureName("steamcraft:steamcellFull");
+            GameRegistry.registerItem(steamcellEmpty, "steamcellEmpty");
+            GameRegistry.registerItem(steamcellFull, "steamcellFull");
+            if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+                steamcellBauble = BaublesIntegration.getSteamCellFiller();
+                GameRegistry.registerItem(steamcellBauble, "steamcellBauble");
+            }
         }
 
         wrench = new ItemWrench().setUnlocalizedName("steamcraft:wrench").setTextureName("steamcraft:wrench").setCreativeTab(Steamcraft.tab);

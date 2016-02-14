@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.tile;
 
+import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
@@ -82,8 +84,6 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.updateEntity();
         if (this.worldObj.isRemote) {
             if (this.getStackInSlot(0) != null) {
-                Item item = this.getStackInSlot(0).getItem();
-                ItemStack stack = this.getStackInSlot(0).copy();
                 if (this.isCharging) {
                     this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F,
                       zCoord + 0.5F, (Math.random() - 0.5F) / 12.0F, 0.0F,
@@ -92,6 +92,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         } else {
             if (this.getStackInSlot(0) != null) {
+                if (this.getStackInSlot(0).getItem() == SteamcraftItems.steamcellEmpty &&
+                  this.getSteamShare() > Config.steamCellCapacity) {
+                    this.inventory[0] = null;
+                    this.dropItem(new ItemStack(SteamcraftItems.steamcellFull));
+                    this.decrSteam(Config.steamCellCapacity);
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    return;
+                }
                 if (!this.hadItem) {
                     this.hadItem = true;
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -344,7 +352,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return var2.getItem() instanceof ISteamChargable;
+        return var2.getItem() instanceof ISteamChargable || var2.getItem() == SteamcraftItems.steamcellEmpty;
     }
 
     public float getSteamInItem() {

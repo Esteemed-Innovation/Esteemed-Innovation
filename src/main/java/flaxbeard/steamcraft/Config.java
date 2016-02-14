@@ -31,6 +31,7 @@ public class Config {
     public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
     public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
     public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
+    public static final int STEAMCELL_CAPACITY_DEFAULT = 100;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -103,6 +104,7 @@ public class Config {
     public static int pistonPushConsumption;
     public static int reloadingConsumption;
     public static int dragonRoarConsumption;
+    public static int steamCellCapacity;
     public static String musketDamage;
     public static String pistolDamage;
     public static String blunderbussDamage;
@@ -189,6 +191,8 @@ public class Config {
     public static boolean enableReloadingHolsters;
     public static boolean enableFrequencyShifter;
     public static boolean enableDragonRoar;
+    public static boolean enableSteamCell;
+    public static boolean enableSteamCellBauble;
 
     // steam tool upgrades
     // core
@@ -415,6 +419,9 @@ public class Config {
         steamToolConsumptionAxe = config.get("Items", "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionDrill = config.get("Items", "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionShovel = config.get("Items", "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        enableSteamCell = config.get("Items", "Enable Steam Cell", true).getBoolean(true);
+        steamCellCapacity = config.get("Items", "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
+        enableSteamCellBauble = config.get("Items", "Enable Steam Cell Bauble", true).getBoolean(true);
 
         // STEAM TOOL UPGRADES
         enableBigDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean(true);

@@ -197,6 +197,17 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     }
 
     @Override
+    public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
+        int trueAmount = steamPerDurability() / (-amount);
+        int newAmount = me.getItemDamage() + trueAmount;
+        if (me.getMaxDamage() >= newAmount) {
+            me.setItemDamage(newAmount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
         return SteamToolHelper.ENGINEER_COORDINATES;
     }
