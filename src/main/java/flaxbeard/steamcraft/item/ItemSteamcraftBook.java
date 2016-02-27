@@ -27,7 +27,7 @@ public class ItemSteamcraftBook extends Item {
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz) {
-        if(player.isSneaking() && !world.isRemote) {
+        if(player.isSneaking() && world.isRemote) {
             Block block = world.getBlock(x, y, z);
             ItemStack stack = block.getPickBlock(new MovingObjectPosition(x, y, z, side, Vec3.createVectorHelper(fx, fy, fz)), world, x, y, z, player);
 

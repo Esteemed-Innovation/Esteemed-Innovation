@@ -107,10 +107,6 @@ public class ExtendedPropertiesPlayer implements IExtendedEntityProperties {
         this.isRangeExtended = false;
         this.tickCache = -1;
 
-        if (this.prevStep == null) {
-            this.prevStep = this.player.stepHeight;
-        }
-
         if (this.lastMotions == null) {
             this.lastMotions = MutablePair.of(this.player.posX, this.player.posZ);
         }
