@@ -19,11 +19,14 @@ public class ModiferSteam extends ModBoolean {
     protected boolean canModify(ItemStack tool, ItemStack[] input) {
         NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
 
-        if (tags.getInteger("Modifiers") > 0 && !tags.getBoolean(key))
-            return false; // Will fail if the modifier is false or the tag
-                          // doesn't exist
-        if (Arrays.asList(((ToolCore) tool.getItem()).getTraits()).contains("ammo"))
+        if (tags.getInteger("Modifiers") > 0 && !tags.getBoolean(key)) {
             return false;
+        }
+        
+        if (Arrays.asList(((ToolCore) tool.getItem()).getTraits()).contains("ammo")) {
+            return false;
+        }
+        
         return true;
     }
 

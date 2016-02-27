@@ -222,7 +222,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                                     .getInteger("Damage"))
                                     / (float) tags.getCompoundTag("InfiTool").getInteger(
                                         "TotalDurability");
-                            ;
+                            
                             if (prevPercent != currentPerc
                                 && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
