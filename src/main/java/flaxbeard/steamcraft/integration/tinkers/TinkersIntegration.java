@@ -9,12 +9,12 @@ import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.tools.ToolCore;
 
 public class TinkersIntegration {
-	public static void postInit() {
-		ModifyBuilder.registerModifier(new ModiferSteam(new ItemStack[] { new ItemStack(
-				SteamcraftBlocks.tank) }));
+    public static void postInit() {
+        ModifyBuilder.registerModifier(new ModiferSteam(new ItemStack[] { new ItemStack(
+                SteamcraftBlocks.tank) }));
 
-		for (ToolCore tool : TConstructRegistry.getToolMapping()) {
-			TConstructClientRegistry.addEffectRenderMapping(tool, 18, "tinker", "steam", true);
-		}
-	}
+        for (ToolCore tool : TConstructRegistry.getToolMapping()) {
+            TConstructClientRegistry.addEffectRenderMapping(tool, 18, "tinker", "steam", true);
+        }
+    }
 }
