@@ -75,8 +75,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                         player.getCurrentEquippedItem().stackSize -= 1;
                         tile.randomDegrees = world.rand.nextInt(361);
                     }
-                }
-                else if(CrossMod.TINKERS_CONSTRUCT && player.getHeldItem().getItem() instanceof ToolCore) {
+                } else if (CrossMod.TINKERS_CONSTRUCT && player.getHeldItem().getItem() instanceof ToolCore) {
                 	ItemStack item = player.getHeldItem();
                 	NBTTagCompound tags = item.getTagCompound();
                     if (tags.getCompoundTag("InfiTool").hasKey("Steam")) {

@@ -99,7 +99,7 @@ public class CrossMod {
 			ThermalFoundationIntegration.postInit();
 		}
 		
-		if(TINKERS_CONSTRUCT) {
+		if (TINKERS_CONSTRUCT) {
 			TinkersIntegration.postInit();
 		}
 
