@@ -75,7 +75,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                         tile.randomDegrees = world.rand.nextInt(361);
                     }
                 } else if (CrossMod.TINKERS_CONSTRUCT
-                        && player.getHeldItem().getItem() instanceof ToolCore) {
+                    && player.getHeldItem().getItem() instanceof ToolCore) {
                     ItemStack item = player.getHeldItem();
                     NBTTagCompound tags = item.getTagCompound();
                     if (tags.getCompoundTag("InfiTool").hasKey("Steam")) {
@@ -128,7 +128,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileEntitySteamCharger tileentitysteamcharger =
-                (TileEntitySteamCharger) world.getTileEntity(x, y, z);
+          (TileEntitySteamCharger) world.getTileEntity(x, y, z);
 
         if (tileentitysteamcharger != null) {
             for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory(); ++i1) {
@@ -148,20 +148,19 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
                         itemstack.stackSize -= j1;
                         EntityItem entityitem =
-                                new EntityItem(world, (double) ((float) x + f),
-                                        (double) ((float) y + f1), (double) ((float) z + f2),
-                                        new ItemStack(itemstack.getItem(), j1,
-                                                itemstack.getItemDamage()));
+                            new EntityItem(world, (double) ((float) x + f),
+                              (double) ((float) y + f1), (double) ((float) z + f2),
+                              new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
                             entityitem.getEntityItem().setTagCompound(
-                                    (NBTTagCompound) itemstack.getTagCompound().copy());
+                              (NBTTagCompound) itemstack.getTagCompound().copy());
                         }
 
                         float f3 = 0.05F;
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
                         entityitem.motionY =
-                                (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
+                          (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
                         world.spawnEntityInWorld(entityitem);
                     }
