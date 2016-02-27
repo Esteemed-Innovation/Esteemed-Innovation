@@ -1,18 +1,21 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.api.ISteamChargable;
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import tconstruct.library.tools.ToolCore;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.api.ISteamTransporter;
+import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
 
@@ -79,7 +82,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.updateEntity();
         if (this.worldObj.isRemote) {
             if (this.getStackInSlot(0) != null) {
-                ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
+                Item item = this.getStackInSlot(0).getItem();
                 ItemStack stack = this.getStackInSlot(0).copy();
                 if (this.isCharging) {
                     this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, (Math.random() - 0.5F) / 12.0F, 0.0F, (Math.random() - 0.5F) / 12.0F);
@@ -91,6 +94,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                     this.hadItem = true;
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 }
+                
+                if(this.getStackInSlot(0).getItem() instanceof ISteamChargable)
+                {
                 ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
                 ItemStack stack = this.getStackInSlot(0).copy();
                 if (!(item instanceof ItemExosuitArmor)) {
@@ -163,6 +169,42 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         }
                     }
                 }
+            } else if(this.getStackInSlot(0).getItem() instanceof ToolCore){
+            	ToolCore item = (ToolCore) this.getStackInSlot(0).getItem();
+                ItemStack stack = this.getStackInSlot(0).copy();
+                NBTTagCompound tags = stack.getTagCompound();
+                int damage = tags.getCompoundTag("InfiTool").getInteger("Damage");
+                if(!tags.getCompoundTag("InfiTool").getBoolean("Broken")) {
+                    if (this.getSteamShare() > 0 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                        if (!this.isCharging) {
+                            //Steamcraft.log.debug("Charging");
+                            this.isCharging = true;
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        }
+                    } else {
+                        if (this.isCharging) {
+                            //Steamcraft.log.debug("Not charging");
+                            this.isCharging = false;
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        }
+                    }
+                    if (this.getSteamShare() > 8 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                        int i = 0;
+                        while (i < 4 && (this.getSteamShare() > 8 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0)) {
+                            this.decrSteam(8);
+                            damage -= 1;
+                            tags.getCompoundTag("InfiTool").setInteger("Damage", damage);
+                            this.setInventorySlotContents(0, stack);
+                            i++;
+                        }
+                        float currentPerc = (float)(tags.getCompoundTag("InfiTool").getInteger("TotalDurability") - tags.getCompoundTag("InfiTool").getInteger("Damage")) / (float)tags.getCompoundTag("InfiTool").getInteger("TotalDurability");;
+                        if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
+                            //log.debug("New percent: "+currentPerc);
+                            prevPercent = currentPerc;
+                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        }
+                    }
+                }
             } else {
                 if (this.hadItem) {
                     //Steamcraft.log.debug("No item");
@@ -172,6 +214,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                 }
             }
             //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
         }
 
     }

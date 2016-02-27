@@ -5,10 +5,9 @@ import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
 import flaxbeard.steamcraft.integration.natura.NaturaIntegration;
 import flaxbeard.steamcraft.integration.nei.NEIIntegration;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
+import flaxbeard.steamcraft.integration.tinkers.TinkersIntegration;
 import flaxbeard.steamcraft.world.PoorOreGeneratorZinc;
-
 import cpw.mods.fml.relauncher.Side;
-
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -98,6 +97,10 @@ public class CrossMod {
 
 		if (THERMAL_FOUNDATION) {
 			ThermalFoundationIntegration.postInit();
+		}
+		
+		if(TINKERS_CONSTRUCT) {
+			TinkersIntegration.postInit();
 		}
 
 		if (TWILIGHT_FOREST) {

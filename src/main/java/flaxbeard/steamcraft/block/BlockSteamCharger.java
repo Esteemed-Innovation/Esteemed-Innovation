@@ -25,6 +25,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
+import tconstruct.library.tools.ToolCore;
+
 public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable {
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)
@@ -66,6 +68,17 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                 if (player.getHeldItem().getItem() instanceof ISteamChargable) {
                     ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
                     if (item.canCharge(player.getHeldItem())) {
+                        ItemStack copy = player.getCurrentEquippedItem().copy();
+                        copy.stackSize = 1;
+                        tile.setInventorySlotContents(0, copy);
+                        player.getCurrentEquippedItem().stackSize -= 1;
+                        tile.randomDegrees = world.rand.nextInt(361);
+                    }
+                }
+                else if(player.getHeldItem().getItem() instanceof ToolCore) {
+                	ItemStack item = player.getHeldItem();
+                	NBTTagCompound tags = item.getTagCompound();
+                    if (tags.getCompoundTag("InfiTool").hasKey("Steam")) {
                         ItemStack copy = player.getCurrentEquippedItem().copy();
                         copy.stackSize = 1;
                         tile.setInventorySlotContents(0, copy);
