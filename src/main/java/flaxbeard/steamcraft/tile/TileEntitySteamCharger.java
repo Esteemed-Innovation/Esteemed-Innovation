@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.tile;
 
-import tconstruct.library.tools.ToolCore;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,10 +10,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import flaxbeard.steamcraft.Steamcraft;
+import tconstruct.library.tools.ToolCore;
+import cpw.mods.fml.common.Optional;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
@@ -169,7 +170,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         }
                     }
                 }
-            } else if(this.getStackInSlot(0).getItem() instanceof ToolCore){
+            } else if(CrossMod.TINKERS_CONSTRUCT && this.getStackInSlot(0).getItem() instanceof ToolCore){
             	ToolCore item = (ToolCore) this.getStackInSlot(0).getItem();
                 ItemStack stack = this.getStackInSlot(0).copy();
                 NBTTagCompound tags = stack.getTagCompound();
