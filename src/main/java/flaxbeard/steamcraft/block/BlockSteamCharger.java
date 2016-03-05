@@ -1,12 +1,12 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,13 +22,15 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import tconstruct.library.tools.ToolCore;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable {
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)
-
     public IIcon top;
     private IIcon bottom;
 
@@ -66,6 +68,17 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                 if (player.getHeldItem().getItem() instanceof ISteamChargable) {
                     ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
                     if (item.canCharge(player.getHeldItem())) {
+                        ItemStack copy = player.getCurrentEquippedItem().copy();
+                        copy.stackSize = 1;
+                        tile.setInventorySlotContents(0, copy);
+                        player.getCurrentEquippedItem().stackSize -= 1;
+                        tile.randomDegrees = world.rand.nextInt(361);
+                    }
+                } else if (CrossMod.TINKERS_CONSTRUCT
+                    && player.getHeldItem().getItem() instanceof ToolCore) {
+                    ItemStack item = player.getHeldItem();
+                    NBTTagCompound tags = item.getTagCompound();
+                    if (tags.getCompoundTag("InfiTool").hasKey("Steam")) {
                         ItemStack copy = player.getCurrentEquippedItem().copy();
                         copy.stackSize = 1;
                         tile.setInventorySlotContents(0, copy);
@@ -114,7 +127,8 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntitySteamCharger tileentitysteamcharger = (TileEntitySteamCharger) world.getTileEntity(x, y, z);
+        TileEntitySteamCharger tileentitysteamcharger =
+          (TileEntitySteamCharger) world.getTileEntity(x, y, z);
 
         if (tileentitysteamcharger != null) {
             for (int i1 = 0; i1 < tileentitysteamcharger.getSizeInventory(); ++i1) {
@@ -133,15 +147,20 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                         }
 
                         itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                        EntityItem entityitem =
+                            new EntityItem(world, (double) ((float) x + f),
+                              (double) ((float) y + f1), (double) ((float) z + f2),
+                              new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                         if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+                            entityitem.getEntityItem().setTagCompound(
+                              (NBTTagCompound) itemstack.getTagCompound().copy());
                         }
 
                         float f3 = 0.05F;
                         entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-                        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
+                        entityitem.motionY =
+                          (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
                         entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
                         world.spawnEntityInWorld(entityitem);
                     }
@@ -150,7 +169,6 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
 
             world.func_147453_f(x, y, z, block);
         }
-
 
         super.breakBlock(world, x, y, z, block, meta);
     }
@@ -162,6 +180,21 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         if (side != 0 && side != 1) {
             int output = meta;
             switch (side) {
+            case 2:
+                output = 2;
+                break;
+            case 3:
+                output = 0;
+                break;
+            case 4:
+                output = 1;
+                break;
+            case 5:
+                output = 3;
+                break;
+            }
+            if (output == meta && side > 1 && side < 6) {
+                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
                 case 2:
                     output = 2;
                     break;
@@ -174,21 +207,6 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                 case 5:
                     output = 3;
                     break;
-            }
-            if (output == meta && side > 1 && side < 6) {
-                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                    case 2:
-                        output = 2;
-                        break;
-                    case 3:
-                        output = 0;
-                        break;
-                    case 4:
-                        output = 1;
-                        break;
-                    case 5:
-                        output = 3;
-                        break;
                 }
             }
             world.setBlockMetadataWithNotify(x, y, z, output, 2);
