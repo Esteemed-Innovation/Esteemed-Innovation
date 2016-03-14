@@ -199,6 +199,7 @@ public class Config {
     public static boolean enableTheVoid;
     public static boolean enableAutosmelting;
     public static boolean enableOverclocker;
+    public static boolean enableFortune;
 
     // drill
     public static boolean enableBigDrill;
@@ -439,6 +440,8 @@ public class Config {
         enableInternalProcessingUnit = config.get("Steam Tool Upgrades", "Enable Steam Drill's Internal Processing Unit", true).getBoolean(true);
         enableTreeFeller = config.get("Steam Tool Upgrades", "Enable Steam Axe's Tree Felling upgrade", true).getBoolean(true);
         enableChainsaw = config.get("Steam Tool Upgrades", "Enable Steam Axe's Chainsaw upgrade", true).getBoolean(true);
+        enableFortune = config.get("Steam Tool Upgrades", "Enable Steam Drill's fortune upgrade", true).getBoolean(true);
+
         backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",

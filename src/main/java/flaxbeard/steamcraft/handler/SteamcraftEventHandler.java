@@ -53,6 +53,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -1739,7 +1740,18 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (OreDictHelper.cobblestones.contains(pair) || !drill.isWound(player)) {
+            if (!drill.isWound(player)) {
+                return;
+            }
+
+            if (drill.hasUpgrade(equipped, SteamcraftItems.fortuneUpgrade)) {
+                event.drops.clear();
+                ArrayList<ItemStack> trueDrops = block.getDrops(event.world, event.x,
+                  event.y, event.z, meta, EnchantmentHelper.getFortuneModifier(player) + 2);
+                event.drops.addAll(trueDrops);
+            }
+
+            if (OreDictHelper.cobblestones.contains(pair)) {
                 return;
             }
 
