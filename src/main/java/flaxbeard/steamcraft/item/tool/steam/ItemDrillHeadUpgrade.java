@@ -76,11 +76,11 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     /**
      * Gets the material string for the ItemStack.
      * @param self The ItemStack to get.
-     * @return The ItemStack's material name.
+     * @return The ItemStack's material name. Defaults to "Iron".
      */
     public static String getMyMaterial(ItemStack self) {
         if (!self.hasTagCompound()) {
-            return null;
+            return "Iron";
         }
         if (self.getTagCompound().hasKey("material")) {
             return self.getTagCompound().getString("material");
