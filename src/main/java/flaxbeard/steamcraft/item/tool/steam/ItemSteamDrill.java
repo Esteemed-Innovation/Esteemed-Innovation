@@ -135,7 +135,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
               ((ISteamToolUpgrade) upgrade.getItem()).renderPriority() == renderPass) {
                 String materialName = ItemDrillHeadUpgrade.getMyMaterial(upgrade);
                 DrillHeadMaterial material = DrillHeadMaterial.materials.get(materialName);
-                return material.color;
+                return material.getColorInt();
             }
         }
         return super.getColorFromItemStack(self, renderPass);

@@ -1,9 +1,6 @@
 package flaxbeard.steamcraft.misc;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.io.FileUtils;
@@ -45,19 +42,35 @@ public class DrillHeadMaterial {
     public int harvestLevel;
     public boolean standard;
     public String oreName;
-    public int color;
+    private String color;
 
-    public DrillHeadMaterial(String materialIngot, String locName, int harvestLevel, boolean standard, int color) {
+    public DrillHeadMaterial(String materialIngot, String locName, int harvestLevel, boolean standard, String color) {
         this(materialIngot, locName, harvestLevel, standard, color, null);
     }
 
-    public DrillHeadMaterial(String materialIngot, String locName, int harvestLevel, boolean standard, int color, String oreName) {
+    public DrillHeadMaterial(String materialIngot, String locName, int harvestLevel, boolean standard, String color, String oreName) {
         this.materialName = materialIngot;
         this.locName = locName;
         this.harvestLevel = harvestLevel;
         this.standard = standard;
         this.oreName = oreName;
         this.color = color;
+    }
+
+    /**
+     * Gets the color as the RGB integer used internally by Minecraft.
+     * @return The color integer.
+     */
+    public int getColorInt() {
+        return new Color(Integer.parseInt(color.replace("#", ""), 16)).getRGB();
+    }
+
+    /**
+     * Gets the color's base string, just in case you want to do that.
+     * @return The color string (including the # if present).
+     */
+    public String getColorString() {
+        return color;
     }
 
     /**
@@ -76,9 +89,9 @@ public class DrillHeadMaterial {
      * @param materialName The material suffix, e.g., "iron" in "ingotIron" and "nuggetIron".
      * @param locName The localization key.
      * @param harvestLevel The harvest level this head provides.
-     * @param color The hexadecimal color (0xWHATEVER).
+     * @param color The color (#FFFFFF).
      */
-    public static void registerDrillMaterial(String materialName, String locName, int harvestLevel, int color) {
+    public static void registerDrillMaterial(String materialName, String locName, int harvestLevel, String color) {
         DrillHeadMaterial material = new DrillHeadMaterial(materialName,locName, harvestLevel, true, color);
         materials.put(materialName, material);
         ArrayList<ItemStack> ingots = OreDictionary.getOres("ingot" + materialName);
@@ -92,9 +105,9 @@ public class DrillHeadMaterial {
      * @param ore The ore dictionary entry to use, e.g., "gemDiamond"
      * @param loc The localization key.
      * @param harvestLevel The harvest level this head provides.
-     * @param color THe hexadecimal color (0xWHATEVER).
+     * @param color The color (#FFFFFF).
      */
-    public static void registerNonStandardDrillMaterial(String material, String ore, String loc, int harvestLevel, int color) {
+    public static void registerNonStandardDrillMaterial(String material, String ore, String loc, int harvestLevel, String color) {
         DrillHeadMaterial head = new DrillHeadMaterial(material, loc, harvestLevel, false, color, ore);
         materials.put(material, head);
         ArrayList<ItemStack> ores = OreDictionary.getOres(ore);
@@ -125,14 +138,13 @@ public class DrillHeadMaterial {
                             JsonObject obj = entry.getValue().getAsJsonObject();
                             if (obj.get("standard").getAsBoolean()) {
                                 String color = obj.get("color").getAsString();
-                                int rgb = new Color(Integer.parseInt(color.replace("#", ""))).getRGB();
                                 registerDrillMaterial(entry.getKey(), obj.get("locName").getAsString(),
-                                  obj.get("harvestLevel").getAsInt(), rgb);
+                                  obj.get("harvestLevel").getAsInt(), obj.get("color").getAsString());
                             } else {
                                 String color = obj.get("color").getAsString();
-                                int rgb = new Color(Integer.parseInt(color.replace("#", ""))).getRGB();
                                 registerNonStandardDrillMaterial(entry.getKey(), obj.get("oreName").getAsString(),
-                                  obj.get("locName").getAsString(), obj.get("harvestLevel").getAsInt(), rgb);
+                                  obj.get("locName").getAsString(), obj.get("harvestLevel").getAsInt(),
+                                  obj.get("color").getAsString());
                             }
                         }
                     }
@@ -143,14 +155,15 @@ public class DrillHeadMaterial {
             }
         }
 
-        registerDrillMaterial("Gold", "drill.gold", 1, new Color(0xCED652).getRGB());
-        registerDrillMaterial("Iron", "drill.iron", 2, new Color(0xDEDEDE).getRGB());
-        registerDrillMaterial("Brass", "drill.brass", 2, new Color(0xFABD3F).getRGB());
-        registerNonStandardDrillMaterial("Diamond", "gemDiamond", "drill.diamond", 3, new Color(0x29C6AD).getRGB());
-        registerNonStandardDrillMaterial("Emerald", "gemEmerald", "drill.emerald", 3, new Color(0x17DD62).getRGB());
+        registerDrillMaterial("Gold", "drill.gold", 1, "#CED652");
+        registerDrillMaterial("Iron", "drill.iron", 2, "#DEDEDE");
+        registerDrillMaterial("Brass", "drill.brass", 2, "#FABD3F");
+        registerNonStandardDrillMaterial("Diamond", "gemDiamond", "drill.diamond", 3, "#29C6AD");
+        registerNonStandardDrillMaterial("Emerald", "gemEmerald", "drill.emerald", 3, "#17DD62");
 //        registerDrillMaterial("gildedGold", "drill.gilded", 2); TODO OreDictionary entry for gilded gold.
 
-        String json = new Gson().toJson(materials);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(materials);
         try {
             FileWriter writer = new FileWriter(jsonFilePath);
             writer.write(json);

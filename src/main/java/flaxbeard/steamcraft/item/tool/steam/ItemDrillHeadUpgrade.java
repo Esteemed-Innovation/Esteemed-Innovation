@@ -58,7 +58,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int renderPass) {
-        return DrillHeadMaterial.materials.get(getMyMaterial(stack)).color;
+        return DrillHeadMaterial.materials.get(getMyMaterial(stack)).getColorInt();
     }
 
     /**
