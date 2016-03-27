@@ -88,8 +88,8 @@ public class DamageHandler {
 
 			//if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
 			float amount = event.ammount;
-			;
 			DamageSource src = event.source;
+
 			if (!player.isEntityInvulnerable()) {
 				if (amount <= 0) return;
 				if (!src.isUnblockable() && player.isBlocking() && amount > 0.0F) {
@@ -120,7 +120,7 @@ public class DamageHandler {
 				ItemStack armor = player.inventory.armorInventory[i];
 				if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
 					ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
-					if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Vibrant") {
+					if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier().equals("Vibrant")) {
 						vibrantLevel += 1;
 					}
 				}
@@ -175,7 +175,7 @@ public class DamageHandler {
 			ItemStack armor = player.inventory.armorInventory[i];
 			if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
 				ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
-				if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Enderium") {
+				if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier().equals("Enderium")) {
 					enderiumLevel += 1;
 				}
 			}
@@ -226,7 +226,7 @@ public class DamageHandler {
 			ItemStack armor = player.inventory.armorInventory[i];
 			if (armor != null && armor.getItem() instanceof ItemExosuitArmor) {
 				ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
-				if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier() == "Fiery") {
+				if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.stackTagCompound.getString("plate")).getIdentifier().equals("Fiery")) {
 					fireLevel += 3;
 				}
 			}
