@@ -4,11 +4,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
+import flaxbeard.steamcraft.api.DrillHeadRecipe;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.handler.CanisterHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import java.util.Map;
 
 public class SteamcraftRecipes {
     public static CrucibleLiquid liquidIron;
@@ -596,6 +600,32 @@ public class SteamcraftRecipes {
                 'b', Items.leather_boots,
                 'h', SteamcraftBlocks.heater,
                 'm', Items.magma_cream));
+        }
+    }
+
+    public static void registerSteamToolUpgrades() {
+        // Not sure how we'd do this in the book, so for now it is not in the book.
+        for (Map.Entry<String, DrillHeadMaterial> entry : DrillHeadMaterial.materials.entrySet()) {
+            String materialString = entry.getKey();
+            DrillHeadMaterial headMat = entry.getValue();
+            if (headMat.standard) {
+                GameRegistry.addRecipe(new DrillHeadRecipe(SteamcraftItems.drillHead,
+                  " n ",
+                  "iii",
+                  "ppp",
+                  'n', "nugget" + materialString,
+                  'i', "ingot" + materialString,
+                  'p', "plateSteamcraftIron")
+                );
+            } else {
+                GameRegistry.addRecipe(new DrillHeadRecipe(SteamcraftItems.drillHead,
+                  " g ",
+                  "ggg",
+                  "ppp",
+                  'g', headMat.oreName,
+                  'p', "plateSteamcraftIron")
+                );
+            }
         }
     }
 

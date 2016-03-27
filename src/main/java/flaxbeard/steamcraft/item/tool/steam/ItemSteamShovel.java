@@ -90,13 +90,11 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         MutablePair info = nbt.shovelInfo;
         int which = (Integer) info.left > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-        if (upgrades != null) {
-            for (ISteamToolUpgrade upgrade : upgrades) {
-                IIcon[] icons = upgrade.getIIcons();
-                if (renderPass == upgrade.renderPriority() && icons != null &&
-                  icons.length >= which + 1 && icons[which] != null) {
-                    return icons[which];
-                }
+        for (ISteamToolUpgrade upgrade : upgrades) {
+            IIcon[] icons = upgrade.getIIcons();
+            if (renderPass == upgrade.renderPriority() && icons != null &&
+              icons.length >= which + 1 && icons[which] != null) {
+                return icons[which];
             }
         }
 

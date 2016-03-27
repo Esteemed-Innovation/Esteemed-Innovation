@@ -31,8 +31,8 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
-import flaxbeard.steamcraft.misc.RecipeHelper;
 import flaxbeard.steamcraft.network.*;
 import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
@@ -88,6 +88,8 @@ public class Steamcraft {
     public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
     public static String MERCHANT_PROPERTY_ID = "FSPMerchantProperties";
 
+    public static String CONFIG_DIR;
+
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
 
@@ -99,6 +101,7 @@ public class Steamcraft {
     public void preInit(FMLPreInitializationEvent event) {
         Config.load(event);
 
+        CONFIG_DIR = event.getModConfigurationDirectory().toString();
         tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
         tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 
@@ -224,11 +227,9 @@ public class Steamcraft {
         long end = System.currentTimeMillis();
         int time = (int) (end - start);
         FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
-        long start1 = System.currentTimeMillis();
-        RecipeHelper.initializeRecipes();
-        long end1 = System.currentTimeMillis();
-        int time1 = (int) (end1 - start1);
-        FMLLog.info("Finished initializing Flaxbeard's Steam Power RecipeHelper in %s ms", time1);
+
+        DrillHeadMaterial.registerDefaults();
+        SteamcraftRecipes.registerSteamToolUpgrades();
     }
 
 

@@ -13,7 +13,7 @@ import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
-import flaxbeard.steamcraft.misc.RecipeHelper;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -71,7 +71,8 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4) {
         super.addInformation(me, player, list, par4);
         list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * this.steamPerDurability() + "/" + me.getMaxDamage() * this.steamPerDurability() + " SU");
-        ArrayList<String> upgradeStrings = SteamToolHelper.getInformation(UtilSteamTool.getUpgrades(me),
+        ArrayList<ItemStack> upgradeStacks = UtilSteamTool.getUpgradeStacks(me);
+        ArrayList<String> upgradeStrings = SteamToolHelper.getInformationFromStacks(upgradeStacks,
           SteamToolSlot.drillHead);
         if (upgradeStrings == null) {
             return;
@@ -107,21 +108,37 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         MutablePair info = nbt.drillInfo;
         int which = (Integer) info.left > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-        if (upgrades != null) {
             for (ISteamToolUpgrade upgrade : upgrades) {
+                if (upgrade instanceof ItemDrillHeadUpgrade && upgrade.renderPriority() == renderPass) {
+                    return headIcons[which];
+                }
                 IIcon[] icons = upgrade.getIIcons();
                 if (renderPass == upgrade.renderPriority() && icons != null &&
                   icons.length >= which + 1 && icons[which] != null) {
                     return icons[which];
                 }
             }
-        }
 
         if (renderPass == 0) {
             return this.coreIcons[which];
         } else {
             return this.headIcons[which];
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack self, int renderPass) {
+        ArrayList<ItemStack> upgrades = UtilSteamTool.getUpgradeStacks(self);
+        for (ItemStack upgrade : upgrades) {
+            if (upgrade.getItem() instanceof ItemDrillHeadUpgrade &&
+              ((ISteamToolUpgrade) upgrade.getItem()).renderPriority() == renderPass) {
+                String materialName = ItemDrillHeadUpgrade.getMyMaterial(upgrade);
+                DrillHeadMaterial material = DrillHeadMaterial.materials.get(materialName);
+                return material.color;
+            }
+        }
+        return super.getColorFromItemStack(self, renderPass);
     }
 
     @Override
@@ -294,9 +311,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 return ((upgradeItem.getToolSlot().tool == 0 &&
                   upgradeItem.getToolSlot().slot == slotNum) ||
                   upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
-            }
-            if (RecipeHelper.blockMaterials.keySet().contains(upgrade.getItem())) {
-                return true;
             }
         }
         return false;

@@ -130,6 +130,7 @@ public class SteamcraftItems {
     public static Item preciseCuttingHead;
     public static Item internalProcessingUnit;
     public static Item fortuneUpgrade;
+    public static Item drillHead;
 
     // axe
     public static Item leafBlower;
@@ -658,6 +659,10 @@ public class SteamcraftItems {
               .setUnlocalizedName("steamcraft:drillFortune").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(fortuneUpgrade, "drillFortune");
         }
+
+        drillHead = new ItemDrillHeadUpgrade().setUnlocalizedName("steamcraft:drillHead")
+          .setCreativeTab(Steamcraft.tabTools);
+        GameRegistry.registerItem(drillHead, "drillHead");
 
         if (Config.enableInternalProcessingUnit) {
             internalProcessingUnit = new ItemSteamToolUpgrade(SteamToolSlot.drillCore,

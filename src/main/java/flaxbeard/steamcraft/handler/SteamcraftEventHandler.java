@@ -35,12 +35,13 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
+import flaxbeard.steamcraft.item.tool.steam.ItemDrillHeadUpgrade;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 import flaxbeard.steamcraft.misc.FrequencyMerchant;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
-import flaxbeard.steamcraft.misc.RecipeHelper;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -1907,12 +1908,14 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            Item upgrade = UtilSteamTool.getHarvestLevelModifier(equipped);
+            ItemStack upgrade = UtilSteamTool.getHarvestLevelModifier(equipped);
             if (!drill.isWound(player)) {
                 return;
             }
-            if (upgrade != null && RecipeHelper.blockMaterials.containsKey(upgrade)) {
-                if (RecipeHelper.blockMaterials.get(upgrade).right > block.getHarvestLevel(meta)) {
+            if (upgrade != null) {
+                String mat = ItemDrillHeadUpgrade.getMyMaterial(upgrade);
+                int harvestLevel = DrillHeadMaterial.materials.get(mat).harvestLevel;
+                if (harvestLevel > block.getHarvestLevel(meta)) {
                     block.harvestBlock(world, player, x, y, z, meta);
                     world.setBlockToAir(x, y, z);
                 } else {

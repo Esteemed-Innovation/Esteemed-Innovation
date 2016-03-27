@@ -36,6 +36,10 @@ public class SteamToolHelper {
         ArrayList<String> strings = new ArrayList<>();
 
         for (ISteamToolUpgrade upgrade : upgrades) {
+            if (upgrade instanceof ItemDrillHeadUpgrade) {
+                continue;
+            }
+
             String info = upgrade.getInformation();
             if (info == null) {
                 info = StatCollector.translateToLocal(((Item) upgrade).getUnlocalizedName());
@@ -44,6 +48,38 @@ public class SteamToolHelper {
                 strings.add(EnumChatFormatting.RED + "" + info);
             } else if (upgrade.getToolSlot() == SteamToolSlot.toolCore) {
                 strings.add(EnumChatFormatting.DARK_GREEN + "" + info);
+            }
+        }
+
+        if (strings.isEmpty()) {
+            return null;
+        }
+
+        return strings;
+    }
+
+    /**
+     * The same as getInformation(ArrayList, SteamToolSlot), but relies on itemstacks instead of ISteamToolUpgrades
+     * @param upgrades The ItemStacks that are being tested against; see #getUpgradeStacks
+     * @param redSlot The slot that should be red. See getInformation.
+     * @return The strings, or null if the upgrades were null.
+     */
+    public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot) {
+        if (upgrades == null) {
+            return null;
+        }
+
+        ArrayList<String> strings = new ArrayList<>();
+
+        for (ItemStack stack : upgrades) {
+            ISteamToolUpgrade upgrade = (ISteamToolUpgrade) stack.getItem();
+            EnumChatFormatting format = upgrade.getToolSlot() == redSlot ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GREEN;
+            if (upgrade instanceof ItemDrillHeadUpgrade) {
+                strings.add(format + "" + ((ItemDrillHeadUpgrade) upgrade).getInformation(stack));
+            } else {
+                String info = upgrade.getInformation();
+                String toAdd = info == null ? stack.getItem().getUnlocalizedName() : info;
+                strings.add(format + "" + StatCollector.translateToLocal(toAdd));
             }
         }
 
