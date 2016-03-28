@@ -2371,29 +2371,67 @@ public class SteamcraftEventHandler {
         }
     }
 
-    // TODO: Use a keybind instead of jump-sprint-attacks.
     @SubscribeEvent
-    public void toggleDrillDash(LivingAttackEvent event) {
-        if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
-            EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
-            if (entity instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) entity;
-                ItemStack equipment = player.getCurrentEquippedItem();
-                if (equipment != null) {
-                    Item item = equipment.getItem();
-                    if (item != null && item instanceof ItemSteamDrill) {
-                        ItemSteamDrill drill = (ItemSteamDrill) item;
-                        int consumption = Config.battleDrillConsumption;
-                        if (drill.hasUpgrade(equipment, SteamcraftItems.battleDrill) &&
-                          player.isSprinting() && (player.motionY > 0 || player.motionY < 0) &&
-                          drill.isWound(player) && equipment.getItemDamage() >= consumption) {
-                            event.entityLiving.attackEntityFrom(DamageSource.generic, 9.0F);
-                            equipment.setItemDamage(consumption);
-                        }
-                    }
+    public void toggleDrillDash(LivingEvent.LivingJumpEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer)) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) event.entityLiving;
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null) {
+            return;
+        }
+        Item equippedItem = equipped.getItem();
+        if (equippedItem == null || !(equippedItem instanceof ItemSteamDrill)) {
+            return;
+        }
+        ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
+        if (!drill.isWound(player) || !drill.hasUpgrade(equipped, SteamcraftItems.battleDrill)) {
+            return;
+        }
+
+        Vec3 vector = player.getLook(0.5F);
+
+        double total = Math.abs(vector.zCoord + vector.xCoord);
+        if (vector.yCoord < total) {
+            vector.yCoord = total;
+        }
+
+        player.motionZ += vector.zCoord * 2.5;
+        player.motionX += vector.xCoord * 2.5;
+
+        EntityLivingBase target = getEntityFromPlayer(player);
+        if (target == null) {
+            return;
+        }
+
+        target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
+        drill.addSteam(equipped, -Config.battleDrillConsumption, player);
+    }
+
+    /**
+     * Gets a single entity from the player's look vec. Scans in a 5 block radius around the player,
+     * and returns the "first" result.
+     * @param player The player
+     * @return The EntityLivingBase near the player.
+     */
+    private EntityLivingBase getEntityFromPlayer(EntityPlayer player) {
+        Vec3 vec = player.getLookVec();
+        double x = vec.xCoord + player.posX;
+        double y = vec.yCoord + player.posY;
+        double z = vec.zCoord + player.posZ;
+
+        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(x - 5, y - 5, z - 5, x + 5, y + 5, z + 5);
+        List entities = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, aabb);
+        for (Object object : entities) {
+            if (object instanceof EntityLivingBase) {
+                EntityLivingBase target = (EntityLivingBase) object;
+                if (player.canEntityBeSeen(target) && target.canBeCollidedWith()) {
+                    return target;
                 }
             }
         }
+        return null;
     }
 
     @SubscribeEvent

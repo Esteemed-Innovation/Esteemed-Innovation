@@ -677,9 +677,9 @@ public class SteamcraftItems {
             GameRegistry.registerItem(chargePlacer, "chargePlacer");
         }
 
-        drillHead = new ItemDrillHeadUpgrade().setUnlocalizedName("steamcraft:DRILL_HEAD")
+        drillHead = new ItemDrillHeadUpgrade().setUnlocalizedName("steamcraft:drillHead")
           .setCreativeTab(Steamcraft.tabTools);
-        GameRegistry.registerItem(drillHead, "DRILL_HEAD");
+        GameRegistry.registerItem(drillHead, "drillHead");
 
         if (Config.enableInternalProcessingUnit) {
             internalProcessingUnit = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_CORE,
