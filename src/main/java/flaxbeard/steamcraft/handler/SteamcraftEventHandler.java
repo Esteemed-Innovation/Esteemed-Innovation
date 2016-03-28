@@ -80,6 +80,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -2009,6 +2010,13 @@ public class SteamcraftEventHandler {
     }
 
     public static HashMap<MutablePair<EntityPlayer, Tuple3>, Integer> charges = new HashMap<>();
+    public static final int PEACEFUL_CHARGE = 12 * 20;
+    public static final int EASY_CHARGE_CAP = 14 * 20;
+    public static final int EASY_CHARGE_MIN = 8 * 20;
+    public static final int NORMAL_CHARGE_CAP = 16 * 20;
+    public static final int NORMAL_CHARGE_MIN = 6 * 20;
+    public static final int HARD_CHARGE_CAP = 18 * 20;
+    public static final int HARD_CHARGE_MIN = 4 * 20;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void placeCharge(BlockEvent.BreakEvent event) {
@@ -2026,8 +2034,44 @@ public class SteamcraftEventHandler {
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
             if (drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer) && drill.isWound(player)) {
-                charges.put(MutablePair.of(player, new Tuple3(x, y, z)), new Random().nextInt(60) + 220);
+                Random rand = new Random();
                 equipped.damageItem(2, player);
+                if (player.worldObj.difficultySetting == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
+                    return;
+                }
+                int max = 0;
+                int min = 0;
+                int constant = 0;
+                boolean useConstant = false;
+                switch (player.worldObj.difficultySetting) {
+                    case HARD: {
+                        max = HARD_CHARGE_CAP;
+                        min = HARD_CHARGE_MIN;
+                        break;
+                    }
+                    case NORMAL: {
+                        max = NORMAL_CHARGE_CAP;
+                        min = NORMAL_CHARGE_MIN;
+                        break;
+                    }
+                    case EASY: {
+                        max = EASY_CHARGE_CAP;
+                        min = EASY_CHARGE_MIN;
+                        break;
+                    }
+                    case PEACEFUL: {
+                        constant = PEACEFUL_CHARGE;
+                        useConstant = true;
+                        break;
+                    }
+                    default: {}
+                }
+                MutablePair<EntityPlayer, Tuple3> pair = MutablePair.of(player, new Tuple3(x, y, z));
+                if (useConstant) {
+                    charges.put(pair, constant);
+                } else {
+                    charges.put(pair, rand.nextInt((max - min) + 1) + min);
+                }
             }
         }
     }

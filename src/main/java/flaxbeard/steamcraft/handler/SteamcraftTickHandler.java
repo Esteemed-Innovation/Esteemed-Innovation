@@ -340,7 +340,7 @@ public class SteamcraftTickHandler {
             int dim = player.dimension;
             int waitTicks = entry.getValue();
             WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
-            if (chargeTicks == waitTicks) {
+            if (chargeTicks >= waitTicks) {
                 // Explosion is half the size of a TNT explosion.
                 double x = (double) (Integer) coords.first;
                 double y = (double) (Integer) coords.second;
@@ -353,7 +353,7 @@ public class SteamcraftTickHandler {
         if (lavaTicks >= 30) {
             lavaTicks = 0;
         }
-        if (chargeTicks >= 280) {
+        if (chargeTicks >= SteamcraftEventHandler.HARD_CHARGE_CAP) {
             chargeTicks = 0;
         }
     }
