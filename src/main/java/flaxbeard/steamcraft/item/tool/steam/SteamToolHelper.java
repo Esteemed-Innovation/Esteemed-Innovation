@@ -46,7 +46,7 @@ public class SteamToolHelper {
             }
             if (upgrade.getToolSlot() == redSlot) {
                 strings.add(EnumChatFormatting.RED + "" + info);
-            } else if (upgrade.getToolSlot() == SteamToolSlot.TOOL_CORE) {
+            } else {
                 strings.add(EnumChatFormatting.DARK_GREEN + "" + info);
             }
         }
