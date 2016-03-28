@@ -131,6 +131,7 @@ public class SteamcraftItems {
     public static Item internalProcessingUnit;
     public static Item fortuneUpgrade;
     public static Item drillHead;
+    public static Item thermalDrill;
 
     // axe
     public static Item leafBlower;
@@ -651,6 +652,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/preciseCuttingHead", null, 1)
               .setUnlocalizedName("steamcraft:preciseCuttingHead").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(preciseCuttingHead, "preciseCuttingHead");
+        }
+
+        if (Config.enableThermalDrill) {
+            thermalDrill = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+              "steamcraft:toolUpgrades/thermalDrill", null, 1)
+              .setUnlocalizedName("steamcraft:thermalDrill").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(thermalDrill, "thermalDrill");
         }
 
         if (Config.enableFortune) {

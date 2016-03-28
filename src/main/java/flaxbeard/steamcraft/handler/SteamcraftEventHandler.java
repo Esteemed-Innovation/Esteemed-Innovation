@@ -1976,6 +1976,38 @@ public class SteamcraftEventHandler {
         }
     }
 
+    /**
+     * The Hash of quick lava blocks to delete.
+     * Key: Pair of Integer and Tuple3. Integer is dimension, Tuple3 are the coordinates.
+     * Value: Integer, number of ticks to wait. Cannot be more than 30 or bad things will happen.
+     */
+    public static HashMap<MutablePair<Integer, Tuple3>, Integer> quickLavas = new HashMap<>();
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void placeLava(BlockEvent.HarvestDropsEvent event) {
+        EntityPlayer player = event.harvester;
+        Block block = event.block;
+        int x = event.x;
+        int y = event.y;
+        int z = event.z;
+        World world = event.world;
+        if (player == null) {
+            return;
+        }
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null || block == null) {
+            return;
+        }
+        if (equipped.getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill)) {
+                world.setBlock(x, y, z, Blocks.lava);
+                quickLavas.put(MutablePair.of(player.dimension, new Tuple3(x, y, z)), new Random().nextInt(30) + 1);
+                event.drops.clear();
+            }
+        }
+    }
+
     public boolean drainFelling = false;
     /**
      * Mines all of the log blocks above the starting coordinate.
@@ -2359,6 +2391,13 @@ public class SteamcraftEventHandler {
                             newSpeed = event.originalSpeed / 2;
                         } else {
                             newSpeed /= 2;
+                        }
+                    }
+                    if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill)) {
+                        if (newSpeed == 0.0F) {
+                            newSpeed = event.originalSpeed * 5;
+                        } else {
+                            newSpeed *= 5;
                         }
                     }
                 }

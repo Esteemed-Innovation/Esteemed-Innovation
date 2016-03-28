@@ -207,6 +207,7 @@ public class Config {
     public static boolean enableStoneGrinder;
     public static boolean enablePreciseCuttingHead;
     public static boolean enableInternalProcessingUnit;
+    public static boolean enableThermalDrill;
     public static int battleDrillConsumption;
 
     // saw
@@ -443,6 +444,7 @@ public class Config {
         enableChainsaw = config.get("Steam Tool Upgrades", "Enable Steam Axe's Chainsaw upgrade", true).getBoolean(true);
         enableFortune = config.get("Steam Tool Upgrades", "Enable Steam Drill's fortune upgrade", true).getBoolean(true);
         enableForestFire = config.get("Steam Tool Upgrades", "Enable Steam Axe's Forest Fire upgrade", true).getBoolean(true);
+        enableThermalDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Thermal Drill upgrade", true).getBoolean(true);
 
         backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +

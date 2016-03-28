@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.ClientProxy;
@@ -23,11 +24,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Mouse;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class SteamcraftTickHandler {
     private static float zoom = 0.0F;
@@ -298,6 +305,31 @@ public class SteamcraftTickHandler {
                     }
                 }
             }
+        }
+    }
+
+    private int ticks = 0;
+
+    @SubscribeEvent
+    public void deleteLava(TickEvent.WorldTickEvent event) {
+        if (event.side.isClient()) {
+            return;
+        }
+        ticks++;
+        for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavas.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<MutablePair<Integer, Tuple3>, Integer> entry = it.next();
+            MutablePair<Integer, Tuple3> dimCoords = entry.getKey();
+            Tuple3 coords = dimCoords.getRight();
+            int dim = dimCoords.getLeft();
+            int waitTicks = entry.getValue();
+            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
+            if (ticks >= waitTicks) {
+                worldServer.setBlockToAir((int) coords.first, (int) coords.second, (int) coords.third);
+                SteamcraftEventHandler.quickLavas.remove(dimCoords);
+            }
+        }
+        if (ticks >= 30) {
+            ticks = 0;
         }
     }
 
