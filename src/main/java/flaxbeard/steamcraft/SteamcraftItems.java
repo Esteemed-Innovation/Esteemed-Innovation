@@ -132,6 +132,7 @@ public class SteamcraftItems {
     public static Item fortuneUpgrade;
     public static Item drillHead;
     public static Item thermalDrill;
+    public static Item chargePlacer;
 
     // axe
     public static Item leafBlower;
@@ -667,6 +668,13 @@ public class SteamcraftItems {
               "steamcraft:toolUpgrades/drillFortune", null, 1)
               .setUnlocalizedName("steamcraft:drillFortune").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(fortuneUpgrade, "drillFortune");
+        }
+
+        if (Config.enableChargePlacer) {
+            chargePlacer = new ItemSteamToolUpgrade(SteamToolSlot.drillHead,
+              "steamcraft:toolUpgrades/chargePlacer", null, 1)
+              .setUnlocalizedName("steamcraft:chargePlacer").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(chargePlacer, "chargePlacer");
         }
 
         drillHead = new ItemDrillHeadUpgrade().setUnlocalizedName("steamcraft:drillHead")

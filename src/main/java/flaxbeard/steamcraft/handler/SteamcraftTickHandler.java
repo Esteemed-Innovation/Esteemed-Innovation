@@ -308,14 +308,17 @@ public class SteamcraftTickHandler {
         }
     }
 
-    private int ticks = 0;
+    private int lavaTicks = 0;
+    private int chargeTicks = 0;
 
     @SubscribeEvent
-    public void deleteLava(TickEvent.WorldTickEvent event) {
+    public void deleteLavaAndExplodeCharges(TickEvent.WorldTickEvent event) {
         if (event.side.isClient()) {
             return;
         }
-        ticks++;
+        lavaTicks++;
+        chargeTicks++;
+
         for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavas.entrySet().iterator(); it.hasNext();) {
             Map.Entry<MutablePair<Integer, Tuple3>, Integer> entry = it.next();
             MutablePair<Integer, Tuple3> dimCoords = entry.getKey();
@@ -323,13 +326,35 @@ public class SteamcraftTickHandler {
             int dim = dimCoords.getLeft();
             int waitTicks = entry.getValue();
             WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
-            if (ticks >= waitTicks) {
+            if (lavaTicks == waitTicks) {
                 worldServer.setBlockToAir((int) coords.first, (int) coords.second, (int) coords.third);
-                SteamcraftEventHandler.quickLavas.remove(dimCoords);
+                it.remove();
             }
         }
-        if (ticks >= 30) {
-            ticks = 0;
+
+        for (Iterator<Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer>> it = SteamcraftEventHandler.charges.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer> entry = it.next();
+            MutablePair<EntityPlayer, Tuple3> playerCoords = entry.getKey();
+            Tuple3 coords = playerCoords.getRight();
+            EntityPlayer player = playerCoords.getLeft();
+            int dim = player.dimension;
+            int waitTicks = entry.getValue();
+            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
+            if (chargeTicks == waitTicks) {
+                // Explosion is half the size of a TNT explosion.
+                double x = (double) (Integer) coords.first;
+                double y = (double) (Integer) coords.second;
+                double z = (double) (Integer) coords.third;
+                worldServer.createExplosion(player, x, y, z, 2.0F, true);
+                it.remove();
+            }
+        }
+
+        if (lavaTicks >= 30) {
+            lavaTicks = 0;
+        }
+        if (chargeTicks >= 280) {
+            chargeTicks = 0;
         }
     }
 

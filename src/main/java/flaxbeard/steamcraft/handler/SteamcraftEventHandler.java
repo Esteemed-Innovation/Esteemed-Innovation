@@ -2000,10 +2000,34 @@ public class SteamcraftEventHandler {
         }
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) && drill.isWound(player)) {
                 world.setBlock(x, y, z, Blocks.lava);
                 quickLavas.put(MutablePair.of(player.dimension, new Tuple3(x, y, z)), new Random().nextInt(30) + 1);
                 event.drops.clear();
+            }
+        }
+    }
+
+    public static HashMap<MutablePair<EntityPlayer, Tuple3>, Integer> charges = new HashMap<>();
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void placeCharge(BlockEvent.BreakEvent event) {
+        EntityPlayer player = event.getPlayer();
+        int x = event.x;
+        int y = event.y;
+        int z = event.z;
+        if (player == null) {
+            return;
+        }
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null) {
+            return;
+        }
+        if (equipped.getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer) && drill.isWound(player)) {
+                charges.put(MutablePair.of(player, new Tuple3(x, y, z)), new Random().nextInt(60) + 220);
+                equipped.damageItem(2, player);
             }
         }
     }
@@ -2393,7 +2417,8 @@ public class SteamcraftEventHandler {
                             newSpeed /= 2;
                         }
                     }
-                    if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill)) {
+                    if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) ||
+                      drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = event.originalSpeed * 5;
                         } else {
