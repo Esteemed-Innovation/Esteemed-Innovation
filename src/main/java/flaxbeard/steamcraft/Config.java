@@ -213,6 +213,7 @@ public class Config {
     public static boolean enableLeafBlower;
     public static boolean enableTreeFeller;
     public static boolean enableChainsaw;
+    public static boolean enableForestFire;
 
     // shovel
     public static boolean enableCultivator;
@@ -441,6 +442,7 @@ public class Config {
         enableTreeFeller = config.get("Steam Tool Upgrades", "Enable Steam Axe's Tree Felling upgrade", true).getBoolean(true);
         enableChainsaw = config.get("Steam Tool Upgrades", "Enable Steam Axe's Chainsaw upgrade", true).getBoolean(true);
         enableFortune = config.get("Steam Tool Upgrades", "Enable Steam Drill's fortune upgrade", true).getBoolean(true);
+        enableForestFire = config.get("Steam Tool Upgrades", "Enable Steam Axe's Forest Fire upgrade", true).getBoolean(true);
 
         backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +

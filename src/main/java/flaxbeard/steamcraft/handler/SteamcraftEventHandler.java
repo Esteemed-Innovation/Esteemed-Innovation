@@ -1963,6 +1963,9 @@ public class SteamcraftEventHandler {
             if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
                 fellBlocks(world, x, y, z, player, equipped);
             }
+            if (axe.hasUpgrade(equipped, SteamcraftItems.forestFire)) {
+                burnBlocks(world, x, y, z, player, equipped);
+            }
         }
 
         if (equipped.getItem() instanceof ISteamTool) {
@@ -1996,6 +1999,31 @@ public class SteamcraftEventHandler {
                 drainFelling = !drainFelling;
             } else {
                 break;
+            }
+        }
+    }
+
+    public boolean drainBurning = false;
+    /**
+     * Burns all log blocks within a 5 block radius.
+     * @param world The world
+     * @param startX The starting X coordinate
+     * @param y The permanent Y coordinate
+     * @param startZ The starting Z coordinate
+     * @param player The player doing the burning
+     * @param axe The steam axe ItemStack.
+     */
+    private void burnBlocks(World world, int startX, int y, int startZ, EntityPlayer player, ItemStack axe) {
+        for (int x = startX - 5; x < startX + 5; x++) {
+            for (int z = startZ - 5; z < startZ + 5; z++) {
+                Block block = world.getBlock(x, y, z);
+                if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
+                    world.setBlock(x, y, z, Blocks.fire);
+                    if (drainBurning) {
+                        axe.damageItem(2, player);
+                    }
+                    drainBurning = !drainBurning;
+                }
             }
         }
     }
