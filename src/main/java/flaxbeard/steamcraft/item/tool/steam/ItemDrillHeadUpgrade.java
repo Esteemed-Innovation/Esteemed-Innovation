@@ -47,7 +47,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.icon = ir.registerIcon("steamcraft:DRILL_HEAD");
+        this.icon = ir.registerIcon("steamcraft:drillHead");
     }
 
     @Override
