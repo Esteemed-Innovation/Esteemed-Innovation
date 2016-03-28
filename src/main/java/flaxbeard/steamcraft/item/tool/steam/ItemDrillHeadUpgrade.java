@@ -24,7 +24,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
 
     @Override
     public SteamToolSlot getToolSlot() {
-        return SteamToolSlot.drillHead;
+        return SteamToolSlot.DRILL_HEAD;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.icon = ir.registerIcon("steamcraft:drillHead");
+        this.icon = ir.registerIcon("steamcraft:DRILL_HEAD");
     }
 
     @Override

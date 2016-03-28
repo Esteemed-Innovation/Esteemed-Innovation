@@ -13,7 +13,6 @@ import flaxbeard.steamcraft.api.tool.UtilSteamTool;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -279,7 +278,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
             ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
             return ((upgradeItem.getToolSlot().tool == 1 &&
               upgradeItem.getToolSlot().slot == slotNum) ||
-              upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+              upgradeItem.getToolSlot() == SteamToolSlot.TOOL_CORE);
         }
         return false;
     }

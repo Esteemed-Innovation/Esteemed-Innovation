@@ -276,7 +276,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
             ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
             return ((upgradeItem.getToolSlot().tool == 2 &&
               upgradeItem.getToolSlot().slot == slotNum) ||
-              upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+              upgradeItem.getToolSlot() == SteamToolSlot.TOOL_CORE);
         }
         return false;
     }

@@ -73,7 +73,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * this.steamPerDurability() + "/" + me.getMaxDamage() * this.steamPerDurability() + " SU");
         ArrayList<ItemStack> upgradeStacks = UtilSteamTool.getUpgradeStacks(me);
         ArrayList<String> upgradeStrings = SteamToolHelper.getInformationFromStacks(upgradeStacks,
-          SteamToolSlot.drillHead);
+          SteamToolSlot.DRILL_HEAD);
         if (upgradeStrings == null) {
             return;
         }
@@ -310,7 +310,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
                 return ((upgradeItem.getToolSlot().tool == 0 &&
                   upgradeItem.getToolSlot().slot == slotNum) ||
-                  upgradeItem.getToolSlot() == SteamToolSlot.toolCore);
+                  upgradeItem.getToolSlot() == SteamToolSlot.TOOL_CORE);
             }
         }
         return false;

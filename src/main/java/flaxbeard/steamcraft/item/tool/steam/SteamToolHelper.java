@@ -25,7 +25,7 @@ public class SteamToolHelper {
     /**
      * Gets an ArrayList of the Strings that should be put in the item's tooltip.
      * @param upgrades The ISteamToolUpgrades that are being tested against; see #getUpgrades
-     * @param redSlot The slot that should be red; drillHead, sawHead, or shovelHead usually.
+     * @param redSlot The slot that should be red; DRILL_HEAD, SAW_HEAD, or SHOVEL_HEAD usually.
      * @return The strings, or null if the upgrades were null.
      */
     public static ArrayList<String> getInformation(ArrayList<ISteamToolUpgrade> upgrades, SteamToolSlot redSlot) {
@@ -46,7 +46,7 @@ public class SteamToolHelper {
             }
             if (upgrade.getToolSlot() == redSlot) {
                 strings.add(EnumChatFormatting.RED + "" + info);
-            } else if (upgrade.getToolSlot() == SteamToolSlot.toolCore) {
+            } else if (upgrade.getToolSlot() == SteamToolSlot.TOOL_CORE) {
                 strings.add(EnumChatFormatting.DARK_GREEN + "" + info);
             }
         }
