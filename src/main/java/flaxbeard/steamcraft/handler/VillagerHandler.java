@@ -9,11 +9,11 @@ import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -38,36 +38,37 @@ public class VillagerHandler {
 		if (merchantField != null && event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
 			GuiMerchant gui = (GuiMerchant) event.gui;
 
-			ItemStack hat = mc.thePlayer.inventory.armorInventory[3];
-			boolean hasHat = hat != null;
+			EntityClientPlayerMP player = mc.thePlayer;
+			ItemStack hat = getHat(player);
 
-			if (hasHat) {
-				Item hatItem = hat.getItem();
-				boolean isTophat = hatItem == SteamcraftItems.tophat;
+			if (tophatlike(hat)) {
+				IMerchant merch = gui.func_147035_g();
+				MerchantRecipeList recipeList = merch.getRecipes(player);
 
+				if (recipeList != null) {
+					for (Object obj : recipeList) {
+						MerchantRecipe recipe = (MerchantRecipe) obj;
 
-				if (tophatlike(hat)) {
-					IMerchant merch = gui.func_147035_g();
-					MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
-					if (recipeList != null) {
-						for (Object obj : recipeList) {
-							MerchantRecipe recipe = (MerchantRecipe) obj;
-							if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F)) {
-								recipe.getItemToSell().stackSize = MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F);
-							} else if (recipe.getItemToBuy().stackSize > 1 && recipe.getItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F)) {
-								recipe.getItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F);
-							} else if (recipe.getSecondItemToBuy() != null && recipe.getSecondItemToBuy().stackSize > 1 && recipe.getSecondItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F)) {
-								recipe.getSecondItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F);
+						if (recipe.getItemToSell().stackSize > 1) {
+							int toSell = MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F);
+							int toBuy = MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F);
+							if (recipe.getItemToSell().stackSize != toSell) {
+								recipe.getItemToSell().stackSize = toSell;
+							} else if (recipe.getItemToBuy().stackSize != toBuy)  {
+								recipe.getItemToBuy().stackSize = toBuy;
 							}
+						} else if (recipe.getSecondItemToBuy() != null && recipe.getSecondItemToBuy().stackSize > 1) {
+							recipe.getSecondItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F);
 						}
-						lastViewVillagerGui = true;
 					}
-					merch.setRecipes(recipeList);
-					try {
-						merchantField.set(gui, merch);
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
+					lastViewVillagerGui = true;
+				}
+
+				merch.setRecipes(recipeList);
+				try {
+					merchantField.set(gui, merch);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -75,49 +76,37 @@ public class VillagerHandler {
 
 	@SubscribeEvent
 	public void updateVillagers(LivingEvent.LivingUpdateEvent event) {
-		if (event.entityLiving instanceof EntityVillager && timeUntilResetField != null &&
+		boolean isVillager = event.entityLiving instanceof EntityVillager;
+		if (isVillager && timeUntilResetField != null &&
 			lastBuyingPlayerField != null) {
 			EntityVillager villager = (EntityVillager) event.entityLiving;
 			Integer timeUntilReset = null;
 			String lastBuyingPlayer = null;
+
 			try {
 				timeUntilReset = timeUntilResetField.getInt(villager);
 				lastBuyingPlayer = (String) lastBuyingPlayerField.get(villager);
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			if (!villager.isTrading() && timeUntilReset != null && timeUntilReset == 39 &&
-				lastBuyingPlayer != null) {
+
+			boolean correctReset = timeUntilReset != null && timeUntilReset == 39;
+			if (!villager.isTrading() && correctReset && lastBuyingPlayer != null) {
 				EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
 				if (player != null) {
 					ItemStack hat = getHat(player);
 					if (isTophat(hat)) {
-						if (!hat.hasTagCompound()) {
-							hat.setTagCompound(new NBTTagCompound());
-						}
-						if (!hat.stackTagCompound.hasKey("level")) {
-							hat.stackTagCompound.setInteger("level", 0);
-						}
-						int level = hat.stackTagCompound.getInteger("level");
-						level++;
-						hat.stackTagCompound.setInteger("level", level);
+						setLevels(hat);
 					} else if (hasTophatUpgrade(hat)) {
 						ItemStack exohead = ((ItemExosuitArmor) hat.getItem()).getStackInSlot(hat, 3);
-						if (!exohead.hasTagCompound()) {
-							exohead.setTagCompound(new NBTTagCompound());
-						}
-						if (!exohead.stackTagCompound.hasKey("level")) {
-							exohead.stackTagCompound.setInteger("level", 0);
-						}
-						int level = exohead.stackTagCompound.getInteger("level");
-						level++;
-						exohead.stackTagCompound.setInteger("level", level);
+						setLevels(exohead);
 						((ItemExosuitArmor) hat.getItem()).setInventorySlotContents(hat, 3, exohead);
 					}
 				}
 			}
 		}
-		if (event.entityLiving instanceof EntityVillager && !event.entityLiving.worldObj.isRemote &&
+
+		if (isVillager && !event.entityLiving.worldObj.isRemote &&
 			buyingListField != null) {
 			EntityVillager villager = (EntityVillager) event.entityLiving;
 			ExtendedPropertiesVillager nbt = (ExtendedPropertiesVillager)
@@ -184,6 +173,18 @@ public class VillagerHandler {
 
 			nbt.lastHadCustomer = hasCustomer;
 		}
+	}
+
+	private void setLevels(ItemStack stack) {
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if (!stack.stackTagCompound.hasKey("level")) {
+			stack.stackTagCompound.setInteger("level", 0);
+		}
+		int level = stack.stackTagCompound.getInteger("level");
+		level++;
+		stack.stackTagCompound.setInteger("level", level);
 	}
 
 	private boolean tophatlike(ItemStack hat) {
