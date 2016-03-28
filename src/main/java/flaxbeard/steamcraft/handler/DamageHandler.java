@@ -34,7 +34,7 @@ public class DamageHandler {
 		}
 
 		if (event.source == DamageSource.fall) {
-			boolean hasPower = SteamcraftEventHandler.hasPower(event.entityLiving, (int) (event.ammount / Config.fallAssistDivisor));
+			boolean hasPower = HandlerUtils.hasPower(event.entityLiving, (int) (event.ammount / Config.fallAssistDivisor));
 			int armor = SteamcraftEventHandler.getExoArmor(event.entityLiving);
 			EntityLivingBase entity = event.entityLiving;
 			if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
@@ -44,7 +44,7 @@ public class DamageHandler {
 						event.ammount = 0.0F;
 					}
 					event.ammount = event.ammount / 3.0F;
-					SteamcraftEventHandler.drainSteam(entity.getEquipmentInSlot(3), (int) (event.ammount / Config.fallAssistDivisor));
+					HandlerUtils.drainSteam(entity.getEquipmentInSlot(3), (int) (event.ammount / Config.fallAssistDivisor));
 					if (event.ammount == 0.0F) {
 						event.setResult(Event.Result.DENY);
 						event.setCanceled(true);

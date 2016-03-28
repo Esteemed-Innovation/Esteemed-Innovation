@@ -28,6 +28,7 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.DamageHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.handler.VillagerHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.network.*;
@@ -160,6 +161,7 @@ public class Steamcraft {
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
         MinecraftForge.EVENT_BUS.register(new DamageHandler());
+        MinecraftForge.EVENT_BUS.register(new VillagerHandler());
 
         FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
 

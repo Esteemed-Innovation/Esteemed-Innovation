@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,7 +14,7 @@ import flaxbeard.steamcraft.api.exosuit.*;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
-import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
+import flaxbeard.steamcraft.handler.HandlerUtils;
 import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -249,7 +248,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         if (this.slot == 1) {
-            SteamcraftEventHandler.drainSteam(stack, damage * 40);
+            HandlerUtils.drainSteam(stack, damage * 40);
         }
     }
 

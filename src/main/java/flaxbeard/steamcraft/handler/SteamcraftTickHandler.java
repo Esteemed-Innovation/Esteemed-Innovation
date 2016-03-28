@@ -23,7 +23,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.input.Mouse;
 
 public class SteamcraftTickHandler {
     private static float zoom = 0.0F;
@@ -51,7 +50,7 @@ public class SteamcraftTickHandler {
             if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
                 if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) &&
-                  SteamcraftEventHandler.hasPower(player, 15)) {
+                  HandlerUtils.hasPower(player, 15)) {
                     if (isServer) {
                         if (!boots.stackTagCompound.hasKey("usedJump")) {
                             boots.stackTagCompound.setBoolean("usedJump", false);
@@ -65,7 +64,7 @@ public class SteamcraftTickHandler {
                       !player.capabilities.isFlying) {
                         if (isServer) {
                             boots.stackTagCompound.setBoolean("usedJump", true);
-                            SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2), 10);
+                            HandlerUtils.drainSteam(player.getCurrentArmor(2), 10);
                         }
                         player.motionY = 0.65D;
                         player.fallDistance = 0.0F;
@@ -78,7 +77,7 @@ public class SteamcraftTickHandler {
             if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
                 if (item.hasUpgrade(chest, SteamcraftItems.jetpack) &&
-                  SteamcraftEventHandler.hasPower(player, 5)) {
+                  HandlerUtils.hasPower(player, 5)) {
                     if (!player.onGround && !player.capabilities.isFlying) {
                         player.motionY += 0.06D;
                         player.fallDistance = 0.0F;
@@ -93,7 +92,7 @@ public class SteamcraftTickHandler {
                               player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation - 0.9F),
                               0.0F, -1.0F, 0.0F);
                         } else {
-                            SteamcraftEventHandler.drainSteam(chest, Config.jetpackConsumption);
+                            HandlerUtils.drainSteam(chest, Config.jetpackConsumption);
                         }
                     }
                 }
@@ -123,7 +122,7 @@ public class SteamcraftTickHandler {
         inUse = false;
         if (event.side == Side.CLIENT && mc.thePlayer != null) {
             if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiMerchant)) {
-                SteamcraftEventHandler.lastViewVillagerGui = false;
+                VillagerHandler.lastViewVillagerGui = false;
             }
             EntityPlayer player = mc.thePlayer;
             if (mc.gameSettings.keyBindUseItem.getIsKeyPressed() && player.isSneaking() &&
@@ -141,7 +140,7 @@ public class SteamcraftTickHandler {
                     }
                 }
             }
-            if (SteamcraftEventHandler.hasPower(player, 1)
+            if (HandlerUtils.hasPower(player, 1)
                     && player.getEquipmentInSlot(2) != null
                     && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor leggings = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();

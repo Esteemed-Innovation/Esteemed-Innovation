@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.handler;
 
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -33,7 +32,6 @@ import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -49,16 +47,12 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
@@ -68,15 +62,12 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
-import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -100,7 +91,6 @@ public class SteamcraftEventHandler {
     private static final UUID uuid3 = UUID.fromString("33235dc2-bf3d-40e4-ae0e-78037c7535e7");
     private static final AttributeModifier exoSwimBoost = new AttributeModifier(uuid3, "EXOSWIMBOOST", 1.0D, 2).setSaved(true);
     private static final ResourceLocation icons = new ResourceLocation("steamcraft:textures/gui/icons.png");
-    public static boolean lastViewVillagerGui = false;
     public static int use = -1;
     boolean lastWearing = false;
     boolean worldStartUpdate = false;
@@ -108,21 +98,7 @@ public class SteamcraftEventHandler {
     private static boolean isShiftDown;
     public int resyncExoBoostTicks = 0;
 
-    public static void drainSteam(ItemStack stack, int amount) {
-        if (stack != null) {
-            if (!stack.hasTagCompound()) {
-                stack.setTagCompound(new NBTTagCompound());
-            }
-            if (!stack.stackTagCompound.hasKey("steamFill")) {
-                stack.stackTagCompound.setInteger("steamFill", 0);
-            }
-            int fill = stack.stackTagCompound.getInteger("steamFill");
-            fill = Math.max(0, fill - amount);
-            stack.stackTagCompound.setInteger("steamFill", fill);
-        }
-    }
-
-//	@SubscribeEvent
+    //	@SubscribeEvent
 //	public void handleMobDrop(LivingDropsEvent event) {
 //		if (event.entityLiving instanceof EntityCreeper) {
 //			int gunpowder = 0;
@@ -159,16 +135,6 @@ public class SteamcraftEventHandler {
 //			}
 //		}
 //	}
-
-    public static boolean hasPower(EntityLivingBase entityLiving, int i) {
-        if (entityLiving.getEquipmentInSlot(3) != null) {
-            ItemStack chestStack = entityLiving.getEquipmentInSlot(3);
-            if (chestStack.getItem() instanceof ItemExosuitArmor) {
-                return ((ItemExosuitArmor) chestStack.getItem()).hasPower(chestStack, i);
-            }
-        }
-        return false;
-    }
 
     @SubscribeEvent
     public void initializeEntityProperties(EntityEvent.EntityConstructing event) {
@@ -241,7 +207,7 @@ public class SteamcraftEventHandler {
     public void handleCanningMachine(EntityItemPickupEvent event) {
         if (event.entityLiving instanceof EntityPlayer && !event.entityLiving.worldObj.isRemote) {
             EntityPlayer player = (EntityPlayer) event.entityLiving;
-            if (hasPower(player, 10) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
+            if (HandlerUtils.hasPower(player, 10) && player.getEquipmentInSlot(2) != null && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor leggings = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
                 if (leggings.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.canner)) {
 
@@ -414,211 +380,6 @@ public class SteamcraftEventHandler {
                 }
             }
 
-        }
-    }
-
-    private static Field lastBuyingPlayerField = null;
-    private static Field timeUntilResetField = null;
-    private static Field merchantField = null;
-    private static Field buyingListField = null;
-
-    private static Field getField(String fieldName, String obfName, Class clazz) {
-        Field field = null;
-        try {
-            field = clazz.getDeclaredField(obfName);
-        } catch (NoSuchFieldException e) {
-            FMLLog.warning("[FSP] Unable to find field " + fieldName + " with its obfuscated " +
-              "name. Trying to find it by its name " + fieldName);
-            try {
-                field = clazz.getDeclaredField(fieldName);
-            } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
-                String fields = "";
-                for (Field field1 : clazz.getDeclaredFields()) {
-                    if (fields.isEmpty()) {
-                        fields += field1.getName();
-                    } else {
-                        fields += ", " + field1.getName();
-                    }
-                }
-                FMLLog.warning("Unable to find " + fieldName + " field in " + clazz.getName() +
-                  "class. Available fields are: " + fields + ". Things are not going to work right.");
-            }
-        }
-        return field;
-    }
-
-    static {
-        FMLLog.info("[FSP] Getting some fields through reflection.");
-        lastBuyingPlayerField = getField("lastBuyingPlayer", "field_82189_bL", EntityVillager.class);
-        timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
-        buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
-
-        if (lastBuyingPlayerField != null) {
-            lastBuyingPlayerField.setAccessible(true);
-        }
-
-        if (timeUntilResetField != null) {
-            timeUntilResetField.setAccessible(true);
-        }
-
-        if (buyingListField != null) {
-            buyingListField.setAccessible(true);
-        }
-
-        try {
-            merchantField = getField("field_147037_w", "field_147037_w", GuiMerchant.class);
-            if (merchantField != null) {
-                merchantField.setAccessible(true);
-            }
-        } catch (NoClassDefFoundError ignore) {
-            FMLLog.warning("[FSP] GuiMerchant class not found. You are probably a server.");
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void updateVillagersClientside(GuiScreenEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (merchantField != null && event.gui instanceof GuiMerchant && !lastViewVillagerGui) {
-            GuiMerchant gui = (GuiMerchant) event.gui;
-            if (mc.thePlayer.inventory.armorInventory[3] != null && (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
-                    || (mc.thePlayer.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead
-                    && ((ItemExosuitArmor) mc.thePlayer.inventory.armorInventory[3].getItem()).hasUpgrade(mc.thePlayer.inventory.armorInventory[3], SteamcraftItems.tophat)))) {
-                IMerchant merch = gui.func_147035_g();
-                MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
-                if (recipeList != null) {
-                    for (Object obj : recipeList) {
-                        MerchantRecipe recipe = (MerchantRecipe) obj;
-                        if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F)) {
-                            recipe.getItemToSell().stackSize = MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F);
-                        } else if (recipe.getItemToBuy().stackSize > 1 && recipe.getItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F)) {
-                            recipe.getItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F);
-                        } else if (recipe.getSecondItemToBuy() != null && recipe.getSecondItemToBuy().stackSize > 1 && recipe.getSecondItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F)) {
-                            recipe.getSecondItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F);
-                        }
-                    }
-                    lastViewVillagerGui = true;
-                }
-                merch.setRecipes(recipeList);
-                try {
-                    merchantField.set(gui, merch);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void updateVillagers(LivingUpdateEvent event) {
-        if (event.entityLiving instanceof EntityVillager && timeUntilResetField != null &&
-          lastBuyingPlayerField != null) {
-            EntityVillager villager = (EntityVillager) event.entityLiving;
-            Integer timeUntilReset = null;
-            String lastBuyingPlayer = null;
-            try {
-                timeUntilReset = timeUntilResetField.getInt(villager);
-                lastBuyingPlayer = (String) lastBuyingPlayerField.get(villager);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            if (!villager.isTrading() && timeUntilReset != null && timeUntilReset == 39 &&
-              lastBuyingPlayer != null) {
-                EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
-                if (player != null) {
-                    if (player.inventory.armorInventory[3] != null && (player.inventory.armorInventory[3].getItem() == SteamcraftItems.tophat)) {
-                        ItemStack hat = player.inventory.armorInventory[3];
-                        if (!hat.hasTagCompound()) {
-                            hat.setTagCompound(new NBTTagCompound());
-                        }
-                        if (!hat.stackTagCompound.hasKey("level")) {
-                            hat.stackTagCompound.setInteger("level", 0);
-                        }
-                        int level = hat.stackTagCompound.getInteger("level");
-                        level++;
-                        hat.stackTagCompound.setInteger("level", level);
-                    } else if (player.inventory.armorInventory[3] != null && player.inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor) player.inventory.armorInventory[3].getItem()).hasUpgrade(player.inventory.armorInventory[3], SteamcraftItems.tophat)) {
-                        ItemStack hat = ((ItemExosuitArmor) player.inventory.armorInventory[3].getItem()).getStackInSlot(player.inventory.armorInventory[3], 3);
-                        if (!hat.hasTagCompound()) {
-                            hat.setTagCompound(new NBTTagCompound());
-                        }
-                        if (!hat.stackTagCompound.hasKey("level")) {
-                            hat.stackTagCompound.setInteger("level", 0);
-                        }
-                        int level = hat.stackTagCompound.getInteger("level");
-                        level++;
-                        hat.stackTagCompound.setInteger("level", level);
-                        ((ItemExosuitArmor) player.inventory.armorInventory[3].getItem()).setInventorySlotContents(player.inventory.armorInventory[3], 3, hat);
-                    }
-                }
-            }
-        }
-        if (event.entityLiving instanceof EntityVillager && !event.entityLiving.worldObj.isRemote &&
-          buyingListField != null) {
-            EntityVillager villager = (EntityVillager) event.entityLiving;
-            ExtendedPropertiesVillager nbt = (ExtendedPropertiesVillager)
-              villager.getExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID);
-            if (nbt.lastHadCustomer == null) {
-                nbt.lastHadCustomer = false;
-            }
-            boolean hasCustomer = false;
-            if (villager.getCustomer() != null && villager.getCustomer().inventory.armorInventory[3] != null && (villager.getCustomer().inventory.armorInventory[3].getItem() == SteamcraftItems.tophat
-                    || (villager.getCustomer().inventory.armorInventory[3].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor) villager.getCustomer().inventory.armorInventory[3].getItem()).hasUpgrade(villager.getCustomer().inventory.armorInventory[3], SteamcraftItems.tophat)))) {
-                EntityPlayer customer = villager.getCustomer();
-                hasCustomer = true;
-
-                if (!nbt.lastHadCustomer) {
-                    MerchantRecipeList recipeList = villager.getRecipes(customer);
-                    for (Object obj : recipeList) {
-                        MerchantRecipe recipe = (MerchantRecipe) obj;
-                        if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F)) {
-                            recipe.getItemToSell().stackSize = MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.25F);
-                        } else if (recipe.getItemToBuy().stackSize > 1 && recipe.getItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F)) {
-                            recipe.getItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getItemToBuy().stackSize / 1.25F);
-                        } else if (recipe.getSecondItemToBuy() != null && recipe.getSecondItemToBuy().stackSize > 1 && recipe.getSecondItemToBuy().stackSize != MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F)) {
-                            recipe.getSecondItemToBuy().stackSize = MathHelper.ceiling_float_int(recipe.getSecondItemToBuy().stackSize / 1.25F);
-                        }
-                    }
-
-                    try {
-                        buyingListField.set(villager, recipeList);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    //customer.closeScreen();
-                    //customer.displayGUIMerchant(villager, villager.getCustomNameTag());
-                }
-            }
-
-            if (!hasCustomer && nbt.lastHadCustomer) {
-                // We need to do reflection because we do not have the customer in this case.
-                MerchantRecipeList recipeList = null;
-                try {
-                    recipeList = (MerchantRecipeList) buyingListField.get(villager);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                if (recipeList != null) {
-                    for (Object obj : recipeList) {
-                        MerchantRecipe recipe = (MerchantRecipe) obj;
-                        if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.ceiling_float_int(recipe.getItemToSell().stackSize / 1.25F)) {
-                            recipe.getItemToSell().stackSize = MathHelper.ceiling_float_int(recipe.getItemToSell().stackSize / 1.25F);
-                        } else if (recipe.getItemToBuy().stackSize > 1 && recipe.getItemToBuy().stackSize != MathHelper.floor_float(recipe.getItemToBuy().stackSize * 1.25F)) {
-                            recipe.getItemToBuy().stackSize = MathHelper.floor_float(recipe.getItemToBuy().stackSize * 1.25F);
-                        } else if (recipe.getSecondItemToBuy() != null && recipe.getSecondItemToBuy().stackSize > 1 && recipe.getSecondItemToBuy().stackSize != MathHelper.floor_float(recipe.getSecondItemToBuy().stackSize * 1.25F)) {
-                            recipe.getSecondItemToBuy().stackSize = MathHelper.floor_float(recipe.getSecondItemToBuy().stackSize * 1.25F);
-                        }
-                    }
-                }
-                try {
-                    buyingListField.set(villager, recipeList);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            nbt.lastHadCustomer = hasCustomer;
         }
     }
 
@@ -803,7 +564,7 @@ public class SteamcraftEventHandler {
     public void handleFirePunch(LivingAttackEvent event) {
         if (event.source.getSourceOfDamage() instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
-            boolean hasPower = hasPower(entity, Config.powerFistConsumption);
+            boolean hasPower = HandlerUtils.hasPower(entity, Config.powerFistConsumption);
             if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getHeldItem() == null) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
                 if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.powerFist)) {
@@ -813,7 +574,7 @@ public class SteamcraftEventHandler {
                     event.entityLiving.motionZ += 3.0F * entity.getLookVec().normalize().zCoord;
                     entity.motionX += -0.5F * entity.getLookVec().normalize().xCoord;
                     entity.motionZ += -0.5F * entity.getLookVec().normalize().zCoord;
-                    drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.powerFistConsumption);
+                    HandlerUtils.drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.powerFistConsumption);
                 }
             }
         }
@@ -833,12 +594,12 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void playerJumps(LivingEvent.LivingJumpEvent event) {
-        boolean hasPower = hasPower(event.entityLiving, Config.jumpBoostConsumptionShiftJump);
+        boolean hasPower = HandlerUtils.hasPower(event.entityLiving, Config.jumpBoostConsumptionShiftJump);
         if (((event.entity instanceof EntityPlayer)) && (((EntityPlayer) event.entity).inventory.armorItemInSlot(0) != null) && (((EntityPlayer) event.entity).inventory.armorItemInSlot(0).getItem() instanceof ItemExosuitArmor)) {
             ItemStack stack = ((EntityPlayer) event.entity).inventory.armorItemInSlot(0);
             ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
 
-            if ((event.entity.isSneaking() && hasPower) || hasPower(event.entityLiving, Config.jumpBoostConsumption)) {
+            if ((event.entity.isSneaking() && hasPower) || HandlerUtils.hasPower(event.entityLiving, Config.jumpBoostConsumption)) {
 
                 if (item.hasUpgrade(stack, SteamcraftItems.jumpAssist)) {
                     if (event.entity.isSneaking()) {
@@ -856,9 +617,9 @@ public class SteamcraftEventHandler {
                         event.entityLiving.motionY += ((jump + 1) * vector.yCoord) / 1.5F;
                         event.entityLiving.motionZ += (jump + 1) * vector.zCoord * 2;
                         event.entityLiving.motionX += (jump + 1) * vector.xCoord * 2;
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.jumpBoostConsumptionShiftJump);
+                        HandlerUtils.drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.jumpBoostConsumptionShiftJump);
                     } else {
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.jumpBoostConsumption);
+                        HandlerUtils.drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.jumpBoostConsumption);
                         event.entityLiving.motionY += 0.2750000059604645D;
                     }
                 }
@@ -887,7 +648,7 @@ public class SteamcraftEventHandler {
             return;
         }
 
-        boolean hasPower = hasPower(entity, 1);
+        boolean hasPower = HandlerUtils.hasPower(entity, 1);
         int armor = getExoArmor(entity);
         if (hasPower && armor == 4) {
             event.newSpeed = event.newSpeed * 1.2F;
@@ -959,7 +720,7 @@ public class SteamcraftEventHandler {
         if (!(entity instanceof EntityPlayer)) {
             return;
         }
-        boolean hasPower = hasPower(entity, 1);
+        boolean hasPower = HandlerUtils.hasPower(entity, 1);
 
         if (entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor) {
             ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
@@ -1057,7 +818,7 @@ public class SteamcraftEventHandler {
                         event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
                     }
                     if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.thrusterConsumption);
+                        HandlerUtils.drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.thrusterConsumption);
                     }
                 }
             } else if (item.hasUpgrade(leggings, SteamcraftItems.runAssist)) {
@@ -1072,7 +833,7 @@ public class SteamcraftEventHandler {
                         event.entityLiving.getEquipmentInSlot(3).stackTagCompound.setInteger("ticksUntilConsume", 2);
                     }
                     if (event.entityLiving.getEquipmentInSlot(3).stackTagCompound.getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.runAssistConsumption);
+                        HandlerUtils.drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.runAssistConsumption);
                     }
                 }
             }
@@ -1135,7 +896,7 @@ public class SteamcraftEventHandler {
             return;
         }
         resyncExoBoostTicks++;
-        boolean hasPower = hasPower(entity, 1);
+        boolean hasPower = HandlerUtils.hasPower(entity, 1);
         int armor = getExoArmor(entity);
 //        ItemStack armor2 = entity.getEquipmentInSlot(1);
         //Steamcraft.proxy.extendRange(entity,1.0F);
@@ -1193,7 +954,7 @@ public class SteamcraftEventHandler {
             double lastZ = tag.lastMotions.right;
             if (ticksLeft <= 0) {
                 if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
-                    drainSteam(stack, 1);
+                    HandlerUtils.drainSteam(stack, 1);
                 }
                 ticksLeft = 2;
             }
