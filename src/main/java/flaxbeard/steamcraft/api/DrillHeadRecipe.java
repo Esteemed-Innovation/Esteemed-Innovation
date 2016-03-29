@@ -34,7 +34,8 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
             if (stack == null || stack.getItem() == null) {
                 continue;
             }
-            FMLLog.info(stack.toString());
+            Item item = stack.getItem();
+            int meta = stack.getItemDamage();
 
             if (OreDictHelper.plateSteamcraftIrons.contains(MutablePair.of(stack.getItem(), stack.getItemDamage()))) {
                 numIronPlates += 1;
@@ -46,13 +47,13 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 ArrayList<ItemStack> ingots = entry.getValue().left;
                 ArrayList<ItemStack> nuggets = entry.getValue().right;
                 for (ItemStack ingot : ingots) {
-                    if (ingot.getItem() == stack.getItem()) {
+                    if (ingot.getItem() == item && ingot.getItemDamage() == meta) {
                         numIngots += 1;
                         materialSafetyNet.add(material);
                     }
                 }
                 for (ItemStack nugget : nuggets) {
-                    if (nugget.getItem() == stack.getItem()) {
+                    if (nugget.getItem() == item && nugget.getItemDamage() == meta) {
                         numNuggets += 1;
                         materialSafetyNet.add(material);
                     }
@@ -63,7 +64,7 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 String material = entry.getKey();
                 ArrayList<ItemStack> list = entry.getValue();
                 for (ItemStack other : list) {
-                    if (other.getItem() == stack.getItem()) {
+                    if (other.getItem() == item && other.getItemDamage() == meta) {
                         numOthers += 1;
                         materialSafetyNet.add(material);
                     }
@@ -81,9 +82,6 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
 
         if ((numOthers == 4 && numNuggets == 0 && numIngots == 0) ||
           (numOthers == 0 && numNuggets == 1 && numIngots == 3)) {
-//            NBTTagCompound nbt = new NBTTagCompound();
-//            nbt.setString("material", mat);
-//            result.setTagCompound(nbt);
             upgrade.setMyMaterial(result, mat);
             return result;
         }

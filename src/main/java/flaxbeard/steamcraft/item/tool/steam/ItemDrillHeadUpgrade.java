@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
@@ -16,6 +17,10 @@ import java.util.List;
 
 public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     public IIcon icon;
+
+    public ItemDrillHeadUpgrade() {
+        this.setTextureName("steamcraft:drillHead");
+    }
 
     @Override
     public int renderPriority() {
@@ -33,26 +38,20 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
         return "";
     }
 
+    /**
+     * @param self The ItemStack of this upgrade.
+     * @return The localized name of the material.
+     */
     public String getInformation(ItemStack self) {
-        return DrillHeadMaterial.materials.get(getMyMaterial(self)).locName;
+        String name = DrillHeadMaterial.materials.get(getMyMaterial(self)).locName;
+        return StatCollector.translateToLocal(name);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void addInformation(ItemStack self, EntityPlayer player, List list, boolean par4) {
         super.addInformation(self, player, list, par4);
-        list.add(DrillHeadMaterial.materials.get(getMyMaterial(self)).locName);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister ir) {
-        this.icon = ir.registerIcon("steamcraft:drillHead");
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack self, int renderPass) {
-        return this.icon;
+        list.add(getInformation(self));
     }
 
     @Override

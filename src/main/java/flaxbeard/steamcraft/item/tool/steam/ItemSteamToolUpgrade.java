@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import java.util.List;
@@ -37,6 +38,11 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
+    public String getInformation() {
+        return myInfo;
+    }
+
+    @Override
     public void registerIcons(IIconRegister ir) {
         if (myOverlays != null) {
             for (int i = 0; i < myOverlays.length; i++) {
@@ -46,14 +52,16 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public void writeInfo(List list) {
-        if (myInfo != null) {
-            list.add(myInfo);
-        }
+    public IIcon[] getIIcons() {
+        return icons;
+    }
+
+    public IIcon getIcon(ItemStack self, int pass) {
+        return this.getIconIndex(self);
     }
 
     @Override
-    public IIcon[] getIIcons() {
-        return icons;
+    public IIcon getIconIndex(ItemStack self) {
+        return icons[0];
     }
 }

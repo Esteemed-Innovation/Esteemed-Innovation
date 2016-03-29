@@ -92,7 +92,7 @@ public class DrillHeadMaterial {
      * @param color The color (#FFFFFF).
      */
     public static void registerDrillMaterial(String materialName, String locName, int harvestLevel, String color) {
-        DrillHeadMaterial material = new DrillHeadMaterial(materialName,locName, harvestLevel, true, color);
+        DrillHeadMaterial material = new DrillHeadMaterial(materialName, locName, harvestLevel, true, color);
         materials.put(materialName, material);
         ArrayList<ItemStack> ingots = OreDictionary.getOres("ingot" + materialName);
         ArrayList<ItemStack> nuggets = OreDictionary.getOres("nugget" + materialName);
@@ -137,11 +137,9 @@ public class DrillHeadMaterial {
                         for (Map.Entry<String, JsonElement> entry : entries) {
                             JsonObject obj = entry.getValue().getAsJsonObject();
                             if (obj.get("standard").getAsBoolean()) {
-                                String color = obj.get("color").getAsString();
                                 registerDrillMaterial(entry.getKey(), obj.get("locName").getAsString(),
                                   obj.get("harvestLevel").getAsInt(), obj.get("color").getAsString());
                             } else {
-                                String color = obj.get("color").getAsString();
                                 registerNonStandardDrillMaterial(entry.getKey(), obj.get("oreName").getAsString(),
                                   obj.get("locName").getAsString(), obj.get("harvestLevel").getAsInt(),
                                   obj.get("color").getAsString());
