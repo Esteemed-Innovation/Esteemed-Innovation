@@ -173,10 +173,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 ticks--;
             }
 
-            if (ticks <= 50 && speed > 0) {
-                world.playSoundAtEntity(player, "minecraft:note.bassattack", 1.0F, 1.0F);
-            }
-
             ticks = ticks % 100;
             nbt.drillInfo = MutablePair.of(ticks, speed);
         }

@@ -131,6 +131,13 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(SteamcraftItems.pistol, new ItemFirearmRenderer());
         MinecraftForgeClient.registerItemRenderer(SteamcraftItems.rocketLauncher, new ItemFirearmRenderer());
 
+        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamDrill,
+          new ItemSteamToolRenderer(ItemSteamToolRenderer.ToolRenderType.DRILL));
+        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamAxe,
+          new ItemSteamToolRenderer(ItemSteamToolRenderer.ToolRenderType.AXE));
+        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamShovel,
+          new ItemSteamToolRenderer(ItemSteamToolRenderer.ToolRenderType.SHOVEL));
+
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);
     }
