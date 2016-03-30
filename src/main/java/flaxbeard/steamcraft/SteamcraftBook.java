@@ -392,15 +392,44 @@ public class SteamcraftBook {
                 SteamcraftRegistry.addResearch("research.FloralLaurel.name", "!research.ExoHeadHelm.name", new BookPageItem("research.FloralLaurel.name", "research.FloralLaurel.0", true, new ItemStack(BotaniaIntegration.floralLaurel)), new BookPageCrafting("", "floralLaurel0", "floralLaurel1", "floralLaurel2", "floralLaurel3", "floralLaurel4", "floralLaurel5", "floralLaurel6", "floralLaurel7", "floralLaurel8", "floralLaurel9", "floralLaurel0", "floralLaurel11", "floralLaurel12", "floralLaurel13", "floralLaurel14", "floralLaurel15"));
             }
             if (Config.enableTopHat) {
-                SteamcraftRegistry.addResearch("research.ExoTopHat.name", "!research.ExoHeadHelm.name", new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(SteamcraftItems.tophatNoEmerald), new ItemStack(SteamcraftItems.tophat)));
+                SteamcraftRegistry.addResearch("research.ExoTopHat.name", "!research.ExoHeadHelm.name", new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(SteamcraftItems.tophatNoEmerald), new ItemStack(SteamcraftItems.tophat)), new BookPage(""));
             }
+            if (Config.enableFrequencyShifter) {
+                SteamcraftRegistry.addResearch(
+                  "research.FrequencyShifter.name",
+                  "!research.ExoHeadHelm.name",
+                  new BookPageItem("research.FrequencyShifter.name", "research.FrequencyShifter.0",
+                    true, new ItemStack(SteamcraftItems.frequencyShifter)),
+                  new BookPageCrafting("", "frequencyShifter")
+                );
+            }
+
             SteamcraftRegistry.addResearch("research.ExoHeadGoggle.name", "category.Exosuit.name");
             if (CrossMod.THAUMCRAFT) {
                 SteamcraftRegistry.addResearch("research.Mask.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.Mask.name", "research.Mask.0", true, new ItemStack(ThaumcraftIntegration.goggleUpgrade)), new BookPageCrafting("", "mask"));
             }
             if (Config.enableGoggles) {
-                SteamcraftRegistry.addResearch("research.ExoGoggles.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.ExoGoggles.name", "research.ExoGoggles.0", true, new ItemStack(SteamcraftItems.goggles), new ItemStack(SteamcraftItems.monacle)));
+                SteamcraftRegistry.addResearch("research.ExoGoggles.name", "!research.ExoHeadGoggle.name", new BookPageItem("research.ExoGoggles.name", "research.ExoGoggles.0", true, new ItemStack(SteamcraftItems.goggles), new ItemStack(SteamcraftItems.monacle)), new BookPage(""));
             }
+            if (Config.enableRebreather) {
+                SteamcraftRegistry.addResearch(
+                  "research.Rebreather.name",
+                  "!research.ExoHeadGoggle.name",
+                  new BookPageItem("research.Rebreather.name", "research.Rebreather.0", true,
+                    new ItemStack(SteamcraftItems.rebreather)),
+                  new BookPageCrafting("", "rebreather")
+                );
+            }
+            if (Config.enableDragonRoar) {
+                SteamcraftRegistry.addResearch(
+                  "research.DragonRoar.name",
+                  "!research.ExoHeadGoggle.name",
+                  new BookPageItem("research.DragonRoar.name", "research.DragonRoar.0", true,
+                    new ItemStack(SteamcraftItems.dragonRoar)),
+                  new BookPageCrafting("", "dragonRoar")
+                );
+            }
+
             SteamcraftRegistry.addResearch("research.ExoBack.name", "category.Exosuit.name");
             if (Config.enableJetpack) {
                 SteamcraftRegistry.addResearch("research.Jetpack.name", "!research.ExoBack.name", new BookPageItem("research.Jetpack.name", "research.Jetpack.0", true, new ItemStack(SteamcraftItems.jetpack)), new BookPageCrafting("", "jetpack1", "jetpack2"));
@@ -419,12 +448,31 @@ public class SteamcraftBook {
             if (Config.enablePitonDeployer) {
                 SteamcraftRegistry.addResearch("research.PitonDeployer.name", "!research.ExoArm.name", new BookPageItem("research.PitonDeployer.name", "research.PitonDeployer.0", true, new ItemStack(SteamcraftItems.pitonDeployer)), new BookPageCrafting("", "pitonDeployer"));
             }
+            if (Config.enablePistonPush) {
+                SteamcraftRegistry.addResearch(
+                  "research.PistonPush.name",
+                  "!research.ExoArm.name",
+                  new BookPageItem("research.PistonPush.name", "research.PistonPush.0", true,
+                    new ItemStack(SteamcraftItems.pistonPush)),
+                  new BookPageCrafting("", "pistonPush")
+                );
+            }
+
             SteamcraftRegistry.addResearch("research.ExoHip.name", "category.Exosuit.name");
             if (Config.enableThrusters) {
                 SteamcraftRegistry.addResearch("research.Thrusters.name", "!research.ExoHip.name", new BookPageItem("research.Thrusters.name", "research.Thrusters.0", true, new ItemStack(SteamcraftItems.thrusters)), new BookPageCrafting("", "thrusters1", "thrusters2"));
             }
             if (Config.enableCanningMachine) {
                 SteamcraftRegistry.addResearch("research.Canner.name", "!research.ExoHip.name", new BookPageItem("research.Canner.name", "research.Canner.0", true, new ItemStack(SteamcraftItems.canner)), new BookPageCrafting("", "canner1", "canner2", "canner3", "canner4"));
+            }
+            if (Config.enableReloadingHolsters) {
+                SteamcraftRegistry.addResearch(
+                  "research.ReloadingHolsters.name",
+                  "!research.ExoHip.name",
+                  new BookPageItem("research.ReloadingHolsters.name",
+                    "research.ReloadingHolsters.0", true, new ItemStack(SteamcraftItems.reloadingHolsters)),
+                  new BookPageCrafting("", "reloadingHolsters")
+                );
             }
 
             SteamcraftRegistry.addResearch("research.ExoLeg.name", "category.Exosuit.name");
@@ -441,31 +489,48 @@ public class SteamcraftBook {
             if (Config.enableJumpAssist) {
                 SteamcraftRegistry.addResearch("research.JumpAssist.name", "!research.ExoHeel.name", new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(SteamcraftItems.jumpAssist)), new BookPageCrafting("", "jumpAssist1", "jumpAssist2"));
             }
-            // Uncomment this when there is actually lang things.
-            /*if (Config.enableAnchorHeels) {
-                if (Config.enableAnchorAnvilRecipe) {
+            if (Config.enableAnchorHeels) {
+                if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0 &&
+                  !Config.enableAnchorAnvilRecipe) {
                     SteamcraftRegistry.addResearch(
                       "research.AnchorHeels.name",
-                      "!research.AnchorHeels.name",
+                      "!research.ExoHeel.name",
                       new BookPageItem("research.AnchorHeels.name",
-                        "research.AnchorHeelsAnvil.0", true,
+                        "research.AnchorHeelsLead.0", true,
                         new ItemStack(SteamcraftItems.anchorHeels)),
                       new BookPageCrafting("", "anchorHeels")
                     );
                 } else {
                     SteamcraftRegistry.addResearch(
                       "research.AnchorHeels.name",
-                      "!research.AnchorHeels.name",
+                      "!research.ExoHeel.name",
                       new BookPageItem("research.AnchorHeels.name",
-                        "research.AnchorHeels.0", true,
+                        "research.AnchorHeelsIron.0", true,
                         new ItemStack(SteamcraftItems.anchorHeels)),
                       new BookPageCrafting("", "anchorHeels")
                     );
                 }
-            }*/
+            }
             SteamcraftRegistry.addResearch("research.ExoFoot.name", "category.Exosuit.name");
             if (Config.enableDoubleJump) {
                 SteamcraftRegistry.addResearch("research.DoubleJump.name", "!research.ExoFoot.name", new BookPageItem("research.DoubleJump.name", "research.DoubleJump.0", true, new ItemStack(SteamcraftItems.doubleJump)), new BookPageCrafting("", "doubleJump1", "doubleJump2"));
+            }
+            if (Config.enableHydrophobic) {
+                SteamcraftRegistry.addResearch(
+                  "research.Hydrophobic.name",
+                  "!research.ExoFoot.name",
+                  new BookPageItem("research.Hydrophobic.name", "research.Hydrophobic.0", true,
+                    new ItemStack(SteamcraftItems.coatingsHydrophobic)),
+                  new BookPageCrafting("", "hydrophobic")
+                );
+            }
+            if (Config.enablePyrophobic) {
+                SteamcraftRegistry.addResearch(
+                  "research.Pyrophobic.name", "!research.ExoFoot.name",
+                  new BookPageItem("research.Pyrophobic.name", "research.Pyrophobic.0", true,
+                    new ItemStack(SteamcraftItems.coatingsPyrophobic)),
+                  new BookPageCrafting("", "pyrophobic")
+                );
             }
         }
     }
