@@ -39,7 +39,7 @@ public class ThaumcraftIntegration {
         CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(ConfigItems.itemNugget, 1, 6), null, 105, 87, 163);
         SteamcraftRegistry.registerLiquid(liquidThaumium);
 
-        goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.headGoggles, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
+        goggleUpgrade = new ItemExosuitUpgrade(ExosuitSlot.HEAD_GOGGLES, "steamcraft:textures/models/armor/gogglesUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:goggleUpgrade").setTextureName("steamcraft:gogglesUpgrade");
         GameRegistry.registerItem(goggleUpgrade, "goggleUpgrade");
         BookRecipeRegistry.addRecipe("mask", new ShapedOreRecipe(new ItemStack(goggleUpgrade), " x ", "xgx", " x ",
           'x', "nuggetBrass", 'g', ConfigItems.itemGoggles));

@@ -1,26 +1,19 @@
 package flaxbeard.steamcraft.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitTank;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
-import flaxbeard.steamcraft.client.ExosuitTexture;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuitTank;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -37,7 +30,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
 
     @Override
     public ExosuitSlot getSlot() {
-        return ExosuitSlot.bodyTank;
+        return ExosuitSlot.BODY_TANK;
     }
 
     @Override

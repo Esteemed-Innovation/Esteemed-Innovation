@@ -23,7 +23,7 @@ public class ItemSteamcraftGoggles extends ItemSteamcraftArmor implements IExosu
 
     @Override
     public ExosuitSlot getSlot() {
-        return ExosuitSlot.headGoggles;
+        return ExosuitSlot.HEAD_GOGGLES;
     }
 
     @Override

@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -219,8 +218,10 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         if (!stack.stackTagCompound.hasKey("maxFill")) {
             stack.stackTagCompound.setInteger("maxFill", 0);
         }
+        int fill = stack.stackTagCompound.getInteger("steamFill");
+        int max = stack.stackTagCompound.getInteger("maxFill");
         //return 0.9D;
-        return 1.0D - (stack.stackTagCompound.getInteger("steamFill") / (double) stack.stackTagCompound.getInteger("maxFill"));
+        return hasTank(stack) ? 1.0D - (fill / (double) max) : 1.0D;
     }
 
     @Override
@@ -253,6 +254,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
         if (this.slot == 0) {
@@ -311,7 +313,6 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
 
     @Override
     public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
-
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
@@ -326,7 +327,9 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             stack.writeToNBT(stc);
             me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
             if (var1 == 5 && slot == 1) {
-                me.stackTagCompound.setInteger("steamFill", 0);
+                if (!me.stackTagCompound.hasKey("steamFill")) {
+                    me.stackTagCompound.setInteger("steamFill", 0);
+                }
                 me.stackTagCompound.setInteger("maxFill", ((IExosuitTank) stack.getItem()).getStorage(me));
                 if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
                     me.stackTagCompound.setInteger("steamFill", me.stackTagCompound.getInteger("maxFill"));
@@ -375,8 +378,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         }
         if (upgrade.getItem() instanceof IExosuitUpgrade) {
             IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
-            return (upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.vanity && upgradeItem.getSlot().slot == slotNum);
-        } else if (slotNum == ExosuitSlot.vanity.slot) {
+            return (upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeItem.getSlot().slot == slotNum);
+        } else if (slotNum == ExosuitSlot.VANITY.slot) {
             int[] ids = OreDictionary.getOreIDs(upgrade);
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
@@ -388,6 +391,14 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         return false;
     }
 
+    /**
+     * Gets whether the exosuit has the given amount of power. Will also set default values for the
+     * ItemStack's NBT if it is the chestpiece and does not have them. These values are:
+     * steamFill: 0
+     * maxFill: 0
+     * @param me The ItemStack to test against.
+     * @param powerNeeded The amount of power to check for.
+     */
     public boolean hasPower(ItemStack me, int powerNeeded) {
         if (this.slot == 1) {
             if (!me.hasTagCompound()) {
@@ -399,9 +410,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             if (!me.stackTagCompound.hasKey("maxFill")) {
                 me.stackTagCompound.setInteger("maxFill", 0);
             }
-            if (me.stackTagCompound.getInteger("steamFill") > powerNeeded) {
-                return true;
-            }
+            return hasTank(me) && me.stackTagCompound.getInteger("steamFill") > powerNeeded;
         }
         return false;
     }
@@ -420,6 +429,33 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                             return true;
                         }
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets whether the given armor has a tank upgrade.
+     * @param me The ItemStack
+     */
+    public boolean hasTank(ItemStack me) {
+        if (slot != 1) {
+            return false;
+        }
+        if (!me.hasTagCompound()) {
+            return false;
+        }
+        if (!me.stackTagCompound.hasKey("inv")) {
+            return false;
+        }
+        NBTTagCompound inv = me.stackTagCompound.getCompoundTag("inv");
+        for (int i = 1; i < 10; i++) {
+            String s = Integer.toString(i);
+            if (inv.hasKey(s)) {
+                ItemStack stack = ItemStack.loadItemStackFromNBT(inv.getCompoundTag(s));
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof IExosuitTank) {
+                    return true;
                 }
             }
         }
@@ -630,7 +666,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
         if (!me.stackTagCompound.hasKey("maxFill")) {
             me.stackTagCompound.setInteger("maxFill", 0);
         }
-        if (slot == 1) {
+        if (hasTank(me)) {
             list.add(EnumChatFormatting.WHITE + "" + me.stackTagCompound.getInteger("steamFill") * 5 + "/" + me.stackTagCompound.getInteger("maxFill") * 5 + " SU");
         }
     }

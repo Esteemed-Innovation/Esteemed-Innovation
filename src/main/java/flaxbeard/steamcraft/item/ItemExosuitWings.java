@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemExosuitWings extends ItemExosuitUpgrade {
     public ItemExosuitWings() {
-        super(ExosuitSlot.bodyFront, "", "", 0);
+        super(ExosuitSlot.BODY_FRONT, "", "", 0);
     }
 
     public static int getTicks(Entity entity) {

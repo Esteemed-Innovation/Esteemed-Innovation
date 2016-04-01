@@ -292,11 +292,11 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(wings, "wings");
             }
             if (Config.enablePowerFist) {
-                powerFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/fireFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
+                powerFist = new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, "steamcraft:textures/models/armor/fireFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:powerFist").setTextureName("steamcraft:powerFist");
                 GameRegistry.registerItem(powerFist, "powerFist");
             }
             if (Config.enableExtendoFist) {
-                extendoFist = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/extendoFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:extendoFist").setTextureName("steamcraft:extendoFist");
+                extendoFist = new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, "steamcraft:textures/models/armor/extendoFist.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:extendoFist").setTextureName("steamcraft:extendoFist");
                 GameRegistry.registerItem(extendoFist, "extendoFist");
             }
             if (Config.enableThrusters) {
@@ -304,39 +304,39 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(thrusters, "thrusters");
             }
             if (Config.enableFallAssist) {
-                fallAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
+                fallAssist = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/fallUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:fallAssist").setTextureName("steamcraft:fallUpgrade");
                 GameRegistry.registerItem(fallAssist, "fallAssist");
             }
             if (Config.enableJumpAssist) {
-                jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/jumpUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
+                jumpAssist = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/jumpUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:jumpAssist").setTextureName("steamcraft:jumpUpgrade");
                 GameRegistry.registerItem(jumpAssist, "jumpAssist");
             }
             if (Config.enableRunAssist) {
-                runAssist = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/runUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
+                runAssist = new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, "steamcraft:textures/models/armor/runUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:runAssist").setTextureName("steamcraft:runUpgrade");
                 GameRegistry.registerItem(runAssist, "runAssist");
             }
             if (Config.enableDoubleJump) {
-                doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "steamcraft:textures/models/armor/doubleJump.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+                doubleJump = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_FEET, "steamcraft:textures/models/armor/doubleJump.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
                 GameRegistry.registerItem(doubleJump, "doubleJump");
             }
             if (Config.enableCanningMachine) {
-                canner = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/canner.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
+                canner = new ItemExosuitUpgrade(ExosuitSlot.LEGS_HIPS, "steamcraft:textures/models/armor/canner.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:canner").setTextureName("steamcraft:canningMachine");
                 GameRegistry.registerItem(canner, "canner");
             }
             if (Config.enablePitonDeployer) {
-                pitonDeployer = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "steamcraft:textures/models/armor/pitonDeployer.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:pitonDeployer").setTextureName("steamcraft:pitonDeployer");
+                pitonDeployer = new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, "steamcraft:textures/models/armor/pitonDeployer.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:pitonDeployer").setTextureName("steamcraft:pitonDeployer");
                 GameRegistry.registerItem(pitonDeployer, "pitonDeployer");
             }
-            //antiFire = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
+            //antiFire = new ItemExosuitUpgrade(ExosuitSlot.LEGS_HIPS, "steamcraft:textures/models/armor/antiFire.png",null,1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:antiFire").setTextureName("steamcraft:antiFire");
             //GameRegistry.registerItem(antiFire, "antiFire");
 
             if (Config.enableStealthUpgrade) {
-                stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.legsLegs, "steamcraft:textures/models/armor/stealthUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
+                stealthUpgrade = new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, "steamcraft:textures/models/armor/stealthUpgrade.png", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:stealthUpgrade").setTextureName("steamcraft:stealthUpgrade");
                 GameRegistry.registerItem(stealthUpgrade, "stealthUpgrade");
             }
 
             if (Config.enableEnderShroud) {
-                enderShroud = new ItemExosuitUpgrade(ExosuitSlot.vanity, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:enderShroud").setTextureName("steamcraft:enderShroud");
+                enderShroud = new ItemExosuitUpgrade(ExosuitSlot.VANITY, "", null, 0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:enderShroud").setTextureName("steamcraft:enderShroud");
                 GameRegistry.registerItem(enderShroud, "enderShroud");
             }
 
@@ -348,7 +348,7 @@ public class SteamcraftItems {
                 uberReinforcedTank = new ItemTank(Config.uberReinforcedTankCapacity, "steamcraft:textures/models/armor/uberReinforcedTank.png", "steamcraft:textures/models/armor/uberReinforcedTank_grey.png").setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:uberReinforcedTank").setTextureName("steamcraft:uberReinforcedTank");
                 GameRegistry.registerItem(uberReinforcedTank, "uberReinforcedTank");
             }
-            //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
+            //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
         }
 

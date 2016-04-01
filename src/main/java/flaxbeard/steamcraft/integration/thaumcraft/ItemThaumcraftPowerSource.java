@@ -47,7 +47,7 @@ public class ItemThaumcraftPowerSource extends Item implements IExosuitUpgrade, 
 
     @Override
     public ExosuitSlot getSlot() {
-        return ExosuitSlot.bodyTank;
+        return ExosuitSlot.BODY_TANK;
     }
 
     @Override

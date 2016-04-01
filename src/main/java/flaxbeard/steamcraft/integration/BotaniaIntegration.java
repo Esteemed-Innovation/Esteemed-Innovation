@@ -63,7 +63,7 @@ public class BotaniaIntegration {
     }
 
     public static void postInit() {
-        floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.headHelm,
+        floralLaurel = new ItemExosuitUpgrade(ExosuitSlot.HEAD_HELM,
           "steamcraft:textures/models/armor/floralLaurel.png", null, 5)
           .setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:floralLaurel")
           .setTextureName("steamcraft:floralLaurel");

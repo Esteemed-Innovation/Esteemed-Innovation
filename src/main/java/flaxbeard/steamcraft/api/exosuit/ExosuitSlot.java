@@ -1,16 +1,16 @@
 package flaxbeard.steamcraft.api.exosuit;
 
 public enum ExosuitSlot {
-    bootsFeet(3, 3),
-    bootsTop(3, 2),
-    bodyFront(1, 2),
-    bodyHand(1, 3),
-    bodyTank(1, 4),
-    headGoggles(0, 3),
-    headHelm(0, 2),
-    legsHips(2, 2),
-    legsLegs(2, 3),
-    vanity(0, 1);
+    BOOTS_FEET(3, 3),
+    BOOTS_TOP(3, 2),
+    BODY_FRONT(1, 2),
+    BODY_HAND(1, 3),
+    BODY_TANK(1, 4),
+    HEAD_GOGGLES(0, 3),
+    HEAD_HELM(0, 2),
+    LEGS_HIPS(2, 2),
+    LEGS_LEGS(2, 3),
+    VANITY(0, 1);
 
     public int slot;
     public int armor;

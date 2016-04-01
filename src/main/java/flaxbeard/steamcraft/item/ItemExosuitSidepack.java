@@ -13,7 +13,7 @@ import javax.vecmath.Vector2d;
 
 public class ItemExosuitSidepack extends ItemExosuitUpgrade {
     public ItemExosuitSidepack() {
-        super(ExosuitSlot.legsHips, "", "", 0);
+        super(ExosuitSlot.LEGS_HIPS, "", "", 0);
     }
 
     @Override

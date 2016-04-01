@@ -7,7 +7,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ModelJetpack;
 public class ItemExosuitJetpack extends ItemExosuitUpgrade {
 
     public ItemExosuitJetpack() {
-        super(ExosuitSlot.bodyFront, "", "", 0);
+        super(ExosuitSlot.BODY_FRONT, "", "", 0);
     }
 
     @Override

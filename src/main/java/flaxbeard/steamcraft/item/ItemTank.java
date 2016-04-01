@@ -31,7 +31,7 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
 
     @Override
     public ExosuitSlot getSlot() {
-        return ExosuitSlot.bodyTank;
+        return ExosuitSlot.BODY_TANK;
     }
 
     @Override

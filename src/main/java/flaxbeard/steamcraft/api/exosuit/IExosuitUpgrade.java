@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
+/**
+ * The interface which allows an item to be upgraded into an Exosuit armor piece.
+ */
 public interface IExosuitUpgrade {
     /**
      * The priority of the upgrade's rendering

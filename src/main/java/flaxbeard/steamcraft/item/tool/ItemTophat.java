@@ -74,7 +74,7 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
 
     @Override
     public ExosuitSlot getSlot() {
-        return ExosuitSlot.headHelm;
+        return ExosuitSlot.HEAD_HELM;
     }
 
     @Override
