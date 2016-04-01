@@ -26,6 +26,7 @@ We're pretty lenient about these guidelines, so it's not a huge deal if it's not
 * Consider prefixing your commits with emojis:
   * :art: `:art:` when dealing with textures, either loading them or adding new ones.
   * :saxophone: `:saxophone:` when dealing with sounds, either loading them or adding new ones.
+  * Any of the earths (:earth_africa: :earth_asia: :earth_americas: :globe_with_meridians: `:earth_africa: :earth_asia: :earth_americas: :globe_with_meridians:`) when dealing with localization.
   * :hatching_chick: `:hatching_chick:` when finishing an unfinished feature.
   * :seedling: `:seedling:` when starting a feature, but not finishing it.
   * :fu: `:fu:` when fixing code format or style.
