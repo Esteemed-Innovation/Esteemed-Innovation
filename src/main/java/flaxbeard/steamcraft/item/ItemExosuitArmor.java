@@ -327,9 +327,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             stack.writeToNBT(stc);
             me.stackTagCompound.getCompoundTag("inv").setTag(Integer.toString(var1), stc);
             if (var1 == 5 && slot == 1) {
-                if (!me.stackTagCompound.hasKey("steamFill")) {
-                    me.stackTagCompound.setInteger("steamFill", 0);
-                }
+                me.stackTagCompound.setInteger("steamFill", 0);
                 me.stackTagCompound.setInteger("maxFill", ((IExosuitTank) stack.getItem()).getStorage(me));
                 if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
                     me.stackTagCompound.setInteger("steamFill", me.stackTagCompound.getInteger("maxFill"));
