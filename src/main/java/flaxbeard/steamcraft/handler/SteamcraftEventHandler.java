@@ -115,46 +115,6 @@ public class SteamcraftEventHandler {
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
     public int resyncExoBoostTicks = 0;
-    public static final String[] merchantNames = {
-      "Jose",
-      "Jaunita",
-      "Olga",
-      "Benito",
-      "Bagwis",
-      "Jon",
-      "Clifford",
-      "Garfield",
-      "Pilar",
-      "Francisco",
-      "Peter",
-      "Will",
-      "Eric",
-      "Emilio",
-      "George",
-      "Ricardo",
-      "Arizbeth",
-      "Robert",
-      "Roberto",
-      "Cornelius",
-      "Claritia",
-      "Paskal",
-      "Aydan",
-      "Jaida",
-      "Dorean",
-      "Hana",
-      "Kalyani",
-      "Iria",
-      "Raimundo",
-      "Yenifer",
-      "Tung",
-      "Talia",
-      "Lana",
-      "Mila",
-      "Bobby",
-      "Tru",
-      "Sammie",
-      "Miranda"
-    };
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
