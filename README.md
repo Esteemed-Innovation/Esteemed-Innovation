@@ -1,4 +1,4 @@
-# Flaxbeard's Steam Power
+![Flaxbeard's Steam Power](https://github.com/Esteemed-Innovation/Flaxbeards-Steam-Power-Resources/blob/master/src/main/resources/steamcraftlogoblank.png)
 
 [![Ready Issues](https://badge.waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power.png?label=ready&title=Ready)](https://waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power)
 [![Build Status](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power.svg?branch=master)](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power)
