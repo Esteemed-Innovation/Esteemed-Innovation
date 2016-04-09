@@ -34,11 +34,11 @@ public class ItemSteamcraftBook extends Item {
             if (stack != null) {
                 for (ItemStack stack2 : SteamcraftRegistry.bookRecipes.keySet()) {
                     if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
-                        player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
                         GuiSteamcraftBook.viewing = SteamcraftRegistry.bookRecipes.get(stack2).left;
                         GuiSteamcraftBook.currPage = MathHelper.floor_float((float) SteamcraftRegistry.bookRecipes.get(stack2).right / 2.0F);
                         GuiSteamcraftBook.lastIndexPage = 1;
                         GuiSteamcraftBook.bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length / 2F);
+                        player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
                         ((GuiSteamcraftBook) Minecraft.getMinecraft().currentScreen).updateButtons();
                         return true;
                     }
