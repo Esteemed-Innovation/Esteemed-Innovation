@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class SteamcraftRegistry {
     /**
      * The Items that can be used on the Carving Table.
@@ -68,7 +69,7 @@ public class SteamcraftRegistry {
     public static ArrayList<String> categories = new ArrayList<>();
 
     /**
-     * All of the research entries in Esteemed Innovation book. Each entry is a pair of the
+     * All of the research entries in Esteemed Innovation book. Each entry is a pair of the name and category.
      */
     public static ArrayList<MutablePair<String, String>> research = new ArrayList<>();
 
@@ -384,8 +385,8 @@ public class SteamcraftRegistry {
     public static void removeLiquid(CrucibleLiquid liquid) {
         liquids.remove(liquid);
         if (liquidRecipes != null) {
-            for (Map.Entry entry : liquidRecipes.entrySet()) {
-                if (((MutablePair) entry.getValue()).left == liquid) {
+            for (Map.Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> entry : liquidRecipes.entrySet()) {
+                if ((entry.getValue()).left == liquid) {
                     liquidRecipes.remove(entry.getKey());
                 }
             }
