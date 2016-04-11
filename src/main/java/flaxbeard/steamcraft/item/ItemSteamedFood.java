@@ -9,16 +9,13 @@ import net.minecraft.util.IIcon;
 public class ItemSteamedFood extends ItemFood {
     private ItemFood baseFood;
     private ItemStack baseFoodStack;
-
     /**
      * The base constructor for ItemSteamedFood. Use this for basic use cases where the output item
      * does not have any metadata (other than 0) that needs to be worried about.
      * @param food The input item
      */
     public ItemSteamedFood(ItemFood food) {
-        super(food.func_150905_g(new ItemStack(food)) + 2, food.func_150906_h(new ItemStack(food)) + 0.2F, food.isWolfsFavoriteMeat());
-        baseFood = food;
-        baseFoodStack = new ItemStack(food);
+        this(food, new ItemStack(food));
     }
 
     /**
