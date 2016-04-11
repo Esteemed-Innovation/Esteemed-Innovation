@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
@@ -504,6 +505,20 @@ public class GuiSteamcraftBook extends GuiScreen {
             }
         }
 
+    }
+
+    /**
+     * Opens the entry for the ItemStack
+     * @param recipeStack The ItemStack to get the recipe entry for.
+     * @param player The player opening the GUI.
+     */
+    public static void openRecipeFor(ItemStack recipeStack, EntityPlayer player) {
+        viewing = SteamcraftRegistry.bookRecipes.get(recipeStack).left;
+        currPage = 0;
+        lastIndexPage = 1;
+        bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length / 2F);
+        player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
+        ((GuiSteamcraftBook) Minecraft.getMinecraft().currentScreen).updateButtons();
     }
 
 }
