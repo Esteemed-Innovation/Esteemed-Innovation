@@ -47,8 +47,9 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
      * @return The localized name of the material.
      */
     public String getInformation(ItemStack self) {
-        String name = DrillHeadMaterial.materials.get(getMyMaterial(self)).locName;
-        return StatCollector.translateToLocal(name);
+        DrillHeadMaterial mat = DrillHeadMaterial.materials.get(getMyMaterial(self));
+        String name = mat.locName;
+        return StatCollector.canTranslate(name) ? StatCollector.translateToLocal(name) : mat.materialName;
     }
 
     @SuppressWarnings("unchecked")
