@@ -92,17 +92,19 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
         for (ISteamToolUpgrade upgrade : upgrades) {
             IIcon[] icons = upgrade.getIIcons();
-            if (renderPass == upgrade.renderPriority() && icons != null &&
-              icons.length >= which + 1 && icons[which] != null) {
-                return icons[which];
+            if (renderPass == upgrade.renderPriority() && icons != null) {
+                if (upgrade.isUniversal()) {
+                    which += 4;
+                }
+                if (icons.length >= which + 1 && icons[which] != null) {
+                    return icons[which];
+                }
+                // Set it back for fallback.
+                which -= 4;
             }
         }
 
-        if (renderPass == 0) {
-            return this.coreIcons[which];
-        } else {
-            return this.headIcons[which];
-        }
+        return renderPass == 0 ? coreIcons[which] : headIcons[which];
     }
 
     @Override

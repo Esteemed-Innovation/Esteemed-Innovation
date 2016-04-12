@@ -611,17 +611,15 @@ public class SteamcraftItems {
         }
 
         if (Config.enableAutosmelting) {
-            // TODO: Change the name of the texture to fit the "core" aspect.
             autosmelting = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
-              "steamcraft:toolUpgrades/drillFurnace", null, 0)
+              "steamcraft:toolUpgrades/furnace", null, 0)
               .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(autosmelting, "autosmelting");
         }
 
         if (Config.enableOverclocker) {
-            // TODO: Change the name of the texture to fit the "core" aspect.
             overclocker = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
-              "steamcraft:toolUpgrades/drillOverclocker", null, 0)
+              "steamcraft:toolUpgrades/overclocker", null, 0)
               .setUnlocalizedName("steamcraft:overclocker").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(overclocker, "overclocker");
         }

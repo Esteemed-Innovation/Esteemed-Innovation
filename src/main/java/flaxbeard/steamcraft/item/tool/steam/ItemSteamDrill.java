@@ -108,22 +108,20 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         MutablePair info = nbt.drillInfo;
         int which = (Integer) info.left > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-            for (ISteamToolUpgrade upgrade : upgrades) {
-                if (upgrade instanceof ItemDrillHeadUpgrade && upgrade.renderPriority() == renderPass) {
-                    return headIcons[which];
-                }
-                IIcon[] icons = upgrade.getIIcons();
-                if (renderPass == upgrade.renderPriority() && icons != null &&
-                  icons.length >= which + 1 && icons[which] != null) {
-                    return icons[which];
-                }
+        for (ISteamToolUpgrade upgrade : upgrades) {
+            if (upgrade instanceof ItemDrillHeadUpgrade && upgrade.renderPriority() == renderPass) {
+                return headIcons[which];
             }
-
-        if (renderPass == 0) {
-            return this.coreIcons[which];
-        } else {
-            return this.headIcons[which];
+            IIcon[] icons = upgrade.getIIcons();
+            // No special behavior for universal upgrades, as we expect 0 and 1 to be the
+            // drill textures anyway.
+            if (renderPass == upgrade.renderPriority() && icons != null &&
+              icons.length >= which + 1 && icons[which] != null) {
+                return icons[which];
+            }
         }
+
+        return renderPass == 0 ? coreIcons[which] : headIcons[which];
     }
 
     @Override

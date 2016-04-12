@@ -27,8 +27,18 @@ public interface ISteamToolUpgrade {
     String getInformation();
 
     /**
-     * The two icons for the upgrade.
+     * The two (or six, if isUniversal is true) icons for the upgrade.
+     * If the upgrade is universal, this MUST be in the following order:
+     * 0 and 1: Drill textures
+     * 2 and 3: Saw textures
+     * 4 and 5: Shovel textures
      * @return The IIcon array.
      */
     IIcon[] getIIcons();
+
+    /**
+     * Whether the upgrade is a universal upgrade. This will determine how to load the icons.
+     * @return Boolean
+     */
+    boolean isUniversal();
 }

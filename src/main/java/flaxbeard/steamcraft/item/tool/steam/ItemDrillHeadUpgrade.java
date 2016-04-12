@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.item.tool.steam;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +19,11 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
 
     public ItemDrillHeadUpgrade() {
         this.setTextureName("steamcraft:drillHead");
+    }
+
+    @Override
+    public boolean isUniversal() {
+        return false;
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     protected String[] myOverlays;
@@ -18,13 +18,35 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
 
     public ItemSteamToolUpgrade(SteamToolSlot slot, String resourceLocation, String info, int priority) {
         mySlot = slot;
-        myInfo = info;
-        if (resourceLocation.isEmpty()) {
-            myOverlays = new String[]{ resourceLocation + "0", resourceLocation + "1"};
+        if (info != null && !info.isEmpty()) {
+            myInfo = info;
+        } else {
+            myInfo = null;
+        }
+        if (resourceLocation != null && !resourceLocation.isEmpty()) {
+            if (isUniversal()) {
+                myOverlays = new String[]{
+                  resourceLocation + "Drill0",
+                  resourceLocation + "Drill1",
+                  resourceLocation + "Saw0",
+                  resourceLocation + "Saw1",
+                  resourceLocation + "Shovel0",
+                  resourceLocation + "Shovel1"
+                };
+                icons = new IIcon[6];
+            } else {
+                myOverlays = new String[]{ resourceLocation + "0", resourceLocation + "1" };
+                icons = new IIcon[2];
+            }
         } else {
             myOverlays = null;
         }
         prio = priority;
+    }
+
+    @Override
+    public boolean isUniversal() {
+        return getToolSlot() == SteamToolSlot.TOOL_CORE;
     }
 
     @Override
@@ -44,7 +66,26 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
 
     @Override
     public void registerIcons(IIconRegister ir) {
-        if (myOverlays != null) {
+        if (myOverlays == null) {
+            return;
+        }
+        if (isUniversal()) {
+            ArrayList<String> list = new ArrayList<>();
+            for (String overlay : myOverlays) {
+                int index = overlay.contains("0") ? 0 : 1;
+                if (overlay.contains("Drill")) {
+                    index += 0;
+                } else if (overlay.contains("Saw")) {
+                    index += 2;
+                } else if (overlay.contains("Shovel")) {
+                    index += 4;
+                }
+                list.add(index, overlay);
+            }
+            for (int i = 0; i < list.size(); i++) {
+                icons[i] = ir.registerIcon(list.get(i));
+            }
+        } else {
             for (int i = 0; i < myOverlays.length; i++) {
                 icons[i] = ir.registerIcon(myOverlays[i]);
             }
