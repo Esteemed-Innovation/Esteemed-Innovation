@@ -19,6 +19,7 @@ MinecraftForge-Credits.txt
 MinecraftForge-License.txt
 README.txt
 out/
+bin/
 
 # Who made this messy crap? Whatever.
 !/fsplib/*.jar
