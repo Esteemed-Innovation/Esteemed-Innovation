@@ -21,15 +21,27 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 
 	@Override
 	public String getGuiTexture(){
-		return "minecraft:textures/gui/container/furnace.png"; //TODO: we need a GUI
+		return "steamcraft:textures/gui/smashergui.png"; //TODO: we need a GUI
 	}
 	
+	int animCount = 0;
 	@Override
 	public void drawBackground(int recipe) {
 		GL11.glColor4f(1, 1, 1, 1);
 		GuiDraw.changeTexture(getGuiTexture());
-		GuiDraw.drawTexturedModalRect(0, 0, 11, 10, 123, 126);
-		GuiDraw.drawTexturedModalRect(126, 0, 147, 10, 75, 100);
+		
+		//Smasher Arm 1
+		GuiDraw.drawTexturedModalRect(53+Math.abs(animCount), 20, 68, 0, 13, 18);
+		//Smasher Arm 2
+		GuiDraw.drawTexturedModalRect(102-Math.abs(animCount), 20, 81, 0, 13, 18);
+		
+		GuiDraw.drawTexturedModalRect(50, 20, 0, 0, 68, 48);
+		
+		if(animCount >= 9)
+		{
+			animCount = -9;
+		}
+			animCount++;
 	}
 	
 	@Override
@@ -66,8 +78,8 @@ public class RockSmasherHandler extends TemplateRecipeHandler {
 		private PositionedStack output;
 		
 		public CachedRockSmasherRecipe(ItemStack input, ItemStack output){
-			this.input = new PositionedStack(input, 29, 53);
-			this.output = new PositionedStack(output, 139, 54);
+			this.input = new PositionedStack(input, 76, 21);
+			this.output = new PositionedStack(output, 76, 50);
 		}
 
 		@Override
