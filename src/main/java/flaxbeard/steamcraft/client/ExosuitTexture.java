@@ -27,7 +27,11 @@ public enum ExosuitTexture {
     PLATE_GILDED("exoPlateGilded_%s"),
     TANK("exo_3", 1),
     TANK_GREY("exo_3_grey", 1),
-    WINGS("wings", 1);
+    WINGS("wings", 1),
+    ANCHOR_HEELS("anchor", 1),
+    DRAGON_ROAR("dragonsroar", 1),
+    FREQUENCY_SHIFTER("frequencyshifter", 1),
+    RELOADING_HOLSTER("holster", 1);
 
     private final ResourceLocation resourceLocation1;
     private final ResourceLocation resourceLocation2;

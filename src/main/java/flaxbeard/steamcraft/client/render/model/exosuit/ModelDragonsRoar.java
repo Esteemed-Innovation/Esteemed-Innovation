@@ -1,14 +1,16 @@
 package flaxbeard.steamcraft.client.render.model.exosuit;
 
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
+import flaxbeard.steamcraft.client.ExosuitTexture;
 
 /**
  * ModelBiped - Either Mojang or a mod author
  * Created using Tabula 4.1.1
  */
-public class ModelDragonsRoar extends ModelBase {
+public class ModelDragonsRoar extends ModelExosuitUpgrade {
     public ModelRenderer Face;
     public ModelRenderer TopJaw;
     public ModelRenderer Jaw;
@@ -66,18 +68,7 @@ public class ModelDragonsRoar extends ModelBase {
         this.CheekFinL.addBox(-3.9F, -4.7F, -2.6F, 2, 2, 6, 0.2F);
         this.setRotateAngle(CheekFinL, 0.2617993877991494F, 0.0F, 1.5707963267948966F);
         this.TopJaw.addChild(this.Snoot);
-    }
-
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
-        this.Fin.render(f5);
-        this.Face.render(f5);
-        this.TopJaw.render(f5);
-        this.FinL.render(f5);
-        this.FinR.render(f5);
-        this.CheekFinR.render(f5);
-        this.Jaw.render(f5);
-        this.CheekFinL.render(f5);
+        this.TopJaw.addChild(this.Jaw);
     }
 
     /**
@@ -87,5 +78,34 @@ public class ModelDragonsRoar extends ModelBase {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
+    }
+
+    public void copyRotationAngles(ModelRenderer parent) {
+        float x = parent.rotateAngleX;
+        float y = parent.rotateAngleY;
+        float z = parent.rotateAngleZ;
+
+        setRotateAngle(this.Fin, x, y, z);
+        setRotateAngle(this.Face, x, y, z);
+        setRotateAngle(this.TopJaw, x, y, z);
+        setRotateAngle(this.FinL, x, y, z);
+        setRotateAngle(this.FinR, x, y, z);
+        setRotateAngle(this.CheekFinL, x, y, z);
+        setRotateAngle(this.CheekFinR, x, y, z);
+    }
+
+    @Override
+    public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        ExosuitTexture.DRAGON_ROAR.bindTexturePart(1);
+        float f = 0.065F;
+        this.Fin.render(f);
+        this.Face.render(f);
+        this.TopJaw.render(f);
+        this.FinL.render(f);
+        this.FinR.render(f);
+        this.CheekFinR.render(f);
+        this.CheekFinL.render(f);
+
+        copyRotationAngles(parentModel.bipedHead);
     }
 }

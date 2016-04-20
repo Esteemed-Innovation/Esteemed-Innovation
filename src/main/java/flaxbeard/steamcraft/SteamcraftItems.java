@@ -377,7 +377,7 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(coatingsPyrophobic, "coatingsPyrophobic");
             }
             if (Config.enableAnchorHeels) {
-                anchorHeels = new ItemExosuitUpgrade(ExosuitSlot.bootsFeet, "", null, 0)
+                anchorHeels = new ItemExosuitAnchorHeels()
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:anchorHeels")
                   .setTextureName("steamcraft:anchorHeels");
@@ -391,21 +391,21 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(pistonPush, "pistonPush");
             }
             if (Config.enableReloadingHolsters && Config.enableFirearms) {
-                reloadingHolsters = new ItemExosuitUpgrade(ExosuitSlot.legsHips, "", null, 0)
+                reloadingHolsters = new ItemExosuitReloadingHolster()
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:reloadingHolsters")
                   .setTextureName("steamcraft:reloadingHolsters");
                 GameRegistry.registerItem(reloadingHolsters, "reloadingHolsters");
             }
             if (Config.enableFrequencyShifter) {
-                frequencyShifter = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0)
+                frequencyShifter = new ItemExosuitFrequencyShifter()
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:frequencyShifter")
                   .setTextureName("steamcraft:frequencyShifter");
                 GameRegistry.registerItem(frequencyShifter, "frequencyShifter");
             }
             if (Config.enableDragonRoar) {
-                dragonRoar = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "", null, 0)
+                dragonRoar = new ItemExosuitDragonRoar()
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:dragonRoar")
                   .setTextureName("steamcraft:dragonRoar");

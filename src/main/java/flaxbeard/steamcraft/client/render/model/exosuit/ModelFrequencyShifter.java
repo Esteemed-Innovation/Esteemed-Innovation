@@ -1,14 +1,16 @@
 package flaxbeard.steamcraft.client.render.model.exosuit;
 
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
+import flaxbeard.steamcraft.client.ExosuitTexture;
 
 /**
  * ModelBiped - Either Mojang or a mod author
  * Created using Tabula 4.1.1
  */
-public class ModelFrequencyShifter extends ModelBase {
+public class ModelFrequencyShifter extends ModelExosuitUpgrade {
     public ModelRenderer EarR;
     public ModelRenderer EarL;
     public ModelRenderer Stem;
@@ -42,14 +44,6 @@ public class ModelFrequencyShifter extends ModelBase {
         this.Stem.addChild(this.Mic);
     }
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
-        this.EarR.render(f5);
-        this.EarL.render(f5);
-        this.Stem.render(f5);
-        this.Headband.render(f5);
-    }
-
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
@@ -57,5 +51,28 @@ public class ModelFrequencyShifter extends ModelBase {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
+    }
+
+    public void copyRotationAngles(ModelRenderer parent) {
+        float x = parent.rotateAngleX;
+        float y = parent.rotateAngleY;
+        float z = parent.rotateAngleZ;
+
+        setRotateAngle(this.EarR, x, y, z);
+        setRotateAngle(this.EarL, x, y, z);
+        setRotateAngle(this.Headband, x, y, z);
+    }
+
+    @Override
+    public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        ExosuitTexture.FREQUENCY_SHIFTER.bindTexturePart(1);
+        this.EarR.render(0.0625F);
+        this.EarL.render(0.0625F);
+        this.Stem.render(0.0625F);
+        this.Headband.render(0.0625F);
+
+        copyRotationAngles(parentModel.bipedHeadwear);
+        setRotateAngle(this.Stem, parentModel.bipedHeadwear.rotateAngleX - 1.0471975511965976F,
+          parentModel.bipedHeadwear.rotateAngleY, parentModel.bipedHeadwear.rotateAngleZ);
     }
 }
