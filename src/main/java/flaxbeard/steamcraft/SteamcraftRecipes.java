@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -214,7 +215,26 @@ public class SteamcraftRecipes {
                     'n', "nuggetBrass", 'b', "ingotBrass", 'p', new ItemStack(SteamcraftBlocks.pipe, 1, 0)));
         }
 
+        if (Config.enableSteamCell) {
+            BookRecipeRegistry.addRecipe("steamcell",
+              new ShapedOreRecipe(SteamcraftItems.steamcellEmpty,
+                "nbn",
+                "bpb",
+                "nbn",
+                'n', "nuggetBrass",
+                'b', Items.netherbrick,
+                'p', Items.blaze_powder));
+        }
 
+        if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+            BookRecipeRegistry.addRecipe("steamcellFiller",
+              new ShapedOreRecipe(SteamcraftItems.steamcellBauble,
+                " p ",
+                "i i",
+                "i i",
+                'p', SteamcraftBlocks.pipe,
+                'i', "plateSteamcraftIron"));
+        }
     }
 
     public static void registerCasting() {
@@ -604,6 +624,9 @@ public class SteamcraftRecipes {
     }
 
     public static void registerSteamToolUpgrades() {
+        if (!Config.enableSteamTools) {
+            return;
+        }
         // Not sure how we'd do this in the book, so for now it is not in the book.
         for (Map.Entry<String, DrillHeadMaterial> entry : DrillHeadMaterial.materials.entrySet()) {
             String materialString = entry.getKey();
@@ -626,6 +649,206 @@ public class SteamcraftRecipes {
                   'p', "plateSteamcraftIron")
                 );
             }
+        }
+
+        if (Config.enableFortune) {
+            ItemStack fortuneBook = new ItemStack(Items.enchanted_book);
+            fortuneBook.addEnchantment(Enchantment.fortune, 3);
+            BookRecipeRegistry.addRecipe("multiplicativeResonator",
+              new ShapedOreRecipe(SteamcraftItems.fortuneUpgrade,
+                "rgr",
+                "rbr",
+                "rgr",
+                'r', "dustRedstone",
+                'g', "plateSteamcraftGildedIron",
+                'b', fortuneBook));
+        }
+
+        if (Config.enableBigDrill) {
+            BookRecipeRegistry.addRecipe("bigDrill", new ShapedOreRecipe(SteamcraftItems.bigDrill,
+              " p ",
+              "pip",
+              "ibi",
+              'p', "plateSteamcraftIron",
+              'i', "ingotIron",
+              'b', "blockIron"));
+        }
+
+        if (Config.enableBattleDrill) {
+            BookRecipeRegistry.addRecipe("battleDrill",
+              new ShapedOreRecipe(SteamcraftItems.battleDrill,
+                " s ",
+                "sps",
+                " p ",
+                's', Items.iron_sword,
+                'p', "plateSteamcraftBrass",
+                'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
+
+        if (Config.enablePreciseCuttingHead) {
+            BookRecipeRegistry.addRecipe("preciseCuttingHead",
+              new ShapedOreRecipe(SteamcraftItems.preciseCuttingHead,
+                "f f",
+                "pdp",
+                "p p",
+                'f', Items.flint,
+                'p', "plateSteamcraftBrass",
+                'd', "gemDiamond"));
+        }
+
+        if (Config.enableStoneGrinder) {
+            BookRecipeRegistry.addRecipe("stoneGrinder",
+              new ShapedOreRecipe(SteamcraftItems.stoneGrinder,
+                "i i",
+                "ctc",
+                "pcp",
+                'i', "ingotIron",
+                'c', "cobblestone",
+                'p', "plateSteamcraftIron",
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableThermalDrill) {
+            BookRecipeRegistry.addRecipe("thermalDrill",
+              new ShapedOreRecipe(SteamcraftItems.thermalDrill,
+                " b ",
+                "bnb",
+                "iii",
+                'b', Items.blaze_rod,
+                'n', Blocks.nether_brick,
+                'i', "ingotBrass"));
+        }
+
+        if (Config.enableChargePlacer) {
+            BookRecipeRegistry.addRecipe("chargePlacer",
+              new ShapedOreRecipe(SteamcraftItems.chargePlacer,
+                "g g",
+                "vbv",
+                "sps",
+                'g', Items.golden_sword,
+                'v', SteamcraftBlocks.valvePipe,
+                'b', Blocks.stone_button,
+                's', SteamcraftBlocks.pipe,
+                'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
+
+        if (Config.enableInternalProcessingUnit) {
+            BookRecipeRegistry.addRecipe("internalProcessingUnit",
+              new ShapedOreRecipe(SteamcraftItems.internalProcessingUnit,
+                "sco",
+                's', SteamcraftBlocks.smasher,
+                'c', Blocks.chest,
+                'o', Blocks.obsidian));
+        }
+
+        if (Config.enableForestFire) {
+            BookRecipeRegistry.addRecipe("forestFire",
+              new ShapedOreRecipe(SteamcraftItems.forestFire,
+                " b ",
+                "btb",
+                " b ",
+                'b', Items.blaze_rod,
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableTreeFeller) {
+            BookRecipeRegistry.addRecipe("treeFeller",
+              new ShapedOreRecipe(SteamcraftItems.treeFeller,
+                "fpf",
+                "p p",
+                "fpf",
+                'f', Items.flint,
+                'p', "plateSteamcraftIron"));
+        }
+
+        if (Config.enableLeafBlower) {
+            BookRecipeRegistry.addRecipe("leafBlower",
+              new ShapedOreRecipe(SteamcraftItems.leafBlower,
+                " p ",
+                "ptp",
+                " p ",
+                'p', "plateSteamcraftBrass",
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableChainsaw) {
+            BookRecipeRegistry.addRecipe("chainsaw",
+              new ShapedOreRecipe(SteamcraftItems.chainsaw,
+                " s ",
+                "sps",
+                " t ",
+                's', Items.iron_sword,
+                'p', "plateSteamcraftBrass",
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableBackhoe) {
+            BookRecipeRegistry.addRecipe("backhoe",
+              new ShapedOreRecipe(SteamcraftItems.backhoe,
+                "s",
+                "p",
+                "p",
+                's', SteamcraftItems.shovel("Brass"),
+                'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
+
+        if (Config.enableCultivator) {
+            BookRecipeRegistry.addRecipe("cultivator",
+              new ShapedOreRecipe(SteamcraftItems.cultivator,
+                "zsz",
+                " z ",
+                'z', "plateSteamcraftZinc",
+                's', "stickWood"));
+        }
+
+        if (Config.enableRotaryBlades) {
+            BookRecipeRegistry.addRecipe("rotaryBlades",
+              new ShapedOreRecipe(SteamcraftItems.rotaryBlades,
+                " f ",
+                "ftf",
+                " f ",
+                'f', Items.flint,
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableSifter) {
+            BookRecipeRegistry.addRecipe("sifter",
+              new ShapedOreRecipe(SteamcraftItems.sifter,
+                " p ",
+                "ctc",
+                " p ",
+                'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0),
+                'c', "cobblestone",
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+
+        }
+
+        if (Config.enableOverclocker) {
+            BookRecipeRegistry.addRecipe("overclocker",
+              new ShapedOreRecipe(SteamcraftItems.overclocker,
+                "r r",
+                "btb",
+                "r r",
+                'r', "dustRedstone",
+                'b', "ingotBrass",
+                't', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)));
+        }
+
+        if (Config.enableAutosmelting) {
+            BookRecipeRegistry.addRecipe("autosmelting",
+              new ShapedOreRecipe(SteamcraftItems.autosmelting,
+              " f ",
+              " h ",
+              "rpr",
+              'f', SteamcraftBlocks.fan,
+              'h', SteamcraftBlocks.heater,
+              'r', Items.blaze_rod,
+              'p', Items.blaze_powder));
+        }
+
+        if (Config.enableTheVoid) {
+            BookRecipeRegistry.addRecipe("theVoid",
+              new ShapelessOreRecipe(SteamcraftItems.theVoid, Blocks.ender_chest, Blocks.hopper));
         }
     }
 
