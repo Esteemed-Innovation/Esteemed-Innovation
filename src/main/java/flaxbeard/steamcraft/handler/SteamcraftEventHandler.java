@@ -1207,8 +1207,6 @@ public class SteamcraftEventHandler {
             event.newSpeed = event.newSpeed * 1.2F;
         }
         EntityPlayer player = (EntityPlayer) entity;
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
         ItemStack heldItemStack = player.getHeldItem();
         if (heldItemStack == null) {
             return;
@@ -1240,26 +1238,23 @@ public class SteamcraftEventHandler {
         /*
         Steam Tools
          */
-        if (player.getHeldItem().getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill.checkNBT(player);
-            MutablePair info = nbt.drillInfo;
-            int speed = (Integer) info.right;
+        if (heldItem instanceof ItemSteamDrill) {
+            NBTTagCompound nbt = ItemSteamDrill.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.iron_pickaxe.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
         }
-        if (player.getHeldItem().getItem() instanceof ItemSteamAxe) {
-            ItemSteamAxe.checkNBT(player);
-            MutablePair info = nbt.axeInfo;
-            int speed = (Integer) info.right;
+        if (heldItem instanceof ItemSteamAxe) {
+            NBTTagCompound nbt = ItemSteamAxe.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
         }
-        if (player.getHeldItem().getItem() instanceof ItemSteamShovel) {
-            ItemSteamShovel.checkNBT(player);
-            MutablePair info = nbt.shovelInfo;
-            int speed = (Integer) info.right;
+        if (heldItem instanceof ItemSteamShovel) {
+            NBTTagCompound nbt = ItemSteamShovel.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
 
             if (speed > 0 && Items.diamond_shovel.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 19.0F * (speed / 3000.0F);
@@ -1742,7 +1737,7 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (!drill.isWound(player)) {
+            if (!drill.isWound(equipped)) {
                 return;
             }
 
@@ -1814,7 +1809,7 @@ public class SteamcraftEventHandler {
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (!shovel.hasUpgrade(equipped, SteamcraftItems.sifter) || !shovel.isWound(player)) {
+            if (!shovel.hasUpgrade(equipped, SteamcraftItems.sifter) || !shovel.isWound(equipped)) {
                 return;
             }
 
@@ -1910,7 +1905,7 @@ public class SteamcraftEventHandler {
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
             ItemStack upgrade = UtilSteamTool.getHarvestLevelModifier(equipped);
-            if (!drill.isWound(player)) {
+            if (!drill.isWound(equipped)) {
                 return;
             }
             if (upgrade != null) {
@@ -1931,7 +1926,7 @@ public class SteamcraftEventHandler {
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (!shovel.isWound(player)) {
+            if (!shovel.isWound(equipped)) {
                 return;
             }
             if (shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
@@ -1958,7 +1953,7 @@ public class SteamcraftEventHandler {
             }
         } else if (equipped.getItem() instanceof ItemSteamAxe) {
             ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-            if (!axe.isWound(player)) {
+            if (!axe.isWound(equipped)) {
                 return;
             }
             if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
@@ -1971,7 +1966,7 @@ public class SteamcraftEventHandler {
 
         if (equipped.getItem() instanceof ISteamTool) {
             ISteamTool tool = (ISteamTool) equipped.getItem();
-            if (tool.isWound(player) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
+            if (tool.isWound(equipped) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
                 equipped.damageItem(1, player);
             }
         }
@@ -2001,7 +1996,7 @@ public class SteamcraftEventHandler {
         }
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) && drill.isWound(player)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) && drill.isWound(equipped)) {
                 world.setBlock(x, y, z, Blocks.lava);
                 quickLavas.put(MutablePair.of(player.dimension, new Tuple3(x, y, z)), new Random().nextInt(30) + 1);
                 event.drops.clear();
@@ -2033,7 +2028,7 @@ public class SteamcraftEventHandler {
         }
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer) && drill.isWound(player)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer) && drill.isWound(equipped)) {
                 Random rand = new Random();
                 equipped.damageItem(2, player);
                 if (player.worldObj.difficultySetting == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
@@ -2140,7 +2135,7 @@ public class SteamcraftEventHandler {
             return;
         }
         ISteamTool tool = (ISteamTool) equipped.getItem();
-        if (!tool.hasUpgrade(equipped, SteamcraftItems.autosmelting) || !tool.isWound(player) ||
+        if (!tool.hasUpgrade(equipped, SteamcraftItems.autosmelting) || !tool.isWound(equipped) ||
           event.drops.isEmpty() || !block.isToolEffective(tool.toolClass(), event.blockMetadata)) {
             return;
         }
@@ -2178,16 +2173,15 @@ public class SteamcraftEventHandler {
      * Gets whether the player can perform actions using the Void upgrade.
      *
      * @param equipped The tool ItemStack.
-     * @param player   The player.
      * @return Whether they are using a ISteamTool that is wound and has the void upgrade.
      */
-    private boolean canDoVoidThings(ItemStack equipped, EntityPlayer player) {
+    private boolean canDoVoidThings(ItemStack equipped) {
         if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ISteamTool)) {
             return false;
         }
 
         ISteamTool tool = (ISteamTool) equipped.getItem();
-        return !(!tool.isWound(player) || !tool.hasUpgrade(equipped, SteamcraftItems.theVoid));
+        return !(!tool.isWound(equipped) || !tool.hasUpgrade(equipped, SteamcraftItems.theVoid));
     }
 
     /**
@@ -2247,7 +2241,7 @@ public class SteamcraftEventHandler {
         int z = event.z;
         ItemStack equipped = player.getCurrentEquippedItem();
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (!canDoVoidThings(equipped, player) || !(tile instanceof IInventory) ||
+        if (!canDoVoidThings(equipped) || !(tile instanceof IInventory) ||
           ((IInventory) tile).getSizeInventory() < 1) {
             return;
         }
@@ -2279,7 +2273,7 @@ public class SteamcraftEventHandler {
         EntityPlayer player = event.harvester;
         World world = event.world;
         ItemStack equipped = player.getCurrentEquippedItem();
-        if (!canDoVoidThings(equipped, player) || player.isSneaking()) {
+        if (!canDoVoidThings(equipped) || player.isSneaking()) {
             return;
         }
 
@@ -2330,7 +2324,7 @@ public class SteamcraftEventHandler {
             }
             if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                if (!axe.isWound(player)) {
+                if (!axe.isWound(equipped)) {
                     return;
                 }
 
@@ -2341,7 +2335,7 @@ public class SteamcraftEventHandler {
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.hasUpgrade(equipped, SteamcraftItems.cultivator) &&
-                  shovel.isWound(player)) {
+                  shovel.isWound(equipped)) {
                     int[][] coords = extraBlocksVertical;
                     for (int[] aCoordinateArray : coords) {
                         int thisX = event.x + aCoordinateArray[0];
@@ -2405,7 +2399,7 @@ public class SteamcraftEventHandler {
             return;
         }
         ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-        if (!axe.isWound(player) || !axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
+        if (!axe.isWound(equipped) || !axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
             return;
         }
 
@@ -2430,7 +2424,7 @@ public class SteamcraftEventHandler {
             return;
         }
         ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
-        if (!drill.isWound(player) || !drill.hasUpgrade(equipped, SteamcraftItems.battleDrill)) {
+        if (!drill.isWound(equipped) || !drill.hasUpgrade(equipped, SteamcraftItems.battleDrill)) {
             return;
         }
 
@@ -2488,7 +2482,7 @@ public class SteamcraftEventHandler {
             float newSpeed = 0.0F;
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                if (drill.isWound(player)) {
+                if (drill.isWound(equipped)) {
                     if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
                         newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
                     }
@@ -2510,10 +2504,10 @@ public class SteamcraftEventHandler {
                 }
             } else if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                if (axe.isWound(player) && axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                if (axe.isWound(equipped) && axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
                     newSpeed = event.originalSpeed / 5F;
                 }
-                if (axe.isWound(player) && axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
+                if (axe.isWound(equipped) && axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
                     if (newSpeed == 0.0F) {
                         newSpeed = event.originalSpeed * ((hardness * 1.8F) / 12);
                     } else {
@@ -2522,13 +2516,13 @@ public class SteamcraftEventHandler {
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-                if (shovel.isWound(player) && shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
+                if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
                     newSpeed = event.originalSpeed * ((hardness * 1.8F) / 8);
                 }
             }
             if (equipped.getItem() instanceof ISteamTool) {
                 ISteamTool tool = (ISteamTool) equipped.getItem();
-                if (tool.isWound(player) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
+                if (tool.isWound(equipped) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
                     if (newSpeed == 0.0F) {
                         newSpeed = event.originalSpeed * 2.5F;
                     } else {

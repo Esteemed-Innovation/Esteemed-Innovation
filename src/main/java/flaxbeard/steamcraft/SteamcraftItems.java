@@ -634,7 +634,7 @@ public class SteamcraftItems {
 
         if (Config.enableBattleDrill) {
             battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
-              "steamcraft:toolUpgades/combatdrill", null, 1)
+              "steamcraft:toolUpgrades/combatdrill", null, 1)
               .setUnlocalizedName("steamcraft:battleDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(battleDrill, "battleDrill");
         }

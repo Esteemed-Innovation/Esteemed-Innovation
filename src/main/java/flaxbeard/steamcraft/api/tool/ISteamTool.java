@@ -1,16 +1,15 @@
 package flaxbeard.steamcraft.api.tool;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public interface ISteamTool {
     /**
      * Checks if the tool is wound up.
-     * @param player The player to get the info for.
-     * @return Whether the tool has been wound by the player.
+     * @param stack The tool
+     * @return Whether the tool has been wound up.
      */
-    boolean isWound(EntityPlayer player);
+    boolean isWound(ItemStack stack);
 
     /**
      * Checks if the tool has a particular upgrade.

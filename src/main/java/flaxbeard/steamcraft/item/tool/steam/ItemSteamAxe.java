@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -43,14 +44,17 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         super(EnumHelper.addToolMaterial("AXE", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static ExtendedPropertiesPlayer checkNBT(EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-        if (nbt.axeInfo == null) {
-            nbt.axeInfo = MutablePair.of(0, 0);
+    public static NBTTagCompound checkNBT(ItemStack axe) {
+        if (!axe.hasTagCompound()) {
+            axe.setTagCompound(new NBTTagCompound());
         }
-
-        return nbt;
+        if (!axe.getTagCompound().hasKey("Speed")) {
+            axe.getTagCompound().setInteger("Speed", 0);
+        }
+        if (!axe.getTagCompound().hasKey("Ticks")) {
+            axe.getTagCompound().setInteger("Ticks", 0);
+        }
+        return axe.getTagCompound();
     }
 
     @SuppressWarnings("unchecked")
@@ -95,11 +99,9 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        NBTTagCompound nbt = checkNBT(stack);
 
-        MutablePair info = nbt.axeInfo;
-        int which = (Integer) info.left > 50 ? 0 : 1;
+        int which = nbt.getInteger("Ticks") > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
         for (ISteamToolUpgrade upgrade : upgrades) {
             IIcon[] icons = upgrade.getIIcons();
@@ -131,13 +133,9 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            checkNBT((EntityPlayer) player);
-            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-
-            MutablePair info = nbt.axeInfo;
-            int ticks = (Integer) info.left;
-            int speed = (Integer) info.right;
+            NBTTagCompound nbt = checkNBT(stack);
+            int ticks = nbt.getInteger("Ticks");
+            int speed = nbt.getInteger("Speed");
 
             if (hasBrokenBlock) {
                 speed -= 10;
@@ -159,14 +157,15 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
             }
 
             ticks = ticks % 100;
-            nbt.axeInfo = MutablePair.of(ticks, speed);
+            nbt.setInteger("Ticks", ticks);
+            nbt.setInteger("Speed", speed);
         }
     }
 
     @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        NBTTagCompound nbt = checkNBT(stack);
 
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
@@ -176,9 +175,8 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         }
 
         if (flag >= 0) {
-            MutablePair info = nbt.axeInfo;
-            int ticks = (Integer) info.left;
-            int speed = (Integer) info.right;
+            int ticks = nbt.getInteger("Ticks");
+            int speed = nbt.getInteger("Speed");
             if (speed <= 1000) {
                 speed += Math.min(90, 1000 - speed);
                 if (flag == 0) {
@@ -188,9 +186,15 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
                 }
             }
 
-            nbt.axeInfo = MutablePair.of(ticks, speed);
+            nbt.setInteger("Ticks", ticks);
+            nbt.setInteger("Speed", speed);
         }
         return stack;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
     }
 
     @Override
@@ -302,10 +306,8 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     }
 
     @Override
-    public boolean isWound(EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
-        MutablePair info = nbt.axeInfo;
-        return ((int) info.right > 0);
+    public boolean isWound(ItemStack stack) {
+        return checkNBT(stack).getInteger("Speed") > 0;
     }
 
     @Override

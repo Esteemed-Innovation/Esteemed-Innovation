@@ -10,6 +10,9 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
 
 public class ItemSteamToolRenderer implements IItemRenderer {
     private final ToolRenderType type;
@@ -38,11 +41,6 @@ public class ItemSteamToolRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-
         GL11.glPushMatrix();
         GL11.glColor4f(1F, 1F, 1F, 1F);
         for (int pass = 0; pass < item.getItem().getRenderPasses(item.getItemDamage()); pass++) {
@@ -63,15 +61,15 @@ public class ItemSteamToolRenderer implements IItemRenderer {
         int use = 0;
         switch (this.type) {
             case DRILL: {
-                use = nbt.drillInfo.right;
+                use = ItemSteamDrill.checkNBT(item).getInteger("Speed");
                 break;
             }
             case AXE: {
-                use = nbt.axeInfo.right;
+                use = ItemSteamAxe.checkNBT(item).getInteger("Speed");
                 break;
             }
             case SHOVEL: {
-                use = nbt.shovelInfo.right;
+                use = ItemSteamShovel.checkNBT(item).getInteger("Speed");
                 break;
             }
         }

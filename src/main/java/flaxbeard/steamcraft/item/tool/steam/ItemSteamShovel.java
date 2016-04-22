@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -43,13 +44,17 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static ExtendedPropertiesPlayer checkNBT(EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-        if (nbt.shovelInfo == null) {
-            nbt.shovelInfo = MutablePair.of(0, 0);
+    public static NBTTagCompound checkNBT(ItemStack stack) {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
         }
-        return nbt;
+        if (!stack.getTagCompound().hasKey("Ticks")) {
+            stack.getTagCompound().setInteger("Ticks", 0);
+        }
+        if (!stack.getTagCompound().hasKey("Speed")) {
+            stack.getTagCompound().setInteger("Speed", 0);
+        }
+        return stack.getTagCompound();
     }
 
     @SuppressWarnings("unchecked")
@@ -94,11 +99,9 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        NBTTagCompound nbt = checkNBT(stack);
 
-        MutablePair info = nbt.shovelInfo;
-        int which = (Integer) info.left > 50 ? 0 : 1;
+        int which = nbt.getInteger("Ticks") > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
         for (ISteamToolUpgrade upgrade : upgrades) {
             IIcon[] icons = upgrade.getIIcons();
@@ -130,12 +133,9 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            checkNBT((EntityPlayer) player);
-            ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-              player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-            MutablePair info = nbt.shovelInfo;
-            int ticks = (Integer) info.left;
-            int speed = (Integer) info.right;
+            NBTTagCompound nbt = checkNBT(stack);
+            int ticks = nbt.getInteger("Ticks");
+            int speed = nbt.getInteger("Speed");
 
             if (hasBrokenBlock) {
                 speed -= 10;
@@ -157,14 +157,15 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
             }
 
             ticks = ticks % 100;
-            nbt.shovelInfo = MutablePair.of(ticks, speed);
+            nbt.setInteger("Ticks", ticks);
+            nbt.setInteger("Speed", speed);
         }
     }
 
     @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
+        NBTTagCompound nbt = checkNBT(stack);
 
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
@@ -174,9 +175,8 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         }
 
         if (flag >= 0) {
-            MutablePair info = nbt.shovelInfo;
-            int ticks = (Integer) info.left;
-            int speed = (Integer) info.right;
+            int ticks = nbt.getInteger("Ticks");
+            int speed = nbt.getInteger("Speed");
             if (speed <= 1000) {
                 speed += Math.min(90, 1000 - speed);
                 if (flag == 0) {
@@ -186,7 +186,8 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
                 }
             }
 
-            nbt.shovelInfo = MutablePair.of(ticks, speed);
+            nbt.setInteger("Ticks", ticks);
+            nbt.setInteger("Speed", speed);
         }
         return stack;
     }
@@ -300,10 +301,8 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     }
 
     @Override
-    public boolean isWound(EntityPlayer player) {
-        ExtendedPropertiesPlayer nbt = checkNBT(player);
-        MutablePair info = nbt.shovelInfo;
-        return ((int) info.right > 0);
+    public boolean isWound(ItemStack stack) {
+        return checkNBT(stack).getInteger("Speed") > 0;
     }
 
     @Override
