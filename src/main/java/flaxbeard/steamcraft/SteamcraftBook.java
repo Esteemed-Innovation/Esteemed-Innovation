@@ -8,15 +8,18 @@ import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SteamcraftBook {
     //Here's a secret for all of you addon devs: Setting the category of a research to the name of an existing research, with a ! at the beginning, will append to that research instead of making its own.
@@ -30,7 +33,6 @@ public class SteamcraftBook {
             registerGadgets();
             registerSteamPower();
             registerExosuit();
-            registerSteamTools();
             //registerAuto();
             /* registerMisc(); Uncomment this when shit is added to it.*/
         }
@@ -228,7 +230,7 @@ public class SteamcraftBook {
 
         if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
             SteamcraftRegistry.addResearch("research.SteamCellFiller.name", "category.Gadgets.name",
-              new BookPageItem("research.SteamCellFiller.name", "research.SteamCell.0",
+              new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0",
                 new ItemStack(SteamcraftItems.steamcellBauble)),
               new BookPageCrafting("", "steamcellFiller"));
         }
@@ -252,9 +254,29 @@ public class SteamcraftBook {
 
         SteamcraftRegistry.addResearch("research.SteamDrillHead.name", "category.SteamTools.name");
 
+        ArrayList<String> drillMatsArray = new ArrayList<>();
+        for (DrillHeadMaterial material : DrillHeadMaterial.materials.values()) {
+            if (StatCollector.canTranslate(material.locName)) {
+                drillMatsArray.add(StatCollector.translateToLocal(material.locName));
+            } else {
+                drillMatsArray.add(material.materialName);
+            }
+        }
+
+        StringBuilder drillMats = new StringBuilder();
+        String delimiter = StatCollector.translateToLocal("steamcraft.book.listjoiner");
+        Iterator iter = drillMatsArray.iterator();
+        while (iter.hasNext()) {
+            drillMats.append(iter.next());
+            if (iter.hasNext()) {
+                drillMats.append(delimiter);
+            }
+        }
+
         SteamcraftRegistry.addResearch("research.DrillHeads.name", "!research.SteamDrillHead.name",
-          new BookPageItem("research.DrillHeads.name", "research.DrillHeads.0", true,
-            new ItemStack(SteamcraftItems.drillHead)));
+          new BookPageItem("research.DrillHeads.name", "research.DrillHeads.0",
+            new Object[] { drillMats.toString() }, true,
+            new ItemStack(SteamcraftItems.drillHead)), new BookPage(""));
 
         if (Config.enableFortune) {
             SteamcraftRegistry.addResearch("research.MultiplicativeResonator.name",

@@ -78,7 +78,7 @@ public class SteamToolHelper {
                 strings.add(format + "" + ((ItemDrillHeadUpgrade) upgrade).getInformation(stack));
             } else {
                 String info = upgrade.getInformation();
-                String toAdd = info == null ? stack.getItem().getUnlocalizedName() : info;
+                String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;
                 strings.add(format + "" + StatCollector.translateToLocal(toAdd));
             }
         }

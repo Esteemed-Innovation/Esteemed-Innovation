@@ -230,6 +230,7 @@ public class Steamcraft {
 
         DrillHeadMaterial.registerDefaults();
         SteamcraftRecipes.registerSteamToolUpgrades();
+        SteamcraftBook.registerSteamTools();
     }
 
 

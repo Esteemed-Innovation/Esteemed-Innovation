@@ -210,7 +210,7 @@ public class SteamcraftItems {
             GameRegistry.registerItem(steamcellFull, "steamcellFull");
             if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
                 steamcellBauble = BaublesIntegration.getSteamCellFiller();
-                GameRegistry.registerItem(steamcellBauble, "steamcellBauble");
+                GameRegistry.registerItem(steamcellBauble, "steamcellFiller");
             }
         }
 
@@ -605,7 +605,7 @@ public class SteamcraftItems {
         // General core!
         if (Config.enableTheVoid) {
             theVoid = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
-              "steamcraft:toolUpgrades/coreVoid", null, 0)
+              "steamcraft:toolUpgrades/void", null, 0)
               .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(theVoid, "theVoid");
         }
@@ -634,14 +634,14 @@ public class SteamcraftItems {
 
         if (Config.enableBattleDrill) {
             battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
-              "steamcraft:toolUpgades/battleDrill", null, 1)
+              "steamcraft:toolUpgades/combatdrill", null, 1)
               .setUnlocalizedName("steamcraft:battleDrill").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(battleDrill, "battleDrill");
         }
 
         if (Config.enableStoneGrinder) {
             stoneGrinder = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
-              "steamcraft:toolUpgrades/stoneGrinder", null, 1)
+              "steamcraft:toolUpgrades/grinder", null, 1)
               .setUnlocalizedName("steamcraft:stoneGrinder").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
         }
@@ -661,9 +661,8 @@ public class SteamcraftItems {
         }
 
         if (Config.enableFortune) {
-            // TODO name
             fortuneUpgrade = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
-              "steamcraft:toolUpgrades/drillFortune", null, 1)
+              "steamcraft:toolUpgrades/fortunedrill", null, 1)
               .setUnlocalizedName("steamcraft:drillFortune").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(fortuneUpgrade, "drillFortune");
         }
@@ -695,16 +694,15 @@ public class SteamcraftItems {
         }
 
         if (Config.enableTreeFeller) {
-            // TODO: Name
             treeFeller = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
-              "steamcraft:toolUpgrades/axeFeller", null, 1)
+              "steamcraft:toolUpgrades/timberHead", null, 1)
               .setUnlocalizedName("steamcraft:feller").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(treeFeller, "feller");
         }
 
         if (Config.enableChainsaw) {
             chainsaw = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
-              "steamcraft:toolUpgrades/chainsaw", null, 1)
+              "steamcraft:toolUpgrades/chainAxe", null, 1)
               .setUnlocalizedName("steamcraft:chainsaw").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(chainsaw, "chainsaw");
         }
@@ -726,21 +724,21 @@ public class SteamcraftItems {
 
         if (Config.enableRotaryBlades) {
             rotaryBlades = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
-              "steamcraft:toolUpgrades/shovelRotary", null, 1)
+              "steamcraft:toolUpgrades/rotaryShovel", null, 1)
               .setUnlocalizedName("steamcraft:rotaryBlades").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(rotaryBlades, "rotaryBlades");
         }
 
         if (Config.enableSifter) {
             sifter = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_CORE,
-              "steamcraft:toolUpgrades/shovelSifter", null, 0)
+              "steamcraft:toolUpgrades/sifterShovel", null, 0)
               .setUnlocalizedName("steamcraft:sifter").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(sifter, "sifter");
         }
 
         if (Config.enableBackhoe) {
             backhoe = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
-              "steamcraft:toolUpgrades/shovelBackhoe", null, 1)
+              "steamcraft:toolUpgrades/backhoeShovel", null, 1)
               .setUnlocalizedName("steamcraft:backhoe").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(backhoe, "backhoe");
         }
