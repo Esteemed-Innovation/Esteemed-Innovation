@@ -490,26 +490,14 @@ public class SteamcraftBook {
                 SteamcraftRegistry.addResearch("research.JumpAssist.name", "!research.ExoHeel.name", new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(SteamcraftItems.jumpAssist)), new BookPageCrafting("", "jumpAssist1", "jumpAssist2"));
             }
             if (Config.enableAnchorHeels) {
-                if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0 &&
-                  !Config.enableAnchorAnvilRecipe) {
-                    SteamcraftRegistry.addResearch(
-                      "research.AnchorHeels.name",
-                      "!research.ExoHeel.name",
-                      new BookPageItem("research.AnchorHeels.name",
-                        "research.AnchorHeelsLead.0", true,
-                        new ItemStack(SteamcraftItems.anchorHeels)),
-                      new BookPageCrafting("", "anchorHeels")
-                    );
-                } else {
-                    SteamcraftRegistry.addResearch(
-                      "research.AnchorHeels.name",
-                      "!research.ExoHeel.name",
-                      new BookPageItem("research.AnchorHeels.name",
-                        "research.AnchorHeelsIron.0", true,
-                        new ItemStack(SteamcraftItems.anchorHeels)),
-                      new BookPageCrafting("", "anchorHeels")
-                    );
-                }
+                boolean lead = Config.enableLeadPlate &&
+                  OreDictionary.getOres("ingotLead").size() > 0 && !Config.enableAnchorAnvilRecipe;
+                String research = lead ? "research.AnchorHeelsLead.0" : "research.AnchorHeelsIron.0";
+                SteamcraftRegistry.addResearch("research.AnchorHeels.name",
+                  "!research.ExoHeel.name",
+                  new BookPageItem("research.AnchorHeels.name", research, true,
+                    new ItemStack(SteamcraftItems.anchorHeels)),
+                  new BookPageCrafting("", "anchorHeels"));
             }
             SteamcraftRegistry.addResearch("research.ExoFoot.name", "category.Exosuit.name");
             if (Config.enableDoubleJump) {

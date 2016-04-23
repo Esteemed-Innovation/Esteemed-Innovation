@@ -368,7 +368,7 @@ public class Config {
         enableSadistPlate = config.get("Exosuit Plates", "Enable sadist plate", true).getBoolean(true);
         enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
         enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
-        enableGildedIronPlate = config.get("Exosuit Plates", "Enable gilded iron palte", true).getBoolean(true);
+        enableGildedIronPlate = config.get("Exosuit Plates", "Enable gilded iron plate", true).getBoolean(true);
 
         basicTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the basic tank can hold", BASIC_TANK_CAPACITY_DEFAULT).getInt();
         reinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
