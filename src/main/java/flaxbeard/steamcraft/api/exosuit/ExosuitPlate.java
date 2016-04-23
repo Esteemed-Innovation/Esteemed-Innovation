@@ -53,6 +53,11 @@ public class ExosuitPlate {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
         }
+        if (this.identifier.equals("Gilded Iron")) {
+            if (source.isProjectile()) {
+                return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot) - 1;
+            }
+        }
         if (this.identifier.equals("Brass")) {
             if (source.isFireDamage()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);

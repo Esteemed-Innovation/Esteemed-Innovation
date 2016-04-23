@@ -98,6 +98,14 @@ public class SteamcraftItems {
     public static Item canner;
     public static Item pitonDeployer;
     public static Item enderShroud;
+    public static Item rebreather;
+    public static Item coatingsHydrophobic;
+    public static Item coatingsPyrophobic;
+    public static Item anchorHeels;
+    public static Item pistonPush;
+    public static Item reloadingHolsters;
+    public static Item frequencyShifter;
+    public static Item dragonRoar;
 
     //public static Item fakeOre;
 
@@ -350,6 +358,59 @@ public class SteamcraftItems {
             }
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
+            if (Config.enableRebreather) {
+                rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
+                GameRegistry.registerItem(rebreather, "rebreather");
+            }
+            if (Config.enableHydrophobic) {
+                coatingsHydrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:coatingsHydrophobic")
+                  .setTextureName("steamcraft:coatingsHydrophobic");
+                GameRegistry.registerItem(coatingsHydrophobic, "coatingsHydrophobic");
+            }
+            if (Config.enablePyrophobic) {
+                coatingsPyrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:coatingsPyrophobic")
+                  .setTextureName("steamcraft:coatingsPyrophobic");
+                GameRegistry.registerItem(coatingsPyrophobic, "coatingsPyrophobic");
+            }
+            if (Config.enableAnchorHeels) {
+                anchorHeels = new ItemExosuitAnchorHeels()
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:anchorHeels")
+                  .setTextureName("steamcraft:anchorHeels");
+                GameRegistry.registerItem(anchorHeels, "anchorHeels");
+            }
+            if (Config.enablePistonPush) {
+                pistonPush = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "", null, 0)
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:pistonPush")
+                  .setTextureName("steamcraft:pistonPush");
+                GameRegistry.registerItem(pistonPush, "pistonPush");
+            }
+            if (Config.enableReloadingHolsters && Config.enableFirearms) {
+                reloadingHolsters = new ItemExosuitReloadingHolster()
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:reloadingHolsters")
+                  .setTextureName("steamcraft:reloadingHolsters");
+                GameRegistry.registerItem(reloadingHolsters, "reloadingHolsters");
+            }
+            if (Config.enableFrequencyShifter) {
+                frequencyShifter = new ItemExosuitFrequencyShifter()
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:frequencyShifter")
+                  .setTextureName("steamcraft:frequencyShifter");
+                GameRegistry.registerItem(frequencyShifter, "frequencyShifter");
+            }
+            if (Config.enableDragonRoar) {
+                dragonRoar = new ItemExosuitDragonRoar()
+                  .setCreativeTab(Steamcraft.tab)
+                  .setUnlocalizedName("steamcraft:dragonRoar")
+                  .setTextureName("steamcraft:dragonRoar");
+                GameRegistry.registerItem(dragonRoar, "dragonRoar");
+            }
         }
 
     }
@@ -380,6 +441,7 @@ public class SteamcraftItems {
         OreDictionary.registerOre("ingotCopper", new ItemStack(steamcraftIngot, 1, 0));
         OreDictionary.registerOre("ingotZinc", new ItemStack(steamcraftIngot, 1, 1));
         OreDictionary.registerOre("ingotBrass", new ItemStack(steamcraftIngot, 1, 2));
+        OreDictionary.registerOre("ingotGildedIron", new ItemStack(steamcraftIngot, 1, 3));
 
 
         ItemArmor.ArmorMaterial tool = EnumHelper.addArmorMaterial("MONACLE", 5, new int[]{1, 3, 2, 1}, 15);
@@ -421,12 +483,17 @@ public class SteamcraftItems {
         OreDictionary.registerOre("plateSteamcraftLead", new ItemStack(steamcraftPlate, 1, 9));
         OreDictionary.registerOre("plateSteamcraftVibrant", new ItemStack(steamcraftPlate, 1, 10));
         OreDictionary.registerOre("plateSteamcraftEnderium", new ItemStack(steamcraftPlate, 1, 11));
+        OreDictionary.registerOre("plateSteamcraftGildedIron", new ItemStack(steamcraftPlate, 1, 12));
 
         exosuitPlate = new ItemExosuitPlate().setUnlocalizedName("steamcraft:exosuitPlate").setCreativeTab(Steamcraft.tab);
         GameRegistry.registerItem(exosuitPlate, "exosuitPlate");
 
         if (Config.enableCopperPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Copper", new ItemStack(exosuitPlate, 1, 0), "Copper", "Copper", "steamcraft.plate.copper"));
+        }
+        if (Config.enableZincPlate) {
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Zinc",
+              new ItemStack(exosuitPlate, 1, 1), "Zinc", "Zinc", "steamcraft.plate.zinc"));
         }
         if (Config.enableIronPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Iron", new ItemStack(exosuitPlate, 1, 2), "Iron", "Iron", "steamcraft.plate.iron"));
@@ -436,6 +503,11 @@ public class SteamcraftItems {
         }
         if (Config.enableBrassPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Brass", new ItemStack(exosuitPlate, 1, 4), "Brass", "Brass", "steamcraft.plate.brass"));
+        }
+        if (Config.enableGildedIronPlate) {
+            SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Gilded Iron",
+              new ItemStack(exosuitPlate, 1, 14), "GildedIron", "GildedIron",
+              "steamcraft.plate.gilded"));
         }
     }
 

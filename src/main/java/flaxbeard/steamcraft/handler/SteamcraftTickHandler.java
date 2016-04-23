@@ -16,6 +16,7 @@ import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -256,6 +257,26 @@ public class SteamcraftTickHandler {
                 zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void fallFast(TickEvent.PlayerTickEvent event) {
+        EntityPlayer player = event.player;
+        if (SteamcraftEventHandler.hasPower(player, 1)) {
+            ItemStack equipment = player.getEquipmentInSlot(1);
+            if (equipment != null) {
+                Item boots = equipment.getItem();
+                if (boots instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor bootArmor = (ItemExosuitArmor) boots;
+                    if (bootArmor.hasUpgrade(equipment, SteamcraftItems.anchorHeels)) {
+                        double newY = player.isInWater() ? -0.6 : -1.1;
+                        if (player.motionY < -0.3 && player.motionY != newY) {
+                            player.motionY = newY;
+                        }
+                    }
+                }
             }
         }
     }

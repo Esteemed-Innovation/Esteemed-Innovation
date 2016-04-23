@@ -283,18 +283,14 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                 me.stackTagCompound.setString("plate", UtilPlates.getPlate(clone).getIdentifier());
                 return true;
             } else {
-                if (me.stackTagCompound.hasKey("plate")) {
-                    me.stackTagCompound.removeTag("plate");
-                }
+                UtilPlates.removePlate(me);
                 return false;
             }
         } else {
             if (!me.hasTagCompound()) {
                 me.setTagCompound(new NBTTagCompound());
             }
-            if (me.stackTagCompound.hasKey("plate")) {
-                me.stackTagCompound.removeTag("plate");
-            }
+            UtilPlates.removePlate(me);
             return false;
         }
     }
@@ -603,11 +599,25 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap map = HashMultimap.create();
+        ItemExosuitArmor armor = (ItemExosuitArmor) stack.getItem();
         if (CrossMod.BOTANIA) {
             map = BotaniaIntegration.addModifiers(map, stack, armorType);
         }
-        if ((((ItemExosuitArmor) stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Lead")) {
-            map.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(new UUID(776437, armorType), "Lead exosuit " + armorType, 0.25F, 0));
+        boolean hasKnockback = false;
+        double knockbackAmount = 0.0D;
+        if (armor.hasPlates(stack) &&
+          UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier().equals("Lead")) {
+            hasKnockback = true;
+            knockbackAmount += 0.25D;
+        }
+        if (armor.hasUpgrade(stack, SteamcraftItems.anchorHeels)) {
+            hasKnockback = true;
+            knockbackAmount += 0.25D;
+        }
+        if (hasKnockback) {
+            map.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(),
+              new AttributeModifier(new UUID(776437, armorType), "Lead exosuit " + armorType,
+                knockbackAmount, 0));
         }
         return map;
     }

@@ -11,6 +11,7 @@ public enum ExosuitTexture {
     EXOSUIT("exo_%s"),
     EXOSUIT_GREY("exo_%s_grey"),
     PLATE_BRASS("exoPlateBrass_%s"),
+    PLATE_ZINC("exoPlateZinc_%s"),
     PLATE_COPPER("exoPlateCopper_%s"),
     PLATE_ELEMENTUM("exoPlateElementum_%s"),
     PLATE_ENDERIUM("exoPlateEnderium_%s"),
@@ -23,9 +24,14 @@ public enum ExosuitTexture {
     PLATE_THAUMIUM("exoPlateThaumium_%s"),
     PLATE_VIBRANT("exoPlateVibrant_%s"),
     PLATE_YETI("exoPlateYeti_%s"),
+    PLATE_GILDED("exoPlateGilded_%s"),
     TANK("exo_3", 1),
     TANK_GREY("exo_3_grey", 1),
-    WINGS("wings", 1);
+    WINGS("wings", 1),
+    ANCHOR_HEELS("anchor", 1),
+    DRAGON_ROAR("dragonsroar", 1),
+    FREQUENCY_SHIFTER("frequencyshifter", 1),
+    RELOADING_HOLSTER("holster", 1);
 
     private final ResourceLocation resourceLocation1;
     private final ResourceLocation resourceLocation2;

@@ -13,11 +13,14 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.*;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.api.event.AnimalTradeEvent;
+import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.api.steamnet.data.SteamNetworkData;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.entity.EntityCanisterItem;
+import flaxbeard.steamcraft.entity.ExtendedPropertiesMerchant;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
 import flaxbeard.steamcraft.entity.ExtendedPropertiesVillager;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
@@ -33,7 +36,7 @@ import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
 import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
-import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
+import flaxbeard.steamcraft.misc.FrequencyMerchant;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -46,11 +49,14 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -64,6 +70,7 @@ import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -81,6 +88,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
@@ -88,9 +96,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SteamcraftEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -179,6 +187,9 @@ public class SteamcraftEventHandler {
         } else if (entity instanceof EntityVillager) {
             entity.registerExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID,
               new ExtendedPropertiesVillager());
+        } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
+            entity.registerExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID,
+              new ExtendedPropertiesMerchant());
         }
     }
 
@@ -725,7 +736,7 @@ public class SteamcraftEventHandler {
                 }
             }
             for (String str : linesToRemove) {
-                if (str.contains("+") && !str.contains("+0.25")) {
+                if (str.contains("+") && (!str.contains("+0.25"))) {
                     event.toolTip.remove(str);
                     event.toolTip.add(1, str);
                 } else {
@@ -760,16 +771,23 @@ public class SteamcraftEventHandler {
     public void doubleExp(PlayerPickupXpEvent event) {
         EntityPlayer player = event.entityPlayer;
         for (int i = 1; i < 5; i++) {
-            float multValu = 1;
+            float multiplier = 1;
             if (player.getEquipmentInSlot(i) != null) {
                 ItemStack stack = player.getEquipmentInSlot(i);
                 if (stack.getItem() instanceof ItemExosuitArmor) {
-                    if (((ItemExosuitArmor) stack.getItem()).hasPlates(stack) && UtilPlates.getPlate(stack.stackTagCompound.getString("plate")).getIdentifier() == "Gold") {
-                        multValu *= 1.25F;
+                    ItemExosuitArmor armor = (ItemExosuitArmor) stack.getItem();
+                    if (armor.hasPlates(stack)) {
+                        ExosuitPlate plate = UtilPlates.getPlate(stack.stackTagCompound.getString("plate"));
+                        String id = plate.getIdentifier();
+                        if (id.equals("Gold")) {
+                            multiplier *= 1.25F;
+                        } else if (id.equals("Gilded Iron")) {
+                            multiplier *= 1.125;
+                        }
                     }
                 }
             }
-            event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue * multValu);
+            event.orb.xpValue = MathHelper.ceiling_float_int(event.orb.xpValue * multiplier);
         }
     }
 
@@ -809,6 +827,110 @@ public class SteamcraftEventHandler {
                     entity.motionX += -0.5F * entity.getLookVec().normalize().xCoord;
                     entity.motionZ += -0.5F * entity.getLookVec().normalize().zCoord;
                     drainSteam(event.entityLiving.getEquipmentInSlot(3), Config.powerFistConsumption);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void handlePistonPunch(PlayerInteractEvent event) {
+        EntityPlayer entity = event.entityPlayer;
+        int consumption = Config.pistonPushConsumption;
+        boolean hasPower = hasPower(entity, consumption);
+        ItemStack heldItem = entity.getHeldItem();
+        if (hasPower && heldItem == null) {
+            ItemStack chestStack = entity.getEquipmentInSlot(3);
+            Item chest = chestStack.getItem();
+            if (chest instanceof ItemExosuitArmor) {
+                ItemExosuitArmor armor = (ItemExosuitArmor) chest;
+                if (armor.hasUpgrade(chestStack, SteamcraftItems.pistonPush)) {
+                    World world = event.world;
+                    int face = event.face;
+                    int x = event.x;
+                    int y = event.y;
+                    int z = event.z;
+                    if (face == 0) {
+                        if (y != 256) {
+                            y += 1;
+                        }
+                    } else if (face == 1) {
+                        if (y != 0) {
+                            y -= 1;
+                        }
+                    } else if (face == 2) {
+                        if (z < 0) {
+                            z += 1;
+                        } else {
+                            z -= 1;
+                        }
+                    } else if (face == 3) {
+                        if (z < 0) {
+                            z -= 1;
+                        } else {
+                            z += 1;
+                        }
+                    } else if (face == 4) {
+                        if (x < 0) {
+                            x -= 1;
+                        } else {
+                            x += 1;
+                        }
+                    } else if (face == 5) {
+                        if (x < 0) {
+                            x += 1;
+                        } else {
+                            x -= 1;
+                        }
+                    }
+                    int i = event.x;
+                    int j = event.y;
+                    int k = event.z;
+                    Block clickedBlock = world.getBlock(i, j, k);
+                    Block blockInPlace = world.getBlock(x, y, z);
+                    int clickedMeta = world.getBlockMetadata(i, j, k);
+                    if ((blockInPlace == null || blockInPlace == Blocks.air ||
+                      blockInPlace instanceof BlockFluidBase) &&
+                      clickedBlock.getBlockHardness(world, x, y, z) >= 0.0F &&
+                      clickedBlock.getMobilityFlag() != 2 && clickedBlock != Blocks.obsidian &&
+                      j >= 0 && !clickedBlock.hasTileEntity(clickedMeta)) {
+                        world.setBlockToAir(i, j, k);
+                        world.setBlock(x, y, z, clickedBlock, clickedMeta, 3);
+                        world.playSoundEffect((double) x + 0.5D, (double) y + 0.5D, (double) z +
+                          0.5D, "tile.piston.out", 0.5F, world.rand.nextFloat() * 0.25F + 0.6F);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void hearMeRoar(LivingAttackEvent event) {
+        // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
+        if (event.source.getSourceOfDamage() instanceof EntityLivingBase &&
+          !event.source.isExplosion()) {
+            EntityLivingBase entity = (EntityLivingBase) event.source.getSourceOfDamage();
+            World world = entity.worldObj;
+            ItemStack equipment = entity.getEquipmentInSlot(4);
+            ItemStack chest = entity.getEquipmentInSlot(3);
+            if (entity.getHeldItem() == null && entity.isSneaking() && equipment != null &&
+              chest != null && chest.getItem() instanceof ItemExosuitArmor &&
+              chest.hasTagCompound()) {
+                int consumption = (chest.stackTagCompound.getInteger("maxFill") / 2) +
+                  Config.dragonRoarConsumption;
+                Item helmet = equipment.getItem();
+                if (hasPower(entity, consumption) && helmet instanceof ItemExosuitArmor) {
+                    ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
+                    if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.dragonRoar)) {
+                        if (world.isRemote) {
+                            world.playSound(entity.posX, entity.posY, entity.posZ,
+                              "mob.enderdragon.growl", 5.0F, 0.8F + world.rand.nextFloat() * 0.3F,
+                              false);
+                        } else {
+                            world.createExplosion(entity, entity.posX + 0.5F, entity.posY,
+                              entity.posZ + 0.5F, 10.0F, false);
+                        }
+                        drainSteam(chest, consumption);
+                    }
                 }
             }
         }
@@ -1537,5 +1659,165 @@ public class SteamcraftEventHandler {
                 }
             }
         }
+    }
+
+    List<DamageSource> invalidSources = Arrays.asList(
+      DamageSource.drown,
+      DamageSource.outOfWorld,
+      DamageSource.starve,
+      DamageSource.wither
+    );
+
+    @SubscribeEvent
+    public void burstZincPlate(LivingHurtEvent event) {
+        EntityLivingBase entity = event.entityLiving;
+        int consumption = Config.zincPlateConsumption;
+        float amount = event.ammount;
+
+        if (!invalidSources.contains(event.source)) {
+            if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
+                EntityPlayer player = (EntityPlayer) entity;
+                float health = player.getHealth();
+                float maxHealth = player.getMaxHealth();
+                float halfOfMax = maxHealth / 2;
+                if (amount >= halfOfMax || health <= halfOfMax) {
+                    ItemStack stackWithPlate = null;
+                    boolean hasZincPlate = false;
+                    for (int i = 1; i < 5; i++) {
+                        ItemStack equipment = player.getEquipmentInSlot(i);
+                        if (equipment != null) {
+                            Item item = equipment.getItem();
+                            if (item instanceof ItemExosuitArmor) {
+                                ItemExosuitArmor armor = (ItemExosuitArmor) item;
+                                if (armor.hasPlates(equipment) &&
+                                  UtilPlates.getPlate(equipment.stackTagCompound.getString("plate")).getIdentifier().equals("Zinc")) {
+                                    stackWithPlate = equipment;
+                                    hasZincPlate = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (hasZincPlate) {
+                        ItemStack zincPlates = new ItemStack(SteamcraftItems.steamcraftPlate, 2, 1);
+                        World world = player.worldObj;
+                        drainSteam(player.getEquipmentInSlot(3), consumption);
+                        UtilPlates.removePlate(stackWithPlate);
+                        EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
+                          player.posZ, zincPlates);
+                        world.spawnEntityInWorld(entityItem);
+//                        player.setHealth(health - (amount - 10.0F));
+                        player.setHealth(health);
+                        player.performHurtAnimation();
+                        world.playSoundEffect(player.posX, player.posY, player.posZ,
+                          "steamcraft:hiss", 2.0F, 0.9F);
+                        event.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void rebreath(LivingAttackEvent event) {
+        int consumption = Config.rebreatherConsumption;
+        if (event.source == DamageSource.drown) {
+            EntityLivingBase entity = event.entityLiving;
+            if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
+                EntityPlayer player = (EntityPlayer) entity;
+                ItemStack equipment = player.getEquipmentInSlot(4);
+                if (equipment != null) {
+                    Item helmet = equipment.getItem();
+                    if (helmet instanceof ItemExosuitArmor) {
+                        ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
+                        if (helmetArmor.hasUpgrade(equipment, SteamcraftItems.rebreather)) {
+                            drainSteam(player.getEquipmentInSlot(3), consumption);
+                            event.setCanceled(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void openMerchant(EntityInteractEvent event) {
+        EntityPlayer player = event.entityPlayer;
+        Entity target = event.target;
+        ItemStack held = player.getHeldItem();
+        if (playerHasFrequencyShifter(player) && (target instanceof EntityWolf ||
+          target instanceof EntityOcelot)) {
+            boolean flag = held == null || !(held.getItem() instanceof ItemNameTag);
+            if (!flag) {
+                return;
+            }
+            EntityLiving living = (EntityLiving) target;
+            ExtendedPropertiesMerchant nbt = (ExtendedPropertiesMerchant)
+              living.getExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID);
+            if (nbt.totalTrades > nbt.maximumTrades) {
+                if (living instanceof EntityWolf) {
+                    EntityWolf wolf = (EntityWolf) living;
+                    wolf.setAngry(true);
+                } else {
+                    EntityOcelot cat = (EntityOcelot) living;
+                    living.targetTasks.addTask(3, new EntityAIHurtByTarget(cat, true));
+                }
+            } else {
+                if (living.hasCustomNameTag()) {
+                    nbt.merchantName = living.getCustomNameTag();
+                }
+                String name = nbt.merchantName;
+                FrequencyMerchant merchant = new FrequencyMerchant(living, name);
+                merchant.setCustomer(player);
+                player.displayGUIMerchant(merchant, name);
+                nbt.totalTrades += 1;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void handlePainfulFrequencies(AnimalTradeEvent event) {
+        EntityLiving entity = event.salesperson;
+        NBTTagCompound nbt = entity.getEntityData();
+        if (nbt.getInteger("totalTrades") > nbt.getInteger("maximumTrades")) {
+            entity.setAttackTarget(event.customer);
+        }
+    }
+
+    @SubscribeEvent
+    public void ignoreChatMessage(ClientChatReceivedEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityPlayer player = mc.thePlayer;
+        World world = mc.theWorld;
+        String message = event.message.getUnformattedText();
+        Matcher matcher = Pattern.compile("<(.+?)>").matcher(message);
+        if (matcher.find()) {
+            EntityPlayer messager = world.getPlayerEntityByName(matcher.group(0));
+            if (messager != null) {
+                if (!messager.getDisplayName().equals(player.getDisplayName()) &&
+                  playerHasFrequencyShifter(messager) && playerHasFrequencyShifter(player)) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks whether the given player has the Frequency Shifter upgrade, and enough steam in their suit.
+     * @param player The player to check.
+     * @return True if the player has the Frequency Shifter upgrade.
+     */
+    private boolean playerHasFrequencyShifter(EntityPlayer player) {
+        ItemStack helmet = player.getEquipmentInSlot(4);
+        if (helmet != null && hasPower(player, 1)) {
+            Item helmetItem = helmet.getItem();
+            if (helmetItem instanceof ItemExosuitArmor) {
+                ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmetItem;
+                if (helmetArmor.hasUpgrade(helmet, SteamcraftItems.frequencyShifter)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -23,6 +23,13 @@ public class Config {
     public static final int BASIC_TANK_CAPACITY_DEFAULT = 36000;
     public static final int REINFORCED_TANK_CAPACITY_DEFAULT = 72000;
     public static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
+    public static final int ZINC_PLATE_CONSUMPTION_DEFAULT = 30;
+    public static final int REBREATHER_CONSUMPTION_DEFAULT = 5;
+    public static final int PYROPHOBIC_CONSUMPTION_DEFAULT = 5;
+    public static final int HYDROPHOBIC_CONSUMPTION_DEFAULT = 10;
+    public static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
+    public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
+    public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -64,7 +71,7 @@ public class Config {
     public static int brassChance;
     public static int gildedChance;
 
-
+    public static boolean enableAnchorAnvilRecipe;
     public static int mortarRadius;
     public static boolean expensiveMusketRecipes;
     public static int chance;
@@ -88,6 +95,13 @@ public class Config {
     public static int screwConsumption;
     public static int heaterConsumption;
     public static int vacuumConsumption;
+    public static int zincPlateConsumption;
+    public static int rebreatherConsumption;
+    public static int hydrophobicConsumption;
+    public static int pyrophobicConsumption;
+    public static int pistonPushConsumption;
+    public static int reloadingConsumption;
+    public static int dragonRoarConsumption;
     public static String musketDamage;
     public static String pistolDamage;
     public static String blunderbussDamage;
@@ -166,12 +180,21 @@ public class Config {
     public static boolean enableReinforcedTank;
     public static boolean enableUberReinforcedTank;
     public static boolean enableEnderShroud;
+    public static boolean enableRebreather;
+    public static boolean enableHydrophobic;
+    public static boolean enablePyrophobic;
+    public static boolean enableAnchorHeels;
+    public static boolean enablePistonPush;
+    public static boolean enableReloadingHolsters;
+    public static boolean enableFrequencyShifter;
+    public static boolean enableDragonRoar;
 
     //plates
     public static boolean enableCopperPlate;
     public static boolean enableIronPlate;
     public static boolean enableGoldPlate;
     public static boolean enableBrassPlate;
+    public static boolean enableZincPlate;
     public static boolean enableLeadPlate;
     public static boolean enableThaumiumPlate;
     public static boolean enableElementiumPlate;
@@ -181,6 +204,7 @@ public class Config {
     public static boolean enableSadistPlate;
     public static boolean enableVibrantPlate;
     public static boolean enableEnderiumPlate;
+    public static boolean enableGildedIronPlate;
 
     public static boolean enableWings;
     public static boolean hasAllCrucial;
@@ -296,6 +320,14 @@ public class Config {
         thrusterConsumption = config.get("Exosuit", "The amount of steam the Exosuit Thrusters consumes", THRUSTER_CONSUMPTION_DEFAULT).getInt();
         runAssistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Run Assist consumes", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
         powerFistConsumption = config.get("Exosuit", "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
+        zincPlateConsumption = config.get("Exosuit", "The amount of steam the Exosuit Zinc Plate consumes", ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
+        rebreatherConsumption = config.get("Exosuit", "The amount of steam the Rebreather consumes", REBREATHER_CONSUMPTION_DEFAULT).getInt();
+        hydrophobicConsumption = config.get("Exosuit", "The amount of steam the Hydrophobic Coatings consume", HYDROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+        pyrophobicConsumption = config.get("Exosuit", "The amount of steam the Pyrophobic Coatings consume", PYROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+        enableAnchorAnvilRecipe = config.get("Exosuit", "Use the leadless Anchor Heels recipe. This will always be true if there is no lead available.", false).getBoolean(false);
+        pistonPushConsumption = config.get("Exosuit", "The amount of steam the Piston Push consumes", PISTON_PUSH_CONSUMPTION_DEFAULT).getInt();
+        reloadingConsumption = config.get("Exosuit", "The amount of steam the Reloading Holsters consume", RELOADING_CONSUMPTION_DEFAULT).getInt();
+        dragonRoarConsumption = config.get("Exosuit", "The amount of steam the Dragon Roar consumes", DRAGON_ROAR_CONSUMPTION_DEFAULT).getInt();
 
         // EXOSUIT UPGRADES
         enableFallAssist = config.get("Exosuit Upgrades", "Enable Fall Assist", true).getBoolean(true);
@@ -313,8 +345,17 @@ public class Config {
         enableReinforcedTank = config.get("Exosuit Upgrades", "Enable Reinforced Tank", true).getBoolean(true);
         enableUberReinforcedTank = config.get("Exosuit Upgrades", "Enable Heavily Reinforced Tank", true).getBoolean(true);
         enableEnderShroud = config.get("Exosuit Upgrades", "Enable Ender Shroud", true).getBoolean(true);
+        enableRebreather = config.get("Exosuit Upgrades", "Enable Rebreather", true).getBoolean(true);
+        enableHydrophobic = config.get("Exosuit Upgrades", "Enable Hydrophobic Coatings", true).getBoolean(true);
+        enablePyrophobic = config.get("Exosuit Upgrades", "Enable Pyrophobic Coatings", true).getBoolean(true);
+        enableAnchorHeels = config.get("Exosuit Upgrades", "Enable Anchor Heels", true).getBoolean(true);
+        enablePistonPush = config.get("Exosuit Upgrades", "Enable Piston Push", true).getBoolean(true);
+        enableReloadingHolsters = config.get("Exosuit Upgrades", "Enable Reloading Holsters", true).getBoolean(true);
+        enableFrequencyShifter = config.get("Exosuit Upgrades", "Enable Frequency Shifter", true).getBoolean(true);
+        enableDragonRoar = config.get("Exosuit Upgrades", "Enable Dragon Roar", true).getBoolean(true);
 
         enableCopperPlate = config.get("Exosuit Plates", "Enable copper plate", true).getBoolean(true);
+        enableZincPlate = config.get("Exosuit Plates", "Enable zinc plate", true).getBoolean(true);
         enableIronPlate = config.get("Exosuit Plates", "Enable iron plate", true).getBoolean(true);
         enableGoldPlate = config.get("Exosuit Plates", "Enable gold plate", true).getBoolean(true);
         enableBrassPlate = config.get("Exosuit Plates", "Enable brass plate", true).getBoolean(true);
@@ -327,6 +368,7 @@ public class Config {
         enableSadistPlate = config.get("Exosuit Plates", "Enable sadist plate", true).getBoolean(true);
         enableVibrantPlate = config.get("Exosuit Plates", "Enable vibrant plate", true).getBoolean(true);
         enableEnderiumPlate = config.get("Exosuit Plates", "Enable enderium plate", true).getBoolean(true);
+        enableGildedIronPlate = config.get("Exosuit Plates", "Enable gilded iron plate", true).getBoolean(true);
 
         basicTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the basic tank can hold", BASIC_TANK_CAPACITY_DEFAULT).getInt();
         reinforcedTankCapacity = config.get("Exosuit Upgrades", "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();

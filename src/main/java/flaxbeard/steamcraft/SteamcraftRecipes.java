@@ -104,6 +104,8 @@ public class SteamcraftRecipes {
         SteamcraftRegistry.registerMeltRecipeTool(SteamcraftItems.legs("Brass"), liquidBrass, 63);
 
         SteamcraftRegistry.registerOreDictDunkRecipe("ingotIron", liquidGold, 1, new ItemStack(SteamcraftItems.steamcraftIngot, 1, 3));
+        SteamcraftRegistry.registerOreDictDunkRecipe("plateSteamcraftIron", liquidGold, 1,
+          new ItemStack(SteamcraftItems.steamcraftPlate, 1, 12));
     }
 
 
@@ -387,6 +389,9 @@ public class SteamcraftRecipes {
         if (Config.enableCopperPlate) {
             addExosuitPlateRecipes("exoCopper", "plateSteamcraftCopper", new ItemStack(SteamcraftItems.exosuitPlate, 1, 0), liquidCopper);
         }
+        if (Config.enableZincPlate) {
+            addExosuitPlateRecipes("exoZinc", "plateSteamcraftZinc", new ItemStack(SteamcraftItems.exosuitPlate, 1, 1), liquidZinc);
+        }
         if (Config.enableIronPlate) {
             addExosuitPlateRecipes("exoIron", "plateSteamcraftIron", new ItemStack(SteamcraftItems.exosuitPlate, 1, 2), liquidIron);
         }
@@ -395,6 +400,10 @@ public class SteamcraftRecipes {
         }
         if (Config.enableBrassPlate) {
             addExosuitPlateRecipes("exoBrass", "plateSteamcraftBrass", new ItemStack(SteamcraftItems.exosuitPlate, 1, 4), liquidBrass);
+        }
+        if (Config.enableGildedIronPlate) {
+            addExosuitPlateRecipes("exoGildedIron", "plateSteamcraftGildedIron",
+              new ItemStack(SteamcraftItems.exosuitPlate, 1, 14));
         }
         if (Config.enableEnderShroud) {
             BookRecipeRegistry.addRecipe("enderShroud", new ShapedOreRecipe(new ItemStack(SteamcraftItems.enderShroud), " g ", "geg", " g ",
@@ -491,6 +500,102 @@ public class SteamcraftRecipes {
                     'v', SteamcraftBlocks.valvePipe, 's', "ingotBrass"));
             BookRecipeRegistry.addRecipe("doubleJump2", new ShapedOreRecipe(new ItemStack(SteamcraftItems.doubleJump), "s s", "v v",
                     'v', SteamcraftBlocks.valvePipe, 's', "plateSteamcraftBrass"));
+        }
+        if (Config.enableAnchorHeels) {
+            if (Config.enableLeadPlate && OreDictionary.getOres("ingotLead").size() > 0 &&
+              !Config.enableAnchorAnvilRecipe) {
+                BookRecipeRegistry.addRecipe("anchorHeels", new ShapedOreRecipe(
+                  new ItemStack(SteamcraftItems.anchorHeels),
+                  "p p",
+                  "e e",
+                  'p', "plateSteamcraftLead",
+                  'e', new ItemStack(SteamcraftItems.exosuitPlate, 1, 11)
+                ));
+            } else {
+                BookRecipeRegistry.addRecipe("anchorHeels", new ShapedOreRecipe(
+                  new ItemStack(SteamcraftItems.anchorHeels),
+                  "p p",
+                  "eae",
+                  'p', "plateSteamcraftIron",
+                  'e', new ItemStack(SteamcraftItems.exosuitPlate, 1, 2),
+                  'a', Blocks.anvil
+                ));
+            }
+        }
+        if (Config.enableFrequencyShifter) {
+            BookRecipeRegistry.addRecipe("frequencyShifter",
+              new ShapedOreRecipe(SteamcraftItems.frequencyShifter,
+                "t n",
+                "pjp",
+                " p ",
+                't', Blocks.redstone_torch,
+                'n', "nuggetBrass",
+                'p', "plateSteamcraftBrass",
+                'j', Blocks.jukebox));
+        }
+        if (Config.enableRebreather) {
+            BookRecipeRegistry.addRecipe("rebreather",
+              new ShapedOreRecipe(SteamcraftItems.rebreather,
+                " l ",
+                "ptp",
+                " c ",
+                'l', Items.leather,
+                'p', SteamcraftBlocks.valvePipe,
+                't', SteamcraftBlocks.tank,
+                'c', new ItemStack(Blocks.carpet, 1, OreDictionary.WILDCARD_VALUE)));
+        }
+        if (Config.enableDragonRoar) {
+            BookRecipeRegistry.addRecipe("dragonRoar",
+              new ShapedOreRecipe(SteamcraftItems.dragonRoar,
+                "ccc",
+                "cfc",
+                "cpc",
+                'c', "plateSteamcraftCopper",
+                'f', SteamcraftBlocks.fan,
+                'p', SteamcraftBlocks.valvePipe));
+        }
+        if (Config.enableReloadingHolsters) {
+            BookRecipeRegistry.addRecipe("reloadingHolsters",
+              new ShapedOreRecipe(SteamcraftItems.reloadingHolsters,
+                "lbl",
+                "c c",
+                "p p",
+                'l', Items.leather,
+                'b', "plateSteamcraftBrass",
+                'c', SteamcraftItems.enhancementRevolver,
+                'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
+        if (Config.enablePistonPush) {
+            BookRecipeRegistry.addRecipe("pistonPush",
+              new ShapedOreRecipe(SteamcraftItems.pistonPush,
+                "n p",
+                "nbp",
+                "n p",
+                'n', "nuggetBrass",
+                'p', Blocks.piston,
+                'b', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
+        }
+        if (Config.enableHydrophobic) {
+            BookRecipeRegistry.addRecipe("hydrophobic",
+              new ShapedOreRecipe(SteamcraftItems.coatingsHydrophobic,
+                "zbz",
+                "hzh",
+                "sss",
+                'z', "plateSteamcraftZinc",
+                'b', Items.leather_boots,
+                'h', SteamcraftBlocks.heater,
+                's', "slimeball"));
+        }
+        if (Config.enablePyrophobic) {
+            BookRecipeRegistry.addRecipe("pyrophobic",
+              new ShapedOreRecipe(SteamcraftItems.coatingsPyrophobic,
+                "cbc",
+                "hch",
+                "mmm",
+                'c', "plateSteamcraftCopper",
+                'b', Items.leather_boots,
+                'h', SteamcraftBlocks.heater,
+                'm', Items.magma_cream));
         }
     }
 

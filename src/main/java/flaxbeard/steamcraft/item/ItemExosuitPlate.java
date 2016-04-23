@@ -16,7 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 public class ItemExosuitPlate extends Item {
-    public IIcon[] icon = new IIcon[14];
+    public IIcon[] icon = new IIcon[15];
 
     public ItemExosuitPlate() {
         this.setHasSubtypes(true);
@@ -40,6 +40,7 @@ public class ItemExosuitPlate extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         this.icon[0] = ir.registerIcon("steamcraft:exosuitPlateCopper");
+        this.icon[1] = ir.registerIcon("steamcraft:exosuitPlateZinc");
         this.icon[2] = ir.registerIcon("steamcraft:exosuitPlateIron");
         this.icon[3] = ir.registerIcon("steamcraft:exosuitPlateGold");
         this.icon[4] = ir.registerIcon("steamcraft:exosuitPlateBrass");
@@ -52,16 +53,18 @@ public class ItemExosuitPlate extends Item {
         this.icon[11] = ir.registerIcon("steamcraft:exosuitPlateLead");
         this.icon[12] = ir.registerIcon("steamcraft:exosuitPlateVibrant");
         this.icon[13] = ir.registerIcon("steamcraft:exosuitPlateEnderium");
-
+        this.icon[14] = ir.registerIcon("steamcraft:exosuitPlateGildedIron");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 1));
         par3List.add(new ItemStack(par1, 1, 2));
         par3List.add(new ItemStack(par1, 1, 3));
         par3List.add(new ItemStack(par1, 1, 4));
+        par3List.add(new ItemStack(par1, 1, 14));
         if (CrossMod.THAUMCRAFT) {
             par3List.add(new ItemStack(par1, 1, 5));
         }
