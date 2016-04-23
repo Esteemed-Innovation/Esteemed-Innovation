@@ -193,11 +193,6 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
-    }
-
-    @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
         return 1.0F;
     }
