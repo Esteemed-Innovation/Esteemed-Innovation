@@ -709,7 +709,7 @@ public class SteamcraftItems {
 
         if (Config.enableForestFire) {
             forestFire = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
-              "steamcraft:toolUpgrades/axeFire", null, 1)
+              "steamcraft:toolUpgrades/fireAxe", null, 1)
               .setUnlocalizedName("steamcraft:forestFire").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(forestFire, "forestFire");
         }
@@ -717,7 +717,7 @@ public class SteamcraftItems {
         // Shovel!
         if (Config.enableCultivator) {
             cultivator = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
-              "steamcraft:toolUpgrades/shovelCultivator", null, 1)
+              "steamcraft:toolUpgrades/cultivatorHead", null, 1)
               .setUnlocalizedName("steamcraft:cultivator").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(cultivator, "cultivator");
         }
