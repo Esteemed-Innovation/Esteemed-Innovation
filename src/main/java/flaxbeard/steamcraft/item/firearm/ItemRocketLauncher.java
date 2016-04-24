@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.item.firearm;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.IEngineerable;
@@ -240,72 +241,72 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-        boolean crouched = par3EntityPlayer.isSneaking();
+    public ItemStack onItemRightClick(ItemStack self, World world, EntityPlayer player) {
+        NBTTagCompound nbt = self.getTagCompound();
+        boolean crouched = player.isSneaking();
 
         if (!crouched) {
-            if (!par1ItemStack.hasTagCompound()) {
-                par1ItemStack.setTagCompound(new NBTTagCompound());
-                nbt = par1ItemStack.getTagCompound();
+            if (!self.hasTagCompound()) {
+                self.setTagCompound(new NBTTagCompound());
+                nbt = self.getTagCompound();
                 nbt.setInteger("loaded", 0);
                 nbt.setBoolean("done", false);
                 nbt.setInteger("numloaded", 0);
             }
-            if (nbt.getInteger("loaded") > 0 || par3EntityPlayer.capabilities.isCreativeMode) {
-                if (!par1ItemStack.stackTagCompound.hasKey("fireDelay") || par1ItemStack.stackTagCompound.getInteger("fireDelay") == 0) {
+            if (nbt.getInteger("loaded") > 0 || player.capabilities.isCreativeMode) {
+                if (!self.stackTagCompound.hasKey("fireDelay") || self.stackTagCompound.getInteger("fireDelay") == 0) {
                     float enhancementAccuracy = 0.0F;
                     float enhancementExplosionSize = 0.0F;
                     int enhancementDelay = 0;
 
-                    if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                        if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementRocketLauncher) {
-                            enhancementAccuracy = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getAccuracyChange(this);
-                            enhancementExplosionSize = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getExplosionChange(this);
-                            enhancementDelay = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getFireDelayChange(par1ItemStack);
+                    if (UtilEnhancements.hasEnhancement(self)) {
+                        if (UtilEnhancements.getEnhancementFromItem(self) instanceof IEnhancementRocketLauncher) {
+                            enhancementAccuracy = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self)).getAccuracyChange(this);
+                            enhancementExplosionSize = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self)).getExplosionChange(this);
+                            enhancementDelay = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self)).getFireDelayChange(self);
                         }
                     }
 
                     float var7 = 1.0F;
 
                     if (var7 < 0.1D) {
-                        return par1ItemStack;
+                        return self;
                     }
 
                     if (var7 > 1.0F) {
                         var7 = 1.0F;
                     }
 
-                    EntityRocket var8 = new EntityRocket(par2World, par3EntityPlayer, ((1.0F + accuracy + enhancementAccuracy) - var7), this.explosionSize + enhancementExplosionSize);
+                    EntityRocket var8 = new EntityRocket(world, player, ((1.0F + accuracy + enhancementAccuracy) - var7), this.explosionSize + enhancementExplosionSize);
 
                     int selectedRocketType = 0;
-                    if (par1ItemStack.hasTagCompound()) {
-                        if (par1ItemStack.stackTagCompound.hasKey("rocketType")) {
-                            selectedRocketType = par1ItemStack.stackTagCompound.getInteger("rocketType");
+                    if (self.hasTagCompound()) {
+                        if (self.stackTagCompound.hasKey("rocketType")) {
+                            selectedRocketType = self.stackTagCompound.getInteger("rocketType");
                         }
                     }
                     var8 = SteamcraftRegistry.rockets.get(selectedRocketType).changeBullet(var8);
 
-                    if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                        if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementRocketLauncher) {
-                            var8 = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var8);
+                    if (UtilEnhancements.hasEnhancement(self)) {
+                        if (UtilEnhancements.getEnhancementFromItem(self) instanceof IEnhancementRocketLauncher) {
+                            var8 = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self)).changeBullet(var8);
                         }
                     }
 
-                    par1ItemStack.damageItem(1, par3EntityPlayer);
-                    par2World.playSoundAtEntity(par3EntityPlayer, "steamcraft:rocket", (1.0F * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.4F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
+                    self.damageItem(1, player);
+                    world.playSoundAtEntity(player, "steamcraft:rocket", (1.0F * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(self) != null && UtilEnhancements.getEnhancementFromItem(self).getID() == "Silencer" ? 0.4F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
 
 
-                    if (!par2World.isRemote) {
-                        par2World.spawnEntityInWorld(var8);
+                    if (!world.isRemote) {
+                        world.spawnEntityInWorld(var8);
                     }
-                    ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, 1);
+                    ArrowLooseEvent event = new ArrowLooseEvent(player, self, 1);
                     MinecraftForge.EVENT_BUS.post(event);
 
                     nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
 
-                    if (par2World.isRemote && !par3EntityPlayer.capabilities.isCreativeMode) {
-                        boolean crouching = par3EntityPlayer.isSneaking();
+                    if (world.isRemote && !player.capabilities.isCreativeMode) {
+                        boolean crouching = player.isSneaking();
 
                         //                 if (crouching)
                         //                 {
@@ -316,54 +317,56 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                         //                 par3EntityPlayer.motionZ = -MathHelper.cos((par3EntityPlayer.rotationYaw) * (float)Math.PI / 180.0F) * (thiskb * (4F / 50F));
                         //                 par3EntityPlayer.motionX = MathHelper.sin((par3EntityPlayer.rotationYaw) * (float)Math.PI / 180.0F) * (thiskb * (4F / 50F));
                     }
-                    if (!par3EntityPlayer.onGround && !par3EntityPlayer.capabilities.isFlying && UtilEnhancements.hasEnhancement(par1ItemStack) && UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof ItemEnhancementAirStrike) {
-                        par1ItemStack.stackTagCompound.setInteger("fireDelay", this.timeBetweenFire + enhancementDelay);
+                    if (player.capabilities.isFlying && !(player.onGround &&
+                      UtilEnhancements.hasEnhancement(self) &&
+                      UtilEnhancements.getEnhancementFromItem(self) instanceof ItemEnhancementAirStrike)) {
+                        self.stackTagCompound.setInteger("fireDelay", this.timeBetweenFire + enhancementDelay);
                     }
                 }
                 // par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(BoilerMod.musketEmpty));
             } else {
 
-                NBTTagCompound nbtt = par1ItemStack.getTagCompound();
-                if (par3EntityPlayer.capabilities.isCreativeMode) {
+                NBTTagCompound nbtt = self.getTagCompound();
+                if (player.capabilities.isCreativeMode) {
                     int enhancementShells = 0;
-                    if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                        if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementRocketLauncher) {
-                            enhancementShells = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
+                    if (UtilEnhancements.hasEnhancement(self)) {
+                        if (UtilEnhancements.getEnhancementFromItem(self) instanceof IEnhancementRocketLauncher) {
+                            enhancementShells = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self)).getClipSizeChange(this);
                         }
                     }
                     nbtt.setInteger("loaded", 1);
                     nbtt.setInteger("numloaded", this.shellCount + enhancementShells);
                 }
-                par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+                player.setItemInUse(self, this.getMaxItemUseDuration(self));
             }
         } else {
-            if (!par1ItemStack.hasTagCompound()) {
-                par1ItemStack.setTagCompound(new NBTTagCompound());
-                nbt = par1ItemStack.getTagCompound();
+            if (!self.hasTagCompound()) {
+                self.setTagCompound(new NBTTagCompound());
+                nbt = self.getTagCompound();
                 nbt.setInteger("loaded", 0);
                 nbt.setBoolean("done", false);
                 nbt.setInteger("numloaded", 0);
             }
             int selectedRocketType = 0;
-            if (par1ItemStack.hasTagCompound()) {
-                if (par1ItemStack.stackTagCompound.hasKey("rocketType")) {
-                    selectedRocketType = par1ItemStack.stackTagCompound.getInteger("rocketType");
+            if (self.hasTagCompound()) {
+                if (self.stackTagCompound.hasKey("rocketType")) {
+                    selectedRocketType = self.stackTagCompound.getInteger("rocketType");
                 }
             }
             int prevRocketType = selectedRocketType;
             selectedRocketType = (selectedRocketType + 1) % SteamcraftRegistry.rockets.size();
             nbt.setInteger("rocketType", selectedRocketType);
-            if (selectedRocketType != prevRocketType && par1ItemStack.stackTagCompound.getInteger("loaded") > 0) {
+            if (selectedRocketType != prevRocketType && self.stackTagCompound.getInteger("loaded") > 0) {
                 ItemStack stack = new ItemStack(((Item) SteamcraftRegistry.rockets.get(prevRocketType)), nbt.getInteger("loaded"), 0);
-                if (!par3EntityPlayer.worldObj.isRemote) {
-                    EntityItem entityItem = new EntityItem(par3EntityPlayer.worldObj, par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, stack);
-                    par3EntityPlayer.worldObj.spawnEntityInWorld(entityItem);
+                if (!player.worldObj.isRemote) {
+                    EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, stack);
+                    player.worldObj.spawnEntityInWorld(entityItem);
                 }
                 nbt.setInteger("loaded", 0);
             }
 
         }
-        return par1ItemStack;
+        return self;
 
     }
 
