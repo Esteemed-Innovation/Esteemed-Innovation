@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -37,6 +38,8 @@ public class PhobicCoatingHandler {
         }
     }
 
+    private boolean isJumping = false;
+
     @SubscribeEvent
     public void walkOnFluid(TickEvent.PlayerTickEvent event) {
         EntityPlayer entity = event.player;
@@ -53,12 +56,15 @@ public class PhobicCoatingHandler {
         int y = MathHelper.floor_double(entity.boundingBox.minY - 0.11F);
         int z = MathHelper.floor_double(entity.posZ);
         Block blockUnder = entity.worldObj.getBlock(x, y, z);
+        if (event.side == Side.CLIENT) {
+            isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
+        }
 
         if (canHydro) {
             if (blockUnder == Blocks.water || blockUnder == Blocks.flowing_water) {
                 entity.fallDistance = 0;
 
-                if (Minecraft.getMinecraft().gameSettings.keyBindJump.isPressed()) {
+                if (isJumping) {
                     entity.motionY = 0.5D;
                 } else {
                     entity.motionY = 0;
