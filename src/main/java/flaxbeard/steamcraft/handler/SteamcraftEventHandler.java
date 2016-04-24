@@ -1897,7 +1897,7 @@ public class SteamcraftEventHandler {
             if (upgrade != null) {
                 String mat = ItemDrillHeadUpgrade.getMyMaterial(upgrade);
                 int harvestLevel = DrillHeadMaterial.materials.get(mat).harvestLevel;
-                if (harvestLevel > block.getHarvestLevel(meta)) {
+                if (harvestLevel >= block.getHarvestLevel(meta)) {
                     block.harvestBlock(world, player, x, y, z, meta);
                     world.setBlockToAir(x, y, z);
                 } else {
