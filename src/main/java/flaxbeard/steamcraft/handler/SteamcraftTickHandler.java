@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.ClientProxy;
+import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamCell;
@@ -58,21 +59,23 @@ public class SteamcraftTickHandler {
         if (!isServer) {
             this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
         }
-        ticksSinceLastCellFill++;
-        if (BaublesIntegration.checkForSteamCellFiller(player)) {
-            if (ticksSinceLastCellFill >= 10) {
-                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-                    ItemStack item = player.inventory.getStackInSlot(i);
-                    if (item != null && item.getItem() instanceof ItemSteamCell &&
-                      ItemSteamCell.chargeItems(player, false)) {
-                        player.inventory.decrStackSize(i, 1);
-                        ticksSinceLastCellFill = 0;
-                        break;
+        if (CrossMod.BAUBLES) {
+            ticksSinceLastCellFill++;
+            if (BaublesIntegration.checkForSteamCellFiller(player)) {
+                if (ticksSinceLastCellFill >= 10) {
+                    for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+                        ItemStack item = player.inventory.getStackInSlot(i);
+                        if (item != null && item.getItem() instanceof ItemSteamCell &&
+                          ItemSteamCell.chargeItems(player, false)) {
+                            player.inventory.decrStackSize(i, 1);
+                            ticksSinceLastCellFill = 0;
+                            break;
+                        }
                     }
                 }
+            } else {
+                ticksSinceLastCellFill = -40;
             }
-        } else {
-            ticksSinceLastCellFill = -40;
         }
         if (isJumping) {
             if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
