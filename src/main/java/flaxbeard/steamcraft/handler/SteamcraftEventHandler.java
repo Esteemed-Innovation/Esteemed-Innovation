@@ -2538,7 +2538,6 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void handlePainfulFrequencies(AnimalTradeEvent event) {
         EntityLiving entity = event.salesperson;
         NBTTagCompound nbt = entity.getEntityData();
@@ -2548,6 +2547,7 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void ignoreChatMessage(ClientChatReceivedEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
