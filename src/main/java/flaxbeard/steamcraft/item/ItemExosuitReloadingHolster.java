@@ -6,7 +6,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ModelReloadingHolster;
 
 public class ItemExosuitReloadingHolster extends ItemExosuitUpgrade {
     public ItemExosuitReloadingHolster() {
-        super(ExosuitSlot.legsHips, "", null, 0);
+        super(ExosuitSlot.LEGS_HIPS, "", null, 0);
     }
 
     @Override

@@ -407,18 +407,18 @@ public class SteamcraftItems {
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
             if (Config.enableRebreather) {
-                rebreather = new ItemExosuitUpgrade(ExosuitSlot.headHelm, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
+                rebreather = new ItemExosuitUpgrade(ExosuitSlot.HEAD_HELM, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
                 GameRegistry.registerItem(rebreather, "rebreather");
             }
             if (Config.enableHydrophobic) {
-                coatingsHydrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                coatingsHydrophobic = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "", null, 0)
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:coatingsHydrophobic")
                   .setTextureName("steamcraft:coatingsHydrophobic");
                 GameRegistry.registerItem(coatingsHydrophobic, "coatingsHydrophobic");
             }
             if (Config.enablePyrophobic) {
-                coatingsPyrophobic = new ItemExosuitUpgrade(ExosuitSlot.bootsTop, "", null, 0)
+                coatingsPyrophobic = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "", null, 0)
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:coatingsPyrophobic")
                   .setTextureName("steamcraft:coatingsPyrophobic");
@@ -432,7 +432,7 @@ public class SteamcraftItems {
                 GameRegistry.registerItem(anchorHeels, "anchorHeels");
             }
             if (Config.enablePistonPush) {
-                pistonPush = new ItemExosuitUpgrade(ExosuitSlot.bodyHand, "", null, 0)
+                pistonPush = new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, "", null, 0)
                   .setCreativeTab(Steamcraft.tab)
                   .setUnlocalizedName("steamcraft:pistonPush")
                   .setTextureName("steamcraft:pistonPush");

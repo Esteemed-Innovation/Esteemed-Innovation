@@ -6,7 +6,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ModelFrequencyShifter;
 
 public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
     public ItemExosuitFrequencyShifter() {
-        super(ExosuitSlot.headHelm, "", null, 0);
+        super(ExosuitSlot.HEAD_HELM, "", null, 0);
     }
 
     @Override
