@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -57,6 +58,9 @@ public class SteamcraftItems {
     public static Item wrench;
     public static Item smashedOre;
     public static Item canister;
+    public static Item steamcellEmpty;
+    public static Item steamcellFull;
+    public static Item steamcellBauble;
 
     // molds
     public static Item blankMold;
@@ -118,6 +122,35 @@ public class SteamcraftItems {
     public static Item steamAxe;
     public static Item steamShovel;
 
+    // steam tool upgrades
+    // drill
+    public static Item bigDrill;
+    public static Item battleDrill;
+    public static Item stoneGrinder;
+    public static Item preciseCuttingHead;
+    public static Item internalProcessingUnit;
+    public static Item fortuneUpgrade;
+    public static Item drillHead;
+    public static Item thermalDrill;
+    public static Item chargePlacer;
+
+    // axe
+    public static Item leafBlower;
+    public static Item treeFeller;
+    public static Item chainsaw;
+    public static Item forestFire;
+
+    // shovel
+    public static Item cultivator;
+    public static Item rotaryBlades;
+    public static Item sifter;
+    public static Item backhoe;
+
+    // core
+    public static Item theVoid;
+    public static Item autosmelting;
+    public static Item overclocker;
+
     // food
     public static Item steamedPorkchop;
     public static Item steamedFish;
@@ -164,6 +197,21 @@ public class SteamcraftItems {
                 survivalist = new Item().setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:survivalist").setTextureName("steamcraft:toolkit").setMaxStackSize(1);
             }
             GameRegistry.registerItem(survivalist, "survivalist");
+        }
+
+        if (Config.enableSteamCell) {
+            steamcellEmpty = new Item().setCreativeTab(Steamcraft.tab)
+              .setUnlocalizedName("steamcraft:steamcellEmpty")
+              .setTextureName("steamcraft:steamcellEmpty");
+            steamcellFull = new ItemSteamCell().setCreativeTab(Steamcraft.tab)
+              .setUnlocalizedName("steamcraft:steamcellFull")
+              .setTextureName("steamcraft:steamcellFull");
+            GameRegistry.registerItem(steamcellEmpty, "steamcellEmpty");
+            GameRegistry.registerItem(steamcellFull, "steamcellFull");
+            if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+                steamcellBauble = BaublesIntegration.getSteamCellFiller();
+                GameRegistry.registerItem(steamcellBauble, "steamcellFiller");
+            }
         }
 
         wrench = new ItemWrench().setUnlocalizedName("steamcraft:wrench").setTextureName("steamcraft:wrench").setCreativeTab(Steamcraft.tab);
@@ -549,6 +597,150 @@ public class SteamcraftItems {
 
             steamShovel = new ItemSteamShovel().setUnlocalizedName("steamcraft:steamShovel").setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(steamShovel, "steamShovel");
+            registerSteamToolUpgrades();
+        }
+    }
+
+    private static void registerSteamToolUpgrades() {
+        // General core!
+        if (Config.enableTheVoid) {
+            theVoid = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
+              "steamcraft:toolUpgrades/void", null, 0)
+              .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(theVoid, "theVoid");
+        }
+
+        if (Config.enableAutosmelting) {
+            autosmelting = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
+              "steamcraft:toolUpgrades/furnace", null, 0)
+              .setUnlocalizedName("steamcraft:autosmelting").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(autosmelting, "autosmelting");
+        }
+
+        if (Config.enableOverclocker) {
+            overclocker = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
+              "steamcraft:toolUpgrades/overclocker", null, 0)
+              .setUnlocalizedName("steamcraft:overclocker").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(overclocker, "overclocker");
+        }
+
+        // Drill!
+        if (Config.enableBigDrill) {
+            bigDrill = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/drillBig", null, 1)
+              .setUnlocalizedName("steamcraft:bigDrill").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(bigDrill, "bigDrill");
+        }
+
+        if (Config.enableBattleDrill) {
+            battleDrill = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/combatdrill", null, 1)
+              .setUnlocalizedName("steamcraft:battleDrill").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(battleDrill, "battleDrill");
+        }
+
+        if (Config.enableStoneGrinder) {
+            stoneGrinder = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/grinder", null, 1)
+              .setUnlocalizedName("steamcraft:stoneGrinder").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(stoneGrinder, "stoneGrinder");
+        }
+
+        if (Config.enablePreciseCuttingHead) {
+            preciseCuttingHead = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/preciseCuttingHead", null, 1)
+              .setUnlocalizedName("steamcraft:preciseCuttingHead").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(preciseCuttingHead, "preciseCuttingHead");
+        }
+
+        if (Config.enableThermalDrill) {
+            thermalDrill = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/thermalDrill", null, 1)
+              .setUnlocalizedName("steamcraft:thermalDrill").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(thermalDrill, "thermalDrill");
+        }
+
+        if (Config.enableFortune) {
+            fortuneUpgrade = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/fortunedrill", null, 1)
+              .setUnlocalizedName("steamcraft:drillFortune").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(fortuneUpgrade, "drillFortune");
+        }
+
+        if (Config.enableChargePlacer) {
+            chargePlacer = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD,
+              "steamcraft:toolUpgrades/chargePlacer", null, 1)
+              .setUnlocalizedName("steamcraft:chargePlacer").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(chargePlacer, "chargePlacer");
+        }
+
+        drillHead = new ItemDrillHeadUpgrade().setUnlocalizedName("steamcraft:drillHead")
+          .setCreativeTab(Steamcraft.tabTools);
+        GameRegistry.registerItem(drillHead, "drillHead");
+
+        if (Config.enableInternalProcessingUnit) {
+            internalProcessingUnit = new ItemSteamToolUpgrade(SteamToolSlot.DRILL_CORE,
+              "steamcraft:toolUpgrades/drillProcessor", null, 0)
+              .setUnlocalizedName("steamcraft:internalProcessor").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(internalProcessingUnit, "internalProcessor");
+        }
+
+        // Saw!
+        if (Config.enableLeafBlower) {
+            leafBlower = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
+              "steamcraft:toolUpgrades/axeBlower", null, 1)
+              .setUnlocalizedName("steamcraft:leafBlower").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(leafBlower, "leafBlower");
+        }
+
+        if (Config.enableTreeFeller) {
+            treeFeller = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
+              "steamcraft:toolUpgrades/timberHead", null, 1)
+              .setUnlocalizedName("steamcraft:feller").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(treeFeller, "feller");
+        }
+
+        if (Config.enableChainsaw) {
+            chainsaw = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
+              "steamcraft:toolUpgrades/chainAxe", null, 1)
+              .setUnlocalizedName("steamcraft:chainsaw").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(chainsaw, "chainsaw");
+        }
+
+        if (Config.enableForestFire) {
+            forestFire = new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD,
+              "steamcraft:toolUpgrades/fireAxe", null, 1)
+              .setUnlocalizedName("steamcraft:forestFire").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(forestFire, "forestFire");
+        }
+
+        // Shovel!
+        if (Config.enableCultivator) {
+            cultivator = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
+              "steamcraft:toolUpgrades/cultivatorHead", null, 1)
+              .setUnlocalizedName("steamcraft:cultivator").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(cultivator, "cultivator");
+        }
+
+        if (Config.enableRotaryBlades) {
+            rotaryBlades = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
+              "steamcraft:toolUpgrades/rotaryShovel", null, 1)
+              .setUnlocalizedName("steamcraft:rotaryBlades").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(rotaryBlades, "rotaryBlades");
+        }
+
+        if (Config.enableSifter) {
+            sifter = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_CORE,
+              "steamcraft:toolUpgrades/sifterShovel", null, 0)
+              .setUnlocalizedName("steamcraft:sifter").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(sifter, "sifter");
+        }
+
+        if (Config.enableBackhoe) {
+            backhoe = new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD,
+              "steamcraft:toolUpgrades/backhoeShovel", null, 1)
+              .setUnlocalizedName("steamcraft:backhoe").setCreativeTab(Steamcraft.tabTools);
+            GameRegistry.registerItem(backhoe, "backhoe");
         }
     }
 

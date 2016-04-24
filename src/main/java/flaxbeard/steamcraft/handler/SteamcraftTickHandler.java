@@ -8,23 +8,32 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.ClientProxy;
+import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.ItemSteamCell;
 import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.input.Mouse;
+import net.minecraft.world.WorldServer;
+import org.apache.commons.lang3.tuple.MutablePair;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class SteamcraftTickHandler {
     private static float zoom = 0.0F;
@@ -37,6 +46,7 @@ public class SteamcraftTickHandler {
     private int zoomSettingOn = 0;
     private boolean lastPressingKey = false;
     private boolean isJumping = false;
+    private int ticksSinceLastCellFill = 0;
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -47,6 +57,22 @@ public class SteamcraftTickHandler {
         ItemStack boots = player.getCurrentArmor(0);
         if (!isServer) {
             this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
+        }
+        ticksSinceLastCellFill++;
+        if (BaublesIntegration.checkForSteamCellFiller(player)) {
+            if (ticksSinceLastCellFill >= 10) {
+                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+                    ItemStack item = player.inventory.getStackInSlot(i);
+                    if (item != null && item.getItem() instanceof ItemSteamCell &&
+                      ItemSteamCell.chargeItems(player, false)) {
+                        player.inventory.decrStackSize(i, 1);
+                        ticksSinceLastCellFill = 0;
+                        break;
+                    }
+                }
+            }
+        } else {
+            ticksSinceLastCellFill = -40;
         }
         if (isJumping) {
             if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
@@ -278,6 +304,56 @@ public class SteamcraftTickHandler {
                     }
                 }
             }
+        }
+    }
+
+    private int lavaTicks = 0;
+    private int chargeTicks = 0;
+
+    @SubscribeEvent
+    public void deleteLavaAndExplodeCharges(TickEvent.WorldTickEvent event) {
+        if (event.side.isClient()) {
+            return;
+        }
+        lavaTicks++;
+        chargeTicks++;
+
+        for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavaBlocks.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<MutablePair<Integer, Tuple3>, Integer> entry = it.next();
+            MutablePair<Integer, Tuple3> dimCoords = entry.getKey();
+            Tuple3 coords = dimCoords.getRight();
+            int dim = dimCoords.getLeft();
+            int waitTicks = entry.getValue();
+            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
+            if (lavaTicks == waitTicks) {
+                worldServer.setBlockToAir((int) coords.first, (int) coords.second, (int) coords.third);
+                it.remove();
+            }
+        }
+
+        for (Iterator<Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer>> it = SteamcraftEventHandler.charges.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer> entry = it.next();
+            MutablePair<EntityPlayer, Tuple3> playerCoords = entry.getKey();
+            Tuple3 coords = playerCoords.getRight();
+            EntityPlayer player = playerCoords.getLeft();
+            int dim = player.dimension;
+            int waitTicks = entry.getValue();
+            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
+            if (chargeTicks >= waitTicks) {
+                // Explosion is half the size of a TNT explosion.
+                double x = (double) (Integer) coords.first;
+                double y = (double) (Integer) coords.second;
+                double z = (double) (Integer) coords.third;
+                worldServer.createExplosion(player, x, y, z, 2.0F, true);
+                it.remove();
+            }
+        }
+
+        if (lavaTicks >= 30) {
+            lavaTicks = 0;
+        }
+        if (chargeTicks >= SteamcraftEventHandler.HARD_CHARGE_CAP) {
+            chargeTicks = 0;
         }
     }
 

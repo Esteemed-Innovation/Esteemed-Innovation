@@ -8,15 +8,18 @@ import flaxbeard.steamcraft.integration.BotaniaIntegration;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
 import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class SteamcraftBook {
     //Here's a secret for all of you addon devs: Setting the category of a research to the name of an existing research, with a ! at the beginning, will append to that research instead of making its own.
@@ -190,11 +193,6 @@ public class SteamcraftBook {
         if (Config.enableWrench) {
             SteamcraftRegistry.addResearch("research.Wrench.name", "category.Gadgets.name", new BookPageItem("research.Wrench.name", "research.Wrench.0", new ItemStack(SteamcraftItems.wrench)), new BookPageText("research.Wrench.name", "research.Wrench.1"), new BookPageCrafting("", "wrench1", "wrench2"));
         }
-        if (Config.enableSteamTools) {
-            SteamcraftRegistry.addResearch("research.SteamTools.name", "category.Gadgets.name", new BookPageItem("research.SteamTools.name", "research.SteamTools.0", new ItemStack(SteamcraftItems.steamDrill), new ItemStack(SteamcraftItems.steamAxe), new ItemStack(SteamcraftItems.steamShovel)), new BookPageText("research.SteamTools.name", "research.SteamTools.1"), new BookPageCrafting("", "drill1", "drill2", "drill3", "drill4"),
-                    new BookPageCrafting("", "axe1", "axe2", "axe3", "axe4"),
-                    new BookPageCrafting("", "shovel1", "shovel2", "shovel3", "shovel4"));
-        }
         if (Config.enableSpyglass) {
             SteamcraftRegistry.addResearch("research.Spyglass.name", "category.Gadgets.name", new BookPageItem("research.Spyglass.name", "research.Spyglass.0", new ItemStack(SteamcraftItems.spyglass)), new BookPageCrafting("", "spyglass1", "spyglass2"));
         }
@@ -220,6 +218,215 @@ public class SteamcraftBook {
         }
         if (Config.enableGoggles) {
             SteamcraftRegistry.addResearch("research.Goggles.name", "category.Gadgets.name", new BookPageItem("research.Goggles.name", "research.Goggles.0", new ItemStack(SteamcraftItems.goggles), new ItemStack(SteamcraftItems.monacle)), new BookPageCrafting("", "goggles1", "goggles2"), new BookPageCrafting("", "monocle1", "monocle2"));
+        }
+
+        if (Config.enableSteamCell) {
+            SteamcraftRegistry.addResearch("research.SteamCell.name", "category.Gadgets.name",
+              new BookPageItem("research.SteamCell.name", "research.SteamCell.0",
+                new ItemStack(SteamcraftItems.steamcellEmpty),
+                new ItemStack(SteamcraftItems.steamcellFull)),
+              new BookPageCrafting("", "steamcell"));
+        }
+
+        if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+            SteamcraftRegistry.addResearch("research.SteamCellFiller.name", "category.Gadgets.name",
+              new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0",
+                new ItemStack(SteamcraftItems.steamcellBauble)),
+              new BookPageCrafting("", "steamcellFiller"));
+        }
+    }
+
+    public static void registerSteamTools() {
+        if (!Config.enableSteamTools) {
+            return;
+        }
+        SteamcraftRegistry.addCategory("category.SteamTools.name");
+        SteamcraftRegistry.addResearch("research.SteamTools.name", "category.SteamTools.name",
+          new BookPageItem("research.SteamTools.name", "research.SteamTools.0",
+            new ItemStack(SteamcraftItems.steamDrill),
+            new ItemStack(SteamcraftItems.steamAxe),
+            new ItemStack(SteamcraftItems.steamShovel)),
+          new BookPageText("research.SteamTools.name", "research.SteamTools.1"),
+          new BookPageCrafting("", "drill1", "drill2", "drill3", "drill4"),
+          new BookPageCrafting("", "axe1", "axe2", "axe3", "axe4"),
+          new BookPageCrafting("", "shovel1", "shovel2", "shovel3", "shovel4")
+        );
+
+        SteamcraftRegistry.addResearch("research.SteamDrillHead.name", "category.SteamTools.name");
+
+        ArrayList<String> drillMatsArray = new ArrayList<>();
+        for (DrillHeadMaterial material : DrillHeadMaterial.materials.values()) {
+            if (StatCollector.canTranslate(material.locName)) {
+                drillMatsArray.add(StatCollector.translateToLocal(material.locName));
+            } else {
+                drillMatsArray.add(material.materialName);
+            }
+        }
+
+        StringBuilder drillMats = new StringBuilder();
+        String delimiter = StatCollector.translateToLocal("steamcraft.book.listjoiner");
+        Iterator iter = drillMatsArray.iterator();
+        while (iter.hasNext()) {
+            drillMats.append(iter.next());
+            if (iter.hasNext()) {
+                drillMats.append(delimiter);
+            }
+        }
+
+        SteamcraftRegistry.addResearch("research.DrillHeads.name", "!research.SteamDrillHead.name",
+          new BookPageItem("research.DrillHeads.name", "research.DrillHeads.0",
+            new Object[] { drillMats.toString() }, true,
+            new ItemStack(SteamcraftItems.drillHead)), new BookPage(""));
+
+        if (Config.enableFortune) {
+            SteamcraftRegistry.addResearch("research.MultiplicativeResonator.name",
+              "!research.SteamDrillHead.name",
+              new BookPageItem("research.MultiplicativeResonator.name",
+                "research.MultiplicativeResonator.0", true,
+                new ItemStack(SteamcraftItems.fortuneUpgrade)),
+              new BookPageCrafting("", "multiplicativeResonator"));
+        }
+
+        if (Config.enableBigDrill) {
+            SteamcraftRegistry.addResearch("research.BigDrill.name",
+              "!research.SteamDrillHead.name",
+              new BookPageItem("research.BigDrill.name", "research.BigDrill.0", true,
+                new ItemStack(SteamcraftItems.bigDrill)),
+              new BookPageCrafting("", "bigDrill"));
+        }
+
+        if (Config.enableBattleDrill) {
+            SteamcraftRegistry.addResearch("research.BattleDrill.name",
+              "!research.SteamDrillHead.name",
+              new BookPageItem("research.BattleDrill.name", "research.BattleDrill.0", true,
+                new ItemStack(SteamcraftItems.battleDrill)),
+              new BookPageCrafting("", "battleDrill"));
+        }
+
+        if (Config.enablePreciseCuttingHead) {
+            SteamcraftRegistry.addResearch("research.PreciseCuttingHead.name",
+              "!research.SteamDrillHead.name",
+              new BookPageItem("research.PreciseCuttingHead.name",
+                "research.PreciseCuttingHead.0", true, new ItemStack(SteamcraftItems.preciseCuttingHead)),
+              new BookPageCrafting("", "preciseCuttingHead"));
+        }
+
+        if (Config.enableStoneGrinder) {
+            SteamcraftRegistry.addResearch("research.StoneGrinder.name",
+              "!research.SteamDrillHead.name",
+              new BookPageItem("research.StoneGrinder.name", "research.StoneGrinder.0", true,
+                new ItemStack(SteamcraftItems.stoneGrinder)),
+              new BookPageCrafting("", "stoneGrinder"));
+        }
+
+        if (Config.enableThermalDrill) {
+            SteamcraftRegistry.addResearch("research.ThermalDrill.name",
+              "!research.SteamDrillHead.name", new BookPageItem("research.ThermalDrill.name",
+                "research.ThermalDrill.0", true, new ItemStack(SteamcraftItems.thermalDrill)),
+              new BookPageCrafting("", "thermalDrill"));
+        }
+
+        if (Config.enableChargePlacer) {
+            SteamcraftRegistry.addResearch("research.CalamityInjector.name",
+              "!research.SteamDrillHead.name", new BookPageItem("research.CalamityInjector.name",
+                "research.CalamityInjector.0", true, new ItemStack(SteamcraftItems.chargePlacer)),
+              new BookPageCrafting("", "chargePlacer"));
+        }
+
+        SteamcraftRegistry.addResearch("research.SteamDrillCore.name", "category.SteamTools.name");
+
+        if (Config.enableInternalProcessingUnit) {
+            SteamcraftRegistry.addResearch("research.InternalProcessingUnit.name",
+              "!research.SteamDrillCore.name", new BookPageItem(
+                "research.InternalProcessingUnit.name", "research.InternalProcessingUnit.0", true,
+                new ItemStack(SteamcraftItems.internalProcessingUnit)),
+              new BookPageCrafting("", "internalProcessingUnit"));
+        }
+
+        SteamcraftRegistry.addResearch("research.SteamSawHead.name", "category.SteamTools.name");
+
+        if (Config.enableForestFire) {
+            SteamcraftRegistry.addResearch("research.ForestFire.name",
+              "!research.SteamSawHead.name", new BookPageItem("research.ForestFire.name",
+                "research.ForestFire.0", true, new ItemStack(SteamcraftItems.forestFire)),
+              new BookPageCrafting("", "forestFire"));
+        }
+
+        if (Config.enableTreeFeller) {
+            SteamcraftRegistry.addResearch("research.TimberChain.name",
+              "!research.SteamSawHead.name", new BookPageItem("research.TimberChain.name",
+                "research.TimberChain.0", true, new ItemStack(SteamcraftItems.treeFeller)),
+              new BookPageCrafting("", "treeFeller"));
+        }
+
+        if (Config.enableLeafBlower) {
+            SteamcraftRegistry.addResearch("research.LeafBlower.name",
+              "!research.SteamSawHead.name", new BookPageItem("research.LeafBlower.name",
+                "research.LeafBlower.0", true, new ItemStack(SteamcraftItems.leafBlower)),
+              new BookPageCrafting("", "leafBlower"));
+        }
+
+        if (Config.enableChainsaw) {
+            SteamcraftRegistry.addResearch("research.Chainsaw.name", "!research.SteamSawHead.name",
+              new BookPageItem("research.Chainsaw.name", "research.Chainsaw.0", true,
+                new ItemStack(SteamcraftItems.chainsaw)), new BookPageCrafting("", "chainsaw"));
+        }
+
+        SteamcraftRegistry.addResearch("research.SteamSawCore.name", "category.SteamTools.name");
+
+        SteamcraftRegistry.addResearch("research.SteamShovelHead.name", "category.SteamTools.name");
+
+        if (Config.enableBackhoe) {
+            SteamcraftRegistry.addResearch("research.Backhoe.name",
+              "!research.SteamShovelHead.name", new BookPageItem("research.Backhoe.name",
+                "research.Backhoe.0", true, new ItemStack(SteamcraftItems.backhoe)),
+              new BookPageCrafting("", "backhoe"));
+        }
+
+        if (Config.enableCultivator) {
+            SteamcraftRegistry.addResearch("research.Cultivator.name",
+              "!research.SteamShovelHead.name", new BookPageItem("research.Cultivator.name",
+                "research.Cultivator.0", true, new ItemStack(SteamcraftItems.cultivator)),
+              new BookPageCrafting("", "cultivator"));
+        }
+
+        if (Config.enableRotaryBlades) {
+            SteamcraftRegistry.addResearch("research.RotaryBlades.name",
+              "!research.SteamShovelHead.name", new BookPageItem("research.RotaryBlades.name",
+                "research.RotaryBlades.0", true, new ItemStack(SteamcraftItems.rotaryBlades)),
+              new BookPageCrafting("", "rotaryBlades"));
+        }
+
+        SteamcraftRegistry.addResearch("research.SteamShovelCore.name", "category.SteamTools.name");
+
+        if (Config.enableSifter) {
+            SteamcraftRegistry.addResearch("research.Sifter.name", "!research.SteamShovelCore.name",
+              new BookPageItem("research.Sifter.name", "research.Sifter.0", true,
+                new ItemStack(SteamcraftItems.sifter)), new BookPageCrafting("", "sifter"));
+        }
+
+        SteamcraftRegistry.addResearch("research.SteamUniversalCore.name", "category.SteamTools.name");
+
+        if (Config.enableOverclocker) {
+            SteamcraftRegistry.addResearch("research.Overclocker.name",
+              "!research.SteamUniversalCore.name", new BookPageItem("research.Overclocker.name",
+                "research.Overclocker.0", true, new ItemStack(SteamcraftItems.overclocker)),
+              new BookPageCrafting("", "overclocker"));
+        }
+
+        if (Config.enableAutosmelting) {
+            SteamcraftRegistry.addResearch("research.ExothermicProjector.name",
+              "!research.SteamUniversalCore.name",
+              new BookPageItem("research.ExothermicProjector.name",
+                "research.ExothermicProjector.0", true, new ItemStack(SteamcraftItems.autosmelting)),
+              new BookPageCrafting("", "autosmelting"));
+        }
+
+        if (Config.enableTheVoid) {
+            SteamcraftRegistry.addResearch("research.TheVoid.name",
+              "!research.SteamUniversalCore.name", new BookPageItem("research.TheVoid.name",
+                "research.TheVoid.0", true, new ItemStack(SteamcraftItems.theVoid)),
+              new BookPageCrafting("", "theVoid"));
         }
     }
 

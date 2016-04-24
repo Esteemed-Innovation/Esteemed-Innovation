@@ -1,11 +1,15 @@
 package flaxbeard.steamcraft.api;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.book.ICraftingPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
+import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
+import flaxbeard.steamcraft.api.tool.SteamToolSlot;
+import flaxbeard.steamcraft.item.tool.steam.ItemSteamToolUpgrade;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -13,10 +17,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class SteamcraftRegistry {

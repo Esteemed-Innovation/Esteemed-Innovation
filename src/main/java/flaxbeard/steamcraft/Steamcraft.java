@@ -2,6 +2,7 @@ package flaxbeard.steamcraft;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -30,6 +31,8 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
+import flaxbeard.steamcraft.misc.DrillHeadMaterial;
+import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.network.*;
 import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
@@ -39,16 +42,19 @@ import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 @Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
-    
     @Instance("Steamcraft")
     public static Steamcraft instance;
 
@@ -82,6 +88,8 @@ public class Steamcraft {
     public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
     public static String MERCHANT_PROPERTY_ID = "FSPMerchantProperties";
 
+    public static String CONFIG_DIR;
+
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
 
@@ -93,6 +101,7 @@ public class Steamcraft {
     public void preInit(FMLPreInitializationEvent event) {
         Config.load(event);
 
+        CONFIG_DIR = event.getModConfigurationDirectory().toString();
         tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
         tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 
@@ -206,6 +215,22 @@ public class Steamcraft {
         SteamcraftRecipes.registerDustLiquids();
         CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
+
+        long start = System.currentTimeMillis();
+        String[] ores = OreDictionary.getOreNames();
+        for (String s : ores) {
+            ArrayList<ItemStack> stacks = OreDictionary.getOres(s);
+            for (ItemStack stack : stacks) {
+                OreDictHelper.initializeOreDicts(s, stack);
+            }
+        }
+        long end = System.currentTimeMillis();
+        int time = (int) (end - start);
+        FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
+
+        DrillHeadMaterial.registerDefaults();
+        SteamcraftRecipes.registerSteamToolUpgrades();
+        SteamcraftBook.registerSteamTools();
     }
 
 

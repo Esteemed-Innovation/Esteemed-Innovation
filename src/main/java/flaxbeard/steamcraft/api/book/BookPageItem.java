@@ -10,12 +10,16 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 public class BookPageItem extends BookPageText {
     public static String lastViewing = "";
     public static int abdoName = 0;
     private ItemStack[] item;
     private String name;
     private String text;
+    private Object[] format = null;
 
     public BookPageItem(String string, String string2, ItemStack... is) {
         super(string, string2);
@@ -29,6 +33,14 @@ public class BookPageItem extends BookPageText {
         item = is;
         text = string2;
         name = string;
+    }
+
+    public BookPageItem(String name, String text, Object[] format, boolean title, ItemStack... is) {
+        super(name, text, title);
+        this.item = is;
+        this.text = text;
+        this.name = name;
+        this.format = format;
     }
 
     public static String doLizbeth(String str) {
@@ -69,7 +81,7 @@ public class BookPageItem extends BookPageText {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
         EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-        s = I18n.format(text);
+        s = this.format == null ? I18n.format(text) : I18n.format(text, this.format);
         String stringLeft = s;
         while (stringLeft.contains("<br>")) {
             String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));

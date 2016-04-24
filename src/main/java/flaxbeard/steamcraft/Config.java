@@ -30,6 +30,8 @@ public class Config {
     public static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
     public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
     public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
+    public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
+    public static final int STEAMCELL_CAPACITY_DEFAULT = 100;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -102,6 +104,7 @@ public class Config {
     public static int pistonPushConsumption;
     public static int reloadingConsumption;
     public static int dragonRoarConsumption;
+    public static int steamCellCapacity;
     public static String musketDamage;
     public static String pistolDamage;
     public static String blunderbussDamage;
@@ -188,6 +191,38 @@ public class Config {
     public static boolean enableReloadingHolsters;
     public static boolean enableFrequencyShifter;
     public static boolean enableDragonRoar;
+    public static boolean enableSteamCell;
+    public static boolean enableSteamCellBauble;
+
+    // steam tool upgrades
+    // core
+    public static boolean enableTheVoid;
+    public static boolean enableAutosmelting;
+    public static boolean enableOverclocker;
+    public static boolean enableFortune;
+
+    // drill
+    public static boolean enableBigDrill;
+    public static boolean enableBattleDrill;
+    public static boolean enableStoneGrinder;
+    public static boolean enablePreciseCuttingHead;
+    public static boolean enableInternalProcessingUnit;
+    public static boolean enableThermalDrill;
+    public static boolean enableChargePlacer;
+    public static int battleDrillConsumption;
+
+    // saw
+    public static boolean enableLeafBlower;
+    public static boolean enableTreeFeller;
+    public static boolean enableChainsaw;
+    public static boolean enableForestFire;
+
+    // shovel
+    public static boolean enableCultivator;
+    public static boolean enableRotaryBlades;
+    public static boolean enableSifter;
+    public static boolean enableBackhoe;
+    public static int backhoeRange;
 
     //plates
     public static boolean enableCopperPlate;
@@ -388,6 +423,35 @@ public class Config {
         steamToolConsumptionAxe = config.get("Items", "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionDrill = config.get("Items", "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionShovel = config.get("Items", "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        enableSteamCell = config.get("Items", "Enable Steam Cell", true).getBoolean(true);
+        steamCellCapacity = config.get("Items", "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
+        enableSteamCellBauble = config.get("Items", "Enable Steam Cell Bauble", true).getBoolean(true);
+
+        // STEAM TOOL UPGRADES
+        enableBigDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean(true);
+        enableLeafBlower = config.get("Steam Tool Upgrades", "Enable Steam Axe's Leaf Blower upgrade", true).getBoolean(true);
+        enableCultivator = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Cultivator upgrade", true).getBoolean(true);
+        enableRotaryBlades = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean(true);
+        enableBattleDrill = config.get("Exosuit Upgrades", "Enable BattleDrill", true).getBoolean(true);
+        enableSifter = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Sifter upgrade", true).getBoolean(true);
+        enableStoneGrinder = config.get("Steam Tool Upgrades", "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean(true);
+        enableBackhoe = config.get("Steam Tool Upgrades", "Enable Steam Shovel's Backhoe upgrade", true).getBoolean(true);
+        enableTheVoid = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade the Void", true).getBoolean(true);
+        enableAutosmelting = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade autosmelting", true).getBoolean(true);
+        enableOverclocker = config.get("Steam Tool Upgrades", "Enable Steam Tool core upgrade overclocker", true).getBoolean(true);
+        enablePreciseCuttingHead = config.get("Steam Tool Upgrades", "Enable Steam Drill's Precise Cutting Head", true).getBoolean(true);
+        enableInternalProcessingUnit = config.get("Steam Tool Upgrades", "Enable Steam Drill's Internal Processing Unit", true).getBoolean(true);
+        enableTreeFeller = config.get("Steam Tool Upgrades", "Enable Steam Axe's Tree Felling upgrade", true).getBoolean(true);
+        enableChainsaw = config.get("Steam Tool Upgrades", "Enable Steam Axe's Chainsaw upgrade", true).getBoolean(true);
+        enableFortune = config.get("Steam Tool Upgrades", "Enable Steam Drill's fortune upgrade", true).getBoolean(true);
+        enableForestFire = config.get("Steam Tool Upgrades", "Enable Steam Axe's Forest Fire upgrade", true).getBoolean(true);
+        enableThermalDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Thermal Drill upgrade", true).getBoolean(true);
+        enableChargePlacer = config.get("Steam Tool Upgrades", "Enable Steam Drill's Charge Placer upgrade", true).getBoolean(true);
+
+        backhoeRange = config.get("Steam Tool Upgrades", "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
+        battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
+          "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
+          BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean(true);
