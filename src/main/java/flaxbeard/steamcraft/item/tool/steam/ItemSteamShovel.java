@@ -32,6 +32,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngineerable, ISteamTool {
@@ -39,6 +40,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     public IIcon[] headIcons = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
+    private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
 
     public ItemSteamShovel() {
         super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
@@ -67,9 +69,15 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
-    public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
+    public boolean onBlockDestroyed(ItemStack stack, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
+        MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
+        nbt.setInteger("Ticks", pair.getLeft());
+        nbt.setInteger("Speed", pair.getRight());
         hasBrokenBlock = true;
+        ticksSpeed.remove(stack);
         return true;
     }
 
@@ -139,13 +147,18 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
                 ticks--;
             }
 
-            if (ticks <= 50 && speed > 0) {
-                world.playSoundAtEntity(player, "minecraft:note.bassattack", 1.0F, 1.0F);
-            }
-
             ticks = ticks % 100;
-            nbt.setInteger("Ticks", ticks);
-            nbt.setInteger("Speed", speed);
+            if (((EntityLivingBase) player).isSwingInProgress) {
+                if (ticksSpeed.containsKey(stack)) {
+                    ticksSpeed.get(stack).setLeft(ticks);
+                    ticksSpeed.get(stack).setRight(speed);
+                } else {
+                    ticksSpeed.put(stack, MutablePair.of(ticks, speed));
+                }
+            } else {
+                nbt.setInteger("Ticks", ticks);
+                nbt.setInteger("Speed", speed);
+            }
         }
     }
 

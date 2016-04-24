@@ -32,15 +32,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEngineerable, ISteamTool {
     public IIcon[] coreIcons = new IIcon[2];
     public IIcon[] headIcons = new IIcon[2];
     private boolean hasBrokenBlock = false;
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
+    private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
 
     public ItemSteamDrill() {
         super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
@@ -69,9 +68,15 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         }
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity) {
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
+        MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
+        nbt.setInteger("Ticks", pair.getLeft());
+        nbt.setInteger("Speed", pair.getRight());
         hasBrokenBlock = true;
+        ticksSpeed.remove(stack);
         return true;
     }
 
@@ -155,8 +160,17 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
             }
 
             ticks = ticks % 100;
-            nbt.setInteger("Ticks", ticks);
-            nbt.setInteger("Speed", speed);
+            if (((EntityLivingBase) player).isSwingInProgress) {
+                if (ticksSpeed.containsKey(stack)) {
+                    ticksSpeed.get(stack).setLeft(ticks);
+                    ticksSpeed.get(stack).setRight(speed);
+                } else {
+                    ticksSpeed.put(stack, MutablePair.of(ticks, speed));
+                }
+            } else {
+                nbt.setInteger("Ticks", ticks);
+                nbt.setInteger("Speed", speed);
+            }
         }
     }
 
