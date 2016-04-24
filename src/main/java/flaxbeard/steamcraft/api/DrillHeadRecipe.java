@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.api;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,8 +70,6 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 }
             }
         }
-
-        FMLLog.info("%s plates, %s others, %s nuggets, and %s ingots", numIronPlates, numOthers, numNuggets, numIngots);
 
         if (!isNetSafe(materialSafetyNet) || numIronPlates != 3) {
             return null;

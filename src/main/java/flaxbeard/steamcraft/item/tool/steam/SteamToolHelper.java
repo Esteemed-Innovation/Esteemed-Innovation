@@ -113,4 +113,23 @@ public class SteamToolHelper {
             me.stackTagCompound.getCompoundTag("upgrades").setTag(Integer.toString(slot), stc);
         }
     }
+
+    /**
+     * Checks if the ItemStack has the Speed and Ticks NBT tags. If it doesn't, it creates them
+     * and sets them to 0.
+     * @param me The ItemStack of the tool
+     * @return The NBTTagCompound of the tool.
+     */
+    public static NBTTagCompound checkNBT(ItemStack me) {
+        if (!me.hasTagCompound()) {
+            me.setTagCompound(new NBTTagCompound());
+        }
+        if (!me.getTagCompound().hasKey("Speed")) {
+            me.getTagCompound().setInteger("Speed", 0);
+        }
+        if (!me.getTagCompound().hasKey("Ticks")) {
+            me.getTagCompound().setInteger("Ticks", 0);
+        }
+        return me.getTagCompound();
+    }
 }

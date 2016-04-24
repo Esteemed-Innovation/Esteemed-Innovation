@@ -678,10 +678,10 @@ public class SteamcraftRecipes {
             BookRecipeRegistry.addRecipe("battleDrill",
               new ShapedOreRecipe(SteamcraftItems.battleDrill,
                 " s ",
-                "sps",
+                "sbs",
                 " p ",
                 's', Items.iron_sword,
-                'p', "plateSteamcraftBrass",
+                'b', "plateSteamcraftBrass",
                 'p', new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0)));
         }
 

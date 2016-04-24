@@ -31,7 +31,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.lwjgl.input.Mouse;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -319,7 +318,7 @@ public class SteamcraftTickHandler {
         lavaTicks++;
         chargeTicks++;
 
-        for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavas.entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavaBlocks.entrySet().iterator(); it.hasNext();) {
             Map.Entry<MutablePair<Integer, Tuple3>, Integer> entry = it.next();
             MutablePair<Integer, Tuple3> dimCoords = entry.getKey();
             Tuple3 coords = dimCoords.getRight();

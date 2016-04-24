@@ -1,31 +1,17 @@
 package flaxbeard.steamcraft.client.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.entity.ExtendedPropertiesPlayer;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.item.tool.steam.SteamToolHelper;
 
 public class ItemSteamToolRenderer implements IItemRenderer {
-    private final ToolRenderType type;
     private RenderItem renderItem;
 
-    public enum ToolRenderType {
-        DRILL,
-        AXE,
-        SHOVEL
-    }
-
-    public ItemSteamToolRenderer(ToolRenderType type) {
-        this.type = type;
+    public ItemSteamToolRenderer() {
         this.renderItem = new RenderItem();
     }
 
@@ -58,21 +44,7 @@ public class ItemSteamToolRenderer implements IItemRenderer {
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
 
-        int use = 0;
-        switch (this.type) {
-            case DRILL: {
-                use = ItemSteamDrill.checkNBT(item).getInteger("Speed");
-                break;
-            }
-            case AXE: {
-                use = ItemSteamAxe.checkNBT(item).getInteger("Speed");
-                break;
-            }
-            case SHOVEL: {
-                use = ItemSteamShovel.checkNBT(item).getInteger("Speed");
-                break;
-            }
-        }
+        int use = SteamToolHelper.checkNBT(item).getInteger("Speed");
 
         double health = (1000.0D - use) / 1000.0D;
         if (use > 0) {

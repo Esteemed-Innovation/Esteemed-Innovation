@@ -46,26 +46,6 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         super(EnumHelper.addToolMaterial("DRILL", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    /**
-     * Checks if the tool's NBT has been initialized. If it isn't, it creates it with the default
-     * values of Ticks 0, and Speed 0.
-     * @param stack The itemstack
-     * @return The ExtendedPropertiesPlayer instance for the player.
-     */
-    public static NBTTagCompound checkNBT(ItemStack stack) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        if (!stack.getTagCompound().hasKey("Ticks")) {
-            stack.getTagCompound().setInteger("Ticks", 0);
-        }
-        if (!stack.getTagCompound().hasKey("Speed")) {
-            stack.getTagCompound().setInteger("Speed", 0);
-        }
-
-        return stack.getTagCompound();
-    }
-
     @Override
     public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
         return true;
@@ -108,7 +88,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int which = nbt.getInteger("Ticks") > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
@@ -155,7 +135,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            NBTTagCompound nbt = checkNBT(stack);
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
             int ticks = nbt.getInteger("Ticks");
             int speed = nbt.getInteger("Speed");
 
@@ -183,7 +163,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
@@ -322,7 +302,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
 
     @Override
     public boolean isWound(ItemStack stack) {
-        return checkNBT(stack).getInteger("Speed") > 0;
+        return SteamToolHelper.checkNBT(stack).getInteger("Speed") > 0;
     }
 
     @Override

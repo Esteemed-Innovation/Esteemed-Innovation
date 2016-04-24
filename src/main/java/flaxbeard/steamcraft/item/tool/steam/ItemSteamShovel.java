@@ -44,19 +44,6 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         super(EnumHelper.addToolMaterial("SHOVEL", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static NBTTagCompound checkNBT(ItemStack stack) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        if (!stack.getTagCompound().hasKey("Ticks")) {
-            stack.getTagCompound().setInteger("Ticks", 0);
-        }
-        if (!stack.getTagCompound().hasKey("Speed")) {
-            stack.getTagCompound().setInteger("Speed", 0);
-        }
-        return stack.getTagCompound();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
@@ -99,7 +86,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int which = nbt.getInteger("Ticks") > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
@@ -133,7 +120,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            NBTTagCompound nbt = checkNBT(stack);
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
             int ticks = nbt.getInteger("Ticks");
             int speed = nbt.getInteger("Speed");
 
@@ -165,7 +152,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
@@ -302,7 +289,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
 
     @Override
     public boolean isWound(ItemStack stack) {
-        return checkNBT(stack).getInteger("Speed") > 0;
+        return SteamToolHelper.checkNBT(stack).getInteger("Speed") > 0;
     }
 
     @Override

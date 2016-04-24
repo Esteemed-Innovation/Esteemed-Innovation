@@ -35,10 +35,7 @@ import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
-import flaxbeard.steamcraft.item.tool.steam.ItemDrillHeadUpgrade;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamAxe;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamDrill;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamShovel;
+import flaxbeard.steamcraft.item.tool.steam.*;
 import flaxbeard.steamcraft.misc.FrequencyMerchant;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
@@ -75,7 +72,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.village.MerchantRecipe;
@@ -1235,27 +1231,17 @@ public class SteamcraftEventHandler {
             }
         }
 
-        /*
-        Steam Tools
-         */
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+        int speed = nbt.getInteger("Speed");
         if (heldItem instanceof ItemSteamDrill) {
-            NBTTagCompound nbt = ItemSteamDrill.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.iron_pickaxe.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
-        }
-        if (heldItem instanceof ItemSteamAxe) {
-            NBTTagCompound nbt = ItemSteamAxe.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
+        } else if (heldItem instanceof ItemSteamAxe) {
             if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
-        }
-        if (heldItem instanceof ItemSteamShovel) {
-            NBTTagCompound nbt = ItemSteamShovel.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
-
+        } else if (heldItem instanceof ItemSteamShovel) {
             if (speed > 0 && Items.diamond_shovel.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 19.0F * (speed / 3000.0F);
             }
@@ -1977,7 +1963,7 @@ public class SteamcraftEventHandler {
      * Key: Pair of Integer and Tuple3. Integer is dimension, Tuple3 are the coordinates.
      * Value: Integer, number of ticks to wait. Cannot be more than 30 or bad things will happen.
      */
-    public static HashMap<MutablePair<Integer, Tuple3>, Integer> quickLavas = new HashMap<>();
+    public static HashMap<MutablePair<Integer, Tuple3>, Integer> quickLavaBlocks = new HashMap<>();
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void placeLava(BlockEvent.HarvestDropsEvent event) {
@@ -1998,7 +1984,7 @@ public class SteamcraftEventHandler {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
             if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) && drill.isWound(equipped)) {
                 world.setBlock(x, y, z, Blocks.lava);
-                quickLavas.put(MutablePair.of(player.dimension, new Tuple3(x, y, z)), new Random().nextInt(30) + 1);
+                quickLavaBlocks.put(MutablePair.of(player.dimension, new Tuple3(x, y, z)), new Random().nextInt(30) + 1);
                 event.drops.clear();
             }
         }
@@ -2305,8 +2291,7 @@ public class SteamcraftEventHandler {
      * @return True if it is dirt or grass, else false.
      */
     private boolean isFarmable(World world, Block block, int x, int y, int z) {
-        return (block != null && !block.isAir(world, x, y, z) &&
-          (block == Blocks.dirt || block == Blocks.grass));
+        return (block != null && (block == Blocks.dirt || block == Blocks.grass));
     }
 
     @SubscribeEvent
@@ -2501,17 +2486,33 @@ public class SteamcraftEventHandler {
                             newSpeed *= 5;
                         }
                     }
+                    if (drill.hasUpgrade(equipped, SteamcraftItems.battleDrill)) {
+                        if (newSpeed == 0.0F) {
+                            newSpeed = event.originalSpeed / 1.7F;
+                        } else {
+                            newSpeed /= 1.7F;
+                        }
+                    }
                 }
             } else if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                if (axe.isWound(equipped) && axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
-                    newSpeed = event.originalSpeed / 5F;
-                }
-                if (axe.isWound(equipped) && axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
-                    if (newSpeed == 0.0F) {
-                        newSpeed = event.originalSpeed * ((hardness * 1.8F) / 12);
-                    } else {
-                        newSpeed *= (hardness * 1.8F) / 12;
+                if (axe.isWound(equipped)) {
+                    if (axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
+                        newSpeed = event.originalSpeed / 5F;
+                    }
+                    if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
+                        if (newSpeed == 0.0F) {
+                            newSpeed = event.originalSpeed * ((hardness * 1.8F) / 12);
+                        } else {
+                            newSpeed *= (hardness * 1.8F) / 12;
+                        }
+                    }
+                    if (axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
+                        if (newSpeed == 0.0F) {
+                            newSpeed = event.originalSpeed / 1.7F;
+                        } else {
+                            newSpeed /= 1.7F;
+                        }
                     }
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {

@@ -44,19 +44,6 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         super(EnumHelper.addToolMaterial("AXE", 2, 320, 1.0F, -1.0F, 0));
     }
 
-    public static NBTTagCompound checkNBT(ItemStack axe) {
-        if (!axe.hasTagCompound()) {
-            axe.setTagCompound(new NBTTagCompound());
-        }
-        if (!axe.getTagCompound().hasKey("Speed")) {
-            axe.getTagCompound().setInteger("Speed", 0);
-        }
-        if (!axe.getTagCompound().hasKey("Ticks")) {
-            axe.getTagCompound().setInteger("Ticks", 0);
-        }
-        return axe.getTagCompound();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
@@ -99,7 +86,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @SuppressWarnings("Duplicates")
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int which = nbt.getInteger("Ticks") > 50 ? 0 : 1;
         ArrayList<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
@@ -133,7 +120,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int par4, boolean par5) {
         if (player instanceof EntityPlayer) {
-            NBTTagCompound nbt = checkNBT(stack);
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
             int ticks = nbt.getInteger("Ticks");
             int speed = nbt.getInteger("Speed");
 
@@ -165,7 +152,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @SuppressWarnings("Duplicates")
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
-        NBTTagCompound nbt = checkNBT(stack);
+        NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
@@ -302,7 +289,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
 
     @Override
     public boolean isWound(ItemStack stack) {
-        return checkNBT(stack).getInteger("Speed") > 0;
+        return SteamToolHelper.checkNBT(stack).getInteger("Speed") > 0;
     }
 
     @Override

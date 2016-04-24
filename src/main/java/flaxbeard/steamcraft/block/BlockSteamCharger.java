@@ -63,6 +63,9 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
      * @return Whether the item can be placed in the TileEntity's inventory.
      */
     private boolean canItemBeCharged(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
         if (item.getItem() instanceof ISteamChargable) {
             return ((ISteamChargable) item.getItem()).canCharge(item);
         } else {
@@ -83,14 +86,12 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
             }
             tile.setInventorySlotContents(0, null);
         } else {
-            if (player.getHeldItem() != null) {
-                if (canItemBeCharged(player.getHeldItem())) {
-                    ItemStack copy = player.getCurrentEquippedItem().copy();
-                    copy.stackSize = 1;
-                    tile.setInventorySlotContents(0, copy);
-                    player.getCurrentEquippedItem().stackSize -= 1;
-                    tile.randomDegrees = world.rand.nextInt(361);
-                }
+            if (canItemBeCharged(player.getHeldItem())) {
+                ItemStack copy = player.getCurrentEquippedItem().copy();
+                copy.stackSize = 1;
+                tile.setInventorySlotContents(0, copy);
+                player.getCurrentEquippedItem().stackSize -= 1;
+                tile.randomDegrees = world.rand.nextInt(361);
             }
         }
         return false;
