@@ -2538,6 +2538,7 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void handlePainfulFrequencies(AnimalTradeEvent event) {
         EntityLiving entity = event.salesperson;
         NBTTagCompound nbt = entity.getEntityData();
