@@ -126,7 +126,6 @@ public class SteamcraftEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
-    public int resyncExoBoostTicks = 0;
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
@@ -1429,7 +1428,6 @@ public class SteamcraftEventHandler {
         if (!(entity instanceof EntityPlayer)) {
             return;
         }
-        resyncExoBoostTicks++;
         boolean hasPower = hasPower(entity, 1);
         int armor = getExoArmor(entity);
 //        ItemStack armor2 = entity.getEquipmentInSlot(1);
@@ -1527,7 +1525,7 @@ public class SteamcraftEventHandler {
     }
 
     private void removeGoodExoBoost(EntityLivingBase entity) {
-        if (resyncExoBoostTicks > 4) {
+        if (entity.ticksExisted % 20 == 0) {
             if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid) != null) {
                 entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoost);
             }
@@ -1542,7 +1540,6 @@ public class SteamcraftEventHandler {
                     tag.prevStep = null;
                 }
             }
-            resyncExoBoostTicks = 0;
         }
     }
 
@@ -1551,14 +1548,13 @@ public class SteamcraftEventHandler {
 //	}
 
     private void removeBadExoBoost(EntityLivingBase entity) {
-        if (resyncExoBoostTicks > 4) {
+        if (entity.ticksExisted % 20 == 0) {
             if (entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getModifier(uuid2) != null) {
                 entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(exoBoostBad);
             }
             if (entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getModifier(uuid2) != null) {
                 entity.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).removeModifier(exoBoostBad);
             }
-            resyncExoBoostTicks = 0;
         }
     }
 
