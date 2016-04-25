@@ -1230,17 +1230,21 @@ public class SteamcraftEventHandler {
             }
         }
 
-        NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
-        int speed = nbt.getInteger("Speed");
         if (heldItem instanceof ItemSteamDrill) {
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.iron_pickaxe.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
         } else if (heldItem instanceof ItemSteamAxe) {
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.diamond_axe.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 11.0F * (speed / 1000.0F);
             }
         } else if (heldItem instanceof ItemSteamShovel) {
+            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.diamond_shovel.func_150893_a(heldItemStack, event.block) != 1.0F) {
                 event.newSpeed *= 1.0F + 19.0F * (speed / 3000.0F);
             }
