@@ -73,11 +73,13 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
         NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
-        MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
-        nbt.setInteger("Ticks", pair.getLeft());
-        nbt.setInteger("Speed", pair.getRight());
-        hasBrokenBlock = true;
-        ticksSpeed.remove(stack);
+        if (ticksSpeed.containsKey(stack)) {
+            MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
+            nbt.setInteger("Ticks", pair.getLeft());
+            nbt.setInteger("Speed", pair.getRight());
+            hasBrokenBlock = true;
+            ticksSpeed.remove(stack);
+        }
         return true;
     }
 

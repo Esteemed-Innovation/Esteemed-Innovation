@@ -72,11 +72,13 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity) {
         NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
-        MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
-        nbt.setInteger("Ticks", pair.getLeft());
-        nbt.setInteger("Speed", pair.getRight());
-        hasBrokenBlock = true;
-        ticksSpeed.remove(stack);
+        if (ticksSpeed.containsKey(stack)) {
+            MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
+            nbt.setInteger("Ticks", pair.getLeft());
+            nbt.setInteger("Speed", pair.getRight());
+            hasBrokenBlock = true;
+            ticksSpeed.remove(stack);
+        }
         return true;
     }
 
