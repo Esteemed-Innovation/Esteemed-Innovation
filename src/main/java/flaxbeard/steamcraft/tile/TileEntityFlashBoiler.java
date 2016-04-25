@@ -254,14 +254,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 ////Steamcraft.log.debug("valid configs found: " +validClusters.length);
 
                 if (validClusters.length == 1) {
-
                     updateMultiblock(validClusters[0], true, frontSide);
-
-
                 }
             }
         }
-
     }
 
     public void destroyMultiblock() {
@@ -379,15 +375,15 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         }
     }
 
-    public TileEntityFlashBoiler getMasterTileEntity() {
+    public TileEntityFlashBoiler getPrimaryTileEntity() {
         int[][] cluster = getClusterCoords(getValidClusterFromMetadata());
         int x = cluster[0][0], y = cluster[0][1], z = cluster[0][2];
-        TileEntityFlashBoiler boiler = null;
-        if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler && worldObj.getBlockMetadata(x, y, z) > 0) {
-            boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
+        if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler &&
+          worldObj.getBlockMetadata(x, y, z) == 1) {
+            return (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
         }
 
-        return boiler;
+        return null;
     }
 
     public void setFront(int frontSide, boolean print) {
@@ -517,7 +513,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     private boolean canSmelt() {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? myTank.getFluidAmount() > 9 : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().canSmelt() : false;
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? myTank.getFluidAmount() > 9 : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().canSmelt() : false;
     }
 
     private boolean canDrainItem(ItemStack stack) {
@@ -529,27 +525,27 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
             return this.furnaceBurnTime > 0;
         } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            if (getMasterTileEntity() != null) {
-                return getMasterTileEntity().isBurning();
+            if (getPrimaryTileEntity() != null) {
+                return getPrimaryTileEntity().isBurning();
             } else return false;
 
         } else return false;
 
     }
 
-    public boolean hasMaster() {
-        return getMasterTileEntity() != null;
+    public boolean hasPrimary() {
+        return getPrimaryTileEntity() != null;
     }
 
     @Override
     public int getSizeInventory() {
 
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks.length : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSizeInventory() : 0);
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks.length : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getSizeInventory() : 0);
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks[slot] : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getStackInSlot(slot) : null);
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks[slot] : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getStackInSlot(slot) : null);
     }
 
     @Override
@@ -575,7 +571,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 return null;
             }
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().decrStackSize(par1, par2) : null;
+            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().decrStackSize(par1, par2) : null;
         }
 
     }
@@ -591,7 +587,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 return null;
             }
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getStackInSlotOnClosing(par1) : null;
+            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getStackInSlotOnClosing(par1) : null;
         }
 
     }
@@ -615,7 +611,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 par2ItemStack.stackSize = this.getInventoryStackLimit();
             }
         } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getMasterTileEntity().setInventorySlotContents(par1, par2ItemStack);
+            getPrimaryTileEntity().setInventorySlotContents(par1, par2ItemStack);
         }
     }
 
@@ -679,7 +675,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public int getCapacity() {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? this.capacity : 0;
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? this.capacity : 0;
     }
 
     @Override
@@ -690,7 +686,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             return 0;
         }
         //if (this.getNetwork() != null)
-        //	return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasMaster() ? getMasterTileEntity().getSteamShare() : 0);
+        //	return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getSteamShare() : 0);
         //else return 0;
     }
 
@@ -706,7 +702,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 && this.getNetwork() != null) {
             this.getNetwork().addSteam(amount);
         } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getMasterTileEntity().insertSteam(amount, face);
+            getPrimaryTileEntity().insertSteam(amount, face);
         }
     }
 
@@ -720,7 +716,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
             return this.furnaceBurnTime * scale / this.currentItemBurnTime;
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getBurnTimeRemainingScaled(scale) : 0;
+            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getBurnTimeRemainingScaled(scale) : 0;
         }
 
     }
@@ -730,7 +726,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 && this.getNetwork() != null) {
             this.getNetwork().decrSteam(i);
         } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getMasterTileEntity().decrSteam(i);
+            getPrimaryTileEntity().decrSteam(i);
         }
 
     }
@@ -779,7 +775,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         for (int i = 0; i < accessibleSlots.length; i++) {
             if (accessibleSlots[i] == slot) isAccessibleSlot = true;
         }
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? this.isItemValidForSlot(slot, stack) && isAccessibleSlot : false;
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? this.isItemValidForSlot(slot, stack) && isAccessibleSlot : false;
     }
 
     @Override
@@ -787,14 +783,14 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
             return stack.getItem() == Items.bucket;
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().canExtractItem(slot, stack, side) : false;
+            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().canExtractItem(slot, stack, side) : false;
         }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public int getCookProgressScaled(int scale) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceCookTime * scale / 200 : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getCookProgressScaled(scale) : 0);
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceCookTime * scale / 200 : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getCookProgressScaled(scale) : 0);
     }
 
     @Override
@@ -803,17 +799,16 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         if (meta == 1) {
             ////Steamcraft.log.debug("Filling master");
             return myTank.fill(resource, doFill);
-        } else if (meta > 0 && hasMaster()) {
+        } else if (meta > 0 && hasPrimary()) {
             ////Steamcraft.log.debug("Deferring fill to master");
-            return getMasterTileEntity().fill(from, resource, doFill);
+            return getPrimaryTileEntity().fill(from, resource, doFill);
         } else {
             return 0;
         }
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource,
-                            boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
@@ -834,7 +829,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? new FluidTankInfo[]{new FluidTankInfo(myTank)} : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasMaster() ? getMasterTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
+        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? new FluidTankInfo[]{new FluidTankInfo(myTank)} : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
     }
 
     @Override
@@ -885,8 +880,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             if (meta == 1) {
                 return this.burning;
             } else {
-                if (this.hasMaster()) {
-                    return this.getMasterTileEntity().isBurning();
+                if (this.hasPrimary()) {
+                    return this.getPrimaryTileEntity().isBurning();
                 }
             }
         }
@@ -902,9 +897,9 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 ////Steamcraft.log.debug("Fill = "+myTank.getFluidAmount());
                 return this.myTank;
             } else {
-                if (this.hasMaster()) {
+                if (this.hasPrimary()) {
                     ////Steamcraft.log.debug("Asking master to return tank");
-                    return this.getMasterTileEntity().getTank();
+                    return this.getPrimaryTileEntity().getTank();
                 }
             }
         }

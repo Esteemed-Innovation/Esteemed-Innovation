@@ -112,7 +112,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
         if (meta > 0) {
             TileEntityFlashBoiler te = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-            ////Steamcraft.log.debug(te.getMasterTileEntity().getBlockMetadata());
+            ////Steamcraft.log.debug(te.getPrimaryTileEntity().getBlockMetadata());
             te.destroyMultiblock();
         }
 
@@ -158,12 +158,16 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
 
     	TileEntityFlashBoiler tileEntity = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
 
+        if (tileEntity == null) {
+            return false;
+        }
+
         boolean isClient = !world.isRemote;
         
-	    if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
+	    if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient) {
     		player.openGui(Steamcraft.instance, 0, world, x, y, z);
         } else {
-        	FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
+        	FluidHelper.fillTankFromHeldItem(player, tileEntity.getTank());
         }
 
         return true;
