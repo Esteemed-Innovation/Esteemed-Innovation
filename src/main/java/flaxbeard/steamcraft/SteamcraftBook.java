@@ -693,9 +693,6 @@ public class SteamcraftBook {
             if (Config.enableFallAssist) {
                 SteamcraftRegistry.addResearch("research.FallAssist.name", "!research.ExoHeel.name", new BookPageItem("research.FallAssist.name", "research.FallAssist.0", true, new ItemStack(SteamcraftItems.fallAssist)), new BookPageCrafting("", "noFall"));
             }
-            if (Config.enableJumpAssist) {
-                SteamcraftRegistry.addResearch("research.JumpAssist.name", "!research.ExoHeel.name", new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(SteamcraftItems.jumpAssist)), new BookPageCrafting("", "jumpAssist1", "jumpAssist2"));
-            }
             if (Config.enableAnchorHeels) {
                 boolean lead = Config.enableLeadPlate &&
                   OreDictionary.getOres("ingotLead").size() > 0 && !Config.enableAnchorAnvilRecipe;
@@ -726,6 +723,13 @@ public class SteamcraftBook {
                     new ItemStack(SteamcraftItems.coatingsPyrophobic)),
                   new BookPageCrafting("", "pyrophobic")
                 );
+            }
+            if (Config.enableJumpAssist) {
+                SteamcraftRegistry.addResearch(
+                  "research.JumpAssist.name", "!research.ExoFoot.name",
+                  new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true,
+                    new ItemStack(SteamcraftItems.jumpAssist)),
+                  new BookPageCrafting("", "jumpAssist1", "jumpAssist2"));
             }
         }
     }
