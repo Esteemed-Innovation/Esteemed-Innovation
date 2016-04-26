@@ -14,12 +14,20 @@ buildscript {
 	
 	dependencies {
 		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+		classpath 'org.ajoberstar:grgit:1.1.0'
 	}
 }
 
 apply plugin: 'forge'
+apply plugin: 'java'
 
 version = newFSPVersion
+
+if (project.hasProperty('dev')) {
+	def git = org.ajoberstar.grgit.Grgit.open(file('.'))
+	project.version = project.version + '-' + git.head().abbreviatedId + '-dev'
+}
+
 group = "com.flaxbeard.Steamcraft"
 archivesBaseName = "FSP-1.7.10"
 
@@ -73,7 +81,9 @@ dependencies {
 processResources {
 	from(sourceSets.main.resources.srcDirs) {
 		include 'mcmod.info'
-		expand 'version':project.version, 'mcversion':project.minecraft.version
+		filter {
+			it.replaceAll('@VERSION@', project.version)
+		}
 	}
 
     from(sourceSets.main.resources.srcDirs) {
