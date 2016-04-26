@@ -2269,6 +2269,11 @@ public class SteamcraftEventHandler {
             int invY = nbt.getInteger("y");
             int invZ = nbt.getInteger("z");
             TileEntity tile = world.getTileEntity(invX, invY, invZ);
+            if (tile == null || (invX == event.x && invY == event.y && invZ == event.z)) {
+                equipped.getTagCompound().removeTag("voidInventory");
+                // Do the things described in #395 here too.
+                return;
+            }
             if (tile instanceof IInventory) {
                 addToInventory(event.drops, (IInventory) tile);
             }
