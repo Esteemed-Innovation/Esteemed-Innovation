@@ -1904,7 +1904,8 @@ public class SteamcraftEventHandler {
                     event.setCanceled(true);
                 }
             }
-            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
+            if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill) &&
+              block.isToolEffective(drill.toolClass(), meta)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, drill, equipped, player);
             }
             if (drill.hasUpgrade(equipped, SteamcraftItems.preciseCuttingHead)) {
@@ -1915,7 +1916,8 @@ public class SteamcraftEventHandler {
             if (!shovel.isWound(equipped)) {
                 return;
             }
-            if (shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
+            if (shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades) &&
+              block.isToolEffective(shovel.toolClass(), meta)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), x, y, z, world, shovel, equipped, player);
             } else if (shovel.hasUpgrade(equipped, SteamcraftItems.backhoe)) {
                 boolean isFalling = block instanceof BlockFalling;
@@ -1942,7 +1944,8 @@ public class SteamcraftEventHandler {
             if (!axe.isWound(equipped)) {
                 return;
             }
-            if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
+            if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller) &&
+              block.isToolEffective(axe.toolClass(), meta)) {
                 fellBlocks(world, x, y, z, player, equipped);
             }
             if (axe.hasUpgrade(equipped, SteamcraftItems.forestFire)) {
