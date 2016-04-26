@@ -184,7 +184,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
             flag = 0;
-        } else if (SteamcraftEventHandler.hasPower(player, 1)) {
+        } else if (SteamcraftEventHandler.hasPower(player, steamPerDurability())) {
             flag = 1;
         }
 
@@ -196,7 +196,7 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
                 if (flag == 0) {
                     stack.damageItem(1, player);
                 } else if (flag == 1) {
-                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), 1);
+                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), steamPerDurability());
                 }
             }
             nbt.setInteger("Ticks", ticks);

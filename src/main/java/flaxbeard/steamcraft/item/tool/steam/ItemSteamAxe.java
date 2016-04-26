@@ -172,7 +172,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         int flag = -1;
         if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
             flag = 0;
-        } else if (SteamcraftEventHandler.hasPower(player, 1)) {
+        } else if (SteamcraftEventHandler.hasPower(player, steamPerDurability())) {
             flag = 1;
         }
 
@@ -184,7 +184,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
                 if (flag == 0) {
                     addSteam(stack, -steamPerDurability(), player);
                 } else if (flag == 1) {
-                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), 1);
+                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), steamPerDurability());
                 }
             }
 
