@@ -2102,7 +2102,7 @@ public class SteamcraftEventHandler {
                 Block block = world.getBlock(x, y, z);
                 if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
                     world.setBlock(x, y, z, Blocks.fire);
-                    if (sAxe.addSteam(axe, -(sAxe.steamPerDurability() * 2), player)) {
+                    if (!sAxe.addSteam(axe, -(sAxe.steamPerDurability() * 2), player)) {
                         return;
                     }
                 }
