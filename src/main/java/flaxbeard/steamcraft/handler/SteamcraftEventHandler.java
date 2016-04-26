@@ -2060,7 +2060,6 @@ public class SteamcraftEventHandler {
         }
     }
 
-    public boolean drainFelling = false;
     /**
      * Mines all of the log blocks above the starting coordinate.
      * @param world The world instance.
@@ -2071,23 +2070,22 @@ public class SteamcraftEventHandler {
      * @param axe The axe's ItemStack
      */
     private void fellBlocks(World world, int startX, int startY, int startZ, EntityPlayer player, ItemStack axe) {
+        ItemSteamAxe sAxe = (ItemSteamAxe) axe.getItem();
         for (int y = startY; y < 256; y++) {
             Block block = world.getBlock(startX, y, startZ);
             if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
                 int meta = world.getBlockMetadata(startX, y, startZ);
                 world.setBlockToAir(startX, y, startZ);
                 block.harvestBlock(world, player, startX, y, startZ, meta);
-                if (drainFelling) {
-                    axe.damageItem(1, player);
+                if (!sAxe.addSteam(axe, -(sAxe.steamPerDurability() / 2), player)) {
+                    break;
                 }
-                drainFelling = !drainFelling;
             } else {
                 break;
             }
         }
     }
 
-    public boolean drainBurning = false;
     /**
      * Burns all log blocks within a 5 block radius.
      * @param world The world
@@ -2098,15 +2096,15 @@ public class SteamcraftEventHandler {
      * @param axe The steam axe ItemStack.
      */
     private void burnBlocks(World world, int startX, int y, int startZ, EntityPlayer player, ItemStack axe) {
+        ItemSteamAxe sAxe = (ItemSteamAxe) axe.getItem();
         for (int x = startX - 5; x < startX + 5; x++) {
             for (int z = startZ - 5; z < startZ + 5; z++) {
                 Block block = world.getBlock(x, y, z);
                 if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
                     world.setBlock(x, y, z, Blocks.fire);
-                    if (drainBurning) {
-                        axe.damageItem(2, player);
+                    if (sAxe.addSteam(axe, -(sAxe.steamPerDurability() * 2), player)) {
+                        return;
                     }
-                    drainBurning = !drainBurning;
                 }
             }
         }
@@ -2490,16 +2488,14 @@ public class SteamcraftEventHandler {
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack equipped = event.entityPlayer.getCurrentEquippedItem();
         Block block = event.block;
-        EntityPlayer player = event.entityPlayer;
         if (equipped != null && equipped.getItem() != null && block != null) {
-            float hardness = block.getBlockHardness(player.worldObj, event.x, event.y, event.z);
             float newSpeed = 0.0F;
             float original = event.originalSpeed;
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
                 if (drill.isWound(equipped)) {
                     if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
-                        newSpeed = Math.abs(Math.max(0.25F, original * ((3.6F - hardness) / 8)) - 0.1F);
+                        newSpeed = original * 0.7F;
                     }
                     if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
                         if (newSpeed == 0.0F) {
@@ -2532,9 +2528,9 @@ public class SteamcraftEventHandler {
                     }
                     if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = Math.abs(Math.max(0.25F, original * ((5.5F - hardness) / 12)) - 0.1F);
+                            newSpeed = original * 0.7F;
                         } else {
-                            newSpeed *= (hardness * 1.8F) / 12;
+                            newSpeed *= 0.7F;
                         }
                     }
                     if (axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
@@ -2548,7 +2544,7 @@ public class SteamcraftEventHandler {
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
-                    newSpeed = Math.abs(Math.max(0.25F, original * (3F - hardness) / 8F) - 0.1F);
+                    newSpeed = original * 0.425F;
                 }
             }
             if (equipped.getItem() instanceof ISteamTool) {
