@@ -213,6 +213,10 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
     public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
         int trueAmount = steamPerDurability() / (-amount);
         int newAmount = me.getItemDamage() + trueAmount;
+        if (newAmount <= 0) {
+            me.setItemDamage(1);
+            return false;
+        }
         if (me.getMaxDamage() >= newAmount) {
             me.setItemDamage(newAmount);
             return true;
