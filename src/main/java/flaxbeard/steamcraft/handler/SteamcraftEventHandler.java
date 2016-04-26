@@ -2491,15 +2491,16 @@ public class SteamcraftEventHandler {
         if (equipped != null && equipped.getItem() != null && block != null) {
             float hardness = block.getBlockHardness(player.worldObj, event.x, event.y, event.z);
             float newSpeed = 0.0F;
+            float original = event.originalSpeed;
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
                 if (drill.isWound(equipped)) {
                     if (drill.hasUpgrade(equipped, SteamcraftItems.bigDrill)) {
-                        newSpeed = event.originalSpeed * ((hardness * 1.5F) / 8);
+                        newSpeed = Math.abs(Math.max(0.25F, original * ((3.6F - hardness) / 8)) - 0.1F);
                     }
                     if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = event.originalSpeed / 2;
+                            newSpeed = original / 2;
                         } else {
                             newSpeed /= 2;
                         }
@@ -2507,14 +2508,14 @@ public class SteamcraftEventHandler {
                     if (drill.hasUpgrade(equipped, SteamcraftItems.thermalDrill) ||
                       drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = event.originalSpeed * 5;
+                            newSpeed = original * 5;
                         } else {
                             newSpeed *= 5;
                         }
                     }
                     if (drill.hasUpgrade(equipped, SteamcraftItems.battleDrill)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = event.originalSpeed / 1.7F;
+                            newSpeed = original / 1.7F;
                         } else {
                             newSpeed /= 1.7F;
                         }
@@ -2524,18 +2525,18 @@ public class SteamcraftEventHandler {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
                 if (axe.isWound(equipped)) {
                     if (axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
-                        newSpeed = event.originalSpeed / 5F;
+                        newSpeed = original / 5F;
                     }
                     if (axe.hasUpgrade(equipped, SteamcraftItems.treeFeller)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = event.originalSpeed * ((hardness * 1.8F) / 12);
+                            newSpeed = Math.abs(Math.max(0.25F, original * ((5.5F - hardness) / 12)) - 0.1F);
                         } else {
                             newSpeed *= (hardness * 1.8F) / 12;
                         }
                     }
                     if (axe.hasUpgrade(equipped, SteamcraftItems.chainsaw)) {
                         if (newSpeed == 0.0F) {
-                            newSpeed = event.originalSpeed / 1.7F;
+                            newSpeed = original / 1.7F;
                         } else {
                             newSpeed /= 1.7F;
                         }
@@ -2544,14 +2545,14 @@ public class SteamcraftEventHandler {
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, SteamcraftItems.rotaryBlades)) {
-                    newSpeed = event.originalSpeed * ((hardness * 1.8F) / 8);
+                    newSpeed = Math.abs(Math.max(0.25F, original * (3F - hardness) / 8F) - 0.1F);
                 }
             }
             if (equipped.getItem() instanceof ISteamTool) {
                 ISteamTool tool = (ISteamTool) equipped.getItem();
                 if (tool.isWound(equipped) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
                     if (newSpeed == 0.0F) {
-                        newSpeed = event.originalSpeed * 2.5F;
+                        newSpeed = original * 2.5F;
                     } else {
                         newSpeed *= 2.5F;
                     }
