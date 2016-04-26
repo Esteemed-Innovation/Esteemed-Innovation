@@ -2212,6 +2212,27 @@ public class SteamcraftEventHandler {
         return nbt;
     }
 
+    /**
+     * Plays the sounds and particles that indicate a void inventory set/unset.
+     * @param world The world
+     * @param x The X coordinate of the inventory
+     * @param y The Y coordinate of the inventory
+     * @param z The Z coordinate of the inventory
+     */
+    private void indicateVoidSet(World world, int x, int y, int z) {
+        Random rand = new Random();
+        if (world.isRemote) {
+            for (int i = 0; i < rand.nextInt(10) + 5; i++) {
+                // Particle spawning code taken from EntityEnderman.
+                world.spawnParticle("portal", x + (rand.nextDouble() - 0.5D),
+                  y + rand.nextDouble(), z + (rand.nextDouble() - 0.5D),
+                  (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
+                  (rand.nextDouble() - 0.5D) * 2.0D);
+            }
+        }
+        world.playSoundEffect(x, y, z, "mob.endermen.portal", 1F, 1F);
+    }
+
     @SubscribeEvent
     public void setVoidInventory(PlayerInteractEvent event) {
         if (event.action != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
@@ -2248,6 +2269,7 @@ public class SteamcraftEventHandler {
         } else {
             equipped.stackTagCompound.setTag("voidInventory", setVoidInventoryNBT(new NBTTagCompound(), x, y, z));
         }
+        indicateVoidSet(world, x, y, z);
     }
 
     @SubscribeEvent
@@ -2269,9 +2291,12 @@ public class SteamcraftEventHandler {
             int invY = nbt.getInteger("y");
             int invZ = nbt.getInteger("z");
             TileEntity tile = world.getTileEntity(invX, invY, invZ);
-            if (tile == null || (invX == event.x && invY == event.y && invZ == event.z)) {
+            int x = event.x;
+            int y = event.y;
+            int z = event.z;
+            if (tile == null || (invX == x && invY == y && invZ == z)) {
                 equipped.getTagCompound().removeTag("voidInventory");
-                // Do the things described in #395 here too.
+                indicateVoidSet(world, x, y, z);
                 return;
             }
             if (tile instanceof IInventory) {
@@ -2288,14 +2313,10 @@ public class SteamcraftEventHandler {
 
     /**
      * Gets whether the block can be tilled into farmland.
-     * @param world The world
      * @param block The block to check
-     * @param x The block's X coordinate
-     * @param y The block's Y coordinate
-     * @param z The block's Z coordinate
      * @return True if it is dirt or grass, else false.
      */
-    private boolean isFarmable(World world, Block block, int x, int y, int z) {
+    private boolean isFarmable(Block block) {
         return (block != null && (block == Blocks.dirt || block == Blocks.grass));
     }
 
@@ -2333,7 +2354,7 @@ public class SteamcraftEventHandler {
                         int thisZ = event.z + aCoordinateArray[2];
 
                         Block block1 = world.getBlock(thisX, thisY, thisZ);
-                        if (isFarmable(world, block1, thisX, thisY, thisZ)) {
+                        if (isFarmable(block1)) {
                             world.setBlockToAir(thisX, thisY, thisZ);
                             world.setBlock(thisX, thisY, thisZ, Blocks.farmland);
                         }
