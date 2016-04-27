@@ -123,14 +123,15 @@ Each time a new block or block-like construct is opened, the indent increases by
 Each statement is followed by a line break.
 
 ### Column limit
-Any line that would exceed the limit of 100 characters must be line-wrapped.
+Any line that would exceed the limit of 120 characters must be line-wrapped.
 
 Exceptions:
 
 1. Lines where obeying the column limit is impossible (for example, long URL in Javadoc)
 2. `package` and `import` statements
 3. Command lines in a comment that may be cut-and-pasted into a shell.
-4. Parameters listed in method calling or declaration (for example, `public void method(int var1, int var2) {`)
+4. Parameters listed in method declaration (for example, `public void method(int var1, int var2) {`)
+5. Class declarations (for example `public class A extends B implements C, D, E, F... {`)
 
 ### Line-wrapping
 #### Where to break
