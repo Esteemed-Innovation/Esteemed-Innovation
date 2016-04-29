@@ -2178,26 +2178,35 @@ public class SteamcraftEventHandler {
      *
      * @param drops An ArrayList of items to add to the inventory.
      * @param inv   The inventory to add items to.
+     * @return The items that did not get added.
      */
-    private void addToInventory(ArrayList<ItemStack> drops, IInventory inv) {
+    private ArrayList<ItemStack> addToInventory(ArrayList<ItemStack> drops, IInventory inv) {
+        ArrayList<ItemStack> failures = new ArrayList<>();
         for (ItemStack drop : drops) {
             if (drop == null) {
                 continue;
             }
+            boolean added = false;
             for (int i = 0; i < inv.getSizeInventory(); i++) {
                 ItemStack stackInSlot = inv.getStackInSlot(i);
                 if (stackInSlot == null) {
                     inv.setInventorySlotContents(i, drop);
+                    added = true;
                     break;
                 } else if (stackInSlot.getItem() == drop.getItem() &&
                   stackInSlot.getItemDamage() == drop.getItemDamage() &&
                   stackInSlot.stackSize + drop.stackSize < stackInSlot.getMaxStackSize()) {
                     stackInSlot.stackSize += drop.stackSize;
                     inv.setInventorySlotContents(i, stackInSlot);
+                    added = true;
                     break;
                 }
             }
+            if (!added) {
+                failures.add(drop);
+            }
         }
+        return failures;
     }
 
     /**
@@ -2275,7 +2284,7 @@ public class SteamcraftEventHandler {
         indicateVoidSet(world, x, y, z);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void sendToVoid(BlockEvent.HarvestDropsEvent event) {
         if (event.harvester == null || event.block == null) {
             return;
@@ -2288,6 +2297,7 @@ public class SteamcraftEventHandler {
             return;
         }
 
+        ArrayList<ItemStack> failures = new ArrayList<>();
         if (equipped.hasTagCompound() && equipped.stackTagCompound.hasKey("voidInventory")) {
             NBTTagCompound nbt = equipped.stackTagCompound.getCompoundTag("voidInventory");
             int invX = nbt.getInteger("x");
@@ -2303,15 +2313,18 @@ public class SteamcraftEventHandler {
                 return;
             }
             if (tile instanceof IInventory) {
-                addToInventory(event.drops, (IInventory) tile);
+                failures = addToInventory(event.drops, (IInventory) tile);
             }
             tile.updateEntity();
         } else {
             InventoryEnderChest ender = player.getInventoryEnderChest();
-            addToInventory(event.drops, ender);
+            failures = addToInventory(event.drops, ender);
             ender.saveInventoryToNBT();
         }
         event.drops.clear();
+        if (!failures.isEmpty()) {
+            event.drops.addAll(failures);
+        }
     }
 
     /**
