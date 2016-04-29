@@ -604,9 +604,8 @@ public class SteamcraftItems {
     private static void registerSteamToolUpgrades() {
         // General core!
         if (Config.enableTheVoid) {
-            theVoid = new ItemSteamToolUpgrade(SteamToolSlot.TOOL_CORE,
-              "steamcraft:toolUpgrades/void", null, 0)
-              .setUnlocalizedName("steamcraft:theVoid").setCreativeTab(Steamcraft.tabTools);
+            theVoid = new ItemTheVoidUpgrade().setUnlocalizedName("steamcraft:theVoid")
+              .setCreativeTab(Steamcraft.tabTools);
             GameRegistry.registerItem(theVoid, "theVoid");
         }
 

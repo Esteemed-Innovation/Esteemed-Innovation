@@ -23,48 +23,12 @@ public class SteamToolHelper {
     };
 
     /**
-     * Gets an ArrayList of the Strings that should be put in the item's tooltip.
-     * @param upgrades The ISteamToolUpgrades that are being tested against; see #getUpgrades
-     * @param redSlot The slot that should be red; DRILL_HEAD, SAW_HEAD, or SHOVEL_HEAD usually.
-     * @return The strings, or null if the upgrades were null.
-     */
-    public static ArrayList<String> getInformation(ArrayList<ISteamToolUpgrade> upgrades, SteamToolSlot redSlot) {
-        if (upgrades == null) {
-            return null;
-        }
-
-        ArrayList<String> strings = new ArrayList<>();
-
-        for (ISteamToolUpgrade upgrade : upgrades) {
-            if (upgrade instanceof ItemDrillHeadUpgrade) {
-                continue;
-            }
-
-            String info = upgrade.getInformation();
-            if (info == null) {
-                info = StatCollector.translateToLocal(((Item) upgrade).getUnlocalizedName());
-            }
-            if (upgrade.getToolSlot() == redSlot) {
-                strings.add(EnumChatFormatting.RED + "" + info);
-            } else {
-                strings.add(EnumChatFormatting.DARK_GREEN + "" + info);
-            }
-        }
-
-        if (strings.isEmpty()) {
-            return null;
-        }
-
-        return strings;
-    }
-
-    /**
      * The same as getInformation(ArrayList, SteamToolSlot), but relies on itemstacks instead of ISteamToolUpgrades
      * @param upgrades The ItemStacks that are being tested against; see #getUpgradeStacks
      * @param redSlot The slot that should be red. See getInformation.
      * @return The strings, or null if the upgrades were null.
      */
-    public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot) {
+    public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot, ItemStack tool) {
         if (upgrades == null) {
             return null;
         }
@@ -74,13 +38,9 @@ public class SteamToolHelper {
         for (ItemStack stack : upgrades) {
             ISteamToolUpgrade upgrade = (ISteamToolUpgrade) stack.getItem();
             EnumChatFormatting format = upgrade.getToolSlot() == redSlot ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GREEN;
-            if (upgrade instanceof ItemDrillHeadUpgrade) {
-                strings.add(format + "" + ((ItemDrillHeadUpgrade) upgrade).getInformation(stack));
-            } else {
-                String info = upgrade.getInformation();
-                String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;
-                strings.add(format + "" + StatCollector.translateToLocal(toAdd));
-            }
+            String info = upgrade.getInformation(stack, tool);
+            String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;
+            strings.add(format + "" + StatCollector.translateToLocal(toAdd));
         }
 
         if (strings.isEmpty()) {

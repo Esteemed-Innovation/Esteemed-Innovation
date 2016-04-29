@@ -55,7 +55,7 @@ public class ItemSteamShovel extends ItemSpade implements ISteamChargable, IEngi
         list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * this.steamPerDurability() + "/" + me.getMaxDamage() * this.steamPerDurability() + " SU");
         ArrayList<ItemStack> upgradeStacks = UtilSteamTool.getUpgradeStacks(me);
         ArrayList<String> upgradeStrings = SteamToolHelper.getInformationFromStacks(upgradeStacks,
-          SteamToolSlot.SHOVEL_HEAD);
+          SteamToolSlot.SHOVEL_HEAD, me);
         if (upgradeStrings == null) {
             return;
         }

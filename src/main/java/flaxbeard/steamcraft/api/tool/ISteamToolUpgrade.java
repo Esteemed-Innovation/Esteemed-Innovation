@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.api.tool;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 public interface ISteamToolUpgrade {
@@ -22,9 +23,11 @@ public interface ISteamToolUpgrade {
 
     /**
      * The information added to the tool's tooltip. If it is null it will simply use the item's name
+     * @param me The ItemStack of the upgrade.
+     * @param tool The ItemStack containing the tool
      * @return The information string. Can be null, expect null.
      */
-    String getInformation();
+    String getInformation(ItemStack me, ItemStack tool);
 
     /**
      * The two (or six, if isUniversal is true) icons for the upgrade.

@@ -37,16 +37,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public String getInformation() {
-        // Don't call this method. Call getInformation(ItemStack) instead.
-        return "";
-    }
-
-    /**
-     * @param self The ItemStack of this upgrade.
-     * @return The localized name of the material.
-     */
-    public String getInformation(ItemStack self) {
+    public String getInformation(ItemStack self, ItemStack tool) {
         DrillHeadMaterial mat = DrillHeadMaterial.materials.get(getMyMaterial(self));
         String name = mat.locName;
         return StatCollector.canTranslate(name) ? StatCollector.translateToLocal(name) : mat.materialName;
@@ -56,7 +47,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     @Override
     public void addInformation(ItemStack self, EntityPlayer player, List list, boolean par4) {
         super.addInformation(self, player, list, par4);
-        list.add(getInformation(self));
+        list.add(getInformation(self, null));
     }
 
     @Override

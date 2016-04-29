@@ -60,10 +60,11 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public String getInformation() {
+    public String getInformation(ItemStack me, ItemStack tool) {
         return myInfo;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void registerIcons(IIconRegister ir) {
         if (myOverlays == null) {

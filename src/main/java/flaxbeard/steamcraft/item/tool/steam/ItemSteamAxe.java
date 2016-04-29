@@ -55,7 +55,7 @@ public class ItemSteamAxe extends ItemAxe implements ISteamChargable, IEngineera
         list.add(EnumChatFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * this.steamPerDurability() + "/" + me.getMaxDamage() * this.steamPerDurability() + " SU");
         ArrayList<ItemStack> upgradeStacks = UtilSteamTool.getUpgradeStacks(me);
         ArrayList<String> upgradeStrings = SteamToolHelper.getInformationFromStacks(upgradeStacks,
-          SteamToolSlot.SAW_HEAD);
+          SteamToolSlot.SAW_HEAD, me);
         if (upgradeStrings == null) {
             return;
         }
