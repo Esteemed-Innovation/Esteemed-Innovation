@@ -10,7 +10,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 public class ConnectPacketHandler implements IMessageHandler<ConnectPacket, IMessage> {
     @Override
     public IMessage onMessage(ConnectPacket message, MessageContext ctx) {
-        World world = message.world;
+        World world = ctx.getServerHandler().playerEntity.worldObj;
         int x = message.x;
         int y = message.y;
         int z = message.z;

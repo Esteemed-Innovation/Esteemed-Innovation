@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.tile;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
@@ -314,7 +315,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     return false;
                 }
 
-                ConnectPacket packet = new ConnectPacket(world, x, y, z, hit.subHit);
+                ConnectPacket packet = new ConnectPacket(x, y, z, hit.subHit);
                 Steamcraft.channel.sendToServer(packet);
             }
         }
@@ -356,7 +357,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                         TileEntity te = worldObj.getTileEntity(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
                         if (te != null && te instanceof ISteamTransporter) {
                             ISteamTransporter p = (ISteamTransporter) te;
-                            p.getNetwork().shouldRefresh();
+                            SteamNetwork network = p.getNetwork();
+                            if (network != null) {
+                                network.shouldRefresh();
+                            }
                         }
                     }
                     this.isOriginalPipe = true;
@@ -412,9 +416,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             if (te != null && te instanceof ISteamTransporter) {
                 //log.debug("    Valid");
                 ISteamTransporter trans = (ISteamTransporter) te;
-                if (trans.getNetwork() != this.getNetwork()) {
+                SteamNetwork transNetwork = trans.getNetwork();
+                if (transNetwork != null && transNetwork != this.getNetwork()) {
                     //log.debug("     Different network!");
-                    trans.getNetwork().shouldRefresh();
+                    transNetwork.shouldRefresh();
                 } else {
                     //log.debug("SameNet");
                 }

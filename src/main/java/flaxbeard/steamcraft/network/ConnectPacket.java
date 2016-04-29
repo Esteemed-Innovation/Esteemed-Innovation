@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.world.World;
 
 public class ConnectPacket implements IMessage {
-    public World world;
     public int x;
     public int y;
     public int z;
@@ -13,8 +12,7 @@ public class ConnectPacket implements IMessage {
 
     public ConnectPacket() {}
 
-    public ConnectPacket(World world, int x, int y, int z, int subHit) {
-        this.world = world;
+    public ConnectPacket(int x, int y, int z, int subHit) {
         this.x = x;
         this.y = y;
         this.z = z;
