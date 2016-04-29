@@ -2,8 +2,9 @@ package flaxbeard.steamcraft.api.tool;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import flaxbeard.steamcraft.api.ISteamChargable;
 
-public interface ISteamTool {
+public interface ISteamTool extends ISteamChargable {
     /**
      * Checks if the tool is wound up.
      * @param stack The tool

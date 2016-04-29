@@ -13,6 +13,7 @@ import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
+import flaxbeard.steamcraft.item.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -181,29 +182,19 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
     public ItemStack onItemRightClick(ItemStack stack, World par2World, EntityPlayer player) {
         NBTTagCompound nbt = SteamToolHelper.checkNBT(stack);
 
-        int flag = -1;
-        if (stack.getItemDamage() < stack.getMaxDamage() - 1) {
-            flag = 0;
-        } else if (SteamcraftEventHandler.hasPower(player, steamPerDurability())) {
-            flag = 1;
+        int ticks = nbt.getInteger("Ticks");
+        int speed = nbt.getInteger("Speed");
+        boolean result = false;
+        if (speed <= 1000) {
+            speed += Math.min(90, 1000 - speed);
+            result = addSteam(stack, -steamPerDurability(), player);
         }
 
-        if (flag >= 0) {
-            int ticks = nbt.getInteger("Ticks");
-            int speed = nbt.getInteger("Speed");
-            if (speed <= 1000) {
-                speed += Math.min(90, 1000 - speed);
-                if (flag == 0) {
-                    stack.damageItem(1, player);
-                } else if (flag == 1) {
-                    SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3), steamPerDurability());
-                }
-            }
+        if (result) {
             nbt.setInteger("Ticks", ticks);
             nbt.setInteger("Speed", speed);
         }
         return stack;
-
     }
 
     @Override
@@ -221,9 +212,10 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
-        int trueAmount = steamPerDurability() / (-amount);
+        int trueAmount = -amount / steamPerDurability();
         int newAmount = me.getItemDamage() + trueAmount;
         if (newAmount <= 0) {
             me.setItemDamage(0);
@@ -232,6 +224,18 @@ public class ItemSteamDrill extends ItemPickaxe implements ISteamChargable, IEng
         if (me.getMaxDamage() >= newAmount) {
             me.setItemDamage(newAmount);
             return true;
+        }
+        if (amount < 0) {
+            ItemStack chest = player.getEquipmentInSlot(3);
+            if (chest == null || !(chest.getItem() instanceof ItemExosuitArmor)) {
+                return false;
+            }
+            ItemExosuitArmor armor = (ItemExosuitArmor) chest.getItem();
+            if (armor.hasPower(chest, amount)) {
+                int exoAmount = (-amount) / armor.steamPerDurability();
+                SteamcraftEventHandler.drainSteam(chest, exoAmount);
+                return true;
+            }
         }
         return false;
     }

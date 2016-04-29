@@ -25,6 +25,7 @@ public class BlockSteamcraftOre extends Block {
         setResistance(5.0F);
         setHardness(1.5F);
         setStepSound(Block.soundTypeStone);
+        setHarvestLevel("pickaxe", 1);
     }
 
     @Override

@@ -1790,7 +1790,7 @@ public class SteamcraftEventHandler {
                         }
                     }
                     event.drops.add(out);
-                    equipped.damageItem(2, player);
+                    drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
                 }
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
@@ -1956,7 +1956,7 @@ public class SteamcraftEventHandler {
         if (equipped.getItem() instanceof ISteamTool) {
             ISteamTool tool = (ISteamTool) equipped.getItem();
             if (tool.isWound(equipped) && tool.hasUpgrade(equipped, SteamcraftItems.overclocker)) {
-                equipped.damageItem(1, player);
+                tool.addSteam(equipped, -tool.steamPerDurability(), player);
             }
         }
     }
@@ -2019,7 +2019,7 @@ public class SteamcraftEventHandler {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
             if (drill.hasUpgrade(equipped, SteamcraftItems.chargePlacer) && drill.isWound(equipped)) {
                 Random rand = new Random();
-                equipped.damageItem(2, player);
+                drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
                 if (player.worldObj.difficultySetting == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
                     return;
                 }
@@ -2077,8 +2077,10 @@ public class SteamcraftEventHandler {
                 int meta = world.getBlockMetadata(startX, y, startZ);
                 world.setBlockToAir(startX, y, startZ);
                 block.harvestBlock(world, player, startX, y, startZ, meta);
-                if (!sAxe.addSteam(axe, -(sAxe.steamPerDurability() / 2), player)) {
-                    break;
+                if (y % 2 == 0) {
+                    if (!sAxe.addSteam(axe, -sAxe.steamPerDurability(), player)) {
+                        break;
+                    }
                 }
             } else {
                 break;
@@ -2133,7 +2135,7 @@ public class SteamcraftEventHandler {
                 continue;
             }
 
-            int meta = drop.getItemDamage() == OreDictionary.WILDCARD_VALUE ? -1 : drop.getItemDamage();
+            int meta = drop.getItemDamage() == OreDictionary.WILDCARD_VALUE ? 0 : drop.getItemDamage();
             MutablePair<Item, Integer> input = MutablePair.of(drop.getItem(), meta);
             if (SteamcraftRegistry.steamingRecipes.containsKey(input)) {
                 event.drops.remove(i);
@@ -2152,7 +2154,7 @@ public class SteamcraftEventHandler {
             }
         }
         if (itemsSmelted > 0) {
-            equipped.damageItem(itemsSmelted, player);
+            tool.addSteam(equipped, -(itemsSmelted * tool.steamPerDurability()), player);
         }
     }
 
@@ -2428,7 +2430,7 @@ public class SteamcraftEventHandler {
         }
         EntityPlayer player = (EntityPlayer) event.entityLiving;
         ItemStack equipped = player.getCurrentEquippedItem();
-        if (equipped == null) {
+        if (equipped == null || !player.isSneaking()) {
             return;
         }
         Item equippedItem = equipped.getItem();
@@ -2456,7 +2458,7 @@ public class SteamcraftEventHandler {
         }
 
         target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
-        drill.addSteam(equipped, -Config.battleDrillConsumption, player);
+        drill.addSteam(equipped, -(Config.battleDrillConsumption * drill.steamPerDurability()), player);
     }
 
     /**
