@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.gui;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -513,12 +514,12 @@ public class GuiSteamcraftBook extends GuiScreen {
      * @param player The player opening the GUI.
      */
     public static void openRecipeFor(ItemStack recipeStack, EntityPlayer player) {
-        viewing = SteamcraftRegistry.bookRecipes.get(recipeStack).left;
-        currPage = 0;
+        MutablePair<String, Integer> page = SteamcraftRegistry.bookRecipes.get(recipeStack);
+        viewing = page.left;
+        currPage = SteamcraftRegistry.entriesWithSubEntries.contains(viewing) ? page.right / 2 : 0;
         lastIndexPage = 1;
-        bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(GuiSteamcraftBook.viewing).length / 2F);
+        bookTotalPages = page.right;
         player.openGui(Steamcraft.instance, 1, player.worldObj, 0, 0, 0);
         ((GuiSteamcraftBook) Minecraft.getMinecraft().currentScreen).updateButtons();
     }
-
 }

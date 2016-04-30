@@ -83,6 +83,11 @@ public class SteamcraftRegistry {
     public static HashMap<ItemStack, MutablePair<String, Integer>> bookRecipes = new HashMap<>();
 
     /**
+     * List of all entries that had entries added to the musing ! syntax. Used by the ctrl/shift click journal feature.
+     */
+    public static ArrayList<String> entriesWithSubEntries = new ArrayList<>();
+
+    /**
      * All of the registered Exosuit Plates. Key is the plate ID, which is typically the material's
      * name. Value is the actual plate.
      */
@@ -191,7 +196,7 @@ public class SteamcraftRegistry {
                 pageNum++;
             }
         } else {
-
+            entriesWithSubEntries.add(category.substring(1));
             BookPage[] targetPages = researchPages.get(category.substring(1));
             int pageNum = targetPages.length;
             for (BookPage page : pages) {
