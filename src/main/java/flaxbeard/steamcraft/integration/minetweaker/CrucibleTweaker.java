@@ -34,7 +34,7 @@ public class CrucibleTweaker {
         CrucibleLiquid crucibleLiquid1 = SteamcraftRegistry.getLiquidFromName(liquid1);
         CrucibleLiquid crucibleLiquid2 = SteamcraftRegistry.getLiquidFromName(liquid2);
 
-        if (crucibleLiquid1 == null || crucibleLiquid2 == null) {
+        if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
             CrucibleFormula formula = new CrucibleFormula(crucibleLiquid1, amount1, crucibleLiquid2, amount2, amountOut);
             CrucibleLiquid out = new CrucibleLiquid(name, iStack, pStack, nStack, formula, r, g, b);
             MineTweakerAPI.apply(new AddLiquid(out));
