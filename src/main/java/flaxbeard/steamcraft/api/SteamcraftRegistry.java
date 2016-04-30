@@ -1,15 +1,11 @@
 package flaxbeard.steamcraft.api;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.api.book.BookPage;
 import flaxbeard.steamcraft.api.book.ICraftingPage;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
-import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
-import flaxbeard.steamcraft.api.tool.SteamToolSlot;
-import flaxbeard.steamcraft.item.tool.steam.ItemSteamToolUpgrade;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -257,10 +253,12 @@ public class SteamcraftRegistry {
      */
     public static void removeDunkRecipe(Item item, int meta, CrucibleLiquid liquid) {
         if (dunkRecipes != null) {
-            for (Map.Entry<Tuple3, MutablePair<Integer, ItemStack>> entry : dunkRecipes.entrySet()) {
-                Tuple3 tuple = entry.getKey();
-                if (tuple.first == item && (int) tuple.second == meta && tuple.third == liquid) {
-                    dunkRecipes.remove(tuple);
+            Iterator<Map.Entry<Tuple3, MutablePair<Integer, ItemStack>>> iter = dunkRecipes.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<Tuple3, MutablePair<Integer, ItemStack>> entry = iter.next();
+                Tuple3 key = entry.getKey();
+                if (key.first == item && (int) key.second == meta && key.third == liquid) {
+                    iter.remove();
                 }
             }
         }
@@ -348,6 +346,29 @@ public class SteamcraftRegistry {
     }
 
     /**
+     * Removes a melt recipe for an OreDict entry.
+     * @param dict The oredict tag.
+     * @param liquid The output liquid.
+     */
+    public static void removeMeltRecipeOreDict(String dict, CrucibleLiquid liquid) {
+        ArrayList<ItemStack> ores = OreDictionary.getOres(dict);
+        for (ItemStack ore : ores) {
+            removeMeltRecipe(ore.getItem(), ore.getItemDamage(), liquid);
+        }
+    }
+
+    /**
+     * Removes a melting recipe for a tool.
+     * @param item The tool
+     * @param liquid The output liquid
+     */
+    public static void removeMeltRecipeTool(Item item, CrucibleLiquid liquid) {
+        for (int j = 0; j < item.getMaxDamage(); j++) {
+            removeMeltRecipe(item, j, liquid);
+        }
+    }
+
+    /**
      * Removes a melting recipe.
      * @param item Input item
      * @param meta Input item metadata.
@@ -355,9 +376,11 @@ public class SteamcraftRegistry {
      */
     public static void removeMeltRecipe(Item item, int meta, CrucibleLiquid liquid) {
         MutablePair input = MutablePair.of(item, meta);
-        MutablePair output = liquidRecipes.get(input);
-        if (output.left == liquid) {
-            liquidRecipes.remove(input);
+        if (liquidRecipes.containsKey(input)) {
+            MutablePair output = liquidRecipes.get(input);
+            if (output.left == liquid) {
+                liquidRecipes.remove(input);
+            }
         }
     }
 

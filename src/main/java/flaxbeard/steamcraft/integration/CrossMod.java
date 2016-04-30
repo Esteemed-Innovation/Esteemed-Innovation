@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.integration;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
+import flaxbeard.steamcraft.integration.minetweaker.MineTweakerIntegration;
 import flaxbeard.steamcraft.integration.natura.NaturaIntegration;
 import flaxbeard.steamcraft.integration.nei.NEIIntegration;
 import flaxbeard.steamcraft.integration.thaumcraft.ThaumcraftIntegration;
@@ -57,6 +58,8 @@ public class CrossMod {
     public static final boolean TWILIGHT_FOREST = Loader.isModLoaded("TwilightForest")
             && Config.enableTwilightForestIntegration;
 
+    public static final boolean MINETWEAKER = Loader.isModLoaded("MineTweaker3");
+
     public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class,
             "FSP_POOR_ZINC", new Class[0], new Object[0]);
 
@@ -107,6 +110,10 @@ public class CrossMod {
 
         if (TWILIGHT_FOREST) {
             TwilightForestIntegration.postInit();
+        }
+
+        if (MINETWEAKER) {
+            MineTweakerIntegration.postInit();
         }
 
         MiscIntegration.postInit();
