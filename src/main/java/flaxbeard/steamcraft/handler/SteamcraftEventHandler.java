@@ -769,7 +769,11 @@ public class SteamcraftEventHandler {
                     }
                     if (foundBook) {
                         event.toolTip.add(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.GRAY + StatCollector.translateToLocal("steamcraft.book.shiftright"));
-                        if (Mouse.isButtonDown(0) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+                        boolean mouseDown = Mouse.isButtonDown(0);
+                        if (Config.singleButtonTrackpad && !mouseDown) {
+                            mouseDown = Mouse.isButtonDown(1);
+                        }
+                        if (mouseDown && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
                             GuiSteamcraftBook.openRecipeFor(stack2, player);
                         }
                     }

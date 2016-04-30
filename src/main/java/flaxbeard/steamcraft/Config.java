@@ -246,6 +246,8 @@ public class Config {
 
     public static boolean enableCanister;
 
+    public static boolean singleButtonTrackpad;
+
 
     public static void load(FMLPreInitializationEvent event) {
         File configurationDir = event.getModConfigurationDirectory();
@@ -458,6 +460,7 @@ public class Config {
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean(false);
         enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean(true);
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean(false);
+        singleButtonTrackpad = config.get("Other", "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean(false);
 
         //INTEGRATION
         enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean(true);
