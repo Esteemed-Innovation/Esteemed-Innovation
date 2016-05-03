@@ -6,7 +6,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ModelDragonsRoar;
 
 public class ItemExosuitDragonRoar extends ItemExosuitUpgrade {
     public ItemExosuitDragonRoar() {
-        super(ExosuitSlot.HEAD_HELM, "", null, 0);
+        super(ExosuitSlot.HEAD_GOGGLES, "", null, 0);
     }
 
     @Override

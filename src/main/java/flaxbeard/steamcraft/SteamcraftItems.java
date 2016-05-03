@@ -407,7 +407,10 @@ public class SteamcraftItems {
             //doubleJump = new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, "steamcraft:textures/models/armor/fallUpgrade.png",null,0).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:doubleJump").setTextureName("steamcraft:doubleJump");
             //GameRegistry.registerItem(doubleJump, "doubleJump");
             if (Config.enableRebreather) {
-                rebreather = new ItemExosuitUpgrade(ExosuitSlot.HEAD_HELM, "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1).setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather").setTextureName("steamcraft:rebreather");
+                rebreather = new ItemExosuitUpgrade(ExosuitSlot.HEAD_GOGGLES,
+                  "steamcraft:textures/models/armor/rebreatherUpgrade.png", null, 1)
+                  .setCreativeTab(Steamcraft.tab).setUnlocalizedName("steamcraft:rebreather")
+                  .setTextureName("steamcraft:rebreather");
                 GameRegistry.registerItem(rebreather, "rebreather");
             }
             if (Config.enableHydrophobic) {
