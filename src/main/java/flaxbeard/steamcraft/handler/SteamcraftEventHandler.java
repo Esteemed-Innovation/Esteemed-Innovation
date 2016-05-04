@@ -84,6 +84,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -1772,16 +1773,6 @@ public class SteamcraftEventHandler {
                 }
             }
 
-            if (drill.hasUpgrade(equipped, SteamcraftItems.preciseCuttingHead) &&
-              block.isToolEffective(drill.toolClass(), meta) &&
-              block.canSilkHarvest(event.world, player, event.x, event.y, event.z, meta) &&
-              drill.canHarvestBlock(block, equipped)) {
-                for (int i = 0; i < event.drops.size(); i++) {
-                    event.drops.remove(i);
-                }
-                event.drops.add(new ItemStack(block, 1, meta));
-            }
-
             if (drill.hasUpgrade(equipped, SteamcraftItems.internalProcessingUnit)) {
                 ItemStack out = TileEntitySmasher.REGISTRY.getOutput(new ItemStack(block, 1, meta));
                 if (out != null && out.getItem() != null) {
@@ -1846,6 +1837,46 @@ public class SteamcraftEventHandler {
                         event.dropChance = 90;
                         return;
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void doPreciseCuttingHead(BlockEvent.HarvestDropsEvent event) {
+        if (event.harvester == null || event.block == null) {
+            return;
+        }
+
+        EntityPlayer player = event.harvester;
+        Block block = event.block;
+        int meta = event.blockMetadata;
+        ItemStack equipped = player.getCurrentEquippedItem();
+        if (equipped == null || equipped.getItem() == null) {
+            return;
+        }
+
+        if (equipped.getItem() instanceof ItemSteamDrill) {
+            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
+            if (!drill.isWound(equipped)) {
+                return;
+            }
+
+            if (drill.hasUpgrade(equipped, SteamcraftItems.preciseCuttingHead) &&
+              ForgeHooks.canHarvestBlock(block, player, meta)) {
+                ItemStack toAdd = new ItemStack(block, 1, meta);
+                if (toAdd.getItem() == null) {
+                    // Special case because lit redstone ore and redstone ore are different blocks entirely...
+                    // Hopefully this is changed, or there is a better way to do this available in 1.9.
+                    if (block == Blocks.lit_redstone_ore) {
+                        toAdd = new ItemStack(Blocks.redstone_ore);
+                    } else {
+                        toAdd = null;
+                    }
+                }
+                if (toAdd != null) {
+                    event.drops.clear();
+                    event.drops.add(toAdd);
                 }
             }
         }
