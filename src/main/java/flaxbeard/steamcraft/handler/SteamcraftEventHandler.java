@@ -44,6 +44,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiMerchant;
@@ -1953,7 +1954,7 @@ public class SteamcraftEventHandler {
                 fellBlocks(world, x, y, z, player, equipped);
             }
             if (axe.hasUpgrade(equipped, SteamcraftItems.forestFire)) {
-                burnBlocks(world, x, y, z, player, equipped);
+                burnBlocks(world, x, y, z);
             }
         }
 
@@ -2096,20 +2097,19 @@ public class SteamcraftEventHandler {
      * Burns all log blocks within a 5 block radius.
      * @param world The world
      * @param startX The starting X coordinate
-     * @param y The permanent Y coordinate
+     * @param startY The starting Y coordinate
      * @param startZ The starting Z coordinate
-     * @param player The player doing the burning
-     * @param axe The steam axe ItemStack.
      */
-    private void burnBlocks(World world, int startX, int y, int startZ, EntityPlayer player, ItemStack axe) {
-        ItemSteamAxe sAxe = (ItemSteamAxe) axe.getItem();
+    private void burnBlocks(World world, int startX, int startY, int startZ) {
         for (int x = startX - 5; x < startX + 5; x++) {
-            for (int z = startZ - 5; z < startZ + 5; z++) {
-                Block block = world.getBlock(x, y, z);
-                if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
-                    world.setBlock(x, y, z, Blocks.fire);
-                    if (!sAxe.addSteam(axe, -(sAxe.steamPerDurability() * 2), player)) {
-                        return;
+            for (int y = startY - 5; y < startY + 5; y++) {
+                for (int z = startZ - 5; z < startZ + 5; z++) {
+                    Block block = world.getBlock(x, y, z);
+                    if (block == null || world.isAirBlock(x, y, z)) {
+                        continue;
+                    }
+                    if (block.isFlammable(world, x, y, z, ForgeDirection.getOrientation(sideHit))) {
+                        world.setBlock(x, y, z, Blocks.fire);
                     }
                 }
             }
@@ -2360,8 +2360,7 @@ public class SteamcraftEventHandler {
                 }
 
                 if (axe.hasUpgrade(equipped, SteamcraftItems.leafBlower)) {
-                    mineExtraBlocks(getExtraBlockCoordinates(sideHit), event.x, event.y, event.z, world,
-                      axe, equipped, player);
+                    blowLeaves(getExtraBlock9Coordinates(sideHit), event.x, event.y, event.z, world, player);
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -2629,6 +2628,8 @@ public class SteamcraftEventHandler {
         return false;
     }
 
+    // { x, y, z } relatively
+
     private static int[][] extraBlocksSide = {
       { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 },
       { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 },
@@ -2647,6 +2648,43 @@ public class SteamcraftEventHandler {
       { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }
     };
 
+    private static int[][] extraBlocks9Side = {
+      { 0, 4, -4 }, { 0, 4, -3 }, { 0, 4, -2 }, { 0, 4, -1 }, { 0, 4, 0 }, { 0, 4, 1 }, { 0, 4, 2 }, { 0, 4, 3 }, { 0, 4, 4 },
+      { 0, 3, -4 }, { 0, 3, -3 }, { 0, 3, -2 }, { 0, 3, -1 }, { 0, 3, 0 }, { 0, 3, 1 }, { 0, 3, 2 }, { 0, 3, 3 }, { 0, 3, 4 },
+      { 0, 2, -4 }, { 0, 3, -3 }, { 0, 2, -2 }, { 0, 2, -1 }, { 0, 2, 0 }, { 0, 2, 1 }, { 0, 2, 2 }, { 0, 2, 3 }, { 0, 2, 4 },
+      { 0, 1, -4 }, { 0, 2, -3 }, { 0, 1, -2 }, { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 }, { 0, 1, 2 }, { 0, 1, 3 }, { 0, 1, 4 },
+      { 0, 0, -4 }, { 0, 0, -3 }, { 0, 0, -2 }, { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 }, { 0, 0, 2 }, { 0, 0, 3 }, { 0, 0, 4 },
+      { 0, -1, -4 }, { 0, -1, -3 }, { 0, -1, -2 }, { 0, -1, -1 }, { 0, -1, 0 }, { 0, -1, 1 }, { 0, -1, 2 }, { 0, -1, 3 }, { 0, -1, 4 },
+      { 0, -2, -4 }, { 0, -2, -3 }, { 0, -2, -2 }, { 0, -2, -1 }, { 0, -2, 0 }, { 0, -2, 1 }, { 0, -2, 2 }, { 0, -2, 3 }, { 0, -2, 4 },
+      { 0, -3, -4 }, { 0, -3, -3 }, { 0, -3, -2 }, { 0, -3, -1 }, { 0, -3, 0 }, { 0, -3, 1 }, { 0, -3, 2 }, { 0, -3, 3 }, { 0, -3, 4 },
+      { 0, -4, -4 }, { 0, -4, -3 }, { 0, -4, -2 }, { 0, -4, -1 }, { 0, -4, 0 }, { 0, -4, 1 }, { 0, -4, 2 }, { 0, -4, 3 }, { 0, -4, 4 },
+    };
+
+    private static int[][] extraBlocks9Forward = {
+      { -4, 4, 0 }, { -3, 4, 0 }, { -2, 4, 0 }, { -1, 4, 0 }, { 0, 4, 0 }, { 1, 4, 0 }, { 2, 4, 0 }, { 3, 4, 0 }, { 4, 4, 0 },
+      { -4, 3, 0 }, { -3, 3, 0 }, { -2, 3, 0 }, { -1, 3, 0 }, { 0, 3, 0 }, { 1, 3, 0 }, { 2, 3, 0 }, { 3, 3, 0 }, { 4, 3, 0 },
+      { -4, 2, 0 }, { -3, 2, 0 }, { -2, 2, 0 }, { -1, 2, 0 }, { 0, 2, 0 }, { 1, 2, 0 }, { 2, 2, 0 }, { 3, 2, 0 }, { 4, 2, 0 },
+      { -4, 1, 0 }, { -3, 1, 0 }, { -2, 1, 0 }, { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 }, { 2, 1, 0 }, { 3, 1, 0 }, { 4, 1, 0 },
+      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0 , 0 }, { 4, 0, 0 },
+      { -4, -1, 0 }, { -3, -1, 0 }, { -2, -1, 0 }, { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }, { 2, -1, 0 }, { 3, -1, 0 }, { 4, -1, 0 },
+      { -4, -2, 0 }, { -3, -2, 0 }, { -2, -2, 0 }, { -1, -2, 0 }, { 0, -2, 0 }, { 1, -2, 0 }, { 2, -2, 0 }, { 3, -2, 0 }, { 4, -2, 0 },
+      { -4, -3, 0 }, { -3, -3, 0 }, { -2, -3, 0 }, { -1, -3, 0 }, { 0, -3, 0 }, { 1, -3, 0 }, { 2, -3, 0 }, { 3, -3, 0 }, { 4, -3, 0 },
+      { -4, -4, 0 }, { -3, -4, 0 }, { -2, -4, 0 }, { -1, -4, 0 }, { 0, -4, 0 }, { 1, -4, 0 }, { 2, -4, 0 }, { 3, -4, 0 }, { 4, -4, 0 },
+    };
+
+    private static int[] [] extraBlocks9Vertical = {
+      { -4, 0, 4 }, { -4, 0, 4 }, { -2, 0, 4 }, { -4, 0, 4 }, { 0, 0, 4 }, { 1, 0, 4 }, { 2, 0, 4 }, { 3, 0, 4 }, { 4, 0, 4},
+      { -4, 0, 3 }, { -3, 0, 3 }, { -2, 0, 3 }, { -3, 0, 3 }, { 0, 0, 3 }, { 1, 0, 3 }, { 2, 0, 3 }, { 3, 0, 3 }, { 4, 0, 3},
+      { -4, 0, 2 }, { -3, 0, 2 }, { -2, 0, 2 }, { -1, 0, 2 }, { 0, 0, 2 }, { 1, 0, 2 }, { 2, 0, 2 }, { 3, 0, 2 }, { 4, 0, 2 },
+      { -4, 0, 1 }, { -3, 0, 1 }, { -2, 0, 1 }, { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 }, { 2, 0, 1 }, { 3, 0, 1 }, { 4, 0, 1 },
+      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 },
+      { -4, 0, -1 }, { -3, 0, -1 }, { -2, 0, -1 }, { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }, { 2, 0, -1 }, { 3, 0, -1 }, { 4, 0, -1 },
+      { -4, 0, -2 }, { -3, 0, -2 }, { -2, 0, -2 }, { -1, 0, -2 }, { 0, 0, -2 }, { 1, 0, -2 }, { 2, 0, -2 }, { 3, 0, -2 }, { 4, 0, -2 },
+      { -4, 0, -3 }, { -3, 0, -3 }, { -2, 0, -3 }, { -1, 0, -3 }, { 0, 0, -3 }, { 1, 0, -3 }, { 2, 0, -3 }, { 3, 0, -3 }, { 4, 0, -3 },
+      { -4, 0, -4 }, { -3, 0, -4 }, { -2, 0, -4 }, { -1, 0, -4 }, { 0, 0, -4 }, { 1, 0, -4 }, { 2, 0, -4 }, { 3, 0, -4 }, { 4, 0, -4 },
+    };
+
+    @SuppressWarnings("Duplicates")
     private int[][] getExtraBlockCoordinates(int sideHit) {
         switch (sideHit) {
             case 5: return extraBlocksSide;
@@ -2655,6 +2693,18 @@ public class SteamcraftEventHandler {
             case 1: return extraBlocksVertical;
             case 0: return extraBlocksVertical;
             default: return extraBlocksForward;
+        }
+    }
+
+    @SuppressWarnings("Duplicates")
+    private int[][] getExtraBlock9Coordinates(int sideHit) {
+        switch (sideHit) {
+            case 5: return extraBlocks9Side;
+            case 4: return extraBlocks9Side;
+            case 3: return extraBlocks9Forward;
+            case 1: return extraBlocks9Vertical;
+            case 0: return extraBlocks9Vertical;
+            default: return extraBlocks9Forward;
         }
     }
 
@@ -2667,10 +2717,11 @@ public class SteamcraftEventHandler {
      * @param world The world.
      * @param tool The tool mining.
      * @param toolStack The ItemStack of the tool.
+     * @param player The player mining.
      */
     private void mineExtraBlocks(int[][] coordinateArray, int x, int y, int z, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
 //        boolean isDrill = tool instanceof ItemSteamDrill;
-        boolean isAxe = tool instanceof ItemSteamAxe;
+//        boolean isAxe = tool instanceof ItemSteamAxe;
         boolean isShovel = tool instanceof ItemSteamShovel;
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = x + aCoordinateArray[0];
@@ -2684,10 +2735,6 @@ public class SteamcraftEventHandler {
                 String toolClass = block.getHarvestTool(meta);
                 flag = ((toolClass != null) && toolClass.equals(((ISteamTool) tool).toolClass()));
             }
-            if (isAxe) {
-                MutablePair item = MutablePair.of(block.getItem(world, thisX, thisY, thisZ), meta);
-                flag = OreDictHelper.leaves.contains(item);
-            }
             if (block != null && !block.isAir(world, thisX, thisY, thisZ) && flag) {
 //                world.spawnParticle("")
 //                world.func_147480_a(thisX, thisY, thisZ, false);
@@ -2695,5 +2742,52 @@ public class SteamcraftEventHandler {
                 block.harvestBlock(world, player, thisX, thisY, thisZ, meta);
             }
         }
+    }
+
+    /**
+     * Harvests the coordinates in the coordinate array.
+     * @param coordinateArray The two-dimensional array containing coordinates to add to x, y, z.
+     * @param x The starting X coordinate.
+     * @param y The starting Y coordinate.
+     * @param z The starting Z coordinate.
+     * @param world The world.
+     * @param player The player mining.
+     */
+    private void blowLeaves(int[][] coordinateArray, int x, int y, int z, World world, EntityPlayer player) {
+        for (int[] aCoordinateArray : coordinateArray) {
+            int thisX = x + aCoordinateArray[0];
+            int thisY = y + aCoordinateArray[1];
+            int thisZ = z + aCoordinateArray[2];
+            Block block = world.getBlock(thisX, thisY, thisZ);
+            int meta = world.getBlockMetadata(thisX, thisY, thisZ);
+            if (block == null || block.isAir(world, thisX, thisY, thisZ)) {
+                continue;
+            }
+            if (isLeaves(block, world, x, y, z)) {
+                world.setBlockToAir(thisX, thisY, thisZ);
+                block.harvestBlock(world, player, thisX, thisY, thisZ, meta);
+            }
+        }
+    }
+
+    private ArrayList<Material> LEAF_MATERIALS = new ArrayList<Material>() { {
+        add(Material.leaves);
+        add(Material.coral);
+        add(Material.craftedSnow);
+        add(Material.plants);
+    }};
+
+    /**
+     * Returns whether the block can be blown by the leaf blower.
+     * @param block The block
+     * @param world The world
+     * @param x The block's X coordinate
+     * @param y The block's Y coordinate
+     * @param z The block's Z coordinate
+     * @return Whether the leaf blower should blow this block away.
+     */
+    private boolean isLeaves(Block block, World world, int x, int y, int z) {
+        return (OreDictHelper.arrayHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
+          block.isLeaves(world, x, y, z) || LEAF_MATERIALS.contains(block.getMaterial()));
     }
 }
