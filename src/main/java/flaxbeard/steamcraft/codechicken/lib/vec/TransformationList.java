@@ -35,10 +35,10 @@ public class TransformationList extends Transformation {
      * @return
      */
     public Matrix4 reverseCompile() {
-        Matrix4 mat = new Matrix4();
+        Matrix4 matLocal = new Matrix4();
         for (Transformation t : transformations)
-            t.apply(mat);
-        return mat;
+            t.apply(matLocal);
+        return matLocal;
     }
 
     @Override

@@ -56,9 +56,9 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
 
         GL11.glScalef(1F, -1F, -1F);
         int ticks = Minecraft.getMinecraft().thePlayer.ticksExisted;
-        float px = (1.0F / 16.0F);
+        float pxLocal = (1.0F / 16.0F);
 
-        GL11.glTranslatef(0.0F * 90.0F, 4 * px, -6 * px);
+        GL11.glTranslatef(0.0F * 90.0F, 4 * pxLocal, -6 * pxLocal);
         if (mold.open) {
             float tick = (float) (Math.PI * (mold.changeTicks * 90.0F / 20.0F)) / 180.0F;
             GL11.glRotatef(100.0F - MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
@@ -149,9 +149,9 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
         GL11.glScalef(1F, -1F, -1F);
 
         GL11.glScalef(1F, -1F, -1F);
-        float px = (1.0F / 16.0F);
+        float pxLocal = (1.0F / 16.0F);
 
-        GL11.glTranslatef(0.0F * 90.0F, 4 * px, -6 * px);
+        GL11.glTranslatef(0.0F * 90.0F, 4 * pxLocal, -6 * pxLocal);
 
         float tick = (float) (Math.PI * (0 * 90.0F / 20.0F)) / 180.0F;
         GL11.glRotatef(0.0F + MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
