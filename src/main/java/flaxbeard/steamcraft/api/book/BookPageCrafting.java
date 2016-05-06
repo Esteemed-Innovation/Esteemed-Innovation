@@ -46,8 +46,8 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
     public BookPageCrafting(String string, IRecipe... recipes) {
         super(string);
         output = recipes[0].getRecipeOutput();
-        for (IRecipe recipe : recipes) {
-            if (recipe instanceof ShapedOreRecipe) {
+        for (IRecipe recipeLocal : recipes) {
+            if (recipeLocal instanceof ShapedOreRecipe) {
                 for (int i = 0; i < 9; i++) {
                     ArrayList newList = new ArrayList();
                     if (inputs[i] != null) {
@@ -57,16 +57,16 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapedOreRecipe) recipe).getInput().length > i && ((ShapedOreRecipe) recipe).getInput()[i] != null) {
-                        if (((ShapedOreRecipe) recipe).getInput()[i] instanceof Collection) {
-                            newList.addAll((Collection) ((ShapedOreRecipe) recipe).getInput()[i]);
+                    if (((ShapedOreRecipe) recipeLocal).getInput().length > i && ((ShapedOreRecipe) recipeLocal).getInput()[i] != null) {
+                        if (((ShapedOreRecipe) recipeLocal).getInput()[i] instanceof Collection) {
+                            newList.addAll((Collection) ((ShapedOreRecipe) recipeLocal).getInput()[i]);
                         } else {
-                            newList.add(((ShapedOreRecipe) recipe).getInput()[i]);
+                            newList.add(((ShapedOreRecipe) recipeLocal).getInput()[i]);
                         }
                     }
                     inputs[i] = newList;
                 }
-            } else if (recipe instanceof ShapedRecipes) {
+            } else if (recipeLocal instanceof ShapedRecipes) {
                 for (int i = 0; i < 10; i++) {
                     ArrayList newList = new ArrayList();
                     if (inputs[i] != null) {
@@ -76,17 +76,17 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapedRecipes) recipe).recipeItems.length > i && ((ShapedRecipes) recipe).recipeItems[i] != null) {
-                        newList.add(((ShapedRecipes) recipe).recipeItems[i]);
+                    if (((ShapedRecipes) recipeLocal).recipeItems.length > i && ((ShapedRecipes) recipeLocal).recipeItems[i] != null) {
+                        newList.add(((ShapedRecipes) recipeLocal).recipeItems[i]);
 
                     }
 
                     inputs[i] = newList;
                 }
-            } else if (recipe instanceof ShapelessRecipes) {
+            } else if (recipeLocal instanceof ShapelessRecipes) {
                 shapeless = true;
-                inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipe).recipeItems.toArray(new Object[((ShapelessRecipes) recipe).recipeItems.size()]));
-            } else if (recipe instanceof ShapelessOreRecipe) {
+                inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipeLocal).recipeItems.toArray(new Object[((ShapelessRecipes) recipeLocal).recipeItems.size()]));
+            } else if (recipeLocal instanceof ShapelessOreRecipe) {
                 shapeless = true;
                 for (int i = 0; i < 9; i++) {
                     ArrayList newList = new ArrayList();
@@ -97,11 +97,11 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapelessOreRecipe) recipe).getInput().size() > i && ((ShapelessOreRecipe) recipe).getInput().get(i) != null) {
-                        if (((ShapelessOreRecipe) recipe).getInput().get(i) instanceof Collection) {
-                            newList.addAll((Collection) ((ShapelessOreRecipe) recipe).getInput().get(i));
+                    if (((ShapelessOreRecipe) recipeLocal).getInput().size() > i && ((ShapelessOreRecipe) recipeLocal).getInput().get(i) != null) {
+                        if (((ShapelessOreRecipe) recipeLocal).getInput().get(i) instanceof Collection) {
+                            newList.addAll((Collection) ((ShapelessOreRecipe) recipeLocal).getInput().get(i));
                         } else {
-                            newList.add(((ShapelessOreRecipe) recipe).getInput().get(i));
+                            newList.add(((ShapelessOreRecipe) recipeLocal).getInput().get(i));
                         }
                     }
                     inputs[i] = newList;

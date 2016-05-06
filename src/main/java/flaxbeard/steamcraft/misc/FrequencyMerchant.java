@@ -165,8 +165,8 @@ public class FrequencyMerchant implements IMerchant {
         if (this.entity != null && this.entity.isEntityAlive() && !this.entity.worldObj.isRemote) {
             recipe.incrementToolUses();
             if (this.existingList != null) {
-                NBTTagCompound nbt = this.entity.getEntityData();
-                nbt.setTag("stock", this.existingList.getRecipiesAsTags());
+                NBTTagCompound nbtLocal = this.entity.getEntityData();
+                nbtLocal.setTag("stock", this.existingList.getRecipiesAsTags());
                 ItemStack toSell = recipe.getItemToSell();
                 ItemStack toBuy = recipe.getItemToBuy();
                 AnimalTradeEvent event = new AnimalTradeEvent(this.entity, this.customer, toBuy, toSell);
