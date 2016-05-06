@@ -465,7 +465,8 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
         if (array == null) {
             while (attributes.size() <= attrib.attributeIndex)
                 attributes.add(null);
-            attributes.set(attrib.attributeIndex, array = attrib.newArray(verts.length));
+            array=attrib.newArray(verts.length);
+            attributes.set(attrib.attributeIndex, array);
         }
         return array;
     }

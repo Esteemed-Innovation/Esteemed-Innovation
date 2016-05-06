@@ -31,7 +31,8 @@ public class RayTracer {
     public static RayTracer instance() {
         RayTracer inst = t_inst.get();
         if (inst == null)
-            t_inst.set(inst = new RayTracer());
+        	inst=new RayTracer();
+            t_inst.set(inst);
         return inst;
     }
 
