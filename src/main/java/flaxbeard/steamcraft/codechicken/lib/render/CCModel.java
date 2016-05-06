@@ -21,7 +21,7 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
     public final int vertexMode;
     public final int vp;
     public Vertex5[] verts;
-    public ArrayList<Object> attributes = new ArrayList<Object>();
+    public ArrayList<Object> attributes = new ArrayList<>();
 
     protected CCModel(int vertexMode) {
         if (vertexMode != 7 && vertexMode != 4)
@@ -89,11 +89,11 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
             coordSystem = new RedundantTransformation();
         int vp = vertexMode == 7 ? 4 : 3;
 
-        HashMap<String, CCModel> modelMap = new HashMap<String, CCModel>();
-        ArrayList<Vector3> verts = new ArrayList<Vector3>();
-        ArrayList<Vector3> uvs = new ArrayList<Vector3>();
-        ArrayList<Vector3> normals = new ArrayList<Vector3>();
-        ArrayList<int[]> polys = new ArrayList<int[]>();
+        HashMap<String, CCModel> modelMap = new HashMap<>();
+        ArrayList<Vector3> verts = new ArrayList<>();
+        ArrayList<Vector3> uvs = new ArrayList<>();
+        ArrayList<Vector3> normals = new ArrayList<>();
+        ArrayList<int[]> polys = new ArrayList<>();
         String modelName = "unnamed";
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -268,10 +268,10 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
     }
 
     public static void exportObj(Map<String, CCModel> models, PrintWriter p) {
-        List<Vector3> verts = new ArrayList<Vector3>();
-        List<UV> uvs = new ArrayList<UV>();
-        List<Vector3> normals = new ArrayList<Vector3>();
-        List<int[]> polys = new ArrayList<int[]>();
+        List<Vector3> verts = new ArrayList<>();
+        List<UV> uvs = new ArrayList<>();
+        List<Vector3> normals = new ArrayList<>();
+        List<int[]> polys = new ArrayList<>();
         for (Map.Entry<String, CCModel> e : models.entrySet()) {
             p.println("g " + e.getKey());
             CCModel m = e.getValue();
@@ -738,7 +738,7 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
      * @return The model
      */
     public CCModel smoothNormals() {
-        ArrayList<PositionNormalEntry> map = new ArrayList<PositionNormalEntry>();
+        ArrayList<PositionNormalEntry> map = new ArrayList<>();
         Vector3[] normals = normals();
         nextvert:
         for (int k = 0; k < verts.length; k++) {
@@ -989,7 +989,7 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
 
     private static class PositionNormalEntry {
         public Vector3 pos;
-        public LinkedList<Vector3> normals = new LinkedList<Vector3>();
+        public LinkedList<Vector3> normals = new LinkedList<>();
 
         public PositionNormalEntry(Vector3 position) {
             pos = position;

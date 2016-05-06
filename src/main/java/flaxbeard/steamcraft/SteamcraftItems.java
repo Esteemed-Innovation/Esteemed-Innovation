@@ -28,7 +28,7 @@ import flaxbeard.steamcraft.item.tool.*;
 import flaxbeard.steamcraft.item.tool.steam.*;
 
 public class SteamcraftItems {
-    public static HashMap<String, Item> tools = new HashMap<String, Item>();
+    public static HashMap<String, Item> tools = new HashMap<>();
 
     // firearms
     public static Item musketCartridge;

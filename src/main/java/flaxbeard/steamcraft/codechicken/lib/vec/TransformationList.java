@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TransformationList extends Transformation {
-    private ArrayList<Transformation> transformations = new ArrayList<Transformation>();
+    private ArrayList<Transformation> transformations = new ArrayList<>();
     private Matrix4 mat;
 
     public TransformationList(Transformation... transforms) {
@@ -94,7 +94,7 @@ public class TransformationList extends Transformation {
     }
 
     private void compact() {
-        ArrayList<Transformation> newList = new ArrayList<Transformation>(transformations.size());
+        ArrayList<Transformation> newList = new ArrayList<>(transformations.size());
         Iterator<Transformation> iterator = transformations.iterator();
         Transformation prev = null;
         while (iterator.hasNext()) {

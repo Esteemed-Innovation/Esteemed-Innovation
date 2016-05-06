@@ -19,7 +19,7 @@ import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
 public class ItemSmashedOre extends Item {
 
-    private static final Map<Integer, String[]> map = new HashMap<Integer, String[]>();
+    private static final Map<Integer, String[]> map = new HashMap<>();
     @SideOnly(Side.CLIENT)
     private Map<Integer, IIcon> icons;
     
@@ -104,7 +104,7 @@ public class ItemSmashedOre extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-    	icons = new HashMap<Integer, IIcon>();
+    	icons = new HashMap<>();
     	for (Entry<Integer, String[]> entry : map.entrySet()) {
     		icons.put(entry.getKey(), register.registerIcon(getIconString() + entry.getValue()[0]));
     	}

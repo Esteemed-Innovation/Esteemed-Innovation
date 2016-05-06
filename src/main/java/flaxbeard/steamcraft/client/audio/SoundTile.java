@@ -23,7 +23,7 @@ public class SoundTile implements ITickableSound {
     private boolean donePlaying = false;
 
     public SoundTile(ISoundTile soundTile) {
-        this.soundTileReference = new WeakReference<ISoundTile>(soundTile);
+        this.soundTileReference = new WeakReference<>(soundTile);
         this.location = soundTile.getSound();
     }
 

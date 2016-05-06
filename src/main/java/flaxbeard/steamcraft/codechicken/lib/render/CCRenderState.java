@@ -178,7 +178,7 @@ public class CCRenderState {
     public static int side;
     public static LC lc = new LC();
     private static int nextOperationIndex;
-    private static ArrayList<VertexAttribute<?>> vertexAttributes = new ArrayList<VertexAttribute<?>>();
+    private static ArrayList<VertexAttribute<?>> vertexAttributes = new ArrayList<>();
 
     public static int registerOperation() {
         return nextOperationIndex++;

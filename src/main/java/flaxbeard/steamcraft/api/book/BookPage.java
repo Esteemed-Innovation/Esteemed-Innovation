@@ -14,7 +14,7 @@ import scala.Tuple4;
 import java.util.ArrayList;
 
 public class BookPage {
-    protected ArrayList<Tuple4> items = new ArrayList<Tuple4>();
+    protected ArrayList<Tuple4> items = new ArrayList<>();
     protected boolean shouldDisplayTitle;
     private String name;
 
