@@ -176,8 +176,8 @@ public class ContainerSteamAnvil extends Container {
             int k;
             int l;
             int i1;
-            int k1;
-            int l1;
+            int k1=0;
+            int l1=0;
             Iterator iterator1;
             Enchantment enchantment;
 
@@ -322,7 +322,8 @@ public class ContainerSteamAnvil extends Container {
 
             k = 0;
 
-            for (iterator1 = map.keySet().iterator(); iterator1.hasNext(); k2 += k + k1 * l1) {
+            for (iterator1 = map.keySet().iterator(); iterator1.hasNext();) {
+            	k2 += k + k1 * l1;
                 i1 = ((Integer) iterator1.next()).intValue();
                 enchantment = Enchantment.enchantmentsList[i1];
                 k1 = ((Integer) map.get(Integer.valueOf(i1))).intValue();

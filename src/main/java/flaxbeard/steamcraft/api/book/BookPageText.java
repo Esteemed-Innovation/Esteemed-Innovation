@@ -58,8 +58,9 @@ public class BookPageText extends BookPage {
     protected int getSplitStringHeight(FontRenderer fontRenderer, String par1Str, int par2, int par3, int par4) {
         List list = fontRenderer.listFormattedStringToWidth(par1Str, par4);
         int initialPar3 = par3;
-        for (Iterator iterator = list.iterator(); iterator.hasNext(); par3 += fontRenderer.FONT_HEIGHT) {
+        for (Iterator iterator = list.iterator(); iterator.hasNext();) {
             String s1 = (String) iterator.next();
+            par3 += fontRenderer.FONT_HEIGHT;
         }
         return par3 - initialPar3;
     }
