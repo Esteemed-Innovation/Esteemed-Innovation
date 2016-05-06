@@ -14,7 +14,8 @@ public abstract class BlockSteamTransporter extends BlockContainer {
         ISteamTransporter te = (ISteamTransporter) world.getTileEntity(x, y, z);
         if (te != null && te.getNetwork() != null) {
             te.getNetwork().split(te, true);
+            te.refresh();
         }
-        te.refresh();
+        
     }
 }
