@@ -51,4 +51,13 @@ public class ExtendedMOP extends MovingObjectPosition implements Comparable<Exte
     public int compareTo(ExtendedMOP o) {
         return dist == o.dist ? 0 : dist < o.dist ? -1 : 1;
     }
+    @Override
+    public boolean equals(Object other) {
+         if(this==other) return true;
+         if(!(other instanceof ExtendedMOP)){
+        	 return false;
+         }
+         ExtendedMOP that=(ExtendedMOP)other;
+         return (that==other)&&(this.dist==that.dist);
+    }
 }
