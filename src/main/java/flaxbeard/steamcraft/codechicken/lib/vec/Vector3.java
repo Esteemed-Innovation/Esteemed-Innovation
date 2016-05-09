@@ -401,7 +401,16 @@ public class Vector3 implements Copyable<Vector3> {
         Vector3 v = (Vector3) o;
         return x == v.x && y == v.y && z == v.z;
     }
-
+    @Override
+    public int hashCode(){
+    	int hashValue=11;
+    	hashValue=31*hashValue+new Double(x).hashCode();
+    	hashValue=31*hashValue+new Double(y).hashCode();
+    	hashValue=31*hashValue+new Double(z).hashCode();
+    	return hashValue;
+    }
+    
+    
     /**
      * Equals method with tolerance
      *
