@@ -33,8 +33,8 @@ public class Config {
     public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
     public static final int STEAMCELL_CAPACITY_DEFAULT = 100;
 
-    public static final float extendedRange = 2.0F; //Range extension in blocks
-    public static final float fallAssistDivisor = 2;
+    public static final float EXTENDED_RANGE = 2.0F; //Range extension in blocks
+    public static final float FALL_ASSIST_DIVISOR = 2;
 
     public static boolean genCopperOverworld;
     public static boolean genZincOverworld;

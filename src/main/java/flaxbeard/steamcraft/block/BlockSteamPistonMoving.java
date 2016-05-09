@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class BlockSteamPistonMoving extends BlockContainer {
-    private static final String __OBFID = "CL_00000368";
+    private static final String OBFID = "CL_00000368";
 
     public BlockSteamPistonMoving() {
         super(Material.piston);

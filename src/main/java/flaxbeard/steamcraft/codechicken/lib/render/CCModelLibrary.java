@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.codechicken.lib.render;
 
 import flaxbeard.steamcraft.codechicken.lib.vec.*;
 
-import static flaxbeard.steamcraft.codechicken.lib.math.MathHelper.phi;
+import static flaxbeard.steamcraft.codechicken.lib.math.MathHelper.PHI;
 
 public class CCModelLibrary {
     public static CCModel icosahedron4;
@@ -17,22 +17,22 @@ public class CCModelLibrary {
     private static void generateIcosahedron() {
         Vector3[] verts = new Vector3[12];
 
-        verts[0] = new Vector3(-1, phi, 0);
-        verts[1] = new Vector3(1, phi, 0);
-        verts[2] = new Vector3(1, -phi, 0);
-        verts[3] = new Vector3(-1, -phi, 0);
+        verts[0] = new Vector3(-1, PHI, 0);
+        verts[1] = new Vector3(1, PHI, 0);
+        verts[2] = new Vector3(1, -PHI, 0);
+        verts[3] = new Vector3(-1, -PHI, 0);
 
-        verts[4] = new Vector3(0, -1, phi);
-        verts[5] = new Vector3(0, 1, phi);
-        verts[6] = new Vector3(0, 1, -phi);
-        verts[7] = new Vector3(0, -1, -phi);
+        verts[4] = new Vector3(0, -1, PHI);
+        verts[5] = new Vector3(0, 1, PHI);
+        verts[6] = new Vector3(0, 1, -PHI);
+        verts[7] = new Vector3(0, -1, -PHI);
 
-        verts[8] = new Vector3(phi, 0, -1);
-        verts[9] = new Vector3(phi, 0, 1);
-        verts[10] = new Vector3(-phi, 0, 1);
-        verts[11] = new Vector3(-phi, 0, -1);
+        verts[8] = new Vector3(PHI, 0, -1);
+        verts[9] = new Vector3(PHI, 0, 1);
+        verts[10] = new Vector3(-PHI, 0, 1);
+        verts[11] = new Vector3(-PHI, 0, -1);
 
-        Quat quat = Quat.aroundAxis(0, 0, 1, Math.atan(1 / phi));
+        Quat quat = Quat.aroundAxis(0, 0, 1, Math.atan(1 / PHI));
         for (Vector3 vec : verts)
             quat.rotate(vec);
 

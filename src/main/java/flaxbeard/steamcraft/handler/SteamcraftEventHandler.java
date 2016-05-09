@@ -1101,7 +1101,7 @@ public class SteamcraftEventHandler {
             }
         }
         if (event.source == DamageSource.fall) {
-            boolean hasPower = hasPower(event.entityLiving, (int) (event.ammount / Config.fallAssistDivisor));
+            boolean hasPower = hasPower(event.entityLiving, (int) (event.ammount / Config.FALL_ASSIST_DIVISOR));
             int armor = getExoArmor(event.entityLiving);
             EntityLivingBase entity = event.entityLiving;
             if (hasPower && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(1) != null && entity.getEquipmentInSlot(1).getItem() instanceof ItemExosuitArmor) {
@@ -1111,7 +1111,7 @@ public class SteamcraftEventHandler {
                         event.ammount = 0.0F;
                     }
                     event.ammount = event.ammount / 3.0F;
-                    drainSteam(entity.getEquipmentInSlot(3), (int) (event.ammount / Config.fallAssistDivisor));
+                    drainSteam(entity.getEquipmentInSlot(3), (int) (event.ammount / Config.FALL_ASSIST_DIVISOR));
                     if (event.ammount == 0.0F) {
                         event.setResult(Event.Result.DENY);
                         event.setCanceled(true);
@@ -1407,7 +1407,7 @@ public class SteamcraftEventHandler {
 //				ItemExosuitArmor chest = (ItemExosuitArmor) entity.getEquipmentInSlot(3).getItem();
 //				if (chest.hasUpgrade(entity.getEquipmentInSlot(3), SteamcraftItems.extendoFist)) {
 //
-//					Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+//					Steamcraft.proxy.extendRange(entity,Config.EXTENDED_RANGE);
 //				}
 //			}
             worldStartUpdate = true;
@@ -1423,10 +1423,10 @@ public class SteamcraftEventHandler {
                 }
             }
 //			if (wearing && !lastWearing && entity.worldObj.isRemote) {
-//				Steamcraft.proxy.extendRange(entity,Config.extendedRange);
+//				Steamcraft.proxy.extendRange(entity,Config.EXTENDED_RANGE);
 //			}
             if (!wearing && lastWearing && entity.worldObj.isRemote) {
-                Steamcraft.proxy.extendRange(entity, -Config.extendedRange);
+                Steamcraft.proxy.extendRange(entity, -Config.EXTENDED_RANGE);
             }
             lastWearing = wearing;
         }
@@ -1456,12 +1456,12 @@ public class SteamcraftEventHandler {
                     if (!tag.isRangeExtended) {
                         wearing = true;
                         tag.isRangeExtended = true;
-                        Steamcraft.proxy.extendRange(entity, Config.extendedRange);
+                        Steamcraft.proxy.extendRange(entity, Config.EXTENDED_RANGE);
                     }
                 }
             }
             if (!wearing && tag.isRangeExtended) {
-                Steamcraft.proxy.extendRange(entity, -Config.extendedRange);
+                Steamcraft.proxy.extendRange(entity, -Config.EXTENDED_RANGE);
                 tag.isRangeExtended = false;
             }
         }
