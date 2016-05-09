@@ -17,7 +17,7 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
 
     public static int getTicks(Entity entity) {
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+          entity.getExtendedProperties(Steamcraft.playerPropertyId);
         if (nbt.tickCache < 0) {
             nbt.tickCache = 0;
         }
@@ -26,7 +26,7 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
 
     public static void updateTicks(Entity entity, int ticks) {
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+          entity.getExtendedProperties(Steamcraft.playerPropertyId);
         nbt.tickCache = ticks;
     }
 

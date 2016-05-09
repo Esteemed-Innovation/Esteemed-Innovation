@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class RayTracer {
-    private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<RayTracer>();
+    private static ThreadLocal<RayTracer> tInst = new ThreadLocal<RayTracer>();
     private Vector3 vec = new Vector3();
     private Vector3 vec2 = new Vector3();
     private Vector3 s_vec = new Vector3();
@@ -29,9 +29,9 @@ public class RayTracer {
     private IndexedCuboid6 c_cuboid;
 
     public static RayTracer instance() {
-        RayTracer inst = t_inst.get();
+        RayTracer inst = tInst.get();
         if (inst == null)
-            t_inst.set(inst = new RayTracer());
+            tInst.set(inst = new RayTracer());
         return inst;
     }
 

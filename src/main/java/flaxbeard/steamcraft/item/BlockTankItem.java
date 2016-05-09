@@ -61,8 +61,8 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
+                    for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+                        if (ModelExosuit.dyes[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }

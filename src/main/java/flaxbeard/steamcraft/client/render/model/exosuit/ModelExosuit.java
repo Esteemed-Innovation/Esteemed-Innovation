@@ -31,7 +31,7 @@ public class ModelExosuit extends ModelBiped {
     public static final ModelPointer MODEL_POINTER = new ModelPointer();
     public static final ComparatorUpgrade COMPARATOR_UPGRADE = new ComparatorUpgrade();
 
-    public static String[] DYES = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
+    public static String[] dyes = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
 
     private final Map<Class<? extends ModelExosuitUpgrade>, ModelExosuitUpgrade> internalModelCache = Maps.newHashMap();
 
@@ -184,8 +184,8 @@ public class ModelExosuit extends ModelBiped {
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < DYES.length; i++) {
-                        if (DYES[i].equals(str.substring(3))) {
+                    for (int i = 0; i < dyes.length; i++) {
+                        if (dyes[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }

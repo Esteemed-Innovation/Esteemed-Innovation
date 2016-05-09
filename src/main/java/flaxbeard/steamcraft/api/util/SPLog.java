@@ -5,11 +5,11 @@ public class SPLog {
     public static final int ERROR = 1;
     public static final int INFO = 2;
     public static final int DEBUG = 3;
-    private static SPLog INSTANCE = new SPLog();
+    private static SPLog instance = new SPLog();
     private int logLevel = 0;
 
     public static SPLog getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     public SPLog setLogLevel(int level) {

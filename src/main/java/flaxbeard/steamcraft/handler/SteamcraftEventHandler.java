@@ -195,13 +195,13 @@ public class SteamcraftEventHandler {
     public void initializeEntityProperties(EntityEvent.EntityConstructing event) {
         Entity entity = event.entity;
         if (entity instanceof EntityPlayer) {
-            entity.registerExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID,
+            entity.registerExtendedProperties(Steamcraft.playerPropertyId,
               new ExtendedPropertiesPlayer());
         } else if (entity instanceof EntityVillager) {
-            entity.registerExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID,
+            entity.registerExtendedProperties(Steamcraft.villagerPropertyId,
               new ExtendedPropertiesVillager());
         } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
-            entity.registerExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID,
+            entity.registerExtendedProperties(Steamcraft.merchantPropertyId,
               new ExtendedPropertiesMerchant());
         }
     }
@@ -582,7 +582,7 @@ public class SteamcraftEventHandler {
           buyingListField != null) {
             EntityVillager villager = (EntityVillager) event.entityLiving;
             ExtendedPropertiesVillager nbt = (ExtendedPropertiesVillager)
-              villager.getExtendedProperties(Steamcraft.VILLAGER_PROPERTY_ID);
+              villager.getExtendedProperties(Steamcraft.villagerPropertyId);
             if (nbt.lastHadCustomer == null) {
                 nbt.lastHadCustomer = false;
             }
@@ -1290,7 +1290,7 @@ public class SteamcraftEventHandler {
 
         EntityPlayer player = (EntityPlayer) entity;
         ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          player.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+          player.getExtendedProperties(Steamcraft.playerPropertyId);
         ItemStack boots = player.inventory.armorItemInSlot(0);
         ItemStack chest = player.getEquipmentInSlot(3);
         ItemStack leggings = player.getEquipmentInSlot(2);
@@ -1444,7 +1444,7 @@ public class SteamcraftEventHandler {
         //Steamcraft.proxy.extendRange(entity,1.0F);
 
         ExtendedPropertiesPlayer tag =
-          (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+          (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.playerPropertyId);
 
         if (entity.worldObj.isRemote) {
             this.updateRangeClient(event);
@@ -1544,7 +1544,7 @@ public class SteamcraftEventHandler {
             }
             if (entity instanceof EntityPlayer) {
                 ExtendedPropertiesPlayer tag =
-                  (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
+                  (ExtendedPropertiesPlayer) entity.getExtendedProperties(Steamcraft.playerPropertyId);
                 if (tag.prevStep != null) {
                     entity.stepHeight = tag.prevStep;
                     tag.prevStep = null;
@@ -2427,7 +2427,7 @@ public class SteamcraftEventHandler {
             }
             EntityLiving living = (EntityLiving) target;
             ExtendedPropertiesMerchant nbt = (ExtendedPropertiesMerchant)
-              living.getExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID);
+              living.getExtendedProperties(Steamcraft.merchantPropertyId);
             if (nbt.totalTrades > nbt.maximumTrades) {
                 if (living instanceof EntityWolf) {
                     EntityWolf wolf = (EntityWolf) living;

@@ -124,7 +124,7 @@ public class DrillHeadMaterial {
      * This method must be called AFTER ore dictionary entries have been registered.
      */
     public static void registerDefaults() {
-        String jsonFilePath = Steamcraft.CONFIG_DIR + "/FSP-materials.json";
+        String jsonFilePath = Steamcraft.configDir + "/FSP-materials.json";
         File jsonFile = new File(jsonFilePath);
         if (jsonFile.exists()) {
             try {

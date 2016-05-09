@@ -295,7 +295,7 @@ public class BlockSteamPistonBase extends Block {
                 ((TileEntitySteamPiston) tileentity1).clearPistonTileEntity();
             }
 
-            p_149696_1_.setBlock(p_149696_2_, p_149696_3_, p_149696_4_, SteamcraftBlocks.steamPiston_extension, p_149696_6_, 3);
+            p_149696_1_.setBlock(p_149696_2_, p_149696_3_, p_149696_4_, SteamcraftBlocks.steamPistonExtension, p_149696_6_, 3);
             p_149696_1_.setTileEntity(p_149696_2_, p_149696_3_, p_149696_4_, BlockPistonMoving.getTileEntity(this, p_149696_6_, p_149696_6_, false, true));
 
             if (this.isSticky) {
@@ -306,7 +306,7 @@ public class BlockSteamPistonBase extends Block {
                 int i2 = p_149696_1_.getBlockMetadata(j1, k1, l1);
                 boolean flag1 = false;
 
-                if (block == SteamcraftBlocks.steamPiston_extension) {
+                if (block == SteamcraftBlocks.steamPistonExtension) {
                     TileEntity tileentity = p_149696_1_.getTileEntity(j1, k1, l1);
 
                     if (tileentity instanceof TileEntitySteamPiston) {
@@ -325,7 +325,7 @@ public class BlockSteamPistonBase extends Block {
                     p_149696_2_ += Facing.offsetsXForSide[p_149696_6_];
                     p_149696_3_ += Facing.offsetsYForSide[p_149696_6_];
                     p_149696_4_ += Facing.offsetsZForSide[p_149696_6_];
-                    p_149696_1_.setBlock(p_149696_2_, p_149696_3_, p_149696_4_, SteamcraftBlocks.steamPiston_extension, i2, 3);
+                    p_149696_1_.setBlock(p_149696_2_, p_149696_3_, p_149696_4_, SteamcraftBlocks.steamPistonExtension, i2, 3);
                     p_149696_1_.setTileEntity(p_149696_2_, p_149696_3_, p_149696_4_, BlockPistonMoving.getTileEntity(block, i2, p_149696_6_, false, false));
                     p_149696_1_.setBlockToAir(j1, k1, l1);
                 } else if (!flag1) {
@@ -464,10 +464,10 @@ public class BlockSteamPistonBase extends Block {
                 int j3 = p_150079_1_.getBlockMetadata(k2, l2, i3);
 
                 if (block1 == this && k2 == p_150079_2_ && l2 == p_150079_3_ && i3 == p_150079_4_) {
-                    p_150079_1_.setBlock(i1, j1, k1, SteamcraftBlocks.steamPiston_extension, p_150079_5_ | (this.isSticky ? 8 : 0), 4);
-                    p_150079_1_.setTileEntity(i1, j1, k1, BlockPistonMoving.getTileEntity(SteamcraftBlocks.steamPiston_head, p_150079_5_ | (this.isSticky ? 8 : 0), p_150079_5_, true, false));
+                    p_150079_1_.setBlock(i1, j1, k1, SteamcraftBlocks.steamPistonExtension, p_150079_5_ | (this.isSticky ? 8 : 0), 4);
+                    p_150079_1_.setTileEntity(i1, j1, k1, BlockPistonMoving.getTileEntity(SteamcraftBlocks.steamPistonHead, p_150079_5_ | (this.isSticky ? 8 : 0), p_150079_5_, true, false));
                 } else {
-                    p_150079_1_.setBlock(i1, j1, k1, SteamcraftBlocks.steamPiston_extension, j3, 4);
+                    p_150079_1_.setBlock(i1, j1, k1, SteamcraftBlocks.steamPistonExtension, j3, 4);
                     p_150079_1_.setTileEntity(i1, j1, k1, BlockPistonMoving.getTileEntity(block1, j3, p_150079_5_, true, false));
                 }
 

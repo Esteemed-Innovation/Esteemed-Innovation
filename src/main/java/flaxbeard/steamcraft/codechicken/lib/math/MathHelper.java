@@ -7,24 +7,24 @@ public class MathHelper {
     public static final double torad = 0.017453292519943;
     public static final double sqrt2 = 1.414213562373095;
 
-    public static double[] SIN_TABLE = new double[65536];
+    public static double[] sinTable = new double[65536];
 
     static {
         for (int i = 0; i < 65536; ++i)
-            SIN_TABLE[i] = Math.sin(i / 65536D * 2 * Math.PI);
+            sinTable[i] = Math.sin(i / 65536D * 2 * Math.PI);
 
-        SIN_TABLE[0] = 0;
-        SIN_TABLE[16384] = 1;
-        SIN_TABLE[32768] = 0;
-        SIN_TABLE[49152] = 1;
+        sinTable[0] = 0;
+        sinTable[16384] = 1;
+        sinTable[32768] = 0;
+        sinTable[49152] = 1;
     }
 
     public static double sin(double d) {
-        return SIN_TABLE[(int) ((float) d * 10430.378F) & 65535];
+        return sinTable[(int) ((float) d * 10430.378F) & 65535];
     }
 
     public static double cos(double d) {
-        return SIN_TABLE[(int) ((float) d * 10430.378F + 16384.0F) & 65535];
+        return sinTable[(int) ((float) d * 10430.378F + 16384.0F) & 65535];
     }
 
     /**

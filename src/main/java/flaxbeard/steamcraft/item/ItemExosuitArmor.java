@@ -131,8 +131,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
+                    for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+                        if (ModelExosuit.dyes[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }
@@ -159,8 +159,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
                 if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
+                    for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+                        if (ModelExosuit.dyes[i].equals(str.substring(3))) {
                             dye = 15 - i;
                             break outerloop;
                         }
@@ -668,8 +668,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                     for (int id : ids) {
                         String str = OreDictionary.getOreName(id);
                         if (str.contains("dye")) {
-                            for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                                if (ModelExosuit.DYES[i].equals(str.substring(3))) {
+                            for (int i = 0; i < ModelExosuit.dyes.length; i++) {
+                                if (ModelExosuit.dyes[i].equals(str.substring(3))) {
                                     dye = 15 - i;
                                     break outerloop;
                                 }
@@ -677,7 +677,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                         }
                     }
                     if (dye != -1) {
-                        list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.color." + ModelExosuit.DYES[15 - dye].toLowerCase()));
+                        list.add(EnumChatFormatting.DARK_GREEN + StatCollector.translateToLocal("steamcraft.color." + ModelExosuit.dyes[15 - dye].toLowerCase()));
                     } else {
                         list.add(EnumChatFormatting.DARK_GREEN + stack.getDisplayName());
                     }

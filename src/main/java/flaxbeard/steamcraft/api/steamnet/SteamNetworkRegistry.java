@@ -21,13 +21,13 @@ import java.util.UUID;
 public class SteamNetworkRegistry {
     private static boolean loaderRegistered = false;
 
-    private static SteamNetworkRegistry INSTANCE = new SteamNetworkRegistry();
+    private static SteamNetworkRegistry instance = new SteamNetworkRegistry();
     private HashSet<Integer> initialized = new HashSet<>();
     private HashMap<Integer, HashMap<String, SteamNetwork>> networks = new HashMap<>();
 
 
     public static SteamNetworkRegistry getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     public static void initialize() {
@@ -35,7 +35,7 @@ public class SteamNetworkRegistry {
             loaderRegistered = true;
 
             MinecraftForge.EVENT_BUS.register(new NetworkLoader());
-            FMLCommonHandler.instance().bus().register(INSTANCE);
+            FMLCommonHandler.instance().bus().register(instance);
         }
     }
 
