@@ -34,11 +34,11 @@ public class ContainerSteamAnvil extends Container {
     private final EntityPlayer thePlayer;
     public TileEntitySteamHammer hammer;
     private World theWorld;
-    private int field_82861_i;
+    private int field82861I;
     /** The maximum cost of repairing/renaming in the anvil. */
     // public int hammer.cost;
-    private int field_82858_j;
-    private int field_82859_k;
+    private int field82858J;
+    private int field82859K;
     /**
      * determined by damage of input item and stackSize of repair materials
      */
@@ -47,9 +47,9 @@ public class ContainerSteamAnvil extends Container {
     public ContainerSteamAnvil(InventoryPlayer par1InventoryPlayer, TileEntitySteamHammer par2Hammer, final World par2World, final int par3, final int par4, final int par5, EntityPlayer par6EntityPlayer) {
         //super(par1InventoryPlayer, par2World, par3, par4, par5, par6EntityPlayer);
         this.theWorld = par2World;
-        this.field_82861_i = par3;
-        this.field_82858_j = par4;
-        this.field_82859_k = par5;
+        this.field82861I = par3;
+        this.field82858J = par4;
+        this.field82859K = par5;
         this.thePlayer = par6EntityPlayer;
         hammer = par2Hammer;
         this.addSlotToContainer(new Slot(hammer, 0, 27, 47) {
@@ -440,7 +440,7 @@ public class ContainerSteamAnvil extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-        return this.theWorld.getBlock(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.field_82861_i + 0.5D, (double) this.field_82858_j + 0.5D, (double) this.field_82859_k + 0.5D) <= 64.0D;
+        return this.theWorld.getBlock(this.field82861I, this.field82858J, this.field82859K) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.field82861I + 0.5D, (double) this.field82858J + 0.5D, (double) this.field82859K + 0.5D) <= 64.0D;
     }
 
     /**

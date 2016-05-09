@@ -97,7 +97,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     public int currentItemBurnTime;
     public int heat;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
-    private String field_145958_o;
+    private String field145958O;
     private boolean wasBurning = false;
     private boolean shouldExplode = false;
     private boolean waitOneTick = true;
@@ -166,7 +166,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         this.currentItemBurnTime = access.getShort("cIBT");
 
         if (access.hasKey("CustomName")) {
-            this.field_145958_o = access.getString("CustomName");
+            this.field145958O = access.getString("CustomName");
         }
 
         if (access.hasKey("water")) {
@@ -205,7 +205,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         access.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName()) {
-            access.setString("CustomName", this.field_145958_o);
+            access.setString("CustomName", this.field145958O);
         }
     }
 
@@ -617,13 +617,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+        return this.hasCustomInventoryName() ? this.field145958O : "container.furnace";
     }
 
     @Override
     public boolean hasCustomInventoryName() {
 
-        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+        return this.field145958O != null && this.field145958O.length() > 0;
     }
 
     @Override

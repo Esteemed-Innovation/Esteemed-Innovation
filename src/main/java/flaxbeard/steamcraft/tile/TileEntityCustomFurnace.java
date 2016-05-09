@@ -46,7 +46,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
      * The ItemStacks that hold the items currently being used in the furnace
      */
     private ItemStack[] furnaceItemStacks = new ItemStack[3];
-    private String field_145958_o;
+    private String field145958O;
 
     /**
      * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
@@ -181,19 +181,19 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
      * Returns the name of the inventory
      */
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+        return this.hasCustomInventoryName() ? this.field145958O : "container.furnace";
     }
 
     /**
      * Returns if the inventory is named
      */
     public boolean hasCustomInventoryName() {
-        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+        return this.field145958O != null && this.field145958O.length() > 0;
     }
 
     @Override
     public void func_145951_a(String p_145951_1_) {
-        this.field_145958_o = p_145951_1_;
+        this.field145958O = p_145951_1_;
     }
 
     @Override
@@ -218,7 +218,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         this.disguiseMeta = nbtTagCompound.getInteger("disguiseMeta");
 
         if (nbtTagCompound.hasKey("CustomName", 8)) {
-            this.field_145958_o = nbtTagCompound.getString("CustomName");
+            this.field145958O = nbtTagCompound.getString("CustomName");
         }
     }
 
@@ -243,7 +243,7 @@ public class TileEntityCustomFurnace extends TileEntityFurnace implements ISided
         nbtTagCompound.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName()) {
-            nbtTagCompound.setString("CustomName", this.field_145958_o);
+            nbtTagCompound.setString("CustomName", this.field145958O);
         }
     }
 

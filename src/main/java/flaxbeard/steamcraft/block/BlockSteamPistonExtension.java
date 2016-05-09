@@ -22,7 +22,7 @@ import java.util.Random;
 public class BlockSteamPistonExtension extends Block {
     private static final String __OBFID = "CL_00000367";
     @SideOnly(Side.CLIENT)
-    private IIcon field_150088_a;
+    private IIcon field150088A;
 
     public BlockSteamPistonExtension() {
         super(Material.piston);
@@ -36,7 +36,7 @@ public class BlockSteamPistonExtension extends Block {
 
     @SideOnly(Side.CLIENT)
     public void func_150086_a(IIcon p_150086_1_) {
-        this.field_150088_a = p_150086_1_;
+        this.field150088A = p_150086_1_;
     }
 
     /**
@@ -75,7 +75,7 @@ public class BlockSteamPistonExtension extends Block {
 
     @SideOnly(Side.CLIENT)
     public void func_150087_e() {
-        this.field_150088_a = null;
+        this.field150088A = null;
     }
 
     /**
@@ -84,7 +84,7 @@ public class BlockSteamPistonExtension extends Block {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
         int k = getDirectionMeta(p_149691_2_);
-        return p_149691_1_ == k ? (this.field_150088_a != null ? this.field_150088_a : ((p_149691_2_ & 8) != 0 ? BlockPistonBase.getPistonBaseIcon("piston_top_sticky") : BlockPistonBase.getPistonBaseIcon("piston_top_normal"))) : (k < 6 && p_149691_1_ == Facing.oppositeSide[k] ? BlockPistonBase.getPistonBaseIcon("piston_top_normal") : BlockPistonBase.getPistonBaseIcon("piston_side"));
+        return p_149691_1_ == k ? (this.field150088A != null ? this.field150088A : ((p_149691_2_ & 8) != 0 ? BlockPistonBase.getPistonBaseIcon("piston_top_sticky") : BlockPistonBase.getPistonBaseIcon("piston_top_normal"))) : (k < 6 && p_149691_1_ == Facing.oppositeSide[k] ? BlockPistonBase.getPistonBaseIcon("piston_top_normal") : BlockPistonBase.getPistonBaseIcon("piston_side"));
     }
 
     @SideOnly(Side.CLIENT)

@@ -23,10 +23,10 @@ public class RayTracer {
     private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<RayTracer>();
     private Vector3 vec = new Vector3();
     private Vector3 vec2 = new Vector3();
-    private Vector3 s_vec = new Vector3();
-    private double s_dist;
-    private int s_side;
-    private IndexedCuboid6 c_cuboid;
+    private Vector3 sVec = new Vector3();
+    private double sDist;
+    private int sSide;
+    private IndexedCuboid6 cCuboid;
 
     public static RayTracer instance() {
         RayTracer inst = t_inst.get();
@@ -138,24 +138,24 @@ public class RayTracer {
         }
 
         double dist = vec2.set(hit).subtract(start).magSquared();
-        if (dist < s_dist) {
-            s_side = side;
-            s_dist = dist;
-            s_vec.set(vec);
+        if (dist < sDist) {
+            sSide = side;
+            sDist = dist;
+            sVec.set(vec);
         }
     }
 
     public MovingObjectPosition rayTraceCuboid(Vector3 start, Vector3 end, Cuboid6 cuboid) {
-        s_dist = Double.MAX_VALUE;
-        s_side = -1;
+        sDist = Double.MAX_VALUE;
+        sSide = -1;
 
         for (int i = 0; i < 6; i++)
             traceSide(i, start, end, cuboid);
 
-        if (s_side < 0)
+        if (sSide < 0)
             return null;
 
-        MovingObjectPosition mop = new MovingObjectPosition(0, 0, 0, s_side, s_vec.toVec3D());
+        MovingObjectPosition mop = new MovingObjectPosition(0, 0, 0, sSide, sVec.toVec3D());
         mop.typeOfHit = null;
         return mop;
     }
@@ -186,11 +186,11 @@ public class RayTracer {
 
         for (IndexedCuboid6 cuboid : cuboids) {
             MovingObjectPosition mop = rayTraceCuboid(start, end, cuboid);
-            if (mop != null && s_dist < c_dist) {
-                mop = new ExtendedMOP(mop, cuboid.data, s_dist);
-                c_dist = s_dist;
+            if (mop != null && sDist < c_dist) {
+                mop = new ExtendedMOP(mop, cuboid.data, sDist);
+                c_dist = sDist;
                 c_hit = mop;
-                c_cuboid = cuboid;
+                cCuboid = cuboid;
             }
         }
 
@@ -205,7 +205,7 @@ public class RayTracer {
             mop.blockY = pos.y;
             mop.blockZ = pos.z;
             if (block != null)
-                c_cuboid.add(new Vector3(-pos.x, -pos.y, -pos.z)).setBlockBounds(block);
+                cCuboid.add(new Vector3(-pos.x, -pos.y, -pos.z)).setBlockBounds(block);
         }
         return mop;
     }
@@ -214,7 +214,7 @@ public class RayTracer {
         for (IndexedCuboid6 cuboid : cuboids) {
             MovingObjectPosition mop = rayTraceCuboid(start, end, cuboid);
             if (mop != null) {
-                ExtendedMOP emop = new ExtendedMOP(mop, cuboid.data, s_dist);
+                ExtendedMOP emop = new ExtendedMOP(mop, cuboid.data, sDist);
                 emop.typeOfHit = MovingObjectType.BLOCK;
                 emop.blockX = pos.x;
                 emop.blockY = pos.y;

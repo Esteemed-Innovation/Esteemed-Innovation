@@ -11,15 +11,15 @@ import flaxbeard.steamcraft.client.ExosuitTexture;
  * Created using Tabula 4.1.1
  */
 public class ModelReloadingHolster extends ModelExosuitUpgrade {
-    public ModelRenderer Holster;
+    public ModelRenderer holster;
 
     public ModelReloadingHolster() {
         this.textureWidth = 40;
         this.textureHeight = 11;
-        this.Holster = new ModelRenderer(this, 0, 0);
-        this.Holster.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Holster.addBox(-5.01F, 8.5F, -4.0F, 1, 5, 4, 0.0F);
-        this.setRotateAngle(Holster, 0.2617993877991494F, 0.0F, 0.0F);
+        this.holster = new ModelRenderer(this, 0, 0);
+        this.holster.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.holster.addBox(-5.01F, 8.5F, -4.0F, 1, 5, 4, 0.0F);
+        this.setRotateAngle(holster, 0.2617993877991494F, 0.0F, 0.0F);
     }
 
     /**
@@ -34,6 +34,6 @@ public class ModelReloadingHolster extends ModelExosuitUpgrade {
     @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
         ExosuitTexture.RELOADING_HOLSTER.bindTexturePart(1);
-        this.Holster.render(0.0625F);
+        this.holster.render(0.0625F);
     }
 }

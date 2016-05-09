@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 public class BlockCustomCraftingTable extends BlockWorkbench implements ITileEntityProvider {
 
     @SideOnly(Side.CLIENT)
-    private IIcon field_150035_a;
+    private IIcon field150035A;
     @SideOnly(Side.CLIENT)
-    private IIcon field_150034_b;
+    private IIcon field150034B;
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
@@ -57,14 +57,14 @@ public class BlockCustomCraftingTable extends BlockWorkbench implements ITileEnt
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister ir) {
         this.blockIcon = ir.registerIcon("steamcraft:customTable1");
-        this.field_150035_a = ir.registerIcon("steamcraft:customTable3");
-        this.field_150034_b = ir.registerIcon("steamcraft:customTable2");
+        this.field150035A = ir.registerIcon("steamcraft:customTable3");
+        this.field150034B = ir.registerIcon("steamcraft:customTable2");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return side == 1 ? this.field_150035_a : (side == 0 ? Blocks.planks.getBlockTextureFromSide(side) : (side != 2 && side != 4 ? this.field_150034_b : this.blockIcon));
+        return side == 1 ? this.field150035A : (side == 0 ? Blocks.planks.getBlockTextureFromSide(side) : (side != 2 && side != 4 ? this.field150034B : this.blockIcon));
     }
 
     @Override

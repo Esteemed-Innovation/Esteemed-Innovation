@@ -37,27 +37,27 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
     @SideOnly(Side.CLIENT)
     public static IIcon steamIcon;
-    private static boolean field_149934_M;
+    private static boolean field149934M;
     private final Random rand = new Random();
-    private final boolean field_149932_b;
+    private final boolean field149932B;
     public IIcon camoIcon;
     public IIcon camoOnIcon;
     @SideOnly(Side.CLIENT)
-    private IIcon field_149935_N;
+    private IIcon field149935N;
     @SideOnly(Side.CLIENT)
-    private IIcon field_149936_O;
+    private IIcon field149936O;
     private IIcon boilerOnIcon;
     private IIcon boilerOffIcon;
 
     public BlockBoiler(boolean on) {
         super(Material.iron);
-        this.field_149932_b = on;
+        this.field149932B = on;
     }
 
     public static void updateFurnaceBlockState(boolean isOn, World world, int x, int y, int z) {
         int l = world.getBlockMetadata(x,y, z);
         TileEntity tileentity = world.getTileEntity(x, y, z);
-        field_149934_M = true;
+        field149934M = true;
 
         if (isOn) {
             world.setBlock(x, y, z, SteamcraftBlocks.boilerOn);
@@ -65,7 +65,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
             world.setBlock(x, y, x, SteamcraftBlocks.boiler);
         }
 
-        field_149934_M = false;
+        field149934M = false;
         world.setBlockMetadataWithNotify(x, y, x, l, 2);
 
         if (tileentity != null) {
@@ -175,7 +175,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
             TileEntityBoiler boiler = (TileEntityBoiler) block.getTileEntity(x, y, z);
             return boiler.isBurning() ? boilerOnIcon : boilerOffIcon;
         } else {
-            return side == 1 ? this.field_149935_N : this.blockIcon;
+            return side == 1 ? this.field149935N : this.blockIcon;
         }
 
 
@@ -186,7 +186,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         if (meta == 0) {
             meta = 3;
         }
-        return side == 1 ? this.field_149935_N : (side == 0 ? this.field_149935_N : (side != meta ? this.blockIcon : this.boilerOffIcon));
+        return side == 1 ? this.field149935N : (side == 0 ? this.field149935N : (side != meta ? this.blockIcon : this.boilerOffIcon));
     }
 
     @Override
@@ -198,8 +198,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         this.boilerOffIcon = ir.registerIcon("steamcraft:boiler");
         this.camoOnIcon = ir.registerIcon("steamcraft:boilerCamoOn");
         this.camoIcon = ir.registerIcon("steamcraft:boilerCamo");
-        //this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "steamcraft:boilerOn" : "steamcraft:boiler");
-        this.field_149935_N = ir.registerIcon("steamcraft:blockBrass");
+        //this.field149936O = p_149651_1_.registerIcon(this.field149932B ? "steamcraft:boilerOn" : "steamcraft:boiler");
+        this.field149935N = ir.registerIcon("steamcraft:blockBrass");
     }
 
     @Override
@@ -249,7 +249,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        if (!field_149934_M) {
+        if (!field149934M) {
             TileEntityBoiler tileentityboiler = (TileEntityBoiler) world.getTileEntity(x, y, z);
 
             if (tileentityboiler != null) {

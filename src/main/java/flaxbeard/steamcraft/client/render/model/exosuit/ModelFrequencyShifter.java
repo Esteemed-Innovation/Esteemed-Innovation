@@ -11,37 +11,37 @@ import flaxbeard.steamcraft.client.ExosuitTexture;
  * Created using Tabula 4.1.1
  */
 public class ModelFrequencyShifter extends ModelExosuitUpgrade {
-    public ModelRenderer EarR;
-    public ModelRenderer EarL;
-    public ModelRenderer Stem;
-    public ModelRenderer Headband;
-    public ModelRenderer Mic;
+    public ModelRenderer earR;
+    public ModelRenderer earL;
+    public ModelRenderer stem;
+    public ModelRenderer headBand;
+    public ModelRenderer mic;
 
     public ModelFrequencyShifter() {
         this.textureWidth = 34;
         this.textureHeight = 32;
         
-        this.EarR = new ModelRenderer(this, 0, 0);
-        this.EarR.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.EarR.addBox(-5.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
+        this.earR = new ModelRenderer(this, 0, 0);
+        this.earR.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.earR.addBox(-5.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
         
-        this.EarL = new ModelRenderer(this, 0, 0);
-        this.EarL.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.EarL.addBox(4.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
+        this.earL = new ModelRenderer(this, 0, 0);
+        this.earL.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.earL.addBox(4.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
         
-        this.Stem = new ModelRenderer(this, 0, 15);
-        this.Stem.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Stem.addBox(4.0F, -10.5F, -4.5F, 1, 16, 1, -0.2F);
-        this.setRotateAngle(Stem, -1.0471975511965976F, 0.0F, 0.0F);
+        this.stem = new ModelRenderer(this, 0, 15);
+        this.stem.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.stem.addBox(4.0F, -10.5F, -4.5F, 1, 16, 1, -0.2F);
+        this.setRotateAngle(stem, -1.0471975511965976F, 0.0F, 0.0F);
         
-        this.Headband = new ModelRenderer(this, 10, 0);
-        this.Headband.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Headband.addBox(-5.0F, -9.0F, -1.0F, 10, 4, 2, -0.5F);
+        this.headBand = new ModelRenderer(this, 10, 0);
+        this.headBand.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.headBand.addBox(-5.0F, -9.0F, -1.0F, 10, 4, 2, -0.5F);
         
-        this.Mic = new ModelRenderer(this, 0, 15);
-        this.Mic.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Mic.addBox(2.2F, 4.5F, -4.5F, 2, 1, 1, 0.0F);
-        this.Stem.addChild(this.Mic);
+        this.mic = new ModelRenderer(this, 0, 15);
+        this.mic.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.mic.addBox(2.2F, 4.5F, -4.5F, 2, 1, 1, 0.0F);
+        this.stem.addChild(this.mic);
     }
 
     /**
@@ -58,21 +58,21 @@ public class ModelFrequencyShifter extends ModelExosuitUpgrade {
         float y = parent.rotateAngleY;
         float z = parent.rotateAngleZ;
 
-        setRotateAngle(this.EarR, x, y, z);
-        setRotateAngle(this.EarL, x, y, z);
-        setRotateAngle(this.Headband, x, y, z);
+        setRotateAngle(this.earR, x, y, z);
+        setRotateAngle(this.earL, x, y, z);
+        setRotateAngle(this.headBand, x, y, z);
     }
 
     @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
         ExosuitTexture.FREQUENCY_SHIFTER.bindTexturePart(1);
-        this.EarR.render(0.0625F);
-        this.EarL.render(0.0625F);
-        this.Stem.render(0.0625F);
-        this.Headband.render(0.0625F);
+        this.earR.render(0.0625F);
+        this.earL.render(0.0625F);
+        this.stem.render(0.0625F);
+        this.headBand.render(0.0625F);
 
         copyRotationAngles(parentModel.bipedHeadwear);
-        setRotateAngle(this.Stem, parentModel.bipedHeadwear.rotateAngleX - 1.0471975511965976F,
+        setRotateAngle(this.stem, parentModel.bipedHeadwear.rotateAngleX - 1.0471975511965976F,
           parentModel.bipedHeadwear.rotateAngleY, parentModel.bipedHeadwear.rotateAngleZ);
     }
 }

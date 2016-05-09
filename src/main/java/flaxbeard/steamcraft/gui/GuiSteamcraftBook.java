@@ -56,7 +56,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     private final ItemStack bookObj;
     public int bookImageWidth = 192;
     public int bookImageHeight = 192;
-    private boolean field_146481_r;
+    private boolean field146481R;
     /**
      * Update ticks since the gui was opened
      */
@@ -182,7 +182,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         if (this.bookPages != null && this.bookPages.tagCount() < 50) {
             this.bookPages.appendTag(new NBTTagString(""));
             ++bookTotalPages;
-            this.field_146481_r = true;
+            this.field146481R = true;
         }
     }
 
@@ -194,7 +194,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     private void func_146457_a(String p_146457_1_) {
         if (this.bookPages != null && currPage >= 0 && currPage < this.bookPages.tagCount()) {
             this.bookPages.func_150304_a(currPage, new NBTTagString(p_146457_1_));
-            this.field_146481_r = true;
+            this.field146481R = true;
         }
     }
 
@@ -438,11 +438,11 @@ public class GuiSteamcraftBook extends GuiScreen {
     @SideOnly(Side.CLIENT)
     public static class NextPageButton extends GuiButton {
         private static final String __OBFID = "CL_00000745";
-        private final boolean field_146151_o;
+        private final boolean field146151O;
 
         public NextPageButton(int par1, int par2, int par3, boolean par4) {
             super(par1, par2, par3, 23, 13, "");
-            this.field_146151_o = par4;
+            this.field146151O = par4;
         }
 
         /**
@@ -460,7 +460,7 @@ public class GuiSteamcraftBook extends GuiScreen {
                     k += 23;
                 }
 
-                if (!this.field_146151_o) {
+                if (!this.field146151O) {
                     l += 13;
                 }
 
