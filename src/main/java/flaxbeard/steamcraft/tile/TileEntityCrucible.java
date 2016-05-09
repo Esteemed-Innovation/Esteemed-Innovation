@@ -276,8 +276,7 @@ public class TileEntityCrucible extends TileEntity {
     }
 
     public int getComparatorOutput() {
-        int out = (int) ((double) 15 * (((double) getFill() / 90D)));
+       return  (int) ((double) 15 * (((double) getFill() / 90D)));
         ////Steamcraft.log.debug(out);
-        return out;
     }
 }
