@@ -127,13 +127,13 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
      */
     protected void keyTyped(char par1, int par2) {
         if (this.field_147091_w.textboxKeyTyped(par1, par2)) {
-            this.func_147090_g();
+            this.func147090G();
         } else {
             super.keyTyped(par1, par2);
         }
     }
 
-    private void func_147090_g() {
+    private void func147090G() {
         String s = this.field_147091_w.getText();
         Slot slot = this.field_147092_v.getSlot(0);
 
@@ -209,7 +209,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
             this.field_147091_w.setEnabled(par3ItemStack != null);
 
             if (par3ItemStack != null) {
-                this.func_147090_g();
+                this.func147090G();
             }
         }
     }

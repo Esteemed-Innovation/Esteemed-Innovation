@@ -45,12 +45,12 @@ public class RayTracer {
         return block.collisionRayTrace(world, x, y, z, headVec, endVec);
     }
 
-    private static double getBlockReachDistance_server(EntityPlayerMP player) {
+    private static double getBlockReachDistanceServer(EntityPlayerMP player) {
         return player.theItemInWorldManager.getBlockReachDistance();
     }
 
     @SideOnly(Side.CLIENT)
-    private static double getBlockReachDistance_client() {
+    private static double getBlockReachDistanceClient() {
         return Minecraft.getMinecraft().playerController.getBlockReachDistance();
     }
 
@@ -82,8 +82,8 @@ public class RayTracer {
     }
 
     public static double getBlockReachDistance(EntityPlayer player) {
-        return player.worldObj.isRemote ? getBlockReachDistance_client() :
-                player instanceof EntityPlayerMP ? getBlockReachDistance_server((EntityPlayerMP) player) : 5D;
+        return player.worldObj.isRemote ? getBlockReachDistanceClient() :
+                player instanceof EntityPlayerMP ? getBlockReachDistanceServer((EntityPlayerMP) player) : 5D;
     }
 
     public static Vec3 getEndVec(EntityPlayer player) {

@@ -134,10 +134,10 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
-        this.func_149930_e(world, x, y, z);
+        this.func149930E(world, x, y, z);
     }
 
-    private void func_149930_e(World world, int x, int y, int z) {
+    private void func149930E(World world, int x, int y, int z) {
         if (!world.isRemote) {
             Block block = world.getBlock(x, y, z - 1);
             Block block1 = world.getBlock(x, y, z + 1);

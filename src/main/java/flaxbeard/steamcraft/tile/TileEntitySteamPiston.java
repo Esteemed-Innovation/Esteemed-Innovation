@@ -75,7 +75,7 @@ public class TileEntitySteamPiston extends TileEntity {
         return this.lastProgress + (this.progress - this.lastProgress) * p_145860_1_;
     }
 
-    private void func_145863_a(float p_145863_1_, float p_145863_2_) {
+    private void func145863A(float p_145863_1_, float p_145863_2_) {
         if (this.extending) {
             p_145863_1_ = 1.0F - p_145863_1_;
         } else {
@@ -139,7 +139,7 @@ public class TileEntitySteamPiston extends TileEntity {
         this.lastProgress = this.progress;
 
         if (this.lastProgress >= 1.0F) {
-            this.func_145863_a(1.0F, 0.25F);
+            this.func145863A(1.0F, 0.25F);
             this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
             this.invalidate();
 
@@ -155,7 +155,7 @@ public class TileEntitySteamPiston extends TileEntity {
             }
 
             if (this.extending) {
-                this.func_145863_a(this.progress, this.progress - this.lastProgress + 0.0625F);
+                this.func145863A(this.progress, this.progress - this.lastProgress + 0.0625F);
             }
         }
     }

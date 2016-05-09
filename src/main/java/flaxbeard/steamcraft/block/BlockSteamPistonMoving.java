@@ -109,7 +109,7 @@ public class BlockSteamPistonMoving extends BlockContainer {
      */
     public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_) {
         if (!p_149690_1_.isRemote) {
-            TileEntitySteamPiston TileEntitySteamPiston = this.func_149963_e(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_);
+            TileEntitySteamPiston TileEntitySteamPiston = this.func149963E(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_);
 
             if (TileEntitySteamPiston != null) {
                 TileEntitySteamPiston.getStoredBlockID().dropBlockAsItem(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, TileEntitySteamPiston.getBlockMetadata(), 0);
@@ -132,7 +132,7 @@ public class BlockSteamPistonMoving extends BlockContainer {
      * cleared to be reused)
      */
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_) {
-        TileEntitySteamPiston TileEntitySteamPiston = this.func_149963_e(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+        TileEntitySteamPiston TileEntitySteamPiston = this.func149963E(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
 
         if (TileEntitySteamPiston == null) {
             return null;
@@ -151,7 +151,7 @@ public class BlockSteamPistonMoving extends BlockContainer {
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_) {
-        TileEntitySteamPiston TileEntitySteamPiston = this.func_149963_e(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_);
+        TileEntitySteamPiston TileEntitySteamPiston = this.func149963E(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_);
 
         if (TileEntitySteamPiston != null) {
             Block block = TileEntitySteamPiston.getStoredBlockID();
@@ -209,7 +209,7 @@ public class BlockSteamPistonMoving extends BlockContainer {
         }
     }
 
-    private TileEntitySteamPiston func_149963_e(IBlockAccess p_149963_1_, int p_149963_2_, int p_149963_3_, int p_149963_4_) {
+    private TileEntitySteamPiston func149963E(IBlockAccess p_149963_1_, int p_149963_2_, int p_149963_3_, int p_149963_4_) {
         TileEntity tileentity = p_149963_1_.getTileEntity(p_149963_2_, p_149963_3_, p_149963_4_);
         return tileentity instanceof TileEntitySteamPiston ? (TileEntitySteamPiston) tileentity : null;
     }
