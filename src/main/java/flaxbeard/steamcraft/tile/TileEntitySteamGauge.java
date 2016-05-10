@@ -50,9 +50,8 @@ public class TileEntitySteamGauge extends TileEntity {
     }
 
     public int getComparatorOutput() {
-        int out = (int) (15 * (100 * ((double) getPressure() * 0.01D)));
+        return (int) (15 * (100 * ((double) getPressure() * 0.01D)));
         ////Steamcraft.log.debug(out);
-        return out;
     }
 
     private ForgeDirection myDir() {

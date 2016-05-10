@@ -73,11 +73,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         // X is contained in cone only if projection of apexToXVect to axis
         // is shorter than axis.
         // We'll use dotProd() to figure projection length.
-        boolean isUnderRoundCap = dotProd(apexToXVect, axisVect)
+        return  dotProd(apexToXVect, axisVect)
                 / magn(axisVect)
                 <
                 magn(axisVect);
-        return isUnderRoundCap;
     }
 
     public static float dotProd(float[] a, float[] b) {

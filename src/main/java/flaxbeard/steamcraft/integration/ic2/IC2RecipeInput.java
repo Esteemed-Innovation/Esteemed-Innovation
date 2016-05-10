@@ -35,7 +35,6 @@ public class IC2RecipeInput implements IRecipeInput {
 
     @Override
     public List<ItemStack> getInputs() {
-    	List<ItemStack> list = Arrays.asList(input);
-        return list;
+    	return Arrays.asList(input);
     }
 }
