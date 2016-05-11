@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class RayTracer {
-    private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<>();
+    private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<RayTracer>();
     private Vector3 vec = new Vector3();
     private Vector3 vec2 = new Vector3();
     private Vector3 s_vec = new Vector3();

@@ -6,10 +6,10 @@ import flaxbeard.steamcraft.codechicken.lib.render.CCRenderState.VertexAttribute
 import java.util.ArrayList;
 
 public class CCRenderPipeline {
-    private ArrayList<VertexAttribute> attribs = new ArrayList<>();
-    private ArrayList<IVertexOperation> ops = new ArrayList<>();
-    private ArrayList<PipelineNode> nodes = new ArrayList<>();
-    private ArrayList<IVertexOperation> sorted = new ArrayList<>();
+    private ArrayList<VertexAttribute> attribs = new ArrayList<VertexAttribute>();
+    private ArrayList<IVertexOperation> ops = new ArrayList<IVertexOperation>();
+    private ArrayList<PipelineNode> nodes = new ArrayList<PipelineNode>();
+    private ArrayList<IVertexOperation> sorted = new ArrayList<IVertexOperation>();
     private PipelineNode loading;
     private PipelineBuilder builder = new PipelineBuilder();
 

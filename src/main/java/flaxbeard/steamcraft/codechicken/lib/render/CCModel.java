@@ -21,7 +21,7 @@ public class CCModel implements CCRenderState.IVertexSource, Copyable<CCModel> {
     public final int vertexMode;
     public final int vp;
     public Vertex5[] verts;
-    public ArrayList<Object> attributes = new ArrayList<>();
+    public ArrayList<Object> attributes = new ArrayList<Object>();
 
     protected CCModel(int vertexMode) {
         if (vertexMode != 7 && vertexMode != 4)

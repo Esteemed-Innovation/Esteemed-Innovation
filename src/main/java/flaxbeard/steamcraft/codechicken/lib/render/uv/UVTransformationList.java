@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class UVTransformationList extends UVTransformation {
-    private ArrayList<UVTransformation> transformations = new ArrayList<>();
+    private ArrayList<UVTransformation> transformations = new ArrayList<UVTransformation>();
 
     public UVTransformationList(UVTransformation... transforms) {
         for (UVTransformation t : transforms)

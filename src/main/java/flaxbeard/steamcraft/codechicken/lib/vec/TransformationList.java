@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TransformationList extends Transformation {
-    private ArrayList<Transformation> transformations = new ArrayList<>();
+    private ArrayList<Transformation> transformations = new ArrayList<Transformation>();
     private Matrix4 mat;
 
     public TransformationList(Transformation... transforms) {
