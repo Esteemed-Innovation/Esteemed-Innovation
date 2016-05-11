@@ -1,0 +1,10 @@
+diff a/src/main/java/flaxbeard/steamcraft/codechicken/lib/vec/BlockCoord.java b/src/main/java/flaxbeard/steamcraft/codechicken/lib/vec/BlockCoord.java	(rejected hunks)
+@@ -73,7 +73,7 @@
+     }
+ 
+     public double mag() {
+-        return Math.sqrt(x * x + y * y + z * z);
++        return Math.sqrt((double)x * x + y * y + z * z);
+     }
+ 
+     public int mag2() {
