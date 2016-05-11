@@ -77,4 +77,11 @@ public class UV implements Copyable<UV> {
         UV uv = (UV) o;
         return u == uv.u && v == uv.v;
     }
+    @Override
+    public int hashCode(){
+    	int hashValue=11;
+    	hashValue=31*hashValue+new Double(v).hashCode();
+    	hashValue=31*hashValue+new Double(u).hashCode();
+    	return hashValue;
+    }
 }
