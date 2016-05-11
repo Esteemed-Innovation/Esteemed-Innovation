@@ -84,11 +84,11 @@ public class Steamcraft {
 
     public static Potion semiInvisible;
 
-    public static String PLAYER_PROPERTY_ID = "FSPPlayerProperties";
-    public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
-    public static String MERCHANT_PROPERTY_ID = "FSPMerchantProperties";
+    public static String playerPropertyId = "FSPPlayerProperties";
+    public static String villagerPropertyId = "FSPVillagerProperties";
+    public static String merchantPropertyId = "FSPMerchantProperties";
 
-    public static String CONFIG_DIR;
+    public static String configDir;
 
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")
     public static CommonProxy proxy;
@@ -101,7 +101,7 @@ public class Steamcraft {
     public void preInit(FMLPreInitializationEvent event) {
         Config.load(event);
 
-        CONFIG_DIR = event.getModConfigurationDirectory().toString();
+        configDir = event.getModConfigurationDirectory().toString();
         tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
         tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 

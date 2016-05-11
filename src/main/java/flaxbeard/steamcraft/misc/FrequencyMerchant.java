@@ -37,7 +37,7 @@ public class FrequencyMerchant implements IMerchant {
     public FrequencyMerchant(EntityLiving entity, String name) {
         this.entity = entity;
         this.nbt = (ExtendedPropertiesMerchant)
-          entity.getExtendedProperties(Steamcraft.MERCHANT_PROPERTY_ID);
+          entity.getExtendedProperties(Steamcraft.merchantPropertyId);
         this.nbt.merchantName = name;
     }
     @Override

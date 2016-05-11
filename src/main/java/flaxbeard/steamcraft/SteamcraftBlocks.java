@@ -39,9 +39,9 @@ public class SteamcraftBlocks {
     public static Block fluidSteamConverter;
     public static Block ruptureDisc;
     public static Block geoBoiler;
-    public static Block geoBoiler_on;
+    public static Block geoBoilerOn;
     public static Block bloodBoiler;
-    public static Block bloodBoiler_on;
+    public static Block bloodBoilerOn;
 
     // steam machines
     public static Block heater;
@@ -61,8 +61,8 @@ public class SteamcraftBlocks {
     // misc
     public static Block engineering;
     public static BlockSteamPistonBase steamPiston;
-    public static BlockSteamPistonMoving steamPiston_extension;
-    public static BlockSteamPistonExtension steamPiston_head;
+    public static BlockSteamPistonMoving steamPistonExtension;
+    public static BlockSteamPistonExtension steamPistonHead;
     public static Block customCrafingTable;
     public static Block customFurnace;
     public static Block customFurnaceOff;
@@ -171,8 +171,8 @@ public class SteamcraftBlocks {
         if (CrossMod.BLOOD_MAGIC && Config.enableBloodBoiler){
             bloodBoiler = new BlockBloodBoiler(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
             GameRegistry.registerBlock(bloodBoiler, "bloodBoiler");
-            bloodBoiler_on = new BlockBloodBoiler(true).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
-            GameRegistry.registerBlock(bloodBoiler_on, "bloodBoiler_on");
+            bloodBoilerOn = new BlockBloodBoiler(true).setBlockName("steamcraft:bloodBoiler").setHardness(5.0F).setResistance(10.0F);
+            GameRegistry.registerBlock(bloodBoilerOn, "bloodBoilerOn");
         }
         */
     }
@@ -250,9 +250,9 @@ public class SteamcraftBlocks {
         }
         //steamPiston = (BlockSteamPistonBase) new BlockSteamPistonBase(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:piston");
         //GameRegistry.registerBlock(steamPiston, "steamPiston");
-        //steamPiston_head = new BlockSteamPistonExtension();
-        //GameRegistry.registerBlock(steamPiston_head, "steamPiston_head");
-        //steamPiston_extension = new BlockSteamPistonMoving();
-        //GameRegistry.registerBlock(steamPiston_extension, "steamPiston_extension");
+        //steamPistonHead = new BlockSteamPistonExtension();
+        //GameRegistry.registerBlock(steamPistonHead, "steamPistonHead");
+        //steamPistonExtension = new BlockSteamPistonMoving();
+        //GameRegistry.registerBlock(steamPistonExtension, "steamPistonExtension");
     }
 }

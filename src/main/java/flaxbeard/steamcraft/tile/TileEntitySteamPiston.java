@@ -82,7 +82,7 @@ public class TileEntitySteamPiston extends TileEntity {
             --p_145863_1_;
         }
 
-        AxisAlignedBB axisalignedbb = SteamcraftBlocks.steamPiston_extension
+        AxisAlignedBB axisalignedbb = SteamcraftBlocks.steamPistonExtension
           .func_149964_a(this.worldObj, this.xCoord, this.yCoord, this.zCoord, this.storedBlock, p_145863_1_,
             this.storedOrientation);
 
@@ -127,7 +127,7 @@ public class TileEntitySteamPiston extends TileEntity {
             this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
             this.invalidate();
 
-            if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == SteamcraftBlocks.steamPiston_extension) {
+            if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == SteamcraftBlocks.steamPistonExtension) {
                 this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, this.storedBlock, this.storedMetadata, 3);
                 this.worldObj.notifyBlockOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.storedBlock);
             }
@@ -143,7 +143,7 @@ public class TileEntitySteamPiston extends TileEntity {
             this.worldObj.removeTileEntity(this.xCoord, this.yCoord, this.zCoord);
             this.invalidate();
 
-            if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == SteamcraftBlocks.steamPiston_extension) {
+            if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord) == SteamcraftBlocks.steamPistonExtension) {
                 this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, this.storedBlock, this.storedMetadata, 3);
                 this.worldObj.notifyBlockOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.storedBlock);
             }
