@@ -5,7 +5,7 @@ import flaxbeard.steamcraft.codechicken.lib.vec.Rotation;
 import flaxbeard.steamcraft.codechicken.lib.vec.Vector3;
 
 public class LightModel implements CCRenderState.IVertexOperation {
-    public static final int operationIndex = CCRenderState.registerOperation();
+    public static final int OPERATION_INDEX = CCRenderState.registerOperation();
     public static LightModel standardLightModel;
     static {
         standardLightModel = new LightModel()
@@ -73,7 +73,7 @@ public class LightModel implements CCRenderState.IVertexOperation {
 
     @Override
     public int operationID() {
-        return operationIndex;
+        return OPERATION_INDEX;
     }
 
     public PlanarLightModel reducePlanar() {

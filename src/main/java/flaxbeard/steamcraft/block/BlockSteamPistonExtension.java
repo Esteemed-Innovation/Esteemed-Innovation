@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockSteamPistonExtension extends Block {
-    private static final String __OBFID = "CL_00000367";
+    private static final String OBFID = "CL_00000367";
     @SideOnly(Side.CLIENT)
     private IIcon field_150088_a;
 

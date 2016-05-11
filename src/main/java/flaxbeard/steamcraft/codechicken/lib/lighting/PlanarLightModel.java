@@ -33,6 +33,6 @@ public class PlanarLightModel implements CCRenderState.IVertexOperation {
 
     @Override
     public int operationID() {
-        return LightModel.operationIndex;
+        return LightModel.OPERATION_INDEX;
     }
 }

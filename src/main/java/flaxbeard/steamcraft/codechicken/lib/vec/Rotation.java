@@ -262,7 +262,7 @@ public class Rotation extends Transformation {
     @Override
     @SideOnly(Side.CLIENT)
     public void glApply() {
-        GL11.glRotatef((float) (angle * MathHelper.todeg), (float) axis.x, (float) axis.y, (float) axis.z);
+        GL11.glRotatef((float) (angle * MathHelper.TO_DEG), (float) axis.x, (float) axis.y, (float) axis.z);
     }
 
     @Override

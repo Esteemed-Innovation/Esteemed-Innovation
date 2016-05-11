@@ -7,7 +7,7 @@ import flaxbeard.steamcraft.codechicken.lib.vec.ITransformation;
  * Abstract supertype for any UV transformation
  */
 public abstract class UVTransformation extends ITransformation<UV, UVTransformation> implements CCRenderState.IVertexOperation {
-    public static final int operationIndex = CCRenderState.registerOperation();
+    public static final int OPERATION_INDEX = CCRenderState.registerOperation();
 
     public UVTransformation at(UV point) {
         return new UVTransformationList(new UVTranslation(-point.u, -point.v), this, new UVTranslation(point.u, point.v));
@@ -29,7 +29,7 @@ public abstract class UVTransformation extends ITransformation<UV, UVTransformat
 
     @Override
     public int operationID() {
-        return operationIndex;
+        return OPERATION_INDEX;
     }
 }
 

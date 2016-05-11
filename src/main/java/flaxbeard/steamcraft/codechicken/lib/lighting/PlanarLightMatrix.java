@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.world.IBlockAccess;
 
 public class PlanarLightMatrix extends PlanarLightModel {
-    public static final int operationIndex = CCRenderState.registerOperation();
+    public static final int OPERATION_INDEX = CCRenderState.registerOperation();
     public static PlanarLightMatrix instance = new PlanarLightMatrix();
 
     public IBlockAccess access;
@@ -49,6 +49,6 @@ public class PlanarLightMatrix extends PlanarLightModel {
 
     @Override
     public int operationID() {
-        return operationIndex;
+        return OPERATION_INDEX;
     }
 }

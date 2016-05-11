@@ -8,7 +8,7 @@ import flaxbeard.steamcraft.codechicken.lib.render.CCRenderState;
  * Abstract supertype for any 3D vector transformation
  */
 public abstract class Transformation extends ITransformation<Vector3, Transformation> implements CCRenderState.IVertexOperation {
-    public static final int operationIndex = CCRenderState.registerOperation();
+    public static final int OPERATION_INDEX = CCRenderState.registerOperation();
 
     /**
      * Applies this transformation to a normal (doesn't translate)
@@ -50,6 +50,6 @@ public abstract class Transformation extends ITransformation<Vector3, Transforma
 
     @Override
     public int operationID() {
-        return operationIndex;
+        return OPERATION_INDEX;
     }
 }

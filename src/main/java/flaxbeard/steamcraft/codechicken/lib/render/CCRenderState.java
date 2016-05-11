@@ -133,7 +133,7 @@ public class CCRenderState {
 
             pos.set(lightMatrix.pos.x, lightMatrix.pos.y, lightMatrix.pos.z);
             pipeline.addDependency(sideAttrib);
-            pipeline.addRequirement(Transformation.operationIndex);
+            pipeline.addRequirement(Transformation.OPERATION_INDEX);
             return true;
         }
 
