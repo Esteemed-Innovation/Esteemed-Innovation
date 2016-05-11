@@ -186,25 +186,25 @@ public class GuiSteamcraftBook extends GuiScreen {
         }
     }
 
-    private String func_146456_p() {
+    private String func146456P() {
         return this.bookPages != null && currPage >= 0 && currPage < this.bookPages.tagCount() ? this.bookPages.getStringTagAt(
           currPage) : "";
     }
 
-    private void func_146457_a(String p_146457_1_) {
+    private void func146457A(String p_146457_1_) {
         if (this.bookPages != null && currPage >= 0 && currPage < this.bookPages.tagCount()) {
             this.bookPages.func_150304_a(currPage, new NBTTagString(p_146457_1_));
             this.field_146481_r = true;
         }
     }
 
-    private void func_146459_b(String p_146459_1_) {
-        String s1 = this.func_146456_p();
+    private void func146459B(String p_146459_1_) {
+        String s1 = this.func146456P();
         String s2 = s1 + p_146459_1_;
         int i = this.fontRendererObj.splitStringWidth(s2 + "" + EnumChatFormatting.BLACK + "_", 118);
 
         if (i <= 118 && s2.length() < 256) {
-            this.func_146457_a(s2);
+            this.func146457A(s2);
         }
     }
 

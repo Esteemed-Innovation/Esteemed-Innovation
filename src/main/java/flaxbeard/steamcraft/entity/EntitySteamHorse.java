@@ -19,7 +19,7 @@ public class EntitySteamHorse extends EntityHorse {
         super(par1World);
     }
 
-    private float func_110267_cL() {
+    private float func110267Cl() {
         return 25.0F;
     }
 
