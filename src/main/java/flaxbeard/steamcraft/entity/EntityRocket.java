@@ -28,10 +28,10 @@ public class EntityRocket extends Entity {
     public float displayRotationYaw;
     public float explosionSize;
     public float inputParam4;
-    private int field_145795_e = -1;
-    private int field_145793_f = -1;
-    private int field_145794_g = -1;
-    private Block field_145796_h;
+    private int field145795E = -1;
+    private int field145793F = -1;
+    private int field145794G = -1;
+    private Block field145796H;
     private int ticksAlive;
     private int ticksInAir;
 
@@ -106,7 +106,7 @@ public class EntityRocket extends Entity {
             // this.setFire(1);
 
             if (this.inGround) {
-                if (this.worldObj.getBlock(this.field_145795_e, this.field_145793_f, this.field_145794_g) == this.field_145796_h) {
+                if (this.worldObj.getBlock(this.field145795E, this.field145793F, this.field145794G) == this.field145796H) {
                     ++this.ticksAlive;
 
                     if (this.ticksAlive == 200) {
@@ -263,10 +263,10 @@ public class EntityRocket extends Entity {
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     public void writeEntityToNBT(NBTTagCompound nbt) {
-    	nbt.setShort("xTile", (short) this.field_145795_e);
-    	nbt.setShort("yTile", (short) this.field_145793_f);
-    	nbt.setShort("zTile", (short) this.field_145794_g);
-    	nbt.setByte("inTile", (byte) Block.getIdFromBlock(this.field_145796_h));
+    	nbt.setShort("xTile", (short) this.field145795E);
+    	nbt.setShort("yTile", (short) this.field145793F);
+    	nbt.setShort("zTile", (short) this.field145794G);
+    	nbt.setByte("inTile", (byte) Block.getIdFromBlock(this.field145796H));
     	nbt.setByte("inGround", (byte) (this.inGround ? 1 : 0));
     	nbt.setTag("direction", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
     }
@@ -275,10 +275,10 @@ public class EntityRocket extends Entity {
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
     public void readEntityFromNBT(NBTTagCompound nbt) {
-        this.field_145795_e = nbt.getShort("xTile");
-        this.field_145793_f = nbt.getShort("yTile");
-        this.field_145794_g = nbt.getShort("zTile");
-        this.field_145796_h = Block.getBlockById(nbt.getByte("inTile") & 255);
+        this.field145795E = nbt.getShort("xTile");
+        this.field145793F = nbt.getShort("yTile");
+        this.field145794G = nbt.getShort("zTile");
+        this.field145796H = Block.getBlockById(nbt.getByte("inTile") & 255);
         this.inGround = nbt.getByte("inGround") == 1;
 
         if (nbt.hasKey("direction", 9)) {

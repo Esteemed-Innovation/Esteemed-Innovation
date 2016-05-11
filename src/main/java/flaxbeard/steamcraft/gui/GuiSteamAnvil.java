@@ -28,16 +28,16 @@ import java.util.List;
 public class GuiSteamAnvil extends GuiContainer implements ICrafting {
     private static final ResourceLocation field_147093_u = new ResourceLocation("textures/gui/container/anvil.png");
     private static final ResourceLocation arrow = new ResourceLocation("textures/gui/container/furnace.png");
-    private ContainerSteamAnvil field_147092_v;
-    private GuiTextField field_147091_w;
-    private InventoryPlayer field_147094_x;
+    private ContainerSteamAnvil field147092V;
+    private GuiTextField field147091W;
+    private InventoryPlayer field147094X;
     private TileEntitySteamHammer hammer;
     private boolean canEdit = false;
 
     public GuiSteamAnvil(InventoryPlayer par1InventoryPlayer, TileEntitySteamHammer par2Hammer, World par2World, int par3, int par4, int par5) {
         super(new ContainerSteamAnvil(par1InventoryPlayer, par2Hammer, par2World, par3, par4, par5, Minecraft.getMinecraft().thePlayer));
-        this.field_147094_x = par1InventoryPlayer;
-        this.field_147092_v = (ContainerSteamAnvil) this.inventorySlots;
+        this.field147094X = par1InventoryPlayer;
+        this.field147092V = (ContainerSteamAnvil) this.inventorySlots;
         this.hammer = par2Hammer;
     }
 
@@ -49,20 +49,20 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         Keyboard.enableRepeatEvents(true);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.field_147091_w = new GuiTextField(this.fontRendererObj, i + 62, j + 24, 103, 12);
-        this.field_147091_w.setTextColor(-1);
-        this.field_147091_w.setDisabledTextColour(-1);
-        this.field_147091_w.setEnableBackgroundDrawing(false);
-        this.field_147091_w.setMaxStringLength(40);
+        this.field147091W = new GuiTextField(this.fontRendererObj, i + 62, j + 24, 103, 12);
+        this.field147091W.setTextColor(-1);
+        this.field147091W.setDisabledTextColour(-1);
+        this.field147091W.setEnableBackgroundDrawing(false);
+        this.field147091W.setMaxStringLength(40);
         this.inventorySlots.removeCraftingFromCrafters(this);
         this.inventorySlots.addCraftingToCrafters(this);
-        this.field_147091_w.setText(hammer.itemName);
+        this.field147091W.setText(hammer.itemName);
         canEdit = true;
         /*
-        if (!this.field_147092_v.getSlot(0).getHasStack()) {
-            this.field_147091_w.setText("");
+        if (!this.field147092V.getSlot(0).getHasStack()) {
+            this.field147091W.setText("");
             hammer.itemName = "";
-            this.field_147092_v.updateItemName("");
+            this.field147092V.updateItemName("");
         }
         */
     }
@@ -85,17 +85,17 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         this.fontRendererObj.drawString(I18n.format("container.repair"), 60, 6, 4210752);
 
 
-        if (this.field_147092_v.hammer.cost > 0) {
+        if (this.field147092V.hammer.cost > 0) {
             int k = 8453920;
             boolean flag = true;
-            String s = I18n.format("container.repair.cost", Integer.valueOf(this.field_147092_v.hammer.cost));
+            String s = I18n.format("container.repair.cost", Integer.valueOf(this.field147092V.hammer.cost));
 
-            if (this.field_147092_v.hammer.cost >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode) {
+            if (this.field147092V.hammer.cost >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode) {
                 s = I18n.format("container.repair.expensive");
                 k = 16736352;
-            } else if (!this.field_147092_v.getSlot(2).getHasStack()) {
+            } else if (!this.field147092V.getSlot(2).getHasStack()) {
                 flag = false;
-            } else if (!this.field_147092_v.getSlot(2).canTakeStack(this.field_147094_x.player)) {
+            } else if (!this.field147092V.getSlot(2).canTakeStack(this.field147094X.player)) {
                 k = 16736352;
             }
 
@@ -126,7 +126,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
      * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      */
     protected void keyTyped(char par1, int par2) {
-        if (this.field_147091_w.textboxKeyTyped(par1, par2)) {
+        if (this.field147091W.textboxKeyTyped(par1, par2)) {
             this.func_147090_g();
         } else {
             super.keyTyped(par1, par2);
@@ -134,8 +134,8 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
     }
 
     private void func_147090_g() {
-        String s = this.field_147091_w.getText();
-        Slot slot = this.field_147092_v.getSlot(0);
+        String s = this.field147091W.getText();
+        Slot slot = this.field147092V.getSlot(0);
 
         if ((slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() &&
           s.equals(slot.getStack().getDisplayName())) || slot != null && slot.getStack() == null) {
@@ -152,7 +152,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
      */
     protected void mouseClicked(int par1, int par2, int par3) {
         super.mouseClicked(par1, par2, par3);
-        this.field_147091_w.mouseClicked(par1, par2, par3);
+        this.field147091W.mouseClicked(par1, par2, par3);
     }
 
     /**
@@ -162,7 +162,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         super.drawScreen(par1, par2, par3);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
-        this.field_147091_w.drawTextBox();
+        this.field147091W.drawTextBox();
     }
 
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
@@ -171,9 +171,9 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        this.drawTexturedModalRect(k + 59, l + 20, 0, this.ySize + (this.field_147092_v.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
+        this.drawTexturedModalRect(k + 59, l + 20, 0, this.ySize + (this.field147092V.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
 
-        if ((this.field_147092_v.getSlot(0).getHasStack() || this.field_147092_v.getSlot(1).getHasStack()) && !this.field_147092_v.getSlot(2).getHasStack()) {
+        if ((this.field147092V.getSlot(0).getHasStack() || this.field147092V.getSlot(1).getHasStack()) && !this.field147092V.getSlot(2).getHasStack()) {
             this.drawTexturedModalRect(k + 99, l + 45, this.xSize, 0, 28, 21);
         }
 
@@ -182,11 +182,11 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
             this.drawTexturedModalRect(k + 102, l + 48, 177, 14, MathHelper.floor_float(22.0F * (((float) this.hammer.progress + (float) this.hammer.hammerTicks / 360.0F) / (float) this.hammer.cost)), 16);
         }
 
-        if (!this.field_147092_v.getSlot(2).canTakeStack(this.field_147094_x.player) && this.field_147092_v.getSlot(2).getHasStack()) {
+        if (!this.field147092V.getSlot(2).canTakeStack(this.field147094X.player) && this.field147092V.getSlot(2).getHasStack()) {
             GL11.glPushMatrix();
 
-            int j1 = this.field_147092_v.getSlot(2).xDisplayPosition;
-            int k1 = this.field_147092_v.getSlot(2).yDisplayPosition;
+            int j1 = this.field147092V.getSlot(2).xDisplayPosition;
+            int k1 = this.field147092V.getSlot(2).yDisplayPosition;
             GL11.glColorMask(true, true, true, false);
             this.drawGradientRect(k + 134, l + 47, k + 134 + 16, l + 47 + 16, 0x59000000, 0x59000000);
             GL11.glColorMask(true, true, true, true);
@@ -205,8 +205,8 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
      */
     public void sendSlotContents(Container par1Container, int par2, ItemStack par3ItemStack) {
         if (par2 == 0) {
-            this.field_147091_w.setText(par3ItemStack == null ? "" : par3ItemStack.getDisplayName());
-            this.field_147091_w.setEnabled(par3ItemStack != null);
+            this.field147091W.setText(par3ItemStack == null ? "" : par3ItemStack.getDisplayName());
+            this.field147091W.setEnabled(par3ItemStack != null);
 
             if (par3ItemStack != null) {
                 this.func_147090_g();

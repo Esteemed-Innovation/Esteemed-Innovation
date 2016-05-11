@@ -40,10 +40,10 @@ public class ExplosionRocket extends Explosion {
      * A list of ChunkPositions of blocks affected by this explosion
      */
     public List affectedBlockPositions = new ArrayList();
-    private int field_77289_h = 16;
+    private int field77289H = 16;
     private Random explosionRNG = new Random();
     private World worldObj;
-    private Map field_77288_k = new HashMap();
+    private Map field77288K = new HashMap();
     private boolean dropAllBlocks = false;
 
     public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_) {
@@ -94,13 +94,13 @@ public class ExplosionRocket extends Explosion {
         double d6;
         double d7;
 
-        for (i = 0; i < this.field_77289_h; ++i) {
-            for (j = 0; j < this.field_77289_h; ++j) {
-                for (k = 0; k < this.field_77289_h; ++k) {
-                    if (i == 0 || i == this.field_77289_h - 1 || j == 0 || j == this.field_77289_h - 1 || k == 0 || k == this.field_77289_h - 1) {
-                        double d0 = (double) ((float) i / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-                        double d1 = (double) ((float) j / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-                        double d2 = (double) ((float) k / ((float) this.field_77289_h - 1.0F) * 2.0F - 1.0F);
+        for (i = 0; i < this.field77289H; ++i) {
+            for (j = 0; j < this.field77289H; ++j) {
+                for (k = 0; k < this.field77289H; ++k) {
+                    if (i == 0 || i == this.field77289H - 1 || j == 0 || j == this.field77289H - 1 || k == 0 || k == this.field77289H - 1) {
+                        double d0 = (double) ((float) i / ((float) this.field77289H - 1.0F) * 2.0F - 1.0F);
+                        double d1 = (double) ((float) j / ((float) this.field77289H - 1.0F) * 2.0F - 1.0F);
+                        double d2 = (double) ((float) k / ((float) this.field77289H - 1.0F) * 2.0F - 1.0F);
                         double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
                         d0 /= d3;
                         d1 /= d3;
@@ -184,7 +184,7 @@ public class ExplosionRocket extends Explosion {
                         }
                         player.fallDistance = 0.1F;
 
-                        this.field_77288_k.put(entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
+                        this.field77288K.put(entity, Vec3.createVectorHelper(d5 * d11, d6 * d11, d7 * d11));
                     }
                 }
             }
@@ -276,7 +276,7 @@ public class ExplosionRocket extends Explosion {
     }
 
     public Map func_77277_b() {
-        return this.field_77288_k;
+        return this.field77288K;
     }
 
     /**

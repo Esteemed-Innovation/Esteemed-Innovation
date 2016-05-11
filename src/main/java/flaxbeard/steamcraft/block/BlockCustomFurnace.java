@@ -26,7 +26,7 @@ import java.util.Random;
 public class BlockCustomFurnace extends BlockFurnace {
 
     private static boolean fieldIsOn;
-    private final Random field_149933_a = new Random();
+    private final Random field149933A = new Random();
     public IIcon camoIcon;
     public IIcon camoOnIcon;
     public IIcon frontIcon;
@@ -110,12 +110,12 @@ public class BlockCustomFurnace extends BlockFurnace {
                     ItemStack itemstack = tileentityfurnace.getStackInSlot(i1);
 
                     if (itemstack != null) {
-                        float f = this.field_149933_a.nextFloat() * 0.8F + 0.1F;
-                        float f1 = this.field_149933_a.nextFloat() * 0.8F + 0.1F;
-                        float f2 = this.field_149933_a.nextFloat() * 0.8F + 0.1F;
+                        float f = this.field149933A.nextFloat() * 0.8F + 0.1F;
+                        float f1 = this.field149933A.nextFloat() * 0.8F + 0.1F;
+                        float f2 = this.field149933A.nextFloat() * 0.8F + 0.1F;
 
                         while (itemstack.stackSize > 0) {
-                            int j1 = this.field_149933_a.nextInt(21) + 10;
+                            int j1 = this.field149933A.nextInt(21) + 10;
 
                             if (j1 > itemstack.stackSize) {
                                 j1 = itemstack.stackSize;
@@ -129,9 +129,9 @@ public class BlockCustomFurnace extends BlockFurnace {
                             }
 
                             float f3 = 0.05F;
-                            entityitem.motionX = (double) ((float) this.field_149933_a.nextGaussian() * f3);
-                            entityitem.motionY = (double) ((float) this.field_149933_a.nextGaussian() * f3 + 0.2F);
-                            entityitem.motionZ = (double) ((float) this.field_149933_a.nextGaussian() * f3);
+                            entityitem.motionX = (double) ((float) this.field149933A.nextGaussian() * f3);
+                            entityitem.motionY = (double) ((float) this.field149933A.nextGaussian() * f3 + 0.2F);
+                            entityitem.motionZ = (double) ((float) this.field149933A.nextGaussian() * f3);
                             world.spawnEntityInWorld(entityitem);
                         }
                     }

@@ -37,7 +37,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     public Block disguiseBlock = null;
     public int disguiseMeta = 0;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
-    private String field_145958_o;
+    private String field145958O;
     private boolean wasBurning;
     private boolean lastWrench = false;
 
@@ -131,7 +131,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         this.currentItemBurnTime = par1NBTTagCompound.getShort("cIBT");
 
         if (par1NBTTagCompound.hasKey("CustomName")) {
-            this.field_145958_o = par1NBTTagCompound.getString("CustomName");
+            this.field145958O = par1NBTTagCompound.getString("CustomName");
         }
 
         if (par1NBTTagCompound.hasKey("water")) {
@@ -165,7 +165,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
         par1NBTTagCompound.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName()) {
-            par1NBTTagCompound.setString("CustomName", this.field_145958_o);
+            par1NBTTagCompound.setString("CustomName", this.field145958O);
         }
     }
 
@@ -349,12 +349,12 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+        return this.hasCustomInventoryName() ? this.field145958O : "container.furnace";
     }
 
     @Override
     public boolean hasCustomInventoryName() {
-        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+        return this.field145958O != null && this.field145958O.length() > 0;
     }
 
     @Override
