@@ -128,7 +128,16 @@ public class SteamcraftEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
-
+    private static ArrayList<Material> LEAF_MATERIALS ; 
+    
+    static{
+    	LEAF_MATERIALS=new ArrayList<Material>();
+    	LEAF_MATERIALS.add(Material.leaves);
+    	LEAF_MATERIALS.add(Material.coral);
+    	LEAF_MATERIALS.add(Material.craftedSnow);
+    	LEAF_MATERIALS.add(Material.plants);
+    }
+    
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
             if (!stack.hasTagCompound()) {
@@ -2800,14 +2809,11 @@ public class SteamcraftEventHandler {
             }
         }
     }
-
-    private ArrayList<Material> LEAF_MATERIALS = new ArrayList<Material>() { {
-        add(Material.leaves);
-        add(Material.coral);
-        add(Material.craftedSnow);
-        add(Material.plants);
-    }};
-
+ 
+   
+        
+    
+    
     /**
      * Returns whether the block can be blown by the leaf blower.
      * @param block The block
