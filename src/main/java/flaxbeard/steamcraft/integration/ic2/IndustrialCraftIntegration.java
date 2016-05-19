@@ -14,6 +14,10 @@ public class IndustrialCraftIntegration {
 	public final static ItemStack FILLED_X8 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 8);
 	public final static ItemStack FILLED_X7 = new ItemStack(IC2Items.getItem("filledTinCan").getItem(), 7);
 	
+	private IndustrialCraftIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	public static void postInit() {
 		Recipes.cannerBottle.addRecipe(EMPTY_X10, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedBeef)), FILLED_X10);
 		Recipes.cannerBottle.addRecipe(EMPTY_X8, new IC2RecipeInput(new ItemStack(SteamcraftItems.steamedChicken)), FILLED_X8);

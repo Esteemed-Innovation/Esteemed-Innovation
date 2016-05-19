@@ -13,7 +13,11 @@ import net.minecraft.item.ItemStack;
 
 public class ThermalFoundationIntegration {
 
-    public static void postInit() {
+	private ThermalFoundationIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static void postInit() {
         CrucibleLiquid liquidEnderium = new CrucibleLiquid("enderium", TFItems.ingotEnderium, new ItemStack(SteamcraftItems.steamcraftPlate, 1, 11), TFItems.nuggetEnderium, null, 15, 106, 106);
         SteamcraftRegistry.registerLiquid(liquidEnderium);
 

@@ -9,7 +9,11 @@ import java.util.HashMap;
 
 public class BookRecipeRegistry {
     public static HashMap<String, IRecipe> recipes = new HashMap<>();
-
+    
+    private BookRecipeRegistry() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
+    
     public static void addRecipe(String key, IRecipe recipe) {
         GameRegistry.addRecipe(recipe);
         recipes.put(key, recipe);

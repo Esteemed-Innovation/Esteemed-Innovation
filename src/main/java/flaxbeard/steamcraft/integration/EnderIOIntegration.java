@@ -12,7 +12,11 @@ import net.minecraft.item.ItemStack;
 
 public class EnderIOIntegration {
 
-    public static void postInit() {
+	private EnderIOIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static void postInit() {
         CrucibleLiquid liquidVibrant = new CrucibleLiquid("vibrant",
           new ItemStack(EnderIO.itemAlloy, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate,
           1, 10), new ItemStack(EnderIO.itemMaterial, 1, 4), null, 124, 179, 56);

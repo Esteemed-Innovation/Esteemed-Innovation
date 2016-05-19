@@ -17,7 +17,12 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 @SuppressWarnings("Duplicates")
 @ZenClass("mods.fsp.Crucible")
 public class CrucibleTweaker {
-    @ZenMethod
+    
+	private CrucibleTweaker() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	@ZenMethod
     public static void addBasicLiquid(String name, IItemStack ingot, IItemStack plate, IItemStack nugget, int r, int g, int b) {
         ItemStack iStack = MineTweakerMC.getItemStack(ingot);
         ItemStack pStack = MineTweakerMC.getItemStack(plate);

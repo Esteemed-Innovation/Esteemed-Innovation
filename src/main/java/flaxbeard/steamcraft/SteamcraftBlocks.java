@@ -66,7 +66,11 @@ public class SteamcraftBlocks {
     public static Block customCrafingTable;
     public static Block customFurnace;
     public static Block customFurnaceOff;
-
+    
+    private SteamcraftBlocks() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
+    
     public static void registerBlocks() {
         registerMetals();
         registerCasting();

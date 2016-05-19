@@ -13,6 +13,10 @@ public class FluidHelper {
 	
 	private static Fluid water = FluidRegistry.WATER;
 	
+	private FluidHelper() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	/**
 	 * If this mod is used with other mods that use different types of water (fresh water, salt water etc),
 	 * this can change which fluid FSB consider water thus increasing compatibility.

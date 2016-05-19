@@ -11,7 +11,12 @@ import static flaxbeard.steamcraft.tile.TileEntitySmasher.REGISTRY;
 
 @ZenClass("mods.fsp.RockSmasher")
 public class RockSmasherTweaker {
-    @ZenMethod
+    
+	private RockSmasherTweaker() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	@ZenMethod
     public static void addSmashingRecipe(IItemStack in, IItemStack out) {
         ItemStack inStack = MineTweakerMC.getItemStack(in);
         ItemStack outStack = MineTweakerMC.getItemStack(out);

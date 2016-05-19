@@ -115,7 +115,7 @@ public class CCRenderPipeline {
     }
 
     private class PipelineNode {
-        public ArrayList<PipelineNode> deps = new ArrayList<PipelineNode>();
+        public ArrayList<PipelineNode> deps = new ArrayList<>();
         public IVertexOperation op;
 
         public void add() {

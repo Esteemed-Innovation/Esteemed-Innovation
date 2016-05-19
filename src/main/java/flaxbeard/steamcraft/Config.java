@@ -248,7 +248,9 @@ public class Config {
 
     public static boolean singleButtonTrackpad;
 
-
+    private Config()throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
     public static void load(FMLPreInitializationEvent event) {
         File configurationDir = event.getModConfigurationDirectory();
         File oldConfigFile = new File(configurationDir, "Steamcraft.cfg");

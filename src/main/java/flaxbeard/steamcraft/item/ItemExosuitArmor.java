@@ -473,7 +473,7 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
     }
 
     public IExosuitUpgrade[] getUpgrades(ItemStack me) {
-        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<IExosuitUpgrade>();
+        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<>();
         if (me.hasTagCompound()) {
             if (me.stackTagCompound.hasKey("inv")) {
                 for (int i = 2; i < 10; i++) {

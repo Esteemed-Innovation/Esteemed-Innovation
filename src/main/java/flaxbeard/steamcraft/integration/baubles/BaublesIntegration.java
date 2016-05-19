@@ -9,7 +9,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 
 public class BaublesIntegration {
-    public static boolean checkForUpgrade(EntityPlayer player, Item item) {
+    
+	private BaublesIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static boolean checkForUpgrade(EntityPlayer player, Item item) {
         IInventory inventory = BaublesApi.getBaubles(player);
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             if (inventory.getStackInSlot(i) != null) {

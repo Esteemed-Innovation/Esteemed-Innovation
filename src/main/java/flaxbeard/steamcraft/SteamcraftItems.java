@@ -28,7 +28,7 @@ import flaxbeard.steamcraft.item.tool.*;
 import flaxbeard.steamcraft.item.tool.steam.*;
 
 public class SteamcraftItems {
-    public static HashMap<String, Item> tools = new HashMap<String, Item>();
+    public static HashMap<String, Item> tools = new HashMap<>();
 
     // firearms
     public static Item musketCartridge;
@@ -157,6 +157,10 @@ public class SteamcraftItems {
     public static Item steamedBeef;
     public static Item steamedChicken;
     public static Item steamedSalmon;
+    
+    private SteamcraftItems() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
 
     public static void registerItems() {
         registerMisc();

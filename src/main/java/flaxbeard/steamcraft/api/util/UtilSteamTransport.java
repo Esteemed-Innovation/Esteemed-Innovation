@@ -12,7 +12,12 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class UtilSteamTransport {
-    private static String[] boom = new String[]{
+    
+	private UtilSteamTransport() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	private static String[] boom = new String[]{
             "It can't withstand that kind of pressure!",
             "She's holding all she can, cap'n!",
             "Your pipes asplode",

@@ -47,6 +47,10 @@ public class BotaniaIntegration {
 
     // Our Items
     public static Item floralLaurel;
+    
+    private BotaniaIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
 
     @SideOnly(Side.CLIENT)
     public static void displayThings(MovingObjectPosition pos, RenderGameOverlayEvent.Post event) {

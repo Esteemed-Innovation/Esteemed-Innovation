@@ -105,7 +105,11 @@ public class SteamcraftRegistry {
      * Value: A pair of the output item and its metadata (eg: steamed porkchop).
      */
     public static HashMap<MutablePair<Item, Integer>, MutablePair<Item, Integer>> steamingRecipes = new HashMap<>();
-
+    
+    private SteamcraftRegistry() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
+    
     /**
      * Adds a steaming recipe.
      * @param food1 The output of the input item (eg: cooked porkchop).

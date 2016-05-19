@@ -50,7 +50,7 @@ public class UVTransformationList extends UVTransformation {
     }
 
     private void compact() {
-        ArrayList<UVTransformation> newList = new ArrayList<UVTransformation>(transformations.size());
+        ArrayList<UVTransformation> newList = new ArrayList<>(transformations.size());
         Iterator<UVTransformation> iterator = transformations.iterator();
         UVTransformation prev = null;
         while (iterator.hasNext()) {

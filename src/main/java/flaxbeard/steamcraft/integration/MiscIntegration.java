@@ -11,6 +11,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class MiscIntegration {
 
+	private MiscIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	public static void postInit() {
         if (FluidRegistry.isFluidRegistered("steam") && Config.enableFluidSteamConverter) {
             SteamcraftBlocks.fluidSteamConverter.setCreativeTab(Steamcraft.tab);

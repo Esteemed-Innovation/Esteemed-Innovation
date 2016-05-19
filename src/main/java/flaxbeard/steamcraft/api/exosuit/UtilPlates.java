@@ -10,6 +10,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilPlates {
+	
+	private UtilPlates() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
     public static ExosuitPlate getPlate(ItemStack item) {
         for (ExosuitPlate plate : SteamcraftRegistry.plates.values()) {
             if (plate.getItem() instanceof ItemStack) {

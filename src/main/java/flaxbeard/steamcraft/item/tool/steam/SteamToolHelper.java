@@ -16,7 +16,12 @@ import java.util.ArrayList;
  * flaxbeard.steamcraft.api.tool.UtilSteamTool.java.
  */
 public class SteamToolHelper {
-    @SuppressWarnings("unchecked")
+    
+	private SteamToolHelper() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	@SuppressWarnings("unchecked")
     public static final MutablePair<Integer, Integer>[] ENGINEER_COORDINATES = new MutablePair[]{
       MutablePair.of(60, 12),
       MutablePair.of(37, 40)

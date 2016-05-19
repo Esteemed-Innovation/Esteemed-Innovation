@@ -736,7 +736,7 @@ public class SteamcraftEventHandler {
             }
         }
         if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ISteamChargable) {
-            ArrayList<String> linesToRemove = new ArrayList<String>();
+            ArrayList<String> linesToRemove = new ArrayList<>();
             for (String str : event.toolTip) {
                 if (str == "") {
                     linesToRemove.add(str);

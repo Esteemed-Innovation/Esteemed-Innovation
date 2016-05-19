@@ -1,0 +1,10 @@
+diff a/src/main/java/flaxbeard/steamcraft/codechicken/lib/raytracer/RayTracer.java b/src/main/java/flaxbeard/steamcraft/codechicken/lib/raytracer/RayTracer.java	(rejected hunks)
+@@ -20,7 +20,7 @@
+ import java.util.List;
+ 
+ public class RayTracer {
+-    private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<RayTracer>();
++    private static ThreadLocal<RayTracer> t_inst = new ThreadLocal<>();
+     private Vector3 vec = new Vector3();
+     private Vector3 vec2 = new Vector3();
+     private Vector3 s_vec = new Vector3();

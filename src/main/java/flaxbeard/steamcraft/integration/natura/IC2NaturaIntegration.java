@@ -12,6 +12,11 @@ import flaxbeard.steamcraft.integration.ic2.IndustrialCraftIntegration;
  * @author xbony2
  */
 public class IC2NaturaIntegration {
+	
+	private IC2NaturaIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	public static void addIC2Recipes() {
 		Recipes.cannerBottle.addRecipe(IndustrialCraftIntegration.EMPTY_X10,
 		  new IC2RecipeInput(new ItemStack(NaturaIntegration.steamedImphide)),

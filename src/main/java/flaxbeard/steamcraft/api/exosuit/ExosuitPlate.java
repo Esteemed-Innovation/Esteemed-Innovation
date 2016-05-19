@@ -12,7 +12,7 @@ public class ExosuitPlate {
     private Object plate;
     private String effect;
     private DamageSource[] bonusSources;
-
+    
     public ExosuitPlate(String id, Object item, String invLocMod, String armorLocMod, String effectLoc, DamageSource... sources) {
         identifier = id;
         invMod = invLocMod;
