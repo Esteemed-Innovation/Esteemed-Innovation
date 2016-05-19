@@ -3,6 +3,11 @@ package flaxbeard.steamcraft.misc;
 import net.minecraft.item.ItemStack;
 
 public class ItemStackUtility {
+	
+	private ItemStackUtility() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	/**
 	 * "Mostly" equal; returns true if the item and meta are the same (don't care about stacksize).
 	 * 

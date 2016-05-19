@@ -157,6 +157,10 @@ public class SteamcraftItems {
     public static Item steamedBeef;
     public static Item steamedChicken;
     public static Item steamedSalmon;
+    
+    private SteamcraftItems() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
 
     public static void registerItems() {
         registerMisc();

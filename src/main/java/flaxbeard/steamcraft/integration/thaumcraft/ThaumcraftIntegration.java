@@ -34,6 +34,10 @@ public class ThaumcraftIntegration {
     // Our Items
     public static Item goggleUpgrade;
     public static Item thaumSource;
+    
+    private ThaumcraftIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
 
     public static void postInit() {
         CrucibleLiquid liquidThaumium = new CrucibleLiquid("thaumium", new ItemStack(ConfigItems.itemResource, 1, 2), new ItemStack(SteamcraftItems.steamcraftPlate, 1, 5), new ItemStack(ConfigItems.itemNugget, 1, 6), null, 105, 87, 163);

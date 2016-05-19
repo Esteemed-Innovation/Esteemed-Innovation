@@ -9,7 +9,11 @@ import net.minecraft.nbt.NBTTagList;
 
 public class EnchiridionIntegration {
 
-    public static boolean hasBook(Item class1, EntityPlayer player) {
+	private EnchiridionIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static boolean hasBook(Item class1, EntityPlayer player) {
         boolean foundBook = false;
         for (int p = 0; p < player.inventory.getSizeInventory(); p++) {
             ItemStack binder = player.inventory.getStackInSlot(p);

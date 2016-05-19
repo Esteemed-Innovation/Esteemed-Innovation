@@ -25,6 +25,10 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BloodMagicIntegration {
 
+	private BloodMagicIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	public static void postInit() {
         if (Config.enableSadistPlate) {
             SteamcraftRegistry.addExosuitPlate(new ExosuitPlate("Sadist",

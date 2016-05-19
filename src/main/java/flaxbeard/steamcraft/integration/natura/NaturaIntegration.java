@@ -15,6 +15,10 @@ public class NaturaIntegration {
 	
 	public static Item steamedImphide;
 	
+	private NaturaIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	public static void postInit() {
 		steamedImphide = new ItemSteamedFood((ItemFood) NContent.impMeat).setUnlocalizedName("steamcraft:steamedImphide").setCreativeTab(Steamcraft.tab);
 		GameRegistry.registerItem(steamedImphide, "steamedImphide");

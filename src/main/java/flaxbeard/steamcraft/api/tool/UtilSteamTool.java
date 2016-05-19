@@ -9,7 +9,12 @@ import flaxbeard.steamcraft.item.tool.steam.ItemDrillHeadUpgrade;
 import java.util.ArrayList;
 
 public class UtilSteamTool {
-    /**
+   
+	private UtilSteamTool() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	/**
      * Checks if the ItemStack has a particular upgrade. Note that you can also call directly on
      * the ISteamTool item rather than this. This is only used internally by FSP for the actual
      * ISteamTool#hasUpgrade(ItemStack, Item) overrides in the steam tool classes.

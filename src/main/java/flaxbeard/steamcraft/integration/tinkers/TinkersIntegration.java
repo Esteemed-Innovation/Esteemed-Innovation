@@ -9,7 +9,12 @@ import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.tools.ToolCore;
 
 public class TinkersIntegration {
-    public static void postInit() {
+    
+	private TinkersIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static void postInit() {
         ModifyBuilder.registerModifier(new ModiferSteam(new ItemStack[] { new ItemStack(
           SteamcraftBlocks.tank) }));
 

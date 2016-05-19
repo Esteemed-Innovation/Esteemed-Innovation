@@ -23,6 +23,10 @@ public class OreDictHelper {
 
     public static ArrayList<MutablePair<Item, Integer>> plateSteamcraftIrons = new ArrayList<>();
 
+    private OreDictHelper() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+    
     public static void initializeOreDicts(String name, ItemStack stack) {
         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
             for (int i = 0; i < 15; i++) {

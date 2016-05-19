@@ -22,9 +22,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SteamcraftBook {
-    //Here's a secret for all of you addon devs: Setting the category of a research to the name of an existing research, with a ! at the beginning, will append to that research instead of making its own.
+    
+	private SteamcraftBook() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
+	
+	//Here's a secret for all of you addon devs: Setting the category of a research to the name of an existing research, with a ! at the beginning, will append to that research instead of making its own.
 
-    public static void registerBookResearch() {
+	public static void registerBookResearch() {
         if (Config.hasAllCrucial) {
             registerRecentCreations();
             registerBasics();

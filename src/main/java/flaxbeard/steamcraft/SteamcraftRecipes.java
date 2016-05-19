@@ -29,7 +29,10 @@ public class SteamcraftRecipes {
     public static CrucibleLiquid liquidGold;
     public static CrucibleLiquid liquidBrass;
 
-
+    private SteamcraftRecipes() throws InstantiationException{
+    	throw new InstantiationException("This class is not to be meant for instantiation");
+    }
+    
     public static void registerRecipes() {
         registerFluid();
         registerCraftingRecipes();

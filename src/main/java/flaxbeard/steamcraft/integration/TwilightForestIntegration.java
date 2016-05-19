@@ -13,7 +13,11 @@ import net.minecraft.item.ItemStack;
 
 public class TwilightForestIntegration {
 
-    public static void postInit() {
+	private TwilightForestIntegration() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	public static void postInit() {
         CrucibleLiquid liquidFiery = new CrucibleLiquid("fiery", new ItemStack(TFItems.fieryIngot),
           new ItemStack(SteamcraftItems.steamcraftPlate, 1, 8), null, null, 91, 69, 69);
         SteamcraftRegistry.registerLiquid(liquidFiery);

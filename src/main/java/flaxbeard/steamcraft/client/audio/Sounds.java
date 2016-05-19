@@ -6,7 +6,11 @@ import net.minecraft.client.audio.SoundHandler;
 
 public class Sounds {
     private static SoundHandler soundMgr;
-
+    
+    private Sounds() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+    
     public static void addSoundTile(ISoundTile soundTile) {
         addSound(new SoundTile(soundTile));
     }

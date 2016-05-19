@@ -11,7 +11,12 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 @ZenClass("mods.fsp.CarvingTable")
 public class CarvingTableTweaker {
-    @ZenMethod
+    
+	private CarvingTableTweaker() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	@ZenMethod
     public static void addCarvable(IItemStack stack) {
         Item item = MineTweakerMC.getItemStack(stack).getItem();
         MineTweakerAPI.apply(new Add(item));

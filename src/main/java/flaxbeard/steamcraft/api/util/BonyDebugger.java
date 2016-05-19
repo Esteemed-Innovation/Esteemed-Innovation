@@ -7,6 +7,11 @@ package flaxbeard.steamcraft.api.util;
  * @author xbony2
  */
 public class BonyDebugger {
+	
+	private BonyDebugger() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
 	/**
 	 * Debugs stuff.
 	 */

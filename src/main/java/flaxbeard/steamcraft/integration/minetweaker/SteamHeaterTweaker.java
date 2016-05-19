@@ -12,7 +12,12 @@ import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 @ZenClass("mods.fsp.SteamHeater")
 public class SteamHeaterTweaker {
-    @ZenMethod
+    
+	private SteamHeaterTweaker() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+	
+	@ZenMethod
     public static void addSteamingRecipe(IItemStack originalI, IItemStack steamedI) {
         ItemStack original = MineTweakerMC.getItemStack(originalI);
         ItemStack steamed = MineTweakerMC.getItemStack(steamedI);

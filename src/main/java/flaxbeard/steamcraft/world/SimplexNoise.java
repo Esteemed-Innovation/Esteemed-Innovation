@@ -35,13 +35,14 @@ public class SimplexNoise {
     // To remove the need for index wrapping, double the permutation table length
     private static short perm[] = new short[512];
     private static short permMod12[] = new short[512];
+    
     static {
         for (int i = 0; i < 512; i++) {
             perm[i] = p[i & 255];
             permMod12[i] = (short) (perm[i] % 12);
         }
     }
-
+    
     // This method is a *lot* faster than using (int)Math.floor(x)
     private static int fastfloor(double x) {
         int xi = (int) x;

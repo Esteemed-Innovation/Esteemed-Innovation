@@ -10,6 +10,11 @@ import net.minecraft.util.IIcon;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilEnhancements {
+	
+	private UtilEnhancements() throws InstantiationException{
+		throw new InstantiationException("This class is not for instantiation");
+	}
+	
     public static void registerEnhancementsForItem(IIconRegister registry, Item item) {
         for (IEnhancement enhancement : SteamcraftRegistry.enhancements.values()) {
             if (enhancement.canApplyTo(new ItemStack(item))) {

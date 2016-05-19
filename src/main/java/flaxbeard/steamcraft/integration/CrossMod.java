@@ -63,6 +63,10 @@ public class CrossMod {
     public static final EventType EVENT_TYPE = (EventType) EnumHelper.addEnum(EventType.class,
             "FSP_POOR_ZINC", new Class[0], new Object[0]);
 
+    private CrossMod() throws InstantiationException{
+		throw new InstantiationException("This class is not meant to be instantiated");
+	}
+    
     public static void preInit(FMLPreInitializationEvent event) {
         if (NEI && event.getSide() == Side.CLIENT) {
             NEIIntegration.preInit();
