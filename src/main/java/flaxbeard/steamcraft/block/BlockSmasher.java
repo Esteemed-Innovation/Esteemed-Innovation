@@ -87,6 +87,8 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
                     case 4:
                         output = 4;
                         break;
+                    default:
+                    	break;
                 }
                 if (output == meta && side > 1 && side < 6) {
                     switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
@@ -102,6 +104,8 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
                         case 4:
                             output = 4;
                             break;
+                        default:
+                        	break;
                     }
                 }
                 world.setBlockMetadataWithNotify(x, y, z, output, 2);

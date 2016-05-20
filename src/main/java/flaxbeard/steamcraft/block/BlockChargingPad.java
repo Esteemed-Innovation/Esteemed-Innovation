@@ -97,6 +97,8 @@ public class BlockChargingPad extends BlockSteamTransporter implements IWrenchab
                 case 5:
                     output = 3;
                     break;
+                default:
+                	break;
             }
             if (output == meta && side > 1 && side < 6) {
                 switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
@@ -112,6 +114,8 @@ public class BlockChargingPad extends BlockSteamTransporter implements IWrenchab
                     case 5:
                         output = 3;
                         break;
+                    default:
+                    	break;
                 }
             }
             world.setBlockMetadataWithNotify(x, y, z, output, 2);
