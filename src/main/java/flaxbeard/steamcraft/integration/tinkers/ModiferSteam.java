@@ -17,17 +17,20 @@ public class ModiferSteam extends ModBoolean {
 
     @Override
     protected boolean canModify(ItemStack tool, ItemStack[] input) {
-        NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
-
-        if (tags.getInteger("Modifiers") > 0 && !tags.getBoolean(key)) {
-            return false;
+        if(tool instanceof ToolCore) {
+            NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
+    
+            if (tags.getInteger("Modifiers") > 0 && !tags.getBoolean(key)) {
+                return false;
+            }
+            
+            if (Arrays.asList(((ToolCore) tool.getItem()).getTraits()).contains("ammo")) {
+                return false;
+            }
+            
+            return true;
         }
-        
-        if (Arrays.asList(((ToolCore) tool.getItem()).getTraits()).contains("ammo")) {
-            return false;
-        }
-        
-        return true;
+        return false;
     }
 
     @Override
