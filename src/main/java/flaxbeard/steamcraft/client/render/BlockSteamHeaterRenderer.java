@@ -141,7 +141,7 @@ public class BlockSteamHeaterRenderer implements ISimpleBlockRenderingHandler {
         float maxY = baseMax;
         float minZ = baseMin;
         float maxZ = baseMax;
-        ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+        ArrayList<ForgeDirection> myDirections = new ArrayList<>();
         int meta = world.getBlockMetadata(x, y, z);
         ForgeDirection direction = ForgeDirection.getOrientation(meta).getOpposite();
         for (ForgeDirection dir : ForgeDirection.values()) {

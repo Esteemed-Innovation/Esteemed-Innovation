@@ -178,7 +178,7 @@ public class BlockPipe extends BlockSteamTransporter {
                     float minZ = baseMin;
                     float maxZ = baseMax;
                     if (pipe != null) {
-                        ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+                        ArrayList<ForgeDirection> myDirections = new ArrayList<>();
                         for (ForgeDirection direction : ForgeDirection.values()) {
                             if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ) != null) {
                                 TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ);
@@ -260,7 +260,7 @@ public class BlockPipe extends BlockSteamTransporter {
                 float minZ = baseMin;
                 float maxZ = baseMax;
                 if (pipe != null) {
-                    ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+                    ArrayList<ForgeDirection> myDirections = new ArrayList<>();
                     for (ForgeDirection direction : ForgeDirection.values()) {
                         if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ) != null) {
                             TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ);

@@ -153,7 +153,7 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
             float maxZ = baseMax;
             baseMin = 5.0F / 16.0F + 0.0001F;
             baseMax = 11.0F / 16.0F - 0.0001F;
-            ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+            ArrayList<ForgeDirection> myDirections = new ArrayList<>();
 
             for (ForgeDirection direction : ForgeDirection.values()) {
                 if (!pipe.doesConnect(direction)) {

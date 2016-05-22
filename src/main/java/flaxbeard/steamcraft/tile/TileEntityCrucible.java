@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TileEntityCrucible extends TileEntity {
-    public ArrayList<CrucibleLiquid> contents = new ArrayList<CrucibleLiquid>();
-    public HashMap<CrucibleLiquid, Integer> number = new HashMap<CrucibleLiquid, Integer>();
+    public ArrayList<CrucibleLiquid> contents = new ArrayList<>();
+    public HashMap<CrucibleLiquid, Integer> number = new HashMap<>();
     public boolean hasUpdated = true;
     public boolean needsUpdate = false;
     public int tipTicks = 0;
@@ -96,8 +96,8 @@ public class TileEntityCrucible extends TileEntity {
         NBTTagCompound access = pkt.func_148857_g();
         NBTTagList nbttaglist = (NBTTagList) access.getTag("liquids");
 
-        contents = new ArrayList<CrucibleLiquid>();
-        number = new HashMap<CrucibleLiquid, Integer>();
+        contents = new ArrayList<>();
+        number = new HashMap<>();
         if (this.tipTicks == 0) {
             this.tipTicks = access.getInteger("tipTicks");
         }

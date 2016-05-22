@@ -35,10 +35,10 @@ public class RenderCanister extends Render {
         item.hoverStart = 0.0F;
 
         GL11.glTranslated(0, 0.85F - (4F / 16F), 0);
-        if (this.renderManager.options.fancyGraphics == false) {
+        if (!this.renderManager.options.fancyGraphics) {
             GL11.glScalef(1.25F, 1.25F, 1.25F);
         }
-        if (this.renderManager.options.fancyGraphics == true || item.getEntityItem().getItem() instanceof ItemBlock) {
+        if (this.renderManager.options.fancyGraphics || item.getEntityItem().getItem() instanceof ItemBlock) {
             GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
         }
         RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);

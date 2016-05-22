@@ -68,7 +68,7 @@ public class GuiSteamcraftBook extends GuiScreen {
     private ArrayList<String> categories;
 
     public GuiSteamcraftBook(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, boolean par3) {
-        categories = new ArrayList<String>();
+        categories = new ArrayList<>();
         for (String cat : SteamcraftRegistry.categories) {
             int pages = 0;
             for (MutablePair research : SteamcraftRegistry.research) {
@@ -304,7 +304,7 @@ public class GuiSteamcraftBook extends GuiScreen {
 
                 String lastCategory = "";
                 boolean canDo = true;
-                ArrayList<Object> thingsToRemove = new ArrayList<Object>();
+                ArrayList<Object> thingsToRemove = new ArrayList<>();
                 for (Object button : this.buttonList) {
                     if (button instanceof GuiButtonSelect) {
                         thingsToRemove.add(button);
