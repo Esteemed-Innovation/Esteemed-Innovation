@@ -98,17 +98,20 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                     if (this.fireTicks == 60) {
                         this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:cannon", 1.0F, 0.8F);
                         this.decrSteam(2000);
-                        ItemStack stack2 = stack.copy();
-                        stack2.stackSize = 1;
-                        EntityMortarItem entityItem = new EntityMortarItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F, this.zCoord + 0.5F, stack2, xT, zT);
-                        this.worldObj.spawnEntityInWorld(entityItem);
-                        entityItem.motionY = 1.0F;
-                        if (stack.stackSize > 1) {
-                            stack.stackSize--;
-                            this.setInventorySlotContents(0, stack);
-                        } else {
-                            this.setInventorySlotContents(0, null);
+                        if (stack != null) {
+                        	ItemStack stack2 = stack.copy();
+                            stack2.stackSize = 1;
+                            EntityMortarItem entityItem = new EntityMortarItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F, this.zCoord + 0.5F, stack2, xT, zT);
+                            this.worldObj.spawnEntityInWorld(entityItem);
+                            entityItem.motionY = 1.0F;
+                            if (stack.stackSize > 1) {
+                                stack.stackSize--;
+                                this.setInventorySlotContents(0, stack);
+                            } else {
+                                this.setInventorySlotContents(0, null);
+                            }
                         }
+                        
                     }
                     if (this.fireTicks == 80) {
                         this.fireTicks = 0;

@@ -308,8 +308,10 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             int maxFill = stack.stackTagCompound.getInteger("maxFill");
             int steamFill = stack.stackTagCompound.getInteger("steamFill");
             return ((float) steamFill / (float) maxFill);
+        } else if (stack != null) {
+        	return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
         }
-        return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
+        return 0.0f;
     }
 
     @Override

@@ -196,9 +196,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                                     int total = inv.getStackInSlot(i).stackSize + stack.stackSize;
                                     stack.stackSize = stack.getMaxStackSize();
                                     total -= stack.getMaxStackSize();
-                                    checkStack2.stackSize = total;
-                                    item.setEntityItemStack(checkStack2);
-                                    //item.getEntityItem().stackSize = (inv.getStackInSlot(i).stackSize + stack.stackSize - stack.getMaxStackSize());
+                                    if (checkStack2 != null) {
+                                    	checkStack2.stackSize = total;
+                                        item.setEntityItemStack(checkStack2);
+                                        //item.getEntityItem().stackSize = (inv.getStackInSlot(i).stackSize + stack.stackSize - stack.getMaxStackSize());
+                                    }
+                                    
                                 } else {
                                     stack.stackSize = inv.getStackInSlot(i).stackSize + item.getEntityItem().stackSize;
                                 }

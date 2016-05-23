@@ -334,9 +334,12 @@ public class BlockPipe extends BlockSteamTransporter {
     @SubscribeEvent
     public void onBlockHighlight(DrawBlockHighlightEvent event) {
         Item equipped = event.player.getCurrentEquippedItem() != null ? event.player.getCurrentEquippedItem().getItem() : null;
-        if ((event.target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) && (event.player.worldObj.getBlock(event.target.blockX, event.target.blockY, event.target.blockZ) instanceof BlockPipe)
-                && (event.player.getCurrentEquippedItem() != null) && ((event.player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(event.player, event.target.blockX, event.target.blockY, event.target.blockZ)))) {
-            RayTracer.retraceBlock(event.player.worldObj, event.player, event.target.blockX, event.target.blockY, event.target.blockZ);
+        int x = event.target.blockX;
+        int y = event.target.blockY;
+        int z = event.target.blockZ;
+        if ((event.target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) && (event.player.worldObj.getBlock(x, y, z) instanceof BlockPipe)
+                && (equipped != null) && ((event.player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(event.player, x, y, z)))) {
+            RayTracer.retraceBlock(event.player.worldObj, event.player, x, y, z);
         }
     }
 
@@ -348,7 +351,7 @@ public class BlockPipe extends BlockSteamTransporter {
         if(player != null) {
             Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
             TileEntity tile = world.getTileEntity(x, y, z);
-            if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
+            if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((equipped != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
                 return super.collisionRayTrace(world, x, y, z, start, end);
             }
             List<IndexedCuboid6> cuboids = new LinkedList();
