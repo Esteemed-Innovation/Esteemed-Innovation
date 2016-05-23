@@ -49,7 +49,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
         } else if (ticks >= 50 && ticks < 180) {
             ticks = 180;
         }
-        float sin = MathHelper.sin((float) Math.toRadians(ticks - 60));
+        float sin = MathHelper.sin((float) Math.toRadians((double) ticks - 60));
         GL11.glRotatef(40 + sin * (42.5F + 9.5F * (1 - sin)) - 52F, 1F, 0F, 0F);
         GL11.glPushMatrix();
         GL11.glScalef(1.0F, 1.0F, (13.0F + ((int) (sin * 42.5F - 42.5F)) / 9.0F) / 13.0F);
@@ -107,7 +107,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
         } else if (ticks >= 50 && ticks < 180) {
             ticks = 180;
         }
-        float sin = MathHelper.sin((float) Math.toRadians(ticks - 60));
+        float sin = MathHelper.sin((float) Math.toRadians((double) ticks - 60));
         GL11.glRotatef(40 + sin * (42.5F + 9.5F * (1 - sin)) - 52F, 1F, 0F, 0F);
         GL11.glPushMatrix();
         GL11.glScalef(1.0F, 1.0F, (13.0F + ((int) (sin * 42.5F - 42.5F)) / 9.0F) / 13.0F);
