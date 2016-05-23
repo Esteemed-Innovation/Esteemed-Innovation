@@ -1,0 +1,10 @@
+diff a/src/main/java/flaxbeard/steamcraft/codechicken/lib/render/CCModel.java b/src/main/java/flaxbeard/steamcraft/codechicken/lib/render/CCModel.java	(rejected hunks)
+@@ -21,7 +21,7 @@
+     public final int vertexMode;
+     public final int vp;
+     public Vertex5[] verts;
+-    public ArrayList<Object> attributes = new ArrayList<Object>();
++    public ArrayList<Object> attributes = new ArrayList<>();
+ 
+     protected CCModel(int vertexMode) {
+         if (vertexMode != 7 && vertexMode != 4)

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class AetherBlockData extends WorldSavedData {
 
     private static final String ID = "AetherBlockData";
-    public ArrayList<ChunkCoordinates> cc = new ArrayList<ChunkCoordinates>();
+    public ArrayList<ChunkCoordinates> cc = new ArrayList<>();
 
     public AetherBlockData() {
         super(ID);

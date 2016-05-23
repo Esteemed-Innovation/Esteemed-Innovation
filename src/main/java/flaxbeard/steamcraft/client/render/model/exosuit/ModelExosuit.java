@@ -197,7 +197,7 @@ public class ModelExosuit extends ModelBiped {
         // Upgrades
         overlayTextures.clear();
         modelClasses.clear();
-        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<IExosuitUpgrade>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
+        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
         Collections.sort(upgrades, COMPARATOR_UPGRADE);
         for (IExosuitUpgrade upgrade : upgrades) {
             ResourceLocation overlay = upgrade.getOverlay();

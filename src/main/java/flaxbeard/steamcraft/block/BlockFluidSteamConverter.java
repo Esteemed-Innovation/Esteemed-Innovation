@@ -78,6 +78,8 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
                 return AxisAlignedBB.getBoundingBox(i + 1 - z2, j + y, k + 1 - x2, i + 1 - z, j + y2, k + 1 - x);
             case 3:
                 return AxisAlignedBB.getBoundingBox(i + x, j + y, k + z, i + x2, j + y2, k + z2);
+            default:
+            	break;
         }
         return super.getCollisionBoundingBoxFromPool(world, i, j, k);
     }
@@ -115,6 +117,8 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
             case 3:
                 this.setBlockBounds(x, y, z, x2, y2, z2);
                 break;
+            default:
+            	break;
         }
         return super.getSelectedBoundingBoxFromPool(world, i, j, k);
     }
@@ -152,6 +156,8 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
             case 3:
                 this.setBlockBounds(x, y, z, x2, y2, z2);
                 break;
+            default:
+            	break;
         }
     }
 

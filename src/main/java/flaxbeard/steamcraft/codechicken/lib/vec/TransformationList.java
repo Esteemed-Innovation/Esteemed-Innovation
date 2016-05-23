@@ -94,7 +94,7 @@ public class TransformationList extends Transformation {
     }
 
     private void compact() {
-        ArrayList<Transformation> newList = new ArrayList<Transformation>(transformations.size());
+        ArrayList<Transformation> newList = new ArrayList<>(transformations.size());
         Iterator<Transformation> iterator = transformations.iterator();
         Transformation prev = null;
         while (iterator.hasNext()) {

@@ -1,0 +1,10 @@
+diff a/src/main/java/flaxbeard/steamcraft/codechicken/lib/render/uv/UVTransformationList.java b/src/main/java/flaxbeard/steamcraft/codechicken/lib/render/uv/UVTransformationList.java	(rejected hunks)
+@@ -4,7 +4,7 @@
+ import java.util.Iterator;
+ 
+ public class UVTransformationList extends UVTransformation {
+-    private ArrayList<UVTransformation> transformations = new ArrayList<UVTransformation>();
++    private ArrayList<UVTransformation> transformations = new ArrayList<>();
+ 
+     public UVTransformationList(UVTransformation... transforms) {
+         for (UVTransformation t : transforms)

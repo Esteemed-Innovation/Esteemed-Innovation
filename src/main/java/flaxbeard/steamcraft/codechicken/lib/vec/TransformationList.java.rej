@@ -1,0 +1,10 @@
+diff a/src/main/java/flaxbeard/steamcraft/codechicken/lib/vec/TransformationList.java b/src/main/java/flaxbeard/steamcraft/codechicken/lib/vec/TransformationList.java	(rejected hunks)
+@@ -94,7 +94,7 @@
+     }
+ 
+     private void compact() {
+-        ArrayList<Transformation> newList = new ArrayList<Transformation>(transformations.size());
++        ArrayList<Transformation> newList = new ArrayList<>(transformations.size());
+         Iterator<Transformation> iterator = transformations.iterator();
+         Transformation prev = null;
+         while (iterator.hasNext()) {
