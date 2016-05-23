@@ -749,7 +749,7 @@ public class SteamcraftBook {
     }
 
     public static ItemStack[] getOreDict(String str) {
-        ArrayList<ItemStack> planks = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> planks = new ArrayList<>();
         for (ItemStack stack : OreDictionary.getOres(str)) {
             planks.add(stack);
         }

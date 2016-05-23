@@ -35,7 +35,7 @@ import java.util.List;
 
 public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
     //protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
-    public ArrayList<Integer> blacklistedSides = new ArrayList<Integer>();
+    public ArrayList<Integer> blacklistedSides = new ArrayList<>();
     public Block disguiseBlock = null;
     public int disguiseMeta = 0;
     public boolean isOriginalPipe = false;
@@ -84,7 +84,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         for (int i = 0; i < length; i++) {
             sidesInt[i] = sidesList.getInteger(Integer.toString(i));
         }
-        this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
+        this.blacklistedSides = new ArrayList<>(Arrays.asList(sidesInt));
         this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
         this.disguiseMeta = access.getInteger("disguiseMeta");
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -100,7 +100,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         for (int i = 0; i < length; i++) {
             sidesInt[i] = sidesList.getInteger(Integer.toString(i));
         }
-        this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
+        this.blacklistedSides = new ArrayList<>(Arrays.asList(sidesInt));
         this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
         this.disguiseMeta = access.getInteger("disguiseMeta");
     }
@@ -137,7 +137,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         }
 
 
-        ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+        ArrayList<ForgeDirection> myDirections = new ArrayList<>();
         for (ForgeDirection direction : ForgeDirection.values()) {
             if (this.doesConnect(direction) && worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
                 TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
