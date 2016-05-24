@@ -63,8 +63,8 @@ public class BlockThumperDummy extends Block implements IWrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO,
+            float yO, float zO) {
         int meta = world.getBlockMetadata(x, y, z) - 1;
         if (world.getBlock(x, y - meta, z) == SteamcraftBlocks.thumper) {
             if (side != 0 && side != 1) {
@@ -81,6 +81,8 @@ public class BlockThumperDummy extends Block implements IWrenchable {
                         break;
                     case 5:
                         world.setBlockMetadataWithNotify(x, y, z, 3, 2);
+                        break;
+                    default:
                         break;
                 }
                 return true;

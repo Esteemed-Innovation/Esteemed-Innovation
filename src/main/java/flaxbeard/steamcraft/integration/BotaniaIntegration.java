@@ -129,6 +129,8 @@ public class BotaniaIntegration {
                     break;
                 case 4:
                     hp = 2;
+                default: 
+                    break;
             }
             map.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(),
               new AttributeModifier(new UUID(numberRandom, armorType),

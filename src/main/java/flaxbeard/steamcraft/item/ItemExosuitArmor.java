@@ -703,6 +703,8 @@ public class ItemExosuitArmor extends ItemArmor implements IPixieSpawner, ISpeci
                     return 0.035F;
                 case 3:
                     return 0.02F;
+                default: 
+                    break;
             }
         }
         return 0;

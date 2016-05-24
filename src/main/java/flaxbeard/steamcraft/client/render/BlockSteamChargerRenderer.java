@@ -221,6 +221,8 @@ public class BlockSteamChargerRenderer implements ISimpleBlockRenderingHandler {
             case 3:
                 block.setBlockBounds(x, y, z, x2, y2, z2);
                 break;
+            default: 
+            	 break;
 
         }
     }

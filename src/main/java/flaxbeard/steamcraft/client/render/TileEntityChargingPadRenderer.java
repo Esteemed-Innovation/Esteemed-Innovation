@@ -35,6 +35,8 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
             case 5:
                 rotation = 0;
                 break;
+            default: 
+            	 break;
         }
 
         ForgeDirection dir = ForgeDirection.getOrientation(meta);
@@ -76,6 +78,8 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
             case 5:
                 rotation = 0;
                 break;
+            default: 
+            	 break;
         }
         ForgeDirection dir = ForgeDirection.getOrientation(meta);
         GL11.glRotatef(90.0F, 0F, 1F, 0F);

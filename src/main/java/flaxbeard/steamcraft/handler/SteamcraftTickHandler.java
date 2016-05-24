@@ -233,6 +233,8 @@ public class SteamcraftTickHandler {
                                     i++;
                                 }
                                 break;
+                            default:
+                                break;
                         }
                         lastPressingKey = true;
                     } else if (!ClientProxy.keyBindings.get("monocle").getIsKeyPressed()) {

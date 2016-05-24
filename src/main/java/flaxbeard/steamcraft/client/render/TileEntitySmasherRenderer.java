@@ -45,6 +45,8 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer impleme
             case 5:
                 GL11.glRotatef(0.0F, 0F, 1F, 0F);
                 break;
+            default: 
+            	 break;
         }
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
