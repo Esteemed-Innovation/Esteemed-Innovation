@@ -38,8 +38,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.readFromNBT(par1NBTTagCompound);
         randomDegrees = (int) (Math.random() * 360);
         if (par1NBTTagCompound.hasKey("inventory")) {
-            this.inventory[0] =
-                ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
+            this.inventory[0] = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
         }
     }
 
@@ -85,15 +84,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         if (this.worldObj.isRemote) {
             if (this.getStackInSlot(0) != null) {
                 if (this.isCharging) {
-                    this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F,
-                      zCoord + 0.5F, (Math.random() - 0.5F) / 12.0F, 0.0F,
-                      (Math.random() - 0.5F) / 12.0F);
+                    this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F,
+                            (Math.random() - 0.5F) / 12.0F, 0.0F, (Math.random() - 0.5F) / 12.0F);
                 }
             }
         } else {
             if (this.getStackInSlot(0) != null) {
-                if (this.getStackInSlot(0).getItem() == SteamcraftItems.steamcellEmpty &&
-                  this.getSteamShare() > Config.steamCellCapacity) {
+                if (this.getStackInSlot(0).getItem() == SteamcraftItems.steamcellEmpty
+                        && this.getSteamShare() > Config.steamCellCapacity) {
                     this.inventory[0] = null;
                     this.dropItem(new ItemStack(SteamcraftItems.steamcellFull));
                     this.decrSteam(Config.steamCellCapacity);
@@ -122,20 +120,17 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                             }
                         }
-                        if (this.getSteamShare() > item.steamPerDurability()
-                          && stack.getItemDamage() > 0) {
+                        if (this.getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
                             int i = 0;
-                            while (i < 4
-                              && (this.getSteamShare() > item.steamPerDurability() && stack
-                                  .getItemDamage() > 0)) {
+                            while (i < 4 && (this.getSteamShare() > item.steamPerDurability()
+                                    && stack.getItemDamage() > 0)) {
                                 this.decrSteam(item.steamPerDurability());
                                 stack.setItemDamage(stack.getItemDamage() - 1);
                                 this.setInventorySlotContents(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
-                            if (prevPercent != currentPerc
-                              && Math.abs(prevPercent - currentPerc) > 0.01) {
+                            if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
                                 prevPercent = currentPerc;
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -152,9 +147,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         if (!stack.stackTagCompound.hasKey("maxFill")) {
                             stack.stackTagCompound.setInteger("maxFill", 0);
                         }
-                        if (this.getSteamShare() > 0
-                          && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound
-                                .getInteger("maxFill")) {
+                        if (this.getSteamShare() > 0 && stack.stackTagCompound
+                                .getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill")) {
                             if (!this.isCharging) {
                                 // Steamcraft.log.debug("Charging");
                                 this.isCharging = true;
@@ -167,39 +161,33 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                             }
                         }
-                        if (this.getSteamShare() > item.steamPerDurability()
-                          && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound
-                              .getInteger("maxFill")) {
+                        if (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound
+                                .getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill")) {
                             int i = 0;
 
-                            while (i < 19
-                              && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound
-                                    .getInteger("steamFill") < stack.stackTagCompound
-                                    .getInteger("maxFill"))) {
+                            while (i < 19 && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound
+                                    .getInteger("steamFill") < stack.stackTagCompound.getInteger("maxFill"))) {
                                 this.decrSteam(item.steamPerDurability());
                                 stack.stackTagCompound.setInteger("steamFill",
-                                    stack.stackTagCompound.getInteger("steamFill") + 1);
+                                        stack.stackTagCompound.getInteger("steamFill") + 1);
                                 this.setInventorySlotContents(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
-                            if (prevPercent != currentPerc
-                              && Math.abs(prevPercent - currentPerc) > 0.01) {
+                            if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
                                 prevPercent = currentPerc;
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                             }
                         }
                     }
-                } else if (CrossMod.TINKERS_CONSTRUCT
-                  && this.getStackInSlot(0).getItem() instanceof ToolCore) {
+                } else if (CrossMod.TINKERS_CONSTRUCT && this.getStackInSlot(0).getItem() instanceof ToolCore) {
                     ToolCore item = (ToolCore) this.getStackInSlot(0).getItem();
                     ItemStack stack = this.getStackInSlot(0).copy();
                     NBTTagCompound tags = stack.getTagCompound();
                     int damage = tags.getCompoundTag("InfiTool").getInteger("Damage");
                     if (!tags.getCompoundTag("InfiTool").getBoolean("Broken")) {
-                        if (this.getSteamShare() > 0
-                            && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                        if (this.getSteamShare() > 0 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
                             if (!this.isCharging) {
                                 // Steamcraft.log.debug("Charging");
                                 this.isCharging = true;
@@ -212,27 +200,21 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                             }
                         }
-                        if (this.getSteamShare() > 8
-                            && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                        if (this.getSteamShare() > 8 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
                             int i = 0;
-                            while (i < 4
-                                && (this.getSteamShare() > 8 && tags.getCompoundTag("InfiTool")
-                                    .getInteger("Damage") > 0)) {
+                            while (i < 4 && (this.getSteamShare() > 8
+                                    && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0)) {
                                 this.decrSteam(8);
                                 damage -= 1;
                                 tags.getCompoundTag("InfiTool").setInteger("Damage", damage);
                                 this.setInventorySlotContents(0, stack);
                                 i++;
                             }
-                            float currentPerc =
-                                (float) (tags.getCompoundTag("InfiTool").getInteger(
-                                    "TotalDurability") - tags.getCompoundTag("InfiTool")
-                                    .getInteger("Damage"))
-                                    / (float) tags.getCompoundTag("InfiTool").getInteger(
-                                        "TotalDurability");
-                            
-                            if (prevPercent != currentPerc
-                                && Math.abs(prevPercent - currentPerc) > 0.01) {
+                            float currentPerc = (float) (tags.getCompoundTag("InfiTool").getInteger("TotalDurability")
+                                    - tags.getCompoundTag("InfiTool").getInteger("Damage"))
+                                    / (float) tags.getCompoundTag("InfiTool").getInteger("TotalDurability");
+
+                            if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
                                 prevPercent = currentPerc;
                                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -259,9 +241,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     public void dropItem(ItemStack item) {
-        EntityItem entityItem =
-          new EntityItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F,
-              this.zCoord + 0.5F, item);
+        EntityItem entityItem = new EntityItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F,
+                this.zCoord + 0.5F, item);
         this.worldObj.spawnEntityInWorld(entityItem);
     }
 
@@ -294,8 +275,10 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     private float getChargingPercent(ItemStack stack) {
-
-        if (stack != null && stack.getItem() instanceof ItemExosuitArmor) {
+        if (stack == null) {
+            return 0F;
+        }
+        if (stack.getItem() instanceof ItemExosuitArmor) {
             if (!stack.hasTagCompound()) {
                 stack.setTagCompound(new NBTTagCompound());
             }
@@ -308,10 +291,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             int maxFill = stack.stackTagCompound.getInteger("maxFill");
             int steamFill = stack.stackTagCompound.getInteger("steamFill");
             return ((float) steamFill / (float) maxFill);
-        } else if (stack != null) {
-        	return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
         }
-        return 0.0f;
+        return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
     }
 
     @Override

@@ -16,7 +16,6 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/itemMortar.png");
     private static float px = (1.0F / 16.0F);
 
-
     @Override
     public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
@@ -31,7 +30,10 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
         model.renderBase();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         if (mortar.zT != mortar.zCoord) {
-            GL11.glRotated(Math.toDegrees((float) Math.atan((float) (mortar.xT - mortar.xCoord) / (float) (mortar.zT - mortar.zCoord))), 0F, 1F, 0F);
+            GL11.glRotated(
+                    Math.toDegrees((float) Math
+                            .atan((float) (mortar.xT - mortar.xCoord) / (float) (mortar.zT - mortar.zCoord))),
+                    0F, 1F, 0F);
         } else {
             GL11.glRotated(270.0F, 0F, 1F, 0F);
         }
@@ -60,7 +62,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
     public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
-        //TileEntityItemMortar mortar = (TileEntityItemMortar) var1;
+        // TileEntityItemMortar mortar = (TileEntityItemMortar) var1;
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslated(x, y, z);

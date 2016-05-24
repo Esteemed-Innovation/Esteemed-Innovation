@@ -67,98 +67,107 @@ public class BlockPipe extends BlockSteamTransporter {
         return Steamcraft.tubeRenderID;
     }
 
-//    @Override
-//    @SideOnly (Side.CLIENT)
-//    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) 
-//    {
-//    	Minecraft mc = Minecraft.getMinecraft();
-//    	TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(i,j, k);
-//    	if (mc.thePlayer.isSneaking() || mc.thePlayer.getHeldItem() == null || !(mc.thePlayer.getHeldItem().getItem() instanceof ItemWrench)) {
-//	 		if (pipe != null && pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.air) {
-//				setBlockBounds(0.0F,0.0F,0.0F,1.0F,1.0F,1.0F);
-//	    	}
-//			else  {
-//				float baseMin = 4.0F/16.0F;
-//				float baseMax = 12.0F/16.0F;
-//				float ringMin = 4.0F/16.0F;
-//				float ringMax = 12.0F/16.0F;
-//				float px = 1.0F/16.0F;
-//				float minX = baseMin;
-//				float maxX = baseMax;
-//				float minY = baseMin;
-//				float maxY = baseMax;
-//				float minZ = baseMin;
-//				float maxZ = baseMax;
-//		    	if (pipe != null) {
-//					ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
-//					for (ForgeDirection direction : ForgeDirection.values()) {
-//						if (pipe.doesConnect(direction) && world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ) != null) {
-//							TileEntity tile = world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ);
-//							if (tile instanceof ISteamTransporter) {
-//								ISteamTransporter target = (ISteamTransporter) tile;
-//								if (target.doesConnect(direction.getOpposite())) {
-//									myDirections.add(direction);
-//									if (direction.offsetX == 1) {
-//										maxX = 1.0F;
-//									}
-//									if (direction.offsetY == 1) {
-//										maxY = 1.0F;
-//									}
-//									if (direction.offsetZ == 1) {
-//										maxZ = 1.0F;
-//									}
-//									if (direction.offsetX == -1) {
-//										minX = 0.0F;
-//									}
-//									if (direction.offsetY == -1) {
-//										minY = 0.0F;
-//									}
-//									if (direction.offsetZ == -1) {
-//										minZ = 0.0F;
-//									}
-//								}
-//							}
-//						}
-//					}
-//					if (myDirections.size() == 2) {
-//						ForgeDirection direction = myDirections.get(0).getOpposite();
-//						while (!pipe.doesConnect(direction) || direction == myDirections.get(0)) {
-//							direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
-//						}
-//						if (direction.offsetX == 1) {
-//							maxX = 1.0F;
-//						}
-//						if (direction.offsetY == 1) {
-//							maxY = 1.0F;
-//						}
-//						if (direction.offsetZ == 1) {
-//							maxZ = 1.0F;
-//						}
-//						if (direction.offsetX == -1) {
-//							minX = 0.0F;
-//						}
-//						if (direction.offsetY == -1) {
-//							minY = 0.0F;
-//						}
-//						if (direction.offsetZ == -1) {
-//							minZ = 0.0F;
-//						}
-//					}
-//					setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
-//		    	}
-//	    	}
-//    	}
-//		Steamcraft.log.debug("Ls");
-//
-//		return super.getSelectedBoundingBoxFromPool(world, i, j, k);
-//    }
+    // @Override
+    // @SideOnly (Side.CLIENT)
+    // public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i,
+    // int j, int k)
+    // {
+    // Minecraft mc = Minecraft.getMinecraft();
+    // TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(i,j,
+    // k);
+    // if (mc.thePlayer.isSneaking() || mc.thePlayer.getHeldItem() == null ||
+    // !(mc.thePlayer.getHeldItem().getItem() instanceof ItemWrench)) {
+    // if (pipe != null && pipe.disguiseBlock != null && pipe.disguiseBlock !=
+    // Blocks.air) {
+    // setBlockBounds(0.0F,0.0F,0.0F,1.0F,1.0F,1.0F);
+    // }
+    // else {
+    // float baseMin = 4.0F/16.0F;
+    // float baseMax = 12.0F/16.0F;
+    // float ringMin = 4.0F/16.0F;
+    // float ringMax = 12.0F/16.0F;
+    // float px = 1.0F/16.0F;
+    // float minX = baseMin;
+    // float maxX = baseMax;
+    // float minY = baseMin;
+    // float maxY = baseMax;
+    // float minZ = baseMin;
+    // float maxZ = baseMax;
+    // if (pipe != null) {
+    // ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
+    // for (ForgeDirection direction : ForgeDirection.values()) {
+    // if (pipe.doesConnect(direction) &&
+    // world.getTileEntity(i+direction.offsetX, j+direction.offsetY,
+    // k+direction.offsetZ) != null) {
+    // TileEntity tile = world.getTileEntity(i+direction.offsetX,
+    // j+direction.offsetY, k+direction.offsetZ);
+    // if (tile instanceof ISteamTransporter) {
+    // ISteamTransporter target = (ISteamTransporter) tile;
+    // if (target.doesConnect(direction.getOpposite())) {
+    // myDirections.add(direction);
+    // if (direction.offsetX == 1) {
+    // maxX = 1.0F;
+    // }
+    // if (direction.offsetY == 1) {
+    // maxY = 1.0F;
+    // }
+    // if (direction.offsetZ == 1) {
+    // maxZ = 1.0F;
+    // }
+    // if (direction.offsetX == -1) {
+    // minX = 0.0F;
+    // }
+    // if (direction.offsetY == -1) {
+    // minY = 0.0F;
+    // }
+    // if (direction.offsetZ == -1) {
+    // minZ = 0.0F;
+    // }
+    // }
+    // }
+    // }
+    // }
+    // if (myDirections.size() == 2) {
+    // ForgeDirection direction = myDirections.get(0).getOpposite();
+    // while (!pipe.doesConnect(direction) || direction == myDirections.get(0))
+    // {
+    // direction = ForgeDirection.getOrientation((direction.ordinal()+1)%5);
+    // }
+    // if (direction.offsetX == 1) {
+    // maxX = 1.0F;
+    // }
+    // if (direction.offsetY == 1) {
+    // maxY = 1.0F;
+    // }
+    // if (direction.offsetZ == 1) {
+    // maxZ = 1.0F;
+    // }
+    // if (direction.offsetX == -1) {
+    // minX = 0.0F;
+    // }
+    // if (direction.offsetY == -1) {
+    // minY = 0.0F;
+    // }
+    // if (direction.offsetZ == -1) {
+    // minZ = 0.0F;
+    // }
+    // }
+    // setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
+    // }
+    // }
+    // }
+    // Steamcraft.log.debug("Ls");
+    //
+    // return super.getSelectedBoundingBoxFromPool(world, i, j, k);
+    // }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if (mc.thePlayer.isSneaking() || mc.thePlayer.getHeldItem() == null || !(mc.thePlayer.getHeldItem().getItem() instanceof ItemWrench)) {
+        if (mc.thePlayer.isSneaking() || mc.thePlayer.getHeldItem() == null
+                || !(mc.thePlayer.getHeldItem().getItem() instanceof ItemWrench)) {
             TileEntity te = world.getTileEntity(i, j, k);
             if (te instanceof TileEntitySteamPipe) {
 
@@ -180,8 +189,10 @@ public class BlockPipe extends BlockSteamTransporter {
                     if (pipe != null) {
                         ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
                         for (ForgeDirection direction : ForgeDirection.values()) {
-                            if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ) != null) {
-                                TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ);
+                            if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX,
+                                    j + direction.offsetY, k + direction.offsetZ) != null) {
+                                TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY,
+                                        k + direction.offsetZ);
                                 if (tile instanceof ISteamTransporter) {
                                     ISteamTransporter target = (ISteamTransporter) tile;
                                     if (target.doesConnect(direction.getOpposite())) {
@@ -262,8 +273,10 @@ public class BlockPipe extends BlockSteamTransporter {
                 if (pipe != null) {
                     ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
                     for (ForgeDirection direction : ForgeDirection.values()) {
-                        if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ) != null) {
-                            TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY, k + direction.offsetZ);
+                        if (pipe.doesConnect(direction) && world.getTileEntity(i + direction.offsetX,
+                                j + direction.offsetY, k + direction.offsetZ) != null) {
+                            TileEntity tile = world.getTileEntity(i + direction.offsetX, j + direction.offsetY,
+                                    k + direction.offsetZ);
                             if (tile instanceof ISteamTransporter) {
                                 ISteamTransporter target = (ISteamTransporter) tile;
                                 if (target.doesConnect(direction.getOpposite())) {
@@ -333,12 +346,14 @@ public class BlockPipe extends BlockSteamTransporter {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onBlockHighlight(DrawBlockHighlightEvent event) {
-        Item equipped = event.player.getCurrentEquippedItem() != null ? event.player.getCurrentEquippedItem().getItem() : null;
+        Item equipped = event.player.getCurrentEquippedItem() != null ? event.player.getCurrentEquippedItem().getItem()
+                : null;
         int x = event.target.blockX;
         int y = event.target.blockY;
         int z = event.target.blockZ;
-        if ((event.target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) && (event.player.worldObj.getBlock(x, y, z) instanceof BlockPipe)
-                && (equipped != null) && ((event.player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(event.player, x, y, z)))) {
+        if ((event.target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+                && (event.player.worldObj.getBlock(x, y, z) instanceof BlockPipe) && (equipped != null)
+                && ((equipped instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(event.player, x, y, z)))) {
             RayTracer.retraceBlock(event.player.worldObj, event.player, x, y, z);
         }
     }
@@ -348,17 +363,20 @@ public class BlockPipe extends BlockSteamTransporter {
     public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end) {
 
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if(player != null) {
+        if (player != null) {
             Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
             TileEntity tile = world.getTileEntity(x, y, z);
-            if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking() || !((equipped != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
+            if ((tile == null) || (!(tile instanceof TileEntitySteamPipe)) || player == null || player.isSneaking()
+                    || !((equipped != null) && (player.getCurrentEquippedItem().getItem() instanceof IPipeWrench
+                            && ((IPipeWrench) equipped).canWrench(player, x, y, z)))) {
                 return super.collisionRayTrace(world, x, y, z, start, end);
             }
             List<IndexedCuboid6> cuboids = new LinkedList();
             ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
-           return  this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(x, y, z), this);
+            return this.rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids,
+                    new BlockCoord(x, y, z), this);
         }
-        
+
         return null;
     }
 

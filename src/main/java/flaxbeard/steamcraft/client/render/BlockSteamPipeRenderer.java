@@ -30,10 +30,10 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
     public static boolean updateWrenchStatus() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-        if (equipped != null) {
-        	 return (player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, (int) player.posX, (int) player.posY, (int) player.posZ) && !player.isSneaking());
-        }
-        return false;
+        Item held = player.getHeldItem().getItem();
+        return equipped != null && held != null && held instanceof IPipeWrench
+                && ((IPipeWrench) equipped).canWrench(player, (int) player.posX, (int) player.posY, (int) player.posZ)
+                && !player.isSneaking();
     }
 
     @Override
@@ -68,7 +68,8 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
         this.drawSides(((BlockPipe) SteamcraftBlocks.pipe).sideIcon, block, renderer);
 
         if (block == SteamcraftBlocks.valvePipe) {
-            block.setBlockBounds(4.5F * px, 1.0F - 5.5F * px, baseMax + 1 * px, 1.0F - 4.5F * px, 1.0F - 4.5F * px, baseMax + 2 * px);
+            block.setBlockBounds(4.5F * px, 1.0F - 5.5F * px, baseMax + 1 * px, 1.0F - 4.5F * px, 1.0F - 4.5F * px,
+                    baseMax + 2 * px);
             renderer.setRenderBoundsFromBlock(block);
             this.drawSides(((BlockPipe) SteamcraftBlocks.pipe).copperIcon, block, renderer);
 
@@ -80,7 +81,8 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
             renderer.setRenderBoundsFromBlock(block);
             this.drawSides(((BlockPipe) SteamcraftBlocks.pipe).copperIcon, block, renderer);
 
-            block.setBlockBounds(1.0F - 5.5F * px, 5.5F * px, baseMax + 1 * px, 1.0F - 4.5F * px, 1.0F - 5.5F * px, baseMax + 2 * px);
+            block.setBlockBounds(1.0F - 5.5F * px, 5.5F * px, baseMax + 1 * px, 1.0F - 4.5F * px, 1.0F - 5.5F * px,
+                    baseMax + 2 * px);
             renderer.setRenderBoundsFromBlock(block);
             this.drawSides(((BlockPipe) SteamcraftBlocks.pipe).copperIcon, block, renderer);
 
@@ -95,9 +97,11 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
             block.setBlockBounds(6.5F * px, 6.5F * px, baseMax, 9.5F * px, 9.5F * px, baseMax + 2 * px);
             renderer.setRenderBoundsFromBlock(block);
             this.drawSides(((BlockPipe) SteamcraftBlocks.pipe).copperIcon, block, renderer);
-            //	block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
-            //renderer.setRenderBoundsFromBlock(block);
-            //this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
+            // block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px,
+            // 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
+            // renderer.setRenderBoundsFromBlock(block);
+            // this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon,
+            // block, renderer);
         }
     }
 
@@ -139,10 +143,12 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         TileEntitySteamPipe pipe = (TileEntitySteamPipe) world.getTileEntity(x, y, z);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (updateWrenchStatus() || (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.air || !pipe.disguiseBlock.renderAsNormalBlock())) {
+        if (updateWrenchStatus() || (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.air
+                || !pipe.disguiseBlock.renderAsNormalBlock())) {
             float baseMin = 5.0F / 16.0F;
             float baseMax = 11.0F / 16.0F;
             float ringMin = 4.0F / 16.0F;
@@ -161,8 +167,10 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
             for (ForgeDirection direction : ForgeDirection.values()) {
                 if (!pipe.doesConnect(direction)) {
                 }
-                if (pipe.doesConnect(direction) && world.getTileEntity(pipe.xCoord + direction.offsetX, pipe.yCoord + direction.offsetY, pipe.zCoord + direction.offsetZ) != null) {
-                    TileEntity tile = world.getTileEntity(pipe.xCoord + direction.offsetX, pipe.yCoord + direction.offsetY, pipe.zCoord + direction.offsetZ);
+                if (pipe.doesConnect(direction) && world.getTileEntity(pipe.xCoord + direction.offsetX,
+                        pipe.yCoord + direction.offsetY, pipe.zCoord + direction.offsetZ) != null) {
+                    TileEntity tile = world.getTileEntity(pipe.xCoord + direction.offsetX,
+                            pipe.yCoord + direction.offsetY, pipe.zCoord + direction.offsetZ);
                     if (tile instanceof ISteamTransporter) {
                         ISteamTransporter target = (ISteamTransporter) tile;
                         if (target.doesConnect(direction.getOpposite())) {
@@ -266,7 +274,8 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
                 renderer.renderStandardBlock(block, x, y, z);
             }
             renderer.clearOverrideBlockTexture();
-            if (pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.air && !pipe.disguiseBlock.renderAsNormalBlock() && !updateWrenchStatus()) {
+            if (pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.air
+                    && !pipe.disguiseBlock.renderAsNormalBlock() && !updateWrenchStatus()) {
                 GL11.glPushMatrix();
                 block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
                 renderer.setRenderBoundsFromBlock(block);
@@ -294,12 +303,18 @@ public class BlockSteamPipeRenderer implements ISimpleBlockRenderingHandler {
             }
             renderer.clearOverrideBlockTexture();
 
-//		    renderer.renderFaceYPos(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(1, pipe.disguiseMeta));
-//		    renderer.renderFaceYNeg(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(0, pipe.disguiseMeta));
-//		    renderer.renderFaceXPos(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(5, pipe.disguiseMeta));
-//		    renderer.renderFaceXNeg(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(2, pipe.disguiseMeta));
-//		    renderer.renderFaceZPos(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(3, pipe.disguiseMeta));
-//		    renderer.renderFaceZNeg(pipe.disguiseBlock, x, y, z, pipe.disguiseBlock.getIcon(4, pipe.disguiseMeta));
+            // renderer.renderFaceYPos(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(1, pipe.disguiseMeta));
+            // renderer.renderFaceYNeg(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(0, pipe.disguiseMeta));
+            // renderer.renderFaceXPos(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(5, pipe.disguiseMeta));
+            // renderer.renderFaceXNeg(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(2, pipe.disguiseMeta));
+            // renderer.renderFaceZPos(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(3, pipe.disguiseMeta));
+            // renderer.renderFaceZNeg(pipe.disguiseBlock, x, y, z,
+            // pipe.disguiseBlock.getIcon(4, pipe.disguiseMeta));
 
         }
         return true;
