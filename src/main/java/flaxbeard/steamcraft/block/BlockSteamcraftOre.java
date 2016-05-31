@@ -53,6 +53,7 @@ public class BlockSteamcraftOre extends Block {
         	case 0: return this.icon[0];
         	case 1: return this.icon[1];
         	case 2: return this.icon[2];
+        	default: break;    		
         	}
         	break;
         case -1: //End
@@ -60,6 +61,7 @@ public class BlockSteamcraftOre extends Block {
         	case 0: return this.icon[3];
         	case 1: return this.icon[4];
         	case 2: return this.icon[2];
+        	default: break;
         	}
         	break;
         case 1:	//Nether
@@ -67,6 +69,7 @@ public class BlockSteamcraftOre extends Block {
         	case 0: return this.icon[5];
         	case 1: return this.icon[6];
         	case 2: return this.icon[2];
+        	default: break;
         	}
         	break;
         default: //Same as overworld
@@ -74,6 +77,7 @@ public class BlockSteamcraftOre extends Block {
         	case 0: return this.icon[0];
         	case 1: return this.icon[1];
         	case 2: return this.icon[2];
+        	default: break;
         	}
         }
 		return this.icon[0]; //Shouldn't happen, but whatever.

@@ -368,6 +368,8 @@ public class BlockSteamPistonBase extends Block {
                     break;
                 case 5:
                     this.setBlockBounds(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+                default:
+                    break;
             }
         } else {
             this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

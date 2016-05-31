@@ -100,6 +100,8 @@ public class BlockSteamHammer extends BlockContainer {
             case 3:
                 this.setBlockBounds(x, y, z, x2, y2, z2);
                 break;
+            default:
+                break;
 
         }
     }

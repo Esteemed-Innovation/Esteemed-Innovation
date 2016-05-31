@@ -78,6 +78,8 @@ public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
                 case 5:
                     world.setBlockMetadataWithNotify(x, y, z, 3, 2);
                     break;
+                default: 
+                    break;
             }
             return true;
         }
