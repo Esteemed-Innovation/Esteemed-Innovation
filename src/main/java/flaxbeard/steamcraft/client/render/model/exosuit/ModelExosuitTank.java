@@ -10,9 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author dmillerw
- */
 public class ModelExosuitTank extends ModelExosuitUpgrade {
 
     public static final ModelPointer MODEL_POINTER = new ModelPointer();

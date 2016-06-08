@@ -6,50 +6,49 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.integration.CrossMod;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import tconstruct.library.tools.ToolCore;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.ITextComponent;
+import slimeknights.tconstruct.library.tools.ToolCore;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
-
     public int randomDegrees;
     private boolean isCharging = false;
     private boolean hadItem = false;
     private float prevPercent = 0F;
-    private ItemStack[] inventory = new ItemStack[1];
+    private ItemStack inventory;
 
     public TileEntitySteamCharger() {
-        super(new ForgeDirection[] { ForgeDirection.DOWN });
-        this.addSidesToGaugeBlacklist(new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.DOWN });
+        super(new EnumFacing[] { EnumFacing.DOWN });
+        addSidesToGaugeBlacklist(new EnumFacing[] { EnumFacing.UP, EnumFacing.DOWN });
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         randomDegrees = (int) (Math.random() * 360);
-        if (par1NBTTagCompound.hasKey("inventory")) {
-            this.inventory[0] =
-                ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("inventory"));
+        if (nbt.hasKey("inventory")) {
+            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        if (this.inventory[0] != null) {
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        if (inventory != null) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            this.inventory[0].writeToNBT(nbttagcompound1);
-            par1NBTTagCompound.setTag("inventory", nbttagcompound1);
+            inventory.writeToNBT(nbttagcompound1);
+            nbt.setTag("inventory", nbttagcompound1);
         }
     }
 
@@ -57,80 +56,72 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
-        if (this.inventory[0] != null) {
+        if (inventory != null) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            this.inventory[0].writeToNBT(nbttagcompound1);
+            inventory.writeToNBT(nbttagcompound1);
             access.setTag("inventory", nbttagcompound1);
         }
-        access.setBoolean("isCharging", this.isCharging);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        access.setBoolean("isCharging", isCharging);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
+        NBTTagCompound access = pkt.getNbtCompound();
         if (access.hasKey("inventory")) {
-            this.inventory[0] = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
+            inventory = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
         } else {
-            this.inventory[0] = null;
+            clear();
         }
-        this.isCharging = access.getBoolean("isCharging");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        isCharging = access.getBoolean("isCharging");
+        markForUpdate();
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (this.worldObj.isRemote) {
-            if (this.getStackInSlot(0) != null) {
-                if (this.isCharging) {
-                    this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F,
-                      zCoord + 0.5F, (Math.random() - 0.5F) / 12.0F, 0.0F,
-                      (Math.random() - 0.5F) / 12.0F);
-                }
+    public void update() {
+        super.update();
+        if (worldObj.isRemote) {
+            if (inventory != null && isCharging) {
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+                  pos.getZ() + 0.5F, (Math.random() - 0.5F) / 12F, 0F, (Math.random() - 0.5F) / 12F);
             }
         } else {
-            if (this.getStackInSlot(0) != null) {
-                if (this.getStackInSlot(0).getItem() == SteamcraftItems.steamcellEmpty &&
-                  this.getSteamShare() > Config.steamCellCapacity) {
-                    this.inventory[0] = null;
-                    this.dropItem(new ItemStack(SteamcraftItems.steamcellFull));
-                    this.decrSteam(Config.steamCellCapacity);
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            if (inventory != null) {
+                if (inventory.getItem() == SteamcraftItems.steamcellEmpty && getSteamShare() > Config.steamCellCapacity) {
+                    clear();
+                    dropItem(new ItemStack(SteamcraftItems.steamcellFull));
+                    decrSteam(Config.steamCellCapacity);
+                    markForUpdate();
                     return;
                 }
-                if (!this.hadItem) {
-                    this.hadItem = true;
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                if (!hadItem) {
+                    hadItem = true;
+                    markForUpdate();
                 }
 
-                if (this.getStackInSlot(0).getItem() instanceof ISteamChargable) {
-                    ISteamChargable item = (ISteamChargable) this.getStackInSlot(0).getItem();
-                    ItemStack stack = this.getStackInSlot(0).copy();
+                if (inventory.getItem() instanceof ISteamChargable) {
+                    ISteamChargable item = (ISteamChargable) inventory.getItem();
+                    ItemStack stack = inventory.copy();
                     if (!(item instanceof ItemExosuitArmor)) {
-                        if (this.getSteamShare() > 0 && stack.getItemDamage() > 0) {
-                            if (!this.isCharging) {
-                                // Steamcraft.log.debug("Charging");
-                                this.isCharging = true;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        if (getSteamShare() > 0 && stack.getItemDamage() > 0) {
+                            if (!isCharging) {
+                                isCharging = true;
+                                markForUpdate();
                             }
                         } else {
-                            if (this.isCharging) {
-                                // Steamcraft.log.debug("Not charging");
-                                this.isCharging = false;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                            if (isCharging) {
+                                isCharging = false;
+                                markForUpdate();
                             }
                         }
-                        if (this.getSteamShare() > item.steamPerDurability()
-                          && stack.getItemDamage() > 0) {
+                        if (getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
                             int i = 0;
                             while (i < 4
-                              && (this.getSteamShare() > item.steamPerDurability() && stack
-                                  .getItemDamage() > 0)) {
-                                this.decrSteam(item.steamPerDurability());
+                              && (getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
+                                decrSteam(item.steamPerDurability());
                                 stack.setItemDamage(stack.getItemDamage() - 1);
-                                this.setInventorySlotContents(0, stack);
+                                setInventorySlotContents(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
@@ -138,116 +129,93 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                               && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
                                 prevPercent = currentPerc;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                                markForUpdate();
                             }
                         }
                     } else {
-
                         if (!stack.hasTagCompound()) {
                             stack.setTagCompound(new NBTTagCompound());
                         }
-                        if (!stack.stackTagCompound.hasKey("steamFill")) {
-                            stack.stackTagCompound.setInteger("steamFill", 0);
+                        if (!stack.getTagCompound().hasKey("steamFill")) {
+                            stack.getTagCompound().setInteger("steamFill", 0);
                         }
-                        if (!stack.stackTagCompound.hasKey("maxFill")) {
-                            stack.stackTagCompound.setInteger("maxFill", 0);
+                        if (!stack.getTagCompound().hasKey("maxFill")) {
+                            stack.getTagCompound().setInteger("maxFill", 0);
                         }
-                        if (this.getSteamShare() > 0
-                          && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound
-                                .getInteger("maxFill")) {
-                            if (!this.isCharging) {
-                                // Steamcraft.log.debug("Charging");
-                                this.isCharging = true;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        if (getSteamShare() > 0 &&
+                          stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill")) {
+                            if (!isCharging) {
+                                isCharging = true;
+                                markForUpdate();
                             }
                         } else {
-                            if (this.isCharging) {
-                                // Steamcraft.log.debug("Not charging");
-                                this.isCharging = false;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                            if (isCharging) {
+                                isCharging = false;
+                                markForUpdate();
                             }
                         }
-                        if (this.getSteamShare() > item.steamPerDurability()
-                          && stack.stackTagCompound.getInteger("steamFill") < stack.stackTagCompound
-                              .getInteger("maxFill")) {
+                        if (getSteamShare() > item.steamPerDurability()
+                          && stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill")) {
                             int i = 0;
 
-                            while (i < 19
-                              && (this.getSteamShare() > item.steamPerDurability() && stack.stackTagCompound
-                                    .getInteger("steamFill") < stack.stackTagCompound
-                                    .getInteger("maxFill"))) {
-                                this.decrSteam(item.steamPerDurability());
-                                stack.stackTagCompound.setInteger("steamFill",
-                                    stack.stackTagCompound.getInteger("steamFill") + 1);
+                            while (i < 19 && (getSteamShare() > item.steamPerDurability() &&
+                              stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill"))) {
+                                decrSteam(item.steamPerDurability());
+                                stack.getTagCompound().setInteger("steamFill",
+                                  stack.getTagCompound().getInteger("steamFill") + 1);
                                 this.setInventorySlotContents(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
-                            if (prevPercent != currentPerc
-                              && Math.abs(prevPercent - currentPerc) > 0.01) {
-                                // log.debug("New percent: "+currentPerc);
+                            if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 prevPercent = currentPerc;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                                markForUpdate();
                             }
                         }
                     }
-                } else if (CrossMod.TINKERS_CONSTRUCT
-                  && this.getStackInSlot(0).getItem() instanceof ToolCore) {
-                    ToolCore item = (ToolCore) this.getStackInSlot(0).getItem();
-                    ItemStack stack = this.getStackInSlot(0).copy();
+                } else if (CrossMod.TINKERS_CONSTRUCT && inventory.getItem() instanceof ToolCore) {
+                    ItemStack stack = inventory.copy();
                     NBTTagCompound tags = stack.getTagCompound();
                     int damage = tags.getCompoundTag("InfiTool").getInteger("Damage");
                     if (!tags.getCompoundTag("InfiTool").getBoolean("Broken")) {
-                        if (this.getSteamShare() > 0
-                            && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
-                            if (!this.isCharging) {
-                                // Steamcraft.log.debug("Charging");
-                                this.isCharging = true;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        if (getSteamShare() > 0 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                            if (!isCharging) {
+                                isCharging = true;
+                                markForUpdate();
                             }
                         } else {
-                            if (this.isCharging) {
-                                // Steamcraft.log.debug("Not charging");
-                                this.isCharging = false;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                            if (isCharging) {
+                                isCharging = false;
+                                markForUpdate();
                             }
                         }
-                        if (this.getSteamShare() > 8
-                            && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
+                        if (getSteamShare() > 8 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
                             int i = 0;
-                            while (i < 4
-                                && (this.getSteamShare() > 8 && tags.getCompoundTag("InfiTool")
-                                    .getInteger("Damage") > 0)) {
-                                this.decrSteam(8);
+                            while (i < 4 && (getSteamShare() > 8 &&
+                              tags.getCompoundTag("InfiTool").getInteger("Damage") > 0)) {
+                                decrSteam(8);
                                 damage -= 1;
                                 tags.getCompoundTag("InfiTool").setInteger("Damage", damage);
-                                this.setInventorySlotContents(0, stack);
+                                setInventorySlotContents(0, stack);
                                 i++;
                             }
-                            float currentPerc =
-                                (float) (tags.getCompoundTag("InfiTool").getInteger(
-                                    "TotalDurability") - tags.getCompoundTag("InfiTool")
-                                    .getInteger("Damage"))
-                                    / (float) tags.getCompoundTag("InfiTool").getInteger(
-                                        "TotalDurability");
+                            int total = tags.getCompoundTag("InfiTool").getInteger("TotalDurability");
+                            int dura = tags.getCompoundTag("InfoTool").getInteger("Damage");
+                            float currentPerc = (float) (total - dura) / (float) total;
                             
-                            if (prevPercent != currentPerc
-                                && Math.abs(prevPercent - currentPerc) > 0.01) {
-                                // log.debug("New percent: "+currentPerc);
+                            if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 prevPercent = currentPerc;
-                                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                                markForUpdate();
                             }
                         }
                     }
                 } else {
-                    if (this.hadItem) {
-                        // Steamcraft.log.debug("No item");
-                        this.hadItem = false;
-                        this.prevPercent = 0F;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    if (hadItem) {
+                        hadItem = false;
+                        prevPercent = 0F;
+                        markForUpdate();
                     }
                 }
-                // this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
         }
 
@@ -259,31 +227,29 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     public void dropItem(ItemStack item) {
-        EntityItem entityItem =
-          new EntityItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F,
-              this.zCoord + 0.5F, item);
-        this.worldObj.spawnEntityInWorld(entityItem);
+        EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5F, pos.getY() + 1.25F, pos.getZ() + 0.5F, item);
+        worldObj.spawnEntityInWorld(entityItem);
     }
 
     @Override
-    public ItemStack getStackInSlot(int var1) {
-        return this.inventory[var1];
+    public ItemStack getStackInSlot(int slot) {
+        return inventory;
     }
 
     @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        if (this.inventory[var1] != null) {
+    public ItemStack decrStackSize(int slot, int count) {
+        if (inventory != null) {
             ItemStack itemstack;
 
-            if (this.inventory[var1].stackSize <= var2) {
-                itemstack = this.inventory[var1];
-                this.inventory[var1] = null;
+            if (inventory.stackSize <= count) {
+                itemstack = inventory;
+                clear();
                 return itemstack;
             } else {
-                itemstack = this.inventory[var1].splitStack(var2);
+                itemstack = inventory.splitStack(count);
 
-                if (this.inventory[var1].stackSize == 0) {
-                    this.inventory[var1] = null;
+                if (inventory.stackSize == 0) {
+                    clear();
                 }
 
                 return itemstack;
@@ -294,42 +260,49 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     private float getChargingPercent(ItemStack stack) {
-
-        if (stack != null && stack.getItem() instanceof ItemExosuitArmor) {
+        if (stack == null) {
+            return 0F;
+        }
+        if (stack.getItem() instanceof ItemExosuitArmor) {
             if (!stack.hasTagCompound()) {
                 stack.setTagCompound(new NBTTagCompound());
             }
-            if (!stack.stackTagCompound.hasKey("steamFill")) {
-                stack.stackTagCompound.setInteger("steamFill", 0);
+            if (!stack.getTagCompound().hasKey("steamFill")) {
+                stack.getTagCompound().setInteger("steamFill", 0);
             }
-            if (!stack.stackTagCompound.hasKey("maxFill")) {
-                stack.stackTagCompound.setInteger("maxFill", 0);
+            if (!stack.getTagCompound().hasKey("maxFill")) {
+                stack.getTagCompound().setInteger("maxFill", 0);
             }
-            int maxFill = stack.stackTagCompound.getInteger("maxFill");
-            int steamFill = stack.stackTagCompound.getInteger("steamFill");
+            int maxFill = stack.getTagCompound().getInteger("maxFill");
+            int steamFill = stack.getTagCompound().getInteger("steamFill");
             return ((float) steamFill / (float) maxFill);
         }
         return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        return this.inventory[var1];
+    public ItemStack removeStackFromSlot(int slot) {
+        return inventory;
     }
 
     @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        this.inventory[var1] = var2;
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        inventory = stack;
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return null;
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return null;
     }
 
     @Override
@@ -338,29 +311,46 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {}
+
+    @Override
+    public void closeInventory(EntityPlayer player) {}
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        return stack.getItem() instanceof ISteamChargable || stack.getItem() == SteamcraftItems.steamcellEmpty;
     }
 
     @Override
-    public void closeInventory() {
+    public int getField(int id) {
+        return randomDegrees;
     }
 
     @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return var2.getItem() instanceof ISteamChargable || var2.getItem() == SteamcraftItems.steamcellEmpty;
+    public void setField(int id, int value) {
+        randomDegrees = value;
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 1;
+    }
+
+    @Override
+    public void clear() {
+        inventory = null;
     }
 
     public float getSteamInItem() {
-        ItemStack stack = this.getStackInSlot(0);
+        ItemStack stack = inventory;
         if (stack != null) {
             return getChargingPercent(stack);
         }
         return 0.0f;
     }
-
 }

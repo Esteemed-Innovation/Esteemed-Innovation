@@ -3,11 +3,7 @@ package flaxbeard.steamcraft.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-/**
- * @author dmillerw
- */
 public enum ExosuitTexture {
-
     EXOSUIT("exo_%s"),
     EXOSUIT_GREY("exo_%s_grey"),
     PLATE_BRASS("exoPlateBrass_%s"),
@@ -36,12 +32,12 @@ public enum ExosuitTexture {
     private final ResourceLocation resourceLocation1;
     private final ResourceLocation resourceLocation2;
 
-    private ExosuitTexture(String file) {
+    ExosuitTexture(String file) {
         resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor/" + (String.format(file, "1")) + ".png");
         resourceLocation2 = new ResourceLocation("steamcraft:textures/models/armor/" + (String.format(file, "2")) + ".png");
     }
 
-    private ExosuitTexture(String file, int part) {
+    ExosuitTexture(String file, int part) {
         if (part == 1) {
             resourceLocation1 = new ResourceLocation("steamcraft:textures/models/armor/" + file + ".png");
             resourceLocation2 = null;

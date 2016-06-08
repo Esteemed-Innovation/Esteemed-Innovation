@@ -9,7 +9,7 @@ import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.ExosuitTexture;
 import flaxbeard.steamcraft.client.Texture;
 import flaxbeard.steamcraft.client.render.model.ModelPointer;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.ComparatorUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;

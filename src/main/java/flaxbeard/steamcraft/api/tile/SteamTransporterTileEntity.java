@@ -12,16 +12,18 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter {
+public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter, ITickable {
     public String name = "SteamTransporterTileEntity";
     public float pressureResistance = 0.8F;
     public float lastPressure = -1F;
@@ -30,22 +32,22 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     protected SPLog log = Steamcraft.log;
     protected String networkName;
     protected SteamNetwork network;
-    protected ForgeDirection[] distributionDirections;
+    protected EnumFacing[] distributionDirections;
     protected boolean shouldJoin = false;
     private int steam = 0;
-    private ArrayList<ForgeDirection> gaugeSideBlacklist = new ArrayList<>();
+    private ArrayList<EnumFacing> gaugeSideBlacklist = new ArrayList<>();
     private boolean isInitialized = false;
 
     public SteamTransporterTileEntity() {
-        this(ForgeDirection.VALID_DIRECTIONS);
+        this(EnumFacing.VALUES);
     }
 
-    public SteamTransporterTileEntity(ForgeDirection[] distributionDirections) {
+    public SteamTransporterTileEntity(EnumFacing[] distributionDirections) {
         this.capacity = 10000;
         this.distributionDirections = distributionDirections;
     }
 
-    public SteamTransporterTileEntity(int capacity, ForgeDirection[] distributionDirections) {
+    public SteamTransporterTileEntity(int capacity, EnumFacing[] distributionDirections) {
         this(distributionDirections);
         this.capacity = capacity;
     }
@@ -58,7 +60,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
             access.setString("networkName", networkName);
             access.setFloat("pressure", this.getPressure());
         }
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     public NBTTagCompound getDescriptionTag() {
@@ -72,15 +74,15 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
+        NBTTagCompound access = pkt.getNbtCompound();
         if (access.hasKey("networkName")) {
             this.networkName = access.getString("networkName");
             this.pressure = access.getFloat("pressure");
 //            Steamcraft.log.debug("Set pressure to "+this.pressure);
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.markForUpdate();
     }
 
     @Override
@@ -112,7 +114,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!this.isInitialized || this.shouldJoin) {
             this.refresh();
         }
@@ -124,18 +126,16 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
             if (this.hasGauge() && this.network != null) {
                 if (Math.abs(this.getPressure() - this.lastPressure) > 0.01F) {
                     //Steamcraft.log.debug("Updating PRESHAAA");
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    this.markForUpdate();
                     this.lastPressure = this.getPressure();
                     this.network.markDirty();
                 }
-
             }
         }
-
     }
 
     @Override
-    public void insertSteam(int amount, ForgeDirection face) {
+    public void insertSteam(int amount, EnumFacing face) {
         if (this.network != null) {
             this.network.addSteam(amount);
         }
@@ -152,11 +152,11 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public void explode() {
         this.network.decrSteam((int) (this.network.getSteam() * 0.1F));
         this.network.split(this, true);
-        this.worldObj.createExplosion(null, xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 4.0F, true);
+        this.worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 4F, true);
     }
 
-    private boolean isValidSteamSide(ForgeDirection face) {
-        for (ForgeDirection d : distributionDirections) {
+    private boolean isValidSteamSide(EnumFacing face) {
+        for (EnumFacing d : distributionDirections) {
             if (d == face) {
                 return true;
             }
@@ -165,28 +165,28 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public boolean canInsert(ForgeDirection face) {
+    public boolean canInsert(EnumFacing face) {
         return isValidSteamSide(face);
     }
 
-    public void addSideToGaugeBlacklist(ForgeDirection face) {
+    public void addSideToGaugeBlacklist(EnumFacing face) {
         gaugeSideBlacklist.add(face);
     }
 
-    public void addSidesToGaugeBlacklist(ForgeDirection[] faces) {
-        for (ForgeDirection face : faces) {
+    public void addSidesToGaugeBlacklist(EnumFacing[] faces) {
+        for (EnumFacing face : faces) {
             addSideToGaugeBlacklist(face);
         }
     }
 
     @Override
-    public boolean doesConnect(ForgeDirection face) {
+    public boolean doesConnect(EnumFacing face) {
         return isValidSteamSide(face);
     }
 
 
     @Override
-    public boolean acceptsGauge(ForgeDirection face) {
+    public boolean acceptsGauge(EnumFacing face) {
         return !gaugeSideBlacklist.contains(face);
     }
 
@@ -198,21 +198,21 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         this.pressureResistance = resistance;
     }
 
-    public void setDistributionDirections(ForgeDirection[] faces) {
+    public void setDistributionDirections(EnumFacing[] faces) {
         this.distributionDirections = faces;
     }
 
 
     @Override
-    public HashSet<ForgeDirection> getConnectionSides() {
-        HashSet<ForgeDirection> out = new HashSet<>();
+    public HashSet<EnumFacing> getConnectionSides() {
+        HashSet<EnumFacing> out = new HashSet<>();
         out.addAll(Arrays.asList(distributionDirections));
         return out;
     }
 
     @Override
     public Coord4 getCoords() {
-        return new Coord4(xCoord, yCoord, zCoord, worldObj.provider.dimensionId);
+        return new Coord4(pos, worldObj.provider.getDimension());
     }
 
     @Override
@@ -246,9 +246,10 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     public boolean hasGauge() {
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        for (EnumFacing dir : EnumFacing.VALUES) {
             if (this.acceptsGauge(dir)) {
-                Block block = worldObj.getBlock(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+                BlockPos offsetPos = pos.offset(dir);
+                Block block = worldObj.getBlockState(offsetPos).getBlock();
                 if (block instanceof BlockSteamGauge || block instanceof BlockRuptureDisc)
                     return true;
             }
@@ -276,15 +277,14 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 				*/
                 SteamNetwork.newOrJoin(this);
                 this.isInitialized = true;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                this.markForUpdate();
             }
         }
     }
 
     public int getDimension() {
-        return this.worldObj.provider.dimensionId;
+        return this.worldObj.provider.getDimension();
     }
-
 
     @Override
     public World getWorld() {
@@ -305,11 +305,20 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     protected void markForUpdate() {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.markDirty();
     }
 
     @Override
     public void wasAdded() {
         //this.steam = 0;
+    }
+
+    /**
+     * Gets the current BlockPos offset by the EnumFacing.
+     * @param facing The direction
+     */
+    public BlockPos getOffsetPos(EnumFacing facing) {
+        return new BlockPos(pos.getX() + facing.getFrontOffsetX(), pos.getY() + facing.getFrontOffsetY(),
+          pos.getZ() + facing.getFrontOffsetZ());
     }
 }

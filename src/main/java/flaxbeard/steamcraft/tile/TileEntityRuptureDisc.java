@@ -1,128 +1,80 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.api.ISteamTransporter;
-import flaxbeard.steamcraft.block.BlockRuptureDisc;
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.tile.SteamReactorTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 
-public class TileEntityRuptureDisc extends TileEntity {
-
+public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITickable {
     private boolean isLeaking = false;
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = new NBTTagCompound();
-        access.setBoolean("isLeaking", this.isLeaking);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        access.setBoolean("isLeaking", isLeaking);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.isLeaking = access.getBoolean("isLeaking");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        NBTTagCompound access = pkt.getNbtCompound();
+        isLeaking = access.getBoolean("isLeaking");
+        markForUpdate();
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (worldObj.isRemote) {
-            if (this.isLeaking) {
+            if (isLeaking) {
+                EnumFacing dir = EnumFacing.getFront(getBlockMetadata());
                 float offset = 10.0F / 16.0F;
-                float xOffset = myDir().getOpposite().offsetX * offset;
-                float yOffset = myDir().getOpposite().offsetY * offset;
-                float zOffset = myDir().getOpposite().offsetZ * offset;
+                float xOffset = dir.getOpposite().getFrontOffsetX() * offset;
+                float yOffset = dir.getOpposite().getFrontOffsetY() * offset;
+                float zOffset = dir.getOpposite().getFrontOffsetZ() * offset;
                 //for (int i = 0; i < 10; i++){
-                this.worldObj.spawnParticle("smoke", xCoord + 0.5F + xOffset, yCoord + 0.5F + yOffset, zCoord + 0.5F + zOffset, myDir().offsetX * 0.1F, myDir().offsetY * 0.1F, myDir().offsetZ * 0.1F);
-                //}
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F + xOffset,
+                  pos.getY() + 0.5F + yOffset, pos.getZ() + 0.5F + zOffset, dir.getFrontOffsetX() * 0.1F,
+                  dir.getFrontOffsetY() * 0.1F, dir.getFrontOffsetZ() * 0.1F);
             }
         } else {
             if (getPressure() > 1.1F) {
-                if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) < 6) {
-                    this.worldObj.createExplosion(null, xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 0.0F, true);
-                    this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 10, 2);
+                if (getBlockMetadata() < 6) {
+                    worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
+                    worldObj.setBlockState(pos, getBlockType().getStateFromMeta(getBlockMetadata() + 10), 2);
                 }
-
             }
-            if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 9) {
+            if (getBlockMetadata() > 9) {
                 int i = 0;
-                if (this.getSteam() > 0) {
-                    if (!this.isLeaking) {
-                        this.isLeaking = true;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                if (getSteam() > 0) {
+                    if (!isLeaking) {
+                        isLeaking = true;
+                        markForUpdate();
                     }
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:leaking", 2.0F, 0.9F);
-
+                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
+                      SoundCategory.BLOCKS, 2F, 0.9F, false);
                 } else {
-                    if (this.isLeaking) {
-                        this.isLeaking = false;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    if (isLeaking) {
+                        isLeaking = false;
+                        markForUpdate();
                     }
                 }
-                while (this.getSteam() > 0 && i < 10) {
-                    this.drainSteam(10);
-
-                    float offset = 10.0F / 16.0F;
-                    float xOffset = myDir().getOpposite().offsetX * offset;
-                    float yOffset = myDir().getOpposite().offsetY * offset;
-                    float zOffset = myDir().getOpposite().offsetZ * offset;
-                    //if (worldObj.isRemote) //Steamcraft.log.debug("draining steam");
-
-
+                while (getSteam() > 0 && i < 10) {
+                    drainSteam(10);
                     i++;
                 }
             } else {
-                if (this.isLeaking) {
-                    this.isLeaking = false;
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                if (isLeaking) {
+                    isLeaking = false;
+                    markForUpdate();
                 }
             }
         }
-
     }
-
-    private void drainSteam(int s) {
-        ForgeDirection d = myDir().getOpposite();
-        ISteamTransporter source = null;
-        TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord + d.offsetZ);
-        if (te != null && te instanceof ISteamTransporter) {
-            source = (ISteamTransporter) te;
-            source.decrSteam(s);
-        }
-    }
-
-    private int getSteam() {
-        ForgeDirection d = myDir().getOpposite();
-        ISteamTransporter source = null;
-        TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord + d.offsetZ);
-        if (te != null && te instanceof ISteamTransporter) {
-            source = (ISteamTransporter) te;
-            if (worldObj.isRemote) {
-                //Steamcraft.log.debug(source.getSteam());
-            }
-            return source.getSteamShare();
-        }
-        return 0;
-    }
-
-    private float getPressure() {
-        ForgeDirection d = myDir().getOpposite();
-        ISteamTransporter source = null;
-        TileEntity te = worldObj.getTileEntity(xCoord + d.offsetX, yCoord, zCoord + d.offsetZ);
-        if (te != null && te instanceof ISteamTransporter) {
-            source = (ISteamTransporter) te;
-            return source.getPressure();
-        }
-        return 0.0F;
-    }
-
-    private ForgeDirection myDir() {
-        return ForgeDirection.getOrientation(BlockRuptureDisc.getMeta(worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
-    }
-
-
 }

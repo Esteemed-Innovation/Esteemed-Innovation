@@ -59,7 +59,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements
         float px = (1.0F / 16.0F);
 
         GL11.glTranslatef(0.0F * 90.0F, 4 * px, -6 * px);
-        if (mold.open) {
+        if (mold.isOpen) {
             float tick = (float) (Math.PI * (mold.changeTicks * 90.0F / 20.0F)) / 180.0F;
             GL11.glRotatef(100.0F - MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
         } else {

@@ -1,8 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,12 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 
@@ -33,7 +27,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 
     /**
      * Updates the valve's redstone state, and opens/closes it accordingly.
-     * @param flag True to open it, false to close it.
+     * @param flag True to isOpen it, false to close it.
      */
     public void updateRedstoneState(boolean flag) {
 		if (Config.enableRedstoneValvePipe) {
@@ -49,7 +43,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         NBTTagCompound access = super.getDescriptionTag();
 
         access.setBoolean("turning", turning);
-        access.setBoolean("open", open);
+        access.setBoolean("isOpen", open);
         access.setBoolean("leaking", isLeaking);
         access.setInteger("turnTicks", turnTicks);
 
@@ -65,14 +59,14 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         }
         this.turning = access.getBoolean("turning");
         this.isLeaking = access.getBoolean("leaking");
-        this.open = access.getBoolean("open");
+        this.open = access.getBoolean("isOpen");
 
     }
 
     @Override
     public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readFromNBT(par1NBTTagCompound);
-        this.open = par1NBTTagCompound.getBoolean("open");
+        this.open = par1NBTTagCompound.getBoolean("isOpen");
         this.redstoneState = par1NBTTagCompound.getBoolean("redstoneState");
 
     }
@@ -80,7 +74,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     @Override
     public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("open", this.open);
+        par1NBTTagCompound.setBoolean("isOpen", this.open);
         par1NBTTagCompound.setBoolean("redstoneState", this.redstoneState);
 
     }
@@ -93,6 +87,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     @Override
     public boolean doesConnect(ForgeDirection face) {
         return face != dir() && super.doesConnect(face);
+    }
+
+    @Override
+    public ArrayList<EnumFacing> getMyDirections() {
+        return super.getMyDirections();
     }
 
     @Override
@@ -121,23 +120,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                         i++;
                     }
                 }
-                ArrayList<ForgeDirection> myDirections = new ArrayList<>();
-                for (ForgeDirection direction : directions) {
-                    if (worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
-                        TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-                        if (tile instanceof ISteamTransporter) {
-                            ISteamTransporter target = (ISteamTransporter) tile;
-                            if (target.doesConnect(direction.getOpposite())) {
-                                myDirections.add(direction);
-                            }
-                        } else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-                            IFluidHandler target = (IFluidHandler) tile;
-                            if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
-                                myDirections.add(direction);
-                            }
-                        }
-                    }
-                }
+                ArrayList<EnumFacing> myDirections = getMyDirections();
                 i = 0;
                 if (myDirections.size() > 0) {
                     ForgeDirection direction = myDirections.get(0).getOpposite();
@@ -150,7 +133,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
         } else {
             if (this.waitingOpen) {
-                //Steamcraft.log.debug("Waiting for open");
+                //Steamcraft.log.debug("Waiting for isOpen");
                 this.setOpen(!this.open);
             }
             if (turning != wasTurning) {
@@ -181,24 +164,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                 }
             }
 
-
-            ArrayList<ForgeDirection> myDirections = new ArrayList<>();
-            for (ForgeDirection direction : directions) {
-            	final TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-                if (tile != null) {
-                    if (tile instanceof ISteamTransporter) {
-                        final ISteamTransporter target = (ISteamTransporter) tile;
-                        if (target.doesConnect(direction.getOpposite())) {
-                            myDirections.add(direction);
-                        }
-                    } else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-                        final IFluidHandler target = (IFluidHandler) tile;
-                        if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
-                            myDirections.add(direction);
-                        }
-                    }
-                }
-            }
+            ArrayList<EnumFacing> myDirections = getMyDirections();
             
             if (myDirections.size() > 0) {
                 ForgeDirection direction = myDirections.get(0).getOpposite();
@@ -207,7 +173,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                 }
 
                 if (myDirections.size() == 2 && open && this.getNetwork() != null && this.getNetwork().getSteam() > 0 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
-                    ////Steamcraft.log.debug("open and should be leaking");
+                    ////Steamcraft.log.debug("isOpen and should be leaking");
                     if (!isLeaking) {
                         isLeaking = true;
                         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

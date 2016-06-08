@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuitTank;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -16,7 +17,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.List;
 
 public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
-
     int capacity;
 
     public ItemTank(int cap, String texLoc, String texLocGrey) {

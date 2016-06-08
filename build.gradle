@@ -1,94 +1,111 @@
 buildscript {
-	repositories {
-		mavenCentral()
-		maven {
-			name = "forge"
-			url = "http://files.minecraftforge.net/maven"
-		}
-		
-		maven {
-			name = "sonatype"
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-		}
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
-	
-	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-		classpath 'org.ajoberstar:grgit:1.1.0'
-	}
+
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'org.ajoberstar:grgit:1.1.0'
+    }
 }
 
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'java'
 
 version = newFSPVersion
 
 if (project.hasProperty('dev')) {
-	def git = org.ajoberstar.grgit.Grgit.open(file('.'))
-	project.version = project.version + '-' + git.head().abbreviatedId + '-dev'
+    def git = org.ajoberstar.grgit.Grgit.open(file('.'))
+    project.version = project.version + '-' + git.head().abbreviatedId + '-dev'
 }
 
 group = "com.flaxbeard.Steamcraft"
-archivesBaseName = "FSP-1.7.10"
+archivesBaseName = "FSP-1.9"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 minecraft {
-	version = forgeVersion
-	runDir = "eclipse"
-	replace "@VERSION@", project.version
+    version = project.forgeVersion
+    mappings = project.mcpMappings
+    runDir = "eclipse"
+    replace "@VERSION@", project.version
 }
 
 repositories {
-	maven {
-		name = "ic2"
-		url = "http://maven.ic2.player.to/"
-	}
+    maven {
+        name = "ic2"
+        url = "http://maven.ic2.player.to/"
+    }
 
-	maven {
-		name "progwml6"
-		url 'http://dvs1.progwml6.com/files/maven'
-	}
+    // Used for Mantle, Natura, Tinkers' Construct, and JEI.
+    maven {
+        name "progwml6"
+        url "http://dvs1.progwml6.com/files/maven"
+    }
 
-	maven {
-		name "tterrag Repo"
-		url "http://maven.tterrag.com"
-	}
-	maven {
-		name = "chickenbones"
-		url = 'http://chickenbones.net/maven/'
-	}
+    maven {
+        name "tterrag Repo"
+        url "http://maven.tterrag.com"
+    }
     maven {
         name "ProfMobius"
         url "http://mobiusstrip.eu/maven"
     }
+
+    maven {
+        name = "The CB Project"
+        url "http://chickenbones.net/maven"
+    }
 }
 
+/*
+Coherent list of mods that we added integration for which do not support 1.9 yet:
+- IndustrialCraft 2
+- Ender IO
+- Natura
+- CoFH Core/Thermal Foundation
+- Thaumcraft
+- Twilight Forest
+- Botania
+- Railcraft
+*/
 dependencies {
-	compile ic2Version
-	compile mantleVersion
-	compile ticVersion
-	compile naturaVersion
-	compile eioVersion
-	compile codeChickenCoreVersion
-	compile notEnoughItemsVersion
-	compile codeChickenLibVersion
+    /*
+    These are the mods that have not updated to 1.9 yet.
+    compile ic2Version
+    compile naturaVersion
+    compile eioVersion
+    */
+    compile mantleVersion
+    compile ticVersion
+    compile jeiVersion
+    compile cclibVersion
 
-	compile fileTree(dir: 'fsplib', include: '*.jar') // Avoiding using the generic "lib".
+    // Avoiding using the generic "lib".
+    compile fileTree(dir: 'fsplib', include: '*.jar')
 }
 
 processResources {
-	from(sourceSets.main.resources.srcDirs) {
-		include 'mcmod.info'
-		filter {
-			it.replaceAll('@VERSION@', project.version)
-		}
-	}
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        filter {
+            it.replaceAll('@VERSION@', project.version)
+        }
+    }
 
     from(sourceSets.main.resources.srcDirs) {
-		exclude 'mcmod.info'
-		exclude 'api'
-		include 'steamcraft/api'
+        exclude 'mcmod.info'
+        exclude 'api'
+        include 'steamcraft/api'
     }
 }

@@ -6,21 +6,22 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler, ISteamTransporter {
-
-    public  FluidTank myTank           = new FluidTank(1000);
-    public  int       progress         = 0;
-    public  int       rotateTicks      = 0;
-    private boolean   running          = false;
-    private int       steamConsumption = Config.screwConsumption;
+    public FluidTank myTank = new FluidTank(1000);
+    public int progress = 0;
+    public int rotateTicks = 0;
+    private boolean running = false;
+    private static final int STEAM_CONSUMPTION = Config.screwConsumption;
 
     public TileEntityPump() {
-        super(ForgeDirection.VALID_DIRECTIONS);
-        this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+        super(EnumFacing.VALUES);
+        this.addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
 
     @Override
@@ -28,73 +29,64 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
         NBTTagCompound access = super.getDescriptionTag();
         access.setShort("progress", (short) progress);
         if (myTank.getFluid() != null) {
-            access.setShort("fluid", (short) myTank.getFluid().getFluid().getID());
+            access.setString("fluid", myTank.getFluid().getFluid().getName());
         }
-        access.setBoolean("running", this.running);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        access.setBoolean("running", running);
+        access.setInteger("fluidQuantity", myTank.getFluidAmount());
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.progress = access.getShort("progress");
+        NBTTagCompound access = pkt.getNbtCompound();
+        progress = access.getShort("progress");
         if (access.hasKey("fluid")) {
-            this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getShort("fluid")), access.getShort("water")));
+            int amt = access.getInteger("fluidQuantity");
+            myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getString("fluid")), amt));
         }
-        ////Steamcraft.log.debug(access.getBoolean("running"));
-        this.running = access.getBoolean("running");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        running = access.getBoolean("running");
+        markForUpdate();
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.progress = par1NBTTagCompound.getShort("progress");
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        progress = nbt.getShort("progress");
 
-        if (par1NBTTagCompound.hasKey("fluid")) {
-            this.myTank.setFluid(new FluidStack(FluidRegistry.getFluid(par1NBTTagCompound.getShort("fluid")), par1NBTTagCompound.getShort("water")));
-
+        if (nbt.hasKey("fluid")) {
+            int amt = nbt.getInteger("fluidQuantity");
+            myTank.setFluid(new FluidStack(FluidRegistry.getFluid(nbt.getString("fluid")), amt));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("progress", (short) progress);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setShort("progress", (short) progress);
 
-        par1NBTTagCompound.setShort("water", (short) myTank.getFluidAmount());
+        nbt.setShort("water", (short) myTank.getFluidAmount());
         if (myTank.getFluid() != null) {
-            par1NBTTagCompound.setShort("fluid", (short) myTank.getFluid().getFluid().getID());
+            nbt.setString("fluid", myTank.getFluid().getFluid().getName());
         }
+        nbt.setInteger("fluidQuantity", myTank.getFluidAmount());
     }
 
-    private ForgeDirection getOutputDirection() {
-        int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        ForgeDirection dir = ForgeDirection.getOrientation(meta);
-        if (meta == 0) {
-            dir = ForgeDirection.SOUTH;
-        }
-        if (meta == 1) {
-            dir = ForgeDirection.WEST;
-        }
-        if (meta == 2) {
-            dir = ForgeDirection.NORTH;
-        }
-        if (meta == 3) {
-            dir = ForgeDirection.EAST;
-        }
-        return dir.getOpposite();
+    private EnumFacing getOutputDirection() {
+        return getInputDirection().getOpposite();
+    }
+
+    private EnumFacing getInputDirection() {
+        return EnumFacing.getFront(getBlockMetadata());
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource,
-                            boolean doDrain) {
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
         if (from != this.getOutputDirection()) {
             return null;
         }
@@ -105,7 +97,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
         if (from == this.getOutputDirection()) {
             return myTank.drain(maxDrain, doDrain);
         }
@@ -113,94 +105,71 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
         return (from == this.getOutputDirection());
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
         return new FluidTankInfo[]{myTank.getInfo()};
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
         if (worldObj.isRemote) {
-            if (this.running && progress < 100) {
-                ////Steamcraft.log.debug("Running!");
+            if (running && progress < 100) {
                 progress++;
                 rotateTicks++;
-            } else {
             }
         } else {
-            ForgeDirection inputDir = this.getOutputDirection().getOpposite();
-            int x = this.xCoord + inputDir.offsetX;
-            int y = this.yCoord + inputDir.offsetY;
-            int z = this.zCoord + inputDir.offsetZ;
-            if (this.getSteamShare() >= steamConsumption && myTank.getFluidAmount() == 0 && this.worldObj.getBlockMetadata(x, y, z) == 0 && FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z)) != null) {
-                Fluid fluid = FluidRegistry.lookupFluidForBlock(this.worldObj.getBlock(x, y, z));
-                if (myTank.getFluidAmount() < 1000) {
-                    this.myTank.fill(new FluidStack(fluid, 1000), true);
-                    this.worldObj.setBlockToAir(x, y, z);
-                    this.worldObj.markBlockForUpdate(x, y, z);
-                    progress = 0;
-                    this.decrSteam(steamConsumption);
-                    ////Steamcraft.log.debug("cycle start");
-                    this.running = true;
-                    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-                }
+            EnumFacing inputDir = getInputDirection();
+            BlockPos offsetPos = getOffsetPos(inputDir);
+            Fluid fluid = FluidRegistry.lookupFluidForBlock(worldObj.getBlockState(offsetPos).getBlock());
+            if (getSteamShare() >= STEAM_CONSUMPTION && myTank.getFluidAmount() == 0 && getBlockMetadata() == 0 &&
+              fluid != null && myTank.getFluidAmount() < 1000) {
+                myTank.fill(new FluidStack(fluid, 1000), true);
+                worldObj.setBlockToAir(offsetPos);
+                progress = 0;
+                decrSteam(STEAM_CONSUMPTION);
+                running = true;
+                markDirty();
             }
             if (myTank.getFluidAmount() > 0 && myTank.getFluid() != null && progress < 100) {
                 progress++;
                 rotateTicks++;
             }
-            ForgeDirection outputDir = this.getOutputDirection();
-            int x2 = this.xCoord + outputDir.offsetX;
-            int y2 = this.yCoord + outputDir.offsetY;
-            int z2 = this.zCoord + outputDir.offsetZ;
+            EnumFacing outputDir = getOutputDirection();
+            offsetPos = getOffsetPos(outputDir);
             if (myTank.getFluidAmount() > 0 && progress == 100) {
-                ////Steamcraft.log.debug("Should be done");
-                if (this.worldObj.getTileEntity(x2, y2, z2) != null && this.worldObj.getTileEntity(x2, y2, z2) instanceof IFluidHandler) {
-                    IFluidHandler fluidHandler = (IFluidHandler) this.worldObj.getTileEntity(x2, y2, z2);
+                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                if (tile != null && tile instanceof IFluidHandler) {
+                    IFluidHandler fluidHandler = (IFluidHandler) tile;
                     if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
-                        int amnt = fluidHandler.fill(inputDir, this.myTank.getFluid(), true);
+                        int amnt = fluidHandler.fill(inputDir, myTank.getFluid(), true);
                         if (amnt > 0) {
-                            this.myTank.drain(amnt, true);
+                            myTank.drain(amnt, true);
                             if (myTank.getFluidAmount() == 0) {
-                                this.running = false;
-                                ////Steamcraft.log.debug("cycle complete");
+                                running = false;
                                 progress = 0;
-                                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
                             }
-                        } else {
-                            if (running) {
-                                this.running = false;
-                                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                            }
-
+                        } else if (running) {
+                            running = false;
                         }
-                    } else {
-                        if (running) {
-                            this.running = false;
-                            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                        }
+                    } else if (running) {
+                        running = false;
                     }
-                } else {
-                    if (running) {
-                        this.running = false;
-                        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    }
+                } else if (running) {
+                    running = false;
                 }
+                markDirty();
             }
-
-
         }
     }
 }

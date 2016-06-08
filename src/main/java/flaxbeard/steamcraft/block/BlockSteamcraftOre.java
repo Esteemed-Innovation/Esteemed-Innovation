@@ -1,31 +1,33 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 public class BlockSteamcraftOre extends Block {
-
     public IIcon[] icon = new IIcon[7];
 
-    public BlockSteamcraftOre() {
-        super(Material.rock);
-        setResistance(5.0F);
-        setHardness(1.5F);
-        setStepSound(Block.soundTypeStone);
+    public BlockSteamcraftOre(String name) {
+        super(Material.ROCK);
+        setResistance(5F);
+        setHardness(3F);
+        setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 1);
+        setCreativeTab(Steamcraft.tab);
+        setUnlocalizedName(name);
+        setRegistryName(Steamcraft.MOD_ID, name);
+        GameRegistry.register(this);
     }
 
     @Override
@@ -81,9 +83,6 @@ public class BlockSteamcraftOre extends Block {
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
-        if (CrossMod.RAILCRAFT) {
-            par3List.add(new ItemStack(par1, 1, 2));
-        }
     }
 
     @Override

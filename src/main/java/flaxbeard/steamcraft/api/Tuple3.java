@@ -1,27 +1,14 @@
 package flaxbeard.steamcraft.api;
 
-public class Tuple3 {
-    public Object first;
-    public Object second;
-    public Object third;
+public class Tuple3<F, S, T> {
+    public F first;
+    public S second;
+    public T third;
 
-    public Tuple3(Object a, Object b, Object c) {
-        this.first = a;
-        this.second = b;
-        this.third = c;
-    }
-
-    public Object get(int x) {
-        switch (x) {
-            case 0:
-                return this.first;
-            case 1:
-                return this.second;
-            case 2:
-                return this.third;
-            default:
-                return null;
-        }
+    public Tuple3(F first, S second, T third) {
+        this.first = first;
+        this.second = second;
+        this.third = third;
     }
 
     @Override

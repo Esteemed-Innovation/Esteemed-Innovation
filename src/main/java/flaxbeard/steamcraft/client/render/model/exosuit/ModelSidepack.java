@@ -8,9 +8,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author dmillerw
- */
 public class ModelSidepack extends ModelExosuitUpgrade {
 
     public ModelRenderer holder1;

@@ -3,11 +3,7 @@ package flaxbeard.steamcraft.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-/**
- * @author dmillerw
- */
 public enum  Texture {
-
     HORNS("armor/horns"),
     TOPHAT("armor/tophat"),
     TOPHAT_EMERALD("armor/tophatemerald"),
@@ -15,7 +11,7 @@ public enum  Texture {
 
     private final ResourceLocation resourceLocation;
 
-    private Texture(String file) {
+    Texture(String file) {
         resourceLocation = new ResourceLocation("steamcraft:textures/models/" + file + ".png");
     }
 

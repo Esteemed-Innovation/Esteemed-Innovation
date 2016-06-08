@@ -4,7 +4,9 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFan;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,12 +19,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockFan extends BlockSteamTransporter implements IWrenchable {
-
     private IIcon iconOn;
     private IIcon iconOff;
 
     public BlockFan() {
         super(Material.iron);
+        setHardness(3.5F);
+        setResistance(7.5F);
     }
 
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {

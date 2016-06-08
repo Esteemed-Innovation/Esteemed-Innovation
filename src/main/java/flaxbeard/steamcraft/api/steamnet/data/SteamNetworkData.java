@@ -21,12 +21,12 @@ public class SteamNetworkData extends WorldSavedData {
     }
 
     public static SteamNetworkData get(World world) {
-        SteamNetworkData data = (SteamNetworkData) world.perWorldStorage.loadData(SteamNetworkData.class, ID);
+        SteamNetworkData data = (SteamNetworkData) world.getPerWorldStorage().loadData(SteamNetworkData.class, ID);
         if (data == null) {
-            //Steamcraft.log.debug("!!NEED NEW STEAM NETWORK DATA!!");
-            data = new SteamNetworkData(world.provider.dimensionId);
-            SteamNetworkRegistry.getInstance().newDimension(world.provider.dimensionId);
-            world.perWorldStorage.setData(ID, data);
+            int dimension = world.provider.getDimension();
+            data = new SteamNetworkData(dimension);
+            SteamNetworkRegistry.getInstance().newDimension(dimension);
+            world.getPerWorldStorage().setData(ID, data);
         }
         return data;
     }

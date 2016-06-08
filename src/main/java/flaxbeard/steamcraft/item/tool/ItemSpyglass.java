@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.item.tool;
 
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
-import flaxbeard.steamcraft.entity.EntityMusketBall;
+import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

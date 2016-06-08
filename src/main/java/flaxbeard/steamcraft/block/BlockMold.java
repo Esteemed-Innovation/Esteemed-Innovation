@@ -33,6 +33,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
 
     public BlockMold() {
         super(Material.rock);
+        setHardness(3.5F);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
             editingMold = true;
         }
         if (editingMold) {
-            if (tile.open) {
+            if (tile.isOpen) {
                 if (tile.mold[0] != null) {
                     if (!world.isRemote) {
                         if (!player.capabilities.isCreativeMode) {
@@ -181,7 +182,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
             }
         } else {
             if (tile.changeTicks == 0 && (player.getHeldItem() == null || !(player.getHeldItem().getItem() instanceof ItemBlock))) {
-                tile.open = !tile.open;
+                tile.isOpen = !tile.isOpen;
                 tile.changeTicks = 20;
                 world.markBlockForUpdate(x, y, z);
 

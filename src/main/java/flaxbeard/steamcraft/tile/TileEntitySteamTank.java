@@ -1,13 +1,11 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.Config;
+import net.minecraft.util.EnumFacing;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntitySteamTank extends SteamTransporterTileEntity implements ISteamTransporter {
-
     public TileEntitySteamTank() {
-        super(80000, ForgeDirection.VALID_DIRECTIONS);
+        super(80000, EnumFacing.HORIZONTALS);
     }
 }

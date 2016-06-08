@@ -20,6 +20,7 @@ public class BlockItemMortar extends BlockContainer {
 
     public BlockItemMortar() {
         super(Material.iron);
+        setHardness(3.5F);
     }
 
     @Override
@@ -41,8 +42,8 @@ public class BlockItemMortar extends BlockContainer {
             if (item.getItem() == SteamcraftItems.astrolabe) {
                 if (item.hasTagCompound() && item.stackTagCompound.hasKey("targetX")) {
                     if (world.provider.dimensionId == item.stackTagCompound.getInteger("dim")) {
-                        tile.xT = item.stackTagCompound.getInteger("targetX");
-                        tile.zT = item.stackTagCompound.getInteger("targetZ");
+                        tile.xTarget = item.stackTagCompound.getInteger("targetX");
+                        tile.zTarget = item.stackTagCompound.getInteger("targetZ");
                         tile.hasTarget = true;
                     }
                 }

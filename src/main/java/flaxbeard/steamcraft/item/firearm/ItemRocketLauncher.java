@@ -1,35 +1,30 @@
 package flaxbeard.steamcraft.item.firearm;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementRocketLauncher;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
-import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.firearm.enhancement.ItemEnhancementAirStrike;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
@@ -415,7 +410,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
     @Override
     public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i,
                          int j) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.furnaceGuiTextures);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.GUI_TEXTURES);
         guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
     }
 

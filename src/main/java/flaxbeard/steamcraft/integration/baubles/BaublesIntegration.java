@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -22,11 +23,11 @@ public class BaublesIntegration {
     }
 
     public static boolean checkForSurvivalist(EntityPlayer player) {
-        return checkForUpgrade(player, SteamcraftItems.survivalist);
+        return checkForUpgrade(player, GadgetItems.Items.SURVIVALIST_TOOLKIT.getItem());
     }
 
     public static boolean checkForSteamCellFiller(EntityPlayer player) {
-        return checkForUpgrade(player, SteamcraftItems.steamcellBauble);
+        return checkForUpgrade(player, GadgetItems.Items.STEAM_CELL_FILLER.getItem());
     }
 
     public static Item getSurvivalist() {

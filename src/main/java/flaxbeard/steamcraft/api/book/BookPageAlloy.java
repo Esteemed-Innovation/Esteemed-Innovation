@@ -5,13 +5,13 @@ import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class BookPageAlloy extends BookPage implements ICraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation("steamcraft:textures/gui/craftingSquare.png");
@@ -20,14 +20,13 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
     private ItemStack[] item1;
     private ItemStack[] item2;
 
-    @SuppressWarnings("deprecation")
     public BookPageAlloy(String string, CrucibleLiquid op, CrucibleFormula form) {
         super(string);
         output = op;
         formula = form;
-        ArrayList<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0]));
+        List<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0]));
         item1 = ores1.toArray(new ItemStack[ores1.size()]);
-        ArrayList<ItemStack> ores2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0]));
+        List<ItemStack> ores2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0]));
         item2 = ores2.toArray(new ItemStack[ores2.size()]);
     }
 
@@ -46,6 +45,10 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
 
     @Override
     public ItemStack[] getCraftedItem() {
-        return new ItemStack[]{output.ingot, output.nugget, output.plate};
+        return new ItemStack[] {
+          output.ingot,
+          output.nugget,
+          output.plate
+        };
     }
 }

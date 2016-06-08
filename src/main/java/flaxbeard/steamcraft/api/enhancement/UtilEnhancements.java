@@ -1,12 +1,10 @@
 package flaxbeard.steamcraft.api.enhancement;
 
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilEnhancements {
@@ -24,8 +22,10 @@ public class UtilEnhancements {
 
     public static IEnhancement getEnhancementFromItem(ItemStack item) {
         if (item.hasTagCompound()) {
-            if (item.stackTagCompound.hasKey("enhancements")) {
-                return SteamcraftRegistry.enhancements.get(item.stackTagCompound.getCompoundTag("enhancements").getString("id"));
+            NBTTagCompound nbt = item.getTagCompound();
+            if (nbt.hasKey("enhancements")) {
+                NBTTagCompound enhancements = nbt.getCompoundTag("enhancements");
+                return SteamcraftRegistry.enhancements.get(enhancements.getString("id"));
             }
         }
         return null;
@@ -49,13 +49,13 @@ public class UtilEnhancements {
 
     public static String getEnhancementDisplayText(ItemStack item) {
         if (hasEnhancement(item)) {
-            return EnumChatFormatting.RED + new ItemStack(((Item) getEnhancementFromItem(item))).getDisplayName();
+            return TextFormatting.RED + new ItemStack(((Item) getEnhancementFromItem(item))).getDisplayName();
         }
         return "";
     }
 
     public static boolean canEnhance(ItemStack item) {
-        return !item.hasTagCompound() || !item.stackTagCompound.hasKey("enhancements");
+        return !item.hasTagCompound() || !item.getTagCompound().hasKey("enhancements");
     }
 
     public static ItemStack getEnhancedItem(ItemStack item, ItemStack enhancement) {
@@ -65,14 +65,14 @@ public class UtilEnhancements {
         }
         NBTTagCompound enhancements = new NBTTagCompound();
         enhancements.setString("id", ((IEnhancement) enhancement.getItem()).getID());
-        output.stackTagCompound.setTag("enhancements", enhancements);
+        output.getTagCompound().setTag("enhancements", enhancements);
 
         return output;
     }
 
     public static void removeEnhancement(ItemStack item) {
-        if (item.hasTagCompound() && item.stackTagCompound.hasKey("enhancements")) {
-            item.stackTagCompound.removeTag("enhancements");
+        if (item.hasTagCompound() && item.getTagCompound().hasKey("enhancements")) {
+            item.getTagCompound().removeTag("enhancements");
         }
     }
 }

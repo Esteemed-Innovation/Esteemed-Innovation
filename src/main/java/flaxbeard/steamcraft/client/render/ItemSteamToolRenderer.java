@@ -1,32 +1,22 @@
 package flaxbeard.steamcraft.client.render;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import flaxbeard.steamcraft.item.tool.steam.SteamToolHelper;
 
-public class ItemSteamToolRenderer implements IItemRenderer {
-    private RenderItem renderItem;
-
-    public ItemSteamToolRenderer() {
-        this.renderItem = new RenderItem();
+public class ItemSteamToolRenderer extends ItemRenderer {
+    public ItemSteamToolRenderer(Minecraft mcIn) {
+        super(mcIn);
     }
 
     @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type == ItemRenderType.INVENTORY;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return false;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    public void renderItem(EntityLivingBase entityIn, ItemStack item, ItemCameraTransforms.TransformType transform) {
         GL11.glPushMatrix();
         GL11.glColor4f(1F, 1F, 1F, 1F);
         for (int pass = 0; pass < item.getItem().getRenderPasses(item.getItemDamage()); pass++) {

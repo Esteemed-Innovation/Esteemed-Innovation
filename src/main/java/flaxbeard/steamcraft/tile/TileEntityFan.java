@@ -1,8 +1,5 @@
 package flaxbeard.steamcraft.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
@@ -20,85 +17,82 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.StatCollector;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.BlockFluidFinite;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-
     public boolean active;
-    public  boolean powered          = false;
-    public  boolean lastSteam        = false;
-    public  int     rotateTicks      = 0;
-    public  int     range            = 9;
-    private boolean isInitialized    = false;
-    private int     steamConsumption = Config.fanConsumption;
+    public boolean powered = false;
+    public boolean lastSteam = false;
+    public int rotateTicks = 0;
+    public int range = 9;
+    private boolean isInitialized = false;
+    private static final int STEAM_CONSUMPTION = Config.fanConsumption;
 
     public TileEntityFan() {
-        this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
-
+        addSidesToGaugeBlacklist(EnumFacing.HORIZONTALS);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
-        access.setShort("range", (short) this.range);
+        access.setShort("range", (short) range);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
-        this.powered = access.getBoolean("powered");
-        this.range = access.getShort("range");
+        powered = access.getBoolean("powered");
+        range = access.getShort("range");
 
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("active", this.getSteamShare() > 0 && !this.powered);
+        access.setBoolean("active", getSteamShare() > 0 && !powered);
         access.setShort("range", (short) this.range);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.active = access.getBoolean("active");
-        this.range = access.getShort("range");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+        NBTTagCompound access = pkt.getNbtCompound();
+        active = access.getBoolean("active");
+        range = access.getShort("range");
+        markDirty();
     }
 
     @Override
-    public void updateEntity() {
-        if (lastSteam != this.getSteamShare() >= steamConsumption) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    public void update() {
+        if (lastSteam != this.getSteamShare() >= STEAM_CONSUMPTION) {
+            markDirty();
         }
-        lastSteam = this.getSteamShare() > steamConsumption;
+        lastSteam = getSteamShare() > STEAM_CONSUMPTION;
         if (!isInitialized) {
-            this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-            this.setDistributionDirections(new ForgeDirection[]{ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord)).getOpposite()});
+            powered = worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
+            setDistributionDirections(new EnumFacing[] { EnumFacing.getFront(getBlockMetadata()).getOpposite() });
             isInitialized = true;
         }
-        super.updateEntity();
-        if (active && this.worldObj.isRemote) {
+        super.update();
+        if (active && worldObj.isRemote) {
             rotateTicks++;
         }
-        if (active && this.worldObj.isRemote || (this.getSteamShare() >= steamConsumption && !this.powered)) {
+        if (active && worldObj.isRemote || (getSteamShare() >= STEAM_CONSUMPTION && !powered)) {
             if (!this.worldObj.isRemote) {
-                this.decrSteam(steamConsumption);
+                this.decrSteam(STEAM_CONSUMPTION);
             }
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);

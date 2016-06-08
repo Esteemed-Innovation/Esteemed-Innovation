@@ -1,8 +1,9 @@
 package flaxbeard.steamcraft.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ItemNamePacket implements IMessage {
     public int x;
@@ -12,10 +13,10 @@ public class ItemNamePacket implements IMessage {
 
     public ItemNamePacket() {}
 
-    public ItemNamePacket(int x, int y, int z, String name) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public ItemNamePacket(BlockPos pos, String name) {
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
         this.name = name;
     }
 

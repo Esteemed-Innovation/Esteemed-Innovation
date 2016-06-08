@@ -2,10 +2,9 @@ package flaxbeard.steamcraft.integration.tinkers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import tconstruct.library.tools.ToolCore;
-import tconstruct.modifiers.tools.ModBoolean;
+import slimeknights.tconstruct.library.tools.ToolCore;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class ModiferSteam extends ModBoolean {
     public int modifiersRequired = 1; // LALALALA totally not hidden
@@ -22,11 +21,11 @@ public class ModiferSteam extends ModBoolean {
         if (tags.getInteger("Modifiers") > 0 && !tags.getBoolean(key)) {
             return false;
         }
-        
-        if (Arrays.asList(((ToolCore) tool.getItem()).getTraits()).contains("ammo")) {
+
+        if (Collections.singletonList(((ToolCore) tool.getItem()).getTraits()).contains("ammo")) {
             return false;
         }
-        
+
         return true;
     }
 

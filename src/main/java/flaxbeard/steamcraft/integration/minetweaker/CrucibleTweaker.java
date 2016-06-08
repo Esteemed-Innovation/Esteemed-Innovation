@@ -1,13 +1,12 @@
 package flaxbeard.steamcraft.integration.minetweaker;
 
-import cpw.mods.fml.common.FMLLog;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
-import minetweaker.api.oredict.IngredientOreDict;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 import flaxbeard.steamcraft.api.CrucibleFormula;

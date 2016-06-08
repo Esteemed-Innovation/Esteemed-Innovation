@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.world;
 
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import net.minecraft.entity.passive.EntityVillager;

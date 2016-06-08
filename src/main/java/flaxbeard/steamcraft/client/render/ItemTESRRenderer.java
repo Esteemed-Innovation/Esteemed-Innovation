@@ -2,13 +2,9 @@ package flaxbeard.steamcraft.client.render;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-
 
 public class ItemTESRRenderer implements IItemRenderer {
     IInventoryTESR render;

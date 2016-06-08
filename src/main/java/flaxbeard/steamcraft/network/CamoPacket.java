@@ -1,7 +1,8 @@
 package flaxbeard.steamcraft.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class CamoPacket implements IMessage {
     public int blockX;
@@ -10,10 +11,10 @@ public class CamoPacket implements IMessage {
 
     public CamoPacket() {}
 
-    public CamoPacket(int blockX, int blockY, int blockZ) {
-        this.blockX = blockX;
-        this.blockY = blockY;
-        this.blockZ = blockZ;
+    public CamoPacket(BlockPos pos) {
+        this.blockX = pos.getX();
+        this.blockY = pos.getY();
+        this.blockZ = pos.getZ();
     }
 
     @Override

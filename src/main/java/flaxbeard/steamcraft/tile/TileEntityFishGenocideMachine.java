@@ -2,114 +2,83 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.entity.EntityFloatingItem;
-import net.minecraft.entity.item.EntityItem;
+import flaxbeard.steamcraft.entity.item.EntityFloatingItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.WeightedRandom;
-import net.minecraft.util.WeightedRandomFishable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTableList;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {
-    private static final List field_146036_f = Arrays
-      .asList(new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.COD.func_150976_a()), 60),
-        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.SALMON.func_150976_a()), 25),
-        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.CLOWNFISH.func_150976_a()), 2),
-        new WeightedRandomFishable(new ItemStack(Items.fish, 1, ItemFishFood.FishType.PUFFERFISH.func_150976_a()), 13));
-
     public TileEntityFishGenocideMachine() {
-        super(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
-        this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+        super(new EnumFacing[] {
+          EnumFacing.UP,
+          EnumFacing.DOWN
+        });
+
+        addSidesToGaugeBlacklist(EnumFacing.HORIZONTALS);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    public int calcSourceBlocks() {
+    /**
+     * @return A new Pair: Chunk, # of water source blocks in chunk at the Y position.
+     */
+    public MutablePair<Chunk, Integer> randSourceBlock() {
+        ArrayList<Chunk> cc = new ArrayList<>();
         int water = 0;
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
-                if (this.worldObj.getBlock(this.xCoord + x, this.yCoord, this.zCoord + z) == Blocks.water) {
+                BlockPos pos = new BlockPos(this.pos.getX() + x, this.pos.getY(), this.pos.getZ() + z);
+                if (worldObj.getBlockState(pos).getBlock() == Blocks.WATER) {
+                    cc.add(new Chunk(worldObj, pos.getX(), pos.getZ()));
                     water++;
                 }
             }
         }
-        return water;
-    }
-
-    public ChunkCoordinates randSourceBlock() {
-        ArrayList<ChunkCoordinates> cc = new ArrayList<ChunkCoordinates>();
-        for (int x = -3; x < 4; x++) {
-            for (int z = -3; z < 4; z++) {
-                if (this.worldObj.getBlock(this.xCoord + x, this.yCoord, this.zCoord + z) == Blocks.water) {
-                    cc.add(new ChunkCoordinates(this.xCoord + x, this.yCoord, this.zCoord + z));
-                }
-            }
-        }
-        return cc.get(this.worldObj.rand.nextInt(cc.size()));
+        return MutablePair.of(cc.get(worldObj.rand.nextInt(cc.size())), water);
     }
 
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        int src = calcSourceBlocks();
-        if (this.getSteamShare() > src) {
-            this.decrSteam(src);
-            if (this.worldObj.rand.nextInt((int) (300.0F / src)) == 0 && !this.worldObj.isRemote) {
-                ChunkCoordinates loc = randSourceBlock();
+    public void update() {
+        super.update();
+        MutablePair<Chunk, Integer> pair = randSourceBlock();
+        int src = pair.getRight();
+        if (getSteamShare() > src) {
+            decrSteam(src);
+            if (worldObj.rand.nextInt((int) (300.0F / src)) == 0 && !worldObj.isRemote) {
+                Chunk loc = pair.getLeft();
+                LootContext lootContext = new LootContext.Builder((WorldServer) worldObj).build();
 
-                ItemStack fish = ((WeightedRandomFishable) WeightedRandom.getRandomItem(this.worldObj.rand, field_146036_f)).func_150708_a(this.worldObj.rand);
-                ItemStack output = fish;
-                if (FurnaceRecipes.smelting().getSmeltingResult(fish) != null) {
-                    output = FurnaceRecipes.smelting().getSmeltingResult(fish);
+                List<ItemStack> fishes = worldObj.getLootTableManager().getLootTableFromLocation(
+                  LootTableList.GAMEPLAY_FISHING_FISH).generateLootForPools(worldObj.rand, lootContext);
+                ItemStack output = fishes.get(worldObj.rand.nextInt(fishes.size()));
+
+                ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(output);
+                if (smeltingResult != null) {
+                    output = smeltingResult;
                 }
-                this.dropItem(output, loc.posX + 0.5F, this.yCoord + 1.0F, loc.posZ + 0.5F);
+                this.dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
             }
         }
     }
 
-    public void dropItem(ItemStack item) {
-        EntityItem entityItem = new EntityItem(this.worldObj, this.xCoord + 0.5F, this.yCoord + 1.25F, this.zCoord + 0.5F, item);
-        this.worldObj.spawnEntityInWorld(entityItem);
-    }
-
+    /**
+     * Drops a floating item of the ItemStack at the position.
+     * @param item The ItemStack
+     * @param x X position
+     * @param y Y position
+     * @param z Z position
+     */
     public void dropItem(ItemStack item, float x, float y, float z) {
-        EntityFloatingItem entityItem = new EntityFloatingItem(this.worldObj, x, y, z, item);
-        this.worldObj.spawnEntityInWorld(entityItem);
+        EntityFloatingItem entityItem = new EntityFloatingItem(worldObj, x, y, z, item);
+        worldObj.spawnEntityInWorld(entityItem);
     }
-
 }

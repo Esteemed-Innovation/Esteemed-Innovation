@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.api.enhancement;
 
-import flaxbeard.steamcraft.entity.EntityMusketBall;
+import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import net.minecraft.item.Item;
 
 public interface IEnhancementFirearm extends IEnhancement {

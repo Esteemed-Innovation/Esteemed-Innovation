@@ -8,12 +8,9 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.Steamcraft;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DrillHeadMaterial {
     /**
@@ -28,14 +25,14 @@ public class DrillHeadMaterial {
      * Key: material name (e.g., "iron").
      * Value: Pair of all oredict entries "ingotMaterial" (left) and "nuggetMaterial" (right).
      */
-    public static HashMap<String, MutablePair<ArrayList<ItemStack>, ArrayList<ItemStack>>> materialOres = new HashMap<>();
+    public static HashMap<String, MutablePair<List<ItemStack>, List<ItemStack>>> materialOres = new HashMap<>();
 
     /**
      * The materials organized by their oredicts.
      * Key: material name (e.g., "diamond").
      * Value: All oredict entries (e.g., gemDiamond entries).
      */
-    public static HashMap<String, ArrayList<ItemStack>> nonStandardMaterials = new HashMap<>();
+    public static HashMap<String, List<ItemStack>> nonStandardMaterials = new HashMap<>();
 
     public String materialName;
     public String locName;
@@ -69,6 +66,7 @@ public class DrillHeadMaterial {
      * Gets the color's base string, just in case you want to do that.
      * @return The color string (including the # if present).
      */
+    @SuppressWarnings("unused")
     public String getColorString() {
         return color;
     }
@@ -94,8 +92,8 @@ public class DrillHeadMaterial {
     public static void registerDrillMaterial(String materialName, String locName, int harvestLevel, String color) {
         DrillHeadMaterial material = new DrillHeadMaterial(materialName, locName, harvestLevel, true, color);
         materials.put(materialName, material);
-        ArrayList<ItemStack> ingots = OreDictionary.getOres("ingot" + materialName);
-        ArrayList<ItemStack> nuggets = OreDictionary.getOres("nugget" + materialName);
+        List<ItemStack> ingots = OreDictionary.getOres("ingot" + materialName);
+        List<ItemStack> nuggets = OreDictionary.getOres("nugget" + materialName);
         materialOres.put(materialName, MutablePair.of(ingots, nuggets));
     }
 
@@ -110,7 +108,7 @@ public class DrillHeadMaterial {
     public static void registerNonStandardDrillMaterial(String material, String ore, String loc, int harvestLevel, String color) {
         DrillHeadMaterial head = new DrillHeadMaterial(material, loc, harvestLevel, false, color, ore);
         materials.put(material, head);
-        ArrayList<ItemStack> ores = OreDictionary.getOres(ore);
+        List<ItemStack> ores = OreDictionary.getOres(ore);
         nonStandardMaterials.put(material, ores);
 
     }

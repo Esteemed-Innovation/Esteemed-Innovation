@@ -1,9 +1,10 @@
 package flaxbeard.steamcraft.tile;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 
-
-public class TileEntityCreativeTank extends TileEntitySteamTank {
+public class TileEntityCreativeTank extends TileEntitySteamTank implements ITickable {
 
     public TileEntityCreativeTank() {
         super();
@@ -17,15 +18,15 @@ public class TileEntityCreativeTank extends TileEntitySteamTank {
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        if (this.getNetwork() != null && this.getNetwork().getCapacity() > 100) {
-            //log.debug(this.getNetwork().getName());
-            //log.debug("net cap: "+this.getNetwork().getCapacity());
-            if (this.getNetwork().getPressure() < 1F) {
-                //log.debug("adding steam");
-                float toAdd = (1F - this.getNetwork().getPressure()) * 0.1F * this.getNetwork().getCapacity();
-                this.insertSteam((int) (Math.floor((double) toAdd)), ForgeDirection.UP);
+    public void update() {
+        super.update();
+        SteamNetwork net = getNetwork();
+        if (net != null && net.getCapacity() > 100 && net.getPressure() < 1F) {
+            int capacity = net.getCapacity();
+            float pressure = net.getPressure();
+            if (capacity > 100 && pressure < 1F) {
+                float toAdd = (1F - pressure) * 0.1F * capacity;
+                insertSteam((int) (Math.floor((double) toAdd)), EnumFacing.UP);
             }
         }
     }

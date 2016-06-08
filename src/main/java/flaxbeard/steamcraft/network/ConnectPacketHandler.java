@@ -1,10 +1,11 @@
 package flaxbeard.steamcraft.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class ConnectPacketHandler implements IMessageHandler<ConnectPacket, IMessage> {
@@ -14,10 +15,11 @@ public class ConnectPacketHandler implements IMessageHandler<ConnectPacket, IMes
         int x = message.x;
         int y = message.y;
         int z = message.z;
+        BlockPos pos = new BlockPos(x, y, z);
         int subHit = message.subHit;
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
         if (tile != null && tile instanceof TileEntitySteamPipe) {
-            ((TileEntitySteamPipe) tile).connectDisconnect(world, x, y, z, subHit);
+            ((TileEntitySteamPipe) tile).connectDisconnect(world, new BlockPos(x, y, z), subHit);
         }
         return null;
     }

@@ -1,22 +1,16 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
-import flaxbeard.steamcraft.client.render.TileEntityVacuumRenderer;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockVacuum extends BlockSteamTransporter implements IWrenchable {
 
@@ -25,6 +19,8 @@ public class BlockVacuum extends BlockSteamTransporter implements IWrenchable {
 
     public BlockVacuum() {
         super(Material.iron);
+        setHardness(3.5F);
+        setResistance(7.5F);
     }
 
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {

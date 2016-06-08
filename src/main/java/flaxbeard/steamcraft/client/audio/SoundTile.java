@@ -1,29 +1,25 @@
 package flaxbeard.steamcraft.client.audio;
 
 import net.minecraft.client.audio.ITickableSound;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.client.audio.SoundEventAccessor;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 
 import java.lang.ref.WeakReference;
 
-/**
- * @author dmillerw
- */
 public class SoundTile implements ITickableSound {
-
     private WeakReference<ISoundTile> soundTileReference;
-
     private ResourceLocation location;
-
-    private float zPosF = 0F;
-    private float xPosF = 0F;
-    private float yPosF = 0F;
-
+    private BlockPos pos;
     public float volume = 1F;
-
     private boolean donePlaying = false;
+    private Sound sound;
 
     public SoundTile(ISoundTile soundTile) {
-        this.soundTileReference = new WeakReference<ISoundTile>(soundTile);
+        this.soundTileReference = new WeakReference<>(soundTile);
         this.location = soundTile.getSound();
     }
 
@@ -33,8 +29,25 @@ public class SoundTile implements ITickableSound {
     }
 
     @Override
-    public ResourceLocation getPositionedSoundLocation() {
+    public ResourceLocation getSoundLocation() {
         return location;
+    }
+
+    @Override
+    public SoundEventAccessor createAccessor(SoundHandler handler) {
+        SoundEventAccessor soundEventAccessor = handler.getAccessor(getSoundLocation());
+        sound = soundEventAccessor == null ? SoundHandler.MISSING_SOUND : soundEventAccessor.cloneEntry();
+        return soundEventAccessor;
+    }
+
+    @Override
+    public Sound getSound() {
+        return sound;
+    }
+
+    @Override
+    public SoundCategory getCategory() {
+        return SoundCategory.BLOCKS;
     }
 
     @Override
@@ -59,17 +72,17 @@ public class SoundTile implements ITickableSound {
 
     @Override
     public float getXPosF() {
-        return xPosF;
+        return (float) pos.getX();
     }
 
     @Override
     public float getYPosF() {
-        return yPosF;
+        return (float) pos.getY();
     }
 
     @Override
     public float getZPosF() {
-        return zPosF;
+        return (float) pos.getZ();
     }
 
     @Override
@@ -79,33 +92,31 @@ public class SoundTile implements ITickableSound {
 
     @Override
     public void update() {
-        ISoundTile soundTile = this.soundTileReference != null ? this.soundTileReference.get() : null;
+        ISoundTile soundTile = soundTileReference != null ? soundTileReference.get() : null;
 
         if (soundTile == null || soundTile.getTileEntity().isInvalid()) {
-            this.soundTileReference = null;
-            if (this.volume >= 0.0005F) {
-                this.volume *= 0.9F;
+            soundTileReference = null;
+            if (volume >= 0.0005F) {
+                volume *= 0.9F;
             } else {
-                this.donePlaying = true;
+                donePlaying = true;
             }
         } else {
-            this.xPosF = soundTile.getTileEntity().xCoord + 0.5F;
-            this.yPosF = soundTile.getTileEntity().yCoord + 0.5F;
-            this.zPosF = soundTile.getTileEntity().zCoord + 0.5F;
+            pos = soundTile.getTileEntity().getPos();
 
             if (soundTile.handleUpdate()) {
                 soundTile.update(this);
             } else {
                 if (soundTile.shouldPlay()) {
-                    if (this.volume < 0.995) {
-                        this.volume = (1.0F - (1.0F - this.volume) * 0.9F);
+                    if (volume < 0.995) {
+                        volume = (1.0F - (1.0F - volume) * 0.9F);
                     } else {
-                        this.volume = 1.0F;
+                        volume = 1.0F;
                     }
-                } else if (this.volume > 0.0005D) {
-                    this.volume *= 0.9F;
+                } else if (volume > 0.0005D) {
+                    volume *= 0.9F;
                 } else {
-                    this.volume = 0.0F;
+                    volume = 0.0F;
                 }
             }
         }

@@ -1,10 +1,9 @@
 package flaxbeard.steamcraft.api.book;
 
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -14,7 +13,7 @@ import scala.Tuple4;
 import java.util.ArrayList;
 
 public class BookPage {
-    protected ArrayList<Tuple4> items = new ArrayList<Tuple4>();
+    protected ArrayList<Tuple4<Integer, Integer, ItemStack, Boolean>> items = new ArrayList<>();
     protected boolean shouldDisplayTitle;
     private String name;
 
@@ -22,7 +21,7 @@ public class BookPage {
         name = string;
     }
 
-    public BookPage(String string, Boolean title) {
+    public BookPage(String string, boolean title) {
         name = string;
         shouldDisplayTitle = title;
     }
@@ -31,7 +30,8 @@ public class BookPage {
         if (isFirstPage || shouldDisplayTitle) {
             String s = I18n.format(name);
             int l = fontRenderer.getStringWidth(s);
-            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3), y + 30, 0x3F3F3F);
+            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3),
+              y + 30, 0x3F3F3F);
         }
     }
 
@@ -45,12 +45,16 @@ public class BookPage {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         itemRender.zLevel = 200.0F;
         FontRenderer font = null;
-        if (stack != null && stack.getItem() != null) font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = fontRendererObj;
-        itemRender.renderItemAndEffectIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y);
-        itemRender.renderItemOverlayIntoGUI(font, Minecraft.getMinecraft().getTextureManager(), stack, x, y, str);
+        if (stack != null && stack.getItem() != null) {
+            font = stack.getItem().getFontRenderer(stack);
+        }
+        if (font == null) {
+            font = fontRendererObj;
+        }
+        itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+        itemRender.renderItemOverlayIntoGUI(font, stack, x, y, str);
         itemRender.zLevel = 0.0F;
-        items.add(new Tuple4(x, y, stack, canHyperlink));
+        items.add(new Tuple4<>(x, y, stack, canHyperlink));
         GL11.glPopMatrix();
     }
 

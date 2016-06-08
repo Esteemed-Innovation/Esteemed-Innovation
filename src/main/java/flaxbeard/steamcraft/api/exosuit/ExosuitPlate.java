@@ -1,9 +1,10 @@
 package flaxbeard.steamcraft.api.exosuit;
 
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class ExosuitPlate {
     private String identifier;
@@ -42,23 +43,23 @@ public class ExosuitPlate {
         }
     }
 
-    public int getDamageReductionAmount(int slot, DamageSource source) {
-        if (this.identifier.equals("Copper")) {
+    public int getDamageReductionAmount(EntityEquipmentSlot slot, DamageSource source) {
+        if (getIdentifier().equals("Copper")) {
             if (source.isExplosion()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
         }
-        if (this.identifier.equals("Iron")) {
+        if (getIdentifier().equals("Iron")) {
             if (source.isProjectile()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
         }
-        if (this.identifier.equals("Gilded Iron")) {
+        if (getIdentifier().equals("Gilded Iron")) {
             if (source.isProjectile()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot) - 1;
             }
         }
-        if (this.identifier.equals("Brass")) {
+        if (getIdentifier().equals("Brass")) {
             if (source.isFireDamage()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
             }
@@ -67,6 +68,6 @@ public class ExosuitPlate {
     }
 
     public String effect() {
-        return StatCollector.translateToLocal(effect);
+        return I18n.translateToLocal(effect);
     }
 }

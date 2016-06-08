@@ -1,7 +1,7 @@
 package flaxbeard.steamcraft.item.firearm;
 
 import flaxbeard.steamcraft.api.enhancement.IRocket;
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.item.Item;
 
 public class ItemRocketBasic extends Item implements IRocket {

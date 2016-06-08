@@ -1,34 +1,30 @@
 package flaxbeard.steamcraft;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
-import flaxbeard.steamcraft.entity.EntityCanisterItem;
-import flaxbeard.steamcraft.entity.EntityFloatingItem;
-import flaxbeard.steamcraft.entity.EntityMortarItem;
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.data.capabilities.animal.AnimalDataStorage;
+import flaxbeard.steamcraft.data.capabilities.animal.IAnimalData;
+import flaxbeard.steamcraft.data.capabilities.player.IPlayerData;
+import flaxbeard.steamcraft.data.capabilities.player.PlayerDataStorage;
+import flaxbeard.steamcraft.data.capabilities.villager.IVillagerData;
+import flaxbeard.steamcraft.data.capabilities.villager.VillagerDataStorage;
+import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
+import flaxbeard.steamcraft.entity.item.EntityFloatingItem;
+import flaxbeard.steamcraft.entity.item.EntityMortarItem;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.PhobicCoatingHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
+import flaxbeard.steamcraft.init.items.ItemCategories;
+import flaxbeard.steamcraft.init.items.MetalItems;
+import flaxbeard.steamcraft.init.items.tools.GadgetItems;
+import flaxbeard.steamcraft.init.items.tools.ToolItems;
+import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
+import flaxbeard.steamcraft.init.misc.MiscellaneousCategories;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
@@ -43,21 +39,52 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
+import java.util.List;
 
-@Mod(modid = "Steamcraft", name = "Flaxbeard's Steam Power", version = Config.VERSION)
+import javax.swing.*;
+
+@Mod(modid = Steamcraft.MOD_ID, name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
-    @Instance("Steamcraft")
+    @Mod.Instance("Steamcraft")
     public static Steamcraft instance;
 
+    @CapabilityInject(IPlayerData.class)
+    public static final Capability<IPlayerData> PLAYER_DATA = null;
+
+    @CapabilityInject(IAnimalData.class)
+    public static final Capability<IAnimalData> ANIMAL_DATA = null;
+
+    @CapabilityInject(IVillagerData.class)
+    public static final Capability<IVillagerData> VILLAGER_DATA = null;
+
+    public static final String MOD_ID = "flaxbeardssteampower";
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
     public static SimpleNetworkWrapper channel;
@@ -77,16 +104,18 @@ public class Steamcraft {
     public static int boilerRenderID;
     public static int customCraftingTableRenderID;
     public static int furnaceRenderID;
-    public static int sawRenderID;
-    public static int bloodBoilerRenderID;
+
+    public static SoundEvent SOUND_HISS;
+    public static SoundEvent SOUND_ROCKET;
+    public static SoundEvent SOUND_WRENCH;
+    public static SoundEvent SOUND_CANNON;
+    public static SoundEvent SOUND_LEAK;
+    public static SoundEvent SOUND_WHISTLE;
+
+    public static VillagerRegistry.VillagerProfession STEAM_ENGINEER_PROFESSION;
+    public static VillagerRegistry.VillagerCareer STEAM_ENGINEER_CAREER;
 
     public static boolean steamRegistered;
-
-    public static Potion semiInvisible;
-
-    public static String PLAYER_PROPERTY_ID = "FSPPlayerProperties";
-    public static String VILLAGER_PROPERTY_ID = "FSPVillagerProperties";
-    public static String MERCHANT_PROPERTY_ID = "FSPMerchantProperties";
 
     public static String CONFIG_DIR;
 
@@ -97,17 +126,36 @@ public class Steamcraft {
         GameRegistry.registerTileEntityWithAlternatives(clazz, "steamcraft:" + key);
     }
 
-    @EventHandler
+    private static SoundEvent registerSound(String soundName) {
+        final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
+        return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
+    }
+
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        try {
+            // Try to get any class in CodeChickenLib.
+            Class.forName("codechicken.lib.raytracer");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            int input = JOptionPane.showOptionDialog(null, "Flaxbeard's Steam Power requires CodeChickenLib.",
+              "CodeChickenLib Not Found!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+
+            if (input == JOptionPane.OK_OPTION || input == JOptionPane.CANCEL_OPTION) {
+                FMLCommonHandler.instance().exitJava(1, false);
+            }
+        }
+
         Config.load(event);
 
         CONFIG_DIR = event.getModConfigurationDirectory().toString();
         tab = new SCTab(CreativeTabs.getNextID(), "steamcraft", false).setBackgroundImageName("item_search.png");
         tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 
-        upgrade = EnumHelper.addRarity("UPGRADE", EnumChatFormatting.RED, "Upgrade");
-        SteamcraftBlocks.registerBlocks();
-        SteamcraftItems.registerItems();
+        upgrade = EnumHelper.addRarity("UPGRADE", TextFormatting.RED, "Upgrade");
+        for (ItemCategories category : ItemCategories.values()) {
+            category.getCategory().oreDict();
+        }
 
         GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
 
@@ -115,6 +163,13 @@ public class Steamcraft {
         channel.registerMessage(CamoPacketHandler.class, CamoPacket.class, 0, Side.SERVER);
         channel.registerMessage(ItemNamePacketHandler.class, ItemNamePacket.class, 1, Side.SERVER);
         channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
+
+        SOUND_HISS = registerSound("hiss");
+        SOUND_CANNON = registerSound("cannon");
+        SOUND_LEAK = registerSound("leaking");
+        SOUND_ROCKET = registerSound("rocket");
+        SOUND_WRENCH = registerSound("wrench");
+        SOUND_WHISTLE = registerSound("horn");
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerId(id);
@@ -157,25 +212,32 @@ public class Steamcraft {
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
-
-        registerTileEntity(TileEntityCustomCraftingTable.class, "customCraftingTable");
-        registerTileEntity(TileEntityCustomFurnace.class, "customFurnace");
         
         CrossMod.preInit(event);
+        CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
+          IPlayerData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(IAnimalData.class, new AnimalDataStorage(),
+          IAnimalData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(IVillagerData.class, new VillagerDataStorage(),
+          IVillagerData.DefaultImplementation.class);
+
+        for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
+            category.getCategory().preInit();
+        }
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
         MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
 
-        FMLCommonHandler.instance().bus().register(new SteamcraftTickHandler());
-        FMLCommonHandler.instance().bus().register(new PhobicCoatingHandler());
+        MinecraftForge.EVENT_BUS.register(new SteamcraftTickHandler());
+        MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
 
         if (event.getSide() == Side.CLIENT) {
-            FMLCommonHandler.instance().bus().register(new ExosuitModelCache());
+            MinecraftForge.EVENT_BUS.register(new ExosuitModelCache());
         }
 
         tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -193,25 +255,36 @@ public class Steamcraft {
 
         proxy.registerRenderers();
         proxy.registerHotkeys();
-        SteamcraftRecipes.registerRecipes();
+        for (ItemCategories category : ItemCategories.values()) {
+            category.getCategory().recipes();
+        }
 
         CrossMod.init(event);
+
+        STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession("flaxbeardssteampower:steam_engineer",
+          "flaxbeardssteampower:textures/models/villager.png");
+        STEAM_ENGINEER_CAREER = new VillagerRegistry.VillagerCareer(STEAM_ENGINEER_PROFESSION, "steam_engineer");
+        VillagerRegistry.instance().register(STEAM_ENGINEER_PROFESSION);
+        VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
+
+        for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
+            category.getCategory().init();
+        }
     }
 
 
-    @EventHandler
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         SteamcraftRecipes.registerCasting();
 
         if (Config.enablePipe) {
-            MinecraftForge.EVENT_BUS.register(SteamcraftBlocks.pipe);
+            MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         }
 
-        ItemSmashedOre iso = (ItemSmashedOre) SteamcraftItems.smashedOre;
+        ItemSmashedOre iso = (ItemSmashedOre) MetalItems.Items.SMASHED_ORE.getItem();
         iso.registerDusts();
         iso.addSmelting();
         iso.registerDusts();
-        SteamcraftItems.reregisterPlates();
         SteamcraftRecipes.registerDustLiquids();
         CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
@@ -219,7 +292,7 @@ public class Steamcraft {
         long start = System.currentTimeMillis();
         String[] ores = OreDictionary.getOreNames();
         for (String s : ores) {
-            ArrayList<ItemStack> stacks = OreDictionary.getOres(s);
+            List<ItemStack> stacks = OreDictionary.getOres(s);
             for (ItemStack stack : stacks) {
                 OreDictHelper.initializeOreDicts(s, stack);
             }
@@ -229,8 +302,12 @@ public class Steamcraft {
         FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
 
         DrillHeadMaterial.registerDefaults();
-        SteamcraftRecipes.registerSteamToolUpgrades();
+        ((ToolUpgradeItems) ItemCategories.TOOL_UPGRADES.getCategory()).postInit();
         SteamcraftBook.registerSteamTools();
+
+        for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
+            category.getCategory().postInit();
+        }
     }
 
 
@@ -246,9 +323,7 @@ public class Steamcraft {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            if (isToolTab)
-                return SteamcraftItems.pick("Brass");
-            return SteamcraftItems.book;
+            return isToolTab ? ToolItems.Items.BRASS_PICKAXE.getItem() : GadgetItems.Items.BOOK.getItem();
         }
 
         @Override

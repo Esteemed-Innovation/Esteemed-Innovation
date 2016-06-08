@@ -1,53 +1,29 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockCarvingTable extends Block {
-    @SideOnly(Side.CLIENT)
-    private IIcon topIcon;
-
     public BlockCarvingTable() {
-        super(Material.wood);
+        super(Material.WOOD);
+        setHardness(3.5F);
+        setSoundType(SoundType.WOOD);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (side == 1) {
-            return this.topIcon;
-        } else {
-            if (side == 0) {
-                return Blocks.planks.getBlockTextureFromSide(side);
-            } else {
-                return this.blockIcon;
-            }
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister ir) {
-        this.blockIcon = ir.registerIcon(this.getTextureName() + "_side");
-        this.topIcon = ir.registerIcon(this.getTextureName() + "_top");
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int int0, float float0, float float1, float float2) {
-        ItemStack held = player.getHeldItem();
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (held != null) {
             Item heldItem = held.getItem();
             if (SteamcraftRegistry.molds.contains(heldItem)) {

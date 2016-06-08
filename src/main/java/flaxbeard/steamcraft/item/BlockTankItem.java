@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuitTank;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
@@ -55,7 +56,6 @@ public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank
         int dye = -1;
         ItemExosuitArmor item = ((ItemExosuitArmor) itemStack.getItem());
         if (item.getStackInSlot(itemStack, 2) != null) {
-            Item vanity = item.getStackInSlot(itemStack, 2).getItem();
             int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(itemStack, 2));
             outerloop:
             for (int id : ids) {

@@ -12,12 +12,12 @@ public class BlockManyMetadataItem extends ItemBlock {
     }
 
     @Override
-    public int getMetadata(int par1) {
-        return par1;
+    public int getMetadata(int damage) {
+        return damage;
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 }

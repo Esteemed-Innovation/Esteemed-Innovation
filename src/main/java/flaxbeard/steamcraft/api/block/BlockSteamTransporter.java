@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.api.block;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BlockSteamTransporter extends BlockContainer {
@@ -10,8 +11,8 @@ public abstract class BlockSteamTransporter extends BlockContainer {
         super(material);
     }
 
-    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-        ISteamTransporter te = (ISteamTransporter) world.getTileEntity(x, y, z);
+    public void onBlockPreDestroy(World world, BlockPos pos, int meta) {
+        ISteamTransporter te = (ISteamTransporter) world.getTileEntity(pos);
         if (te != null && te.getNetwork() != null) {
             te.getNetwork().split(te, true);
         }

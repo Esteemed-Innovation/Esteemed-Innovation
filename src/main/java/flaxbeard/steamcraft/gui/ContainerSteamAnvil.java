@@ -1,9 +1,8 @@
 package flaxbeard.steamcraft.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,77 +14,66 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.helpers.Charsets;
 
 import java.util.Iterator;
 import java.util.Map;
 
 public class ContainerSteamAnvil extends Container {
-    private static final Logger logger = LogManager.getLogger();
-    private static final String __OBFID = "CL_00001732";
-    /**
-     * The player that has this container open.
-     */
     private final EntityPlayer thePlayer;
     public TileEntitySteamHammer hammer;
     private World theWorld;
-    private int field_82861_i;
-    /** The maximum cost of repairing/renaming in the anvil. */
-    // public int hammer.cost;
-    private int field_82858_j;
-    private int field_82859_k;
+    private int xPos;
+    private int yPos;
+    private int zPos;
+    private BlockPos pos;
     /**
      * determined by damage of input item and stackSize of repair materials
      */
     private int stackSizeToBeUsedInRepair;
 
-    public ContainerSteamAnvil(InventoryPlayer par1InventoryPlayer, TileEntitySteamHammer par2Hammer, final World par2World, final int par3, final int par4, final int par5, EntityPlayer par6EntityPlayer) {
-        //super(par1InventoryPlayer, par2World, par3, par4, par5, par6EntityPlayer);
-        this.theWorld = par2World;
-        this.field_82861_i = par3;
-        this.field_82858_j = par4;
-        this.field_82859_k = par5;
-        this.thePlayer = par6EntityPlayer;
-        hammer = par2Hammer;
+    public ContainerSteamAnvil(InventoryPlayer playerInv, TileEntitySteamHammer tileEntity, final World world, final int x, final int y, final int z, EntityPlayer player) {
+        //super(playerInv, world, par3, y, z, player);
+        theWorld = world;
+        xPos = x;
+        yPos = y;
+        zPos = z;
+        pos = new BlockPos(x, y, z);
+        thePlayer = player;
+        hammer = tileEntity;
         this.addSlotToContainer(new Slot(hammer, 0, 27, 47) {
+            @Override
             public void onSlotChanged() {
                 ContainerSteamAnvil.this.onCraftMatrixChanged(hammer);
                 super.onSlotChanged();
             }
         });
         this.addSlotToContainer(new Slot(hammer, 1, 76, 47) {
+            @Override
             public void onSlotChanged() {
                 ContainerSteamAnvil.this.onCraftMatrixChanged(hammer);
                 super.onSlotChanged();
             }
         });
         this.addSlotToContainer(new Slot(hammer, 2, 134, 47) {
-            /**
-             * Check if the stack is a valid item for this slot.
-             */
-            public boolean isItemValid(ItemStack par1ItemStack) {
+            @Override
+            public boolean isItemValid(ItemStack stack) {
                 return false;
             }
 
-            /**
-             * Return whether this slot's stack can be taken from this slot.
-             */
-            public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
-                return hammer.cost > 0 && hammer.cost == hammer.progress && this.getHasStack();
+            @Override
+            public boolean canTakeStack(EntityPlayer player) {
+                return hammer.cost > 0 && hammer.cost == hammer.progress && getHasStack();
             }
 
-            public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
-//                if (!par1EntityPlayer.capabilities.isCreativeMode)
-//                {
-//                    par1EntityPlayer.addExperienceLevel(-ContainerSteamAnvil.this.hammer.cost);
-//                }
+            @Override
+            public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
                 hammer.progress = 0;
-                hammer.setInventorySlotContents(0, (ItemStack) null);
+                hammer.setInventorySlotContents(0, null);
                 onCraftMatrixChanged(hammer);
 
                 if (ContainerSteamAnvil.this.stackSizeToBeUsedInRepair > 0) {
@@ -96,31 +84,32 @@ public class ContainerSteamAnvil extends Container {
                         hammer.setInventorySlotContents(1, itemstack1);
                         onCraftMatrixChanged(hammer);
                     } else {
-                        hammer.setInventorySlotContents(1, (ItemStack) null);
+                        hammer.setInventorySlotContents(1, null);
                         onCraftMatrixChanged(hammer);
                     }
                 } else {
-                    hammer.setInventorySlotContents(1, (ItemStack) null);
+                    hammer.setInventorySlotContents(1, null);
                     onCraftMatrixChanged(hammer);
                 }
 
                 ContainerSteamAnvil.this.hammer.cost = 0;
 
-                if (!par1EntityPlayer.capabilities.isCreativeMode && !par2World.isRemote && par2World.getBlock(par3, par4, par5) == Blocks.anvil && par1EntityPlayer.getRNG().nextFloat() < 0.12F) {
-                    int i1 = par2World.getBlockMetadata(par3, par4, par5);
-                    int k = i1 & 3;
-                    int l = i1 >> 2;
+                IBlockState state = world.getBlockState(pos);
+
+                if (!player.capabilities.isCreativeMode && !world.isRemote &&
+                  world.getBlockState(pos).getBlock() == Blocks.ANVIL && player.getRNG().nextFloat() < 0.12F) {
+                    int l = state.getValue(BlockAnvil.DAMAGE);
                     ++l;
 
                     if (l > 2) {
-                        par2World.setBlockToAir(par3, par4, par5);
-                        par2World.playAuxSFX(1020, par3, par4, par5, 0);
+                        world.setBlockToAir(pos);
+                        world.playAuxSFX(1029, pos, 0);
                     } else {
-                        par2World.setBlockMetadataWithNotify(par3, par4, par5, k | l << 2, 2);
-                        par2World.playAuxSFX(1021, par3, par4, par5, 0);
+                        world.setBlockState(pos, state.withProperty(BlockAnvil.DAMAGE, l), 2);
+                        world.playAuxSFX(1030, pos, 0);
                     }
-                } else if (!par2World.isRemote) {
-                    par2World.playAuxSFX(1021, par3, par4, par5, 0);
+                } else if (!world.isRemote) {
+                    world.playAuxSFX(1030, pos, 0);
                 }
             }
         });
@@ -128,33 +117,26 @@ public class ContainerSteamAnvil extends Container {
 
         for (i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
         for (i = 0; i < 9; ++i) {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 142));
+            addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 142));
         }
         onCraftMatrixChanged(hammer);
-
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
-    public void onCraftMatrixChanged(IInventory par1IInventory) {
-        super.onCraftMatrixChanged(par1IInventory);
+    @Override
+    public void onCraftMatrixChanged(IInventory inv) {
+        super.onCraftMatrixChanged(inv);
 
-        if (par1IInventory == this.hammer) {
-            this.updateRepairOutput();
+        if (inv == hammer) {
+            updateRepairOutput();
         }
     }
 
-    /**
-     * called when the Anvil Input Slot changes, calculates the new result and puts it in the output slot
-     */
     public void updateRepairOutput() {
-        int oldCost = this.hammer.cost;
         ItemStack old = hammer.getStackInSlot(2);
         ItemStack itemstack = hammer.getStackInSlot(0);
         this.hammer.cost = 0;
@@ -163,9 +145,8 @@ public class ContainerSteamAnvil extends Container {
         int j = 0;
 
         if (itemstack == null) {
-            hammer.setInventorySlotContents(2, (ItemStack) null);
-            //onCraftMatrixChanged(hammer);
-            this.hammer.cost = 0;
+            hammer.setInventorySlotContents(2, null);
+            hammer.cost = 0;
         } else {
             ItemStack itemstack1 = itemstack.copy();
             ItemStack itemstack2 = hammer.getStackInSlot(1);
@@ -182,15 +163,13 @@ public class ContainerSteamAnvil extends Container {
             Enchantment enchantment;
 
             if (itemstack2 != null) {
-                // if (!ForgeHooks.onAnvilChange(this, itemstack, itemstack2, outputSlot, repairedItemName, k2)) return;
-                flag = itemstack2.getItem() == Items.enchanted_book && Items.enchanted_book.func_92110_g(itemstack2).tagCount() > 0;
+                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && Items.ENCHANTED_BOOK.getEnchantments(itemstack2).tagCount() > 0;
 
                 if (itemstack1.isItemStackDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2)) {
                     k = Math.min(itemstack1.getItemDamageForDisplay(), itemstack1.getMaxDamage() / 4);
 
                     if (k <= 0) {
-                        hammer.setInventorySlotContents(2, (ItemStack) null);
-                        //onCraftMatrixChanged(hammer);
+                        hammer.setInventorySlotContents(2, null);
                         this.hammer.cost = 0;
                         return;
                     }
@@ -205,8 +184,7 @@ public class ContainerSteamAnvil extends Container {
                     this.stackSizeToBeUsedInRepair = l;
                 } else {
                     if (!flag && (itemstack1.getItem() != itemstack2.getItem() || !itemstack1.isItemStackDamageable())) {
-                        hammer.setInventorySlotContents(2, (ItemStack) null);
-                        //onCraftMatrixChanged(hammer);
+                        hammer.setInventorySlotContents(2, null);
                         this.hammer.cost = 0;
                         return;
                     }
@@ -232,10 +210,10 @@ public class ContainerSteamAnvil extends Container {
                     iterator1 = map1.keySet().iterator();
 
                     while (iterator1.hasNext()) {
-                        i1 = ((Integer) iterator1.next()).intValue();
-                        enchantment = Enchantment.enchantmentsList[i1];
-                        k1 = map.containsKey(Integer.valueOf(i1)) ? ((Integer) map.get(Integer.valueOf(i1))).intValue() : 0;
-                        l1 = ((Integer) map1.get(Integer.valueOf(i1))).intValue();
+                        i1 = (Integer) iterator1.next();
+                        enchantment = Enchantment.getEnchantmentByID(i1);
+                        k1 = map.containsKey(i1) ? ((Integer) map.get(i1)) : 0;
+                        l1 = ((Integer) map1.get(i1));
                         int i3;
 
                         if (k1 == l1) {
@@ -249,16 +227,14 @@ public class ContainerSteamAnvil extends Container {
                         int i2 = l1 - k1;
                         boolean flag1 = enchantment.canApply(itemstack);
 
-                        if (this.thePlayer.capabilities.isCreativeMode || itemstack.getItem() == Items.enchanted_book) {
+                        if (this.thePlayer.capabilities.isCreativeMode || itemstack.getItem() == Items.ENCHANTED_BOOK) {
                             flag1 = true;
                         }
 
-                        Iterator iterator = map.keySet().iterator();
+                        for (Object o : map.keySet()) {
+                            int j2 = ((Integer) o);
 
-                        while (iterator.hasNext()) {
-                            int j2 = ((Integer) iterator.next()).intValue();
-
-                            if (j2 != i1 && !enchantment.canApplyTogether(Enchantment.enchantmentsList[j2])) {
+                            if (j2 != i1 && !enchantment.canApplyTogether(Enchantment.getEnchantmentByID(j2))) {
                                 flag1 = false;
                                 i += i2;
                             }
@@ -269,28 +245,27 @@ public class ContainerSteamAnvil extends Container {
                                 l1 = enchantment.getMaxLevel();
                             }
 
-                            map.put(Integer.valueOf(i1), Integer.valueOf(l1));
+                            map.put(i1, l1);
                             int l2 = 0;
 
-                            switch (enchantment.getWeight()) {
-                                case 1:
-                                    l2 = 8;
+                            switch (enchantment.getRarity()) {
+                                case COMMON: {
+                                    l2 = 1;
                                     break;
-                                case 2:
-                                    l2 = 4;
-                                case 3:
-                                case 4:
-                                case 6:
-                                case 7:
-                                case 8:
-                                case 9:
-                                default:
-                                    break;
-                                case 5:
+                                }
+                                case UNCOMMON: {
                                     l2 = 2;
                                     break;
-                                case 10:
-                                    l2 = 1;
+                                }
+                                case RARE: {
+                                    l2 = 4;
+                                    break;
+                                }
+                                case VERY_RARE: {
+                                    l2 = 8;
+                                    break;
+                                }
+                                default: {}
                             }
 
                             if (flag) {
@@ -307,7 +282,7 @@ public class ContainerSteamAnvil extends Container {
                 if (itemstack.hasDisplayName()) {
                     j = itemstack.isItemStackDamageable() ? 7 : itemstack.stackSize * 5;
                     i += j;
-                    itemstack1.func_135074_t();
+                    itemstack1.clearCustomName();
                 }
             } else if (!hammer.itemName.equals(itemstack.getDisplayName())) {
                 j = itemstack.isItemStackDamageable() ? 7 : itemstack.stackSize * 5;
@@ -323,31 +298,31 @@ public class ContainerSteamAnvil extends Container {
             k = 0;
 
             for (iterator1 = map.keySet().iterator(); iterator1.hasNext(); k2 += k + k1 * l1) {
-                i1 = ((Integer) iterator1.next()).intValue();
-                enchantment = Enchantment.enchantmentsList[i1];
-                k1 = ((Integer) map.get(Integer.valueOf(i1))).intValue();
+                i1 = ((Integer) iterator1.next());
+                enchantment = Enchantment.getEnchantmentByID(i1);
+                k1 = ((Integer) map.get(Integer.valueOf(i1)));
                 l1 = 0;
                 ++k;
 
-                switch (enchantment.getWeight()) {
-                    case 1:
-                        l1 = 8;
+                switch (enchantment.getRarity()) {
+                    case COMMON: {
+                        l1 = 1;
                         break;
-                    case 2:
-                        l1 = 4;
-                    case 3:
-                    case 4:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    default:
-                        break;
-                    case 5:
+                    }
+                    case UNCOMMON: {
                         l1 = 2;
                         break;
-                    case 10:
-                        l1 = 1;
+                    }
+                    case RARE: {
+                        l1 = 4;
+                    }
+                    case VERY_RARE: {
+                        l1 = 8;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
 
                 if (flag) {
@@ -440,7 +415,7 @@ public class ContainerSteamAnvil extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-        return this.theWorld.getBlock(this.field_82861_i, this.field_82858_j, this.field_82859_k) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.field_82861_i + 0.5D, (double) this.field_82858_j + 0.5D, (double) this.field_82859_k + 0.5D) <= 64.0D;
+        return this.theWorld.getBlock(this.xPos, this.yPos, this.zPos) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.xPos + 0.5D, (double) this.yPos + 0.5D, (double) this.zPos + 0.5D) <= 64.0D;
     }
 
     /**

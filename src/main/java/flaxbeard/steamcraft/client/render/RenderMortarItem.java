@@ -1,9 +1,7 @@
 package flaxbeard.steamcraft.client.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.client.render.model.ModelMortarItem;
-import flaxbeard.steamcraft.entity.EntityMortarItem;
+import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -11,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -23,6 +23,10 @@ public class RenderMortarItem extends Render {
     private static final ResourceLocation b8 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_3.png");
     private static final ResourceLocation[] breakTextures = {b4, b5, b6, b7, b8};
     private static final ModelMortarItem model = new ModelMortarItem();
+
+    protected RenderMortarItem(RenderManager renderManager) {
+        super(renderManager);
+    }
 
     @Override
     public void doRender(Entity var1, double x, double y, double z, float var8, float var9) {
@@ -57,20 +61,18 @@ public class RenderMortarItem extends Render {
         item.hoverStart = 0.0F;
 
         GL11.glTranslated(0, 0.85F, 0);
-        if (this.renderManager.options.fancyGraphics == false) {
+        if (!renderManager.options.fancyGraphics) {
             GL11.glScalef(1.25F, 1.25F, 1.25F);
         }
-        if (this.renderManager.options.fancyGraphics == true || item.getEntityItem().getItem() instanceof ItemBlock) {
+        if (renderManager.options.fancyGraphics || item.getEntityItem().getItem() instanceof ItemBlock) {
             GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
         }
-        RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+        renderManager.doRenderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
         GL11.glPopMatrix();
-
     }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity var1) {
         return null;
     }
-
 }

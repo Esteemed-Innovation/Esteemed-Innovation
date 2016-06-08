@@ -1,37 +1,29 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IPipeWrench;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
-import flaxbeard.steamcraft.codechicken.lib.raytracer.IndexedCuboid6;
-import flaxbeard.steamcraft.codechicken.lib.raytracer.RayTracer;
-import flaxbeard.steamcraft.codechicken.lib.vec.BlockCoord;
-import flaxbeard.steamcraft.codechicken.lib.vec.Vector3;
 import flaxbeard.steamcraft.item.ItemWrench;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
+import codechicken.lib.raytracer.RayTracer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class BlockPipe extends BlockSteamTransporter {
-
     public IIcon sideIcon;
     public IIcon copperIcon;
     public int pass = 0;
@@ -39,6 +31,8 @@ public class BlockPipe extends BlockSteamTransporter {
 
     public BlockPipe() {
         super(Material.iron);
+        setHardness(2.5F);
+        setResistance(5F);
     }
 
     @Override

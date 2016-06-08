@@ -2,7 +2,7 @@ package flaxbeard.steamcraft.client.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;

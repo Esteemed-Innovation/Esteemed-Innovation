@@ -30,8 +30,8 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer impl
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         model.renderBase();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        if (mortar.zT != mortar.zCoord) {
-            GL11.glRotated(Math.toDegrees((float) Math.atan((float) (mortar.xT - mortar.xCoord) / (float) (mortar.zT - mortar.zCoord))), 0F, 1F, 0F);
+        if (mortar.zTarget != mortar.zCoord) {
+            GL11.glRotated(Math.toDegrees((float) Math.atan((float) (mortar.xTarget - mortar.xCoord) / (float) (mortar.zTarget - mortar.zCoord))), 0F, 1F, 0F);
         } else {
             GL11.glRotated(270.0F, 0F, 1F, 0F);
         }

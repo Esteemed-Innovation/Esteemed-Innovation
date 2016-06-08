@@ -1,40 +1,46 @@
 package flaxbeard.steamcraft.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.api.Tuple3;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.ClientProxy;
+import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
+import flaxbeard.steamcraft.init.items.armor.ArmorItems;
+import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
+import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamCell;
 import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.Iterator;
 import java.util.Map;
+
+import static flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems.Items.*;
 
 public class SteamcraftTickHandler {
     private static float zoom = 0.0F;
@@ -54,10 +60,10 @@ public class SteamcraftTickHandler {
         EntityPlayer player = event.player;
         World world = player.worldObj;
         boolean isServer = event.side == Side.SERVER;
-        ItemStack chest = player.getCurrentArmor(2);
-        ItemStack boots = player.getCurrentArmor(0);
+        ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         if (!isServer) {
-            this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
+            this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
         }
         if (CrossMod.BAUBLES) {
             ticksSinceLastCellFill++;
@@ -80,45 +86,45 @@ public class SteamcraftTickHandler {
         if (isJumping) {
             if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-                if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) &&
+                if (item.hasUpgrade(boots, DOUBLE_JUMP.getItem()) &&
                   SteamcraftEventHandler.hasPower(player, 15)) {
                     if (isServer) {
-                        if (!boots.stackTagCompound.hasKey("usedJump")) {
-                            boots.stackTagCompound.setBoolean("usedJump", false);
+                        if (!boots.getTagCompound().hasKey("usedJump")) {
+                            boots.getTagCompound().setBoolean("usedJump", false);
                         }
-                        if (!boots.stackTagCompound.hasKey("releasedSpace")) {
-                            boots.stackTagCompound.setBoolean("releasedSpace", false);
+                        if (!boots.getTagCompound().hasKey("releasedSpace")) {
+                            boots.getTagCompound().setBoolean("releasedSpace", false);
                         }
                     }
-                    if (!player.onGround && boots.stackTagCompound.getBoolean("releasedSpace") &&
-                      !boots.stackTagCompound.getBoolean("usedJump") &&
+                    if (!player.onGround && boots.getTagCompound().getBoolean("releasedSpace") &&
+                      !boots.getTagCompound().getBoolean("usedJump") &&
                       !player.capabilities.isFlying) {
                         if (isServer) {
-                            boots.stackTagCompound.setBoolean("usedJump", true);
-                            SteamcraftEventHandler.drainSteam(player.getCurrentArmor(2), 10);
+                            boots.getTagCompound().setBoolean("usedJump", true);
+                            SteamcraftEventHandler.drainSteam(chest, 10);
                         }
                         player.motionY = 0.65D;
                         player.fallDistance = 0.0F;
                     }
                     if (isServer) {
-                        boots.stackTagCompound.setBoolean("releasedSpace", false);
+                        boots.getTagCompound().setBoolean("releasedSpace", false);
                     }
                 }
             }
             if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
-                if (item.hasUpgrade(chest, SteamcraftItems.jetpack) &&
+                if (item.hasUpgrade(chest, JETPACK.getItem()) &&
                   SteamcraftEventHandler.hasPower(player, 5)) {
                     if (!player.onGround && !player.capabilities.isFlying) {
                         player.motionY += 0.06D;
                         player.fallDistance = 0.0F;
                         if (!isServer) {
                             double rotation = Math.toRadians(player.renderYawOffset);
-                            world.spawnParticle("smoke",
+                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                               player.posX + 0.4 * Math.sin(rotation + 0.9F),
                               player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation + 0.9F),
                               0.0F, -1.0F, 0.0F);
-                            world.spawnParticle("smoke",
+                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                               player.posX + 0.4 * Math.sin(rotation - 0.9F),
                               player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation - 0.9F),
                               0.0F, -1.0F, 0.0F);
@@ -127,19 +133,17 @@ public class SteamcraftTickHandler {
                         }
                     }
                 }
-                if (item.hasUpgrade(chest, SteamcraftItems.pitonDeployer) && isServer) {
-                    if (chest.stackTagCompound.hasKey("grappled") &&
-                      chest.stackTagCompound.getBoolean("grappled")) {
-                        chest.stackTagCompound.setBoolean("grappled", false);
+                if (item.hasUpgrade(chest, PITON_DEPLOYER.getItem()) && isServer) {
+                    if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
+                        chest.getTagCompound().setBoolean("grappled", false);
                     }
                 }
             }
         } else {
             if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-                if (item.hasUpgrade(boots, SteamcraftItems.doubleJump) && !player.onGround &&
-                  isServer) {
-                    boots.stackTagCompound.setBoolean("releasedSpace", true);
+                if (item.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && !player.onGround && isServer) {
+                    boots.getTagCompound().setBoolean("releasedSpace", true);
                 }
             }
         }
@@ -156,43 +160,51 @@ public class SteamcraftTickHandler {
                 SteamcraftEventHandler.lastViewVillagerGui = false;
             }
             EntityPlayer player = mc.thePlayer;
-            if (mc.gameSettings.keyBindUseItem.getIsKeyPressed() && player.isSneaking() &&
-              player.getHeldItem() != null && player.getHeldItem().getItem() instanceof ItemBlock) {
-                MovingObjectPosition pos = mc.objectMouseOver;
+            ItemStack held = player.getActiveItemStack();
+            if (mc.gameSettings.keyBindUseItem.isKeyDown() && player.isSneaking() && held != null &&
+              held.getItem() instanceof ItemBlock) {
+                RayTraceResult pos = mc.objectMouseOver;
                 if (pos != null) {
-                    int x = pos.blockX;
-                    int y = pos.blockY;
-                    int z = pos.blockZ;
-                    TileEntity te = mc.theWorld.getTileEntity(x, y, z);
-                    if (mc.theWorld.getBlock(x, y, z) == SteamcraftBlocks.pipe ||
+                    BlockPos blockPos = pos.getBlockPos();
+                    TileEntity te = mc.theWorld.getTileEntity(blockPos);
+                    if (mc.theWorld.getBlockState(blockPos).getBlock() == SteamNetworkBlocks.Blocks.PIPE.getBlock() ||
                       (te != null && te instanceof IDisguisableBlock)) {
-                        CamoPacket packet = new CamoPacket(x, y, z);
+                        CamoPacket packet = new CamoPacket(blockPos);
                         Steamcraft.channel.sendToServer(packet);
                     }
                 }
             }
-            if (SteamcraftEventHandler.hasPower(player, 1)
-                    && player.getEquipmentInSlot(2) != null
-                    && player.getEquipmentInSlot(2).getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor leggings = (ItemExosuitArmor) player.getEquipmentInSlot(2).getItem();
-                if (player.worldObj.isRemote && leggings.hasUpgrade(player.getEquipmentInSlot(2), SteamcraftItems.thrusters)) {
+
+            ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+            if (SteamcraftEventHandler.hasPower(player, 1) && legs != null && legs.getItem() instanceof ItemExosuitArmor) {
+                ItemExosuitArmor leggings = (ItemExosuitArmor) legs.getItem();
+                if (player.worldObj.isRemote && leggings.hasUpgrade(legs, THRUSTERS.getItem())) {
                     if (!player.onGround && Math.abs(player.motionX) + Math.abs(player.motionZ) > 0.0F && !player.isInWater() && !(player.capabilities.isFlying)) {
                         double rotation = Math.toRadians(player.renderYawOffset + 90.0F);
                         double rotation2 = Math.toRadians(player.renderYawOffset + 270.0F);
 
-                        player.worldObj.spawnParticle("smoke", player.posX + 0.5 * Math.sin(rotation), player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation), player.motionX * -0.1F, 0, player.motionZ * -0.1F);
-                        player.worldObj.spawnParticle("smoke", player.posX + 0.5 * Math.sin(rotation2), player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation2), player.motionX * -0.1F, 0, player.motionZ * -0.1F);
-
+                        player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                          player.posX + 0.5 * Math.sin(rotation),
+                          player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation),
+                          player.motionX * -0.1F, 0, player.motionZ * -0.1F);
+                        player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                          player.posX + 0.5 * Math.sin(rotation2),
+                          player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation2),
+                          player.motionX * -0.1F, 0, player.motionZ * -0.1F);
                     }
                 }
             }
 
-            ItemStack hat = player.inventory.armorInventory[3];
-            boolean hasHat = hat != null && (hat.getItem() == SteamcraftItems.monacle || hat.getItem() == SteamcraftItems.goggles || (hat.getItem() == SteamcraftItems.exoArmorHead && (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.goggles) || ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, SteamcraftItems.monacle))));
+            ItemStack hat = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+            Item monacle = ArmorItems.Items.MONOCLE.getItem();
+            Item goggles = ArmorItems.Items.GOGGLES.getItem();
+            boolean hasHat = hat != null && (hat.getItem() == monacle ||
+              hat.getItem() == goggles || (hat.getItem() == ArmorItems.Items.EXOSUIT_HEADPIECE.getItem() &&
+              (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, goggles) ||
+                ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
-                    if (ClientProxy.keyBindings.get("monocle").getIsKeyPressed()
-                      && !lastPressingKey) {
+                    if (ClientProxy.keyBindings.get("monocle").isKeyDown() && !lastPressingKey) {
                         zoomSettingOn++;
                         zoomSettingOn = zoomSettingOn % 4;
                         switch (zoomSettingOn) {
@@ -235,23 +247,23 @@ public class SteamcraftTickHandler {
                                 break;
                         }
                         lastPressingKey = true;
-                    } else if (!ClientProxy.keyBindings.get("monocle").getIsKeyPressed()) {
+                    } else if (!ClientProxy.keyBindings.get("monocle").isKeyDown()) {
                         lastPressingKey = false;
                     }
                     inUse = zoomSettingOn != 0;
-
                 }
             }
             ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
-            if (item != null && item.getItem() == SteamcraftItems.spyglass) {
+            if (item != null && item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
                 if (mc.gameSettings.thirdPersonView == 0) {
                     inUse = true;
                     this.renderTelescopeOverlay();
                 }
             }
-            if (!wasInUse && item != null && player.isUsingItem() && item.getItem() == SteamcraftItems.musket && UtilEnhancements.getEnhancementFromItem(item) == SteamcraftItems.spyglass) {
+            if (!wasInUse && item != null && player.isHandActive() && item.getItem() == FirearmItems.Items.MUSKET.getItem() &&
+              UtilEnhancements.getEnhancementFromItem(item) == GadgetItems.Items.SPYGLASS.getItem()) {
                 boolean isShooting = false;
-                if (item.stackTagCompound != null) {
+                if (item.getTagCompound() != null) {
                     NBTTagCompound nbt = item.getTagCompound();
                     if (nbt.getInteger("loaded") > 0) {
                         isShooting = true;
@@ -276,13 +288,15 @@ public class SteamcraftTickHandler {
             if (inUse && !wasInUse) {
                 zoom = 0.0F;
             }
-            if (inUse && mc.gameSettings.keyBindAttack.getIsKeyPressed() && zoom > 0F && item != null && item.getItem() == SteamcraftItems.spyglass) {
+            if (inUse && mc.gameSettings.keyBindAttack.isKeyDown() && zoom > 0F && item != null &&
+              item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
                 zoom -= 1.0F;
                 mc.gameSettings.fovSetting += 2.5F;
                 mc.gameSettings.mouseSensitivity += 0.01F;
 
             }
-            if (inUse && mc.gameSettings.keyBindUseItem.getIsKeyPressed() && mc.gameSettings.fovSetting > 5F && item != null && item.getItem() == SteamcraftItems.spyglass) {
+            if (inUse && mc.gameSettings.keyBindUseItem.isKeyDown() && mc.gameSettings.fovSetting > 5F &&
+              item != null && item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
                 zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;
@@ -294,12 +308,12 @@ public class SteamcraftTickHandler {
     public void fallFast(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
         if (SteamcraftEventHandler.hasPower(player, 1)) {
-            ItemStack equipment = player.getEquipmentInSlot(1);
-            if (equipment != null) {
-                Item boots = equipment.getItem();
+            ItemStack bootStack = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+            if (bootStack != null) {
+                Item boots = bootStack.getItem();
                 if (boots instanceof ItemExosuitArmor) {
                     ItemExosuitArmor bootArmor = (ItemExosuitArmor) boots;
-                    if (bootArmor.hasUpgrade(equipment, SteamcraftItems.anchorHeels)) {
+                    if (bootArmor.hasUpgrade(bootStack, ANCHOR_HEELS.getItem())) {
                         double newY = player.isInWater() ? -0.6 : -1.1;
                         if (player.motionY < -0.3 && player.motionY != newY) {
                             player.motionY = newY;
@@ -321,34 +335,36 @@ public class SteamcraftTickHandler {
         lavaTicks++;
         chargeTicks++;
 
-        for (Iterator<Map.Entry<MutablePair<Integer, Tuple3>, Integer>> it = SteamcraftEventHandler.quickLavaBlocks.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<MutablePair<Integer, Tuple3>, Integer> entry = it.next();
-            MutablePair<Integer, Tuple3> dimCoords = entry.getKey();
-            Tuple3 coords = dimCoords.getRight();
+        Iterator<Map.Entry<MutablePair<Integer, BlockPos>, Integer>> lava = SteamcraftEventHandler.quickLavaBlocks.entrySet().iterator();
+        while (lava.hasNext()) {
+            Map.Entry<MutablePair<Integer, BlockPos>, Integer> entry = lava.next();
+            MutablePair<Integer, BlockPos> dimCoords = entry.getKey();
+            BlockPos pos = dimCoords.getRight();
             int dim = dimCoords.getLeft();
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
             int waitTicks = entry.getValue();
-            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
             if (lavaTicks == waitTicks) {
-                worldServer.setBlockToAir((int) coords.first, (int) coords.second, (int) coords.third);
-                it.remove();
+                worldServer.setBlockToAir(pos);
+                lava.remove();
             }
         }
 
-        for (Iterator<Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer>> it = SteamcraftEventHandler.charges.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<MutablePair<EntityPlayer, Tuple3>, Integer> entry = it.next();
-            MutablePair<EntityPlayer, Tuple3> playerCoords = entry.getKey();
-            Tuple3 coords = playerCoords.getRight();
+        Iterator<Map.Entry<MutablePair<EntityPlayer, BlockPos>, Integer>> charge = SteamcraftEventHandler.charges.entrySet().iterator();
+        while (charge.hasNext()) {
+            Map.Entry<MutablePair<EntityPlayer, BlockPos>, Integer> entry = charge.next();
+            MutablePair<EntityPlayer, BlockPos> playerCoords = entry.getKey();
+            BlockPos pos = playerCoords.getRight();
             EntityPlayer player = playerCoords.getLeft();
             int dim = player.dimension;
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
             int waitTicks = entry.getValue();
-            WorldServer worldServer = MinecraftServer.getServer().worldServerForDimension(dim);
             if (chargeTicks >= waitTicks) {
                 // Explosion is half the size of a TNT explosion.
-                double x = (double) (Integer) coords.first;
-                double y = (double) (Integer) coords.second;
-                double z = (double) (Integer) coords.third;
+                double x = (double) pos.getX();
+                double y = (double) pos.getY();
+                double z = (double) pos.getZ();
                 worldServer.createExplosion(player, x, y, z, 2.0F, true);
-                it.remove();
+                charge.remove();
             }
         }
 

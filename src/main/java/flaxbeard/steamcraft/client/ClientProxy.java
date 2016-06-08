@@ -1,27 +1,21 @@
 package flaxbeard.steamcraft.client;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.render.*;
+import flaxbeard.steamcraft.client.render.colorhandlers.ItemSmashedOreColorHandler;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
-import flaxbeard.steamcraft.entity.EntityCanisterItem;
-import flaxbeard.steamcraft.entity.EntityMortarItem;
-import flaxbeard.steamcraft.entity.EntityRocket;
-import flaxbeard.steamcraft.entity.EntitySteamHorse;
-import flaxbeard.steamcraft.integration.BotaniaIntegration;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
+import flaxbeard.steamcraft.entity.item.EntityMortarItem;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelHorse;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -34,6 +28,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
@@ -54,12 +53,15 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderers() {
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemSmashedOreColorHandler(),
+          SteamcraftItems.smashedOre);
+
+        MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new RenderMortarItem());
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, new RenderCanister());
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySteamHorse.class, new RenderSteamHorse(new ModelHorse(), 0));
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderRocket());
 
         TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer(false);
@@ -146,26 +148,27 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    private void setController(Minecraft minecraft) {
+        PlayerControllerMP controller = minecraft.playerController;
+        World world = minecraft.theWorld;
+        if (!(controller instanceof SteamcraftPlayerController)) {
+            GameType type = world.getWorldInfo().getGameType();
+            NetHandlerPlayClient net = minecraft.getNetHandler();
+            SteamcraftPlayerController ourController = new SteamcraftPlayerController(minecraft, net);
+            ourController.setGameType(type);
+            minecraft.playerController = ourController;
+        }
+    }
+
     @Override
-    public void extendRange(Entity entity, float amount) {
+    public void extendRange(Entity entity, double amount) {
         super.extendRange(entity, amount);
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
         if (entity == player) {
-            if (CrossMod.BOTANIA) {
-                BotaniaIntegration.extendRange(entity, amount);
-            } else {
-                if (!(mc.playerController instanceof SteamcraftPlayerController)) {
-                    GameType type = mc.theWorld.getWorldInfo().getGameType();
-                    NetHandlerPlayClient net = mc.getNetHandler();
-                    SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
-                    controller.setGameType(type);
-                    mc.playerController = controller;
-                }
+            setController(mc);
 
-                ((SteamcraftPlayerController) mc.playerController).setReachDistanceExtension(((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() + amount);
-
-            }
+            ((SteamcraftPlayerController) mc.playerController).setReachDistanceExtension(((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() + amount);
         }
     }
 
@@ -174,19 +177,9 @@ public class ClientProxy extends CommonProxy {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
         if (entity == player) {
-            if (CrossMod.BOTANIA) {
-                BotaniaIntegration.checkRange(entity);
-            } else {
-                if (!(mc.playerController instanceof SteamcraftPlayerController)) {
-                    GameType type = mc.theWorld.getWorldInfo().getGameType();
-                    NetHandlerPlayClient net = mc.getNetHandler();
-                    SteamcraftPlayerController controller = new SteamcraftPlayerController(mc, net);
-                    controller.setGameType(type);
-                    mc.playerController = controller;
-                }
-                if (((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
-                    extendRange(entity, 2.0F - ((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension());
-                }
+            setController(mc);
+            if (((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {
+                extendRange(entity, 2.0F - ((SteamcraftPlayerController) mc.playerController).getReachDistanceExtension());
             }
         }
     }

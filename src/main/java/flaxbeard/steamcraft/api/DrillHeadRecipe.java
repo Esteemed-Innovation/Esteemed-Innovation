@@ -10,6 +10,7 @@ import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DrillHeadRecipe extends ShapedOreRecipe {
@@ -41,10 +42,10 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 continue;
             }
 
-            for (Map.Entry<String, MutablePair<ArrayList<ItemStack>, ArrayList<ItemStack>>> entry : DrillHeadMaterial.materialOres.entrySet()) {
+            for (Map.Entry<String, MutablePair<List<ItemStack>, List<ItemStack>>> entry : DrillHeadMaterial.materialOres.entrySet()) {
                 String material = entry.getKey();
-                ArrayList<ItemStack> ingots = entry.getValue().left;
-                ArrayList<ItemStack> nuggets = entry.getValue().right;
+                List<ItemStack> ingots = entry.getValue().left;
+                List<ItemStack> nuggets = entry.getValue().right;
                 for (ItemStack ingot : ingots) {
                     if (ingot.getItem() == item && ingot.getItemDamage() == meta) {
                         numIngots += 1;
@@ -59,9 +60,9 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 }
             }
 
-            for (Map.Entry<String, ArrayList<ItemStack>> entry : DrillHeadMaterial.nonStandardMaterials.entrySet()) {
+            for (Map.Entry<String, List<ItemStack>> entry : DrillHeadMaterial.nonStandardMaterials.entrySet()) {
                 String material = entry.getKey();
-                ArrayList<ItemStack> list = entry.getValue();
+                List<ItemStack> list = entry.getValue();
                 for (ItemStack other : list) {
                     if (other.getItem() == item && other.getItemDamage() == meta) {
                         numOthers += 1;

@@ -1,17 +1,18 @@
 package flaxbeard.steamcraft.api.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class Coord4 {
-    public int x, y, z, dimension;
+    public int dimension;
+    public BlockPos pos;
 
-    public Coord4(int x, int y, int z, int dimension) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Coord4(BlockPos pos, int dimension) {
+        this.pos = pos;
         this.dimension = dimension;
     }
 
@@ -20,47 +21,48 @@ public class Coord4 {
         int yc = nbt.getInteger("y");
         int zc = nbt.getInteger("z");
         int d = nbt.getInteger("dimension");
-        return new Coord4(xc, yc, zc, d);
+        BlockPos pos = new BlockPos(xc, yc, zc);
+        return new Coord4(pos, d);
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        nbt.setInteger("x", x);
-        nbt.setInteger("y", y);
-        nbt.setInteger("z", z);
+        nbt.setInteger("x", pos.getX());
+        nbt.setInteger("y", pos.getY());
+        nbt.setInteger("z", pos.getZ());
         nbt.setInteger("dimension", dimension);
 
         return nbt;
     }
 
     public TileEntity getTileEntity(IBlockAccess world) {
-        return world.getTileEntity(x, y, z);
+        return world.getTileEntity(pos);
     }
 
     public Block getBlock(IBlockAccess world) {
-        return world.getBlock(x, y, z);
+        return getBlockState(world).getBlock();
     }
 
+    public IBlockState getBlockState(IBlockAccess world) {
+        return world.getBlockState(pos);
+    }
 
     public String toString() {
-        return "Coord4: " + x + ", " + y + ", " + z + "; Dimension: " + dimension;
+        return "Coord4: " + pos.toString() + "; Dimension: " + dimension;
     }
-
 
     @Override
     public boolean equals(Object other) {
         return other instanceof Coord4 &&
-          this.x == ((Coord4) other).x &&
-          this.y == ((Coord4) other).y &&
-          this.z == ((Coord4) other).z &&
+          this.pos.equals(((Coord4) other).pos) &&
           this.dimension == ((Coord4) other).dimension;
     }
 
     @Override
     public int hashCode() {
         int hash = 1;
-        hash = 31 * hash + x;
-        hash = 31 * hash + y;
-        hash = 31 * hash + z;
+        hash = 31 * hash + pos.getX();
+        hash = 31 * hash + pos.getY();
+        hash = 31 * hash + pos.getZ();
         hash = 31 * hash + dimension;
         return hash;
     }

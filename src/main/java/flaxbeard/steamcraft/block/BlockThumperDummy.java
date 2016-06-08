@@ -7,7 +7,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -17,6 +16,7 @@ public class BlockThumperDummy extends Block implements IWrenchable {
 
     public BlockThumperDummy() {
         super(Material.iron);
+        setHardness(3.5F);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.misc;
 
-import flaxbeard.steamcraft.entity.EntityRocket;
+import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -14,6 +14,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -21,7 +22,6 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public class ExplosionRocket extends Explosion {
-    private static final String __OBFID = "CL_00000134";
     /**
      * whether or not the explosion sets fire to blocks around it
      */
@@ -39,21 +39,21 @@ public class ExplosionRocket extends Explosion {
     /**
      * A list of ChunkPositions of blocks affected by this explosion
      */
-    public List affectedBlockPositions = new ArrayList();
+    public List<BlockPos> affectedBlockPositions = new ArrayList();
     private int field_77289_h = 16;
     private Random explosionRNG = new Random();
     private World worldObj;
     private Map field_77288_k = new HashMap();
     private boolean dropAllBlocks = false;
 
-    public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_) {
-        super(world, entity, p_i1948_3_, p_i1948_5_, p_i1948_7_, p_i1948_9_);
+    public ExplosionRocket(World world, Entity entity, double x, double y, double z, float p_i1948_9_) {
+        super(world, entity, x, y, z, p_i1948_9_);
         this.worldObj = world;
         this.exploder = entity;
         this.explosionSize = p_i1948_9_;
-        this.explosionX = p_i1948_3_;
-        this.explosionY = p_i1948_5_;
-        this.explosionZ = p_i1948_7_;
+        this.explosionX = x;
+        this.explosionY = y;
+        this.explosionZ = z;
     }
 
     public ExplosionRocket(World world, Entity entity, double p_i1948_3_, double p_i1948_5_, double p_i1948_7_, float p_i1948_9_, boolean blocks) {

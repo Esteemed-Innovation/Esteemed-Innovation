@@ -22,10 +22,10 @@ public class UtilSteamTool {
             return false;
         }
 
-        if (me.hasTagCompound() && me.stackTagCompound.hasKey("upgrades")) {
+        if (me.hasTagCompound() && me.getTagCompound().hasKey("upgrades")) {
             for (int i = 1; i < 10; i++) {
-                if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
+                if (me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
+                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
                     if (stack.getItem() == check) {
                         return true;
                     }
@@ -43,11 +43,11 @@ public class UtilSteamTool {
      */
     public static ArrayList<ISteamToolUpgrade> getUpgrades(ItemStack me) {
         ArrayList<ISteamToolUpgrade> upgrades = new ArrayList<>();
-        if (me.stackTagCompound == null || !me.stackTagCompound.hasKey("upgrades")) {
+        if (!me.hasTagCompound() || !me.getTagCompound().hasKey("upgrades")) {
             return upgrades;
         }
 
-        NBTTagCompound unbt = me.stackTagCompound.getCompoundTag("upgrades");
+        NBTTagCompound unbt = me.getTagCompound().getCompoundTag("upgrades");
 
         for (int i = 1; i < 10; i++) {
             if (unbt.hasKey(Integer.toString(i))) {
@@ -99,9 +99,9 @@ public class UtilSteamTool {
      */
     public static ItemStack getHarvestLevelModifier(ItemStack me) {
         for (int i = 0; i < 10; i++) {
-            if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
+            if (me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(
-                  me.stackTagCompound.getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
+                  me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
                     if (item != null && item instanceof ItemDrillHeadUpgrade) {

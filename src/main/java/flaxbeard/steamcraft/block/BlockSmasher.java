@@ -4,49 +4,38 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
 
 public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockSmasher() {
-        super(Material.iron);
-
+        super(Material.IRON);
+        setHardness(5F);
+        setResistance(10F);
     }
 
     @Override
-    public int getRenderType() {
-        return -1;
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-        if (l == 0) {
-            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-        }
-
-        if (l == 1) {
-            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-        }
-
-        if (l == 2) {
-            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-        }
-
-        if (l == 3) {
-            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-        }
-
-
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
     }
 
     @Override
@@ -55,59 +44,30 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        TileEntitySmasher smasher = (TileEntitySmasher) world.getTileEntity(x, y, z);
-        smasher.blockUpdate();
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (player.isSneaking()) {
-            return true;
-        } else {
-            if (side != 0 && side != 1) {
-                int output = meta;
-                switch (side) {
-                    case 3:
-                        output = 3;
-                        break;
-                    case 2:
-                        output = 2;
-                        break;
-                    case 5:
-                        output = 5;
-                        break;
-                    case 4:
-                        output = 4;
-                        break;
-                }
-                if (output == meta && side > 1 && side < 6) {
-                    switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                        case 3:
-                            output = 3;
-                            break;
-                        case 2:
-                            output = 2;
-                            break;
-                        case 5:
-                            output = 5;
-                            break;
-                        case 4:
-                            output = 4;
-                            break;
-                    }
-                }
-                world.setBlockMetadataWithNotify(x, y, z, output, 2);
-                return true;
-            }
-            return false;
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getIndex();
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighbor) {
+        ((TileEntitySmasher) world.getTileEntity(pos)).blockUpdate();
+    }
+
+    @Override
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, IBlockState state, float hitX, float hitY, float hitZ) {
+        if (!player.isSneaking()) {
+            this.rotateBlock(world, pos, side);
         }
+        return true;
     }
 }

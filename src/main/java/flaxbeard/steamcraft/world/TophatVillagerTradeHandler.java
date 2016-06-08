@@ -1,10 +1,9 @@
 package flaxbeard.steamcraft.world;
 
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import flaxbeard.steamcraft.SteamcraftItems;
-import flaxbeard.steamcraft.item.ItemExosuitArmor;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 

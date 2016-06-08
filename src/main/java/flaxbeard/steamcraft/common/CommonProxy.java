@@ -1,30 +1,29 @@
 package flaxbeard.steamcraft.common;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
-public class CommonProxy {
-    public void registerRenderers() {}
+public abstract class CommonProxy {
+    public abstract void registerRenderers();
 
-    public void serverStarting(FMLServerStartingEvent event) {
-        //event.registerServerCommand(new CommandUpdateSteamcraft());
+    public abstract void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv);
+
+    public abstract void registerHotkeys();
+
+    public void extendRange(Entity entity, double amount) {
+        if (entity instanceof EntityPlayerMP) {
+            PlayerInteractionManager mgr = ((EntityPlayerMP) entity).interactionManager;
+            double reach = mgr.getBlockReachDistance();
+            mgr.setBlockReachDistance(reach + amount);
+        }
     }
 
-    public void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv) {}
-
-    public void registerHotkeys() {}
-
-    public void extendRange(Entity entity, float amount) {
-        if (entity instanceof EntityPlayerMP)
-            ((EntityPlayerMP) entity).theItemInWorldManager.setBlockReachDistance(((EntityPlayerMP) entity).theItemInWorldManager.getBlockReachDistance() + amount);
-    }
-
-    public void checkRange(EntityLivingBase entity) {}
+    public abstract void checkRange(EntityLivingBase entity);
 
     public static void logInfo(String string){
         FMLLog.info("[FSP]: " + string);

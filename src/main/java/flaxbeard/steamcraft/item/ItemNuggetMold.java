@@ -7,8 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ItemNuggetMold extends Item implements ICrucibleMold {
-
-
     private ResourceLocation icon = new ResourceLocation("steamcraft:textures/models/moldNugget.png");
 
     public ItemNuggetMold() {

@@ -1,4 +1,0 @@
-[submodule "src/main/resources"]
-	path = src/main/resources
-	url = https://github.com/Esteemed-Innovation/Flaxbeards-Steam-Power-Resources.git
-	ignore = dirty

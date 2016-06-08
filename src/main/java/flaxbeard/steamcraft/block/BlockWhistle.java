@@ -1,7 +1,5 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
@@ -9,23 +7,18 @@ import flaxbeard.steamcraft.tile.TileEntityWhistle;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWhistle extends BlockContainer {
-    public IIcon alt;
-
     public BlockWhistle() {
-        super(Material.iron);
+        super(Material.IRON);
+        setHardness(1F);
     }
-
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int xl, int yl, int zl) {

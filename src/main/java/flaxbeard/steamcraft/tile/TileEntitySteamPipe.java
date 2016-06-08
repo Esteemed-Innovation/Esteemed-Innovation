@@ -7,11 +7,13 @@ import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.block.BlockPipe;
 import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
-import flaxbeard.steamcraft.codechicken.lib.raytracer.IndexedCuboid6;
-import flaxbeard.steamcraft.codechicken.lib.raytracer.RayTracer;
-import flaxbeard.steamcraft.codechicken.lib.vec.Cuboid6;
 import flaxbeard.steamcraft.network.ConnectPacket;
+import codechicken.lib.raytracer.IndexedCuboid6;
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.vec.Cuboid6;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,12 +21,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -35,19 +41,17 @@ import java.util.List;
 
 public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
     //protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
-    public ArrayList<Integer> blacklistedSides = new ArrayList<Integer>();
+    public ArrayList<Integer> blacklistedSides = new ArrayList<>();
     public Block disguiseBlock = null;
     public int disguiseMeta = 0;
     public boolean isOriginalPipe = false;
     public boolean isOtherPipe = false;
     protected boolean isLeaking = false;
-    private boolean isSplitting = false;
-    private int mySteam = 0;
     private boolean lastWrench = false;
 
     public TileEntitySteamPipe() {
-        super(ForgeDirection.values());
-        this.name = "Pipe";
+        super(EnumFacing.VALUES);
+        name = "Pipe";
     }
 
     public TileEntitySteamPipe(int capacity) {
@@ -58,7 +62,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
-        access.setBoolean("isLeaking", this.isLeaking);
+        access.setBoolean("isLeaking", isLeaking);
         NBTTagCompound list = new NBTTagCompound();
         int g = 0;
         for (int i : blacklistedSides) {
@@ -69,25 +73,25 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         access.setTag("blacklistedSides", list);
         access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.isLeaking = access.getBoolean("isLeaking");
+        NBTTagCompound access = pkt.getNbtCompound();
+        isLeaking = access.getBoolean("isLeaking");
         NBTTagCompound sidesList = access.getCompoundTag("blacklistedSides");
         int length = sidesList.getInteger("size");
         Integer[] sidesInt = new Integer[length];
         for (int i = 0; i < length; i++) {
             sidesInt[i] = sidesList.getInteger(Integer.toString(i));
         }
-        this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
-        this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
-        this.disguiseMeta = access.getInteger("disguiseMeta");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        blacklistedSides = new ArrayList<>(Arrays.asList(sidesInt));
+        disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
+        disguiseMeta = access.getInteger("disguiseMeta");
+        markDirty();
     }
 
 
@@ -100,9 +104,9 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         for (int i = 0; i < length; i++) {
             sidesInt[i] = sidesList.getInteger(Integer.toString(i));
         }
-        this.blacklistedSides = new ArrayList<Integer>(Arrays.asList(sidesInt));
-        this.disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
-        this.disguiseMeta = access.getInteger("disguiseMeta");
+        blacklistedSides = new ArrayList<>(Arrays.asList(sidesInt));
+        disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
+        disguiseMeta = access.getInteger("disguiseMeta");
     }
 
     @Override
@@ -120,27 +124,18 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         access.setInteger("disguiseMeta", disguiseMeta);
     }
 
+    /**
+     * Calls the superclass of this class #update without doing all of our own updating. See: Valve Pipe.
+     */
     public void superUpdate() {
-        super.updateEntity();
+        super.update();
     }
 
-    @Override
-    public void updateEntity() {
-        super.updateEntity();
-
-        if (this.worldObj.isRemote) {
-            boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
-            if (hasWrench != lastWrench && !(this.disguiseBlock == null || this.disguiseBlock == Blocks.air)) {
-                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            }
-            lastWrench = hasWrench;
-        }
-
-
-        ArrayList<ForgeDirection> myDirections = new ArrayList<ForgeDirection>();
-        for (ForgeDirection direction : ForgeDirection.values()) {
-            if (this.doesConnect(direction) && worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
-                TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+    public ArrayList<EnumFacing> getMyDirections() {
+        ArrayList<EnumFacing> myDirections = new ArrayList<>();
+        for (EnumFacing direction : EnumFacing.VALUES) {
+            TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
+            if (this.doesConnect(direction) && tile != null) {
                 if (tile instanceof ISteamTransporter) {
                     ISteamTransporter target = (ISteamTransporter) tile;
                     if (target.doesConnect(direction.getOpposite())) {
@@ -148,61 +143,75 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     }
                 } else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
                     IFluidHandler target = (IFluidHandler) tile;
-                    if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) || target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
+                    if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) ||
+                      target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
                         myDirections.add(direction);
                     }
                 }
             }
         }
+
+        return myDirections;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        if (worldObj.isRemote) {
+            boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
+            if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
+                markDirty();
+            }
+            lastWrench = hasWrench;
+        }
+
+        ArrayList<EnumFacing> myDirections = getMyDirections();
         int i = 0;
         if (myDirections.size() > 0) {
-            ForgeDirection direction = myDirections.get(0).getOpposite();
+            EnumFacing direction = myDirections.get(0).getOpposite();
             while (!doesConnect(direction) || direction == myDirections.get(0)) {
-                direction = ForgeDirection.getOrientation((direction.ordinal() + 1) % 5);
+                direction = EnumFacing.getHorizontal((direction.ordinal() + 1) % 5);
             }
+            BlockPos dirPos = getOffsetPos(direction);
             if (!worldObj.isRemote) {
-                if (myDirections.size() == 2 && this.getSteamShare() > 0 && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+                if (myDirections.size() == 2 && getSteamShare() > 0 && (worldObj.isAirBlock(dirPos) ||
+                  !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
+                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
+                      SoundCategory.BLOCKS, 2F, 0.9F, false);
                     if (!isLeaking) {
-                        ////Steamcraft.log.debug("Block is leaking!");
                         isLeaking = true;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                         markDirty();
                     }
 
                 } else {
                     if (isLeaking) {
-                        ////Steamcraft.log.debug("Block is no longer leaking!");
                         isLeaking = false;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                         markDirty();
                     }
                 }
-                while (myDirections.size() == 2 && this.getPressure() > 0 && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
-                    if (worldObj.isRemote) {
-                    }
-                    this.decrSteam(10);
-
+                while (myDirections.size() == 2 && getPressure() > 0 && i < 10 &&
+                  (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
+                    decrSteam(10);
                     i++;
                 }
             }
-            if (worldObj.isRemote && this.isLeaking) {
-                this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, direction.offsetX * 0.1F, direction.offsetY * 0.1F, direction.offsetZ * 0.1F);
+            if (worldObj.isRemote && isLeaking) {
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+                  pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
+                  direction.getFrontOffsetZ() * 0.1F);
             }
-
         }
-
-
     }
 
     @Override
-    public HashSet<ForgeDirection> getConnectionSides() {
-        HashSet<ForgeDirection> out = new HashSet();
-        HashSet<ForgeDirection> blacklist = new HashSet();
+    public HashSet<EnumFacing> getConnectionSides() {
+        HashSet<EnumFacing> out = new HashSet<>();
+        HashSet<EnumFacing> blacklist = new HashSet<>();
         for (int i : blacklistedSides) {
-            blacklist.add(ForgeDirection.getOrientation(i));
+            blacklist.add(EnumFacing.getFront(i));
         }
-        for (ForgeDirection d : distributionDirections) {
+        for (EnumFacing d : distributionDirections) {
             if (!blacklist.contains(d)) {
                 out.add(d);
             }
@@ -212,50 +221,39 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     @Override
-    public boolean doesConnect(ForgeDirection face) {
+    public boolean doesConnect(EnumFacing face) {
         for (int i : blacklistedSides) {
-            if (ForgeDirection.getOrientation(i) == face) {
+            if (EnumFacing.getFront(i) == face) {
                 return false;
             }
         }
         return true;
     }
 
-//	@Override
-//	public boolean acceptsGauge(ForgeDirection face) {
-//		return true;
-//	}
-
-
     @Override
     public int getSteamShare() {
-        if (this.getNetwork() == null) {
+        SteamNetwork network = getNetwork();
+        if (network == null) {
             this.network = null;
-            this.networkName = null;
+            networkName = null;
             return 0;
         } else {
-            return (int) Math.floor((double) this.getNetwork().getPressure() * (double) this.capacity);
+            return (int) Math.floor((double) network.getPressure() * (double) capacity);
         }
 
     }
 
-
-    public MovingObjectPosition rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, MovingObjectPosition fullblock) {
-        return fullblock;
-    }
-
     private int canConnectSide(int side) {
-        ForgeDirection direction = ForgeDirection.getOrientation(side);
-        if (worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) != null) {
-            TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-            if (tile instanceof ISteamTransporter) {
-                ISteamTransporter target = (ISteamTransporter) tile;
-                if (target.doesConnect(direction.getOpposite())) {
-                    return target instanceof TileEntitySteamPipe ? 2 : 1;
-                }
-                if (target instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) target).blacklistedSides.contains(direction.getOpposite().ordinal())) {
-                    return 2;
-                }
+        EnumFacing direction = EnumFacing.getFront(side);
+        BlockPos pos = getOffsetPos(direction);
+        TileEntity tile = worldObj.getTileEntity(pos);
+        if (tile != null && tile instanceof ISteamTransporter) {
+            ISteamTransporter target = (ISteamTransporter) tile;
+            if (target.doesConnect(direction.getOpposite())) {
+                return target instanceof TileEntitySteamPipe ? 2 : 1;
+            }
+            if (target instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) target).blacklistedSides.contains(direction.getOpposite().ordinal())) {
+                return 2;
             }
         }
         return 0;
@@ -264,68 +262,72 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     public void addTraceableCuboids(List<IndexedCuboid6> cuboids) {
         float min = 4F / 16F;
         float max = 12F / 16F;
-        Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
         if (canConnectSide(0) > 0) {
             float bottom = canConnectSide(0) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(0), new Cuboid6(this.xCoord + min, this.yCoord + bottom, this.zCoord + min, this.xCoord + max, this.yCoord + 5F / 16F, this.zCoord + max)));
+            cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + 5F / 16F, z + max)));
         }
         if (canConnectSide(1) > 0) {
             float top = canConnectSide(1) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(1), new Cuboid6(this.xCoord + min, this.yCoord + 11F / 16F, this.zCoord + min, this.xCoord + max, this.yCoord + top, this.zCoord + max)));
+            cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + 11F / 16F, z + min, x + max, y + top, z + max)));
         }
         if (canConnectSide(2) > 0) {
             float bottom = canConnectSide(2) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(2), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + bottom, this.xCoord + max, this.yCoord + max, this.zCoord + 5F / 16F)));
+            cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + 5F / 16F)));
         }
         if (canConnectSide(3) > 0) {
             float top = canConnectSide(3) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(3), new Cuboid6(this.xCoord + min, this.yCoord + min, this.zCoord + 11F / 16F, this.xCoord + max, this.yCoord + max, this.zCoord + top)));
+            cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + 11F / 16F, x + max, y + max, z + top)));
         }
         if (canConnectSide(4) > 0) {
             float bottom = canConnectSide(4) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(4), new Cuboid6(this.xCoord + bottom, this.yCoord + min, this.zCoord + min, this.xCoord + 5F / 16F, this.yCoord + max, this.zCoord + max)));
+            cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + 5F / 16F, y + max, z + max)));
         }
         if (canConnectSide(5) > 0) {
             float top = canConnectSide(5) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(Integer.valueOf(5), new Cuboid6(this.xCoord + 11F / 16F, this.yCoord + min, this.zCoord + min, this.xCoord + top, this.yCoord + max, this.zCoord + max)));
+            cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + 11F / 16F, y + min, z + min,x + top, y + max, z + max)));
         }
-        cuboids.add(new IndexedCuboid6(Integer.valueOf(6), new Cuboid6(this.xCoord + 5F / 16F, this.yCoord + 5F / 16F, this.zCoord + 5F / 16F, this.xCoord + 11F / 16F, this.yCoord + 11F / 16F, this.zCoord + 11F / 16F)));
-
+        cuboids.add(new IndexedCuboid6(6, new Cuboid6(x + 5F / 16F, y + 5F / 16F, z + 5F / 16F, x + 11F / 16F, y + 11F / 16F, z + 11F / 16F)));
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
             if (this.disguiseBlock != null) {
                 if (!player.capabilities.isCreativeMode) {
                     EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock, 1, disguiseMeta));
                     world.spawnEntityInWorld(entityItem);
                 }
-                world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), disguiseBlock.stepSound.getBreakSound(), (disguiseBlock.stepSound.getVolume() + 1.0F) / 2.0F, disguiseBlock.stepSound.getPitch() * 0.8F);
+                SoundType sound = disguiseBlock.getSoundType();
+                world.playSound((double) pos.getX() + 0.5F, (double) (pos.getY() + 0.5F),
+                  (double) (pos.getZ() + 0.5F), sound.getBreakSound(), SoundCategory.BLOCKS,
+                  (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F, false);
                 disguiseBlock = null;
-                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                markDirty();
                 return true;
             }
         } else {
             if (this.worldObj.isRemote) {
-                MovingObjectPosition hit = RayTracer.retraceBlock(world, player, x, y, z);
-                //Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
+                RayTraceResult hit = RayTracer.retraceBlock(world, player, pos);
+                // Use ryatracer to get the subpart that was hit. The # corresponds with a forge direction.
                 if (hit == null) {
                     return false;
                 }
 
-                ConnectPacket packet = new ConnectPacket(x, y, z, hit.subHit);
+                ConnectPacket packet = new ConnectPacket(pos, hit.subHit);
                 Steamcraft.channel.sendToServer(packet);
             }
         }
         return false;
     }
 
-    public void connectDisconnect(World world, int x, int y, int z, int subHit) {
-        //Use ratracer to get the subpart that was hit. The # corresponds with a forge direction.
-        //If hit a part from 0 to 5 (direction) and hit me
-        if ((subHit >= 0) && (subHit < 6) && world.getBlock(x, y, z) instanceof BlockPipe) {
+    public void connectDisconnect(World world, BlockPos pos, int subHit) {
+        // Use raytracer to get the subpart that was hit. The # corresponds with a forge direction.
+        // If hit a part from 0 to 5 (direction) and hit me
+
+        if ((subHit >= 0) && (subHit < 6) && world.getBlockState(pos).getBlock() instanceof BlockPipe) {
             //Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
             int sidesConnect = 0;
             for (int i = 0; i < 6; i++) {

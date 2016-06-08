@@ -1,47 +1,57 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.util.UtilMisc;
+import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.tile.TileEntityRuptureDisc;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import net.minecraftforge.client.model.ModelLoader;
 
 public class BlockRuptureDisc extends BlockContainer {
-    public IIcon front;
-    public IIcon back;
-    public IIcon top;
-    public IIcon top2;
-    public IIcon backR;
+    public static final PropertyEnum STATE = PropertyEnum.create("state", BlockRuptureDisc.States.class);
 
     public BlockRuptureDisc() {
-        super(Material.iron);
+        super(Material.IRON);
+        setHardness(1F);
+
+        for (BlockRuptureDiscItem.RuptureStates state : BlockRuptureDiscItem.RuptureStates.values()) {
+            String modelName = "rupture_disc" + state.getName();
+            ModelResourceLocation loc = new ModelResourceLocation(Steamcraft.MOD_ID + ":" + modelName, "inventory");
+            int meta = state.getMetadata();
+            ModelLoader.setCustomModelResourceLocation(this, meta, loc);
+        }
     }
 
-    public static int getMeta(int input) {
-        if (input > 9) {
-            input = input - 10;
-        }
-        return input;
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, STATE);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(STATE, States.byMeta(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return ((States) state.getValue(STATE)).getID();
     }
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int xl, int yl, int zl) {
-        int meta = world.getBlockMetadata(xl, yl, zl);
         meta = getMeta(meta);
         float px = 1.0F / 16.0F;
         float x = 4 * px;
@@ -102,26 +112,6 @@ public class BlockRuptureDisc extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        int trueMeta = meta;
-        meta = getMeta(meta);
-        return side == meta || side == ForgeDirection.OPPOSITES[meta] ? (side == meta ? (trueMeta > 9 ? backR : back) : front) : ((meta == 5 || meta == 4) ? blockIcon : top2);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister ir) {
-        this.blockIcon = ir.registerIcon("steamcraft:discTop");
-        this.back = ir.registerIcon("steamcraft:discFromt");
-        this.backR = ir.registerIcon("steamcraft:discFromtRuptured");
-        this.front = ir.registerIcon("steamcraft:discBack");
-        this.top = blockIcon;
-        this.top2 = ir.registerIcon("steamcraft:discTop2");
-
-    }
-
-    @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityRuptureDisc();
     }
@@ -147,8 +137,8 @@ public class BlockRuptureDisc extends BlockContainer {
     }
 
     @Override
-    public int damageDropped(int meta) {
-        return (meta > 9 ? 1 : 0);
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
     }
 
     @Override
@@ -168,4 +158,42 @@ public class BlockRuptureDisc extends BlockContainer {
         return false;
     }
 
+    private enum States implements IStringSerializable {
+        OPEN(0, "open"),
+        CLOSED(1, "closed");
+
+        private int id;
+        private String name;
+
+        private static States[] LOOKUP = new States[values().length];
+
+        static {
+            for (States state : values()) {
+                LOOKUP[state.getID()] = state;
+            }
+        }
+
+        States(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public int getID() {
+            return id;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+
+        public static States byMeta(int meta) {
+            return LOOKUP[meta];
+        }
+    }
 }

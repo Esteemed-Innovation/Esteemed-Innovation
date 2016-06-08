@@ -1,17 +1,18 @@
 package flaxbeard.steamcraft.api.book;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.ArrayUtils;
@@ -49,7 +50,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
         for (IRecipe recipe : recipes) {
             if (recipe instanceof ShapedOreRecipe) {
                 for (int i = 0; i < 9; i++) {
-                    ArrayList newList = new ArrayList();
+                    ArrayList<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
                         if (inputs[i] instanceof Collection) {
                             newList.addAll((Collection) inputs[i]);
@@ -68,7 +69,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                 }
             } else if (recipe instanceof ShapedRecipes) {
                 for (int i = 0; i < 10; i++) {
-                    ArrayList newList = new ArrayList();
+                    ArrayList<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
                         if (inputs[i] instanceof Collection) {
                             newList.addAll((Collection) inputs[i]);
@@ -89,7 +90,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
             } else if (recipe instanceof ShapelessOreRecipe) {
                 shapeless = true;
                 for (int i = 0; i < 9; i++) {
-                    ArrayList newList = new ArrayList();
+                    ArrayList<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
                         if (inputs[i] instanceof Collection) {
                             newList.addAll((Collection) inputs[i]);
@@ -157,17 +158,19 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
                             fontRenderer.setUnicodeFlag(true);
                         }
                         if (inputs[(maxX * i) + j] instanceof ArrayList && ((ArrayList) inputs[(maxX * i) + j]).size() > 0) {
-
                             ArrayList<ItemStack> list2 = new ArrayList<>();
-                            for (ItemStack item : ((ArrayList<ItemStack>) inputs[(maxX * i) + j])) {
-                                if (item.getItemDamage() == 32767) {
-                                    ArrayList list = new ArrayList<ItemStack>();
-                                    item.getItem().getSubItems(item.getItem(), null, list);
-                                    for (Object item2 : list) {
-                                        list2.add((ItemStack) item2);
+                            for (Object obj : (Object[]) inputs[(maxX * i) + j]) {
+                                if (obj instanceof ItemStack) {
+                                    ItemStack item = (ItemStack) obj;
+                                    if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+                                        ArrayList<ItemStack> list = new ArrayList<>();
+                                        item.getItem().getSubItems(item.getItem(), null, list);
+                                        for (Object item2 : list) {
+                                            list2.add((ItemStack) item2);
+                                        }
+                                    } else {
+                                        list2.add(item);
                                     }
-                                } else {
-                                    list2.add(item);
                                 }
                             }
                             ItemStack[] item = list2.toArray(new ItemStack[list2.size()]);

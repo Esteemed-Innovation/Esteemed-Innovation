@@ -1,12 +1,13 @@
 package flaxbeard.steamcraft.misc;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldContainer implements IBlockAccess {
 
@@ -26,19 +27,18 @@ public class WorldContainer implements IBlockAccess {
     }
 
     @Override
-    public Block getBlock(int var1, int var2, int var3) {
-        return myWorld.getBlock(var1, var2, var3);
+    public IBlockState getBlockState(BlockPos pos) {
+        return myWorld.getBlockState(pos);
     }
 
     @Override
-    public TileEntity getTileEntity(int var1, int var2, int var3) {
-        return myWorld.getTileEntity(var1, var2, var3);
+    public TileEntity getTileEntity(BlockPos pos) {
+        return myWorld.getTileEntity(pos);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
-
         return allBrightness != -1 ? allBrightness : myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
     }
 
@@ -76,8 +76,7 @@ public class WorldContainer implements IBlockAccess {
     }
 
     @Override
-    public boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default) {
-        return myWorld.isSideSolid(x, y, z, side, _default);
+    public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
+        return myWorld.isSideSolid(pos, side, _default);
     }
-
 }

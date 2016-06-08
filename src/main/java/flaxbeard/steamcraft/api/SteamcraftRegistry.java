@@ -9,7 +9,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -286,7 +286,7 @@ public class SteamcraftRegistry {
      * @param result The result ItemStack.
      */
     public static void registerOreDictDunkRecipe(String dict, CrucibleLiquid liquid, int liquidAmount, ItemStack result) {
-        ArrayList<ItemStack> ores = OreDictionary.getOres(dict);
+        List<ItemStack> ores = OreDictionary.getOres(dict);
         for (ItemStack ore : ores) {
             registerDunkRecipe(ore.getItem(), ore.getItemDamage(), liquid, liquidAmount, result);
         }
@@ -298,7 +298,7 @@ public class SteamcraftRegistry {
      * @param liquid The input liquid.
      */
     public static void removeOreDictDunkRecipe(String dict, CrucibleLiquid liquid) {
-        ArrayList<ItemStack> ores = OreDictionary.getOres(dict);
+        List<ItemStack> ores = OreDictionary.getOres(dict);
         for (ItemStack ore : ores) {
             removeDunkRecipe(ore.getItem(), ore.getItemDamage(), liquid);
         }
@@ -332,7 +332,7 @@ public class SteamcraftRegistry {
      * @param m The amount of liquid.
      */
     public static void registerMeltRecipeOreDict(String dict, CrucibleLiquid liquid, int m) {
-        ArrayList<ItemStack> ores = OreDictionary.getOres(dict);
+        List<ItemStack> ores = OreDictionary.getOres(dict);
         for (ItemStack ore : ores) {
             registerMeltRecipe(ore.getItem(), ore.getItemDamage(), liquid, m);
         }
@@ -356,7 +356,7 @@ public class SteamcraftRegistry {
      * @param liquid The output liquid.
      */
     public static void removeMeltRecipeOreDict(String dict, CrucibleLiquid liquid) {
-        ArrayList<ItemStack> ores = OreDictionary.getOres(dict);
+        List<ItemStack> ores = OreDictionary.getOres(dict);
         for (ItemStack ore : ores) {
             removeMeltRecipe(ore.getItem(), ore.getItemDamage(), liquid);
         }

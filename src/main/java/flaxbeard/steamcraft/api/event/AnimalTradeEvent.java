@@ -1,9 +1,9 @@
 package flaxbeard.steamcraft.api.event;
 
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * AnimalTradeEvent is fired when a player trades with a cat or a dog using the Frequency Transmitter.

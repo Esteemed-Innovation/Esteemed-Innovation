@@ -2,11 +2,16 @@ package flaxbeard.steamcraft.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamChargable;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 
 public class ItemSteamCell extends Item {
     public ItemSteamCell() {
@@ -20,7 +25,7 @@ public class ItemSteamCell extends Item {
      * @return If it successfully charged an item.
      */
     public static boolean chargeItems(EntityPlayer player, boolean skipExo) {
-        ItemStack chest = player.getEquipmentInSlot(3);
+        ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         int steamToAdd = Config.steamCellCapacity;
         if (!skipExo && chest != null && chest.getItem() instanceof ItemExosuitArmor) {
             ItemExosuitArmor armor = (ItemExosuitArmor) chest.getItem();
@@ -41,10 +46,10 @@ public class ItemSteamCell extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack me, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack me, World world, EntityPlayer player, EnumHand hand) {
         if (chargeItems(player, false)) {
             me.stackSize--;
         }
-        return me;
+        return ActionResult.newResult(EnumActionResult.PASS, me);
     }
 }

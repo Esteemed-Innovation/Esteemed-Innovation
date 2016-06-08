@@ -1,8 +1,8 @@
 package flaxbeard.steamcraft.network;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.world.World;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ConnectPacket implements IMessage {
     public int x;
@@ -12,10 +12,10 @@ public class ConnectPacket implements IMessage {
 
     public ConnectPacket() {}
 
-    public ConnectPacket(int x, int y, int z, int subHit) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public ConnectPacket(BlockPos pos, int subHit) {
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.z = pos.getZ();
         this.subHit = subHit;
     }
 

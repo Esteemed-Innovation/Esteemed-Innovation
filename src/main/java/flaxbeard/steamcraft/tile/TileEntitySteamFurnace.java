@@ -5,146 +5,158 @@ import net.minecraft.block.BlockFurnace;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class TileEntitySteamFurnace extends TileEntityFurnace {
-    //private ItemStack[] furnaceItemStacks = new ItemStack[3];
+    /**
+     * See getField in TileEntityFurnace.
+     */
+    private static final int FURNACE_BURN_TIME_ID = 0;
+    private static final int CURRENT_ITEM_BURN_TIME_ID = 1;
+    private static final int COOK_TIME_ID = 2;
+    private static final int TOTAL_COOK_TIME_ID = 3;
 
     @Override
-    public void updateEntity() {
+    public void update() {
         int numHeaters = 0;
 
         for (int i = 0; i < 6; i++) {
-            ForgeDirection dir2 = ForgeDirection.getOrientation(i);
-            int x = xCoord + dir2.offsetX;
-            int y = yCoord + dir2.offsetY;
-            int z = zCoord + dir2.offsetZ;
-            if (this.worldObj.getTileEntity(x, y, z) != null) {
-                if (this.worldObj.getTileEntity(x, y, z) instanceof TileEntitySteamHeater && ((TileEntitySteamHeater) this.worldObj.getTileEntity(x, y, z)).getSteamShare() > 2 && this.worldObj.getBlockMetadata(x, y, z) == ForgeDirection.OPPOSITES[i]) {
-                    numHeaters++;
-                }
+            EnumFacing dir2 = EnumFacing.getFront(i);
+            int x = pos.getX() + dir2.getFrontOffsetX();
+            int y = pos.getY() + dir2.getFrontOffsetY();
+            int z = pos.getZ() + dir2.getFrontOffsetZ();
+            BlockPos offsetPos = new BlockPos(x, y, z);
+            TileEntity tile = worldObj.getTileEntity(offsetPos);
+            if (tile != null && tile instanceof TileEntitySteamHeater &&
+              ((TileEntitySteamHeater) tile).getSteamShare() > 2 && getBlockMetadata() == dir2.getOpposite().ordinal()) {
+                numHeaters++;
             }
         }
         if (numHeaters == 0) {
             TileEntitySteamHeater.replace(this);
         }
 
-        boolean flag = this.furnaceBurnTime > 0;
+        int furnaceBurnTime = super.getField(FURNACE_BURN_TIME_ID);
+        boolean flag = furnaceBurnTime > 0;
         boolean flag1 = false;
 
-        if (this.furnaceBurnTime > 0) {
-            --this.furnaceBurnTime;
+        if (furnaceBurnTime > 0) {
+            super.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime - 1);
+            furnaceBurnTime--;
         }
 
-        if (!this.worldObj.isRemote) {
-            if (this.furnaceBurnTime == 0 && this.canSmelt()) {
-                this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.getStackInSlot(1));
+        if (!worldObj.isRemote) {
+            if (furnaceBurnTime == 0 && canSmelt()) {
+                ItemStack inSlot1 = getStackInSlot(1);
+                int currentItemBurnTime = furnaceBurnTime = getItemBurnTime(inSlot1);
+                super.setField(CURRENT_ITEM_BURN_TIME_ID, currentItemBurnTime);
+                super.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime);
 
-                if (this.furnaceBurnTime > 0) {
+                if (furnaceBurnTime > 0) {
                     flag1 = true;
 
-                    if (this.getStackInSlot(1) != null) {
-                        ItemStack copy = this.getStackInSlot(1).copy();
+                    if (inSlot1 != null) {
+                        ItemStack copy = inSlot1.copy();
                         copy.stackSize--;
-                        this.setInventorySlotContents(1, copy);
+                        setInventorySlotContents(1, copy);
 
-                        if (this.getStackInSlot(1).stackSize == 0) {
-                            setInventorySlotContents(1, getStackInSlot(1).getItem().getContainerItem(getStackInSlot(1)));
+                        if (inSlot1.stackSize == 0) {
+                            setInventorySlotContents(1, inSlot1.getItem().getContainerItem(inSlot1));
                         }
                     }
                 }
             }
 
-            if (this.isBurning() && this.canSmelt()) {
-                ++this.furnaceCookTime;
+            int furnaceCookTime;
+            if (isBurning() && canSmelt()) {
+                furnaceCookTime = super.getField(COOK_TIME_ID);
+                ++furnaceCookTime;
+                super.setField(COOK_TIME_ID, furnaceCookTime);
 
-                if (this.furnaceCookTime == 200) {
-                    this.furnaceCookTime = 0;
-                    this.smeltItem();
+                if (furnaceCookTime == 200) {
+                    furnaceCookTime = 0;
+                    smeltItem();
+                    super.setField(COOK_TIME_ID, furnaceCookTime);
                     flag1 = true;
                 }
             } else {
-                this.furnaceCookTime = 0;
+                furnaceCookTime = 0;
+                super.setField(COOK_TIME_ID, furnaceCookTime);
             }
 
-            if (flag != this.furnaceBurnTime > 0) {
+            if (flag != furnaceBurnTime > 0) {
                 flag1 = true;
-                BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                BlockFurnace.setState(furnaceBurnTime > 0, worldObj, pos);
             }
         }
 
         if (flag1) {
-            this.markDirty();
+            markDirty();
         }
     }
 
     public boolean canSmelt() {
-        if (this.getStackInSlot(0) == null) {
+        ItemStack slot0 = getStackInSlot(0);
+        if (slot0 == null) {
             return false;
         } else {
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.getStackInSlot(0));
-            if (itemstack == null) return false;
-            if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
-                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
-                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
-                if (meta == -1) {
-                    itemstack = new ItemStack(item);
-                } else {
-                    itemstack = new ItemStack(item, 1, meta);
-                }
-            } else if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
-                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).right;
-                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).left;
-                if (meta == -1) {
-                    itemstack = new ItemStack(item);
-                } else {
-                    itemstack = new ItemStack(item, 1, meta);
-                }
+            ItemStack output = FurnaceRecipes.instance().getSmeltingResult(slot0);
+            if (output == null) {
+                return false;
             }
-            if (this.getStackInSlot(2) == null) return true;
-            if (!this.getStackInSlot(2).isItemEqual(itemstack)) return false;
-            int result = getStackInSlot(2).stackSize + itemstack.stackSize;
-            return result <= getInventoryStackLimit() && result <= this.getStackInSlot(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+            ItemStack slot2 = getStackInSlot(2);
+            if (slot2 == null) {
+                return true;
+            }
+            if (!slot2.isItemEqual(output)) {
+                return false;
+            }
+            int result = slot2.stackSize + output.stackSize;
+            // Forge BugFix: Make it respect stack sizes properly.
+            return result <= getInventoryStackLimit() && result <= slot2.getMaxStackSize();
         }
-        //return true;
     }
 
     @Override
     public void smeltItem() {
-        if (this.canSmelt()) {
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.getStackInSlot(0));
-            if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage()))) {
-                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).right;
-                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), itemstack.getItemDamage())).left;
+        ItemStack slot0 = getStackInSlot(0);
+        if (canSmelt()) {
+            ItemStack output = FurnaceRecipes.instance().getSmeltingResult(slot0);
+            if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(output.getItem(), output.getItemDamage()))) {
+                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(output.getItem(), output.getItemDamage())).right;
+                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(output.getItem(), output.getItemDamage())).left;
                 if (meta == -1) {
-                    itemstack = new ItemStack(item);
+                    output = new ItemStack(item);
                 } else {
-                    itemstack = new ItemStack(item, 1, meta);
+                    output = new ItemStack(item, 1, meta);
                 }
-            } else if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(itemstack.getItem(), -1))) {
-                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).right;
-                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(itemstack.getItem(), -1)).left;
+            } else if (SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(output.getItem(), -1))) {
+                int meta = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(output.getItem(), -1)).right;
+                Item item = SteamcraftRegistry.steamingRecipes.get(MutablePair.of(output.getItem(), -1)).left;
                 if (meta == -1) {
-                    itemstack = new ItemStack(item);
+                    output = new ItemStack(item);
                 } else {
-                    itemstack = new ItemStack(item, 1, meta);
+                    output = new ItemStack(item, 1, meta);
                 }
             }
-            if (this.getStackInSlot(2) == null) {
-                this.setInventorySlotContents(2, itemstack.copy());
-            } else if (this.getStackInSlot(2).getItem() == itemstack.getItem()) {
-                ItemStack copy = this.getStackInSlot(2).copy();
-                copy.stackSize += itemstack.stackSize;
+            ItemStack slot2 = getStackInSlot(2);
+            if (slot2 == null) {
+                this.setInventorySlotContents(2, output.copy());
+            } else if (slot2.getItem() == output.getItem()) {
+                ItemStack copy = slot2.copy();
+                copy.stackSize += output.stackSize;
                 this.setInventorySlotContents(2, copy);
             }
 
-            ItemStack copy = this.getStackInSlot(0).copy();
+            ItemStack copy = output.copy();
             copy.stackSize--;
             this.setInventorySlotContents(0, copy);
 
-            if (this.getStackInSlot(0).stackSize <= 0) {
+            if (output.stackSize <= 0) {
                 this.setInventorySlotContents(0, null);
             }
         }

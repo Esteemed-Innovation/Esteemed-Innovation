@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.integration;
 
-import enchiridion.ItemEnchiridion;
+import joshie.enchiridion.items.ItemEnchiridion;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class EnchiridionIntegration {
             ItemStack binder = player.inventory.getStackInSlot(p);
             if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) &&
               (binder.getItemDamage() == 1)) {
-                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound :
+                NBTTagCompound loader = binder.hasTagCompound() ? binder.getTagCompound() :
                   new NBTTagCompound();
                 NBTTagList nbttaglist = loader.getTagList("Inventory", 10);
                 if (nbttaglist != null) {
@@ -38,7 +38,7 @@ public class EnchiridionIntegration {
             ItemStack binder = player.inventory.getStackInSlot(p);
             if ((binder != null) && (binder.getItem() instanceof ItemEnchiridion) &&
               (binder.getItemDamage() == 1)) {
-                NBTTagCompound loader = binder.hasTagCompound() ? binder.stackTagCompound :
+                NBTTagCompound loader = binder.hasTagCompound() ? binder.getTagCompound() :
                   new NBTTagCompound();
                 NBTTagList nbttaglist = loader.getTagList("Inventory", 10);
                 if (nbttaglist != null) {

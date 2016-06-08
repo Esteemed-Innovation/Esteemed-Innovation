@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.api.tool;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public interface ISteamToolUpgrade {
 

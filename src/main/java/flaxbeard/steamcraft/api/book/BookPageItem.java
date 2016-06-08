@@ -3,15 +3,12 @@ package flaxbeard.steamcraft.api.book;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
-
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class BookPageItem extends BookPageText {
     public static String lastViewing = "";
@@ -44,7 +41,7 @@ public class BookPageItem extends BookPageText {
     }
 
     public static String doLizbeth(String str) {
-        String name = Minecraft.getMinecraft().thePlayer.getCommandSenderName();
+        String name = Minecraft.getMinecraft().thePlayer.getDisplayNameString();
         if (name.equals("MasterAbdoTGM50")) {
             String[] abdoNames = {"Abdo", "Teku", "Tombyn", "Kryse", "Fredje", "Wesley", "Lizbeth"};
             name = abdoNames[abdoName];
@@ -75,11 +72,12 @@ public class BookPageItem extends BookPageText {
             yOffset = y + 65;
             s = I18n.format(name);
             l = fontRenderer.getStringWidth(s);
-            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3), y + 30, 0x3F3F3F);
+            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3),
+              y + 30, 0x3F3F3F);
         }
 
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
-        EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         s = this.format == null ? I18n.format(text) : I18n.format(text, this.format);
         String stringLeft = s;
@@ -89,7 +87,6 @@ public class BookPageItem extends BookPageText {
                 output = doLizbeth(output);
             }
             fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
-            yOffset += this.getSplitStringHeight(fontRenderer, output, x + 40, yOffset, 110);
             yOffset += 10;
             stringLeft = stringLeft.substring(stringLeft.indexOf("<br>") + 4, stringLeft.length());
         }
@@ -102,13 +99,13 @@ public class BookPageItem extends BookPageText {
         int size = item.length;
         int i = 0;
         for (ItemStack stack : item) {
-            this.drawItemStack(stack.copy(), x + book.bookImageWidth / 2 - 12 - (size - 1) * 9 + i * 18, isFirstPage || shouldDisplayTitle ? y + 45 : y + 35, "", renderer, fontRenderer, false);
+            drawItemStack(stack.copy(), x + book.bookImageWidth / 2 - 12 - (size - 1) * 9 + i * 18,
+              isFirstPage || shouldDisplayTitle ? y + 45 : y + 35, "", renderer, fontRenderer, false);
             i++;
         }
     }
 
-    private boolean shouldDoLizbeth(int view, EntityClientPlayerMP player) {
-        return ((view != 0 || player.getCommandSenderName().equals("MasterAbdoTGM50")) &&
-          Config.easterEggs);
+    private boolean shouldDoLizbeth(int view, EntityPlayerSP player) {
+        return ((view != 0 || player.getDisplayNameString().equals("MasterAbdoTGM50")) && Config.easterEggs);
     }
 }

@@ -6,9 +6,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 
-/**
- * @author dmillerw
- */
 public class ModelWings extends ModelExosuitUpgrade {
 
     private static final int PARTS = 5;

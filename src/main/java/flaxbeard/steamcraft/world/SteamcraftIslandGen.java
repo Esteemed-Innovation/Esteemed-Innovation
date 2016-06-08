@@ -1,23 +1,21 @@
 package flaxbeard.steamcraft.world;
 
-import cpw.mods.fml.common.IWorldGenerator;
-import flaxbeard.steamcraft.data.AetherBlockData;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
 public class SteamcraftIslandGen implements IWorldGenerator {
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world,
-                         IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-
-        switch (world.provider.dimensionId) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        switch (world.provider.getDimension()) {
             case -1:
                 generateNether(world, random, chunkX * 16, chunkZ * 16);
                 break;
@@ -30,10 +28,7 @@ public class SteamcraftIslandGen implements IWorldGenerator {
         }
     }
 
-    private void generateEnd(World world, Random random, int i, int j) {
-        //filler
-
-    }
+    private void generateEnd(World world, Random random, int i, int j) {}
 
     private void generateSurface(World world, Random random, int i, int j) {
         if (random.nextInt(10) == 0) {
@@ -42,7 +37,9 @@ public class SteamcraftIslandGen implements IWorldGenerator {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 255; y > 0; y--) {
-                        if (world.getBlock(i + x, y, j + z).getMaterial() != Material.air && !world.getBlock(i + x, y, j + z).isFoliage(world, i + x, y, j + z)) {
+                        BlockPos pos = new BlockPos(i + x, y, j + z);
+                        IBlockState state = world.getBlockState(pos);
+                        if (state.getMaterial() != Material.AIR && !state.getBlock().isFoliage(world, pos)) {
                             if (y < minY) {
                                 minY = y;
                             }
@@ -64,17 +61,19 @@ public class SteamcraftIslandGen implements IWorldGenerator {
                         int bottomOffset = Math.min(6, (int) ((xOffset + zOffset) / 1.5F)) - 2;
                         if (xOffset + zOffset > 4) {
                             for (int y = 255; y > (minY - bottomOffset); y--) {
-                                if (world.getBlock(i + x, y, j + z).getMaterial() != Material.air && world.getBlock(i + x, y, j + z).getMaterial() != Material.water) {
-                                    ////Steamcraft.log.debug("YAY");
-
-                                    Block block = world.getBlock(i + x, y, j + z);
-                                    int meta = world.getBlockMetadata(i + x, y, j + z);
-                                    world.setBlockToAir(i + x, y, j + z);
-                                    if (y == (minY - bottomOffset) + 1 && world.getBlock(i + x, y - 1, j + z) == Blocks.dirt) {
-                                        world.setBlock(i + x, y - 1, j + z, Blocks.grass);
+                                BlockPos pos = new BlockPos(i + x, y, j + z);
+                                IBlockState state = world.getBlockState(pos);
+                                Material material = state.getMaterial();
+                                if (material != Material.AIR && material != Material.WATER) {
+                                    int meta = state.getBlock().getMetaFromState(state);
+                                    world.setBlockToAir(pos);
+                                    BlockPos min = new BlockPos(i + x, y - 1, j + z);
+                                    if (y == (minY - bottomOffset) + 1 &&
+                                      world.getBlockState(min).getBlock() == Blocks.DIRT) {
+                                        world.setBlockState(min, Blocks.GRASS.getDefaultState());
                                     }
-                                    world.setBlock(i + x, y + offset, j + z, block, meta, 2);
-                                    AetherBlockData.get(world).addCoord(new ChunkCoordinates(i + x, y + offset, j + z));
+                                    BlockPos offsetPos = new BlockPos(i + x, y + offset, j + z);
+                                    world.setBlockState(offsetPos, state, 2);
                                 }
                             }
                         }
@@ -84,8 +83,5 @@ public class SteamcraftIslandGen implements IWorldGenerator {
         }
     }
 
-    private void generateNether(World world, Random random, int i, int j) {
-        // filler
-
-    }
+    private void generateNether(World world, Random random, int i, int j) {}
 }

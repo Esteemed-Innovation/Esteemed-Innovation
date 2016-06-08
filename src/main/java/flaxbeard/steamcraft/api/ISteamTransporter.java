@@ -2,8 +2,8 @@ package flaxbeard.steamcraft.api;
 
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.util.Coord4;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.HashSet;
 
@@ -26,7 +26,7 @@ public interface ISteamTransporter {
      *
      * @return true if steam can be inserted
      */
-    boolean canInsert(ForgeDirection face);
+    boolean canInsert(EnumFacing face);
 
     /**
      * How much steam the device can store
@@ -41,11 +41,11 @@ public interface ISteamTransporter {
      * @param amount - How much steam can be inserted per
      * @param face   - The side of the device
      */
-    void insertSteam(int amount, ForgeDirection face);
+    void insertSteam(int amount, EnumFacing face);
 
     void decrSteam(int i);
 
-    boolean doesConnect(ForgeDirection face);
+    boolean doesConnect(EnumFacing face);
 
     /**
      * Called to ensure that the device can have a steam gauge put on it to check how much steam it has
@@ -54,9 +54,9 @@ public interface ISteamTransporter {
      *
      * @return true if steam gauges can be put on it
      */
-    boolean acceptsGauge(ForgeDirection face);
+    boolean acceptsGauge(EnumFacing face);
 
-    HashSet<ForgeDirection> getConnectionSides();
+    HashSet<EnumFacing> getConnectionSides();
 
     World getWorld();
 

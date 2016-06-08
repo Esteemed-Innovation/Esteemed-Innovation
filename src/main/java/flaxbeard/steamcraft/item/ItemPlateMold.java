@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ItemPlateMold extends Item implements ICrucibleMold {
-
     private ResourceLocation icon = new ResourceLocation("steamcraft:textures/models/moldPlate.png");
 
     public ItemPlateMold() {

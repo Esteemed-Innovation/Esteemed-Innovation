@@ -1,10 +1,10 @@
 package flaxbeard.steamcraft.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSteamedFood extends ItemFood {
     private ItemFood baseFood;
@@ -25,9 +25,13 @@ public class ItemSteamedFood extends ItemFood {
      * @param foodStack The input item as an ItemStack
      */
     public ItemSteamedFood(ItemFood food, ItemStack foodStack) {
-        super(food.func_150905_g(foodStack) + 2, food.func_150906_h(foodStack) + 0.2F, food.isWolfsFavoriteMeat());
+        super(food.getHealAmount(foodStack) + 2, food.getSaturationModifier(foodStack) + 0.2F, food.isWolfsFavoriteMeat());
         baseFood = food;
         baseFoodStack = foodStack;
+    }
+
+    public ItemSteamedFood(ItemStack foodStack) {
+        this((ItemFood) foodStack.getItem(), foodStack);
     }
 
     @Override
