@@ -127,9 +127,10 @@ public class GuiSteamcraftBook extends GuiScreen {
 
         int i = (this.width - this.bookImageWidth) / 2;
         int b0 = (this.height - this.bookImageHeight) / 2;
-        this.buttonList.add(this.buttonNextPage = new GuiSteamcraftBook.NextPageButton(1, i + 120 + 67, b0 + 154, true));
-        this.buttonList.add(this.buttonPreviousPage = new GuiSteamcraftBook.NextPageButton(2, i + 38 - 67, b0 + 154, false));
-
+        this.buttonNextPage=new GuiSteamcraftBook.NextPageButton(1, i + 120 + 67, b0 + 154, true);
+        this.buttonList.add(this.buttonNextPage);
+        this.buttonPreviousPage=new GuiSteamcraftBook.NextPageButton(2, i + 38 - 67, b0 + 154, false);
+        this.buttonList.add(this.buttonPreviousPage);
         this.updateButtons();
     }
 
