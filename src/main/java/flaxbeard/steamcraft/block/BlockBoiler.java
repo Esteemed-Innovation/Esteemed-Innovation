@@ -55,7 +55,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     }
 
     public static void updateFurnaceBlockState(boolean isOn, World world, int x, int y, int z) {
-        int l = world.getBlockMetadata(x,y, z);
+        int l = world.getBlockMetadata(x, y, z);
         TileEntity tileentity = world.getTileEntity(x, y, z);
         field_149934_M = true;
 
@@ -95,7 +95,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         if (world.getTileEntity(x2, y2, z2) instanceof TileEntityBoiler) {
             TileEntityBoiler boiler = (TileEntityBoiler) world.getTileEntity(x2, y2, z2);
             int l = world.getBlockMetadata(x2, y2, z2);
-            if (boiler != null && boiler.disguiseBlock != null && boiler.disguiseBlock != Blocks.air && !BlockSteamPipeRenderer.updateWrenchStatus()) {
+            if (boiler != null && boiler.disguiseBlock != null && boiler.disguiseBlock != Blocks.air
+                    && !BlockSteamPipeRenderer.updateWrenchStatus()) {
 
                 return side == l ? super.shouldSideBeRendered(world, x, y, z, side) : false;
             }
@@ -178,7 +179,6 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
             return side == 1 ? this.field_149935_N : this.blockIcon;
         }
 
-
     }
 
     @Override
@@ -186,7 +186,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         if (meta == 0) {
             meta = 3;
         }
-        return side == 1 ? this.field_149935_N : (side == 0 ? this.field_149935_N : (side != meta ? this.blockIcon : this.boilerOffIcon));
+        return side == 1 ? this.field_149935_N
+                : (side == 0 ? this.field_149935_N : (side != meta ? this.blockIcon : this.boilerOffIcon));
     }
 
     @Override
@@ -198,7 +199,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         this.boilerOffIcon = ir.registerIcon("steamcraft:boiler");
         this.camoOnIcon = ir.registerIcon("steamcraft:boilerCamoOn");
         this.camoIcon = ir.registerIcon("steamcraft:boilerCamo");
-        //this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "steamcraft:boilerOn" : "steamcraft:boiler");
+        // this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ?
+        // "steamcraft:boilerOn" : "steamcraft:boiler");
         this.field_149935_N = ir.registerIcon("steamcraft:blockBrass");
     }
 
@@ -223,7 +225,8 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         }
 
         if (stack.hasDisplayName()) {
-            // ((TileEntityBoiler)world.getTileEntity(x, y, z)).func_145951_a(stack.getDisplayName());
+            // ((TileEntityBoiler)world.getTileEntity(x, y,
+            // z)).func_145951_a(stack.getDisplayName());
         }
     }
 
@@ -233,17 +236,18 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf) {
-    	TileEntityBoiler tileEntity = (TileEntityBoiler) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf,
+            float zf) {
+        TileEntityBoiler tileEntity = (TileEntityBoiler) world.getTileEntity(x, y, z);
 
         boolean isClient = !world.isRemote;
-        
-	    if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient && tileEntity != null) {
-    		player.openGui(Steamcraft.instance, 0, world, x, y, z);
-        } else {
-        	FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
+        if (tileEntity != null) {
+            if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient) {
+                player.openGui(Steamcraft.instance, 0, world, x, y, z);
+            } else {
+                FluidHelper.fillTankFromHeldItem(player, tileEntity.myTank);
+            }
         }
-
         return true;
     }
 
@@ -269,10 +273,13 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
                             }
 
                             itemstack.stackSize -= j1;
-                            EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+                            EntityItem entityitem = new EntityItem(world, (double) ((float) x + f),
+                                    (double) ((float) y + f1), (double) ((float) z + f2),
+                                    new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
                             if (itemstack.hasTagCompound()) {
-                                entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+                                entityitem.getEntityItem()
+                                        .setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
                             }
 
                             float f3 = 0.05F;
@@ -297,13 +304,14 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO,
+            float yO, float zO) {
         int meta = world.getBlockMetadata(x, y, z);
         if (player.isSneaking()) {
             return true;
         } else if (side != 0 && side != 1) {
-            world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
+            world.setBlockMetadataWithNotify(x, y, z,
+                    side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
             return true;
         }
         return false;

@@ -31,15 +31,15 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-
+public class TileEntityVacuum extends SteamTransporterTileEntity
+        implements ISteamTransporter, IWrenchable, IWrenchDisplay {
 
     private static int steamUsage = Config.vacuumConsumption;
     public boolean active;
-    public  boolean powered       = false;
-    public  boolean lastSteam     = false;
-    public  int     rotateTicks   = 0;
-    public  int     range         = 9;
+    public boolean powered = false;
+    public boolean lastSteam = false;
+    public int rotateTicks = 0;
+    public int range = 9;
     private boolean isInitialized = false;
 
     public static boolean isLyingInCone(float[] x, float[] t, float[] b, float aperture) {
@@ -58,13 +58,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         // not limited by "round basement".
         // We'll use dotProd() to
         // determine angle between apexToXVect and axis.
-        boolean isInInfiniteCone = dotProd(apexToXVect, axisVect)
-          / magn(apexToXVect) / magn(axisVect)
-          >
-          // We can safely compare cos() of angles
-          // between vectors instead of bare angles.
-          Math.cos(halfAperture);
-
+        boolean isInInfiniteCone = dotProd(apexToXVect, axisVect) / magn(apexToXVect) / magn(axisVect) >
+        // We can safely compare cos() of angles
+        // between vectors instead of bare angles.
+        Math.cos(halfAperture);
 
         if (!isInInfiniteCone) {
             return false;
@@ -73,10 +70,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         // X is contained in cone only if projection of apexToXVect to axis
         // is shorter than axis.
         // We'll use dotProd() to figure projection length.
-        return  dotProd(apexToXVect, axisVect)
-                / magn(axisVect)
-                <
-                magn(axisVect);
+        return dotProd(apexToXVect, axisVect) / magn(axisVect) < magn(axisVect);
     }
 
     public static float dotProd(float[] a, float[] b) {
@@ -84,11 +78,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     }
 
     public static float[] dif(float[] a, float[] b) {
-        return (new float[]{
-                a[0] - b[0],
-                a[1] - b[1],
-                a[2] - b[2]
-        });
+        return (new float[] { a[0] - b[0], a[1] - b[1], a[2] - b[2] });
     }
 
     public static float magn(float[] a) {
@@ -103,7 +93,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         lastSteam = this.getSteamShare() > steamUsage;
         if (!isInitialized) {
             this.powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-            ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+            ForgeDirection myDir = ForgeDirection
+                    .getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
             ForgeDirection[] directions = new ForgeDirection[5];
             int i = 0;
             for (ForgeDirection direction : ForgeDirection.values()) {
@@ -117,13 +108,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         }
         super.updateEntity();
         if (!this.worldObj.isRemote) {
-        	if ((this.getSteamShare() < steamUsage) || this.powered) {
-        		this.active = false;
-        	}
-        	else {
-        		this.active = true;
-        		this.decrSteam(steamUsage);
-        	}        	
+            if ((this.getSteamShare() < steamUsage) || this.powered) {
+                this.active = false;
+            } else {
+                this.active = true;
+                this.decrSteam(steamUsage);
+            }
         }
         if (active) {
             if (this.worldObj.isRemote) {
@@ -131,27 +121,45 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
             }
             int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
             ForgeDirection dir = ForgeDirection.getOrientation(meta);
-            float[] M = {this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F};
-            float[] N = {this.xCoord + 0.5F + range * dir.offsetX, this.yCoord + 0.5F + range * dir.offsetY, this.zCoord + 0.5F + range * dir.offsetZ};
-            float theta = (float) Math.PI / 2.0F; //half angle of cone
-            //List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
-            List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - 20, yCoord - 20, zCoord - 20, xCoord + 20, yCoord + 20, zCoord + 20));
+            float[] M = { this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F };
+            float[] N = { this.xCoord + 0.5F + range * dir.offsetX, this.yCoord + 0.5F + range * dir.offsetY,
+                    this.zCoord + 0.5F + range * dir.offsetZ };
+            float theta = (float) Math.PI / 2.0F; // half angle of cone
+            // List entities = worldObj.getEntitiesWithinAABB(Entity.class,
+            // AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ?
+            // dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ?
+            // dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ?
+            // dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ?
+            // dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ?
+            // dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ?
+            // dir.offsetZ * blocksInFront : 0)));
+            List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - 20,
+                    yCoord - 20, zCoord - 20, xCoord + 20, yCoord + 20, zCoord + 20));
             for (int i = 0; i < 200; i++) {
-                float[] X = {(worldObj.rand.nextFloat() * 40.0F) - 20.0F + xCoord, (worldObj.rand.nextFloat() * 40.0F) - 20.0F + yCoord, (worldObj.rand.nextFloat() * 40.0F) - 20.0F + zCoord};
-                if (isLyingInCone(X, M, N, theta) && this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(X[0], X[1], X[2]), Vec3.createVectorHelper(this.xCoord + 0.5F + dir.offsetX, this.yCoord + 0.5F + dir.offsetY, this.zCoord + 0.5F + dir.offsetZ)) == null) {
+                float[] X = { (worldObj.rand.nextFloat() * 40.0F) - 20.0F + xCoord,
+                        (worldObj.rand.nextFloat() * 40.0F) - 20.0F + yCoord,
+                        (worldObj.rand.nextFloat() * 40.0F) - 20.0F + zCoord };
+                if (isLyingInCone(X, M, N, theta)
+                        && this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(X[0], X[1], X[2]),
+                                Vec3.createVectorHelper(this.xCoord + 0.5F + dir.offsetX,
+                                        this.yCoord + 0.5F + dir.offsetY, this.zCoord + 0.5F + dir.offsetZ)) == null) {
                     Vec3 vec = Vec3.createVectorHelper(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
                     vec = vec.normalize();
-                    this.worldObj.spawnParticle("smoke", X[0], X[1], X[2], -vec.xCoord * 0.5F, -vec.yCoord * 0.5F, -vec.zCoord * 0.5F);
+                    this.worldObj.spawnParticle("smoke", X[0], X[1], X[2], -vec.xCoord * 0.5F, -vec.yCoord * 0.5F,
+                            -vec.zCoord * 0.5F);
                 }
             }
 
             for (Object obj : entities) {
                 Entity entity = (Entity) obj;
-                float[] X = {(float) entity.posX, (float) entity.posY, (float) entity.posZ};
+                float[] X = { (float) entity.posX, (float) entity.posY, (float) entity.posZ };
 
-
-                if (isLyingInCone(X, M, N, theta) && this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ), Vec3.createVectorHelper(this.xCoord + 0.5F + dir.offsetX, this.yCoord + 0.5F + dir.offsetY, this.zCoord + 0.5F + dir.offsetZ)) == null) {
-                    if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
+                if (isLyingInCone(X, M, N, theta)
+                        && this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY, entity.posZ),
+                                Vec3.createVectorHelper(this.xCoord + 0.5F + dir.offsetX,
+                                        this.yCoord + 0.5F + dir.offsetY, this.zCoord + 0.5F + dir.offsetZ)) == null) {
+                    if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying
+                            && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                         Vec3 vec = Vec3.createVectorHelper(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
                         vec = vec.normalize();
                         vec.yCoord *= 1;
@@ -170,11 +178,19 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 
             }
 
-            List list = worldObj.selectEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xCoord + dir.offsetX * 0.25F, yCoord + dir.offsetY * 0.25F, zCoord + dir.offsetZ * 0.25F, xCoord + 1.0D + dir.offsetX * 0.25F, yCoord + 1.0D + dir.offsetY * 0.25F, zCoord + 1.0D + dir.offsetZ * 0.25F), IEntitySelector.selectAnything);
+            List list = worldObj.selectEntitiesWithinAABB(EntityItem.class,
+                    AxisAlignedBB.getBoundingBox(xCoord + dir.offsetX * 0.25F, yCoord + dir.offsetY * 0.25F,
+                            zCoord + dir.offsetZ * 0.25F, xCoord + 1.0D + dir.offsetX * 0.25F,
+                            yCoord + 1.0D + dir.offsetY * 0.25F, zCoord + 1.0D + dir.offsetZ * 0.25F),
+                    IEntitySelector.selectAnything);
             if (list.size() > 0) {
                 EntityItem item = (EntityItem) list.get(0);
-                if (this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ) != null && this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ) instanceof ISidedInventory) {
-                    ISidedInventory inv = (ISidedInventory) this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ);
+                if (this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY,
+                        zCoord - dir.offsetZ) != null
+                        && this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY,
+                                zCoord - dir.offsetZ) instanceof ISidedInventory) {
+                    ISidedInventory inv = (ISidedInventory) this.worldObj.getTileEntity(xCoord - dir.offsetX,
+                            yCoord - dir.offsetY, zCoord - dir.offsetZ);
                     int[] access = inv.getAccessibleSlotsFromSide(dir.getOpposite().flag);
                     for (int j = 0; j < access.length; j++) {
                         int i = access[j];
@@ -186,7 +202,11 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                             checkStack2 = item.getEntityItem().copy();
                             checkStack2.stackSize = 1;
                         }
-                        if ((inv.getStackInSlot(i) == null || (item.getEntityItem().areItemStacksEqual(checkStack1, checkStack2) && inv.getStackInSlot(i).stackSize < inv.getStackInSlot(i).getMaxStackSize())) && inv.isItemValidForSlot(i, item.getEntityItem()) && inv.canInsertItem(i, item.getEntityItem(), dir.getOpposite().flag)) {
+                        if ((inv.getStackInSlot(i) == null
+                                || (item.getEntityItem().areItemStacksEqual(checkStack1, checkStack2)
+                                        && inv.getStackInSlot(i).stackSize < inv.getStackInSlot(i).getMaxStackSize()))
+                                && inv.isItemValidForSlot(i, item.getEntityItem())
+                                && inv.canInsertItem(i, item.getEntityItem(), dir.getOpposite().flag)) {
                             ItemStack stack = item.getEntityItem().copy();
                             boolean setDead = true;
                             if (inv.getStackInSlot(i) != null) {
@@ -196,9 +216,15 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                                     int total = inv.getStackInSlot(i).stackSize + stack.stackSize;
                                     stack.stackSize = stack.getMaxStackSize();
                                     total -= stack.getMaxStackSize();
-                                    checkStack2.stackSize = total;
-                                    item.setEntityItemStack(checkStack2);
-                                    //item.getEntityItem().stackSize = (inv.getStackInSlot(i).stackSize + stack.stackSize - stack.getMaxStackSize());
+                                    if (checkStack2 != null) {
+                                        checkStack2.stackSize = total;
+                                        item.setEntityItemStack(checkStack2);
+                                        // item.getEntityItem().stackSize =
+                                        // (inv.getStackInSlot(i).stackSize +
+                                        // stack.stackSize -
+                                        // stack.getMaxStackSize());
+                                    }
+
                                 } else {
                                     stack.stackSize = inv.getStackInSlot(i).stackSize + item.getEntityItem().stackSize;
                                 }
@@ -210,8 +236,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                             break;
                         }
                     }
-                } else if (this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ) != null && this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ) instanceof IInventory) {
-                    IInventory inv = (IInventory) this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY, zCoord - dir.offsetZ);
+                } else if (this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY,
+                        zCoord - dir.offsetZ) != null
+                        && this.worldObj.getTileEntity(xCoord - dir.offsetX, yCoord - dir.offsetY,
+                                zCoord - dir.offsetZ) instanceof IInventory) {
+                    IInventory inv = (IInventory) this.worldObj.getTileEntity(xCoord - dir.offsetX,
+                            yCoord - dir.offsetY, zCoord - dir.offsetZ);
                     for (int i = 0; i < inv.getSizeInventory(); i++) {
                         ItemStack checkStack1 = null;
                         ItemStack checkStack2 = null;
@@ -221,7 +251,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                             checkStack2 = item.getEntityItem().copy();
                             checkStack2.stackSize = 1;
                         }
-                        if ((inv.getStackInSlot(i) == null || (item.getEntityItem().areItemStacksEqual(checkStack1, checkStack2) && inv.getStackInSlot(i).stackSize < inv.getStackInSlot(i).getMaxStackSize())) && inv.isItemValidForSlot(i, item.getEntityItem())) {
+                        if ((inv.getStackInSlot(i) == null
+                                || (item.getEntityItem().areItemStacksEqual(checkStack1, checkStack2)
+                                        && inv.getStackInSlot(i).stackSize < inv.getStackInSlot(i).getMaxStackSize()))
+                                && inv.isItemValidForSlot(i, item.getEntityItem())) {
                             ItemStack stack = item.getEntityItem().copy();
                             boolean setDead = true;
                             if (inv.getStackInSlot(i) != null) {
@@ -233,7 +266,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                                     total -= stack.getMaxStackSize();
                                     checkStack2.stackSize = total;
                                     item.setEntityItemStack(checkStack2);
-                                    //item.getEntityItem().stackSize = (inv.getStackInSlot(i).stackSize + stack.stackSize - stack.getMaxStackSize());
+                                    // item.getEntityItem().stackSize =
+                                    // (inv.getStackInSlot(i).stackSize +
+                                    // stack.stackSize -
+                                    // stack.getMaxStackSize());
                                 } else {
                                     stack.stackSize = inv.getStackInSlot(i).stackSize + item.getEntityItem().stackSize;
                                 }
@@ -250,7 +286,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         }
     }
 
-
     @Override
     public void writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
@@ -266,7 +301,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 
     }
 
-
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound access = super.getDescriptionTag();
@@ -274,7 +308,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         access.setShort("range", (short) this.range);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
     }
-
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
@@ -286,7 +319,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 
     }
 
-
     public void updateRedstoneState(boolean flag) {
         if (flag != powered) {
             this.powered = flag;
@@ -295,8 +327,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO,
+            float yO, float zO) {
         if (player.isSneaking()) {
             switch (range) {
                 case 9:
@@ -324,14 +356,15 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                     range = 9;
                     break;
             }
-            //Steamcraft.log.debug(range);
+            // Steamcraft.log.debug(range);
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             return true;
         } else {
             int steam = this.getSteamShare();
 
             this.getNetwork().split(this, true);
-            ForgeDirection myDir = ForgeDirection.getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+            ForgeDirection myDir = ForgeDirection
+                    .getOrientation(this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
             ForgeDirection[] directions = new ForgeDirection[5];
             int i = 0;
             for (ForgeDirection direction : ForgeDirection.values()) {
@@ -355,7 +388,9 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.resolution.getScaledWidth() / 2 - 8;
         int y = event.resolution.getScaledHeight() / 2 - 8;
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("steamcraft.fan.range") + " " + this.range + " " + StatCollector.translateToLocal("steamcraft.fan.blocks"), x + 15, y + 13, color);
+        Minecraft.getMinecraft().fontRenderer
+                .drawStringWithShadow(StatCollector.translateToLocal("steamcraft.fan.range") + " " + this.range + " "
+                        + StatCollector.translateToLocal("steamcraft.fan.blocks"), x + 15, y + 13, color);
         GL11.glPopMatrix();
     }
 }
