@@ -46,7 +46,13 @@ public class BlockSteamcraftOre extends Block {
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int side, int meta) {
-        int dimensionID = Minecraft.getMinecraft().theWorld.provider.dimensionId;
+    	int dimensionID;
+    	try{
+            dimensionID = Minecraft.getMinecraft().theWorld.provider.dimensionId;
+    	}catch(NullPointerException e){
+    	    return this.icon[0];
+    	}
+
         switch(dimensionID){
         case 0:	//Overworld
         	switch(meta){
