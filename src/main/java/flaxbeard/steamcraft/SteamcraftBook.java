@@ -19,12 +19,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks.Blocks.*;
+import static flaxbeard.steamcraft.init.blocks.OreBlocks.Blocks.*;
+import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.*;
+import static flaxbeard.steamcraft.init.items.CraftingComponentItems.Items.*;
+
 public class SteamcraftBook {
     //Here's a secret for all of you addon devs: Setting the category of a research to the name of an existing research, with a ! at the beginning, will append to that research instead of making its own.
 
     public static void registerBookResearch() {
         if (Config.hasAllCrucial) {
-            registerRecentCreations();
             registerBasics();
             registerFirearms();
             registerCasting();
@@ -40,62 +44,64 @@ public class SteamcraftBook {
     public static void registerBasics() {
         SteamcraftRegistry.addCategory("category.Basics.name");
 
-        SteamcraftRegistry.addResearch("research.Book.name", "category.Basics.name", new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(SteamcraftItems.book)), new BookPageCrafting("", "book"));
-        SteamcraftRegistry.addResearch("research.Ores.name", "category.Basics.name", new BookPageItem("research.Ores.name", "research.Ores.0", new ItemStack(SteamcraftBlocks.steamcraftOre, 1, 0), new ItemStack(SteamcraftBlocks.steamcraftOre, 1, 1)));
-        SteamcraftRegistry.addResearch("research.Bits.name", "category.Basics.name", new BookPageItem("research.Bits.name", "research.Bits.0", new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 0), new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 5)), new BookPageCrafting("", "piston1", "piston2"), new BookPageText("research.Bits.name", "research.Bits.1"), new BookPageCrafting("", "turbine1", "turbine2"));
-
         SteamcraftRegistry.addResearch(
-                "research.SteamSystem.name",
-                "category.Basics.name",
-                new BookPageItem(
-                        "research.SteamSystem.name",
-                        "research.SteamSystem.0",
-                        new ItemStack(SteamcraftBlocks.boiler, 1, 0),
-                        new ItemStack(SteamcraftBlocks.pipe, 1, 0)
-                ),
-                new BookPageText("research.SteamSystem.name", "research.SteamSystem.1"),
-                new BookPageText("research.SteamSystem.name", "research.SteamSystem.2"),
-                new BookPageText("research.SteamSystem.name", "research.SteamSystem.3"),
-                new BookPageText("research.SteamSystem.name", "research.SteamSystem.4"),
-                new BookPageText("research.SteamSystem.name", "research.SteamSystem.5")
+          "research.Book.name",
+          "category.Basics.name",
+          new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK.getItem())),
+          new BookPageCrafting("", "book")
         );
 
-        SteamcraftRegistry.addResearch("research.Camouflage.name", "category.Basics.name", new BookPageItem("research.Camouflage.name", "research.Camouflage.0", new ItemStack(SteamcraftBlocks.pipe), new ItemStack(Blocks.STONEBRICK)), new BookPageText("research.Camouflage.name", "research.Camouflage.1"));
+        SteamcraftRegistry.addResearch(
+          "research.Ores.name",
+          "category.Basics.name",
+          new BookPageItem(
+            "research.Ores.name",
+            "research.Ores.0",
+            OVERWORLD_COPPER_ORE.createItemStack(),
+            OVERWORLD_ZINC_ORE.createItemStack()
+          )
+        );
 
+        SteamcraftRegistry.addResearch(
+          "research.Bits.name",
+          "category.Basics.name",
+          new BookPageItem(
+            "research.Bits.name",
+            "research.Bits.0",
+            BRASS_PISTON.createItemStack(),
+            BRASS_TURBINE.createItemStack()
+          ),
+          new BookPageCrafting("", "piston1", "piston2"),
+          new BookPageText("research.Bits.name", "research.Bits.1"),
+          new BookPageCrafting("", "turbine1", "turbine2")
+        );
 
-    }
+        SteamcraftRegistry.addResearch(
+          "research.SteamSystem.name",
+          "category.Basics.name",
+          new BookPageItem(
+            "research.SteamSystem.name",
+            "research.SteamSystem.0",
+            new ItemStack(BOILER.getBlock(), 1, 0),
+            new ItemStack(PIPE.getBlock(), 1, 0)
+          ),
+          new BookPageText("research.SteamSystem.name", "research.SteamSystem.1"),
+          new BookPageText("research.SteamSystem.name", "research.SteamSystem.2"),
+          new BookPageText("research.SteamSystem.name", "research.SteamSystem.3"),
+          new BookPageText("research.SteamSystem.name", "research.SteamSystem.4"),
+          new BookPageText("research.SteamSystem.name", "research.SteamSystem.5")
+        );
 
-    public static void registerRecentCreations() {
-        //There should be 5 recent creations at all times. Remove the bottom one when you are adding one.
-
-        SteamcraftRegistry.addCategory("category.RecentCreations.name");
-        /*
-        if (Config.enableBlockPlacer){
-            SteamcraftRegistry.addResearch("#research.BlockPlacer.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.apple)));
-        }
-        */
-
-        if (Config.enableRocket && Config.enableRocketConcussive && Config.enableRocketMining && Config.enableEnhancementFastRockets && Config.enableRL){
-            SteamcraftRegistry.addResearch("#research.RocketLauncher.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-        }
-
-        if (Config.enableChargingPad && Config.enableCharger) {
-            SteamcraftRegistry.addResearch("#research.FillingPad.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-        }
-
-        if (Config.enableFirearms) {
-            SteamcraftRegistry.addResearch("#research.Musket.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-            SteamcraftRegistry.addResearch("#research.Blunderbuss.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-            SteamcraftRegistry.addResearch("#research.Pistol.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-        }
-
-        if (Config.enableCanister) {
-            SteamcraftRegistry.addResearch("#research.Canister.name", "category.RecentCreations.name", new BookPageItem("", "", new ItemStack(Items.APPLE)));
-        }
-
-        if (Config.enableGoggles) {
-            SteamcraftRegistry.addResearch("#research.Goggles.name","category.RecentCreations.name",new BookPageItem("","", new ItemStack(Items.APPLE)));
-        }
+        SteamcraftRegistry.addResearch(
+          "research.Camouflage.name",
+          "category.Basics.name",
+          new BookPageItem(
+            "research.Camouflage.name",
+            "research.Camouflage.0",
+            new ItemStack(PIPE.getBlock()),
+            new ItemStack(Blocks.STONEBRICK)),
+          new BookPageText("research.Camouflage.name", "research.Camouflage.1")
+        );
     }
 
     public static void registerFirearms() {
