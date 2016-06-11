@@ -2,9 +2,9 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.tile.SteamReactorTileEntity;
+import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -15,7 +15,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
     private boolean isLeaking = false;
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = new NBTTagCompound();
         access.setBoolean("isLeaking", isLeaking);
         return new SPacketUpdateTileEntity(pos, 1, access);
@@ -47,7 +47,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
             if (getPressure() > 1.1F) {
                 if (getBlockMetadata() < 6) {
                     worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
-                    worldObj.setBlockState(pos, getBlockType().getStateFromMeta(getBlockMetadata() + 10), 2);
+                    worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRuptureDisc.IS_BURST, true));
                 }
             }
             if (getBlockMetadata() > 9) {

@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,12 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.oredict.OreDictionary;
@@ -84,7 +83,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound access) {
+    public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setBoolean("blockBreakerMode", blockBreakerMode);
         access.setBoolean("hasBeenSet", hasBeenSet);
@@ -104,10 +103,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         }
 
         access.setTag("Items", nbttaglist);
+
+        return access;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
@@ -421,6 +422,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         IBlockState partnerState = worldObj.getBlockState(partnerPos);
         Block partner = partnerState.getBlock();
         TileEntity partnerTE = worldObj.getTileEntity(partnerPos);
+        if (partnerTE == null || !(partnerTE instanceof TileEntitySmasher)) {
+            return false;
+        }
         if (partner == ROCK_SMASHER.getBlock() && ((TileEntitySmasher) partnerTE).getSteamShare() > 100 &&
           partner.getMetaFromState(partnerState) == opposite) {
             TileEntitySmasher partnerSmasher = (TileEntitySmasher) partnerTE;
@@ -499,9 +503,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
             Block block = state2.getBlock();
             if (block == ROCK_SMASHER.getBlock() && block.getMetaFromState(state2) == opposite) {
                 TileEntitySmasher smasher = (TileEntitySmasher) world.getTileEntity(pos2);
-                smasher.blockBreakerMode = blockBreakerMode;
-                smasher.hasBeenSet = true;
-                smasher.markForUpdate();
+                if (smasher != null) {
+                    smasher.blockBreakerMode = blockBreakerMode;
+                    smasher.hasBeenSet = true;
+                    smasher.markForUpdate();
+                }
             }
             markForUpdate();
         } else {
@@ -529,11 +535,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
-        String loc = I18n.translateToLocal("steamcraft.smasher." + blockBreakerMode);
+        String loc = I18n.format("steamcraft.smasher." + blockBreakerMode);
         Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(loc, x + 15, y + 13, color);
         GL11.glPopMatrix();
     }
 
+    @SuppressWarnings("unused")
     public static class SmashablesRegistry {
         public final Map<String, ItemStack> oreDicts = new HashMap<>();
         public final Map<ItemStack, ItemStack> registry = new HashMap<>();

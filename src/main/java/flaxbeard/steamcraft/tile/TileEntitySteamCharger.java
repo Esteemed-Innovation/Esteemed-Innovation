@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
@@ -14,12 +13,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.ITextComponent;
 import slimeknights.tconstruct.library.tools.ToolCore;
+
+import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.STEAM_CELL_EMPTY;
+import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.STEAM_CELL_FULL;
 
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
     public int randomDegrees;
@@ -43,17 +44,18 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         if (inventory != null) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             inventory.writeToNBT(nbttagcompound1);
             nbt.setTag("inventory", nbttagcompound1);
         }
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
         if (inventory != null) {
@@ -88,9 +90,10 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         } else {
             if (inventory != null) {
-                if (inventory.getItem() == SteamcraftItems.steamcellEmpty && getSteamShare() > Config.steamCellCapacity) {
+                if (inventory.getItem() == STEAM_CELL_EMPTY.getItem() &&
+                  getSteamShare() > Config.steamCellCapacity) {
                     clear();
-                    dropItem(new ItemStack(SteamcraftItems.steamcellFull));
+                    dropItem(new ItemStack(STEAM_CELL_FULL.getItem()));
                     decrSteam(Config.steamCellCapacity);
                     markForUpdate();
                     return;
@@ -323,7 +326,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack.getItem() instanceof ISteamChargable || stack.getItem() == SteamcraftItems.steamcellEmpty;
+        return stack.getItem() instanceof ISteamChargable || stack.getItem() == STEAM_CELL_EMPTY.getItem();
     }
 
     @Override

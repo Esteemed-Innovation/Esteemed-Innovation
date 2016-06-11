@@ -21,7 +21,7 @@ public class SteamNetworkData extends WorldSavedData {
     }
 
     public static SteamNetworkData get(World world) {
-        SteamNetworkData data = (SteamNetworkData) world.getPerWorldStorage().loadData(SteamNetworkData.class, ID);
+        SteamNetworkData data = (SteamNetworkData) world.getPerWorldStorage().getOrLoadData(SteamNetworkData.class, ID);
         if (data == null) {
             int dimension = world.provider.getDimension();
             data = new SteamNetworkData(dimension);
@@ -38,8 +38,10 @@ public class SteamNetworkData extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt.setInteger("dimID", dimID);
         SteamNetworkRegistry.getInstance().writeToNBT(nbt, dimID);
+
+        return nbt;
     }
 }

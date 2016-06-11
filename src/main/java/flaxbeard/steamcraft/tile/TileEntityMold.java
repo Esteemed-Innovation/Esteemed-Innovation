@@ -8,7 +8,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -23,8 +22,8 @@ public class TileEntityMold extends TileEntity implements ISidedInventory, ITick
     private ItemStack inventory;
 
     @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setBoolean("isOpen", isOpen);
         access.setInteger("changeTicks", changeTicks);
@@ -76,7 +75,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory, ITick
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isOpen", isOpen);
 
@@ -90,6 +89,8 @@ public class TileEntityMold extends TileEntity implements ISidedInventory, ITick
             inventory.writeToNBT(nbttagcompound1);
             nbt.setTag("inventory", nbttagcompound1);
         }
+
+        return nbt;
     }
 
     public boolean canPour() {

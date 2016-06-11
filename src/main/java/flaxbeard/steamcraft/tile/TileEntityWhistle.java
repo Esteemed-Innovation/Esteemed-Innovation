@@ -7,7 +7,6 @@ import flaxbeard.steamcraft.client.audio.SoundTile;
 import flaxbeard.steamcraft.client.audio.Sounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -25,8 +24,8 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
     private int steamTick = 0;
 
     @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setBoolean("isSounding", isSounding);
 

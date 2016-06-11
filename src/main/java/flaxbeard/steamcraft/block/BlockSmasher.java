@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.block;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -17,6 +16,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
@@ -59,8 +59,11 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighbor) {
-        ((TileEntitySmasher) world.getTileEntity(pos)).blockUpdate();
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null && tile instanceof TileEntitySmasher) {
+            ((TileEntitySmasher) tile).blockUpdate();
+        }
     }
 
     @Override

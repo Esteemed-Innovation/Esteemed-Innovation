@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -56,7 +55,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -68,11 +67,13 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
         }
 
         nbt.setTag("liquids", nbttaglist);
+
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
         NBTTagCompound access = new NBTTagCompound();
         NBTTagList nbttaglist = new NBTTagList();
         access.setInteger("tipTicks", tipTicks);

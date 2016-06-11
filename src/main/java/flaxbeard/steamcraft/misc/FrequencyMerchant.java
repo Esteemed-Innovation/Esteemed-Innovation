@@ -18,14 +18,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.event.AnimalTradeEvent;
 import flaxbeard.steamcraft.data.capabilities.animal.IAnimalData;
-import flaxbeard.steamcraft.integration.CrossMod;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import static flaxbeard.steamcraft.init.items.CraftingComponentItems.Items.*;
+import static flaxbeard.steamcraft.init.items.FoodItems.Items.*;
+import static flaxbeard.steamcraft.init.items.MetalItems.Items.BRASS_INGOT;
+import static flaxbeard.steamcraft.init.items.MetalcastingItems.Items.*;
+import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.ITEM_CANISTER;
+import static flaxbeard.steamcraft.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
 
 public class FrequencyMerchant implements IMerchant {
     private final EntityLiving entity;
@@ -80,50 +85,50 @@ public class FrequencyMerchant implements IMerchant {
         saleItems.add(MutablePair.of(new ItemStack(Items.CARROT_ON_A_STICK), 3));
 
         if (entity instanceof EntityWolf) {
-            currencies.add(new ItemStack(SteamcraftItems.steamedBeef));
-            currencies.add(new ItemStack(SteamcraftItems.steamedPorkchop));
-            currencies.add(new ItemStack(SteamcraftItems.steamedChicken));
+            currencies.add(new ItemStack(STEAMED_BEEF.getItem()));
+            currencies.add(new ItemStack(STEAMED_PORKCHOP.getItem()));
+            currencies.add(new ItemStack(STEAMED_CHICKEN.getItem()));
             currencies.add(new ItemStack(Items.BONE));
 
             if (random.nextDouble() < 0.09D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.musketCartridge, 2), 12));
+                saleItems.add(MutablePair.of(new ItemStack(MUSKET_CARTRIDGE.getItem(), 2), 12));
             }
             if (random.nextDouble() < 0.08D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 1), 15));
+                saleItems.add(MutablePair.of(GUN_STOCK.createItemStack(), 15));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 2), 15));
+                saleItems.add(MutablePair.of(IRON_BARREL.createItemStack(), 15));
             }
             if (random.nextDouble() < 0.06D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 3), 15));
+                saleItems.add(MutablePair.of(BLUNDERBUSS_BARREL.createItemStack(), 15));
             }
             if (random.nextDouble() < 0.05D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.steamcraftCrafting, 1, 4), 15));
+                saleItems.add(MutablePair.of(FLINTLOCK.createItemStack(), 15));
             }
             if (random.nextDouble() < 0.04D) {
                 saleItems.add(MutablePair.of(new ItemStack(Items.IRON_SWORD), 20));
             }
         } else if (entity instanceof EntityOcelot) {
-            currencies.add(new ItemStack(SteamcraftItems.steamedFish));
-            currencies.add(new ItemStack(SteamcraftItems.steamedSalmon));
+            currencies.add(new ItemStack(STEAMED_FISH.getItem()));
+            currencies.add(new ItemStack(STEAMED_SALMON.getItem()));
 
             if (random.nextDouble() < 0.09D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.blankMold, 2), 6));
+                saleItems.add(MutablePair.of(new ItemStack(BLANK_MOLD.getItem(), 2), 6));
             }
             if (random.nextDouble() < 0.08D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.ingotMold), 8));
+                saleItems.add(MutablePair.of(new ItemStack(INGOT_MOLD.getItem()), 8));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.plateMold), 8));
+                saleItems.add(MutablePair.of(new ItemStack(PLATE_MOLD.getItem()), 8));
             }
             if (random.nextDouble() < 0.06D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.nuggetMold), 8));
+                saleItems.add(MutablePair.of(new ItemStack(NUGGET_MOLD.getItem()), 8));
             }
             if (random.nextDouble() < 0.05D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.steamcraftIngot, 2, 2), 4));
+                saleItems.add(MutablePair.of(BRASS_INGOT.createItemStack(2), 4));
             }
             if (random.nextDouble() < 0.04D) {
-                saleItems.add(MutablePair.of(new ItemStack(SteamcraftItems.canister), 5));
+                saleItems.add(MutablePair.of(new ItemStack(ITEM_CANISTER.getItem()), 5));
             }
 
         }

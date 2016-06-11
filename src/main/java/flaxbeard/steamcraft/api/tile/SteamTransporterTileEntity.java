@@ -11,7 +11,6 @@ import flaxbeard.steamcraft.block.BlockSteamGauge;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -53,8 +52,8 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
         NBTTagCompound access = new NBTTagCompound();
         if (networkName != null) {
             access.setString("networkName", networkName);
@@ -99,10 +98,12 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         //log.debug("writing STTE to NBT with steam: "+this.steam);
         compound.setInteger("steam", this.steam);
+
+        return compound;
     }
 
     public int getCapacity() {

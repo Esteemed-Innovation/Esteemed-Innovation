@@ -5,7 +5,6 @@ import net.minecraft.util.ITickable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 
 public class TileEntityCreativeTank extends TileEntitySteamTank implements ITickable {
-
     public TileEntityCreativeTank() {
         super();
         this.name = "Creative Tank";

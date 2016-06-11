@@ -9,19 +9,23 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 
 public class BlockRuptureDisc extends BlockContainer {
-    public static final PropertyEnum STATE = PropertyEnum.create("state", BlockRuptureDisc.States.class);
+    public static final PropertyBool IS_BURST = PropertyBool.create("isBurst");
 
     public BlockRuptureDisc() {
         super(Material.IRON);
@@ -37,17 +41,17 @@ public class BlockRuptureDisc extends BlockContainer {
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, STATE);
+        return new BlockStateContainer(this, IS_BURST);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(STATE, States.byMeta(meta));
+        return getDefaultState().withProperty(IS_BURST, false);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((States) state.getValue(STATE)).getID();
+        return state.getValue(IS_BURST) ? 0 : 1;
     }
 
     @Override
@@ -142,58 +146,14 @@ public class BlockRuptureDisc extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        TileEntityRuptureDisc tile = (TileEntityRuptureDisc) world.getTileEntity(x, y, z);
-        if (world.getBlockMetadata(x, y, z) > 9) {
-            if (player.getHeldItem() != null) {
-                if (UtilMisc.doesMatch(player.getHeldItem(), "plateSteamcraftZinc")) {
-                    world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) - 10, 2);
-                    if (!player.capabilities.isCreativeMode) {
-                        player.getCurrentEquippedItem().stackSize -= 1;
-                    }
-                    return true;
-                }
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (state.getValue(IS_BURST) && heldItem != null && UtilMisc.doesMatch(heldItem, "plateSteamcraftZinc")) {
+            world.setBlockState(pos, state.withProperty(IS_BURST, false));
+            if (!player.capabilities.isCreativeMode) {
+                heldItem.stackSize -= 1;
             }
+            return true;
         }
         return false;
-    }
-
-    private enum States implements IStringSerializable {
-        OPEN(0, "open"),
-        CLOSED(1, "closed");
-
-        private int id;
-        private String name;
-
-        private static States[] LOOKUP = new States[values().length];
-
-        static {
-            for (States state : values()) {
-                LOOKUP[state.getID()] = state;
-            }
-        }
-
-        States(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public int getID() {
-            return id;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return getName();
-        }
-
-        public static States byMeta(int meta) {
-            return LOOKUP[meta];
-        }
     }
 }
