@@ -5,25 +5,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldContainer implements IBlockAccess {
-
     IBlockAccess myWorld;
     int allMeta;
-    int allBrightness = -1;
+    int allBrightness;
 
     public WorldContainer(IBlockAccess world, int meta) {
-        this.myWorld = world;
-        this.allMeta = meta;
+        this(world, meta, -1);
     }
 
     public WorldContainer(IBlockAccess world, int meta, int brightness) {
-        this.myWorld = world;
-        this.allMeta = meta;
-        this.allBrightness = brightness;
+        myWorld = world;
+        allMeta = meta;
+        allBrightness = brightness;
     }
 
     @Override
@@ -38,30 +37,13 @@ public class WorldContainer implements IBlockAccess {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
-        return allBrightness != -1 ? allBrightness : myWorld.getLightBrightnessForSkyBlocks(var1, var2, var3, var4);
+    public int getCombinedLight(BlockPos pos, int light) {
+        return allBrightness != -1 ? allBrightness : myWorld.getCombinedLight(pos, light);
     }
 
     @Override
-    public int getBlockMetadata(int var1, int var2, int var3) {
-        return allMeta;
-    }
-
-    @Override
-    public boolean isAirBlock(int var1, int var2, int var3) {
-        return myWorld.isAirBlock(var1, var2, var3);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BiomeGenBase getBiomeGenForCoords(int var1, int var2) {
-        return myWorld.getBiomeGenForCoords(var1, var2);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getHeight() {
-        return myWorld.getHeight();
+    public boolean isAirBlock(BlockPos pos) {
+        return myWorld.isAirBlock(pos);
     }
 
     @Override
@@ -71,12 +53,23 @@ public class WorldContainer implements IBlockAccess {
     }
 
     @Override
-    public int isBlockProvidingPowerTo(int var1, int var2, int var3, int var4) {
-        return myWorld.isBlockProvidingPowerTo(var1, var2, var3, var4);
+    public int getStrongPower(BlockPos pos, EnumFacing facing) {
+        return myWorld.getStrongPower(pos, facing);
     }
 
     @Override
     public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
         return myWorld.isSideSolid(pos, side, _default);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Biome getBiome(BlockPos pos) {
+        return myWorld.getBiome(pos);
+    }
+
+    @Override
+    public WorldType getWorldType() {
+        return myWorld.getWorldType();
     }
 }

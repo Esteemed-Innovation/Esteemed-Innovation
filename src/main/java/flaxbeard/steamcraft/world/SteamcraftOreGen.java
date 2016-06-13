@@ -5,7 +5,6 @@ import flaxbeard.steamcraft.init.blocks.OreBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.pattern.BlockMatcher;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -15,8 +14,12 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-public class SteamcraftOreGen implements IWorldGenerator {
+import static flaxbeard.steamcraft.init.blocks.OreBlocks.Blocks.*;
+import static net.minecraft.init.Blocks.STONE;
+import static net.minecraft.init.Blocks.END_STONE;
+import static net.minecraft.init.Blocks.NETHERRACK;
 
+public class SteamcraftOreGen implements IWorldGenerator {
     //Support for World Generation Manager
     public String getName() {
        return "FlaxbeardsSteamPower";
@@ -53,58 +56,58 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private void generateEnd(World world, Random random, int i, int j) {
         if (Config.genCopperEnd) {
-            WorldGenMinable copper = getCopperOre(Blocks.END_STONE);
+            WorldGenMinable copper = getCopperOre(END_COPPER_ORE.getMetadata(), END_STONE);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincEnd) {
-            WorldGenMinable zinc = getZincOre(Blocks.END_STONE);
+            WorldGenMinable zinc = getZincOre(END_ZINC_ORE.getMetadata(), END_STONE);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
     private void generateSurface(World world, Random random, int i, int j) {
         if (Config.genCopperOverworld) {
-            WorldGenMinable copper = getCopperOre(Blocks.STONE);
+            WorldGenMinable copper = getCopperOre(OVERWORLD_COPPER_ORE.getMetadata(), STONE);
             generateBlocks(world, copper, random, 80, 10, i, j);
         }
 
         if (Config.genZincOverworld) {
-            WorldGenMinable zinc = getZincOre(Blocks.STONE);
+            WorldGenMinable zinc = getZincOre(OVERWORLD_ZINC_ORE.getMetadata(), STONE);
             generateBlocks(world, zinc, random, 75, 10, i, j);
         }
     }
 
     private void generateNether(World world, Random random, int i, int j) {
         if (Config.genCopperNether) {
-            WorldGenMinable copper = getCopperOre(Blocks.NETHERRACK);
+            WorldGenMinable copper = getCopperOre(NETHER_COPPER_ORE.getMetadata(), NETHERRACK);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincNether) {
-            WorldGenMinable zinc = getZincOre(Blocks.NETHERRACK);
+            WorldGenMinable zinc = getZincOre(NETHER_ZINC_ORE.getMetadata(), NETHERRACK);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
     private void generateExtra(World world, Random random, int i, int j) {
         if (Config.genCopperExtras) {
-            WorldGenMinable copper = getCopperOre(Blocks.STONE);
+            WorldGenMinable copper = getCopperOre(OVERWORLD_COPPER_ORE.getMetadata(), STONE);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincExtras) {
-            WorldGenMinable zinc = getZincOre(Blocks.STONE);
+            WorldGenMinable zinc = getZincOre(OVERWORLD_ZINC_ORE.getMetadata(), STONE);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
-    private WorldGenMinable getCopperOre(Block block) {
-        return getOre(0, 10, block);
+    private WorldGenMinable getCopperOre(int meta, Block block) {
+        return getOre(meta, 10, block);
     }
 
-    private WorldGenMinable getZincOre(Block block) {
-        return getOre(1, 7, block);
+    private WorldGenMinable getZincOre(int meta, Block block) {
+        return getOre(meta, 7, block);
     }
 
     private WorldGenMinable getOre(int meta, int count, Block block) {
