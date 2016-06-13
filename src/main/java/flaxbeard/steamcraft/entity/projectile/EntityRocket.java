@@ -91,7 +91,7 @@ public class EntityRocket extends Entity {
         IBlockState state = worldObj.getBlockState(getPosition());
         Block block = worldObj.getBlockState(getPosition()).getBlock();
         if (!worldObj.isRemote && (shootingEntity != null && shootingEntity.isDead ||
-          (block == null || block.isAir(state, worldObj, getPosition())))) {
+          (block.isAir(state, worldObj, getPosition())))) {
             setDead();
         } else {
             super.onUpdate();
@@ -221,7 +221,7 @@ public class EntityRocket extends Entity {
     }
 
     public Explosion newExplosion(World world, Entity entity, double x, double y, double z, float explosionSize, boolean doFire, boolean doSmokeAndGrief) {
-        ExplosionRocket explosion = new ExplosionRocket(world, entity, x, y, z, explosionSize, doSmokeAndGrief);
+        ExplosionRocket explosion = new ExplosionRocket(world, entity, x, y, z, explosionSize, doFire, doSmokeAndGrief);
         explosion.isFlaming = doFire;
         explosion.isSmoking = doSmokeAndGrief;
         explosion.doExplosionA();
@@ -230,8 +230,8 @@ public class EntityRocket extends Entity {
         for (EntityPlayer entityplayer : world.playerEntities) {
             if (entityplayer.getDistanceSq(x, y, z) < 4096.0D) {
                 SPacketExplosion packet = new SPacketExplosion(x, y, z, explosionSize,
-                  explosion.affectedBlockPositions, (Vec3d) explosion.func_77277_b().get(entityplayer));
-                ((EntityPlayerMP) entityplayer).playerNetServerHandler.sendPacket(packet);
+                  explosion.affectedBlockPositions, explosion.getPlayerKnockbackMap().get(entityplayer));
+                ((EntityPlayerMP) entityplayer).connection.sendPacket(packet);
             }
         }
 
@@ -282,18 +282,16 @@ public class EntityRocket extends Entity {
             return false;
         } else {
             setBeenAttacked();
+            Entity entity = source.getEntity();
+            if (entity != null) {
+                Vec3d vec3 = entity.getLookVec();
 
-            if (source.getEntity() != null) {
-                Vec3d vec3 = source.getEntity().getLookVec();
+                motionX = vec3.xCoord;
+                motionY = vec3.yCoord;
+                motionZ = vec3.zCoord;
 
-                if (vec3 != null) {
-                    motionX = vec3.xCoord;
-                    motionY = vec3.yCoord;
-                    motionZ = vec3.zCoord;
-                }
-
-                if (source.getEntity() instanceof EntityLivingBase) {
-                    shootingEntity = (EntityLivingBase) source.getEntity();
+                if (entity instanceof EntityLivingBase) {
+                    shootingEntity = (EntityLivingBase) entity;
                 }
 
                 return true;

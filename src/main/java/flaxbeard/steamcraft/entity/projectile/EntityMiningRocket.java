@@ -5,12 +5,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketExplosion;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class EntityMiningRocket extends EntityRocket {
-
     public EntityMiningRocket(World world) {
         super(world);
     }
@@ -30,8 +28,9 @@ public class EntityMiningRocket extends EntityRocket {
 
         for (EntityPlayer entityplayer : world.playerEntities) {
             if (entityplayer.getDistanceSq(x, y, z) < 4096.0D) {
-                SPacketExplosion packet = new SPacketExplosion(x, y, z, explosionSize, explosion.affectedBlockPositions, (Vec3d) explosion.func_77277_b().get(entityplayer));
-                ((EntityPlayerMP) entityplayer).playerNetServerHandler.sendPacket(packet);
+                SPacketExplosion packet = new SPacketExplosion(x, y, z, explosionSize, explosion.affectedBlockPositions,
+                  explosion.getPlayerKnockbackMap().get(entityplayer));
+                ((EntityPlayerMP) entityplayer).connection.sendPacket(packet);
             }
         }
 
