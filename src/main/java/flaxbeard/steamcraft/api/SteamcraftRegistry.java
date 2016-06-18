@@ -183,7 +183,7 @@ public class SteamcraftRegistry {
      * @param pages The pages in that entry.
      */
     public static void addResearch(String string, String category, BookPage... pages) {
-        if (!category.substring(0, 1).equals("!")) {
+        if (!("!".equals(category.substring(0, 1)))) {
             research.add(MutablePair.of(string, category));
             researchPages.put(string, pages);
             int pageNum = 0;

@@ -45,7 +45,7 @@ public class BookPageItem extends BookPageText {
 
     public static String doLizbeth(String str) {
         String name = Minecraft.getMinecraft().thePlayer.getCommandSenderName();
-        if (name.equals("MasterAbdoTGM50")) {
+        if ("MasterAbdoTGM50".equals(name)) {
             String[] abdoNames = {"Abdo", "Teku", "Tombyn", "Kryse", "Fredje", "Wesley", "Lizbeth"};
             name = abdoNames[abdoName];
         }
@@ -108,7 +108,7 @@ public class BookPageItem extends BookPageText {
     }
 
     private boolean shouldDoLizbeth(int view, EntityClientPlayerMP player) {
-        return ((view != 0 || player.getCommandSenderName().equals("MasterAbdoTGM50")) &&
+        return ((view != 0 || "MasterAbdoTGM50".equals(player.getCommandSenderName())) &&
           Config.easterEggs);
     }
 }

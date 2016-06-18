@@ -141,7 +141,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
           s.equals(slot.getStack().getDisplayName())) || slot != null && slot.getStack() == null) {
             s = "";
         }
-        if (!s.equals("") && canEdit) {
+        if (!"".equals(s) && canEdit) {
             ItemNamePacket packet = new ItemNamePacket(hammer.xCoord, hammer.yCoord, hammer.zCoord, s);
             Steamcraft.channel.sendToServer(packet);
         }
