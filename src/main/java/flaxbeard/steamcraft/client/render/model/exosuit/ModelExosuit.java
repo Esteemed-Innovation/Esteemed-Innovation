@@ -150,7 +150,7 @@ public class ModelExosuit extends ModelBiped {
 
         // Yeti Horns
         if (armor == 0) {
-            yetiHorns = exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.stackTagCompound.getString("plate")).getIdentifier().equals("Yeti");
+            yetiHorns = exosuitArmor.hasPlates(itemStack) && "Yeti".equals(UtilPlates.getPlate(itemStack.stackTagCompound.getString("plate")).getIdentifier());
         } else {
             yetiHorns = false;
         }
@@ -257,7 +257,7 @@ public class ModelExosuit extends ModelBiped {
         penguinNose.showModel = false;
 
         // Begin special additions
-        if (entity instanceof EntityPlayer && entity.getCommandSenderName().equals("joshiejack")) {
+        if (entity instanceof EntityPlayer && "joshiejack".equals(entity.getCommandSenderName())) {
             penguinBody.showModel = true;
             penguinArm1.showModel = true;
             penguinArm2.showModel = true;
@@ -267,7 +267,7 @@ public class ModelExosuit extends ModelBiped {
             this.bipedHead.render(par7);
         }
 
-        if (armor == 0 && entity instanceof EntityPlayer && entity.getCommandSenderName().equals("Succubism")) {
+        if (armor == 0 && entity instanceof EntityPlayer && "Succubism".equals(entity.getCommandSenderName())) {
             this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
             this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
             this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -307,7 +307,7 @@ public class ModelExosuit extends ModelBiped {
             this.bipedLeftLeg.render(par7);
             this.bipedHeadwear.render(par7);
 
-            if (armor == 0 && entity instanceof EntityPlayer && entity.getCommandSenderName().equals("Succubism")) {
+            if (armor == 0 && entity instanceof EntityPlayer && "Succubism".equals(entity.getCommandSenderName())) {
                 this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
                 this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
                 this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
