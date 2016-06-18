@@ -15,6 +15,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SteamcraftBlocks {
 
+    private static final String STEAMCRAFT_BLOCK_BRASS = "steamcraft:blockBrass";
+    private static final String STEAMCRAFT_BLANK_TEXTURE = "steamcraft:blankTexture";
+
     // metals
     public static Block steamcraftOre;
     public static Block blockBrass;
@@ -88,7 +91,7 @@ public class SteamcraftBlocks {
             OreDictionary.registerOre("orePoorZinc", new ItemStack(steamcraftOre, 1, 2));
         }
 
-        blockBrass = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:blockBrass").setBlockTextureName("steamcraft:blockBrass").setHardness(5.0F).setResistance(10.0F);
+        blockBrass = new BlockBeacon(Material.iron).setCreativeTab(Steamcraft.tab).setBlockName(STEAMCRAFT_BLOCK_BRASS).setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setHardness(5.0F).setResistance(10.0F);
         GameRegistry.registerBlock(blockBrass, "blockBrass");
         OreDictionary.registerOre("blockBrass", blockBrass);
 
@@ -162,8 +165,8 @@ public class SteamcraftBlocks {
         }
 
         if (Config.enableFluidSteamConverter) {
-            //fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F).setCreativeTab(Steamcraft.tab);
-            fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName("steamcraft:blockBrass").setResistance(7.5F).setHardness(3.5F);
+            //fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setResistance(7.5F).setHardness(3.5F).setCreativeTab(Steamcraft.tab);
+            fluidSteamConverter = new BlockFluidSteamConverter().setBlockName("steamcraft:fluidSteamConverter").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(fluidSteamConverter, "fluidSteamConverter");
         }
 
@@ -191,54 +194,54 @@ public class SteamcraftBlocks {
         }
 
         if (Config.enableHeater && Config.enablePipe) {
-            heater = new BlockSteamHeater().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:heater").setBlockTextureName("steamcraft:blockBrass").setHardness(3.625F).setResistance(7.5F);
+            heater = new BlockSteamHeater().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:heater").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setHardness(3.625F).setResistance(7.5F);
             GameRegistry.registerBlock(heater, "heater");
         }
 
         if (Config.enableChargingPad && Config.enableCharger) {
-            chargingPad = new BlockChargingPad().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:chargingPad").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+            chargingPad = new BlockChargingPad().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:chargingPad").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setHardness(3.5F);
             GameRegistry.registerBlock(chargingPad, "chargingPad");
         }
 
         if (Config.enableCharger) {
-            charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+            charger = new BlockSteamCharger().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:charger").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setHardness(3.5F);
             GameRegistry.registerBlock(charger, "charger");
         }
 
         if (Config.enableHammer) {
-            hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName("steamcraft:blockBrass").setHardness(3.5F);
+            hammer = new BlockSteamHammer().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:hammer").setBlockTextureName(STEAMCRAFT_BLOCK_BRASS).setHardness(3.5F);
             GameRegistry.registerBlock(hammer, "hammer");
         }
 
         if (Config.enableMortar) {
-            itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+            itemMortar = new BlockItemMortar().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:itemMortar").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
             GameRegistry.registerBlock(itemMortar, "itemMortar");
         }
 
         if (Config.enableThumper) {
-            thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+            thumper = new BlockThumper().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:thumper").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
             GameRegistry.registerBlock(thumper, BlockThumperItem.class, "thumper");
-            thumperDummy = new BlockThumperDummy().setBlockName("steamcraft:thumperDummy").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+            thumperDummy = new BlockThumperDummy().setBlockName("steamcraft:thumperDummy").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
             GameRegistry.registerBlock(thumperDummy, "thumperDummy");
         }
 
         if (Config.enableFan) {
-            fan = new BlockFan().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fan").setResistance(7.5F).setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+            fan = new BlockFan().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:fan").setResistance(7.5F).setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
             GameRegistry.registerBlock(fan, "fan");
         }
 
         if (Config.enableVacuum && Config.enableFan) {
-            vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName("steamcraft:blankTexture").setResistance(7.5F).setHardness(3.5F);
+            vacuum = new BlockVacuum().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:vacuum").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setResistance(7.5F).setHardness(3.5F);
             GameRegistry.registerBlock(vacuum, "vacuum");
         }
         /*
-		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName("steamcraft:blankTexture").setHardness(2.5F);
+		customCrafingTable = new BlockCustomCraftingTable().setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customCraftingTable").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(2.5F);
 		GameRegistry.registerBlock(customCrafingTable, "customCraftingTable");
 
-		customFurnace = new BlockCustomFurnace(true).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		customFurnace = new BlockCustomFurnace(true).setBlockName("steamcraft:customFurnace").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
 		GameRegistry.registerBlock(customFurnace, "customFurnace");
 
-		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName("steamcraft:blankTexture").setHardness(3.5F);
+		customFurnaceOff = new BlockCustomFurnace(false).setCreativeTab(Steamcraft.tab).setBlockName("steamcraft:customFurnace").setBlockTextureName(STEAMCRAFT_BLANK_TEXTURE).setHardness(3.5F);
 		GameRegistry.registerBlock(customFurnaceOff, "customFurnaceOff");
 		*/
     }
