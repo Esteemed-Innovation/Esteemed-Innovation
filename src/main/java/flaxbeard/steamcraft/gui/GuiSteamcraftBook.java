@@ -166,7 +166,7 @@ public class GuiSteamcraftBook extends GuiScreen {
             if (button instanceof GuiButtonSelect) {
                 GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
                 lastIndexPage = currPage;
-                viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
+                viewing = "#".equals(buttonSelect.name.substring(0, 1)) ? buttonSelect.name.substring(1) : buttonSelect.name;
                 currPage = 0;
                 bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(viewing).length / 2F);
                 this.updateButtons();

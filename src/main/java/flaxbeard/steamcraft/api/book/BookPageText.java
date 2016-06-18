@@ -38,7 +38,7 @@ public class BookPageText extends BookPage {
         String stringLeft = I18n.format(text);
         while (stringLeft.contains("<br>")) {
             String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
-            if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+            if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || "MasterAbdoTGM50".equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName()) && Config.easterEggs)) {
                 output = BookPageItem.doLizbeth(output);
             }
             fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
@@ -48,7 +48,7 @@ public class BookPageText extends BookPage {
 
         }
         String output = stringLeft;
-        if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || Minecraft.getMinecraft().thePlayer.getCommandSenderName().equals("MasterAbdoTGM50")) && Config.easterEggs) {
+        if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 || "MasterAbdoTGM50".equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName()) && Config.easterEggs)) {
             output = BookPageItem.doLizbeth(output);
         }
         fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
