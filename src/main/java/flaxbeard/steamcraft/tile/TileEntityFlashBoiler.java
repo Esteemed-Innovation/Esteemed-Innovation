@@ -144,10 +144,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound access) {
-        super.readFromNBT(access);
-        this.frontSide = access.getInteger("frontSide");
-        NBTTagList nbttaglist = (NBTTagList) access.getTag("Items");
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.frontSide = nbt.getInteger("frontSide");
+        NBTTagList nbttaglist = (NBTTagList) nbt.getTag("Items");
         this.furnaceItemStacks = new ItemStack[2];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
@@ -159,35 +159,35 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             }
         }
 
-        this.furnaceBurnTime = access.getShort("BurnTime");
-        this.furnaceCookTime = access.getShort("CookTime");
-        this.currentItemBurnTime = access.getShort("cIBT");
+        this.furnaceBurnTime = nbt.getShort("BurnTime");
+        this.furnaceCookTime = nbt.getShort("CookTime");
+        this.currentItemBurnTime = nbt.getShort("cIBT");
 
-        if (access.hasKey("CustomName")) {
-            this.field_145958_o = access.getString("CustomName");
+        if (nbt.hasKey("CustomName")) {
+            this.field_145958_o = nbt.getString("CustomName");
         }
 
-        if (access.hasKey("water")) {
-            this.myTank.setFluid(new FluidStack(FluidRegistry.WATER, access.getShort("water")));
+        if (nbt.hasKey("water")) {
+            this.myTank.setFluid(new FluidStack(FluidRegistry.WATER, nbt.getShort("water")));
         }
 
-        if (access.hasKey("heat")) {
-            this.heat = access.getShort("heat");
+        if (nbt.hasKey("heat")) {
+            this.heat = nbt.getShort("heat");
         }
         // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound access) {
-        super.writeToNBT(access);
-        access.setInteger("frontSide", this.frontSide);
-        access.setShort("BurnTime", (short) this.furnaceBurnTime);
-        access.setShort("water", (short) myTank.getFluidAmount());
-        access.setShort("heat", (short) this.heat);
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setInteger("frontSide", this.frontSide);
+        nbt.setShort("BurnTime", (short) this.furnaceBurnTime);
+        nbt.setShort("water", (short) myTank.getFluidAmount());
+        nbt.setShort("heat", (short) this.heat);
 
-        access.setShort("CookTime", (short) this.furnaceCookTime);
-        access.setShort("cIBT", (short) this.currentItemBurnTime);
+        nbt.setShort("CookTime", (short) this.furnaceCookTime);
+        nbt.setShort("cIBT", (short) this.currentItemBurnTime);
 
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -200,10 +200,10 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             }
         }
 
-        access.setTag("Items", nbttaglist);
+        nbt.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName()) {
-            access.setString("CustomName", this.field_145958_o);
+            nbt.setString("CustomName", this.field_145958_o);
         }
     }
 
@@ -630,8 +630,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : var1.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
     }
 
     @Override

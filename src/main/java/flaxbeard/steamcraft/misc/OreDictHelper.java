@@ -20,6 +20,9 @@ public class OreDictHelper {
     public static HashMap<MutablePair<Item, Integer>, String> gems = new HashMap<>();
     public static ArrayList<MutablePair<Item, Integer>> sticks = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> logs = new ArrayList<>();
+    public static ArrayList<Item> slabWoods = new ArrayList<>();
+    public static ArrayList<Item> blockCoals = new ArrayList<>();
+    public static ArrayList<Item> saplings = new ArrayList<>();
 
     public static ArrayList<MutablePair<Item, Integer>> plateSteamcraftIrons = new ArrayList<>();
 
@@ -60,6 +63,9 @@ public class OreDictHelper {
 
         if (name.startsWith("block")) {
             blocks.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
+            if (name.endsWith("Coal")) {
+                blockCoals.add(stack.getItem());
+            }
         }
 
         if (name.startsWith("gem")) {
@@ -76,6 +82,14 @@ public class OreDictHelper {
 
         if (name.equals("plateSteamcraftIron")) {
             plateSteamcraftIrons.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+        }
+
+        if (name.equals("slabWood")) {
+            slabWoods.add(stack.getItem());
+        }
+
+        if (name.equals("treeSapling")) {
+            saplings.add(stack.getItem());
         }
     }
 
