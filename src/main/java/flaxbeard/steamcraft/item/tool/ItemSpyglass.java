@@ -1,18 +1,21 @@
 package flaxbeard.steamcraft.item.tool;
 
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
+import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemSpyglass extends Item implements IEnhancementFirearm {
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-        return par1ItemStack;
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+        player.setActiveHand(hand);
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -26,12 +29,8 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-    }
-
-    @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == SteamcraftItems.musket;
+        return stack.getItem() == FirearmItems.Items.MUSKET.getItem();
     }
 
     @Override

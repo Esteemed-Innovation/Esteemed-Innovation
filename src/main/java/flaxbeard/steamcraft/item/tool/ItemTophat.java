@@ -5,6 +5,7 @@ import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.ModelTophat;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,24 +33,25 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
         emerald = isEmerald;
     }
 
-    public void onCreated(ItemStack me, World p_77622_2_, EntityPlayer player) {
-        if (player.getDisplayName() == "Flaxbeard" || player.getDisplayName() == "ForgeDevName") {
+    public void onCreated(ItemStack me, World world, EntityPlayer player) {
+        String name = player.getDisplayName().getFormattedText();
+        if ("Flaxbeard".equals(name) || "ForgeDevName".equals(name)) {
             me.setTagCompound(new NBTTagCompound());
-            me.stackTagCompound.setBoolean("Flaxbeard", true);
+            me.getTagCompound().setBoolean("Flaxbeard", true);
         }
     }
 
     @Override
     public EnumRarity getRarity(ItemStack me) {
-        if (me.hasTagCompound() && me.stackTagCompound.hasKey("Flaxbeard")) {
-            return EnumRarity.epic;
+        if (me.hasTagCompound() && me.getTagCompound().hasKey("Flaxbeard")) {
+            return EnumRarity.EPIC;
         }
         return super.getRarity(me);
     }
 
     @Override
     public String getUnlocalizedName(ItemStack me) {
-        if (me.hasTagCompound() && me.stackTagCompound.hasKey("Flaxbeard")) {
+        if (me.hasTagCompound() && me.getTagCompound().hasKey("Flaxbeard")) {
             return "item.steamcraft:kek";
         }
         return super.getUnlocalizedName(me);
@@ -59,10 +62,9 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
         return emerald ? "steamcraft:textures/models/armor/tophatemerald.png" : "steamcraft:textures/models/armor/tophat.png";
     }
 
-
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.isItemEqual(new ItemStack(Items.leather)) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return par2ItemStack.isItemEqual(new ItemStack(Items.LEATHER)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     @Override
@@ -96,8 +98,8 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
         if (modelTophat == null)
             modelTophat = new ModelTophat();
 
-        if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("level")) {
-            modelTophat.level = itemStack.stackTagCompound.getInteger("level");
+        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("level")) {
+            modelTophat.level = itemStack.getTagCompound().getInteger("level");
         }
 
         return modelTophat;
@@ -109,12 +111,13 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     }
 
     @Override
-    public void addInformation(ItemStack me, EntityPlayer player, List list, boolean par4) {
+    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean par4) {
         super.addInformation(me, player, list, par4);
         if (me.hasTagCompound()) {
-            if (me.stackTagCompound.hasKey("level")) {
-                int level = me.stackTagCompound.getInteger("level");
-                list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("steamcraft.exosuit.level") + " " + level);
+            if (me.getTagCompound().hasKey("level")) {
+                int level = me.getTagCompound().getInteger("level");
+                // TODO: Proper string formatting.
+                list.add(TextFormatting.GREEN + I18n.format("steamcraft.exosuit.level") + " " + level);
             }
         }
     }

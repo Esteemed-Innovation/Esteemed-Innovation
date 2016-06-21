@@ -85,10 +85,10 @@ public class ArmorItems implements IInitCategory {
     }
 
     public enum Materials {
-        EXOSUIT(EnumHelper.addArmorMaterial("EXOSUIT", Steamcraft.MOD_ID + ":exo", 15, new int[]{2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC)),
-        GILDED(EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD)),
-        BRASS(EnumHelper.addArmorMaterial("BRASS", Steamcraft.MOD_ID + ":brass", 11, new int[]{2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON)),
-        MONOCLE(EnumHelper.addArmorMaterial("MONOCLE", Steamcraft.MOD_ID + ":monacle", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER));
+        EXOSUIT(EnumHelper.addArmorMaterial("EXOSUIT", Steamcraft.MOD_ID + ":exo", 15, new int[]{2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F)),
+        GILDED(EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F)),
+        BRASS(EnumHelper.addArmorMaterial("BRASS", Steamcraft.MOD_ID + ":brass", 11, new int[]{2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F)),
+        MONOCLE(EnumHelper.addArmorMaterial("MONOCLE", Steamcraft.MOD_ID + ":monacle", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F));
 
         private ItemArmor.ArmorMaterial material;
 

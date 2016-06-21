@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.item.tool.steam;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     public String getInformation(ItemStack self, ItemStack tool) {
         DrillHeadMaterial mat = DrillHeadMaterial.materials.get(getMyMaterial(self));
         String name = mat.locName;
-        return StatCollector.canTranslate(name) ? StatCollector.translateToLocal(name) : mat.materialName;
+        return I18n.hasKey(name) ? I18n.format(name) : mat.materialName;
     }
 
     @SuppressWarnings("unchecked")

@@ -1,7 +1,9 @@
 package flaxbeard.steamcraft.item.tool.steam;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.MutablePair;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
@@ -23,25 +25,21 @@ public class SteamToolHelper {
      * The same as getInformation(ArrayList, SteamToolSlot), but relies on itemstacks instead of ISteamToolUpgrades
      * @param upgrades The ItemStacks that are being tested against; see #getUpgradeStacks
      * @param redSlot The slot that should be red. See getInformation.
-     * @return The strings, or null if the upgrades were null.
+     * @return The strings. Will return an empty array if there are no upgrades or strings.
      */
     public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot, ItemStack tool) {
         if (upgrades == null) {
-            return null;
+            return new ArrayList<>();
         }
 
         ArrayList<String> strings = new ArrayList<>();
 
         for (ItemStack stack : upgrades) {
             ISteamToolUpgrade upgrade = (ISteamToolUpgrade) stack.getItem();
-            EnumChatFormatting format = upgrade.getToolSlot() == redSlot ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GREEN;
+            TextFormatting format = upgrade.getToolSlot() == redSlot ? TextFormatting.RED : TextFormatting.DARK_GREEN;
             String info = upgrade.getInformation(stack, tool);
             String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;
-            strings.add(format + "" + StatCollector.translateToLocal(toAdd));
-        }
-
-        if (strings.isEmpty()) {
-            return null;
+            strings.add(format + "" + I18n.format(toAdd));
         }
 
         return strings;
@@ -58,16 +56,16 @@ public class SteamToolHelper {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
-        if (!me.stackTagCompound.hasKey("upgrades")) {
-            me.stackTagCompound.setTag("upgrades", new NBTTagCompound());
+        if (!me.getTagCompound().hasKey("upgrades")) {
+            me.getTagCompound().setTag("upgrades", new NBTTagCompound());
         }
-        if (me.stackTagCompound.getCompoundTag("upgrades").hasKey(Integer.toString(slot))) {
-            me.stackTagCompound.getCompoundTag("upgrades").removeTag(Integer.toString(slot));
+        if (me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(slot))) {
+            me.getTagCompound().getCompoundTag("upgrades").removeTag(Integer.toString(slot));
         }
         NBTTagCompound stc = new NBTTagCompound();
         if (stack != null) {
             stack.writeToNBT(stc);
-            me.stackTagCompound.getCompoundTag("upgrades").setTag(Integer.toString(slot), stc);
+            me.getTagCompound().getCompoundTag("upgrades").setTag(Integer.toString(slot), stc);
         }
     }
 
