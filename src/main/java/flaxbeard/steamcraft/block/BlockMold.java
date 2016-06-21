@@ -1,108 +1,45 @@
 package flaxbeard.steamcraft.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.tile.TileEntityMold;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.Random;
 
 public class BlockMold extends BlockContainer implements IWrenchable {
-    private static float px = (1.0F / 16.0F);
-    private final Random rand = new Random();
-    public IIcon blank;
-
+    private static final float px = (1.0F / 16.0F);
+    public static PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockMold() {
-        super(Material.rock);
+        super(Material.ROCK);
         setHardness(3.5F);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntityMold tileentitymold = (TileEntityMold) world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntityMold tileentitymold = (TileEntityMold) world.getTileEntity(pos);
 
         if (tileentitymold != null) {
-            for (int i1 = 0; i1 < tileentitymold.getSizeInventory(); ++i1) {
-                ItemStack itemstack = tileentitymold.getStackInSlot(i1);
+            InventoryHelper.dropInventoryItems(world, pos, tileentitymold);
 
-                if (itemstack != null) {
-                    float f = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
-
-                    while (itemstack.stackSize > 0) {
-                        int j1 = this.rand.nextInt(21) + 10;
-
-                        if (j1 > itemstack.stackSize) {
-                            j1 = itemstack.stackSize;
-                        }
-
-                        itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
-
-                        if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                        }
-
-                        float f3 = 0.05F;
-                        entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-                        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        world.spawnEntityInWorld(entityitem);
-                    }
-                }
-                itemstack = tileentitymold.mold[0];
-
-                if (itemstack != null) {
-                    float f = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
-
-                    while (itemstack.stackSize > 0) {
-                        int j1 = this.rand.nextInt(21) + 10;
-
-                        if (j1 > itemstack.stackSize) {
-                            j1 = itemstack.stackSize;
-                        }
-
-                        itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
-
-                        if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                        }
-
-                        float f3 = 0.05F;
-                        entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-                        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        world.spawnEntityInWorld(entityitem);
-                    }
-                }
-            }
-
-            world.func_147453_f(x, y, z, block);
+            world.updateComparatorOutputLevel(pos, state.getBlock());
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 
 
@@ -112,45 +49,27 @@ public class BlockMold extends BlockContainer implements IWrenchable {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
-        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        world.setBlockMetadataWithNotify(x, y, z, l, 2);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return blank;
-
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, elb.getHorizontalFacing().getOpposite()), 2);
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        return new AxisAlignedBB(x + 2 * px, y + 0.0F, z + 2 * px, x + 1.0F - 2 * px, y + 1.0F - 8 * px, z + 1.0F - 2 * px);
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess iba, int x, int y, int z) {
-        setBlockBounds(2 * px, 0.0F, 2 * px, 1.0F - 2 * px, 1.0F - 8 * px, 1.0F - 2 * px);
-        super.setBlockBoundsBasedOnState(iba, x, y, z);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-        return AxisAlignedBB.getBoundingBox(i + 2 * px, j + 0.0F, k + 2 * px, i + 1.0F - 2 * px, j + 1.0F - 8 * px, k + 1.0F - 2 * px);
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
-        TileEntityMold tile = (TileEntityMold) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        TileEntityMold tile = (TileEntityMold) world.getTileEntity(pos);
+        if (tile == null) {
+            return false;
+        }
         boolean editingMold = false;
-        if (player.getHeldItem() != null) {
-            if (player.getHeldItem().getItem() instanceof ICrucibleMold) {
+        if (heldItem != null) {
+            if (heldItem.getItem() instanceof ICrucibleMold) {
                 editingMold = true;
             }
         }
@@ -159,85 +78,82 @@ public class BlockMold extends BlockContainer implements IWrenchable {
         }
         if (editingMold) {
             if (tile.isOpen) {
-                if (tile.mold[0] != null) {
+                if (tile.mold != null) {
                     if (!world.isRemote) {
                         if (!player.capabilities.isCreativeMode) {
-                            tile.dropItem(tile.mold[0]);
+                            tile.dropItem(tile.mold);
                         }
                     }
-                    tile.mold[0] = null;
-                    world.markBlockForUpdate(x, y, z);
-
+                    tile.mold = null;
+                    // markDirty
                 }
-                if (player.getHeldItem() != null) {
-                    if (player.getHeldItem().getItem() instanceof ICrucibleMold) {
-                        tile.mold[0] = player.getHeldItem();
+                if (heldItem != null) {
+                    if (heldItem.getItem() instanceof ICrucibleMold) {
+                        tile.mold = heldItem;
                         if (!player.capabilities.isCreativeMode) {
                             player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
                         }
-                        world.markBlockForUpdate(x, y, z);
+                        // markDirty
 
                     }
                 }
             }
         } else {
-            if (tile.changeTicks == 0 && (player.getHeldItem() == null || !(player.getHeldItem().getItem() instanceof ItemBlock))) {
+            if (tile.changeTicks == 0 && (heldItem == null || !(heldItem.getItem() instanceof ItemBlock))) {
                 tile.isOpen = !tile.isOpen;
                 tile.changeTicks = 20;
-                world.markBlockForUpdate(x, y, z);
-
+                // markDirty
             }
-
         }
 
         return false;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister ir) {
-        this.blank = ir.registerIcon("steamcraft:blankTexture");
-    }
-
-    @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (side != 0 && side != 1) {
-            int output = meta;
-            switch (side) {
-                case 2:
-                    output = 2;
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
+            EnumFacing output = facing;
+            switch (facing) {
+                case NORTH: {
+                    output = EnumFacing.NORTH;
                     break;
-                case 3:
-                    output = 0;
+                }
+                case SOUTH: {
+                    output = EnumFacing.DOWN;
                     break;
-                case 4:
-                    output = 1;
+                }
+                case WEST: {
+                    output = EnumFacing.UP;
                     break;
-                case 5:
-                    output = 3;
+                }
+                case EAST: {
+                    output = EnumFacing.SOUTH;
                     break;
-            }
-            if (output == meta && side > 1 && side < 6) {
-                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                    case 2:
-                        output = 2;
-                        break;
-                    case 3:
-                        output = 0;
-                        break;
-                    case 4:
-                        output = 1;
-                        break;
-                    case 5:
-                        output = 3;
-                        break;
                 }
             }
-            world.setBlockMetadataWithNotify(x, y, z, output, 2);
+            if (output == facing && facing.getIndex() > 1 && facing.getIndex() < 6) {
+                switch (facing.getOpposite()) {
+                    case NORTH: {
+                        output = EnumFacing.NORTH;
+                        break;
+                    }
+                    case SOUTH: {
+                        output = EnumFacing.DOWN;
+                        break;
+                    }
+                    case WEST: {
+                        output = EnumFacing.UP;
+                        break;
+                    }
+                    case EAST: {
+                        output = EnumFacing.SOUTH;
+                        break;
+                    }
+                }
+            }
+            world.setBlockState(pos, state.withProperty(FACING, output), 2);
             return true;
         }
         return false;
     }
-
 }
