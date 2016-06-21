@@ -2,13 +2,16 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.block.BlockChargingPad;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class TileEntityChargingPad extends SteamTransporterTileEntity implements ISteamTransporter {
-
     public EntityLivingBase target;
     public int extendTicks;
     public boolean descending = false;
@@ -24,132 +26,135 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
     public boolean lastDescending = false;
 
     public TileEntityChargingPad() {
-        super(new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.DOWN});
-        this.addSidesToGaugeBlacklist(new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.DOWN});
+        super(new EnumFacing[] { EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.DOWN });
+        addSidesToGaugeBlacklist(new EnumFacing[] { EnumFacing.UP, EnumFacing.DOWN });
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 2.5F, this.zCoord + 1);
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        return new AxisAlignedBB(x, y, z, x + 1, y + 2.5F, z + 1);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
-        access.setBoolean("descending", this.descending);
-        if (this.target != null) {
+        access.setBoolean("descending", descending);
+        if (target != null) {
             access.setInteger("target", target.getEntityId());
         }
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.descending = access.getBoolean("descending");
-        if (access.hasKey("target")) {
-            this.target = (EntityLivingBase) this.worldObj.getEntityByID(access.getInteger("target"));
-        } else {
-            this.target = null;
-        }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        NBTTagCompound access = pkt.getNbtCompound();
+        descending = access.getBoolean("descending");
+        target = access.hasKey("target") ? (EntityLivingBase) worldObj.getEntityByID(access.getInteger("target")) : null;
+        markForUpdate();
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
-        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+    public void update() {
+        super.update();
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockChargingPad.FACING);
 
-        switch (meta) {
-            case 2:
+        switch (facing) {
+            case NORTH: {
                 rotation = 180;
                 break;
-            case 3:
+            }
+            case SOUTH: {
                 rotation = 0;
                 break;
-            case 4:
+            }
+            case WEST: {
                 rotation = 270;
                 break;
-            case 5:
+            }
+            case EAST: {
                 rotation = 90;
                 break;
+            }
         }
 
-        if (!this.worldObj.isRemote) {
+        if (!worldObj.isRemote) {
             EntityLivingBase entity = null;
-            List list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord + 0.25F, yCoord, zCoord + 0.25F, xCoord + 0.75F, yCoord + 2, zCoord + 0.75F));
-            for (Object obj : list) {
+            List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
+            for (EntityLivingBase ent : list) {
                 if (entity == null) {
-                    entity = (EntityLivingBase) obj;
+                    entity = ent;
                 }
-                if (obj == target) {
-                    entity = (EntityLivingBase) obj;
+                if (ent == target) {
+                    entity = ent;
                 }
             }
-            if (entity != null && entity.getEquipmentInSlot(3) != null && entity.getEquipmentInSlot(3).getItem() instanceof ItemExosuitArmor && entity == target && Math.abs(entity.posX - (this.xCoord + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (this.zCoord + 0.5F)) <= 0.06F) {
 
-                ItemStack armor = entity.getEquipmentInSlot(3);
-                ItemExosuitArmor armorItem = (ItemExosuitArmor) armor.getItem();
-                if (armorItem.getStackInSlot(armor, 5) != null) {
+            if (entity != null) {
+                ItemStack equipment = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor && entity == target &&
+                  Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.06F) {
+                    ItemExosuitArmor armorItem = (ItemExosuitArmor) equipment.getItem();
+                    if (armorItem.getStackInSlot(equipment, 5) != null) {
+                        if (extendTicks < 40) {
+                            extendTicks++;
+                        }
+                        // && (extendTicks < 14 || Math.abs(entity.renderYawOffset%360 + this.rotation) <= 60 || Math.abs((360-entity.renderYawOffset)%360 + this.rotation) <= 60
 
-
-                    if (extendTicks < 40) {
-                        extendTicks++;
-                    }
-                    // && (extendTicks < 14 || Math.abs(entity.renderYawOffset%360 + this.rotation) <= 60 || Math.abs((360-entity.renderYawOffset)%360 + this.rotation) <= 60
-
-                    if (extendTicks == 40) {
-                        if (armor.stackTagCompound.getInteger("steamFill") < armor.stackTagCompound.getInteger("maxFill")) {
-                            int i = 0;
-                            while (i < 39 && (this.getSteamShare() > armorItem.steamPerDurability() && armor.stackTagCompound.getInteger("steamFill") < armor.stackTagCompound.getInteger("maxFill"))) {
-                                this.decrSteam(armorItem.steamPerDurability());
-                                armor.stackTagCompound.setInteger("steamFill", armor.stackTagCompound.getInteger("steamFill") + 1);
-                                i++;
+                        if (extendTicks == 40 && equipment.hasTagCompound()) {
+                            NBTTagCompound compound = equipment.getTagCompound();
+                            if (compound.getInteger("steamFill") < compound.getInteger("maxFill")) {
+                                int i = 0;
+                                while (i < 39 && (this.getSteamShare() > armorItem.steamPerDurability() &&
+                                  compound.getInteger("steamFill") < compound.getInteger("maxFill"))) {
+                                    decrSteam(armorItem.steamPerDurability());
+                                    compound.setInteger("steamFill", compound.getInteger("steamFill") + 1);
+                                    i++;
+                                }
+                                if (entity instanceof EntityPlayer) {
+                                    ((EntityPlayer) entity).inventoryContainer.detectAndSendChanges();
+                                }
                             }
-                            if (entity instanceof EntityPlayer) {
-                                ((EntityPlayer) entity).inventoryContainer.detectAndSendChanges();
+                        }
+
+                        descending = false;
+                    } else {
+                        descending = true;
+                    }
+                } else if (entity == target) {
+                    if (!(Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F)) {
+                        if (entity.posX > pos.getX() + 0.5F) {
+                            if (Math.abs(entity.motionX) <= 0.1F) {
+                                entity.motionX -= 0.01F;
+                            }
+                        }
+                        if (entity.posX < pos.getX() + 0.5F) {
+                            if (Math.abs(entity.motionX) <= 0.1F) {
+                                entity.motionX += 0.01F;
+                            }
+                        }
+                    }
+                    if (!(Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.05F)) {
+                        if (entity.posZ > pos.getZ() + 0.5F) {
+                            if (Math.abs(entity.motionZ) <= 0.1F) {
+                                entity.motionZ -= 0.01F;
+                            }
+                        }
+                        if (entity.posZ < pos.getZ() + 0.5F) {
+                            if (Math.abs(entity.motionZ) <= 0.1F) {
+                                entity.motionZ += 0.01F;
                             }
                         }
                     }
 
-
-                    descending = false;
-                } else {
                     descending = true;
                 }
-
-            } else if (entity != null && entity == target) {
-                if (!(Math.abs(entity.posX - (this.xCoord + 0.5F)) <= 0.05F)) {
-                    if (entity.posX > this.xCoord + 0.5F) {
-                        if (Math.abs(entity.motionX) <= 0.1F) {
-                            entity.motionX -= 0.01F;
-                        }
-                    }
-                    if (entity.posX < this.xCoord + 0.5F) {
-                        if (Math.abs(entity.motionX) <= 0.1F) {
-                            entity.motionX += 0.01F;
-                        }
-                    }
-                }
-                if (!(Math.abs(entity.posZ - (this.zCoord + 0.5F)) <= 0.05F)) {
-                    if (entity.posZ > this.zCoord + 0.5F) {
-                        if (Math.abs(entity.motionZ) <= 0.1F) {
-                            entity.motionZ -= 0.01F;
-                        }
-                    }
-                    if (entity.posZ < this.zCoord + 0.5F) {
-                        if (Math.abs(entity.motionZ) <= 0.1F) {
-                            entity.motionZ += 0.01F;
-                        }
-                    }
-                }
-
-                descending = true;
-
             } else {
                 descending = true;
             }
@@ -175,24 +180,23 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
                 extendTicks -= 1;
             }
             if (lastDescending != descending) {
-                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                markForUpdate();
                 lastDescending = descending;
             }
 
-            if (entity != null && entity == target && this.extendTicks >= 15) {
-                if (entity.renderYawOffset % 360 != -this.rotation) {
-                    entity.renderYawOffset = -this.rotation;
+            if (entity != null && entity == target && extendTicks >= 15) {
+                if (entity.renderYawOffset % 360 != -rotation) {
+                    entity.renderYawOffset = -rotation;
                 }
             }
         } else {
-
             if (extendTicks < 40 && !descending) {
                 extendTicks++;
             } else if (extendTicks > 0 && descending) {
                 extendTicks--;
             }
             EntityLivingBase entity = null;
-            List list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord + 0.25F, yCoord, zCoord + 0.25F, xCoord + 0.75F, yCoord + 2, zCoord + 0.75F));
+            List list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
             for (Object obj : list) {
                 if (entity == null) {
                     entity = (EntityLivingBase) obj;
@@ -201,35 +205,35 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
                     entity = (EntityLivingBase) obj;
                 }
             }
-            if (entity != null && !(Math.abs(entity.posX - (this.xCoord + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (this.zCoord + 0.5F)) <= 0.06F)) {
-                if (!(Math.abs(entity.posX - (this.xCoord + 0.5F)) <= 0.05F)) {
-                    if (entity.posX > this.xCoord + 0.5F) {
+            if (entity != null && !(Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.06F)) {
+                if (!(Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F)) {
+                    if (entity.posX > pos.getX() + 0.5F) {
                         if (Math.abs(entity.motionX) <= 0.1F) {
                             entity.motionX -= 0.01F;
                         }
                     }
-                    if (entity.posX < this.xCoord + 0.5F) {
+                    if (entity.posX < pos.getX() + 0.5F) {
                         if (Math.abs(entity.motionX) <= 0.1F) {
                             entity.motionX += 0.01F;
                         }
                     }
                 }
-                if (!(Math.abs(entity.posZ - (this.zCoord + 0.5F)) <= 0.05F)) {
-                    if (entity.posZ > this.zCoord + 0.5F) {
+                if (!(Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.05F)) {
+                    if (entity.posZ > pos.getZ() + 0.5F) {
                         if (Math.abs(entity.motionZ) <= 0.1F) {
                             entity.motionZ -= 0.01F;
                         }
                     }
-                    if (entity.posZ < this.zCoord + 0.5F) {
+                    if (entity.posZ < pos.getZ() + 0.5F) {
                         if (Math.abs(entity.motionZ) <= 0.1F) {
                             entity.motionZ += 0.01F;
                         }
                     }
                 }
             }
-            if (entity != null && entity == target && this.extendTicks >= 15) {
-                if (entity.renderYawOffset % 360 != -this.rotation) {
-                    entity.renderYawOffset = -this.rotation;
+            if (entity != null && entity == target && extendTicks >= 15) {
+                if (entity.renderYawOffset % 360 != -rotation) {
+                    entity.renderYawOffset = -rotation;
                 }
             }
         }

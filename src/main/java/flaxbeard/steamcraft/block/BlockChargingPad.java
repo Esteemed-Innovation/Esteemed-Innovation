@@ -3,114 +3,81 @@ package flaxbeard.steamcraft.block;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityChargingPad;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockChargingPad extends BlockSteamTransporter implements IWrenchable {
-    private IIcon[] top = new IIcon[4];
+    public static PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockChargingPad() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(3.5F);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-        if (l == 0) {
-            world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-        }
-
-        if (l == 1) {
-            world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-        }
-
-        if (l == 2) {
-            world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-        }
-
-        if (l == 3) {
-            world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-        }
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, entity.getHorizontalFacing().getOpposite()));
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        top[0] = register.registerIcon("steamcraft:feetIndent2");
-        top[1] = register.registerIcon("steamcraft:feetIndent3");
-        top[2] = register.registerIcon("steamcraft:feetIndent4");
-        top[3] = register.registerIcon("steamcraft:feetIndent5");
-
-        super.registerBlockIcons(register);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (side == 1 && meta > 1) {
-            return this.top[meta - 2];
-        }
-        return this.blockIcon;
-    }
-
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityChargingPad();
-        //return null;
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (side != 0 && side != 1) {
-            int output = meta;
-            switch (side) {
-                case 2:
-                    output = 2;
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
+            EnumFacing output = facing;
+            switch (facing) {
+                case NORTH: {
+                    output = EnumFacing.NORTH;
                     break;
-                case 3:
-                    output = 0;
+                }
+                case SOUTH: {
+                    output = EnumFacing.DOWN;
                     break;
-                case 4:
-                    output = 1;
+                }
+                case WEST: {
+                    output = EnumFacing.UP;
                     break;
-                case 5:
-                    output = 3;
+                }
+                case EAST: {
+                    output = EnumFacing.SOUTH;
                     break;
-            }
-            if (output == meta && side > 1 && side < 6) {
-                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                    case 2:
-                        output = 2;
-                        break;
-                    case 3:
-                        output = 0;
-                        break;
-                    case 4:
-                        output = 1;
-                        break;
-                    case 5:
-                        output = 3;
-                        break;
                 }
             }
-            world.setBlockMetadataWithNotify(x, y, z, output, 2);
+            if (output == facing && facing.getIndex() > 1 && facing.getIndex() < 6) {
+                switch (facing.getOpposite()) {
+                    case NORTH: {
+                        output = EnumFacing.NORTH;
+                        break;
+                    }
+                    case SOUTH: {
+                        output = EnumFacing.DOWN;
+                        break;
+                    }
+                    case WEST: {
+                        output = EnumFacing.UP;
+                        break;
+                    }
+                    case EAST: {
+                        output = EnumFacing.SOUTH;
+                        break;
+                    }
+                }
+            }
+            world.setBlockState(pos, state.withProperty(FACING, output), 2);
             return true;
         }
         return false;
