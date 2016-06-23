@@ -1,31 +1,29 @@
 package flaxbeard.steamcraft.client.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.client.render.model.ModelCrucible;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-
     private static final ModelCrucible model = new ModelCrucible();
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/crucible.png");
     private static final ResourceLocation textureHell = new ResourceLocation("steamcraft:textures/models/crucible2.png");
     private static final ResourceLocation texture2 = new ResourceLocation("minecraft:textures/blocks/cobblestone.png");
-    private static float px = (1.0F / 16.0F);
     private boolean isNether = false;
 
     public TileEntityCrucibleRenderer(boolean isHell) {
@@ -33,10 +31,11 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
-
-        TileEntityCrucible crucible = (TileEntityCrucible) var1;
-        int meta = crucible.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
+    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
+        TileEntityCrucible crucible = (TileEntityCrucible) tileEntity;
+        IBlockState state = crucible.getWorld().getBlockState(crucible.getPos());
+        EnumFacing facing = state.getValue(BlockSteamcraftCrucible.FACING);
+        int facingOrdinal = facing.ordinal();
         ////Steamcraft.log.debug(meta);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -46,11 +45,12 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         int ticks = crucible.tipTicks;
         Minecraft.getMinecraft().renderEngine.bindTexture(texture2);
-        GL11.glRotatef(90.0F * (meta + (meta % 2 * 2)), 0F, 1F, 0F);
+        GL11.glRotatef(90.0F * (facingOrdinal + (facingOrdinal % 2 * 2)), 0F, 1F, 0F);
         GL11.glScalef(1F, -1F, -1F);
         model.renderNoRotate();
         GL11.glScalef(1F, -1F, -1F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(crucible.getWorldObj().getBlock(crucible.xCoord, crucible.yCoord, crucible.zCoord) == SteamcraftBlocks.hellCrucible ? textureHell : texture);
+        ResourceLocation resource = isNether ? textureHell : texture;
+        Minecraft.getMinecraft().renderEngine.bindTexture(resource);
         if (ticks > 135) {
             ticks = (int) ((ticks - 90) / 5.0F * 90);
             GL11.glRotatef((MathHelper.sin((float) (Math.PI * (ticks / 90.0F)))) * 5.0F, 1F, 0F, 0F);
@@ -104,8 +104,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
     }
 
     @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
-        TileEntityCrucible crucible = (TileEntityCrucible) var1;
+    public void renderInventoryTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glColor4f(1F, 1F, 1F, 1F);
@@ -124,5 +123,4 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer implem
 
         GL11.glPopMatrix();
     }
-
 }

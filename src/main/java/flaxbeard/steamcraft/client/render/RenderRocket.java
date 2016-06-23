@@ -1,34 +1,26 @@
 package flaxbeard.steamcraft.client.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class RenderRocket extends Render {
     private static final ResourceLocation arrowTextures = new ResourceLocation("steamcraft:textures/models/rocket.png");
-    private static final String __OBFID = "CL_00000978";
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-
-    public void doRender(EntityRocket rocket, double d, double d1, double d2, float f, float f1) {
-        this.bindEntityTexture(rocket);
+    public void doRender(EntityRocket rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+        bindEntityTexture(rocket);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) d, (float) d1, (float) d2);
-        Vec3 vec = Vec3.createVectorHelper(rocket.motionX, rocket.motionY, rocket.motionZ);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
+        Vec3d vec = new Vec3d(rocket.motionX, rocket.motionY, rocket.motionZ);
         vec = vec.normalize();
         float distance = (float) Math.sqrt(vec.zCoord * vec.zCoord + vec.xCoord * vec.xCoord);
         float pitch = (float) Math.asin(vec.yCoord);
@@ -39,7 +31,7 @@ public class RenderRocket extends Render {
         byte b0 = 0;
         float f2 = 0.0F;
         float f3 = 0.5F;
-        float f4 = (float) (0 + b0 * 10) / 32.0F;
+        float f4 = (float) (b0 * 10) / 32.0F;
         float f5 = (float) (5 + b0 * 10) / 32.0F;
         float f6 = 0.0F;
         float f7 = 0.15625F;
@@ -47,7 +39,7 @@ public class RenderRocket extends Render {
         float f9 = (float) (10 + b0 * 10) / 32.0F;
         float f10 = 0.05625F;
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        float f11 = 0 - f1;
+        float f11 = 0 - partialTicks;
 
         if (f11 > 0.0F) {
             float f12 = -MathHelper.sin(f11 * 3.0F) * f11;

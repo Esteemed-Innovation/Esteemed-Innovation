@@ -261,6 +261,8 @@ public class Steamcraft {
 
         CrossMod.init(event);
 
+        // This deprecation is moderately useless unless we add our own engineer zombie texture.
+        //noinspection deprecation
         STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession("flaxbeardssteampower:steam_engineer",
           "flaxbeardssteampower:textures/models/villager.png");
         STEAM_ENGINEER_CAREER = new VillagerRegistry.VillagerCareer(STEAM_ENGINEER_PROFESSION, "steam_engineer");
@@ -275,8 +277,6 @@ public class Steamcraft {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        SteamcraftRecipes.registerCasting();
-
         if (Config.enablePipe) {
             MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         }
@@ -285,7 +285,6 @@ public class Steamcraft {
         iso.registerDusts();
         iso.addSmelting();
         iso.registerDusts();
-        SteamcraftRecipes.registerDustLiquids();
         CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
 

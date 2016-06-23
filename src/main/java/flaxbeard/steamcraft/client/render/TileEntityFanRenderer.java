@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-
     private static final ModelFan model = new ModelFan();
 
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/fan.png");

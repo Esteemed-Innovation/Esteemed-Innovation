@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
@@ -15,16 +16,15 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer {
     private static final ModelPointer model = new ModelPointer();
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/pointer.png");
 
-
     @Override
-    public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
+    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
         GL11.glPushMatrix();
-        GL11.glTranslatef((float) var2 + 0.5F, (float) var4 + 0.5F, (float) var6 + 0.5F);
-        int meta = var1.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
+        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        int meta = tileEntity.getWorldObj().getBlockMetadata(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
         ForgeDirection dir = ForgeDirection.getOrientation(meta);
         GL11.glTranslatef(-7F * dir.offsetX / 16.0F, -2.0F / 16.0F, -7F * dir.offsetZ / 16.0F);
-        if (var1.getWorldObj().getTileEntity(var1.xCoord - dir.offsetX, var1.yCoord - dir.offsetY, var1.zCoord - dir.offsetZ) != null) {
-            ISteamTransporter trans = (ISteamTransporter) var1.getWorldObj().getTileEntity(var1.xCoord - dir.offsetX, var1.yCoord - dir.offsetY, var1.zCoord - dir.offsetZ);
+        if (tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord - dir.offsetX, tileEntity.yCoord - dir.offsetY, tileEntity.zCoord - dir.offsetZ) != null) {
+            ISteamTransporter trans = (ISteamTransporter) tileEntity.getWorldObj().getTileEntity(tileEntity.xCoord - dir.offsetX, tileEntity.yCoord - dir.offsetY, tileEntity.zCoord - dir.offsetZ);
             float pressure = 0F;
             if (trans instanceof TileEntitySteamCharger) {
                 pressure = ((TileEntitySteamCharger) trans).getSteamInItem();

@@ -31,7 +31,7 @@ public class TileEntityPipeDisguiseRenderer extends TileEntitySpecialRenderer {
 //			}
 //			catch (Exception e)
 //			{
-//				
+//
 //			}
 //			renderBlocks = null;
 //			wc = null;
