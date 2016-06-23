@@ -2,13 +2,12 @@ package flaxbeard.steamcraft.client.render.model.exosuit;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
 import flaxbeard.steamcraft.client.ExosuitTexture;
 import flaxbeard.steamcraft.client.Texture;
-import flaxbeard.steamcraft.client.render.model.ModelPointer;
+import flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.ComparatorUpgrade;
 import net.minecraft.client.Minecraft;
@@ -19,7 +18,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
@@ -27,11 +29,9 @@ import org.lwjgl.opengl.GL11;
 import java.util.*;
 
 public class ModelExosuit extends ModelBiped {
-
-    public static final ModelPointer MODEL_POINTER = new ModelPointer();
     public static final ComparatorUpgrade COMPARATOR_UPGRADE = new ComparatorUpgrade();
 
-    public static String[] DYES = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
+    public static final String[] DYES = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
 
     private final Map<Class<? extends ModelExosuitUpgrade>, ModelExosuitUpgrade> internalModelCache = Maps.newHashMap();
 
@@ -39,7 +39,7 @@ public class ModelExosuit extends ModelBiped {
         if (!internalModelCache.containsKey(clazz))
             try {
                 internalModelCache.put(clazz, clazz.newInstance());
-            } catch (Exception ex) {}
+            } catch (IllegalAccessException | InstantiationException ignore) {}
 
         return internalModelCache.get(clazz);
     }
@@ -149,11 +149,7 @@ public class ModelExosuit extends ModelBiped {
         ItemExosuitArmor exosuitArmor = ((ItemExosuitArmor) itemStack.getItem());
 
         // Yeti Horns
-        if (armor == 0) {
-            yetiHorns = exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.stackTagCompound.getString("plate")).getIdentifier().equals("Yeti");
-        } else {
-            yetiHorns = false;
-        }
+        yetiHorns = armor == 0 && exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.getTagCompound().getString("plate")).getIdentifier().equals("Yeti");
 
         // Plates
         if (exosuitArmor.hasPlates(itemStack)) {
@@ -164,7 +160,7 @@ public class ModelExosuit extends ModelBiped {
         }
 
         // Ender Shroud
-        if (exosuitArmor.hasUpgrade(itemStack, SteamcraftItems.enderShroud)) {
+        if (exosuitArmor.hasUpgrade(itemStack, ExosuitUpgradeItems.Items.ENDER_SHROUD.getItem())) {
             shroudEnabled = true;
             if (entityLivingBase.hurtTime != 0) {
                 shroudModifier = entityLivingBase.hurtTime / 9F;
@@ -197,7 +193,7 @@ public class ModelExosuit extends ModelBiped {
         // Upgrades
         overlayTextures.clear();
         modelClasses.clear();
-        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<IExosuitUpgrade>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
+        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
         Collections.sort(upgrades, COMPARATOR_UPGRADE);
         for (IExosuitUpgrade upgrade : upgrades) {
             ResourceLocation overlay = upgrade.getOverlay();
@@ -215,7 +211,7 @@ public class ModelExosuit extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float par2, float par3, float par4, float par5, float par6, float par7) {
+    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GL11.glPushMatrix();
 
         // Yeti Horns
@@ -240,15 +236,15 @@ public class ModelExosuit extends ModelBiped {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.003921569F);
         }
 
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7, entity);
+        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
 
-        this.bipedHead.render(par7);
-        this.bipedBody.render(par7);
-        this.bipedRightArm.render(par7);
-        this.bipedLeftArm.render(par7);
-        this.bipedRightLeg.render(par7);
-        this.bipedLeftLeg.render(par7);
-        this.bipedHeadwear.render(par7);
+        this.bipedHead.render(scale);
+        this.bipedBody.render(scale);
+        this.bipedRightArm.render(scale);
+        this.bipedLeftArm.render(scale);
+        this.bipedRightLeg.render(scale);
+        this.bipedLeftLeg.render(scale);
+        this.bipedHeadwear.render(scale);
 
         penguinBody.showModel = false;
         penguinArm1.showModel = false;
@@ -257,78 +253,65 @@ public class ModelExosuit extends ModelBiped {
         penguinNose.showModel = false;
 
         // Begin special additions
-        if (entity instanceof EntityPlayer && entity.getCommandSenderName().equals("joshiejack")) {
+        if (entity instanceof EntityPlayer && ((EntityPlayer) entity).getDisplayNameString().equals("joshiejack")) {
             penguinBody.showModel = true;
             penguinArm1.showModel = true;
             penguinArm2.showModel = true;
             penguinHead.showModel = true;
             penguinNose.showModel = true;
 //          Minecraft.getMinecraft().renderEngine.bindTexture(test);
-            this.bipedHead.render(par7);
+            this.bipedHead.render(scale);
         }
 
-        if (armor == 0 && entity instanceof EntityPlayer && entity.getCommandSenderName().equals("Succubism")) {
+        if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getDisplayNameString().equals("Succubism")) {
             this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
             this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
             this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
             this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
             Texture.HORNS.bindTexture();
-            this.hornLeftBase.render(par7);
-            this.hornRightBase.render(par7);
+            this.hornLeftBase.render(scale);
+            this.hornRightBase.render(scale);
         }
         // End special additions
 
         // Plates
         if (hasPlateOverlay) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(plateOverlayTexture);
-            this.bipedHead.render(par7);
-            this.bipedBody.render(par7);
-            this.bipedRightArm.render(par7);
-            this.bipedLeftArm.render(par7);
-            this.bipedRightLeg.render(par7);
-            this.bipedLeftLeg.render(par7);
-            this.bipedHeadwear.render(par7);
+            renderAndBind(scale, plateOverlayTexture);
         }
 
         // Dye
         if (dye != -1) {
-            float[] color = EntitySheep.fleeceColorTable[dye];
+            EnumDyeColor dyeColor = EnumDyeColor.byDyeDamage(dye);
+            float[] color = EntitySheep.getDyeRgb(dyeColor);
 
             GL11.glColor3f(color[0], color[1], color[2]);
 
             if (armor == 2) ExosuitTexture.EXOSUIT_GREY.bindTexturePart(2);
             else ExosuitTexture.EXOSUIT_GREY.bindTexturePart(1);
 
-            this.bipedHead.render(par7);
-            this.bipedBody.render(par7);
-            this.bipedRightArm.render(par7);
-            this.bipedLeftArm.render(par7);
-            this.bipedRightLeg.render(par7);
-            this.bipedLeftLeg.render(par7);
-            this.bipedHeadwear.render(par7);
+            this.bipedHead.render(scale);
+            this.bipedBody.render(scale);
+            this.bipedRightArm.render(scale);
+            this.bipedLeftArm.render(scale);
+            this.bipedRightLeg.render(scale);
+            this.bipedLeftLeg.render(scale);
+            this.bipedHeadwear.render(scale);
 
-            if (armor == 0 && entity instanceof EntityPlayer && entity.getCommandSenderName().equals("Succubism")) {
+            if (armor == 0 && entity instanceof EntityPlayer && ((EntityPlayer) entity).getDisplayNameString().equals("Succubism")) {
                 this.hornLeftBase.rotateAngleY = this.bipedHead.rotateAngleY;
                 this.hornLeftBase.rotateAngleX = this.bipedHead.rotateAngleX;
                 this.hornRightBase.rotateAngleY = this.bipedHead.rotateAngleY;
                 this.hornRightBase.rotateAngleX = this.bipedHead.rotateAngleX;
                 Texture.HORNS.bindTexture();
-                this.hornLeftBase.render(par7);
-                this.hornRightBase.render(par7);
+                this.hornLeftBase.render(scale);
+                this.hornRightBase.render(scale);
             }
 
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
         }
 
         for (ResourceLocation resourceLocation : overlayTextures) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(resourceLocation);
-            this.bipedHead.render(par7);
-            this.bipedBody.render(par7);
-            this.bipedRightArm.render(par7);
-            this.bipedLeftArm.render(par7);
-            this.bipedRightLeg.render(par7);
-            this.bipedLeftLeg.render(par7);
-            this.bipedHeadwear.render(par7);
+            renderAndBind(scale, resourceLocation);
         }
 
         for (Class<? extends ModelExosuitUpgrade> modelClass : modelClasses) {
@@ -376,23 +359,49 @@ public class ModelExosuit extends ModelBiped {
         return hornParts;
     }
 
+    private void renderAndBind(float scale, ResourceLocation resource) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(resource);
+        this.bipedHead.render(scale);
+        this.bipedBody.render(scale);
+        this.bipedRightArm.render(scale);
+        this.bipedLeftArm.render(scale);
+        this.bipedRightLeg.render(scale);
+        this.bipedLeftLeg.render(scale);
+        this.bipedHeadwear.render(scale);
+    }
+
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
         EntityLivingBase living = (EntityLivingBase) par7Entity;
-        aimedBow = false;
-        isSneak = living != null ? living.isSneaking() : false;
+        isSneak = living != null && living.isSneaking();
         if (living != null && living instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) living;
 
-            ItemStack itemstack = player.inventory.getCurrentItem();
-            heldItemRight = itemstack != null ? 1 : 0;
+            ItemStack mainItemStack = player.getHeldItem(EnumHand.MAIN_HAND);
+            ItemStack offItemStack = player.getHeldItem(EnumHand.OFF_HAND);
+            boolean leftMain = player.getPrimaryHand() == EnumHandSide.LEFT;
+            if (leftMain) {
+                leftArmPose = mainItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+                rightArmPose = offItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+            } else {
+                leftArmPose = offItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+                rightArmPose = mainItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+            }
 
-            if (itemstack != null && player.getItemInUseCount() > 0) {
-                EnumAction enumaction = itemstack.getItemUseAction();
-                if (enumaction == EnumAction.block) {
-                    heldItemRight = 3;
-                } else if (enumaction == EnumAction.bow) {
-                    aimedBow = true;
+            if (mainItemStack != null && player.getItemInUseCount() > 0) {
+                EnumAction enumaction = mainItemStack.getItemUseAction();
+                if (enumaction == EnumAction.BLOCK) {
+                    if (leftMain) {
+                        leftArmPose = ArmPose.BLOCK;
+                    } else {
+                        rightArmPose = ArmPose.BLOCK;
+                    }
+                } else if (enumaction == EnumAction.BOW) {
+                    if (leftMain) {
+                        leftArmPose = ArmPose.BOW_AND_ARROW;
+                    } else {
+                        rightArmPose = ArmPose.BOW_AND_ARROW;
+                    }
                 }
             }
         }

@@ -27,10 +27,11 @@ public class ExosuitModelCache {
     }
 
     public ModelExosuit getModel(EntityPlayer entityPlayer, int armorType) {
-        if (!modelCache.containsKey(entityPlayer.getCommandSenderName())) {
-            modelCache.put(entityPlayer.getCommandSenderName(), generateNewArray());
+        String name = entityPlayer.getDisplayNameString();
+        if (!modelCache.containsKey(name)) {
+            modelCache.put(name, generateNewArray());
         }
-        return modelCache.get(entityPlayer.getCommandSenderName())[armorType];
+        return modelCache.get(name)[armorType];
     }
 
     @SubscribeEvent
@@ -39,10 +40,6 @@ public class ExosuitModelCache {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.side == Side.CLIENT && mc.thePlayer != null) {
             if (event.phase == TickEvent.Phase.START) {
-                return;
-            }
-
-            if (!(mc.thePlayer instanceof EntityClientPlayerMP)) {
                 return;
             }
 

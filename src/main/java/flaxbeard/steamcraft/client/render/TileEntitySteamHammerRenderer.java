@@ -15,19 +15,16 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-
     private static final ModelHammer model = new ModelHammer();
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/hammer.png");
     private static float px = (1.0F / 16.0F);
 
-
     @Override
-    public void renderTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
-
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
-        TileEntitySteamHammer hammer = (TileEntitySteamHammer) var1;
-        int meta = hammer.getWorldObj().getBlockMetadata(var1.xCoord, var1.yCoord, var1.zCoord);
+        TileEntitySteamHammer hammer = (TileEntitySteamHammer) te;
+        int meta = hammer.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         ////Steamcraft.log.debug(meta);
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -72,7 +69,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
             GL11.glTranslatef(0.0F, -(7.0F / 32.0F), 0.0F);
             ItemStack is = hammer.getStackInSlot(0).copy();
             is.stackSize = 1;
-            EntityItem item = new EntityItem(var1.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
+            EntityItem item = new EntityItem(te.getWorldObj(), 0.0F, 0.0F, 0.0F, is);
             item.hoverStart = 0.0F;
             boolean fancy = settings.fancyGraphics;
             settings.fancyGraphics = true;

@@ -8,6 +8,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.item.EnumDyeColor;
 import org.lwjgl.opengl.GL11;
 
 public class ModelExosuitTank extends ModelExosuitUpgrade {
@@ -33,7 +34,7 @@ public class ModelExosuitTank extends ModelExosuitUpgrade {
 
         if (dye != -1) {
             ExosuitTexture.TANK_GREY.bindTexturePart(1);
-            float[] color = EntitySheep.fleeceColorTable[dye];
+            float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(dye));
             GL11.glColor3f(color[0], color[1], color[2]);
             tank.render(0.0625F);
             GL11.glColor3f(0.5F, 0.5F, 0.5F);

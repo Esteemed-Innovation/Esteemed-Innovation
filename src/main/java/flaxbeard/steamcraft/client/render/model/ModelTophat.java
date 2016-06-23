@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.client.render.model;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -12,10 +11,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import org.lwjgl.opengl.GL11;
 
 public class ModelTophat extends ModelBiped {
-
     private ModelRenderer tophatBase;
     private ModelRenderer tophatHat;
 
@@ -45,13 +45,13 @@ public class ModelTophat extends ModelBiped {
         GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleX), 1, 0, 0);
         GL11.glRotated(Math.toDegrees(this.bipedHead.rotateAngleZ), 0, 0, 1);
         GL11.glTranslatef(-this.bipedHead.rotationPointX, -this.bipedHead.rotationPointY, -this.bipedHead.rotationPointZ);
-        ItemStack itemStack = new ItemStack(Items.emerald);
+        ItemStack itemStack = new ItemStack(Items.EMERALD);
         if (level >= 18) {
             level = 18;
         }
         if (level >= 9) {
             level -= 8;
-            itemStack = new ItemStack(Blocks.emerald_block);
+            itemStack = new ItemStack(Blocks.EMERALD_BLOCK);
         }
         for (int i = 0; i < level; i++) {
             GL11.glPushMatrix();
@@ -60,8 +60,7 @@ public class ModelTophat extends ModelBiped {
             GL11.glRotated((Minecraft.getMinecraft().thePlayer.ticksExisted * 10.0D) % 360 + (360F / level) * i, 0, 1, 0);
             GL11.glTranslatef(0.75F, 0.0F, 0.0F);
             GL11.glRotated((Minecraft.getMinecraft().thePlayer.ticksExisted * 11D) % 360, 0, 1, 0);
-            RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().thePlayer.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F);
-            item = null;
+            Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().thePlayer.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F, true);
             GL11.glPopMatrix();
         }
         GL11.glPopMatrix();
@@ -71,20 +70,35 @@ public class ModelTophat extends ModelBiped {
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity) {
         EntityLivingBase living = (EntityLivingBase) par7Entity;
-        aimedBow = false;
-        isSneak = living != null ? living.isSneaking() : false;
+        isSneak = living != null && living.isSneaking();
         if (living != null && living instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) living;
 
-            ItemStack itemstack = player.inventory.getCurrentItem();
-            heldItemRight = itemstack != null ? 1 : 0;
+            ItemStack mainItemStack = player.getHeldItem(EnumHand.MAIN_HAND);
+            ItemStack offItemStack = player.getHeldItem(EnumHand.OFF_HAND);
+            boolean leftMain = player.getPrimaryHand() == EnumHandSide.LEFT;
+            if (leftMain) {
+                leftArmPose = mainItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+                rightArmPose = offItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+            } else {
+                leftArmPose = offItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+                rightArmPose = mainItemStack == null ? ArmPose.EMPTY : ArmPose.ITEM;
+            }
 
-            if (itemstack != null && player.getItemInUseCount() > 0) {
-                EnumAction enumaction = itemstack.getItemUseAction();
-                if (enumaction == EnumAction.block) {
-                    heldItemRight = 3;
-                } else if (enumaction == EnumAction.bow) {
-                    aimedBow = true;
+            if (mainItemStack != null && player.getItemInUseCount() > 0) {
+                EnumAction enumaction = mainItemStack.getItemUseAction();
+                if (enumaction == EnumAction.BLOCK) {
+                    if (leftMain) {
+                        leftArmPose = ArmPose.BLOCK;
+                    } else {
+                        rightArmPose = ArmPose.BLOCK;
+                    }
+                } else if (enumaction == EnumAction.BOW) {
+                    if (leftMain) {
+                        leftArmPose = ArmPose.BOW_AND_ARROW;
+                    } else {
+                        rightArmPose = ArmPose.BOW_AND_ARROW;
+                    }
                 }
             }
         }
