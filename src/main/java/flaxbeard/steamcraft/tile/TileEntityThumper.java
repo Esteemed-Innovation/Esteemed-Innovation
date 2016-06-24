@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Arrays;
 
 public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter {
-
     public int progress = 0;
     private boolean isRunning = false;
     private Material[] validMaterials = {Material.sand, Material.ground, Material.rock, Material.clay, Material.grass};

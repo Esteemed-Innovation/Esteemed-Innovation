@@ -3,39 +3,37 @@ package flaxbeard.steamcraft.block;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityPump;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPump extends BlockSteamTransporter implements IWrenchable {
+    public static PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockPump() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
-        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        world.setBlockMetadataWithNotify(x, y, z, l, 2);
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, elb.getHorizontalFacing()), 2);
     }
 
 //    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
 //		return null;
 //    }
-//    
+//
 //    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int xp, int yp, int zp)
 //    {
 //    	int meta = blockAccess.getBlockMetadata(xp, yp, zp);
@@ -59,21 +57,10 @@ public class BlockPump extends BlockSteamTransporter implements IWrenchable {
 //		case 3:
 //			this.setBlockBounds(x, y, z, x2, y2, z2);
 //			break;
-//		
+//
 //		}
 //    }
-//    
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister ir) {
-        this.blockIcon = ir.registerIcon("steamcraft:blankTexture");
-    }
+//
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta){
@@ -81,44 +68,11 @@ public class BlockPump extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (side != 0 && side != 1) {
-            int output = meta;
-            switch (side) {
-                case 2:
-                    output = 2;
-                    break;
-                case 3:
-                    output = 0;
-                    break;
-                case 4:
-                    output = 1;
-                    break;
-                case 5:
-                    output = 3;
-                    break;
-            }
-            if (output == meta && side > 1 && side < 6) {
-                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                    case 2:
-                        output = 2;
-                        break;
-                    case 3:
-                        output = 0;
-                        break;
-                    case 4:
-                        output = 1;
-                        break;
-                    case 5:
-                        output = 3;
-                        break;
-                }
-            }
-            world.setBlockMetadataWithNotify(x, y, z, output, 2);
-            return true;
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        if (facing == EnumFacing.DOWN || facing == EnumFacing.UP) {
+            return false;
         }
-        return false;
+        world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+        return true;
     }
 }

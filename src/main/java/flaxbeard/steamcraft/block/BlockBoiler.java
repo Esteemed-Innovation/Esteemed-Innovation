@@ -162,7 +162,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
             return true;
-        } else if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && facing != state.getValue(FACING)) {
+        } else if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
             world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
         }
         return false;

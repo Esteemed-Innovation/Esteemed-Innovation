@@ -2,34 +2,34 @@ package flaxbeard.steamcraft.block;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileEntityDummyBlock extends TileEntity {
+public class TileEntityDummyBlock extends TileEntity implements ITickable {
     private int timeToLive = 25;
 
     @Override
-    public Packet getDescriptionPacket() {
-        super.getDescriptionPacket();
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        super.getUpdatePacket();
         NBTTagCompound access = new NBTTagCompound();
         access.setInteger("ttl", timeToLive);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
+        NBTTagCompound access = pkt.getNbtCompound();
         this.timeToLive = access.getInteger("ttl");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
     }
 
-    public void updateEntity() {
+    @Override
+    public void update() {
         if (this.timeToLive <= 0) {
-            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+            worldObj.setBlockToAir(pos);
         }
         this.timeToLive--;
-
-
     }
 }

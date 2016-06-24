@@ -69,7 +69,7 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, IBlockState state, float hitX, float hitY, float hitZ) {
         if (!player.isSneaking()) {
-            this.rotateBlock(world, pos, side);
+            world.setBlockState(pos, state.withProperty(FACING, side.getOpposite()), 2);
         }
         return true;
     }

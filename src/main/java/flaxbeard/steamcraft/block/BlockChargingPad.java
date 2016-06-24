@@ -37,50 +37,11 @@ public class BlockChargingPad extends BlockSteamTransporter implements IWrenchab
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
-        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
-            EnumFacing output = facing;
-            switch (facing) {
-                case NORTH: {
-                    output = EnumFacing.NORTH;
-                    break;
-                }
-                case SOUTH: {
-                    output = EnumFacing.DOWN;
-                    break;
-                }
-                case WEST: {
-                    output = EnumFacing.UP;
-                    break;
-                }
-                case EAST: {
-                    output = EnumFacing.SOUTH;
-                    break;
-                }
-            }
-            if (output == facing && facing.getIndex() > 1 && facing.getIndex() < 6) {
-                switch (facing.getOpposite()) {
-                    case NORTH: {
-                        output = EnumFacing.NORTH;
-                        break;
-                    }
-                    case SOUTH: {
-                        output = EnumFacing.DOWN;
-                        break;
-                    }
-                    case WEST: {
-                        output = EnumFacing.UP;
-                        break;
-                    }
-                    case EAST: {
-                        output = EnumFacing.SOUTH;
-                        break;
-                    }
-                }
-            }
-            world.setBlockState(pos, state.withProperty(FACING, output), 2);
-            return true;
+        if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
+            return false;
         }
-        return false;
+        world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+        return true;
     }
 
 }

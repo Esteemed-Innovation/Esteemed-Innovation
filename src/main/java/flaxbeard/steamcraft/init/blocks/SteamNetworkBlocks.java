@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import slimeknights.tconstruct.smeltery.block.BlockTank;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
@@ -23,7 +22,7 @@ public class SteamNetworkBlocks implements IInitCategory {
         FLASH_BOILER(new BlockFlashBoiler(), "flashBoiler"),
         PIPE(new BlockPipe(), "pipe"),
         VALVE_PIPE(new BlockValvePipe(), "valvePipe"),
-        TANK(new BlockTank(), "steamTank"),
+        TANK(new BlockSteamTank(), "steamTank"),
         STEAM_GAUGE(new BlockSteamGauge(), "meter"),
         RUPTURE_DISC(new BlockRuptureDisc(), "ruptureDisc"),
         STEAM_WHISTLE(new BlockWhistle(), "horn"),
