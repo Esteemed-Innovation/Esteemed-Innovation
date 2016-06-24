@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.handler;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.*;
-import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.event.AnimalTradeEvent;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import flaxbeard.steamcraft.api.exosuit.UtilPlates;
@@ -19,7 +18,6 @@ import flaxbeard.steamcraft.data.capabilities.player.PlayerDataSerializer;
 import flaxbeard.steamcraft.data.capabilities.villager.VillagerDataSerializer;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.gui.GuiSteamcraftBook;
-import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems;
 import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.EnchiridionIntegration;
@@ -28,15 +26,10 @@ import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.*;
-import flaxbeard.steamcraft.misc.FrequencyMerchant;
-import flaxbeard.steamcraft.misc.DrillHeadMaterial;
-import flaxbeard.steamcraft.misc.ItemStackUtility;
-import flaxbeard.steamcraft.misc.OreDictHelper;
+import flaxbeard.steamcraft.misc.*;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -46,9 +39,7 @@ import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -59,9 +50,9 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
@@ -71,11 +62,11 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.EnumDifficulty;
@@ -89,11 +80,8 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -119,7 +107,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static flaxbeard.steamcraft.init.items.tools.ToolItems.Items.*;
 import static flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems.Items.*;
 import static flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems.Items.*;
 import static flaxbeard.steamcraft.init.items.armor.ArmorItems.Items.*;
@@ -140,10 +127,11 @@ public class SteamcraftEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = Steamcraft.log;
     private static boolean isShiftDown;
+    private static final Potion SLOWNESS_POTION = Potion.getPotionById(PotionType.getID(PotionTypes.SLOWNESS));
 
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
-            if (!stack.hasTagCompound()) {
+            if (stack.getTagCompound() == null) {
                 stack.setTagCompound(new NBTTagCompound());
             }
             if (!stack.getTagCompound().hasKey("steamFill")) {
@@ -236,7 +224,8 @@ public class SteamcraftEventHandler {
                 selectedRocketType = 0;
             }
             String name = selectedRocketType == 0 ? "item.steamcraft:rocket.name.2" : ((Item) SteamcraftRegistry.rockets.get(selectedRocketType)).getUnlocalizedName() + ".name";
-            String tooltip = I18n.translateToLocal("steamcraft.rocket") + " " + I18n.translateToLocal(name);
+            // TODO: Proper formatting.
+            String tooltip = I18n.format("steamcraft.rocket") + " " + I18n.format(name);
 
             int tooltipStartX = (width - fontRenderer.getStringWidth(tooltip)) / 2;
             int tooltipStartY = height - 35 - (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode ? 0 : 35);
@@ -294,10 +283,9 @@ public class SteamcraftEventHandler {
                     if (isCannable) {
                         int numCans = 0;
                         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                            if (player.inventory.getStackInSlot(i) != null) {
-                                if (player.inventory.getStackInSlot(i).getItem() == ITEM_CANISTER.getItem()) {
-                                    numCans += player.inventory.getStackInSlot(i).stackSize;
-                                }
+                            ItemStack stackInSlot = player.inventory.getStackInSlot(i);
+                            if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER.getItem()) {
+                                numCans += stackInSlot.stackSize;
                             }
                         }
                         if (numCans >= item.stackSize) {
@@ -351,7 +339,8 @@ public class SteamcraftEventHandler {
         Entity entity = event.getEntity();
         if (entity instanceof EntityItem && !(entity instanceof EntityCanisterItem)) {
             EntityItem item = (EntityItem) entity;
-            if (item.getEntityItem().hasTagCompound() && item.getEntityItem().getTagCompound().hasKey("canned")) {
+            ItemStack stack = item.getEntityItem();
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
                 if (!event.getWorld().isRemote) {
                     EntityCanisterItem item2 = new EntityCanisterItem(item.worldObj, item.posX, item.posY, item.posZ, item);
                     item2.motionX = item.motionX;
@@ -526,6 +515,9 @@ public class SteamcraftEventHandler {
                   stackSizeSecond != MathHelper.ceiling_float_int(stackSizeSecond / 1.25F)) {
                     stackSizeSecond = MathHelper.ceiling_float_int(stackSizeSecond / 1.25F);
                 }
+                toSell.stackSize = stackSizeToSell;
+                toBuy.stackSize = stackSizeToBuy;
+                secondBuy.stackSize = stackSizeSecond;
             }
             lastViewVillagerGui = true;
         }
@@ -727,10 +719,10 @@ public class SteamcraftEventHandler {
         ItemStack stack = event.getItemStack();
         ExosuitPlate plate = UtilPlates.getPlate(stack);
         if (plate != null) {
-            event.getToolTip().add(TextFormatting.BLUE + I18n.translateToLocal("steamcraft.plate.bonus") + plate.effect());
+            event.getToolTip().add(TextFormatting.BLUE + I18n.format("steamcraft.plate.bonus") + plate.effect());
         }
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
-            event.getToolTip().add(TextFormatting.GOLD + I18n.translateToLocal("steamcraft.canned"));
+            event.getToolTip().add(TextFormatting.GOLD + I18n.format("steamcraft.canned"));
         }
         if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ISteamChargable) {
             ArrayList<String> linesToRemove = new ArrayList<>();
@@ -764,7 +756,7 @@ public class SteamcraftEventHandler {
                       player.inventory.hasItemStack(new ItemStack(BOOK.getItem()));
                     if (foundBook) {
                         event.getToolTip().add(TextFormatting.ITALIC + "" + TextFormatting.GRAY +
-                          I18n.translateToLocal("steamcraft.book.shiftright"));
+                          I18n.format("steamcraft.book.shiftright"));
                         boolean mouseDown = Mouse.isButtonDown(0);
                         if (Config.singleButtonTrackpad && !mouseDown) {
                             mouseDown = Mouse.isButtonDown(1);
@@ -784,6 +776,9 @@ public class SteamcraftEventHandler {
         for (int i = 0; i < ItemStackUtility.EQUIPMENT_SLOTS.length; i++) {
             float multiplier = 1;
             EntityEquipmentSlot slot = ItemStackUtility.getSlotFromIndex(i);
+            if (slot == null) {
+                continue;
+            }
             if (slot.getSlotType() == EntityEquipmentSlot.Type.HAND) {
                 continue;
             }
@@ -807,22 +802,25 @@ public class SteamcraftEventHandler {
     }
 
     @SubscribeEvent
-    public void useItem(PlayerUseItemEvent.Tick event) {
-        if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
-            use = event.duration;
+    public void useItem(LivingEntityUseItemEvent.Tick event) {
+        Item item = event.getItem().getItem();
+        if (item instanceof ItemFirearm || item instanceof ItemRocketLauncher) {
+            use = event.getDuration();
         }
     }
 
     @SubscribeEvent
-    public void useItemEnd(PlayerUseItemEvent.Finish event) {
-        if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
+    public void useItemEnd(LivingEntityUseItemEvent.Finish event) {
+        Item item = event.getItem().getItem();
+        if (item instanceof ItemFirearm || item instanceof ItemRocketLauncher) {
             use = -1;
         }
     }
 
     @SubscribeEvent
-    public void useItemEnd(PlayerUseItemEvent.Stop event) {
-        if (event.item.getItem() instanceof ItemFirearm || event.item.getItem() instanceof ItemRocketLauncher) {
+    public void useItemEnd(LivingEntityUseItemEvent.Stop event) {
+        Item item = event.getItem().getItem();
+        if (item instanceof ItemFirearm || item instanceof ItemRocketLauncher) {
             use = -1;
         }
     }
@@ -835,7 +833,7 @@ public class SteamcraftEventHandler {
             EntityLivingBase entity = (EntityLivingBase) sourceEntity;
             boolean hasPower = hasPower(entity, Config.powerFistConsumption);
             ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (hasPower && stack != null && entity.getActiveHand() == null &&
+            if (hasPower && stack != null && entity.getActiveItemStack() == null &&
               stack.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) stack.getItem();
                 if (chest.hasUpgrade(stack, POWER_FIST.getItem())) {
@@ -999,7 +997,9 @@ public class SteamcraftEventHandler {
                         BlockPos posDown = new BlockPos(tX, tY - 1, tZ);
                         BlockPos posUp = new BlockPos(tX, tY + 1, tZ);
                         if (mobs.size() == 0 && player.worldObj.isSideSolid(posDown, EnumFacing.UP) &&
-                          !player.worldObj.isAnyLiquid(AxisAlignedBB.getBoundingBox(tX, tY - 1, tZ, tX, tY + 1, tZ)) && player.worldObj.isAirBlock(tX, tZ, tY) && player.worldObj.isAirBlock(tX, tZ, tY + 1)) {
+                          !player.worldObj.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
+                          player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY)) &&
+                          player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
                             foundSpot = true;
                         } else {
                             if (counter >= 36) {
@@ -1019,7 +1019,7 @@ public class SteamcraftEventHandler {
                     }
 
                     if (foundSpot) {
-                        ((EntityPlayerMP) player).playerNetServerHandler.setPlayerLocation(tX, tY, tZ, player.worldObj.rand.nextInt(360), player.rotationPitch);
+                        player.setPositionAndRotation(tX, tY, tZ, player.worldObj.rand.nextInt(360), player.rotationPitch);
                     }
                 }
             }
@@ -1053,8 +1053,9 @@ public class SteamcraftEventHandler {
                     safe++;
                     tX = (int) (mob.posX + range * Math.sin(Math.toRadians(startRotation)));
                     tZ = (int) (mob.posZ + range * Math.cos(Math.toRadians(startRotation)));
-                    tY = (int) mob.posY + yO;
-                    if (player.worldObj.isSideSolid(new BlockPos(tX, tY - 1, tZ), EnumFacing.UP) && !player.worldObj.isAnyLiquid(AxisAlignedBB.getBoundingBox(tX, tY - 1, tZ, tX, tY + 1, tZ)) && player.worldObj.isAirBlock(tX, tZ, tY) && player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
+                    if (player.worldObj.isSideSolid(new BlockPos(tX, tY - 1, tZ), EnumFacing.UP) &&
+                      !player.worldObj.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
+                      player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY)) && player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
                         foundSpot = true;
                     } else {
                         if (counter >= 36) {
@@ -1107,7 +1108,7 @@ public class SteamcraftEventHandler {
                     }
                 }
                 if (chillLevel > 0) {
-                    ((EntityLivingBase) event.getSource().getEntity()).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, chillLevel * 3 + 5, MathHelper.ceiling_float_int((float) chillLevel / 2F)));
+                    ((EntityLivingBase) event.getSource().getEntity()).addPotionEffect(new PotionEffect(SLOWNESS_POTION, chillLevel * 3 + 5, MathHelper.ceiling_float_int((float) chillLevel / 2F)));
                 }
             }
         }
@@ -1230,7 +1231,7 @@ public class SteamcraftEventHandler {
             event.setNewSpeed(event.getNewSpeed() * 1.2F);
         }
         EntityPlayer player = (EntityPlayer) entity;
-        ItemStack heldItemStack = player.getHeldItem();
+        ItemStack heldItemStack = player.getActiveItemStack();
         if (heldItemStack == null) {
             return;
         }
@@ -1258,22 +1259,24 @@ public class SteamcraftEventHandler {
             }
         }
 
+        IBlockState state = event.getState();
+
         if (heldItem instanceof ItemSteamDrill) {
             NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.IRON_PICKAXE.func_150893_a(heldItemStack, event.block) != 1.0F) {
+            if (speed > 0 && Items.IRON_PICKAXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         } else if (heldItem instanceof ItemSteamAxe) {
             NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.DIAMOND_AXE.func_150893_a(player.getHeldItem(), event.block) != 1.0F) {
+            if (speed > 0 && Items.DIAMOND_AXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         } else if (heldItem instanceof ItemSteamShovel) {
             NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.DIAMOND_SHOVEL.func_150893_a(heldItemStack, event.block) != 1.0F) {
+            if (speed > 0 && Items.DIAMOND_SHOVEL.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         }
@@ -1668,6 +1671,8 @@ public class SteamcraftEventHandler {
             }
         }
 
+        /*
+        I don't know about this stuff, since block shapes and stuff are handled with JSON now. I don't know how we are going to check if it is a solid cube.
         TileEntity tile = world.getTileEntity(pos);
         ItemStack held = player.getHeldItem(player.getActiveHand());
         if (player.isSneaking() && ((tile != null && tile instanceof IDisguisableBlock) ||
@@ -1675,12 +1680,13 @@ public class SteamcraftEventHandler {
           held.getItem() instanceof ItemBlock) {
             Block block1 = Block.getBlockFromItem(held.getItem());
             if (!(block1 instanceof BlockContainer) && !(block1 instanceof ITileEntityProvider) &&
-              (block1.getRenderType() == 0 || block1.getRenderType() == 39 ||
+              (block1.getRenderType(state) == EnumBlockRenderType.LIQUID || block1.getRenderType() == 39 ||
                 block1.getRenderType() == 31) && (block1.renderAsNormalBlock() ||
               (block1 == Blocks.glass && block == SteamcraftBlocks.pipe))) {
                 event.setCanceled(true);
             }
         }
+        */
     }
 
     List<DamageSource> invalidSources = Arrays.asList(
@@ -1690,14 +1696,15 @@ public class SteamcraftEventHandler {
       DamageSource.wither
     );
 
+    private static final int ZINC_CONSUMPTION = Config.zincPlateConsumption;
+
     @SubscribeEvent
     public void burstZincPlate(LivingHurtEvent event) {
-        EntityLivingBase entity = event.entityLiving;
-        int consumption = Config.zincPlateConsumption;
-        float amount = event.ammount;
+        EntityLivingBase entity = event.getEntityLiving();
+        float amount = event.getAmount();
 
-        if (!invalidSources.contains(event.source)) {
-            if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
+        if (!invalidSources.contains(event.getSource())) {
+            if (entity instanceof EntityPlayer && hasPower(entity, ZINC_CONSUMPTION)) {
                 EntityPlayer player = (EntityPlayer) entity;
                 float health = player.getHealth();
                 float maxHealth = player.getMaxHealth();
@@ -1706,7 +1713,7 @@ public class SteamcraftEventHandler {
                     ItemStack stackWithPlate = null;
                     boolean hasZincPlate = false;
                     for (int i = 1; i < 5; i++) {
-                        ItemStack equipment = player.getEquipmentInSlot(i);
+                        ItemStack equipment = entity.getItemStackFromSlot(ItemStackUtility.getSlotFromIndex(i));
                         if (equipment != null) {
                             Item item = equipment.getItem();
                             if (item instanceof ItemExosuitArmor) {
@@ -1723,7 +1730,7 @@ public class SteamcraftEventHandler {
                     if (hasZincPlate) {
                         ItemStack zincPlates = ExosuitUpgradeItems.PlateItems.ZINC.createItemStack(2);
                         World world = player.worldObj;
-                        drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), consumption);
+                        drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ZINC_CONSUMPTION);
                         UtilPlates.removePlate(stackWithPlate);
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, zincPlates);
@@ -1731,8 +1738,8 @@ public class SteamcraftEventHandler {
 //                        player.setHealth(health - (amount - 10.0F));
                         player.setHealth(health);
                         player.performHurtAnimation();
-                        world.playSoundEffect(player.posX, player.posY, player.posZ,
-                          "steamcraft:hiss", 2.0F, 0.9F);
+                        world.playSound(player.posX, player.posY, player.posZ, Steamcraft.SOUND_HISS,
+                          SoundCategory.PLAYERS, 2F, 0.9F, false);
                         event.setCanceled(true);
                     }
                 }
@@ -1742,19 +1749,22 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void dropDrops(BlockEvent.HarvestDropsEvent event) {
-        if (event.getHarvester() == null || event.getBlock() == null) {
+        if (event.getHarvester() == null) {
             return;
         }
 
         Random rand = new Random();
-        EntityPlayer player = event.harvester;
-        Block block = event.block;
-        int meta = event.blockMetadata;
-        Item otherBlockItem = block.getItemDropped(meta, rand, 0);
+        BlockPos pos = event.getPos();
+        EntityPlayer player = event.getHarvester();
+        World world = event.getWorld();
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        Item otherBlockItem = block.getItemDropped(state, rand, 0);
         Item blockItem = Item.getItemFromBlock(block);
-        MutablePair pair = MutablePair.of(blockItem, meta);
-        ItemStack equipped = player.getCurrentEquippedItem();
-        if (equipped == null || equipped.getItem() == null) {
+        int meta = block.getMetaFromState(state);
+        MutablePair<Item, Integer> pair = MutablePair.of(blockItem, meta);
+        ItemStack equipped = player.getActiveItemStack();
+        if (equipped == null) {
             return;
         }
 
@@ -1765,10 +1775,9 @@ public class SteamcraftEventHandler {
             }
 
             if (drill.hasUpgrade(equipped, MULTIPLICATIVE_RESONATOR.getItem())) {
-                event.drops.clear();
-                ArrayList<ItemStack> trueDrops = block.getDrops(event.world, event.x,
-                  event.y, event.z, meta, EnchantmentHelper.getFortuneModifier(player) + 2);
-                event.drops.addAll(trueDrops);
+                event.getDrops().clear();
+                List<ItemStack> trueDrops = block.getDrops(world, pos, state, EnchantmentUtility.getFortuneModifier(player) + 2);
+                event.getDrops().addAll(trueDrops);
             }
 
             if (OreDictHelper.cobblestones.contains(pair)) {
@@ -1776,19 +1785,21 @@ public class SteamcraftEventHandler {
             }
 
             if (drill.hasUpgrade(equipped, STONE_GRINDER.getItem())) {
-                String harvestTool = block.getHarvestTool(meta);
+                String harvestTool = block.getHarvestTool(state);
+                // Docs say it can be null.
+                //noinspection ConstantConditions
                 if (harvestTool == null || !harvestTool.equals(drill.toolClass())) {
                     return;
                 }
                 boolean addedNugget = false;
-                for (int i = 0; i < event.drops.size(); i++) {
-                    ItemStack drop = event.drops.get(i);
+                for (int i = 0; i < event.getDrops().size(); i++) {
+                    ItemStack drop = event.getDrops().get(i);
                     MutablePair item = MutablePair.of(drop.getItem(), drop.getItemDamage());
                     if (!OreDictHelper.stones.contains(item) && !OreDictHelper.cobblestones.contains(item)) {
                         continue;
                     }
 
-                    event.drops.remove(i);
+                    event.getDrops().remove(i);
                     int chance = rand.nextInt(5);
                     if (chance != 3 || addedNugget) {
                         continue;
@@ -1799,24 +1810,24 @@ public class SteamcraftEventHandler {
                     int size = rand.nextInt(3) + 1;
                     ItemStack nugget = new ItemStack((Item) nuggetPair.left,
                       size, (int) nuggetPair.right);
-                    event.drops.add(nugget);
+                    event.getDrops().add(nugget);
                     addedNugget = true;
                 }
             }
 
             if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT.getItem())) {
                 ItemStack out = TileEntitySmasher.REGISTRY.getOutput(new ItemStack(block, 1, meta));
-                if (out != null && out.getItem() != null) {
+                if (out != null) {
                     if (rand.nextInt(Config.chance) == 0) {
                         out.stackSize *= 2;
                     }
-                    for (int i = 0; i < event.drops.size(); i++) {
-                        ItemStack drop = event.drops.get(i);
+                    for (int i = 0; i < event.getDrops().size(); i++) {
+                        ItemStack drop = event.getDrops().get(i);
                         if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
-                            event.drops.remove(i);
+                            event.getDrops().remove(i);
                         }
                     }
-                    event.drops.add(out);
+                    event.getDrops().add(out);
                     drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
                 }
             }
@@ -1826,10 +1837,10 @@ public class SteamcraftEventHandler {
                 return;
             }
 
-            for (int i = 0; i < event.drops.size(); i++) {
-                Item item = event.drops.get(i).getItem();
+            for (int i = 0; i < event.getDrops().size(); i++) {
+                Item item = event.getDrops().get(i).getItem();
                 if (item == blockItem || item == otherBlockItem) {
-                    event.drops.remove(i);
+                    event.getDrops().remove(i);
                 }
             }
 
@@ -1840,32 +1851,32 @@ public class SteamcraftEventHandler {
                     MutablePair nuggetPair = OreDictHelper.goldNuggets.get(index);
                     int size = rand.nextInt(3) + 1;
                     ItemStack nugget = new ItemStack((Item) nuggetPair.left, size, (int) nuggetPair.right);
-                    event.drops.add(nugget);
+                    event.getDrops().add(nugget);
                     return;
                 }
             }
 
-            if (block == Blocks.dirt || block == Blocks.grass || block == Blocks.farmland) {
+            if (block == Blocks.DIRT || block == Blocks.GRASS || block == Blocks.FARMLAND) {
                 int chance = rand.nextInt(6);
                 if (chance == 4) {
                     int boneOrSeeds = rand.nextInt(2);
                     int stackSize = rand.nextInt(3) + 1;
                     ItemStack itemstack;
                     if (boneOrSeeds == 1) {
-                        itemstack = new ItemStack(Items.bone);
+                        itemstack = new ItemStack(Items.BONE);
                     } else {
-                        itemstack = new ItemStack(Items.wheat_seeds);
+                        itemstack = new ItemStack(Items.WHEAT_SEEDS);
                     }
                     itemstack.stackSize = stackSize;
-                    event.drops.add(itemstack);
+                    event.getDrops().add(itemstack);
                     return;
                 }
             }
 
-            if (event.block == Blocks.gravel) {
-                for (int i = 0; i < event.drops.size(); i++) {
-                    if (event.drops.get(i).getItem() == Items.flint) {
-                        event.dropChance = 90;
+            if (block == Blocks.GRAVEL) {
+                for (int i = 0; i < event.getDrops().size(); i++) {
+                    if (event.getDrops().get(i).getItem() == Items.FLINT) {
+                        event.setDropChance(90);
                         return;
                     }
                 }
@@ -1875,15 +1886,18 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void doPreciseCuttingHead(BlockEvent.HarvestDropsEvent event) {
-        if (event.harvester == null || event.block == null) {
+        if (event.getHarvester() == null) {
             return;
         }
 
-        EntityPlayer player = event.harvester;
-        Block block = event.block;
-        int meta = event.blockMetadata;
-        ItemStack equipped = player.getCurrentEquippedItem();
-        if (equipped == null || equipped.getItem() == null) {
+        EntityPlayer player = event.getHarvester();
+        BlockPos pos = event.getPos();
+        World world = event.getWorld();
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        int meta = block.getMetaFromState(state);
+        ItemStack equipped = player.getActiveItemStack();
+        if (equipped == null) {
             return;
         }
 
@@ -1894,20 +1908,20 @@ public class SteamcraftEventHandler {
             }
 
             if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD.getItem()) &&
-              ForgeHooks.canHarvestBlock(block, player, meta)) {
+              ForgeHooks.canHarvestBlock(block, player, world, pos)) {
                 ItemStack toAdd = new ItemStack(block, 1, meta);
                 if (toAdd.getItem() == null) {
                     // Special case because lit redstone ore and redstone ore are different blocks entirely...
                     // Hopefully this is changed, or there is a better way to do this available in 1.9.
-                    if (block == Blocks.lit_redstone_ore) {
-                        toAdd = new ItemStack(Blocks.redstone_ore);
+                    if (block == Blocks.LIT_REDSTONE_ORE) {
+                        toAdd = new ItemStack(Blocks.REDSTONE_ORE);
                     } else {
                         toAdd = null;
                     }
                 }
                 if (toAdd != null) {
-                    event.drops.clear();
-                    event.drops.add(toAdd);
+                    event.getDrops().clear();
+                    event.getDrops().add(toAdd);
                 }
             }
         }
@@ -2425,7 +2439,7 @@ public class SteamcraftEventHandler {
             }
 
             if (axe.hasUpgrade(equipped, LEAF_BLOWER.getItem())) {
-                blowLeaves(getExtraBlock9Coordinates(sideHit), pos, world, player);
+                blowLeaves(getExtraBlock9Coordinates(sideHit), pos, world, player, equipped);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
@@ -2500,7 +2514,7 @@ public class SteamcraftEventHandler {
 
         if (!player.worldObj.isRemote) {
             event.getEntityLiving().attackEntityFrom(DamageSource.generic, 9.0F);
-            event.getEntityLiving().addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 10, 10));
+            event.getEntityLiving().addPotionEffect(new PotionEffect(SLOWNESS_POTION, 10, 10));
         }
     }
 
@@ -2526,9 +2540,9 @@ public class SteamcraftEventHandler {
         Vec3d vector = player.getLook(0.5F);
 
         double total = Math.abs(vector.zCoord + vector.xCoord);
-        if (vector.yCoord < total) {
-            vector.yCoord = total;
-        }
+//        if (vector.yCoord < total) {
+//            vector.yCoord = total;
+//        }
 
         player.motionZ += vector.zCoord * 2.5;
         player.motionX += vector.xCoord * 2.5;
