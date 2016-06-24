@@ -1728,7 +1728,7 @@ public class SteamcraftEventHandler {
                         }
                     }
                     if (hasZincPlate) {
-                        ItemStack zincPlates = ExosuitUpgradeItems.PlateItems.ZINC.createItemStack(2);
+                        ItemStack zincPlates = ExosuitUpgradeItems.PlateItems.ZINC_EXO.createItemStack(2);
                         World world = player.worldObj;
                         drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ZINC_CONSUMPTION);
                         UtilPlates.removePlate(stackWithPlate);

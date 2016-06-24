@@ -13,11 +13,11 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
 public class DefaultCrucibleLiquids extends MiscellaneousCategory {
     public enum Liquids {
-        IRON(new CrucibleLiquid("iron", new ItemStack(Items.IRON_INGOT), MetalItems.Items.IRON_PLATE.createItemStack(), MetalItems.Items.IRON_NUGGET.createItemStack(), null, 200, 200, 200)),
-        GOLD(new CrucibleLiquid("gold", new ItemStack(Items.GOLD_INGOT), MetalItems.Items.GOLD_PLATE.createItemStack(), new ItemStack(Items.GOLD_NUGGET), null, 220, 157, 11)),
-        ZINC(new CrucibleLiquid("zinc", MetalItems.Items.ZINC_INGOT.createItemStack(), MetalItems.Items.ZINC_PLATE.createItemStack(), MetalItems.Items.ZINC_NUGGET.createItemStack(), null, 225, 225, 225)),
-        COPPER(new CrucibleLiquid("copper", MetalItems.Items.COPPER_INGOT.createItemStack(), MetalItems.Items.COPPER_PLATE.createItemStack(), MetalItems.Items.COPPER_NUGGET.createItemStack(), null, 140, 66, 12)),
-        BRASS(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), new CrucibleFormula(ZINC.getLiquid(), 1, COPPER.getLiquid(), 3, 4), 242, 191, 66));
+        IRON_LIQUID(new CrucibleLiquid("iron", new ItemStack(Items.IRON_INGOT), MetalItems.Items.IRON_PLATE.createItemStack(), MetalItems.Items.IRON_NUGGET.createItemStack(), null, 200, 200, 200)),
+        GOLD_LIQUID(new CrucibleLiquid("gold", new ItemStack(Items.GOLD_INGOT), MetalItems.Items.GOLD_PLATE.createItemStack(), new ItemStack(Items.GOLD_NUGGET), null, 220, 157, 11)),
+        ZINC_LIQUID(new CrucibleLiquid("zinc", MetalItems.Items.ZINC_INGOT.createItemStack(), MetalItems.Items.ZINC_PLATE.createItemStack(), MetalItems.Items.ZINC_NUGGET.createItemStack(), null, 225, 225, 225)),
+        COPPER_LIQUID(new CrucibleLiquid("copper", MetalItems.Items.COPPER_INGOT.createItemStack(), MetalItems.Items.COPPER_PLATE.createItemStack(), MetalItems.Items.COPPER_NUGGET.createItemStack(), null, 140, 66, 12)),
+        BRASS_LIQUID(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), new CrucibleFormula(ZINC_LIQUID.getLiquid(), 1, COPPER_LIQUID.getLiquid(), 3, 4), 242, 191, 66));
 
         private CrucibleLiquid liquid;
 
@@ -35,11 +35,11 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
             SteamcraftRegistry.registerLiquid(liquid.getLiquid());
         }
 
-        CrucibleLiquid liquidGold = Liquids.GOLD.getLiquid();
-        CrucibleLiquid liquidIron = Liquids.IRON.getLiquid();
-        CrucibleLiquid liquidZinc = Liquids.ZINC.getLiquid();
-        CrucibleLiquid liquidCopper = Liquids.COPPER.getLiquid();
-        CrucibleLiquid liquidBrass = Liquids.BRASS.getLiquid();
+        CrucibleLiquid liquidGold = Liquids.GOLD_LIQUID.getLiquid();
+        CrucibleLiquid liquidIron = Liquids.IRON_LIQUID.getLiquid();
+        CrucibleLiquid liquidZinc = Liquids.ZINC_LIQUID.getLiquid();
+        CrucibleLiquid liquidCopper = Liquids.COPPER_LIQUID.getLiquid();
+        CrucibleLiquid liquidBrass = Liquids.BRASS_LIQUID.getLiquid();
 
         SteamcraftRegistry.registerMeltRecipeOreDict(INGOT_GOLD, liquidGold, 9);
         SteamcraftRegistry.registerMeltRecipeOreDict(INGOT_IRON, liquidIron, 9);
@@ -103,10 +103,10 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
 
     @Override
     public void postInit() {
-        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_GOLD, Liquids.GOLD.getLiquid(), 9);
-        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_IRON, Liquids.IRON.getLiquid(), 9);
-        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_ZINC, Liquids.ZINC.getLiquid(), 9);
-        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER.getLiquid(), 9);
-        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_GOLD, Liquids.GOLD_LIQUID.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_IRON, Liquids.IRON_LIQUID.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_ZINC, Liquids.ZINC_LIQUID.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER_LIQUID.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS_LIQUID.getLiquid(), 9);
     }
 }

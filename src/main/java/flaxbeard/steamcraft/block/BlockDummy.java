@@ -1,44 +1,28 @@
 package flaxbeard.steamcraft.block;
 
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockDummy extends BlockContainer {
+import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
 
+public class BlockDummy extends BlockContainer {
     public BlockDummy() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(50.0F);
         setLightOpacity(0);
     }
 
     @Override
-    public int getRenderType() {
-        return -1;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon("steamcraft:blockBrass");
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         return true;
     }
 
@@ -47,28 +31,30 @@ public class BlockDummy extends BlockContainer {
         return new TileEntityDummyBlock();
     }
 
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         int smasherCount = 0;
-        smasherCount += world.getBlock(x + 1, y, z) == SteamcraftBlocks.smasher ? 1 : 0;
-        smasherCount += world.getBlock(x - 1, y, z) == SteamcraftBlocks.smasher ? 1 : 0;
-        smasherCount += world.getBlock(x, y, z + 1) == SteamcraftBlocks.smasher ? 1 : 0;
-        smasherCount += world.getBlock(x, y, z - 1) == SteamcraftBlocks.smasher ? 1 : 0;
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        smasherCount += world.getBlockState(new BlockPos(x + 1, y, z)).getBlock() == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(new BlockPos(x - 1, y, z)) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(new BlockPos(x, y, z + 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(new BlockPos(x, y, z - 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
 
         if (smasherCount < 2) {
-            world.setBlockToAir(x, y, z);
+            // TODO: Figure out what to do about this.
+            world.setBlockToAir(pos);
         }
-
     }
 
     @Override
-    public boolean isAir(IBlockAccess world, int x, int y, int z){
+    public boolean isAir(IBlockState state, IBlockAccess world, BlockPos pos){
         return true;
     }
 
     @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta){
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player){
         return false;
     }
-
-
 }

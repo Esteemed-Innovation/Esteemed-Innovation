@@ -175,13 +175,13 @@ public class ExosuitUpgradeItems implements IInitCategory {
     }
 
     public enum PlateItems {
-        IRON("Iron", 0, "Iron", "iron"),
-        GOLD("Gold", 1, "Gold", "gold"),
-        COPPER("Copper", 2, "Copper", "copper"),
-        ZINC("Zinc", 3, "Zinc", "zinc"),
-        BRASS("Brass", 4, "Brass", "brass"),
-        GILDED_IRON("Gilded Iron", 5, "GildedIron", "gilded"),
-        LEAD("Lead", 6, "Lead", "lead");
+        IRON_EXO("Iron", 0, "Iron", "iron"),
+        GOLD_EXO("Gold", 1, "Gold", "gold"),
+        COPPER_EXO("Copper", 2, "Copper", "copper"),
+        ZINC_EXO("Zinc", 3, "Zinc", "zinc"),
+        BRASS_EXO("Brass", 4, "Brass", "brass"),
+        GILDED_IRON_EXO("Gilded Iron", 5, "GildedIron", "gilded"),
+        LEAD_EXO("Lead", 6, "Lead", "lead");
 
         private int metadata;
         private String id;
@@ -224,22 +224,22 @@ public class ExosuitUpgradeItems implements IInitCategory {
 
         public boolean isEnabled() {
             switch (this) {
-                case IRON: {
+                case IRON_EXO: {
                     return Config.enableIronPlate;
                 }
-                case GOLD: {
+                case GOLD_EXO: {
                     return Config.enableGoldPlate;
                 }
-                case COPPER: {
+                case COPPER_EXO: {
                     return Config.enableCopperPlate;
                 }
-                case ZINC: {
+                case ZINC_EXO: {
                     return Config.enableZincPlate;
                 }
-                case BRASS: {
+                case BRASS_EXO: {
                     return Config.enableBrassPlate;
                 }
-                case GILDED_IRON: {
+                case GILDED_IRON_EXO: {
                     return Config.enableGildedIronPlate;
                 }
                 default: {
@@ -563,7 +563,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                           "p p",
                           "e e",
                           'p', PLATE_LEAD,
-                          'e', PlateItems.LEAD.createItemStack()
+                          'e', PlateItems.LEAD_EXO.createItemStack()
                         ));
                     } else {
                         BookRecipeRegistry.addRecipe("anchorHeels", new ShapedOreRecipe(
@@ -571,7 +571,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                           "p p",
                           "eae",
                           'p', PLATE_IRON,
-                          'e', PlateItems.IRON.createItemStack(),
+                          'e', PlateItems.IRON_EXO.createItemStack(),
                           'a', ANVIL
                         ));
                     }
@@ -636,31 +636,31 @@ public class ExosuitUpgradeItems implements IInitCategory {
         for (PlateItems item : PlateItems.LOOKUP) {
             switch (item) {
                 // TODO: Liquid stuff.
-                case IRON: {
-                    addExosuitPlateRecipes("exoIron", PLATE_IRON, item.createItemStack(), DefaultCrucibleLiquids.Liquids.IRON.getLiquid());
+                case IRON_EXO: {
+                    addExosuitPlateRecipes("exoIron", PLATE_IRON, item.createItemStack(), DefaultCrucibleLiquids.Liquids.IRON_LIQUID.getLiquid());
                     break;
                 }
-                case GOLD: {
-                    addExosuitPlateRecipes("exoGold", PLATE_GOLD, item.createItemStack(), DefaultCrucibleLiquids.Liquids.GOLD.getLiquid());
+                case GOLD_EXO: {
+                    addExosuitPlateRecipes("exoGold", PLATE_GOLD, item.createItemStack(), DefaultCrucibleLiquids.Liquids.GOLD_LIQUID.getLiquid());
                     break;
                 }
-                case COPPER: {
-                    addExosuitPlateRecipes("exoCopper", PLATE_COPPER, item.createItemStack(), DefaultCrucibleLiquids.Liquids.COPPER.getLiquid());
+                case COPPER_EXO: {
+                    addExosuitPlateRecipes("exoCopper", PLATE_COPPER, item.createItemStack(), DefaultCrucibleLiquids.Liquids.COPPER_LIQUID.getLiquid());
                     break;
                 }
-                case ZINC: {
-                    addExosuitPlateRecipes("exoZinc", PLATE_ZINC, item.createItemStack(), DefaultCrucibleLiquids.Liquids.ZINC.getLiquid());
+                case ZINC_EXO: {
+                    addExosuitPlateRecipes("exoZinc", PLATE_ZINC, item.createItemStack(), DefaultCrucibleLiquids.Liquids.ZINC_LIQUID.getLiquid());
                     break;
                 }
-                case BRASS: {
-                    addExosuitPlateRecipes("exoBrass", PLATE_BRASS, item.createItemStack(), DefaultCrucibleLiquids.Liquids.BRASS.getLiquid());
+                case BRASS_EXO: {
+                    addExosuitPlateRecipes("exoBrass", PLATE_BRASS, item.createItemStack(), DefaultCrucibleLiquids.Liquids.BRASS_LIQUID.getLiquid());
                     break;
                 }
-                case GILDED_IRON: {
+                case GILDED_IRON_EXO: {
                     addExosuitPlateRecipes("exoGildedIron", PLATE_GILDED_IRON, item.createItemStack());
                     break;
                 }
-                case LEAD: { // TODO Lead
+                case LEAD_EXO: { // TODO Lead
                     addExosuitPlateRecipes("exoLead", PLATE_LEAD, item.createItemStack(), liquidLead);
                 }
             }

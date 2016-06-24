@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -25,7 +25,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.fml.relauncher.Side;
@@ -222,30 +221,30 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     private void putInInventory(EntityItem item, int slot, IInventory inv) {
         ItemStack checkStack1 = null;
         ItemStack checkStack2 = null;
+        ItemStack stackInSlot = inv.getStackInSlot(slot);
         if (inv.getStackInSlot(slot) != null) {
-            checkStack1 = inv.getStackInSlot(slot).copy();
+            checkStack1 = stackInSlot.copy();
             checkStack1.stackSize = 1;
             checkStack2 = item.getEntityItem().copy();
             checkStack2.stackSize = 1;
         }
-        if ((inv.getStackInSlot(slot) == null || (ItemStack.areItemStacksEqual(checkStack1, checkStack2) &&
-          inv.getStackInSlot(slot).stackSize < inv.getStackInSlot(slot).getMaxStackSize())) &&
+        if ((stackInSlot == null || (ItemStack.areItemStacksEqual(checkStack1, checkStack2) &&
+          stackInSlot.stackSize < stackInSlot.getMaxStackSize())) &&
           inv.isItemValidForSlot(slot, item.getEntityItem())) {
             ItemStack stack = item.getEntityItem().copy();
             boolean setDead = true;
             if (inv.getStackInSlot(slot) != null) {
-
-                if ((inv.getStackInSlot(slot).stackSize + stack.stackSize) > stack.getMaxStackSize() &&
+                if ((stackInSlot.stackSize + stack.stackSize) > stack.getMaxStackSize() &&
                   checkStack2 != null) {
                     setDead = false;
-                    int total = inv.getStackInSlot(slot).stackSize + stack.stackSize;
+                    int total = stackInSlot.stackSize + stack.stackSize;
                     stack.stackSize = stack.getMaxStackSize();
                     total -= stack.getMaxStackSize();
                     checkStack2.stackSize = total;
                     item.setEntityItemStack(checkStack2);
                     //item.getEntityItem().stackSize = (inv.getStackInSlot(slot).stackSize + stack.stackSize - stack.getMaxStackSize());
                 } else {
-                    stack.stackSize = inv.getStackInSlot(slot).stackSize + item.getEntityItem().stackSize;
+                    stack.stackSize = stackInSlot.stackSize + item.getEntityItem().stackSize;
                 }
             }
             inv.setInventorySlotContents(slot, stack);
@@ -256,10 +255,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound access) {
+    public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
         access.setShort("range", (short) range);
+
+        return access;
     }
 
     @Override
@@ -271,7 +272,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setBoolean("active", getSteamShare() > VACUUM_STEAM_CONSUMPTION && !powered);
         access.setShort("range", (short) range);
@@ -368,8 +369,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         int color = mc.thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
-        mc.fontRendererObj.drawStringWithShadow(I18n.translateToLocal("steamcraft.fan.range") + " " + range + " " +
-          I18n.translateToLocal("steamcraft.fan.blocks"), x + 15, y + 13, color);
+        mc.fontRendererObj.drawStringWithShadow(I18n.format("steamcraft.fan.range") + " " + range + " " +
+          I18n.format("steamcraft.fan.blocks"), x + 15, y  +13, color);
         GL11.glPopMatrix();
     }
 }

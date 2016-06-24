@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -44,10 +43,12 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound access) {
+    public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
         access.setShort("range", (short) range);
+
+        return access;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setBoolean("active", getSteamShare() > 0 && !powered);
         access.setShort("range", (short) this.range);

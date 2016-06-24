@@ -66,7 +66,7 @@ public class ToolItems implements IInitCategory {
 
     public enum Materials {
         GILDED_IRON(EnumHelper.addToolMaterial("GILDEDGOLD", 2, 250, 6.0F, 2.0F, 22)),
-        BRASS(EnumHelper.addToolMaterial("BRASS", 2, 191, 7.0F, 2.5F, 14)),
+        BRASS(EnumHelper.addToolMaterial("BRASS_LIQUID", 2, 191, 7.0F, 2.5F, 14)),
         STEAM_DRILL(EnumHelper.addToolMaterial("STEAMDRILL", 2, 320, 1.0F, -1.0F, 0)),
         STEAM_SAW(EnumHelper.addToolMaterial("STEAMSAW", 2, 320, 1.0F, -1.0F, 0)),
         STEAM_SHOVEL(EnumHelper.addToolMaterial("STEAMSHOVEL", 2, 320, 1.0F, -1.0F, 0));
