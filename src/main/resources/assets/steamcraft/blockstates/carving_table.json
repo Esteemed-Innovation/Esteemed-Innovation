@@ -1,0 +1,12 @@
+
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "steamcraft:carving_table"
+    },
+    "inventory": [{
+      "model": "steamcraft:carving_table"
+    }]
+  }
+}

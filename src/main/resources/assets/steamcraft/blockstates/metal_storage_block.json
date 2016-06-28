@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_all",
+    "uvlock": true
+  },
+  "variants": {
+    "variant": {
+      "0": {
+        "textures": {
+          "texture": "flaxbeardssteampower:blocks/blockCopper"
+        }
+      },
+      "1": {
+        "textures": {
+          "texture": "flaxbeardssteampower:blocks/blockZinc"
+        }
+      },
+      "2": {
+        "textures": {
+          "texture": "flaxbeardssteampower:blocks/blockBrass"
+        }
+      },
+      "3": {
+        "textures": {
+          "texture": "blocks/gold_block"
+        }
+      }
+    }
+  }
+}
