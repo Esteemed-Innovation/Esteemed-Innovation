@@ -1,17 +1,19 @@
 package flaxbeard.steamcraft.item.firearm.enhancement;
 
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.MUSKET;
+import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.BLUNDERBUSS;
+
 public class ItemEnhancementSpeedloader extends Item implements IEnhancementFirearm {
     @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == SteamcraftItems.musket || stack.getItem() == SteamcraftItems.blunderbuss;
+        return stack.getItem() == MUSKET.getItem() || stack.getItem() == BLUNDERBUSS.getItem();
     }
 
     @Override
@@ -26,20 +28,14 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
     @Override
     public String getIcon(Item item) {
-        if (item == SteamcraftItems.musket) {
-            return "steamcraft:weaponMusketSpeedloader";
-        } else {
-            return "steamcraft:weaponBlunderbussSpeedloader";
-        }
+        String weapon = item == MUSKET.getItem() ? "Musket" : "Blunderbuss";
+        return "steamcraft:weapon" + weapon + "Speedloader";
     }
 
     @Override
     public String getName(Item item) {
-        if (item == SteamcraftItems.musket) {
-            return "item.steamcraft:musketSpeedloader";
-        } else {
-            return "item.steamcraft:blunderbussSpeedloader";
-        }
+        String weapon = item == MUSKET.getItem() ? "musket" : "blunderbuss";
+        return "item.steamcraft:" + weapon + "Speedloader";
     }
 
     @Override

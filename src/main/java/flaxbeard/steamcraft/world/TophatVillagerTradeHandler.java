@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.world;
 
-import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.math.MathHelper;
@@ -12,8 +12,8 @@ import java.util.Random;
 public class TophatVillagerTradeHandler implements IVillageTradeHandler {
     @Override
     public void manipulateTradesForVillager(EntityVillager villager, MerchantRecipeList recipeList, Random random) {
-        if (villager.getCustomer().inventory.armorInventory[0] != null && (villager.getCustomer().inventory.armorInventory[0].getItem() == SteamcraftItems.tophat
-                || (villager.getCustomer().inventory.armorInventory[0].getItem() == SteamcraftItems.exoArmorHead && ((ItemExosuitArmor) villager.getCustomer().inventory.armorInventory[0].getItem()).hasUpgrade(villager.getCustomer().inventory.armorInventory[0], SteamcraftItems.tophat)))) {
+        if (villager.getCustomer().inventory.armorInventory[0] != null && (villager.getCustomer().inventory.armorInventory[0].getItem() == ArmorItems.Items.ENTREPRENEUR_TOP_HAT.getItem()
+                || (villager.getCustomer().inventory.armorInventory[0].getItem() == ArmorItems.Items.EXOSUIT_HEADPIECE.getItem() && ((ItemExosuitArmor) villager.getCustomer().inventory.armorInventory[0].getItem()).hasUpgrade(villager.getCustomer().inventory.armorInventory[0], SteamcraftItems.tophat)))) {
             for (Object obj : recipeList) {
                 MerchantRecipe recipe = (MerchantRecipe) obj;
                 if (recipe.getItemToSell().stackSize > 1 && recipe.getItemToSell().stackSize != MathHelper.floor_float(recipe.getItemToSell().stackSize * 1.1F)) {

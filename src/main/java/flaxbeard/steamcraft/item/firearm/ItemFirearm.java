@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.item.firearm;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
@@ -10,6 +9,8 @@ import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
+import flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems;
+import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -30,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
+
+import static flaxbeard.steamcraft.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
 
 public class ItemFirearm extends Item implements IEngineerable {
     public float damage;
@@ -102,9 +105,9 @@ public class ItemFirearm extends Item implements IEngineerable {
                 Item legsItem = legs.getItem();
                 if (legsItem instanceof ItemExosuitArmor) {
                     ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
-                    if (legsArmor.hasUpgrade(legs, SteamcraftItems.reloadingHolsters) &&
+                    if (legsArmor.hasUpgrade(legs, ExosuitUpgradeItems.Items.RELOADING_HOLSTERS.getItem()) &&
                       SteamcraftEventHandler.hasPower(player, Config.reloadingConsumption) &&
-                      player.inventory.hasItem(SteamcraftItems.musketCartridge)) {
+                      player.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
                         this.onEaten(stack, world, player);
                         this.onItemRightClick(stack, world, player);
                         SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3),
@@ -266,17 +269,17 @@ public class ItemFirearm extends Item implements IEngineerable {
                 enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
             }
         }
-        if (var5 || par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge)) {
+        if (var5 || par3EntityPlayer.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
             if (nbt.getBoolean("done") == false) {
                 nbt.setInteger("numloaded", 1);
                 if (var5) {
                     nbt.setInteger("numloaded", this.shellCount + enhancementShells);
                 } else {
-                    par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
+                    par3EntityPlayer.inventory.consumeInventoryItem(MUSKET_CARTRIDGE.getItem());
                     if ((this.shellCount + enhancementShells) > 1) {
                         for (int i = 1; i < (this.shellCount + enhancementShells); i++) {
-                            if (par3EntityPlayer.inventory.hasItem(SteamcraftItems.musketCartridge)) {
-                                par3EntityPlayer.inventory.consumeInventoryItem(SteamcraftItems.musketCartridge);
+                            if (par3EntityPlayer.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
+                                par3EntityPlayer.inventory.consumeInventoryItem(MUSKET_CARTRIDGE.getItem());
                                 nbt.setInteger("numloaded", nbt.getInteger("numloaded") + 1);
                             }
                         }
@@ -445,11 +448,11 @@ public class ItemFirearm extends Item implements IEngineerable {
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
-        if (this == SteamcraftItems.musket) {
+        if (this == FirearmItems.Items.MUSKET.getItem()) {
             guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 64, 64, 64);
-        } else if (this == SteamcraftItems.blunderbuss) {
+        } else if (this == FirearmItems.Items.BLUNDERBUSS.getItem()) {
             guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 64, 64, 64);
-        } else if (this == SteamcraftItems.pistol) {
+        } else if (this == FirearmItems.Items.PISTOL.getItem()) {
             guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 128, 64, 64, 64);
         }
 

@@ -2,8 +2,6 @@ package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.client.render.*;
 import flaxbeard.steamcraft.client.render.colorhandlers.ItemSmashedOreColorHandler;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
@@ -11,6 +9,12 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
+import flaxbeard.steamcraft.init.blocks.CastingBlocks;
+import flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks;
+import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
+import flaxbeard.steamcraft.init.items.MetalItems;
+import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
+import flaxbeard.steamcraft.init.items.tools.ToolItems;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 import net.minecraft.block.Block;
@@ -53,7 +57,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenderers() {
         Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemSmashedOreColorHandler(),
-          SteamcraftItems.smashedOre);
+          MetalItems.Items.SMASHED_ORE.getItem());
 
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
@@ -65,13 +69,13 @@ public class ClientProxy extends CommonProxy {
 
         TileEntitySpecialRenderer renderCrucible = new TileEntityCrucibleRenderer(false);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, renderCrucible);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.crucible), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CastingBlocks.Blocks.CRUCIBLE.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
         renderCrucible = new TileEntityCrucibleRenderer(true);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hellCrucible), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderCrucible, new TileEntityCrucible()));
 
         TileEntitySpecialRenderer renderMold = new TileEntityMoldRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMold.class, new TileEntityMoldRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.mold), new ItemTESRRenderer((IInventoryTESR) renderMold, new TileEntityMold()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(CastingBlocks.Blocks.MOLD.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderMold, new TileEntityMold()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamCharger.class, new TileEntitySteamChargerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());
@@ -79,41 +83,41 @@ public class ClientProxy extends CommonProxy {
 
         TileEntitySpecialRenderer renderSteamHammer = new TileEntitySteamHammerRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamHammer.class, new TileEntitySteamHammerRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.hammer), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.STEAM_HAMMER.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderSteamHammer, new TileEntitySteamHammer()));
 
         TileEntitySpecialRenderer renderItemMortar = new TileEntityItemMortarRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityItemMortar.class, new TileEntityItemMortarRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.itemMortar), new ItemTESRRenderer((IInventoryTESR) renderItemMortar, new TileEntityItemMortar()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.ITEM_MORTAR.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderItemMortar, new TileEntityItemMortar()));
 
         TileEntitySpecialRenderer renderPump = new TileEntityPumpRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPump.class, new TileEntityPumpRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.pump), new ItemTESRRenderer((IInventoryTESR) renderPump, new TileEntityPump()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamNetworkBlocks.Blocks.PIPE.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderPump, new TileEntityPump()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValvePipe.class, new TileEntityValvePipeRenderer());
 
         TileEntitySpecialRenderer renderSmasher = new TileEntitySmasherRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmasher.class, new TileEntitySmasherRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.smasher), new ItemTESRRenderer((IInventoryTESR) renderSmasher, new TileEntitySmasher()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.ROCK_SMASHER.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderSmasher, new TileEntitySmasher()));
 
         TileEntitySpecialRenderer renderThumper = new TileEntityThumperRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThumper.class, new TileEntityThumperRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.thumper), new ItemTESRRenderer((IInventoryTESR) renderThumper, new TileEntityThumper()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.THUMPER.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderThumper, new TileEntityThumper()));
 
         TileEntitySpecialRenderer renderFan = new TileEntityFanRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFan.class, new TileEntityFanRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.fan), new ItemTESRRenderer((IInventoryTESR) renderFan, new TileEntityFan()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.FAN.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderFan, new TileEntityFan()));
 
         TileEntitySpecialRenderer renderVacuum = new TileEntityVacuumRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVacuum.class, new TileEntityVacuumRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.vacuum), new ItemTESRRenderer((IInventoryTESR) renderVacuum, new TileEntityVacuum()));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.VACUUM.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderVacuum, new TileEntityVacuum()));
 
         TileEntitySpecialRenderer renderFluidSteam = new TileEntityFluidSteamRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidSteamConverter.class, new TileEntityFluidSteamRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.fluidSteamConverter), new ItemTESRRenderer((IInventoryTESR) renderFluidSteam, new TileEntityFluidSteamConverter(), true));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamNetworkBlocks.Blocks.PRESSURE_CONVERTER.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderFluidSteam, new TileEntityFluidSteamConverter(), true));
 
         TileEntitySpecialRenderer renderChargingPad = new TileEntityChargingPadRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChargingPad.class, new TileEntityChargingPadRenderer());
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamcraftBlocks.chargingPad), new ItemTESRRenderer((IInventoryTESR) renderChargingPad, new TileEntityChargingPad(), true));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SteamMachineryBlocks.Blocks.FILLING_PAD.getBlock()), new ItemTESRRenderer((IInventoryTESR) renderChargingPad, new TileEntityChargingPad(), true));
 
         RenderingRegistry.registerBlockHandler(Steamcraft.tubeRenderID, new BlockSteamPipeRenderer());
         RenderingRegistry.registerBlockHandler(Steamcraft.heaterRenderID, new BlockSteamHeaterRenderer());
@@ -126,14 +130,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(Steamcraft.furnaceRenderID, new BlockCustomFurnaceRenderer());
 
 
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.musket, new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.blunderbuss, new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.pistol, new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.rocketLauncher, new ItemFirearmRenderer());
+        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.MUSKET.getItem(), new ItemFirearmRenderer());
+        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.BLUNDERBUSS.getItem(), new ItemFirearmRenderer());
+        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.PISTOL.getItem(), new ItemFirearmRenderer());
+        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.ROCKET_LAUNCHER.getItem(), new ItemFirearmRenderer());
 
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamDrill, new ItemSteamToolRenderer());
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamAxe, new ItemSteamToolRenderer());
-        MinecraftForgeClient.registerItemRenderer(SteamcraftItems.steamShovel, new ItemSteamToolRenderer());
+        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_DRILL.getItem(), new ItemSteamToolRenderer());
+        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_SAW.getItem(), new ItemSteamToolRenderer());
+        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_SHOVEL.getItem(), new ItemSteamToolRenderer());
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);
@@ -151,7 +155,7 @@ public class ClientProxy extends CommonProxy {
         World world = minecraft.theWorld;
         if (!(controller instanceof SteamcraftPlayerController)) {
             GameType type = world.getWorldInfo().getGameType();
-            NetHandlerPlayClient net = minecraft.getNetHandler();
+            NetHandlerPlayClient net = minecraft.getConnection();
             SteamcraftPlayerController ourController = new SteamcraftPlayerController(minecraft, net);
             ourController.setGameType(type);
             minecraft.playerController = ourController;

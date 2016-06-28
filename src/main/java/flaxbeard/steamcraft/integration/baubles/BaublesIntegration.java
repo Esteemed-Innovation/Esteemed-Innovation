@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.integration.baubles;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

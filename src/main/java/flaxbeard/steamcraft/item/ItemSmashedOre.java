@@ -14,8 +14,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
 public class ItemSmashedOre extends Item {
@@ -57,19 +55,19 @@ public class ItemSmashedOre extends Item {
     }
 
     public void registerDusts() {
-        for(Entry<Integer, String[]> entry : map.entrySet()) {
+        for (Entry<Integer, String[]> entry : map.entrySet()) {
             String name = entry.getValue()[0];
             OreDictionary.registerOre("dust" + name, new ItemStack(this, 1, entry.getKey()));
         }
     }
 
     public void addSmelting() {
-        for(Entry<Integer, String[]> entry : map.entrySet()) {
+        for (Entry<Integer, String[]> entry : map.entrySet()) {
             String smelting = entry.getValue()[1];
 
             List<ItemStack> stacks = OreDictionary.getOres(smelting);
             if (!stacks.isEmpty()) {
-                GameRegistry.addSmelting(new ItemStack(SteamcraftItems.smashedOre, 1, entry.getKey()), stacks.get(0).copy(), 0.5F);
+                GameRegistry.addSmelting(new ItemStack(this, 1, entry.getKey()), stacks.get(0).copy(), 0.5F);
             }
         }
     }
@@ -77,7 +75,7 @@ public class ItemSmashedOre extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for(Entry<Integer, String[]> entry : map.entrySet()) {
+        for (Entry<Integer, String[]> entry : map.entrySet()) {
             if (!OreDictionary.getOres("ore" + entry.getValue()[0]).isEmpty()) {
                 list.add(new ItemStack(item, 1, entry.getKey()));
             }

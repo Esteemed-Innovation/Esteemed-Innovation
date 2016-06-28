@@ -1,9 +1,9 @@
 package flaxbeard.steamcraft.item.firearm.enhancement;
 
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementRocketLauncher;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
+import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 public class ItemEnhancementAirStrike extends Item implements IEnhancementRocketLauncher {
     @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == SteamcraftItems.rocketLauncher;
+        return stack.getItem() == FirearmItems.Items.ROCKET_LAUNCHER.getItem();
     }
 
     @Override
