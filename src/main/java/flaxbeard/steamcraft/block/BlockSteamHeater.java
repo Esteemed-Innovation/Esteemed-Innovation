@@ -5,12 +5,18 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -18,87 +24,28 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSteamHeater extends BlockSteamTransporter implements IWrenchable {
-    private IIcon iconOn;
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockSteamHeater() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(3.625F);
         setResistance(7.5F);
     }
 
-    public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {
-        if (MathHelper.abs((float) elb.posX - (float) x) < 2.0F && MathHelper.abs((float) elb.posZ - (float) z) < 2.0F) {
-            double d0 = elb.posY + 1.82D - (double) elb.yOffset;
-
-            if (d0 - (double) y > 2.0D) {
-                return 1;
-            }
-
-            if ((double) y- d0 > 0.0D) {
-                return 0;
-            }
-        }
-
-        int l = MathHelper.floor_double((double) (elb.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        if (side == meta) {
-            return iconOn;
-        }
-        return blockIcon;
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public void registerBlockIcons(IIconRegister ir) {
-        super.registerBlockIcons(ir);
-        this.iconOn = ir.registerIcon("steamcraft:heaterOn");
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase elb, ItemStack stack) {
-        int l = determineOrientation(world, x, y, z, elb);
-        world.setBlockMetadataWithNotify(x, y, z, l, 2);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySteamHeater();
     }
 
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return Steamcraft.heaterRenderID;
-    }
-
-    @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        world.setBlockMetadataWithNotify(x, y, z, side == meta ? ForgeDirection.getOrientation(side).getOpposite().ordinal() : side, 2);
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        world.setBlockState(pos, state.withProperty(FACING, player.getHorizontalFacing().getOpposite()), 2);
         return true;
     }
-
 }

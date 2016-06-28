@@ -7,40 +7,33 @@ import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSteamGauge extends BlockContainer {
-    public IIcon front;
-    public IIcon back;
-    public IIcon top;
-
     public BlockSteamGauge() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(1F);
     }
 
     @Override
-    public boolean hasComparatorInputOverride() {
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntitySteamGauge) {
             return ((TileEntitySteamGauge) te).getComparatorOutput();
         }
         return 0;
-    }
-
-    @Override
-    public String getItemIconName() {
-        return "steamcraft:gauge";
     }
 
     @Override
@@ -151,7 +144,7 @@ public class BlockSteamGauge extends BlockContainer {
 //    	int pressurePerc = (int)(gauge.getPressure() * 100);
 //    	if (world.isRemote){
 //    		String color = "";
-//    		
+//
 //    		if (pressurePerc > 120){
 //    			color = "�4";
 //    		} else if (pressurePerc > 115){
@@ -159,11 +152,11 @@ public class BlockSteamGauge extends BlockContainer {
 //    		} else if (pressurePerc > 100){
 //    			color = "�e";
 //    		}
-//    		
+//
 //    		player.addChatComponentMessage(new ChatComponentText(color+"Current pressure: "+pressurePerc+"%"));
-//    			
+//
 //    	}
-//    	
+//
 //    	return true;
 //    }
 

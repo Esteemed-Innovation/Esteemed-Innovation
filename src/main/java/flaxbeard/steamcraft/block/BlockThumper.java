@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
-
     public BlockThumper() {
         super(Material.iron);
         setHardness(3.5F);
