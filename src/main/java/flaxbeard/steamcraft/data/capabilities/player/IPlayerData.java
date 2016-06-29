@@ -53,49 +53,49 @@ public interface IPlayerData {
     void setLastMotions(MutablePair<Double, Double> value);
 
     class DefaultImplementation implements IPlayerData {
-        private Float previousStepHeight;
-        private int tickCache;
-        private boolean isRangeExtended;
-        private MutablePair<Double, Double> lastMotions;
+        private Float previousStepHeight = null;
+        private int tickCache = -1;
+        private boolean isRangeExtended = false;
+        private MutablePair<Double, Double> lastMotions = null;
 
         @Override
         public Float getPreviousStepHeight() {
-            return null;
+            return previousStepHeight;
         }
 
         @Override
         public int getTickCache() {
-            return -1;
+            return tickCache;
         }
 
         @Override
         public boolean isRangeExtended() {
-            return false;
+            return isRangeExtended;
         }
 
         @Override
         public MutablePair<Double, Double> getLastMotions() {
-            return null;
+            return lastMotions;
         }
 
         @Override
         public void setPreviousStepHeight(Float value) {
-            this.previousStepHeight = value;
+            previousStepHeight = value;
         }
 
         @Override
         public void setTickCache(int value) {
-            this.tickCache = value;
+            tickCache = value;
         }
 
         @Override
         public void setRangeExtended(boolean value) {
-            this.isRangeExtended = value;
+            isRangeExtended = value;
         }
 
         @Override
         public void setLastMotions(MutablePair<Double, Double> value) {
-            this.lastMotions = value;
+            lastMotions = value;
         }
     }
 }

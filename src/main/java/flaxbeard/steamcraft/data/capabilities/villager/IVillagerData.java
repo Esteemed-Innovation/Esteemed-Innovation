@@ -14,7 +14,7 @@ public interface IVillagerData {
     void setHadCustomer(Boolean value);
 
     class DefaultImplementation implements IVillagerData {
-        private Boolean lastHadCustomer;
+        private Boolean lastHadCustomer = null;
 
         @Override
         public Boolean hadCustomer() {
