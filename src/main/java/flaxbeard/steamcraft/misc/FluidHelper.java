@@ -26,7 +26,7 @@ public class FluidHelper {
      * @return Whether the player is holding a container and it has water in it.
      */
 	public static boolean playerIsHoldingWaterContainer(EntityPlayer player) {
-		ItemStack heldItem = player.getActiveItemStack();
+		ItemStack heldItem = ItemStackUtility.getHeldItemStack(player);
 		return itemStackIsWaterContainer(heldItem);
 	}
 
@@ -71,7 +71,7 @@ public class FluidHelper {
      * @param tank The tank to fill.
      */
 	public static void fillTankFromHeldItem(EntityPlayer player, IFluidTank tank) {
-		ItemStack newContainer = fillTankFromItem(player.getActiveItemStack(), tank);
+		ItemStack newContainer = fillTankFromItem(ItemStackUtility.getHeldItemStack(player), tank);
 
 		if (player.capabilities.isCreativeMode) {
 			return;

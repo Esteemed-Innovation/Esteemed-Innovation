@@ -60,7 +60,7 @@ public class GuiSteamcraftBook extends GuiScreen {
         if (!viewing.isEmpty()) {
             bookTotalPages = MathHelper.ceiling_float_int(SteamcraftRegistry.researchPages.get(viewing).length / 2F);
         }
-        ItemStack active = player.getActiveItemStack();
+        ItemStack active = player.getHeldItemMainhand();
         if (active != null && active.getItem() instanceof ItemSteamcraftBook) {
             book = active;
         } else {

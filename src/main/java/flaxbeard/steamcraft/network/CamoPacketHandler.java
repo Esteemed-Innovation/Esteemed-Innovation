@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> {
@@ -31,7 +32,7 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
 
         BlockPos pos = new BlockPos(x, y, z);
 
-        ItemStack held = player.getActiveItemStack();
+        ItemStack held = ItemStackUtility.getHeldItemStack(player);
         if (held == null || held.getItem() == null) {
             return null;
         }

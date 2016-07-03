@@ -207,7 +207,7 @@ public class SteamcraftEventHandler {
     @SideOnly(Side.CLIENT)
     public void handleRocketDisplay(RenderGameOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getMinecraft();
-        ItemStack heldStack = mc.thePlayer.getActiveItemStack();
+        ItemStack heldStack = ItemStackUtility.getHeldItemStack(mc.thePlayer);
         if (event.getType() == ElementType.ALL && heldStack != null &&
           heldStack.getItem() == ROCKET_LAUNCHER.getItem()) {
             ScaledResolution resolution = new ScaledResolution(mc);
@@ -392,7 +392,7 @@ public class SteamcraftEventHandler {
 					}
 				}
 			}*/
-            ItemStack equipped = player.getActiveItemStack();
+            ItemStack equipped = player.getHeldItemMainhand();
             RayTraceResult pos = mc.objectMouseOver;
             if (pos != null && equipped != null && equipped.getItem() != null) {
                 if (equipped.getItem() instanceof IPipeWrench) {
@@ -833,7 +833,7 @@ public class SteamcraftEventHandler {
             EntityLivingBase entity = (EntityLivingBase) sourceEntity;
             boolean hasPower = hasPower(entity, Config.powerFistConsumption);
             ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (hasPower && stack != null && entity.getActiveItemStack() == null &&
+            if (hasPower && stack != null && entity.getHeldItemMainhand() == null &&
               stack.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) stack.getItem();
                 if (chest.hasUpgrade(stack, POWER_FIST.getItem())) {
@@ -855,7 +855,7 @@ public class SteamcraftEventHandler {
         EntityPlayer entity = event.getEntityPlayer();
         int consumption = Config.pistonPushConsumption;
         boolean hasPower = hasPower(entity, consumption);
-        ItemStack heldItem = entity.getActiveItemStack();
+        ItemStack heldItem = entity.getHeldItemMainhand();
         if (hasPower && heldItem == null) {
             ItemStack chestStack = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             Item chest = chestStack.getItem();
@@ -928,7 +928,7 @@ public class SteamcraftEventHandler {
             World world = entity.worldObj;
             ItemStack head = entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (entity.getActiveItemStack() == null && entity.isSneaking() && head != null &&
+            if (entity.getHeldItemMainhand() == null && entity.isSneaking() && head != null &&
               chest != null && chest.getItem() instanceof ItemExosuitArmor &&
               chest.hasTagCompound()) {
                 int consumption = (chest.getTagCompound().getInteger("maxFill") / 2) + Config.dragonRoarConsumption;
@@ -1231,7 +1231,7 @@ public class SteamcraftEventHandler {
             event.setNewSpeed(event.getNewSpeed() * 1.2F);
         }
         EntityPlayer player = (EntityPlayer) entity;
-        ItemStack heldItemStack = player.getActiveItemStack();
+        ItemStack heldItemStack = player.getHeldItemMainhand();
         if (heldItemStack == null) {
             return;
         }
@@ -1763,7 +1763,7 @@ public class SteamcraftEventHandler {
         Item blockItem = Item.getItemFromBlock(block);
         int meta = block.getMetaFromState(state);
         MutablePair<Item, Integer> pair = MutablePair.of(blockItem, meta);
-        ItemStack equipped = player.getActiveItemStack();
+        ItemStack equipped = player.getHeldItemMainhand();
         if (equipped == null) {
             return;
         }
@@ -1896,7 +1896,7 @@ public class SteamcraftEventHandler {
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
         int meta = block.getMetaFromState(state);
-        ItemStack equipped = player.getActiveItemStack();
+        ItemStack equipped = player.getHeldItemMainhand();
         if (equipped == null) {
             return;
         }
@@ -2524,7 +2524,7 @@ public class SteamcraftEventHandler {
             return;
         }
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        ItemStack equipped = player.getActiveItemStack();
+        ItemStack equipped = player.getHeldItemMainhand();
         if (equipped == null || !player.isSneaking()) {
             return;
         }
@@ -2583,7 +2583,7 @@ public class SteamcraftEventHandler {
 
     @SubscribeEvent
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
-        ItemStack equipped = event.getEntityPlayer().getActiveItemStack();
+        ItemStack equipped = event.getEntityPlayer().getHeldItemMainhand();
         BlockPos pos = event.getPos();
         World world = event.getEntity().worldObj;
         IBlockState state = world.getBlockState(pos);

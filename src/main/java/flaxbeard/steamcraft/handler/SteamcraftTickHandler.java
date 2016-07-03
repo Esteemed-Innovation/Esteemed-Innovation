@@ -13,6 +13,7 @@ import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.item.ItemSteamCell;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 import flaxbeard.steamcraft.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
@@ -160,7 +161,7 @@ public class SteamcraftTickHandler {
                 SteamcraftEventHandler.lastViewVillagerGui = false;
             }
             EntityPlayer player = mc.thePlayer;
-            ItemStack held = player.getActiveItemStack();
+            ItemStack held = ItemStackUtility.getHeldItemStack(player);
             if (mc.gameSettings.keyBindUseItem.isKeyDown() && player.isSneaking() && held != null &&
               held.getItem() instanceof ItemBlock) {
                 RayTraceResult pos = mc.objectMouseOver;
