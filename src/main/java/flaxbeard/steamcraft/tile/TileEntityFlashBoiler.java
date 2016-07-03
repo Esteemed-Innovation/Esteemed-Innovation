@@ -1,13 +1,12 @@
 package flaxbeard.steamcraft.tile;
 
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.*;
@@ -15,8 +14,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,221 +36,178 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     // OO       OO     Z ^
     // XO       OO     X-->
     private static int[][] bbl = new int[][]{
-            new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1},
-            new int[]{0, 1, 0}, new int[]{1, 1, 0}, new int[]{0, 1, 1}, new int[]{1, 1, 1}
+      new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1},
+      new int[]{0, 1, 0}, new int[]{1, 1, 0}, new int[]{0, 1, 1}, new int[]{1, 1, 1}
     };
     // bottom   top
     // OO       OO     Z ^
     // OO       XO     X-->
     private static int[][] tbl = new int[][]{
-            new int[]{0, -1, 0}, new int[]{1, -1, 0}, new int[]{0, -1, 1}, new int[]{1, -1, 1},
-            new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1}
+      new int[]{0, -1, 0}, new int[]{1, -1, 0}, new int[]{0, -1, 1}, new int[]{1, -1, 1},
+      new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1}
     };
     // bottom   top
     // OO       OO     Z ^
     // OX       OO     X-->
     private static int[][] bbr = new int[][]{
-            new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1},
-            new int[]{-1, 1, 0}, new int[]{0, 1, 0}, new int[]{-1, 1, 1}, new int[]{0, 1, 1}
+      new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1},
+      new int[]{-1, 1, 0}, new int[]{0, 1, 0}, new int[]{-1, 1, 1}, new int[]{0, 1, 1}
     };
     // bottom   top
     // OO       OO     Z ^
     // OO       OX     X-->
     private static int[][] tbr = new int[][]{
-            new int[]{-1, -1, 0}, new int[]{0, -1, 0}, new int[]{-1, -1, 1}, new int[]{0, -1, 1},
-            new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1}
+      new int[]{-1, -1, 0}, new int[]{0, -1, 0}, new int[]{-1, -1, 1}, new int[]{0, -1, 1},
+      new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1}
     };
     // bottom   top
     // XO       OO     Z ^
     // OO       OO     X-->
     private static int[][] btl = new int[][]{
-            new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0},
-            new int[]{0, 1, -1}, new int[]{1, 1, -1}, new int[]{0, 1, 0}, new int[]{1, 1, 0}
+      new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0},
+      new int[]{0, 1, -1}, new int[]{1, 1, -1}, new int[]{0, 1, 0}, new int[]{1, 1, 0}
     };
     // bottom   top
     // OO       XO     Z ^
     // OO       OO     X-->
     private static int[][] ttl = new int[][]{
-            new int[]{0, -1, -1}, new int[]{1, -1, -1}, new int[]{0, -1, 0}, new int[]{1, -1, 0},
-            new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0}
+      new int[]{0, -1, -1}, new int[]{1, -1, -1}, new int[]{0, -1, 0}, new int[]{1, -1, 0},
+      new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0}
     };
     // bottom   top
     // OX       OO     Z ^
     // OO       OO     X-->
     private static int[][] btr = new int[][]{
-            new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0},
-            new int[]{-1, 1, -1}, new int[]{0, 1, -1}, new int[]{-1, 1, 0}, new int[]{0, 1, 0}
+      new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0},
+      new int[]{-1, 1, -1}, new int[]{0, 1, -1}, new int[]{-1, 1, 0}, new int[]{0, 1, 0}
     };
     // bottom   top
     // OO       OX     Z ^
     // OO       OO     X-->
     private static int[][] ttr = new int[][]{
-            new int[]{-1, -1, -1}, new int[]{0, -1, -1}, new int[]{-1, -1, 0}, new int[]{0, -1, 0},
-            new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0}
+      new int[]{-1, -1, -1}, new int[]{0, -1, -1}, new int[]{-1, -1, 0}, new int[]{0, -1, 0},
+      new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0}
     };
+
     private static int[][][] validConfigs = new int[][][]{
-            bbl, tbl, bbr, tbr, btl, ttl, btr, ttr
+      bbl, tbl, bbr, tbr, btl, ttl, btr, ttr
     };
+
     public int furnaceCookTime;
     public int furnaceBurnTime;
     public int currentItemBurnTime;
     public int heat;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
-    private String field_145958_o;
+    private String customName;
     private boolean wasBurning = false;
     private boolean shouldExplode = false;
     private boolean waitOneTick = true;
     private int frontSide = -1;
-    private boolean loaded = false;
     private boolean burning;
 
     public TileEntityFlashBoiler() {
         super(CAPACITY);
         super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1), 80000);
-        this.setPressureResistance(0.5F);
-    }
-
-    public static int getItemBurnTime(ItemStack stack) {
-        if (stack == null) {
-            return 0;
-        } else {
-            Item item = stack.getItem();
-
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air) {
-                Block block = Block.getBlockFromItem(item);
-
-                if (block == Blocks.wooden_slab) {
-                    return 150;
-                }
-
-                if (block.getMaterial() == Material.wood) {
-                    return 300;
-                }
-
-                if (block == Blocks.coal_block) {
-                    return 16000;
-                }
-            }
-
-            if (item instanceof ItemTool && ((ItemTool) item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemHoe && ((ItemHoe) item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(stack);
-        }
+        setPressureResistance(0.5F);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        this.frontSide = nbt.getInteger("frontSide");
+        frontSide = nbt.getInteger("frontSide");
         NBTTagList nbttaglist = (NBTTagList) nbt.getTag("Items");
-        this.furnaceItemStacks = new ItemStack[2];
+        furnaceItemStacks = new ItemStack[2];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound compound = nbttaglist.getCompoundTagAt(i);
             byte b0 = compound.getByte("Slot");
 
-            if (b0 >= 0 && b0 < this.furnaceItemStacks.length) {
-                this.furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(compound);
+            if (b0 >= 0 && b0 < furnaceItemStacks.length) {
+                furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(compound);
             }
         }
 
-        this.furnaceBurnTime = nbt.getShort("BurnTime");
-        this.furnaceCookTime = nbt.getShort("CookTime");
-        this.currentItemBurnTime = nbt.getShort("cIBT");
+        furnaceBurnTime = nbt.getShort("BurnTime");
+        furnaceCookTime = nbt.getShort("CookTime");
+        currentItemBurnTime = nbt.getShort("cIBT");
 
         if (nbt.hasKey("CustomName")) {
-            this.field_145958_o = nbt.getString("CustomName");
+            customName = nbt.getString("CustomName");
         }
 
         if (nbt.hasKey("water")) {
-            this.myTank.setFluid(new FluidStack(FluidRegistry.WATER, nbt.getShort("water")));
+            myTank.setFluid(new FluidStack(FluidRegistry.WATER, nbt.getShort("water")));
         }
 
         if (nbt.hasKey("heat")) {
-            this.heat = nbt.getShort("heat");
+            heat = nbt.getShort("heat");
         }
         // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setInteger("frontSide", this.frontSide);
-        nbt.setShort("BurnTime", (short) this.furnaceBurnTime);
+        nbt.setInteger("frontSide", frontSide);
+        nbt.setShort("BurnTime", (short) furnaceBurnTime);
         nbt.setShort("water", (short) myTank.getFluidAmount());
-        nbt.setShort("heat", (short) this.heat);
+        nbt.setShort("heat", (short) heat);
 
-        nbt.setShort("CookTime", (short) this.furnaceCookTime);
-        nbt.setShort("cIBT", (short) this.currentItemBurnTime);
+        nbt.setShort("CookTime", (short) furnaceCookTime);
+        nbt.setShort("cIBT", (short) currentItemBurnTime);
 
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.furnaceItemStacks.length; ++i) {
-            if (this.furnaceItemStacks[i] != null) {
+        for (int i = 0; i < furnaceItemStacks.length; ++i) {
+            if (furnaceItemStacks[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte) i);
-                this.furnaceItemStacks[i].writeToNBT(nbttagcompound1);
+                furnaceItemStacks[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
 
         nbt.setTag("Items", nbttaglist);
 
-        if (this.hasCustomInventoryName()) {
-            nbt.setString("CustomName", this.field_145958_o);
+        if (hasCustomInventoryName()) {
+            nbt.setString("CustomName", customName);
         }
+
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
-        access.setInteger("frontSide", this.frontSide);
+        access.setInteger("frontSide", frontSide);
         access.setInteger("water", myTank.getFluidAmount());
-        access.setShort("BurnTime", (short) this.furnaceBurnTime);
-        access.setShort("CookTime", (short) this.furnaceCookTime);
-        access.setShort("cIBT", (short) this.currentItemBurnTime);
+        access.setShort("BurnTime", (short) furnaceBurnTime);
+        access.setShort("CookTime", (short) furnaceCookTime);
+        access.setShort("cIBT", (short) currentItemBurnTime);
         access.setBoolean("burning", burning);
 
-
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.frontSide = access.getInteger("frontSide");
-        this.myTank.setFluid(new FluidStack(FluidRegistry.WATER, access.getInteger("water")));
-        this.furnaceBurnTime = access.getShort("BurnTime");
-        this.currentItemBurnTime = access.getShort("cIBT");
-        this.furnaceCookTime = access.getShort("CookTime");
-        this.burning = access.getBoolean("burning");
+        NBTTagCompound access = pkt.getNbtCompound();
+        frontSide = access.getInteger("frontSide");
+        myTank.setFluid(new FluidStack(FluidRegistry.WATER, access.getInteger("water")));
+        furnaceBurnTime = access.getShort("BurnTime");
+        currentItemBurnTime = access.getShort("cIBT");
+        furnaceCookTime = access.getShort("CookTime");
+        burning = access.getBoolean("burning");
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        super.markForUpdate();
     }
 
     public void checkMultiblock(boolean isBreaking, int frontSide) {
-        ////Steamcraft.log.debug(frontSideIn);
-        int x = xCoord, y = yCoord, z = zCoord;
-
-        ////Steamcraft.log.debug("Checking multiblock; frontSide: "+this.frontSide);
-
-        boolean isMultiblock = false;
-        boolean isTooManyBlocks = false;
-
-
         if (!worldObj.isRemote) {
             if (!isBreaking) {
-                ////Steamcraft.log.debug(this.frontSide);
                 int[] validClusters = getValidClusters();
-                ////Steamcraft.log.debug("valid configs found: " +validClusters.length);
 
                 if (validClusters.length == 1) {
                     updateMultiblock(validClusters[0], true, frontSide);
@@ -259,37 +217,45 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     public void destroyMultiblock() {
-        updateMultiblock(this.getValidClusterFromMetadata(), false, -1);
+        updateMultiblock(getValidClusterFromMetadata(), false, -1);
     }
 
     private int getValidClusterFromMetadata() {
         int validCluster = -1;
         // Because the clusters at the top are doofy and not in the right order =\
-        switch (worldObj.getBlockMetadata(xCoord, yCoord, zCoord)) {
-            case 1:
+        switch (getBlockMetadata()) {
+            case 1: {
                 validCluster = 0;
                 break;
-            case 2:
+            }
+            case 2: {
                 validCluster = 2;
                 break;
-            case 3:
+            }
+            case 3: {
                 validCluster = 4;
                 break;
-            case 4:
+            }
+            case 4: {
                 validCluster = 6;
                 break;
-            case 5:
+            }
+            case 5: {
                 validCluster = 1;
                 break;
-            case 6:
+            }
+            case 6: {
                 validCluster = 3;
                 break;
-            case 7:
+            }
+            case 7: {
                 validCluster = 5;
                 break;
-            case 8:
+            }
+            case 8: {
                 validCluster = 7;
                 break;
+            }
         }
 
         return validCluster;
@@ -298,16 +264,17 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     private int checkCluster(int[][] cluster) {
         int count = 0;
         for (int pos = 0; pos < 8; pos++) {
-            int x = cluster[pos][0] + xCoord, y = cluster[pos][1] + yCoord, z = cluster[pos][2] + zCoord;
-            Block b = worldObj.getBlock(x, y, z);
-            if (b == SteamcraftBlocks.flashBoiler) {
-                TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
-                if (!(worldObj.getBlockMetadata(x, y, z) > 0)) {
+            int x = cluster[pos][0] + this.pos.getX();
+            int y = cluster[pos][1] + this.pos.getY();
+            int z = cluster[pos][2] + this.pos.getZ();
+            BlockPos blockPos = new BlockPos(x, y, z);
+            Block block = worldObj.getBlockState(blockPos).getBlock();
+            if (block == SteamNetworkBlocks.Blocks.FLASH_BOILER.getBlock()) {
+                TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(blockPos);
+                if (!(getBlockMetadata() > 0)) {
                     count++;
                 }
-
             }
-
         }
 
         return count;
@@ -318,18 +285,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         int[] out;
         int count = 0;
         for (int clusterIndex = 0; clusterIndex < 8; clusterIndex++) {
-            ////Steamcraft.log.debug("Checking cluster "+clusterIndex);
-            boolean isValid = false;
             if (checkCluster(validConfigs[clusterIndex]) == 8) {
                 valid[count] = clusterIndex;
                 count++;
-                isValid = true;
             }
         }
         out = new int[count];
-        for (int i = 0; i < count; i++) {
-            out[i] = valid[i];
-        }
+        System.arraycopy(valid, 0, out, 0, count);
         return out;
     }
 
@@ -337,21 +299,24 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         int[][] cluster = validConfigs[clusterIndex];
         int[][] out = new int[8][3];
         for (int pos = 0; pos < 8; pos++) {
-            out[pos] = new int[]{cluster[pos][0] + xCoord, cluster[pos][1] + yCoord, cluster[pos][2] + zCoord};
+            out[pos] = new int[] {
+              cluster[pos][0] + this.pos.getX(),
+              cluster[pos][1] + this.pos.getY(),
+              cluster[pos][2] + this.pos.getZ()
+            };
         }
         return out;
     }
 
     private void updateMultiblock(int clusterIndex, boolean isMultiblock, int frontSide) {
         int[][] cluster = getClusterCoords(clusterIndex);
-        HashSet<TileEntityFlashBoiler> boilers = new HashSet();
+        HashSet<TileEntityFlashBoiler> boilers = new HashSet<>();
         for (int pos = 7; pos >= 0; pos--) {
             int x = cluster[pos][0], y = cluster[pos][1], z = cluster[pos][2];
             if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler) {
                 worldObj.setBlockMetadataWithNotify(
-                        cluster[pos][0], cluster[pos][1], cluster[pos][2],
-                        isMultiblock ? pos + 1 : 0,
-                        2
+                  cluster[pos][0], cluster[pos][1], cluster[pos][2],
+                  isMultiblock ? pos + 1 : 0, 2
                 );
                 TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(cluster[pos][0], cluster[pos][1], cluster[pos][2]);
                 boiler.setFront(frontSide, false);
@@ -395,8 +360,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @Override
-    public void updateEntity() {
-        super.superUpdateOnly();
+    public void update() {
+        super.update();
         // fixes existing capacity and prevents explosions
         if (this.capacity != CAPACITY) {
             int steamToLose = Math.abs(this.capacity - CAPACITY);
@@ -615,13 +580,13 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+        return this.hasCustomInventoryName() ? this.customName : "container.furnace";
     }
 
     @Override
     public boolean hasCustomInventoryName() {
 
-        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
     @Override
@@ -730,12 +695,12 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @Override
-    public boolean doesConnect(ForgeDirection face) {
+    public boolean doesConnect(EnumFacing face) {
         return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 4;
     }
 
     @Override
-    public boolean acceptsGauge(ForgeDirection face) {
+    public boolean acceptsGauge(EnumFacing face) {
         if (face != ForgeDirection.UP && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
             if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 4 && face != ForgeDirection.UP) {
                 return true;
