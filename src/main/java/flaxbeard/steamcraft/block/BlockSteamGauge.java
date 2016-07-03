@@ -6,7 +6,9 @@ import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSteamGauge extends BlockContainer {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public BlockSteamGauge() {
         super(Material.IRON);
         setHardness(1F);

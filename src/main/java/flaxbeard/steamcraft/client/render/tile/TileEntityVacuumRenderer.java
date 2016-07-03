@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.tile;
 
 import flaxbeard.steamcraft.block.BlockVacuum;
 import flaxbeard.steamcraft.client.render.model.ModelVacuum;
@@ -11,11 +11,11 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelVacuum model = new ModelVacuum();
-    private static final ResourceLocation fanTexture = new ResourceLocation("steamcraft:textures/models/fan.png");
+    private static final ModelVacuum MODEL = new ModelVacuum();
+    private static final ResourceLocation FAN_TEXTURE = new ResourceLocation("steamcraft:textures/models/fan.png");
 
-    private Runnable renderSide = new Runnable() { @Override public void run() { model.renderSide(); }};
-    private Runnable renderBlade = new Runnable() { @Override public void run() { model.renderBlade(); }};
+    private Runnable renderSide = new Runnable() { @Override public void run() { MODEL.renderSide(); }};
+    private Runnable renderBlade = new Runnable() { @Override public void run() { MODEL.renderBlade(); }};
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -43,14 +43,14 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implemen
         }
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(fanTexture);
-        model.render();
+        Minecraft.getMinecraft().renderEngine.bindTexture(FAN_TEXTURE);
+        MODEL.render();
         renderFour(renderSide);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         GL11.glRotatef(-vacuum.rotateTicks * 25.0F, 1F, 0F, 0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        model.renderPole();
+        MODEL.renderPole();
         renderFour(renderBlade);
 
         GL11.glPopMatrix();
@@ -77,11 +77,11 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implemen
         GL11.glTranslated(x, y, z);
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(fanTexture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(FAN_TEXTURE);
 
-        model.render();
+        MODEL.render();
         renderFour(renderSide);
-        model.renderPole();
+        MODEL.renderPole();
         renderFour(renderBlade);
         GL11.glPopMatrix();
     }

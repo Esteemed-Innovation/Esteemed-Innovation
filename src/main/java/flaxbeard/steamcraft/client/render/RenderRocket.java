@@ -2,7 +2,9 @@ package flaxbeard.steamcraft.client.render;
 
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -14,20 +16,30 @@ import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class RenderRocket extends Render {
-    private static final ResourceLocation arrowTextures = new ResourceLocation("steamcraft:textures/models/rocket.png");
+    private static final ResourceLocation ARROW_TEXTURES = new ResourceLocation("steamcraft:textures/models/rocket.png");
 
-    public void doRender(EntityRocket rocket, double x, double y, double z, float entityYaw, float partialTicks) {
+    public RenderRocket(RenderManager manager) {
+        super(manager);
+    }
+
+    @Override
+    public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        if (!(entity instanceof EntityRocket)) {
+            return;
+        }
+
+        EntityRocket rocket = (EntityRocket) entity;
         bindEntityTexture(rocket);
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x, (float) y, (float) z);
         Vec3d vec = new Vec3d(rocket.motionX, rocket.motionY, rocket.motionZ);
         vec = vec.normalize();
-        float distance = (float) Math.sqrt(vec.zCoord * vec.zCoord + vec.xCoord * vec.xCoord);
         float pitch = (float) Math.asin(vec.yCoord);
-        float yaw = (float) Math.atan2(vec.xCoord, vec.zCoord);
+        @SuppressWarnings("SuspiciousNameCombination") float yaw = (float) Math.atan2(vec.xCoord, vec.zCoord);
         GL11.glRotatef((float) Math.toDegrees(yaw) - 90, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef((float) Math.toDegrees(pitch), 0.0F, 0.0F, 1.0F);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer buffer = tessellator.getBuffer();
         byte b0 = 0;
         float f2 = 0.0F;
         float f3 = 0.5F;
@@ -50,28 +62,25 @@ public class RenderRocket extends Render {
         GL11.glScalef(f10, f10, f10);
         GL11.glTranslatef(-4.0F, 0.0F, 0.0F);
         GL11.glNormal3f(f10, 0.0F, 0.0F);
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0D, -2.0D, -2.0D, (double) f6, (double) f8);
-        tessellator.addVertexWithUV(-7.0D, -2.0D, 2.0D, (double) f7, (double) f8);
-        tessellator.addVertexWithUV(-7.0D, 2.0D, 2.0D, (double) f7, (double) f9);
-        tessellator.addVertexWithUV(-7.0D, 2.0D, -2.0D, (double) f6, (double) f9);
+        RenderUtility.addVertexWithUV(buffer, -7D, -2D, -2D, f6, f8);
+        RenderUtility.addVertexWithUV(buffer, -7D, -2D, 2D, f7, f8);
+        RenderUtility.addVertexWithUV(buffer, -7D, 2D, 2D, f7, f9);
+        RenderUtility.addVertexWithUV(buffer, -7D, 2D, -2D, f6, f9);
         tessellator.draw();
         GL11.glNormal3f(-f10, 0.0F, 0.0F);
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0D, 2.0D, -2.0D, (double) f6, (double) f8);
-        tessellator.addVertexWithUV(-7.0D, 2.0D, 2.0D, (double) f7, (double) f8);
-        tessellator.addVertexWithUV(-7.0D, -2.0D, 2.0D, (double) f7, (double) f9);
-        tessellator.addVertexWithUV(-7.0D, -2.0D, -2.0D, (double) f6, (double) f9);
+        RenderUtility.addVertexWithUV(buffer, -7D, 2D, -2D, f6, f8);
+        RenderUtility.addVertexWithUV(buffer, -7D, 2D, 2D, f7, f8);
+        RenderUtility.addVertexWithUV(buffer, -7D, -2D, 2D, f7, f9);
+        RenderUtility.addVertexWithUV(buffer, -7D, -2D, -2D, f6, f9);
         tessellator.draw();
 
         for (int i = 0; i < 4; ++i) {
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glNormal3f(0.0F, 0.0F, f10);
-            tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-8.0D, -2.0D, 0.0D, (double) f2, (double) f4);
-            tessellator.addVertexWithUV(8.0D, -2.0D, 0.0D, (double) f3, (double) f4);
-            tessellator.addVertexWithUV(8.0D, 2.0D, 0.0D, (double) f3, (double) f5);
-            tessellator.addVertexWithUV(-8.0D, 2.0D, 0.0D, (double) f2, (double) f5);
+            RenderUtility.addVertexWithUV(buffer, -8D, -2D, 0D, f2, f4);
+            RenderUtility.addVertexWithUV(buffer, 8D, -2D, 0D, f3, f4);
+            RenderUtility.addVertexWithUV(buffer, 8D, 2D, 0D, f3, f5);
+            RenderUtility.addVertexWithUV(buffer, -8D, 2D, -0D, f2, f5);
             tessellator.draw();
         }
 
@@ -79,27 +88,8 @@ public class RenderRocket extends Render {
         GL11.glPopMatrix();
     }
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    protected ResourceLocation getEntityTexture(EntityRocket rocket) {
-        return arrowTextures;
-    }
-
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
+    @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntityRocket) entity);
-    }
-
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-        this.doRender((EntityRocket) entity, d, d1, d2, f, f1);
+        return ARROW_TEXTURES;
     }
 }

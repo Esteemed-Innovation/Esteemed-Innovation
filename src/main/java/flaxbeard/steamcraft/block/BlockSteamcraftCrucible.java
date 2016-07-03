@@ -12,7 +12,10 @@ import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -28,11 +31,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
-    private static float px = (1.0F / 16.0F);
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    private static final float PX = (1.0F / 16.0F);
     public IIcon innerIcon;
     public IIcon topIcon;
     public IIcon bottomIcon;
-    public IIcon liquidIcon;
+    public TextureAtlasSprite liquidIcon;
     public IIcon blank;
 
     public BlockSteamcraftCrucible() {
@@ -47,7 +51,7 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-        return AxisAlignedBB.getBoundingBox(i + px, j + 0.0F + px, k + px, i + 1.0F - px, j + 1.0F - px, k + 1.0F - px);
+        return AxisAlignedBB.getBoundingBox(i + PX, j + 0.0F + PX, k + PX, i + 1.0F - PX, j + 1.0F - PX, k + 1.0F - PX);
     }
 
     @Override
@@ -142,7 +146,7 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
-        setBlockBounds(px, 0.0F + px, px, 1.0F - px, 1.0F - px, 1.0F - px);
+        setBlockBounds(PX, 0.0F + PX, PX, 1.0F - PX, 1.0F - PX, 1.0F - PX);
         super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
     }
 

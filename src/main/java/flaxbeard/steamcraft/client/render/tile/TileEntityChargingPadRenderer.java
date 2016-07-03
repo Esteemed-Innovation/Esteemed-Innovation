@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.tile;
 
 import flaxbeard.steamcraft.block.BlockChargingPad;
 import flaxbeard.steamcraft.client.render.model.ModelChargingPad;
@@ -11,8 +11,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelChargingPad model = new ModelChargingPad();
-    private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/charger.png");
+    private static final ModelChargingPad MODEL = new ModelChargingPad();
+    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/models/charger.png");
+    private static final int INVENTORY_ROTATION = 180;
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -44,7 +45,7 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
         GL11.glRotatef(90.0F, 0F, 1F, 0F);
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -52,14 +53,12 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         GL11.glTranslated(0.0F, 0.32D + 0.95D * Math.sin(Math.toRadians((90D / 40D) * pad.extendTicks)), 0.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
-        model.render(pad.extendTicks);
+        MODEL.render(pad.extendTicks);
 
         GL11.glPopMatrix();
     }
-
-    private static final int inventoryRotation = 180;
 
     @Override
     public void renderInventoryTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {
@@ -68,19 +67,17 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
 
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         //System.out.println(pad.extendTicks);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(inventoryRotation, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(INVENTORY_ROTATION, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         GL11.glTranslated(0.0F, 0.32D + 0.95D * Math.sin(Math.toRadians((90D / 40D) * 0)), 0.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
-        model.render(0);
+        MODEL.render(0);
 
         GL11.glPopMatrix();
-
     }
 }

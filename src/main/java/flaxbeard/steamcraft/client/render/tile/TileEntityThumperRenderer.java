@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.tile;
 
 import flaxbeard.steamcraft.block.BlockThumper;
 import flaxbeard.steamcraft.client.render.model.ModelThumper;
@@ -12,8 +12,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class TileEntityThumperRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelThumper model = new ModelThumper();
-    private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/thumper.png");
+    private static final ModelThumper MODEL = new ModelThumper();
+    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/models/thumper.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -27,8 +27,8 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer impleme
         }
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        model.render();
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+        MODEL.render();
         double trans = 0;
         if (thumper.progress < 20) {
             trans = 0.0D;
@@ -44,11 +44,9 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer impleme
         }
         GL11.glTranslated(0.0F, trans, 0.0F);
 
-        model.renderThumper();
+        MODEL.renderThumper();
         GL11.glPopMatrix();
-
     }
-
 
     @Override
     public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
@@ -56,17 +54,14 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer impleme
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslated(x, y, z);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         GL11.glScalef(0.3F, 0.3F, 0.3F);
         GL11.glTranslatef(-0.5F, -2.9F, -0.5F);
 
-
-        model.render();
-        model.renderThumper();
+        MODEL.render();
+        MODEL.renderThumper();
 
         GL11.glPopMatrix();
-
     }
-
 }

@@ -3,7 +3,9 @@ package flaxbeard.steamcraft.block;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityFluidSteamConverter;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFluidSteamConverter extends BlockSteamTransporter implements IWrenchable {
-
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private IIcon sideIcon;
 
     public BlockFluidSteamConverter() {

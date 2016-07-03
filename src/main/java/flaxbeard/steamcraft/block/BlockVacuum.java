@@ -4,7 +4,9 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockVacuum extends BlockSteamTransporter implements IWrenchable {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     private IIcon iconOn;
     private IIcon iconOff;

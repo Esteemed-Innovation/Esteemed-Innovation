@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.tile;
 
 import flaxbeard.steamcraft.block.BlockValvePipe;
 import flaxbeard.steamcraft.client.render.model.ModelValve;
@@ -8,13 +8,11 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelValve model = new ModelValve();
-    private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/blocks/blockCopper.png");
-
+    private static final ModelValve MODEL = new ModelValve();
+    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/blocks/blockCopper.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -44,14 +42,12 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer imple
             }
         }
         GL11.glRotated((225.0F * (valve.isOpen() ? valve.turnTicks : 10 - valve.turnTicks) / 10.0F), 1, 0, 0);
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
-        model.render();
+        MODEL.render();
         GL11.glPopMatrix();
     }
 
-
     @Override
     public void renderInventoryTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {}
-
 }

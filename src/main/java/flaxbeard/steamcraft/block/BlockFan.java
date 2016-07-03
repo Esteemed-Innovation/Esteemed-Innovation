@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockFan extends BlockSteamTransporter implements IWrenchable {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private IIcon iconOn;
     private IIcon iconOff;
 

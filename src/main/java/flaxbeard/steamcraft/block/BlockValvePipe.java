@@ -2,6 +2,8 @@ package flaxbeard.steamcraft.block;
 
 import flaxbeard.steamcraft.tile.TileEntityValvePipe;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -11,6 +13,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockValvePipe extends BlockPipe {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
+
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase elb) {
         if (MathHelper.abs((float) elb.posX - (float) x) < 2.0F && MathHelper.abs((float) elb.posZ - (float) z) < 2.0F) {
             double d0 = elb.posY + 1.82D - (double) elb.yOffset;

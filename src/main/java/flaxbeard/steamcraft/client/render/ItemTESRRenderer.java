@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.client.render;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
+import flaxbeard.steamcraft.client.render.tile.IInventoryTESR;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
