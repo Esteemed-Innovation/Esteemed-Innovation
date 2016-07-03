@@ -10,6 +10,7 @@ import flaxbeard.steamcraft.data.capabilities.player.IPlayerData;
 import flaxbeard.steamcraft.data.capabilities.player.PlayerDataStorage;
 import flaxbeard.steamcraft.data.capabilities.villager.IVillagerData;
 import flaxbeard.steamcraft.data.capabilities.villager.VillagerDataStorage;
+import flaxbeard.steamcraft.data.village.SteamEngineerCareer;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityFloatingItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
@@ -34,7 +35,6 @@ import flaxbeard.steamcraft.tile.*;
 import flaxbeard.steamcraft.world.ComponentSteamWorkshop;
 import flaxbeard.steamcraft.world.SteamWorkshopCreationHandler;
 import flaxbeard.steamcraft.world.SteamcraftOreGen;
-import flaxbeard.steamcraft.world.SteampunkVillagerTradeHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -173,9 +173,8 @@ public class Steamcraft {
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerId(id);
-        VillagerRegistry.instance().registerVillageTradeHandler(id, new SteampunkVillagerTradeHandler());
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
-        MapGenStructureIO.func_143031_a(ComponentSteamWorkshop.class, "steamcraft:workshop");
+        MapGenStructureIO.registerStructureComponent(ComponentSteamWorkshop.class, "steamcraft:workshop");
         EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
         EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
         EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, Steamcraft.instance, 64, 20, true);
@@ -265,7 +264,7 @@ public class Steamcraft {
         //noinspection deprecation
         STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession("flaxbeardssteampower:steam_engineer",
           "flaxbeardssteampower:textures/models/villager.png");
-        STEAM_ENGINEER_CAREER = new VillagerRegistry.VillagerCareer(STEAM_ENGINEER_PROFESSION, "steam_engineer");
+        STEAM_ENGINEER_CAREER = new SteamEngineerCareer();
         VillagerRegistry.instance().register(STEAM_ENGINEER_PROFESSION);
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
 

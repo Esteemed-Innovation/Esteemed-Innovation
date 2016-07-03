@@ -1,8 +1,8 @@
 package flaxbeard.steamcraft.world;
 
-import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftBlocks;
-import flaxbeard.steamcraft.SteamcraftItems;
+import flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks;
+import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
+import flaxbeard.steamcraft.init.items.FoodItems;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
@@ -106,78 +106,74 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
         fillWithBlocks(world, sbb, 1, 4, 1, 7, 4, 4, PLANK_STATE, PLANK_STATE, false);
         // world, blockID, metadata, x, y, z, bounds
 
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 2, 2, 0, sbb);// Glass and door
+        setBlockState(world, PANE_STATE, 2, 2, 0, sbb);
         //  this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 2, 2, 0, sbb);
         placeDoorCurrentPosition(world, sbb, random, 4, 1, 0, getCoordBaseMode());
         // this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 4, 2, 0, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 6, 2, 0, sbb);
+        setBlockState(world, PANE_STATE, 6, 2, 0, sbb);
+        setBlockState(world, PANE_STATE, 6, 2, 0, sbb);
 
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 2, 2, 5, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 3, 2, 5, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 5, 2, 5, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 6, 2, 5, sbb);
+        setBlockState(world, PANE_STATE, 2, 2, 5, sbb);
+        setBlockState(world, PANE_STATE, 3, 2, 5, sbb);
+        setBlockState(world, PANE_STATE, 5, 2, 5, sbb);
+        setBlockState(world, PANE_STATE, 6, 2, 5, sbb);
 
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 0, 2, 2, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 0, 2, 3, sbb);
+        setBlockState(world, PANE_STATE, 0, 2, 2, sbb);
+        setBlockState(world, PANE_STATE, 0, 2, 3, sbb);
 
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 8, 2, 2, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, 8, 2, 3, sbb);
+        setBlockState(world, PANE_STATE, 8, 2, 2, sbb);
+        setBlockState(world, PANE_STATE, 8, 2, 3, sbb);
 
-        int i = this.getMetadataWithOffset(Blocks.ladder, 3); // Ladders
-        this.placeBlockAtCurrentPosition(world, Blocks.ladder, i, 7, 1, 4, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.ladder, i, 7, 2, 4, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.ladder, i, 7, 3, 4, sbb);
-        this.placeBlockAtCurrentPosition(world, Blocks.ladder, i, 7, 4, 4, sbb);
+        setBlockState(world, LADDER_STATE, 7, 1, 4, sbb);
+        setBlockState(world, LADDER_STATE, 7, 2, 4, sbb);
+        setBlockState(world, LADDER_STATE, 7, 3, 4, sbb);
+        setBlockState(world, LADDER_STATE, 7, 4, 4, sbb);
 
-        i = this.getMetadataWithOffset(Blocks.sticky_piston, 4);
-        this.placeBlockAtCurrentPosition(world, Blocks.sticky_piston, i, 7, 1, 1, sbb); // Piston
+        setBlockState(world, Blocks.STICKY_PISTON.getDefaultState(), 7, 1, 1, sbb);
 
-        i = this.getMetadataWithOffset(Blocks.ladder, 3);
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.boiler, 0, 1, 1, 4, sbb); // Boiler
+        setBlockState(world, SteamNetworkBlocks.Blocks.BOILER.getBlock().getDefaultState(), 1, 1, 4, sbb);
         int x = this.getXWithOffset(1, 4);
         int y = this.getYWithOffset(1);
         int z = this.getZWithOffset(1, 4);
-        world.setBlockMetadataWithNotify(x, y, z, i, 2);
         populateBoiler(world, x, y, z);
 
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.pipe, 0, 1, 2, 4, sbb); // Pipes
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.pipe, 0, 2, 2, 4, sbb); // Pipes
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.pipe, 0, 3, 2, 4, sbb); // Pipes
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.pipe, 0, 4, 2, 4, sbb); // Pipes
-        i = this.getMetadataWithOffset(Blocks.sticky_piston, 4);
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.heater, i, 4, 1, 4, sbb); // Heater
+        IBlockState PIPE_STATE = SteamNetworkBlocks.Blocks.PIPE.getBlock().getDefaultState();
+        setBlockState(world, PIPE_STATE, 1, 2, 4, sbb);
+        setBlockState(world, PIPE_STATE, 2, 2, 4, sbb);
+        setBlockState(world, PIPE_STATE, 3, 2, 4, sbb);
+        setBlockState(world, PIPE_STATE, 4, 2, 4, sbb);
 
-        i = this.getMetadataWithOffset(Blocks.sticky_piston, 5);
-        this.placeBlockAtCurrentPosition(world, SteamcraftBlocks.heater, i, 2, 1, 4, sbb); // Heater
+        IBlockState HEATER_STATE = SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock().getDefaultState();
+        setBlockState(world, HEATER_STATE, 4, 1, 4, sbb);
+        setBlockState(world, HEATER_STATE, 2, 1, 4, sbb);
 
-        i = this.getMetadataWithOffset(Blocks.ladder, 3);
-        this.placeBlockAtCurrentPosition(world, Blocks.furnace, 0, 3, 1, 4, sbb); // Furnace
+        setBlockState(world, Blocks.FURNACE.getDefaultState(), 3, 1, 4, sbb);
         x = this.getXWithOffset(3, 4);
         y = this.getYWithOffset(1);
         z = this.getZWithOffset(3, 4);
-        world.setBlockMetadataWithNotify(x, y, z, i, 2);
         populateFurnace(world, x, y, z);
 
         for (int l = 0; l < 6; ++l) {
             for (int i1 = 0; i1 < 9; ++i1) {
-                this.clearCurrentPositionBlocksUpwards(world, i1, 9, l, sbb);
-                this.func_151554_b(world, Blocks.cobblestone, 0, i1, -1, l, sbb);
+                clearCurrentPositionBlocksUpwards(world, i1, 9, l, sbb);
+                replaceAirAndLiquidDownwards(world, COBBLESTONE_STATE, i1, -1, l, sbb);
             }
         }
-        this.spawnVillagers(world, sbb, 3, 1, 3, 1);
+        spawnVillagers(world, sbb, 3, 1, 3, 1);
 
         return true;
     }
 
-    private void populateFurnace(World world, BlockPos pos) {
-        Random rand = new Random(world.getSeed() + pos.getX() + pos.getY() + pos.getZ());
+    private void populateFurnace(World world, int x, int y, int z) {
+        Random rand = new Random(world.getSeed() + x + y + z);
+        BlockPos pos = new BlockPos(x, y, z);
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityFurnace) {
             TileEntityFurnace furnace = (TileEntityFurnace) tile;
             ItemStack[] possibleLoot = {
-              new ItemStack(SteamcraftItems.steamedBeef),
-              new ItemStack(SteamcraftItems.steamedPorkchop),
-              new ItemStack(SteamcraftItems.steamedChicken)
+              new ItemStack(FoodItems.Items.STEAMED_BEEF.getItem()),
+              new ItemStack(FoodItems.Items.STEAMED_PORKCHOP.getItem()),
+              new ItemStack(FoodItems.Items.STEAMED_CHICKEN.getItem())
             };
             ItemStack loot = possibleLoot[rand.nextInt(possibleLoot.length)];
             loot.stackSize = rand.nextInt(3) + 1;
@@ -185,8 +181,9 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
         }
     }
 
-    private void populateBoiler(World world, BlockPos pos) {
-        Random rand = new Random(world.getSeed() + pos.getX() + pos.getY() + pos.getZ());
+    private void populateBoiler(World world, int x, int y, int z) {
+        Random rand = new Random(world.getSeed() + x + y + z);
+        BlockPos pos = new BlockPos(x, y, z);
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityBoiler) {
             TileEntityBoiler boiler = (TileEntityBoiler) tile;
@@ -195,20 +192,10 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
             boiler.myTank.setFluid(new FluidStack(FluidRegistry.WATER, 2000 + rand.nextInt(3000)));
         }
     }
-
-    public int getMetaForBoiler(int p_151555_2_) {
-        if (this.coordBaseMode == 0) {
-            return 2;
-        } else if (this.coordBaseMode == 1) {
-            return 3;
-        } else if (this.coordBaseMode == 2) {
-            return 4;
-        }
-        return 5;
-    }
-
+/* TODO
     @Override
-    protected int getVillagerType(int par1) {
+    protected int chooseProfession(int villagersSpawned, int currentProfession) {
         return Config.villagerId;
     }
+    */
 }
