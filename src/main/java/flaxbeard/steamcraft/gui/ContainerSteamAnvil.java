@@ -10,7 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -45,21 +45,21 @@ public class ContainerSteamAnvil extends Container {
         pos = new BlockPos(x, y, z);
         thePlayer = player;
         hammer = tileEntity;
-        this.addSlotToContainer(new Slot(hammer, 0, 27, 47) {
+        addSlotToContainer(new Slot(hammer, 0, 27, 47) {
             @Override
             public void onSlotChanged() {
                 ContainerSteamAnvil.this.onCraftMatrixChanged(hammer);
                 super.onSlotChanged();
             }
         });
-        this.addSlotToContainer(new Slot(hammer, 1, 76, 47) {
+        addSlotToContainer(new Slot(hammer, 1, 76, 47) {
             @Override
             public void onSlotChanged() {
                 ContainerSteamAnvil.this.onCraftMatrixChanged(hammer);
                 super.onSlotChanged();
             }
         });
-        this.addSlotToContainer(new Slot(hammer, 2, 134, 47) {
+        addSlotToContainer(new Slot(hammer, 2, 134, 47) {
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return false;
@@ -103,13 +103,13 @@ public class ContainerSteamAnvil extends Container {
 
                     if (l > 2) {
                         world.setBlockToAir(pos);
-                        world.playAuxSFX(1029, pos, 0);
+                        world.playBroadcastSound(1029, pos, 0);
                     } else {
                         world.setBlockState(pos, state.withProperty(BlockAnvil.DAMAGE, l), 2);
-                        world.playAuxSFX(1030, pos, 0);
+                        world.playBroadcastSound(1030, pos, 0);
                     }
                 } else if (!world.isRemote) {
-                    world.playAuxSFX(1030, pos, 0);
+                    world.playBroadcastSound(1030, pos, 0);
                 }
             }
         });
@@ -157,8 +157,8 @@ public class ContainerSteamAnvil extends Container {
             int k;
             int l;
             int i1;
-            int k1;
-            int l1;
+            int k1 = 0;
+            int l1 = 0;
             Iterator iterator1;
             Enchantment enchantment;
 
@@ -166,32 +166,32 @@ public class ContainerSteamAnvil extends Container {
                 flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && Items.ENCHANTED_BOOK.getEnchantments(itemstack2).tagCount() > 0;
 
                 if (itemstack1.isItemStackDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2)) {
-                    k = Math.min(itemstack1.getItemDamageForDisplay(), itemstack1.getMaxDamage() / 4);
+                    k = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);
 
                     if (k <= 0) {
                         hammer.setInventorySlotContents(2, null);
-                        this.hammer.cost = 0;
+                        hammer.cost = 0;
                         return;
                     }
 
                     for (l = 0; k > 0 && l < itemstack2.stackSize; ++l) {
-                        i1 = itemstack1.getItemDamageForDisplay() - k;
+                        i1 = itemstack1.getItemDamage() - k;
                         itemstack1.setItemDamage(i1);
                         i += Math.max(1, k / 100) + map.size();
-                        k = Math.min(itemstack1.getItemDamageForDisplay(), itemstack1.getMaxDamage() / 4);
+                        k = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);
                     }
 
                     this.stackSizeToBeUsedInRepair = l;
                 } else {
                     if (!flag && (itemstack1.getItem() != itemstack2.getItem() || !itemstack1.isItemStackDamageable())) {
                         hammer.setInventorySlotContents(2, null);
-                        this.hammer.cost = 0;
+                        hammer.cost = 0;
                         return;
                     }
 
                     if (itemstack1.isItemStackDamageable() && !flag) {
-                        k = itemstack.getMaxDamage() - itemstack.getItemDamageForDisplay();
-                        l = itemstack2.getMaxDamage() - itemstack2.getItemDamageForDisplay();
+                        k = itemstack.getMaxDamage() - itemstack.getItemDamage();
+                        l = itemstack2.getMaxDamage() - itemstack2.getItemDamage();
                         i1 = l + itemstack1.getMaxDamage() * 12 / 100;
                         int j1 = k + i1;
                         k1 = itemstack1.getMaxDamage() - j1;
@@ -212,6 +212,9 @@ public class ContainerSteamAnvil extends Container {
                     while (iterator1.hasNext()) {
                         i1 = (Integer) iterator1.next();
                         enchantment = Enchantment.getEnchantmentByID(i1);
+                        if (enchantment == null) {
+                            continue;
+                        }
                         k1 = map.containsKey(i1) ? ((Integer) map.get(i1)) : 0;
                         l1 = ((Integer) map1.get(i1));
                         int i3;
@@ -300,7 +303,10 @@ public class ContainerSteamAnvil extends Container {
             for (iterator1 = map.keySet().iterator(); iterator1.hasNext(); k2 += k + k1 * l1) {
                 i1 = ((Integer) iterator1.next());
                 enchantment = Enchantment.getEnchantmentByID(i1);
-                k1 = ((Integer) map.get(Integer.valueOf(i1)));
+                if (enchantment == null) {
+                    continue;
+                }
+                k1 = ((Integer) map.get(i1));
                 l1 = 0;
                 ++k;
 
@@ -315,6 +321,7 @@ public class ContainerSteamAnvil extends Container {
                     }
                     case RARE: {
                         l1 = 4;
+                        break;
                     }
                     case VERY_RARE: {
                         l1 = 8;
@@ -374,59 +381,45 @@ public class ContainerSteamAnvil extends Container {
             //onCraftMatrixChanged(hammer);
             this.detectAndSendChanges();
         }
-        if (!hammer.getStackInSlot(2).areItemStacksEqual(hammer.getStackInSlot(2), old) || !hammer.getStackInSlot(2).areItemStackTagsEqual(hammer.getStackInSlot(2), old)) {
+        ItemStack stackInSlotTwo = hammer.getStackInSlot(2);
+        if (!ItemStack.areItemStacksEqual(stackInSlotTwo, old) || !ItemStack.areItemStackTagsEqual(stackInSlotTwo, old)) {
             hammer.progress = 0;
         }
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting par1ICrafting) {
-        super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.sendProgressBarUpdate(this, 0, this.hammer.cost);
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        listener.sendProgressBarUpdate(this, 0, hammer.cost);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
         if (par1 == 0) {
-            this.hammer.cost = par2;
+            hammer.cost = par2;
         }
     }
 
-    /**
-     * Called when the container is closed.
-     */
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        super.onContainerClosed(par1EntityPlayer);
-
-//        if (!this.theWorld.isRemote)
-//        {
-//            for (int i = 0; i < hammer.getSizeInventory(); ++i)
-//            {
-//                ItemStack itemstack = hammer.getStackInSlotOnClosing(i);
-//
-//                if (itemstack != null)
-//                {
-//                    par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
-//                }
-//            }
-//        }
+    @Override
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-        return this.theWorld.getBlock(this.xPos, this.yPos, this.zPos) != Blocks.anvil ? false : par1EntityPlayer.getDistanceSq((double) this.xPos + 0.5D, (double) this.yPos + 0.5D, (double) this.zPos + 0.5D) <= 64.0D;
+    public boolean canInteractWith(EntityPlayer player) {
+        return theWorld.getBlockState(pos).getBlock() == Blocks.ANVIL &&
+          player.getDistanceSq(xPos + 0.5D, yPos + 0.5D, zPos + 0.5D) <= 64D;
     }
 
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
         ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(par2);
+        Slot slot = inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
+            assert itemstack1 != null;
             itemstack = itemstack1.copy();
 
             if (par2 == 2) {
@@ -444,7 +437,7 @@ public class ContainerSteamAnvil extends Container {
             }
 
             if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }
@@ -464,12 +457,13 @@ public class ContainerSteamAnvil extends Container {
      */
     public void updateItemName(String s) {
         hammer.itemName = s;
-
-        if (this.getSlot(2).getHasStack()) {
-            ItemStack itemstack = this.getSlot(2).getStack();
+        Slot slot = getSlot(2);
+        if (slot.getHasStack()) {
+            ItemStack itemstack = slot.getStack();
+            assert itemstack != null;
 
             if (StringUtils.isBlank(s)) {
-                itemstack.func_135074_t();
+                itemstack.clearCustomName();
             } else {
                 itemstack.setStackDisplayName(hammer.itemName);
             }

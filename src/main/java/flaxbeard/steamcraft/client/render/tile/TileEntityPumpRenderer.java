@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.client.render.tile;
 
 import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.client.render.model.ModelPump;
+import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityPump;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -110,8 +111,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
 
     private void renderEndcap(int progress, @Nonnull Fluid fluid) {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        ResourceLocation resourceLocation = fluid.getStill();
-        TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(resourceLocation.toString());
+        TextureAtlasSprite icon = FluidHelper.getStillTexture(Minecraft.getMinecraft(), fluid);
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
 

@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.misc;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -165,4 +167,14 @@ public class FluidHelper {
 
 		return newContainer;
 	}
+
+    /**
+     * Gets the still texture for the fluid
+     * @param mc Minecraft instance
+     * @param fluid Fluid to get the texture of
+     * @return the texture
+     */
+	public static TextureAtlasSprite getStillTexture(Minecraft mc, Fluid fluid) {
+        return mc.getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
+    }
 }

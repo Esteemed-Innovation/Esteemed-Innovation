@@ -9,7 +9,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class GuiSteamAnvil extends GuiContainer implements ICrafting {
+public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
     private static final ResourceLocation ANVIL_TEXTURE = new ResourceLocation("textures/gui/container/anvil.png");
     private static final ResourceLocation ARROW = new ResourceLocation("textures/gui/container/furnace.png");
     private ContainerSteamAnvil container;
@@ -53,7 +53,7 @@ public class GuiSteamAnvil extends GuiContainer implements ICrafting {
         textField.setEnableBackgroundDrawing(false);
         textField.setMaxStringLength(40);
         inventorySlots.removeListener(this);
-        inventorySlots.onCraftGuiOpened(this);
+        inventorySlots.addListener(this);
         textField.setText(hammer.itemName);
         canEdit = true;
     }

@@ -5,7 +5,7 @@ import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -41,21 +41,21 @@ public class ContainerBoiler extends Container {
     }
 
     @Override
-    public void onCraftGuiOpened(ICrafting icrafting) {
-        super.onCraftGuiOpened(icrafting);
-        icrafting.sendProgressBarUpdate(this, 0, tileEntity.furnaceCookTime);
-        icrafting.sendProgressBarUpdate(this, 1, tileEntity.furnaceBurnTime);
-        icrafting.sendProgressBarUpdate(this, 2, TileEntityBoiler.getItemBurnTime(null));
-        icrafting.sendProgressBarUpdate(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
+    public void addListener(IContainerListener listener) {
+        super.addListener(listener);
+        listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceCookTime);
+        listener.sendProgressBarUpdate(this, 1, tileEntity.furnaceBurnTime);
+        listener.sendProgressBarUpdate(this, 2, TileEntityBoiler.getItemBurnTime(null));
+        listener.sendProgressBarUpdate(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
     }
 
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (ICrafting listener : listeners) {
+        for (IContainerListener listener : listeners) {
             if (lastCookTime != tileEntity.furnaceCookTime) {
-                listener.sendProgressBarUpdate(this, 0, this.tileEntity.furnaceCookTime);
+                listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceCookTime);
             }
 
             if (lastBurnTime != tileEntity.furnaceBurnTime) {
