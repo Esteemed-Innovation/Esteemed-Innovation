@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;

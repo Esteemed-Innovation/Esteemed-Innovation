@@ -1,9 +1,8 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.block;
 
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.block.BlockCustomFurnace;
-import flaxbeard.steamcraft.misc.BlockContainer;
 import flaxbeard.steamcraft.misc.WorldContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

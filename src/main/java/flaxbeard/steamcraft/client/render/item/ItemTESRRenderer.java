@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.item;
 
 import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.client.render.tile.IInventoryTESR;

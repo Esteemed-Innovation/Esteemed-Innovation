@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.block;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import flaxbeard.steamcraft.Steamcraft;
@@ -6,8 +6,6 @@ import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.IPipeWrench;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockPipe;
-import flaxbeard.steamcraft.item.ItemWrench;
-import flaxbeard.steamcraft.misc.BlockContainer;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -19,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 

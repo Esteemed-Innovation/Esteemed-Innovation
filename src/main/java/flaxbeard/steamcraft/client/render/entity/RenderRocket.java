@@ -1,5 +1,6 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.entity;
 
+import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;

@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.entity;
 
 import flaxbeard.steamcraft.client.render.model.ModelMortarItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;

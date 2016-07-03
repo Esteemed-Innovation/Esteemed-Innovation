@@ -4,7 +4,7 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.client.render.BlockSteamPipeRenderer;
+import flaxbeard.steamcraft.client.render.block.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.data.capabilities.BoilerTankProperties;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.misc.OreDictHelper;

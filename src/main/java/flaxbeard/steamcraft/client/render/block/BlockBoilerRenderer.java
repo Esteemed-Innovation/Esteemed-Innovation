@@ -1,8 +1,7 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.block;
 
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockBoiler;
-import flaxbeard.steamcraft.misc.BlockContainer;
 import flaxbeard.steamcraft.misc.WorldContainer;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.block.Block;

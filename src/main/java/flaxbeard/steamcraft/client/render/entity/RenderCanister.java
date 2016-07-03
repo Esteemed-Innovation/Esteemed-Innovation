@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.client.render;
+package flaxbeard.steamcraft.client.render.entity;
 
 import flaxbeard.steamcraft.client.render.model.ModelCanister;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;

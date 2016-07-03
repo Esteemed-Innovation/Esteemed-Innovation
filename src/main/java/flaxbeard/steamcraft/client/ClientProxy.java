@@ -2,8 +2,14 @@ package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.client.render.*;
+import flaxbeard.steamcraft.client.render.block.*;
 import flaxbeard.steamcraft.client.render.colorhandlers.ItemSmashedOreColorHandler;
+import flaxbeard.steamcraft.client.render.entity.RenderCanister;
+import flaxbeard.steamcraft.client.render.entity.RenderMortarItem;
+import flaxbeard.steamcraft.client.render.entity.RenderRocket;
+import flaxbeard.steamcraft.client.render.item.ItemFirearmRenderer;
+import flaxbeard.steamcraft.client.render.item.ItemSteamToolRenderer;
+import flaxbeard.steamcraft.client.render.item.ItemTESRRenderer;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.client.render.tile.*;
 import flaxbeard.steamcraft.common.CommonProxy;
