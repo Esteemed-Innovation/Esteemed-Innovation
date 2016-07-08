@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +27,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     private static final int PUSH_MAX = 250; // in mb a tick
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setShort("runTicks", (short) runTicks);
         access.setBoolean("pushing", pushing);
@@ -49,9 +48,10 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("pushing", pushing);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("pushing", pushing);
+        return nbt;
     }
 
     @Override

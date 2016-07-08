@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.FMLLog;
 public abstract class CommonProxy {
     public abstract void registerRenderers();
 
-    public abstract void spawnBreakParticles(World world, float x, float y, float z, Block blokc, float xv, float yv, float zv);
+    public abstract void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv);
 
     public abstract void registerHotkeys();
 

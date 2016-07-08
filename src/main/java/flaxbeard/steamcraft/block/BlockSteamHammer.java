@@ -4,7 +4,9 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.tile.TileEntitySteamHammer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockSteamHammer extends BlockContainer {
+    public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private final Random rand = new Random();
     @SideOnly(Side.CLIENT)
     public IIcon top;

@@ -10,7 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -41,7 +40,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         xTarget = nbt.getShort("xTarget");
         zTarget = nbt.getShort("zTarget");
         fireTicks = nbt.getShort("fireTicks");
-        this.hasTarget = nbt.getBoolean("hasTarget");
+        hasTarget = nbt.getBoolean("hasTarget");
 
         if (nbt.hasKey("inventory")) {
             inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
@@ -49,7 +48,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setShort("xTarget", (short) xTarget);
         nbt.setShort("zTarget", (short) zTarget);
@@ -62,10 +61,12 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
             inventory.writeToNBT(nbttagcompound1);
             nbt.setTag("inventory", nbttagcompound1);
         }
+
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
         access.setInteger("fireTicks", fireTicks);
@@ -90,12 +91,13 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         super.update();
         if (!worldObj.isRemote) {
             BlockPos thisPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
-            if ((getStackInSlot(0) != null && worldObj.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
+            ItemStack stackInSlotZero = getStackInSlot(0);
+            if ((stackInSlotZero != null && worldObj.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
                 ItemStack stack = null;
-                if (fireTicks < 60) {
-                    stack = getStackInSlot(0).copy();
+                if (fireTicks < 60 && stackInSlotZero != null) {
+                    stack = stackInSlotZero.copy();
                 }
-                if (this.getSteamShare() > 2000 && hasTarget) {
+                if (getSteamShare() > 2000 && hasTarget) {
                     if (fireTicks == 0) {
                         markForUpdate();
                     }
@@ -104,7 +106,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                         worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
                           Steamcraft.SOUND_HISS, SoundCategory.BLOCKS, Blocks.ANVIL.getSoundType().getVolume(), 0.9F, false);
                     }
-                    if (this.fireTicks == 60 && stack != null) {
+                    if (fireTicks == 60 && stack != null) {
                         worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
                           Steamcraft.SOUND_CANNON, SoundCategory.BLOCKS, 2F, 0.8F, false);
                         decrSteam(2000);
@@ -255,9 +257,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                 zTarget = value;
                 return;
             }
-            default: {
-                return;
-            }
+            default: {}
         }
     }
 

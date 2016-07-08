@@ -5,7 +5,6 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -25,7 +24,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setShort("progress", (short) progress);
         if (myTank.getFluid() != null) {
@@ -61,7 +60,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setShort("progress", (short) progress);
 
@@ -70,6 +69,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             nbt.setString("fluid", myTank.getFluid().getFluid().getName());
         }
         nbt.setInteger("fluidQuantity", myTank.getFluidAmount());
+        return nbt;
     }
 
     private EnumFacing getOutputDirection() {

@@ -4,54 +4,62 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import net.minecraft.block.Block;
+import flaxbeard.steamcraft.block.BlockSteamHammer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory, ISteamTransporter {
-    public  int         hammerTicks      = 0;
-    public  String      itemName         = "";
-    public  int         cost             = 0;
-    public  int         progress         = 0;
-    private boolean     isInitialized    = false;
-    private boolean     isWorking        = false;
-    private boolean     hadItem          = false;
-    private ItemStack[] inventory        = new ItemStack[3];
-    private int         steamConsumption = Config.hammerConsumption;
+    public int hammerTicks = 0;
+    public String itemName = "";
+    public int cost = 0;
+    public int progress = 0;
+    private boolean isInitialized = false;
+    private boolean isWorking = false;
+    private boolean hadItem = false;
+    private ItemStack[] inventory = new ItemStack[3];
+    private static final int CONSUMPTION = Config.hammerConsumption;
+    private static final float VOLUME = Blocks.ANVIL.getSoundType().getVolume();
 
     public TileEntitySteamHammer() {
-        super(ForgeDirection.VALID_DIRECTIONS);
-        this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+        super(EnumFacing.HORIZONTALS);
+        addSidesToGaugeBlacklist(EnumFacing.HORIZONTALS);
     }
 
     @Override
-    public void updateEntity() {
-        ForgeDirection dir = myDir();
+    public void update() {
+        EnumFacing dir = myDir();
         if (!isInitialized) {
 
-            ForgeDirection[] dirs = {dir.getOpposite()};
-            this.setDistributionDirections(dirs);
-            this.isInitialized = true;
+            EnumFacing[] dirs = {dir.getOpposite()};
+            setDistributionDirections(dirs);
+            isInitialized = true;
         }
-        super.updateEntity();
+        super.update();
         if (worldObj.isRemote) {
-            if (this.isWorking) {
+            if (isWorking) {
                 if (cost > 0 && progress < cost && hammerTicks == 355) {
                     progress++;
                 }
                 hammerTicks = (hammerTicks + 5) % 360;
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
-                        Steamcraft.proxy.spawnBreakParticles(worldObj, xCoord + 0.5F + 0.25F *
-                            dir.offsetX, yCoord, zCoord + 0.5F + 0.25F * dir.offsetZ, Blocks.anvil,
-                          (float) (Math.random() - 0.5F) / 12.0F, 0.0F, (float)
-                          (Math.random() - 0.5F) / 12.0F);
+                        Steamcraft.proxy.spawnBreakParticles(worldObj,
+                          pos.getX() + 0.5F + 0.25F * dir.getFrontOffsetX(), pos.getY(),
+                          pos.getZ() + 0.5F + 0.25F * dir.getFrontOffsetZ(), Blocks.ANVIL,
+                          (float) (Math.random() - 0.5F) / 12F, 0F, (float) (Math.random() - 0.5F) / 12F
+                        );
                     }
                 }
             } else {
@@ -59,31 +67,31 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 progress = 0;
             }
         } else {
-            if (this.getStackInSlot(0) != null) {
-                if (!this.hadItem) {
-                    this.hadItem = true;
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            if (getStackInSlot(0) != null) {
+                if (!hadItem) {
+                    hadItem = true;
+                    markForUpdate();
                 }
-            } else if (this.hadItem) {
-                this.hadItem = false;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            } else if (hadItem) {
+                hadItem = false;
+                markForUpdate();
             }
             if (cost > 0 && progress < cost && hammerTicks == 355) {
                 progress++;
             }
-            if (cost > 0 && progress < cost && this.getStackInSlot(2) != null) {
+            if (cost > 0 && progress < cost && getStackInSlot(2) != null) {
                 if (hammerTicks == 0) {
-                    if (this.getSteamShare() >= steamConsumption) {
-                        this.decrSteam(steamConsumption);
-                        if (!this.isWorking) {
-                            this.isWorking = true;
-                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    if (getSteamShare() >= CONSUMPTION) {
+                        decrSteam(CONSUMPTION);
+                        if (!isWorking) {
+                            isWorking = true;
+                            markForUpdate();
                         }
 
                     } else {
-                        if (this.isWorking) {
-                            this.isWorking = false;
-                            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        if (isWorking) {
+                            isWorking = false;
+                            markForUpdate();
                         }
                         return;
                     }
@@ -92,12 +100,11 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 switch (hammerTicks) {
                     case 15:
                     case 40: {
-                        playHammerSound("random.anvil_land", Block.soundTypeAnvil.getVolume(),
-                          (float) (0.75 + (Math.random() * 0.1F)));
+                        playHammerSound(SoundEvents.BLOCK_ANVIL_LAND, (float) (0.75 + (Math.random() * 0.1F)));
                         break;
                     }
                     case 170: {
-                        playHammerSound("steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
+                        playHammerSound(Steamcraft.SOUND_HISS, 0.9F);
                         break;
                     }
                     default: {
@@ -105,9 +112,9 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                     }
                 }
             } else {
-                if (this.isWorking) {
-                    this.isWorking = false;
-                    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                if (isWorking) {
+                    isWorking = false;
+                    markForUpdate();
                 }
                 if (hammerTicks > 0) {
                     hammerTicks = 0;
@@ -116,53 +123,43 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         }
     }
 
-    private void playHammerSound(String sound, float volume, float par3) {
-        this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F,
-          sound, 0.2F, (float) (0.75F + (Math.random() * 0.1F)));
+    private void playHammerSound(SoundEvent sound, float volume, float pitch) {
+        this.worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
+          sound, SoundCategory.BLOCKS, volume, pitch, false);
     }
 
-    private ForgeDirection myDir() {
-        int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        ForgeDirection dir = ForgeDirection.getOrientation(meta);
-        if (meta == 0) {
-            dir = ForgeDirection.SOUTH;
-        }
-        if (meta == 1) {
-            dir = ForgeDirection.WEST;
-        }
-        if (meta == 2) {
-            dir = ForgeDirection.NORTH;
-        }
-        if (meta == 3) {
-            dir = ForgeDirection.EAST;
-        }
-        return dir;
+    private void playHammerSound(SoundEvent sound, float pitch) {
+        playHammerSound(sound, VOLUME, pitch);
+    }
+
+    private EnumFacing myDir() {
+        return worldObj.getBlockState(pos).getValue(BlockSteamHammer.FACING);
     }
 
     @Override
     public int getSizeInventory() {
-        return this.inventory.length;
+        return inventory.length;
     }
 
     @Override
-    public ItemStack getStackInSlot(int par1) {
-        return this.inventory[par1];
+    public ItemStack getStackInSlot(int index) {
+        return inventory[index];
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (this.inventory[par1] != null) {
+    public ItemStack decrStackSize(int index, int count) {
+        if (inventory[index] != null) {
             ItemStack itemstack;
 
-            if (this.inventory[par1].stackSize <= par2) {
-                itemstack = this.inventory[par1];
-                this.inventory[par1] = null;
+            if (inventory[index].stackSize <= count) {
+                itemstack = inventory[index];
+                inventory[index] = null;
                 return itemstack;
             } else {
-                itemstack = this.inventory[par1].splitStack(par2);
+                itemstack = inventory[index].splitStack(count);
 
-                if (this.inventory[par1].stackSize == 0) {
-                    this.inventory[par1] = null;
+                if (inventory[index].stackSize == 0) {
+                    inventory[index] = null;
                 }
 
                 return itemstack;
@@ -173,10 +170,10 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
-        if (this.inventory[par1] != null) {
-            ItemStack itemstack = this.inventory[par1];
-            this.inventory[par1] = null;
+    public ItemStack removeStackFromSlot(int index) {
+        if (inventory[index] != null) {
+            ItemStack itemstack = inventory[index];
+            inventory[index] = null;
             return itemstack;
         } else {
             return null;
@@ -184,21 +181,26 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-        this.inventory[par1] = par2ItemStack;
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        inventory[index] = stack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
+            stack.stackSize = getInventoryStackLimit();
         }
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return "";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public ITextComponent getDisplayName() {
+        return new TextComponentString(getName());
+    }
+
+    @Override
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -208,27 +210,24 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false :
-          var1.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D,
-          (double) this.zCoord + 0.5D) <= 64.0D;
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return worldObj.getTileEntity(pos) == this &&
+          player.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory() {
-    }
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
-    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
         return true;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
         access.setInteger("cost", cost);
@@ -236,62 +235,107 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         access.setInteger("hammerTicks", hammerTicks);
         access.setBoolean("isWorking", this.isWorking);
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.cost = access.getInteger("cost");
-        this.isWorking = access.getBoolean("isWorking");
-        this.progress = access.getInteger("progress");
-        this.hammerTicks = access.getInteger("hammerTicks");
+        NBTTagCompound access = pkt.getNbtCompound();
+        cost = access.getInteger("cost");
+        isWorking = access.getBoolean("isWorking");
+        progress = access.getInteger("progress");
+        hammerTicks = access.getInteger("hammerTicks");
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markForUpdate();
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        NBTTagList nbttaglist = (NBTTagList) par1NBTTagCompound.getTag("Items");
-        this.inventory = new ItemStack[this.getSizeInventory()];
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        NBTTagList nbttaglist = (NBTTagList) nbt.getTag("Items");
+        inventory = new ItemStack[getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
-            if (b0 >= 0 && b0 < this.inventory.length) {
-                this.inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            if (b0 >= 0 && b0 < inventory.length) {
+                inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
 
-        this.cost = par1NBTTagCompound.getInteger("cost");
-        this.progress = par1NBTTagCompound.getInteger("progress");
-        this.hammerTicks = par1NBTTagCompound.getInteger("hammerTicks");
-
+        cost = nbt.getInteger("cost");
+        progress = nbt.getInteger("progress");
+        hammerTicks = nbt.getInteger("hammerTicks");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("cost", cost);
-        par1NBTTagCompound.setInteger("progress", progress);
-        par1NBTTagCompound.setInteger("hammerTicks", hammerTicks);
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setInteger("cost", cost);
+        nbt.setInteger("progress", progress);
+        nbt.setInteger("hammerTicks", hammerTicks);
 
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.inventory.length; ++i) {
-            if (this.inventory[i] != null) {
+        for (int i = 0; i < inventory.length; ++i) {
+            if (inventory[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte) i);
-                this.inventory[i].writeToNBT(nbttagcompound1);
+                inventory[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
 
-        par1NBTTagCompound.setTag("Items", nbttaglist);
+        nbt.setTag("Items", nbttaglist);
 
+        return nbt;
     }
 
+    @Override
+    public int getField(int id) {
+        switch (id) {
+            case 0: {
+                return hammerTicks;
+            }
+            case 1: {
+                return cost;
+            }
+            case 2: {
+                return progress;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        switch (id) {
+            case 0: {
+                hammerTicks = value;
+                break;
+            }
+            case 1: {
+                cost = value;
+                break;
+            }
+            case 2: {
+                progress = value;
+                break;
+            }
+        }
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 3;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < getSizeInventory(); i++) {
+            inventory[i] = null;
+        }
+    }
 }
