@@ -1,14 +1,21 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,45 +24,56 @@ import java.util.Arrays;
 public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter {
     public int progress = 0;
     private boolean isRunning = false;
-    private Material[] validMaterials = {Material.sand, Material.ground, Material.rock, Material.clay, Material.grass};
+    private static final Material[] VALID_MATERIALS = {
+      Material.SAND,
+      Material.GROUND,
+      Material.ROCK,
+      Material.CLAY,
+      Material.GRASS
+    };
+    private static final float ANVIL_VOLUME = Blocks.ANVIL.getSoundType().getVolume();
 
     public TileEntityThumper() {
-        super(new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST});
-        this.addSidesToGaugeBlacklist(ForgeDirection.VALID_DIRECTIONS);
+        super(new EnumFacing[] {
+          EnumFacing.DOWN,
+          EnumFacing.NORTH,
+          EnumFacing.SOUTH,
+          EnumFacing.EAST,
+          EnumFacing.WEST
+        });
+        addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
         if (worldObj.isRemote) {
-            if (this.isRunning) {
+            if (isRunning) {
                 if (progress < 110) {
                     progress++;
                 } else {
-                    this.progress = 0;
-                    this.isRunning = false;
+                    progress = 0;
+                    isRunning = false;
                 }
             } else {
-                this.progress = 0;
-                this.isRunning = false;
+                progress = 0;
+                isRunning = false;
             }
-
         } else {
-            if (this.getSteamShare() >= 2000 && this.progress == 0) {
-                if (!this.isRunning) {
-                    this.isRunning = true;
+            if (getSteamShare() >= 2000 && progress == 0) {
+                if (!isRunning) {
+                    isRunning = true;
                 }
-                this.progress++;
-                this.decrSteam(2000);
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
-            } else if (progress > 0 && !this.isRunning) {
-                this.isRunning = true;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                progress++;
+                decrSteam(2000);
+                markForUpdate();
+            } else if (progress > 0 && !isRunning) {
+                isRunning = true;
+                markForUpdate();
             }
-            if (this.progress == 15) {
-                this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:hiss", Block.soundTypeAnvil.getVolume(), 0.9F);
-                //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            if (progress == 15) {
+                worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_HISS,
+                  SoundCategory.BLOCKS, ANVIL_VOLUME, 0.9F, false);
             }
 
             if (progress > 0 && progress < 110) {
@@ -63,7 +81,8 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
             }
             if (progress >= 110) {
                 progress = 0;
-                this.worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.explode", 8.0F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+                worldObj.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 8F,
+                  (1F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
                 //	        List players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord-4.5F, yCoord-4.5F, zCoord-4.5F, xCoord+5.5F, yCoord+5.5F, zCoord+5.5F));
                 //	        for (Object obj : players) {
                 //	        	if (obj instanceof EntityPlayer && this.worldObj.isRemote) {
@@ -77,23 +96,23 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
                     for (int z = 0; z < 4; z++) {
                         boolean hasTarget = false;
                         int i = 0;
-                        ChunkCoordinates target = new ChunkCoordinates(xCoord, yCoord - 10, zCoord);
-                        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-                        ForgeDirection[] moveDirs;
-                        ForgeDirection[] moveDirsNotUp;
-                        ForgeDirection[] forbiddenDirs;
+                        BlockPos target = new BlockPos(pos.getX(), pos.getY() - 10, pos.getZ());
+                        int meta = getBlockMetadata();
+                        EnumFacing[] moveDirs;
+                        EnumFacing[] moveDirsNotUp;
+                        EnumFacing[] forbiddenDirs;
                         if (meta == 1 || meta == 3) {
-                            ForgeDirection[] moveDirs2 = {ForgeDirection.DOWN, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.UP, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST};
-                            ForgeDirection[] moveDirsNotUp2 = {ForgeDirection.DOWN, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.EAST, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST, ForgeDirection.WEST};
-                            ForgeDirection[] forbiddenDirs2 = {ForgeDirection.NORTH, ForgeDirection.SOUTH};
+                            EnumFacing[] moveDirs2 = {EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.UP, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST};
+                            EnumFacing[] moveDirsNotUp2 = {EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.EAST, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST, EnumFacing.WEST};
+                            EnumFacing[] forbiddenDirs2 = {EnumFacing.NORTH, EnumFacing.SOUTH};
 
                             moveDirs = moveDirs2;
                             moveDirsNotUp = moveDirsNotUp2;
                             forbiddenDirs = forbiddenDirs2;
                         } else {
-                            ForgeDirection[] moveDirs2 = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH};
-                            ForgeDirection[] moveDirsNotUp2 = {ForgeDirection.DOWN, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH, ForgeDirection.SOUTH};
-                            ForgeDirection[] forbiddenDirs2 = {ForgeDirection.EAST, ForgeDirection.WEST};
+                            EnumFacing[] moveDirs2 = {EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.UP, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH};
+                            EnumFacing[] moveDirsNotUp2 = {EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH, EnumFacing.SOUTH};
+                            EnumFacing[] forbiddenDirs2 = {EnumFacing.EAST, EnumFacing.WEST};
 
                             moveDirs = moveDirs2;
                             moveDirsNotUp = moveDirsNotUp2;
@@ -101,80 +120,85 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
                         }
 
                         while (!hasTarget && i < 160) {
-                            if (!worldObj.isAirBlock(target.posX, target.posY, target.posZ) && Arrays.asList(this.validMaterials).contains(this.worldObj.getBlock(target.posX, target.posY, target.posZ).getMaterial()) && (worldObj.getBlock(target.posX, target.posY, target.posZ).getBlockHardness(worldObj, target.posX, target.posY, target.posZ) != -1.0F) && !worldObj.canBlockSeeTheSky(target.posX - 1, target.posY + 1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX + 1, target.posY + 1, target.posZ) && !worldObj.canBlockSeeTheSky(target.posX, target.posY + 1, target.posZ - 1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY + 1, target.posZ + 1) && !worldObj.canBlockSeeTheSky(target.posX, target.posY + 1, target.posZ)) {
+                            if (!worldObj.isAirBlock(target) &&
+                              Arrays.asList(VALID_MATERIALS).contains(worldObj.getBlockState(target).getMaterial()) &&
+                              (worldObj.getBlockState(target).getBlockHardness(worldObj, target) != -1.0F) &&
+                              !worldObj.canBlockSeeSky(new BlockPos(target.getX() - 1, target.getY() + 1, target.getZ())) &&
+                              !worldObj.canBlockSeeSky(new BlockPos(target.getX() + 1, target.getY() + 1, target.getZ())) &&
+                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() - 1)) &&
+                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() + 1)) &&
+                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ()))) {
                                 hasTarget = true;
                             } else {
-                                if (target.posY < yCoord - 3) {
-                                    ForgeDirection direction = moveDirs[worldObj.rand.nextInt(moveDirs.length)];
-                                    if (this.worldObj.rand.nextInt(50) == 0) {
+                                if (target.getY() < pos.getY() - 3) {
+                                    EnumFacing direction = moveDirs[worldObj.rand.nextInt(moveDirs.length)];
+                                    if (worldObj.rand.nextInt(50) == 0) {
                                         direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
                                     }
-                                    target = new ChunkCoordinates(target.posX + direction.offsetX, target.posY + direction.offsetY, target.posZ + direction.offsetZ);
+                                    target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
+                                      target.getY() + direction.getFrontOffsetY(),
+                                      target.getZ() + direction.getFrontOffsetZ());
                                 } else {
-
-                                    ForgeDirection direction = moveDirsNotUp[worldObj.rand.nextInt(moveDirsNotUp.length)];
-                                    if (this.worldObj.rand.nextInt(50) == 0) {
+                                    EnumFacing direction = moveDirsNotUp[worldObj.rand.nextInt(moveDirsNotUp.length)];
+                                    if (worldObj.rand.nextInt(50) == 0) {
                                         direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
                                     }
-                                    target = new ChunkCoordinates(target.posX + direction.offsetX, target.posY + direction.offsetY, target.posZ + direction.offsetZ);
+                                    target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
+                                      target.getY() + direction.getFrontOffsetY(),
+                                      target.getZ() + direction.getFrontOffsetZ());
                                 }
                             }
                             i++;
                         }
                         if (hasTarget) {
-                            Block block = worldObj.getBlock(target.posX, target.posY, target.posZ);
+                            IBlockState state = worldObj.getBlockState(target);
+                            Block block = state.getBlock();
                             if (Config.dropItem) {
-                                block.dropBlockAsItem(worldObj, target.posX, target.posY, target.posZ, this.worldObj.getBlockMetadata(target.posX, target.posY, target.posZ), 0);
+                                block.dropBlockAsItem(worldObj, target, state, 0);
                             }
-                            worldObj.setBlockToAir(target.posX, target.posY, target.posZ);
-                        } else {
+                            worldObj.setBlockToAir(target);
                         }
                     }
                 }
             }
         }
-        //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
     }
-
 
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 5, this.zCoord + 1);
+        return new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 5, pos.getZ() + 1);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.progress = par1NBTTagCompound.getShort("progress");
-
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        progress = nbt.getShort("progress");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("progress", (short) this.progress);
-
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setShort("progress", (short) progress);
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
         access.setInteger("progress", progress);
         access.setBoolean("isRunning", isRunning);
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
-
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        this.progress = access.getInteger("progress");
-        this.isRunning = access.getBoolean("isRunning");
+        NBTTagCompound access = pkt.getNbtCompound();
+        progress = access.getInteger("progress");
+        isRunning = access.getBoolean("isRunning");
 
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markForUpdate();
     }
 }

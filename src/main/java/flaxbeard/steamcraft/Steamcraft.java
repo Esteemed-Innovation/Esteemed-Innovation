@@ -190,7 +190,6 @@ public class Steamcraft {
         registerTileEntity(TileEntitySteamPipe.class, "pipe");
         registerTileEntity(TileEntityValvePipe.class, "valvePipe");
 
-        registerTileEntity(TileEntitySteamPiston.class, "steamPiston");
         registerTileEntity(TileEntitySteamHeater.class, "heater");
         registerTileEntity(TileEntityEngineeringTable.class, "engineeringTable");
         registerTileEntity(TileEntitySteamCharger.class, "steamCharger");

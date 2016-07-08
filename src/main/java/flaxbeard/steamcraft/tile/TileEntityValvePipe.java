@@ -1,14 +1,21 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
+import flaxbeard.steamcraft.block.BlockValvePipe;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -31,15 +38,15 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
      */
     public void updateRedstoneState(boolean flag) {
 		if (Config.enableRedstoneValvePipe) {
-			if (!this.isTurning()) {
-                this.setOpen(flag);
+			if (!isTurning()) {
+                setOpen(flag);
             }
 		}
         redstoneState = flag;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
 
         access.setBoolean("turning", turning);
@@ -47,45 +54,42 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         access.setBoolean("leaking", isLeaking);
         access.setInteger("turnTicks", turnTicks);
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound access = pkt.func_148857_g();
-        if (this.turnTicks == 0) {
-            this.turnTicks = access.getInteger("turnTicks");
+        NBTTagCompound access = pkt.getNbtCompound();
+        if (turnTicks == 0) {
+            turnTicks = access.getInteger("turnTicks");
         }
-        this.turning = access.getBoolean("turning");
-        this.isLeaking = access.getBoolean("leaking");
-        this.open = access.getBoolean("isOpen");
-
+        turning = access.getBoolean("turning");
+        isLeaking = access.getBoolean("leaking");
+        open = access.getBoolean("isOpen");
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        this.open = par1NBTTagCompound.getBoolean("isOpen");
-        this.redstoneState = par1NBTTagCompound.getBoolean("redstoneState");
-
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        open = nbt.getBoolean("isOpen");
+        redstoneState = nbt.getBoolean("redstoneState");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("isOpen", this.open);
-        par1NBTTagCompound.setBoolean("redstoneState", this.redstoneState);
-
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("isOpen", open);
+        nbt.setBoolean("redstoneState", redstoneState);
+        return nbt;
     }
 
-    public ForgeDirection dir() {
-        int meta = this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        return ForgeDirection.getOrientation(meta);
+    public EnumFacing dir() {
+        return worldObj.getBlockState(pos).getValue(BlockValvePipe.FACING);
     }
 
     @Override
-    public boolean doesConnect(ForgeDirection face) {
+    public boolean doesConnect(EnumFacing face) {
         return face != dir() && super.doesConnect(face);
     }
 
@@ -95,7 +99,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         super.superUpdate();
         if (worldObj.isRemote) {
             if (turning && turnTicks < 10) {
@@ -103,95 +107,82 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
             if (turnTicks >= 10) {
                 turning = false;
-                this.setOpen(!this.open);
+                setOpen(!open);
                 turnTicks = 0;
             }
             if (!turning) {
-                this.turnTicks = 0;
+                turnTicks = 0;
             }
 
             if (isLeaking) {
-                ForgeDirection myDir = dir();
-                ForgeDirection[] directions = new ForgeDirection[6];
-                int i = 0;
-                for (ForgeDirection direction : ForgeDirection.values()) {
-                    if (direction != myDir) {
-                        directions[i] = direction;
-                        i++;
-                    }
-                }
                 ArrayList<EnumFacing> myDirections = getMyDirections();
-                i = 0;
+                int i = 0;
                 if (myDirections.size() > 0) {
-                    ForgeDirection direction = myDirections.get(0).getOpposite();
-                    while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
+                    EnumFacing direction = myDirections.get(0).getOpposite();
+                    BlockPos dirPos = new BlockPos(pos.getX() + direction.getFrontOffsetX(), pos.getY() + direction.getFrontOffsetY(), pos.getZ() + direction.getFrontOffsetZ());
+                    while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
                         //this.decrSteam(1);
-                        this.worldObj.spawnParticle("smoke", xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, direction.offsetX * 0.1F, direction.offsetY * 0.1F, direction.offsetZ * 0.1F);
+                        worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+                          pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
+                          direction.getFrontOffsetZ() * 0.1F);
                         i++;
                     }
                 }
             }
         } else {
-            if (this.waitingOpen) {
+            if (waitingOpen) {
                 //Steamcraft.log.debug("Waiting for isOpen");
-                this.setOpen(!this.open);
+                setOpen(!open);
             }
             if (turning != wasTurning) {
                 wasTurning = turning;
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                markForUpdate();
             }
             if (turning && turnTicks < 10) {
                 turnTicks++;
             }
             if (turnTicks >= 10) {
                 turning = false;
-                this.setOpen(!this.open);
+                setOpen(!open);
                 turnTicks = 0;
             }
             if (!turning) {
                 if (wasTurning) {
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    markForUpdate();
                 }
-                this.turnTicks = 0;
+                turnTicks = 0;
             }
-            ForgeDirection myDir = dir();
-            ForgeDirection[] directions = new ForgeDirection[6];
-            int i = 0;
-            for (ForgeDirection direction : ForgeDirection.values()) {
-                if (direction != myDir) {
-                    directions[i] = direction;
-                    i++;
-                }
-            }
-
             ArrayList<EnumFacing> myDirections = getMyDirections();
             
             if (myDirections.size() > 0) {
-                ForgeDirection direction = myDirections.get(0).getOpposite();
-                while (!this.doesConnect(direction)) {
-                    direction = ForgeDirection.getOrientation((direction.flag + 1) % 5);
+                EnumFacing direction = myDirections.get(0).getOpposite();
+                while (!doesConnect(direction)) {
+                    direction = EnumFacing.getFront((direction.getIndex() + 1) % 5);
                 }
 
-                if (myDirections.size() == 2 && open && this.getNetwork() != null && this.getNetwork().getSteam() > 0 && (worldObj.isAirBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) || !worldObj.isSideSolid(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ, direction.getOpposite()))) {
-                    ////Steamcraft.log.debug("isOpen and should be leaking");
+                BlockPos dirPos = new BlockPos(pos.getX() + direction.getFrontOffsetX(), pos.getY() + direction.getFrontOffsetY(), pos.getZ() + direction.getFrontOffsetZ());
+                if (myDirections.size() == 2 && open && getNetwork() != null && getNetwork().getSteam() > 0 &&
+                  (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
+                    // Steamcraft.log.debug("isOpen and should be leaking");
                     if (!isLeaking) {
                         isLeaking = true;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        markForUpdate();
                     }
-                    this.decrSteam(100);
-                    this.worldObj.playSoundEffect(this.xCoord + 0.5F, this.yCoord + 0.5F, this.zCoord + 0.5F, "steamcraft:leaking", 2.0F, 0.9F);
+                    decrSteam(100);
+                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
+                      SoundCategory.BLOCKS, 2F, 0.9F, false);
                 } else {
-                    ////Steamcraft.log.debug("Probably shouldn't be leaking");
+                    // Steamcraft.log.debug("Probably shouldn't be leaking");
                     if (isLeaking) {
                         isLeaking = false;
-                        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                        markForUpdate();
                     }
                 }
 
             } else {
                 if (isLeaking) {
                     isLeaking = false;
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    markForUpdate();
                 }
             }
         }
@@ -201,12 +192,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     @Override
-    public boolean canInsert(ForgeDirection face) {
+    public boolean canInsert(EnumFacing face) {
         return face != dir() && open;
     }
 
     @Override
-    public boolean acceptsGauge(ForgeDirection face) {
+    public boolean acceptsGauge(EnumFacing face) {
         return face != dir().getOpposite();
     }
 
@@ -215,12 +206,12 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     public void setTurning() {
-        this.turning = true;
-        this.turnTicks = 0;
+        turning = true;
+        turnTicks = 0;
     }
 
     public boolean isOpen() {
-        return this.open;
+        return open;
     }
 
     private void setOpen(boolean open) {
@@ -229,7 +220,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
         if (!worldObj.isRemote) {
             if (open) {
                 //Steamcraft.log.debug("Joining");
-                if (SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())) {
+                if (SteamNetworkRegistry.getInstance().isInitialized(getDimension())) {
                     SteamNetwork.newOrJoin(this);
                 } else {
                     changed = false;
@@ -237,24 +228,24 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                 }
             } else {
                 //Steamcraft.log.debug("Splitting");
-                if (this.getNetwork() != null) {
-                    this.getNetwork().split(this, true);
+                if (getNetwork() != null) {
+                    getNetwork().split(this, true);
                 } else {
                     changed = false;
-                    this.waitingOpen = true;
+                    waitingOpen = true;
                 }
             }
         }
         if (!changed) {
             this.open = !open;
         } else {
-            this.waitingOpen = false;
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            waitingOpen = false;
+            markForUpdate();
         }
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float xO, float yO, float zO) {
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         return false;
     }
 }

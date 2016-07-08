@@ -20,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -59,7 +58,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getDescriptionTag();
         access.setBoolean("isLeaking", isLeaking);
         NBTTagCompound list = new NBTTagCompound();
@@ -109,7 +108,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound access) {
+    public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         NBTTagCompound list = new NBTTagCompound();
         int g = 0;
@@ -121,6 +120,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         access.setTag("blacklistedSides", list);
         access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("disguiseMeta", disguiseMeta);
+
+        return access;
     }
 
     /**
@@ -330,99 +331,87 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             //Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
             int sidesConnect = 0;
             for (int i = 0; i < 6; i++) {
-                if (this.doesConnect(ForgeDirection.getOrientation(i))) {
+                if (doesConnect(EnumFacing.getFront(i))) {
                     sidesConnect++;
                 }
             }
             boolean netChange = false;
             //If does connect on this side, and has adequate sides left
-            if (this.doesConnect(ForgeDirection.getOrientation(subHit))) {
-                ForgeDirection direction = ForgeDirection.getOrientation(subHit);
-                TileEntity tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+            EnumFacing direction = EnumFacing.getFront(subHit);
+            if (doesConnect(direction)) {
+                TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
                 if (tile instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) tile).blacklistedSides.contains(direction.getOpposite().ordinal())) {
                     TileEntitySteamPipe pipe = (TileEntitySteamPipe) tile;
                     pipe.blacklistedSides.remove((Integer) direction.getOpposite().ordinal());
 
                     //network stuff
 
-                    int steam = pipe.getNetwork().split(pipe, false);
                     pipe.shouldJoin();
                     pipe.isOtherPipe = true;
                     //pipe.getNetwork().addSteam(steam);
-                    this.worldObj.markBlockForUpdate(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+                    markForUpdate();
                 } else if (sidesConnect > 2) {
                     //add to blacklist
-                    this.blacklistedSides.add(subHit);
+                    blacklistedSides.add(subHit);
                     {
-                        ForgeDirection d = ForgeDirection.getOrientation(subHit);
-                        TileEntity te = worldObj.getTileEntity(x + d.offsetX, y + d.offsetY, z + d.offsetZ);
-                        if (te != null && te instanceof ISteamTransporter) {
-                            ISteamTransporter p = (ISteamTransporter) te;
+                        if (tile != null && tile instanceof ISteamTransporter) {
+                            ISteamTransporter p = (ISteamTransporter) tile;
                             SteamNetwork network = p.getNetwork();
                             if (network != null) {
                                 network.shouldRefresh();
                             }
                         }
                     }
-                    this.isOriginalPipe = true;
+                    isOriginalPipe = true;
                     //bad network stuff
-                    int steam = this.getNetwork().split(this, false);
-                    this.shouldJoin();
+                    int steam = getNetwork().split(this, false);
+                    shouldJoin();
                     //this.getNetwork().addSteam(steam);
-                    ////Steamcraft.log.debug("B");
-                    ////Steamcraft.log.debug(this.getNetworkName());
-                    ////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
 
                     refreshNeighbors();
-                    this.network.shouldRefresh();
-                    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-
+                    network.shouldRefresh();
+                    markForUpdate();
                 }
             }
             //else if doesn't connect
-            else if (!this.doesConnect(ForgeDirection.getOrientation(subHit))) {
-                if (this.blacklistedSides.contains(subHit)) {
+            else if (!doesConnect(direction)) {
+                if (blacklistedSides.contains(subHit)) {
                     //remove from whitelist
-                    this.blacklistedSides.remove((Integer) subHit);
+                    blacklistedSides.remove((Integer) subHit);
                     //network stuff
-                    int steam = this.getNetwork().split(this, false);
-                    this.shouldJoin();
+                    int steam = getNetwork().split(this, false);
+                    shouldJoin();
                     //this.getNetwork().addSteam(steam);
                     ////Steamcraft.log.debug("C");
                     ////Steamcraft.log.debug(this.getNetworkName());
                     ////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
-                    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    markForUpdate();
                 }
             }
-            if (this.getSteamShare() > 0) {
+//            if (getSteamShare() > 0) {
                 //world.playSoundEffect(x+0.5F, y+0.5F, z+0.5F, "steamcraft:leaking", 2.0F, 0.9F);
-                ForgeDirection d = ForgeDirection.getOrientation(subHit);
-            }
-            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, "steamcraft:wrench", 2.0F, 0.9F);
-
+//            }
+            world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_WRENCH,
+              SoundCategory.BLOCKS, 2F, 0.9F, false);
         }
     }
 
     @Override
     public void refresh() {
         super.refresh();
-        this.isOriginalPipe = false;
-        this.isOtherPipe = false;
+        isOriginalPipe = false;
+        isOtherPipe = false;
     }
 
     private void refreshNeighbors() {
         //log.debug("Refreshing neighbors");
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity te = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ);
+        for (EnumFacing dir : EnumFacing.VALUES) {
+            TileEntity te = worldObj.getTileEntity(getOffsetPos(dir));
             if (te != null && te instanceof ISteamTransporter) {
-                //log.debug("    Valid");
                 ISteamTransporter trans = (ISteamTransporter) te;
                 SteamNetwork transNetwork = trans.getNetwork();
-                if (transNetwork != null && transNetwork != this.getNetwork()) {
-                    //log.debug("     Different network!");
+                if (transNetwork != null && transNetwork != getNetwork()) {
                     transNetwork.shouldRefresh();
-                } else {
-                    //log.debug("SameNet");
                 }
             }
         }
