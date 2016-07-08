@@ -47,6 +47,29 @@ public class MetalItems implements IInitCategory {
         private Item item;
         private boolean hasType;
 
+        public static Items[] INGOTS;
+        public static Items[] NUGGETS;
+        public static Items[] PLATES;
+
+        static {
+            for (Items item : values()) {
+                if (!item.hasType()) {
+                    continue;
+                }
+                switch (item.type) {
+                    case INGOT: {
+                        INGOTS[item.metadata] = item;
+                    }
+                    case NUGGET: {
+                        NUGGETS[item.metadata] = item;
+                    }
+                    case PLATE: {
+                        PLATES[item.metadata] = item;
+                    }
+                }
+            }
+        }
+
         Items(int metadata, Types type) {
             this.metadata = metadata;
             this.type = type;

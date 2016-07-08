@@ -2,9 +2,6 @@ package flaxbeard.steamcraft.item;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSteamedFood extends ItemFood {
     private ItemFood baseFood;
@@ -37,10 +34,5 @@ public class ItemSteamedFood extends ItemFood {
     @Override
     public IIcon getIconFromDamage(int meta) {
         return baseFood.getIconFromDamage(baseFoodStack.getItemDamage());
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack par1ItemStack, int par2) {
-        return (0xFFDBDBDB);
     }
 }

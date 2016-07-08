@@ -6,40 +6,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import flaxbeard.steamcraft.init.items.MetalItems;
+
 import java.util.List;
 
 public class ItemSteamcraftNugget extends Item {
-    public IIcon[] icon = new IIcon[4];
-
     public ItemSteamcraftNugget() {
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIconFromDamage(int par1) {
-        if (par1 < icon.length) {
-            return this.icon[par1];
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> subItems) {
+        for (MetalItems.Items metal : MetalItems.Items.NUGGETS) {
+            subItems.add(metal.createItemStack());
         }
-        return this.icon[0];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister ir) {
-        this.icon[0] = ir.registerIcon("steamcraft:nuggetCopper");
-        this.icon[1] = ir.registerIcon("steamcraft:nuggetZinc");
-        this.icon[2] = ir.registerIcon("steamcraft:nuggetIron");
-        this.icon[3] = ir.registerIcon("steamcraft:nuggetBrass");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
     }
 
     @Override
