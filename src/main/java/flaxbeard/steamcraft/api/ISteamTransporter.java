@@ -20,15 +20,6 @@ public interface ISteamTransporter {
     float getPressureResistance();
 
     /**
-     * Called to ensure that the device can have steam put into it
-     *
-     * @param face - The side of the device
-     *
-     * @return true if steam can be inserted
-     */
-    boolean canInsert(EnumFacing face);
-
-    /**
      * How much steam the device can store
      */
     int getCapacity();
@@ -59,8 +50,6 @@ public interface ISteamTransporter {
     HashSet<EnumFacing> getConnectionSides();
 
     World getWorld();
-
-    String getNetworkName();
 
     void setNetworkName(String name);
 

@@ -186,14 +186,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                 }
             }
         }
-
-
-        //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public boolean canInsert(EnumFacing face) {
-        return face != dir() && open;
     }
 
     @Override

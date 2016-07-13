@@ -13,7 +13,7 @@ public abstract class BlockSteamTransporter extends BlockContainer {
     }
 
     @Override
-    public void onBlockPreDestroy(World world, BlockPos pos, IBlockState state) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         ISteamTransporter te = (ISteamTransporter) world.getTileEntity(pos);
         if (te == null) {
             return;

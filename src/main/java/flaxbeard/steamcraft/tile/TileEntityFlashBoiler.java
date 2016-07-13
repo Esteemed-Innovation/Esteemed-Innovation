@@ -2,8 +2,10 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
+import flaxbeard.steamcraft.block.BlockFlashBoiler;
 import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.misc.FluidHelper;
+import flaxbeard.steamcraft.misc.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,21 +15,23 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collections;
 import java.util.HashSet;
 
 public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHandler, ISidedInventory, ISteamTransporter {
-
-    private static final int[] slotsTop = new int[]{0, 1};
-    private static final int[] slotsBottom = new int[]{0, 1};
-    private static final int[] slotsSides = new int[]{0, 1};
+    private static final int[] SLOTS_TOP = new int[] { 0, 1 };
+    private static final int[] SLOTS_BOTTOM = new int[] { 0, 1 };
+    private static final int[] SLOTS_SIDES = new int[] { 0, 1 };
     private static final int CAPACITY = 12500;
     // ====================================================
     //          All the possible configurations
@@ -35,68 +39,68 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     // bottom   top
     // OO       OO     Z ^
     // XO       OO     X-->
-    private static int[][] bbl = new int[][]{
-      new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1},
-      new int[]{0, 1, 0}, new int[]{1, 1, 0}, new int[]{0, 1, 1}, new int[]{1, 1, 1}
+    private static final int[][] BBL = new int[][] {
+      new int[] { 0, 0, 0 }, new int[] { 1, 0, 0 }, new int[] { 0, 0, 1 }, new int[] { 1, 0, 1 },
+      new int[] { 0, 1, 0 }, new int[] { 1, 1, 0 }, new int[] { 0, 1, 1 }, new int[] { 1, 1, 1 }
     };
     // bottom   top
     // OO       OO     Z ^
     // OO       XO     X-->
-    private static int[][] tbl = new int[][]{
-      new int[]{0, -1, 0}, new int[]{1, -1, 0}, new int[]{0, -1, 1}, new int[]{1, -1, 1},
-      new int[]{0, 0, 0}, new int[]{1, 0, 0}, new int[]{0, 0, 1}, new int[]{1, 0, 1}
+    private static final int[][] TBL = new int[][] {
+      new int[] { 0, -1, 0 }, new int[] { 1, -1, 0 }, new int[] { 0, -1, 1 }, new int[] { 1, -1, 1 },
+      new int[] { 0, 0, 0 }, new int[] { 1, 0, 0 }, new int[] { 0, 0, 1 }, new int[] { 1, 0, 1 }
     };
     // bottom   top
     // OO       OO     Z ^
     // OX       OO     X-->
-    private static int[][] bbr = new int[][]{
-      new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1},
-      new int[]{-1, 1, 0}, new int[]{0, 1, 0}, new int[]{-1, 1, 1}, new int[]{0, 1, 1}
+    private static final int[][] BBR = new int[][] {
+      new int[] { -1, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { -1, 0, 1 }, new int[] { 0, 0, 1 },
+      new int[] { -1, 1, 0 }, new int[] { 0, 1, 0 }, new int[] { -1, 1, 1 }, new int[] { 0, 1, 1 }
     };
     // bottom   top
     // OO       OO     Z ^
     // OO       OX     X-->
-    private static int[][] tbr = new int[][]{
-      new int[]{-1, -1, 0}, new int[]{0, -1, 0}, new int[]{-1, -1, 1}, new int[]{0, -1, 1},
-      new int[]{-1, 0, 0}, new int[]{0, 0, 0}, new int[]{-1, 0, 1}, new int[]{0, 0, 1}
+    private static final int[][] tbr = new int[][] {
+      new int[] { -1, -1, 0 }, new int[] { 0, -1, 0 }, new int[] { -1, -1, 1 }, new int[] { 0, -1, 1 },
+      new int[] { -1, 0, 0 }, new int[] { 0, 0, 0 }, new int[] { -1, 0, 1 }, new int[] { 0, 0, 1 }
     };
     // bottom   top
     // XO       OO     Z ^
     // OO       OO     X-->
-    private static int[][] btl = new int[][]{
-      new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0},
-      new int[]{0, 1, -1}, new int[]{1, 1, -1}, new int[]{0, 1, 0}, new int[]{1, 1, 0}
+    private static final int[][] BTL = new int[][] {
+      new int[] { 0, 0, -1 }, new int[] { 1, 0, -1 }, new int[] { 0, 0, 0 }, new int[] { 1, 0, 0 },
+      new int[] { 0, 1, -1 }, new int[] { 1, 1, -1 }, new int[] { 0, 1, 0 }, new int[] { 1, 1, 0 }
     };
     // bottom   top
     // OO       XO     Z ^
     // OO       OO     X-->
-    private static int[][] ttl = new int[][]{
-      new int[]{0, -1, -1}, new int[]{1, -1, -1}, new int[]{0, -1, 0}, new int[]{1, -1, 0},
-      new int[]{0, 0, -1}, new int[]{1, 0, -1}, new int[]{0, 0, 0}, new int[]{1, 0, 0}
+    private static final int[][] TTL = new int[][] {
+      new int[] { 0, -1, -1 }, new int[] { 1, -1, -1 }, new int[] { 0, -1, 0}, new int[] { 1, -1, 0},
+      new int[] { 0, 0, -1 }, new int[] { 1, 0, -1 }, new int[] { 0, 0, 0 }, new int[] { 1, 0, 0 }
     };
     // bottom   top
     // OX       OO     Z ^
     // OO       OO     X-->
-    private static int[][] btr = new int[][]{
-      new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0},
-      new int[]{-1, 1, -1}, new int[]{0, 1, -1}, new int[]{-1, 1, 0}, new int[]{0, 1, 0}
+    private static final int[][] BTR = new int[][] {
+      new int[] { -1, 0, -1 }, new int[] { 0, 0, -1 }, new int[] { -1, 0, 0 }, new int[] { 0, 0, 0 },
+      new int[] { -1, 1, -1 }, new int[] { 0, 1, -1 }, new int[] { -1, 1, 0 }, new int[] { 0, 1, 0 }
     };
     // bottom   top
     // OO       OX     Z ^
     // OO       OO     X-->
-    private static int[][] ttr = new int[][]{
-      new int[]{-1, -1, -1}, new int[]{0, -1, -1}, new int[]{-1, -1, 0}, new int[]{0, -1, 0},
-      new int[]{-1, 0, -1}, new int[]{0, 0, -1}, new int[]{-1, 0, 0}, new int[]{0, 0, 0}
+    private static final int[][] TTR = new int[][] {
+      new int[] { -1, -1, -1 }, new int[] { 0, -1, -1 }, new int[] { -1, -1, 0 }, new int[] { 0, -1, 0 },
+      new int[] { -1, 0, -1 }, new int[] { 0, 0, -1 }, new int[] { -1, 0, 0 }, new int[] { 0, 0, 0 }
     };
 
-    private static int[][][] validConfigs = new int[][][]{
-      bbl, tbl, bbr, tbr, btl, ttl, btr, ttr
+    private static final int[][][] VALID_CONFIGS = new int[][][] {
+      BBL, TBL, BBR, tbr, BTL, TTL, BTR, TTR
     };
 
-    public int furnaceCookTime;
-    public int furnaceBurnTime;
-    public int currentItemBurnTime;
-    public int heat;
+    private int furnaceCookTime;
+    private int furnaceBurnTime;
+    private int currentItemBurnTime;
+    private int heat;
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String customName;
     private boolean wasBurning = false;
@@ -109,6 +113,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         super(CAPACITY);
         super.myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1), 80000);
         setPressureResistance(0.5F);
+    }
+
+    private BlockFlashBoiler.Corners getMyCorner() {
+        IBlockState state = worldObj.getBlockState(pos);
+        return state.getValue(BlockFlashBoiler.CORNER);
     }
 
     @Override
@@ -170,7 +179,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
         nbt.setTag("Items", nbttaglist);
 
-        if (hasCustomInventoryName()) {
+        if (hasCustomName()) {
             nbt.setString("CustomName", customName);
         }
 
@@ -268,12 +277,11 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
             int y = cluster[pos][1] + this.pos.getY();
             int z = cluster[pos][2] + this.pos.getZ();
             BlockPos blockPos = new BlockPos(x, y, z);
-            Block block = worldObj.getBlockState(blockPos).getBlock();
-            if (block == SteamNetworkBlocks.Blocks.FLASH_BOILER.getBlock()) {
-                TileEntityFlashBoiler fb = (TileEntityFlashBoiler) worldObj.getTileEntity(blockPos);
-                if (!(getBlockMetadata() > 0)) {
-                    count++;
-                }
+            IBlockState state = worldObj.getBlockState(blockPos);
+            Block block = state.getBlock();
+            if (block == SteamNetworkBlocks.Blocks.FLASH_BOILER.getBlock() &&
+              state.getValue(BlockFlashBoiler.CORNER) == BlockFlashBoiler.Corners.NONE) {
+                count++;
             }
         }
 
@@ -285,7 +293,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         int[] out;
         int count = 0;
         for (int clusterIndex = 0; clusterIndex < 8; clusterIndex++) {
-            if (checkCluster(validConfigs[clusterIndex]) == 8) {
+            if (checkCluster(VALID_CONFIGS[clusterIndex]) == 8) {
                 valid[count] = clusterIndex;
                 count++;
             }
@@ -296,7 +304,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     private int[][] getClusterCoords(int clusterIndex) {
-        int[][] cluster = validConfigs[clusterIndex];
+        int[][] cluster = VALID_CONFIGS[clusterIndex];
         int[][] out = new int[8][3];
         for (int pos = 0; pos < 8; pos++) {
             out[pos] = new int[] {
@@ -313,280 +321,287 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         HashSet<TileEntityFlashBoiler> boilers = new HashSet<>();
         for (int pos = 7; pos >= 0; pos--) {
             int x = cluster[pos][0], y = cluster[pos][1], z = cluster[pos][2];
-            if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler) {
-                worldObj.setBlockMetadataWithNotify(
-                  cluster[pos][0], cluster[pos][1], cluster[pos][2],
-                  isMultiblock ? pos + 1 : 0, 2
-                );
-                TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(cluster[pos][0], cluster[pos][1], cluster[pos][2]);
-                boiler.setFront(frontSide, false);
+            BlockPos blockPos = new BlockPos(x, y, z);
+            IBlockState state = worldObj.getBlockState(blockPos);
+            if (state.getBlock() == SteamNetworkBlocks.Blocks.FLASH_BOILER.getBlock()) {
+                BlockFlashBoiler.Corners corner = isMultiblock ? BlockFlashBoiler.Corners.LOOKUP[pos + 1] : BlockFlashBoiler.Corners.NONE;
+                worldObj.setBlockState(blockPos, state.withProperty(BlockFlashBoiler.CORNER, corner));
+
+                TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(blockPos);
+                if (boiler == null) {
+                    return;
+                }
+                boiler.setFront(frontSide);
                 boilers.add(boiler);
-
-            } else {
-                ////Steamcraft.log.debug("ERROR! ("+x+","+y+","+z+") is not a flashBoiler!");
             }
-
         }
         for (TileEntityFlashBoiler boiler : boilers) {
             if (isMultiblock) {
                 SteamNetwork.newOrJoin(boiler);
             } else {
-                if (this.getNetwork() != null) {
-                    this.getNetwork().split(boiler, true);
+                SteamNetwork net = getNetwork();
+                if (net != null) {
+                    net.split(boiler, true);
                 }
             }
         }
     }
 
-    public TileEntityFlashBoiler getPrimaryTileEntity() {
+    private TileEntityFlashBoiler getPrimaryTileEntity() {
         int[][] cluster = getClusterCoords(getValidClusterFromMetadata());
         int x = cluster[0][0], y = cluster[0][1], z = cluster[0][2];
-        if (worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler &&
-          worldObj.getBlockMetadata(x, y, z) == 1) {
-            return (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
+        BlockPos blockPos = new BlockPos(x, y, z);
+        if (isPrimary(worldObj, blockPos)) {
+            return (TileEntityFlashBoiler) worldObj.getTileEntity(blockPos);
         }
 
         return null;
     }
 
-    public void setFront(int frontSide, boolean print) {
-        //if (print) //Steamcraft.log.debug("Setting front side to "+frontSide);
-        if (!worldObj.isRemote)
+    private void setFront(int frontSide) {
+        if (!worldObj.isRemote) {
             this.frontSide = frontSide;
+        }
     }
 
     public int getFront() {
-        return this.frontSide;
+        return frontSide;
+    }
+
+    private static boolean isPrimary(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == SteamNetworkBlocks.Blocks.FLASH_BOILER.getBlock() &&
+          state.getValue(BlockFlashBoiler.CORNER) == BlockFlashBoiler.Corners.TOP_LEFT_BACK;
     }
 
     @Override
     public void update() {
         super.update();
         // fixes existing capacity and prevents explosions
-        if (this.capacity != CAPACITY) {
-            int steamToLose = Math.abs(this.capacity - CAPACITY);
-            this.decrSteam(steamToLose);
-            this.capacity = CAPACITY;
-
+        if (capacity != CAPACITY) {
+            int steamToLose = Math.abs(capacity - CAPACITY);
+            decrSteam(steamToLose);
+            capacity = CAPACITY;
         }
-        if (this.shouldExplode) {
-            this.getNetwork().split(this, true);
-            worldObj.createExplosion(null, xCoord + 0.5F, yCoord + 0.5F, zCoord + 0.5F, 4.0F, true);
+
+        if (shouldExplode) {
+            getNetwork().split(this, true);
+            worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 4.0F, true);
             return;
         }
         ////Steamcraft.log.debug(this.getFront());
        if (waitOneTick) {
            waitOneTick = false;
        } else {
-            if (!worldObj.isRemote && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            	ItemStack stackInInput = this.getStackInSlot(1);
+            if (!worldObj.isRemote && isPrimary(worldObj, pos)) {
+            	ItemStack stackInInput = getStackInSlot(1);
         		if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
             		ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
             		setInventorySlotContents(1, drainedItemStack);
                 }
 
-                boolean flag = this.furnaceBurnTime > 0;
-                boolean flag1 = false;
                 int maxThisTick = 10;
-//                if (this.furnaceBurnTime > 0) {
-//                    maxThisTick = Math.min(furnaceBurnTime, 10);
-//                    this.furnaceBurnTime -= maxThisTick;
 
-//                }
+                if (!worldObj.isRemote) {
+                    if (furnaceBurnTime == 0 && canSmelt()) {
+                        currentItemBurnTime = furnaceBurnTime = getItemBurnTime(furnaceItemStacks[0]);
 
+                        if (furnaceBurnTime > 0) {
+                            if (furnaceItemStacks[0] != null) {
+                                --furnaceItemStacks[0].stackSize;
 
-                if (!this.worldObj.isRemote) {
-                    if (this.furnaceBurnTime == 0 && this.canSmelt()) {
-                        this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[0]);
-
-                        if (this.furnaceBurnTime > 0) {
-
-                            flag1 = true;
-
-                            if (this.furnaceItemStacks[0] != null) {
-                                --this.furnaceItemStacks[0].stackSize;
-
-                                if (this.furnaceItemStacks[0].stackSize == 0) {
-                                    this.furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
+                                if (furnaceItemStacks[0].stackSize == 0) {
+                                    furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
                                 }
                             }
                         }
                         // worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     }
 
-                    if (!this.isBurning() && this.heat > 0) {
-                        this.heat -= Math.min(this.heat, 10);
+                    if (!isBurning() && heat > 0) {
+                        heat -= Math.min(heat, 10);
                     }
 
-                    if (this.isBurning() && this.heat < 1600) {
-                        this.heat++;
+                    if (isBurning() && heat < 1600) {
+                        heat++;
                     }
 
-                    if (this.isBurning() && this.canSmelt()) {
-                        ++this.furnaceCookTime;
+                    if (isBurning() && canSmelt()) {
+                        ++furnaceCookTime;
 
-                        if (this.furnaceCookTime > 0) {
+                        if (furnaceCookTime > 0) {
                             int i = 0;
                             //HEAT COMMENTED OUT
                             int maxSteamThisTick = (int) (((float) maxThisTick) * 0.7F + (maxThisTick * 0.3F * (
                               1600.0F / 1600.0F)));
 //                            System.out.println("HEAT IS: " + heat + " MAX STEAM IS: " + maxSteamThisTick);
-                            while (i < maxSteamThisTick && this.isBurning() && this.canSmelt()) {
-                                this.insertSteam(10);
-                                this.myTank.drain(2, true);
+                            while (i < maxSteamThisTick && isBurning() && canSmelt()) {
+                                insertSteam(10);
+                                myTank.drain(2, true);
                                 i++;
                             }
-                            this.furnaceCookTime = 0;
-
-                            flag1 = true;
+                            furnaceCookTime = 0;
                         }
                     } else {
-                        this.furnaceCookTime = 0;
-                    }
-
-                    if (flag != this.furnaceBurnTime > 0) {
-                        flag1 = true;
-                        //BlockBoiler.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+                        furnaceCookTime = 0;
                     }
                 }
 
-                if (this.isBurning() != this.wasBurning) {
-                    this.wasBurning = this.isBurning();
-                    this.burning = this.isBurning();
-                    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                if (isBurning() != wasBurning) {
+                    wasBurning = isBurning();
+                    burning = isBurning();
+                    markForUpdate();
                 }
             }
         }
 
-        if (this.furnaceBurnTime > 0) {
-            this.furnaceBurnTime -= 1;
+        if (furnaceBurnTime > 0) {
+            furnaceBurnTime -= 1;
         }
-
-        if (!this.worldObj.isRemote) {
-            ////Steamcraft.log.debug(this.furnaceBurnTime);
-        }
-        //this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     private void insertSteam(int i) {
-        if (this.getNetwork() != null) {
-            this.getNetwork().addSteam(i);
+        SteamNetwork net = getNetwork();
+        if (net != null) {
+            net.addSteam(i);
         }
 
     }
 
     private boolean canSmelt() {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? myTank.getFluidAmount() > 9 : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().canSmelt() : false;
-    }
-
-    private boolean canDrainItem(ItemStack stack) {
-        return stack.stackSize == 1;
-    }
-
-    @Override
-    public boolean isBurning() {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            return this.furnaceBurnTime > 0;
-        } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            if (getPrimaryTileEntity() != null) {
-                return getPrimaryTileEntity().isBurning();
-            } else return false;
-
-        } else return false;
-
-    }
-
-    public boolean hasPrimary() {
-        return getPrimaryTileEntity() != null;
-    }
-
-    @Override
-    public int getSizeInventory() {
-
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks.length : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getSizeInventory() : 0);
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceItemStacks[slot] : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getStackInSlot(slot) : null);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            if (this.furnaceItemStacks[par1] != null) {
-                ItemStack itemstack;
-
-                if (this.furnaceItemStacks[par1].stackSize <= par2) {
-                    itemstack = this.furnaceItemStacks[par1];
-                    this.furnaceItemStacks[par1] = null;
-                    return itemstack;
-                } else {
-                    itemstack = this.furnaceItemStacks[par1].splitStack(par2);
-
-                    if (this.furnaceItemStacks[par1].stackSize == 0) {
-                        this.furnaceItemStacks[par1] = null;
-                    }
-
-                    return itemstack;
-                }
-            } else {
-                return null;
-            }
-        } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().decrStackSize(par1, par2) : null;
+        if (isPrimary(worldObj, pos)) {
+            return myTank.getFluidAmount() > 0;
         }
-
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int par1) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            if (this.furnaceItemStacks[par1] != null) {
-                ItemStack itemstack = this.furnaceItemStacks[par1];
-                this.furnaceItemStacks[par1] = null;
-                return itemstack;
-            } else {
-                return null;
-            }
-        } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getStackInSlotOnClosing(par1) : null;
-        }
-
-    }
-
-    public boolean isInCluster(int x, int y, int z) {
-        int[][] cluster = this.getClusterCoords(this.getValidClusterFromMetadata());
-        for (int pos = 0; pos < cluster.length; pos++) {
-            if (x == cluster[pos][0] && y == cluster[pos][1] && z == cluster[pos][1]) {
-                return worldObj.getBlock(x, y, z) == SteamcraftBlocks.flashBoiler && worldObj.getBlockMetadata(x, y, z) > 0;
-            }
+        if (getMyCorner() != BlockFlashBoiler.Corners.NONE && hasPrimary()) {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            return primary != null && primary.canSmelt();
         }
         return false;
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            this.furnaceItemStacks[par1] = par2ItemStack;
+    public boolean isBurning() {
+        if (isPrimary(worldObj, pos)) {
+            return furnaceBurnTime > 0;
+        } else {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            return primary != null && primary.isBurning();
+        }
+    }
 
-            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-                par2ItemStack.stackSize = this.getInventoryStackLimit();
+    private boolean hasPrimary() {
+        return getPrimaryTileEntity() != null;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        if (isPrimary(worldObj, pos)) {
+            return furnaceItemStacks.length;
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.getSizeInventory();
+                }
             }
-        } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getPrimaryTileEntity().setInventorySlotContents(par1, par2ItemStack);
+        }
+        return 0;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        if (isPrimary(worldObj, pos)) {
+            return furnaceItemStacks[slot];
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.getStackInSlot(slot);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count) {
+        if (isPrimary(worldObj, pos)) {
+            if (furnaceItemStacks[index] != null) {
+                ItemStack itemstack;
+                if (furnaceItemStacks[index].stackSize <= count) {
+                    itemstack = furnaceItemStacks[index];
+                    furnaceItemStacks[index] = null;
+                } else {
+                    itemstack = furnaceItemStacks[index].splitStack(count);
+                    if (furnaceItemStacks[index].stackSize == 0) {
+                        furnaceItemStacks[index] = null;
+                    }
+                }
+                return itemstack;
+            }
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.decrStackSize(index, count);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int slot) {
+        if (isPrimary(worldObj, pos)) {
+            ItemStack itemstack = null;
+            if (furnaceItemStacks[slot] != null) {
+                itemstack = furnaceItemStacks[slot];
+                furnaceItemStacks[slot] = null;
+            }
+            return itemstack;
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.removeStackFromSlot(slot);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack) {
+        if (isPrimary(worldObj, pos)) {
+            furnaceItemStacks[index] = stack;
+
+            int stackLimit = getInventoryStackLimit();
+            if (stack != null && stack.stackSize > stackLimit) {
+                stack.stackSize = stackLimit;
+            }
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    primary.setInventorySlotContents(index, stack);
+                }
+            }
         }
     }
 
     @Override
-    public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.furnace";
+    public String getName() {
+        return hasCustomName() ? customName : "container.furnace";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public ITextComponent getDisplayName() {
+        return new TextComponentTranslation(getName());
+    }
 
-        return this.customName != null && this.customName.length() > 0;
+    @Override
+    public boolean hasCustomName() {
+        return customName != null && customName.length() > 0;
     }
 
     @Override
@@ -596,16 +611,14 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D) <= 64.0D;
+        return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64D;
     }
 
     @Override
-    public void openInventory() {
-    }
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -614,43 +627,26 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public float getPressure() {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-
+        if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
             if (worldObj.isRemote) {
-                ////Steamcraft.log.debug("Returning "+this.pressure);
-                return (pressure);
+                return pressure;
             } else {
-                if (this.getNetwork() != null)
-                    return (super.getPressure());
-                else
-                    return 0;
+                if (getNetwork() != null) {
+                    return super.getPressure();
+                }
             }
-        } else {
-            return 0F;
         }
-
-    }
-
-    @Override
-    public boolean canInsert(ForgeDirection face) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 4 && face != myDir();
+        return 0F;
     }
 
     @Override
     public int getCapacity() {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? this.capacity : 0;
+        return getMyCorner() == BlockFlashBoiler.Corners.NONE ? 0 : capacity;
     }
 
     @Override
     public int getSteamShare() {
-        if (this.getBlockMetadata() > 0) {
-            return super.getSteamShare();
-        } else {
-            return 0;
-        }
-        //if (this.getNetwork() != null)
-        //	return worldObj.getBlockMetadata(xCoord,yCoord,zCoord) == 1 ? this.getNetwork().getSteam() : (worldObj.getBlockMetadata(xCoord,yCoord,zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getSteamShare() : 0);
-        //else return 0;
+        return getMyCorner() == BlockFlashBoiler.Corners.NONE ? 0 : super.getSteamShare();
     }
 
     @Override
@@ -661,48 +657,61 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
     }
 
     @Override
-    public void insertSteam(int amount, ForgeDirection face) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 && this.getNetwork() != null) {
-            this.getNetwork().addSteam(amount);
-        } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getPrimaryTileEntity().insertSteam(amount, face);
+    public void insertSteam(int amount, EnumFacing face) {
+        SteamNetwork net = getNetwork();
+        if (isPrimary(worldObj, pos) && net != null) {
+            net.addSteam(amount);
+        } else if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            if (primary != null) {
+                primary.insertSteam(amount, face);
+            }
         }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public int getBurnTimeRemainingScaled(int scale) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            if (this.currentItemBurnTime == 0) {
-                this.currentItemBurnTime = 200;
+        if (isPrimary(worldObj, pos)) {
+            if (currentItemBurnTime == 0) {
+                currentItemBurnTime = 200;
             }
 
-            return this.furnaceBurnTime * scale / this.currentItemBurnTime;
+            return furnaceBurnTime * scale / currentItemBurnTime;
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getBurnTimeRemainingScaled(scale) : 0;
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.getBurnTimeRemainingScaled(scale);
+                }
+            }
         }
-
+        return 0;
     }
 
     @Override
     public void decrSteam(int i) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 && this.getNetwork() != null) {
-            this.getNetwork().decrSteam(i);
-        } else if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            getPrimaryTileEntity().decrSteam(i);
+        SteamNetwork net = getNetwork();
+        if (isPrimary(worldObj, pos) && net != null) {
+            net.decrSteam(i);
+        } else if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            if (primary != null) {
+                primary.decrSteam(i);
+            }
         }
-
     }
 
     @Override
     public boolean doesConnect(EnumFacing face) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 4;
+        return getMyCorner().getVertical() == BlockFlashBoiler.Corners.Vertical.TOP;
     }
 
     @Override
     public boolean acceptsGauge(EnumFacing face) {
-        if (face != ForgeDirection.UP && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0) {
-            if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 4 && face != ForgeDirection.UP) {
+        BlockFlashBoiler.Corners corner = getMyCorner();
+        if (face != EnumFacing.UP && corner != BlockFlashBoiler.Corners.NONE) {
+            if (corner.getVertical() == BlockFlashBoiler.Corners.Vertical.TOP && face != EnumFacing.UP) {
                 return true;
             } else if (face != myDir()) {
                 return true;
@@ -711,140 +720,174 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         return false;
     }
 
-    public ForgeDirection myDir() {
-        int meta = this.frontSide;
-        switch (meta) {
-            case 2:
-                return ForgeDirection.NORTH;
-            case 3:
-                return ForgeDirection.SOUTH;
-            case 4:
-                return ForgeDirection.WEST;
-            case 5:
-                return ForgeDirection.EAST;
+    private EnumFacing myDir() {
+        int front = frontSide;
+        switch (front) {
+            case 2: {
+                return EnumFacing.NORTH;
+            }
+            case 3: {
+                return EnumFacing.SOUTH;
+            }
+            case 4: {
+                return EnumFacing.WEST;
+            }
+            case 5: {
+                return EnumFacing.EAST;
+            }
         }
-        return ForgeDirection.NORTH;
+        return EnumFacing.NORTH;
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        return side == 0 ? slotsBottom : (side == 1 ? slotsTop : slotsSides);
+    public int[] getSlotsForFace(EnumFacing face) {
+        if (face == EnumFacing.UP) {
+            return SLOTS_TOP;
+        } else if (face == EnumFacing.DOWN) {
+            return SLOTS_BOTTOM;
+        }
+        return SLOTS_SIDES;
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        int[] accessibleSlots = getAccessibleSlotsFromSide(side);
+    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+        int[] accessibleSlots = getSlotsForFace(side);
         boolean isAccessibleSlot = false;
-        for (int i = 0; i < accessibleSlots.length; i++) {
-            if (accessibleSlots[i] == slot) isAccessibleSlot = true;
+        for (int accessibleSlot : accessibleSlots) {
+            if (accessibleSlot == slot) {
+                isAccessibleSlot = true;
+            }
         }
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? this.isItemValidForSlot(slot, stack) && isAccessibleSlot : false;
+        return getMyCorner() != BlockFlashBoiler.Corners.NONE && isItemValidForSlot(slot, stack) && isAccessibleSlot;
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        if (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-            return stack.getItem() == Items.bucket;
+    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+        if (isPrimary(worldObj, pos)) {
+            return stack.getItem() == Items.BUCKET;
         } else {
-            return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().canExtractItem(slot, stack, side) : false;
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.canExtractItem(slot, stack, side);
+                }
+            }
         }
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     public int getCookProgressScaled(int scale) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? this.furnaceCookTime * scale / 200 : (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getCookProgressScaled(scale) : 0);
-    }
-
-    @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-        if (meta == 1) {
-            ////Steamcraft.log.debug("Filling master");
-            return myTank.fill(resource, doFill);
-        } else if (meta > 0 && hasPrimary()) {
-            ////Steamcraft.log.debug("Deferring fill to master");
-            return getPrimaryTileEntity().fill(from, resource, doFill);
-        } else {
-            return 0;
+        if (isPrimary(worldObj, pos)) {
+            return furnaceCookTime * scale / 200;
+        } else if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            if (primary != null) {
+                return primary.getCookProgressScaled(scale);
+            }
         }
+        return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+        if (isPrimary(worldObj, pos)) {
+            return myTank.fill(resource, doFill);
+        } else if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+            TileEntityFlashBoiler primary = getPrimaryTileEntity();
+            if (primary != null) {
+                return primary.fill(from, resource, doFill);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
         return fluid == FluidRegistry.WATER;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
         return false;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1 ? new FluidTankInfo[]{new FluidTankInfo(myTank)} : worldObj.getBlockMetadata(xCoord, yCoord, zCoord) > 0 && hasPrimary() ? getPrimaryTileEntity().getTankInfo(from) : new FluidTankInfo[]{new FluidTankInfo(new FluidTank(0))};
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
+        if (isPrimary(worldObj, pos)) {
+            return new FluidTankInfo[] { new FluidTankInfo(myTank) };
+        } else {
+            if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.getTankInfo(from);
+                }
+            }
+        }
+        return new FluidTankInfo[] { new FluidTankInfo(new FluidTank(0)) };
     }
 
     @Override
     public void explode() {
-        TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+        TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) worldObj.getTileEntity(pos);
         if (boiler != null) {
             int clusterIndex = boiler.getValidClusterFromMetadata();
             if (clusterIndex >= 0) {
                 int[][] cluster = (boiler.getClusterCoords(boiler.getValidClusterFromMetadata()));
-                for (int pos = 0; pos < cluster.length; pos++) {
-                    int x = cluster[pos][0], y = cluster[pos][1], z = cluster[pos][2];
-                    if (!(x == xCoord && y == yCoord && z == zCoord)) {
-                        TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler) worldObj.getTileEntity(x, y, z);
-                        if (otherBoiler != null) otherBoiler.secondaryExplosion();
+                for (int[] aCluster : cluster) {
+                    int x = aCluster[0], y = aCluster[1], z = aCluster[2];
+                    BlockPos blockPos = new BlockPos(x, y, z);
+                    if (!WorldHelper.areBlockPosEqual(blockPos, this.pos)) {
+                        TileEntityFlashBoiler otherBoiler = (TileEntityFlashBoiler) worldObj.getTileEntity(blockPos);
+                        if (otherBoiler != null) {
+                            otherBoiler.secondaryExplosion();
+                        }
                     }
                 }
             }
 
         }
         super.explode();
-
-
     }
 
     @Override
-    public HashSet<ForgeDirection> getConnectionSides() {
-        int meta = this.getBlockMetadata();
-        HashSet<ForgeDirection> sides = new HashSet();
-        if (meta > 0) {
-            if (meta > 4) {
-                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    sides.add(side);
-                }
+    public HashSet<EnumFacing> getConnectionSides() {
+        BlockFlashBoiler.Corners corner = getMyCorner();
+        HashSet<EnumFacing> sides = new HashSet<>();
+        if (corner != BlockFlashBoiler.Corners.NONE) {
+            if (corner.getVertical() == BlockFlashBoiler.Corners.Vertical.TOP) {
+                Collections.addAll(sides, EnumFacing.VALUES);
             } else {
-                sides.add(ForgeDirection.UP);
+                sides.add(EnumFacing.UP);
             }
         }
         return sides;
     }
 
     public void secondaryExplosion() {
-        this.shouldExplode = true;
+        shouldExplode = true;
     }
 
     public boolean getBurning() {
-        int meta = getBlockMetadata();
-        if (meta > 0) {
-            if (meta == 1) {
-                return this.burning;
+        BlockFlashBoiler.Corners corner = getMyCorner();
+        if (corner != BlockFlashBoiler.Corners.NONE) {
+            if (isPrimary(worldObj, pos)) {
+                return burning;
             } else {
-                if (this.hasPrimary()) {
-                    return this.getPrimaryTileEntity().isBurning();
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.isBurning();
                 }
             }
         }
@@ -853,16 +896,14 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public FluidTank getTank() {
-        ////Steamcraft.log.debug("Flash boiler tank get!");
-        if (this.getBlockMetadata() > 0) {
-            if (this.getBlockMetadata() == 1) {
-                ////Steamcraft.log.debug("Master returning tank");
-                ////Steamcraft.log.debug("Fill = "+myTank.getFluidAmount());
-                return this.myTank;
+        BlockFlashBoiler.Corners corner = getMyCorner();
+        if (corner != BlockFlashBoiler.Corners.NONE) {
+            if (isPrimary(worldObj, pos)) {
+                return myTank;
             } else {
-                if (this.hasPrimary()) {
-                    ////Steamcraft.log.debug("Asking master to return tank");
-                    return this.getPrimaryTileEntity().getTank();
+                TileEntityFlashBoiler primary = getPrimaryTileEntity();
+                if (primary != null) {
+                    return primary.getTank();
                 }
             }
         }

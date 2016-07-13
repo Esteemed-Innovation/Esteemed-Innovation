@@ -4,20 +4,27 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityFlashBoiler;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 // Notes:
 // ATM meta 1 has a special texture, because that's going to be the master TE for the multi.
@@ -28,31 +35,13 @@ import java.util.Random;
 
 
 public class BlockFlashBoiler extends BlockSteamTransporter {
-
-    private final Random rand = new Random();
-
-    public IIcon otherIcon;
-    public IIcon specialIcon;
-
-    public IIcon topLeft;
-    public IIcon topLeftSide;
-    public IIcon bottomLeft;
-    public IIcon topRight;
-    public IIcon topRightSide;
-    public IIcon bottomRight;
-    public IIcon topLeftF;
-    public IIcon bottomLeftF;
-    public IIcon topRightF;
-    public IIcon bottomRightF;
-    public IIcon topLeftO;
-    public IIcon bottomLeftO;
-    public IIcon topRightO;
-    public IIcon bottomRightO;
+    public static final PropertyEnum<Corners> CORNER = PropertyEnum.create("corner", Corners.class);
 
     public BlockFlashBoiler() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
+        setDefaultState(blockState.getBaseState().withProperty(CORNER, Corners.NONE));
     }
 
     @Override
@@ -60,96 +49,50 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
         return new TileEntityFlashBoiler();
     }
 
-    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-        //	//Steamcraft.log.debug(world.isRemote ? "Client: " : "Server: "+"onBlockPreDestroy");
-        // //Steamcraft.log.debug(world.isRemote ? "Client: " : "Server: "+"breakBlock");
-        super.onBlockPreDestroy(world, x, y, z, meta);
-        TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, CORNER);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(CORNER).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(CORNER, Corners.LOOKUP[meta]);
+    }
+
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        super.breakBlock(world, pos, state);
+        TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(pos);
 
         if (boiler != null) {
-            for (int i1 = 0; i1 < boiler.getSizeInventory(); ++i1) {
-                ItemStack itemstack = boiler.getStackInSlot(i1);
-
-                if (itemstack != null) {
-                    float f = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f1 = this.rand.nextFloat() * 0.8F + 0.1F;
-                    float f2 = this.rand.nextFloat() * 0.8F + 0.1F;
-
-                    while (itemstack.stackSize > 0) {
-                        int j1 = this.rand.nextInt(21) + 10;
-
-                        if (j1 > itemstack.stackSize) {
-                            j1 = itemstack.stackSize;
-                        }
-
-                        itemstack.stackSize -= j1;
-                        EntityItem entityitem = new EntityItem(world, (double) ((float) x + f), (double) ((float) y + f1), (double) ((float) z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
-
-                        if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                        }
-
-                        float f3 = 0.05F;
-                        entityitem.motionX = (double) ((float) this.rand.nextGaussian() * f3);
-                        entityitem.motionY = (double) ((float) this.rand.nextGaussian() * f3 + 0.2F);
-                        entityitem.motionZ = (double) ((float) this.rand.nextGaussian() * f3);
-                        world.spawnEntityInWorld(entityitem);
-                    }
-                }
-                boiler.setInventorySlotContents(i1, null);
-
+            InventoryHelper.dropInventoryItems(world, pos, boiler);
+            if (state.getValue(CORNER) != Corners.NONE) {
+                boiler.destroyMultiblock();
             }
-
-
         }
-
-        if (meta > 0) {
-            TileEntityFlashBoiler te = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-            ////Steamcraft.log.debug(te.getPrimaryTileEntity().getBlockMetadata());
-            te.destroyMultiblock();
-        }
-
     }
 
-    public void checkMultiblock(World world, int x, int y, int z, boolean isBreaking, int frontSide) {
+    private void checkMultiblock(World world, BlockPos pos, boolean isBreaking, int frontSide) {
         if (!world.isRemote) {
-            TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
-            boiler.checkMultiblock(isBreaking, frontSide);
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile != null && tile instanceof TileEntityFlashBoiler) {
+                TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) tile;
+                boiler.checkMultiblock(isBreaking, frontSide);
+            }
         }
-
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister ir) {
-        this.blockIcon = ir.registerIcon("steamcraft:flashBoiler");
-        this.otherIcon = ir.registerIcon("steamcraft:testFront");
-        this.specialIcon = ir.registerIcon("steamcraft:testSpecial");
-
-        this.topLeft = ir.registerIcon("steamcraft:flashBoilerTopLeft");
-        this.topLeftSide = ir.registerIcon("steamcraft:flashBoilerTopLeftSide");
-        this.bottomLeft = ir.registerIcon("steamcraft:flashBoilerBottomLeft");
-        this.topRight = ir.registerIcon("steamcraft:flashBoilerTopRight");
-        this.topRightSide = ir.registerIcon("steamcraft:flashBoilerTopRightSide");
-
-        this.bottomRight = ir.registerIcon("steamcraft:flashBoilerBottomRight");
-        this.topLeftF = ir.registerIcon("steamcraft:flashBoilerTopLeftO");
-        this.bottomLeftF = ir.registerIcon("steamcraft:flashBoilerBottomLeftO");
-        this.topRightF = ir.registerIcon("steamcraft:flashBoilerTopRightO");
-        this.bottomRightF = ir.registerIcon("steamcraft:flashBoilerBottomRightO");
-        this.topLeftO = ir.registerIcon("steamcraft:flashBoilerTopLeftT");
-        this.bottomLeftO = ir.registerIcon("steamcraft:flashBoilerBottomLeftT");
-        this.topRightO = ir.registerIcon("steamcraft:flashBoilerTopRightT");
-        this.bottomRightO = ir.registerIcon("steamcraft:flashBoilerBottomRightT");
-
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xf, float yf, float zf) {
-    	if (world.getBlockMetadata(x, y, z) <= 0) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    	if (state.getValue(CORNER) == Corners.NONE) {
     		return false;
     	}
 
-    	TileEntityFlashBoiler tileEntity = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
+    	TileEntityFlashBoiler tileEntity = (TileEntityFlashBoiler) world.getTileEntity(pos);
 
         if (tileEntity == null) {
             return false;
@@ -158,7 +101,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
         boolean isClient = !world.isRemote;
         
 	    if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient) {
-    		player.openGui(Steamcraft.instance, 0, world, x, y, z);
+    		player.openGui(Steamcraft.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
         } else {
         	FluidHelper.fillTankFromHeldItem(player, tileEntity.getTank());
         }
@@ -167,220 +110,80 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        ////Steamcraft.log.debug("onBlockPlacedBy fired");
-        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        EnumFacing l = placer.getHorizontalFacing().getOpposite();
         int frontSide = -1;
         switch (l) {
-            case 0:
+            case DOWN: {
                 frontSide = 2;
                 break;
-            case 1:
+            }
+            case UP: {
                 frontSide = 5;
                 break;
-            case 2:
+            }
+            case NORTH: {
                 frontSide = 3;
                 break;
-            case 3:
+            }
+            case SOUTH: {
                 frontSide = 4;
                 break;
-            default:
-                ////Steamcraft.log.debug(l);
+            }
+            default: {
                 break;
+            }
         }
 
-        checkMultiblock(world, x, y, z, false, frontSide);
+        checkMultiblock(world, pos, false, frontSide);
     }
 
-    @Override
-    public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side) {
-        ////Steamcraft.log.debug(meta);
-        int meta = block.getBlockMetadata(x, y, z);
-        if (meta == 0) {
-            return blockIcon;
+    private static final float FIFTYTWO = 0.52F;
+
+    private void spawnParticles(World world, int front, float xOffset, double y, float zOffset, Random random) {
+        float offset = getRandomFlameOffset(random);
+        double x;
+        double z;
+        if (front == 4) {
+            x = (double) (xOffset - FIFTYTWO);
+            z = (double) (zOffset + offset);
+        } else if (front == 5 || front == 3) {
+            x = (double) (xOffset + FIFTYTWO);
+            z = (double) (zOffset + offset);
+        } else if (front == 2) {
+            x = (double) (xOffset + offset);
+            z = (double) (zOffset - FIFTYTWO);
         } else {
-            TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) block.getTileEntity(x, y, z);
-            IIcon tex = otherIcon;
-            if (meta == 1) {
-                if (side == 0) {
-                    tex = topLeft;
-                } else if (side == 4) {
-                    tex = bottomLeft;
-                } else {
-                    tex = bottomRight;
-                }
-            }
-            if (meta == 2) {
-                if (side == 2) {
-                    tex = bottomLeft;
-                } else if (side == 0) {
-                    tex = topRight;
-                } else {
-                    tex = bottomRight;
-                }
-            }
-            if (meta == 3) {
-                if (side == 3 || side == 0) {
-                    tex = bottomLeft;
-                } else {
-                    tex = bottomRight;
-                }
-            }
-            //Fixed
-            if (meta == 4) {
-                if (side == 5) {
-                    tex = bottomLeft;
-                } else {
-                    tex = bottomRight;
-                }
-            }
-            //Front
-            if (meta == 5) {
-                if (side == 1) {
-                    tex = topLeft;
-                } else if (side == 4) {
-                    tex = topLeftSide;
-                } else {
-                    tex = topRightSide;
-                }
-            }
-            //Fixed
-            if (meta == 6) {
-                if (side == 2) {
-                    tex = topLeftSide;
-                } else if (side == 1) {
-                    tex = topRight;
-                } else {
-                    tex = topRightSide;
-                }
-            }
-            //Front
-            if (meta == 7) {
-                if (side == 3) {
-                    tex = topLeftSide;
-                } else if (side == 1) {
-                    tex = bottomLeft;
-                } else {
-                    tex = topRightSide;
-                }
-            }
-            if (meta == 8) {
-                if (side == 1) {
-                    tex = bottomRight;
-                } else if (side == 5) {
-                    tex = topLeftSide;
-                } else {
-                    tex = topRightSide;
-                }
-            }
-            if (side == boiler.getFront()) {
-                if (boiler.getBurning()) {
-                    if (tex == topLeftSide) {
-                        return topLeftO;
-                    }
-                    if (tex == topRightSide) {
-                        return topRightO;
-                    }
-                    if (tex == bottomRight) {
-                        return bottomRightO;
-                    }
-                    if (tex == bottomLeft) {
-                        return bottomLeftO;
-                    }
-                }
-                if (tex == topLeftSide) {
-                    return topLeftF;
-                }
-                if (tex == topRightSide) {
-                    return topRightF;
-                }
-                if (tex == bottomRight) {
-                    return bottomRightF;
-                }
-                if (tex == bottomLeft) {
-                    return bottomLeftF;
-                }
-            }
-            return tex;
+            return;
         }
 
+        spawnParticles(world, x, y, z);
+    }
+
+    private void spawnParticles(World world, double x, double y, double z) {
+        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
+        world.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-        if (world.getBlockMetadata(x, y, z) < 5) {
-            TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(x, y, z);
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+        Corners corner = state.getValue(CORNER);
+        if (corner == Corners.NONE || corner.getDirection() == Corners.Direction.FRONT) {
+            TileEntityFlashBoiler boiler = (TileEntityFlashBoiler) world.getTileEntity(pos);
+            if (boiler == null) {
+                return;
+            }
 
             if (boiler.isBurning()) {
                 int front = boiler.getFront();
-                float xOffset = (float) x + 0.5F;
-                float yOffset = (float) y + 0.25F + random.nextFloat() * 0.8F;
-                float zOffset = (float) z + 0.5F;
-                float f3 = 0.52F;
-                float f4 = getRandomFlameOffset(random);
-
-                if (front == 4) {
-                    world.spawnParticle("smoke", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset - f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-//			                
-//			                world.spawnParticle("smoke", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
-//			                world.spawnParticle("flame", (double)(xOffset - f3), (double)yOffset, (double)(zOffset + f4), 0.0D, 0.0D, 0.0D);
-                } else if (front == 5) {
-                    world.spawnParticle("smoke", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f3), (double) yOffset, (double) (zOffset + f4), 0.0D, 0.0D, 0.0D);
-                } else if (front == 2) {
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset - f3), 0.0D, 0.0D, 0.0D);
-                } else if (front == 3) {
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    f4 = getRandomFlameOffset(random);
-
-                    world.spawnParticle("smoke", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                    world.spawnParticle("flame", (double) (xOffset + f4), (double) yOffset, (double) (zOffset + f3), 0.0D, 0.0D, 0.0D);
-                }
+                float xOffset = (float) pos.getX() + 0.5F;
+                float yOffset = (float) pos.getY() + 0.25F + random.nextFloat() * 0.8F;
+                float zOffset = (float) pos.getZ() + 0.5F;
+                spawnParticles(world, front, xOffset, yOffset, zOffset, random);
+                spawnParticles(world, front, xOffset, yOffset, zOffset, random);
+                spawnParticles(world, front, xOffset, yOffset, zOffset, random);
+                spawnParticles(world, front, xOffset, yOffset, zOffset, random);
             }
         }
 
@@ -390,11 +193,71 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
         return random.nextFloat() * 0.8F - 0.4F;
     }
 
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+    public enum Corners implements IStringSerializable {
+        // This one is for when the flash boiler is not a fully constructed multiblock.
+        NONE("none", null, null, null),
+        // This one is arbitrarily the primary flash boiler block.
+        TOP_LEFT_BACK("topLeftBack", Vertical.TOP, Side.LEFT, Direction.BACK),
+        TOP_LEFT_FRONT("topLeftFront", Vertical.TOP, Side.LEFT, Direction.FRONT),
+        TOP_RIGHT_BACK("topRightBack", Vertical.TOP, Side.RIGHT, Direction.BACK),
+        TOP_RIGHT_FRONT("topRightFront", Vertical.TOP, Side.RIGHT, Direction.FRONT),
+        BOTTOM_LEFT_BACK("bottomLeftBack", Vertical.BOTTOM, Side.LEFT, Direction.BACK),
+        BOTTOM_LEFT_FRONT("bottomLeftFront", Vertical.BOTTOM, Side.LEFT, Direction.FRONT),
+        BOTTOM_RIGHT_BACK("bottomRightBack", Vertical.BOTTOM, Side.RIGHT, Direction.BACK),
+        BOTTOM_RIGHT_FRONT("bottomRightFront", Vertical.BOTTOM, Side.RIGHT, Direction.FRONT);
 
-        super.breakBlock(world, x, y, z, block, meta);
+        public static Corners[] LOOKUP = new Corners[values().length];
 
+        static {
+            for (Corners corner : values()) {
+                LOOKUP[corner.ordinal()] = corner;
+            }
+        }
+
+        private String name;
+        private Vertical vertical;
+        private Side side;
+        private Direction direction;
+
+        Corners(String name, Vertical vertical, Side side, Direction direction) {
+            this.name = name;
+            this.vertical = vertical;
+            this.side = side;
+            this.direction = direction;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Nullable
+        public Vertical getVertical() {
+            return vertical;
+        }
+
+        @Nullable
+        public Side getSide() {
+            return side;
+        }
+
+        @Nullable
+        public Direction getDirection() {
+            return direction;
+        }
+
+        public enum Vertical {
+            TOP,
+            BOTTOM
+        }
+
+        public enum Side {
+            LEFT,
+            RIGHT
+        }
+
+        public enum Direction {
+            FRONT,
+            BACK
+        }
     }
-
 }

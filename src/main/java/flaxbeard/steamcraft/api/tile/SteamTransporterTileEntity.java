@@ -165,11 +165,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         return false;
     }
 
-    @Override
-    public boolean canInsert(EnumFacing face) {
-        return isValidSteamSide(face);
-    }
-
     public void addSideToGaugeBlacklist(EnumFacing face) {
         gaugeSideBlacklist.add(face);
     }
@@ -203,7 +198,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         this.distributionDirections = faces;
     }
 
-
     @Override
     public HashSet<EnumFacing> getConnectionSides() {
         HashSet<EnumFacing> out = new HashSet<>();
@@ -216,10 +210,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         return new Coord4(pos, worldObj.provider.getDimension());
     }
 
-    @Override
-    public String getNetworkName() {
-        return this.networkName;
-    }
 
     public void setNetworkName(String name) {
         this.networkName = name;
@@ -310,9 +300,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     @Override
-    public void wasAdded() {
-        //this.steam = 0;
-    }
+    public void wasAdded() {}
 
     /**
      * Gets the current BlockPos offset by the EnumFacing.
