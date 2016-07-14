@@ -42,9 +42,10 @@ public class BlockDummy extends BlockContainer {
         smasherCount += world.getBlockState(new BlockPos(x, y, z + 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
         smasherCount += world.getBlockState(new BlockPos(x, y, z - 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
 
-        if (smasherCount < 2) {
-            // TODO: Figure out what to do about this.
-            world.setBlockToAir(pos);
+        // The TileEntity simple acts as a middleman to get the mutable World object.
+        TileEntity tile = world.getTileEntity(pos);
+        if (smasherCount < 2 && tile != null) {
+            tile.getWorld().setBlockToAir(pos);
         }
     }
 

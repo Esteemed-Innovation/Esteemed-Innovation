@@ -6,26 +6,49 @@ import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.item.BlockRuptureDiscItem;
 import flaxbeard.steamcraft.tile.TileEntityRuptureDisc;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 
+import java.util.Iterator;
+
+import javax.annotation.Nullable;
+
+/**
+ * The Rupture Disc metadata is slightly complicated.
+ * The DIRECTION property is a kinda simplified variant of the EnumFacing horizontal plane.
+ * They add their ordinal to the meta.
+ * The IS_BURST property has 2 values: True (10), False (0)
+ * These two are added together to get the final meta value, 0-6 (closed), and 10-16 (burst).
+ *
+ * However, the Rupture Disc item only has 2 metadata values: Burst (1), and Closed (0). So when doing things relating
+ * to dropping, we have to properly subtract 10 when appropriate.
+ */
 public class BlockRuptureDisc extends BlockContainer {
     public static final PropertyBool IS_BURST = PropertyBool.create("isBurst");
+    public static final PropertyEnum<RuptureDiscDirection> DIRECTION = PropertyEnum.create("direction", RuptureDiscDirection.class);
 
     public BlockRuptureDisc() {
         super(Material.IRON);
@@ -35,84 +58,76 @@ public class BlockRuptureDisc extends BlockContainer {
             String modelName = "rupture_disc" + state.getName();
             ModelResourceLocation loc = new ModelResourceLocation(Steamcraft.MOD_ID + ":" + modelName, "inventory");
             int meta = state.getMetadata();
-            ModelLoader.setCustomModelResourceLocation(this, meta, loc);
+            Item item = Item.getItemFromBlock(this);
+            if (item != null) {
+                ModelLoader.setCustomModelResourceLocation(item, meta, loc);
+            }
         }
     }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, IS_BURST);
+        return new BlockStateContainer(this, IS_BURST, DIRECTION);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(IS_BURST, false);
+        return getDefaultState().withProperty(IS_BURST, meta >= 10)
+          .withProperty(DIRECTION, RuptureDiscDirection.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(IS_BURST) ? 0 : 1;
+        int a = state.getValue(IS_BURST) ? 10 : 0;
+        RuptureDiscDirection dir = state.getValue(DIRECTION);
+        return a + dir.ordinal();
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int xl, int yl, int zl) {
-        meta = getMeta(meta);
-        float px = 1.0F / 16.0F;
-        float x = 4 * px;
-        float y = 4 * px;
-        float z = 0.0F;
-        float x2 = 12 * px;
-        float y2 = 12 * px;
-        float z2 = 3 * px;
-        ForgeDirection dir = ForgeDirection.getOrientation(meta).getOpposite();
-        if (world.getTileEntity(xl + dir.offsetX, yl + dir.offsetY, zl + dir.offsetZ) != null && world.getTileEntity(xl + dir.offsetX, yl + dir.offsetY, zl + dir.offsetZ) instanceof TileEntitySteamPipe) {
-            z = -5 * px;
-            z2 = -2 * px + 0.0005F;
-        }
-        switch (meta) {
-            case 5:
-                this.setBlockBounds(z, y, x, z2, y2, x2);
+    public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing dir) {
+        TileEntity tile = null;
+        switch (dir) {
+            case NORTH: {
+                tile = world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1));
                 break;
-            case 2:
-                this.setBlockBounds(1 - x2, y, 1 - z2, 1 - x, y2, 1 - z);
-                break;
-            case 4:
-                this.setBlockBounds(1 - z2, y, 1 - x2, 1 - z, y2, 1 - x);
-                break;
-            case 3:
-                this.setBlockBounds(x, y, z, x2, y2, z2);
-                break;
-        }
-    }
-
-    @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side) {
-        ForgeDirection dir = ForgeDirection.getOrientation(side);
-        return (dir == NORTH && world.getTileEntity(x, y, z + 1) != null && world.getTileEntity(x, y, z + 1) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x, y, z + 1)).acceptsGauge(dir.getOpposite())) ||
-                (dir == SOUTH && world.getTileEntity(x, y, z - 1) != null && world.getTileEntity(x, y, z - 1) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x, y, z - 1)).acceptsGauge(dir.getOpposite())) ||
-                (dir == WEST && world.getTileEntity(x + 1, y, z) != null && world.getTileEntity(x + 1, y, z) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x + 1, y, z)).acceptsGauge(dir.getOpposite())) ||
-                (dir == EAST && world.getTileEntity(x - 1, y, z) != null && world.getTileEntity(x - 1, y, z) instanceof ISteamTransporter && ((ISteamTransporter) world.getTileEntity(x - 1, y, z)).acceptsGauge(dir.getOpposite()));
-    }
-
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        if (neighbor != this) {
-            int l = world.getBlockMetadata(x, y, z);
-            l = getMeta(l);
-            boolean flag = false;
-            if (!this.canPlaceBlockOnSide(world, x, y, z, l)) {
-                flag = true;
             }
+            case SOUTH: {
+                tile = world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1));
+                break;
+            }
+            case WEST: {
+                tile = world.getTileEntity(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()));
+                break;
+            }
+            case EAST: {
+                tile = world.getTileEntity(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()));
+            }
+        }
 
-            if (flag) {
-                this.dropBlockAsItem(world, x, y, z, l, 0);
-                world.setBlockToAir(x, y, z);
+        if (tile != null && tile instanceof ISteamTransporter) {
+            ISteamTransporter trans = (ISteamTransporter) tile;
+            return trans.acceptsGauge(dir.getOpposite());
+        }
+        return false;
+    }
+
+    @Override
+    public void onNeighborChange(IBlockAccess iba, BlockPos pos, BlockPos neighbor) {
+        TileEntity tileEntity = iba.getTileEntity(pos);
+        if (neighbor != pos && tileEntity != null) {
+            IBlockState state = iba.getBlockState(pos);
+            int meta = getMetaFromState(state);
+            World world = tileEntity.getWorld();
+            if (!canPlaceBlockOnSide(world, pos, RuptureDiscDirection.byMetadata(meta).getEnumFacing())) {
+                dropBlockAsItem(world, pos, state, 0);
+                world.setBlockToAir(pos);
             }
         }
     }
 
     @Override
-    public int onBlockPlaced(World world, int x, int y, int z, int side, float p_149660_6_, float p_149660_7_, float p_149660_8_, int meta) {
-        return (meta == 1 ? side + 10 : side);
+    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getStateFromMeta(meta == 1 ? side.ordinal() + 10 : side.ordinal());
     }
 
     @Override
@@ -121,28 +136,14 @@ public class BlockRuptureDisc extends BlockContainer {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
         return null;
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        return Steamcraft.ruptureDiscRenderID;
-    }
-
-    @Override
     public int damageDropped(IBlockState state) {
-        return getMetaFromState(state);
+        int blockMeta = getMetaFromState(state);
+        return blockMeta >= 10 ? blockMeta - 10 : blockMeta;
     }
 
     @Override
@@ -155,5 +156,30 @@ public class BlockRuptureDisc extends BlockContainer {
             return true;
         }
         return false;
+    }
+
+    private enum RuptureDiscDirection implements IStringSerializable {
+        NORTH(EnumFacing.NORTH),
+        SOUTH(EnumFacing.SOUTH),
+        EAST(EnumFacing.EAST),
+        WEST(EnumFacing.WEST);
+
+        private EnumFacing enumFacing;
+
+        RuptureDiscDirection(EnumFacing enumFacing) {
+            this.enumFacing = enumFacing;
+        }
+
+        public String getName() {
+            return getEnumFacing().getName();
+        }
+
+        public EnumFacing getEnumFacing() {
+            return enumFacing;
+        }
+
+        public static RuptureDiscDirection byMetadata(int metadata) {
+            return values()[metadata >= 10 ? metadata - 10 : metadata];
+        }
     }
 }
