@@ -133,7 +133,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(Steamcraft.ruptureDiscRenderID, new BlockRuptureDiscRenderer());
         RenderingRegistry.registerBlockHandler(Steamcraft.whistleRenderID, new BlockWhistleRenderer());
         RenderingRegistry.registerBlockHandler(Steamcraft.boilerRenderID, new BlockBoilerRenderer());
-        RenderingRegistry.registerBlockHandler(Steamcraft.furnaceRenderID, new BlockCustomFurnaceRenderer());
 
 
         MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.MUSKET.getItem(), new ItemFirearmRenderer());

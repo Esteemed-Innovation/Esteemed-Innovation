@@ -30,7 +30,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
     public boolean isPrimaryHeater;
     private boolean isInitialized = false;
     private boolean prevHadYuck = true;
-    public int steamConsumption = Config.heaterConsumption;
+    public static final int CONSUMPTION = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
         super(EnumFacing.VALUES);
@@ -86,7 +86,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 
     @Override
     public void update() {
-        EnumFacing dir = EnumFacing.getFront(getBlockMetadata());
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
         if (!isInitialized) {
             setValidDistributionDirections(dir);
             isInitialized = true;
@@ -114,7 +114,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
             if (tile2 != null)  {
                 if (tile2 instanceof TileEntitySteamHeater) {
                     TileEntitySteamHeater heater2 = (TileEntitySteamHeater) tile2;
-                    if (heater2.getSteamShare() >= steamConsumption &&
+                    if (heater2.getSteamShare() >= CONSUMPTION &&
                       tile2.getBlockMetadata() == EnumFacing.getFront(i).getOpposite().getIndex()) {
                         isPrimaryHeater = x == pos.getX() && y == pos.getY() && z == pos.getZ();
                         secondaryHeaters.add(heater2);
@@ -142,13 +142,13 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
             int furnaceBurnTime = furnace.getField(0);
             int furnaceCookTime = furnace.getField(2); // This may be actually 3. TODO Double check
 
-            if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= steamConsumption && canSmelt(furnace)) {
+            if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= CONSUMPTION && canSmelt(furnace)) {
                 if (furnaceBurnTime == 0) {
                     BlockFurnace.setState(true, worldObj, offsetPos);
                 }
 
                 for (TileEntitySteamHeater heater : secondaryHeaters) {
-                    heater.decrSteam(steamConsumption);
+                    heater.decrSteam(CONSUMPTION);
                 }
 
                 furnace.setField(0, furnaceBurnTime + 3);

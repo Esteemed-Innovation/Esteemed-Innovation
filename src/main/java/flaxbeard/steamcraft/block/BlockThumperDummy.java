@@ -1,55 +1,25 @@
 package flaxbeard.steamcraft.block;
 
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
 public class BlockThumperDummy extends Block implements IWrenchable {
-
     public BlockThumperDummy() {
-        super(Material.iron);
+        super(Material.IRON);
         setHardness(3.5F);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int i, int j, int k) {
-        int meta = world.getBlockMetadata(i, j, k) - 1;
-        setBlockBounds(0.0F, 0.0F - meta, 0.0F, 1.0F, 4.0F - meta, 1.0F);
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-        int meta = world.getBlockMetadata(x, y, z) - 1;
-        if (world.getBlock(x, y - meta, z) != SteamcraftBlocks.thumper) {
-            world.setBlockToAir(x, y, z);
-        }
-        if (meta != 1) {
-            for (int i = 1; i < meta; i++) {
-                if (world.getBlock(x, y - i, z) != SteamcraftBlocks.thumperDummy) {
-                    world.setBlockToAir(x, y, z);
-                }
-            }
-        }
-        if (meta != 3) {
-            for (int i = 1; i < (3 - meta); i++) {
-                if (world.getBlock(x, y + i, z) != SteamcraftBlocks.thumperDummy) {
-                    world.setBlockToAir(x, y, z);
-                }
-            }
-        }
     }
 
     @Override
@@ -58,34 +28,20 @@ public class BlockThumperDummy extends Block implements IWrenchable {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
-        return new ItemStack(Item.getItemFromBlock(SteamcraftBlocks.thumper), 1, 0);
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+        Item item = Item.getItemFromBlock(SteamMachineryBlocks.Blocks.THUMPER.getBlock());
+        return item == null ? null : new ItemStack(item, 1, 0);
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z) - 1;
-        if (world.getBlock(x, y - meta, z) == SteamcraftBlocks.thumper) {
-            if (side != 0 && side != 1) {
-                y = y - meta;
-                switch (side) {
-                    case 2:
-                        world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-                        break;
-                    case 3:
-                        world.setBlockMetadataWithNotify(x, y, z, 0, 2);
-                        break;
-                    case 4:
-                        world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-                        break;
-                    case 5:
-                        world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-                        break;
-                }
-                return true;
-            }
-            return false;
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        int meta = getMetaFromState(state) - 1;
+        BlockPos thumperPos = new BlockPos(pos.getX(), pos.getY() - meta, pos.getZ());
+        IBlockState thumperState = world.getBlockState(thumperPos);
+        if (thumperState.getBlock() == SteamMachineryBlocks.Blocks.THUMPER.getBlock() && facing != EnumFacing.UP &&
+          facing != EnumFacing.DOWN) {
+            world.setBlockState(thumperPos, thumperState.withProperty(BlockThumper.FACING, facing.getOpposite()), 2);
+            return true;
         }
         return false;
     }

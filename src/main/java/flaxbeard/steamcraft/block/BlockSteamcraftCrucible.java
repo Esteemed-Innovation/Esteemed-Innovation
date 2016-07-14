@@ -1,67 +1,59 @@
 package flaxbeard.steamcraft.block;
 
-import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftBlocks;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.Tuple3;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.blocks.CastingBlocks;
 import flaxbeard.steamcraft.tile.TileEntityCrucible;
 import flaxbeard.steamcraft.tile.TileEntitySteamHeater;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final float PX = (1.0F / 16.0F);
-    public IIcon innerIcon;
-    public IIcon topIcon;
-    public IIcon bottomIcon;
     public TextureAtlasSprite liquidIcon;
-    public IIcon blank;
 
     public BlockSteamcraftCrucible() {
-        super(Material.rock);
+        super(Material.ROCK);
         setHardness(3.5F);
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        return new AxisAlignedBB(x + PX, y + 0.0F + PX, z + PX, x + 1.0F - PX, y + 1.0F - PX, z + 1.0F - PX);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-        return AxisAlignedBB.getBoundingBox(i + PX, j + 0.0F + PX, k + PX, i + 1.0F - PX, j + 1.0F - PX, k + 1.0F - PX);
-    }
-
-    @Override
-    public boolean hasComparatorInputOverride() {
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
     @Override
-    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntityCrucible) {
             TileEntityCrucible crucible = (TileEntityCrucible) te;
             return crucible.getComparatorOutput();
@@ -69,27 +61,24 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
         return 0;
     }
 
-    public boolean isCrucibleHeated(World world, int x, int y, int z) {
-        Block blockUnderCrucible = world.getBlock(x, y - 1, z);
-        TileEntity tileUnderCrucible = world.getTileEntity(x, y - 1, z);
-        int steam = Config.heaterConsumption;
+    public boolean isCrucibleHeated(World world, BlockPos pos) {
+        BlockPos underCruciblePosition = new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ());
+        IBlockState stateUnderCrucible = world.getBlockState(underCruciblePosition);
+        TileEntity tileUnderCrucible = world.getTileEntity(underCruciblePosition);
 
-        if (this == SteamcraftBlocks.hellCrucible ||
-          blockUnderCrucible.getMaterial() == Material.fire ||
-          blockUnderCrucible.getMaterial() == Material.lava || Config.enableThaumcraftIntegration &&
-          Config.enableNitorPoweredCrucible && CrossMod.THAUMCRAFT &&
-          ThaumcraftIntegration.isNitorUnderBlock(world, x, y, z)) {
+        if (this == CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock() ||
+          stateUnderCrucible.getMaterial() == Material.FIRE ||
+          stateUnderCrucible.getMaterial() == Material.LAVA) {
             return true;
         }
 
         if (tileUnderCrucible instanceof TileEntitySteamHeater) {
             TileEntitySteamHeater steamHeater = (TileEntitySteamHeater) tileUnderCrucible;
 
-            if (steamHeater.myDir() == ForgeDirection.UP && steamHeater.getSteam() >= steam) {
-                steamHeater.decrSteam(steam);
+            if (world.getBlockState(steamHeater.getPos()).getValue(BlockSteamHeater.FACING) == EnumFacing.UP &&
+              steamHeater.getSteam() >= TileEntitySteamHeater.CONSUMPTION) {
+                steamHeater.decrSteam(TileEntitySteamHeater.CONSUMPTION);
                 return true;
-            } else {
-                return false;
             }
         }
 
@@ -97,10 +86,10 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
-            if (isCrucibleHeated(world, x, y, z)) {
+            if (isCrucibleHeated(world, pos)) {
                 MutablePair output;
                 if (SteamcraftRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
                     output = SteamcraftRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
@@ -110,16 +99,18 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
                 } else {
                     return;
                 }
-                TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(x, y, z);
+                TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
                 int amount = (Integer) output.right;
-                if (crucible != null){
-                    if (item.delayBeforeCanPickup > 2){
-                        item.delayBeforeCanPickup = 2;
-                    } else if (item.delayBeforeCanPickup <= 1) {
+                if (crucible != null) {
+                    // TODO: Waiting for response to MinecraftForge#3092. If it is not accepted, we will have to do
+                    // reflection to get the delayBeforeCanPickup value.
+//                    if (item.delayBeforeCanPickup > 2){
+//                        item.delayBeforeCanPickup = 2;
+//                    } else if (item.delayBeforeCanPickup <= 1) {
                         ItemStack stack = item.getEntityItem();
                         ItemStack out = crucible.fillWith(stack, amount, output);
                         if (crucible.getFill() + amount <= 90) {
-                            item.delayBeforeCanPickup = 2;
+//                            item.delayBeforeCanPickup = 2;
                         }
 
                         if (out.stackSize <= 0) {
@@ -127,44 +118,15 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
                         } else {
                             item.setEntityItemStack(out);
                         }
-                    }
+//                    }
                 }
             }
         }
     }
 
     @Override
-    public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-        int l = MathHelper.floor_double((double) (p_149689_5_.rotationYaw * 4.0F / 360.0F) + 2.5D) & 3;
-        p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, l, 2);
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
-        setBlockBounds(PX, 0.0F + PX, PX, 1.0F - PX, 1.0F - PX, 1.0F - PX);
-        super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(int side, int meta) {
-        return blank;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister ir) {
-        this.innerIcon = ir.registerIcon(this.getTextureName() + "_" + "inner");
-        this.topIcon = ir.registerIcon(this.getTextureName() + "_top");
-        this.bottomIcon = ir.registerIcon(this.getTextureName() + "_" + "bottom");
-        this.blockIcon = ir.registerIcon(this.getTextureName() + "_side");
-        this.liquidIcon = ir.registerIcon(this.getTextureName() + "_liquid");
-        this.blank = ir.registerIcon("steamcraft:blankTexture");
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
     }
 
     @Override
@@ -173,20 +135,31 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
-        if (!player.isSneaking() && player.getHeldItem() == null) {
-            TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(pos);
+        if (tile == null) {
+            return false;
+        }
+        if (!player.isSneaking() && heldItem == null) {
             if (!tile.isTipping()) {
                 tile.setTipping();
                 tile.needsUpdate = true;
             }
-        } else if (player.getHeldItem() != null) {
-            TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(x, y, z);
+        } else if (heldItem != null) {
             for (CrucibleLiquid liquid : tile.contents) {
-                Tuple3 tuple = new Tuple3(player.getHeldItem().getItem(), player.getHeldItem().getItemDamage(), liquid);
-                if (SteamcraftRegistry.dunkRecipes.containsKey(tuple)) {
-                    int needed = SteamcraftRegistry.dunkRecipes.get(tuple).left;
-                    ItemStack result = SteamcraftRegistry.dunkRecipes.get(tuple).right.copy();
+                Tuple3<Item, Integer, CrucibleLiquid> tuple = new Tuple3<>(heldItem.getItem(), heldItem.getItemDamage(), liquid);
+                boolean valid;
+                if (!SteamcraftRegistry.dunkRecipes.containsKey(tuple)) {
+                    tuple = new Tuple3<>(heldItem.getItem(), -1, liquid);
+                    valid = SteamcraftRegistry.dunkRecipes.containsKey(tuple);
+                } else {
+                    valid = true;
+                }
+
+                if (valid) {
+                    MutablePair<Integer, ItemStack> pair = SteamcraftRegistry.dunkRecipes.get(tuple);
+                    int needed = pair.getLeft();
+                    ItemStack result = pair.getRight().copy();
                     if (tile.number.get(liquid) >= needed) {
                         player.inventory.decrStackSize(player.inventory.currentItem, 1);
                         int currNum = tile.number.get(liquid);
@@ -205,30 +178,6 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
                         break;
                     }
-                } else {
-                    Tuple3 tuple1 = new Tuple3(player.getHeldItem(), -1, liquid);
-                    if (SteamcraftRegistry.dunkRecipes.containsKey(tuple1)) {
-                        int needed = SteamcraftRegistry.dunkRecipes.get(tuple1).left;
-                        ItemStack result = SteamcraftRegistry.dunkRecipes.get(tuple1).right.copy();
-                        if (tile.number.get(liquid) >= needed) {
-                            player.inventory.decrStackSize(player.inventory.currentItem, 1);
-                            int currNum = tile.number.get(liquid);
-                            currNum -= needed;
-                            if (currNum == 0) {
-                                tile.contents.remove(liquid);
-                            }
-                            tile.number.remove(liquid);
-                            tile.number.put(liquid, currNum);
-                            if (!player.inventory.addItemStackToInventory(result)) {
-                                if (!player.worldObj.isRemote) {
-                                    player.entityDropItem(result, 0.0F);
-                                }
-                            }
-                            tile.needsUpdate = true;
-
-                            break;
-                        }
-                    }
                 }
             }
         }
@@ -236,42 +185,9 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world,
-                            int x, int y, int z, int side, float xO, float yO, float zO) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (side != 0 && side != 1) {
-            int output = meta;
-            switch (side) {
-                case 2:
-                    output = 2;
-                    break;
-                case 3:
-                    output = 0;
-                    break;
-                case 4:
-                    output = 1;
-                    break;
-                case 5:
-                    output = 3;
-                    break;
-            }
-            if (output == meta && side > 1 && side < 6) {
-                switch (ForgeDirection.getOrientation(side).getOpposite().ordinal()) {
-                    case 2:
-                        output = 2;
-                        break;
-                    case 3:
-                        output = 0;
-                        break;
-                    case 4:
-                        output = 1;
-                        break;
-                    case 5:
-                        output = 3;
-                        break;
-                }
-            }
-            world.setBlockMetadataWithNotify(x, y, z, output, 2);
+    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
+            world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
             return true;
         }
         return false;

@@ -102,8 +102,6 @@ public class Steamcraft {
     public static int ruptureDiscRenderID;
     public static int whistleRenderID;
     public static int boilerRenderID;
-    public static int customCraftingTableRenderID;
-    public static int furnaceRenderID;
 
     public static SoundEvent SOUND_HISS;
     public static SoundEvent SOUND_ROCKET;
@@ -246,8 +244,6 @@ public class Steamcraft {
         ruptureDiscRenderID = RenderingRegistry.getNextAvailableRenderId();
         whistleRenderID = RenderingRegistry.getNextAvailableRenderId();
         boilerRenderID = RenderingRegistry.getNextAvailableRenderId();
-        customCraftingTableRenderID = RenderingRegistry.getNextAvailableRenderId();
-        furnaceRenderID = RenderingRegistry.getNextAvailableRenderId();
         //sawRenderID = RenderingRegistry.getNextAvailableRenderId();
         //bloodBoilerRenderID = RenderingRegistry.getNextAvailableRenderId();
 
