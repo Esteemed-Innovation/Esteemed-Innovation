@@ -25,7 +25,6 @@ public class BlockSteamcraftOre extends Block {
         setCreativeTab(Steamcraft.tab);
         setUnlocalizedName(name);
         setRegistryName(Steamcraft.MOD_ID, name);
-        GameRegistry.register(this);
     }
 
     @Override

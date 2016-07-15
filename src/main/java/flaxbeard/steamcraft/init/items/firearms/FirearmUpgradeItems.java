@@ -42,14 +42,12 @@ public class FirearmUpgradeItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-                if (item instanceof IEnhancement) {
-                    SteamcraftRegistry.registerEnhancement((IEnhancement) item);
-                }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
+            if (item instanceof IEnhancement) {
+                SteamcraftRegistry.registerEnhancement((IEnhancement) item);
             }
             this.item = item;
         }

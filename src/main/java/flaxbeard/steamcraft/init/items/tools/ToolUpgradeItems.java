@@ -62,12 +62,10 @@ public class ToolUpgradeItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tabTools);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tabTools);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 
@@ -297,7 +295,7 @@ public class ToolUpgradeItems implements IInitCategory {
                         "btb",
                         " b ",
                         'b', BLAZE_ROD,
-                        't', CraftingComponentItems.Items.BRASS_TURBINE
+                        't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                       ));
                     break;
                 }

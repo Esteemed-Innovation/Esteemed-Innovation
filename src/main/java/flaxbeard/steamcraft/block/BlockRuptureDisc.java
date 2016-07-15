@@ -47,7 +47,7 @@ import javax.annotation.Nullable;
  * to dropping, we have to properly subtract 10 when appropriate.
  */
 public class BlockRuptureDisc extends BlockContainer {
-    public static final PropertyBool IS_BURST = PropertyBool.create("isBurst");
+    public static final PropertyBool IS_BURST = PropertyBool.create("is_burst");
     public static final PropertyEnum<RuptureDiscDirection> DIRECTION = PropertyEnum.create("direction", RuptureDiscDirection.class);
 
     public BlockRuptureDisc() {

@@ -19,6 +19,7 @@ import flaxbeard.steamcraft.gui.SteamcraftGuiHandler;
 import flaxbeard.steamcraft.handler.PhobicCoatingHandler;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
+import flaxbeard.steamcraft.init.blocks.BlockCategories;
 import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.init.items.ItemCategories;
 import flaxbeard.steamcraft.init.items.MetalItems;
@@ -26,7 +27,6 @@ import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
 import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
 import flaxbeard.steamcraft.init.misc.MiscellaneousCategories;
-import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
@@ -83,7 +83,9 @@ public class Steamcraft {
     @CapabilityInject(IVillagerData.class)
     public static final Capability<IVillagerData> VILLAGER_DATA = null;
 
-    public static final String MOD_ID = "flaxbeardssteampower";
+    // TODO: Rename everything.
+    public static final String MOD_ID = "steamcraft";
+//    public static final String MOD_ID = "flaxbeardssteampower";
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
     public static SimpleNetworkWrapper channel;
@@ -92,15 +94,6 @@ public class Steamcraft {
 
     public static CreativeTabs tab;
     public static CreativeTabs tabTools;
-
-    public static int tubeRenderID;
-    public static int heaterRenderID;
-    public static int chargerRenderID;
-    public static int genocideRenderID;
-    public static int gaugeRenderID;
-    public static int ruptureDiscRenderID;
-    public static int whistleRenderID;
-    public static int boilerRenderID;
 
     public static SoundEvent SOUND_HISS;
     public static SoundEvent SOUND_ROCKET;
@@ -132,7 +125,7 @@ public class Steamcraft {
     public void preInit(FMLPreInitializationEvent event) {
         try {
             // Try to get any class in CodeChickenLib.
-            Class.forName("codechicken.lib.raytracer");
+            Class.forName("codechicken.lib.raytracer.RayTracer");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             int input = JOptionPane.showOptionDialog(null, "Flaxbeard's Steam Power requires CodeChickenLib.",
@@ -150,9 +143,6 @@ public class Steamcraft {
         tabTools = new SCTab(CreativeTabs.getNextID(), "steamcraftTools", true);
 
         upgrade = EnumHelper.addRarity("UPGRADE", TextFormatting.RED, "Upgrade");
-        for (ItemCategories category : ItemCategories.values()) {
-            category.getCategory().oreDict();
-        }
 
         GameRegistry.registerWorldGenerator(new SteamcraftOreGen(), 1);
 
@@ -168,12 +158,22 @@ public class Steamcraft {
         SOUND_WRENCH = registerSound("wrench");
         SOUND_WHISTLE = registerSound("horn");
 
+        // Forcibly initialize every item and ORE_BLOCK category, calling their static blocks and enums and stuff.
+        for (BlockCategories category : BlockCategories.values()) {
+            category.getCategory().oreDict();
+        }
+
+        for (ItemCategories category : ItemCategories.values()) {
+            category.getCategory().oreDict();
+        }
+
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
         MapGenStructureIO.registerStructureComponent(ComponentSteamWorkshop.class, "steamcraft:workshop");
-        EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
-        EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, Steamcraft.instance, 64, 20, true);
-        EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, Steamcraft.instance, 64, 20, true);
-        EntityRegistry.registerModEntity(EntityRocket.class, "Rocket", 3, Steamcraft.instance, 64, 20, true);
+
+        EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, this, 64, 20, true);
+        EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, this, 64, 20, true);
+        EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, this, 64, 20, true);
+        EntityRegistry.registerModEntity(EntityRocket.class, "Rocket", 3, this, 64, 20, true);
         // EntityRegistry.registerModEntity(EntityHarpoon.class, "Harpoon", 4, Steamcraft.instance, 64, 20, true);
 
         //  EntityRegistry.registerModEntity(EntitySteamHorse.class, "SteamHorse", 2, Steamcraft.instance, 64, 1, true);
@@ -222,7 +222,7 @@ public class Steamcraft {
 
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
         MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
@@ -236,6 +236,11 @@ public class Steamcraft {
 
         proxy.registerRenderers();
         proxy.registerHotkeys();
+
+        for (BlockCategories category : BlockCategories.values()) {
+            category.getCategory().recipes();
+        }
+
         for (ItemCategories category : ItemCategories.values()) {
             category.getCategory().recipes();
         }

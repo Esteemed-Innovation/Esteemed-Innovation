@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.init.items;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -47,9 +48,9 @@ public class MetalItems implements IInitCategory {
         private Item item;
         private boolean hasType;
 
-        public static Items[] INGOTS;
-        public static Items[] NUGGETS;
-        public static Items[] PLATES;
+        public static Items[] INGOTS = new Items[4];
+        public static Items[] NUGGETS = new Items[5];
+        public static Items[] PLATES = new Items[6];
 
         static {
             for (Items item : values()) {
@@ -59,12 +60,15 @@ public class MetalItems implements IInitCategory {
                 switch (item.type) {
                     case INGOT: {
                         INGOTS[item.metadata] = item;
+                        break;
                     }
                     case NUGGET: {
                         NUGGETS[item.metadata] = item;
+                        break;
                     }
                     case PLATE: {
                         PLATES[item.metadata] = item;
+                        break;
                     }
                 }
             }
@@ -80,7 +84,7 @@ public class MetalItems implements IInitCategory {
             item.setCreativeTab(Steamcraft.tab);
             item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             item.setRegistryName(Steamcraft.MOD_ID, name);
-            GameRegistry.register(item);
+            item = GameRegistry.register(item);
             this.item = item;
             hasType = false;
         }
@@ -105,7 +109,7 @@ public class MetalItems implements IInitCategory {
                 item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
                 item.setRegistryName(Steamcraft.MOD_ID, name);
                 item.setCreativeTab(Steamcraft.tab);
-                GameRegistry.register(item);
+                item = GameRegistry.register(item);
                 this.item = item;
             }
 
@@ -164,7 +168,11 @@ public class MetalItems implements IInitCategory {
         add3x3Recipe(new ItemStack(IRON_INGOT), NUGGET_IRON);
 
         GameRegistry.addSmelting(OreBlocks.Blocks.OVERWORLD_COPPER_ORE.createItemStack(), Items.COPPER_INGOT.createItemStack(), 0.5F);
+        GameRegistry.addSmelting(OreBlocks.Blocks.NETHER_COPPER_ORE.createItemStack(), Items.COPPER_INGOT.createItemStack(), 0.5F);
+        GameRegistry.addSmelting(OreBlocks.Blocks.END_COPPER_ORE.createItemStack(), Items.COPPER_INGOT.createItemStack(), 0.5F);
         GameRegistry.addSmelting(OreBlocks.Blocks.OVERWORLD_ZINC_ORE.createItemStack(), Items.ZINC_INGOT.createItemStack(), 0.5F);
+        GameRegistry.addSmelting(OreBlocks.Blocks.NETHER_ZINC_ORE.createItemStack(), Items.ZINC_INGOT.createItemStack(), 0.5F);
+        GameRegistry.addSmelting(OreBlocks.Blocks.END_ZINC_ORE.createItemStack(), Items.ZINC_INGOT.createItemStack(), 0.5F);
 
         REGISTRY.registerSmashable(COBBLESTONE_ORE, new ItemStack(GRAVEL));
         REGISTRY.registerSmashable(COBBLESTONE_WALL, new ItemStack(GRAVEL));

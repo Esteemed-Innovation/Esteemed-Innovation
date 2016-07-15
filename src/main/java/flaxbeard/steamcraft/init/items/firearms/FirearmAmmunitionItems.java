@@ -39,14 +39,12 @@ public class FirearmAmmunitionItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-                if (item instanceof IRocket) {
-                    SteamcraftRegistry.registerRocket((IRocket) item);
-                }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
+            if (item instanceof IRocket) {
+                SteamcraftRegistry.registerRocket((IRocket) item);
             }
             this.item = item;
         }

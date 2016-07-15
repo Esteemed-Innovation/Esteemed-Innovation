@@ -32,7 +32,7 @@ public class ArmorItems implements IInitCategory {
         EXOSUIT_HEADPIECE(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
         EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exoArmorBody", Steamcraft.tab),
         EXOSUIT_LEGPIECE(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, Materials.EXOSUIT.getMaterial()), "exoArmorLegs", Steamcraft.tab),
-        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
+        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exoArmorFeet", Steamcraft.tab),
         GILDED_HELMET(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotGildedIron", "GildedIron"), "helmetGildedIron", Steamcraft.tabTools),
         GILDED_CHESTPLATE(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotGildedIron", "GildedIron"), "chestGildedIron", Steamcraft.tabTools),
         GILDED_LEGGINGS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotGildedIron", "GildedIron"), "legsGildedIron", Steamcraft.tabTools),
@@ -59,12 +59,10 @@ public class ArmorItems implements IInitCategory {
         }
 
         Items(Item item, String name, CreativeTabs tab) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 

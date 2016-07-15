@@ -196,15 +196,15 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
     public enum Corners implements IStringSerializable {
         // This one is for when the flash boiler is not a fully constructed multiblock.
         NONE("none", null, null, null),
-        // This one is arbitrarily the primary flash boiler block.
-        TOP_LEFT_BACK("topLeftBack", Vertical.TOP, Side.LEFT, Direction.BACK),
-        TOP_LEFT_FRONT("topLeftFront", Vertical.TOP, Side.LEFT, Direction.FRONT),
-        TOP_RIGHT_BACK("topRightBack", Vertical.TOP, Side.RIGHT, Direction.BACK),
-        TOP_RIGHT_FRONT("topRightFront", Vertical.TOP, Side.RIGHT, Direction.FRONT),
-        BOTTOM_LEFT_BACK("bottomLeftBack", Vertical.BOTTOM, Side.LEFT, Direction.BACK),
-        BOTTOM_LEFT_FRONT("bottomLeftFront", Vertical.BOTTOM, Side.LEFT, Direction.FRONT),
-        BOTTOM_RIGHT_BACK("bottomRightBack", Vertical.BOTTOM, Side.RIGHT, Direction.BACK),
-        BOTTOM_RIGHT_FRONT("bottomRightFront", Vertical.BOTTOM, Side.RIGHT, Direction.FRONT);
+        // This one is arbitrarily the primary flash boiler ORE_BLOCK.
+        TOP_LEFT_BACK("top_left_back", Vertical.TOP, Side.LEFT, Direction.BACK),
+        TOP_LEFT_FRONT("top_left_front", Vertical.TOP, Side.LEFT, Direction.FRONT),
+        TOP_RIGHT_BACK("top_right_back", Vertical.TOP, Side.RIGHT, Direction.BACK),
+        TOP_RIGHT_FRONT("top_right_front", Vertical.TOP, Side.RIGHT, Direction.FRONT),
+        BOTTOM_LEFT_BACK("bottom_left_back", Vertical.BOTTOM, Side.LEFT, Direction.BACK),
+        BOTTOM_LEFT_FRONT("bottom_left_front", Vertical.BOTTOM, Side.LEFT, Direction.FRONT),
+        BOTTOM_RIGHT_BACK("bottom_right_back", Vertical.BOTTOM, Side.RIGHT, Direction.BACK),
+        BOTTOM_RIGHT_FRONT("bottom_right_front", Vertical.BOTTOM, Side.RIGHT, Direction.FRONT);
 
         public static Corners[] LOOKUP = new Corners[values().length];
 

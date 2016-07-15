@@ -100,10 +100,10 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
     }
 
     /**
-     * Plays the sound for the block at the position.
-     * @param block The block
+     * Plays the sound for the ORE_BLOCK at the position.
+     * @param block The ORE_BLOCK
      * @param world The world
-     * @param pos The block position
+     * @param pos The ORE_BLOCK position
      */
     private void playSound(Block block, World world, BlockPos pos) {
         double x = pos.getX() + 0.5D;

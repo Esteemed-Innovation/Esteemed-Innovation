@@ -17,7 +17,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.ITextComponent;
-import slimeknights.tconstruct.library.tools.ToolCore;
 
 import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.STEAM_CELL_EMPTY;
 import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.STEAM_CELL_FULL;
@@ -176,7 +175,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                             }
                         }
                     }
+                /*
                 } else if (CrossMod.TINKERS_CONSTRUCT && inventory.getItem() instanceof ToolCore) {
+
                     ItemStack stack = inventory.copy();
                     NBTTagCompound tags = stack.getTagCompound();
                     int damage = tags.getCompoundTag("InfiTool").getInteger("Damage");
@@ -212,6 +213,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                             }
                         }
                     }
+                */
                 } else {
                     if (hadItem) {
                         hadItem = false;

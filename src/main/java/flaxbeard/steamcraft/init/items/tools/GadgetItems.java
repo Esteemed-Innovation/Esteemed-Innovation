@@ -47,14 +47,12 @@ public class GadgetItems implements IInitCategory {
         private Item item;
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-                if (item instanceof IEnhancement) {
-                    SteamcraftRegistry.registerEnhancement((IEnhancement) item);
-                }
+            item.setUnlocalizedName(name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
+            if (item instanceof IEnhancement) {
+                SteamcraftRegistry.registerEnhancement((IEnhancement) item);
             }
             this.item = item;
         }

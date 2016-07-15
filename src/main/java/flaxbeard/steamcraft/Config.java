@@ -317,7 +317,7 @@ public class Config {
         enableMortar = config.get("Blocks", "Enable Item Mortar", true).getBoolean();
         enableHammer = config.get("Blocks", "Enable Steam Hammer", true).getBoolean();
         enableHeater = config.get("Blocks", "Enable Steam Heater", true).getBoolean();
-        enableMold = config.get("Blocks", "Enable Mold block", true).getBoolean();
+        enableMold = config.get("Blocks", "Enable Mold ORE_BLOCK", true).getBoolean();
         enablePump = config.get("Blocks", "Enable Archimedes Screw", true).getBoolean();
         enableSmasher = config.get("Blocks", "Enable Rock Smasher", true).getBoolean();
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean();
@@ -443,7 +443,7 @@ public class Config {
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean();
         wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean();
         enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean();
-        disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
+        disableParticles = config.get("Other", "Disable ORE_BLOCK break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get("Other", "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();
 
         //INTEGRATION

@@ -32,12 +32,10 @@ public class FirearmItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 
@@ -88,9 +86,9 @@ public class FirearmItems implements IInitCategory {
                       "b  ",
                       " bf",
                       "  s",
-                      'b', CraftingComponentItems.Items.BLUNDERBUSS_BARREL,
+                      'b', CraftingComponentItems.Items.BLUNDERBUSS_BARREL.createItemStack(),
                       'f', CraftingComponentItems.Items.FLINTLOCK.createItemStack(),
-                      's', CraftingComponentItems.Items.GUN_STOCK
+                      's', CraftingComponentItems.Items.GUN_STOCK.createItemStack()
                     ));
                 }
             }

@@ -22,7 +22,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import slimeknights.tconstruct.library.tools.ToolCore;
 
 public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -54,10 +53,12 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         if (item.getItem() instanceof ISteamChargable) {
             return ((ISteamChargable) item.getItem()).canCharge(item);
         } else {
+            /*
             if (CrossMod.TINKERS_CONSTRUCT && item.getItem() instanceof ToolCore) {
                 NBTTagCompound nbt = item.getTagCompound();
                 return nbt.getCompoundTag("InfiTool").hasKey("Steam");
             }
+            */
             return item.getItem() == GadgetItems.Items.STEAM_CELL_EMPTY.getItem();
         }
     }

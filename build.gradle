@@ -86,8 +86,9 @@ dependencies {
     compile naturaVersion
     compile eioVersion
     */
-    compile mantleVersion
-    compile ticVersion
+//    There are some issues that I can't figure out with these mods.
+//    compile mantleVersion
+//    compile ticVersion
     compile jeiVersion
     compile cclibVersion
 

@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.init.blocks.MetalBlocks;
 
 import java.util.List;
 
@@ -28,7 +29,6 @@ public class BlockBeacon extends Block {
         setResistance(10F);
         setRegistryName(Steamcraft.MOD_ID, "metal_storage_block");
         setSoundType(SoundType.METAL);
-        GameRegistry.register(this);
     }
 
     @Override
@@ -38,10 +38,9 @@ public class BlockBeacon extends Block {
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(item, 1, MetalBlockTypes.COPPER.getMetadata()));
-        list.add(new ItemStack(item, 1, MetalBlockTypes.ZINC.getMetadata()));
-        list.add(new ItemStack(item, 1, MetalBlockTypes.BRASS.getMetadata()));
-        list.add(new ItemStack(item, 1, MetalBlockTypes.GILDED_IRON.getMetadata()));
+        for (MetalBlocks.Blocks block : MetalBlocks.Blocks.values()) {
+            list.add(block.createItemStack());
+        }
     }
 
     @Override
@@ -70,10 +69,10 @@ public class BlockBeacon extends Block {
     }
 
     public enum MetalBlockTypes implements IStringSerializable {
-        COPPER("Copper", 0),
-        ZINC("Zinc", 1),
-        BRASS("Brass", 2),
-        GILDED_IRON("GildedIron", 3);
+        COPPER("copper", MetalBlocks.Blocks.COPPER.getMetadata()),
+        ZINC("zinc", MetalBlocks.Blocks.ZINC.getMetadata()),
+        BRASS("brass", MetalBlocks.Blocks.BRASS.getMetadata()),
+        GILDED_IRON("gilded_iron", MetalBlocks.Blocks.GILDED_IRON.getMetadata());
 
         private String name;
         private int metadata;

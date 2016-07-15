@@ -112,7 +112,7 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private WorldGenMinable getOre(int meta, int count, Block block) {
         BlockMatcher matcher = BlockMatcher.forBlock(block);
-        return new WorldGenMinable(OreBlocks.Blocks.block.getStateFromMeta(meta), count, matcher);
+        return new WorldGenMinable(OreBlocks.Blocks.ORE_BLOCK.getStateFromMeta(meta), count, matcher);
     }
 
     private void generateBlocks(World world, WorldGenMinable block, Random random, int maxY, int maxPerChunk, int x, int z) {

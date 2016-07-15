@@ -27,12 +27,10 @@ public class MiscellaneousBlocks implements IInitCategory {
         private Block block;
 
         Blocks(Block block, String name) {
-            if (isEnabled()) {
-                block.setCreativeTab(Steamcraft.tab);
-                block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                block.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(block);
-            }
+            block.setCreativeTab(Steamcraft.tab);
+            block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            block.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(block);
             this.block = block;
         }
 

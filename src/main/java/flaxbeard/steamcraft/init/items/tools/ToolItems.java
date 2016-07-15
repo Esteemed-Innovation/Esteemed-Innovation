@@ -47,11 +47,9 @@ public class ToolItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tabTools);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tabTools);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
             this.item = item;
         }
 

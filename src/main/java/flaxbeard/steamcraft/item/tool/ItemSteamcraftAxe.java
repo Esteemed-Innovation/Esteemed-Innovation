@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.api.util.UtilMisc;
 
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class ItemSteamcraftAxe extends ItemAxe {
     private Object repairMaterial;
 
     public ItemSteamcraftAxe(ToolMaterial toolMaterial, Object repairMat) {
-        super(toolMaterial);
+        super(toolMaterial, 8F, -3.1F);
         harvestLevel = toolMaterial.getHarvestLevel();
         repairMaterial = repairMat;
         this.setCreativeTab(Steamcraft.tabTools);

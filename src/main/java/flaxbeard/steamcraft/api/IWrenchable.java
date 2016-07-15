@@ -17,9 +17,9 @@ public interface IWrenchable {
      * @param stack The ItemStack wrench
      * @param player The player
      * @param world The world
-     * @param pos The block position
+     * @param pos The ORE_BLOCK position
      * @param hand The hand being used
-     * @param facing The side of the block hit
+     * @param facing The side of the ORE_BLOCK hit
      * @param state The current blockstate.
      * @param hitX See Item#onItemUseFirst
      * @param hitY See Item#onItemUseFirst

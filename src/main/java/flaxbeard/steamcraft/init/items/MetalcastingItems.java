@@ -34,16 +34,14 @@ public class MetalcastingItems implements IInitCategory {
         }
 
         Items(Item item, String name, boolean stackOfOne) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                if (stackOfOne) {
-                    item.setMaxStackSize(1);
-                }
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-                SteamcraftRegistry.addCarvableMold(item);
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            if (stackOfOne) {
+                item.setMaxStackSize(1);
             }
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
+            SteamcraftRegistry.addCarvableMold(item);
             this.item = item;
         }
 

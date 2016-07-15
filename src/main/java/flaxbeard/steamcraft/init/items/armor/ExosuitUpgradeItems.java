@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.init.items.armor;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -57,6 +58,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
         public static Items[] LOOKUP = new Items[values().length];
 
         static {
+            FMLLog.info("Static initializer for ExosuitUpgradeItems");
             for (Items item : values()) {
                 if (item.isEnabled()) {
                     LOOKUP[item.ordinal()] = item;
@@ -65,24 +67,20 @@ public class ExosuitUpgradeItems implements IInitCategory {
         }
 
         Items(Item item, String name) {
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 
         Items(ExosuitSlot slot, String resource, String info, int prio, String name) {
             resource = "steamcraft:textures/models/armor/" + resource + ".png";
             Item item = new ItemExosuitUpgrade(slot, resource, info, prio);
-            if (isEnabled()) {
-                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                item.setCreativeTab(Steamcraft.tab);
-                item.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(item);
-            }
+            item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            item.setCreativeTab(Steamcraft.tab);
+            item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 
@@ -165,7 +163,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                     return Config.enableDragonRoar;
                 }
                 case EXOSUIT_PLATE: {
-                    return ArmorItems.Items.EXOSUIT_CHESTPIECE.isEnabled();
+                    return true;
                 }
                 default: {
                     return false;
@@ -197,13 +195,11 @@ public class ExosuitUpgradeItems implements IInitCategory {
         }
 
         PlateItems(String id, int metadata, String resource, String langSuffix) {
-            if (isEnabled()) {
-                ExosuitPlate plate = new ExosuitPlate(id, createItemStack(), resource, resource,
-                  Steamcraft.MOD_ID + ".plate." + langSuffix);
-                SteamcraftRegistry.addExosuitPlate(plate);
-                this.metadata = metadata;
-                this.id = id;
-            }
+            ExosuitPlate plate = new ExosuitPlate(id, createItemStack(), resource, resource,
+              Steamcraft.MOD_ID + ".plate." + langSuffix);
+            SteamcraftRegistry.addExosuitPlate(plate);
+            this.metadata = metadata;
+            this.id = id;
         }
 
         public int getMetadata() {
@@ -223,32 +219,22 @@ public class ExosuitUpgradeItems implements IInitCategory {
         }
 
         public boolean isEnabled() {
-            switch (this) {
-                case IRON_EXO: {
-                    return Config.enableIronPlate;
-                }
-                case GOLD_EXO: {
-                    return Config.enableGoldPlate;
-                }
-                case COPPER_EXO: {
-                    return Config.enableCopperPlate;
-                }
-                case ZINC_EXO: {
-                    return Config.enableZincPlate;
-                }
-                case BRASS_EXO: {
-                    return Config.enableBrassPlate;
-                }
-                case GILDED_IRON_EXO: {
-                    return Config.enableGildedIronPlate;
-                }
-                case LEAD_EXO: {
-                    return Config.enableLeadPlate;
-                }
-                default: {
-                    return false;
-                }
+            if (this == IRON_EXO) {
+                return Config.enableIronPlate;
+            } else if (this == GOLD_EXO) {
+                return Config.enableGoldPlate;
+            } else if (this == COPPER_EXO) {
+                return Config.enableCopperPlate;
+            } else if (this == ZINC_EXO) {
+                return Config.enableZincPlate;
+            } else if (this == BRASS_EXO) {
+                return Config.enableBrassPlate;
+            } else if (this == GILDED_IRON_EXO) {
+                return Config.enableGildedIronPlate;
+            } else if (this == LEAD_EXO) {
+                return Config.enableLeadPlate;
             }
+            return false;
         }
     }
 
@@ -588,7 +574,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                         "n p",
                         'n', NUGGET_BRASS,
                         'p', PISTON,
-                        'b', CraftingComponentItems.Items.BRASS_PISTON
+                        'b', CraftingComponentItems.Items.BRASS_PISTON.createItemStack()
                       ));
                     break;
                 }
@@ -694,9 +680,11 @@ public class ExosuitUpgradeItems implements IInitCategory {
             stack.stackSize = 4;
             GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
         } else if (ingredient instanceof String) {
-            ItemStack stack = OreDictionary.getOres((String) ingredient).get(0).copy();
-            stack.stackSize = 4;
-            GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+            for (ItemStack ore : OreDictionary.getOres((String) ingredient)) {
+                ItemStack stack = ore.copy();
+                stack.stackSize = 4;
+                GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
+            }
         }
     }
 }

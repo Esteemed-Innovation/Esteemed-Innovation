@@ -71,7 +71,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         spinup = access.getInteger("spinup");
         blockBreakerMode = access.getBoolean("blockBreakerMode");
         hasBeenSet = access.getBoolean("hasBeenSet");
-        smooshingBlock = Block.getBlockById(access.getInteger("block"));
+        smooshingBlock = Block.getBlockById(access.getInteger("ORE_BLOCK"));
         smooshingMeta = access.getInteger("smooshingMeta");
         NBTTagList nbttaglist = (NBTTagList) access.getTag("Items");
         smooshedStack = new ArrayList<>();
@@ -90,7 +90,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
-        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("ORE_BLOCK", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -113,7 +113,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
-        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("ORE_BLOCK", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         access.setBoolean("running", running);
         access.setBoolean("blockBreakerMode", blockBreakerMode);
@@ -179,7 +179,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         extendedLength = access.getFloat("extendedLength");
         extendedTicks = access.getInteger("extendedTicks");
         spinup = access.getInteger("spinup");
-        smooshingBlock = Block.getBlockById(access.getInteger("block"));
+        smooshingBlock = Block.getBlockById(access.getInteger("ORE_BLOCK"));
         smooshingMeta = access.getInteger("smooshingMeta");
         running = access.getBoolean("running");
         blockBreakerMode = access.getBoolean("blockBreakerMode");

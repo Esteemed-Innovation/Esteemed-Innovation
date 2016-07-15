@@ -13,12 +13,12 @@ import static flaxbeard.steamcraft.init.misc.CraftingHelpers.add3x3Recipe;
 
 public class MetalBlocks implements IInitCategory {
     public enum Blocks {
-        COPPER(BlockBeacon.MetalBlockTypes.COPPER.getMetadata()),
-        ZINC(BlockBeacon.MetalBlockTypes.ZINC.getMetadata()),
-        BRASS(BlockBeacon.MetalBlockTypes.BRASS.getMetadata()),
-        GILDED_IRON(BlockBeacon.MetalBlockTypes.GILDED_IRON.getMetadata());
+        COPPER(0),
+        ZINC(1),
+        BRASS(2),
+        GILDED_IRON(3);
 
-        private static Block block = new BlockBeacon(Material.IRON);
+        private static Block block = GameRegistry.register(new BlockBeacon(Material.IRON));
         private int meta;
 
         Blocks(int meta) {

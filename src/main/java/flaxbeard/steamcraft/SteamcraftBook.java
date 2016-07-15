@@ -177,7 +177,7 @@ public class SteamcraftBook {
             if (Config.enableEnhancementRevolver) {
                 SteamcraftRegistry.addResearch("research.EnhancementRevolver.name", "!research.Pistol.name",
                   new BookPageItem("research.EnhancementRevolver.name", "research.EnhancementRevolver.0", true,
-                    new ItemStack(REVOLVER_CHAMBER.getItem())), new BookPageCrafting("", "revolver1", "revolver2"));
+                    new ItemStack(REVOLVER_CHAMBER.getItem())), new BookPageCrafting("", "revolver"));
             }
             if (Config.enableEnhancementSilencer) {
                 SteamcraftRegistry.addResearch("research.EnhancementSilencer.name", "!research.Pistol.name",
@@ -187,7 +187,7 @@ public class SteamcraftBook {
             if (Config.enableEnhancementSpeedy) {
                 SteamcraftRegistry.addResearch("research.EnhancementSpeedy.name", "!research.Pistol.name",
                   new BookPageItem("research.EnhancementSpeedy.name", "research.EnhancementSpeedy.0", true,
-                    new ItemStack(BREECH.getItem())), new BookPageCrafting("", "speedy1", "speedy2"));
+                    new ItemStack(BREECH.getItem())), new BookPageCrafting("", "speedy"));
             }
         }
         if (Config.enableRL) {
@@ -582,12 +582,11 @@ public class SteamcraftBook {
         SteamcraftRegistry.addResearch("research.CreativeTank.name", "category.NOTREAL.name",
           new BookPageItem("research.CreativeTank.name", "research.CreativeTank.0", new ItemStack(Items.BOWL)));
         SteamcraftRegistry.bookRecipes.put(new ItemStack(TANK.getBlock(), 1, 1), MutablePair.of("research.CreativeTank.name", 0));
-
         if (Config.enableCharger) {
             SteamcraftRegistry.addResearch("research.Filler.name", "category.SteamPower.name",
               new BookPageItem("research.Filler.name", "research.Filler.0", new ItemStack(STEAM_FILLER.getBlock())),
               new BookPageText("research.Filler.name", "research.Filler.1"),
-              new BookPageCrafting("", "filler1", "filler2"));
+              new BookPageCrafting("", "filler"));
         }
 
         if (Config.enableChargingPad && Config.enableCharger) {
@@ -667,7 +666,7 @@ public class SteamcraftBook {
                 new ItemStack(EXOSUIT_LEGPIECE.getItem()),
                 new ItemStack(EXOSUIT_FOOTPIECE.getItem())),
               new BookPageText("research.Exosuit.name", "research.Exosuit.1"),
-              new BookPageCrafting("", "engineering1", "engineering2"),
+              new BookPageCrafting("", "engineering"),
               new BookPageCrafting("", "exoHead"),
               new BookPageCrafting("", "exoBody"),
               new BookPageCrafting("", "exoLegs"),

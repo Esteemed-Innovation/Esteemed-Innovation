@@ -41,14 +41,12 @@ public class SteamMachineryBlocks implements IInitCategory {
         }
 
         Blocks(Block block, String name, boolean isDummy) {
-            if (isEnabled()) {
-                if (!isDummy) {
-                    block.setCreativeTab(Steamcraft.tab);
-                }
-                block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
-                block.setRegistryName(Steamcraft.MOD_ID, name);
-                GameRegistry.register(block);
+            if (!isDummy) {
+                block.setCreativeTab(Steamcraft.tab);
             }
+            block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+            block.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(block);
             this.block = block;
         }
 
