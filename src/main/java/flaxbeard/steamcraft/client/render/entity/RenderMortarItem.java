@@ -24,7 +24,7 @@ public class RenderMortarItem extends Render {
     private static final ResourceLocation[] breakTextures = {b4, b5, b6, b7, b8};
     private static final ModelMortarItem model = new ModelMortarItem();
 
-    protected RenderMortarItem(RenderManager renderManager) {
+    public RenderMortarItem(RenderManager renderManager) {
         super(renderManager);
     }
 

@@ -6,7 +6,6 @@ import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.block.BlockPipe;
-import flaxbeard.steamcraft.client.render.block.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.network.ConnectPacket;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
@@ -157,7 +156,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     @Override
     public void update() {
         super.update();
-
+        /*
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
             if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
@@ -165,6 +164,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             }
             lastWrench = hasWrench;
         }
+        */
 
         ArrayList<EnumFacing> myDirections = getMyDirections();
         int i = 0;

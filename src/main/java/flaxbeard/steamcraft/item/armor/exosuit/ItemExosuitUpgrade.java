@@ -16,10 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
-
-    protected ResourceLocation myOverlay;
-    protected String myInfo;
-    protected int pri;
+    private ResourceLocation myOverlay;
+    private String myInfo;
+    private int pri;
     private ExosuitSlot mySlot;
 
     public ItemExosuitUpgrade(ExosuitSlot slot, String loc, String info, int priority) {
@@ -52,7 +51,7 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
     public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
-    public void writeInfo(List list) {
+    public void writeInfo(List<String> list) {
         if (myInfo != null) {
             list.add(myInfo);
         }

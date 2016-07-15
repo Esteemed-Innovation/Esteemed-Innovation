@@ -32,5 +32,5 @@ public interface IExosuitUpgrade {
 
     void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
 
-    void writeInfo(List list);
+    void writeInfo(List<String> list);
 }

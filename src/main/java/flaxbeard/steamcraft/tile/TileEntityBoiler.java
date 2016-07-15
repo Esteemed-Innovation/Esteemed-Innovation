@@ -4,7 +4,6 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.client.render.block.BlockSteamPipeRenderer;
 import flaxbeard.steamcraft.data.capabilities.BoilerTankProperties;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.misc.OreDictHelper;
@@ -204,6 +203,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     @Override
     public void update() {
         super.update();
+        /*
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
             if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
@@ -211,6 +211,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
             }
             lastWrench = hasWrench;
         }
+        */
 
         ItemStack stackInInput = getStackInSlot(1);
 	    if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {

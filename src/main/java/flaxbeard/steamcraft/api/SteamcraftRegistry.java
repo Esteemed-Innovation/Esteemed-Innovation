@@ -6,9 +6,9 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IRocket;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -98,7 +98,7 @@ public class SteamcraftRegistry {
      * All of the Exosuit Plate icons. Key is a pair of the exosuit slot and the plate. Value is the
      * IIcon for that slot.
      */
-    public static HashMap<MutablePair<Integer, ExosuitPlate>, IIcon> plateIcons = new HashMap<>();
+    public static HashMap<MutablePair<EntityEquipmentSlot, ExosuitPlate>, String> plateIcons = new HashMap<>();
 
     /**
      * All of the custom steaming recipes for the Steam Heater.

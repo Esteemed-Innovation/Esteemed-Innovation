@@ -366,7 +366,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
 
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 192, 64, 64, 64);
     }
 

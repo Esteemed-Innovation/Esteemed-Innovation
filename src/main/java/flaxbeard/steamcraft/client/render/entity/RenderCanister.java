@@ -18,7 +18,7 @@ public class RenderCanister extends Render {
     private static final ResourceLocation texture = new ResourceLocation("steamcraft:textures/models/mortarItem.png");
     private static final ModelCanister model = new ModelCanister();
 
-    protected RenderCanister(RenderManager renderManager) {
+    public RenderCanister(RenderManager renderManager) {
         super(renderManager);
     }
 

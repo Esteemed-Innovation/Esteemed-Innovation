@@ -1,12 +1,8 @@
 package flaxbeard.steamcraft.init.misc.integration.tinkers;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import slimeknights.tconstruct.library.tools.ToolCore;
-
-import java.util.Collections;
-
-public class ModiferSteam extends ModBoolean {
+// TODO: Wait for Lance to figure out Tinkers' Construct's new API.
+public class ModiferSteam /*extends ModBoolean*/ {
+    /*
     public int modifiersRequired = 1; // LALALALA totally not hidden
                                       // IguanaTweaks Support LALALALA
 
@@ -42,4 +38,5 @@ public class ModiferSteam extends ModBoolean {
 
         tags.getCompoundTag("InfiTool").setBoolean(key, true);
     }
+    */
 }

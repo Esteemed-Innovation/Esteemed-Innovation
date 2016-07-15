@@ -419,7 +419,7 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
 
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
         int textureX = 0;
         if (this == FirearmItems.Items.MUSKET.getItem()) {
             textureX = 0;

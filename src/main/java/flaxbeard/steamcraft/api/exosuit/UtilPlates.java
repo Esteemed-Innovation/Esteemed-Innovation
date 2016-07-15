@@ -26,13 +26,13 @@ public class UtilPlates {
         return null;
     }
 
-    public static void registerPlatesForItem(IIconRegister registry, ItemExosuitArmor item) {
+    public static void registerPlatesForItem(ItemExosuitArmor item) {
         for (ExosuitPlate plate : SteamcraftRegistry.plates.values()) {
-            SteamcraftRegistry.plateIcons.put(MutablePair.of(item.slot, plate), registry.registerIcon(plate.getIcon(item)));
+            SteamcraftRegistry.plateIcons.put(MutablePair.of(item.slot, plate), plate.getIcon(item));
         }
     }
 
-    public static IIcon getIconFromPlate(String string, ItemExosuitArmor item) {
+    public static String getIconFromPlate(String string, ItemExosuitArmor item) {
         ExosuitPlate plate = SteamcraftRegistry.plates.get(string);
         return SteamcraftRegistry.plateIcons.get(MutablePair.of(item.slot, plate));
     }

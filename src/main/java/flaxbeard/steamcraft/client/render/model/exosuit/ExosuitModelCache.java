@@ -2,8 +2,10 @@ package flaxbeard.steamcraft.client.render.model.exosuit;
 
 import com.google.common.collect.Maps;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -26,12 +28,12 @@ public class ExosuitModelCache {
         return array;
     }
 
-    public ModelExosuit getModel(EntityPlayer entityPlayer, int armorType) {
+    public ModelExosuit getModel(EntityPlayer entityPlayer, EntityEquipmentSlot armorType) {
         String name = entityPlayer.getDisplayNameString();
         if (!modelCache.containsKey(name)) {
             modelCache.put(name, generateNewArray());
         }
-        return modelCache.get(name)[armorType];
+        return modelCache.get(name)[armorType.getIndex()];
     }
 
     @SubscribeEvent
@@ -47,7 +49,7 @@ public class ExosuitModelCache {
                 ItemStack itemStack = mc.thePlayer.inventory.armorInventory[3 - i];
 
                 if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
-                    getModel(mc.thePlayer, i).updateModel(mc.thePlayer, itemStack);
+                    getModel(mc.thePlayer, ItemStackUtility.getSlotFromIndex(i)).updateModel(mc.thePlayer, itemStack);
                 }
             }
         }
