@@ -1,6 +1,7 @@
 package flaxbeard.steamcraft.init.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import flaxbeard.steamcraft.Config;
@@ -31,6 +32,7 @@ public class MiscellaneousBlocks implements IInitCategory {
             block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             block.setRegistryName(Steamcraft.MOD_ID, name);
             GameRegistry.register(block);
+            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
             this.block = block;
         }
 

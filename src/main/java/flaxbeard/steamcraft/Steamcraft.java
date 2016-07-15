@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft;
 
+import flaxbeard.steamcraft.api.DrillHeadRecipe;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
@@ -64,6 +65,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 
 import java.util.List;
 
@@ -247,8 +249,8 @@ public class Steamcraft {
 
         // This deprecation is moderately useless unless we add our own engineer zombie texture.
         //noinspection deprecation
-        STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession("flaxbeardssteampower:steam_engineer",
-          "flaxbeardssteampower:textures/models/villager.png");
+        STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession(MOD_ID + ":steam_engineer",
+          MOD_ID + ":textures/models/villager.png");
         STEAM_ENGINEER_CAREER = new SteamEngineerCareer();
         VillagerRegistry.instance().register(STEAM_ENGINEER_PROFESSION);
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
@@ -285,6 +287,7 @@ public class Steamcraft {
         int time = (int) (end - start);
         FMLLog.info("Finished initializing Flaxbeard's Steam Power OreDictHelper in %s ms", time);
 
+        RecipeSorter.register(MOD_ID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
         DrillHeadMaterial.registerDefaults();
         ((ToolUpgradeItems) ItemCategories.TOOL_UPGRADES.getCategory()).postInit();
         SteamcraftBook.registerSteamTools();

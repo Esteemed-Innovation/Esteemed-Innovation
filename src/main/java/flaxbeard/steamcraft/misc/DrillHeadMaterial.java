@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.init.misc.OreDictEntries;
 
 import java.awt.Color;
 import java.io.*;
@@ -154,8 +155,8 @@ public class DrillHeadMaterial {
         registerDrillMaterial("Gold", "drill.gold", 1, "#CED652");
         registerDrillMaterial("Iron", "drill.iron", 2, "#DEDEDE");
         registerDrillMaterial("Brass", "drill.brass", 2, "#FABD3F");
-        registerNonStandardDrillMaterial("Diamond", "gemDiamond", "drill.diamond", 3, "#29C6AD");
-        registerNonStandardDrillMaterial("Emerald", "gemEmerald", "drill.emerald", 3, "#17DD62");
+        registerNonStandardDrillMaterial("Diamond", OreDictEntries.GEM_DIAMOND, "drill.diamond", 3, "#29C6AD");
+        registerNonStandardDrillMaterial("Emerald", OreDictEntries.GEM_EMERALD, "drill.emerald", 3, "#17DD62");
 //        registerDrillMaterial("gildedGold", "drill.gilded", 2); TODO OreDictionary entry for gilded gold.
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

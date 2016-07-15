@@ -3,11 +3,14 @@ package flaxbeard.steamcraft.data.capabilities.player;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import javax.annotation.Nullable;
+
 public interface IPlayerData {
     /**
      * Gets the prevStep for the player.
      * @return Float. Can be null.
      */
+    @Nullable
     Float getPreviousStepHeight();
 
     /**
@@ -26,13 +29,14 @@ public interface IPlayerData {
      * Gets the player's previous X, Z motions.
      * @return MutablePair of doubles.
      */
+    @Nullable
     MutablePair<Double, Double> getLastMotions();
 
     /**
      * Sets the previous step height
      * @param value Float, can be null
      */
-    void setPreviousStepHeight(Float value);
+    void setPreviousStepHeight(@Nullable Float value);
 
     /**
      * Sets the tick cache
@@ -50,7 +54,7 @@ public interface IPlayerData {
      * Sets the player's previous X, Z motions.
      * @param value a pair of doubles
      */
-    void setLastMotions(MutablePair<Double, Double> value);
+    void setLastMotions(@Nullable MutablePair<Double, Double> value);
 
     class DefaultImplementation implements IPlayerData {
         private Float previousStepHeight = null;

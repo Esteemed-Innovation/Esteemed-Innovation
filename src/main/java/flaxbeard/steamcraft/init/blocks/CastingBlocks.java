@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.init.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -38,7 +39,8 @@ public class CastingBlocks implements IInitCategory {
             block.setCreativeTab(Steamcraft.tab);
             block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             block.setRegistryName(Steamcraft.MOD_ID, name);
-            block = GameRegistry.register(block);
+            GameRegistry.register(block);
+            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
             this.block = block;
         }
 

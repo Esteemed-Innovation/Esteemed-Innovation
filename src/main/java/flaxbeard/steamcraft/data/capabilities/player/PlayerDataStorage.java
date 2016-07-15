@@ -17,15 +17,21 @@ public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
             nbt.setFloat("prevStep", step);
         }
         MutablePair<Double, Double> pair = instance.getLastMotions();
-        nbt.setDouble("lastMotionX", pair.left);
-        nbt.setDouble("lastMotionZ", pair.right);
+        if (pair != null) {
+            nbt.setDouble("lastMotionX", pair.left);
+            nbt.setDouble("lastMotionZ", pair.right);
+        }
         return nbt;
     }
 
     @Override
     public void readNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
-        instance.setLastMotions(MutablePair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));
+        if (nbt.hasKey("lastMotionX") && nbt.hasKey("lastMotionZ")) {
+            instance.setLastMotions(MutablePair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));
+        } else {
+            instance.setLastMotions(null);
+        }
         if (nbt.hasKey("prevStep")) {
             instance.setPreviousStepHeight(nbt.getFloat("prevStep"));
         } else {

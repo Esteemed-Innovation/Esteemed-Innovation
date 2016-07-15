@@ -2,7 +2,6 @@ package flaxbeard.steamcraft.init.items.armor;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -58,7 +57,6 @@ public class ExosuitUpgradeItems implements IInitCategory {
         public static Items[] LOOKUP = new Items[values().length];
 
         static {
-            FMLLog.info("Static initializer for ExosuitUpgradeItems");
             for (Items item : values()) {
                 if (item.isEnabled()) {
                     LOOKUP[item.ordinal()] = item;

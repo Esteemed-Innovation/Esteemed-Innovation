@@ -1,12 +1,10 @@
 package flaxbeard.steamcraft.init.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.init.IInitCategory;
 
@@ -21,9 +19,12 @@ public class OreBlocks implements IInitCategory {
         END_COPPER_ORE(4),
         END_ZINC_ORE(5);
 
-        public static Block ORE_BLOCK = GameRegistry.register(new BlockSteamcraftOre("ore"));
-        public static Item ORE_ITEMBLOCK = GameRegistry.register(new ItemBlock(ORE_BLOCK).setUnlocalizedName("ore")
-          .setRegistryName(Steamcraft.MOD_ID, "ore"));
+        public static Block ORE_BLOCK = new BlockSteamcraftOre("ore");
+
+        static {
+            GameRegistry.register(ORE_BLOCK);
+            GameRegistry.register(new ItemBlock(ORE_BLOCK).setRegistryName(ORE_BLOCK.getRegistryName()));
+        }
         private int meta;
 
         Blocks(int meta) {
@@ -39,8 +40,8 @@ public class OreBlocks implements IInitCategory {
         }
 
         public ItemStack createItemStack(int size) {
-//            return new ItemStack(ORE_BLOCK, size, getMetadata());
-            return new ItemStack(ORE_ITEMBLOCK, size, getMetadata());
+            return new ItemStack(ORE_BLOCK, size, getMetadata());
+//            return new ItemStack(ORE_ITEMBLOCK, size, getMetadata());
         }
     }
 
