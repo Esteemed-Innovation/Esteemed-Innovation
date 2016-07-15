@@ -16,8 +16,7 @@ public class BlockBoilerRenderer implements ISimpleBlockRenderingHandler {
     private RenderBlocks renderBlocks = new RenderBlocks();
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelId,
-                                     RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         int x = 0;

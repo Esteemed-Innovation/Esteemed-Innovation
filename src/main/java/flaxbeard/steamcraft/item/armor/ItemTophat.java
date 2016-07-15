@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.item.tool;
+package flaxbeard.steamcraft.item.armor;
 
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -23,12 +24,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
-
     private static ModelTophat modelTophat;
+    private boolean emerald;
 
-    boolean emerald;
-
-    public ItemTophat(ArmorMaterial armorMaterial, int renderIndex, int armorType, boolean isEmerald) {
+    public ItemTophat(ArmorMaterial armorMaterial, int renderIndex, EntityEquipmentSlot armorType, boolean isEmerald) {
         super(armorMaterial, renderIndex, armorType);
         emerald = isEmerald;
     }
@@ -58,11 +57,6 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return emerald ? "steamcraft:textures/models/armor/tophatemerald.png" : "steamcraft:textures/models/armor/tophat.png";
-    }
-
-    @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
         return par2ItemStack.isItemEqual(new ItemStack(Items.LEATHER)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
@@ -88,27 +82,10 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
-
-    }
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        if (modelTophat == null)
-            modelTophat = new ModelTophat();
-
-        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("level")) {
-            modelTophat.level = itemStack.getTagCompound().getInteger("level");
-        }
-
-        return modelTophat;
-    }
-
-    @Override
-    public void writeInfo(List list) {
-
-    }
+    public void writeInfo(List list) {}
 
     @Override
     public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean par4) {

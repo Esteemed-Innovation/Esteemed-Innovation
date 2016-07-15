@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelWings;
+import flaxbeard.steamcraft.data.capabilities.player.IPlayerData;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,18 +16,18 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
     }
 
     public static int getTicks(Entity entity) {
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-        if (nbt.tickCache < 0) {
-            nbt.tickCache = 0;
+        IPlayerData nbt = entity.getCapability(Steamcraft.PLAYER_DATA, null);
+        int ticks = nbt.getTickCache();
+        if (ticks < 0) {
+            nbt.setTickCache(0);
+            ticks = 0;
         }
-        return nbt.tickCache;
+        return ticks;
     }
 
     public static void updateTicks(Entity entity, int ticks) {
-        ExtendedPropertiesPlayer nbt = (ExtendedPropertiesPlayer)
-          entity.getExtendedProperties(Steamcraft.PLAYER_PROPERTY_ID);
-        nbt.tickCache = ticks;
+        IPlayerData nbt = entity.getCapability(Steamcraft.PLAYER_DATA, null);
+        nbt.setTickCache(ticks);
     }
 
     @Override

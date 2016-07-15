@@ -4,18 +4,17 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 
-import java.util.ArrayList;
-
 public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
-    private String[] myOverlays;
-    private IIcon[] icons = new IIcon[6];
+    private ResourceLocation[] myOverlays = new ResourceLocation[6];
 
     public ItemTheVoidUpgrade() {
-        String resource = "steamcraft:toolUpgrades/void";
-        myOverlays = new String[] {
+        String resource = "toolUpgrades/void";
+        String[] overlays = new String[] {
           resource + "Drill0",
           resource + "Drill1",
           resource + "Saw0",
@@ -23,6 +22,9 @@ public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
           resource + "Shovel0",
           resource + "Shovel1"
         };
+        for (int i = 0; i < 6; i++) {
+            myOverlays[i] = new ResourceLocation(Steamcraft.MOD_ID, overlays[i]);
+        }
     }
 
     @Override
@@ -47,39 +49,9 @@ public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
         return null;
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
-    public void registerIcons(IIconRegister ir) {
-        ArrayList<String> list = new ArrayList<>();
-        for (String overlay : myOverlays) {
-            int index = overlay.contains("0") ? 0 : 1;
-            if (overlay.contains("Drill")) {
-                index += 0;
-            } else if (overlay.contains("Saw")) {
-                index += 2;
-            } else if (overlay.contains("Shovel")) {
-                index += 4;
-            }
-            list.add(index, overlay);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            icons[i] = ir.registerIcon(list.get(i));
-        }
-    }
-
-    @Override
-    public IIcon[] getIIcons() {
-        return icons;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack self, int pass) {
-        return this.getIconIndex(self);
-    }
-
-    @Override
-    public IIcon getIconIndex(ItemStack self) {
-        return icons[0];
+    public ResourceLocation[] getIIcons() {
+        return myOverlays;
     }
 
     @Override

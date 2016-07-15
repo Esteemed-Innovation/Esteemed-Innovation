@@ -2,8 +2,12 @@ package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.client.render.block.*;
+import flaxbeard.steamcraft.client.render.colorhandlers.ItemExosuitColorHandler;
 import flaxbeard.steamcraft.client.render.colorhandlers.ItemSmashedOreColorHandler;
+import flaxbeard.steamcraft.client.render.colorhandlers.SteamDrillColorHandler;
+import flaxbeard.steamcraft.client.render.colorhandlers.SteamDrillHeadUpgradeColorHandler;
 import flaxbeard.steamcraft.client.render.entity.RenderCanister;
 import flaxbeard.steamcraft.client.render.entity.RenderMortarItem;
 import flaxbeard.steamcraft.client.render.entity.RenderRocket;
@@ -20,14 +24,18 @@ import flaxbeard.steamcraft.init.blocks.CastingBlocks;
 import flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks;
 import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.init.items.MetalItems;
+import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
+import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
+import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -62,8 +70,19 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderers() {
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemSmashedOreColorHandler(),
-          MetalItems.Items.SMASHED_ORE.getItem());
+        ItemColors colors = Minecraft.getMinecraft().getItemColors();
+        colors.registerItemColorHandler(new ItemSmashedOreColorHandler(), MetalItems.Items.SMASHED_ORE.getItem());
+        for (ArmorItems.Items item : ArmorItems.Items.LOOKUP) {
+            if (item.getItem() instanceof ItemExosuitArmor) {
+                colors.registerItemColorHandler(new ItemExosuitColorHandler(item), item.getItem());
+            }
+        }
+        colors.registerItemColorHandler(new SteamDrillColorHandler(), ToolItems.Items.STEAM_DRILL.getItem());
+        colors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), ToolUpgradeItems.Items.DRILL_HEAD.getItem());
+
+        for (FirearmItems.Items item : FirearmItems.Items.LOOKUP) {
+            UtilEnhancements.registerEnhancementsForItem(item.getItem());
+        }
 
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);

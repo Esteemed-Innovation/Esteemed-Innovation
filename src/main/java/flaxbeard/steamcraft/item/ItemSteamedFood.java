@@ -31,8 +31,11 @@ public class ItemSteamedFood extends ItemFood {
         this((ItemFood) foodStack.getItem(), foodStack);
     }
 
-    @Override
-    public IIcon getIconFromDamage(int meta) {
-        return baseFood.getIconFromDamage(baseFoodStack.getItemDamage());
+    public ItemFood getBaseFood() {
+        return baseFood;
+    }
+
+    public ItemStack getBaseFoodStack() {
+        return baseFoodStack;
     }
 }

@@ -4,15 +4,13 @@ import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
-    protected String[] myOverlays;
-    protected String myInfo;
-    protected int prio;
+    private ResourceLocation[] myOverlays;
+    private String myInfo;
+    private int prio;
     private SteamToolSlot mySlot;
-    public IIcon[] icons;
 
     public ItemSteamToolUpgrade(SteamToolSlot slot, String resourceLocation, String info, int priority) {
         mySlot = slot;
@@ -23,21 +21,22 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
         }
         if (resourceLocation != null && !resourceLocation.isEmpty()) {
             if (isUniversal()) {
-                myOverlays = new String[]{
-                  resourceLocation + "Drill0",
-                  resourceLocation + "Drill1",
-                  resourceLocation + "Saw0",
-                  resourceLocation + "Saw1",
-                  resourceLocation + "Shovel0",
-                  resourceLocation + "Shovel1"
+                myOverlays = new ResourceLocation[] {
+                  new ResourceLocation(resourceLocation + "Drill0"),
+                  new ResourceLocation(resourceLocation + "Drill1"),
+                  new ResourceLocation(resourceLocation + "Saw0"),
+                  new ResourceLocation(resourceLocation + "Saw1"),
+                  new ResourceLocation(resourceLocation + "Shovel0"),
+                  new ResourceLocation(resourceLocation + "Shovel1")
                 };
-                icons = new IIcon[6];
             } else {
-                myOverlays = new String[]{ resourceLocation + "0", resourceLocation + "1" };
-                icons = new IIcon[2];
+                myOverlays = new ResourceLocation[] {
+                  new ResourceLocation(resourceLocation + "0"),
+                  new ResourceLocation(resourceLocation + "1")
+                };
             }
         } else {
-            myOverlays = null;
+            myOverlays = new ResourceLocation[] {};
         }
         prio = priority;
     }
@@ -62,46 +61,8 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
         return myInfo;
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
-    public void registerIcons(IIconRegister ir) {
-        if (myOverlays == null) {
-            return;
-        }
-        if (isUniversal()) {
-            ArrayList<String> list = new ArrayList<>();
-            for (String overlay : myOverlays) {
-                int index = overlay.contains("0") ? 0 : 1;
-                if (overlay.contains("Drill")) {
-                    index += 0;
-                } else if (overlay.contains("Saw")) {
-                    index += 2;
-                } else if (overlay.contains("Shovel")) {
-                    index += 4;
-                }
-                list.add(index, overlay);
-            }
-            for (int i = 0; i < list.size(); i++) {
-                icons[i] = ir.registerIcon(list.get(i));
-            }
-        } else {
-            for (int i = 0; i < myOverlays.length; i++) {
-                icons[i] = ir.registerIcon(myOverlays[i]);
-            }
-        }
-    }
-
-    @Override
-    public IIcon[] getIIcons() {
-        return icons;
-    }
-
-    public IIcon getIcon(ItemStack self, int pass) {
-        return this.getIconIndex(self);
-    }
-
-    @Override
-    public IIcon getIconIndex(ItemStack self) {
-        return icons[0];
+    public ResourceLocation[] getIIcons() {
+        return myOverlays;
     }
 }

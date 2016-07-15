@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.init.items.armor;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -18,9 +19,9 @@ import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.init.items.CraftingComponentItems;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
-import flaxbeard.steamcraft.item.tool.ItemSteamcraftArmor;
-import flaxbeard.steamcraft.item.tool.ItemSteamcraftGoggles;
-import flaxbeard.steamcraft.item.tool.ItemTophat;
+import flaxbeard.steamcraft.item.armor.ItemSteamcraftArmor;
+import flaxbeard.steamcraft.item.armor.ItemSteamcraftGoggles;
+import flaxbeard.steamcraft.item.armor.ItemTophat;
 
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
@@ -28,10 +29,10 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
 public class ArmorItems implements IInitCategory {
     public enum Items {
-        EXOSUIT_HEADPIECE(new ItemExosuitArmor(0, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
-        EXOSUIT_CHESTPIECE(new ItemExosuitArmor(1, Materials.EXOSUIT.getMaterial()), "exoArmorBody", Steamcraft.tab),
-        EXOSUIT_LEGPIECE(new ItemExosuitArmor(2, Materials.EXOSUIT.getMaterial()), "exoArmorLegs", Steamcraft.tab),
-        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(3, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
+        EXOSUIT_HEADPIECE(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
+        EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exoArmorBody", Steamcraft.tab),
+        EXOSUIT_LEGPIECE(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, Materials.EXOSUIT.getMaterial()), "exoArmorLegs", Steamcraft.tab),
+        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
         GILDED_HELMET(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 0, "ingotGildedIron", "GildedIron"), "helmetGildedIron", Steamcraft.tabTools),
         GILDED_CHESTPLATE(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 1, "ingotGildedIron", "GildedIron"), "chestGildedIron", Steamcraft.tabTools),
         GILDED_LEGGINGS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 2, "ingotGildedIron", "GildedIron"), "legsGildedIron", Steamcraft.tabTools),

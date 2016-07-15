@@ -1,10 +1,11 @@
-package flaxbeard.steamcraft.item.tool;
+package flaxbeard.steamcraft.item.armor;
 
 import flaxbeard.steamcraft.api.exosuit.ExosuitSlot;
 import flaxbeard.steamcraft.api.exosuit.IExosuitUpgrade;
 import flaxbeard.steamcraft.api.exosuit.ModelExosuitUpgrade;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ItemSteamcraftGoggles extends ItemSteamcraftArmor implements IExosuitUpgrade {
 
-    public ItemSteamcraftGoggles(ArmorMaterial armorMaterial, int renderIndex, int armorType, Object repair, String n) {
+    public ItemSteamcraftGoggles(ArmorMaterial armorMaterial, int renderIndex, EntityEquipmentSlot armorType, Object repair, String n) {
         super(armorMaterial, renderIndex, armorType, repair, n);
     }
 

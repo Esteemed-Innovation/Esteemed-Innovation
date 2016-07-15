@@ -9,6 +9,7 @@ import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -44,9 +45,9 @@ public class SteamcraftRegistry {
     /**
      * The icons for all of the IEnhancements.
      * Key: A pair of the item, the item as an enhancement.
-     * Value: The IIcon for the enhancement.
+     * Value: The ResourceLocation for the enhancement.
      */
-    public static HashMap<MutablePair<Item, IEnhancement>, IIcon> enhancementIcons = new HashMap<>();
+    public static HashMap<MutablePair<Item, IEnhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
 
     /**
      * The IEnhancements.
@@ -236,7 +237,7 @@ public class SteamcraftRegistry {
      * @param result The output ItemStack.
      */
     public static void registerDunkRecipe(Item item, int meta, CrucibleLiquid liquid, int liquidAmount, ItemStack result) {
-        dunkRecipes.put(new Tuple3(item, meta, liquid), MutablePair.of(liquidAmount, result));
+        dunkRecipes.put(new Tuple3<>(item, meta, liquid), MutablePair.of(liquidAmount, result));
     }
 
     /**

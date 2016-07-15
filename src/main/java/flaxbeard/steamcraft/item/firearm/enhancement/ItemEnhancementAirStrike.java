@@ -7,6 +7,7 @@ import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemEnhancementAirStrike extends Item implements IEnhancementRocketLauncher {
     @Override
@@ -25,8 +26,8 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
     }
 
     @Override
-    public String getIcon(Item item) {
-        return "steamcraft:weaponRocketLauncherAirStrike";
+    public ResourceLocation getIcon(Item item) {
+        return new ResourceLocation(Steamcraft.MOD_ID, "weaponRocketLauncherAirStrike");
     }
 
     @Override

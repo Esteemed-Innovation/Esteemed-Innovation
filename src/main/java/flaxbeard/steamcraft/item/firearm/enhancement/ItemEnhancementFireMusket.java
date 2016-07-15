@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.MUSKET;
 import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.BLUNDERBUSS;
@@ -27,9 +28,9 @@ public class ItemEnhancementFireMusket extends Item implements IEnhancementFirea
     }
 
     @Override
-    public String getIcon(Item item) {
+    public ResourceLocation getIcon(Item item) {
         String weapon = item == MUSKET.getItem() ? "Musket" : "Blunderbuss";
-        return "steamcraft:weapon" + weapon + "Ablaze";
+        return new ResourceLocation(Steamcraft.MOD_ID, "weapon" + weapon + "Ablaze");
     }
 
     @Override

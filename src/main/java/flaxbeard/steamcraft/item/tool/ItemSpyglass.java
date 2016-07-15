@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.item.tool;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
 import flaxbeard.steamcraft.entity.projectile.EntityMusketBall;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class ItemSpyglass extends Item implements IEnhancementFirearm {
@@ -39,8 +41,8 @@ public class ItemSpyglass extends Item implements IEnhancementFirearm {
     }
 
     @Override
-    public String getIcon(Item item) {
-        return "steamcraft:weaponMusketSharpshooter";
+    public ResourceLocation getIcon(Item item) {
+        return new ResourceLocation(Steamcraft.MOD_ID, "weaponMusketSharpshooter");
     }
 
     @Override

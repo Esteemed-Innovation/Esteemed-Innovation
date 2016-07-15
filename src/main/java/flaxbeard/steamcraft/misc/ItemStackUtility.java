@@ -2,7 +2,10 @@ package flaxbeard.steamcraft.misc;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -20,7 +23,7 @@ public class ItemStackUtility {
      * @param stack2
      * @return
      */
-    public static boolean areItemStacksMostlyEqual(ItemStack stack1, ItemStack stack2){
+    public static boolean areItemStacksMostlyEqual(ItemStack stack1, ItemStack stack2) {
         return stack1.getItem().equals(stack2.getItem()) && stack1.getItemDamage() == stack2.getItemDamage();
     }
 
@@ -57,6 +60,52 @@ public class ItemStackUtility {
             }
         } else {
             return mainHand;
+        }
+    }
+
+    /**
+     * Checks if the item is in the inventory. Does not handle metadata.
+     * @param inventory The inventory
+     * @param check The item
+     * @return boolean
+     */
+    public static boolean inventoryHasItem(IInventory inventory, Item check) {
+        for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
+            ItemStack inSlot = inventory.getStackInSlot(slot);
+            if (inSlot == null) {
+                continue;
+            }
+            if (inSlot.getItem() == check) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * A very specific method for consuming an ItemStack in the player's inventory.
+     * This is basically the old consumeInventoryItem method.
+     * @param inventory The player's inventory
+     * @param item The item to consume.
+     */
+    public static void consumePlayerInventoryItem(InventoryPlayer inventory, Item item) {
+        ItemStack stack = null;
+        for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
+            ItemStack inSlot = inventory.getStackInSlot(slot);
+            if (inSlot == null) {
+                continue;
+            }
+            if (inSlot.getItem() == item) {
+                stack = inSlot;
+            }
+        }
+        if (stack == null) {
+            return;
+        }
+        --stack.stackSize;
+
+        if (stack.stackSize == 0) {
+            inventory.deleteStack(stack);
         }
     }
 }

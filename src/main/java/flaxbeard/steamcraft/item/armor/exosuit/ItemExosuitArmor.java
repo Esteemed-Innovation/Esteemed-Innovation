@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.SteamcraftItems;
 import flaxbeard.steamcraft.api.IEngineerable;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.exosuit.*;
@@ -16,12 +15,11 @@ import flaxbeard.steamcraft.integration.CrossMod;
 import flaxbeard.steamcraft.item.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -34,7 +32,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,131 +39,21 @@ import java.util.UUID;
 public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngineerable, ISteamChargable {
     public static final ResourceLocation largeIcons = new ResourceLocation("steamcraft:textures/gui/engineering2.png");
 
-    public int slot;
-    public IIcon grey;
+    public EntityEquipmentSlot slot;
 
-    public ItemExosuitArmor(int i, ArmorMaterial mat) {
-        super(mat, 1, i);
-        slot = i;
-        this.setMaxDamage(0);
+    public ItemExosuitArmor(EntityEquipmentSlot slot, ArmorMaterial mat) {
+        super(mat, 1, slot);
+        this.slot = slot;
+        setMaxDamage(0);
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return false;
-    }
-
-    public int getPlateReqs() {
-        switch (slot) {
-            case 0:
-                return 5;
-            case 1:
-                return 8;
-            case 2:
-                return 7;
-            case 3:
-                return 4;
-            default:
-                return 1;
-        }
     }
 
     public String getString() {
         return this.iconString;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses() {
-        return true;
-    }
-
-    @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        if (stack.getItem() == SteamcraftItems.exoArmorLegs) {
-            return "steamcraft:textures/models/armor/exo_2.png";
-        } else {
-            return "steamcraft:textures/models/armor/exo_1.png";
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister) {
-        super.registerIcons(par1IconRegister);
-        UtilPlates.registerPlatesForItem(par1IconRegister, this);
-        grey = par1IconRegister.registerIcon(this.iconString + "_grey");
-    }
-
-    @Override
-    public int getRenderPasses(int metadata) {
-        return 3;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack, int pass) {
-        return (this.getStackInSlot(stack, 2) != null && this.getStackInSlot(stack, 2).getItem() == SteamcraftItems.enderShroud);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int pass) {
-
-        if (pass == 0) {
-            return this.itemIcon;
-        }
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("plate") && pass > 1) {
-            return UtilPlates.getIconFromPlate(stack.stackTagCompound.getString("plate"), this);
-        } else if (this.getStackInSlot(stack, 2) != null) {
-            Item vanity = getStackInSlot(stack, 2).getItem();
-            int[] ids = OreDictionary.getOreIDs(getStackInSlot(stack, 2));
-            int dye = -1;
-            outerloop:
-            for (int id : ids) {
-                String str = OreDictionary.getOreName(id);
-                if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
-                            dye = 15 - i;
-                            break outerloop;
-                        }
-                    }
-                }
-            }
-            if (dye != -1) {
-                return grey;
-            } else {
-                return this.itemIcon;
-            }
-        }
-        return this.itemIcon;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int pass) {
-        if (this.getStackInSlot(stack, 2) != null && (pass == 1 || (pass > 1 && !stack.stackTagCompound.hasKey("plate")))) {
-            Item vanity = getStackInSlot(stack, 2).getItem();
-            int[] ids = OreDictionary.getOreIDs(getStackInSlot(stack, 2));
-            int dye = -1;
-            outerloop:
-            for (int id : ids) {
-                String str = OreDictionary.getOreName(id);
-                if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
-                            dye = 15 - i;
-                            break outerloop;
-                        }
-                    }
-                }
-            }
-            if (dye != -1) {
-                float[] color = EntitySheep.fleeceColorTable[dye];
-                return new Color(color[0], color[1], color[2]).getRGB();
-            }
-        }
-        return super.getColorFromItemStack(stack, pass);
     }
 
     @Override

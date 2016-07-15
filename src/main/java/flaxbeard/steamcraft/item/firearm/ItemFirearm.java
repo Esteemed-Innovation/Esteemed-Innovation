@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.item.firearm;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.IEngineerable;
+import flaxbeard.steamcraft.api.IRenderItem;
 import flaxbeard.steamcraft.api.util.UtilMisc;
 import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.api.enhancement.IEnhancementFirearm;
@@ -12,107 +13,109 @@ import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
 
 import static flaxbeard.steamcraft.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
 
-public class ItemFirearm extends Item implements IEngineerable {
+public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
     public float damage;
     public int reloadTime;
     public int shellCount;
     public float accuracy;
     public float knockback;
     public boolean shotgun;
-    public Object repairMaterial = null;
+    public Object repairMaterial;
     /**
      * Used only for the Reloading Holsters, hence why it is private. Don't make it public, as that
      * could confuse other developers into thinking they should use it for things.
      */
     private int ticksSinceReload;
-    private boolean wasSprinting = false;
 
-    public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7) {
-        this.maxStackSize = 1;
-        this.setMaxDamage(384);
-        this.damage = par2;
-        this.reloadTime = par3;
-        this.accuracy = par4;
-        this.knockback = par5;
-        this.shotgun = par6;
-        this.shellCount = par7;
+    public ItemFirearm(float damage, int reloadTime, float accuracy, float knockback, boolean shotgun, int shellCount) {
+        this(damage, reloadTime, accuracy, knockback, shotgun, shellCount, null);
     }
 
-    public ItemFirearm(float par2, int par3, float par4, float par5, boolean par6, int par7, Object repair) {
-        this.maxStackSize = 1;
-        this.setMaxDamage(384);
-        this.damage = par2;
-        this.reloadTime = par3;
-        this.accuracy = par4;
-        this.knockback = par5;
-        this.shotgun = par6;
-        this.shellCount = par7;
+    public ItemFirearm(float damage, int reloadTime, float accuracy, float knockback, boolean shotgun, int shellCount, Object repair) {
+        maxStackSize = 1;
+        setMaxDamage(384);
+        this.damage = damage;
+        this.reloadTime = reloadTime;
+        this.accuracy = accuracy;
+        this.knockback = knockback;
+        this.shotgun = shotgun;
+        this.shellCount = shellCount;
         this.repairMaterial = repair;
     }
 
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        if (UtilEnhancements.hasEnhancement(stack)) {
-            list.add(UtilEnhancements.getEnhancementDisplayText(stack));
+    public static void initializeNBT(ItemStack stack) {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+            NBTTagCompound nbt = stack.getTagCompound();
+            nbt.setInteger("loaded", 0);
+            nbt.setInteger("numloaded", 0);
         }
-        super.addInformation(stack, player, list, par4);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean isCurrentItem) {
-        super.onUpdate(stack, world, entity, par4, isCurrentItem);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+        if (UtilEnhancements.hasEnhancement(stack)) {
+            list.add(UtilEnhancements.getEnhancementDisplayText(stack));
+        }
+        super.addInformation(stack, player, list, advanced);
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isCurrentItem) {
+        super.onUpdate(stack, world, entity, itemSlot, isCurrentItem);
         if (entity instanceof EntityPlayerSP) {
             EntityPlayerSP player = (EntityPlayerSP) entity;
-            ItemStack usingItem = player.getItemInUse();
-            if (usingItem != null && usingItem.getItem() == this && UtilEnhancements.hasEnhancement(usingItem) && UtilEnhancements.getEnhancementFromItem(usingItem).getID() == "Speedy") {
+            ItemStack usingItem = player.getActiveItemStack();
+            if (usingItem != null && usingItem.getItem() == this && UtilEnhancements.hasEnhancement(usingItem) &&
+              "Speedy".equals(UtilEnhancements.getEnhancementFromItem(usingItem).getID())) {
                 player.movementInput.moveForward *= 5.0F;
                 player.movementInput.moveStrafe *= 5.0F;
-            } else {
-                wasSprinting = player.isSprinting();
             }
         }
 
         // Reloading Holster code.
         if (!isCurrentItem && entity instanceof EntityPlayer && stack.hasTagCompound()) {
-            this.ticksSinceReload += 1;
+            ticksSinceReload += 1;
             NBTTagCompound nbt = stack.getTagCompound();
             EntityPlayer player = (EntityPlayer) entity;
-            ItemStack legs = player.getEquipmentInSlot(2);
-            if (legs != null && nbt.getInteger("loaded") < 1 &&
-              this.ticksSinceReload >= (this.reloadTime + 10)) {
+            ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+            if (legs != null && nbt.getInteger("loaded") < 1 && ticksSinceReload >= (reloadTime + 10)) {
                 Item legsItem = legs.getItem();
                 if (legsItem instanceof ItemExosuitArmor) {
                     ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ExosuitUpgradeItems.Items.RELOADING_HOLSTERS.getItem()) &&
                       SteamcraftEventHandler.hasPower(player, Config.reloadingConsumption) &&
-                      player.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
-                        this.onEaten(stack, world, player);
-                        this.onItemRightClick(stack, world, player);
-                        SteamcraftEventHandler.drainSteam(player.getEquipmentInSlot(3),
+                      ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
+                        onItemUseFinish(stack, world, player);
+                        onItemRightClick(stack, world, player, player.getActiveHand());
+                        SteamcraftEventHandler.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
                           Config.reloadingConsumption);
-                        this.ticksSinceReload = 0;
+                        ticksSinceReload = 0;
                         // TODO: Reload sound
                         // TODO: Out of ammo- cannot reload sound
                     }
@@ -131,39 +134,22 @@ public class ItemFirearm extends Item implements IEngineerable {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister ir) {
-        super.registerIcons(ir);
-        UtilEnhancements.registerEnhancementsForItem(ir, this);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+    public ResourceLocation getIcon(ItemStack stack) {
         if (UtilEnhancements.hasEnhancement(stack)) {
             return UtilEnhancements.getIconFromEnhancement(stack);
-        } else {
-            return super.getIcon(stack, renderPass, player, usingItem, useRemaining);
         }
+        return null;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIconIndex(ItemStack stack) {
-        if (UtilEnhancements.hasEnhancement(stack)) {
-            return UtilEnhancements.getIconFromEnhancement(stack);
-        } else {
-            return super.getIconIndex(stack);
-        }
+    public int renderPasses(ItemStack self) {
+        return 1;
     }
 
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
     @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-        boolean crouched = par3EntityPlayer.isSneaking();
+    public void onPlayerStoppedUsing(ItemStack itemstack, World world, EntityLivingBase entity, int timeLeft) {
+        NBTTagCompound nbt = itemstack.getTagCompound();
+        boolean crouched = entity.isSneaking();
 
         if (nbt.getInteger("loaded") > 0) {
             float enhancementAccuracy = 0.0F;
@@ -171,115 +157,128 @@ public class ItemFirearm extends Item implements IEngineerable {
             float enhancementKnockback = 0;
             float crouchingBonus = crouched ? 0.10F : 0;
 
-            if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                    enhancementAccuracy = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getAccuracyChange(this);
-                    enhancementDamage = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getDamageChange(this);
-                    enhancementKnockback = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getKnockbackChange(this);
+            if (UtilEnhancements.hasEnhancement(itemstack)) {
+                IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(itemstack);
+                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
+                    IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+                    enhancementAccuracy = enhancementFirearm.getAccuracyChange(this);
+                    enhancementDamage = enhancementFirearm.getDamageChange(this);
+                    enhancementKnockback = enhancementFirearm.getKnockbackChange(this);
                 }
             }
-            int var6 = this.getMaxItemUseDuration(par1ItemStack) - par4;
-            ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, var6);
-            MinecraftForge.EVENT_BUS.post(event);
+            int timeUsed = getMaxItemUseDuration(itemstack) - timeLeft;
+            if (entity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) entity;
+                ArrowLooseEvent event = new ArrowLooseEvent(player, itemstack, world, timeUsed,
+                  ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem()));
+                MinecraftForge.EVENT_BUS.post(event);
 
-            if (event.isCanceled()) {
-                return;
-            }
-
-            var6 = event.charge;
-            float var7 = var6 / 20.0F;
-            var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
-
-            if (var7 < 0.1D) {
-                return;
-            }
-
-            if (var7 > 1.0F) {
-                var7 = 1.0F;
-            }
-
-            EntityMusketBall var8 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, ((1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7), (damage + enhancementDamage), true);
-
-            if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                    var8 = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var8);
+                if (event.isCanceled()) {
+                    return;
                 }
-            }
 
-            par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.explode", ((knockback + enhancementKnockback) * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.4F : 1.0F), 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + var7 * 0.5F);
-            for (int i = 1; i < 16; i++) {
-                par2World.spawnParticle("smoke", par3EntityPlayer.posX + itemRand.nextFloat() - 0.5F, par3EntityPlayer.posY + (itemRand.nextFloat() / 2) - 0.25F, par3EntityPlayer.posZ + itemRand.nextFloat() - 0.5F, 0.0D, 0.01D, 0.0D);
-            }
+                timeUsed = event.getCharge();
+                float timeUsedSecs = timeUsed / 20.0F;
+                timeUsedSecs = (timeUsedSecs * timeUsedSecs + timeUsedSecs * 2.0F) / 3.0F;
 
-            if (!par2World.isRemote) {
-                if (shotgun) {
-                    for (int i = 1; i < 21; i++) {
-                        EntityMusketBall var12 = new EntityMusketBall(par2World, par3EntityPlayer, 2.0F, (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - var7, (damage + enhancementDamage), false);
-                        if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                            if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                                var12 = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).changeBullet(var12);
-                            }
-                        }
-                        par2World.spawnEntityInWorld(var12);
+                if (timeUsedSecs < 0.1D) {
+                    return;
+                }
+
+                if (timeUsedSecs > 1.0F) {
+                    timeUsedSecs = 1.0F;
+                }
+
+                EntityMusketBall musketBall = new EntityMusketBall(world, player, 2.0F, ((1.0F + accuracy + enhancementAccuracy - crouchingBonus) - timeUsedSecs), (damage + enhancementDamage), true);
+
+                if (UtilEnhancements.hasEnhancement(itemstack)) {
+                    if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
+                        musketBall = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(musketBall);
                     }
-                } else {
-                    par2World.spawnEntityInWorld(var8);
                 }
 
-                //par3EntityPlayer.rotationPitch = par3EntityPlayer.rotationPitch + 100.0F;
-                //Minecraft minecraft = Minecraft.getMinecraft();
-                //minecraft.entityRenderer.
-            }
-
-            nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
-
-            if (par2World.isRemote && !par3EntityPlayer.capabilities.isCreativeMode) {
-                float thiskb = this.knockback + enhancementKnockback;
-                boolean crouching = par3EntityPlayer.isSneaking();
-
-                if (crouching) {
-                    thiskb = thiskb / 2;
+                itemstack.damageItem(1, entity);
+                float vol = ((knockback + enhancementKnockback) * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(itemstack) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(itemstack).getID()) ? 0.4F : 1.0F);
+                float pitch = 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + timeUsedSecs * 0.5F;
+                world.playSound(player, player.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, vol, pitch);
+                for (int i = 1; i < 16; i++) {
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entity.posX + itemRand.nextFloat() - 0.5F,
+                      entity.posY + (itemRand.nextFloat() / 2) - 0.25F,
+                      entity.posZ + itemRand.nextFloat() - 0.5F, 0D, 0.01D, 0D);
                 }
 
-                par3EntityPlayer.rotationPitch = par3EntityPlayer.rotationPitch - (thiskb * 3F);
-                par3EntityPlayer.motionZ = -MathHelper.cos((par3EntityPlayer.rotationYaw) * (float) Math.PI / 180.0F) * (thiskb * (4F / 50F));
-                par3EntityPlayer.motionX = MathHelper.sin((par3EntityPlayer.rotationYaw) * (float) Math.PI / 180.0F) * (thiskb * (4F / 50F));
-            }
+                if (!world.isRemote) {
+                    if (shotgun) {
+                        for (int i = 1; i < 21; i++) {
+                            EntityMusketBall shotgunRound = new EntityMusketBall(world, player, 2.0F,
+                              (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - timeUsedSecs,
+                              (damage + enhancementDamage), false);
+                            if (UtilEnhancements.hasEnhancement(itemstack)) {
+                                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
+                                    shotgunRound = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(shotgunRound);
+                                }
+                            }
+                            world.spawnEntityInWorld(shotgunRound);
+                        }
+                    } else {
+                        world.spawnEntityInWorld(musketBall);
+                    }
+                }
 
-            // par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(BoilerMod.musketEmpty));
-        } else {
-            if (nbt.getBoolean("done")) {
-                //done = false;
-                //par3EntityPlayer.inventoryContainer.putStackInSlot(par3EntityPlayer.inventory.currentItem + 36, new ItemStack(BoilerMod.musket, 1));
-                //par3EntityPlayer.inventoryContainer.detectAndSendChanges();
-                nbt.setInteger("loaded", nbt.getInteger("numloaded"));
-                nbt.setBoolean("done", false);
+                nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
+
+                if (world.isRemote && !player.capabilities.isCreativeMode) {
+                    float thiskb = this.knockback + enhancementKnockback;
+                    boolean crouching = entity.isSneaking();
+
+                    if (crouching) {
+                        thiskb = thiskb / 2;
+                    }
+
+                    entity.rotationPitch = entity.rotationPitch - (thiskb * 3F);
+                    entity.motionZ = -MathHelper.cos((entity.rotationYaw) * (float) Math.PI / 180.0F) * (thiskb * (4F / 50F));
+                    entity.motionX = MathHelper.sin((entity.rotationYaw) * (float) Math.PI / 180.0F) * (thiskb * (4F / 50F));
+                }
             }
+        } else if (nbt.getBoolean("done")) {
+            nbt.setInteger("loaded", nbt.getInteger("numloaded"));
+            nbt.setBoolean("done", false);
         }
     }
 
-    @Override
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-        boolean var5 = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
-        int enhancementShells = 0;
-        if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-            if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
+    private int getEnhancementShells(ItemStack self) {
+        if (UtilEnhancements.hasEnhancement(self)) {
+            IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
+            if (enhancement instanceof IEnhancementFirearm) {
+                IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+                return enhancementFirearm.getClipSizeChange(this);
             }
         }
-        if (var5 || par3EntityPlayer.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
-            if (nbt.getBoolean("done") == false) {
+        return 0;
+    }
+
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (!(entity instanceof EntityPlayer)) {
+            // ? Not sure what else to return here. Null?
+            return stack;
+        }
+        EntityPlayer player = (EntityPlayer) entity;
+        boolean infiniteShots = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+        int enhancementShells = getEnhancementShells(stack);
+        if (infiniteShots || ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
+            if (!nbt.getBoolean("done")) {
                 nbt.setInteger("numloaded", 1);
-                if (var5) {
-                    nbt.setInteger("numloaded", this.shellCount + enhancementShells);
+                if (infiniteShots) {
+                    nbt.setInteger("numloaded", shellCount + enhancementShells);
                 } else {
-                    par3EntityPlayer.inventory.consumeInventoryItem(MUSKET_CARTRIDGE.getItem());
-                    if ((this.shellCount + enhancementShells) > 1) {
-                        for (int i = 1; i < (this.shellCount + enhancementShells); i++) {
-                            if (par3EntityPlayer.inventory.hasItem(MUSKET_CARTRIDGE.getItem())) {
-                                par3EntityPlayer.inventory.consumeInventoryItem(MUSKET_CARTRIDGE.getItem());
+                    ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE.getItem());
+                    int totalShells = shellCount + enhancementShells;
+                    if (totalShells > 1) {
+                        for (int i = 1; i < totalShells; i++) {
+                            if (ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
+                                ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE.getItem());
                                 nbt.setInteger("numloaded", nbt.getInteger("numloaded") + 1);
                             }
                         }
@@ -287,11 +286,13 @@ public class ItemFirearm extends Item implements IEngineerable {
                 }
 
                 nbt.setBoolean("done", true);
-                par2World.playSoundAtEntity(par3EntityPlayer, "random.click", (UtilEnhancements.getEnhancementFromItem(par1ItemStack) != null && UtilEnhancements.getEnhancementFromItem(par1ItemStack).getID() == "Silencer" ? 0.4F : 1.0F), par2World.rand.nextFloat() * 0.1F + 0.9F);
+                float vol = UtilEnhancements.getEnhancementFromItem(stack) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(stack).getID()) ? 0.4F : 1.0F;
+                float pitch = world.rand.nextFloat() * 0.1F + 0.9F;
+                world.playSound(player, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, vol, pitch);
             }
         }
 
-        return par1ItemStack;
+        return stack;
     }
 
     @Override
@@ -299,25 +300,17 @@ public class ItemFirearm extends Item implements IEngineerable {
         return true;
     }
 
-    /**
-     * How long it takes to use or consume an item
-     */
     @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-        if (!par1ItemStack.hasTagCompound()) {
-            par1ItemStack.setTagCompound(new NBTTagCompound());
-            NBTTagCompound nbt = par1ItemStack.getTagCompound();
-            nbt.setInteger("loaded", 0);
-            nbt.setInteger("numloaded", 0);
-            //nbt.setBoolean("done", false);
-        }
-
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
+    public int getMaxItemUseDuration(ItemStack stack) {
+        initializeNBT(stack);
+        NBTTagCompound nbt = stack.getTagCompound();
 
         int enhancementReload = 0;
-        if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-            if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                enhancementReload = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getReloadChange(this);
+        if (UtilEnhancements.hasEnhancement(stack)) {
+            IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(stack);
+            if (enhancement instanceof IEnhancementFirearm) {
+                IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+                enhancementReload = enhancementFirearm.getReloadChange(this);
             }
         }
 
@@ -328,60 +321,35 @@ public class ItemFirearm extends Item implements IEngineerable {
         }
     }
 
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
     @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-        if (!par1ItemStack.hasTagCompound()) {
-            par1ItemStack.setTagCompound(new NBTTagCompound());
-            NBTTagCompound nbt = par1ItemStack.getTagCompound();
-            nbt.setInteger("loaded", 0);
-            nbt.setInteger("numloaded", 0);
-            //nbt.setBoolean("done", false);
-        }
-
-        NBTTagCompound nbt = par1ItemStack.getTagCompound();
-
+    public EnumAction getItemUseAction(ItemStack stack) {
+        initializeNBT(stack);
+        NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.getInteger("loaded") > 0) {
-            return EnumAction.bow;
+            return EnumAction.BOW;
         } else {
-            return EnumAction.block;
-
+            return EnumAction.BLOCK;
         }
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-        if (!par1ItemStack.hasTagCompound()) {
-            par1ItemStack.setTagCompound(new NBTTagCompound());
-            NBTTagCompound nbt = par1ItemStack.getTagCompound();
-            nbt.setInteger("loaded", 0);
-            nbt.setBoolean("done", false);
-            nbt.setInteger("numloaded", 0);
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+        initializeNBT(itemStack);
+        NBTTagCompound nbt = itemStack.getTagCompound();
+        if (player.capabilities.isCreativeMode) {
+            int enhancementShells = getEnhancementShells(itemStack);
+            nbt.setInteger("loaded", 1);
+            nbt.setInteger("numloaded", shellCount + enhancementShells);
         }
-
-        NBTTagCompound nbtt = par1ItemStack.getTagCompound();
-        if (par3EntityPlayer.capabilities.isCreativeMode) {
-            int enhancementShells = 0;
-            if (UtilEnhancements.hasEnhancement(par1ItemStack)) {
-                if (UtilEnhancements.getEnhancementFromItem(par1ItemStack) instanceof IEnhancementFirearm) {
-                    enhancementShells = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(par1ItemStack)).getClipSizeChange(this);
-                }
-            }
-            nbtt.setInteger("loaded", 1);
-            nbtt.setInteger("numloaded", this.shellCount + enhancementShells);
-        }
-        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-        return par1ItemStack;
+        player.setActiveHand(hand);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
     }
 
+    // Note: The alternative to this warning is pretty horrible and like 3 lines longer, because generics are not invariant.
+    @SuppressWarnings("unchecked")
     @Override
     public MutablePair<Integer, Integer>[] engineerCoordinates() {
-        return new MutablePair[]{MutablePair.of(53, 29)};
+        return new MutablePair[] { MutablePair.of(53, 29) };
     }
 
     @Override
@@ -393,8 +361,7 @@ public class ItemFirearm extends Item implements IEngineerable {
         return null;
     }
 
-    @Override
-    public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+    public static void initializeEnhancementsNBT(ItemStack me, ItemStack stack) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
@@ -402,8 +369,13 @@ public class ItemFirearm extends Item implements IEngineerable {
             IEnhancement enhancement = (IEnhancement) stack.getItem();
             NBTTagCompound enhancements = new NBTTagCompound();
             enhancements.setString("id", enhancement.getID());
-            me.stackTagCompound.setTag("enhancements", enhancements);
+            me.getTagCompound().setTag("enhancements", enhancements);
         }
+    }
+
+    @Override
+    public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+        initializeEnhancementsNBT(me, stack);
     }
 
     @Override
@@ -433,29 +405,29 @@ public class ItemFirearm extends Item implements IEngineerable {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         if (repairMaterial != null) {
             if (repairMaterial instanceof ItemStack) {
-                return par2ItemStack.isItemEqual((ItemStack) repairMaterial) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+                return repair.isItemEqual((ItemStack) repairMaterial) || super.getIsRepairable(toRepair, repair);
             }
             if (repairMaterial instanceof String) {
-                return UtilMisc.doesMatch(par2ItemStack, (String) repairMaterial) ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
+                return UtilMisc.doesMatch(repair, (String) repairMaterial) || super.getIsRepairable(toRepair, repair);
             }
         }
-        return super.getIsRepairable(par1ItemStack, par2ItemStack);
+        return super.getIsRepairable(toRepair, repair);
     }
 
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.largeIcons);
+        int textureX = 0;
         if (this == FirearmItems.Items.MUSKET.getItem()) {
-            guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 0, 64, 64, 64);
+            textureX = 0;
         } else if (this == FirearmItems.Items.BLUNDERBUSS.getItem()) {
-            guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 64, 64, 64);
+            textureX = 64;
         } else if (this == FirearmItems.Items.PISTOL.getItem()) {
-            guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 128, 64, 64, 64);
+            textureX = 128;
         }
-
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, textureX, 64, 64, 64);
     }
-
 }

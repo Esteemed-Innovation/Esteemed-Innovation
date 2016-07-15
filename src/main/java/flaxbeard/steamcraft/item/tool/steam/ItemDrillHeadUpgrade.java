@@ -5,8 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.ResourceLocation;
 import flaxbeard.steamcraft.api.tool.ISteamToolUpgrade;
 import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
@@ -14,11 +13,7 @@ import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import java.util.List;
 
 public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
-    public IIcon icon;
-
-    public ItemDrillHeadUpgrade() {
-        this.setTextureName("steamcraft:drillHead");
-    }
+    public ItemDrillHeadUpgrade() {}
 
     @Override
     public boolean isUniversal() {
@@ -42,17 +37,10 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
         return I18n.hasKey(name) ? I18n.format(name) : mat.materialName;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack self, EntityPlayer player, List list, boolean par4) {
-        super.addInformation(self, player, list, par4);
+    public void addInformation(ItemStack self, EntityPlayer player, List<String> list, boolean advanced) {
+        super.addInformation(self, player, list, advanced);
         list.add(getInformation(self, null));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int renderPass) {
-        return DrillHeadMaterial.materials.get(getMyMaterial(stack)).getColorInt();
     }
 
     /**
@@ -84,8 +72,8 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public IIcon[] getIIcons() {
+    public ResourceLocation[] getIIcons() {
         // The Drill Head Upgrade has custom rendering techniques that do not require new textures.
-        return null;
+        return new ResourceLocation[] {};
     }
 }

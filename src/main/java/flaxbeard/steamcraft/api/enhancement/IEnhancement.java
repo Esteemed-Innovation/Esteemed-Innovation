@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.api.enhancement;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public interface IEnhancement {
     /**
@@ -25,7 +26,7 @@ public interface IEnhancement {
      * @param item The weapon item.
      * @return The resource location string for the new weapon created by upgrading it.
      */
-    String getIcon(Item item);
+    ResourceLocation getIcon(Item item);
 
     /**
      * The unlocalized name, exactly as it is in the lang file, for the weapon that will be created

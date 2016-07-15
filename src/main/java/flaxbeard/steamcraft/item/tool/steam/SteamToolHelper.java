@@ -10,6 +10,8 @@ import flaxbeard.steamcraft.api.tool.SteamToolSlot;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 /**
  * Class for internal use in the steam tools. For utils relating to the steam tool, see
  * flaxbeard.steamcraft.api.tool.UtilSteamTool.java.
@@ -27,6 +29,7 @@ public class SteamToolHelper {
      * @param redSlot The slot that should be red. See getInformation.
      * @return The strings. Will return an empty array if there are no upgrades or strings.
      */
+    @Nonnull
     public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot, ItemStack tool) {
         if (upgrades == null) {
             return new ArrayList<>();

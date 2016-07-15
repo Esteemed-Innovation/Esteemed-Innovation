@@ -1,6 +1,9 @@
 package flaxbeard.steamcraft.api.tool;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
 
 public interface ISteamToolUpgrade {
 
@@ -36,7 +39,8 @@ public interface ISteamToolUpgrade {
      * 4 and 5: Shovel textures
      * @return The IIcon array.
      */
-    IIcon[] getIIcons();
+    @Nonnull
+    ResourceLocation[] getIIcons();
 
     /**
      * Whether the upgrade is a universal upgrade. This will determine how to load the icons.
