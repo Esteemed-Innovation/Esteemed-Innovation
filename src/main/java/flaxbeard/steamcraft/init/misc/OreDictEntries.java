@@ -57,6 +57,7 @@ public class OreDictEntries {
     public static String INGOT_GILDED_IRON = PREFIX_INGOT + MATERIAL_GILDED_IRON;
     public static String INGOT_IRON = PREFIX_INGOT + MATERIAL_IRON;
     public static String INGOT_GOLD = PREFIX_INGOT + MATERIAL_GOLD;
+    public static String INGOT_LEAD = PREFIX_INGOT + MATERIAL_LEAD;
 
     // Plates (plateSteamcraft).
     public static String PLATE_BRASS = PREFIX_PLATE + MATERIAL_BRASS;
@@ -92,6 +93,7 @@ public class OreDictEntries {
     public static String DUST_COPPER = PREFIX_DUST + MATERIAL_COPPER;
     public static String DUST_ZINC = PREFIX_DUST + MATERIAL_ZINC;
     public static String DUST_BRASS = PREFIX_DUST + MATERIAL_BRASS;
+    public static String DUST_LEAD = PREFIX_DUST + MATERIAL_LEAD;
 
     // Tiny Dusts.
     public static String DUST_TINY_GOLD = PREFIX_DUST_TINY + MATERIAL_GOLD;

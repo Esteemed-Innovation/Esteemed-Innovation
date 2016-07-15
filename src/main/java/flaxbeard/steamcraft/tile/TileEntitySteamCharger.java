@@ -4,7 +4,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 
 import net.minecraft.entity.item.EntityItem;

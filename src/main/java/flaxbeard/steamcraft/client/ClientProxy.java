@@ -31,10 +31,12 @@ import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
+import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.settings.KeyBinding;
@@ -82,7 +84,11 @@ public class ClientProxy extends CommonProxy {
 
         for (FirearmItems.Items item : FirearmItems.Items.LOOKUP) {
             UtilEnhancements.registerEnhancementsForItem(item.getItem());
+            ModelRegistryHelper.registerItemRenderer(item.getItem(), new ItemFirearmRenderer());
         }
+        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_DRILL.getItem(), new ItemSteamToolRenderer());
+        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SAW.getItem(), new ItemSteamToolRenderer());
+        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SHOVEL.getItem(), new ItemSteamToolRenderer());
 
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
@@ -152,16 +158,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(Steamcraft.ruptureDiscRenderID, new BlockRuptureDiscRenderer());
         RenderingRegistry.registerBlockHandler(Steamcraft.whistleRenderID, new BlockWhistleRenderer());
         RenderingRegistry.registerBlockHandler(Steamcraft.boilerRenderID, new BlockBoilerRenderer());
-
-
-        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.MUSKET.getItem(), new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.BLUNDERBUSS.getItem(), new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.PISTOL.getItem(), new ItemFirearmRenderer());
-        MinecraftForgeClient.registerItemRenderer(FirearmItems.Items.ROCKET_LAUNCHER.getItem(), new ItemFirearmRenderer());
-
-        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_DRILL.getItem(), new ItemSteamToolRenderer());
-        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_SAW.getItem(), new ItemSteamToolRenderer());
-        MinecraftForgeClient.registerItemRenderer(ToolItems.Items.STEAM_SHOVEL.getItem(), new ItemSteamToolRenderer());
 
         int id = Config.villagerId;
         VillagerRegistry.instance().registerVillagerSkin(id, villagerTexture);

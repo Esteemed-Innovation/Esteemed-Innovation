@@ -26,7 +26,7 @@ import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
 import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
 import flaxbeard.steamcraft.init.misc.MiscellaneousCategories;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
@@ -49,7 +49,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
@@ -169,8 +168,6 @@ public class Steamcraft {
         SOUND_WRENCH = registerSound("wrench");
         SOUND_WHISTLE = registerSound("horn");
 
-        int id = Config.villagerId;
-        VillagerRegistry.instance().registerVillagerId(id);
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
         MapGenStructureIO.registerStructureComponent(ComponentSteamWorkshop.class, "steamcraft:workshop");
         EntityRegistry.registerModEntity(EntityFloatingItem.class, "FloatingItem", 0, Steamcraft.instance, 64, 20, true);
@@ -208,8 +205,7 @@ public class Steamcraft {
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
-        
-        CrossMod.preInit(event);
+
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
           IPlayerData.DefaultImplementation.class);
         CapabilityManager.INSTANCE.register(IAnimalData.class, new AnimalDataStorage(),
@@ -218,7 +214,9 @@ public class Steamcraft {
           IVillagerData.DefaultImplementation.class);
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
-            category.getCategory().preInit();
+            if (category.isEnabled()) {
+                category.getCategory().preInit();
+            }
         }
     }
 
@@ -236,24 +234,11 @@ public class Steamcraft {
             MinecraftForge.EVENT_BUS.register(new ExosuitModelCache());
         }
 
-        tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        heaterRenderID = RenderingRegistry.getNextAvailableRenderId();
-        chargerRenderID = RenderingRegistry.getNextAvailableRenderId();
-        genocideRenderID = RenderingRegistry.getNextAvailableRenderId();
-        gaugeRenderID = RenderingRegistry.getNextAvailableRenderId();
-        ruptureDiscRenderID = RenderingRegistry.getNextAvailableRenderId();
-        whistleRenderID = RenderingRegistry.getNextAvailableRenderId();
-        boilerRenderID = RenderingRegistry.getNextAvailableRenderId();
-        //sawRenderID = RenderingRegistry.getNextAvailableRenderId();
-        //bloodBoilerRenderID = RenderingRegistry.getNextAvailableRenderId();
-
         proxy.registerRenderers();
         proxy.registerHotkeys();
         for (ItemCategories category : ItemCategories.values()) {
             category.getCategory().recipes();
         }
-
-        CrossMod.init(event);
 
         // This deprecation is moderately useless unless we add our own engineer zombie texture.
         //noinspection deprecation
@@ -264,7 +249,9 @@ public class Steamcraft {
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
-            category.getCategory().init();
+            if (category.isEnabled()) {
+                category.getCategory().init();
+            }
         }
     }
 
@@ -279,7 +266,6 @@ public class Steamcraft {
         iso.registerDusts();
         iso.addSmelting();
         iso.registerDusts();
-        CrossMod.postInit(event);
         SteamcraftBook.registerBookResearch();
 
         long start = System.currentTimeMillis();
@@ -299,7 +285,9 @@ public class Steamcraft {
         SteamcraftBook.registerSteamTools();
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
-            category.getCategory().postInit();
+            if (category.isEnabled()) {
+                category.getCategory().postInit();
+            }
         }
     }
 

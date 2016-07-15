@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration.baubles;
+package flaxbeard.steamcraft.init.misc.integration.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;

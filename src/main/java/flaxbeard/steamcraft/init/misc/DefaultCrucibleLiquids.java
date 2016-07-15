@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.init.misc;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -17,7 +18,8 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         GOLD_LIQUID(new CrucibleLiquid("gold", new ItemStack(Items.GOLD_INGOT), MetalItems.Items.GOLD_PLATE.createItemStack(), new ItemStack(Items.GOLD_NUGGET), null, 220, 157, 11)),
         ZINC_LIQUID(new CrucibleLiquid("zinc", MetalItems.Items.ZINC_INGOT.createItemStack(), MetalItems.Items.ZINC_PLATE.createItemStack(), MetalItems.Items.ZINC_NUGGET.createItemStack(), null, 225, 225, 225)),
         COPPER_LIQUID(new CrucibleLiquid("copper", MetalItems.Items.COPPER_INGOT.createItemStack(), MetalItems.Items.COPPER_PLATE.createItemStack(), MetalItems.Items.COPPER_NUGGET.createItemStack(), null, 140, 66, 12)),
-        BRASS_LIQUID(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), new CrucibleFormula(ZINC_LIQUID.getLiquid(), 1, COPPER_LIQUID.getLiquid(), 3, 4), 242, 191, 66));
+        BRASS_LIQUID(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), new CrucibleFormula(ZINC_LIQUID.getLiquid(), 1, COPPER_LIQUID.getLiquid(), 3, 4), 242, 191, 66)),
+        LEAD_LIQUID(new CrucibleLiquid("lead", findFirstOre(INGOT_LEAD), findFirstOre(PLATE_LEAD), findFirstOre(NUGGET_LEAD), null, 118, 128, 157));
 
         private CrucibleLiquid liquid;
 
@@ -29,6 +31,16 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
             return liquid;
         }
     }
+
+    private static ItemStack findFirstOre(String ore) {
+        for (ItemStack stack : OreDictionary.getOres(ore)) {
+            if (stack != null) {
+                return stack;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void init() {
         for (Liquids liquid : Liquids.values()) {
@@ -40,6 +52,7 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         CrucibleLiquid liquidZinc = Liquids.ZINC_LIQUID.getLiquid();
         CrucibleLiquid liquidCopper = Liquids.COPPER_LIQUID.getLiquid();
         CrucibleLiquid liquidBrass = Liquids.BRASS_LIQUID.getLiquid();
+        CrucibleLiquid liquidLead = Liquids.LEAD_LIQUID.getLiquid();
 
         SteamcraftRegistry.registerMeltRecipeOreDict(INGOT_GOLD, liquidGold, 9);
         SteamcraftRegistry.registerMeltRecipeOreDict(INGOT_IRON, liquidIron, 9);
@@ -99,6 +112,10 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         SteamcraftRegistry.registerOreDictDunkRecipe(INGOT_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_INGOT.createItemStack());
         SteamcraftRegistry.registerOreDictDunkRecipe(PLATE_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_PLATE.createItemStack());
         SteamcraftRegistry.registerOreDictDunkRecipe(NUGGET_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_NUGGET.createItemStack());
+
+        SteamcraftRegistry.registerMeltRecipeOreDict("ingotLead", liquidLead, 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict("nuggetLead", liquidLead, 1);
+        SteamcraftRegistry.registerMeltRecipeOreDict("plateSteamcraftLead", liquidLead, 6);
     }
 
     @Override
@@ -108,5 +125,6 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         SteamcraftRegistry.registerMeltRecipeOreDict(DUST_ZINC, Liquids.ZINC_LIQUID.getLiquid(), 9);
         SteamcraftRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER_LIQUID.getLiquid(), 9);
         SteamcraftRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS_LIQUID.getLiquid(), 9);
+        SteamcraftRegistry.registerMeltRecipeOreDict(DUST_LEAD, Liquids.LEAD_LIQUID.getLiquid(), 9);
     }
 }

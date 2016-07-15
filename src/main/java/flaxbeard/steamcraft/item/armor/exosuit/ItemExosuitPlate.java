@@ -2,14 +2,12 @@ package flaxbeard.steamcraft.item.armor.exosuit;
 
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems;
-import flaxbeard.steamcraft.integration.CrossMod;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 

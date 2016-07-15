@@ -5,10 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import flaxbeard.steamcraft.init.items.MetalItems;
-import flaxbeard.steamcraft.integration.CrossMod;
 
 
 import java.util.List;

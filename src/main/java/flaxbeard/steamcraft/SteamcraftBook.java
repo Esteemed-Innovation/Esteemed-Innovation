@@ -3,7 +3,7 @@ package flaxbeard.steamcraft;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.book.*;
 import flaxbeard.steamcraft.api.exosuit.ExosuitPlate;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import net.minecraft.client.resources.I18n;

@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration.minetweaker;
+package flaxbeard.steamcraft.init.misc.integration.crafttweaker;
 
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;

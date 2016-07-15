@@ -33,18 +33,18 @@ public class ArmorItems implements IInitCategory {
         EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exoArmorBody", Steamcraft.tab),
         EXOSUIT_LEGPIECE(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, Materials.EXOSUIT.getMaterial()), "exoArmorLegs", Steamcraft.tab),
         EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exoArmorHead", Steamcraft.tab),
-        GILDED_HELMET(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 0, "ingotGildedIron", "GildedIron"), "helmetGildedIron", Steamcraft.tabTools),
-        GILDED_CHESTPLATE(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 1, "ingotGildedIron", "GildedIron"), "chestGildedIron", Steamcraft.tabTools),
-        GILDED_LEGGINGS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 2, "ingotGildedIron", "GildedIron"), "legsGildedIron", Steamcraft.tabTools),
-        GILDED_BOOTS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, 3, "ingotGildedIron", "GildedIron"), "feetGildedIron", Steamcraft.tabTools),
-        BRASS_HELMET(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, 0, "ingotBrass", "Brass"), "helmetBrass", Steamcraft.tabTools),
-        BRASS_CHESTPLATE(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, 1, "ingotBrass", "Brass"), "chestBrass", Steamcraft.tabTools),
-        BRASS_LEGGINGS(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, 2, "ingotBrass", "Brass"), "legsBrass", Steamcraft.tabTools),
-        BRASS_BOOTS(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, 3, "ingotBrass", "Brass"), "feetBrass", Steamcraft.tabTools),
-        MONOCLE(new ItemSteamcraftGoggles(Materials.MONOCLE.getMaterial(), 2, 0, LEATHER, "Monocle"), "monacle", Steamcraft.tabTools),
-        GOGGLES(new ItemSteamcraftGoggles(Materials.MONOCLE.getMaterial(), 2, 0, LEATHER, "Goggles"), "goggles", Steamcraft.tabTools),
-        TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, 0, false), "tophatNoEmerald", Steamcraft.tabTools),
-        ENTREPRENEUR_TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, 0, true), "tophat", Steamcraft.tabTools);
+        GILDED_HELMET(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotGildedIron", "GildedIron"), "helmetGildedIron", Steamcraft.tabTools),
+        GILDED_CHESTPLATE(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotGildedIron", "GildedIron"), "chestGildedIron", Steamcraft.tabTools),
+        GILDED_LEGGINGS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotGildedIron", "GildedIron"), "legsGildedIron", Steamcraft.tabTools),
+        GILDED_BOOTS(new ItemSteamcraftArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotGildedIron", "GildedIron"), "feetGildedIron", Steamcraft.tabTools),
+        BRASS_HELMET(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotBrass", "Brass"), "helmetBrass", Steamcraft.tabTools),
+        BRASS_CHESTPLATE(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotBrass", "Brass"), "chestBrass", Steamcraft.tabTools),
+        BRASS_LEGGINGS(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotBrass", "Brass"), "legsBrass", Steamcraft.tabTools),
+        BRASS_BOOTS(new ItemSteamcraftArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotBrass", "Brass"), "feetBrass", Steamcraft.tabTools),
+        MONOCLE(new ItemSteamcraftGoggles(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monacle", Steamcraft.tabTools),
+        GOGGLES(new ItemSteamcraftGoggles(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", Steamcraft.tabTools),
+        TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, false), "tophatNoEmerald", Steamcraft.tabTools),
+        ENTREPRENEUR_TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, true), "tophat", Steamcraft.tabTools);
 
         private Item item;
 

@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration;
+package flaxbeard.steamcraft.init.misc.integration;
 
 import joshie.enchiridion.items.ItemEnchiridion;
 import net.minecraft.entity.player.EntityPlayer;

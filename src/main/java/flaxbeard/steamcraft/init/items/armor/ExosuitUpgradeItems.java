@@ -242,6 +242,9 @@ public class ExosuitUpgradeItems implements IInitCategory {
                 case GILDED_IRON_EXO: {
                     return Config.enableGildedIronPlate;
                 }
+                case LEAD_EXO: {
+                    return Config.enableLeadPlate;
+                }
                 default: {
                     return false;
                 }
@@ -635,7 +638,6 @@ public class ExosuitUpgradeItems implements IInitCategory {
 
         for (PlateItems item : PlateItems.LOOKUP) {
             switch (item) {
-                // TODO: Liquid stuff.
                 case IRON_EXO: {
                     addExosuitPlateRecipes("exoIron", PLATE_IRON, item.createItemStack(), DefaultCrucibleLiquids.Liquids.IRON_LIQUID.getLiquid());
                     break;
@@ -660,8 +662,9 @@ public class ExosuitUpgradeItems implements IInitCategory {
                     addExosuitPlateRecipes("exoGildedIron", PLATE_GILDED_IRON, item.createItemStack());
                     break;
                 }
-                case LEAD_EXO: { // TODO Lead
-                    addExosuitPlateRecipes("exoLead", PLATE_LEAD, item.createItemStack(), liquidLead);
+                case LEAD_EXO: {
+
+                    addExosuitPlateRecipes("exoLead", PLATE_LEAD, item.createItemStack(), DefaultCrucibleLiquids.Liquids.LEAD_LIQUID.getLiquid());
                 }
             }
         }

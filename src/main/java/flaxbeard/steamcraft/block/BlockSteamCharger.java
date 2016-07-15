@@ -4,7 +4,7 @@ import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 
 import net.minecraft.block.BlockHorizontal;

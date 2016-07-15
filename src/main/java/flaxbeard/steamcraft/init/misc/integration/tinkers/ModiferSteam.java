@@ -1,4 +1,4 @@
-package flaxbeard.steamcraft.integration.tinkers;
+package flaxbeard.steamcraft.init.misc.integration.tinkers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

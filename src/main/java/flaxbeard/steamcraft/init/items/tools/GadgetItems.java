@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.init.items.tools;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -13,8 +12,8 @@ import flaxbeard.steamcraft.api.enhancement.IEnhancement;
 import flaxbeard.steamcraft.handler.CanisterHandler;
 import flaxbeard.steamcraft.init.IInitCategory;
 import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
-import flaxbeard.steamcraft.integration.CrossMod;
-import flaxbeard.steamcraft.integration.baubles.BaublesIntegration;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.baubles.BaublesIntegration;
 import flaxbeard.steamcraft.item.ItemAstrolabe;
 import flaxbeard.steamcraft.item.ItemSteamCell;
 import flaxbeard.steamcraft.item.ItemSteamcraftBook;

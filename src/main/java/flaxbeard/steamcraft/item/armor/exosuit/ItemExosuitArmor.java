@@ -11,7 +11,7 @@ import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.client.render.model.exosuit.ModelExosuit;
 import flaxbeard.steamcraft.gui.GuiEngineeringTable;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
-import flaxbeard.steamcraft.integration.CrossMod;
+import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
