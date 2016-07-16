@@ -99,14 +99,11 @@ public class SteamNetwork {
         Coord4 transCoords = trans.getCoords();
         for (EnumFacing d : trans.getConnectionSides()) {
             TileEntity te = trans.getWorld().getTileEntity(transCoords.pos.offset(d));
-            if (te != null && te instanceof ISteamTransporter) {
-                if (te != trans) {
-                    ISteamTransporter t = (ISteamTransporter) te;
-                    if (t.getConnectionSides().contains(d.getOpposite())) {
-                        out.add(t);
-                    }
+            if (te != null && te instanceof ISteamTransporter && te != trans) {
+                ISteamTransporter t = (ISteamTransporter) te;
+                if (t.getConnectionSides().contains(d.getOpposite())) {
+                    out.add(t);
                 }
-
             }
         }
         return out;

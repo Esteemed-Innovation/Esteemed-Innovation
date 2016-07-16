@@ -52,9 +52,11 @@ public class Coord4 {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof Coord4 &&
-          this.pos.equals(((Coord4) other).pos) &&
-          this.dimension == ((Coord4) other).dimension;
+        if (other instanceof Coord4) {
+            Coord4 coord = (Coord4) other;
+            return pos.equals(coord.pos) && dimension == coord.dimension;
+        }
+        return false;
     }
 
     @Override

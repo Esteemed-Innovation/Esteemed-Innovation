@@ -73,7 +73,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
     }
 
     private void setValidDistributionDirections(EnumFacing orientation) {
-        EnumFacing[] directions = new EnumFacing[6];
+        EnumFacing[] directions = new EnumFacing[5];
         int i = 0;
         for (EnumFacing dir : EnumFacing.VALUES) {
             if (dir != orientation) {

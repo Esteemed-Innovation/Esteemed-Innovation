@@ -42,12 +42,11 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     }
 
     public SteamTransporterTileEntity(EnumFacing[] distributionDirections) {
-        this.capacity = 10000;
-        this.distributionDirections = distributionDirections;
+        this(10_000, distributionDirections);
     }
 
     public SteamTransporterTileEntity(int capacity, EnumFacing[] distributionDirections) {
-        this(distributionDirections);
+        this.distributionDirections = distributionDirections;
         this.capacity = capacity;
     }
 
@@ -180,7 +179,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
         return isValidSteamSide(face);
     }
 
-
     @Override
     public boolean acceptsGauge(EnumFacing face) {
         return !gaugeSideBlacklist.contains(face);
@@ -209,7 +207,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     public Coord4 getCoords() {
         return new Coord4(pos, worldObj.provider.getDimension());
     }
-
 
     public void setNetworkName(String name) {
         this.networkName = name;
