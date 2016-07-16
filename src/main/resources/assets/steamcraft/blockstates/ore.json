@@ -1,0 +1,41 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "variant": {
+      "overworld_copper": {
+        "textures": {
+          "all": "steamcraft:blocks/oreCopper"
+        }
+      },
+      "overworld_zinc": {
+        "textures": {
+          "all": "steamcraft:blocks/oreZinc"
+        }
+      },
+      "nether_copper": {
+        "textures": {
+          "all": "steamcraft:blocks/copper_nether"
+        }
+      },
+      "nether_zinc": {
+        "textures": {
+          "all": "steamcraft:blocks/zinc_nether"
+        }
+      },
+      "end_copper": {
+        "textures": {
+          "all": "steamcraft:blocks/copper_end"
+        }
+      },
+      "end_zinc": {
+        "textures": {
+          "all": "steamcraft:blocks/zinc_end"
+        }
+      }
+    }
+  }
+}

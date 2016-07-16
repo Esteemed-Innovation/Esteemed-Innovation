@@ -220,6 +220,9 @@ public class Steamcraft {
                 category.getCategory().preInit();
             }
         }
+
+
+        proxy.registerModels();
     }
 
     @Mod.EventHandler

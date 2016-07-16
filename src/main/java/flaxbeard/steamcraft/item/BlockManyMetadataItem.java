@@ -8,7 +8,7 @@ public class BlockManyMetadataItem extends ItemBlock {
 
     public BlockManyMetadataItem(Block block) {
         super(block);
-        this.setHasSubtypes(true);
+        setHasSubtypes(true);
     }
 
     @Override

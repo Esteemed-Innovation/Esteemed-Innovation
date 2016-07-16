@@ -20,8 +20,8 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.PLANK_WOOD;
 public class CastingBlocks implements IInitCategory {
     public enum Blocks {
         CRUCIBLE(new BlockSteamcraftCrucible(), "crucible"),
-        NETHER_CRUCIBLE(new BlockSteamcraftCrucible(), "hellCrucible"),
-        CARVING_TABLE(new BlockCarvingTable(), "carving"),
+        NETHER_CRUCIBLE(new BlockSteamcraftCrucible(), "hell_crucible"),
+        CARVING_TABLE(new BlockCarvingTable(), "carving_table"),
         MOLD(new BlockMold(), "mold");
 
         private Block block;
@@ -66,7 +66,9 @@ public class CastingBlocks implements IInitCategory {
     }
 
     @Override
-    public void oreDict() {}
+    public void oreDict() {
+        Blocks.values();
+    }
 
     @Override
     public void recipes() {

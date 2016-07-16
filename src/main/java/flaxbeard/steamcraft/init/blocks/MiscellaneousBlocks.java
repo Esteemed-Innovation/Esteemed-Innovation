@@ -46,7 +46,9 @@ public class MiscellaneousBlocks implements IInitCategory {
     }
 
     @Override
-    public void oreDict() {}
+    public void oreDict() {
+        Blocks.values();
+    }
 
     @Override
     public void recipes() {

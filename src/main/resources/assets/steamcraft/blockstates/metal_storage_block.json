@@ -1,29 +1,29 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube_all",
-    "uvlock": true
+    "model": "minecraft:cube_all",
+    "transform": "forge:default-block"
   },
   "variants": {
     "variant": {
-      "0": {
+      "copper": {
         "textures": {
-          "texture": "flaxbeardssteampower:blocks/blockCopper"
+          "all": "steamcraft:blocks/blockCopper"
         }
       },
-      "1": {
+      "zinc": {
         "textures": {
-          "texture": "flaxbeardssteampower:blocks/blockZinc"
+          "all": "steamcraft:blocks/blockZinc"
         }
       },
-      "2": {
+      "brass": {
         "textures": {
-          "texture": "flaxbeardssteampower:blocks/blockBrass"
+          "all": "steamcraft:blocks/blockBrass"
         }
       },
-      "3": {
+      "gilded_iron": {
         "textures": {
-          "texture": "blocks/gold_block"
+          "all": "minecraft:blocks/gold_block"
         }
       }
     }

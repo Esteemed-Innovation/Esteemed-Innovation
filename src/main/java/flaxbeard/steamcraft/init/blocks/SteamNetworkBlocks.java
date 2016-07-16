@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.init.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -19,15 +20,15 @@ import static net.minecraft.init.Items.*;
 public class SteamNetworkBlocks implements IInitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
-        BOILER_ON(new BlockBoiler(), "boilerOn"),
-        FLASH_BOILER(new BlockFlashBoiler(), "flashBoiler"),
+        BOILER_ON(new BlockBoiler(), "boiler_on"),
+        FLASH_BOILER(new BlockFlashBoiler(), "flash_boiler"),
         PIPE(new BlockPipe(), "pipe"),
-        VALVE_PIPE(new BlockValvePipe(), "valvePipe"),
-        TANK(new BlockSteamTank(), "steamTank"),
+        VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
+        TANK(new BlockSteamTank(), "steam_tank"),
         STEAM_GAUGE(new BlockSteamGauge(), "meter"),
-        RUPTURE_DISC(new BlockRuptureDisc(), "ruptureDisc"),
+        RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc"),
         STEAM_WHISTLE(new BlockWhistle(), "horn"),
-        PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "fluidSteamConverter");
+        PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "fluid_steam_converter");
 
         private Block block;
 
@@ -89,7 +90,9 @@ public class SteamNetworkBlocks implements IInitCategory {
     }
 
     @Override
-    public void oreDict() {}
+    public void oreDict() {
+        Blocks.values();
+    }
 
     @Override
     public void recipes() {

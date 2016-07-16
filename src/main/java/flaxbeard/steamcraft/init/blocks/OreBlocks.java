@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.init.IInitCategory;
+import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 
 import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
@@ -23,7 +24,7 @@ public class OreBlocks implements IInitCategory {
 
         static {
             GameRegistry.register(ORE_BLOCK);
-            GameRegistry.register(new ItemBlock(ORE_BLOCK).setRegistryName(ORE_BLOCK.getRegistryName()));
+            GameRegistry.register(new BlockManyMetadataItem(ORE_BLOCK).setRegistryName(ORE_BLOCK.getRegistryName()));
         }
         private int meta;
 
@@ -41,7 +42,6 @@ public class OreBlocks implements IInitCategory {
 
         public ItemStack createItemStack(int size) {
             return new ItemStack(ORE_BLOCK, size, getMetadata());
-//            return new ItemStack(ORE_ITEMBLOCK, size, getMetadata());
         }
     }
 

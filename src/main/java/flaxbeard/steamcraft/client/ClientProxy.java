@@ -1,7 +1,10 @@
 package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.block.BlockBeacon;
+import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.client.render.colorhandlers.*;
 import flaxbeard.steamcraft.client.render.entity.*;
 import flaxbeard.steamcraft.client.render.item.ItemFirearmRenderer;
@@ -12,6 +15,7 @@ import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
+import flaxbeard.steamcraft.init.blocks.*;
 import flaxbeard.steamcraft.init.items.MetalItems;
 import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
@@ -22,11 +26,13 @@ import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -34,20 +40,93 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.FMLLog;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
 
 public class ClientProxy extends CommonProxy {
     public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
+
+    /**
+     * Registers a block model for all of the provided variants. This registers it specifically for the ItemBlock.
+     * @param block The block
+     * @param name The name of the property as passed to IProperty.create
+     * @param variants All of the variants (probably Enum.values())
+     */
+    private void registerModelAllVariants(Block block, String name, IStringSerializable[] variants) {
+        registerModelAllVariants(Item.getItemFromBlock(block), name, variants);
+    }
+
+    /**
+     * Registers an item model for all of the provided variants
+     * @param item The item
+     * @param name see #registerModelAllVariants
+     * @param variants see #registerModelAllVariants
+     */
+    private void registerModelAllVariants(Item item, String name, IStringSerializable[] variants) {
+        for (int i = 0; i < variants.length; i++) {
+            IStringSerializable string = variants[i];
+            registerModel(item, i, name + "=" + string.getName());
+        }
+    }
+
+    /**
+     * Registers the block's model for metadata 0 and variant "inventory".
+     * @param block the block
+     */
+    private void registerModel(Block block) {
+        registerModel(Item.getItemFromBlock(block));
+    }
+
+    /**
+     * Registers the item's model for metadata 0 and variant "inventory".
+     * @param item the item
+     */
+    private void registerModel(Item item) {
+        registerModel(item, 0);
+    }
+
+    /**
+     * Registers an item's model with a specific metadata value and variant "inventory".
+     * @param item the item
+     * @param meta the metadata
+     */
+    private void registerModel(Item item, int meta) {
+        registerModel(item, meta, "inventory");
+    }
+
+    /**
+     * Registers the item's model with the according variant.
+     * @param item The item
+     * @param meta The metadata
+     * @param variant The variant. If a specific property, it should likely be "property=name"
+     */
+    private void registerModel(Item item, int meta, String variant) {
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), variant));
+    }
+
+    @Override
+    public void registerModels() {
+        registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
+        registerModel(SteamNetworkBlocks.Blocks.BOILER_ON.getBlock());
+        registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
+          BlockBeacon.MetalBlockTypes.values());
+        registerModel(CastingBlocks.Blocks.CARVING_TABLE.getBlock());
+        registerModelAllVariants(OreBlocks.Blocks.ORE_BLOCK, BlockSteamcraftOre.VARIANT.getName(),
+          BlockSteamcraftOre.OreBlockTypes.LOOKUP);
+        registerModel(MiscellaneousBlocks.Blocks.ENGINEERING_TABLE.getBlock());
+    }
 
     @Override
     public void registerHotkeys() {

@@ -19,14 +19,14 @@ public class SteamMachineryBlocks implements IInitCategory {
     public enum Blocks {
         ARCHIMEDES_SCREW(new BlockPump(), "pump"),
         ROCK_SMASHER(new BlockSmasher(), "smasher"),
-        ROCK_SMASHER_DUMMY(new BlockDummy(), "dummy", true),
+        ROCK_SMASHER_DUMMY(new BlockDummy(), "smasher_dummy", true),
         STEAM_HEATER(new BlockSteamHeater(), "heater"),
-        FILLING_PAD(new BlockChargingPad(), "chargingPad"),
+        FILLING_PAD(new BlockChargingPad(), "charging_pad"),
         STEAM_FILLER(new BlockSteamCharger(), "charger"),
         STEAM_HAMMER(new BlockSteamHammer(), "hammer"),
-        ITEM_MORTAR(new BlockItemMortar(), "itemMortar"),
+        ITEM_MORTAR(new BlockItemMortar(), "item_mortar"),
         THUMPER(new BlockThumper(), "thumper"),
-        THUMPER_DUMMY(new BlockThumperDummy(), "thumperDummy", true),
+        THUMPER_DUMMY(new BlockThumperDummy(), "thumper_dummy", true),
         FAN(new BlockFan(), "fan"),
         VACUUM(new BlockVacuum(), "vacuum");
 
@@ -100,7 +100,9 @@ public class SteamMachineryBlocks implements IInitCategory {
     }
 
     @Override
-    public void oreDict() {}
+    public void oreDict() {
+        Blocks.values();
+    }
 
     @Override
     public void recipes() {

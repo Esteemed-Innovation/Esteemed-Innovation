@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.block.BlockBeacon;
 import flaxbeard.steamcraft.init.IInitCategory;
+import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 
 import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 import static flaxbeard.steamcraft.init.misc.CraftingHelpers.add3x3Recipe;
@@ -19,11 +20,11 @@ public class MetalBlocks implements IInitCategory {
         BRASS(2),
         GILDED_IRON(3);
 
-        private static Block block = new BlockBeacon(Material.IRON);
+        public static Block BLOCK = new BlockBeacon(Material.IRON);
 
         static {
-            GameRegistry.register(block);
-            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+            GameRegistry.register(BLOCK);
+            GameRegistry.register(new BlockManyMetadataItem(BLOCK).setRegistryName(BLOCK.getRegistryName()));
         }
 
         private int meta;
@@ -41,7 +42,7 @@ public class MetalBlocks implements IInitCategory {
         }
 
         public ItemStack createItemStack(int size) {
-            return new ItemStack(block, size, getMetadata());
+            return new ItemStack(BLOCK, size, getMetadata());
         }
     }
 

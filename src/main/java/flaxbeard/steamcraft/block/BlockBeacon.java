@@ -27,8 +27,9 @@ public class BlockBeacon extends Block {
         setUnlocalizedName(Steamcraft.MOD_ID + ":metal_storage_block");
         setHardness(5F);
         setResistance(10F);
-        setRegistryName(Steamcraft.MOD_ID, "metal_storage_block");
+        setDefaultState(blockState.getBaseState().withProperty(VARIANT, MetalBlockTypes.byMetadata(0)));
         setSoundType(SoundType.METAL);
+        setRegistryName(Steamcraft.MOD_ID, "metal_storage_block");
     }
 
     @Override
