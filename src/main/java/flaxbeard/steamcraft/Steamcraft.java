@@ -217,7 +217,7 @@ public class Steamcraft {
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
             if (category.isEnabled()) {
-                category.getCategory().preInit();
+                category.getCategory().preInit(event);
             }
         }
 
@@ -260,7 +260,7 @@ public class Steamcraft {
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
             if (category.isEnabled()) {
-                category.getCategory().init();
+                category.getCategory().init(event);
             }
         }
     }
@@ -297,7 +297,7 @@ public class Steamcraft {
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
             if (category.isEnabled()) {
-                category.getCategory().postInit();
+                category.getCategory().postInit(event);
             }
         }
     }
