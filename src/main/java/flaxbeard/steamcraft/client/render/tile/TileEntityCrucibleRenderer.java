@@ -81,7 +81,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
             float height = (2F + (fill / 90F) * 11F) / 16F;
             GlStateManager.rotate(180F, 1F, 0F, 0F);
             GlStateManager.translate(0F, -height, -1F);
-            renderLiquid(crucible, x, y, z, height);
+            renderLiquid(crucible);
             GlStateManager.enableBlend();
         }
         GlStateManager.popMatrix();
@@ -92,7 +92,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         }
     }
 
-    private void renderLiquid(TileEntityCrucible crucible, double x, double y, double z, float height) {
+    private void renderLiquid(TileEntityCrucible crucible) {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(BlockSteamcraftCrucible.LIQUID_ICON_RL.toString());
         // See crucible_liquid mcmeta
