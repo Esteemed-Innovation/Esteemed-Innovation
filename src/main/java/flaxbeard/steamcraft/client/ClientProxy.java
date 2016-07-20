@@ -1,9 +1,9 @@
 package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.block.BlockBeacon;
+import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.client.render.colorhandlers.*;
 import flaxbeard.steamcraft.client.render.entity.*;
@@ -26,13 +26,11 @@ import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -50,7 +48,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
@@ -126,6 +123,8 @@ public class ClientProxy extends CommonProxy {
         registerModelAllVariants(OreBlocks.Blocks.ORE_BLOCK, BlockSteamcraftOre.VARIANT.getName(),
           BlockSteamcraftOre.OreBlockTypes.LOOKUP);
         registerModel(MiscellaneousBlocks.Blocks.ENGINEERING_TABLE.getBlock());
+        registerModel(CastingBlocks.Blocks.CRUCIBLE.getBlock());
+        registerModel(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock());
     }
 
     @Override
@@ -179,8 +178,7 @@ public class ClientProxy extends CommonProxy {
             }
         });
 
-        // TODO: Figure out what to do about the normal/nether crucible differences.
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TileEntityCrucibleRenderer(true));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TileEntityCrucibleRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMold.class, new TileEntityMoldRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamCharger.class, new TileEntitySteamChargerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());

@@ -1,17 +1,13 @@
 package flaxbeard.steamcraft.init.misc;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.init.items.MetalItems;
 import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
@@ -45,13 +41,6 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
             }
         }
         return null;
-    }
-
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        if (event.getSide() == Side.CLIENT) {
-            Minecraft.getMinecraft().getTextureMapBlocks().registerSprite(BlockSteamcraftCrucible.LIQUID_ICON);
-        }
     }
 
     @Override

@@ -196,7 +196,7 @@ public class BlockFlashBoiler extends BlockSteamTransporter {
     public enum Corners implements IStringSerializable {
         // This one is for when the flash boiler is not a fully constructed multiblock.
         NONE("none", null, null, null),
-        // This one is arbitrarily the primary flash boiler ORE_BLOCK.
+        // This one is arbitrarily the primary flash boiler block.
         TOP_LEFT_BACK("top_left_back", Vertical.TOP, Side.LEFT, Direction.BACK),
         TOP_LEFT_FRONT("top_left_front", Vertical.TOP, Side.LEFT, Direction.FRONT),
         TOP_RIGHT_BACK("top_right_back", Vertical.TOP, Side.RIGHT, Direction.BACK),

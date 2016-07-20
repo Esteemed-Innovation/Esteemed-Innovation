@@ -4,6 +4,8 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,17 +28,16 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
     public int tipTicks = 0;
     private int targetFill = -1;
     private boolean tipping;
-    private EnumFacing[] dirs = {
-      EnumFacing.SOUTH,
-      EnumFacing.WEST,
-      EnumFacing.NORTH,
-      EnumFacing.EAST
-    };
     public boolean isPowered;
     private int lastComparatorOutput = 0;
 
     public TileEntityCrucible() {
         isPowered = false;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
     }
 
     @Override
@@ -111,7 +112,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
             contents.add(liquid);
             number.put(liquid, (int) nbttagcompound1.getShort("amount"));
         }
-        markDirty();
+        worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 8);
     }
 
     @Override
@@ -122,7 +123,8 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
         if (this.getFill() == targetFill) {
             hasUpdated = true;
         }
-        int meta = getBlockMetadata();
+        IBlockState state = worldObj.getBlockState(pos);
+        EnumFacing myDir = state.getValue(BlockSteamcraftCrucible.FACING);
 
         if (worldObj.isBlockIndirectlyGettingPowered(pos) > 0) {
             isPowered = true;
@@ -130,9 +132,9 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
         if (tipping || isPowered) {
             tipTicks++;
             if (tipTicks == 45 && !worldObj.isRemote) {
-                int posX = pos.getX() + dirs[meta].getFrontOffsetX();
+                int posX = pos.getX() + myDir.getFrontOffsetX();
                 int posY = pos.getY();
-                int posZ = pos.getZ() + dirs[meta].getFrontOffsetZ();
+                int posZ = pos.getZ() + myDir.getFrontOffsetZ();
                 BlockPos offsetPos = new BlockPos(posX, posY, posZ);
                 TileEntity tile = worldObj.getTileEntity(offsetPos);
                 if (tile != null && tile instanceof TileEntityMold) {
@@ -208,7 +210,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
             markDirty();
         }
         if (needsUpdate) {
-            markDirty();
+            worldObj.notifyBlockUpdate(pos, state, worldObj.getBlockState(pos), 0);
             needsUpdate = false;
         }
 
@@ -239,7 +241,6 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
                 hasUpdated = false;
                 targetFill = fill + amount;
                 needsUpdate = true;
-
             }
         }
         return stack;
@@ -263,7 +264,6 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
     public void setTipping() {
         tipping = true;
         tipTicks = 0;
-        needsUpdate = true;
     }
 
     public int getComparatorOutput() {

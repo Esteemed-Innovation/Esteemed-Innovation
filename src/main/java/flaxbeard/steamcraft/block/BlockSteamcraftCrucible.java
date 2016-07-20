@@ -1,5 +1,6 @@
 package flaxbeard.steamcraft.block;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
@@ -14,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -22,21 +22,36 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final float PX = (1.0F / 16.0F);
-    public TextureAtlasSprite liquidIcon;
+    public static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(PX, PX, PX, 1F - PX, 1F - PX, 1F - PX);
+    public static final ResourceLocation LIQUID_ICON_RL = new ResourceLocation(Steamcraft.MOD_ID, "blocks/crucible_liquid");
 
     public BlockSteamcraftCrucible() {
         super(Material.ROCK);
         setHardness(3.5F);
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
     @Override
@@ -46,20 +61,27 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+        EnumFacing dir = EnumFacing.getFront(meta);
+
+        if (dir.getAxis() == EnumFacing.Axis.Y) {
+            dir = EnumFacing.NORTH;
+        }
+        return getDefaultState().withProperty(FACING, dir);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        return new AxisAlignedBB(x + PX, y + 0.0F + PX, z + PX, x + 1.0F - PX, y + 1.0F - PX, z + 1.0F - PX);
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return CRUCIBLE_AABB;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
     }
 
     @Override
@@ -134,6 +156,7 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
                         } else {
                             item.setEntityItemStack(out);
                         }
+                        crucible.needsUpdate = true;
 //                    }
                 }
             }
@@ -146,7 +169,12 @@ public class BlockSteamcraftCrucible extends BlockContainer implements IWrenchab
     }
 
     @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityCrucible();
     }
 

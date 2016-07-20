@@ -3,6 +3,7 @@ package flaxbeard.steamcraft;
 import flaxbeard.steamcraft.api.DrillHeadRecipe;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
+import flaxbeard.steamcraft.client.render.TextureStitcher;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.data.capabilities.animal.AnimalDataStorage;
@@ -85,9 +86,7 @@ public class Steamcraft {
     @CapabilityInject(IVillagerData.class)
     public static final Capability<IVillagerData> VILLAGER_DATA = null;
 
-    // TODO: Rename everything.
     public static final String MOD_ID = "steamcraft";
-//    public static final String MOD_ID = "flaxbeardssteampower";
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
     public static SimpleNetworkWrapper channel;
@@ -221,7 +220,6 @@ public class Steamcraft {
             }
         }
 
-
         proxy.registerModels();
     }
 
@@ -268,6 +266,9 @@ public class Steamcraft {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            MinecraftForge.EVENT_BUS.register(new TextureStitcher());
+        }
         if (Config.enablePipe) {
             MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         }
