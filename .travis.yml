@@ -15,4 +15,4 @@ notifications:
     skip_join: true
 branches:
   only:
-    - master
+    - 1.9
