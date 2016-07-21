@@ -178,6 +178,10 @@ public class ClientProxy extends CommonProxy {
                 registerModel(item.getItem());
             }
         }
+
+        for (ToolUpgradeItems.Items item : ToolUpgradeItems.Items.LOOKUP) {
+            registerModel(item.getItem());
+        }
     }
 
     @Override
