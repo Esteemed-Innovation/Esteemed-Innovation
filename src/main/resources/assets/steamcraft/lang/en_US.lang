@@ -629,13 +629,14 @@ item.steamcraft:canister.name=Item Canister
 
 item.steamcraft:kek.name=Toppest of Keks
 
-
-item.steamcraft:steamedChicken.name=Steamed Chicken
-item.steamcraft:steamedBeef.name=Steamed Beef
-item.steamcraft:steamedFish.name=Steamed Fish
-item.steamcraft:steamedPorkchop.name=Steamed Porkchop
+item.steamcraft:steamed_chicken.name=Steamed Chicken
+item.steamcraft:steamed_beef.name=Steamed Beef
+item.steamcraft:steamed_fish.name=Steamed Fish
+item.steamcraft:steamed_porkchop.name=Steamed Porkchop
+item.steamcraft:steamed_salmon.name=Steamed Salmon
+item.steamcraft:steamed_mutton.name=Steamed Mutton
+item.steamcraft:steamed_rabbit.name=Steamed Rabbit
 item.steamcraft:steamedImphide.name=Steamed Imphide
-item.steamcraft:steamedSalmon.name=Steamed Salmon
 
 item.toolHead.headAxeBrass.name=Brass Axe Head
 item.toolHead.headPickaxeBrass.name=Brass Pickaxe Head

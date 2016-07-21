@@ -14,11 +14,13 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
 public class FoodItems implements IInitCategory {
     public enum Items {
-        STEAMED_FISH(new ItemSteamedFood((ItemFood) COOKED_FISH), "steamedFish"),
-        STEAMED_SALMON(new ItemSteamedFood(new ItemStack(COOKED_FISH, 1, 1)), "steamedSalmon"),
-        STEAMED_CHICKEN(new ItemSteamedFood((ItemFood) COOKED_CHICKEN), "steamedChicken"),
-        STEAMED_BEEF(new ItemSteamedFood((ItemFood) COOKED_BEEF), "steamedBeef"),
-        STEAMED_PORKCHOP(new ItemSteamedFood((ItemFood) COOKED_PORKCHOP), "steamedPorkchop");
+        STEAMED_FISH(new ItemSteamedFood((ItemFood) COOKED_FISH), "steamed_fish"),
+        STEAMED_SALMON(new ItemSteamedFood(new ItemStack(COOKED_FISH, 1, 1)), "steamed_salmon"),
+        STEAMED_CHICKEN(new ItemSteamedFood((ItemFood) COOKED_CHICKEN), "steamed_chicken"),
+        STEAMED_BEEF(new ItemSteamedFood((ItemFood) COOKED_BEEF), "steamed_beef"),
+        STEAMED_PORKCHOP(new ItemSteamedFood((ItemFood) COOKED_PORKCHOP), "steamed_porkchop"),
+        STEAMED_MUTTON(new ItemSteamedFood((ItemFood) COOKED_MUTTON), "steamed_mutton"),
+        STEAMED_RABBIT(new ItemSteamedFood((ItemFood) COOKED_RABBIT), "steamed_rabbit");
 
         private ItemSteamedFood item;
 
@@ -43,9 +45,10 @@ public class FoodItems implements IInitCategory {
         OreDictionary.registerOre(ALL_PORK_COOKED, Items.STEAMED_PORKCHOP.getItem());
         OreDictionary.registerOre(ALL_BEEF_COOKED, Items.STEAMED_BEEF.getItem());
 
-        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_BEEF.getItem());
-        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_CHICKEN.getItem());
-        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_PORKCHOP.getItem());
+        // Right now all food items are meat, be careful of this in the future if adding more foods.
+        for (Items item : Items.values()) {
+            OreDictionary.registerOre(ALL_MEAT_COOKED, item.getItem());
+        }
     }
 
     @Override
@@ -71,6 +74,14 @@ public class FoodItems implements IInitCategory {
                 }
                 case STEAMED_SALMON: {
                     SteamcraftRegistry.addSteamingRecipe(COOKED_FISH, 1, item.getItem(), 0);
+                    break;
+                }
+                case STEAMED_MUTTON: {
+                    SteamcraftRegistry.addSteamingRecipe(COOKED_MUTTON, item.getItem());
+                    break;
+                }
+                case STEAMED_RABBIT: {
+                    SteamcraftRegistry.addSteamingRecipe(COOKED_RABBIT, item.getItem());
                     break;
                 }
             }
