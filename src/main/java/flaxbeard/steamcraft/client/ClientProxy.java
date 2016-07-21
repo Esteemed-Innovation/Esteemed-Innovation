@@ -24,6 +24,7 @@ import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
 import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
+import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
@@ -151,6 +152,20 @@ public class ClientProxy extends CommonProxy {
         }
         for (MetalcastingItems.Items item : MetalcastingItems.Items.values()) {
             registerModel(item.getItem());
+        }
+
+        {
+            Item item = MetalItems.Items.SMASHED_ORE.getItem();
+            for (Integer meta : ItemSmashedOre.map.keySet()) {
+                registerModel(item, meta);
+            }
+        }
+
+        for (MetalItems.Items item : MetalItems.Items.values()) {
+            // Skip the smashed ore because we just registered its model.
+            if (item.hasType()) {
+                registerModelItemStack(item.createItemStack());
+            }
         }
     }
 

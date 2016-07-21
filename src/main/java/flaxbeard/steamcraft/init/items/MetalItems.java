@@ -41,7 +41,7 @@ public class MetalItems implements IInitCategory {
         GILDED_IRON_PLATE(3, Types.PLATE),
         IRON_PLATE(4, Types.PLATE),
         GOLD_PLATE(5, Types.PLATE),
-        SMASHED_ORE(new ItemSmashedOre(), "smashedOre");
+        SMASHED_ORE(new ItemSmashedOre(), "smashed_ore");
 
         private Types type;
         private int metadata;
@@ -146,6 +146,10 @@ public class MetalItems implements IInitCategory {
         OreDictionary.registerOre(PLATE_GILDED_IRON, Items.GILDED_IRON_PLATE.createItemStack());
         OreDictionary.registerOre(PLATE_IRON, Items.IRON_PLATE.createItemStack());
         OreDictionary.registerOre(PLATE_GOLD, Items.GOLD_PLATE.createItemStack());
+
+        ItemSmashedOre iso = (ItemSmashedOre) Items.SMASHED_ORE.getItem();
+        ((ItemSmashedOre) Items.SMASHED_ORE.getItem()).registerDefaultEntries();
+        iso.registerDusts();
     }
 
     @Override
@@ -179,5 +183,9 @@ public class MetalItems implements IInitCategory {
         REGISTRY.registerSmashable(GRAVEL_ORE, new ItemStack(SAND));
         REGISTRY.registerSmashable(GLOWSTONE_ORE, new ItemStack(GLOWSTONE_DUST, 4));
         REGISTRY.registerSmashable(SANDSTONE_ORE, new ItemStack(SAND));
+
+        ItemSmashedOre iso = (ItemSmashedOre) Items.SMASHED_ORE.getItem();
+        ((ItemSmashedOre) Items.SMASHED_ORE.getItem()).registerDefaultEntries();
+        iso.addSmelting();
     }
 }

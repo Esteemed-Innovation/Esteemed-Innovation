@@ -273,10 +273,6 @@ public class Steamcraft {
             MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         }
 
-        ItemSmashedOre iso = (ItemSmashedOre) MetalItems.Items.SMASHED_ORE.getItem();
-        iso.registerDusts();
-        iso.addSmelting();
-        iso.registerDusts();
         SteamcraftBook.registerBookResearch();
 
         long start = System.currentTimeMillis();

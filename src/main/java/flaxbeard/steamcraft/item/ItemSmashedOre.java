@@ -24,7 +24,11 @@ public class ItemSmashedOre extends Item {
         super();
         setHasSubtypes(true);
 
-        //standard
+        //Potentially removes a recipe
+        //TileEntitySmasher.REGISTRY.oreDicts.remove("oreIron");
+    }
+
+    public void registerDefaultEntries() {
         registerEntry(0, "Iron", "ingotIron", 0xC0A188);
         registerEntry(1, "Gold", "ingotGold", 0xE0D500);
         registerEntry(2, "Copper", "ingotCopper", 0x94451F);
@@ -38,14 +42,6 @@ public class ItemSmashedOre extends Item {
         registerEntry(10, "Cobalt", "ingotCobalt", 0x193DA9);
         registerEntry(11, "Ardite", "ingotArdite", 0xA7890E);
         registerEntry(12, "Cinnabar", "quicksilver", 0x562526);
-
-        ModelResourceLocation loc = new ModelResourceLocation("steamcraft:smashed_ore", "inventory");
-        for (Integer meta : map.keySet()) {
-            ModelLoader.setCustomModelResourceLocation(this, meta, loc);
-        }
-
-        //Potentially removes a recipe
-        //TileEntitySmasher.REGISTRY.oreDicts.remove("oreIron");
     }
 
     private void registerEntry(int meta, String name, String smeltingResult, int color) {
@@ -76,9 +72,7 @@ public class ItemSmashedOre extends Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (Entry<Integer, String[]> entry : map.entrySet()) {
-            if (!OreDictionary.getOres("ore" + entry.getValue()[0]).isEmpty()) {
-                list.add(new ItemStack(item, 1, entry.getKey()));
-            }
+            list.add(new ItemStack(item, 1, entry.getKey()));
         }
     }
 
