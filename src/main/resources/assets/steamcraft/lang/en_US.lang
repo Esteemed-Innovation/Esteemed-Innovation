@@ -414,11 +414,11 @@ itemGroup.steamcraft=FSP
 itemGroup.steamcraftTools=FSP Tools
 steamcraft.enhancementText=Enhancements:
 
-item.steamcraft:musketCartridge.name=Musket Cartridge
+item.steamcraft:musket_cartridge.name=Musket Cartridge
 item.steamcraft:rocket.name=Rocket
 item.steamcraft:rocket.name.2=Normal Rocket
-item.steamcraft:rocketConcussive.name=Concussive Rocket
-item.steamcraft:rocketMiner.name=Mining Charge
+item.steamcraft:rocket_concussive.name=Concussive Rocket
+item.steamcraft:rocket_miner.name=Mining Charge
 
 item.steamcraft:musket.name=Flintlock Musket
 item.steamcraft:rocketLauncher.name=Rocket Launcher

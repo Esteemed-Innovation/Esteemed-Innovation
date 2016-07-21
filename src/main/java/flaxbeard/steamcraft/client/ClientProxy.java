@@ -21,6 +21,7 @@ import flaxbeard.steamcraft.init.items.FoodItems;
 import flaxbeard.steamcraft.init.items.MetalItems;
 import flaxbeard.steamcraft.init.items.MetalcastingItems;
 import flaxbeard.steamcraft.init.items.armor.ArmorItems;
+import flaxbeard.steamcraft.init.items.firearms.FirearmAmmunitionItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
@@ -180,6 +181,10 @@ public class ClientProxy extends CommonProxy {
         }
 
         for (ToolUpgradeItems.Items item : ToolUpgradeItems.Items.LOOKUP) {
+            registerModel(item.getItem());
+        }
+
+        for (FirearmAmmunitionItems.Items item : FirearmAmmunitionItems.Items.LOOKUP) {
             registerModel(item.getItem());
         }
     }

@@ -21,10 +21,10 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
 public class FirearmAmmunitionItems implements IInitCategory {
     public enum Items {
-        MUSKET_CARTRIDGE(new Item(), "musketCartridge"),
+        MUSKET_CARTRIDGE(new Item(), "musket_cartridge"),
         ROCKET(new ItemRocketBasic(), "rocket"),
-        CONCUSSIVE_ROCKET(new ItemRocketConcussive(), "rocketConcussive"),
-        MINING_ROCKET(new ItemRocketMining(), "rocketMiner");
+        CONCUSSIVE_ROCKET(new ItemRocketConcussive(), "rocket_concussive"),
+        MINING_ROCKET(new ItemRocketMining(), "rocket_miner");
 
         private Item item;
 
