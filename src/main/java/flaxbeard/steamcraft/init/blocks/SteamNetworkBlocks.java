@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.block.*;
 import flaxbeard.steamcraft.init.IInitCategory;
+import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 
 import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.*;
@@ -46,7 +47,7 @@ public class SteamNetworkBlocks implements IInitCategory {
             block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             block.setRegistryName(Steamcraft.MOD_ID, name);
             GameRegistry.register(block);
-            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+            GameRegistry.register(new BlockManyMetadataItem(block).setRegistryName(block.getRegistryName()));
             this.block = block;
         }
 

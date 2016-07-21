@@ -90,7 +90,15 @@ public class ClientProxy extends CommonProxy {
      * @param block the block
      */
     private void registerModel(Block block) {
-        registerModel(Item.getItemFromBlock(block));
+        registerModel(block, 0);
+    }
+
+    private void registerModel(Block block, int meta) {
+        registerModel(block, meta, "inventory");
+    }
+
+    private void registerModel(Block block, int meta, String variant) {
+        registerModel(Item.getItemFromBlock(block), meta, variant);
     }
 
     /**
@@ -137,14 +145,20 @@ public class ClientProxy extends CommonProxy {
     public void registerModels() {
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.BOILER_ON.getBlock());
+        registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
+        registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 1, "is_creative=true");
+
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());
-        registerModel(CastingBlocks.Blocks.CARVING_TABLE.getBlock());
+
         registerModelAllVariants(OreBlocks.Blocks.ORE_BLOCK, BlockSteamcraftOre.VARIANT.getName(),
           BlockSteamcraftOre.OreBlockTypes.LOOKUP);
+
         registerModel(MiscellaneousBlocks.Blocks.ENGINEERING_TABLE.getBlock());
+
         registerModel(CastingBlocks.Blocks.CRUCIBLE.getBlock());
         registerModel(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock());
+        registerModel(CastingBlocks.Blocks.CARVING_TABLE.getBlock());
 
         for (CraftingComponentItems.Items item : CraftingComponentItems.Items.values()) {
             registerModelItemStack(item.createItemStack());
