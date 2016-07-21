@@ -2,8 +2,8 @@ package flaxbeard.steamcraft.client;
 
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
+import flaxbeard.steamcraft.api.tool.ISteamTool;
 import flaxbeard.steamcraft.block.BlockBeacon;
-import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.client.render.colorhandlers.*;
 import flaxbeard.steamcraft.client.render.entity.*;
@@ -171,6 +171,12 @@ public class ClientProxy extends CommonProxy {
 
         for (GadgetItems.Items item : GadgetItems.Items.LOOKUP) {
             registerModel(item.getItem());
+        }
+
+        for (ToolItems.Items item : ToolItems.Items.LOOKUP) {
+            if (!(item.getItem() instanceof ISteamTool)) {
+                registerModel(item.getItem());
+            }
         }
     }
 

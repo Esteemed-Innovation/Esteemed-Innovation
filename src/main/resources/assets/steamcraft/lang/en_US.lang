@@ -533,26 +533,26 @@ item.steamcraft:chestGildedGold.name=Gilded Iron Chestplate
 item.steamcraft:legsGildedGold.name=Gilded Iron Leggings
 item.steamcraft:feetGildedGold.name=Gilded Iron Boots
 
-item.steamcraft:pickGildedGold.name=Gilded Iron Pickaxe
-item.steamcraft:axeGildedGold.name=Gilded Iron Axe
-item.steamcraft:shovelGildedGold.name=Gilded Iron Shovel
-item.steamcraft:hoeGildedGold.name=Gilded Iron Hoe
-item.steamcraft:swordGildedGold.name=Gilded Iron Sword
+item.steamcraft:gilded_iron_pickaxe.name=Gilded Iron Pickaxe
+item.steamcraft:gilded_iron_axe.name=Gilded Iron Axe
+item.steamcraft:gilded_iron_shovel.name=Gilded Iron Shovel
+item.steamcraft:gilded_iron_hoe.name=Gilded Iron Hoe
+item.steamcraft:gilded_iron_sword.name=Gilded Iron Sword
 
 item.steamcraft:helmBrass.name=Brass Helmet
 item.steamcraft:chestBrass.name=Brass Chestplate
 item.steamcraft:legsBrass.name=Brass Leggings
 item.steamcraft:feetBrass.name=Brass Boots
 
-item.steamcraft:pickBrass.name=Brass Pickaxe
-item.steamcraft:axeBrass.name=Brass Axe
-item.steamcraft:shovelBrass.name=Brass Shovel
-item.steamcraft:hoeBrass.name=Brass Hoe
-item.steamcraft:swordBrass.name=Brass Sword
+item.steamcraft:brass_pickaxe.name=Brass Pickaxe
+item.steamcraft:brass_axe.name=Brass Axe
+item.steamcraft:brass_shovel.name=Brass Shovel
+item.steamcraft:brass_hoe.name=Brass Hoe
+item.steamcraft:brass_sword.name=Brass Sword
 
-item.steamcraft:steamDrill.name=Steam Drill
-item.steamcraft:steamAxe.name=Steam Saw
-item.steamcraft:steamShovel.name=Steam Shovel
+item.steamcraft:steam_drill.name=Steam Drill
+item.steamcraft:steam_axe.name=Steam Saw
+item.steamcraft:steam_shovel.name=Steam Shovel
 
 item.steamcraft:theVoid.name=The Void
 steamcraft.void.desc=The Void: Set to (%d, %d, %d)

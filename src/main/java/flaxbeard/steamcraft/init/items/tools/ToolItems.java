@@ -20,19 +20,19 @@ import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
 
 public class ToolItems implements IInitCategory {
     public enum Items {
-        STEAM_DRILL(new ItemSteamDrill(), "steamDrill"),
-        STEAM_SAW(new ItemSteamAxe(), "steamSaw"),
-        STEAM_SHOVEL(new ItemSteamShovel(), "steamShovel"),
-        BRASS_SWORD(new ItemSteamcraftSword(Materials.BRASS.getMaterial(), INGOT_BRASS), "brassSword"),
-        BRASS_PICKAXE(new ItemSteamcraftPickaxe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brassPickaxe"),
-        BRASS_AXE(new ItemSteamcraftAxe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brassAxe"),
-        BRASS_SHOVEL(new ItemSteamcraftShovel(Materials.BRASS.getMaterial(), INGOT_BRASS), "brassShovel"),
-        BRASS_HOE(new ItemSteamcraftHoe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brassHoe"),
-        GILDED_IRON_SWORD(new ItemSteamcraftSword(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gildedIronSword"),
-        GILDED_IRON_PICKAXE(new ItemSteamcraftPickaxe(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gildedIronPickaxe"),
-        GILDED_IRON_AXE(new ItemSteamcraftAxe(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gildedIronAxe"),
-        GILDED_IRON_SHOVEL(new ItemSteamcraftShovel(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gildedIronShovel"),
-        GILDED_IRON_HOE(new ItemSteamcraftHoe(Materials.BRASS.getMaterial(), INGOT_GILDED_IRON), "gildedIronHoe");
+        STEAM_DRILL(new ItemSteamDrill(), "steam_drill"),
+        STEAM_SAW(new ItemSteamAxe(), "steam_saw"),
+        STEAM_SHOVEL(new ItemSteamShovel(), "steam_shovel"),
+        BRASS_SWORD(new ItemSteamcraftSword(Materials.BRASS.getMaterial(), INGOT_BRASS), "brass_sword"),
+        BRASS_PICKAXE(new ItemSteamcraftPickaxe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brass_pickaxe"),
+        BRASS_AXE(new ItemSteamcraftAxe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brass_axe"),
+        BRASS_SHOVEL(new ItemSteamcraftShovel(Materials.BRASS.getMaterial(), INGOT_BRASS), "brass_shovel"),
+        BRASS_HOE(new ItemSteamcraftHoe(Materials.BRASS.getMaterial(), INGOT_BRASS), "brass_hoe"),
+        GILDED_IRON_SWORD(new ItemSteamcraftSword(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gilded_iron_sword"),
+        GILDED_IRON_PICKAXE(new ItemSteamcraftPickaxe(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gilded_iron_pickaxe"),
+        GILDED_IRON_AXE(new ItemSteamcraftAxe(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gilded_iron_axe"),
+        GILDED_IRON_SHOVEL(new ItemSteamcraftShovel(Materials.GILDED_IRON.getMaterial(), INGOT_GILDED_IRON), "gilded_iron_shovel"),
+        GILDED_IRON_HOE(new ItemSteamcraftHoe(Materials.BRASS.getMaterial(), INGOT_GILDED_IRON), "gilded_iron_hoe");
 
         private Item item;
 
@@ -50,6 +50,7 @@ public class ToolItems implements IInitCategory {
             item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             item.setCreativeTab(Steamcraft.tabTools);
             item.setRegistryName(Steamcraft.MOD_ID, name);
+            GameRegistry.register(item);
             this.item = item;
         }
 
