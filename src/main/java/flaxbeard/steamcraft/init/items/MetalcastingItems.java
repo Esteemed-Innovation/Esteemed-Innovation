@@ -16,10 +16,10 @@ import static net.minecraft.init.Items.*;
 
 public class MetalcastingItems implements IInitCategory {
     public enum Items {
-        INGOT_MOLD(new ItemIngotMold(), "ingotMold", false),
-        NUGGET_MOLD(new ItemNuggetMold(), "nuggetMold", false),
-        PLATE_MOLD(new ItemPlateMold(), "plateMold", false),
-        BLANK_MOLD(new Item(), "blankMold", true);
+        INGOT_MOLD(new ItemIngotMold(), "ingot_mold", false),
+        NUGGET_MOLD(new ItemNuggetMold(), "nugget_mold", false),
+        PLATE_MOLD(new ItemPlateMold(), "plate_mold", false),
+        BLANK_MOLD(new Item(), "blank_mold", true);
 
         private Item item;
 

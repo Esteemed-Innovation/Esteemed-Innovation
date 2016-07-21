@@ -19,6 +19,7 @@ import flaxbeard.steamcraft.init.blocks.*;
 import flaxbeard.steamcraft.init.items.CraftingComponentItems;
 import flaxbeard.steamcraft.init.items.FoodItems;
 import flaxbeard.steamcraft.init.items.MetalItems;
+import flaxbeard.steamcraft.init.items.MetalcastingItems;
 import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
@@ -146,6 +147,9 @@ public class ClientProxy extends CommonProxy {
             registerModelItemStack(item.createItemStack());
         }
         for (FoodItems.Items item : FoodItems.Items.values()) {
+            registerModel(item.getItem());
+        }
+        for (MetalcastingItems.Items item : MetalcastingItems.Items.values()) {
             registerModel(item.getItem());
         }
     }

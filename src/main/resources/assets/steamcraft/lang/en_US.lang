@@ -529,10 +529,10 @@ item.steamcraft:exosuitPlate.14.name=Gilded Iron Exosuit Plate
 item.steamcraft:reinforcedTank.name=Reinforced Exosuit Tank
 item.steamcraft:uberReinforcedTank.name=Heavily Reinforced Exosuit Tank
 
-item.steamcraft:ingotMold.name=Ingot Mold
-item.steamcraft:nuggetMold.name=Nugget Mold
-item.steamcraft:plateMold.name=Plate Mold
-item.steamcraft:blankMold.name=Blank Mold
+item.steamcraft:ingot_mold.name=Ingot Mold
+item.steamcraft:nugget_mold.name=Nugget Mold
+item.steamcraft:plate_mold.name=Plate Mold
+item.steamcraft:blank_mold.name=Blank Mold
 
 item.steamcraft:helmGildedGold.name=Gilded Iron Helmet
 item.steamcraft:chestGildedGold.name=Gilded Iron Chestplate
