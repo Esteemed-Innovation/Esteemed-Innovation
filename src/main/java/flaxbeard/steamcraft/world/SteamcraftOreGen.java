@@ -1,9 +1,11 @@
 package flaxbeard.steamcraft.world;
 
 import flaxbeard.steamcraft.Config;
+import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.init.blocks.OreBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,7 +16,6 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static flaxbeard.steamcraft.init.blocks.OreBlocks.Blocks.*;
 import static net.minecraft.init.Blocks.STONE;
 import static net.minecraft.init.Blocks.END_STONE;
 import static net.minecraft.init.Blocks.NETHERRACK;
@@ -56,63 +57,64 @@ public class SteamcraftOreGen implements IWorldGenerator {
 
     private void generateEnd(World world, Random random, int i, int j) {
         if (Config.genCopperEnd) {
-            WorldGenMinable copper = getCopperOre(END_COPPER_ORE.getMetadata(), END_STONE);
+            WorldGenMinable copper = getCopperOre(BlockSteamcraftOre.OreBlockTypes.END_COPPER, END_STONE);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincEnd) {
-            WorldGenMinable zinc = getZincOre(END_ZINC_ORE.getMetadata(), END_STONE);
+            WorldGenMinable zinc = getZincOre(BlockSteamcraftOre.OreBlockTypes.END_ZINC, END_STONE);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
     private void generateSurface(World world, Random random, int i, int j) {
         if (Config.genCopperOverworld) {
-            WorldGenMinable copper = getCopperOre(OVERWORLD_COPPER_ORE.getMetadata(), STONE);
+            WorldGenMinable copper = getCopperOre(BlockSteamcraftOre.OreBlockTypes.OVERWORLD_COPPER, STONE);
             generateBlocks(world, copper, random, 80, 10, i, j);
         }
 
         if (Config.genZincOverworld) {
-            WorldGenMinable zinc = getZincOre(OVERWORLD_ZINC_ORE.getMetadata(), STONE);
+            WorldGenMinable zinc = getZincOre(BlockSteamcraftOre.OreBlockTypes.OVERWORLD_ZINC, STONE);
             generateBlocks(world, zinc, random, 75, 10, i, j);
         }
     }
 
     private void generateNether(World world, Random random, int i, int j) {
         if (Config.genCopperNether) {
-            WorldGenMinable copper = getCopperOre(NETHER_COPPER_ORE.getMetadata(), NETHERRACK);
+            WorldGenMinable copper = getCopperOre(BlockSteamcraftOre.OreBlockTypes.NETHER_COPPER, NETHERRACK);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincNether) {
-            WorldGenMinable zinc = getZincOre(NETHER_ZINC_ORE.getMetadata(), NETHERRACK);
+            WorldGenMinable zinc = getZincOre(BlockSteamcraftOre.OreBlockTypes.NETHER_ZINC, NETHERRACK);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
     private void generateExtra(World world, Random random, int i, int j) {
         if (Config.genCopperExtras) {
-            WorldGenMinable copper = getCopperOre(OVERWORLD_COPPER_ORE.getMetadata(), STONE);
+            WorldGenMinable copper = getCopperOre(BlockSteamcraftOre.OreBlockTypes.OVERWORLD_COPPER, STONE);
             generateBlocks(world, copper, random, 128, 10, i, j);
         }
 
         if (Config.genZincExtras) {
-            WorldGenMinable zinc = getZincOre(OVERWORLD_ZINC_ORE.getMetadata(), STONE);
+            WorldGenMinable zinc = getZincOre(BlockSteamcraftOre.OreBlockTypes.OVERWORLD_ZINC, STONE);
             generateBlocks(world, zinc, random, 128, 10, i, j);
         }
     }
 
-    private WorldGenMinable getCopperOre(int meta, Block block) {
-        return getOre(meta, 10, block);
+    private WorldGenMinable getCopperOre(BlockSteamcraftOre.OreBlockTypes type, Block block) {
+        return getOre(type, 10, block);
     }
 
-    private WorldGenMinable getZincOre(int meta, Block block) {
-        return getOre(meta, 7, block);
+    private WorldGenMinable getZincOre(BlockSteamcraftOre.OreBlockTypes type, Block block) {
+        return getOre(type, 7, block);
     }
 
-    private WorldGenMinable getOre(int meta, int count, Block block) {
+    private WorldGenMinable getOre(BlockSteamcraftOre.OreBlockTypes type, int count, Block block) {
         BlockMatcher matcher = BlockMatcher.forBlock(block);
-        return new WorldGenMinable(OreBlocks.Blocks.ORE_BLOCK.getStateFromMeta(meta), count, matcher);
+        IBlockState state = OreBlocks.Blocks.ORE_BLOCK.getDefaultState().withProperty(BlockSteamcraftOre.VARIANT, type);
+        return new WorldGenMinable(state, count, matcher);
     }
 
     private void generateBlocks(World world, WorldGenMinable block, Random random, int maxY, int maxPerChunk, int x, int z) {
