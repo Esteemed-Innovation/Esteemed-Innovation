@@ -24,12 +24,10 @@ import flaxbeard.steamcraft.handler.SteamcraftTickHandler;
 import flaxbeard.steamcraft.init.blocks.BlockCategories;
 import flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks;
 import flaxbeard.steamcraft.init.items.ItemCategories;
-import flaxbeard.steamcraft.init.items.MetalItems;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
 import flaxbeard.steamcraft.init.items.tools.ToolItems;
 import flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems;
 import flaxbeard.steamcraft.init.misc.MiscellaneousCategories;
-import flaxbeard.steamcraft.item.ItemSmashedOre;
 import flaxbeard.steamcraft.misc.DrillHeadMaterial;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import flaxbeard.steamcraft.network.*;
@@ -74,7 +72,9 @@ import javax.swing.*;
 
 @Mod(modid = Steamcraft.MOD_ID, name = "Flaxbeard's Steam Power", version = Config.VERSION)
 public class Steamcraft {
-    @Mod.Instance("Steamcraft")
+    public static final String MOD_ID = "steamcraft";
+
+    @Mod.Instance(MOD_ID)
     public static Steamcraft instance;
 
     @CapabilityInject(IPlayerData.class)
@@ -86,7 +86,6 @@ public class Steamcraft {
     @CapabilityInject(IVillagerData.class)
     public static final Capability<IVillagerData> VILLAGER_DATA = null;
 
-    public static final String MOD_ID = "steamcraft";
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
     public static SimpleNetworkWrapper channel;
@@ -225,7 +224,7 @@ public class Steamcraft {
 
     @Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new SteamcraftGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new SteamcraftGuiHandler());
 
         MinecraftForge.EVENT_BUS.register(new SteamcraftEventHandler());
         MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
@@ -303,8 +302,8 @@ public class Steamcraft {
     private class SCTab extends CreativeTabs {
         boolean isToolTab;
 
-        public SCTab(int par1, String par2Str, boolean toolTab) {
-            super(par1, par2Str);
+        public SCTab(int index, String label, boolean toolTab) {
+            super(index, label);
             isToolTab = toolTab;
         }
 

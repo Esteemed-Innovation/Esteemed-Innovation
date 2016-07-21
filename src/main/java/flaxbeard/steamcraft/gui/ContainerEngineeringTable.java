@@ -1,12 +1,12 @@
 package flaxbeard.steamcraft.gui;
 
 import flaxbeard.steamcraft.api.IEngineerable;
-import flaxbeard.steamcraft.misc.ItemStackUtility;
 import flaxbeard.steamcraft.tile.TileEntityEngineeringTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import javax.annotation.Nullable;
+
 public class ContainerEngineeringTable extends Container {
+    private static final EntityEquipmentSlot[] ARMOR_SLOTS = new EntityEquipmentSlot[] {
+      EntityEquipmentSlot.HEAD,
+      EntityEquipmentSlot.CHEST,
+      EntityEquipmentSlot.LEGS,
+      EntityEquipmentSlot.FEET
+    };
+
     private TileEntityEngineeringTable tileEntity;
 
     public ContainerEngineeringTable(InventoryPlayer inventoryPlayer, TileEntityEngineeringTable tileEntityEngineeringTable) {
@@ -25,7 +34,7 @@ public class ContainerEngineeringTable extends Container {
         for (int i = 1; i < 10; i++) {
             addSlotToContainer(new SlotLimitedStackSize(tileEntityEngineeringTable, i, -1000, -1000));
         }
-        this.updateSlots();
+        updateSlots();
 
         int i;
 
@@ -36,24 +45,34 @@ public class ContainerEngineeringTable extends Container {
         }
 
         for (i = 0; i < 4; ++i) {
-            final int k = i;
-            addSlotToContainer(new Slot(inventoryPlayer, inventoryPlayer.getSizeInventory() - 1 - i, 8, 8 + i * 18) {
+            final EntityEquipmentSlot equipmentSlot = ARMOR_SLOTS[i];
+            // The index stuff is terrible. Sorry.
+            addSlotToContainer(new Slot(inventoryPlayer, inventoryPlayer.getSizeInventory() - 2 - i, 8, 8 + i * 18) {
                 private EntityPlayer player = inv.player;
 
+                @Override
                 public int getSlotStackLimit() {
                     return 1;
                 }
 
+                @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return stack != null && stack.getItem().isValidArmor(stack, ItemStackUtility.getSlotFromIndex(k), player);
+                    return stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
                 }
 
                 @SideOnly(Side.CLIENT)
                 public String getSlotTexture() {
-                    return ItemArmor.EMPTY_SLOT_NAMES[k];
+                    return ItemArmor.EMPTY_SLOT_NAMES[equipmentSlot.getIndex()];
                 }
             });
         }
+
+        addSlotToContainer(new Slot(inventoryPlayer, 40, 30, 62) {
+            @SideOnly(Side.CLIENT)
+            public String getSlotTexture() {
+                return "minecraft:items/empty_armor_slot_shield";
+            }
+        });
 
         for (i = 0; i < 9; ++i) {
             addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
@@ -65,11 +84,12 @@ public class ContainerEngineeringTable extends Container {
         return true;
     }
 
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
         return null;
     }
 
-    public void updateSlots() {
+    private void updateSlots() {
         boolean hasEngineer = false;
 
         ItemStack stackInSlotZero = tileEntity.getStackInSlot(0);
@@ -106,7 +126,7 @@ public class ContainerEngineeringTable extends Container {
     @Override
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player) {
         ItemStack toReturn = super.slotClick(slotID, dragType, clickType, player);
-        this.updateSlots();
+        updateSlots();
         tileEntity.markDirty();
 //        tileEntity.getWorld().markBlockForUpdate(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
         return toReturn;

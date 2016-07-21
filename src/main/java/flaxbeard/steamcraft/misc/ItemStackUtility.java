@@ -33,9 +33,19 @@ public class ItemStackUtility {
      * @return The slot or null.
      */
     @Nullable
-    public static EntityEquipmentSlot getSlotFromIndex(int index) {
+    public static EntityEquipmentSlot getSlotFromSlotIndex(int index) {
         for (EntityEquipmentSlot slot : EQUIPMENT_SLOTS) {
             if (slot.getSlotIndex() == index) {
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static EntityEquipmentSlot getSlotFromIndex(int index) {
+        for (EntityEquipmentSlot slot : EQUIPMENT_SLOTS) {
+            if (slot.getIndex() == index) {
                 return slot;
             }
         }

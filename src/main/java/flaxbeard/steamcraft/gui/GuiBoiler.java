@@ -1,6 +1,6 @@
 package flaxbeard.steamcraft.gui;
 
-import flaxbeard.steamcraft.client.render.RenderUtility;
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiBoiler extends GuiContainer {
     private static final ResourceLocation BOILER_TEXTURES = new ResourceLocation("steamcraft:textures/gui/boiler.png");
+    public static final ResourceLocation STEAM_RL = new ResourceLocation(Steamcraft.MOD_ID, "blocks/steam");
     private TileEntityBoiler tileEntity;
 
     public GuiBoiler(InventoryPlayer inventoryPlayer, TileEntityBoiler tileEntity) {
@@ -78,7 +80,7 @@ public class GuiBoiler extends GuiContainer {
         TextureAtlasSprite icon = FluidHelper.getStillTexture(mc, fluid.getFluid());
         if (steam) {
             // TODO Dunno ?
-            icon = mc.getTextureMapBlocks().getTextureExtry("steamcraft:textures/blocks/steam");
+            icon = mc.getTextureMapBlocks().getTextureExtry(STEAM_RL.toString());
         }
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         //RenderUtils.setGLColorFromInt(fluid.getFluid().getColor(fluid));
@@ -109,11 +111,11 @@ public class GuiBoiler extends GuiContainer {
     private void drawCutIcon(TextureAtlasSprite icon, int x, int y, int width, int height, int cut) {
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
-        RenderUtility.addVertexWithUV(buffer, x, y + height, zLevel, icon.getMinU(), icon.getInterpolatedV(height));
-        RenderUtility.addVertexWithUV(buffer, x + width, y + height, zLevel, icon.getInterpolatedU(width), icon.getInterpolatedV(height));
-        RenderUtility.addVertexWithUV(buffer, x + width, y + cut, zLevel, icon.getInterpolatedU(width), icon.getInterpolatedV(cut));
-        RenderUtility.addVertexWithUV(buffer, x, y + cut, zLevel, icon.getMinU(), icon.getInterpolatedV(cut));
-        tess.draw();
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buffer.pos(x, y + height, zLevel).tex(icon.getMinU(), icon.getInterpolatedV(height)).endVertex();
+        buffer.pos(x + width, y + height, zLevel).tex(icon.getInterpolatedU(width), icon.getInterpolatedV(height)).endVertex();
+        buffer.pos(x + width, y + cut, zLevel).tex(icon.getInterpolatedU(width), icon.getInterpolatedV(cut)).endVertex();
+        buffer.pos(x, y + cut, zLevel).tex(icon.getMinU(), icon.getInterpolatedV(cut)).endVertex();
+        buffer.finishDrawing();
     }
-
 }

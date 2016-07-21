@@ -31,7 +31,7 @@ public class GuiEngineeringTable extends GuiContainer {
         int k = (width - xSize) / 2;
         int l = (height - ySize) / 2;
         GL11.glEnable(3042);
-        this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+        drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
         if (tileEntity.getStackInSlot(0) != null) {
             if (tileEntity.getStackInSlot(0).getItem() instanceof IEngineerable) {

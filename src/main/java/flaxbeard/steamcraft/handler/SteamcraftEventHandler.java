@@ -775,7 +775,7 @@ public class SteamcraftEventHandler {
         EntityPlayer player = event.getEntityPlayer();
         for (int i = 0; i < ItemStackUtility.EQUIPMENT_SLOTS.length; i++) {
             float multiplier = 1;
-            EntityEquipmentSlot slot = ItemStackUtility.getSlotFromIndex(i);
+            EntityEquipmentSlot slot = ItemStackUtility.getSlotFromSlotIndex(i);
             if (slot == null) {
                 continue;
             }
@@ -961,7 +961,7 @@ public class SteamcraftEventHandler {
             if (player.getHealth() <= 5.0F) {
                 int vibrantLevel = 0;
                 for (int i = 0; i < ItemStackUtility.EQUIPMENT_SLOTS.length; i++) {
-                    EntityEquipmentSlot slot = ItemStackUtility.getSlotFromIndex(i);
+                    EntityEquipmentSlot slot = ItemStackUtility.getSlotFromSlotIndex(i);
                     if (slot.getSlotType() == EntityEquipmentSlot.Type.HAND) {
                         continue;
                     }
@@ -1713,7 +1713,7 @@ public class SteamcraftEventHandler {
                     ItemStack stackWithPlate = null;
                     boolean hasZincPlate = false;
                     for (int i = 1; i < 5; i++) {
-                        ItemStack equipment = entity.getItemStackFromSlot(ItemStackUtility.getSlotFromIndex(i));
+                        ItemStack equipment = entity.getItemStackFromSlot(ItemStackUtility.getSlotFromSlotIndex(i));
                         if (equipment != null) {
                             Item item = equipment.getItem();
                             if (item instanceof ItemExosuitArmor) {

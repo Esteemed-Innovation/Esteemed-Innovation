@@ -49,7 +49,7 @@ public class ExosuitModelCache {
                 ItemStack itemStack = mc.thePlayer.inventory.armorInventory[3 - i];
 
                 if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
-                    getModel(mc.thePlayer, ItemStackUtility.getSlotFromIndex(i)).updateModel(mc.thePlayer, itemStack);
+                    getModel(mc.thePlayer, ItemStackUtility.getSlotFromSlotIndex(i)).updateModel(mc.thePlayer, itemStack);
                 }
             }
         }
