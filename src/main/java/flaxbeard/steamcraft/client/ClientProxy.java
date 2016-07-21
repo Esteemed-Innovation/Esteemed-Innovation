@@ -16,6 +16,7 @@ import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
 import flaxbeard.steamcraft.init.blocks.*;
+import flaxbeard.steamcraft.init.items.CraftingComponentItems;
 import flaxbeard.steamcraft.init.items.MetalItems;
 import flaxbeard.steamcraft.init.items.armor.ArmorItems;
 import flaxbeard.steamcraft.init.items.firearms.FirearmItems;
@@ -39,6 +40,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
@@ -113,6 +115,19 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), variant));
     }
 
+    private void registerModelItemStack(ItemStack stack) {
+        registerModelItemStack(stack, "inventory");
+    }
+
+    /**
+     * Registers an item model for the given itemstack, based on its unlocalized name.
+     */
+    private void registerModelItemStack(ItemStack stack, String variant) {
+        Item item = stack.getItem();
+        String name = item.getRegistryName() + "." + stack.getItemDamage();
+        ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(name, variant));
+    }
+
     @Override
     public void registerModels() {
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
@@ -125,6 +140,10 @@ public class ClientProxy extends CommonProxy {
         registerModel(MiscellaneousBlocks.Blocks.ENGINEERING_TABLE.getBlock());
         registerModel(CastingBlocks.Blocks.CRUCIBLE.getBlock());
         registerModel(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock());
+
+        for (CraftingComponentItems.Items item : CraftingComponentItems.Items.values()) {
+            registerModelItemStack(item.createItemStack());
+        }
     }
 
     @Override

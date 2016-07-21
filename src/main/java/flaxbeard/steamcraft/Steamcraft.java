@@ -159,7 +159,7 @@ public class Steamcraft {
         SOUND_WRENCH = registerSound("wrench");
         SOUND_WHISTLE = registerSound("horn");
 
-        // Forcibly initialize every item and ORE_BLOCK category, calling their static blocks and enums and stuff.
+        // Forcibly initialize every item and block category, calling their static blocks and enums and stuff.
         for (BlockCategories category : BlockCategories.values()) {
             category.getCategory().oreDict();
         }

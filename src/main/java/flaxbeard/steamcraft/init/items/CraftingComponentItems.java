@@ -25,13 +25,13 @@ public class CraftingComponentItems implements IInitCategory {
         BLUNDERBUSS_BARREL(5);
 
         private int metadata;
-        private static Item item = new ItemSteamcraftCrafting();
+        public static Item ITEM = new ItemSteamcraftCrafting();
 
         static {
-            item.setUnlocalizedName(Steamcraft.MOD_ID + ":crafting");
-            item.setRegistryName(Steamcraft.MOD_ID, "crafting");
-            item.setCreativeTab(Steamcraft.tab);
-            GameRegistry.register(item);
+            ITEM.setUnlocalizedName(Steamcraft.MOD_ID + ":crafting");
+            ITEM.setRegistryName(Steamcraft.MOD_ID, "crafting");
+            ITEM.setCreativeTab(Steamcraft.tab);
+            GameRegistry.register(ITEM);
         }
 
         Items(int metadata) {
@@ -39,7 +39,7 @@ public class CraftingComponentItems implements IInitCategory {
         }
 
         public ItemStack createItemStack(int size) {
-            return new ItemStack(item, size, metadata);
+            return new ItemStack(ITEM, size, metadata);
         }
 
         public ItemStack createItemStack() {
