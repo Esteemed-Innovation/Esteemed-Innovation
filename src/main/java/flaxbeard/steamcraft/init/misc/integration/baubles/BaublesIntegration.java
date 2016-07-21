@@ -2,23 +2,16 @@ package flaxbeard.steamcraft.init.misc.integration.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.init.items.tools.GadgetItems;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class BaublesIntegration {
     public static boolean checkForUpgrade(EntityPlayer player, Item item) {
         IInventory inventory = BaublesApi.getBaubles(player);
-        for (int i = 0; i < inventory.getSizeInventory(); i++) {
-            ItemStack stackInSlot = inventory.getStackInSlot(i);
-            if (stackInSlot != null && stackInSlot.getItem() == item) {
-                return true;
-            }
-        }
-        return false;
+        return ItemStackUtility.inventoryHasItem(inventory, item);
     }
 
     public static boolean checkForSurvivalist(EntityPlayer player) {
@@ -30,12 +23,10 @@ public class BaublesIntegration {
     }
 
     public static Item getSurvivalist() {
-        return new ItemBauble(BaubleType.BELT).setCreativeTab(Steamcraft.tab)
-          .setUnlocalizedName("steamcraft:survivalist").setMaxStackSize(1);
+        return new ItemBauble(BaubleType.BELT).setMaxStackSize(1);
     }
 
     public static Item getSteamCellFiller() {
-        return new ItemBauble(BaubleType.AMULET).setCreativeTab(Steamcraft.tab)
-          .setUnlocalizedName("steamcraft:steamcellFiller").setMaxStackSize(1);
+        return new ItemBauble(BaubleType.AMULET).setMaxStackSize(1);
     }
 }

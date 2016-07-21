@@ -30,9 +30,9 @@ public class GadgetItems implements IInitCategory {
         ASTROLABE(new ItemAstrolabe(), "astrolabe"),
         ITEM_CANISTER(new Item(), "canister"),
         SURVIVALIST_TOOLKIT(CrossMod.BAUBLES ? BaublesIntegration.getSurvivalist() : new Item().setMaxStackSize(1), "survivalist"),
-        STEAM_CELL_EMPTY(new Item(), "steamcellEmpty"),
-        STEAM_CELL_FULL(new ItemSteamCell(), "steamcellFull"),
-        STEAM_CELL_FILLER(CrossMod.BAUBLES ? BaublesIntegration.getSteamCellFiller() : null, "steamcellFiller"),
+        STEAM_CELL_EMPTY(new Item(), "steamcell_empty"),
+        STEAM_CELL_FULL(new ItemSteamCell(), "steamcell_full"),
+        STEAM_CELL_FILLER(CrossMod.BAUBLES ? BaublesIntegration.getSteamCellFiller() : null, "steamcell_filler"),
         WRENCH(new ItemWrench(), "wrench");
 
         public static Items[] LOOKUP = new Items[values().length];
@@ -47,12 +47,14 @@ public class GadgetItems implements IInitCategory {
         private Item item;
 
         Items(Item item, String name) {
-            item.setUnlocalizedName(name);
-            item.setCreativeTab(Steamcraft.tab);
-            item.setRegistryName(Steamcraft.MOD_ID, name);
-            GameRegistry.register(item);
-            if (item instanceof IEnhancement) {
-                SteamcraftRegistry.registerEnhancement((IEnhancement) item);
+            if (item != null) {
+                item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
+                item.setCreativeTab(Steamcraft.tab);
+                item.setRegistryName(Steamcraft.MOD_ID, name);
+                GameRegistry.register(item);
+                if (item instanceof IEnhancement) {
+                    SteamcraftRegistry.registerEnhancement((IEnhancement) item);
+                }
             }
             this.item = item;
         }

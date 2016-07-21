@@ -583,9 +583,9 @@ drill.brass=Brass
 drill.diamond=Diamond
 drill.emerald=Emerald
 
-item.steamcraft:steamcellEmpty.name=Empty Steam Cell
-item.steamcraft:steamcellFull.name=Full Steam Cell
-item.steamcraft:steamcellFiller.name=Steam Cell Filler
+item.steamcraft:steamcell_empty.name=Empty Steam Cell
+item.steamcraft:steamcell_full.name=Full Steam Cell
+item.steamcraft:steamcell_filler.name=Steam Cell Filler
 
 item.steamcraft:astrolabe.name=Astrolabe
 item.steamcraft:wrench.name=Pipe Wrench
