@@ -25,7 +25,7 @@ public class SteamNetworkBlocks implements IInitCategory {
         FLASH_BOILER(new BlockFlashBoiler(), "flash_boiler"),
         PIPE(new BlockPipe(), "pipe"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
-        TANK(new BlockSteamTank(), "steam_tank"),
+        TANK(new BlockSteamTank(), "steam_tank", true),
         STEAM_GAUGE(new BlockSteamGauge(), "meter"),
         RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc"),
         STEAM_WHISTLE(new BlockWhistle(), "horn"),
@@ -43,11 +43,17 @@ public class SteamNetworkBlocks implements IInitCategory {
         }
 
         Blocks(Block block, String name) {
+            this(block, name, false);
+        }
+
+        Blocks(Block block, String name, boolean meta) {
             block.setCreativeTab(Steamcraft.tab);
             block.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             block.setRegistryName(Steamcraft.MOD_ID, name);
             GameRegistry.register(block);
-            GameRegistry.register(new BlockManyMetadataItem(block).setRegistryName(block.getRegistryName()));
+            ItemBlock itemblock = meta ? new BlockManyMetadataItem(block) : new ItemBlock(block);
+            itemblock.setRegistryName(block.getRegistryName());
+            GameRegistry.register(itemblock);
             this.block = block;
         }
 
