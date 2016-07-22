@@ -134,7 +134,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         ArrayList<EnumFacing> myDirections = new ArrayList<>();
         for (EnumFacing direction : EnumFacing.VALUES) {
             TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
-            if (this.doesConnect(direction) && tile != null) {
+            if (doesConnect(direction) && tile != null) {
                 if (tile instanceof ISteamTransporter) {
                     ISteamTransporter target = (ISteamTransporter) tile;
                     if (target.doesConnect(direction.getOpposite())) {
@@ -243,8 +243,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
     }
 
-    private int canConnectSide(int side) {
-        EnumFacing direction = EnumFacing.getFront(side);
+    private int canConnectSide(EnumFacing direction) {
         BlockPos pos = getOffsetPos(direction);
         TileEntity tile = worldObj.getTileEntity(pos);
         if (tile != null && tile instanceof ISteamTransporter) {
@@ -260,36 +259,55 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     public void addTraceableCuboids(List<IndexedCuboid6> cuboids) {
-        float min = 4F / 16F;
-        float max = 12F / 16F;
+        float min = BlockPipe.BASE_MIN;
+        float max = BlockPipe.BASE_MAX;
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        if (canConnectSide(0) > 0) {
-            float bottom = canConnectSide(0) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + 5F / 16F, z + max)));
+        IBlockState actualState = worldObj.getBlockState(pos).getActualState(worldObj, pos);
+        {
+            int connectDown = canConnectSide(EnumFacing.DOWN);
+            if (connectDown > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.DOWN, BlockPipe.UP)) {
+                float bottom = connectDown == 2 ? -5F / 16F : 0F;
+                cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + max, z + max)));
+            }
         }
-        if (canConnectSide(1) > 0) {
-            float top = canConnectSide(1) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + 11F / 16F, z + min, x + max, y + top, z + max)));
+        {
+            int connectUp = canConnectSide(EnumFacing.UP);
+            if (connectUp > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.UP, BlockPipe.DOWN)) {
+                float top = connectUp == 2 ? 21F / 16F : 1F;
+                cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + min, z + min, x + max, y + top, z + max)));
+            }
         }
-        if (canConnectSide(2) > 0) {
-            float bottom = canConnectSide(2) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + 5F / 16F)));
+        {
+            int connectNorth = canConnectSide(EnumFacing.NORTH);
+            if (connectNorth > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.NORTH, BlockPipe.SOUTH)) {
+                float bottom = connectNorth == 2 ? -5F / 16F : 0F;
+                cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + max)));
+            }
         }
-        if (canConnectSide(3) > 0) {
-            float top = canConnectSide(3) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + 11F / 16F, x + max, y + max, z + top)));
+        {
+            int connectSouth = canConnectSide(EnumFacing.SOUTH);
+            if (connectSouth > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.SOUTH, BlockPipe.NORTH)) {
+                float top = connectSouth == 2 ? 21F / 16F : 1F;
+                cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + min, x + max, y + max, z + top)));
+            }
         }
-        if (canConnectSide(4) > 0) {
-            float bottom = canConnectSide(4) == 2 ? -5F / 16F : 0.0F;
-            cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + 5F / 16F, y + max, z + max)));
+        {
+            int connectWest = canConnectSide(EnumFacing.WEST);
+            if (connectWest > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.WEST, BlockPipe.EAST)) {
+                float bottom = connectWest == 2 ? -5F / 16F : 0F;
+                cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + max, y + max, z + max)));
+            }
         }
-        if (canConnectSide(5) > 0) {
-            float top = canConnectSide(5) == 2 ? 21F / 16F : 1.0F;
-            cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + 11F / 16F, y + min, z + min,x + top, y + max, z + max)));
+        {
+            int connectEast = canConnectSide(EnumFacing.EAST);
+            if (connectEast > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.EAST, BlockPipe.WEST)) {
+                float top = connectEast == 2 ? 21F / 16F : 1F;
+                cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + min, y + min, z + min, x + top, y + max, z + max)));
+            }
         }
-        cuboids.add(new IndexedCuboid6(6, new Cuboid6(x + 5F / 16F, y + 5F / 16F, z + 5F / 16F, x + 11F / 16F, y + 11F / 16F, z + 11F / 16F)));
+        cuboids.add(new IndexedCuboid6(6, new Cuboid6(x + min, y + min, z + min, x + 12F / 16F, y + 12F / 16F, z + 12F / 16F)));
     }
 
     @Override

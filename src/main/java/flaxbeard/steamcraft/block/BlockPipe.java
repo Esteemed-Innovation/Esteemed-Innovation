@@ -1,16 +1,16 @@
 package flaxbeard.steamcraft.block;
 
 import flaxbeard.steamcraft.api.IPipeWrench;
-import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.block.BlockSteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
-import codechicken.lib.vec.BlockCoord;
-import codechicken.lib.vec.Vector3;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -20,22 +20,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BlockPipe extends BlockSteamTransporter {
-    private static final float BASE_MIN = 4.0F / 16.0F;
-    private static final float BASE_MAX = 12.0F / 16.0F;
-    public int pass = 0;
-    private RayTracer rayTracer = new RayTracer();
+    public static final float BASE_MIN = 4F / 16F;
+    public static final float BASE_MAX = 12F / 16F;
+
+    public static final PropertyBool NORTH = PropertyBool.create("north");
+    public static final PropertyBool EAST = PropertyBool.create("east");
+    public static final PropertyBool SOUTH = PropertyBool.create("south");
+    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final PropertyBool UP = PropertyBool.create("up");
+    public static final PropertyBool DOWN = PropertyBool.create("down");
 
     public BlockPipe() {
         super(Material.IRON);
@@ -44,8 +47,53 @@ public class BlockPipe extends BlockSteamTransporter {
     }
 
     @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySteamPipe();
+    }
+
+    @Override
+    public BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, NORTH, SOUTH, EAST, WEST, UP, DOWN);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        HashMap<IProperty, Boolean> vals = new HashMap<>();
+        if (tile == null || !(tile instanceof TileEntitySteamPipe)) {
+            vals.put(NORTH, false);
+            vals.put(SOUTH, false);
+            vals.put(EAST, false);
+            vals.put(WEST, false);
+            vals.put(UP, false);
+            vals.put(DOWN, false);
+        } else {
+            ArrayList<EnumFacing> connections = ((TileEntitySteamPipe) tile).getMyDirections();
+            vals.put(NORTH, connections.contains(EnumFacing.NORTH));
+            vals.put(SOUTH, connections.contains(EnumFacing.SOUTH));
+            vals.put(EAST, connections.contains(EnumFacing.EAST));
+            vals.put(WEST, connections.contains(EnumFacing.WEST));
+            vals.put(UP, connections.contains(EnumFacing.UP));
+            vals.put(DOWN, connections.contains(EnumFacing.DOWN));
+        }
+
+        return state
+          .withProperty(NORTH, vals.get(NORTH))
+          .withProperty(SOUTH, vals.get(SOUTH))
+          .withProperty(EAST, vals.get(EAST))
+          .withProperty(WEST, vals.get(WEST))
+          .withProperty(UP, vals.get(UP))
+          .withProperty(DOWN, vals.get(DOWN));
     }
 
     /*
@@ -136,76 +184,45 @@ public class BlockPipe extends BlockSteamTransporter {
     }
     */
 
+    public static boolean isPipeFacing(IBlockState actualState, PropertyBool facing, PropertyBool opposite) {
+        return actualState.getValue(facing) || actualState.getValue(opposite);
+    }
+
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntitySteamPipe) {
             TileEntitySteamPipe pipe = (TileEntitySteamPipe) te;
-            if (pipe.disguiseBlock != null && pipe.disguiseBlock != Blocks.AIR) {
-                return new AxisAlignedBB(pos);
-            } else {
+            if (pipe.disguiseBlock == null || pipe.disguiseBlock == Blocks.AIR) {
                 float minX = BASE_MIN;
                 float maxX = BASE_MAX;
                 float minY = BASE_MIN;
                 float maxY = BASE_MAX;
                 float minZ = BASE_MIN;
                 float maxZ = BASE_MAX;
-                ArrayList<EnumFacing> myDirections = new ArrayList<>();
-                for (EnumFacing direction : EnumFacing.VALUES) {
-                    TileEntity tile = world.getTileEntity(new BlockPos(pos.getX() + direction.getFrontOffsetX(), pos.getY() + direction.getFrontOffsetY(), pos.getZ() + direction.getFrontOffsetZ()));
-                    if (pipe.doesConnect(direction) && tile != null && tile instanceof ISteamTransporter) {
-                        ISteamTransporter target = (ISteamTransporter) tile;
-                        if (target.doesConnect(direction.getOpposite())) {
-                            myDirections.add(direction);
-                            if (direction.getFrontOffsetX() == 1) {
-                                maxX = 1.0F;
-                            }
-                            if (direction.getFrontOffsetY() == 1) {
-                                maxY = 1.0F;
-                            }
-                            if (direction.getFrontOffsetZ() == 1) {
-                                maxZ = 1.0F;
-                            }
-                            if (direction.getFrontOffsetX() == -1) {
-                                minX = 0.0F;
-                            }
-                            if (direction.getFrontOffsetY() == -1) {
-                                minY = 0.0F;
-                            }
-                            if (direction.getFrontOffsetZ() == -1) {
-                                minZ = 0.0F;
-                            }
-                        }
-                    }
+                IBlockState actualState = getActualState(state, world, pos);
+                if (isPipeFacing(actualState, NORTH, SOUTH)) {
+                    minZ = 0F;
                 }
-                if (myDirections.size() == 2) {
-                    EnumFacing direction = myDirections.get(0).getOpposite();
-                    while (!pipe.doesConnect(direction) || direction == myDirections.get(0)) {
-                        direction = EnumFacing.getFront((direction.ordinal() + 1) % 5);
-                    }
-                    if (direction.getFrontOffsetX() == 1) {
-                        maxX = 1.0F;
-                    }
-                    if (direction.getFrontOffsetY() == 1) {
-                        maxY = 1.0F;
-                    }
-                    if (direction.getFrontOffsetZ() == 1) {
-                        maxZ = 1.0F;
-                    }
-                    if (direction.getFrontOffsetX() == -1) {
-                        minX = 0.0F;
-                    }
-                    if (direction.getFrontOffsetY() == -1) {
-                        minY = 0.0F;
-                    }
-                    if (direction.getFrontOffsetZ() == -1) {
-                        minZ = 0.0F;
-                    }
+                if (isPipeFacing(actualState, SOUTH, NORTH)) {
+                    maxZ = 1F;
                 }
-                return new AxisAlignedBB(pos.getX() + minX, pos.getY() + minY, pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY, pos.getZ() + maxZ);
+                if (isPipeFacing(actualState, EAST, WEST)) {
+                    minX = 1F;
+                }
+                if (isPipeFacing(actualState, WEST, EAST)) {
+                    maxX = 0F;
+                }
+                if (isPipeFacing(actualState, DOWN, UP)) {
+                    minY = 0F;
+                }
+                if (isPipeFacing(actualState, UP, DOWN)) {
+                    maxY = 1F;
+                }
+                return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
             }
         }
-        return super.getCollisionBoundingBox(state, world, pos);
+        return super.getBoundingBox(state, world, pos);
     }
 
     @SideOnly(Side.CLIENT)
@@ -230,25 +247,28 @@ public class BlockPipe extends BlockSteamTransporter {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos, Vec3d start, Vec3d end) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) {
-            return null;
-        }
-        ItemStack mainHandStack = player.getHeldItemMainhand();
-        if (mainHandStack == null) {
-            return null;
-        }
-        Item equipped = mainHandStack.getItem();
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile == null || !(tile instanceof TileEntitySteamPipe) || player.isSneaking() ||
-          !(equipped instanceof IPipeWrench && ((IPipeWrench) equipped).canWrench(player, pos))) {
-            return super.collisionRayTrace(state, world, pos, start, end);
+        if (tile == null || !(tile instanceof TileEntitySteamPipe)) {
+            return;
         }
         List<IndexedCuboid6> cuboids = new LinkedList<>();
         ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
+        for (IndexedCuboid6 cuboid : cuboids) {
+            AxisAlignedBB aabb = cuboid.aabb();
+            if (aabb.intersectsWith(entityBox)) {
+                collidingBoxes.add(aabb);
+            }
+        }
+    }
 
-        return rayTracer.rayTraceCuboids(new Vector3(start), new Vector3(end), cuboids, new BlockCoord(pos));
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 }
