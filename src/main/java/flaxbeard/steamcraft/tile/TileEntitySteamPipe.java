@@ -16,7 +16,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -265,15 +264,42 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     /**
-     * Gets whether the pipe is connected to at least two specific sides. Used to check whether the pipe is "long",
-     * and not just a corner or single piece.
-     * @param actualState The actual state of the block
-     * @param facing The first direction property
-     * @param opposite The second direction property, usually the logical opposite direction.
-     * @return
+     * Checks whether the pipe is connected at the given direction, or the opposite and only the opposite.
+     * This is referred to in several comments as a "long" pipe, eg. =.=.=, the first and last are the "long" pipes,
+     * because they do not connect to anything on more than one side, but are still rendered as "long", as if they were.
+     *
+     * This method will be significantly slower than the other shouldStretchInDirection method in most use cases,
+     * as it manually calls getMyDirections. When this is being called > 1 times every tick or update, this should not
+     * be used, and instead, the fast version should be called to prevent the performance hit of calling
+     * getMyDirections() repeatedly.
+     * @param actualState The actual state for the block
+     * @param direction The first direction
+     * @param opposite The second direction, usually the opposite.
      */
-    public boolean isPipeFacing(IBlockState actualState, PropertyBool facing, PropertyBool opposite) {
-        return actualState.getValue(facing) && actualState.getValue(opposite);
+    public boolean shouldStretchInDirection(IBlockState actualState, PropertyBool direction, PropertyBool opposite) {
+        return shouldStretchInDirection(actualState.getValue(direction), actualState.getValue(opposite), getMyDirections().size());
+    }
+
+    /**
+     * A variant of shouldStretchInDirection that does not actually manually get all of the values, because, particularly
+     * with the getMyDirections method, it might cause some serious performance hits. Recommended usage:
+     * ```
+     * boolean hasDown = actualState.getValue(DOWN);
+     * boolean hasUp = actualState.getValue(UP);
+     * int numDirs = pipe.getMyDirections().size();
+     * shouldStretchInDirection(hasDown, hasUp, numDirs);
+     * ```
+     *
+     * This method is simply a wrapper for a very common if statement in relation to pipe bounding and collision boxes.
+     *
+     * This method also has the benefit of being static, which the other shouldStretchInDirection method is not.
+     *
+     * @param hasDir Whether it is connected at this dir
+     * @param hasOpposite Whether it is connected at this dir, usually the opposite of the dir used in hasDir
+     * @param numDirs The number of directions that this pipe is connected at.
+     */
+    public static boolean shouldStretchInDirection(boolean hasDir, boolean hasOpposite, int numDirs) {
+        return hasDir || (hasOpposite && numDirs == 1);
     }
 
     public void addTraceableCuboids(List<IndexedCuboid6> cuboids) {
@@ -283,47 +309,42 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         int y = pos.getY();
         int z = pos.getZ();
         IBlockState actualState = worldObj.getBlockState(pos).getActualState(worldObj, pos);
-        {
+        boolean hasDown = actualState.getValue(BlockPipe.DOWN);
+        boolean hasUp = actualState.getValue(BlockPipe.UP);
+        boolean hasNorth = actualState.getValue(BlockPipe.NORTH);
+        boolean hasSouth = actualState.getValue(BlockPipe.SOUTH);
+        boolean hasWest = actualState.getValue(BlockPipe.WEST);
+        boolean hasEast = actualState.getValue(BlockPipe.EAST);
+        int numDirs = getMyDirections().size();
+        if (shouldStretchInDirection(hasDown, hasUp, numDirs)) {
             int connectDown = canConnectSide(EnumFacing.DOWN);
-            if (connectDown > 0 || isPipeFacing(actualState, BlockPipe.DOWN, BlockPipe.UP)) {
-                float bottom = connectDown == 2 ? -5F / 16F : 0F;
-                cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + max, z + max)));
-            }
+            float bottom = connectDown == 2 ? -5F / 16F : 0F;
+            cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + max, z + max)));
         }
-        {
+        if (shouldStretchInDirection(hasUp, hasDown, numDirs)) {
             int connectUp = canConnectSide(EnumFacing.UP);
-            if (connectUp > 0 || isPipeFacing(actualState, BlockPipe.UP, BlockPipe.DOWN)) {
-                float top = connectUp == 2 ? 21F / 16F : 1F;
-                cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + min, z + min, x + max, y + top, z + max)));
-            }
+            float top = connectUp == 2 ? 21F / 16F : 1F;
+            cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + min, z + min, x + max, y + top, z + max)));
         }
-        {
+        if (shouldStretchInDirection(hasNorth, hasSouth, numDirs)) {
             int connectNorth = canConnectSide(EnumFacing.NORTH);
-            if (connectNorth > 0 || isPipeFacing(actualState, BlockPipe.NORTH, BlockPipe.SOUTH)) {
-                float bottom = connectNorth == 2 ? -5F / 16F : 0F;
-                cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + max)));
-            }
+            float bottom = connectNorth == 2 ? -5F / 16F : 0F;
+            cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + max)));
         }
-        {
+        if (shouldStretchInDirection(hasSouth, hasNorth, numDirs)) {
             int connectSouth = canConnectSide(EnumFacing.SOUTH);
-            if (connectSouth > 0 || isPipeFacing(actualState, BlockPipe.SOUTH, BlockPipe.NORTH)) {
-                float top = connectSouth == 2 ? 21F / 16F : 1F;
-                cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + min, x + max, y + max, z + top)));
-            }
+            float top = connectSouth == 2 ? 21F / 16F : 1F;
+            cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + min, x + max, y + max, z + top)));
         }
-        {
+        if (shouldStretchInDirection(hasWest, hasEast, numDirs)) {
             int connectWest = canConnectSide(EnumFacing.WEST);
-            if (connectWest > 0 || isPipeFacing(actualState, BlockPipe.WEST, BlockPipe.EAST)) {
-                float bottom = connectWest == 2 ? -5F / 16F : 0F;
-                cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + max, y + max, z + max)));
-            }
+            float bottom = connectWest == 2 ? -5F / 16F : 0F;
+            cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + max, y + max, z + max)));
         }
-        {
+        if (shouldStretchInDirection(hasEast, hasWest, numDirs)) {
             int connectEast = canConnectSide(EnumFacing.EAST);
-            if (connectEast > 0 || isPipeFacing(actualState, BlockPipe.EAST, BlockPipe.WEST)) {
-                float top = connectEast == 2 ? 21F / 16F : 1F;
-                cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + min, y + min, z + min, x + top, y + max, z + max)));
-            }
+            float top = connectEast == 2 ? 21F / 16F : 1F;
+            cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + min, y + min, z + min, x + top, y + max, z + max)));
         }
         cuboids.add(new IndexedCuboid6(6, new Cuboid6(x + min, y + min, z + min, x + 12F / 16F, y + 12F / 16F, z + 12F / 16F)));
     }

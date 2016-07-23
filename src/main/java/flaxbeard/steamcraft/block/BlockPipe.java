@@ -206,22 +206,22 @@ public class BlockPipe extends BlockSteamTransporter {
                 boolean hasEast = actualState.getValue(EAST);
                 boolean hasDown = actualState.getValue(DOWN);
                 boolean hasUp = actualState.getValue(UP);
-                if (hasNorth || (hasSouth && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasNorth, hasSouth, numDirs)) {
                     minZ = 0F;
                 }
-                if (hasSouth || (hasNorth && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasSouth, hasNorth, numDirs)) {
                     maxZ = 1F;
                 }
-                if (hasWest || (hasEast && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasWest, hasEast, numDirs)) {
                     minX = 0F;
                 }
-                if (hasEast || (hasWest && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasEast, hasWest, numDirs)) {
                     maxX = 1F;
                 }
-                if (hasDown || (hasUp && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasDown, hasUp, numDirs)) {
                     minY = 0F;
                 }
-                if (hasUp || (hasDown && numDirs == 1)) {
+                if (TileEntitySteamPipe.shouldStretchInDirection(hasUp, hasDown, numDirs)) {
                     maxY = 1F;
                 }
                 return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
