@@ -184,10 +184,6 @@ public class BlockPipe extends BlockSteamTransporter {
     }
     */
 
-    public static boolean isPipeFacing(IBlockState actualState, PropertyBool facing, PropertyBool opposite) {
-        return actualState.getValue(facing) || actualState.getValue(opposite);
-    }
-
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
@@ -201,22 +197,31 @@ public class BlockPipe extends BlockSteamTransporter {
                 float minZ = BASE_MIN;
                 float maxZ = BASE_MAX;
                 IBlockState actualState = getActualState(state, world, pos);
-                if (isPipeFacing(actualState, NORTH, SOUTH)) {
+                // The OR check resolves the problem with "long" pipes that don't connect to anything having a shorter
+                // bounding box in that direction.
+                int numDirs = pipe.getMyDirections().size();
+                boolean hasNorth = actualState.getValue(NORTH);
+                boolean hasSouth = actualState.getValue(SOUTH);
+                boolean hasWest = actualState.getValue(WEST);
+                boolean hasEast = actualState.getValue(EAST);
+                boolean hasDown = actualState.getValue(DOWN);
+                boolean hasUp = actualState.getValue(UP);
+                if (hasNorth || (hasSouth && numDirs == 1)) {
                     minZ = 0F;
                 }
-                if (isPipeFacing(actualState, SOUTH, NORTH)) {
+                if (hasSouth || (hasNorth && numDirs == 1)) {
                     maxZ = 1F;
                 }
-                if (isPipeFacing(actualState, EAST, WEST)) {
-                    minX = 1F;
+                if (hasWest || (hasEast && numDirs == 1)) {
+                    minX = 0F;
                 }
-                if (isPipeFacing(actualState, WEST, EAST)) {
-                    maxX = 0F;
+                if (hasEast || (hasWest && numDirs == 1)) {
+                    maxX = 1F;
                 }
-                if (isPipeFacing(actualState, DOWN, UP)) {
+                if (hasDown || (hasUp && numDirs == 1)) {
                     minY = 0F;
                 }
-                if (isPipeFacing(actualState, UP, DOWN)) {
+                if (hasUp || (hasDown && numDirs == 1)) {
                     maxY = 1F;
                 }
                 return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);

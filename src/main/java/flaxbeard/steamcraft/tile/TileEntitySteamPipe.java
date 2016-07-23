@@ -12,6 +12,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -243,7 +244,12 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
     }
 
-    private int canConnectSide(EnumFacing direction) {
+    /**
+     * Gets whether the pipe can connect to something in the given direction.
+     * @param direction The direction
+     * @return 0 if it cannot connect. 2 if it can connect to another pipe. 1 if it can connect, but not to another pipe.
+     */
+    public int canConnectSide(EnumFacing direction) {
         BlockPos pos = getOffsetPos(direction);
         TileEntity tile = worldObj.getTileEntity(pos);
         if (tile != null && tile instanceof ISteamTransporter) {
@@ -258,6 +264,18 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         return 0;
     }
 
+    /**
+     * Gets whether the pipe is connected to at least two specific sides. Used to check whether the pipe is "long",
+     * and not just a corner or single piece.
+     * @param actualState The actual state of the block
+     * @param facing The first direction property
+     * @param opposite The second direction property, usually the logical opposite direction.
+     * @return
+     */
+    public boolean isPipeFacing(IBlockState actualState, PropertyBool facing, PropertyBool opposite) {
+        return actualState.getValue(facing) && actualState.getValue(opposite);
+    }
+
     public void addTraceableCuboids(List<IndexedCuboid6> cuboids) {
         float min = BlockPipe.BASE_MIN;
         float max = BlockPipe.BASE_MAX;
@@ -267,42 +285,42 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         IBlockState actualState = worldObj.getBlockState(pos).getActualState(worldObj, pos);
         {
             int connectDown = canConnectSide(EnumFacing.DOWN);
-            if (connectDown > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.DOWN, BlockPipe.UP)) {
+            if (connectDown > 0 || isPipeFacing(actualState, BlockPipe.DOWN, BlockPipe.UP)) {
                 float bottom = connectDown == 2 ? -5F / 16F : 0F;
                 cuboids.add(new IndexedCuboid6(0, new Cuboid6(x + min, y + bottom, z + min, x + max, y + max, z + max)));
             }
         }
         {
             int connectUp = canConnectSide(EnumFacing.UP);
-            if (connectUp > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.UP, BlockPipe.DOWN)) {
+            if (connectUp > 0 || isPipeFacing(actualState, BlockPipe.UP, BlockPipe.DOWN)) {
                 float top = connectUp == 2 ? 21F / 16F : 1F;
                 cuboids.add(new IndexedCuboid6(1, new Cuboid6(x + min, y + min, z + min, x + max, y + top, z + max)));
             }
         }
         {
             int connectNorth = canConnectSide(EnumFacing.NORTH);
-            if (connectNorth > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.NORTH, BlockPipe.SOUTH)) {
+            if (connectNorth > 0 || isPipeFacing(actualState, BlockPipe.NORTH, BlockPipe.SOUTH)) {
                 float bottom = connectNorth == 2 ? -5F / 16F : 0F;
                 cuboids.add(new IndexedCuboid6(2, new Cuboid6(x + min, y + min, z + bottom, x + max, y + max, z + max)));
             }
         }
         {
             int connectSouth = canConnectSide(EnumFacing.SOUTH);
-            if (connectSouth > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.SOUTH, BlockPipe.NORTH)) {
+            if (connectSouth > 0 || isPipeFacing(actualState, BlockPipe.SOUTH, BlockPipe.NORTH)) {
                 float top = connectSouth == 2 ? 21F / 16F : 1F;
                 cuboids.add(new IndexedCuboid6(3, new Cuboid6(x + min, y + min, z + min, x + max, y + max, z + top)));
             }
         }
         {
             int connectWest = canConnectSide(EnumFacing.WEST);
-            if (connectWest > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.WEST, BlockPipe.EAST)) {
+            if (connectWest > 0 || isPipeFacing(actualState, BlockPipe.WEST, BlockPipe.EAST)) {
                 float bottom = connectWest == 2 ? -5F / 16F : 0F;
                 cuboids.add(new IndexedCuboid6(4, new Cuboid6(x + bottom, y + min, z + min, x + max, y + max, z + max)));
             }
         }
         {
             int connectEast = canConnectSide(EnumFacing.EAST);
-            if (connectEast > 0 || BlockPipe.isPipeFacing(actualState, BlockPipe.EAST, BlockPipe.WEST)) {
+            if (connectEast > 0 || isPipeFacing(actualState, BlockPipe.EAST, BlockPipe.WEST)) {
                 float top = connectEast == 2 ? 21F / 16F : 1F;
                 cuboids.add(new IndexedCuboid6(5, new Cuboid6(x + min, y + min, z + min, x + top, y + max, z + max)));
             }
