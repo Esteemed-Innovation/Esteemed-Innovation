@@ -6,6 +6,6 @@ import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 
 public class TileEntitySteamTank extends SteamTransporterTileEntity implements ISteamTransporter {
     public TileEntitySteamTank() {
-        super(80000, EnumFacing.HORIZONTALS);
+        super(80000, EnumFacing.VALUES);
     }
 }
