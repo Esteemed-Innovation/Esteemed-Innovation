@@ -4,7 +4,6 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.block.IDisguisableBlock;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.data.capabilities.BoilerTankProperties;
 import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.misc.OreDictHelper;
 import net.minecraft.block.Block;
@@ -34,17 +33,15 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityBoiler extends SteamTransporterTileEntity implements IFluidHandler, ISidedInventory, ISteamTransporter, IWrenchable, IDisguisableBlock {
+public class TileEntityBoiler extends SteamTransporterTileEntity implements ISidedInventory, ISteamTransporter, IWrenchable, IDisguisableBlock {
     private static final int[] slotsTop = new int[]{0, 1};
     private static final int[] slotsBottom = new int[]{0, 1};
     private static final int[] slotsSides = new int[]{0, 1};
-    public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 1), 10000);
+    public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 0), 10000);
     public int furnaceCookTime;
     public int furnaceBurnTime;
     public int currentItemBurnTime;
@@ -53,7 +50,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
     private ItemStack[] furnaceItemStacks = new ItemStack[2];
     private String customName;
     private boolean wasBurning;
-    private boolean lastWrench = false;
 
     public TileEntityBoiler(int capacity) {
         super(capacity, new EnumFacing[] { EnumFacing.UP });
@@ -276,27 +272,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements IFlu
 
     public boolean isBurning() {
         return furnaceBurnTime > 0;
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return myTank.fill(resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(FluidStack resource, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public IFluidTankProperties[] getTankProperties() {
-        // ... ? I have no idea if this is how this is supposed to work. There's not a whole lotta docs for this stuff.
-        return new IFluidTankProperties[] { new BoilerTankProperties() };
     }
 
     @Override

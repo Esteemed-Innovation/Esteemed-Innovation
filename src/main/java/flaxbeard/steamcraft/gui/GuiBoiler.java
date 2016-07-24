@@ -46,7 +46,6 @@ public class GuiBoiler extends GuiContainer {
         i1 = tileEntity.getBurnTimeRemainingScaled(14);
         drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
         GL11.glDisable(3042);
-        // //Steamcraft.log.debug(this.tileEntity.myTank.getCapacity());
         FluidTank tank = tileEntity.getTank();
         if (tank == null) {
             return;
@@ -79,11 +78,10 @@ public class GuiBoiler extends GuiContainer {
         }
         TextureAtlasSprite icon = FluidHelper.getStillTexture(mc, fluid.getFluid());
         if (steam) {
-            // TODO Dunno ?
             icon = mc.getTextureMapBlocks().getTextureExtry(STEAM_RL.toString());
         }
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        //RenderUtils.setGLColorFromInt(fluid.getFluid().getColor(fluid));
+//        RenderUtils.setGLColorFromInt(fluid.getFluid().getColor(fluid));
         int fullX = width / 16;
         int fullY = height / 16;
         int lastX = width - fullX * 16;
@@ -116,6 +114,6 @@ public class GuiBoiler extends GuiContainer {
         buffer.pos(x + width, y + height, zLevel).tex(icon.getInterpolatedU(width), icon.getInterpolatedV(height)).endVertex();
         buffer.pos(x + width, y + cut, zLevel).tex(icon.getInterpolatedU(width), icon.getInterpolatedV(cut)).endVertex();
         buffer.pos(x, y + cut, zLevel).tex(icon.getMinU(), icon.getInterpolatedV(cut)).endVertex();
-        buffer.finishDrawing();
+        tess.draw();
     }
 }
