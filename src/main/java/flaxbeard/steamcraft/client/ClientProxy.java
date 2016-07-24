@@ -12,6 +12,7 @@ import flaxbeard.steamcraft.client.render.item.ItemSteamToolRenderer;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.client.render.tile.*;
 import flaxbeard.steamcraft.common.CommonProxy;
+import flaxbeard.steamcraft.data.state.StateMapperValvePipe;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
@@ -148,6 +149,8 @@ public class ClientProxy extends CommonProxy {
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 1, "is_creative=true");
         registerModel(SteamNetworkBlocks.Blocks.PIPE.getBlock());
+        ModelLoader.setCustomStateMapper(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock(), new StateMapperValvePipe());
+        registerModel(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock());
 
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());

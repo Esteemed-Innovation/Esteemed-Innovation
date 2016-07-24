@@ -2,8 +2,16 @@ package flaxbeard.steamcraft.client.render;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ReportedException;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.*;
+import net.minecraftforge.common.model.TRSRTransformation;
 import org.lwjgl.opengl.GL11;
+
+import java.util.HashMap;
 
 public class RenderUtility {
     /**
@@ -37,5 +45,25 @@ public class RenderUtility {
         buffer.pos(par2 + par4, par3, 0D);
         buffer.endVertex();
         tessellator.draw();
+    }
+
+    private static HashMap<ResourceLocation, IBakedModel> bakedModels = new HashMap<>();
+
+    public static IBakedModel bakeModel(ResourceLocation loc) {
+        if (bakedModels.containsKey(loc)) {
+            return bakedModels.get(loc);
+        }
+
+        try {
+            IModel model = ModelLoaderRegistry.getModel(loc);
+            IBakedModel bakedModel = model.bake(TRSRTransformation.identity(), DefaultVertexFormats.BLOCK,
+              ModelLoader.defaultTextureGetter());
+            bakedModels.put(loc, bakedModel);
+            return bakedModel;
+
+            // Stupid vanilla, throwing generic exceptions
+        } catch (Exception e) {
+            throw new ReportedException(new CrashReport("Error loading custom model " + loc.toString(), e));
+        }
     }
 }
