@@ -1,7 +1,6 @@
 package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.Config;
-import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.steamnet.SteamNetworkRegistry;
 import flaxbeard.steamcraft.block.BlockValvePipe;
@@ -13,8 +12,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -99,6 +96,21 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     @Override
+    public boolean canLeak(EnumFacing direction) {
+        SteamNetwork net = getNetwork();
+        if (net == null) {
+            return false;
+        }
+        BlockPos dirPos = getOffsetPos(direction);
+        /*
+         No super call, because the valve pipe does not actually get a share of the network. For the valve pipe,
+         we have to actually check the amount of steam in the network that it is connected to.
+          */
+        return isOpen() && net.getSteam() > 0 && (worldObj.isAirBlock(dirPos) ||
+          !worldObj.isSideSolid(dirPos, direction.getOpposite()));
+    }
+
+    @Override
     public void update() {
         super.superUpdate();
         if (worldObj.isRemote) {
@@ -112,22 +124,6 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
             if (!turning) {
                 turnTicks = 0;
-            }
-
-            if (isLeaking) {
-                ArrayList<EnumFacing> myDirections = getMyDirections();
-                int i = 0;
-                if (myDirections.size() > 0) {
-                    EnumFacing direction = myDirections.get(0).getOpposite();
-                    BlockPos dirPos = new BlockPos(pos.getX() + direction.getFrontOffsetX(), pos.getY() + direction.getFrontOffsetY(), pos.getZ() + direction.getFrontOffsetZ());
-                    while (myDirections.size() == 2 && open && i < 10 && (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
-                        //this.decrSteam(1);
-                        worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
-                          pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
-                          direction.getFrontOffsetZ() * 0.1F);
-                        i++;
-                    }
-                }
             }
         } else {
             if (waitingOpen) {
@@ -152,40 +148,8 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                 }
                 turnTicks = 0;
             }
-            ArrayList<EnumFacing> myDirections = getMyDirections();
-            
-            if (myDirections.size() > 0) {
-                EnumFacing direction = myDirections.get(0).getOpposite();
-                while (!doesConnect(direction)) {
-                    direction = EnumFacing.getFront((direction.getIndex() + 1) % 5);
-                }
-
-                BlockPos dirPos = new BlockPos(pos.getX() + direction.getFrontOffsetX(), pos.getY() + direction.getFrontOffsetY(), pos.getZ() + direction.getFrontOffsetZ());
-                if (myDirections.size() == 2 && open && getNetwork() != null && getNetwork().getSteam() > 0 &&
-                  (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
-                    // Steamcraft.log.debug("isOpen and should be leaking");
-                    if (!isLeaking) {
-                        isLeaking = true;
-                        markForUpdate();
-                    }
-                    decrSteam(100);
-                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
-                      SoundCategory.BLOCKS, 2F, 0.9F, false);
-                } else {
-                    // Steamcraft.log.debug("Probably shouldn't be leaking");
-                    if (isLeaking) {
-                        isLeaking = false;
-                        markForUpdate();
-                    }
-                }
-
-            } else {
-                if (isLeaking) {
-                    isLeaking = false;
-                    markForUpdate();
-                }
-            }
         }
+        leak();
     }
 
     @Override
@@ -216,7 +180,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
                     SteamNetwork.newOrJoin(this);
                 } else {
                     changed = false;
-                    this.waitingOpen = true;
+                    waitingOpen = true;
                 }
             } else {
                 //Steamcraft.log.debug("Splitting");

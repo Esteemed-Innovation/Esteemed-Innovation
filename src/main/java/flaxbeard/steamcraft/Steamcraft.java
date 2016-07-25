@@ -105,8 +105,6 @@ public class Steamcraft {
     public static VillagerRegistry.VillagerProfession STEAM_ENGINEER_PROFESSION;
     public static VillagerRegistry.VillagerCareer STEAM_ENGINEER_CAREER;
 
-    public static boolean steamRegistered;
-
     public static String CONFIG_DIR;
 
     @SidedProxy(clientSide = "flaxbeard.steamcraft.client.ClientProxy", serverSide = "flaxbeard.steamcraft.common.CommonProxy")

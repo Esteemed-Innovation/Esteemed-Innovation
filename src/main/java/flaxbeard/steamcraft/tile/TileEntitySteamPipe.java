@@ -134,18 +134,10 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         ArrayList<EnumFacing> myDirections = new ArrayList<>();
         for (EnumFacing direction : EnumFacing.VALUES) {
             TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
-            if (doesConnect(direction) && tile != null) {
-                if (tile instanceof ISteamTransporter) {
-                    ISteamTransporter target = (ISteamTransporter) tile;
-                    if (target.doesConnect(direction.getOpposite())) {
-                        myDirections.add(direction);
-                    }
-                } else if (tile instanceof IFluidHandler && Steamcraft.steamRegistered) {
-                    IFluidHandler target = (IFluidHandler) tile;
-                    if (target.canDrain(direction.getOpposite(), FluidRegistry.getFluid("steam")) ||
-                      target.canFill(direction.getOpposite(), FluidRegistry.getFluid("steam"))) {
-                        myDirections.add(direction);
-                    }
+            if (tile instanceof ISteamTransporter) {
+                ISteamTransporter target = (ISteamTransporter) tile;
+                if (target.doesConnect(direction.getOpposite())) {
+                    myDirections.add(direction);
                 }
             }
         }
@@ -153,10 +145,63 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         return myDirections;
     }
 
+    /**
+     * Handles the leaking logic. Checks if there is only one connection, if it can leak, etc.
+     * If it is leaking and shouldn't, this stops it, and if it isn't but should, this makes it leak.
+     */
+    public void leak() {
+        ArrayList<EnumFacing> myDirections = getMyDirections();
+        if (myDirections.size() != 1) {
+            return;
+        }
+        EnumFacing direction = myDirections.get(0).getOpposite();
+        while (!doesConnect(direction) || direction == myDirections.get(0)) {
+            direction = EnumFacing.VALUES[(direction.ordinal() + 1) % 5];
+        }
+        if (!worldObj.isRemote) {
+            int i = 0;
+            IBlockState myState = worldObj.getBlockState(pos);
+            if (canLeak(direction)) {
+                worldObj.playSound(null, pos, Steamcraft.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
+                if (!isLeaking) {
+                    isLeaking = true;
+                    worldObj.notifyBlockUpdate(pos, myState, worldObj.getBlockState(pos), 0);
+                    markDirty();
+                }
+            } else {
+                if (isLeaking) {
+                    isLeaking = false;
+                    worldObj.notifyBlockUpdate(pos, myState, worldObj.getBlockState(pos), 0);
+                    markDirty();
+                }
+            }
+            while (isLeaking && i < 10) {
+                decrSteam(10);
+                i++;
+            }
+        } else if (isLeaking) {
+            worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+              pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
+              direction.getFrontOffsetZ() * 0.1F);
+        }
+    }
+
+    /**
+     * Gets whether this tileentity is able to leak from this side.
+     * @param direction The side
+     * @return Whether it can leak.
+     */
+    public boolean canLeak(EnumFacing direction) {
+        BlockPos dirPos = getOffsetPos(direction);
+        return (getSteamShare() > 0 && (worldObj.isAirBlock(dirPos) ||
+          !worldObj.isSideSolid(dirPos, direction.getOpposite())));
+    }
+
     @Override
     public void update() {
         super.update();
         /*
+        TODO: Port this.
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
             if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
@@ -165,43 +210,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             lastWrench = hasWrench;
         }
         */
-
-        ArrayList<EnumFacing> myDirections = getMyDirections();
-        int i = 0;
-        if (myDirections.size() > 0) {
-            EnumFacing direction = myDirections.get(0).getOpposite();
-            while (!doesConnect(direction) || direction == myDirections.get(0)) {
-                direction = EnumFacing.getHorizontal((direction.ordinal() + 1) % 5);
-            }
-            BlockPos dirPos = getOffsetPos(direction);
-            if (!worldObj.isRemote) {
-                if (myDirections.size() == 2 && getSteamShare() > 0 && (worldObj.isAirBlock(dirPos) ||
-                  !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
-                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
-                      SoundCategory.BLOCKS, 2F, 0.9F, false);
-                    if (!isLeaking) {
-                        isLeaking = true;
-                        markDirty();
-                    }
-
-                } else {
-                    if (isLeaking) {
-                        isLeaking = false;
-                        markDirty();
-                    }
-                }
-                while (myDirections.size() == 2 && getPressure() > 0 && i < 10 &&
-                  (worldObj.isAirBlock(dirPos) || !worldObj.isSideSolid(dirPos, direction.getOpposite()))) {
-                    decrSteam(10);
-                    i++;
-                }
-            }
-            if (worldObj.isRemote && isLeaking) {
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
-                  pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
-                  direction.getFrontOffsetZ() * 0.1F);
-            }
-        }
+        leak();
     }
 
     @Override
@@ -223,7 +232,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     @Override
     public boolean doesConnect(EnumFacing face) {
         for (int i : blacklistedSides) {
-            if (EnumFacing.getFront(i) == face) {
+            if (EnumFacing.VALUES[i] == face) {
                 return false;
             }
         }
@@ -384,7 +393,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         // Use raytracer to get the subpart that was hit. The # corresponds with a forge direction.
         // If hit a part from 0 to 5 (direction) and hit me
 
-        if ((subHit >= 0) && (subHit < 6) && world.getBlockState(pos).getBlock() instanceof BlockPipe) {
+        IBlockState state = world.getBlockState(pos);
+        if ((subHit >= 0) && (subHit < 6) && state instanceof BlockPipe) {
             //Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
             int sidesConnect = 0;
             for (int i = 0; i < 6; i++) {
@@ -396,7 +406,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
             //If does connect on this side, and has adequate sides left
             EnumFacing direction = EnumFacing.getFront(subHit);
             if (doesConnect(direction)) {
-                TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
+                BlockPos offsetPos = getOffsetPos(direction);
+                TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile instanceof TileEntitySteamPipe && ((TileEntitySteamPipe) tile).blacklistedSides.contains(direction.getOpposite().ordinal())) {
                     TileEntitySteamPipe pipe = (TileEntitySteamPipe) tile;
                     pipe.blacklistedSides.remove((Integer) direction.getOpposite().ordinal());
@@ -406,7 +417,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     pipe.shouldJoin();
                     pipe.isOtherPipe = true;
                     //pipe.getNetwork().addSteam(steam);
-                    markForUpdate();
+                    world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
                 } else if (sidesConnect > 2) {
                     //add to blacklist
                     blacklistedSides.add(subHit);
@@ -427,7 +438,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
                     refreshNeighbors();
                     network.shouldRefresh();
-                    markForUpdate();
+                    world.notifyBlockUpdate(this.pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 0);
                 }
             }
             //else if doesn't connect
@@ -442,7 +453,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     ////Steamcraft.log.debug("C");
                     ////Steamcraft.log.debug(this.getNetworkName());
                     ////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
-                    markForUpdate();
+                    world.notifyBlockUpdate(this.pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 0);
                 }
             }
 //            if (getSteamShare() > 0) {
