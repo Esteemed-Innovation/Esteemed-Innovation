@@ -145,7 +145,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerModels() {
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
-        registerModel(SteamNetworkBlocks.Blocks.BOILER_ON.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 1, "is_creative=true");
         registerModel(SteamNetworkBlocks.Blocks.PIPE.getBlock());

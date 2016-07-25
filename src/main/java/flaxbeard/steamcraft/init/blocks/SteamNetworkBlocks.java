@@ -21,7 +21,6 @@ import static net.minecraft.init.Items.*;
 public class SteamNetworkBlocks implements IInitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
-        BOILER_ON(new BlockBoiler(), "boiler_on"),
         FLASH_BOILER(new BlockFlashBoiler(), "flash_boiler"),
         PIPE(new BlockPipe(), "pipe"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
@@ -59,8 +58,7 @@ public class SteamNetworkBlocks implements IInitCategory {
 
         public boolean isEnabled() {
             switch (this) {
-                case BOILER:
-                case BOILER_ON: {
+                case BOILER: {
                     return Config.enableBoiler;
                 }
                 case FLASH_BOILER: {

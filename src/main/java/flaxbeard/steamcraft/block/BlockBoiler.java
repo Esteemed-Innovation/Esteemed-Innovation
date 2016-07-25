@@ -8,6 +8,7 @@ import flaxbeard.steamcraft.misc.FluidHelper;
 import flaxbeard.steamcraft.tile.TileEntityBoiler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +22,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,6 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
+    public static final PropertyBool IS_ON = PropertyBool.create("on");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockBoiler() {
@@ -38,7 +41,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, IS_ON);
     }
 
     @Override
@@ -49,6 +52,16 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileEntityBoiler) {
+            TileEntityBoiler boiler = (TileEntityBoiler) tile;
+            return getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(IS_ON, boiler.isBurning());
+        }
+        return state;
     }
 
     @Override

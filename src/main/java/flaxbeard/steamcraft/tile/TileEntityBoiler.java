@@ -260,9 +260,9 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             }
         }
 
-        if (!worldObj.isRemote && wasBurning != isBurning()) {
-            super.markForUpdate();
+        if (wasBurning != isBurning()) {
             wasBurning = isBurning();
+            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 0);
         }
     }
 

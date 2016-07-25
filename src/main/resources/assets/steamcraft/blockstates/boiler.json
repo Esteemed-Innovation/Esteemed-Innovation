@@ -20,6 +20,18 @@
         "y": 90
       }
     },
+    "on": {
+      "true": {
+        "textures": {
+          "front": "steamcraft:blocks/boilerOn"
+        }
+      },
+      "false": {
+        "textures": {
+          "front": "steamcraft:blocks/boiler"
+        }
+      }
+    },
     "inventory": [{}]
   }
 }
