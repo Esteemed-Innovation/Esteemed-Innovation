@@ -15,6 +15,12 @@ public interface ISteamTransporter {
     float getPressure();
 
     /**
+     * Sets the pressure of the device.
+     * @param pressure
+     */
+    void setPressure(float pressure);
+
+    /**
      * How resistant the device is to pressure meltdowns
      */
     float getPressureResistance();

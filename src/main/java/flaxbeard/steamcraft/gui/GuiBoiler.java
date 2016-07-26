@@ -59,7 +59,7 @@ public class GuiBoiler extends GuiContainer {
         drawFluid(new FluidStack(FluidRegistry.WATER, 1), (int) (fill * 58.0F), k + 81, l + 14, 16, 58, false);
         mc.getTextureManager().bindTexture(BOILER_TEXTURES);
         drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
-        fill = tileEntity.pressure;
+        fill = tileEntity.getPressure();
         fill = Math.min(fill, 1.0F);
         FluidStack stack = new FluidStack(FluidRegistry.WATER, 1);
         if (FluidRegistry.isFluidRegistered("steam")) {

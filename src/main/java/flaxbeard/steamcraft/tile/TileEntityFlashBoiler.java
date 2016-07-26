@@ -188,7 +188,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setInteger("frontSide", frontSide);
         access.setInteger("water", myTank.getFluidAmount());
         access.setShort("BurnTime", (short) furnaceBurnTime);
@@ -627,14 +627,8 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
 
     @Override
     public float getPressure() {
-        if (getMyCorner() != BlockFlashBoiler.Corners.NONE) {
-            if (worldObj.isRemote) {
-                return pressure;
-            } else {
-                if (getNetwork() != null) {
-                    return super.getPressure();
-                }
-            }
+        if (getMyCorner() != BlockFlashBoiler.Corners.NONE && (worldObj.isRemote || getNetwork() != null)) {
+            return super.getPressure();
         }
         return 0F;
     }

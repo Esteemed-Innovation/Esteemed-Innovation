@@ -112,7 +112,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setInteger("water", myTank.getFluidAmount());
         access.setShort("BurnTime", (short) furnaceBurnTime);
         access.setShort("CookTime", (short) furnaceCookTime);

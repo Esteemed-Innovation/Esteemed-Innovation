@@ -67,7 +67,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setBoolean("active", getSteamShare() > 0 && !powered);
         access.setShort("range", (short) range);
         return new SPacketUpdateTileEntity(pos, 1, access);

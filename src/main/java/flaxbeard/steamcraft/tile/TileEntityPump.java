@@ -25,7 +25,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setShort("progress", (short) progress);
         if (myTank.getFluid() != null) {
             access.setString("fluid", myTank.getFluid().getFluid().getName());

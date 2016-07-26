@@ -7,8 +7,8 @@ import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 public class TileEntityCreativeTank extends TileEntitySteamTank implements ITickable {
     public TileEntityCreativeTank() {
         super();
-        this.name = "Creative Tank";
-        this.capacity = 1;
+        name = "Creative Tank";
+        capacity = 1;
     }
 
     @Override

@@ -184,7 +184,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
 
         access.setInteger("progress", progress);
         access.setBoolean("isRunning", isRunning);

@@ -41,7 +41,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
 
         access.setBoolean("descending", descending);
         if (target != null) {

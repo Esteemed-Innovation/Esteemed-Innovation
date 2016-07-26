@@ -97,7 +97,7 @@ public class ContainerBoiler extends Container {
             tileEntity.currentItemBurnTime = data;
         }
         if (id == 3) {
-            tileEntity.pressure = (float) data / 1000F;
+            tileEntity.setPressure((float) data / 1000F);
         }
         if (id == 4) {
             int current = tileEntity.getTank().getFluidAmount();

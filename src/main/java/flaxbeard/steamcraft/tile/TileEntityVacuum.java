@@ -273,7 +273,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setBoolean("active", getSteamShare() > VACUUM_STEAM_CONSUMPTION && !powered);
         access.setShort("range", (short) range);
         return new SPacketUpdateTileEntity(pos, 1, access);

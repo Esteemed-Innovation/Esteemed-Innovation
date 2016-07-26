@@ -28,7 +28,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setShort("runTicks", (short) runTicks);
         access.setBoolean("pushing", pushing);
 

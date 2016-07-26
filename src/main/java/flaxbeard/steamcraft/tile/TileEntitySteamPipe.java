@@ -28,8 +28,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +56,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getDescriptionTag();
+        NBTTagCompound access = super.getUpdateTag();
         access.setBoolean("isLeaking", isLeaking);
         NBTTagCompound list = new NBTTagCompound();
         int g = 0;
