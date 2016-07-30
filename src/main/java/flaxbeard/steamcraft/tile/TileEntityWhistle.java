@@ -108,7 +108,9 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
 
     @Override
     public boolean shouldPlay() {
-        return getPressure() > 1.02F;
+//        TODO
+//        return getPressure() > 1.02F;
+        return true;
     }
 
     @Override

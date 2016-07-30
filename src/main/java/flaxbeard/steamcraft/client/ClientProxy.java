@@ -47,6 +47,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
@@ -94,7 +95,7 @@ public class ClientProxy extends CommonProxy {
         registerModel(block, 0);
     }
 
-    private void registerModel(Block block, int meta) {
+    private void registerModel(Block block, int meta)  {
         registerModel(block, meta, "inventory");
     }
 
@@ -150,6 +151,8 @@ public class ClientProxy extends CommonProxy {
         registerModel(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         ModelLoader.setCustomStateMapper(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock(), new StateMapperValvePipe());
         registerModel(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock());
+        registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 0));
+        registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 1));
 
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());

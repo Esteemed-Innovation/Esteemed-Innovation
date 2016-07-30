@@ -11,19 +11,21 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
  */
 public class SteamReactorTileEntity extends TileEntity {
     /**
+     * @param dir The FACING value for the reactor.
      * @return The pressure of the attached transporter.
      */
-    public float getPressure() {
-        ISteamTransporter transporter = getAdjacentTransporter();
+    public float getPressure(EnumFacing dir) {
+        ISteamTransporter transporter = getAdjacentTransporter(dir);
         return transporter == null ? 0F : transporter.getPressure();
     }
 
     /**
      * Drains steam from the attached transporter.
      * @param s The amount of steam to drain.
+     * @param dir The FACING value for the reactor.
      */
-    public void drainSteam(int s) {
-        ISteamTransporter transporter = getAdjacentTransporter();
+    public void drainSteam(int s, EnumFacing dir) {
+        ISteamTransporter transporter = getAdjacentTransporter(dir);
         if (transporter != null) {
             transporter.decrSteam(s);
         }
@@ -31,10 +33,11 @@ public class SteamReactorTileEntity extends TileEntity {
 
     /**
      * Gets the current amount of steam in the attached transporter.
+     * @param dir The FACING value for the reactor..
      * @return The steam in the transporter.
      */
-    public int getSteam() {
-        ISteamTransporter transporter = getAdjacentTransporter();
+    public int getSteam(EnumFacing dir) {
+        ISteamTransporter transporter = getAdjacentTransporter(dir);
         return transporter == null ? 0 : transporter.getSteamShare();
     }
 
@@ -42,9 +45,9 @@ public class SteamReactorTileEntity extends TileEntity {
      * Gets the attached transporter.
      * @return null if there is no ISteamTransporter adjacent to it.
      */
-    public ISteamTransporter getAdjacentTransporter() {
-        EnumFacing d = EnumFacing.getFront(getBlockMetadata()).getOpposite();
-        BlockPos transporterPos = new BlockPos(pos.getX() + d.getFrontOffsetX(), pos.getY(), pos.getZ() + d.getFrontOffsetZ());
+    public ISteamTransporter getAdjacentTransporter(EnumFacing dir) {
+        EnumFacing d = dir.getOpposite();
+        BlockPos transporterPos = pos.offset(d);
         TileEntity te = worldObj.getTileEntity(transporterPos);
         if (te != null && te instanceof ISteamTransporter) {
             return (ISteamTransporter) te;

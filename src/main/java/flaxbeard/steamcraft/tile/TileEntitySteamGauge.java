@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.tile;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamReactorTileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
 public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITickable {
@@ -19,8 +20,8 @@ public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITic
     }
 
     @Override
-    public float getPressure() {
-        ISteamTransporter transporter = getAdjacentTransporter();
+    public float getPressure(EnumFacing dir) {
+        ISteamTransporter transporter = getAdjacentTransporter(dir);
         if (transporter == null) {
             return 0F;
         }
@@ -31,6 +32,7 @@ public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITic
     }
 
     public int getComparatorOutput() {
-        return (int) (15 * (100 * ((double) getPressure() * 0.01D)));
+//        TODO
+        return (int) (15 * (100 * ((double) getPressure(EnumFacing.NORTH) * 0.01D)));
     }
 }

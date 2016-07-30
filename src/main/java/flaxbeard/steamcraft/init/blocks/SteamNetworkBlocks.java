@@ -26,7 +26,7 @@ public class SteamNetworkBlocks implements IInitCategory {
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
         TANK(new BlockSteamTank(), "steam_tank", true),
         STEAM_GAUGE(new BlockSteamGauge(), "meter"),
-        RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc"),
+        RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc", true),
         STEAM_WHISTLE(new BlockWhistle(), "horn"),
         PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "fluid_steam_converter");
 

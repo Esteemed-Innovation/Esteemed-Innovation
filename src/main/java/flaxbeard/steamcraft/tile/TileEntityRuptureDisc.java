@@ -3,6 +3,7 @@ package flaxbeard.steamcraft.tile;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.tile.SteamReactorTileEntity;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -31,48 +32,49 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
 
     @Override
     public void update() {
+        IBlockState startingState = worldObj.getBlockState(pos);
+        EnumFacing dir = startingState.getValue(BlockRuptureDisc.FACING);
         if (worldObj.isRemote) {
             if (isLeaking) {
-                EnumFacing dir = EnumFacing.getFront(getBlockMetadata());
                 float offset = 10.0F / 16.0F;
                 float xOffset = dir.getOpposite().getFrontOffsetX() * offset;
                 float yOffset = dir.getOpposite().getFrontOffsetY() * offset;
                 float zOffset = dir.getOpposite().getFrontOffsetZ() * offset;
-                //for (int i = 0; i < 10; i++){
                 worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F + xOffset,
                   pos.getY() + 0.5F + yOffset, pos.getZ() + 0.5F + zOffset, dir.getFrontOffsetX() * 0.1F,
                   dir.getFrontOffsetY() * 0.1F, dir.getFrontOffsetZ() * 0.1F);
             }
         } else {
-            if (getPressure() > 1.1F) {
-                if (getBlockMetadata() < 6) {
-                    worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
-                    worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockRuptureDisc.IS_BURST, true));
-                }
+            if (getPressure(dir) > 1.1F && !startingState.getValue(BlockRuptureDisc.IS_BURST)) {
+                worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
+                worldObj.setBlockState(pos, startingState.withProperty(BlockRuptureDisc.IS_BURST, true));
             }
-            if (getBlockMetadata() > 9) {
+            // We may or may not change the state up there^
+            startingState = worldObj.getBlockState(pos);
+            if (startingState.getValue(BlockRuptureDisc.IS_BURST)) {
                 int i = 0;
-                if (getSteam() > 0) {
+                if (getSteam(dir) > 0) {
                     if (!isLeaking) {
                         isLeaking = true;
-                        markForUpdate();
+                        worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
+                        markDirty();
                     }
-                    worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_LEAK,
-                      SoundCategory.BLOCKS, 2F, 0.9F, false);
+
+                    worldObj.playSound(null, pos, Steamcraft.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
                 } else {
                     if (isLeaking) {
                         isLeaking = false;
-                        markForUpdate();
+                        worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
                     }
                 }
-                while (getSteam() > 0 && i < 10) {
-                    drainSteam(10);
+                while (getSteam(dir) > 0 && i < 10) {
+                    drainSteam(10, dir);
                     i++;
                 }
             } else {
                 if (isLeaking) {
                     isLeaking = false;
-                    markForUpdate();
+                    worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
                 }
             }
         }
