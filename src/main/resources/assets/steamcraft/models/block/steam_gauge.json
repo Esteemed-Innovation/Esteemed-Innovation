@@ -1,0 +1,22 @@
+{
+  "textures": {
+    "front": "steamcraft:blocks/gaugeFront",
+    "back": "steamcraft:blocks/gaugeBack",
+    "else": "steamcraft:blocks/blockBrass"
+  },
+  "elements": [
+    {
+      "name": "cube",
+      "from": [ 4, 4, 0 ],
+      "to": [ 12, 12, 1 ],
+      "faces": {
+        "north": { "texture": "#front" },
+        "east": { "texture": "#else" },
+        "south": { "texture": "#front" },
+        "west": { "texture": "#else" },
+        "up": { "texture": "#else" },
+        "down": { "texture": "#else" }
+      }
+    }
+  ]
+}

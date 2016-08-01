@@ -2,22 +2,31 @@ package flaxbeard.steamcraft.block;
 
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class BlockSteamGauge extends BlockContainer {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public static final PropertyBool ON_PIPE = PropertyBool.create("on_pipe");
+    private static final float PX_MIN = 4 / 16F;
+    private static final float PX_MAX = 12 / 16F;
 
     public BlockSteamGauge() {
         super(Material.IRON);
@@ -26,7 +35,7 @@ public class BlockSteamGauge extends BlockContainer {
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, ON_PIPE);
     }
 
     @Override
@@ -40,6 +49,12 @@ public class BlockSteamGauge extends BlockContainer {
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos.offset(state.getValue(FACING).getOpposite()));
+        return state.withProperty(ON_PIPE, tile != null && tile instanceof TileEntitySteamPipe);
+    }
+
+    @Override
     public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
@@ -48,31 +63,14 @@ public class BlockSteamGauge extends BlockContainer {
     public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (te != null && te instanceof TileEntitySteamGauge) {
-            return ((TileEntitySteamGauge) te).getComparatorOutput();
+            return ((TileEntitySteamGauge) te).getComparatorOutput(state.getValue(FACING));
         }
         return 0;
     }
 
     @Override
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing dir) {
-        TileEntity tile = null;
-        switch (dir) {
-            case NORTH: {
-                tile = world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1));
-                break;
-            }
-            case SOUTH: {
-                tile = world.getTileEntity(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1));
-                break;
-            }
-            case WEST: {
-                tile = world.getTileEntity(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()));
-                break;
-            }
-            case EAST: {
-                tile = world.getTileEntity(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()));
-            }
-        }
+        TileEntity tile = world.getTileEntity(pos.offset(dir.getOpposite()));
 
         if (tile != null && tile instanceof ISteamTransporter) {
             ISteamTransporter trans = (ISteamTransporter) tile;
@@ -83,16 +81,14 @@ public class BlockSteamGauge extends BlockContainer {
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        if (neighbor != pos) {
-            TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity != null) {
-                World actualWorld = tileEntity.getWorld();
-                IBlockState state = world.getBlockState(pos);
-                EnumFacing dir = state.getValue(FACING);
-                if (canPlaceBlockOnSide(actualWorld, pos, dir)) {
-                    dropBlockAsItem(actualWorld, pos, state, 0);
-                    actualWorld.setBlockToAir(pos);
-                }
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (pos != neighbor && tileEntity != null) {
+            World actualWorld = tileEntity.getWorld();
+            IBlockState state = world.getBlockState(pos);
+            EnumFacing dir = state.getValue(FACING);
+            if (!canPlaceBlockOnSide(actualWorld, pos, dir)) {
+                dropBlockAsItem(actualWorld, pos, state, 0);
+                actualWorld.setBlockToAir(pos);
             }
         }
     }
@@ -103,6 +99,11 @@ public class BlockSteamGauge extends BlockContainer {
     }
 
     @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntitySteamGauge();
     }
@@ -110,6 +111,33 @@ public class BlockSteamGauge extends BlockContainer {
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
         return null;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        boolean pipe = state.getActualState(source, pos).getValue(ON_PIPE);
+        float minX = 4 * BlockRuptureDisc.UNIT;
+        float minY = 4 * BlockRuptureDisc.UNIT;
+        float minZ = pipe ? -4 * BlockRuptureDisc.UNIT : 0F;
+        float maxX = 12 * BlockRuptureDisc.UNIT;
+        float maxY = 12 * BlockRuptureDisc.UNIT;
+        float maxZ = pipe ? -3 * BlockRuptureDisc.UNIT + 0.0005F : BlockRuptureDisc.UNIT;
+        return BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, false);
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
     /*

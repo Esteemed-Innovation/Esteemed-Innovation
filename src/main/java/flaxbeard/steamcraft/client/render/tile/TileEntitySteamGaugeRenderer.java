@@ -1,12 +1,19 @@
 package flaxbeard.steamcraft.client.render.tile;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
-import flaxbeard.steamcraft.client.render.model.ModelPointer;
+import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
+import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -14,56 +21,64 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer {
-    private static final ModelPointer MODEL = new ModelPointer();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/models/pointer.png");
+public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<TileEntitySteamGauge> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/blocks/gaugePointer.png");
+    private static final ResourceLocation POINTER_RL = new ResourceLocation(Steamcraft.MOD_ID, "block/steam_gauge_pointer");
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        World world = tileEntity.getWorld();
-        BlockPos pos = tileEntity.getPos();
-        EnumFacing dir = world.getBlockState(pos).getValue(BlockSteamGauge.FACING);
-        GL11.glTranslatef(-7F * dir.getFrontOffsetX() / 16.0F, -2.0F / 16.0F, -7F * dir.getFrontOffsetZ() / 16.0F);
-
-        BlockPos offsetPos = new BlockPos(pos.getX() - dir.getFrontOffsetX(), pos.getY() - dir.getFrontOffsetY(),
-          pos.getZ() - dir.getFrontOffsetZ());
-        TileEntity offsetTileEntity = world.getTileEntity(offsetPos);
-        if (offsetTileEntity != null) {
-            ISteamTransporter trans = (ISteamTransporter) offsetTileEntity;
+    public void renderTileEntityAt(TileEntitySteamGauge gauge, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5, y, z + 0.5);
+        World world = gauge.getWorld();
+        BlockPos gaugePos = gauge.getPos();
+        EnumFacing dir = world.getBlockState(gaugePos).getValue(BlockSteamGauge.FACING).getOpposite();
+        int offsetX = dir.getFrontOffsetX();
+        int offsetZ = dir.getFrontOffsetZ();
+        TileEntity tile = world.getTileEntity(gaugePos.offset(dir));
+        if (tile != null) {
+            ISteamTransporter trans = (ISteamTransporter) tile;
             float pressure = trans instanceof TileEntitySteamCharger ? ((TileEntitySteamCharger) trans).getSteamInItem() : trans.getPressure();
             if (trans instanceof TileEntitySteamPipe) {
-                GL11.glTranslatef(-5.0F * dir.getFrontOffsetX() / 16.0F, 0.0F, -5.0F * dir.getFrontOffsetZ() / 16.0F);
+                GlStateManager.translate(4F * offsetX / 16.0F, 0.0F, 4F * offsetZ / 16.0F);
             }
-            switch (dir) {
-                case NORTH: {
-                    GL11.glRotated(-90F, 0, 1, 0);
-                    break;
-                }
-                case SOUTH: {
-                    GL11.glRotated(90F, 0, 1, 0);
+            switch (dir.getOpposite()) {
+                case WEST: {
+                    GlStateManager.rotate(-90F, 0, 1, 0);
                     break;
                 }
                 case EAST: {
-                    GL11.glRotated(180F, 0, 1, 0);
+                    GlStateManager.rotate(90F, 0, 1, 0);
+                    break;
+                }
+                case NORTH: {
+                    GlStateManager.rotate(180F, 0, 1, 0);
                     break;
                 }
             }
-            GL11.glRotatef(-95.0F, 1, 0, 0);
+            GlStateManager.rotate(-95.0F, 1, 0, 0);
+            GlStateManager.translate(-7.5F / 16F, 0, -10F / 16F);
+
             float rand = 0.0F;
-            ////Steamcraft.log.debug(trans.getPressure());
             if (pressure > 0.0F) {
-                rand = (float) ((Math.random() - 0.5F) * 5.0F);
+                rand = (float) ((Math.random() - 0.5F));
                 if (pressure >= 1.0F) {
-                    rand = (float) ((Math.random() * 50.0F - 25.0F));
+                    rand = (float) ((Math.random() * 20.0F - 10.0F));
                 }
             }
-            GL11.glRotated((Math.min(190.0F * pressure, 190.0F) + rand), 1, 0, 0);
+            GlStateManager.translate(7F / 16F, 0, 17F / 16F);
+            GlStateManager.rotate((Math.min(190.0F * pressure, 190.0F) + rand), 0, 1, 0);
+            GlStateManager.translate(-7F / 16F, 0, -17F / 16F);
 
-            Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-            MODEL.render();
-            GL11.glPopMatrix();
+            Tessellator tess = Tessellator.getInstance();
+            VertexBuffer buffer = tess.getBuffer();
+            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+            IBakedModel valveModel = RenderUtility.bakeModel(POINTER_RL);
+            for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
+                buffer.addVertexData(quad.getVertexData());
+            }
+            bindTexture(TEXTURE);
+            tess.draw();
         }
+        GlStateManager.popMatrix();
     }
 }

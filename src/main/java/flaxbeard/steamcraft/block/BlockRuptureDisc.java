@@ -29,7 +29,7 @@ public class BlockRuptureDisc extends BlockContainer {
     public static final PropertyBool IS_BURST = PropertyBool.create("is_burst");
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyBool ON_PIPE = PropertyBool.create("on_pipe");
-    private static final float UNIT = 1F / 16F;
+    public static final float UNIT = 1F / 16F;
 
     public BlockRuptureDisc() {
         super(Material.IRON);
@@ -139,16 +139,8 @@ public class BlockRuptureDisc extends BlockContainer {
         return EnumBlockRenderType.MODEL;
     }
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        boolean pipe = state.getActualState(source, pos).getValue(ON_PIPE);
-        float minX = 4 * UNIT;
-        float minY = 4 * UNIT;
-        float minZ = pipe ? -5 * UNIT : 0F;
-        float maxX = 12 * UNIT;
-        float maxY = 12 * UNIT;
-        float maxZ = pipe ? -2 * UNIT + 0.0005F : 3 * UNIT;
-        switch (state.getValue(FACING)) {
+    public static AxisAlignedBB getDirectionalBoundingBox(EnumFacing dir, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, boolean allowsUpDown) {
+        switch (dir) {
             case NORTH: {
                 return new AxisAlignedBB(1 - maxX, minY, 1 - maxZ, 1 - minX, maxY, 1 - minZ);
             }
@@ -162,12 +154,30 @@ public class BlockRuptureDisc extends BlockContainer {
                 return new AxisAlignedBB(1 - maxZ, minY, 1 - maxX, 1 - minZ, maxY, 1 - minX);
             }
             case UP: {
+                if (!allowsUpDown) {
+                    break;
+                }
                 return new AxisAlignedBB(minX, minZ, minY, maxX, maxZ, maxY);
             }
             case DOWN: {
+                if (!allowsUpDown) {
+                    break;
+                }
                 return new AxisAlignedBB(minX, 1 - minZ, minY, maxX, 1 - maxZ, maxY);
             }
         }
         return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        boolean pipe = state.getActualState(source, pos).getValue(ON_PIPE);
+        float minX = 4 * UNIT;
+        float minY = 4 * UNIT;
+        float minZ = pipe ? -5 * UNIT : 0F;
+        float maxX = 12 * UNIT;
+        float maxY = 12 * UNIT;
+        float maxZ = pipe ? -2 * UNIT + 0.0005F : 3 * UNIT;
+        return getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, true);
     }
 }
