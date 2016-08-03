@@ -1,0 +1,80 @@
+{
+  "textures": {
+    "all": "steamcraft:blocks/blockBrass",
+    "particle": "steamcraft:blocks/blockBrass"
+  },
+  "elements": [
+    {
+      "name": "connector",
+      "from": [ 6.5, 6.5, 0 ],
+      "to": [ 9.5, 9.5, 1 ],
+      "faces": {
+        "east": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" }
+      }
+    },
+    {
+      "name": "horizontal",
+      "from": [ 7, 7, 1 ],
+      "to": [ 9, 9, 3 ],
+      "faces": {
+        "east": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" }
+      }
+    },
+    {
+      "name": "vertical",
+      "from": [ 7, 7, 3 ],
+      "to": [ 9, 10, 5 ],
+      "faces": {
+        "north": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "down": { "texture": "#all" }
+      }
+    },
+    {
+      "name": "middle",
+      "from": [ 6.5, 10, 2.5 ],
+      "to": [ 9.5, 11, 5.5 ],
+      "faces": {
+        "north": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" }
+      }
+    },
+    {
+      "name": "small middle bit",
+      "from": [ 7.5, 11, 3.5 ],
+      "to": [ 8.5, 12, 4.5 ],
+      "faces": {
+        "north": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" }
+      }
+    },
+    {
+      "name": "whistle",
+      "from": [ 6.5, 12, 2.5 ],
+      "to": [ 9.5, 16, 5.5 ],
+      "faces": {
+        "north": { "texture": "#all" },
+        "east": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west": { "texture": "#all" },
+        "up": { "texture": "#all" },
+        "down": { "texture": "#all" }
+      }
+    }
+  ]
+}

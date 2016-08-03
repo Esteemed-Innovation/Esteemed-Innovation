@@ -679,5 +679,5 @@ tile.steamcraft:rupture_disc.0.name=Rupture Disc
 tile.steamcraft:rupture_disc.1.name=Burst Rupture Disc
 tile.steamcraft:fan.name=Fan
 tile.steamcraft:vacuum.name=Vacuum
-tile.steamcraft:horn.name=Steam Whistle
+tile.steamcraft:steam_whistle.name=Steam Whistle
 tile.steamcraft:fluid_steam_converter.name=Pressure Converter

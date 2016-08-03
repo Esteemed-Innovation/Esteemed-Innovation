@@ -154,6 +154,7 @@ public class ClientProxy extends CommonProxy {
         registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 0));
         registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 1));
         registerModel(SteamNetworkBlocks.Blocks.STEAM_GAUGE.getBlock());
+        registerModel(SteamNetworkBlocks.Blocks.STEAM_WHISTLE.getBlock());
 
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());

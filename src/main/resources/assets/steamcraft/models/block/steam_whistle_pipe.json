@@ -1,0 +1,80 @@
+{
+  "textures": {
+    "all": "steamcraft:blocks/blockBrass",
+    "particle": "steamcraft:blocks/blockBrass"
+  },
+  "elements": [
+    {
+      "name": "connector",
+      "from": [ 6.5, 6.5, -4 ],
+      "to": [ 9.5, 9.5, -3 ],
+      "faces": {
+        "east": { "texture": "#all", "uv": [ 6.5, 6.5, 9.5, 9.5 ] },
+        "south": { "texture": "#all", "uv": [ 6.5, 6.5, 9.5, 9.5 ] },
+        "west": { "texture": "#all", "uv": [ 6.5, 6.5, 9.5, 9.5 ] },
+        "up": { "texture": "#all", "uv": [ 6.5, 6.5, 9.5, 9.5 ] },
+        "down": { "texture": "#all", "uv": [ 6.5, 6.5, 9.5, 9.5 ] }
+      }
+    },
+    {
+      "name": "horizontal",
+      "from": [ 7, 7, -3 ],
+      "to": [ 9, 9, -1 ],
+      "faces": {
+        "east": { "texture": "#all", "uv": [ 7, 7, 9, 9 ] },
+        "west": { "texture": "#all", "uv": [ 7, 7, 9, 9 ] },
+        "up": { "texture": "#all", "uv": [ 7, 7, 9, 9 ] },
+        "down": { "texture": "#all", "uv": [ 7, 7, 9, 9 ] }
+      }
+    },
+    {
+      "name": "vertical",
+      "from": [ 7, 7, -1 ],
+      "to": [ 9, 10, 1 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [7, 7, 9, 10 ] },
+        "east": { "texture": "#all", "uv": [7, 7, 9, 10 ] },
+        "south": { "texture": "#all", "uv": [7, 7, 9, 10 ] },
+        "west": { "texture": "#all", "uv": [7, 7, 9, 10 ] },
+        "down": { "texture": "#all", "uv": [7, 7, 9, 10 ] }
+      }
+    },
+    {
+      "name": "middle",
+      "from": [ 6.5, 10, -1.5 ],
+      "to": [ 9.5, 11, 1.5 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] },
+        "east": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] },
+        "south": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] },
+        "west": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] },
+        "up": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] },
+        "down": { "texture": "#all", "uv": [ 6.5, 10, 9.5, 11 ] }
+      }
+    },
+    {
+      "name": "small middle bit",
+      "from": [ 7.5, 11, -0.5 ],
+      "to": [ 8.5, 12, 0.5 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 7.5, 11, 8.5, 12 ] },
+        "east": { "texture": "#all", "uv": [ 7.5, 11, 8.5, 12 ] },
+        "south": { "texture": "#all", "uv": [ 7.5, 11, 8.5, 12 ] },
+        "west": { "texture": "#all", "uv": [ 7.5, 11, 8.5, 12 ] }
+      }
+    },
+    {
+      "name": "whistle",
+      "from": [ 6.5, 12, -1.5 ],
+      "to": [ 9.5, 16, 1.5 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] },
+        "east": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] },
+        "south": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] },
+        "west": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] },
+        "up": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] },
+        "down": { "texture": "#all", "uv": [6.5, 12, 9.5, 16 ] }
+      }
+    }
+  ]
+}
