@@ -59,7 +59,6 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
     @SideOnly(Side.CLIENT)
     private void updateSound() {
         if (!isSoundRegistered) {
-            System.out.println("playing sound");
             worldObj.playSound(null, pos, Steamcraft.SOUND_WHISTLE, SoundCategory.BLOCKS, getVolume(), 1F);
 //                Sounds.addSoundTile(this);
             isSoundRegistered = true;
