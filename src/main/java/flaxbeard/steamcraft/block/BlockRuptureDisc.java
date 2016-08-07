@@ -139,6 +139,31 @@ public class BlockRuptureDisc extends BlockContainer {
         return EnumBlockRenderType.MODEL;
     }
 
+    // TODO: Move these to a dedicated place that is not BlockRuptureDisc.
+    /**
+     * Overload for getDirectionalBoundingBox using a base AABB instead of a bunch of floats.
+     * @param dir The direction the block is facing
+     * @param base The base AxisAlignedBB
+     * @param allowsUpDown Whether it allows vertical rotation (facing UP or facing DOWN)
+     * @return The rotated AABB.
+     */
+    public static AxisAlignedBB getDirectionalBoundingBox(EnumFacing dir, AxisAlignedBB base, boolean allowsUpDown) {
+        return getDirectionalBoundingBox(dir, (float) base.minX, (float) base.minY, (float) base.minZ,
+          (float) base.maxX, (float) base.maxY, (float) base.maxZ, allowsUpDown);
+    }
+
+    /**
+     * Gets an AxisAlignedBB according to the provided direction (rotation).
+     * @param dir The direction
+     * @param minX Minimum X for the AABB
+     * @param minY Minimum Y
+     * @param minZ Minimum Z
+     * @param maxX Maximum X
+     * @param maxY Maximum Y
+     * @param maxZ Maximum Z
+     * @param allowsUpDown Whether it allows vertical rotation (facing UP and facing DOWN)
+     * @return The rotated AABB.
+     */
     public static AxisAlignedBB getDirectionalBoundingBox(EnumFacing dir, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, boolean allowsUpDown) {
         switch (dir) {
             case NORTH: {

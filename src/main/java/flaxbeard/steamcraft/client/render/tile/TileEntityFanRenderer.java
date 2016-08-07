@@ -1,84 +1,59 @@
 package flaxbeard.steamcraft.client.render.tile;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockFan;
-import flaxbeard.steamcraft.client.render.model.ModelFan;
+import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.tile.TileEntityFan;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class TileEntityFanRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelFan MODEL = new ModelFan();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/models/fan.png");
+public class TileEntityFanRenderer extends TileEntitySpecialRenderer<TileEntityFan> {
+    private static final ResourceLocation BLADES_TEXTURE = new ResourceLocation(Steamcraft.MOD_ID, "textures/blocks/fan_blades_noise.png");
+    private static final ResourceLocation BLADES_RL = new ResourceLocation(Steamcraft.MOD_ID, "block/fan_blades");
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        TileEntityFan fan = (TileEntityFan) tile;
-
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        EnumFacing dir = tile.getWorld().getBlockState(tile.getPos()).getValue(BlockFan.FACING);
+    public void renderTileEntityAt(TileEntityFan tile, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+        IBlockState state = tile.getWorld().getBlockState(tile.getPos());
+        EnumFacing dir = state.getValue(BlockFan.FACING);
         if (dir == EnumFacing.DOWN) {
-            GL11.glRotatef(-90.0F, 0F, 0F, 1F);
+            GlStateManager.rotate(-90F, 0, 0, 1);
         }
         if (dir == EnumFacing.UP) {
-            GL11.glRotatef(90.0F, 0F, 0F, 1F);
+            GlStateManager.rotate(90F, 0, 0, 1);
         }
         if (dir == EnumFacing.SOUTH) {
-            GL11.glRotatef(-90.0F, 0F, 1F, 0F);
+            GlStateManager.rotate(-90F, 0, 1, 0);
         }
         if (dir == EnumFacing.NORTH) {
-            GL11.glRotatef(90.0F, 0F, 1F, 0F);
+            GlStateManager.rotate(90F, 0, 1, 0);
         }
         if (dir == EnumFacing.WEST) {
-            GL11.glRotatef(180.0F, 0F, 1F, 0F);
+            GlStateManager.rotate(180F, 0, 1, 0);
         }
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GlStateManager.rotate(tile.rotateTicks * 25F, 1, 0, 0);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
-        MODEL.renderBase();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(fan.rotateTicks * 25.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-
-        MODEL.render();
-        renderBlades();
-
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderInventoryTileEntityAt(TileEntity tile, double x, double y, double z, float var8) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
-
-        GL11.glTranslatef(-0.2F, -0.5F, -0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-
-        MODEL.renderBase();
-        MODEL.render();
-        renderBlades();
-        GL11.glPopMatrix();
-    }
-
-    private void renderBlades() {
-        for (int i = 0; i < 4; i++) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-
-            GL11.glRotatef(90F * i, 1F, 0F, 0F);
-            GL11.glRotatef(10F, 0F, 1F, 0F);
-
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-            MODEL.renderBlade();
-
-            GL11.glPopMatrix();
+        Tessellator tess = Tessellator.getInstance();
+        VertexBuffer buffer = tess.getBuffer();
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        IBakedModel valveModel = RenderUtility.bakeModel(BLADES_RL);
+        for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
+            buffer.addVertexData(quad.getVertexData());
         }
+        bindTexture(BLADES_TEXTURE);
+        tess.draw();
+
+        GlStateManager.popMatrix();
     }
 }

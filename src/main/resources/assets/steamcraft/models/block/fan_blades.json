@@ -1,0 +1,73 @@
+{
+    "__comment": "That 0 texture is old. It is not actually used anymore, it is rendered through the TESR",
+    "textures": {
+        "particle": "steamcraft:blocks/blocks/blockBrass",
+        "0": "steamcraft:blocks/fan_blades_noise"
+    },
+    "elements": [
+        {
+            "name": "blade1",
+            "from": [ 3.0, 9.5, 7.5 ], 
+            "to": [ 4.0, 13.5, 10.5 ],
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "east": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "south": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "up": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "down": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] }
+            }
+        },
+        {
+            "name": "center",
+            "from": [ 0.1, 6.5, 6.5 ],
+            "to": [ 5.1, 9.5, 9.5 ],
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 1.0, 4.0, 6.0, 7.0 ] },
+                "east": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 7.0 ] },
+                "south": { "texture": "#0", "uv": [ 1.0, 4.0, 6.0, 7.0 ] },
+                "up": { "texture": "#0", "uv": [ 4.0, 4.0, 9.0, 7.0 ] },
+                "down": { "texture": "#0", "uv": [ 1.0, 5.0, 6.0, 8.0 ] }
+            }
+        },
+        {
+            "name": "blade2",
+            "from": [ 3.0, 2.5, 5.5 ], 
+            "to": [ 4.0, 6.5, 8.5 ],
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "east": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "south": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "up": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "down": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] }
+            }
+        },
+        {
+            "name": "blade3",
+            "from": [ 3.0, 5.5, 9.5 ], 
+            "to": [ 4.0, 8.5, 13.5 ],
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "east": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "south": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 4.0, 5.0, 7.0 ] },
+                "up": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "down": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] }
+            }
+        },
+        {
+            "name": "blade4",
+            "from": [ 3.0, 7.5, 2.5 ], 
+            "to": [ 4.0, 10.5, 6.5 ],
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "east": { "texture": "#0", "uv": [ 1.0, 4.0, 4.0, 8.0 ] },
+                "south": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 4.0, 5.0, 7.0 ] },
+                "up": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] },
+                "down": { "texture": "#0", "uv": [ 5.0, 0.0, 6.0, 4.0 ] }
+            }
+        }
+    ]
+}

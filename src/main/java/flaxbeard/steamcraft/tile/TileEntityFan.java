@@ -49,6 +49,11 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     }
 
     @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
         access.setBoolean("powered", powered);
@@ -79,7 +84,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
         NBTTagCompound access = pkt.getNbtCompound();
         active = access.getBoolean("active");
         range = access.getShort("range");
-        markDirty();
+        worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 8);
     }
 
     /**
@@ -194,7 +199,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     public void updateRedstoneState(boolean flag) {
         if (flag != powered) {
             powered = flag;
-            markForUpdate();
+            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 0);
         }
     }
 
@@ -207,7 +212,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
                 range += 2;
             }
             //Steamcraft.log.debug(range);
-            markForUpdate();
+            worldObj.notifyBlockUpdate(pos, state, worldObj.getBlockState(pos), 0);
         } else {
             int steam = getSteamShare();
             getNetwork().split(this, true);
