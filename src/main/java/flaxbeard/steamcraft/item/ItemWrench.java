@@ -3,7 +3,6 @@ package flaxbeard.steamcraft.item;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.IPipeWrench;
 import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,27 +27,28 @@ public class ItemWrench extends Item implements IPipeWrench {
     @Override
     public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         TileEntity tile = world.getTileEntity(pos);
-        if (!world.isRemote || (tile != null && tile instanceof TileEntitySteamPipe && !player.isSneaking())) {
+        EnumActionResult endResult = EnumActionResult.PASS;
+        if (!world.isRemote) {
             IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
-            if (block != null && block instanceof IWrenchable) {
+            boolean doBlock = block != null && block instanceof IWrenchable;
+            boolean doTile = tile != null && tile instanceof IWrenchable;
+            if (doBlock) {
                 boolean result = ((IWrenchable) block).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
-                if (tile != null && tile instanceof IWrenchable) {
-                    ((IWrenchable) tile).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
-                }
                 if (result) {
                     world.playSound(player, pos, Steamcraft.SOUND_WRENCH, SoundCategory.PLAYERS, 2F, 0.9F);
-                    return EnumActionResult.SUCCESS;
+                    endResult = EnumActionResult.SUCCESS;
                 }
-            } else if (tile != null && tile instanceof IWrenchable) {
+            }
+            if (doTile) {
                 boolean result = ((IWrenchable) tile).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
                 if (result) {
                     world.playSound(player, pos, Steamcraft.SOUND_WRENCH, SoundCategory.PLAYERS, 2F, 0.9F);
-                    return EnumActionResult.SUCCESS;
+                    endResult = EnumActionResult.SUCCESS;
                 }
             }
         }
-        return EnumActionResult.FAIL;
+        return endResult;
     }
 
     @Override
