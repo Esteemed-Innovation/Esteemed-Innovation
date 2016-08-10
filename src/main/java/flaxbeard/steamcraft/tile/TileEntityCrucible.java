@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
+import flaxbeard.steamcraft.api.tile.TileEntityBase;
 import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -20,7 +21,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TileEntityCrucible extends TileEntity implements ITickable {
+public class TileEntityCrucible extends TileEntityBase implements ITickable {
     public ArrayList<CrucibleLiquid> contents = new ArrayList<>();
     public HashMap<CrucibleLiquid, Integer> number = new HashMap<>();
     public boolean hasUpdated = true;
@@ -112,7 +113,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
             contents.add(liquid);
             number.put(liquid, (int) nbttagcompound1.getShort("amount"));
         }
-        worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 8);
+        markForResync();
     }
 
     @Override
@@ -210,7 +211,7 @@ public class TileEntityCrucible extends TileEntity implements ITickable {
             markDirty();
         }
         if (needsUpdate) {
-            worldObj.notifyBlockUpdate(pos, state, worldObj.getBlockState(pos), 0);
+            markForResync(state);
             needsUpdate = false;
         }
 

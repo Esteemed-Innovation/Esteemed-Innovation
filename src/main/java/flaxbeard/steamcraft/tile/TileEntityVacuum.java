@@ -97,7 +97,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     @Override
     public void update() {
         if (lastSteam != getSteamShare() > VACUUM_STEAM_CONSUMPTION) {
-            markForUpdate();
+            markForResync();
         }
         lastSteam = getSteamShare() > VACUUM_STEAM_CONSUMPTION;
         if (!isInitialized) {
@@ -286,14 +286,14 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         NBTTagCompound access = pkt.getNbtCompound();
         active = access.getBoolean("active");
         range = access.getShort("range");
-        markForUpdate();
+        markForResync();
     }
 
 
     public void updateRedstoneState(boolean flag) {
         if (flag != powered) {
             this.powered = flag;
-            markForUpdate();
+            markForResync();
         }
     }
 
@@ -338,7 +338,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
                 }
             }
             //Steamcraft.log.debug(range);
-            markForUpdate();
+            markForResync();
             return true;
         } else {
             int steam = getSteamShare();

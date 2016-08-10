@@ -163,13 +163,13 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                 worldObj.playSound(null, pos, Steamcraft.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
                 if (!isLeaking) {
                     isLeaking = true;
-                    worldObj.notifyBlockUpdate(pos, myState, worldObj.getBlockState(pos), 0);
+                    markForResync(myState);
                     markDirty();
                 }
             } else {
                 if (isLeaking) {
                     isLeaking = false;
-                    worldObj.notifyBlockUpdate(pos, myState, worldObj.getBlockState(pos), 0);
+                    markForResync(myState);
                     markDirty();
                 }
             }
@@ -436,7 +436,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
 
                     refreshNeighbors();
                     network.shouldRefresh();
-                    world.notifyBlockUpdate(this.pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 0);
+                    markForResync();
                 }
             }
             //else if doesn't connect
@@ -451,7 +451,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     ////Steamcraft.log.debug("C");
                     ////Steamcraft.log.debug(this.getNetworkName());
                     ////Steamcraft.log.debug("steam: "+steam+"; nw steam: "+this.getNetwork().getSteam());
-                    world.notifyBlockUpdate(this.pos, world.getBlockState(this.pos), world.getBlockState(this.pos), 0);
+                    markForResync();
                 }
             }
 //            if (getSteamShare() > 0) {

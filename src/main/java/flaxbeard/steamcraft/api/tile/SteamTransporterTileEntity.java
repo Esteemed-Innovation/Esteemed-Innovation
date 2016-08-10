@@ -9,6 +9,7 @@ import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.BlockRuptureDisc;
 import flaxbeard.steamcraft.block.BlockSteamGauge;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class SteamTransporterTileEntity extends TileEntity implements ISteamTransporter, ITickable {
+public class SteamTransporterTileEntity extends TileEntityBase implements ISteamTransporter, ITickable {
     public String name = "SteamTransporterTileEntity";
     private float pressureResistance = 0.8F;
     private float lastPressure = -1F;
@@ -81,7 +82,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
             pressure = access.getFloat("pressure");
 //            Steamcraft.log.debug("Set pressure to "+this.pressure);
         }
-        markForUpdate();
+        markForResync();
     }
 
     @Override
@@ -136,7 +137,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
             if (hasGauge() && net != null) {
                 if (Math.abs(getPressure() - lastPressure) > 0.01F) {
                     //Steamcraft.log.debug("Updating PRESHAAA");
-                    markForUpdate();
+                    markForResync();
                     lastPressure = getPressure();
                     net.markDirty();
                 }
@@ -285,7 +286,7 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
 				*/
                 SteamNetwork.newOrJoin(this);
                 isInitialized = true;
-                markForUpdate();
+                markForResync();
             }
         }
     }
@@ -312,10 +313,6 @@ public class SteamTransporterTileEntity extends TileEntity implements ISteamTran
     @Override
     public String getName() {
         return name;
-    }
-
-    protected void markForUpdate() {
-        markDirty();
     }
 
     @Override

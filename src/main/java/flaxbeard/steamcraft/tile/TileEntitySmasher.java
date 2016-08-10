@@ -184,7 +184,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         running = access.getBoolean("running");
         blockBreakerMode = access.getBoolean("blockBreakerMode");
         hasBeenSet = access.getBoolean("hasBeenSet");
-        markForUpdate();
+        markForResync();
     }
 
     @Override
@@ -241,7 +241,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                 shouldStop = false;
                 isBreaking = false;
                 running = false;
-                markForUpdate();
+                markForResync();
                 return;
             }
             if (!smashNextRound && hasSomethingToSmash() && hasPartner() && getSteamShare() > 1000 && !isActive) {
@@ -257,7 +257,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                 if (hasSomethingToSmash() && !isActive) {
                     decrSteam(1000);
                     running = true;
-                    markForUpdate();
+                    markForResync();
                     isActive = true;
                     isBreaking = true;
                 }
@@ -287,7 +287,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                                     smooshingBlock = middleBlock;
                                     smooshingMeta = middleBlock.getMetaFromState(middleBlockState);
                                     smooshedStack = smooshingBlock.getDrops(worldObj, middleBlockPos, middleBlockState, 0);
-                                    markForUpdate();
+                                    markForResync();
                                     worldObj.setBlockState(middleBlockPos, ROCK_SMASHER_DUMMY.getBlock().getDefaultState());
                                 }
                             } else {
@@ -333,7 +333,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     } else {
                         isActive = false;
                         running = false;
-                        markForUpdate();
+                        markForResync();
                         extendedTicks = 0;
                         if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY.getBlock()) {
                             worldObj.setBlockToAir(middleBlockPos);
@@ -506,10 +506,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                 if (smasher != null) {
                     smasher.blockBreakerMode = blockBreakerMode;
                     smasher.hasBeenSet = true;
-                    smasher.markForUpdate();
+                    smasher.markForResync();
                 }
             }
-            markForUpdate();
+            markForResync();
         } else {
             int steam = getSteamShare();
             getNetwork().split(this, true);

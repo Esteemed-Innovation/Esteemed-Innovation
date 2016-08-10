@@ -44,7 +44,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             runTicks = access.getShort("runTicks");
         }
         pushing = access.getBoolean("pushing");
-        markForUpdate();
+        markForResync();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             runTicks--;
         }
         if (runTicks > 0 != lastRunning) {
-            markForUpdate();
+            markForResync();
         }
         lastRunning = runTicks > 0;
 

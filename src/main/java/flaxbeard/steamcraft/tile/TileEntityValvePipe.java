@@ -132,7 +132,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
             if (turning != wasTurning) {
                 wasTurning = turning;
-                markForUpdate();
+                markForResync();
             }
             if (turning && turnTicks < 10) {
                 turnTicks++;
@@ -144,7 +144,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             }
             if (!turning) {
                 if (wasTurning) {
-                    markForUpdate();
+                    markForResync();
                 }
                 turnTicks = 0;
             }
@@ -196,7 +196,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
             this.open = !open;
         } else {
             waitingOpen = false;
-            markForUpdate();
+            markForResync();
         }
     }
 

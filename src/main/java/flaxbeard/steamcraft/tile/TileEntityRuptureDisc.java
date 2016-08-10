@@ -56,7 +56,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
                 if (getSteam(dir) > 0) {
                     if (!isLeaking) {
                         isLeaking = true;
-                        worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
+                        markForResync(startingState);
                         markDirty();
                     }
 
@@ -64,7 +64,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
                 } else {
                     if (isLeaking) {
                         isLeaking = false;
-                        worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
+                        markForResync(startingState);
                     }
                 }
                 while (getSteam(dir) > 0 && i < 10) {
@@ -74,7 +74,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
             } else {
                 if (isLeaking) {
                     isLeaking = false;
-                    worldObj.notifyBlockUpdate(pos, startingState, worldObj.getBlockState(pos), 0);
+                    markForResync(startingState);
                 }
             }
         }

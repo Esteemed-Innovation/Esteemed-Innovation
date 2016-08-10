@@ -70,11 +70,11 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             if (getStackInSlot(0) != null) {
                 if (!hadItem) {
                     hadItem = true;
-                    markForUpdate();
+                    markForResync();
                 }
             } else if (hadItem) {
                 hadItem = false;
-                markForUpdate();
+                markForResync();
             }
             if (cost > 0 && progress < cost && hammerTicks == 355) {
                 progress++;
@@ -85,13 +85,13 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                         decrSteam(CONSUMPTION);
                         if (!isWorking) {
                             isWorking = true;
-                            markForUpdate();
+                            markForResync();
                         }
 
                     } else {
                         if (isWorking) {
                             isWorking = false;
-                            markForUpdate();
+                            markForResync();
                         }
                         return;
                     }
@@ -114,7 +114,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             } else {
                 if (isWorking) {
                     isWorking = false;
-                    markForUpdate();
+                    markForResync();
                 }
                 if (hammerTicks > 0) {
                     hammerTicks = 0;
@@ -247,7 +247,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         progress = access.getInteger("progress");
         hammerTicks = access.getInteger("hammerTicks");
 
-        markForUpdate();
+        markForResync();
     }
 
     @Override

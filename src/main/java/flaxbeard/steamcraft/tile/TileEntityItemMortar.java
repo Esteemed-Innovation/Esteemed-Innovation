@@ -99,7 +99,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                 }
                 if (getSteamShare() > 2000 && hasTarget) {
                     if (fireTicks == 0) {
-                        markForUpdate();
+                        markForResync();
                     }
                     fireTicks++;
                     if (fireTicks == 10) {
@@ -128,11 +128,11 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                     }
                 } else {
                     fireTicks = 0;
-                    markForUpdate();
+                    markForResync();
                 }
             } else {
                 fireTicks = 0;
-                markForUpdate();
+                markForResync();
             }
         } else {
             if (fireTicks > 0) {

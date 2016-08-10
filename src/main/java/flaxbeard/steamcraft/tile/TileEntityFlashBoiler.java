@@ -210,7 +210,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
         furnaceCookTime = access.getShort("CookTime");
         burning = access.getBoolean("burning");
 
-        super.markForUpdate();
+        super.markForResync();
     }
 
     public void checkMultiblock(boolean isBreaking, int frontSide) {
@@ -450,7 +450,7 @@ public class TileEntityFlashBoiler extends TileEntityBoiler implements IFluidHan
                 if (isBurning() != wasBurning) {
                     wasBurning = isBurning();
                     burning = isBurning();
-                    markForUpdate();
+                    markForResync();
                 }
             }
         }

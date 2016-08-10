@@ -4,7 +4,6 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamChargable;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.init.misc.integration.CrossMod;
 import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 
 import net.minecraft.entity.item.EntityItem;
@@ -76,7 +75,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             clear();
         }
         isCharging = access.getBoolean("isCharging");
-        markForUpdate();
+        markForResync();
     }
 
     @Override
@@ -94,12 +93,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                     clear();
                     dropItem(new ItemStack(STEAM_CELL_FULL.getItem()));
                     decrSteam(Config.steamCellCapacity);
-                    markForUpdate();
+                    markForResync();
                     return;
                 }
                 if (!hadItem) {
                     hadItem = true;
-                    markForUpdate();
+                    markForResync();
                 }
 
                 if (inventory.getItem() instanceof ISteamChargable) {
@@ -109,12 +108,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         if (getSteamShare() > 0 && stack.getItemDamage() > 0) {
                             if (!isCharging) {
                                 isCharging = true;
-                                markForUpdate();
+                                markForResync();
                             }
                         } else {
                             if (isCharging) {
                                 isCharging = false;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                         if (getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0) {
@@ -131,7 +130,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                               && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 // log.debug("New percent: "+currentPerc);
                                 prevPercent = currentPerc;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                     } else {
@@ -148,12 +147,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                           stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill")) {
                             if (!isCharging) {
                                 isCharging = true;
-                                markForUpdate();
+                                markForResync();
                             }
                         } else {
                             if (isCharging) {
                                 isCharging = false;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                         if (getSteamShare() > item.steamPerDurability()
@@ -171,7 +170,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                             float currentPerc = getChargingPercent(stack);
                             if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 prevPercent = currentPerc;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                     }
@@ -185,12 +184,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         if (getSteamShare() > 0 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
                             if (!isCharging) {
                                 isCharging = true;
-                                markForUpdate();
+                                markForResync();
                             }
                         } else {
                             if (isCharging) {
                                 isCharging = false;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                         if (getSteamShare() > 8 && tags.getCompoundTag("InfiTool").getInteger("Damage") > 0) {
@@ -209,7 +208,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                             
                             if (prevPercent != currentPerc && Math.abs(prevPercent - currentPerc) > 0.01) {
                                 prevPercent = currentPerc;
-                                markForUpdate();
+                                markForResync();
                             }
                         }
                     }
@@ -218,7 +217,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                     if (hadItem) {
                         hadItem = false;
                         prevPercent = 0F;
-                        markForUpdate();
+                        markForResync();
                     }
                 }
             }

@@ -133,7 +133,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         furnaceCookTime = access.getShort("CookTime");
         disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
         disguiseMeta = access.getInteger("disguiseMeta");
-        super.markForUpdate();
+        super.markForResync();
     }
 
     @Override
@@ -203,7 +203,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
             if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
-                super.markForUpdate();
+                super.markForResync();
             }
             lastWrench = hasWrench;
         }
@@ -256,13 +256,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             }
 
             if (isBurnTimeGreaterThanZero != furnaceBurnTime > 0) {
-                super.markForUpdate();
+                super.markForResync();
             }
         }
 
         if (wasBurning != isBurning()) {
             wasBurning = isBurning();
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 0);
+            markForResync();
         }
     }
 
@@ -433,7 +433,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
                   (sound.getVolume() + 1F) / 2F, sound.getPitch() * 0.8F, false);
                 disguiseBlock = null;
 
-                super.markForUpdate();
+                super.markForResync();
                 return true;
             }
         } else {

@@ -45,7 +45,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             myTank.setFluid(new FluidStack(FluidRegistry.getFluid(access.getString("fluid")), amt));
         }
         running = access.getBoolean("running");
-        markForUpdate();
+        markForResync();
     }
 
     @Override

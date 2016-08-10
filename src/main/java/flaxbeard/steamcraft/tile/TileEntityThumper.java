@@ -66,10 +66,10 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
                 }
                 progress++;
                 decrSteam(2000);
-                markForUpdate();
+                markForResync();
             } else if (progress > 0 && !isRunning) {
                 isRunning = true;
-                markForUpdate();
+                markForResync();
             }
             if (progress == 15) {
                 worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, Steamcraft.SOUND_HISS,
@@ -199,6 +199,6 @@ public class TileEntityThumper extends SteamTransporterTileEntity implements ISt
         progress = access.getInteger("progress");
         isRunning = access.getBoolean("isRunning");
 
-        markForUpdate();
+        markForResync();
     }
 }

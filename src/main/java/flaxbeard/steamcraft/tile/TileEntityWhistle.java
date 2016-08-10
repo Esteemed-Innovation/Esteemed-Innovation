@@ -52,7 +52,7 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
                     isSounding = false;
                 }
             }
-            worldObj.notifyBlockUpdate(pos, worldObj.getBlockState(pos), worldObj.getBlockState(pos), 0);
+            markForResync();
         }
     }
 

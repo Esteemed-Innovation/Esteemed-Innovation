@@ -9,7 +9,7 @@ import flaxbeard.steamcraft.api.ISteamTransporter;
  * Similar to the SteamTransporterTileEntity, this tile entity is used for steam "reactor" blocks.
  * For example: Steam Whistle, Rupture Disc.
  */
-public class SteamReactorTileEntity extends TileEntity {
+public class SteamReactorTileEntity extends TileEntityBase {
     /**
      * @param dir The FACING value for the reactor.
      * @return The pressure of the attached transporter.

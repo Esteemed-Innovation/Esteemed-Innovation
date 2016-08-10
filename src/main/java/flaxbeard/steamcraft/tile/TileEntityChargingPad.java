@@ -57,7 +57,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
         NBTTagCompound access = pkt.getNbtCompound();
         descending = access.getBoolean("descending");
         target = access.hasKey("target") ? (EntityLivingBase) worldObj.getEntityByID(access.getInteger("target")) : null;
-        markForUpdate();
+        markForResync();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
                 extendTicks -= 1;
             }
             if (lastDescending != descending) {
-                markForUpdate();
+                markForResync();
                 lastDescending = descending;
             }
 
