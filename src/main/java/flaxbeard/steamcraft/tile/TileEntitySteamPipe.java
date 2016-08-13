@@ -121,16 +121,25 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         return access;
     }
 
-    /**
-     * Calls the superclass of this class #update without doing all of our own updating. See: Valve Pipe.
+    /*
+    Supersuper methods for bypassing TileEntitySteamPipe's behavior.
+    TODO: Create a base TileEntityPipe class for TileEntitySteamPipe (this), TileEntityValvePipe, and TileEntitySteamHeater to inherit.
      */
-    public void superUpdate() {
+   void superUpdate() {
         super.update();
+    }
+
+    NBTTagCompound superWriteToNBT(NBTTagCompound access) {
+        return super.writeToNBT(access);
+    }
+
+    void superReadFromNBT(NBTTagCompound access) {
+        super.readFromNBT(access);
     }
 
     public ArrayList<EnumFacing> getMyDirections() {
         ArrayList<EnumFacing> myDirections = new ArrayList<>();
-        for (EnumFacing direction : EnumFacing.VALUES) {
+        for (EnumFacing direction : getConnectionSides()) {
             TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
             if (tile instanceof ISteamTransporter) {
                 ISteamTransporter target = (ISteamTransporter) tile;
@@ -234,7 +243,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                 return false;
             }
         }
-        return true;
+        return super.doesConnect(face);
     }
 
     @Override

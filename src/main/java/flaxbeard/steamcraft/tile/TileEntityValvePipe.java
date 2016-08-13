@@ -87,12 +87,16 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 
     @Override
     public boolean doesConnect(EnumFacing face) {
-        return face != dir() && super.doesConnect(face);
+        return face.getAxis() != dir().getAxis() && super.doesConnect(face);
     }
 
     @Override
     public ArrayList<EnumFacing> getMyDirections() {
-        return super.getMyDirections();
+        ArrayList<EnumFacing> base = super.getMyDirections();
+        EnumFacing myDir = dir();
+        base.remove(myDir);
+        base.remove(myDir.getOpposite());
+        return base;
     }
 
     @Override
@@ -154,7 +158,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
 
     @Override
     public boolean acceptsGauge(EnumFacing face) {
-        return face != dir().getOpposite();
+        return face.getAxis() != dir().getAxis();
     }
 
     public boolean isTurning() {
