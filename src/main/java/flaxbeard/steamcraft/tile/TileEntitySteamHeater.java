@@ -25,7 +25,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
 
-public class TileEntitySteamHeater extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
+public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteamTransporter, IWrenchable {
     // When multiple heaters are used on a furnace, there is a single primary heater
     public boolean isPrimaryHeater;
     private boolean isInitialized = false;
@@ -33,7 +33,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
     public static final int CONSUMPTION = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
-        super(EnumFacing.VALUES);
+        super();
         addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
 
@@ -61,13 +61,13 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
+        super.superReadFromNBT(nbt);
         prevHadYuck = nbt.getBoolean("prevHadYuck");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
+        super.superWriteToNBT(nbt);
         nbt.setBoolean("prevHadYuck", prevHadYuck);
         return nbt;
     }
@@ -91,7 +91,7 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
             setValidDistributionDirections(dir);
             isInitialized = true;
         }
-        super.update();
+        super.superUpdate();
 
         ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
@@ -204,6 +204,8 @@ public class TileEntitySteamHeater extends SteamTransporterTileEntity implements
         getNetwork().split(this, true);
         EnumFacing dir = state.getValue(BlockSteamHeater.FACING);
         setValidDistributionDirections(dir);
+        BlockPos offsetPos = pos.offset(dir);
+        worldObj.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
         SteamNetwork.newOrJoin(this);
         getNetwork().addSteam(steam);
         return true;
