@@ -51,7 +51,7 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity != null && tileEntity instanceof TileEntityFan) {
-            boolean poweredByRedstone = world.isBlockIndirectlyGettingPowered(pos) > 0;
+            boolean poweredByRedstone = world.isBlockPowered(pos);
             TileEntityFan fan = (TileEntityFan) tileEntity;
             fan.updateRedstoneState(poweredByRedstone);
         }
@@ -59,10 +59,8 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        onNeighborChange(world, pos, null);
+        neighborChanged(state, world, pos, null);
     }
-
-
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {

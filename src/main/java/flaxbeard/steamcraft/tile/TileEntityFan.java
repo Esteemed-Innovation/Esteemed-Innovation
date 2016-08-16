@@ -67,7 +67,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
         super.readFromNBT(access);
         powered = access.getBoolean("powered");
         range = access.getShort("range");
-
     }
 
     @Override
@@ -125,18 +124,22 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     @Override
     public void update() {
         if (lastSteam != getSteamShare() >= STEAM_CONSUMPTION) {
-            markDirty();
+            markForResync();
         }
         lastSteam = getSteamShare() > STEAM_CONSUMPTION;
+        if (!lastSteam && !worldObj.isRemote && active) {
+            markForResync();
+        }
         if (!isInitialized) {
-            powered = worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
-            setDistributionDirections(new EnumFacing[] { EnumFacing.getFront(getBlockMetadata()).getOpposite() });
+            powered = worldObj.isBlockPowered(pos);
+            setDistributionDirections(new EnumFacing[] { worldObj.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
             isInitialized = true;
         }
         super.update();
         if (active && worldObj.isRemote) {
             rotateTicks++;
         }
+
         if (active && worldObj.isRemote || (getSteamShare() >= STEAM_CONSUMPTION && !powered)) {
             if (!worldObj.isRemote) {
                 decrSteam(STEAM_CONSUMPTION);
@@ -178,8 +181,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
                 }
             }
             List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + (dir.getFrontOffsetX() < 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + (dir.getFrontOffsetY() < 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + (dir.getFrontOffsetZ() < 0 ? dir.getFrontOffsetZ() * blocksInFront : 0), pos.getX() + 1 + (dir.getFrontOffsetX() > 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + 1 + (dir.getFrontOffsetY() > 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + 1 + (dir.getFrontOffsetZ() > 0 ? dir.getFrontOffsetZ() * blocksInFront : 0)));
-            for (Object obj : entities) {
-                Entity entity = (Entity) obj;
+            for (Entity entity : entities) {
                 if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                     if (entity instanceof EntityPlayer && entity.isSneaking()) {
                         entity.motionX += dir.getFrontOffsetX() * 0.025F;
