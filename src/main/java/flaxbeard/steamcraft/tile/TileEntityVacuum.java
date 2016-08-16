@@ -6,6 +6,7 @@ import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
+import flaxbeard.steamcraft.block.BlockVacuum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TileEntityVacuum extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
@@ -101,17 +103,17 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         }
         lastSteam = getSteamShare() > VACUUM_STEAM_CONSUMPTION;
         if (!isInitialized) {
-            powered = worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
-            EnumFacing myDir = EnumFacing.getFront(getBlockMetadata());
+            powered = worldObj.isBlockPowered(pos);
+            EnumFacing myDir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
             EnumFacing[] directions = new EnumFacing[5];
             int i = 0;
             for (EnumFacing direction : EnumFacing.VALUES) {
-                if (direction != myDir && direction != myDir.getOpposite()) {
+                if (direction.getAxis() != myDir.getAxis()) {
                     directions[i] = direction;
                     i++;
                 }
             }
-            setDistributionDirections(directions);
+            setDistributionDirections(Arrays.copyOf(directions, i));
             isInitialized = true;
         }
         super.update();
@@ -128,8 +130,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
             if (worldObj.isRemote) {
                 rotateTicks++;
             }
-            int meta = getBlockMetadata();
-            EnumFacing dir = EnumFacing.getFront(meta);
+            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
             float[] M = {
               pos.getX() + 0.5F,
               pos.getY() + 0.5F,
@@ -197,6 +198,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
               pos.getZ() + dir.getFrontOffsetZ() * 0.25F, pos.getX() + 1.0D + dir.getFrontOffsetX() * 0.25F,
               pos.getY() + 1.0D + dir.getFrontOffsetY() * 0.25F, pos.getZ() + 1.0D + dir.getFrontOffsetZ() * 0.25F));
 
+            // TODO: This may be able to be optimized by iterating over the entire list. Test.
             if (list.size() > 0) {
                 EntityItem item = list.get(0);
                 BlockPos offsetPos = new BlockPos(pos.getX() - dir.getFrontOffsetX(),
@@ -292,7 +294,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
 
     public void updateRedstoneState(boolean flag) {
         if (flag != powered) {
-            this.powered = flag;
+            powered = flag;
             markForResync();
         }
     }

@@ -1,88 +1,88 @@
 package flaxbeard.steamcraft.client.render.tile;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.block.BlockVacuum;
-import flaxbeard.steamcraft.client.render.model.ModelVacuum;
+import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.tile.TileEntityVacuum;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelVacuum MODEL = new ModelVacuum();
-    private static final ResourceLocation FAN_TEXTURE = new ResourceLocation("steamcraft:textures/models/fan.png");
+import static flaxbeard.steamcraft.client.render.tile.TileEntityFanRenderer.BLADES_RL;
+import static flaxbeard.steamcraft.client.render.tile.TileEntityFanRenderer.BLADES_TEXTURE;
 
-    private Runnable renderSide = new Runnable() { @Override public void run() { MODEL.renderSide(); }};
-    private Runnable renderBlade = new Runnable() { @Override public void run() { MODEL.renderBlade(); }};
+public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer<TileEntityVacuum> {
+    private static final ResourceLocation SIDE_RL = new ResourceLocation(Steamcraft.MOD_ID, "block/vacuum_front_side");
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        TileEntityVacuum vacuum = (TileEntityVacuum) tile;
-
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        EnumFacing facing = tile.getWorld().getBlockState(tile.getPos()).getValue(BlockVacuum.FACING);
-        switch (facing) {
-            case DOWN: {
-                GL11.glRotatef(-90F, 0F, 0F, 1F);
-            }
-            case UP: {
-                GL11.glRotatef(90F, 0F, 0F, 1F);
-            }
-            case NORTH: {
-                GL11.glRotatef(90F, 0F, 1F, 0F);
-            }
-            case SOUTH: {
-                GL11.glRotatef(-90F, 0F, 1F, 0F);
-            }
-            case WEST: {
-                GL11.glRotatef(180F, 0F, 1F, 0F);
-            }
+    public void renderTileEntityAt(TileEntityVacuum vacuum, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+        EnumFacing dir = vacuum.getWorld().getBlockState(vacuum.getPos()).getValue(BlockVacuum.FACING);
+        if (dir == EnumFacing.DOWN) {
+            GlStateManager.rotate(-90F, 0, 0, 1);
         }
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        if (dir == EnumFacing.UP) {
+            GlStateManager.rotate(90F, 0, 0, 1);
+        }
+        if (dir == EnumFacing.SOUTH) {
+            GlStateManager.rotate(-90F, 0, 1, 0);
+        }
+        if (dir == EnumFacing.NORTH) {
+            GlStateManager.rotate(90F, 0, 1, 0);
+        }
+        if (dir == EnumFacing.WEST) {
+            GlStateManager.rotate(180F, 0, 1, 0);
+        }
+        GlStateManager.rotate(-vacuum.rotateTicks * 25F, 1, 0, 0);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(FAN_TEXTURE);
-        MODEL.render();
-        renderFour(renderSide);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(-vacuum.rotateTicks * 25.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        Tessellator tess = Tessellator.getInstance();
 
-        MODEL.renderPole();
-        renderFour(renderBlade);
+        RenderUtility.renderModel(tess.getBuffer(), BLADES_RL);
+        bindTexture(BLADES_TEXTURE);
+        tess.draw();
+        GlStateManager.popMatrix();
 
-        GL11.glPopMatrix();
+        // These must be done in different matrixes in order to prevent wrongly spinning the sides with the blades.
 
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+        // The default orientation of the blades and the sides are completely different, so we have to rotate differently.
+        if (dir == EnumFacing.UP) {
+            GlStateManager.rotate(270F, 1, 0, 0);
+        } else if (dir == EnumFacing.DOWN) {
+            GlStateManager.rotate(90F, 1, 0, 0);
+        } else if (dir == EnumFacing.NORTH) {
+            GlStateManager.rotate(180F, 0, 1, 0);
+        } else if (dir == EnumFacing.EAST) {
+            GlStateManager.rotate(90F, 0, 1, 0);
+        } else if (dir == EnumFacing.WEST) {
+            GlStateManager.rotate(270F, 0, 1, 0);
+        }
+        GlStateManager.translate(-0.5, -0.5, -0.5);
+
+        renderFour(tess, SIDE_RL);
+
+        GlStateManager.popMatrix();
     }
 
-    private void renderFour(Runnable render) {
+    private void renderFour(Tessellator tessellator, ResourceLocation modelResource) {
         for (int i = 0; i < 4; i++) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-            GL11.glRotatef(90F * i, 1F, 0F, 0F);
-            GL11.glRotatef(10F, 0F, 1F, 0F);
-            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.5, 0.5, 0.5);
+            GlStateManager.rotate(90F * i, 0, 0, 1);
+            GlStateManager.rotate(-10F, 0, 1, 0);
+            GlStateManager.translate(-0.5, -0.5, -0.5);
 
-            // Hey Striking, you like this functional programming masterpiece?
-            render.run();
-            GL11.glPopMatrix();
+            RenderUtility.renderModel(tessellator.getBuffer(), modelResource);
+            bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            tessellator.draw();
+
+            GlStateManager.popMatrix();
         }
-    }
-
-    @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float var8) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
-
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(FAN_TEXTURE);
-
-        MODEL.render();
-        renderFour(renderSide);
-        MODEL.renderPole();
-        renderFour(renderBlade);
-        GL11.glPopMatrix();
     }
 }

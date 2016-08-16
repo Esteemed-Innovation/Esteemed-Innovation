@@ -2,6 +2,7 @@ package flaxbeard.steamcraft.client.render;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.crash.CrashReport;
@@ -64,6 +65,14 @@ public class RenderUtility {
             // Stupid vanilla, throwing generic exceptions
         } catch (Exception e) {
             throw new ReportedException(new CrashReport("Error loading custom model " + loc.toString(), e));
+        }
+    }
+
+    public static void renderModel(VertexBuffer buffer, ResourceLocation modelLocation) {
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        IBakedModel valveModel = RenderUtility.bakeModel(modelLocation);
+        for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
+            buffer.addVertexData(quad.getVertexData());
         }
     }
 }

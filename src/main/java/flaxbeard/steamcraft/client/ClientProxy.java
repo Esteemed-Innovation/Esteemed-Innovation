@@ -158,6 +158,7 @@ public class ClientProxy extends CommonProxy {
 
         registerModel(SteamMachineryBlocks.Blocks.FAN.getBlock());
         registerModel(SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock());
+        registerModel(SteamMachineryBlocks.Blocks.VACUUM.getBlock());
 
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());
