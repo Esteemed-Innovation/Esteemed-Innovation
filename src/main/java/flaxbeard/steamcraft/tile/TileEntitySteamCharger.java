@@ -25,7 +25,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     private boolean isCharging = false;
     private boolean hadItem = false;
     private float prevPercent = 0F;
-    private ItemStack inventory;
+    private ItemStack inventory = null;
 
     public TileEntitySteamCharger() {
         super(new EnumFacing[] { EnumFacing.DOWN });
@@ -88,8 +88,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         } else {
             if (inventory != null) {
-                if (inventory.getItem() == STEAM_CELL_EMPTY.getItem() &&
-                  getSteamShare() > Config.steamCellCapacity) {
+                if (inventory.getItem() == STEAM_CELL_EMPTY.getItem() && getSteamShare() > Config.steamCellCapacity) {
                     clear();
                     dropItem(new ItemStack(STEAM_CELL_FULL.getItem()));
                     decrSteam(Config.steamCellCapacity);

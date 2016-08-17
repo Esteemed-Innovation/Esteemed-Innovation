@@ -16,14 +16,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    private static final AxisAlignedBB CHARGER_AABB = new AxisAlignedBB(0, 0, 0, 1, 1F / 2F, 1);
 
     public BlockSteamCharger() {
         super(Material.IRON);
@@ -46,8 +49,8 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
-        return new AxisAlignedBB(pos, new BlockPos(pos.getX() + 1, pos.getY() + 0.5F, pos.getZ() + 1));
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return CHARGER_AABB;
     }
 
     @Override
@@ -89,6 +92,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                 tile.dropItem(stackInSlot);
             }
             tile.setInventorySlotContents(0, null);
+            return true;
         } else {
             if (canItemBeCharged(heldItem)) {
                 ItemStack copy = heldItem.copy();
@@ -96,6 +100,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
                 tile.setInventorySlotContents(0, copy);
                 heldItem.stackSize -= 1;
                 tile.randomDegrees = world.rand.nextInt(361);
+                return true;
             }
         }
         return false;
@@ -125,6 +130,20 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
             return true;
         }
         return false;
+    }
 
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 }

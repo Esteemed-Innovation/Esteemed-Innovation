@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "steamcraft:steam_charger"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "north": {
+        "y": 180
+      },
+      "east": {
+        "y": 270
+      },
+      "west": {
+        "y": 90
+      }
+    },
+    "inventory": [{}]
+  }
+}
