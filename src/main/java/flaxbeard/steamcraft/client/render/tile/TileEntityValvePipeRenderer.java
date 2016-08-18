@@ -8,15 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileEntityValvePipe> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Steamcraft.MOD_ID, "textures/blocks/blockCopper.png");
@@ -71,11 +67,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
 
         Tessellator tess = Tessellator.getInstance();
         VertexBuffer buffer = tess.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        IBakedModel valveModel = RenderUtility.bakeModel(VALVE_RL);
-        for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
-            buffer.addVertexData(quad.getVertexData());
-        }
+        RenderUtility.renderModel(buffer, VALVE_RL);
         bindTexture(TEXTURE);
         tess.draw();
 
