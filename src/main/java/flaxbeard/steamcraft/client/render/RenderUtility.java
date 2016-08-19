@@ -70,8 +70,8 @@ public class RenderUtility {
 
     public static void renderModel(VertexBuffer buffer, ResourceLocation modelLocation) {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-        IBakedModel valveModel = RenderUtility.bakeModel(modelLocation);
-        for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
+        IBakedModel model = bakeModel(modelLocation);
+        for (BakedQuad quad : model.getQuads(null, null, 0)) {
             buffer.addVertexData(quad.getVertexData());
         }
     }

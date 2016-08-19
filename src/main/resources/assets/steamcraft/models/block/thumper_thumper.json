@@ -1,0 +1,20 @@
+{
+  "textures": {
+    "0": "steamcraft:models/thumper"
+  },
+  "elements": [
+    {
+      "name": "thumper",
+      "from": [ 3.0, 0.1, 2.0 ],
+      "to": [ 13.0, 14.0, 14.0 ],
+      "faces": {
+        "north": { "texture": "#0", "uv": [ 6.0, 1.5, 7.25, 3.25 ] },
+        "east": { "texture": "#0", "uv": [ 4.5, 1.5, 6.0, 3.25 ] },
+        "south": { "texture": "#0", "uv": [ 8.75, 1.5, 10.0, 3.25 ] },
+        "west": { "texture": "#0", "uv": [ 4.5, 1.5, 6.0, 3.2 ] },
+        "up": { "texture": "#0", "uv": [ 8.5, 0.0, 7.2, 1.5 ] },
+        "down": { "texture": "#0", "uv": [ 8.5, 0.0, 7.25, 1.5 ] }
+      }
+    }
+  ]
+}

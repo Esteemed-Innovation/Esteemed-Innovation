@@ -674,6 +674,7 @@ tile.steamcraft:item_mortar.name=Item Mortar
 tile.steamcraft:pump.name=Archimedes Screw
 tile.steamcraft:smasher.name=Rock Smasher
 tile.steamcraft:thumper.name=Thumper
+tile.steamcraft:thumper_dummy.name=Thumper
 tile.steamcraft:flash_foiler.name=Flash Boiler Component
 tile.steamcraft:rupture_disc.0.name=Rupture Disc
 tile.steamcraft:rupture_disc.1.name=Burst Rupture Disc

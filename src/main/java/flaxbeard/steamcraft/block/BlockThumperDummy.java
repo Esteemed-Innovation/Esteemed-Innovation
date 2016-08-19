@@ -36,19 +36,46 @@ public class BlockThumperDummy extends Block implements IWrenchable {
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
-        int meta = getMetaFromState(state) - 1;
-        BlockPos thumperPos = new BlockPos(pos.getX(), pos.getY() - meta, pos.getZ());
-        IBlockState thumperState = world.getBlockState(thumperPos);
-        if (thumperState.getBlock() == SteamMachineryBlocks.Blocks.THUMPER.getBlock() && facing != EnumFacing.UP &&
-          facing != EnumFacing.DOWN) {
-            world.setBlockState(thumperPos, thumperState.withProperty(BlockThumper.FACING, facing.getOpposite()), 2);
-            return true;
+        if (facing.getAxis() == EnumFacing.Axis.Y) {
+            return false;
+        }
+        for (int i = 1; i < 4; i++) {
+            BlockPos blockPos = pos.down(i);
+            IBlockState blockState = world.getBlockState(blockPos);
+            Block block = blockState.getBlock();
+            if (block == SteamMachineryBlocks.Blocks.THUMPER.getBlock()) {
+                ((BlockThumper) block).onWrench(stack, player, world, blockPos, hand, facing, blockState, hitX, hitY, hitZ);
+                return true;
+            }
         }
         return false;
     }
 
     @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        // No need to break the Thumper itself because that is handled by BlockThumper#neighborChanged.
+        for (int i = -1; i < 1; i++) {
+            BlockPos next = pos.up(i);
+            if (world.getBlockState(next).getBlock() == this) {
+                world.setBlockToAir(next);
+            }
+        }
+
+        super.breakBlock(world, pos, state);
+    }
+
+    @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.INVISIBLE;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 }

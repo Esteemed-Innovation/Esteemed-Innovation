@@ -47,7 +47,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
@@ -160,6 +159,8 @@ public class ClientProxy extends CommonProxy {
         registerModel(SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock());
         registerModel(SteamMachineryBlocks.Blocks.VACUUM.getBlock());
         registerModel(SteamMachineryBlocks.Blocks.STEAM_FILLER.getBlock());
+        registerModel(SteamMachineryBlocks.Blocks.THUMPER.getBlock());
+        registerModel(SteamMachineryBlocks.Blocks.THUMPER_DUMMY.getBlock());
 
         registerModelAllVariants(MetalBlocks.Blocks.BLOCK, BlockBeacon.VARIANT.getName(),
           BlockBeacon.MetalBlockTypes.values());
