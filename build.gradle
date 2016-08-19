@@ -61,11 +61,6 @@ repositories {
         name "ProfMobius"
         url "http://mobiusstrip.eu/maven"
     }
-
-    maven {
-        name = "The CB Project"
-        url "http://chickenbones.net/maven"
-    }
 }
 
 /*
@@ -90,7 +85,6 @@ dependencies {
 //    compile mantleVersion
 //    compile ticVersion
     compile jeiVersion
-    compile cclibVersion
 
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'fsplib', include: '*.jar')
