@@ -31,8 +31,8 @@ if (project.hasProperty('dev')) {
 group = "com.flaxbeard.Steamcraft"
 archivesBaseName = "FSP-1.9"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
     version = project.forgeVersion
