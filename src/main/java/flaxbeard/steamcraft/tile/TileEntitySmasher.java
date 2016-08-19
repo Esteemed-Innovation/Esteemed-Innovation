@@ -540,7 +540,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         GL11.glPopMatrix();
     }
 
-    @SuppressWarnings("unused")
     public static class SmashablesRegistry {
         public final Map<String, ItemStack> oreDicts = new HashMap<>();
         public final Map<ItemStack, ItemStack> registry = new HashMap<>();

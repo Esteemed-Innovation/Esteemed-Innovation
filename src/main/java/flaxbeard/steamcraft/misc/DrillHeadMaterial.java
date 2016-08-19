@@ -67,7 +67,6 @@ public class DrillHeadMaterial {
      * Gets the color's base string, just in case you want to do that.
      * @return The color string (including the # if present).
      */
-    @SuppressWarnings("unused")
     public String getColorString() {
         return color;
     }

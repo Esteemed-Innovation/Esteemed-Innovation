@@ -82,6 +82,8 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
                 rotation = 90;
                 break;
             }
+		default:
+			break;
         }
 
         if (!worldObj.isRemote) {
