@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "defaults": {
     "textures": {
-      "particle": "steamcraft:block/blockBrass"
+      "particle": "steamcraft:blocks/blockBrass"
     }
   },
   "variants": {
