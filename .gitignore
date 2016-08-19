@@ -22,3 +22,6 @@ out/
 # Who made this messy crap? Whatever.
 !/fsplib/*.jar
 *.hprof
+/bin/
+.DS_Store
+*.launch

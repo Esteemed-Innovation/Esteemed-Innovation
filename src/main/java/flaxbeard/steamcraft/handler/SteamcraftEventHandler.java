@@ -143,7 +143,7 @@ public class SteamcraftEventHandler {
         }
     }
 
-//	@SubscribeEvent
+//	@SubscribeEvent the fuck kind of commenting out is this
 //	public void handleMobDrop(LivingDropsEvent event) {
 //		if (event.entityLiving instanceof EntityCreeper) {
 //			int gunpowder = 0;
@@ -2766,7 +2766,6 @@ public class SteamcraftEventHandler {
       { -4, 0, -4 }, { -3, 0, -4 }, { -2, 0, -4 }, { -1, 0, -4 }, { 0, 0, -4 }, { 1, 0, -4 }, { 2, 0, -4 }, { 3, 0, -4 }, { 4, 0, -4 },
     };
 
-    @SuppressWarnings("Duplicates")
     private int[][] getExtraBlockCoordinates(int sideHit) {
         switch (sideHit) {
             case 5: return extraBlocksSide;
@@ -2778,7 +2777,6 @@ public class SteamcraftEventHandler {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     private int[][] getExtraBlock9Coordinates(int sideHit) {
         switch (sideHit) {
             case 5: return extraBlocks9Side;

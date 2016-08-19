@@ -100,7 +100,7 @@ public class ContainerEngineeringTable extends Container {
                 int i = 1;
                 for (MutablePair<Integer, Integer> pair : item.engineerCoordinates()) {
                     int x = pair.left;
-                    @SuppressWarnings("SuspiciousNameCombination") int y = pair.right;
+                    int y = pair.right;
                     ((SlotLimitedStackSize) getSlot(i)).setSlotStackLimit(1);
                     getSlot(i).xDisplayPosition = x + 53;
                     getSlot(i).yDisplayPosition = y + 9;

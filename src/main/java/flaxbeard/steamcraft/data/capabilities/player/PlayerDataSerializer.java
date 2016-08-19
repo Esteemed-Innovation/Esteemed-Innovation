@@ -6,7 +6,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import flaxbeard.steamcraft.Steamcraft;
 
-@SuppressWarnings("ConstantConditions")
 public class PlayerDataSerializer implements ICapabilitySerializable<NBTTagCompound> {
     IPlayerData instance = Steamcraft.PLAYER_DATA.getDefaultInstance();
 

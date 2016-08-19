@@ -6,7 +6,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import flaxbeard.steamcraft.Steamcraft;
 
-@SuppressWarnings("ConstantConditions")
 public class VillagerDataSerializer implements ICapabilitySerializable<NBTTagByte> {
     IVillagerData instance = Steamcraft.VILLAGER_DATA.getDefaultInstance();
 

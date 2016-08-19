@@ -236,7 +236,6 @@ public class SteamNetwork {
         }
     }
 
-    @SuppressWarnings("unused")
     public void setTransporterCoords(Coord4[] coords) {
         transporterCoords = coords;
     }
@@ -347,7 +346,6 @@ public class SteamNetwork {
         return checked;
     }
 
-    @SuppressWarnings("unused")
     private HashSet<ISteamTransporter> getNeighborTransporters(ISteamTransporter trans) {
         HashSet<ISteamTransporter> out = new HashSet<>();
         Coord4 coords = trans.getCoords();

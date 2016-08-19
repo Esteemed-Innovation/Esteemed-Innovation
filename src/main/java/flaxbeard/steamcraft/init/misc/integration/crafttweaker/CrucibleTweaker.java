@@ -13,7 +13,6 @@ import flaxbeard.steamcraft.api.CrucibleFormula;
 import flaxbeard.steamcraft.api.CrucibleLiquid;
 import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
-@SuppressWarnings("Duplicates")
 @ZenClass("mods.fsp.Crucible")
 public class CrucibleTweaker {
     @ZenMethod
@@ -348,7 +347,6 @@ public class CrucibleTweaker {
             return true;
         }
 
-        @SuppressWarnings("Duplicates")
         @Override
         public void undo() {
             if (in instanceof ItemStack) {

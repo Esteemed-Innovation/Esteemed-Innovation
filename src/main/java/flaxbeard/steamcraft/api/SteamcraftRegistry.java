@@ -16,7 +16,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.*;
 
-@SuppressWarnings("unused")
 public class SteamcraftRegistry {
     /**
      * The Items that can be used on the Carving Table.

@@ -146,6 +146,8 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                     output = EnumFacing.SOUTH;
                     break;
                 }
+			default:
+				break;
             }
             if (output == facing && facing.getIndex() > 1 && facing.getIndex() < 6) {
                 switch (facing.getOpposite()) {
@@ -165,6 +167,8 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                         output = EnumFacing.SOUTH;
                         break;
                     }
+				default:
+					break;
                 }
             }
             world.setBlockState(pos, state.withProperty(FACING, output), 2);

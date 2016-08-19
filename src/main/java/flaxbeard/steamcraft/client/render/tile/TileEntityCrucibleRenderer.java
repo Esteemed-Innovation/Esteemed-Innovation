@@ -45,6 +45,8 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
                 angle = 0F;
                 break;
             }
+		default:
+			break;
         }
 
         GlStateManager.pushMatrix();
