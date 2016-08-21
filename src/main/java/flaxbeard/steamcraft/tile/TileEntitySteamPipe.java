@@ -127,7 +127,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
      */
    void superUpdate() {
         super.update();
-    }
+   }
 
     NBTTagCompound superWriteToNBT(NBTTagCompound access) {
         return super.writeToNBT(access);

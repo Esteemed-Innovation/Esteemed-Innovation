@@ -28,6 +28,7 @@ import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.*;
 import flaxbeard.steamcraft.misc.*;
 import flaxbeard.steamcraft.tile.TileEntitySmasher;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.EnumPushReaction;
@@ -58,7 +59,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.item.*;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -83,7 +83,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -93,7 +92,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -103,15 +101,13 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-import static flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems.Items.*;
+import static flaxbeard.steamcraft.init.items.armor.ArmorItems.Items.ENTREPRENEUR_TOP_HAT;
+import static flaxbeard.steamcraft.init.items.armor.ArmorItems.Items.EXOSUIT_HEADPIECE;
 import static flaxbeard.steamcraft.init.items.armor.ExosuitUpgradeItems.Items.*;
-import static flaxbeard.steamcraft.init.items.armor.ArmorItems.Items.*;
-import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.*;
+import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.ROCKET_LAUNCHER;
 import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.*;
+import static flaxbeard.steamcraft.init.items.tools.ToolUpgradeItems.Items.*;
 
 public class SteamcraftEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -2217,23 +2213,13 @@ public class SteamcraftEventHandler {
                 continue;
             }
 
-            int meta = drop.getItemDamage() == OreDictionary.WILDCARD_VALUE ? 0 : drop.getItemDamage();
-            MutablePair<Item, Integer> input = MutablePair.of(drop.getItem(), meta);
-            if (SteamcraftRegistry.steamingRecipes.containsKey(input)) {
-                event.getDrops().remove(i);
-                MutablePair<Item, Integer> output = SteamcraftRegistry.steamingRecipes.get(input);
-                ItemStack stack = new ItemStack(output.left, drop.stackSize, output.right);
-                event.getDrops().add(stack);
-                itemsSmelted += 1;
-            } else {
-                ItemStack output = FurnaceRecipes.instance().getSmeltingResult(drop);
-                if (output == null || output.getItem() == null) {
-                    continue;
-                }
-                event.getDrops().remove(i);
-                event.getDrops().add(i, output.copy());
-                itemsSmelted += 1;
+            ItemStack output = SteamingRegistry.getSteamingResult(drop);
+            if (output == null || output.getItem() == null) {
+                continue;
             }
+            event.getDrops().remove(i);
+            event.getDrops().add(i, output.copy());
+            itemsSmelted += 1;
         }
         if (itemsSmelted > 0) {
             tool.addSteam(equipped, -(itemsSmelted * tool.steamPerDurability()), player);

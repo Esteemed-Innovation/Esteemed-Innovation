@@ -15,6 +15,10 @@ public class ItemSteamedFood extends ItemFood {
         this(food, new ItemStack(food));
     }
 
+    public ItemSteamedFood(ItemStack foodStack) {
+        this((ItemFood) foodStack.getItem(), foodStack);
+    }
+
     /**
      * The base constructor for more complicated ItemSteamedFoods. Use this for cases where the
      * output item has metadata (other than 0). For example: Steamed Salmon
@@ -25,10 +29,6 @@ public class ItemSteamedFood extends ItemFood {
         super(food.getHealAmount(foodStack) + 2, food.getSaturationModifier(foodStack) + 0.2F, food.isWolfsFavoriteMeat());
         baseFood = food;
         baseFoodStack = foodStack;
-    }
-
-    public ItemSteamedFood(ItemStack foodStack) {
-        this((ItemFood) foodStack.getItem(), foodStack);
     }
 
     public ItemFood getBaseFood() {

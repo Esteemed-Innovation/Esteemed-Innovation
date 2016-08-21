@@ -39,6 +39,7 @@ public class OreDictEntries {
     public static String FOOD_COOKED_BEEF = "beefcooked";
     public static String FOOD_COOKED_PORK = "porkcooked";
     public static String FOOD_COOKED_MEAT = "meatcooked";
+    public static String FOOD_VEGGIE = "veggie";
 
     // Blocks.
     public static String BLOCK_BRASS = PREFIX_BLOCK + MATERIAL_BRASS;
@@ -119,6 +120,8 @@ public class OreDictEntries {
     public static String ALL_BEEF_COOKED = PREFIX_LIST_ALL + FOOD_COOKED_BEEF;
     public static String ALL_PORK_COOKED = PREFIX_LIST_ALL + FOOD_COOKED_PORK;
     public static String ALL_MEAT_COOKED = PREFIX_LIST_ALL + FOOD_COOKED_MEAT;
+    public static String ALL_VEGGIE = PREFIX_LIST_ALL + FOOD_VEGGIE;
+
 
     // Disambiguated vanilla ore entries.
     // These entries would conflict with their Items/Blocks counterparts when statically imported.

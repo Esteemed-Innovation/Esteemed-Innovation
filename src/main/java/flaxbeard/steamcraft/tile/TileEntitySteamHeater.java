@@ -3,17 +3,13 @@ package flaxbeard.steamcraft.tile;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchable;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
-import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
 import flaxbeard.steamcraft.block.BlockSteamHeater;
 
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -21,15 +17,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
 
+import static flaxbeard.steamcraft.tile.TileEntitySteamFurnace.*;
+
+// FIXME: Shift-clicking in the SteamFurnace GUI with things added by addSteamingRecipe are not put into slot 0.
 public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteamTransporter, IWrenchable {
     // When multiple heaters are used on a furnace, there is a single primary heater
     public boolean isPrimaryHeater;
     private boolean isInitialized = false;
-    private boolean prevHadYuck = true;
     public static final int CONSUMPTION = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
@@ -44,31 +41,30 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteam
               furnace.getStackInSlot(1),
               furnace.getStackInSlot(2)
             };
-            int furnaceBurnTime = furnace.getField(0);
-            int currentItemBurnTime = furnace.getField(1);
-            int furnaceCookTime = furnace.getField(2); // This may be actually 3. TODO Double check
-            furnace.getWorld().setTileEntity(furnace.getPos(), new TileEntityFurnace());
+            int furnaceBurnTime = furnace.getField(FURNACE_BURN_TIME_ID);
+            int currentItemBurnTime = furnace.getField(CURRENT_ITEM_BURN_TIME_ID);
+            int furnaceCookTime = furnace.getField(COOK_TIME_ID);
+            furnace.getWorld().setTileEntity(furnace.getPos(), new TileEntitySteamFurnace());
             TileEntityFurnace furnace2 = (TileEntityFurnace) furnace.getWorld().getTileEntity(furnace.getPos());
             assert furnace2 != null;
             furnace2.setInventorySlotContents(0, furnaceItemStacks[0]);
             furnace2.setInventorySlotContents(1, furnaceItemStacks[1]);
             furnace2.setInventorySlotContents(2, furnaceItemStacks[2]);
-            furnace2.setField(0, furnaceBurnTime);
-            furnace2.setField(1, currentItemBurnTime);
-            furnace2.setField(2, furnaceCookTime);
+            furnace2.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime);
+            furnace2.setField(CURRENT_ITEM_BURN_TIME_ID, currentItemBurnTime);
+            furnace2.setField(COOK_TIME_ID, furnaceCookTime);
         }
     }
+
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.superReadFromNBT(nbt);
-        prevHadYuck = nbt.getBoolean("prevHadYuck");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.superWriteToNBT(nbt);
-        nbt.setBoolean("prevHadYuck", prevHadYuck);
         return nbt;
     }
 
@@ -86,12 +82,12 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteam
 
     @Override
     public void update() {
+        super.superUpdate();
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
         if (!isInitialized) {
             setValidDistributionDirections(dir);
             isInitialized = true;
         }
-        super.superUpdate();
 
         ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
@@ -99,50 +95,46 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteam
         if (tile == null || !(tile instanceof TileEntityFurnace)) {
             return;
         }
+        TileEntityFurnace furnace = (TileEntityFurnace) tile;
 
         int numHeaters = 0;
-        if (!isPrimaryHeater) {
-            prevHadYuck = true;
-        }
         isPrimaryHeater = false;
-        for (int i = 0; i < 6; i++) {
-            EnumFacing dir2 = EnumFacing.getFront(i);
+        for (EnumFacing dir2 : EnumFacing.VALUES) {
             int x = pos.getX() + dir.getFrontOffsetX() + dir2.getFrontOffsetX();
             int y = pos.getY() + dir.getFrontOffsetY() + dir2.getFrontOffsetY();
             int z = pos.getZ() + dir.getFrontOffsetZ() + dir2.getFrontOffsetZ();
-            TileEntity tile2 = worldObj.getTileEntity(new BlockPos(x, y, z));
+            BlockPos pos2 = new BlockPos(x, y, z);
+            TileEntity tile2 = worldObj.getTileEntity(pos2);
+            IBlockState state2 = worldObj.getBlockState(pos2);
             if (tile2 != null)  {
                 if (tile2 instanceof TileEntitySteamHeater) {
                     TileEntitySteamHeater heater2 = (TileEntitySteamHeater) tile2;
-                    if (heater2.getSteamShare() >= CONSUMPTION &&
-                      tile2.getBlockMetadata() == EnumFacing.getFront(i).getOpposite().getIndex()) {
+                    if (heater2.getSteamShare() >= CONSUMPTION && state2.getValue(BlockSteamHeater.FACING).getOpposite() == dir2) {
                         isPrimaryHeater = x == pos.getX() && y == pos.getY() && z == pos.getZ();
                         secondaryHeaters.add(heater2);
                         numHeaters++;
-                        if ( secondaryHeaters.size() > 4) {
+                        if (secondaryHeaters.size() > 4) {
                             secondaryHeaters.remove(0);
                         }
                         numHeaters = Math.min(4, numHeaters);
                     }
                 }
-            } else {
-                worldObj.addTileEntity(this);
             }
         }
         if (isPrimaryHeater && numHeaters > 0) {
-            TileEntityFurnace furnace = (TileEntityFurnace) worldObj.getTileEntity(offsetPos);
-            if (furnace == null ) {
-                return;
-            }
-
             if (!(furnace instanceof TileEntitySteamFurnace) && furnace.getClass() == TileEntityFurnace.class) {
                 replace(furnace);
             }
 
-            int furnaceBurnTime = furnace.getField(0);
-            int furnaceCookTime = furnace.getField(2); // This may be actually 3. TODO Double check
+            if (!(furnace instanceof TileEntitySteamFurnace)) {
+                return;
+            }
 
-            if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= CONSUMPTION && canSmelt(furnace)) {
+            int furnaceBurnTime = furnace.getField(FURNACE_BURN_TIME_ID);
+            int furnaceCookTime = furnace.getField(COOK_TIME_ID);
+
+            if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= CONSUMPTION &&
+              ((TileEntitySteamFurnace) furnace).canSmelt()) {
                 if (furnaceBurnTime == 0) {
                     BlockFurnace.setState(true, worldObj, offsetPos);
                 }
@@ -155,47 +147,11 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteam
 
                 if (numHeaters > 1 && furnaceCookTime > 0) {
                     int newCookTime = Math.min(furnaceCookTime + 2 * numHeaters - 1, 199);
-                    furnace.setField(2, newCookTime);
+                    furnace.setField(COOK_TIME_ID, newCookTime);
                 }
-                // FIXME mark offsetPos for update.
+                worldObj.notifyBlockUpdate(offsetPos, worldObj.getBlockState(offsetPos), worldObj.getBlockState(offsetPos), 0);
             }
-            ItemStack stack = furnace.getStackInSlot(2);
-            prevHadYuck = !(stack == null ||
-              !SteamcraftRegistry.steamingRecipes.containsKey(MutablePair.of(stack.getItem(), stack.getItemDamage())));
         }
-    }
-
-    public boolean canSmelt(TileEntityFurnace furnace) {
-        ItemStack stackInSlotZero = furnace.getStackInSlot(0);
-        if (stackInSlotZero == null) {
-            return false;
-        }
-        ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(stackInSlotZero);
-        if (itemstack == null) {
-            return false;
-        }
-
-        MutablePair<Item, Integer> pairNoMeta = MutablePair.of(itemstack.getItem(), 0);
-        MutablePair<Item, Integer> pairMeta = MutablePair.of(itemstack.getItem(), itemstack.getItemDamage());
-        if (SteamcraftRegistry.steamingRecipes.containsKey(pairNoMeta)) {
-            int meta = SteamcraftRegistry.steamingRecipes.get(pairNoMeta).getRight();
-            Item item = SteamcraftRegistry.steamingRecipes.get(pairNoMeta).getLeft();
-            itemstack = meta == 0 ? new ItemStack(item) : new ItemStack(item, 0, meta);
-        }
-        if (SteamcraftRegistry.steamingRecipes.containsKey(pairMeta)) {
-            int meta = SteamcraftRegistry.steamingRecipes.get(pairMeta).getRight();
-            Item item = SteamcraftRegistry.steamingRecipes.get(pairMeta).getLeft();
-            itemstack = meta == 0 ? new ItemStack(item) : new ItemStack(item, 0, meta);
-        }
-        ItemStack stackInSlotTwo = furnace.getStackInSlot(2);
-        if (stackInSlotTwo == null) {
-            return true;
-        }
-        if (!stackInSlotTwo.isItemEqual(itemstack)) {
-            return false;
-        }
-        int result = stackInSlotTwo.stackSize + itemstack.stackSize;
-        return result <= furnace.getInventoryStackLimit() && result <= stackInSlotTwo.getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
     }
 
     @Override
@@ -210,5 +166,4 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteam
         getNetwork().addSteam(steam);
         return true;
     }
-
 }

@@ -630,6 +630,9 @@ item.steamcraft:steamed_porkchop.name=Steamed Porkchop
 item.steamcraft:steamed_salmon.name=Steamed Salmon
 item.steamcraft:steamed_mutton.name=Steamed Mutton
 item.steamcraft:steamed_rabbit.name=Steamed Rabbit
+item.steamcraft:steamed_carrot.name=Steamed Carrot
+item.steamcraft:steamed_potato.name=Steamed Potato
+item.steamcraft:steamed_beetroot.name=Steamed Beetroot
 item.steamcraft:steamedImphide.name=Steamed Imphide
 
 item.toolHead.headAxeBrass.name=Brass Axe Head

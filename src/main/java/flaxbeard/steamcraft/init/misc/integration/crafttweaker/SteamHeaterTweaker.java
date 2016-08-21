@@ -1,41 +1,35 @@
 package flaxbeard.steamcraft.init.misc.integration.crafttweaker;
 
+import flaxbeard.steamcraft.api.SteamingRegistry;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
 
 @ZenClass("mods.fsp.SteamHeater")
 public class SteamHeaterTweaker {
     @ZenMethod
-    public static void addSteamingRecipe(IItemStack originalI, IItemStack steamedI) {
-        ItemStack original = MineTweakerMC.getItemStack(originalI);
-        ItemStack steamed = MineTweakerMC.getItemStack(steamedI);
-        MineTweakerAPI.apply(new Add(original.getItem(), original.getItemDamage(),
-          steamed.getItem(), steamed.getItemDamage()));
+    public static void addSteamingReplacementRecipe(IItemStack inputI, IItemStack outputI) {
+        ItemStack input = MineTweakerMC.getItemStack(inputI);
+        ItemStack output = MineTweakerMC.getItemStack(outputI);
+        MineTweakerAPI.apply(new Add(input, output));
     }
 
     private static class Add implements IUndoableAction {
-        private final Item originalItem;
-        private final int originalMeta;
-        private final Item steamedItem;
-        private final int steamedMeta;
+        private final ItemStack input;
+        private final ItemStack output;
 
-        public Add(Item originalItem, int originalMeta, Item steamedItem, int steamedMeta) {
-            this.originalItem = originalItem;
-            this.originalMeta = originalMeta;
-            this.steamedItem = steamedItem;
-            this.steamedMeta = steamedMeta;
+        public Add(ItemStack input, ItemStack output) {
+            this.input = input;
+            this.output = output;
         }
 
         @Override
         public void apply() {
-            SteamcraftRegistry.addSteamingRecipe(originalItem, originalMeta, steamedItem, steamedMeta);
+            SteamingRegistry.addSteamingRecipe(input, output);
         }
 
         @Override
@@ -45,17 +39,17 @@ public class SteamHeaterTweaker {
 
         @Override
         public void undo() {
-            SteamcraftRegistry.removeSteamingRecipe(originalItem, originalMeta);
+            SteamingRegistry.removeSteamingRecipe(input);
         }
 
         @Override
         public String describe() {
-            return "Adding steaming recipe alternative for " + originalItem.getUnlocalizedName();
+            return "Adding steaming recipe for " + input.getUnlocalizedName() + " -> " + output.getUnlocalizedName();
         }
 
         @Override
         public String describeUndo() {
-            return "Removing steaming recipe alternative for " + originalItem.getUnlocalizedName();
+            return "Removing steaming recipe for " + input.getUnlocalizedName() + " -> " + output.getUnlocalizedName();
         }
 
         @Override
@@ -65,23 +59,21 @@ public class SteamHeaterTweaker {
     }
 
     @ZenMethod
-    public static void removeSteamingRecipe(IItemStack original) {
+    public static void removeSteamingReplacementRecipe(IItemStack original) {
         ItemStack stack = MineTweakerMC.getItemStack(original);
-        MineTweakerAPI.apply(new Remove(stack.getItem(), stack.getItemDamage()));
+        MineTweakerAPI.apply(new Remove(stack));
     }
 
     private static class Remove implements IUndoableAction {
-        private final Item item;
-        private final int meta;
+        private final ItemStack input;
 
-        public Remove(Item item, int meta) {
-            this.item = item;
-            this.meta = meta;
+        public Remove(ItemStack input) {
+            this.input = input;
         }
 
         @Override
         public void apply() {
-            SteamcraftRegistry.removeSteamingRecipe(item, meta);
+            SteamingRegistry.removeSteamingRecipe(input);
         }
 
         @Override
@@ -94,7 +86,7 @@ public class SteamHeaterTweaker {
 
         @Override
         public String describe() {
-            return "Removing steaming alternative recipe for " + item.getUnlocalizedName();
+            return "Removing steaming recipe for " + input.getUnlocalizedName();
         }
 
         @Override

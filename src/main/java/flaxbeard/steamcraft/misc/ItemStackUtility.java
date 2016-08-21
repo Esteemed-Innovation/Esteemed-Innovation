@@ -1,6 +1,5 @@
 package flaxbeard.steamcraft.misc;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,6 +17,7 @@ public class ItemStackUtility {
 
     /**
      * "Mostly" equal; returns true if the item and meta are the same (don't care about stacksize).
+     * TODO: Replace with ItemStack#isItemEqual
      * 
      * @param stack1
      * @param stack2
@@ -25,6 +25,14 @@ public class ItemStackUtility {
      */
     public static boolean areItemStacksMostlyEqual(ItemStack stack1, ItemStack stack2) {
         return stack1.getItem().equals(stack2.getItem()) && stack1.getItemDamage() == stack2.getItemDamage();
+    }
+
+    /**
+     * Public version of {@link net.minecraft.item.crafting.FurnaceRecipes#compareItemStacks(ItemStack, ItemStack)}
+     */
+    public static boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+        return stack2.getItem() == stack1.getItem() &&
+                (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
 
     /**

@@ -1,16 +1,18 @@
 package flaxbeard.steamcraft.init.items;
 
+import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.SteamingRegistry;
+import flaxbeard.steamcraft.init.IInitCategory;
+import flaxbeard.steamcraft.item.ItemSteamedFood;
+
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.Steamcraft;
-import flaxbeard.steamcraft.api.SteamcraftRegistry;
-import flaxbeard.steamcraft.init.IInitCategory;
-import flaxbeard.steamcraft.item.ItemSteamedFood;
 
-import static net.minecraft.init.Items.*;
 import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Items.*;
 
 public class FoodItems implements IInitCategory {
     public enum Items {
@@ -20,11 +22,14 @@ public class FoodItems implements IInitCategory {
         STEAMED_BEEF(new ItemSteamedFood((ItemFood) COOKED_BEEF), "steamed_beef"),
         STEAMED_PORKCHOP(new ItemSteamedFood((ItemFood) COOKED_PORKCHOP), "steamed_porkchop"),
         STEAMED_MUTTON(new ItemSteamedFood((ItemFood) COOKED_MUTTON), "steamed_mutton"),
-        STEAMED_RABBIT(new ItemSteamedFood((ItemFood) COOKED_RABBIT), "steamed_rabbit");
+        STEAMED_RABBIT(new ItemSteamedFood((ItemFood) COOKED_RABBIT), "steamed_rabbit"),
+        STEAMED_CARROT(new ItemSteamedFood((ItemFood) CARROT), "steamed_carrot"),
+        STEAMED_BEETROOT(new ItemSteamedFood((ItemFood) BEETROOT), "steamed_beetroot"),
+        STEAMED_POTATO(new ItemSteamedFood((ItemFood) BAKED_POTATO), "steamed_potato");
 
-        private ItemSteamedFood item;
+        private Item item;
 
-        Items(ItemSteamedFood item, String name) {
+        Items(Item item, String name) {
             item.setUnlocalizedName(Steamcraft.MOD_ID + ":" + name);
             item.setCreativeTab(Steamcraft.tab);
             item.setRegistryName(Steamcraft.MOD_ID, name);
@@ -32,7 +37,7 @@ public class FoodItems implements IInitCategory {
             this.item = item;
         }
 
-        public ItemSteamedFood getItem() {
+        public Item getItem() {
             return item;
         }
     }
@@ -44,11 +49,15 @@ public class FoodItems implements IInitCategory {
         OreDictionary.registerOre(ALL_CHICKEN_COOKED, Items.STEAMED_CHICKEN.getItem());
         OreDictionary.registerOre(ALL_PORK_COOKED, Items.STEAMED_PORKCHOP.getItem());
         OreDictionary.registerOre(ALL_BEEF_COOKED, Items.STEAMED_BEEF.getItem());
+        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_FISH.getItem());
+        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_SALMON.getItem());
+        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_CHICKEN.getItem());
+        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_PORKCHOP.getItem());
+        OreDictionary.registerOre(ALL_MEAT_COOKED, Items.STEAMED_BEEF.getItem());
 
-        // Right now all food items are meat, be careful of this in the future if adding more foods.
-        for (Items item : Items.values()) {
-            OreDictionary.registerOre(ALL_MEAT_COOKED, item.getItem());
-        }
+        OreDictionary.registerOre(ALL_VEGGIE, Items.STEAMED_CARROT.getItem());
+        OreDictionary.registerOre(ALL_VEGGIE, Items.STEAMED_BEETROOT.getItem());
+        OreDictionary.registerOre(ALL_VEGGIE, Items.STEAMED_POTATO.getItem());
     }
 
     @Override
@@ -57,31 +66,43 @@ public class FoodItems implements IInitCategory {
         for (Items item : Items.values()) {
             switch (item) {
                 case STEAMED_BEEF: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_BEEF, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(BEEF), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_CHICKEN: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_CHICKEN, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(CHICKEN), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_FISH: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_FISH, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(FISH), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_PORKCHOP: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_PORKCHOP, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(PORKCHOP), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_SALMON: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_FISH, 1, item.getItem(), 0);
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(FISH, 1, 1), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_MUTTON: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_MUTTON, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(MUTTON), new ItemStack(item.getItem()));
                     break;
                 }
                 case STEAMED_RABBIT: {
-                    SteamcraftRegistry.addSteamingRecipe(COOKED_RABBIT, item.getItem());
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(RABBIT), new ItemStack(item.getItem()));
+                    break;
+                }
+                case STEAMED_BEETROOT: {
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(BEETROOT), new ItemStack(item.getItem()));
+                    break;
+                }
+                case STEAMED_CARROT: {
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(CARROT), new ItemStack(item.getItem()));
+                    break;
+                }
+                case STEAMED_POTATO: {
+                    SteamingRegistry.addSteamingRecipe(new ItemStack(POTATO), new ItemStack(item.getItem()));
                     break;
                 }
             }
