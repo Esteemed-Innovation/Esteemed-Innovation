@@ -84,11 +84,11 @@ Import statements must not be line-wrapped.
 #### Ordering and spacing
 Import statements are divided into the following groups, in this order, with each group separated by a single black line:
 
-1. All static imports in a single group
-2. `flaxbeard.steamcraft` imports
-3. Third-party imports, for example, from Minecraft Forge or Minecraft.
-4. `java` imports
-5. `javax` imports
+1. `flaxbeard.steamcraft` imports
+2. Third-party imports, for example, from Minecraft Forge or Minecraft.
+3. `java` imports
+4. `javax` imports
+5. All static imports in a single group
 
 ### Class declaration
 #### Two or less top-level class declaration
