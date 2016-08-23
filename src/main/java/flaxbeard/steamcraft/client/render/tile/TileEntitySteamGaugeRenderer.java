@@ -7,19 +7,16 @@ import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.tile.TileEntitySteamCharger;
 import flaxbeard.steamcraft.tile.TileEntitySteamGauge;
 import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<TileEntitySteamGauge> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/blocks/gaugePointer.png");
@@ -73,11 +70,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
 
             Tessellator tess = Tessellator.getInstance();
             VertexBuffer buffer = tess.getBuffer();
-            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-            IBakedModel valveModel = RenderUtility.bakeModel(POINTER_RL);
-            for (BakedQuad quad : valveModel.getQuads(null, null, 0)) {
-                buffer.addVertexData(quad.getVertexData());
-            }
+            RenderUtility.renderModel(buffer, POINTER_RL);
             bindTexture(TEXTURE);
             tess.draw();
         }

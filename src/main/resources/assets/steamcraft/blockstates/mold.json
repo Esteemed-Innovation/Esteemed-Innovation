@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "steamcraft:mold_bottom"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "north": {
+        "y": 180
+      },
+      "west": {
+        "y": 90
+      },
+      "east": {
+        "y": 270
+      }
+    },
+    "inventory": [{
+      "submodel": {
+        "bottom": {
+          "model": "steamcraft:mold_bottom"
+        },
+        "top": {
+          "model": "steamcraft:mold_top"
+        }
+      }
+    }]
+  }
+}

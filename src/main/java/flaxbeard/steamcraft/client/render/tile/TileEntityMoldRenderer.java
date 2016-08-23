@@ -1,157 +1,108 @@
 package flaxbeard.steamcraft.client.render.tile;
 
+import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ICrucibleMold;
+import flaxbeard.steamcraft.block.BlockMold;
 import flaxbeard.steamcraft.client.render.RenderUtility;
-import flaxbeard.steamcraft.client.render.model.ModelMold;
 import flaxbeard.steamcraft.tile.TileEntityMold;
-import net.minecraft.client.Minecraft;
+
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityMoldRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelMold MODEL = new ModelMold();
-    private static final ResourceLocation TEXTURE = new ResourceLocation("steamcraft:textures/models/mold.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("steamcraft:textures/models/mold2.png");
+public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntityMold> {
+    private static final ResourceLocation MODEL_RL = new ResourceLocation(Steamcraft.MOD_ID, "block/mold_top");
     private static final float PX = (1F / 16F);
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        TileEntityMold mold = (TileEntityMold) tile;
-        int meta = tile.getBlockMetadata();
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-        GL11.glTranslated(x, y, z);
-
+    public void renderTileEntityAt(TileEntityMold mold, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.translate(x, y, z);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(90.0F * (meta + (meta % 2 * 2)) + 180.0F, 0F, 1F, 0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+        EnumFacing dir = getWorld().getBlockState(mold.getPos()).getValue(BlockMold.FACING);
+        if (dir == EnumFacing.SOUTH) {
+            GlStateManager.rotate(180F, 0, 1, 0);
+        } else if (dir == EnumFacing.EAST) {
+            GlStateManager.rotate(270F, 0, 1, 0);
+        } else if (dir == EnumFacing.WEST) {
+            GlStateManager.rotate(90F, 0, 1, 0);
+        }
 
-        GL11.glScalef(1F, -1F, -1F);
-        MODEL.renderBottom();
-        GL11.glPushMatrix();
-        GL11.glRotatef(90.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F + 4 * PX);
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(180F, 1, 0, 0);
+        // FIXME: Z Fighting when really high above the mold.
+        GlStateManager.translate(-0.5, (3.999F / 16F), -0.5);
 
         if (mold.mold != null) {
             renderMold(mold.mold.getItem(), true);
         }
+        GlStateManager.translate(0, 0.001, 0);
+        GlStateManager.popMatrix();
 
-        GL11.glTranslatef(0.0F, 0.0F, -0.001F);
-        renderMoldUnder();
-
-        GL11.glPopMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-        GL11.glScalef(1F, -1F, -1F);
-
-        GL11.glScalef(1F, -1F, -1F);
-
-        GL11.glTranslatef(0.0F * 90.0F, 4 * PX, -6 * PX);
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(180F, 0, 1, 0);
+        GlStateManager.translate(0, -4 * PX, -6 * PX);
+        float tick = (float) (Math.PI * (mold.changeTicks * 90.0F / 20.0F)) / 180.0F;
+        float rotation = mold.isOpen ? 80F + MathHelper.sin(tick) * 100F : MathHelper.sin(tick) * -100F;
         if (mold.isOpen) {
-            float tick = (float) (Math.PI * (mold.changeTicks * 90.0F / 20.0F)) / 180.0F;
-            GL11.glRotatef(100.0F - MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
-        } else {
-            float tick = (float) (Math.PI * (mold.changeTicks * 90.0F / 20.0F)) / 180.0F;
-            GL11.glRotatef(0.0F + MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
+            GlStateManager.rotate(180F, 1, 0, 0);
         }
-        MODEL.renderTop();
-        GL11.glPushMatrix();
-        GL11.glRotatef(270.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F - 6 * PX, -0.5F + 8 * PX);
+        GlStateManager.rotate(rotation, 1, 0, 0);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
+        GlStateManager.translate(0, 4 * PX, 6 * PX);
+        RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), MODEL_RL);
+        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Tessellator.getInstance().draw();
+        GlStateManager.popMatrix();
 
+        GlStateManager.pushMatrix();
+        GlStateManager.rotate(180F, 0, 1, 0);
+        GlStateManager.translate(0, -4 * PX, -6 * PX);
+        if (mold.isOpen) {
+            GlStateManager.rotate(180F, 1, 0, 0);
+        }
+        GlStateManager.rotate(rotation, 1, 0, 0);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
+        GlStateManager.translate(0, 4 * PX, 6 * PX);
+        GlStateManager.translate(0, 3.999 * PX, 0);
         if (mold.mold != null) {
-            renderMold(mold.mold.getItem(), false);
+            renderMold(mold.mold.getItem(), true);
         }
-        GL11.glTranslatef(0.0F, 0.0F, -0.001F);
-        renderMoldUnder();
-        GL11.glPopMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
-        GL11.glScalef(1F, -1F, -1F);
+        GlStateManager.popMatrix();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private void renderMold(Item item, boolean bottom) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(((ICrucibleMold) item).getBlockTexture());
+        bindTexture(((ICrucibleMold) item).getBlockTexture());
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
-        buffer.putNormal(0F, 0F, 1F);
+//        buffer.putNormal(0F, 0F, 1F);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         if (bottom) {
-            RenderUtility.addVertexWithUV(buffer, 0D, 0D, 0D, 0F, 0F);
-            RenderUtility.addVertexWithUV(buffer, 1D, 0D, 0D, 1F, 0F);
-            RenderUtility.addVertexWithUV(buffer, 1D, 1D, 0D, 1F, 1F);
-            RenderUtility.addVertexWithUV(buffer, 0D, 1D, 0D, 0F, 1F);
+            buffer.pos(0D, 0D, 0D).tex(0F, 0F).endVertex();
+            buffer.pos(1D, 0D, 0D).tex(1F, 0F).endVertex();
+            buffer.pos(1D, 0D, 1D).tex(1F, 1F).endVertex();
+            buffer.pos(0D, 0D, 1D).tex(0F, 1F).endVertex();
         } else {
-            RenderUtility.addVertexWithUV(buffer, 1D, 1D, 0D, 0F, 0F);
-            RenderUtility.addVertexWithUV(buffer, 0D, 1D, 0D, 1F, 0F);
-            RenderUtility.addVertexWithUV(buffer, 0D, 0D, 0D, 1F, 1F);
-            RenderUtility.addVertexWithUV(buffer, 1D, 0D, 0D, 0F, 1F);
+            buffer.pos(1D, 0D, 1D).tex(0F, 0F).endVertex();
+            buffer.pos(0D, 0D, 1D).tex(1F, 0F).endVertex();
+            buffer.pos(0D, 0D, 0D).tex(1F, 1F).endVertex();
+            buffer.pos(1D, 0D, 0D).tex(0F, 1F).endVertex();
         }
         tessellator.draw();
-    }
-
-    private void renderMoldUnder() {
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_2);
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
-        buffer.putNormal(0F, 0F, 1F);
-        RenderUtility.addVertexWithUV(buffer, 0.0D, 0.0D, 0.0D, 0F, 0F);
-        RenderUtility.addVertexWithUV(buffer, 1.0D, 0.0D, 0.0D, 1F, 0F);
-        RenderUtility.addVertexWithUV(buffer, 1.0D, 1.0D, 0.0D, 1F, 1F);
-        RenderUtility.addVertexWithUV(buffer, 0.0D, 1.0D, 0.0D, 0F, 1F);
-        tessellator.draw();
-    }
-
-    @Override
-    public void renderInventoryTileEntityAt(TileEntity var1, double x, double y, double z, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-        GL11.glTranslated(x, y, z);
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-
-        GL11.glScalef(1F, -1F, -1F);
-        MODEL.renderBottom();
-        GL11.glPushMatrix();
-        GL11.glRotatef(90.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F + 4 * PX);
-        GL11.glTranslatef(0.0F, 0.0F, -0.001F);
-
-        GL11.glPopMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-        GL11.glScalef(1F, -1F, -1F);
-
-        GL11.glScalef(1F, -1F, -1F);
-
-        GL11.glTranslatef(0.0F * 90.0F, 4 * PX, -6 * PX);
-
-        float tick = (float) (Math.PI * (0 * 90.0F / 20.0F)) / 180.0F;
-        GL11.glRotatef(0.0F + MathHelper.sin(tick) * 100.0F, 1F, 0F, 0F);
-
-        MODEL.renderTop();
-        GL11.glPushMatrix();
-        GL11.glRotatef(270.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F - 6 * PX, -0.5F + 8 * PX);
-        GL11.glTranslatef(0.0F, 0.0F, -0.001F);
-
-        GL11.glPopMatrix();
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-
-        GL11.glScalef(1F, -1F, -1F);
-
-        GL11.glPopMatrix();
     }
 }

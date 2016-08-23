@@ -68,6 +68,12 @@ public class RenderUtility {
         }
     }
 
+    /**
+     * Renders a baked model from the resource location pointing to the model JSON.
+     * <b>Always draw after calling this method, otherwise the vertex will never finish building!</b>
+     * @param buffer The VertexBuffer
+     * @param modelLocation The model, do not include .json
+     */
     public static void renderModel(VertexBuffer buffer, ResourceLocation modelLocation) {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         IBakedModel model = bakeModel(modelLocation);

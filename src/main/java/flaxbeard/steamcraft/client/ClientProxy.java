@@ -173,6 +173,7 @@ public class ClientProxy extends CommonProxy {
         registerModel(CastingBlocks.Blocks.CRUCIBLE.getBlock());
         registerModel(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock());
         registerModel(CastingBlocks.Blocks.CARVING_TABLE.getBlock());
+        registerModel(CastingBlocks.Blocks.MOLD.getBlock());
 
         for (CraftingComponentItems.Items item : CraftingComponentItems.Items.values()) {
             registerModelItemStack(item.createItemStack());

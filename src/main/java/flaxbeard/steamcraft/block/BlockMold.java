@@ -3,7 +3,8 @@ package flaxbeard.steamcraft.block;
 import flaxbeard.steamcraft.api.ICrucibleMold;
 import flaxbeard.steamcraft.api.IWrenchable;
 import flaxbeard.steamcraft.tile.TileEntityMold;
-import net.minecraft.block.BlockContainer;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -22,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockMold extends BlockContainer implements IWrenchable {
+public class BlockMold extends Block implements IWrenchable {
     private static final float px = (1.0F / 16.0F);
     public static PropertyDirection FACING = BlockHorizontal.FACING;
 
@@ -58,9 +59,13 @@ public class BlockMold extends BlockContainer implements IWrenchable {
         super.breakBlock(world, pos, state);
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityMold();
     }
 
@@ -71,10 +76,7 @@ public class BlockMold extends BlockContainer implements IWrenchable {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        return new AxisAlignedBB(x + 2 * px, y + 0.0F, z + 2 * px, x + 1.0F - 2 * px, y + 1.0F - 8 * px, z + 1.0F - 2 * px);
+        return new AxisAlignedBB(2 * px, 0.0F, 2 * px, 1.0F - 2 * px, 1.0F - 8 * px, 1.0F - 2 * px);
     }
 
     @Override
@@ -114,11 +116,13 @@ public class BlockMold extends BlockContainer implements IWrenchable {
                     }
                 }
             }
+            return true;
         } else {
             if (tile.changeTicks == 0 && (heldItem == null || !(heldItem.getItem() instanceof ItemBlock))) {
                 tile.isOpen = !tile.isOpen;
                 tile.changeTicks = 20;
                 // markDirty
+                return true;
             }
         }
 
@@ -128,52 +132,19 @@ public class BlockMold extends BlockContainer implements IWrenchable {
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
-            EnumFacing output = facing;
-            switch (facing) {
-                case NORTH: {
-                    output = EnumFacing.NORTH;
-                    break;
-                }
-                case SOUTH: {
-                    output = EnumFacing.DOWN;
-                    break;
-                }
-                case WEST: {
-                    output = EnumFacing.UP;
-                    break;
-                }
-                case EAST: {
-                    output = EnumFacing.SOUTH;
-                    break;
-                }
-			default:
-				break;
-            }
-            if (output == facing && facing.getIndex() > 1 && facing.getIndex() < 6) {
-                switch (facing.getOpposite()) {
-                    case NORTH: {
-                        output = EnumFacing.NORTH;
-                        break;
-                    }
-                    case SOUTH: {
-                        output = EnumFacing.DOWN;
-                        break;
-                    }
-                    case WEST: {
-                        output = EnumFacing.UP;
-                        break;
-                    }
-                    case EAST: {
-                        output = EnumFacing.SOUTH;
-                        break;
-                    }
-				default:
-					break;
-                }
-            }
-            world.setBlockState(pos, state.withProperty(FACING, output), 2);
+            world.setBlockState(pos, state.withProperty(FACING, facing));
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 }
