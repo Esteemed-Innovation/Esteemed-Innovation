@@ -1,12 +1,15 @@
 package flaxbeard.steamcraft.client.render.item;
 
+import flaxbeard.steamcraft.api.IRenderItem;
+import flaxbeard.steamcraft.client.render.RenderUtility;
+import flaxbeard.steamcraft.item.tool.steam.SteamToolHelper;
+
 import codechicken.lib.render.IItemRenderer;
 import codechicken.lib.render.TextureUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,16 +17,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
-import flaxbeard.steamcraft.api.IRenderItem;
-import flaxbeard.steamcraft.client.render.RenderUtility;
-import flaxbeard.steamcraft.item.tool.steam.SteamToolHelper;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
 
 public class ItemSteamToolRenderer implements IItemRenderer {
     @Override
@@ -73,11 +71,6 @@ public class ItemSteamToolRenderer implements IItemRenderer {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
         GL11.glPopMatrix();
-    }
-
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return null;
     }
 
     @Override

@@ -70,8 +70,6 @@ repositories {
 
 /*
 Coherent list of mods that we added integration for which do not support 1.9 yet:
-- IndustrialCraft 2
-- Ender IO
 - Natura
 - CoFH Core/Thermal Foundation
 - Thaumcraft
@@ -82,15 +80,15 @@ Coherent list of mods that we added integration for which do not support 1.9 yet
 dependencies {
     /*
     These are the mods that have not updated to 1.9 yet.
-    compile ic2Version
     compile naturaVersion
-    compile eioVersion
     */
 //    There are some issues that I can't figure out with these mods.
 //    compile mantleVersion
 //    compile ticVersion
+    compile ic2Version
     compile jeiVersion
     compile cclibVersion
+    compile eioVersion
 
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'fsplib', include: '*.jar')

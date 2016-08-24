@@ -108,7 +108,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
 
         setBlockState(world, PANE_STATE, 2, 2, 0, sbb);
         //  this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 2, 2, 0, sbb);
-        placeDoorCurrentPosition(world, sbb, random, 4, 1, 0, getCoordBaseMode());
+        func_189927_a(world, sbb, random, 4, 1, 0, getCoordBaseMode());
         // this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 4, 2, 0, sbb);
         setBlockState(world, PANE_STATE, 6, 2, 0, sbb);
         setBlockState(world, PANE_STATE, 6, 2, 0, sbb);

@@ -8,14 +8,13 @@ import flaxbeard.steamcraft.client.render.RenderUtility;
 import flaxbeard.steamcraft.handler.SteamcraftEventHandler;
 import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
+
 import codechicken.lib.render.IItemRenderer;
 import codechicken.lib.render.TextureUtils;
-import codechicken.lib.render.TransformUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,14 +23,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
 
 public class ItemFirearmRenderer implements IItemRenderer {
     @Override
@@ -155,10 +152,5 @@ public class ItemFirearmRenderer implements IItemRenderer {
     @Override
     public ItemOverrideList getOverrides() {
         return ItemOverrideList.NONE;
-    }
-
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_TOOL.getTransforms(), cameraTransformType);
     }
 }
