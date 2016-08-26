@@ -3,7 +3,6 @@ package flaxbeard.steamcraft;
 import flaxbeard.steamcraft.api.DrillHeadRecipe;
 import flaxbeard.steamcraft.api.util.SPLog;
 import flaxbeard.steamcraft.block.TileEntityDummyBlock;
-import flaxbeard.steamcraft.client.render.TextureStitcher;
 import flaxbeard.steamcraft.client.render.model.exosuit.ExosuitModelCache;
 import flaxbeard.steamcraft.common.CommonProxy;
 import flaxbeard.steamcraft.data.capabilities.animal.AnimalDataStorage;
@@ -217,6 +216,7 @@ public class Steamcraft {
                 category.getCategory().preInit(event);
             }
         }
+        proxy.registerTexturesToStitch();
 
         proxy.registerModels();
     }
@@ -264,9 +264,6 @@ public class Steamcraft {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            MinecraftForge.EVENT_BUS.register(new TextureStitcher());
-        }
         if (Config.enablePipe) {
             MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
         }

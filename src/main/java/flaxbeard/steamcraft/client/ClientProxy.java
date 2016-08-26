@@ -4,6 +4,7 @@ import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.api.enhancement.UtilEnhancements;
 import flaxbeard.steamcraft.api.tool.ISteamTool;
 import flaxbeard.steamcraft.block.BlockBeacon;
+import flaxbeard.steamcraft.block.BlockSteamcraftCrucible;
 import flaxbeard.steamcraft.block.BlockSteamcraftOre;
 import flaxbeard.steamcraft.client.render.colorhandlers.ItemExosuitColorHandler;
 import flaxbeard.steamcraft.client.render.colorhandlers.ItemSmashedOreColorHandler;
@@ -21,6 +22,7 @@ import flaxbeard.steamcraft.data.state.StateMapperValvePipe;
 import flaxbeard.steamcraft.entity.item.EntityCanisterItem;
 import flaxbeard.steamcraft.entity.item.EntityMortarItem;
 import flaxbeard.steamcraft.entity.projectile.EntityRocket;
+import flaxbeard.steamcraft.gui.GuiBoiler;
 import flaxbeard.steamcraft.init.blocks.*;
 import flaxbeard.steamcraft.init.items.CraftingComponentItems;
 import flaxbeard.steamcraft.init.items.FoodItems;
@@ -37,6 +39,7 @@ import flaxbeard.steamcraft.item.armor.exosuit.ItemExosuitArmor;
 import flaxbeard.steamcraft.misc.SteamcraftPlayerController;
 import flaxbeard.steamcraft.tile.*;
 
+import codechicken.lib.render.CCIconRegister;
 import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -289,6 +292,12 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVacuum.class, new TileEntityVacuumRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidSteamConverter.class, new TileEntityFluidSteamRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChargingPad.class, new TileEntityChargingPadRenderer());
+    }
+
+    @Override
+    public void registerTexturesToStitch() {
+        CCIconRegister.registerTexture(BlockSteamcraftCrucible.LIQUID_ICON_RL);
+        CCIconRegister.registerTexture(GuiBoiler.STEAM_RL);
     }
 
     @Override
