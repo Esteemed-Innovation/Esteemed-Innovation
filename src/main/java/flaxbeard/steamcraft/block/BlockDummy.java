@@ -1,11 +1,15 @@
 package flaxbeard.steamcraft.block;
 
-import net.minecraft.block.BlockContainer;
+import flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -14,7 +18,7 @@ import net.minecraft.world.World;
 
 import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
 
-public class BlockDummy extends BlockContainer {
+public class BlockDummy extends Block {
     public BlockDummy() {
         super(Material.IRON);
         setHardness(50.0F);
@@ -27,25 +31,25 @@ public class BlockDummy extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata){
+    public boolean hasTileEntity(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityDummyBlock();
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         int smasherCount = 0;
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-        smasherCount += world.getBlockState(new BlockPos(x + 1, y, z)).getBlock() == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(new BlockPos(x - 1, y, z)) == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(new BlockPos(x, y, z + 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(new BlockPos(x, y, z - 1)) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(pos.east()).getBlock() == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(pos.west()) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(pos.north()) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(pos.south()) == ROCK_SMASHER.getBlock() ? 1 : 0;
 
-        // The TileEntity simple acts as a middleman to get the mutable World object.
-        TileEntity tile = world.getTileEntity(pos);
-        if (smasherCount < 2 && tile != null) {
-            tile.getWorld().setBlockToAir(pos);
+        if (smasherCount < 2) {
+            world.setBlockToAir(pos);
         }
     }
 
@@ -57,5 +61,25 @@ public class BlockDummy extends BlockContainer {
     @Override
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player){
         return false;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+        return new ItemStack(SteamMachineryBlocks.Blocks.ROCK_SMASHER.getBlock());
     }
 }

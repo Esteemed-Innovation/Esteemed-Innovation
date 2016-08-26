@@ -1,12 +1,7 @@
 package flaxbeard.steamcraft.init.items;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import flaxbeard.steamcraft.Steamcraft;
+import flaxbeard.steamcraft.api.SmasherRegistry;
 import flaxbeard.steamcraft.init.IInitCategory;
 import flaxbeard.steamcraft.init.blocks.OreBlocks;
 import flaxbeard.steamcraft.item.ItemSmashedOre;
@@ -14,14 +9,17 @@ import flaxbeard.steamcraft.item.ItemSteamcraftIngot;
 import flaxbeard.steamcraft.item.ItemSteamcraftNugget;
 import flaxbeard.steamcraft.item.ItemSteamcraftPlate;
 
-import static net.minecraft.init.Items.IRON_INGOT;
-import static net.minecraft.init.Items.GLOWSTONE_DUST;
-import static net.minecraft.init.Blocks.COBBLESTONE_WALL;
-import static net.minecraft.init.Blocks.GRAVEL;
-import static net.minecraft.init.Blocks.SAND;
-import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import static flaxbeard.steamcraft.init.misc.CraftingHelpers.add3x3Recipe;
-import static flaxbeard.steamcraft.tile.TileEntitySmasher.REGISTRY;
+import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Items.GLOWSTONE_DUST;
+import static net.minecraft.init.Items.IRON_INGOT;
 
 public class MetalItems implements IInitCategory {
     public enum Items {
@@ -178,11 +176,11 @@ public class MetalItems implements IInitCategory {
         GameRegistry.addSmelting(OreBlocks.Blocks.NETHER_ZINC_ORE.createItemStack(), Items.ZINC_INGOT.createItemStack(), 0.5F);
         GameRegistry.addSmelting(OreBlocks.Blocks.END_ZINC_ORE.createItemStack(), Items.ZINC_INGOT.createItemStack(), 0.5F);
 
-        REGISTRY.registerSmashable(COBBLESTONE_ORE, new ItemStack(GRAVEL));
-        REGISTRY.registerSmashable(COBBLESTONE_WALL, new ItemStack(GRAVEL));
-        REGISTRY.registerSmashable(GRAVEL_ORE, new ItemStack(SAND));
-        REGISTRY.registerSmashable(GLOWSTONE_ORE, new ItemStack(GLOWSTONE_DUST, 4));
-        REGISTRY.registerSmashable(SANDSTONE_ORE, new ItemStack(SAND));
+        SmasherRegistry.registerSmashable(COBBLESTONE_ORE, new ItemStack(GRAVEL));
+        SmasherRegistry.registerSmashable(COBBLESTONE_WALL, new ItemStack(GRAVEL));
+        SmasherRegistry.registerSmashable(GRAVEL_ORE, new ItemStack(SAND));
+        SmasherRegistry.registerSmashable(GLOWSTONE_ORE, new ItemStack(GLOWSTONE_DUST, 4));
+        SmasherRegistry.registerSmashable(SANDSTONE_ORE, new ItemStack(SAND));
 
         ItemSmashedOre iso = (ItemSmashedOre) Items.SMASHED_ORE.getItem();
         ((ItemSmashedOre) Items.SMASHED_ORE.getItem()).registerDefaultEntries();

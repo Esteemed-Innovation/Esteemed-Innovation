@@ -27,7 +27,6 @@ import flaxbeard.steamcraft.item.firearm.ItemFirearm;
 import flaxbeard.steamcraft.item.firearm.ItemRocketLauncher;
 import flaxbeard.steamcraft.item.tool.steam.*;
 import flaxbeard.steamcraft.misc.*;
-import flaxbeard.steamcraft.tile.TileEntitySmasher;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -1812,7 +1811,7 @@ public class SteamcraftEventHandler {
             }
 
             if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT.getItem())) {
-                ItemStack out = TileEntitySmasher.REGISTRY.getOutput(new ItemStack(block, 1, meta));
+                ItemStack out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta));
                 if (out != null) {
                     if (rand.nextInt(Config.chance) == 0) {
                         out.stackSize *= 2;

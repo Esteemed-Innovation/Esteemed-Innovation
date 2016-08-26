@@ -1,5 +1,7 @@
 package flaxbeard.steamcraft.init.misc.integration.crafttweaker;
 
+import flaxbeard.steamcraft.api.SmasherRegistry;
+
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -7,7 +9,6 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
-import static flaxbeard.steamcraft.tile.TileEntitySmasher.REGISTRY;
 
 @ZenClass("mods.fsp.RockSmasher")
 public class RockSmasherTweaker {
@@ -36,9 +37,9 @@ public class RockSmasherTweaker {
         @Override
         public void apply() {
             if (in instanceof ItemStack) {
-                REGISTRY.registerSmashable((ItemStack) in, out);
+                SmasherRegistry.registerSmashable((ItemStack) in, out);
             } else if (in instanceof String) {
-                REGISTRY.registerSmashable((String) in, out);
+                SmasherRegistry.registerSmashable((String) in, out);
             }
         }
 
@@ -50,9 +51,9 @@ public class RockSmasherTweaker {
         @Override
         public void undo() {
             if (in instanceof ItemStack) {
-                REGISTRY.removeSmashable((ItemStack) in, out);
+                SmasherRegistry.removeSmashable((ItemStack) in);
             } else if (in instanceof String) {
-                REGISTRY.removeSmashable((String) in, out);
+                SmasherRegistry.removeSmashable((String) in);
             }
         }
 
@@ -107,9 +108,9 @@ public class RockSmasherTweaker {
         @Override
         public void apply() {
             if (in instanceof ItemStack) {
-                REGISTRY.removeSmashable((ItemStack) in, out);
+                SmasherRegistry.removeSmashable((ItemStack) in);
             } else if (in instanceof String) {
-                REGISTRY.removeSmashable((String) in, out);
+                SmasherRegistry.removeSmashable((String) in);
             }
         }
 
@@ -121,9 +122,9 @@ public class RockSmasherTweaker {
         @Override
         public void undo() {
             if (in instanceof ItemStack) {
-                REGISTRY.registerSmashable((ItemStack) in, out);
+                SmasherRegistry.registerSmashable((ItemStack) in, out);
             } else if (in instanceof String) {
-                REGISTRY.registerSmashable((String) in, out);
+                SmasherRegistry.registerSmashable((String) in, out);
             }
         }
 

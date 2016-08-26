@@ -16,18 +16,6 @@ public class ItemStackUtility {
     public static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = EntityEquipmentSlot.values();
 
     /**
-     * "Mostly" equal; returns true if the item and meta are the same (don't care about stacksize).
-     * TODO: Replace with ItemStack#isItemEqual
-     * 
-     * @param stack1
-     * @param stack2
-     * @return
-     */
-    public static boolean areItemStacksMostlyEqual(ItemStack stack1, ItemStack stack2) {
-        return stack1.getItem().equals(stack2.getItem()) && stack1.getItemDamage() == stack2.getItemDamage();
-    }
-
-    /**
      * Public version of {@link net.minecraft.item.crafting.FurnaceRecipes#compareItemStacks(ItemStack, ItemStack)}
      */
     public static boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {

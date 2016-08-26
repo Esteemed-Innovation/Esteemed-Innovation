@@ -5,20 +5,21 @@ import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.ISteamTransporter;
 import flaxbeard.steamcraft.api.IWrenchDisplay;
 import flaxbeard.steamcraft.api.IWrenchable;
+import flaxbeard.steamcraft.api.SmasherRegistry;
 import flaxbeard.steamcraft.api.steamnet.SteamNetwork;
 import flaxbeard.steamcraft.api.tile.SteamTransporterTileEntity;
-import flaxbeard.steamcraft.misc.ItemStackUtility;
+import flaxbeard.steamcraft.block.BlockSmasher;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,27 +30,20 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
-import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.*;
+import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
+import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER_DUMMY;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-	public static final SmashablesRegistry REGISTRY = new SmashablesRegistry();
-
-    public int spinup = 0;
-    public float extendedLength = 0.0F;
-    public Block smooshingBlock;
-    public int smooshingMeta;
+	public int spinup = 0;
+    private float extendedLength = 0.0F;
+    private Block smooshingBlock;
+    private int smooshingMeta;
     public int extendedTicks = 0;
-    public List<ItemStack> smooshedStack;
-    private boolean hasBlockUpdate = false;
+    private List<ItemStack> smooshedStack;
     private boolean isActive = false;
     private boolean isBreaking = false;
     private boolean shouldStop = false;
@@ -71,7 +65,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         spinup = access.getInteger("spinup");
         blockBreakerMode = access.getBoolean("blockBreakerMode");
         hasBeenSet = access.getBoolean("hasBeenSet");
-        smooshingBlock = Block.getBlockById(access.getInteger("ORE_BLOCK"));
+        smooshingBlock = Block.getBlockById(access.getInteger("block"));
         smooshingMeta = access.getInteger("smooshingMeta");
         NBTTagList nbttaglist = (NBTTagList) access.getTag("Items");
         smooshedStack = new ArrayList<>();
@@ -90,7 +84,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
-        access.setInteger("ORE_BLOCK", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -113,7 +107,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         access.setInteger("spinup", spinup);
         access.setFloat("extendedLength", extendedLength);
         access.setInteger("extendedTicks", extendedTicks);
-        access.setInteger("ORE_BLOCK", Block.getIdFromBlock(smooshingBlock));
+        access.setInteger("block", Block.getIdFromBlock(smooshingBlock));
         access.setInteger("smooshingMeta", smooshingMeta);
         access.setBoolean("running", running);
         access.setBoolean("blockBreakerMode", blockBreakerMode);
@@ -121,53 +115,25 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
-
-//	private int encodeParticles(){
-//		int smash=0 , smoke1=0, smoke2=0, smoke3=0;
-//		if (!worldObj.isRemote){
-//			if (extendedTicks==3) smash = 1;
-//			if (extendedTicks >= 8 && extendedTicks <= 16 && (extendedTicks % 4) == 0) smoke1 = 2;
-//			//int smoke1 = (extendedTicks == 3) ? (1 << 1) : 0;
-//			//int smoke2 = (extendedTicks >= 8) && (extendedTicks <= 16) && ((extendedTicks % 4) == 0) ? (1  << 2): 0;
-//			//int smoke3 =  (extendedTicks == 6) ? (1 << 3) : 0;
-//
-//		}
-//
-//
-//		return smash + smoke1 + smoke2 + smoke3;
-//	}
-
     private void decodeAndCreateParticles() {
         if (worldObj.isRemote) {
             if (extendedTicks > 15) {
-                float xV = 0F;
-                float zV = 0F;
-                double xO = 0D;
-                double zO = 0D;
-                switch (getBlockMetadata()) {
-                    case 2:
-                        zV = 0.05F;
-                        zO = 0.1D;
-                        break;
-                    case 3:
-                        zV = -0.05F;
-                        zO = -0.1D;
-                        break;
-                    case 4:
-                        xV = 0.05F;
-                        xO = 0.1D;
-                        break;
-                    case 5:
-                        xV = -0.05F;
-                        xO = -0.1D;
-                        break;
-                    default:
-                        break;
+                float xVelocity = 0F;
+                float zVelocity = 0F;
+                double xOffset = 0D;
+                double zOffset = 0D;
+                EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+                if (facing.getAxis() == EnumFacing.Axis.X) {
+                    xVelocity = 0.05F * -facing.getFrontOffsetX();
+                    xOffset = 0.1D * -facing.getFrontOffsetX();
+                } else {
+                    zVelocity = 0.05F * -facing.getFrontOffsetZ();
+                    zOffset = 0.1D * -facing.getFrontOffsetZ();
                 }
-                double xParticle = pos.getX() + 0.5D + xO;
+                double xParticle = pos.getX() + 0.5D + xOffset;
                 double yParticle = pos.getY() + 1.1D;
-                double zParticle = pos.getZ() + 0.5D + zO;
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xParticle, yParticle, zParticle, xV, 0.05F, zV);
+                double zParticle = pos.getZ() + 0.5D + zOffset;
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xParticle, yParticle, zParticle, xVelocity, 0.05F, zVelocity);
             }
         }
     }
@@ -179,7 +145,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         extendedLength = access.getFloat("extendedLength");
         extendedTicks = access.getInteger("extendedTicks");
         spinup = access.getInteger("spinup");
-        smooshingBlock = Block.getBlockById(access.getInteger("ORE_BLOCK"));
+        smooshingBlock = Block.getBlockById(access.getInteger("block"));
         smooshingMeta = access.getInteger("smooshingMeta");
         running = access.getBoolean("running");
         blockBreakerMode = access.getBoolean("blockBreakerMode");
@@ -190,9 +156,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     @Override
     public void update() {
         if (!isInitialized) {
-            EnumFacing facing = EnumFacing.getFront(getBlockMetadata());
+            EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
             addSideToGaugeBlacklist(facing);
-            EnumFacing[] directions = new EnumFacing[5];
+            EnumFacing[] directions = new EnumFacing[4];
             int i = 0;
             for (EnumFacing direction : EnumFacing.VALUES) {
                 if (direction != facing && direction != EnumFacing.UP) {
@@ -213,7 +179,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
             BlockPos soundPos = new BlockPos(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
             if (spinup == 1) {
                 worldObj.playSound(null, soundPos, Steamcraft.SOUND_HISS, SoundCategory.BLOCKS,
-                  Blocks.ANVIL.getSoundType().getVolume(), 0.9F);
+                  SoundType.ANVIL.getVolume(), 0.9F);
             }
             if (extendedTicks > 15) {
                 worldObj.playSound(null, soundPos, Steamcraft.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
@@ -223,14 +189,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                 worldObj.playSound(null, soundPos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5F, pitch);
             }
             if (extendedTicks > 0 && extendedTicks < 6 && smooshingBlock != null) {
-                SoundType smooshingSoundType = smooshingBlock.getSoundType();
-                if (smooshingSoundType != null) {
-                    SoundEvent breakSound = smooshingSoundType.getBreakSound();
-                    if (breakSound != null) {
-                        worldObj.playSound(null, soundPos, breakSound, SoundCategory.BLOCKS,
-                          smooshingSoundType.getVolume(), smooshingSoundType.getPitch());
-                    }
-                }
+                SoundType smooshingSoundType = smooshingBlock.getSoundType(worldObj.getBlockState(soundPos), worldObj, soundPos, null);
+                SoundEvent breakSound = smooshingSoundType.getBreakSound();
+                worldObj.playSound(null, soundPos, breakSound, SoundCategory.BLOCKS,
+                  smooshingSoundType.getVolume(), smooshingSoundType.getPitch());
             }
             //handle state changes
             if (shouldStop) {
@@ -268,12 +230,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
             if (isActive) {
                 // if we haven't spun up yet, do it.
                 if (isBreaking) {
-                    if (!hasSomethingToSmash() && spinup < 40 && getBlockMetadata() % 2 == 0) {
+                    if (!hasSomethingToSmash() && spinup < 40 && isPrimary()) {
                         shouldStop = true;
                         int[] tc = getTarget(2);
                         BlockPos position = new BlockPos(tc[0], y, tc[1]);
                         TileEntitySmasher partner = (TileEntitySmasher) worldObj.getTileEntity(position);
-                        partner.shouldStop = true;
+                        if (partner != null) {
+                            partner.shouldStop = true;
+                        }
                         return;
                     }
                     if (spinup < 41) {
@@ -283,7 +247,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                             Block middleBlock = middleBlockState.getBlock();
                             if (hasSomethingToSmash()) {
                                 spinup++;
-                                if (getBlockMetadata() % 2 == 0) {
+                                if (isPrimary()) {
                                     smooshingBlock = middleBlock;
                                     smooshingMeta = middleBlock.getMetaFromState(middleBlockState);
                                     smooshedStack = smooshingBlock.getDrops(worldObj, middleBlockPos, middleBlockState, 0);
@@ -295,6 +259,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                                     int[] pc = getTarget(2);
                                     BlockPos partnerPosition = new BlockPos(pc[0], y, pc[1]);
                                     TileEntitySmasher partner = (TileEntitySmasher) worldObj.getTileEntity(partnerPosition);
+                                    //noinspection ConstantConditions
                                     if (partner.spinup < 41 || (partner.spinup >= 41 && partner.shouldStop)) {
                                         shouldStop = true;
                                     }
@@ -311,7 +276,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 //                     if we've spun up, extend
                     } else if (extendedLength < 0.5F && !shouldStop) {
                         extendedLength += 0.1F;
-                        if (extendedTicks == 3 && getBlockMetadata() % 2 == 0 && !worldObj.isRemote) {
+                        if (extendedTicks == 3 && isPrimary() && !worldObj.isRemote) {
                             spawnItems(middleBlockPos);
                         }
                         extendedTicks++;
@@ -341,8 +306,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     }
                 }
                 // Sync.
-            } else if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY.getBlock() &&
-              getBlockMetadata() % 2 == 0) {
+            } else if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY.getBlock() && isPrimary()) {
                 worldObj.setBlockToAir(middleBlockPos);
             }
         } else {
@@ -359,7 +323,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     spinup++;
                     if (!worldObj.isAirBlock(targetPosition) && worldObj.getTileEntity(targetPosition) == null) {
                         IBlockState blockState = worldObj.getBlockState(targetPosition);
-                        if (blockState.getBlockHardness(worldObj, targetPosition) < 50F && getBlockMetadata() % 2 == 0) {
+                        if (blockState.getBlockHardness(worldObj, targetPosition) < 50F && isPrimary()) {
                             smooshingBlock = blockState.getBlock();
                             smooshingMeta = blockState.getBlock().getMetaFromState(blockState);
                         }
@@ -374,10 +338,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         }
     }
 
+    private boolean isPrimary() {
+        return worldObj.getBlockState(pos).getValue(BlockSmasher.FACING).getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE;
+    }
+
     private void spawnItems(BlockPos position) {
         if (smooshedStack != null) {
             for (ItemStack stack : smooshedStack) {
-            	ItemStack output = REGISTRY.getOutput(stack);
+            	ItemStack output = SmasherRegistry.getOutput(stack);
                 double x = position.getX() + 0.5F;
                 double y = position.getY() + 0.1F;
                 double z = position.getZ() + 0.5F;
@@ -407,7 +375,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         BlockPos position = new BlockPos(x, y, z);
         IBlockState blockState = worldObj.getBlockState(position);
         Block block = blockState.getBlock();
-        return !worldObj.isAirBlock(position) && block == Blocks.BEDROCK &&
+        return !worldObj.isAirBlock(position) && block != Blocks.BEDROCK &&
           worldObj.getTileEntity(position) == null && blockState.getBlockHardness(worldObj, position) < 50F;
     }
 
@@ -445,47 +413,17 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
         return false;
     }
 
-    // returns x, z, opposite
+    /**
+     * @param distance The distance from the current smasher to check in. For example, getTarget(2) will check
+     *                 X_Y where X is the current smasher, and Y is the space to check.
+     * @return An array of the X and Z coordinates (no Y because the smasher cannot face up/down) and the opposite
+     *         facing horizontal index.
+     */
     private int[] getTarget(int distance) {
-        int x = pos.getX();
-        int z = pos.getZ();
-        int meta = getBlockMetadata();
-        int opposite = meta % 2 == 0 ? meta + 1 : meta - 1;
-        switch (meta) {
-            case 2: {
-                z -= distance;
-                opposite = 3;
-                break;
-            }
-            case 3: {
-                z += distance;
-                opposite = 2;
-                break;
-            }
-            case 4: {
-                x -= distance;
-                opposite = 5;
-                break;
-            }
-            case 5: {
-                x += distance;
-                opposite = 4;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-
-        return new int[]{x, z, opposite};
-    }
-
-    public void blockUpdate() {
-        hasBlockUpdate = true;
-    }
-
-    public boolean hasUpdate() {
-        return hasBlockUpdate;
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+        EnumFacing opposite = facing.getOpposite();
+        BlockPos target = pos.offset(facing, distance);
+        return new int[] { target.getX(), target.getZ(), opposite.getHorizontalIndex() };
     }
 
     @Override
@@ -515,8 +453,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
             getNetwork().split(this, true);
             EnumFacing[] directions = new EnumFacing[5];
             int i = 0;
-            for (EnumFacing direction : EnumFacing.values()) {
-                if (direction != EnumFacing.getFront(getBlockMetadata()) && direction != EnumFacing.UP) {
+            EnumFacing myFacing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+            for (EnumFacing direction : EnumFacing.VALUES) {
+                if (direction != myFacing && direction != EnumFacing.UP) {
                     directions[i] = direction;
                     i++;
                 }
@@ -531,97 +470,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
 
     @Override
     public void displayWrench(Post event) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
         String loc = I18n.format("steamcraft.smasher." + blockBreakerMode);
         Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(loc, x + 15, y + 13, color);
-        GL11.glPopMatrix();
-    }
-
-    public static class SmashablesRegistry {
-        public final Map<String, ItemStack> oreDicts = new HashMap<>();
-        public final Map<ItemStack, ItemStack> registry = new HashMap<>();
-
-        public ItemStack getOutput(ItemStack input) {
-            if (input == null) {
-                return null;
-            }
-            ItemStack output = null;
-            int[] ids = OreDictionary.getOreIDs(input);
-
-            if (ids != null && ids.length > 0) {
-                for (int id : ids) {
-                    output = oreDicts.get(OreDictionary.getOreName(id));
-                    if (output != null) {
-                        break;
-                    }
-                }
-            }
-
-            if (output == null) {
-                for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
-                    if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
-                        output = entry.getValue();
-                        if (output != null) {
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return ItemStack.copyItemStack(output);
-        }
-
-        public List<ItemStack> getInputs(ItemStack output) {
-            if(output == null) {
-                return null;
-            }
-
-            List<ItemStack> inputs = new ArrayList<>();
-
-            for (Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
-                if(ItemStackUtility.areItemStacksMostlyEqual(entry.getValue(), output)){
-                    inputs.add(entry.getKey());
-                }
-            }
-
-            for (Entry<String, ItemStack> entry : oreDicts.entrySet()) {
-                if(ItemStackUtility.areItemStacksMostlyEqual(entry.getValue(), output)){
-                    inputs.addAll(OreDictionary.getOres(entry.getKey()));
-                }
-            }
-
-            if(inputs.isEmpty()){
-                return null;
-            }
-
-            return inputs;
-        }
-
-        public void registerSmashable(String input, ItemStack output) {
-            oreDicts.put(input, output);
-        }
-
-        public void registerSmashable(Block input, ItemStack output) {
-            registerSmashable(new ItemStack(input), output);
-        }
-
-        public void registerSmashable(Item input, ItemStack output) {
-            registerSmashable(new ItemStack(input), output);
-        }
-
-        public void registerSmashable(ItemStack input, ItemStack output) {
-            registry.put(input, output);
-        }
-
-        public void removeSmashable(String input, ItemStack output) {
-            oreDicts.remove(input);
-        }
-
-        public void removeSmashable(ItemStack input, ItemStack output) {
-            registry.remove(input);
-        }
+        GlStateManager.popMatrix();
     }
 }

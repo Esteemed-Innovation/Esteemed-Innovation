@@ -1,20 +1,19 @@
 package flaxbeard.steamcraft.item;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import flaxbeard.steamcraft.api.SmasherRegistry;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import flaxbeard.steamcraft.tile.TileEntitySmasher;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ItemSmashedOre extends Item {
     public static final Map<Integer, String[]> map = new HashMap<>();
@@ -45,7 +44,7 @@ public class ItemSmashedOre extends Item {
     }
 
     private void registerEntry(int meta, String name, String smeltingResult, int color) {
-        TileEntitySmasher.REGISTRY.registerSmashable("ore" + name, new ItemStack(this, 1, meta));
+        SmasherRegistry.registerSmashable("ore" + name, new ItemStack(this, 1, meta));
         map.put(meta, new String[] { name, smeltingResult });
         colors.put(meta, color);
     }
