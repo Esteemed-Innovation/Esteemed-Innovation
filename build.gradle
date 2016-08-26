@@ -89,6 +89,7 @@ dependencies {
     compile jeiVersion
     compile cclibVersion
     compile eioVersion
+    compile ecoreVersion
 
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'fsplib', include: '*.jar')
