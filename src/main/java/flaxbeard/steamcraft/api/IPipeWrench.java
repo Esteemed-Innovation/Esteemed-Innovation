@@ -10,10 +10,10 @@ import net.minecraft.util.math.BlockPos;
 public interface IPipeWrench {
 
     /**
-     * Called to ensure the pipe wrench can be used on a ORE_BLOCK.
+     * Called to ensure the pipe wrench can be used on a block.
      *
      * @param player The player wrenching
-     * @param pos The position of the ORE_BLOCK being wrenched
+     * @param pos The position of the block being wrenched
      *
      * @return true if wrenching is possible; false if not.
      */
@@ -23,7 +23,7 @@ public interface IPipeWrench {
      * Called after the pipe wrench has been used.
      *
      * @param player The player wrenching
-     * @param pos The position of the ORE_BLOCK being wrenched
+     * @param pos The position of the block being wrenched
      * @param hand The hand holding the wrench.
      */
     void wrenchUsed(EntityPlayer player, BlockPos pos, EnumHand hand);

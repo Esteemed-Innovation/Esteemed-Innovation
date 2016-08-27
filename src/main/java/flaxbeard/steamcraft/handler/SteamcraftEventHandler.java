@@ -1667,17 +1667,17 @@ public class SteamcraftEventHandler {
         }
 
         /*
-        I don't know about this stuff, since ORE_BLOCK shapes and stuff are handled with JSON now. I don't know how we are going to check if it is a solid cube.
+        I don't know about this stuff, since block shapes and stuff are handled with JSON now. I don't know how we are going to check if it is a solid cube.
         TileEntity tile = world.getTileEntity(pos);
         ItemStack held = player.getHeldItem(player.getActiveHand());
         if (player.isSneaking() && ((tile != null && tile instanceof IDisguisableBlock) ||
-          ORE_BLOCK == SteamNetworkBlocks.Blocks.PIPE.getBlock()) && held != null &&
+          block == SteamNetworkBlocks.Blocks.PIPE.getBlock()) && held != null &&
           held.getItem() instanceof ItemBlock) {
             Block block1 = Block.getBlockFromItem(held.getItem());
             if (!(block1 instanceof BlockContainer) && !(block1 instanceof ITileEntityProvider) &&
               (block1.getRenderType(state) == EnumBlockRenderType.LIQUID || block1.getRenderType() == 39 ||
                 block1.getRenderType() == 31) && (block1.renderAsNormalBlock() ||
-              (block1 == Blocks.glass && ORE_BLOCK == SteamcraftBlocks.pipe))) {
+              (block1 == Blocks.glass && block == SteamcraftBlocks.pipe))) {
                 event.setCanceled(true);
             }
         }
@@ -2162,7 +2162,7 @@ public class SteamcraftEventHandler {
     }
 
     /**
-     * Burns all log blocks within a 5 ORE_BLOCK radius.
+     * Burns all log blocks within a 5 block radius.
      * @param world The world
      * @param startPos The starting Block Position
      */
@@ -2395,8 +2395,8 @@ public class SteamcraftEventHandler {
     }
 
     /**
-     * Gets whether the ORE_BLOCK can be tilled into farmland.
-     * @param block The ORE_BLOCK to check
+     * Gets whether the block can be tilled into farmland.
+     * @param block The block to check
      * @return True if it is dirt or grass, else false.
      */
     private boolean isFarmable(Block block) {
@@ -2542,7 +2542,7 @@ public class SteamcraftEventHandler {
     }
 
     /**
-     * Gets a single entity from the player's look vec. Scans in a 5 ORE_BLOCK radius around the player,
+     * Gets a single entity from the player's look vec. Scans in a 5 block radius around the player,
      * and returns the "first" result.
      * @param player The player
      * @return The EntityLivingBase near the player.
@@ -2841,11 +2841,11 @@ public class SteamcraftEventHandler {
     }};
 
     /**
-     * Returns whether the ORE_BLOCK can be blown by the leaf blower.
-     * @param block The ORE_BLOCK
+     * Returns whether the block can be blown by the leaf blower.
+     * @param block The block
      * @param world The world
-     * @param pos The ORE_BLOCK's position
-     * @return Whether the leaf blower should blow this ORE_BLOCK away.
+     * @param pos The block's position
+     * @return Whether the leaf blower should blow this block away.
      */
     private boolean isLeaves(Block block, World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);

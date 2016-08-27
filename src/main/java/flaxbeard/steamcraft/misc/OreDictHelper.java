@@ -61,7 +61,7 @@ public class OreDictHelper {
             sands.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.startsWith("ORE_BLOCK")) {
+        if (name.startsWith("block")) {
             blocks.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
             if (name.endsWith("Coal")) {
                 blockCoals.add(stack.getItem());

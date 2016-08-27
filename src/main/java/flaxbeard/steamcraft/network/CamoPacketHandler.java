@@ -1,5 +1,9 @@
 package flaxbeard.steamcraft.network;
 
+import flaxbeard.steamcraft.api.block.IDisguisableBlock;
+import flaxbeard.steamcraft.misc.ItemStackUtility;
+import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
@@ -17,9 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import flaxbeard.steamcraft.api.block.IDisguisableBlock;
-import flaxbeard.steamcraft.misc.ItemStackUtility;
-import flaxbeard.steamcraft.tile.TileEntitySteamPipe;
 
 public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> {
     @Override
@@ -100,10 +101,10 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
     }
 
     /**
-     * Plays the sound for the ORE_BLOCK at the position.
-     * @param block The ORE_BLOCK
+     * Plays the sound for the block at the position.
+     * @param block The block
      * @param world The world
-     * @param pos The ORE_BLOCK position
+     * @param pos The block position
      */
     private void playSound(Block block, World world, BlockPos pos) {
         double x = pos.getX() + 0.5D;
