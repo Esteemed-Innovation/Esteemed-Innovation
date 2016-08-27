@@ -197,7 +197,6 @@ public class Steamcraft {
         registerTileEntity(TileEntityThumper.class, "thumper");
         registerTileEntity(TileEntitySmasher.class, "smasher");
         registerTileEntity(TileEntityDummyBlock.class, "dummy");
-        registerTileEntity(TileEntityFlashBoiler.class, "flashBoiler");
         registerTileEntity(TileEntityFan.class, "fan");
         registerTileEntity(TileEntityVacuum.class, "vacuum");
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");

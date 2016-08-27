@@ -1,12 +1,5 @@
 package flaxbeard.steamcraft.init.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
@@ -14,14 +7,21 @@ import flaxbeard.steamcraft.block.*;
 import flaxbeard.steamcraft.init.IInitCategory;
 import flaxbeard.steamcraft.item.BlockManyMetadataItem;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import static flaxbeard.steamcraft.init.misc.OreDictEntries.*;
-import static net.minecraft.init.Blocks.*;
-import static net.minecraft.init.Items.*;
+import static net.minecraft.init.Blocks.FURNACE;
+import static net.minecraft.init.Blocks.LEVER;
+import static net.minecraft.init.Items.COMPASS;
 
 public class SteamNetworkBlocks implements IInitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
-        FLASH_BOILER(new BlockFlashBoiler(), "flash_boiler"),
         PIPE(new BlockPipe(), "pipe"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
         TANK(new BlockSteamTank(), "steam_tank", true),
@@ -60,9 +60,6 @@ public class SteamNetworkBlocks implements IInitCategory {
             switch (this) {
                 case BOILER: {
                     return Config.enableBoiler;
-                }
-                case FLASH_BOILER: {
-                    return BOILER.isEnabled() && Config.enableFlashBoiler;
                 }
                 case PIPE: {
                     return Config.enablePipe;
@@ -117,29 +114,6 @@ public class SteamNetworkBlocks implements IInitCategory {
                       "xxx",
                       'x', PLATE_BRASS,
                       'f', FURNACE
-                    ));
-                    break;
-                }
-                case FLASH_BOILER: {
-                    BookRecipeRegistry.addRecipe("flashBoiler1", new ShapedOreRecipe(new ItemStack(block.getBlock(), 2),
-                      "xtx",
-                      "pbp",
-                      "nnn",
-                      'x', INGOT_BRASS,
-                      'b', Blocks.BOILER.getBlock(),
-                      't', Blocks.TANK.getBlock(),
-                      'n', NETHER_BRICK,
-                      'p', Blocks.PIPE.getBlock()
-                    ));
-                    BookRecipeRegistry.addRecipe("flashBoiler2", new ShapedOreRecipe(new ItemStack(block.getBlock(), 2),
-                      "xtx",
-                      "pbp",
-                      "nnn",
-                      'x', PLATE_BRASS,
-                      'b', Blocks.BOILER.getBlock(),
-                      't', Blocks.TANK.getBlock(),
-                      'n', NETHER_BRICK,
-                      'p', Blocks.PIPE.getBlock()
                     ));
                     break;
                 }

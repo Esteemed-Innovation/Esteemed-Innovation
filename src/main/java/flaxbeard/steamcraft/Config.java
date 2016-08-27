@@ -116,7 +116,6 @@ public class Config {
     public static boolean enableHellCrucible;
     public static boolean enableEngineering;
     public static boolean enableFan;
-    public static boolean enableFlashBoiler;
     public static boolean enableFluidSteamConverter;
     public static boolean enableMortar;
     public static boolean enableGauge;
@@ -293,7 +292,6 @@ public class Config {
         // STEAM SYSTEM
         config.addCustomCategoryComment("SteamSystem", "Disabling any piece marked crucial disables pretty much the whole mod.");
         enableBoiler = config.get("SteamSystem", "Enable Boiler (Crucial)", true).getBoolean();
-        enableFlashBoiler = config.get("SteamSystem", "Enable Flash Boiler", true).getBoolean();
         enableHorn = config.get("SteamSystem", "Enable Horn", true).getBoolean();
         enableGauge = config.get("SteamSystem", "Enable Pressure Gauge (Crucial)", true).getBoolean();
         enablePipe = config.get("SteamSystem", "Enable Steam Pipe (Crucial)", true).getBoolean();
