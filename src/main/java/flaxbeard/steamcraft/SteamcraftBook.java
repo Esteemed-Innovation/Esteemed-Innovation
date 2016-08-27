@@ -546,12 +546,6 @@ public class SteamcraftBook {
           new BookPageItem("research.Boiler.name", "research.Boiler.0", new ItemStack(BOILER.getBlock())),
           new BookPageCrafting("", "boiler1", "boiler2"));
 
-        if (Config.enableFlashBoiler) {
-            SteamcraftRegistry.addResearch("research.FlashBoiler.name", "category.SteamPower.name",
-              new BookPageItem("research.FlashBoiler.name", "research.FlashBoiler.0", new ItemStack(FLASH_BOILER.getBlock())),
-              new BookPageText("research.FlashBoiler.name", "research.FlashBoiler.1"),
-              new BookPageCrafting("", "flashBoiler1", "flashBoiler2"));
-        }
         SteamcraftRegistry.addResearch("research.Pipe.name", "category.SteamPower.name",
           new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(PIPE.getBlock())),
           new BookPageCrafting("", "pipe1", "pipe2"),
