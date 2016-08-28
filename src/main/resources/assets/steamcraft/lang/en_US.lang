@@ -409,6 +409,9 @@ category.Automation.name=Automation
 research.BlockPlacer.name=Plonker
 research.BlockPlacer.0=I may have a machine that will smash the blocks I place down, but I'm too busy flying around with my exosuit to bother continuously placing blocks down there to keep up with my demands. So, I have created this machine, the Plonker. It will place the block given to it in front of it.
 
+category.Misc.name=Miscellaneous
+research.Funnel.name=Funnel
+research.Funnel.0=I've considered the properties of particulates which fall, such as a sand and gravel and come to the conclusion that liquids must obey similar laws. As a result of my experiments I've constructed the funnel, which operates as a hopper does but for fluids. This should ease water collection for various purposes.
 
 itemGroup.steamcraft=FSP
 itemGroup.steamcraftTools=FSP Tools
@@ -685,3 +688,4 @@ tile.steamcraft:fan.name=Fan
 tile.steamcraft:vacuum.name=Vacuum
 tile.steamcraft:steam_whistle.name=Steam Whistle
 tile.steamcraft:fluid_steam_converter.name=Pressure Converter
+tile.steamcraft:funnel.name=Funnel

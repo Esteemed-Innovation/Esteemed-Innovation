@@ -1,19 +1,23 @@
 package flaxbeard.steamcraft.init.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import flaxbeard.steamcraft.Config;
 import flaxbeard.steamcraft.Steamcraft;
 import flaxbeard.steamcraft.api.book.BookRecipeRegistry;
 import flaxbeard.steamcraft.block.BlockEngineeringTable;
+import flaxbeard.steamcraft.block.BlockFunnel;
 import flaxbeard.steamcraft.init.IInitCategory;
 import flaxbeard.steamcraft.init.misc.OreDictEntries;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
 public class MiscellaneousBlocks implements IInitCategory {
     public enum Blocks {
-        ENGINEERING_TABLE(new BlockEngineeringTable(), "engineering");
+        ENGINEERING_TABLE(new BlockEngineeringTable(), "engineering"),
+        FUNNEL(new BlockFunnel(), "funnel");
 
         public static Blocks[] LOOKUP = new Blocks[values().length];
 
@@ -37,7 +41,15 @@ public class MiscellaneousBlocks implements IInitCategory {
         }
 
         public boolean isEnabled() {
-            return Config.enableEngineering;
+            switch (this) {
+                case ENGINEERING_TABLE: {
+                    return Config.enableEngineering;
+                }
+                case FUNNEL: {
+                    return Config.enableFunnel;
+                }
+            }
+            return false;
         }
 
         public Block getBlock() {
@@ -61,6 +73,16 @@ public class MiscellaneousBlocks implements IInitCategory {
                       "xxx",
                       'x', OreDictEntries.COBBLESTONE_ORE,
                       'z', OreDictEntries.PLATE_IRON
+                    ));
+                    break;
+                }
+                case FUNNEL: {
+                    BookRecipeRegistry.addRecipe("funnel", new ShapedOreRecipe(block.getBlock(),
+                      "c c",
+                      "cbc",
+                      " c ",
+                      'c', OreDictEntries.INGOT_COPPER,
+                      'b', Items.BOWL
                     ));
                     break;
                 }

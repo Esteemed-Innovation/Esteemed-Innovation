@@ -111,7 +111,7 @@ public class Steamcraft {
     public static CommonProxy proxy;
 
     private static void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
-        GameRegistry.registerTileEntityWithAlternatives(clazz, "steamcraft:" + key);
+        GameRegistry.registerTileEntityWithAlternatives(clazz, Steamcraft.MOD_ID + ":" + key);
     }
 
     private static SoundEvent registerSound(String soundName) {
@@ -202,6 +202,7 @@ public class Steamcraft {
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
+        registerTileEntity(TileEntityFunnel.class, "funnel");
 
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
           IPlayerData.DefaultImplementation.class);

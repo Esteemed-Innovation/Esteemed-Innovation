@@ -179,6 +179,7 @@ public class ClientProxy extends CommonProxy {
           BlockSteamcraftOre.OreBlockTypes.LOOKUP);
 
         registerModel(MiscellaneousBlocks.Blocks.ENGINEERING_TABLE.getBlock());
+        registerModel(MiscellaneousBlocks.Blocks.FUNNEL.getBlock());
 
         registerModel(CastingBlocks.Blocks.CRUCIBLE.getBlock());
         registerModel(CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock());

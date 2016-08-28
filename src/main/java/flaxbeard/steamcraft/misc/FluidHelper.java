@@ -1,14 +1,24 @@
 package flaxbeard.steamcraft.misc;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 public class FluidHelper {
     private static Fluid water = FluidRegistry.WATER;
@@ -58,6 +68,25 @@ public class FluidHelper {
             if (fluid != null) {
                 return fluid;
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the Fluid for the given blockstate. Special handling for vanilla fluids (wooo >.>)
+     * @param state The blockstate
+     * @return The fluid. If the blockstate's material is WATER or LAVA, returns the according fluid from FluidRegistry.
+     *         Can be null.
+     */
+    public static Fluid getFluidFromBlockState(IBlockState state) {
+        Fluid fluid = FluidRegistry.lookupFluidForBlock(state.getBlock());
+        if (fluid != null) {
+            return fluid;
+        } else if (state.getMaterial() == Material.WATER) {
+            return FluidRegistry.WATER;
+        } else if (state.getMaterial() == Material.LAVA) {
+            return FluidRegistry.LAVA;
         }
 
         return null;
@@ -128,5 +157,94 @@ public class FluidHelper {
      */
     public static TextureAtlasSprite getStillTexture(Minecraft mc, Fluid fluid) {
         return mc.getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+    }
+
+    /**
+     * Returns the "level" value for the block that is considered the still fluid block.
+     * @param block The block
+     * @return If the block is a BlockFluidBase (Forge fluid), the max render height meta, otherwise 0.
+     */
+    public static int getStillFluidLevel(Block block) {
+        return block instanceof BlockFluidBase ? ((BlockFluidBase) block).getMaxRenderHeightMeta() : 0;
+    }
+
+    /**
+     * Gets the current fluid level for the block. Handles Forge and Minecraft fluids differently >.>
+     * @param world The world
+     * @param pos The pos
+     * @return The current level
+     */
+    public static int getFluidLevel(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        // Thank you Minecraft and Minecraft Forge...
+        if (block instanceof BlockFluidBase) {
+            return state.getValue(BlockFluidBase.LEVEL);
+        } else if (block instanceof BlockLiquid) {
+            return state.getValue(BlockLiquid.LEVEL);
+        }
+        return 0;
+    }
+
+    /**
+     * Checks whether the block is an infinite source block of water.
+     * @param world The world
+     * @param pos The block that is being tested against
+     * @param fluid The fluid in the block
+     * @return Whether the given pos can be treated as an infinite source of water. For example, if the water is "XYZ",
+     *         only "Y" will return true.
+     */
+    public static boolean isInfiniteWaterSource(World world, BlockPos pos, Fluid fluid) {
+        if (fluid != FluidRegistry.WATER) {
+            return false;
+        }
+
+        List<BlockPos> adjacent = new ArrayList<>();
+        adjacent.addAll(Arrays.asList(pos.north(), pos.south(), pos.east(), pos.west()));
+
+        int sourceBlocks = 0;
+
+        for (BlockPos blockToCheck : adjacent) {
+            IBlockState state = world.getBlockState(blockToCheck);
+            Block block = state.getBlock();
+            if (getFluidFromBlockState(state) == FluidRegistry.WATER &&
+              getFluidLevel(world, blockToCheck) == getStillFluidLevel(block)) {
+                sourceBlocks++;
+            }
+        }
+
+        return sourceBlocks >= 2;
+    }
+
+    /**
+     * Recursively scans the blocks around the given starting block to check if they are fluids.
+     * @param world The world
+     * @param start The block to start scanning at. It will check all directions adjacent to it except down.
+     * @param fluid The fluid in the block
+     * @param alreadyChecked The list of blocks that have already been checked.
+     * @return The BlockPos that is a source block. If none is found, returns null.
+     */
+    public static BlockPos findSourceBlockPos(World world, BlockPos start, Fluid fluid, Set<BlockPos> alreadyChecked) {
+        if (fluid.getBlock() instanceof BlockFluidFinite || world.getBlockState(start).getValue(BlockLiquid.LEVEL) == getStillFluidLevel(fluid.getBlock())) {
+            return start;
+        }
+
+        List<BlockPos> blocksToCheck = new ArrayList<>();
+        blocksToCheck.addAll(Arrays.asList(start.up(), start.north(), start.south(), start.east(), start.west()));
+
+        for (BlockPos blockToCheck : blocksToCheck) {
+            if (!alreadyChecked.contains(blockToCheck) && getFluidFromBlockState(world.getBlockState(blockToCheck)) == fluid) {
+                if (getFluidLevel(world, blockToCheck) == getStillFluidLevel(fluid.getBlock())) {
+                    return blockToCheck;
+                } else {
+                    alreadyChecked.add(blockToCheck);
+                    BlockPos source = findSourceBlockPos(world, blockToCheck, fluid, alreadyChecked);
+                    if (source != null) {
+                        return source;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

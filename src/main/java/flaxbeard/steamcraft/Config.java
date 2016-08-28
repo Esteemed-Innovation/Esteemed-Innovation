@@ -109,6 +109,7 @@ public class Config {
     public static boolean enableRedstoneValvePipe;
 
     // blocks
+    public static boolean enableFunnel;
     public static boolean enableBlockPlacer;
     public static boolean enableBoiler;
     public static boolean enableCharger;
@@ -321,6 +322,7 @@ public class Config {
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean();
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean();
         enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean();
+        enableFunnel = config.get("Block", "Enable Funnel", true).getBoolean();
 
         // BLOCK CONSUMPTION RATES
         hammerConsumption = config.get("Consumption", "Steam Hammer consumption", 4000).getInt();

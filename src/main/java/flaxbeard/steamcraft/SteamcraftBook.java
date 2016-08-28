@@ -23,6 +23,7 @@ import static flaxbeard.steamcraft.init.blocks.SteamNetworkBlocks.Blocks.*;
 import static flaxbeard.steamcraft.init.blocks.OreBlocks.Blocks.*;
 import static flaxbeard.steamcraft.init.blocks.CastingBlocks.Blocks.*;
 import static flaxbeard.steamcraft.init.blocks.SteamMachineryBlocks.Blocks.*;
+import static flaxbeard.steamcraft.init.blocks.MiscellaneousBlocks.Blocks.*;
 import static flaxbeard.steamcraft.init.items.tools.GadgetItems.Items.*;
 import static flaxbeard.steamcraft.init.items.CraftingComponentItems.Items.*;
 import static flaxbeard.steamcraft.init.items.firearms.FirearmItems.Items.*;
@@ -49,8 +50,8 @@ public class SteamcraftBook {
             registerGadgets();
             registerSteamPower();
             registerExosuit();
+            registerMisc();
             //registerAuto();
-            /* registerMisc(); Uncomment this when shit is added to it.*/
         }
 
     }
@@ -897,6 +898,16 @@ public class SteamcraftBook {
                   new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(JUMP_ASSIST.getItem())),
                   new BookPageCrafting("", "jumpAssist1", "jumpAssist2"));
             }
+        }
+    }
+
+    private static void registerMisc() {
+        SteamcraftRegistry.addCategory("category.Misc.name");
+        if (FUNNEL.isEnabled()) {
+            SteamcraftRegistry.addResearch("research.Funnel.name", "category.Misc.name",
+              new BookPageItem("research.Funnel.name", "research.Funnel.0", true, new ItemStack(FUNNEL.getBlock())),
+              new BookPageCrafting("", "funnel")
+            );
         }
     }
 }
