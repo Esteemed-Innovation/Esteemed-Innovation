@@ -13,6 +13,9 @@ public class OreDictEntries {
     public static String PREFIX_ORE = "ore";
     public static String PREFIX_DUST_TINY = "dustTiny";
     public static String PREFIX_PANE = "pane";
+    public static String PREFIX_TREE = "tree";
+    public static String PREFIX_LOG = "log";
+    public static String PREFIX_SLAB = "slab";
     // Primarily used by Harvestcraft.
     public static String PREFIX_LIST_ALL = "listAll";
 
@@ -32,6 +35,9 @@ public class OreDictEntries {
     public static String MATERIAL_GLASS = "Glass";
     public static String MATERIAL_GLASS_COLORLESS = MATERIAL_GLASS + "Colorless";
     public static String MATERIAL_EMERALD = "Emerald";
+    public static String MATERIAL_LEAVES = "Leaves";
+    public static String MATERIAL_COAL = "Coal";
+    public static String MATERIAL_SAPLING = "Sapling";
 
     // Foods.
     public static String FOOD_COOKED_FISH = "fishcooked";
@@ -122,6 +128,12 @@ public class OreDictEntries {
     public static String ALL_MEAT_COOKED = PREFIX_LIST_ALL + FOOD_COOKED_MEAT;
     public static String ALL_VEGGIE = PREFIX_LIST_ALL + FOOD_VEGGIE;
 
+    // Tree stuff.
+    public static String TREE_LEAVES = PREFIX_TREE + MATERIAL_LEAVES;
+    public static String LOG_WOOD = PREFIX_LOG + MATERIAL_WOOD;
+    public static String SLAB_WOOD = PREFIX_SLAB + MATERIAL_WOOD;
+    public static String TREE_SAPLING = PREFIX_TREE + MATERIAL_SAPLING;
+
 
     // Disambiguated vanilla ore entries.
     // These entries would conflict with their Items/Blocks counterparts when statically imported.
@@ -132,4 +144,6 @@ public class OreDictEntries {
     public static String GRAVEL_ORE = "gravel";
     public static String GLOWSTONE_ORE = "glowstone";
     public static String SANDSTONE_ORE = "sandstone";
+    public static String STONE_ORE = "stone";
+    public static String SAND_ORE = "sand";
 }

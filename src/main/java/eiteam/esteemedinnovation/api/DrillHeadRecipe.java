@@ -37,7 +37,7 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
             Item item = stack.getItem();
             int meta = stack.getItemDamage();
 
-            if (OreDictHelper.fineIronPlates.contains(MutablePair.of(stack.getItem(), stack.getItemDamage()))) {
+            if (OreDictHelper.thinIronPlates.contains(MutablePair.of(stack.getItem(), stack.getItemDamage()))) {
                 numIronPlates += 1;
                 continue;
             }

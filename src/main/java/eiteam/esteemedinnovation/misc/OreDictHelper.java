@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.misc;
 
+import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,7 +25,7 @@ public class OreDictHelper {
     public static ArrayList<Item> blockCoals = new ArrayList<>();
     public static ArrayList<Item> saplings = new ArrayList<>();
 
-    public static ArrayList<MutablePair<Item, Integer>> fineIronPlates = new ArrayList<>();
+    public static ArrayList<MutablePair<Item, Integer>> thinIronPlates = new ArrayList<>();
 
     public static void initializeOreDicts(String name, ItemStack stack) {
         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
@@ -33,62 +34,62 @@ public class OreDictHelper {
             }
             return;
         }
-        if (name.equals("stone")) {
+        if (name.equals(OreDictEntries.STONE_ORE)) {
             stones.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.equals("cobblestone")) {
+        if (name.equals(OreDictEntries.COBBLESTONE_ORE)) {
             MutablePair<Item, Integer> pair = MutablePair.of(stack.getItem(), stack.getItemDamage());
             cobblestones.add(pair);
         }
 
-        if (name.startsWith("nugget")) {
+        if (name.startsWith(OreDictEntries.PREFIX_NUGGET)) {
             nuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
-            if (name.endsWith("Gold")) {
+            if (name.endsWith(OreDictEntries.MATERIAL_GOLD)) {
                 goldNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
             }
         }
 
-        if (name.startsWith("ingot")) {
+        if (name.startsWith(OreDictEntries.PREFIX_INGOT)) {
             ingots.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
         }
 
-        if (name.equals("treeLeaves")) {
+        if (name.equals(OreDictEntries.TREE_LEAVES)) {
             leaves.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.equals("sand")) {
+        if (name.equals(OreDictEntries.SAND_ORE)) {
             sands.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.startsWith("block")) {
+        if (name.startsWith(OreDictEntries.PREFIX_BLOCK)) {
             blocks.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
-            if (name.endsWith("Coal")) {
+            if (name.endsWith(OreDictEntries.MATERIAL_COAL)) {
                 blockCoals.add(stack.getItem());
             }
         }
 
-        if (name.startsWith("gem")) {
+        if (name.startsWith(OreDictEntries.PREFIX_GEM)) {
             gems.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
         }
 
-        if (name.equals("stickWood")) {
+        if (name.equals(OreDictEntries.STICK_WOOD)) {
             sticks.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.startsWith("log")) {
+        if (name.startsWith(OreDictEntries.PREFIX_LOG)) {
             logs.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.equals("plateThinIron")) {
-            fineIronPlates.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+        if (name.equals(OreDictEntries.PLATE_THIN_IRON)) {
+            thinIronPlates.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
-        if (name.equals("slabWood")) {
+        if (name.equals(OreDictEntries.SLAB_WOOD)) {
             slabWoods.add(stack.getItem());
         }
 
-        if (name.equals("treeSapling")) {
+        if (name.equals(OreDictEntries.TREE_SAPLING)) {
             saplings.add(stack.getItem());
         }
     }
