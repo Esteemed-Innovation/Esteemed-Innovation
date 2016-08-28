@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "esteemedinnovation:funnel"
+  },
+  "variants": {
+    "powered": {
+      "true": {},
+      "false": {}
+    },
+    "inventory": [{}]
+  }
+}

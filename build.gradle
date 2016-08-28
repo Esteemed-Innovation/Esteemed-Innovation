@@ -21,15 +21,15 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'java'
 
-version = newFSPVersion
+version = newModVersion
 
 if (project.hasProperty('dev')) {
     def git = org.ajoberstar.grgit.Grgit.open(file('.'))
     project.version = project.version + '-' + git.head().abbreviatedId + '-dev'
 }
 
-group = "com.flaxbeard.Steamcraft"
-archivesBaseName = "FSP-1.9"
+group = "eiteam.esteemedinnovation"
+archivesBaseName = "EsteemedInnovation-1.10"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -92,7 +92,7 @@ dependencies {
     compile ecoreVersion
 
     // Avoiding using the generic "lib".
-    compile fileTree(dir: 'fsplib', include: '*.jar')
+    compile fileTree(dir: 'eilib', include: '*.jar')
 }
 
 processResources {
@@ -106,6 +106,6 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
         exclude 'api'
-        include 'steamcraft/api'
+        include 'esteemedinnovation/api'
     }
 }

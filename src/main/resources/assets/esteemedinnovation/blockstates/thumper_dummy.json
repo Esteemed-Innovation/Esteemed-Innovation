@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "esteemedinnovation:blocks/blockBrass"
+    }
+  },
+  "variants": {
+    "inventory": [{
+      "submodel": {
+        "bottom": {
+          "model": "esteemedinnovation:thumper_bottom",
+          "transform": {
+            "scale": 0.125
+          }
+        },
+        "top": {
+          "model": "esteemedinnovation:thumper_top",
+          "transform": {
+            "translation": [ 0, 0.1875, 0 ],
+            "scale": 0.125
+          }
+        }
+      }
+    }]
+  }
+}

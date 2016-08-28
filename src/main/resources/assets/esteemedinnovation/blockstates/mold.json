@@ -1,0 +1,30 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "esteemedinnovation:mold_bottom"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "north": {
+        "y": 180
+      },
+      "west": {
+        "y": 90
+      },
+      "east": {
+        "y": 270
+      }
+    },
+    "inventory": [{
+      "submodel": {
+        "bottom": {
+          "model": "esteemedinnovation:mold_bottom"
+        },
+        "top": {
+          "model": "esteemedinnovation:mold_top"
+        }
+      }
+    }]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_bottom_top",
+    "textures": {
+      "bottom": "blocks/planks_oak",
+      "top": "esteemedinnovation:blocks/carving_top",
+      "side": "esteemedinnovation:blocks/carving_side"
+    }
+  },
+  "variants": {
+    "inventory": [{}],
+    "normal": [{}]
+  }
+}

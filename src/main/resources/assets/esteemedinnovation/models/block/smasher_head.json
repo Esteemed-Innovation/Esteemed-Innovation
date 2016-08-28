@@ -1,0 +1,63 @@
+{
+  "textures": {
+    "0": "esteemedinnovation:models/smasher"
+  },
+  "elements": [
+    {
+      "name": "piston head",
+      "from": [ 0.0, 0.0, 12.0 ],
+      "to": [ 16.0, 16.0, 16.0 ],
+      "faces": {
+        "north": { "texture": "#0", "uv": [ 0.0, 12.0, 4.0, 16.0 ] },
+        "east": { "texture": "#0", "uv": [ 4.0, 12.0, 5.0, 16.0 ] },
+        "south": { "texture": "#0", "uv": [ 5.0, 12.0, 9.0, 16.0 ] },
+        "west": { "texture": "#0", "uv": [ 9.0, 12.0, 10.0, 16.0 ] },
+        "up": { "texture": "#0", "uv": [ 5.0, 8.0, 6.0, 12.0 ], "rotation": 90 },
+        "down": { "texture": "#0", "uv": [ 6.0, 8.0, 5.0, 12.0 ], "rotation": 90 }
+      }
+    },
+    {
+      "name": "piston rod",
+      "from": [ 6.0, 6.0, 4.0 ],
+      "to": [ 10.0, 10.0, 13.0 ],
+      "faces": {
+        "east": { "texture": "#0", "uv": [ 10.0, 9.0, 12.0, 10.0 ] },
+        "west": { "texture": "#0", "uv": [ 15.0, 9.0, 13.0, 10.0 ] },
+        "up": { "texture": "#0", "uv": [ 12.25, 9.0, 10.0, 8.0 ], "rotation": 90 },
+        "down": { "texture": "#0", "uv": [ 14.5, 8.0, 12.25, 9.0 ], "rotation": 90 }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [ 30, 45, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.625, 0.625, 0.625 ]
+    },
+    "ground": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 0],
+      "scale":[ 0.25, 0.25, 0.25 ]
+    },
+    "fixed": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 0, 0],
+      "scale":[ 0.5, 0.5, 0.5 ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [ 75, 45, 0 ],
+      "translation": [ 0, 2.5, 0],
+      "scale": [ 0.375, 0.375, 0.375 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 45, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 225, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.40, 0.40, 0.40 ]
+    }
+  }
+}

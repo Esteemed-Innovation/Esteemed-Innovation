@@ -1,0 +1,98 @@
+{
+  "elements": [
+    {
+      "__comment": "box1",
+      "from": [8.5, 10.5, 4.5],
+      "to": [9.5, 11.5, 11.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box2",
+      "from": [8.5, 4.5, 4.5],
+      "to": [9.5, 5.5, 11.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box3",
+      "from": [8.5, 5.5, 4.5],
+      "to": [9.5, 10.5, 5.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box4",
+      "from": [8.5, 5.5, 10.5],
+      "to": [9.5, 10.5, 11.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box5",
+      "from": [8.5, 7.5, 5.5],
+      "to": [9.5, 8.5, 10.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box6",
+      "from": [8.5, 5.5, 7.5],
+      "to": [9.5, 10.5, 8.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    },
+    {
+      "__comment": "box7",
+      "from": [7.5, 6.5, 6.5],
+      "to": [9.5, 9.5, 9.5],
+      "faces": {
+        "down":  { "texture": "#all" },
+        "up":    { "texture": "#all" },
+        "north": { "texture": "#all" },
+        "south": { "texture": "#all" },
+        "west":  { "texture": "#all" },
+        "east":  { "texture": "#all" }
+      }
+    }
+  ],
+  "textures": {
+    "all": "esteemedinnovation:blocks/blockCopper"
+  }
+}

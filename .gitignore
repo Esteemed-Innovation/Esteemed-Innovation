@@ -20,7 +20,7 @@ README.txt
 out/
 
 # Who made this messy crap? Whatever.
-!/fsplib/*.jar
+!/elib/*.jar
 *.hprof
 /bin/
 .DS_Store

@@ -1,0 +1,82 @@
+{
+  "__comment": "Elements taken from rupture_disc model and repositioned.",
+  "elements": [
+    {
+      "name": "plate",
+      "from": [ 5, 5, -4 ],
+      "to": [ 11, 11, -3 ],
+      "faces": {
+        "south": { "texture": "#plate", "uv": [ 5, 5, 11, 11 ] }
+      }
+    },
+    {
+      "name": "border bottom",
+      "from": [ 4, 4, -4 ],
+      "to": [ 12, 5, -2 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 0, 0, 8, 1 ] },
+        "east": { "texture": "#all", "uv": [ 0, 0, 2, 1 ] },
+        "south": { "texture": "#all", "uv": [ 0, 0, 8, 1 ] },
+        "west": { "texture": "#all", "uv": [ 0, 0, 2, 1 ] },
+        "up": { "texture": "#all", "uv": [ 0, 0, 8, 2 ] },
+        "down": { "texture": "#all", "uv": [ 0, 0, 8, 2 ] }
+      }
+    },
+    {
+      "name": "border top",
+      "from": [ 4, 11, -4 ],
+      "to": [ 12, 12, -2 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 0, 0, 8, 1 ] },
+        "east": { "texture": "#all", "uv": [ 0, 0, 2, 1 ] },
+        "south": { "texture": "#all", "uv": [ 0, 0, 8, 1 ] },
+        "west": { "texture": "#all", "uv": [ 0, 0, 2, 1 ] },
+        "up": { "texture": "#all", "uv": [ 0, 0, 8, 2 ] },
+        "down": { "texture": "#all", "uv": [ 0, 0, 8, 2 ] }
+      }
+    },
+    {
+      "name": "border east",
+      "from": [ 11, 5, -4 ],
+      "to": [ 12, 11, -2 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 0, 0, 1, 6 ] },
+        "east": { "texture": "#all", "uv": [ 0, 0, 2, 6] },
+        "south": { "texture": "#all", "uv": [ 0, 0, 1, 6 ] },
+        "west": { "texture": "#all", "uv": [ 0, 0, 2, 6 ] },
+        "up": { "texture": "#all", "uv": [ 0, 0, 1, 2 ] },
+        "down": { "texture": "#all", "uv": [ 0, 0, 1, 2 ] }
+      }
+    },
+    {
+      "name": "border west",
+      "from": [ 4, 5, -4 ],
+      "to": [ 5, 11, -2 ],
+      "faces": {
+        "north": { "texture": "#all", "uv": [ 0, 0, 1, 6 ] },
+        "east": { "texture": "#all", "uv": [ 0, 0, 2, 6] },
+        "south": { "texture": "#all", "uv": [ 0, 0, 1, 6 ] },
+        "west": { "texture": "#all", "uv": [ 0, 0, 2, 6 ] },
+        "up": { "texture": "#all", "uv": [ 0, 0, 1, 2 ] },
+        "down": { "texture": "#all", "uv": [ 0, 0, 1, 2 ] }
+      }
+    },
+    {
+      "name": "stand thing",
+      "from": [ 5, 5, -5 ],
+      "to": [ 11, 11, -4 ],
+      "faces": {
+        "north": { "texture": "#back", "uv": [ 0, 0, 6, 6 ] },
+        "east": { "texture": "#all", "uv": [ 0, 0, 1, 6 ] },
+        "west": { "texture": "#all", "uv": [ 0, 0, 6, 6 ] },
+        "up": { "texture": "#all", "uv": [ 0, 0, 6, 1 ] },
+        "down": { "texture": "#all", "uv": [ 0, 0, 6, 1 ] }
+      }
+    }
+  ],
+  "textures": {
+    "all": "esteemedinnovation:blocks/blockBrass",
+    "back": "esteemedinnovation:blocks/discBack",
+    "particle": "esteemedinnovation:blocks/blockBrass"
+  }
+}

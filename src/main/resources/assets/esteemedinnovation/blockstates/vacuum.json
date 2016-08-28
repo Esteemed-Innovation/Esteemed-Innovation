@@ -1,0 +1,27 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "esteemedinnovation:vacuum_base"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "up": {
+        "x": 90
+      },
+      "down": {
+        "x": 270
+      },
+      "north": {
+        "y": 180
+      },
+      "east": {
+        "y": 270
+      },
+      "west": {
+        "y": 90
+      }
+    },
+    "inventory": [{}]
+  }
+}

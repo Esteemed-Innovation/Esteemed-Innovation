@@ -84,7 +84,7 @@ Import statements must not be line-wrapped.
 #### Ordering and spacing
 Import statements are divided into the following groups, in this order, with each group separated by a single black line:
 
-1. `flaxbeard.steamcraft` imports
+1. `eiteam.esteemedinnovation` imports
 2. Third-party imports, for example, from Minecraft Forge or Minecraft.
 3. `java` imports
 4. `javax` imports

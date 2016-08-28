@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "variant": {
+      "copper": {
+        "textures": {
+          "all": "esteemedinnovation:blocks/blockCopper"
+        }
+      },
+      "zinc": {
+        "textures": {
+          "all": "esteemedinnovation:blocks/blockZinc"
+        }
+      },
+      "brass": {
+        "textures": {
+          "all": "esteemedinnovation:blocks/blockBrass"
+        }
+      },
+      "gilded_iron": {
+        "textures": {
+          "all": "minecraft:blocks/gold_block"
+        }
+      }
+    }
+  }
+}

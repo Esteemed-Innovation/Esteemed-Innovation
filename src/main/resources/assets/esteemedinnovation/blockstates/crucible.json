@@ -1,0 +1,28 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "esteemedinnovation:crucible",
+    "textures": {
+      "bottom": "esteemedinnovation:blocks/crucible_bottom",
+      "side": "esteemedinnovation:blocks/crucible_side",
+      "button": "minecraft:blocks/cobblestone"
+    }
+  },
+  "variants": {
+    "facing": {
+      "south": {
+        "y": 90
+      },
+      "north": {
+        "y": 90
+      },
+      "west": {
+        "y": 90
+      },
+      "east": {
+        "y": 90
+      }
+    },
+    "inventory": [{}]
+  }
+}

@@ -1,14 +1,13 @@
-![Flaxbeard's Steam Power](https://github.com/Esteemed-Innovation/Flaxbeards-Steam-Power-Resources/blob/master/src/main/resources/steamcraftlogoblank.png)
+![Esteemed Innovation](https://github.com/Esteemed-Innovation/Esteemed-Innovation/blob/1.10/src/main/resources/logoblank.png)
 
-[![Ready Issues](https://badge.waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power.png?label=ready&title=Ready)](https://waffle.io/Esteemed-Innovation/Flaxbeards-Steam-Power)
-[![Build Status](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power.svg?branch=1.9)](https://travis-ci.org/Esteemed-Innovation/Flaxbeards-Steam-Power)
+[![Build Status](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation.svg?branch=1.10)](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation)
 [![Total Downloads](http://modshields.herokuapp.com/totaldl?id=flaxbeards-steam-power)](http://minecraft.curseforge.com/projects/flaxbeards-steam-power)
 [![Latest Version](http://modshields.herokuapp.com/latestversion?id=flaxbeards-steam-power)](http://minecraft.curseforge.com/projects/flaxbeards-steam-power/files/latest)
 [![Wiki Status](http://modshields.herokuapp.com/wiki?article=Flaxbeard's Steam Power)](http://ftb.gamepedia.com/Flaxbeard's Steam Power)
 
-Flaxbeard's Steam Power, or FSP for short, is a tech mod for Minecraft based on steam power as its core. The mod includes a variety of steam tech, with upgradeable steam powered armor and tools and steam powered machinery to aid the player in a fun and innovative way.
+Esteemed Innovation, or EI for short, is a tech mod for Minecraft based on steam power as its core. The mod includes a variety of steam tech, with upgradeable steam powered armor and tools and steam powered machinery to aid the player in a fun and innovative way.
 
-The goal of FSP is innovative content that encourages fun play rather than trying to one-up other tech mods. FSP is currently in beta.
+The goal of EI is innovative content that encourages fun play rather than trying to one-up other tech mods. EI is currently in beta.
 
 ## Information and downloads
 * Information can be found on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power).
@@ -16,4 +15,4 @@ The goal of FSP is innovative content that encourages fun play rather than tryin
 * Downloads can be found on [CurseForge](http://minecraft.curseforge.com/mc-mods/224867-flaxbeards-steam-power/)
 
 ## Contact
-You can contact the team usually within hours here on GitHub through issues. If that's not your style, you can also contact tue Esteemed Innovation team on IRC at #TheSteamTank on EsperNet.
+You can contact the team usually within hours here on GitHub through issues. If that's not your style, you can also contact the Esteemed Innovation team on IRC at #TheSteamTank on EsperNet.
