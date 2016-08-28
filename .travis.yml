@@ -17,4 +17,4 @@ notifications:
     skip_join: true
 branches:
   only:
-    - 1.9
+    - 1.10
