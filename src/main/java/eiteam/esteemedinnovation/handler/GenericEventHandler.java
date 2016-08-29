@@ -1800,8 +1800,8 @@ public class GenericEventHandler {
                         continue;
                     }
 
-                    int index = rand.nextInt(OreDictHelper.nuggets.size());
-                    MutablePair nuggetPair = OreDictHelper.nuggets.get(index);
+                    int index = rand.nextInt(OreDictHelper.stoneGrinderNuggets.size());
+                    MutablePair nuggetPair = OreDictHelper.stoneGrinderNuggets.get(index);
                     int size = rand.nextInt(3) + 1;
                     ItemStack nugget = new ItemStack((Item) nuggetPair.left,
                       size, (int) nuggetPair.right);

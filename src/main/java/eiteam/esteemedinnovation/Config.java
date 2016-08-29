@@ -4,6 +4,8 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class Config {
     //Don't change this string. - @xbony2
@@ -213,6 +215,8 @@ public class Config {
     public static boolean enableSifter;
     public static boolean enableBackhoe;
     public static int backhoeRange;
+
+    public static List<String> blacklistedStoneGrinderNuggets;
 
     //plates
     public static boolean enableCopperPlate;
@@ -438,6 +442,7 @@ public class Config {
         battleDrillConsumption = config.get("Steam Tool Upgrades", "Steam consumption for the " +
           "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
+        blacklistedStoneGrinderNuggets = Arrays.asList(config.get("Steam Tool Upgrades", "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[] {}).getStringList());
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean();

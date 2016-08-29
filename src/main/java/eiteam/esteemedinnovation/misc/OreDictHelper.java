@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.misc;
 
+import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 public class OreDictHelper {
     public static ArrayList<MutablePair<Item, Integer>> stones = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> cobblestones = new ArrayList<>();
+    public static ArrayList<MutablePair<Item, Integer>> stoneGrinderNuggets = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> nuggets = new ArrayList<>();
     public static HashMap<MutablePair<Item, Integer>, String> ingots = new HashMap<>();
     public static ArrayList<MutablePair<Item, Integer>> leaves = new ArrayList<>();
@@ -51,6 +53,9 @@ public class OreDictHelper {
             nuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
             if (name.endsWith(OreDictEntries.MATERIAL_GOLD)) {
                 goldNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            }
+            if (!Config.blacklistedStoneGrinderNuggets.contains(name)) {
+                stoneGrinderNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
             }
         }
 
