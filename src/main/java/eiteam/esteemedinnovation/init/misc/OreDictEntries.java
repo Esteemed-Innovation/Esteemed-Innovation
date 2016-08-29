@@ -16,6 +16,7 @@ public class OreDictEntries {
     public static String PREFIX_TREE = "tree";
     public static String PREFIX_LOG = "log";
     public static String PREFIX_SLAB = "slab";
+    public static String PREFIX_DYE = "dye";
     // Primarily used by Harvestcraft.
     public static String PREFIX_LIST_ALL = "listAll";
 
@@ -38,6 +39,24 @@ public class OreDictEntries {
     public static String MATERIAL_LEAVES = "Leaves";
     public static String MATERIAL_COAL = "Coal";
     public static String MATERIAL_SAPLING = "Sapling";
+
+    // Colors.
+    public static String COLOR_WHITE = "White";
+    public static String COLOR_ORANGE = "Orange";
+    public static String COLOR_MAGENTA = "Magenta";
+    public static String COLOR_LIGHT_BLUE = "LightBlue";
+    public static String COLOR_YELLOW = "Yellow";
+    public static String COLOR_LIME = "Lime";
+    public static String COLOR_PINK = "Pink";
+    public static String COLOR_GRAY = "Gray";
+    public static String COLOR_SILVER = "Silver";
+    public static String COLOR_CYAN = "Cyan";
+    public static String COLOR_PURPLE = "Purple";
+    public static String COLOR_BLUE = "Blue";
+    public static String COLOR_BROWN = "Brown";
+    public static String COLOR_GREEN = "Green";
+    public static String COLOR_RED = "Red";
+    public static String COLOR_BLACK = "Black";
 
     // Foods.
     public static String FOOD_COOKED_FISH = "fishcooked";
@@ -128,6 +147,24 @@ public class OreDictEntries {
     public static String ALL_MEAT_COOKED = PREFIX_LIST_ALL + FOOD_COOKED_MEAT;
     public static String ALL_VEGGIE = PREFIX_LIST_ALL + FOOD_VEGGIE;
 
+    // Dyes.
+    public static String DYE_WHITE = PREFIX_DYE + COLOR_WHITE;
+    public static String DYE_ORANGE = PREFIX_DYE + COLOR_WHITE;
+    public static String DYE_MAGENTA = PREFIX_DYE + COLOR_MAGENTA;
+    public static String DYE_LIGHT_BLUE = PREFIX_DYE + COLOR_LIGHT_BLUE;
+    public static String DYE_YELLOW = PREFIX_DYE + COLOR_YELLOW;
+    public static String DYE_LIME = PREFIX_DYE + COLOR_LIME;
+    public static String DYE_PINK = PREFIX_DYE + COLOR_PINK;
+    public static String DYE_GRAY = PREFIX_DYE + COLOR_GRAY;
+    public static String DYE_SILVER = PREFIX_DYE + COLOR_SILVER;
+    public static String DYE_CYAN = PREFIX_DYE + COLOR_CYAN;
+    public static String DYE_PURPLE = PREFIX_DYE + COLOR_PURPLE;
+    public static String DYE_BLUE = PREFIX_DYE + COLOR_BLUE;
+    public static String DYE_BROWN = PREFIX_DYE + COLOR_BROWN;
+    public static String DYE_GREEN = PREFIX_DYE + COLOR_GREEN;
+    public static String DYE_RED = PREFIX_DYE + COLOR_RED;
+    public static String DYE_BLACK = PREFIX_DYE + COLOR_BLACK;
+
     // Tree stuff.
     public static String TREE_LEAVES = PREFIX_TREE + MATERIAL_LEAVES;
     public static String LOG_WOOD = PREFIX_LOG + MATERIAL_WOOD;
@@ -146,4 +183,6 @@ public class OreDictEntries {
     public static String SANDSTONE_ORE = "sandstone";
     public static String STONE_ORE = "stone";
     public static String SAND_ORE = "sand";
+    public static String DIRT_ORE = "dirt";
+    public static String GRASS_ORE = "grass";
 }

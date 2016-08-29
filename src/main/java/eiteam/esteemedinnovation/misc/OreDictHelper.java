@@ -24,6 +24,10 @@ public class OreDictHelper {
     public static ArrayList<Item> slabWoods = new ArrayList<>();
     public static ArrayList<Item> blockCoals = new ArrayList<>();
     public static ArrayList<Item> saplings = new ArrayList<>();
+    public static ArrayList<Item> dirts = new ArrayList<>();
+    public static ArrayList<Item> grasses = new ArrayList<>();
+    public static ArrayList<Item> gravels = new ArrayList<>();
+    public static ArrayList<Item> ores = new ArrayList<>();
 
     public static ArrayList<MutablePair<Item, Integer>> thinIronPlates = new ArrayList<>();
 
@@ -91,6 +95,22 @@ public class OreDictHelper {
 
         if (name.equals(OreDictEntries.TREE_SAPLING)) {
             saplings.add(stack.getItem());
+        }
+
+        if (name.equals(OreDictEntries.DIRT_ORE)) {
+            dirts.add(stack.getItem());
+        }
+
+        if (name.equals(OreDictEntries.GRASS_ORE)) {
+            grasses.add(stack.getItem());
+        }
+
+        if (name.equals(OreDictEntries.GRAVEL_ORE)) {
+            gravels.add(stack.getItem());
+        }
+
+        if (name.startsWith(OreDictEntries.PREFIX_ORE)) {
+            ores.add(stack.getItem());
         }
     }
 

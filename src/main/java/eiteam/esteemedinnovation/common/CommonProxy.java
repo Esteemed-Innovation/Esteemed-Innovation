@@ -17,6 +17,9 @@ public abstract class CommonProxy {
 
     public abstract void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv);
 
+    public abstract void spawnAsteriskParticles(World world, float x, float y, float z);
+    public abstract void spawnExclamationParticles(World world, float x, float y, float z);
+
     public abstract void registerHotkeys();
 
     public void extendRange(Entity entity, double amount) {

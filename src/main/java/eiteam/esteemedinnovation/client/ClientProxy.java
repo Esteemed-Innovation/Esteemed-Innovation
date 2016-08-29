@@ -1,11 +1,15 @@
 package eiteam.esteemedinnovation.client;
 
+import codechicken.lib.render.CCIconRegister;
+import codechicken.lib.render.ModelRegistryHelper;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.block.BlockBeacon;
 import eiteam.esteemedinnovation.block.BlockCrucible;
 import eiteam.esteemedinnovation.block.BlockGenericOre;
+import eiteam.esteemedinnovation.client.particle.ParticleAsterisk;
+import eiteam.esteemedinnovation.client.particle.ParticleExclamationPoint;
 import eiteam.esteemedinnovation.client.render.colorhandlers.ItemExosuitColorHandler;
 import eiteam.esteemedinnovation.client.render.colorhandlers.ItemSmashedOreColorHandler;
 import eiteam.esteemedinnovation.client.render.colorhandlers.SteamDrillColorHandler;
@@ -24,10 +28,7 @@ import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiBoiler;
 import eiteam.esteemedinnovation.init.blocks.*;
-import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.init.items.FoodItems;
-import eiteam.esteemedinnovation.init.items.MetalItems;
-import eiteam.esteemedinnovation.init.items.MetalcastingItems;
+import eiteam.esteemedinnovation.init.items.*;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
@@ -38,13 +39,11 @@ import eiteam.esteemedinnovation.item.ItemSmashedOre;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.misc.PlayerController;
 import eiteam.esteemedinnovation.tile.*;
-
-import codechicken.lib.render.CCIconRegister;
-import codechicken.lib.render.ModelRegistryHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -57,6 +56,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -71,6 +71,7 @@ import java.util.HashMap;
 
 public class ClientProxy extends CommonProxy {
     public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
+    public static final ResourceLocation FONT_ASCII = new ResourceLocation("minecraft", "textures/font/ascii.png");
 
     /**
      * Registers a block model for all of the provided variants. This registers it specifically for the ItemBlock.
@@ -227,6 +228,10 @@ public class ClientProxy extends CommonProxy {
         for (FirearmAmmunitionItems.Items item : FirearmAmmunitionItems.Items.LOOKUP) {
             registerModel(item.getItem());
         }
+
+        for (NaturalPhilosophyItems.Items item : NaturalPhilosophyItems.Items.LOOKUP) {
+            registerModel(item.getItem());
+        }
     }
 
     @Override
@@ -304,9 +309,23 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {
+//      The first argument of getEntityFX is the particle ID, and it is not used in the method at all.
+        spawnParticles(new ParticleDigging.Factory().getEntityFX(0, world, x, y, z, xv, yv, zv, 2));
+    }
+
+    @Override
+    public void spawnAsteriskParticles(World world, float x, float y, float z) {
+        spawnParticles(new ParticleAsterisk(world, x, y, z));
+    }
+
+    @Override
+    public void spawnExclamationParticles(World world, float x, float y, float z) {
+        spawnParticles(new ParticleExclamationPoint(world, x, y, z));
+    }
+
+    private void spawnParticles(Particle particle) {
         if (!Config.disableParticles) {
-            // The first argument of getEntityFX is the particle ID, and it is not used in the method at all.
-            Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleDigging.Factory().getEntityFX(0, world, x, y, z, xv, yv, zv, 2));
+            Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
     }
 

@@ -22,7 +22,8 @@ public enum ItemCategories {
     TOOL_UPGRADES(new ToolUpgradeItems()),
     FOOD(new FoodItems()),
     METALS(new MetalItems()),
-    GADGETS(new GadgetItems());
+    GADGETS(new GadgetItems()),
+    NATURAL_PHILOSOPHY(new NaturalPhilosophyItems());
 
     private IInitCategory category;
 

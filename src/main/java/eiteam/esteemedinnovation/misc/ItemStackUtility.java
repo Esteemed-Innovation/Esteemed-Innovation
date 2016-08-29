@@ -76,16 +76,26 @@ public class ItemStackUtility {
      * @return boolean
      */
     public static boolean inventoryHasItem(IInventory inventory, Item check) {
-        for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
-            ItemStack inSlot = inventory.getStackInSlot(slot);
+        return findItemStackFromInventory(inventory, check) != null;
+    }
+
+    /**
+     * Searches for an item in the inventory and returns its stack.
+     * @param haystack The inventory to search in
+     * @param needle The item to search for
+     * @return The itemstack, or null
+     */
+    public static ItemStack findItemStackFromInventory(IInventory haystack, Item needle) {
+        for (int slot = 0; slot < haystack.getSizeInventory(); slot++) {
+            ItemStack inSlot = haystack.getStackInSlot(slot);
             if (inSlot == null) {
                 continue;
             }
-            if (inSlot.getItem() == check) {
-                return true;
+            if (inSlot.getItem() == needle) {
+                return inSlot;
             }
         }
-        return false;
+        return null;
     }
 
     /**
