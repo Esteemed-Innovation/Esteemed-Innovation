@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import eiteam.esteemedinnovation.api.IWrenchable;
 import eiteam.esteemedinnovation.tile.TileEntityMold;
 

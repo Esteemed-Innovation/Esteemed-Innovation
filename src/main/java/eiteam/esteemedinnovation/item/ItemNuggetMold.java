@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.item;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.ICrucibleMold;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

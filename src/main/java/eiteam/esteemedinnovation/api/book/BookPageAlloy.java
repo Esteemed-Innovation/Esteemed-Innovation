@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.api.book;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.CrucibleFormula;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.gui.GuiJournal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

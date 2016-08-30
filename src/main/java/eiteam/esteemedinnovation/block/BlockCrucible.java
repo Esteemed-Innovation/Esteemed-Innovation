@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.IWrenchable;
 import eiteam.esteemedinnovation.api.Tuple3;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
 import eiteam.esteemedinnovation.tile.TileEntityCrucible;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHeater;
@@ -129,10 +129,10 @@ public class BlockCrucible extends BlockContainer implements IWrenchable {
             EntityItem item = (EntityItem) entity;
             if (isCrucibleHeated(world, pos)) {
                 MutablePair output;
-                if (GeneralRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
-                    output = GeneralRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
-                } else if (GeneralRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), -1))) {
-                    output = GeneralRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), -1));
+                if (CrucibleRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
+                    output = CrucibleRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
+                } else if (CrucibleRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), -1))) {
+                    output = CrucibleRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), -1));
 
                 } else {
                     return;
@@ -193,15 +193,15 @@ public class BlockCrucible extends BlockContainer implements IWrenchable {
             for (CrucibleLiquid liquid : tile.contents) {
                 Tuple3<Item, Integer, CrucibleLiquid> tuple = new Tuple3<>(heldItem.getItem(), heldItem.getItemDamage(), liquid);
                 boolean valid;
-                if (!GeneralRegistry.dunkRecipes.containsKey(tuple)) {
+                if (!CrucibleRegistry.dunkRecipes.containsKey(tuple)) {
                     tuple = new Tuple3<>(heldItem.getItem(), -1, liquid);
-                    valid = GeneralRegistry.dunkRecipes.containsKey(tuple);
+                    valid = CrucibleRegistry.dunkRecipes.containsKey(tuple);
                 } else {
                     valid = true;
                 }
 
                 if (valid) {
-                    MutablePair<Integer, ItemStack> pair = GeneralRegistry.dunkRecipes.get(tuple);
+                    MutablePair<Integer, ItemStack> pair = CrucibleRegistry.dunkRecipes.get(tuple);
                     int needed = pair.getLeft();
                     ItemStack result = pair.getRight().copy();
                     if (tile.number.get(liquid) >= needed) {

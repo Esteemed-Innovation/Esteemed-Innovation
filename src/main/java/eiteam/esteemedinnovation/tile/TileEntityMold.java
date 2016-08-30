@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.ICrucibleMold;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;

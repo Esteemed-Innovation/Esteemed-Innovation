@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.CrucibleFormula;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
-import eiteam.esteemedinnovation.api.ICrucibleMold;
+import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import eiteam.esteemedinnovation.api.tile.TileEntityBase;
 import eiteam.esteemedinnovation.block.BlockCrucible;
 
@@ -49,7 +49,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
+            CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
             if (liquid != null) {
                 contents.add(liquid);
                 number.put(liquid, (int) nbttagcompound1.getShort("amount"));
@@ -110,7 +110,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
         tipping = access.getBoolean("tipping");
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
+            CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(nbttagcompound1.getString("name"));
             contents.add(liquid);
             number.put(liquid, (int) nbttagcompound1.getShort("amount"));
         }
@@ -171,7 +171,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
 
         // Optimization: Don't iterate over all the liquids if we have nothing.
         if (!contents.isEmpty()) {
-            for (CrucibleLiquid liquid : GeneralRegistry.liquids) {
+            for (CrucibleLiquid liquid : CrucibleRegistry.liquids) {
                 if (liquid.recipe == null) {
                     continue;
                 }
@@ -249,7 +249,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
     }
 
     public CrucibleLiquid getNextLiquid(ICrucibleMold mold) {
-        for (CrucibleLiquid liquid : GeneralRegistry.liquids) {
+        for (CrucibleLiquid liquid : CrucibleRegistry.liquids) {
             if (number.containsKey(liquid)) {
                 if (mold.canUseOn(liquid) && number.get(liquid) >= mold.getCostToMold(liquid)) {
                     return liquid;

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.init.misc.integration.crafttweaker;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 
+import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -34,7 +34,7 @@ public class CarvingTableTweaker {
 
         @Override
         public void apply() {
-            GeneralRegistry.addCarvableMold(item);
+            MoldRegistry.addCarvableMold(item);
         }
 
         @Override
@@ -44,7 +44,7 @@ public class CarvingTableTweaker {
 
         @Override
         public void undo() {
-            GeneralRegistry.removeMold(item);
+            MoldRegistry.removeMold(item);
         }
 
         @Override
@@ -72,7 +72,7 @@ public class CarvingTableTweaker {
 
         @Override
         public void apply() {
-            GeneralRegistry.removeMold(item);
+            MoldRegistry.removeMold(item);
         }
 
         @Override
@@ -82,7 +82,7 @@ public class CarvingTableTweaker {
 
         @Override
         public void undo() {
-            GeneralRegistry.addCarvableMold(item);
+            MoldRegistry.addCarvableMold(item);
         }
 
         @Override

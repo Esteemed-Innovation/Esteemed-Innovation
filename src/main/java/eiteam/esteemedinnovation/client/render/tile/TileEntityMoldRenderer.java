@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.client.render.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import eiteam.esteemedinnovation.block.BlockMold;
 import eiteam.esteemedinnovation.client.render.RenderUtility;
 import eiteam.esteemedinnovation.tile.TileEntityMold;

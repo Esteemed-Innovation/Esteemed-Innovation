@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.api;
+package eiteam.esteemedinnovation.api.crucible;
 
 import java.util.ArrayList;
 import java.util.HashMap;

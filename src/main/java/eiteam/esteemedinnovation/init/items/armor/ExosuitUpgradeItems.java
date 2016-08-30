@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.init.items.armor;
 
 import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -9,7 +10,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
@@ -662,7 +663,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
      */
     public void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
         addExosuitPlateRecipes(str, ingredient, plate);
-        GeneralRegistry.registerMeltRecipe(plate.getItem(), plate.getItemDamage(), liq, 24);
+        CrucibleRegistry.registerMeltRecipe(plate.getItem(), plate.getItemDamage(), liq, 24);
     }
 
     /**

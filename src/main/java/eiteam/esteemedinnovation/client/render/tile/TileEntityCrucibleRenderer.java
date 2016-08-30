@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.client.render.tile;
 
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.block.BlockCrucible;
 import eiteam.esteemedinnovation.tile.TileEntityCrucible;
 import net.minecraft.block.state.IBlockState;

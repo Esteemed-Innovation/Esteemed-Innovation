@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -41,7 +41,7 @@ public class MetalcastingItems implements IInitCategory {
             }
             item.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(item);
-            GeneralRegistry.addCarvableMold(item);
+            MoldRegistry.addCarvableMold(item);
             this.item = item;
         }
 

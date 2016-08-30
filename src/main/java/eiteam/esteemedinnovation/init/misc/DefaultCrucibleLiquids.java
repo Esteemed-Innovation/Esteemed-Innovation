@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.init.misc;
 
-import eiteam.esteemedinnovation.api.CrucibleFormula;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolItems;
@@ -47,7 +47,7 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
     @Override
     public void init(FMLInitializationEvent event) {
         for (Liquids liquid : Liquids.values()) {
-            GeneralRegistry.registerLiquid(liquid.getLiquid());
+            CrucibleRegistry.registerLiquid(liquid.getLiquid());
         }
 
         CrucibleLiquid liquidGold = Liquids.GOLD_LIQUID.getLiquid();
@@ -57,77 +57,77 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         CrucibleLiquid liquidBrass = Liquids.BRASS_LIQUID.getLiquid();
         CrucibleLiquid liquidLead = Liquids.LEAD_LIQUID.getLiquid();
 
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_GOLD, liquidGold, 9);
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_IRON, liquidIron, 9);
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_ZINC, liquidZinc, 9);
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_COPPER, liquidCopper, 9);
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_BRASS, liquidBrass, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_GOLD, liquidGold, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_IRON, liquidIron, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_ZINC, liquidZinc, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_COPPER, liquidCopper, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_BRASS, liquidBrass, 9);
 
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_TINY_GOLD, liquidGold, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_TINY_IRON, liquidIron, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_TINY_ZINC, liquidZinc, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_TINY_COPPER, liquidCopper, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_TINY_BRASS, liquidBrass, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_TINY_GOLD, liquidGold, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_TINY_IRON, liquidIron, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_TINY_ZINC, liquidZinc, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_TINY_COPPER, liquidCopper, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_TINY_BRASS, liquidBrass, 1);
 
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_GOLD, liquidGold, 6);
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_IRON, liquidIron, 6);
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_ZINC, liquidZinc, 6);
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_COPPER, liquidCopper, 6);
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_BRASS, liquidBrass, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_GOLD, liquidGold, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_IRON, liquidIron, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_ZINC, liquidZinc, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_COPPER, liquidCopper, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_BRASS, liquidBrass, 6);
 
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_GOLD, liquidGold, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_IRON, liquidIron, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_ZINC, liquidZinc, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_COPPER, liquidCopper, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_BRASS, liquidBrass, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_GOLD, liquidGold, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_IRON, liquidIron, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_ZINC, liquidZinc, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_COPPER, liquidCopper, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_BRASS, liquidBrass, 1);
 //        GeneralRegistry.registerMeltRecipe(Items.gold_nugget, liquidGold, 1);
 
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_SWORD, liquidIron, 18);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_PICKAXE, liquidIron, 27);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_AXE, liquidIron, 27);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_HOE, liquidIron, 18);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_SHOVEL, liquidIron, 9);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_BOOTS, liquidIron, 36);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_CHESTPLATE, liquidIron, 72);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_HELMET, liquidIron, 45);
-        GeneralRegistry.registerMeltRecipeTool(Items.IRON_LEGGINGS, liquidIron, 63);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_SWORD, liquidIron, 18);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_PICKAXE, liquidIron, 27);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_AXE, liquidIron, 27);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_HOE, liquidIron, 18);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_SHOVEL, liquidIron, 9);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_BOOTS, liquidIron, 36);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_CHESTPLATE, liquidIron, 72);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_HELMET, liquidIron, 45);
+        CrucibleRegistry.registerMeltRecipeTool(Items.IRON_LEGGINGS, liquidIron, 63);
 
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_SWORD, liquidGold, 18);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_PICKAXE, liquidGold, 27);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_AXE, liquidGold, 27);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_HOE, liquidGold, 18);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_SHOVEL, liquidGold, 9);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_BOOTS, liquidGold, 36);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_CHESTPLATE, liquidGold, 72);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_HELMET, liquidGold, 45);
-        GeneralRegistry.registerMeltRecipeTool(Items.GOLDEN_LEGGINGS, liquidGold, 63);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_SWORD, liquidGold, 18);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_PICKAXE, liquidGold, 27);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_AXE, liquidGold, 27);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_HOE, liquidGold, 18);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_SHOVEL, liquidGold, 9);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_BOOTS, liquidGold, 36);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_CHESTPLATE, liquidGold, 72);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_HELMET, liquidGold, 45);
+        CrucibleRegistry.registerMeltRecipeTool(Items.GOLDEN_LEGGINGS, liquidGold, 63);
 
-        GeneralRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_SWORD.getItem(), liquidBrass, 18);
-        GeneralRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_PICKAXE.getItem(), liquidBrass, 27);
-        GeneralRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_AXE.getItem(), liquidBrass, 27);
-        GeneralRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_HOE.getItem(), liquidBrass, 18);
-        GeneralRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_SHOVEL.getItem(), liquidBrass, 9);
-        GeneralRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_BOOTS.getItem(), liquidBrass, 36);
-        GeneralRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_CHESTPLATE.getItem(), liquidBrass, 72);
-        GeneralRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_HELMET.getItem(), liquidBrass, 45);
-        GeneralRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_LEGGINGS.getItem(), liquidBrass, 63);
+        CrucibleRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_SWORD.getItem(), liquidBrass, 18);
+        CrucibleRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_PICKAXE.getItem(), liquidBrass, 27);
+        CrucibleRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_AXE.getItem(), liquidBrass, 27);
+        CrucibleRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_HOE.getItem(), liquidBrass, 18);
+        CrucibleRegistry.registerMeltRecipeTool(ToolItems.Items.BRASS_SHOVEL.getItem(), liquidBrass, 9);
+        CrucibleRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_BOOTS.getItem(), liquidBrass, 36);
+        CrucibleRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_CHESTPLATE.getItem(), liquidBrass, 72);
+        CrucibleRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_HELMET.getItem(), liquidBrass, 45);
+        CrucibleRegistry.registerMeltRecipeTool(ArmorItems.Items.BRASS_LEGGINGS.getItem(), liquidBrass, 63);
 
-        GeneralRegistry.registerOreDictDunkRecipe(INGOT_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_INGOT.createItemStack());
-        GeneralRegistry.registerOreDictDunkRecipe(PLATE_THIN_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_PLATE.createItemStack());
-        GeneralRegistry.registerOreDictDunkRecipe(NUGGET_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_NUGGET.createItemStack());
+        CrucibleRegistry.registerOreDictDunkRecipe(INGOT_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_INGOT.createItemStack());
+        CrucibleRegistry.registerOreDictDunkRecipe(PLATE_THIN_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_PLATE.createItemStack());
+        CrucibleRegistry.registerOreDictDunkRecipe(NUGGET_IRON, liquidGold, 1, MetalItems.Items.GILDED_IRON_NUGGET.createItemStack());
 
-        GeneralRegistry.registerMeltRecipeOreDict(INGOT_LEAD, liquidLead, 9);
-        GeneralRegistry.registerMeltRecipeOreDict(NUGGET_LEAD, liquidLead, 1);
-        GeneralRegistry.registerMeltRecipeOreDict(PLATE_THIN_LEAD, liquidLead, 6);
+        CrucibleRegistry.registerMeltRecipeOreDict(INGOT_LEAD, liquidLead, 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_LEAD, liquidLead, 1);
+        CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_LEAD, liquidLead, 6);
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_GOLD, Liquids.GOLD_LIQUID.getLiquid(), 9);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_IRON, Liquids.IRON_LIQUID.getLiquid(), 9);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_ZINC, Liquids.ZINC_LIQUID.getLiquid(), 9);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER_LIQUID.getLiquid(), 9);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS_LIQUID.getLiquid(), 9);
-        GeneralRegistry.registerMeltRecipeOreDict(DUST_LEAD, Liquids.LEAD_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_GOLD, Liquids.GOLD_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_IRON, Liquids.IRON_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_ZINC, Liquids.ZINC_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS_LIQUID.getLiquid(), 9);
+        CrucibleRegistry.registerMeltRecipeOreDict(DUST_LEAD, Liquids.LEAD_LIQUID.getLiquid(), 9);
     }
 }

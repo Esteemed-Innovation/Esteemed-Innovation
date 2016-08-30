@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.init.misc.integration.crafttweaker;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.CrucibleFormula;
-import eiteam.esteemedinnovation.api.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
@@ -31,8 +31,8 @@ public class CrucibleTweaker {
         ItemStack iStack = MineTweakerMC.getItemStack(ingot);
         ItemStack pStack = MineTweakerMC.getItemStack(plate);
         ItemStack nStack = MineTweakerMC.getItemStack(nugget);
-        CrucibleLiquid crucibleLiquid1 = GeneralRegistry.getLiquidFromName(liquid1);
-        CrucibleLiquid crucibleLiquid2 = GeneralRegistry.getLiquidFromName(liquid2);
+        CrucibleLiquid crucibleLiquid1 = CrucibleRegistry.getLiquidFromName(liquid1);
+        CrucibleLiquid crucibleLiquid2 = CrucibleRegistry.getLiquidFromName(liquid2);
 
         if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
             CrucibleFormula formula = new CrucibleFormula(crucibleLiquid1, amount1, crucibleLiquid2, amount2, amountOut);
@@ -51,7 +51,7 @@ public class CrucibleTweaker {
 
         @Override
         public void apply() {
-            GeneralRegistry.registerLiquid(liquid);
+            CrucibleRegistry.registerLiquid(liquid);
         }
 
         @Override
@@ -61,7 +61,7 @@ public class CrucibleTweaker {
 
         @Override
         public void undo() {
-            GeneralRegistry.removeLiquid(liquid);
+            CrucibleRegistry.removeLiquid(liquid);
         }
 
         @Override
@@ -82,7 +82,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeLiquid(String name) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(name);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(name);
         if (liquid != null) {
             MineTweakerAPI.apply(new RemoveLiquid(liquid));
         } else {
@@ -99,7 +99,7 @@ public class CrucibleTweaker {
 
         @Override
         public void apply() {
-            GeneralRegistry.removeLiquid(liquid);
+            CrucibleRegistry.removeLiquid(liquid);
         }
 
         @Override
@@ -109,7 +109,7 @@ public class CrucibleTweaker {
 
         @Override
         public void undo() {
-            GeneralRegistry.registerLiquid(liquid);
+            CrucibleRegistry.registerLiquid(liquid);
         }
 
         @Override
@@ -130,7 +130,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void addMeltRecipe(IItemStack item, String liquidName, int amountOut) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         ItemStack stack = MineTweakerMC.getItemStack(item);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
@@ -141,7 +141,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void addOreMeltRecipe(String dict, String liquidName, int amountOut) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
         } else {
@@ -151,7 +151,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void addToolMeltRecipe(IItemStack itemstack, String liquidName, int amountOut) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         Item item = MineTweakerMC.getItemStack(itemstack).getItem();
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
@@ -176,11 +176,11 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.registerMeltRecipe(item, meta, liquid, amountOut);
+                CrucibleRegistry.registerMeltRecipe(item, meta, liquid, amountOut);
             } else if (in instanceof Item) {
-                GeneralRegistry.registerMeltRecipeTool((Item) in, liquid, amountOut);
+                CrucibleRegistry.registerMeltRecipeTool((Item) in, liquid, amountOut);
             } else if (in instanceof String) {
-                GeneralRegistry.registerMeltRecipeOreDict((String) in, liquid, amountOut);
+                CrucibleRegistry.registerMeltRecipeOreDict((String) in, liquid, amountOut);
             }
         }
 
@@ -194,11 +194,11 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.removeMeltRecipe(item, meta, liquid);
+                CrucibleRegistry.removeMeltRecipe(item, meta, liquid);
             } else if (in instanceof Item) {
-                GeneralRegistry.removeMeltRecipeTool((Item) in, liquid);
+                CrucibleRegistry.removeMeltRecipeTool((Item) in, liquid);
             } else if (in instanceof String) {
-                GeneralRegistry.removeMeltRecipeOreDict((String) in, liquid);
+                CrucibleRegistry.removeMeltRecipeOreDict((String) in, liquid);
             }
         }
 
@@ -220,7 +220,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeMeltRecipe(IItemStack input, String output) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(output);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(output);
         ItemStack stack = MineTweakerMC.getItemStack(input);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + output);
@@ -231,7 +231,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeOreMeltRecipe(String dict, String liquidName) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
         } else {
@@ -241,7 +241,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeToolMeltRecipe(IItemStack itemstack, String liquidName) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         Item item = MineTweakerMC.getItemStack(itemstack).getItem();
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
@@ -264,11 +264,11 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.removeMeltRecipe(item, meta, liquid);
+                CrucibleRegistry.removeMeltRecipe(item, meta, liquid);
             } else if (in instanceof Item) {
-                GeneralRegistry.removeMeltRecipeTool((Item) in, liquid);
+                CrucibleRegistry.removeMeltRecipeTool((Item) in, liquid);
             } else if (in instanceof String) {
-                GeneralRegistry.removeMeltRecipeOreDict((String) in, liquid);
+                CrucibleRegistry.removeMeltRecipeOreDict((String) in, liquid);
             }
         }
 
@@ -300,7 +300,7 @@ public class CrucibleTweaker {
     @ZenMethod
     public static void addDunkRecipe(IItemStack in, String inLiq, int liquidAmount, IItemStack out) {
         ItemStack inStack = MineTweakerMC.getItemStack(in);
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(inLiq);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(inLiq);
         ItemStack outStack = MineTweakerMC.getItemStack(out);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + inLiq);
@@ -311,7 +311,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void addOreDunkRecipe(String dict, String liq, int amount, IItemStack out) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liq);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liq);
         ItemStack outStack = MineTweakerMC.getItemStack(out);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liq);
@@ -338,9 +338,9 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.registerDunkRecipe(item, meta, liquid, liquidAmount, out);
+                CrucibleRegistry.registerDunkRecipe(item, meta, liquid, liquidAmount, out);
             } else if (in instanceof String) {
-                GeneralRegistry.registerOreDictDunkRecipe((String) in, liquid, liquidAmount, out);
+                CrucibleRegistry.registerOreDictDunkRecipe((String) in, liquid, liquidAmount, out);
             }
         }
 
@@ -354,9 +354,9 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.removeDunkRecipe(item, meta, liquid);
+                CrucibleRegistry.removeDunkRecipe(item, meta, liquid);
             } else if (in instanceof String) {
-                GeneralRegistry.removeOreDictDunkRecipe((String) in, liquid);
+                CrucibleRegistry.removeOreDictDunkRecipe((String) in, liquid);
             }
         }
 
@@ -390,7 +390,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeDunkRecipe(IItemStack in, String liquidName) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         ItemStack stack = MineTweakerMC.getItemStack(in);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
@@ -401,7 +401,7 @@ public class CrucibleTweaker {
 
     @ZenMethod
     public static void removeOreDunkRecipe(String dict, String liquidName) {
-        CrucibleLiquid liquid = GeneralRegistry.getLiquidFromName(liquidName);
+        CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
             FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
         } else {
@@ -423,9 +423,9 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.removeDunkRecipe(item, meta, liquid);
+                CrucibleRegistry.removeDunkRecipe(item, meta, liquid);
             } else if (in instanceof String) {
-                GeneralRegistry.removeOreDictDunkRecipe((String) in, liquid);
+                CrucibleRegistry.removeOreDictDunkRecipe((String) in, liquid);
             }
         }
 
@@ -439,9 +439,9 @@ public class CrucibleTweaker {
             if (in instanceof ItemStack) {
                 Item item = ((ItemStack) in).getItem();
                 int meta = ((ItemStack) in).getItemDamage();
-                GeneralRegistry.removeDunkRecipe(item, meta, liquid);
+                CrucibleRegistry.removeDunkRecipe(item, meta, liquid);
             } else if (in instanceof String) {
-                GeneralRegistry.removeOreDictDunkRecipe((String) in, liquid);
+                CrucibleRegistry.removeOreDictDunkRecipe((String) in, liquid);
             }
         }
 
