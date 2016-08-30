@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.gui;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import eiteam.esteemedinnovation.api.book.BookPage;
+import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
@@ -46,10 +46,10 @@ public class GuiJournal extends GuiScreen {
 
     public GuiJournal(EntityPlayer player) {
         categories = new ArrayList<>();
-        for (String cat : GeneralRegistry.categories) {
+        for (String cat : BookPageRegistry.categories) {
             int pages = 0;
-            for (MutablePair<String, String> research : GeneralRegistry.research) {
-                if (research.right.equals(cat) && GeneralRegistry.researchPages.get(research.left).length > 0) {
+            for (MutablePair<String, String> research : BookPageRegistry.research) {
+                if (research.right.equals(cat) && BookPageRegistry.researchPages.get(research.left).length > 0) {
                     pages++;
                 }
             }
@@ -59,7 +59,7 @@ public class GuiJournal extends GuiScreen {
         }
         bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
         if (!viewing.isEmpty()) {
-            bookTotalPages = MathHelper.ceiling_float_int(GeneralRegistry.researchPages.get(viewing).length / 2F);
+            bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
         }
         ItemStack active = player.getHeldItemMainhand();
         if (active != null && active.getItem() instanceof ItemEsteemedInnovationJournal) {
@@ -135,7 +135,7 @@ public class GuiJournal extends GuiScreen {
                 lastIndexPage = currPage;
                 viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
                 currPage = 0;
-                bookTotalPages = MathHelper.ceiling_float_int(GeneralRegistry.researchPages.get(viewing).length / 2F);
+                bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
                 updateButtons();
                 mustReleaseMouse = true;
             }
@@ -245,8 +245,8 @@ public class GuiJournal extends GuiScreen {
                 int i = 10;
                 int offsetCounter = 0;
                 fontRendererObj.drawString("\u00A7n" + s, k + 40 - 67, 44 + b0, 0x3F3F3F);
-                for (MutablePair<String, String> research : GeneralRegistry.research) {
-                    if (research.right.equals(category) && GeneralRegistry.researchPages.get(research.left).length > 0) {
+                for (MutablePair<String, String> research : BookPageRegistry.research) {
+                    if (research.right.equals(category) && BookPageRegistry.researchPages.get(research.left).length > 0) {
                         offsetCounter++;
                         if (offsetCounter > offset && offsetCounter < offset + 10) {
                             s = research.left;
@@ -267,8 +267,8 @@ public class GuiJournal extends GuiScreen {
                     s = I18n.format(category);
                     i = 10;
                     this.fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
-                    for (MutablePair<String, String> research : GeneralRegistry.research) {
-                        if (research.right.equals(category) && GeneralRegistry.researchPages.get(research.left).length > 0) {
+                    for (MutablePair<String, String> research : BookPageRegistry.research) {
+                        if (research.right.equals(category) && BookPageRegistry.researchPages.get(research.left).length > 0) {
                             offsetCounter++;
                             if (offsetCounter > offset && offsetCounter < offset + 10) {
                                 s = research.left;
@@ -285,9 +285,9 @@ public class GuiJournal extends GuiScreen {
             fontRendererObj.setUnicodeFlag(unicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
             fontRendererObj.setUnicodeFlag(true);
-            if (GeneralRegistry.researchPages.containsKey(viewing)) {
+            if (BookPageRegistry.researchPages.containsKey(viewing)) {
                 GL11.glEnable(GL11.GL_BLEND);
-                BookPage[] pages = GeneralRegistry.researchPages.get(viewing);
+                BookPage[] pages = BookPageRegistry.researchPages.get(viewing);
                 BookPage page = pages[(currPage) * 2];
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glPushMatrix();
@@ -320,7 +320,7 @@ public class GuiJournal extends GuiScreen {
             }
         }
         if (renderHyperlink) {
-            for (ItemStack stack : GeneralRegistry.bookRecipes.keySet()) {
+            for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
                 if (stack.getItem() == stack0.getItem() && stack.getItemDamage() == stack0.getItemDamage()) {
                     list.add(TextFormatting.ITALIC + "" + TextFormatting.GRAY + I18n.format("esteemedinnovation.book.clickme"));
                 }
@@ -341,11 +341,11 @@ public class GuiJournal extends GuiScreen {
     }
 
     public void itemClicked(ItemStack itemStack) {
-         for (ItemStack stack : GeneralRegistry.bookRecipes.keySet()) {
+         for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
-                viewing = GeneralRegistry.bookRecipes.get(stack).left;
-                currPage = MathHelper.floor_float((float) GeneralRegistry.bookRecipes.get(stack).right / 2.0F);
-                bookTotalPages = MathHelper.ceiling_float_int(GeneralRegistry.researchPages.get(viewing).length / 2F);
+                viewing = BookPageRegistry.bookRecipes.get(stack).left;
+                currPage = MathHelper.floor_float((float) BookPageRegistry.bookRecipes.get(stack).right / 2.0F);
+                bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
                 mustReleaseMouse = true;
                 this.updateButtons();
             }
@@ -422,9 +422,9 @@ public class GuiJournal extends GuiScreen {
      * @param player The player opening the GUI.
      */
     public static void openRecipeFor(ItemStack recipeStack, EntityPlayer player) {
-        MutablePair<String, Integer> page = GeneralRegistry.bookRecipes.get(recipeStack);
+        MutablePair<String, Integer> page = BookPageRegistry.bookRecipes.get(recipeStack);
         viewing = page.left;
-        currPage = GeneralRegistry.entriesWithSubEntries.contains(viewing) ? page.right / 2 : 0;
+        currPage = BookPageRegistry.entriesWithSubEntries.contains(viewing) ? page.right / 2 : 0;
         lastIndexPage = 1;
         bookTotalPages = page.right;
         player.openGui(EsteemedInnovation.instance, 1, player.worldObj, 0, 0, 0);

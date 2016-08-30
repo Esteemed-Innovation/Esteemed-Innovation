@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.handler;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.*;
+import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
@@ -406,7 +407,7 @@ public class GenericEventHandler {
                     Block block = state.getBlock();
                     ItemStack stack = block.getPickBlock(state, pos, player.worldObj, pos.getBlockPos(), player);
                     if (stack != null) {
-                        for (ItemStack s : GeneralRegistry.bookRecipes.keySet()) {
+                        for (ItemStack s : BookPageRegistry.bookRecipes.keySet()) {
                             if (s.getItem() == stack.getItem() && s.getItemDamage() == stack.getItemDamage()) {
                                 GL11.glPushMatrix();
                                 int x = event.getResolution().getScaledWidth() / 2 - 8;
@@ -746,7 +747,7 @@ public class GenericEventHandler {
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;
         if (mc.currentScreen instanceof GuiContainer) {
-            for (ItemStack stack2 : GeneralRegistry.bookRecipes.keySet()) {
+            for (ItemStack stack2 : BookPageRegistry.bookRecipes.keySet()) {
                 if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
                     boolean foundBook = (CrossMod.ENCHIRIDION && EnchiridionIntegration.hasBook(BOOK.getItem(), player)) ||
                       player.inventory.hasItemStack(new ItemStack(BOOK.getItem()));

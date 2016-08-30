@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.item;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
+import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.gui.GuiJournal;
 
 import net.minecraft.block.state.IBlockState;
@@ -37,7 +37,7 @@ public class ItemEsteemedInnovationJournal extends Item {
 
             //noinspection ConstantConditions
             if (stack != null) {
-                for (ItemStack stack2 : GeneralRegistry.bookRecipes.keySet()) {
+                for (ItemStack stack2 : BookPageRegistry.bookRecipes.keySet()) {
                     if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
                         GuiJournal.openRecipeFor(stack2, player);
                         return EnumActionResult.SUCCESS;
