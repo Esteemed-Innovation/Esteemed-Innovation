@@ -119,7 +119,7 @@ An empty block or block-like construct should be closed immediately after it is 
 ### Block indentation
 Each time a new block or block-like construct is opened, the indent increases by 4 spaces. When the block ends, the indent returns to the previous indentation level. The ident level applies to both code and comments throughout the block.
 
-### One statement per lane
+### One statement per line
 Each statement is followed by a line break.
 
 ### Column limit
