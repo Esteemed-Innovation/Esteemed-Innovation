@@ -17,9 +17,9 @@ import eiteam.esteemedinnovation.entity.item.EntityFloatingItem;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiHandler;
+import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.handler.GenericTickHandler;
 import eiteam.esteemedinnovation.handler.PhobicCoatingHandler;
-import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.blocks.BlockCategories;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.ItemCategories;
@@ -32,9 +32,9 @@ import eiteam.esteemedinnovation.misc.OreDictHelper;
 import eiteam.esteemedinnovation.network.*;
 import eiteam.esteemedinnovation.tile.*;
 import eiteam.esteemedinnovation.world.ComponentSteamWorkshop;
+import eiteam.esteemedinnovation.world.ExtraDimensionalOreGenerator;
 import eiteam.esteemedinnovation.world.SteamWorkshopCreationHandler;
-import eiteam.esteemedinnovation.world.OreGenerator;
-
+import eiteam.esteemedinnovation.world.SurfaceOreGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -66,9 +66,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import java.util.List;
-
 import javax.swing.*;
+import java.util.List;
 
 @Mod(modid = EsteemedInnovation.MOD_ID, name = "Esteemed Innovation", version = Config.VERSION)
 public class EsteemedInnovation {
@@ -142,7 +141,8 @@ public class EsteemedInnovation {
 
         upgrade = EnumHelper.addRarity("UPGRADE", TextFormatting.RED, "Upgrade");
 
-        GameRegistry.registerWorldGenerator(new OreGenerator(), 1);
+        GameRegistry.registerWorldGenerator(new ExtraDimensionalOreGenerator(), 1);
+        GameRegistry.registerWorldGenerator(new SurfaceOreGenerator(), 1);
 
         channel = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID + "Channel");
         channel.registerMessage(CamoPacketHandler.class, CamoPacket.class, 0, Side.SERVER);

@@ -18,6 +18,7 @@ public class BlockEngineeringTable extends BlockContainer {
     public BlockEngineeringTable() {
         super(Material.ROCK);
         setHardness(3.5F);
+        setCreativeTab(EsteemedInnovation.tab);
     }
 
     @Override

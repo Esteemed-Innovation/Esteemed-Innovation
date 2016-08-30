@@ -5,9 +5,10 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.block.BlockEngineeringTable;
 import eiteam.esteemedinnovation.block.BlockFunnel;
+import eiteam.esteemedinnovation.block.BlockOreDepositGenerator;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
-
+import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -17,7 +18,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class MiscellaneousBlocks implements IInitCategory {
     public enum Blocks {
         ENGINEERING_TABLE(new BlockEngineeringTable(), "engineering"),
-        FUNNEL(new BlockFunnel(), "funnel");
+        FUNNEL(new BlockFunnel(), "funnel"),
+        ORE_DEPOSIT_BLOCK(new BlockOreDepositGenerator(), true, "ore_deposit_generator");
 
         public static Blocks[] LOOKUP = new Blocks[values().length];
 
@@ -31,12 +33,20 @@ public class MiscellaneousBlocks implements IInitCategory {
 
         private Block block;
 
+        Blocks(Block block, boolean meta, String name) {
+            this(block, new BlockManyMetadataItem(block), name);
+        }
+
         Blocks(Block block, String name) {
-            block.setCreativeTab(EsteemedInnovation.tab);
+            this(block, new ItemBlock(block), name);
+        }
+
+        // You probably won't actually be able to use this one since ItemBlock constructors take the Block.
+        Blocks(Block block, ItemBlock itemBlock, String name) {
             block.setUnlocalizedName(EsteemedInnovation.MOD_ID + ":" + name);
             block.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(block);
-            GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+            GameRegistry.register(itemBlock.setRegistryName(block.getRegistryName()));
             this.block = block;
         }
 
@@ -47,6 +57,9 @@ public class MiscellaneousBlocks implements IInitCategory {
                 }
                 case FUNNEL: {
                     return Config.enableFunnel;
+                }
+                case ORE_DEPOSIT_BLOCK: {
+                    return true;
                 }
             }
             return false;
@@ -84,6 +97,9 @@ public class MiscellaneousBlocks implements IInitCategory {
                       'c', OreDictEntries.INGOT_COPPER,
                       'b', Items.BOWL
                     ));
+                    break;
+                }
+                case ORE_DEPOSIT_BLOCK: {
                     break;
                 }
             }

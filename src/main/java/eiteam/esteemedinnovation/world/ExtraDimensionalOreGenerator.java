@@ -20,7 +20,7 @@ import static net.minecraft.init.Blocks.STONE;
 import static net.minecraft.init.Blocks.END_STONE;
 import static net.minecraft.init.Blocks.NETHERRACK;
 
-public class OreGenerator implements IWorldGenerator {
+public class ExtraDimensionalOreGenerator implements IWorldGenerator {
     //Support for World Generation Manager
     public String getName() {
        return "EsteemedInnovation";
@@ -44,10 +44,6 @@ public class OreGenerator implements IWorldGenerator {
                 generateNether(world, random, chunkX * 16, chunkZ * 16);
                 break;
             }
-            case 0: {
-                generateSurface(world, random, chunkX * 16, chunkZ * 16);
-                break;
-            }
             case 1: {
                 generateEnd(world, random, chunkX * 16, chunkZ * 16);
                 break;
@@ -64,18 +60,6 @@ public class OreGenerator implements IWorldGenerator {
         if (Config.genZincEnd) {
             WorldGenMinable zinc = getZincOre(BlockGenericOre.OreBlockTypes.END_ZINC, END_STONE);
             generateBlocks(world, zinc, random, 128, 10, i, j);
-        }
-    }
-
-    private void generateSurface(World world, Random random, int i, int j) {
-        if (Config.genCopperOverworld) {
-            WorldGenMinable copper = getCopperOre(BlockGenericOre.OreBlockTypes.OVERWORLD_COPPER, STONE);
-            generateBlocks(world, copper, random, 80, 10, i, j);
-        }
-
-        if (Config.genZincOverworld) {
-            WorldGenMinable zinc = getZincOre(BlockGenericOre.OreBlockTypes.OVERWORLD_ZINC, STONE);
-            generateBlocks(world, zinc, random, 75, 10, i, j);
         }
     }
 

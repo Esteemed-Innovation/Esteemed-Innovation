@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
+import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.tile.TileEntityFunnel;
 
 import net.minecraft.block.Block;
@@ -17,6 +18,7 @@ public class BlockFunnel extends Block {
 
     public BlockFunnel() {
         super(Material.ANVIL);
+        setCreativeTab(EsteemedInnovation.tab);
     }
 
     @Override

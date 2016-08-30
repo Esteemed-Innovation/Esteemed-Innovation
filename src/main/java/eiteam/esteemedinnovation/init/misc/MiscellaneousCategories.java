@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.init.misc.integration.tinkers.TinkersIntegratio
 
 public enum MiscellaneousCategories {
     DEFAULT_CRUCIBLE_LIQUIDS(new DefaultCrucibleLiquids()),
+    LOOT_TABLES(new LootTablesCategory()),
     TINKERS_INTEGRATION(new TinkersIntegration()),
     CRAFTTWEAKER_INTEGRATION(new CraftTweakerIntegration());
 
@@ -22,6 +23,9 @@ public enum MiscellaneousCategories {
     public boolean isEnabled() {
         switch (this) {
             case DEFAULT_CRUCIBLE_LIQUIDS: {
+                return true;
+            }
+            case LOOT_TABLES: {
                 return true;
             }
             case TINKERS_INTEGRATION: {
