@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHeater;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;

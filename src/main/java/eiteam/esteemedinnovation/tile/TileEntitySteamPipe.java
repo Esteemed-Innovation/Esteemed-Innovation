@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.block.BlockPipe;

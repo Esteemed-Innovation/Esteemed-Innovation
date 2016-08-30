@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import net.minecraft.block.state.IBlockState;

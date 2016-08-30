@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.IPipeWrench;
+import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
 import codechicken.lib.raytracer.IndexedCuboid6;

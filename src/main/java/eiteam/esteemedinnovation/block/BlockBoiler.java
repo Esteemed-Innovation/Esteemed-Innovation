@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.misc.FluidHelper;

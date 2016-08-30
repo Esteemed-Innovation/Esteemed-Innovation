@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.api;
+package eiteam.esteemedinnovation.api.wrench;
 
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 

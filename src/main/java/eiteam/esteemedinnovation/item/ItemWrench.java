@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.item;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.IPipeWrench;
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

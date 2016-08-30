@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.api;
+package eiteam.esteemedinnovation.api.wrench;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

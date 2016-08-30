@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

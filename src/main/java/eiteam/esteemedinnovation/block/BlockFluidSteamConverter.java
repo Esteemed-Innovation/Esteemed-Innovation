@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.tile.TileEntityFluidSteamConverter;
 import net.minecraft.block.BlockHorizontal;

@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.ISteamChargable;
-import eiteam.esteemedinnovation.api.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.tile.TileEntitySteamCharger;
