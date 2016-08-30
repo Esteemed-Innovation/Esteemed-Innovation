@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.handler;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.*;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
@@ -215,10 +216,10 @@ public class GenericEventHandler {
                     selectedRocketType = heldStack.getTagCompound().getInteger("rocketType");
                 }
             }
-            if (selectedRocketType > GeneralRegistry.rockets.size() - 1) {
+            if (selectedRocketType > EnhancementRegistry.rockets.size() - 1) {
                 selectedRocketType = 0;
             }
-            String name = selectedRocketType == 0 ? "item.esteemedinnovation:rocket.name.2" : ((Item) GeneralRegistry.rockets.get(selectedRocketType)).getUnlocalizedName() + ".name";
+            String name = selectedRocketType == 0 ? "item.esteemedinnovation:rocket.name.2" : ((Item) EnhancementRegistry.rockets.get(selectedRocketType)).getUnlocalizedName() + ".name";
             // TODO: Proper formatting.
             String tooltip = I18n.format("esteemedinnovation.rocket") + " " + I18n.format(name);
 

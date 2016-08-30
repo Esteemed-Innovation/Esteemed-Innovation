@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.init.items.firearms;
 
+import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
@@ -47,7 +47,7 @@ public class FirearmUpgradeItems implements IInitCategory {
             item.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(item);
             if (item instanceof IEnhancement) {
-                GeneralRegistry.registerEnhancement((IEnhancement) item);
+                EnhancementRegistry.registerEnhancement((IEnhancement) item);
             }
             this.item = item;
         }

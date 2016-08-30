@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.api.enhancement;
 
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,9 +9,9 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilEnhancements {
     public static void registerEnhancementsForItem(Item item) {
-        for (IEnhancement enhancement : GeneralRegistry.enhancements.values()) {
+        for (IEnhancement enhancement : EnhancementRegistry.enhancements.values()) {
             if (enhancement.canApplyTo(new ItemStack(item))) {
-                GeneralRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), enhancement.getIcon(item));
+                EnhancementRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), enhancement.getIcon(item));
             }
         }
     }
@@ -26,14 +25,14 @@ public class UtilEnhancements {
             NBTTagCompound nbt = item.getTagCompound();
             if (nbt.hasKey("enhancements")) {
                 NBTTagCompound enhancements = nbt.getCompoundTag("enhancements");
-                return GeneralRegistry.enhancements.get(enhancements.getString("id"));
+                return EnhancementRegistry.enhancements.get(enhancements.getString("id"));
             }
         }
         return null;
     }
 
     public static ResourceLocation getIconFromEnhancement(ItemStack item, IEnhancement enhancement) {
-        return GeneralRegistry.enhancementIcons.get(MutablePair.of(item.getItem(), enhancement));
+        return EnhancementRegistry.enhancementIcons.get(MutablePair.of(item.getItem(), enhancement));
     }
 
     public static ResourceLocation getIconFromEnhancement(ItemStack item) {

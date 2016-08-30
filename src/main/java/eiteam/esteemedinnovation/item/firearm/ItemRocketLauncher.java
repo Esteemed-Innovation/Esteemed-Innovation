@@ -3,12 +3,8 @@ package eiteam.esteemedinnovation.item.firearm;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.IEngineerable;
 import eiteam.esteemedinnovation.api.IRenderItem;
-import eiteam.esteemedinnovation.api.GeneralRegistry;
-import eiteam.esteemedinnovation.api.enhancement.IRocket;
+import eiteam.esteemedinnovation.api.enhancement.*;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancementRocketLauncher;
-import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
@@ -136,7 +132,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
             selectedRocketType = nbt.getInteger("rocketType");
         }
 
-        Item rocketType = (Item) GeneralRegistry.rockets.get(selectedRocketType);
+        Item rocketType = (Item) EnhancementRegistry.rockets.get(selectedRocketType);
         if (!nbt.getBoolean("done") && (infiniteShots || ItemStackUtility.inventoryHasItem(player.inventory, rocketType))) {
             nbt.setInteger("numloaded", 1);
             int totalShells = shellCount + enhancementShells;
@@ -242,7 +238,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                     if (self.hasTagCompound() && self.getTagCompound().hasKey("rocketType")) {
                         selectedRocketType = self.getTagCompound().getInteger("rocketType");
                     }
-                    IRocket irocket = GeneralRegistry.rockets.get(selectedRocketType);
+                    IRocket irocket = EnhancementRegistry.rockets.get(selectedRocketType);
                     rocket = irocket.changeBullet(rocket);
 
                     if (UtilEnhancements.hasEnhancement(self)) {
@@ -288,10 +284,10 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                 selectedRocketType = self.getTagCompound().getInteger("rocketType");
             }
             int prevRocketType = selectedRocketType;
-            selectedRocketType = (selectedRocketType + 1) % GeneralRegistry.rockets.size();
+            selectedRocketType = (selectedRocketType + 1) % EnhancementRegistry.rockets.size();
             nbt.setInteger("rocketType", selectedRocketType);
             if (selectedRocketType != prevRocketType && self.getTagCompound().getInteger("loaded") > 0) {
-                ItemStack stack = new ItemStack(((Item) GeneralRegistry.rockets.get(prevRocketType)), nbt.getInteger("loaded"), 0);
+                ItemStack stack = new ItemStack(((Item) EnhancementRegistry.rockets.get(prevRocketType)), nbt.getInteger("loaded"), 0);
                 if (!player.worldObj.isRemote) {
                     EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, stack);
                     player.worldObj.spawnEntityInWorld(entityItem);
