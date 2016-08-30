@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation;
 
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
@@ -672,7 +672,7 @@ public class EsteemedInnovationJournal {
                 ItemStack stack = new ItemStack(EXOSUIT_CHESTPIECE.getItem());
                 stack.setTagCompound(new NBTTagCompound());
                 ItemStack plate = null;
-                Collection<ExosuitPlate> values = GeneralRegistry.plates.values();
+                Collection<ExosuitPlate> values = ExosuitRegistry.plates.values();
                 Object item = values.toArray(new ExosuitPlate[values.size()])[i].getItem();
                 if (item instanceof String) {
                     if (OreDictionary.getOres((String) item).size() > 0) {

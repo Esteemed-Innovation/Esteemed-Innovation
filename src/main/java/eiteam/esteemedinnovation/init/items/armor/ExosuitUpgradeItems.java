@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.init.items.armor;
 
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -196,7 +196,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
         PlateItems(String id, int metadata, String resource, String langSuffix) {
             ExosuitPlate plate = new ExosuitPlate(id, createItemStack(), resource, resource,
               EsteemedInnovation.MOD_ID + ".plate." + langSuffix);
-            GeneralRegistry.addExosuitPlate(plate);
+            ExosuitRegistry.addExosuitPlate(plate);
             this.metadata = metadata;
             this.id = id;
         }

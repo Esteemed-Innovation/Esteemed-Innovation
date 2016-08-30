@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
-import eiteam.esteemedinnovation.api.GeneralRegistry;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,7 +8,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilPlates {
     public static ExosuitPlate getPlate(ItemStack item) {
-        for (ExosuitPlate plate : GeneralRegistry.plates.values()) {
+        for (ExosuitPlate plate : ExosuitRegistry.plates.values()) {
             if (plate.getItem() instanceof ItemStack) {
                 if (((ItemStack) plate.getItem()).isItemEqual(item)) {
                     return plate;
@@ -27,23 +26,23 @@ public class UtilPlates {
     }
 
     public static void registerPlatesForItem(ItemExosuitArmor item) {
-        for (ExosuitPlate plate : GeneralRegistry.plates.values()) {
-            GeneralRegistry.plateIcons.put(MutablePair.of(item.slot, plate), plate.getIcon(item));
+        for (ExosuitPlate plate : ExosuitRegistry.plates.values()) {
+            ExosuitRegistry.plateIcons.put(MutablePair.of(item.slot, plate), plate.getIcon(item));
         }
     }
 
     public static String getIconFromPlate(String string, ItemExosuitArmor item) {
-        ExosuitPlate plate = GeneralRegistry.plates.get(string);
-        return GeneralRegistry.plateIcons.get(MutablePair.of(item.slot, plate));
+        ExosuitPlate plate = ExosuitRegistry.plates.get(string);
+        return ExosuitRegistry.plateIcons.get(MutablePair.of(item.slot, plate));
     }
 
     public static String getArmorLocationFromPlate(String string, ItemExosuitArmor item, int armorType) {
-        ExosuitPlate plate = GeneralRegistry.plates.get(string);
+        ExosuitPlate plate = ExosuitRegistry.plates.get(string);
         return plate.getArmorLocation(item, armorType);
     }
 
     public static ExosuitPlate getPlate(String string) {
-        return GeneralRegistry.plates.get(string);
+        return ExosuitRegistry.plates.get(string);
     }
 
     /**
