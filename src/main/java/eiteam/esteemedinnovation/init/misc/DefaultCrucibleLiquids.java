@@ -3,11 +3,12 @@ package eiteam.esteemedinnovation.init.misc;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolItems;
-
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -119,6 +120,9 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         CrucibleRegistry.registerMeltRecipeOreDict(INGOT_LEAD, liquidLead, 9);
         CrucibleRegistry.registerMeltRecipeOreDict(NUGGET_LEAD, liquidLead, 1);
         CrucibleRegistry.registerMeltRecipeOreDict(PLATE_THIN_LEAD, liquidLead, 6);
+
+        CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(PipeBlocks.Blocks.BRASS_PIPE.getBlock()), liquidBrass, 54);
+        CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(PipeBlocks.Blocks.COPPER_PIPE.getBlock()), liquidCopper, 54);
     }
 
     @Override
@@ -129,5 +133,8 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
         CrucibleRegistry.registerMeltRecipeOreDict(DUST_COPPER, Liquids.COPPER_LIQUID.getLiquid(), 9);
         CrucibleRegistry.registerMeltRecipeOreDict(DUST_BRASS, Liquids.BRASS_LIQUID.getLiquid(), 9);
         CrucibleRegistry.registerMeltRecipeOreDict(DUST_LEAD, Liquids.LEAD_LIQUID.getLiquid(), 9);
+
+        CrucibleRegistry.pipeLiquids.put(Liquids.BRASS_LIQUID.getLiquid(), new ItemStack(PipeBlocks.Blocks.BRASS_PIPE.getBlock()));
+        CrucibleRegistry.pipeLiquids.put(Liquids.COPPER_LIQUID.getLiquid(), new ItemStack(PipeBlocks.Blocks.COPPER_PIPE.getBlock()));
     }
 }

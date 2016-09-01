@@ -28,6 +28,11 @@ public class CrucibleRegistry {
     public static HashMap<Tuple3, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
 
     /**
+     * All of the CrucibleLiquids that can be cast into pipes, and their according pipe ItemStacks
+     */
+    public static HashMap<CrucibleLiquid, ItemStack> pipeLiquids = new HashMap<>();
+
+    /**
      * Gets the given CrucibleLiquid from the name.
      * @param name The liquid's name.
      * @return Null if it cannot find that liquid, otherwise, the liquid.

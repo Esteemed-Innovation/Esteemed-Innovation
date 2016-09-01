@@ -1,24 +1,26 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.item.ItemIngotMold;
 import eiteam.esteemedinnovation.item.ItemNuggetMold;
+import eiteam.esteemedinnovation.item.ItemPipeMold;
 import eiteam.esteemedinnovation.item.ItemPlateMold;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static net.minecraft.init.Items.*;
+import static net.minecraft.init.Items.BRICK;
 
 public class MetalcastingItems implements IInitCategory {
     public enum Items {
         INGOT_MOLD(new ItemIngotMold(), "ingot_mold", false),
         NUGGET_MOLD(new ItemNuggetMold(), "nugget_mold", false),
         PLATE_MOLD(new ItemPlateMold(), "plate_mold", false),
+        PIPE_MOLD(new ItemPipeMold(), "pipe_mold", false),
         BLANK_MOLD(new Item(), "blank_mold", true);
 
         private Item item;
