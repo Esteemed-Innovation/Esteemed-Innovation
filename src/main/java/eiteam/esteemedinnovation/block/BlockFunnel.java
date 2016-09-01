@@ -55,4 +55,9 @@ public class BlockFunnel extends Block {
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityFunnel();
     }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 }
