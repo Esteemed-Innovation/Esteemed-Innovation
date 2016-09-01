@@ -550,7 +550,6 @@ public class EsteemedInnovationJournal {
 
         BookPageRegistry.addResearch("research.Pipe.name", "category.SteamPower.name",
           new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE.getBlock())),
-          new BookPageCrafting("", "pipe1", "pipe2"),
           new BookPageText("research.Pipe.name", "research.Pipe.1"),
           new BookPageCrafting("", "valvePipe"));
 
