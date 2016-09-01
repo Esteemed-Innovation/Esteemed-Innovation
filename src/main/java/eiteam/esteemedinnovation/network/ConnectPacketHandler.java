@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 
 public class ConnectPacketHandler implements IMessageHandler<ConnectPacket, IMessage> {
     @Override

@@ -1,17 +1,13 @@
 package eiteam.esteemedinnovation.init.items.tools;
 
-import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
 import eiteam.esteemedinnovation.handler.CanisterHandler;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
 import eiteam.esteemedinnovation.item.ItemAstrolabe;
@@ -19,9 +15,13 @@ import eiteam.esteemedinnovation.item.ItemEsteemedInnovationJournal;
 import eiteam.esteemedinnovation.item.ItemSteamCell;
 import eiteam.esteemedinnovation.item.ItemWrench;
 import eiteam.esteemedinnovation.item.tool.ItemSpyglass;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import static net.minecraft.init.Items.*;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Items.*;
 
 public class GadgetItems implements IInitCategory {
     public enum Items {
@@ -179,7 +179,7 @@ public class GadgetItems implements IInitCategory {
                         " p ",
                         "i i",
                         "i i",
-                        'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                        'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                         'i', PLATE_THIN_IRON
                       ));
                     break;

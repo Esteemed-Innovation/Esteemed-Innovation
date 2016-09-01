@@ -21,7 +21,7 @@ import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.handler.GenericTickHandler;
 import eiteam.esteemedinnovation.handler.PhobicCoatingHandler;
 import eiteam.esteemedinnovation.init.blocks.BlockCategories;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.ItemCategories;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolItems;
@@ -31,6 +31,9 @@ import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
 import eiteam.esteemedinnovation.network.*;
 import eiteam.esteemedinnovation.tile.*;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityColdFluidPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import eiteam.esteemedinnovation.world.ComponentSteamWorkshop;
 import eiteam.esteemedinnovation.world.ExtraDimensionalOreGenerator;
 import eiteam.esteemedinnovation.world.SteamWorkshopCreationHandler;
@@ -180,7 +183,8 @@ public class EsteemedInnovation {
         registerTileEntity(TileEntityCrucible.class, "crucible");
         registerTileEntity(TileEntityMold.class, "mold");
         registerTileEntity(TileEntityBoiler.class, "boiler");
-        registerTileEntity(TileEntitySteamPipe.class, "pipe");
+        registerTileEntity(TileEntitySteamPipe.class, "brass_pipe");
+        registerTileEntity(TileEntityColdFluidPipe.class, "copper_pipe");
         registerTileEntity(TileEntityValvePipe.class, "valvePipe");
 
         registerTileEntity(TileEntitySteamHeater.class, "heater");
@@ -265,7 +269,7 @@ public class EsteemedInnovation {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         if (Config.enablePipe) {
-            MinecraftForge.EVENT_BUS.register(SteamNetworkBlocks.Blocks.PIPE.getBlock());
+            MinecraftForge.EVENT_BUS.register(PipeBlocks.Blocks.BRASS_PIPE.getBlock());
         }
 
         EsteemedInnovationJournal.registerBookResearch();

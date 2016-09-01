@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.util.Coord4;
 import eiteam.esteemedinnovation.api.util.SPLog;
-import eiteam.esteemedinnovation.tile.TileEntityValvePipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.world;
 
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.FoodItems;
@@ -137,7 +138,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
         int z = this.getZWithOffset(1, 4);
         populateBoiler(world, x, y, z);
 
-        IBlockState PIPE_STATE = SteamNetworkBlocks.Blocks.PIPE.getBlock().getDefaultState();
+        IBlockState PIPE_STATE = PipeBlocks.Blocks.BRASS_PIPE.getBlock().getDefaultState();
         setBlockState(world, PIPE_STATE, 1, 2, 4, sbb);
         setBlockState(world, PIPE_STATE, 2, 2, 4, sbb);
         setBlockState(world, PIPE_STATE, 3, 2, 4, sbb);

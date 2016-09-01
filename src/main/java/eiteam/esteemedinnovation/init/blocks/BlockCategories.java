@@ -6,6 +6,7 @@ public enum BlockCategories {
     METAL_BLOCKS(new MetalBlocks()),
     CASTING_BLOCKS(new CastingBlocks()),
     STEAM_NETWORK_BLOCKS(new SteamNetworkBlocks()),
+    PIPE_BLOCKS(new PipeBlocks()),
     STEAM_MACHINERY(new SteamMachineryBlocks()),
     MISCELLANEOUS(new MiscellaneousBlocks());
 

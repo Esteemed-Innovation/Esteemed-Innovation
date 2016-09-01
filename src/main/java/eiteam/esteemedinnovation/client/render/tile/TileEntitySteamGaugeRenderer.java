@@ -6,7 +6,7 @@ import eiteam.esteemedinnovation.block.BlockSteamGauge;
 import eiteam.esteemedinnovation.client.render.RenderUtility;
 import eiteam.esteemedinnovation.tile.TileEntitySteamCharger;
 import eiteam.esteemedinnovation.tile.TileEntitySteamGauge;
-import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

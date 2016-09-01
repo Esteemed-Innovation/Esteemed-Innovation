@@ -1,9 +1,9 @@
-package eiteam.esteemedinnovation.tile;
+package eiteam.esteemedinnovation.tile.pipe;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
-import eiteam.esteemedinnovation.block.BlockValvePipe;
+import eiteam.esteemedinnovation.block.pipe.BlockValvePipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

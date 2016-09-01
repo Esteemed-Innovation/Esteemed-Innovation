@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
 import eiteam.esteemedinnovation.block.BlockWhistle;
 import eiteam.esteemedinnovation.client.audio.ISoundTile;
 import eiteam.esteemedinnovation.client.audio.SoundTile;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;

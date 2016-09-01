@@ -1,6 +1,6 @@
-package eiteam.esteemedinnovation.block;
+package eiteam.esteemedinnovation.block.pipe;
 
-import eiteam.esteemedinnovation.tile.TileEntityValvePipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.properties.PropertyBool;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockValvePipe extends BlockPipe {
+public class BlockValvePipe extends BlockSteamPipe {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
 
     // The actual states used to determine connection sides.

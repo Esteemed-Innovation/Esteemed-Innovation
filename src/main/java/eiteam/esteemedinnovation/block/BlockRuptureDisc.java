@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.tile.TileEntityRuptureDisc;
-import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;

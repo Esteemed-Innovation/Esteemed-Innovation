@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.block.*;
+import eiteam.esteemedinnovation.block.pipe.BlockValvePipe;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
 
@@ -22,7 +23,6 @@ import static net.minecraft.init.Items.COMPASS;
 public class SteamNetworkBlocks implements IInitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
-        PIPE(new BlockPipe(), "pipe"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
         TANK(new BlockSteamTank(), "steam_tank", true),
         STEAM_GAUGE(new BlockSteamGauge(), "steam_gauge"),
@@ -61,11 +61,8 @@ public class SteamNetworkBlocks implements IInitCategory {
                 case BOILER: {
                     return Config.enableBoiler;
                 }
-                case PIPE: {
-                    return Config.enablePipe;
-                }
                 case VALVE_PIPE: {
-                    return PIPE.isEnabled() && Config.enableValvePipe;
+                    return Config.enableValvePipe;
                 }
                 case TANK: {
                     return Config.enableTank;
@@ -117,24 +114,9 @@ public class SteamNetworkBlocks implements IInitCategory {
                     ));
                     break;
                 }
-                case PIPE: {
-                    BookRecipeRegistry.addRecipe("pipe1", new ShapedOreRecipe(block.getBlock(),
-                      "xxx",
-                      "   ",
-                      "xxx",
-                      'x', INGOT_BRASS
-                    ));
-                    BookRecipeRegistry.addRecipe("pipe2", new ShapedOreRecipe(block.getBlock(),
-                      "xxx",
-                      "   ",
-                      "xxx",
-                      'x', PLATE_THIN_BRASS
-                    ));
-                    break;
-                }
                 case VALVE_PIPE: {
                     BookRecipeRegistry.addRecipe("valvePipe", new ShapelessOreRecipe(block.getBlock(),
-                      Blocks.PIPE.getBlock(), LEVER));
+                      PipeBlocks.Blocks.BRASS_PIPE.getBlock(), LEVER));
                     break;
                 }
                 case TANK: {
@@ -168,7 +150,7 @@ public class SteamNetworkBlocks implements IInitCategory {
                       "pp ",
                       'n', NUGGET_BRASS,
                       'b', PLATE_THIN_BRASS,
-                      'p', Blocks.PIPE.getBlock()
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock()
                     ));
                     BookRecipeRegistry.addRecipe("whistle2", new ShapedOreRecipe(block.getBlock(),
                       " bb",
@@ -176,7 +158,7 @@ public class SteamNetworkBlocks implements IInitCategory {
                       "pp ",
                       'n', NUGGET_BRASS,
                       'b', INGOT_BRASS,
-                      'p', Blocks.PIPE.getBlock()
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock()
                     ));
                     break;
                 }
@@ -199,7 +181,7 @@ public class SteamNetworkBlocks implements IInitCategory {
                       "xlx",
                       'x', "ingotBrass",
                       'l', LEATHER_ORE,
-                      'p', Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       'g', PANE_GLASS_COLORLESS
                     ));
                     BookRecipeRegistry.addRecipe("fsc1", new ShapedOreRecipe(block.getBlock(),
@@ -208,7 +190,7 @@ public class SteamNetworkBlocks implements IInitCategory {
                       "xlx",
                       'x', PLATE_THIN_BRASS,
                       'l', LEATHER_ORE,
-                      'p', Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       'g', PANE_GLASS_COLORLESS
                     ));
                     break;

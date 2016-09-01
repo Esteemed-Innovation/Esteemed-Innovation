@@ -1,31 +1,32 @@
 package eiteam.esteemedinnovation.init.items.armor;
 
+import eiteam.esteemedinnovation.Config;
+import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
+import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
+import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
+import eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems;
+import eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids;
+import eiteam.esteemedinnovation.item.ItemTank;
+import eiteam.esteemedinnovation.item.armor.exosuit.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
-import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems;
-import eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids;
-import eiteam.esteemedinnovation.item.ItemTank;
-import eiteam.esteemedinnovation.item.armor.exosuit.*;
 
-import static net.minecraft.init.Items.*;
-import static net.minecraft.init.Blocks.*;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Items.*;
 
 public class ExosuitUpgradeItems implements IInitCategory {
     public enum Items {
@@ -249,7 +250,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                       "p p",
                       "ptg",
                       "p p",
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       'g', SteamNetworkBlocks.Blocks.STEAM_GAUGE.getBlock(),
                       't', INGOT_BRASS
                     ));
@@ -257,7 +258,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                       "p p",
                       "ptg",
                       "p p",
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       'g', SteamNetworkBlocks.Blocks.STEAM_GAUGE.getBlock(),
                       't', PLATE_THIN_BRASS
                     ));
@@ -321,7 +322,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                       "tnt",
                       "ptp",
                       "tnt",
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', INGOT_BRASS,
                       'n', NUGGET_BRASS
                     ));
@@ -329,7 +330,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
                       "tnt",
                       "ptp",
                       "tnt",
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', PLATE_THIN_BRASS,
                       'n', NUGGET_BRASS
                     ));

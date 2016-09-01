@@ -4,9 +4,8 @@ import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.item.ItemCraftingComponent;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -62,7 +61,7 @@ public class CraftingComponentItems implements IInitCategory {
                       " i ",
                       'x', INGOT_BRASS,
                       'p', PISTON,
-                      'i', SteamNetworkBlocks.Blocks.PIPE.getBlock()
+                      'i', PipeBlocks.Blocks.BRASS_PIPE.getBlock()
                     ));
                     BookRecipeRegistry.addRecipe("piston2", new ShapedOreRecipe(item.createItemStack(),
                       " x ",
@@ -70,7 +69,7 @@ public class CraftingComponentItems implements IInitCategory {
                       " i ",
                       'x', PLATE_THIN_BRASS,
                       'p', PISTON,
-                      'i', SteamNetworkBlocks.Blocks.PIPE.getBlock()
+                      'i', PipeBlocks.Blocks.BRASS_PIPE.getBlock()
                     ));
                     break;
                 }

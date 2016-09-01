@@ -1,11 +1,11 @@
-package eiteam.esteemedinnovation.tile;
+package eiteam.esteemedinnovation.tile.pipe;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.block.BlockPipe;
+import eiteam.esteemedinnovation.block.pipe.BlockSteamPipe;
 import eiteam.esteemedinnovation.network.ConnectPacket;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
@@ -125,15 +125,15 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     Supersuper methods for bypassing TileEntitySteamPipe's behavior.
     TODO: Create a base TileEntityPipe class for TileEntitySteamPipe (this), TileEntityValvePipe, and TileEntitySteamHeater to inherit.
      */
-   void superUpdate() {
+    protected void superUpdate() {
         super.update();
    }
 
-    NBTTagCompound superWriteToNBT(NBTTagCompound access) {
+    protected NBTTagCompound superWriteToNBT(NBTTagCompound access) {
         return super.writeToNBT(access);
     }
 
-    void superReadFromNBT(NBTTagCompound access) {
+    protected void superReadFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
     }
 
@@ -319,18 +319,18 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     }
 
     public void addTraceableCuboids(List<IndexedCuboid6> cuboids) {
-        float min = BlockPipe.BASE_MIN;
-        float max = BlockPipe.BASE_MAX;
+        float min = BlockSteamPipe.BASE_MIN;
+        float max = BlockSteamPipe.BASE_MAX;
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
         IBlockState actualState = worldObj.getBlockState(pos).getActualState(worldObj, pos);
-        boolean hasDown = actualState.getValue(BlockPipe.DOWN);
-        boolean hasUp = actualState.getValue(BlockPipe.UP);
-        boolean hasNorth = actualState.getValue(BlockPipe.NORTH);
-        boolean hasSouth = actualState.getValue(BlockPipe.SOUTH);
-        boolean hasWest = actualState.getValue(BlockPipe.WEST);
-        boolean hasEast = actualState.getValue(BlockPipe.EAST);
+        boolean hasDown = actualState.getValue(BlockSteamPipe.DOWN);
+        boolean hasUp = actualState.getValue(BlockSteamPipe.UP);
+        boolean hasNorth = actualState.getValue(BlockSteamPipe.NORTH);
+        boolean hasSouth = actualState.getValue(BlockSteamPipe.SOUTH);
+        boolean hasWest = actualState.getValue(BlockSteamPipe.WEST);
+        boolean hasEast = actualState.getValue(BlockSteamPipe.EAST);
         int numDirs = getMyDirections().size();
         if (shouldStretchInDirection(hasDown, hasUp, numDirs)) {
             int connectDown = canConnectSide(EnumFacing.DOWN);
@@ -401,7 +401,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         // If hit a part from 0 to 5 (direction) and hit me
 
         IBlockState state = world.getBlockState(pos);
-        if ((subHit >= 0) && (subHit < 6) && state instanceof BlockPipe) {
+        if ((subHit >= 0) && (subHit < 6) && state instanceof BlockSteamPipe) {
             //Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
             int sidesConnect = 0;
             for (int i = 0; i < 6; i++) {

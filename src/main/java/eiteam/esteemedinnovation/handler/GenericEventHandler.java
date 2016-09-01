@@ -1675,7 +1675,7 @@ public class GenericEventHandler {
         TileEntity tile = world.getTileEntity(pos);
         ItemStack held = player.getHeldItem(player.getActiveHand());
         if (player.isSneaking() && ((tile != null && tile instanceof IDisguisableBlock) ||
-          block == SteamNetworkBlocks.Blocks.PIPE.getBlock()) && held != null &&
+          block == PipeBlocks.Blocks.BRASS_PIPE.getBlock()) && held != null &&
           held.getItem() instanceof ItemBlock) {
             Block block1 = Block.getBlockFromItem(held.getItem());
             if (!(block1 instanceof BlockContainer) && !(block1 instanceof ITileEntityProvider) &&

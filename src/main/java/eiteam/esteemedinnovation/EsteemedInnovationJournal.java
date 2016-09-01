@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static eiteam.esteemedinnovation.init.blocks.PipeBlocks.Blocks.BRASS_PIPE;
 import static eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks.Blocks.*;
 import static eiteam.esteemedinnovation.init.blocks.OreBlocks.Blocks.*;
 import static eiteam.esteemedinnovation.init.blocks.CastingBlocks.Blocks.*;
@@ -98,7 +99,7 @@ public class EsteemedInnovationJournal {
             "research.SteamSystem.name",
             "research.SteamSystem.0",
             new ItemStack(BOILER.getBlock(), 1, 0),
-            new ItemStack(PIPE.getBlock(), 1, 0)
+            new ItemStack(BRASS_PIPE.getBlock(), 1, 0)
           ),
           new BookPageText("research.SteamSystem.name", "research.SteamSystem.1"),
           new BookPageText("research.SteamSystem.name", "research.SteamSystem.2"),
@@ -113,7 +114,7 @@ public class EsteemedInnovationJournal {
           new BookPageItem(
             "research.Camouflage.name",
             "research.Camouflage.0",
-            new ItemStack(PIPE.getBlock()),
+            new ItemStack(BRASS_PIPE.getBlock()),
             new ItemStack(Blocks.STONEBRICK)),
           new BookPageText("research.Camouflage.name", "research.Camouflage.1")
         );
@@ -548,7 +549,7 @@ public class EsteemedInnovationJournal {
           new BookPageCrafting("", "boiler1", "boiler2"));
 
         BookPageRegistry.addResearch("research.Pipe.name", "category.SteamPower.name",
-          new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(PIPE.getBlock())),
+          new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE.getBlock())),
           new BookPageCrafting("", "pipe1", "pipe2"),
           new BookPageText("research.Pipe.name", "research.Pipe.1"),
           new BookPageCrafting("", "valvePipe"));

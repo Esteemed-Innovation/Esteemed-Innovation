@@ -1,5 +1,9 @@
 package eiteam.esteemedinnovation.data.village;
 
+import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
+import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
+import eiteam.esteemedinnovation.init.items.MetalItems;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -7,11 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
-
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
-import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.init.items.MetalItems;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +20,7 @@ public class SteamEngineerCareer extends VillagerRegistry.VillagerCareer {
     private static ItemStack BRASS_PLATE = MetalItems.Items.BRASS_PLATE.createItemStack();
     private static ItemStack TURBINE = CraftingComponentItems.Items.BRASS_TURBINE.createItemStack();
     private static ItemStack PISTON = CraftingComponentItems.Items.BRASS_PISTON.createItemStack();
-    private static Item PIPE = Item.getItemFromBlock(SteamNetworkBlocks.Blocks.PIPE.getBlock());
+    private static Item PIPE = Item.getItemFromBlock(PipeBlocks.Blocks.BRASS_PIPE.getBlock());
     private static final Random RANDOM = new Random();
 
     public SteamEngineerCareer() {

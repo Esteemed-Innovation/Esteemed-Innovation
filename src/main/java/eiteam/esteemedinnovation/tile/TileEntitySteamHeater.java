@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.block.BlockSteamHeater;
 
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

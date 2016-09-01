@@ -12,7 +12,7 @@ import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
-import static eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks.Blocks.PIPE;
+import static eiteam.esteemedinnovation.init.blocks.PipeBlocks.Blocks.BRASS_PIPE;
 import static net.minecraft.init.Blocks.*;
 
 public class SteamMachineryBlocks implements IInitCategory {
@@ -70,7 +70,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                     return Config.enableSmasher;
                 }
                 case STEAM_HEATER: {
-                    return Config.enableHeater && SteamNetworkBlocks.Blocks.PIPE.isEnabled();
+                    return Config.enableHeater;
                 }
                 case FILLING_PAD: {
                     return Config.enableChargingPad && STEAM_FILLER.isEnabled();
@@ -170,7 +170,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       'x', INGOT_BRASS,
                       'c', NUGGET_COPPER,
                       'f', FURNACE,
-                      'p', PIPE.getBlock()
+                      'p', BRASS_PIPE.getBlock()
                     ));
                     BookRecipeRegistry.addRecipe("heater2", new ShapedOreRecipe(block.getBlock(),
                       "ccc",
@@ -179,7 +179,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       'x', PLATE_THIN_BRASS,
                       'c', NUGGET_COPPER,
                       'f', FURNACE,
-                      'p', PIPE.getBlock()
+                      'p', BRASS_PIPE.getBlock()
                     ));
                     break;
                 }
@@ -189,7 +189,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "pcp",
                       "pbp",
                       'c', Blocks.STEAM_FILLER.getBlock(),
-                      'p', PIPE.getBlock(),
+                      'p', BRASS_PIPE.getBlock(),
                       'b', INGOT_BRASS
                     ));
                     BookRecipeRegistry.addRecipe("fillingPad2", new ShapedOreRecipe(block.getBlock(),
@@ -197,7 +197,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "pcp",
                       "pbp",
                       'c', Blocks.STEAM_FILLER.getBlock(),
-                      'p', PIPE.getBlock(),
+                      'p', BRASS_PIPE.getBlock(),
                       'b', PLATE_THIN_BRASS
                     ));
                     break;
@@ -208,7 +208,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "xpx",
                       "xpx",
                       'x', COBBLESTONE_ORE,
-                      'p', PIPE.getBlock()
+                      'p', BRASS_PIPE.getBlock()
                     ));
                     break;
                 }
@@ -271,7 +271,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "xix",
                       'i', BLOCK_IRON,
                       'b', BLOCK_BRASS,
-                      'e', PIPE.getBlock(),
+                      'e', BRASS_PIPE.getBlock(),
                       'p', CraftingComponentItems.Items.BRASS_PISTON.createItemStack(),
                       'x', PLATE_THIN_BRASS
                     ));
@@ -281,7 +281,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "xix",
                       'i', BLOCK_IRON,
                       'b', BLOCK_BRASS,
-                      'e', PIPE.getBlock(),
+                      'e', BRASS_PIPE.getBlock(),
                       'p', CraftingComponentItems.Items.BRASS_PISTON.createItemStack(),
                       'x', INGOT_BRASS
                     ));
@@ -312,7 +312,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "pfx",
                       " x ",
                       'x', INGOT_BRASS,
-                      'p', PIPE.getBlock(),
+                      'p', BRASS_PIPE.getBlock(),
                       'f', Blocks.FAN.getBlock()
                     ));
                     BookRecipeRegistry.addRecipe("vacuum2", new ShapedOreRecipe(block.getBlock(),
@@ -320,7 +320,7 @@ public class SteamMachineryBlocks implements IInitCategory {
                       "pfx",
                       " x ",
                       'x', PLATE_THIN_BRASS,
-                      'p', PIPE.getBlock(),
+                      'p', BRASS_PIPE.getBlock(),
                       'f', Blocks.FAN.getBlock()
                     ));
                     break;

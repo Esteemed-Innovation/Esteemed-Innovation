@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.client.render.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.block.BlockValvePipe;
+import eiteam.esteemedinnovation.block.pipe.BlockValvePipe;
 import eiteam.esteemedinnovation.client.render.RenderUtility;
-import eiteam.esteemedinnovation.tile.TileEntityValvePipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

@@ -1,8 +1,8 @@
-package eiteam.esteemedinnovation.block;
+package eiteam.esteemedinnovation.block.pipe;
 
 import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import net.minecraft.block.material.Material;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
-public class BlockPipe extends BlockSteamTransporter {
+public class BlockSteamPipe extends BlockSteamTransporter {
     public static final float BASE_MIN = 4F / 16F;
     public static final float BASE_MAX = 12F / 16F;
 
@@ -40,7 +40,7 @@ public class BlockPipe extends BlockSteamTransporter {
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
-    public BlockPipe() {
+    public BlockSteamPipe() {
         super(Material.IRON);
         setHardness(2.5F);
         setResistance(5F);
@@ -242,7 +242,7 @@ public class BlockPipe extends BlockSteamTransporter {
         RayTraceResult rtr = event.getTarget();
         BlockPos rtrPos = rtr.getBlockPos();
         if (rtr.typeOfHit == RayTraceResult.Type.BLOCK &&
-          player.worldObj.getBlockState(rtr.getBlockPos()).getBlock() instanceof BlockPipe &&
+          player.worldObj.getBlockState(rtr.getBlockPos()).getBlock() instanceof BlockSteamPipe &&
           equipped instanceof IPipeWrench) {
             IPipeWrench wrench = (IPipeWrench) equipped;
             if (wrench.canWrench(player, rtrPos)) {

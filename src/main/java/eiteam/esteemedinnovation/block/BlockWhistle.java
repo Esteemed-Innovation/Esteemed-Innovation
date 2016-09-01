@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.tile.TileEntitySteamPipe;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import eiteam.esteemedinnovation.tile.TileEntityWhistle;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;

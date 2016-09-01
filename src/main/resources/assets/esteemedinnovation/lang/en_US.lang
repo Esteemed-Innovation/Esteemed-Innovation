@@ -659,7 +659,6 @@ tile.esteemedinnovation:charging_pad.name=Filling Pad
 tile.esteemedinnovation:crucible.name=Crucible
 tile.esteemedinnovation:hell_crucible.name=Nether Crucible
 tile.esteemedinnovation:mold.name=Mold
-tile.esteemedinnovation:pipe.name=Pipe
 tile.esteemedinnovation:valve_pipe.name=Valve Pipe
 tile.esteemedinnovation:boiler.name=Boiler
 tile.esteemedinnovation:boiler_on.name=Boiler
@@ -697,3 +696,6 @@ tile.esteemedinnovation:funnel.name=Funnel
 esteemedinnovation.research.sneakforlist=Sneak to view your keywords
 item.esteemedinnovation:soil_sampling_kit.name=Soil Sampling Kit
 item.esteemedinnovation:research_log_biome.name=Biome Log
+
+tile.esteemedinnovation:brass_pipe.name=Brass Pipe
+tile.esteemedinnovation:copper_pipe.name=Copper Pipe

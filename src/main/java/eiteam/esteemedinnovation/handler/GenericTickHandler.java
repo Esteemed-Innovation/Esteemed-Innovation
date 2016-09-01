@@ -5,22 +5,22 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.client.ClientProxy;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
-import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.item.ItemSteamCell;
+import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.misc.ItemStackUtility;
 import eiteam.esteemedinnovation.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -168,7 +168,7 @@ public class GenericTickHandler {
                 if (pos != null) {
                     BlockPos blockPos = pos.getBlockPos();
                     TileEntity te = mc.theWorld.getTileEntity(blockPos);
-                    if (mc.theWorld.getBlockState(blockPos).getBlock() == SteamNetworkBlocks.Blocks.PIPE.getBlock() ||
+                    if (mc.theWorld.getBlockState(blockPos).getBlock() == PipeBlocks.Blocks.BRASS_PIPE.getBlock() ||
                       (te != null && te instanceof IDisguisableBlock)) {
                         CamoPacket packet = new CamoPacket(blockPos);
                         EsteemedInnovation.channel.sendToServer(packet);

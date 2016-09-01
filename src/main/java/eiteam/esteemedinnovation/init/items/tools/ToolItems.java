@@ -1,20 +1,20 @@
 package eiteam.esteemedinnovation.init.items.tools;
 
+import eiteam.esteemedinnovation.Config;
+import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
+import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
+import eiteam.esteemedinnovation.item.tool.*;
+import eiteam.esteemedinnovation.item.tool.steam.ItemSteamAxe;
+import eiteam.esteemedinnovation.item.tool.steam.ItemSteamDrill;
+import eiteam.esteemedinnovation.item.tool.steam.ItemSteamShovel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
-import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.tool.*;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamAxe;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamDrill;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamShovel;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
@@ -95,7 +95,7 @@ public class ToolItems implements IInitCategory {
                       "xpx",
                       'x', INGOT_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("drill2", new ShapedOreRecipe(out,
@@ -104,7 +104,7 @@ public class ToolItems implements IInitCategory {
                       "xpx",
                       'x', PLATE_THIN_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("drill3", new ShapedOreRecipe(out,
@@ -113,7 +113,7 @@ public class ToolItems implements IInitCategory {
                       "xpx",
                       'x', INGOT_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("drill4", new ShapedOreRecipe(out,
@@ -122,7 +122,7 @@ public class ToolItems implements IInitCategory {
                       "xpx",
                       'x', PLATE_THIN_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     break;
@@ -135,7 +135,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', INGOT_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack(),
                       'n', NUGGET_IRON
                     ));
@@ -145,7 +145,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', PLATE_THIN_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack(),
                       'n', NUGGET_IRON
                     ));
@@ -155,7 +155,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', INGOT_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack(),
                       'n', NUGGET_IRON
                     ));
@@ -165,7 +165,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', PLATE_THIN_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack(),
                       'n', NUGGET_IRON
                     ));
@@ -179,7 +179,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', INGOT_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("shovel2", new ShapedOreRecipe(out,
@@ -188,7 +188,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', PLATE_THIN_BRASS,
                       'i', INGOT_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("shovel3", new ShapedOreRecipe(out,
@@ -197,7 +197,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', INGOT_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     BookRecipeRegistry.addRecipe("shovel4", new ShapedOreRecipe(out,
@@ -206,7 +206,7 @@ public class ToolItems implements IInitCategory {
                       "xpi",
                       'x', PLATE_THIN_BRASS,
                       'i', PLATE_THIN_IRON,
-                      'p', SteamNetworkBlocks.Blocks.PIPE.getBlock(),
+                      'p', PipeBlocks.Blocks.BRASS_PIPE.getBlock(),
                       't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack()
                     ));
                     break;

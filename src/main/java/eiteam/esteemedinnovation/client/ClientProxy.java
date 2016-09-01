@@ -39,6 +39,7 @@ import eiteam.esteemedinnovation.item.ItemSmashedOre;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.misc.PlayerController;
 import eiteam.esteemedinnovation.tile.*;
+import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -157,7 +158,7 @@ public class ClientProxy extends CommonProxy {
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 1, "is_creative=true");
-        registerModel(SteamNetworkBlocks.Blocks.PIPE.getBlock());
+        registerModel(PipeBlocks.Blocks.BRASS_PIPE.getBlock());
         ModelLoader.setCustomStateMapper(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock(), new StateMapperValvePipe());
         registerModel(SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock());
         registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 0));

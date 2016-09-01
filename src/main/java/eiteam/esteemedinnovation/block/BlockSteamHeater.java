@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.block.pipe.BlockSteamPipe;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHeater;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
@@ -22,9 +23,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class BlockSteamHeater extends BlockPipe implements IWrenchable {
+public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
-    // Actual states taken from BlockPipe
+    // Actual states taken from BlockSteamPipe
     public static final PropertyBool NORTH = PropertyBool.create("north");
     public static final PropertyBool EAST = PropertyBool.create("east");
     public static final PropertyBool SOUTH = PropertyBool.create("south");
