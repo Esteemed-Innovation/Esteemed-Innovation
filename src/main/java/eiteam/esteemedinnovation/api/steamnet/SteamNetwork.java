@@ -9,6 +9,7 @@ import eiteam.esteemedinnovation.tile.pipe.TileEntityValvePipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -213,7 +214,17 @@ public class SteamNetwork {
 
     public float getPressure() {
         if (capacity > 0) {
-            return (float) getSteam() / (float) getCapacity();
+            float altitudePressureModifier = 1F;
+            if (transporters != null) {
+                int totalY = 0;
+                for (Coord4 coord : transporters.keySet()) {
+                    totalY += coord.pos.getY();
+                }
+                int averageY = MathHelper.ceiling_float_int((float) totalY / (float) transporters.size());
+                int networkAltitude = 64 - averageY;
+                altitudePressureModifier = (float) -(Math.sqrt(Math.abs((float) networkAltitude / 100F))) + 1;
+            }
+            return ((float) getSteam() / (float) getCapacity()) * altitudePressureModifier;
         }
         return 0;
 
