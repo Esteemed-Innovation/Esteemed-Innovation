@@ -81,6 +81,6 @@ public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
-//        collidingBoxes.add(FULL_BLOCK_AABB);
+        super.superAddCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
     }
 }

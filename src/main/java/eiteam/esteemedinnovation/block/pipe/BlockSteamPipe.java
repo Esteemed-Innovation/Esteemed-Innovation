@@ -251,6 +251,10 @@ public class BlockSteamPipe extends BlockSteamTransporter {
         }
     }
 
+    protected void superAddCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
+        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
+    }
+
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
         TileEntity tile = world.getTileEntity(pos);

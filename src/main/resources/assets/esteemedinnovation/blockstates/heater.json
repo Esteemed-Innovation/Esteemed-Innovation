@@ -25,53 +25,53 @@
       "apply": { "model": "esteemedinnovation:heater", "x": 90 }
     },
     {
-      "apply": { "model": "esteemedinnovation:pipe_center" }
+      "apply": { "model": "esteemedinnovation:brass_pipe_center" }
     },
     {
       "when": { "north": false, "south": false, "east": false, "west": false, "up": false, "down": false},
-      "apply": { "model": "esteemedinnovation:pipe_no_connections" }
+      "apply": { "model": "esteemedinnovation:brass_pipe_no_connections" }
     },
     {
       "when": { "OR": [
         { "north": true },
         { "north": false, "south": true, "east": false, "west": false, "up": false, "down": false }
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection" }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection" }
     },
     {
       "when": { "OR": [
         { "east": true },
         { "east": false, "west": true, "north": false, "south": false, "up": false, "down": false }
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection", "y": 90 }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 90 }
     },
     {
       "when": { "OR": [
         { "south": true },
         { "south": false, "north": true, "east": false, "west": false, "up": false, "down": false }
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection", "y": 180 }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 180 }
     },
     {
       "when": { "OR": [
         { "west": true },
         { "west": false, "east": true, "north": false, "south": false, "up": false, "down": false }
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection", "y": 270 }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 270 }
     },
     {
       "when": { "OR": [
         { "up": true },
         { "up": false, "down": true, "north": false, "south": false, "east": false, "west": false}
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection", "x": 270 }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection", "x": 270 }
     },
     {
       "when": { "OR": [
         { "down": true },
         { "down": false, "up": true, "north": false, "south": false, "east": false, "west": false }
       ] },
-      "apply": { "model": "esteemedinnovation:pipe_connection", "x": 90 }
+      "apply": { "model": "esteemedinnovation:brass_pipe_connection", "x": 90 }
     }
   ]
 }
