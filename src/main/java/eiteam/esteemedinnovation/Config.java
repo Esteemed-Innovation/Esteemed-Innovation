@@ -71,7 +71,7 @@ public class Config {
     public static boolean enableAnchorAnvilRecipe;
     public static int mortarRadius;
     public static boolean expensiveMusketRecipes;
-    public static int chance;
+    public static int smasherDoubleChance;
     public static boolean dropItem;
     public static int duplicateLogs;
     public static int exoConsumption;
@@ -290,7 +290,7 @@ public class Config {
 
         // MACHINES
         mortarRadius = config.get("Machines", "Item Mortar accuracy (radius in blocks)", 2).getInt();
-        chance = config.get("Machines", "Chance of double drops from Rock Smasher (1 in X)", 4).getInt();
+        smasherDoubleChance = config.get("Machines", "Chance of double drops from Rock Smasher (%)", 75).getInt();
         duplicateLogs = config.get("Machines", "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
         dropItem = config.get("Machines", "Thumper drops items (may lag servers)", true).getBoolean();
 

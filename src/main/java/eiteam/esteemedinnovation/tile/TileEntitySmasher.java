@@ -3,13 +3,12 @@ package eiteam.esteemedinnovation.tile;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.block.BlockSmasher;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -356,7 +355,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
                     worldObj.spawnEntityInWorld(entityItem);
                 } else {
                     // Ore doubling
-                    if (worldObj.rand.nextInt(Config.chance) == 0) {
+                    if (worldObj.rand.nextInt(100) >= Config.smasherDoubleChance) {
                         output.stackSize *= 2;
                     }
                     EntityItem entityItem = new EntityItem(worldObj, x, y, z, output);

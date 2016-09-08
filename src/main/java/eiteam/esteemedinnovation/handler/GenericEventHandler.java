@@ -1817,7 +1817,7 @@ public class GenericEventHandler {
             if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT.getItem())) {
                 ItemStack out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta));
                 if (out != null) {
-                    if (rand.nextInt(Config.chance) == 0) {
+                    if (rand.nextInt(100) >= Config.smasherDoubleChance) {
                         out.stackSize *= 2;
                     }
                     for (int i = 0; i < event.getDrops().size(); i++) {
