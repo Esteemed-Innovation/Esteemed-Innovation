@@ -3,10 +3,10 @@ package eiteam.esteemedinnovation.tile;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.block.BlockFan;
 import eiteam.esteemedinnovation.misc.MathUtility;
 import net.minecraft.block.Block;
@@ -222,15 +222,19 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void displayWrench(Post event) {
+    public static void rangeDisplay(Post event, int range) {
         GL11.glPushMatrix();
         Minecraft mc =  Minecraft.getMinecraft();
         int color = mc.thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
-        mc.fontRendererObj.drawStringWithShadow(I18n.format("esteemedinnovation.fan.range") + " " + range + " " + I18n.format("esteemedinnovation.fan.blocks"), x + 15, y + 13, color);
+        mc.fontRendererObj.drawStringWithShadow(I18n.format("esteemedinnovation.fan.range", range), x + 15, y + 13, color);
         GL11.glPopMatrix();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void displayWrench(Post event) {
+        rangeDisplay(event, range);
     }
 }

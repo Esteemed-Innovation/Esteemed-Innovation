@@ -9,8 +9,6 @@ import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.block.BlockVacuum;
 import eiteam.esteemedinnovation.misc.MathUtility;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +29,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 import java.util.List;
@@ -330,13 +327,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     @SideOnly(Side.CLIENT)
     @Override
     public void displayWrench(Post event) {
-        GL11.glPushMatrix();
-        Minecraft mc = Minecraft.getMinecraft();
-        int color = mc.thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
-        int x = event.getResolution().getScaledWidth() / 2 - 8;
-        int y = event.getResolution().getScaledHeight() / 2 - 8;
-        mc.fontRendererObj.drawStringWithShadow(I18n.format("esteemedinnovation.fan.range") + " " + range + " " +
-          I18n.format("esteemedinnovation.fan.blocks"), x + 15, y  +13, color);
-        GL11.glPopMatrix();
+        TileEntityFan.rangeDisplay(event, range);
     }
 }

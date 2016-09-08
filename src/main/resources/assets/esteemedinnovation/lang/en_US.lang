@@ -52,8 +52,7 @@ esteemedinnovation.astrolabe.dimension.nether=the Nether
 esteemedinnovation.astrolabe.dimension.end=the End
 esteemedinnovation.astrolabe.in=in
 
-esteemedinnovation.fan.range=Range:
-esteemedinnovation.fan.blocks=blocks
+esteemedinnovation.fan.range=Range: %d blocks
 esteemedinnovation.smasher.true=Mode: Block Breaker
 esteemedinnovation.smasher.false=Mode: Smasher
 
