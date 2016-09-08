@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
 public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITickable {
-    private int lastCompOutput = 0;
+    private int lastCompOutput;
 
     @Override
     public void update() {
@@ -33,6 +33,6 @@ public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITic
     }
 
     public int getComparatorOutput(EnumFacing dir) {
-        return (int) (15 * (100 * ((double) getPressure(dir) * 0.01D)));
+        return (int) (15 * (100 * (getPressure(dir) * 0.01D)));
     }
 }

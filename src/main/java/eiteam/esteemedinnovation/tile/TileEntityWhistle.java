@@ -15,10 +15,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundTile, ITickable {
-    private float volume = 0F;
-    private boolean isSoundRegistered = false;
-    private boolean isSounding = false;
-    private int steamTick = 0;
+    private float volume;
+    private boolean isSoundRegistered;
+    private boolean isSounding;
+    private int steamTick;
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
@@ -60,31 +60,31 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
     @SideOnly(Side.CLIENT)
     private void updateSound() {
         if (!isSoundRegistered) {
-            worldObj.playSound(null, pos, EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, getVolume(), 1F);
+            worldObj.playSound(null, pos, EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, volume, 1F);
 //                Sounds.addSoundTile(this);
             isSoundRegistered = true;
         }
 
         if (isSounding) {
             if (steamTick == 0) {
-                EnumFacing d = worldObj.getBlockState(pos).getValue(BlockWhistle.FACING).getOpposite();
-                TileEntity te = worldObj.getTileEntity(pos.offset(d));
+                EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockWhistle.FACING).getOpposite();
+                TileEntity te = worldObj.getTileEntity(pos.offset(dir));
                 float offset = 2.0F / 16.0F;
-                if (te != null && te instanceof TileEntitySteamPipe) {
+                if (te instanceof TileEntitySteamPipe) {
                     offset = 6.0F / 16.0F;
                 }
                 float offset2 = (2.0F / 16.0F / 3.0F);
 
-                float xOffset = d.getFrontOffsetX() * offset;
-                float zOffset = d.getFrontOffsetZ() * offset;
-                float yOffset = d.getFrontOffsetY() * offset;
-                float xOffset2 = d.getFrontOffsetX() * offset2;
-                float zOffset2 = d.getFrontOffsetZ() * offset2;
+                float xOffset = dir.getFrontOffsetX() * offset;
+                float zOffset = dir.getFrontOffsetZ() * offset;
+                float yOffset = dir.getFrontOffsetY() * offset;
+                float xOffset2 = dir.getFrontOffsetX() * offset2;
+                float zOffset2 = dir.getFrontOffsetZ() * offset2;
                 worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + xOffset,
                   pos.getY() + 0.7D + yOffset, pos.getZ() + 0.5D + zOffset, 0F - xOffset2, 0.05F, 0F - zOffset2);
 
-                worldObj.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, EsteemedInnovation.SOUND_WHISTLE,
-                  SoundCategory.BLOCKS, getVolume(), 1F, true);
+                worldObj.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                  EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, volume, 1F, true);
             }
             steamTick++;
             if (steamTick >= 4) {
@@ -99,10 +99,6 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
         } else {
             volume = 0F;
         }
-    }
-
-    public float getVolume() {
-        return volume;
     }
 
     @Override
@@ -127,6 +123,6 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements ISoundT
 
     @Override
     public void update(SoundTile soundTile) {
-        soundTile.volume = getVolume();
+        soundTile.volume = volume;
     }
 }

@@ -1,10 +1,9 @@
 package eiteam.esteemedinnovation.tile;
 
-import net.minecraft.util.EnumFacing;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import net.minecraft.util.EnumFacing;
 
-public class TileEntitySteamTank extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntitySteamTank extends SteamTransporterTileEntity {
     public TileEntitySteamTank() {
         super(80000, EnumFacing.VALUES);
     }
