@@ -12,10 +12,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SteamNetwork {
     private static Random random = new Random();
@@ -57,16 +55,9 @@ public class SteamNetwork {
         SteamNetwork theNetwork = null;
         boolean hasJoinedNetwork = false;
         if (others.size() > 0) {
-            for (ISteamTransporter t : others) {
-                if (!isClosedValvePipe(t)) {
-                    if (t.getNetwork() != null) {
-                        SteamNetwork net = t.getNetwork();
-                        if (net != null) {
-                            nets.add(net);
-                        }
-                    }
-                }
-            }
+            others.stream()
+              .filter(t -> !isClosedValvePipe(t) && t.getNetwork() != null)
+              .forEach(t -> nets.add(t.getNetwork()));
 
             if (nets.size() > 0) {
                 SteamNetwork main = null;

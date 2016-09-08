@@ -72,7 +72,7 @@ public class SteamNetworkRegistry {
 
     public void add(SteamNetwork network) {
         if (!networks.containsKey(network.getDimension())) {
-            networks.put(network.getDimension(), new ArrayList<SteamNetwork>());
+            networks.put(network.getDimension(), new ArrayList<>());
         }
         ArrayList<SteamNetwork> dimension = networks.get(network.getDimension());
         dimension.add(network);

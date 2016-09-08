@@ -36,7 +36,7 @@ public class TileEntityFunnel extends TileEntity implements ITickable {
             IBlockState aboveState = worldObj.getBlockState(up);
             Fluid fluid = FluidHelper.getFluidFromBlockState(aboveState);
             if (fluid != null) {
-                BlockPos source = FluidHelper.findSourceBlockPos(worldObj, up, fluid, new HashSet<BlockPos>());
+                BlockPos source = FluidHelper.findSourceBlockPos(worldObj, up, fluid, new HashSet<>());
                 if (source != null) {
                     IBlockState sourceState = worldObj.getBlockState(source);
                     Block sourceBlock = sourceState.getBlock();
