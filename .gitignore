@@ -18,6 +18,7 @@ MinecraftForge-Credits.txt
 MinecraftForge-License.txt
 README.txt
 out/
+logs/
 
 # Who made this messy crap? Whatever.
 !/elib/*.jar
