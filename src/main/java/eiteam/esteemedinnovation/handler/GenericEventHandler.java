@@ -393,7 +393,7 @@ public class GenericEventHandler {
 			}*/
             ItemStack equipped = player.getHeldItemMainhand();
             RayTraceResult pos = mc.objectMouseOver;
-            if (pos != null && equipped != null && equipped.getItem() != null) {
+            if (pos != null && equipped != null && equipped.getItem() != null && pos.typeOfHit == RayTraceResult.Type.BLOCK) {
                 if (equipped.getItem() instanceof IPipeWrench) {
                     IPipeWrench wrench = (IPipeWrench) equipped.getItem();
                     if (wrench.canWrench(player, pos.getBlockPos())) {
