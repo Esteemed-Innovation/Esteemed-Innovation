@@ -2,11 +2,12 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.block.BlockVacuum;
+import eiteam.esteemedinnovation.misc.MathUtility;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -302,44 +303,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float xO, float yO, float zO) {
         if (player.isSneaking()) {
-            switch (range) {
-                case 9: {
-                    range = 11;
-                    break;
-                }
-                case 11: {
-                    range = 13;
-                    break;
-                }
-                case 13: {
-                    range = 15;
-                    break;
-                }
-                case 15: {
-                    range = 17;
-                    break;
-                }
-                case 17: {
-                    range = 19;
-                    break;
-                }
-                case 19: {
-                    range = 5;
-                    break;
-                }
-                case 5: {
-                    range = 7;
-                    break;
-                }
-                case 7: {
-                    range = 9;
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-            //EsteemedInnovation.log.debug(range);
+            range = MathUtility.minWithDefault(19, range + 2, 5);
             markForResync();
             return true;
         } else {

@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 install: chmod +x ./gradlew
 before_script: ./gradlew setupDecompWorkspace
-script: ./gradlew build
+script: ./gradlew test
 notifications:
   email: false
   irc:

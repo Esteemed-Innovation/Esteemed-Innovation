@@ -93,6 +93,8 @@ dependencies {
 
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'eilib', include: '*.jar')
+
+    testCompile 'junit:junit:4.12'
 }
 
 processResources {

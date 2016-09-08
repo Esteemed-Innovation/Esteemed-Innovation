@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.block.BlockFan;
+import eiteam.esteemedinnovation.misc.MathUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockTrapDoor;
@@ -208,12 +209,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements ISteamT
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
-            if (range == 19) {
-                range = 5;
-            } else {
-                range += 2;
-            }
-            //EsteemedInnovation.log.debug(range);
+            range = MathUtility.minWithDefault(19, range + 2, 5);
             markForResync(state);
         } else {
             int steam = getSteamShare();
