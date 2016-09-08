@@ -3,6 +3,8 @@ package eiteam.esteemedinnovation.tile;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.block.BlockPump;
+import eiteam.esteemedinnovation.misc.FluidHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -77,7 +79,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     private EnumFacing getInputDirection() {
-        return EnumFacing.getFront(getBlockMetadata());
+        return worldObj.getBlockState(pos).getValue(BlockPump.FACING);
     }
 
     @Override
@@ -130,11 +132,13 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
         } else {
             EnumFacing inputDir = getInputDirection();
             BlockPos offsetPos = getOffsetPos(inputDir);
-            Fluid fluid = FluidRegistry.lookupFluidForBlock(worldObj.getBlockState(offsetPos).getBlock());
-            if (getSteamShare() >= STEAM_CONSUMPTION && myTank.getFluidAmount() == 0 && getBlockMetadata() == 0 &&
-              fluid != null && myTank.getFluidAmount() < 1000) {
+            Fluid fluid = FluidHelper.getFluidFromBlockState(worldObj.getBlockState(offsetPos));
+            if (getSteamShare() >= STEAM_CONSUMPTION && myTank.getFluidAmount() == 0 && fluid != null &&
+              myTank.getFluidAmount() < 1000) {
                 myTank.fill(new FluidStack(fluid, 1000), true);
-                worldObj.setBlockToAir(offsetPos);
+                if (!FluidHelper.isInfiniteWaterSource(worldObj, offsetPos, fluid)) {
+                    worldObj.setBlockToAir(offsetPos);
+                }
                 progress = 0;
                 decrSteam(STEAM_CONSUMPTION);
                 running = true;
@@ -157,7 +161,6 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
                             if (myTank.getFluidAmount() == 0) {
                                 running = false;
                                 progress = 0;
-
                             }
                         } else if (running) {
                             running = false;
