@@ -245,9 +245,7 @@ public class ClientProxy extends CommonProxy {
     public void registerHotkeys() {
         keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key.esteemedinnovation.category"));
 
-        for (KeyBinding bind : keyBindings.values()) {
-            ClientRegistry.registerKeyBinding(bind);
-        }
+        keyBindings.values().forEach(ClientRegistry::registerKeyBinding);
     }
 
     @Override
@@ -273,24 +271,9 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, new IRenderFactory<EntityMortarItem>() {
-            @Override
-            public Render<? super EntityMortarItem> createRenderFor(RenderManager manager) {
-                return new RenderMortarItem(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, new IRenderFactory<EntityCanisterItem>() {
-            @Override
-            public Render<? super EntityCanisterItem> createRenderFor(RenderManager manager) {
-                return new RenderCanister(manager);
-            }
-        });
-        RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new IRenderFactory<EntityRocket>() {
-            @Override
-            public Render<? super EntityRocket> createRenderFor(RenderManager manager) {
-                return new RenderRocket(manager);
-            }
-        });
+        RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, RenderMortarItem::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, RenderCanister::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, RenderRocket::new);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TileEntityCrucibleRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMold.class, new TileEntityMoldRenderer());
