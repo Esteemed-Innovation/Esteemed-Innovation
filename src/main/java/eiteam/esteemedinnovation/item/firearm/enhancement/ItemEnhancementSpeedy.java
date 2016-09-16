@@ -4,10 +4,13 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
 import eiteam.esteemedinnovation.entity.projectile.EntityMusketBall;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class ItemEnhancementSpeedy extends Item implements IEnhancementFirearm {
     @Override
@@ -26,7 +29,7 @@ public class ItemEnhancementSpeedy extends Item implements IEnhancementFirearm {
     }
 
     @Override
-    public ResourceLocation getIcon(Item item) {
+    public ResourceLocation getModel(Item item) {
         return new ResourceLocation(EsteemedInnovation.MOD_ID, "pistol_speedy");
     }
 
@@ -65,4 +68,12 @@ public class ItemEnhancementSpeedy extends Item implements IEnhancementFirearm {
         return bullet;
     }
 
+    @Override
+    public void onWeaponUpdate(ItemStack weaponStack, World world, Entity entity, int itemSlot, boolean isWeaponCurrentItem) {
+        if (isWeaponCurrentItem && entity instanceof EntityPlayerSP) {
+            EntityPlayerSP player = (EntityPlayerSP) entity;
+            player.movementInput.moveForward *= 5.0F;
+            player.movementInput.moveStrafe *= 5.0F;
+        }
+    }
 }

@@ -2,11 +2,10 @@ package eiteam.esteemedinnovation.item.firearm;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.IRenderItem;
-import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.entity.projectile.EntityMusketBall;
 import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
@@ -14,7 +13,6 @@ import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.misc.ItemStackUtility;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -38,7 +36,7 @@ import java.util.List;
 
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
 
-public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
+public class ItemFirearm extends Item implements IEngineerable {
     public float damage;
     public int reloadTime;
     public int shellCount;
@@ -88,14 +86,8 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isCurrentItem) {
         super.onUpdate(stack, world, entity, itemSlot, isCurrentItem);
-        if (entity instanceof EntityPlayerSP) {
-            EntityPlayerSP player = (EntityPlayerSP) entity;
-            ItemStack usingItem = player.getActiveItemStack();
-            if (usingItem != null && usingItem.getItem() == this && UtilEnhancements.hasEnhancement(usingItem) &&
-              "Speedy".equals(UtilEnhancements.getEnhancementFromItem(usingItem).getID())) {
-                player.movementInput.moveForward *= 5.0F;
-                player.movementInput.moveStrafe *= 5.0F;
-            }
+        if (UtilEnhancements.hasEnhancement(stack)) {
+            UtilEnhancements.getEnhancementFromItem(stack).onWeaponUpdate(stack, world, entity, itemSlot, isCurrentItem);
         }
 
         // Reloading Holster code.
@@ -131,19 +123,6 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
         } else {
             return super.getUnlocalizedName(stack);
         }
-    }
-
-    @Override
-    public ResourceLocation getIcon(ItemStack stack) {
-        if (UtilEnhancements.hasEnhancement(stack)) {
-            return UtilEnhancements.getIconFromEnhancement(stack);
-        }
-        return null;
-    }
-
-    @Override
-    public int renderPasses(ItemStack self) {
-        return 1;
     }
 
     @Override
@@ -198,7 +177,7 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
                 }
 
                 itemstack.damageItem(1, entity);
-                float vol = ((knockback + enhancementKnockback) * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(itemstack) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(itemstack).getID()) ? 0.4F : 1.0F);
+                float vol = ((knockback + enhancementKnockback) * (2F / 5F)) * (UtilEnhancements.hasEnhancement(itemstack) ? UtilEnhancements.getEnhancementFromItem(itemstack).getVolume(itemstack, world, entity) : 1.0F);
                 float pitch = 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + timeUsedSecs * 0.5F;
                 world.playSound(player, player.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, vol, pitch);
                 for (int i = 1; i < 16; i++) {
@@ -226,6 +205,10 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
                 }
 
                 nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
+
+                if (UtilEnhancements.hasEnhancement(itemstack)) {
+                    UtilEnhancements.getEnhancementFromItem(itemstack).afterRoundFired(itemstack, world, player);
+                }
 
                 if (world.isRemote && !player.capabilities.isCreativeMode) {
                     float thiskb = this.knockback + enhancementKnockback;
@@ -286,7 +269,7 @@ public class ItemFirearm extends Item implements IEngineerable, IRenderItem {
                 }
 
                 nbt.setBoolean("done", true);
-                float vol = UtilEnhancements.getEnhancementFromItem(stack) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(stack).getID()) ? 0.4F : 1.0F;
+                float vol = UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getEnhancementFromItem(stack).getVolume(stack, world, entity) : 1.0F;
                 float pitch = world.rand.nextFloat() * 0.1F + 0.9F;
                 world.playSound(player, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, vol, pitch);
             }

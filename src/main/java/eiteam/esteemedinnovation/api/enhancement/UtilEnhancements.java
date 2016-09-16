@@ -20,7 +20,7 @@ public class UtilEnhancements {
         List<ResourceLocation> locs = new ArrayList<>();
         for (IEnhancement enhancement : EnhancementRegistry.enhancements.values()) {
             if (enhancement.canApplyTo(new ItemStack(item))) {
-                ResourceLocation loc = enhancement.getIcon(item);
+                ResourceLocation loc = enhancement.getModel(item);
                 locs.add(loc);
                 EnhancementRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), loc);
             }

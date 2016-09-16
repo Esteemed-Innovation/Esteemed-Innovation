@@ -26,7 +26,7 @@ public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
     }
 
     @Override
-    public ResourceLocation getIcon(Item item) {
+    public ResourceLocation getModel(Item item) {
         return new ResourceLocation(EsteemedInnovation.MOD_ID, "blunderbuss_recoil");
     }
 

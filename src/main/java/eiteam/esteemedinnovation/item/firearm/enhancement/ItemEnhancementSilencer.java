@@ -4,10 +4,12 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
 import eiteam.esteemedinnovation.entity.projectile.EntityMusketBall;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class ItemEnhancementSilencer extends Item implements IEnhancementFirearm {
     @Override
@@ -26,7 +28,7 @@ public class ItemEnhancementSilencer extends Item implements IEnhancementFirearm
     }
 
     @Override
-    public ResourceLocation getIcon(Item item) {
+    public ResourceLocation getModel(Item item) {
         return new ResourceLocation(EsteemedInnovation.MOD_ID, "pistol_silencer");
     }
 
@@ -66,4 +68,8 @@ public class ItemEnhancementSilencer extends Item implements IEnhancementFirearm
         return bullet;
     }
 
+    @Override
+    public float getVolume(ItemStack weaponStack, World world, EntityLivingBase user) {
+        return 0.4F;
+    }
 }

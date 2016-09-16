@@ -4,10 +4,12 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementRocketLauncher;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 public class ItemEnhancementAirStrike extends Item implements IEnhancementRocketLauncher {
     @Override
@@ -26,7 +28,7 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
     }
 
     @Override
-    public ResourceLocation getIcon(Item item) {
+    public ResourceLocation getModel(Item item) {
         return new ResourceLocation(EsteemedInnovation.MOD_ID, "rocket_launcher_air_strike");
     }
 
@@ -66,4 +68,8 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
         return bullet;
     }
 
+    @Override
+    public void afterRoundFired(ItemStack weaponStack, World world, EntityPlayer player) {
+        // Suppressing fire delay stuff by not calling the supermethod.
+    }
 }

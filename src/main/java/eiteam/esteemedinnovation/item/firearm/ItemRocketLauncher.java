@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.item.firearm.enhancement.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.misc.ItemStackUtility;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -77,11 +76,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        if (UtilEnhancements.hasEnhancement(stack)) {
-            return UtilEnhancements.getNameFromEnhancement(stack);
-        } else {
-            return super.getUnlocalizedName(stack);
-        }
+        return UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getNameFromEnhancement(stack) : super.getUnlocalizedName(stack);
     }
 
     @Override
@@ -151,7 +146,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
             }
 
             nbt.setBoolean("done", true);
-            float vol = UtilEnhancements.getEnhancementFromItem(stack) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(stack).getID()) ? 0.4F : 1F;
+            float vol = UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getEnhancementFromItem(stack).getVolume(stack, world, entity) : 1F;
             float pitch = world.rand.nextFloat() * 0.1F + 0.9F;
             world.playSound(player, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, vol, pitch);
         }
@@ -220,7 +215,6 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                 if (!self.getTagCompound().hasKey("fireDelay") || self.getTagCompound().getInteger("fireDelay") == 0) {
                     float enhancementAccuracy = 0.0F;
                     float enhancementExplosionSize = 0.0F;
-                    int enhancementDelay = 0;
 
                     if (UtilEnhancements.hasEnhancement(self)) {
                         IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
@@ -228,7 +222,6 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                             IEnhancementRocketLauncher enhancementRocketLauncher = (IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self);
                             enhancementAccuracy = enhancementRocketLauncher.getAccuracyChange(this);
                             enhancementExplosionSize = enhancementRocketLauncher.getExplosionChange(this);
-                            enhancementDelay = enhancementRocketLauncher.getFireDelayChange(self);
                         }
                     }
 
@@ -250,7 +243,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                     }
 
                     self.damageItem(1, player);
-                    float vol = (1.0F * (2F / 5F)) * (UtilEnhancements.getEnhancementFromItem(self) != null && "Silencer".equals(UtilEnhancements.getEnhancementFromItem(self).getID()) ? 0.4F : 1.0F);
+                    float vol = (1.0F * (2F / 5F)) * (UtilEnhancements.hasEnhancement(self) ? UtilEnhancements.getEnhancementFromItem(self).getVolume(self, world, player) : 1.0F);
                     float pitch = 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + 1F * 0.5F;
                     world.playSound(player, player.getPosition(), EsteemedInnovation.SOUND_ROCKET, SoundCategory.PLAYERS, vol, pitch);
 
@@ -261,10 +254,10 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
                     MinecraftForge.EVENT_BUS.post(event);
 
                     nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
-                    if (player.capabilities.isFlying && !(player.onGround &&
-                      UtilEnhancements.hasEnhancement(self) &&
-                      UtilEnhancements.getEnhancementFromItem(self) instanceof ItemEnhancementAirStrike)) {
-                        self.getTagCompound().setInteger("fireDelay", timeBetweenFire + enhancementDelay);
+                    // Used by IEnhancementRocketLauncher to add an additional fire delay.
+                    nbt.setInteger("fireDelay", timeBetweenFire);
+                    if (UtilEnhancements.hasEnhancement(self)) {
+                        UtilEnhancements.getEnhancementFromItem(self).afterRoundFired(self, world, player);
                     }
                 }
                 // par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(BoilerMod.musketEmpty));
