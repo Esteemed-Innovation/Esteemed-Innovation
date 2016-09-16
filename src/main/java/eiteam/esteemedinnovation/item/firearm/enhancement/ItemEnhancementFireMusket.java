@@ -29,8 +29,8 @@ public class ItemEnhancementFireMusket extends Item implements IEnhancementFirea
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        String weapon = item == MUSKET.getItem() ? "Musket" : "Blunderbuss";
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weapon" + weapon + "Ablaze");
+        String weapon = item == MUSKET.getItem() ? "musket" : "blunderbuss";
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, weapon + "_blaze");
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ItemEnhancementFastRockets extends Item implements IEnhancementRock
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weaponRocketLauncherFast");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "rocket_launcher_fast");
     }
 
     @Override

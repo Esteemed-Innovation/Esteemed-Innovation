@@ -17,7 +17,6 @@ import eiteam.esteemedinnovation.client.render.colorhandlers.SteamDrillHeadUpgra
 import eiteam.esteemedinnovation.client.render.entity.RenderCanister;
 import eiteam.esteemedinnovation.client.render.entity.RenderMortarItem;
 import eiteam.esteemedinnovation.client.render.entity.RenderRocket;
-import eiteam.esteemedinnovation.client.render.item.ItemFirearmRenderer;
 import eiteam.esteemedinnovation.client.render.item.ItemSteamToolRenderer;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.client.render.tile.*;
@@ -32,6 +31,7 @@ import eiteam.esteemedinnovation.init.items.*;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
+import eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
@@ -46,10 +46,9 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -63,12 +62,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientProxy extends CommonProxy {
     public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
@@ -232,12 +232,34 @@ public class ClientProxy extends CommonProxy {
             registerModel(item.getItem());
         }
 
+        for (FirearmUpgradeItems.Items item : FirearmUpgradeItems.Items.LOOKUP) {
+            registerModel(item.getItem());
+        }
+
         for (FirearmAmmunitionItems.Items item : FirearmAmmunitionItems.Items.LOOKUP) {
             registerModel(item.getItem());
         }
 
         for (NaturalPhilosophyItems.Items item : NaturalPhilosophyItems.Items.LOOKUP) {
             registerModel(item.getItem());
+        }
+
+        // TODO: Durability bars for load progress and current ammo contents.
+        for (FirearmItems.Items item : FirearmItems.Items.LOOKUP) {
+            List<ModelResourceLocation> locations = UtilEnhancements.registerEnhancementsForItem(item.getItem())
+              .stream()
+              .map(r -> new ModelResourceLocation(r, "inventory"))
+              .collect(Collectors.toList());
+            // No enhancement.
+            locations.add(new ModelResourceLocation(item.getItem().getRegistryName(), "inventory"));
+            ModelBakery.registerItemVariants(item.getItem(), locations.toArray(new ModelResourceLocation[locations.size()]));
+            ModelLoader.setCustomMeshDefinition(item.getItem(), stack -> {
+                ResourceLocation loc = UtilEnhancements.getIconFromEnhancement(stack);
+                if (loc == null) {
+                    loc = stack.getItem().getRegistryName();
+                }
+                return new ModelResourceLocation(loc, "inventory");
+            });
         }
     }
 
@@ -260,10 +282,6 @@ public class ClientProxy extends CommonProxy {
         colors.registerItemColorHandler(new SteamDrillColorHandler(), ToolItems.Items.STEAM_DRILL.getItem());
         colors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), ToolUpgradeItems.Items.DRILL_HEAD.getItem());
 
-        for (FirearmItems.Items item : FirearmItems.Items.LOOKUP) {
-            UtilEnhancements.registerEnhancementsForItem(item.getItem());
-            ModelRegistryHelper.registerItemRenderer(item.getItem(), new ItemFirearmRenderer());
-        }
         ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_DRILL.getItem(), new ItemSteamToolRenderer());
         ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SAW.getItem(), new ItemSteamToolRenderer());
         ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SHOVEL.getItem(), new ItemSteamToolRenderer());

@@ -27,7 +27,7 @@ public class ItemEnhancementSilencer extends Item implements IEnhancementFirearm
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weaponPistolSilencer");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "pistol_silencer");
     }
 
     @Override

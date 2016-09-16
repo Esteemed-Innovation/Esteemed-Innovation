@@ -7,13 +7,25 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UtilEnhancements {
-    public static void registerEnhancementsForItem(Item item) {
+    /**
+     * Registers the ResourceLocations for the icons for every possible upgrade for the provided item.
+     * @param item The item that can take enhancements.
+     * @return A list of all registered resource locations for the item.
+     */
+    public static List<ResourceLocation> registerEnhancementsForItem(Item item) {
+        List<ResourceLocation> locs = new ArrayList<>();
         for (IEnhancement enhancement : EnhancementRegistry.enhancements.values()) {
             if (enhancement.canApplyTo(new ItemStack(item))) {
-                EnhancementRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), enhancement.getIcon(item));
+                ResourceLocation loc = enhancement.getIcon(item);
+                locs.add(loc);
+                EnhancementRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), loc);
             }
         }
+        return locs;
     }
 
     public static boolean hasEnhancement(ItemStack item) {

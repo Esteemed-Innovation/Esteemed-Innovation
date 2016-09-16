@@ -27,7 +27,7 @@ public class ItemEnhancementRevolver extends Item implements IEnhancementFirearm
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weaponRevolver");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "pistol_revolver");
     }
 
     @Override

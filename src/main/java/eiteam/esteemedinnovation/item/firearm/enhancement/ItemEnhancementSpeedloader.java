@@ -29,8 +29,8 @@ public class ItemEnhancementSpeedloader extends Item implements IEnhancementFire
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        String weapon = item == MUSKET.getItem() ? "Musket" : "Blunderbuss";
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weapon" + weapon + "Speedloader");
+        String weapon = item == MUSKET.getItem() ? "musket" : "blunderbuss";
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, weapon + "_speedloader");
     }
 
     @Override

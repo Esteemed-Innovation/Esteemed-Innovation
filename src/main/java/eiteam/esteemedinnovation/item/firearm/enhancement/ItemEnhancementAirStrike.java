@@ -27,7 +27,7 @@ public class ItemEnhancementAirStrike extends Item implements IEnhancementRocket
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weaponRocketLauncherAirStrike");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "rocket_launcher_air_strike");
     }
 
     @Override

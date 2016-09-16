@@ -27,7 +27,7 @@ public class ItemEnhancementSpeedy extends Item implements IEnhancementFirearm {
 
     @Override
     public ResourceLocation getIcon(Item item) {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID, "weaponPistolSpeedy");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "pistol_speedy");
     }
 
     @Override

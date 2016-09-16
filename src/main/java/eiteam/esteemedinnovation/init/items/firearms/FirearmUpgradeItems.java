@@ -20,15 +20,15 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
 public class FirearmUpgradeItems implements IInitCategory {
     public enum Items {
-        BLAZE_BARREL(new ItemEnhancementFireMusket(), "enhancementAblaze"),
-        REVOLVER_CHAMBER(new ItemEnhancementRevolver(), "enhancementRevolver"),
-        BREECH(new ItemEnhancementSpeedloader(), "enhancementSpeedloader"),
-        MAKESHIFT_SUPPRESSOR(new ItemEnhancementSilencer(), "enhancementSilencer"),
-        RECOIL_PAD(new ItemEnhancementRecoil(), "enhancementRecoil"),
-        BOLT_ACTION(new ItemEnhancementSpeedy(), "enhancementSpeedy"),
-        STREAMLINED_BARREL(new ItemEnhancementFastRockets(), "enhancementFastRockets"),
-        AIR_STRIKE_CONVERSION_KIT(new ItemEnhancementAirStrike(), "enhancementAriStrike"),
-        EXTENDED_MAGAZINE(new ItemEnhancementAmmo(), "enhancementAmmo");
+        BLAZE_BARREL(new ItemEnhancementFireMusket(), "enhancement_blaze"),
+        REVOLVER_CHAMBER(new ItemEnhancementRevolver(), "enhancement_revolver"),
+        BREECH(new ItemEnhancementSpeedloader(), "enhancement_speedloader"),
+        MAKESHIFT_SUPPRESSOR(new ItemEnhancementSilencer(), "enhancement_silencer"),
+        RECOIL_PAD(new ItemEnhancementRecoil(), "enhancement_recoil"),
+        BOLT_ACTION(new ItemEnhancementSpeedy(), "enhancement_speedy"),
+        STREAMLINED_BARREL(new ItemEnhancementFastRockets(), "enhancement_fast_rockets"),
+        AIR_STRIKE_CONVERSION_KIT(new ItemEnhancementAirStrike(), "enhancement_air_strike"),
+        EXTENDED_MAGAZINE(new ItemEnhancementAmmo(), "enhancement_ammo");
 
         private Item item;
         public static Items[] LOOKUP = new Items[values().length];

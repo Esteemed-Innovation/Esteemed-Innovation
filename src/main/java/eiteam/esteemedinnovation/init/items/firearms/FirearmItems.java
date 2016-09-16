@@ -17,7 +17,7 @@ public class FirearmItems implements IInitCategory {
     public enum Items {
         MUSKET(new ItemFirearm(Config.musketDamage, 84, 0.2F, 5.0F, false, 1, INGOT_IRON), "musket"),
         PISTOL(new ItemFirearm(Config.pistolDamage, 42, 0.5F, 2.0F, false, 1, INGOT_IRON), "pistol"),
-        ROCKET_LAUNCHER(new ItemRocketLauncher(2.0F, 95, 10, 3.5F, 4, INGOT_IRON), "rocketLauncher"),
+        ROCKET_LAUNCHER(new ItemRocketLauncher(2.0F, 95, 10, 3.5F, 4, INGOT_IRON), "rocket_launcher"),
         BLUNDERBUSS(new ItemFirearm(Config.blunderbussDamage, 95, 3.5F, 7.5F, true, 1, INGOT_BRASS), "blunderbuss");
 
         private Item item;
