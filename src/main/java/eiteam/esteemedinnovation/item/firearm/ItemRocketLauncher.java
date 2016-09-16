@@ -63,6 +63,10 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, world, entity, itemSlot, isSelected);
+        if (UtilEnhancements.hasEnhancement(stack)) {
+            UtilEnhancements.getEnhancementFromItem(stack).onWeaponUpdate(stack, world, entity, itemSlot, isSelected);
+        }
+
         if (stack.hasTagCompound()) {
             if (stack.getTagCompound().hasKey("fireDelay")) {
                 int delay = stack.getTagCompound().getInteger("fireDelay");
