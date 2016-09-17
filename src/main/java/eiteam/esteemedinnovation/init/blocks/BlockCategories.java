@@ -8,6 +8,7 @@ public enum BlockCategories {
     STEAM_NETWORK_BLOCKS(new SteamNetworkBlocks()),
     PIPE_BLOCKS(new PipeBlocks()),
     STEAM_MACHINERY(new SteamMachineryBlocks()),
+    PRESSURE_PLATES(new PressurePlateBlocks()),
     MISCELLANEOUS(new MiscellaneousBlocks());
 
     private IInitCategory category;

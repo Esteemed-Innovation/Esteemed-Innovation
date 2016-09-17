@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "pressure_plate_up",
+    "textures": {
+      "texture": "esteemedinnovation:blocks/blockCopper"
+    }
+  },
+  "variants": {
+    "powered": {
+      "true": {
+        "model": "pressure_plate_down"
+      },
+      "false": {}
+    }
+  }
+}

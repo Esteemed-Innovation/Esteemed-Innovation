@@ -96,6 +96,10 @@ public class MetalItems implements IInitCategory {
             return hasType() ? new ItemStack(getItem(), size, metadata) : new ItemStack(getItem(), size);
         }
 
+        public int getMetadata() {
+            return metadata;
+        }
+
         public enum Types {
             INGOT(new ItemMetalIngot(), "ingot"),
             NUGGET(new ItemMetalNugget(), "nugget"),

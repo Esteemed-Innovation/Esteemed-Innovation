@@ -1,0 +1,59 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "pressure_plate_up",
+    "textures": {
+      "texture": "blocks/iron_block"
+    }
+  },
+  "variants": {
+    "power": {
+      "0": {},
+      "1": {
+        "model": "pressure_plate_down"
+      },
+      "2": {
+        "model": "pressure_plate_down"
+      },
+      "3": {
+        "model": "pressure_plate_down"
+      },
+      "4": {
+        "model": "pressure_plate_down"
+      },
+      "5": {
+        "model": "pressure_plate_down"
+      },
+      "6": {
+        "model": "pressure_plate_down"
+      },
+      "7": {
+        "model": "pressure_plate_down"
+      },
+      "8": {
+        "model": "pressure_plate_down"
+      },
+      "9": {
+        "model": "pressure_plate_down"
+      },
+      "10": {
+        "model": "pressure_plate_down"
+      },
+      "11": {
+        "model": "pressure_plate_down"
+      },
+      "12": {
+        "model": "pressure_plate_down"
+      },
+      "13": {
+        "model": "pressure_plate_down"
+      },
+      "14": {
+        "model": "pressure_plate_down"
+      },
+      "15": {
+        "model": "pressure_plate_down"
+      }
+    }
+  }
+}
