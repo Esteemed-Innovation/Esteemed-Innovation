@@ -13,29 +13,29 @@ import net.minecraft.item.ItemStack;
 
 public class BookPageItem extends BookPageText {
     public static String lastViewing = "";
-    public static int abdoName = 0;
+    public static int abdoName;
     private ItemStack[] item;
     private String name;
     private String text;
-    private Object[] format = null;
+    private Object[] format;
 
-    public BookPageItem(String string, String string2, ItemStack... is) {
-        super(string, string2);
+    public BookPageItem(String name, String text, ItemStack... is) {
+        super(name, text);
         item = is;
-        text = string2;
-        name = string;
+        this.text = text;
+        this.name = name;
     }
 
-    public BookPageItem(String string, String string2, boolean title, ItemStack... is) {
-        super(string, string2, title);
+    public BookPageItem(String name, String text, boolean title, ItemStack... is) {
+        super(name, text, title);
         item = is;
-        text = string2;
-        name = string;
+        this.name = name;
+        this.text = text;
     }
 
     public BookPageItem(String name, String text, Object[] format, boolean title, ItemStack... is) {
         super(name, text, title);
-        this.item = is;
+        item = is;
         this.text = text;
         this.name = name;
         this.format = format;
@@ -62,9 +62,9 @@ public class BookPageItem extends BookPageText {
 
     @Override
     public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
-        if (!lastViewing.equals(GuiJournal.viewing)) {
+        if (!lastViewing.equals(book.viewing)) {
             abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
-            lastViewing = GuiJournal.viewing;
+            lastViewing = book.viewing;
         }
         String s;
         int l;
@@ -73,35 +73,26 @@ public class BookPageItem extends BookPageText {
             yOffset = y + 65;
             s = I18n.format(name);
             l = fontRenderer.getStringWidth(s);
-            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + book.bookImageWidth / 2 - (l / 1.6) - 3),
+            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + GuiJournal.BOOK_IMAGE_WIDTH / 2F - (l / 1.6) - 3),
               y + 30, 0x3F3F3F);
         }
 
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
-        s = this.format == null ? I18n.format(text) : I18n.format(text, this.format);
-        String stringLeft = s;
-        while (stringLeft.contains("<br>")) {
-            String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
-            if (shouldDoLizbeth(settings.thirdPersonView, player)) {
-                output = doLizbeth(output);
-            }
-            fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
-            yOffset += 10;
-            stringLeft = stringLeft.substring(stringLeft.indexOf("<br>") + 4, stringLeft.length());
-        }
-        String output = stringLeft;
+        String output = format == null ? I18n.format(text) : I18n.format(text, format);
+        output = output.replace("\\n", "\n");
         if (shouldDoLizbeth(settings.thirdPersonView, player)) {
             output = doLizbeth(output);
         }
+
         fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
 
         int size = item.length;
         int i = 0;
         for (ItemStack stack : item) {
-            drawItemStack(stack.copy(), x + book.bookImageWidth / 2 - 12 - (size - 1) * 9 + i * 18,
-              isFirstPage || shouldDisplayTitle ? y + 45 : y + 35, "", renderer, fontRenderer, false);
+            drawItemStack(stack.copy(), x + GuiJournal.BOOK_IMAGE_WIDTH / 2 - 12 - (size - 1) * 9 + i * 18,
+              y + (isFirstPage || shouldDisplayTitle ? 45 : 35), "", renderer, fontRenderer, false);
             i++;
         }
     }

@@ -11,41 +11,29 @@ import net.minecraft.client.resources.I18n;
 public class BookPageText extends BookPage {
     private String text;
 
-    public BookPageText(String string, String string2) {
-        super(string);
+    public BookPageText(String name, String string2) {
+        super(name);
         text = string2;
     }
 
-    public BookPageText(String string, String string2, boolean title) {
-        super(string, title);
+    public BookPageText(String name, String string2, boolean title) {
+        super(name, title);
         text = string2;
     }
 
     @Override
     public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         super.renderPage(x, y, fontRenderer, book, renderer, isFirstPage, mx, my);
-        if (!BookPageItem.lastViewing.equals(GuiJournal.viewing)) {
+        if (!BookPageItem.lastViewing.equals(book.viewing)) {
             BookPageItem.abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
-            BookPageItem.lastViewing = GuiJournal.viewing;
+            BookPageItem.lastViewing = book.viewing;
         }
         int yOffset = y + 30;
         if (isFirstPage || shouldDisplayTitle) {
             yOffset = y + 40;
         }
 
-        String stringLeft = I18n.format(text);
-        while (stringLeft.contains("<br>")) {
-            String output = stringLeft.substring(0, stringLeft.indexOf("<br>"));
-            if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 ||
-              Minecraft.getMinecraft().thePlayer.getDisplayNameString().equals("MasterAbdoTGM50")) && Config.easterEggs) {
-                output = BookPageItem.doLizbeth(output);
-            }
-            fontRenderer.drawSplitString(output, x + 40, yOffset, 110, 0);
-            yOffset += 10;
-            stringLeft = stringLeft.substring(stringLeft.indexOf("<br>") + 4, stringLeft.length());
-        }
-
-        String output = stringLeft;
+        String output = I18n.format(text).replace("\\n", "\n");
         if ((Minecraft.getMinecraft().gameSettings.thirdPersonView != 0 ||
           Minecraft.getMinecraft().thePlayer.getDisplayNameString().equals("MasterAbdoTGM50")) && Config.easterEggs) {
             output = BookPageItem.doLizbeth(output);

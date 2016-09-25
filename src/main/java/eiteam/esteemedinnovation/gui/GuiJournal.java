@@ -7,42 +7,41 @@ import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.item.ItemEsteemedInnovationJournal;
-
+import eiteam.esteemedinnovation.misc.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GuiJournal extends GuiScreen {
-    private static final ResourceLocation bookGuiTextures = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
-    private static final ResourceLocation book2 = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book2.png");
-    private static final ResourceLocation reverseBookGuiTextures = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/bookReverse.png");
-    public static int bookTotalPages = 1;
-    public static int currPage = 0;
-    public static int lastIndexPage = 0;
-    public static String viewing = "";
-    private static ItemStack book;
-    private static boolean mustReleaseMouse = false;
-    public int bookImageWidth = 192;
-    public int bookImageHeight = 192;
+    private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
+    private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book2.png");
+    private static final ResourceLocation REVERSE_BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/bookReverse.png");
+    private int bookTotalPages = 1;
+    private int currPage;
+    private int lastIndexPage;
+    public String viewing = "";
+    private ItemStack book;
+    private boolean mustReleaseMouse;
+    public static final int BOOK_IMAGE_WIDTH = 192;
+    public static final int BOOK_IMAGE_HEIGHT = 192;
     private GuiJournal.NextPageButton buttonNextPage;
     private GuiJournal.NextPageButton buttonPreviousPage;
-    private ArrayList<String> categories;
+    private List<String> categories;
 
     public GuiJournal(EntityPlayer player) {
         categories = new ArrayList<>();
@@ -92,10 +91,12 @@ public class GuiJournal extends GuiScreen {
     public void initGui() {
         buttonList.clear();
 
-        int i = (width - bookImageWidth) / 2;
-        int b0 = (height - bookImageHeight) / 2;
-        buttonList.add(buttonNextPage = new GuiJournal.NextPageButton(1, i + 120 + 67, b0 + 154, true));
-        buttonList.add(buttonPreviousPage = new GuiJournal.NextPageButton(2, i + 38 - 67, b0 + 154, false));
+        int i = (width - BOOK_IMAGE_WIDTH) / 2;
+        int b0 = (height - BOOK_IMAGE_HEIGHT) / 2;
+        buttonNextPage = new GuiJournal.NextPageButton(1, i + 120 + 67, b0 + 154, true);
+        buttonPreviousPage = new GuiJournal.NextPageButton(2, i + 38 - 67, b0 + 154, false);
+        buttonList.add(buttonNextPage);
+        buttonList.add(buttonPreviousPage);
 
         updateButtons();
     }
@@ -158,81 +159,80 @@ public class GuiJournal extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        int d = Mouse.getDWheel();
-        if (d < 0 && buttonNextPage.visible) {
+        int dWheelRecentMovement = Mouse.getDWheel();
+        if (dWheelRecentMovement < 0 && buttonNextPage.visible) {
             actionPerformed(buttonNextPage);
         }
-        if (d > 0 && buttonPreviousPage.visible) {
+        if (dWheelRecentMovement > 0 && buttonPreviousPage.visible) {
             actionPerformed(buttonPreviousPage);
         }
         if (mustReleaseMouse && !Mouse.isButtonDown(0)) {
             mustReleaseMouse = false;
         }
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int k = (width - bookImageWidth) / 2;
-        int b0 = (height - bookImageHeight) / 2;
-        if (currPage == 0 && !viewing.isEmpty()) {
-            mc.getTextureManager().bindTexture(book2);
-            drawTexturedModalRect(k + 67, b0, 0, 0, bookImageWidth, bookImageHeight);
+        GlStateManager.color(1, 1, 1, 1);
+        int k = (width - BOOK_IMAGE_WIDTH) / 2;
+        int b0 = (height - BOOK_IMAGE_HEIGHT) / 2;
+        if (currPage == 0 && viewing.isEmpty()) {
+            mc.getTextureManager().bindTexture(BOOK_FRONT_TEXTURES);
+            drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
         } else {
-            mc.getTextureManager().bindTexture(reverseBookGuiTextures);
-            drawTexturedModalRect(k - 67, b0, 0, 0, bookImageWidth, bookImageHeight);
-            mc.getTextureManager().bindTexture(bookGuiTextures);
-            drawTexturedModalRect(k + 67, b0, 0, 0, bookImageWidth, bookImageHeight);
+            mc.getTextureManager().bindTexture(REVERSE_BOOK_GUI_TEXTURES);
+            drawTexturedModalRect(k - 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
+            mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
+            drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
         }
 
 
         String s = book.getDisplayName();
         int l = fontRendererObj.getStringWidth(s);
 
-        fontRendererObj.drawStringWithShadow(s, k + bookImageWidth / 2 - l / 2 - 3, b0 - 15, 0xFFFFFF);
+        fontRendererObj.drawStringWithShadow(s, k + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 - 15, 0xFFFFFF);
 
         boolean unicode = fontRendererObj.getUnicodeFlag();
         fontRendererObj.setUnicodeFlag(true);
-        if (!(currPage == 0 && !viewing.isEmpty())) {
+        if (currPage != 0 || !viewing.isEmpty()) {
             s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 4, bookTotalPages * 2);
             if (viewing.isEmpty()) {
                 s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 2, bookTotalPages * 2 - 2);
             }
 
             l = fontRendererObj.getStringWidth(s);
-            fontRendererObj.drawString(s, k - l + this.bookImageWidth - 44 + 67, b0 + 16, 0x3F3F3F);
+            fontRendererObj.drawString(s, k - l + BOOK_IMAGE_WIDTH - 44 + 67, b0 + 16, 0x3F3F3F);
 
             s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 3, bookTotalPages * 2);
             if (viewing.isEmpty()) {
                 s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 1, bookTotalPages * 2 - 2);
             }
 
-            fontRendererObj.drawString(s, k + l - this.bookImageWidth + 54 + 67, b0 + 16, 0x3F3F3F);
+            fontRendererObj.drawString(s, k + l - BOOK_IMAGE_WIDTH + 54 + 67, b0 + 16, 0x3F3F3F);
         } else {
             fontRendererObj.setUnicodeFlag(unicode);
-            fontRendererObj.drawStringWithShadow(s, k + 67 + bookImageWidth / 2 - l / 2 - 3, b0 + 80, 0xC19E51);
+            fontRendererObj.drawStringWithShadow(s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 80, 0xC19E51);
             fontRendererObj.setUnicodeFlag(true);
             s = I18n.format("esteemedinnovation.book.info");
             l = fontRendererObj.getStringWidth(s);
-            fontRendererObj.drawString("\u00A7o" + s, k + 67 + bookImageWidth / 2 - l / 2 - 3, b0 + 90, 0xC19E51);
+            fontRendererObj.drawString("\u00A7o" + s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 90, 0xC19E51);
             s = I18n.format("esteemedinnovation.book.by");
             l = fontRendererObj.getStringWidth(s + " " + mc.thePlayer.getDisplayNameString());
             fontRendererObj.drawString("\u00A7o" + s + " " + mc.thePlayer.getDisplayNameString(),
-              k + 67 + bookImageWidth / 2 - l / 2 - 3, b0 + 105, 0xC19E51);
+              k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 105, 0xC19E51);
         }
-
 
         if (viewing.isEmpty()) {
             if (currPage > 0) {
                 s = I18n.format("esteemedinnovation.book.index");
                 l = fontRendererObj.getStringWidth(s);
-                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k - 67 + this.bookImageWidth / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
-                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k + 67 + this.bookImageWidth / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
+                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k - 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
+                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
 
-                ArrayList<GuiButtonSelect> thingsToRemove = new ArrayList<>();
+                Collection<GuiButtonSelect> thingsToRemove = new ArrayList<>();
                 for (GuiButton button : buttonList) {
                     if (button instanceof GuiButtonSelect) {
                         thingsToRemove.add((GuiButtonSelect) button);
                     }
                 }
                 for (GuiButtonSelect button : thingsToRemove) {
-                    this.buttonList.remove(button);
+                    buttonList.remove(button);
                 }
 
                 String category = categories.get((currPage - 1) * 2);
@@ -266,7 +266,7 @@ public class GuiJournal extends GuiScreen {
                     }
                     s = I18n.format(category);
                     i = 10;
-                    this.fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
+                    fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
                     for (MutablePair<String, String> research : BookPageRegistry.research) {
                         if (research.right.equals(category) && BookPageRegistry.researchPages.get(research.left).length > 0) {
                             offsetCounter++;
@@ -286,24 +286,25 @@ public class GuiJournal extends GuiScreen {
             super.drawScreen(mouseX, mouseY, partialTicks);
             fontRendererObj.setUnicodeFlag(true);
             if (BookPageRegistry.researchPages.containsKey(viewing)) {
-                GL11.glEnable(GL11.GL_BLEND);
+                GlStateManager.enableBlend();
                 BookPage[] pages = BookPageRegistry.researchPages.get(viewing);
-                BookPage page = pages[(currPage) * 2];
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glPushMatrix();
-                page.renderPage(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
-                GL11.glPopMatrix();
-                BookPage originalPage = page;
-                GL11.glEnable(GL11.GL_BLEND);
-                if (pages.length > (currPage) * 2 + 1) {
-                    page = pages[(currPage) * 2 + 1];
-                    GL11.glPushMatrix();
-                    page.renderPage(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
-                    GL11.glPopMatrix();
+                int leftPageIndex = currPage * 2;
+                BookPage leftPage = pages[leftPageIndex];
+                GlStateManager.enableBlend();
+                GlStateManager.pushMatrix();
+                leftPage.renderPage(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                GlStateManager.popMatrix();
+                GlStateManager.enableBlend();
+                int rightPageIndex = leftPageIndex + 1;
+                if (pages.length > rightPageIndex) {
+                    BookPage rightPage = pages[rightPageIndex];
+                    GlStateManager.pushMatrix();
+                    rightPage.renderPage(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    GlStateManager.popMatrix();
 
-                    page.renderPageAfter(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    rightPage.renderPageAfter(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
                 }
-                originalPage.renderPageAfter(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                leftPage.renderPageAfter(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
             }
             fontRendererObj.setUnicodeFlag(unicode);
         }
@@ -311,7 +312,7 @@ public class GuiJournal extends GuiScreen {
 
     public void renderToolTip(ItemStack stack0, int mouseX, int mouseY, boolean renderHyperlink) {
         List<String> list = stack0.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
-        this.zLevel = 1.0F;
+        zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k) {
             if (k == 0) {
                 list.set(k, stack0.getRarity().rarityColor + list.get(k));
@@ -328,15 +329,15 @@ public class GuiJournal extends GuiScreen {
         }
 
         FontRenderer font = stack0.getItem().getFontRenderer(stack0);
-        this.drawHoveringText(list, mouseX, mouseY);
+        drawHoveringText(list, mouseX, mouseY);
         drawHoveringText(list, mouseX, mouseY, (font == null ? fontRendererObj : font));
-        this.zLevel = 0.0F;
+        zLevel = 0.0F;
     }
 
     public void renderText(String str, int mouseX, int mouseY) {
         List<String> list = new ArrayList<>();
         list.add(I18n.format(str));
-        this.drawHoveringText(list, mouseX, mouseY);
+        drawHoveringText(list, mouseX, mouseY);
         drawHoveringText(list, mouseX, mouseY, fontRendererObj);
     }
 
@@ -344,74 +345,74 @@ public class GuiJournal extends GuiScreen {
          for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
                 viewing = BookPageRegistry.bookRecipes.get(stack).left;
-                currPage = MathHelper.floor_float((float) BookPageRegistry.bookRecipes.get(stack).right / 2.0F);
+                currPage = MathHelper.floor_float(BookPageRegistry.bookRecipes.get(stack).right / 2.0F);
                 bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
                 mustReleaseMouse = true;
-                this.updateButtons();
+                updateButtons();
             }
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    public static class NextPageButton extends GuiButton {
-        private final boolean field_146151_o;
+    private static class NextPageButton extends GuiButton {
+        /**
+         * True if it is the next page button, false if it is the previous page button.
+         */
+        private final boolean isNext;
 
-        public NextPageButton(int buttonID, int x, int y, boolean par4) {
+        NextPageButton(int buttonID, int x, int y, boolean isNext) {
             super(buttonID, x, y, 23, 13, "");
-            this.field_146151_o = par4;
+            this.isNext = isNext;
         }
 
         @Override
         public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-            if (this.visible) {
-                boolean flag = mouseX >= xPosition && mouseY >= yPosition &&
-                  mouseX < xPosition + width && mouseY < yPosition + height;
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                minecraft.getTextureManager().bindTexture(GuiJournal.bookGuiTextures);
+            if (visible) {
+                boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(xPosition, mouseX, xPosition + width) &&
+                  MathUtility.isBetweenMinInclusive(yPosition, mouseY, yPosition + height);
+                GlStateManager.color(1, 1, 1, 1);
+                minecraft.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
                 int k = 0;
                 int l = 192;
 
-                if (flag) {
+                if (isMouseInBookBounds) {
                     k += 23;
                 }
 
-                if (!this.field_146151_o) {
+                if (!isNext) {
                     l += 13;
                 }
 
-                this.drawTexturedModalRect(xPosition, yPosition, k, l, 23, 13);
+                drawTexturedModalRect(xPosition, yPosition, k, l, 23, 13);
             }
         }
     }
 
-    class GuiButtonSelect extends GuiButton {
+    private class GuiButtonSelect extends GuiButton {
         public String name;
 
-        public GuiButtonSelect(int buttonID, int x, int y, int width, int height, String buttonText) {
+        GuiButtonSelect(int buttonID, int x, int y, int width, int height, String buttonText) {
 
-            super(buttonID, x, y, width, height, buttonText.contains("#") ? I18n.format(buttonText.substring(1)) : I18n.format(buttonText));
+            super(buttonID, x, y, width, height, I18n.format(buttonText.contains("#") ? buttonText.substring(1) : buttonText));
             name = buttonText;
         }
 
-        public void drawCenteredStringWithoutShadow(FontRenderer fontRenderer, String str, int x, int y, int color) {
+        void drawCenteredStringWithoutShadow(FontRenderer fontRenderer, String str, int x, int y, int color) {
             fontRenderer.drawString(str, x, y, color);
         }
 
         @Override
         public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-            if (this.visible) {
+            if (visible) {
                 FontRenderer fontRenderer = mc.fontRendererObj;
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                boolean test = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width &&
-                  mouseY < yPosition + height;
-                this.mouseDragged(mc, mouseX, mouseY);
-                int color = 0x3F3F3F;
-
-                boolean unicode = fontRendererObj.getUnicodeFlag();
+                GlStateManager.color(1, 1, 1, 1);
+                boolean isMouseOverBook = MathUtility.isBetweenMinInclusive(xPosition, mouseX, xPosition + width) &&
+                  MathUtility.isBetweenMinInclusive(yPosition, mouseY, yPosition + height);
+                mouseDragged(mc, mouseX, mouseY);
+                boolean unicodeBeforeSet = fontRendererObj.getUnicodeFlag();
                 fontRendererObj.setUnicodeFlag(true);
-                this.drawCenteredStringWithoutShadow(fontRenderer, "\u2022 " + displayString, xPosition + (test ? 1 : 0),
-                  yPosition + (this.height - 8) / 2, color);
-                fontRendererObj.setUnicodeFlag(unicode);
+                drawCenteredStringWithoutShadow(fontRenderer, "\u2022 " + displayString, xPosition + (isMouseOverBook ? 1 : 0),
+                  yPosition + (height - 8) / 2, 0x3F3F3F);
+                fontRendererObj.setUnicodeFlag(unicodeBeforeSet);
             }
         }
     }
@@ -422,12 +423,17 @@ public class GuiJournal extends GuiScreen {
      * @param player The player opening the GUI.
      */
     public static void openRecipeFor(ItemStack recipeStack, EntityPlayer player) {
-        MutablePair<String, Integer> page = BookPageRegistry.bookRecipes.get(recipeStack);
-        viewing = page.left;
-        currPage = BookPageRegistry.entriesWithSubEntries.contains(viewing) ? page.right / 2 : 0;
-        lastIndexPage = 1;
-        bookTotalPages = page.right;
         player.openGui(EsteemedInnovation.instance, 1, player.worldObj, 0, 0, 0);
-        ((GuiJournal) Minecraft.getMinecraft().currentScreen).updateButtons();
+        GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+        if (!(gui instanceof GuiJournal)) {
+            return;
+        }
+        GuiJournal journal = (GuiJournal) gui;
+        MutablePair<String, Integer> page = BookPageRegistry.bookRecipes.get(recipeStack);
+        journal.viewing = page.left;
+        journal.currPage = BookPageRegistry.entriesWithSubEntries.contains(journal.viewing) ? page.right / 2 : 0;
+        journal.lastIndexPage = 1;
+        journal.bookTotalPages = page.right;
+        journal.updateButtons();
     }
 }

@@ -4,12 +4,10 @@ import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.gui.GuiJournal;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -21,8 +19,8 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
     private ItemStack[] item1;
     private ItemStack[] item2;
 
-    public BookPageAlloy(String string, CrucibleLiquid op, CrucibleFormula form) {
-        super(string);
+    public BookPageAlloy(String name, CrucibleLiquid op, CrucibleFormula form) {
+        super(name);
         output = op;
         formula = form;
         List<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0]));
@@ -36,11 +34,11 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
         book.mc.getTextureManager().bindTexture(craftSquareTexture);
         book.drawTexturedModalRect(x + 45, y + 65, 0, 82, 97, 59);
         fontRenderer.setUnicodeFlag(false);
-        int ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item1.length * 20.0D)) / 20.0D);
-        this.drawItemStack(item1[ticks], x + 40 + 19, y + 65 + 2, formula.liquid1num > 1 ? Integer.toString(formula.liquid1num) : "", renderer, fontRenderer, true);
-        ticks = MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (item2.length * 20.0D)) / 20.0D);
-        this.drawItemStack(item2[ticks], x + 40 + 19, y + 65 + 20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer, true);
-        this.drawItemStack(output.ingot, x + 40 + 75, y + 65 + 14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer, false);
+        int item1Ticks = getTicks(item1);
+        int item2Ticks = getTicks(item2);
+        drawItemStack(item1[item1Ticks], x + 40 + 19, y + 65 + 2, formula.liquid1num > 1 ? Integer.toString(formula.liquid1num) : "", renderer, fontRenderer, true);
+        drawItemStack(item2[item2Ticks], x + 40 + 19, y + 65 + 20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer, true);
+        drawItemStack(output.ingot, x + 40 + 75, y + 65 + 14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
     }
 

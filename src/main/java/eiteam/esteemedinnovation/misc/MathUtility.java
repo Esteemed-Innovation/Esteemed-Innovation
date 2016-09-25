@@ -15,4 +15,32 @@ public class MathUtility {
     public static int minWithDefault(int a, int b, int def) {
         return a < b ? def : b;
     }
+
+    /**
+     * [min, max)
+     */
+    public static boolean isBetweenMinInclusive(int min, int val, int max) {
+        return val >= min && val < max;
+    }
+
+    /**
+     * (min, max)
+     */
+    public static boolean isBetween(int min, int val, int max) {
+        return val > min && val < max;
+    }
+
+    /**
+     * (min, max]
+     */
+    public static boolean isBetweenMaxInclusive(int min, int val, int max) {
+        return val > min && val <= max;
+    }
+
+    /**
+     * [min, max]
+     */
+    public static boolean isBetweenBothInclusive(int min, int val, int max) {
+        return val >= min && val <= max;
+    }
 }
