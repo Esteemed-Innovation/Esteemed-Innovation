@@ -11,8 +11,8 @@ public class BlockFishGenocideMachine extends BlockContainer {
         super(Material.IRON);
     }
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityFishGenocideMachine();
-	}
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileEntityFishGenocideMachine();
+    }
 }

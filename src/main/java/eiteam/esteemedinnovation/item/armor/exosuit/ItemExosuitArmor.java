@@ -168,8 +168,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
                   MutablePair.of(28, 40)
                 };
             }
-		default:
-			break;
+            default: {
+                break;
+            }
         }
         return new MutablePair[]{MutablePair.of(49, 26)};
     }
@@ -441,8 +442,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
                     }
                 }
             }
-		default:
-			break;
+            default: {
+                break;
+            }
         }
     }
 

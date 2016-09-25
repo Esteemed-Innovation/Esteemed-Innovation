@@ -240,12 +240,12 @@ public class EntityRocket extends Entity {
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
-    	nbt.setShort("xTile", (short) x);
-    	nbt.setShort("yTile", (short) y);
-    	nbt.setShort("zTile", (short) z);
-    	nbt.setByte("inTile", (byte) Block.getIdFromBlock(blockInside));
+        nbt.setShort("xTile", (short) x);
+        nbt.setShort("yTile", (short) y);
+        nbt.setShort("zTile", (short) z);
+        nbt.setByte("inTile", (byte) Block.getIdFromBlock(blockInside));
         nbt.setBoolean("inGround", inGround);
-    	nbt.setTag("direction", newDoubleNBTList(motionX, motionY, motionZ));
+        nbt.setTag("direction", newDoubleNBTList(motionX, motionY, motionZ));
     }
 
     @Override

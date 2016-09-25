@@ -51,8 +51,9 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
                     GlStateManager.rotate(180F, 0, 1, 0);
                     break;
                 }
-			default:
-				break;
+                default: {
+                    break;
+                }
             }
             GlStateManager.rotate(-95.0F, 1, 0, 0);
             GlStateManager.translate(-7.5F / 16F, 0, -10F / 16F);

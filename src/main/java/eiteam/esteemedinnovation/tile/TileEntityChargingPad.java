@@ -82,8 +82,9 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
                 rotation = 90;
                 break;
             }
-		default:
-			break;
+            default: {
+                break;
+            }
         }
 
         if (!worldObj.isRemote) {
@@ -163,21 +164,21 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity implements
             target = entity;
 
 
-//		if (this.target != null) {
-//			if (this.target instanceof EntityPlayer) {
-//				float targetRotation = -((EntityPlayer)this.target).renderYawOffset;
-//				if (this.rotation < targetRotation) {
-//					((EntityPlayer)this.target).renderYawOffset += Math.min(targetRotation - this.rotation, 20.2F);
-//				}
-//				if (this.rotation > targetRotation) {
-//					((EntityPlayer)this.target).renderYawOffset += Math.max(targetRotation - this.rotation, -20.2F);
-//				}
-//			}
-//		}
+//        if (this.target != null) {
+//            if (this.target instanceof EntityPlayer) {
+//                float targetRotation = -((EntityPlayer)this.target).renderYawOffset;
+//                if (this.rotation < targetRotation) {
+//                    ((EntityPlayer)this.target).renderYawOffset += Math.min(targetRotation - this.rotation, 20.2F);
+//                }
+//                if (this.rotation > targetRotation) {
+//                    ((EntityPlayer)this.target).renderYawOffset += Math.max(targetRotation - this.rotation, -20.2F);
+//                }
+//            }
+//        }
 
-//			if (extendTicks <= 0) {
-//				descending = false;
-//			}
+//            if (extendTicks <= 0) {
+//                descending = false;
+//            }
             if (descending && extendTicks >= 0) {
                 extendTicks -= 1;
             }

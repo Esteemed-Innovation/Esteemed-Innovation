@@ -155,7 +155,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-    	TileEntityBoiler tileEntity = (TileEntityBoiler) world.getTileEntity(pos);
+        TileEntityBoiler tileEntity = (TileEntityBoiler) world.getTileEntity(pos);
 
         boolean isClient = !world.isRemote;
 

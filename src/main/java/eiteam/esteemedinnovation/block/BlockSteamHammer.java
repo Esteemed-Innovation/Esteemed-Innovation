@@ -54,34 +54,34 @@ public class BlockSteamHammer extends BlockContainer {
         return null;
     }
 
-	/*@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-	{
-		TileEntitySteamCharger tile = (TileEntitySteamCharger) world.getTileEntity(x,y,z);
-		if (tile.getStackInSlot(0) != null) {
-			if (!world.isRemote ) {
-				tile.dropItem(tile.getStackInSlot(0));
-			}
-			tile.setInventorySlotContents(0, null);
-		}
-		else
-		{
-			if (player.getHeldItem() != null) {
-				if (player.getHeldItem().getItem() instanceof ISteamChargable) {
-					ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
-					if (item.canCharge(player.getHeldItem())) {
-						ItemStack copy = player.getCurrentEquippedItem().copy();
-						copy.stackSize = 1;
-						tile.setInventorySlotContents(0, copy);
-						player.getCurrentEquippedItem().stackSize -= 1;
-						tile.randomDegrees = world.rand.nextInt(361);
-					}
-				}
-			}
-		}
-		return false;
-	}
-	*/
+    /*@Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    {
+        TileEntitySteamCharger tile = (TileEntitySteamCharger) world.getTileEntity(x,y,z);
+        if (tile.getStackInSlot(0) != null) {
+            if (!world.isRemote ) {
+                tile.dropItem(tile.getStackInSlot(0));
+            }
+            tile.setInventorySlotContents(0, null);
+        }
+        else
+        {
+            if (player.getHeldItem() != null) {
+                if (player.getHeldItem().getItem() instanceof ISteamChargable) {
+                    ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
+                    if (item.canCharge(player.getHeldItem())) {
+                        ItemStack copy = player.getCurrentEquippedItem().copy();
+                        copy.stackSize = 1;
+                        tile.setInventorySlotContents(0, copy);
+                        player.getCurrentEquippedItem().stackSize -= 1;
+                        tile.randomDegrees = world.rand.nextInt(361);
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    */
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {

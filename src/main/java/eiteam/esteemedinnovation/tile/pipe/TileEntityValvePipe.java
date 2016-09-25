@@ -34,11 +34,11 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
      * @param flag True to isOpen it, false to close it.
      */
     public void updateRedstoneState(boolean flag) {
-		if (Config.enableRedstoneValvePipe) {
-			if (!isTurning()) {
+        if (Config.enableRedstoneValvePipe) {
+            if (!isTurning()) {
                 setOpen(flag);
             }
-		}
+        }
         redstoneState = flag;
     }
 

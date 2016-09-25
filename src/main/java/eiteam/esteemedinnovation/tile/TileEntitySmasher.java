@@ -37,7 +37,7 @@ import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.
 import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER_DUMMY;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
-	public int spinup = 0;
+    public int spinup = 0;
     private float extendedLength = 0.0F;
     private Block smooshingBlock;
     private int smooshingMeta;
@@ -344,7 +344,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements ISt
     private void spawnItems(BlockPos position) {
         if (smooshedStack != null) {
             for (ItemStack stack : smooshedStack) {
-            	ItemStack output = SmasherRegistry.getOutput(stack);
+                ItemStack output = SmasherRegistry.getOutput(stack);
                 double x = position.getX() + 0.5F;
                 double y = position.getY() + 0.1F;
                 double z = position.getZ() + 0.5F;

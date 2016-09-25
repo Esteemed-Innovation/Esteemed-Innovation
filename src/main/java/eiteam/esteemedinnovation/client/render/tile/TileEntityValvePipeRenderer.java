@@ -61,8 +61,9 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
                 GlStateManager.rotate(180, 0, 1, 0);
                 break;
             }
-		default:
-			break;
+            default: {
+                break;
+            }
         }
         GlStateManager.rotate((225.0F * (valve.isOpen() ? valve.turnTicks : 10 - valve.turnTicks) / 10.0F), 1, 0, 0);
         GlStateManager.translate(-0.5, -0.5, -0.5);

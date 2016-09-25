@@ -210,9 +210,9 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         */
 
         ItemStack stackInInput = getStackInSlot(1);
-	    if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
-    		ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
-    		setInventorySlotContents(1, drainedItemStack);
+        if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+            ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
+            setInventorySlotContents(1, drainedItemStack);
         }
 
         boolean isBurnTimeGreaterThanZero = furnaceBurnTime > 0;
@@ -244,7 +244,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
                 if (furnaceCookTime > 0) {
                     //int i = 0;
-                    //	while (i<maxThisTick && isBurning() && canSmelt()) {
+                    //while (i<maxThisTick && isBurning() && canSmelt()) {
                     getNetwork().addSteam(10);
                     myTank.drain(2, true);
                     ///i++;
@@ -379,7 +379,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-    	return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
+        return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
     }
 
     @Override

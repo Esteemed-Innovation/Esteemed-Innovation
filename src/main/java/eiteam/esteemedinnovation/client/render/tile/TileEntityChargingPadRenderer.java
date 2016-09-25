@@ -41,8 +41,9 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
                 rotation = 0;
                 break;
             }
-		default:
-			break;
+            default: {
+                break;
+            }
         }
 
         GL11.glRotatef(90.0F, 0F, 1F, 0F);

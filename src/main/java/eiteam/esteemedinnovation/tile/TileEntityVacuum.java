@@ -116,13 +116,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements ISte
         }
         super.update();
         if (!worldObj.isRemote) {
-        	if ((getSteamShare() < VACUUM_STEAM_CONSUMPTION) || powered) {
-        		active = false;
-        	}
-        	else {
-        		active = true;
-        		decrSteam(VACUUM_STEAM_CONSUMPTION);
-        	}
+            if ((getSteamShare() < VACUUM_STEAM_CONSUMPTION) || powered) {
+                active = false;
+            } else {
+                active = true;
+                decrSteam(VACUUM_STEAM_CONSUMPTION);
+            }
         }
         if (active) {
             if (worldObj.isRemote) {

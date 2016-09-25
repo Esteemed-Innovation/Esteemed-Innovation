@@ -7,17 +7,17 @@ package eiteam.esteemedinnovation.api.util;
  * @author xbony2
  */
 public class BonyDebugger {
-	/**
-	 * Debugs stuff.
-	 */
-	public static void debug() {
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
-		System.out.println("End of yolo spam.");
-	}
+    /**
+     * Debugs stuff.
+     */
+    public static void debug() {
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("YOLOYOLYOYOLOYOLYOYLYOYL");
+        System.out.println("End of yolo spam.");
+    }
 }

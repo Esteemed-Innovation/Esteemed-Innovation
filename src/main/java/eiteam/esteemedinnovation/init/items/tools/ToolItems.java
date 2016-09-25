@@ -243,8 +243,9 @@ public class ToolItems implements IInitCategory {
                     addSwordRecipe(item.getItem(), INGOT_GILDED_IRON);
                     break;
                 }
-			default:
-				break;
+                default: {
+                    break;
+                }
             }
         }
     }

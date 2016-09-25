@@ -325,8 +325,9 @@ public class SteamMachineryBlocks implements IInitCategory {
                     ));
                     break;
                 }
-			default:
-				break;
+                default: {
+                    break;
+                }
             }
         }
     }
