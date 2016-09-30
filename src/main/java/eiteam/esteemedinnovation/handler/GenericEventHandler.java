@@ -444,16 +444,17 @@ public class GenericEventHandler {
                 field = clazz.getDeclaredField(fieldName);
             } catch (NoSuchFieldException e1) {
                 e1.printStackTrace();
-                String fields = "";
+                boolean builderHasAField = false;
+                StringBuilder builder = new StringBuilder();
                 for (Field field1 : clazz.getDeclaredFields()) {
-                    if (fields.isEmpty()) {
-                        fields += field1.getName();
-                    } else {
-                        fields += ", " + field1.getName();
+                    if (builderHasAField) {
+                        builder.append(", ");
                     }
+                    builder.append(field1.getName());
+                    builderHasAField = true;
                 }
                 FMLLog.warning("Unable to find " + fieldName + " field in " + clazz.getName() +
-                  ".class. Available fields are: " + fields + ". Things are not going to work right.");
+                  ".class. Available fields are: " + builder + ". Things are not going to work right.");
             }
         }
         return field;

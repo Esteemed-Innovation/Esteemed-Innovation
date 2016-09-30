@@ -184,8 +184,7 @@ public class ClientProxy extends CommonProxy {
         registerModel(MiscellaneousBlocks.Blocks.FUNNEL.getBlock());
 
         for (int i = 0; i < 4; i++) {
-            String variant = "variant=" + (i % 2 == 0 ? "copper" : "zinc");
-            variant += ",worked_out=" + (i > 1 ? "true" : "false");
+            String variant = "variant=" + (i % 2 == 0 ? "copper" : "zinc") + ",worked_out=" + (i > 1 ? "true" : "false");
             registerModel(MiscellaneousBlocks.Blocks.ORE_DEPOSIT_BLOCK.getBlock(), i, variant);
         }
 
