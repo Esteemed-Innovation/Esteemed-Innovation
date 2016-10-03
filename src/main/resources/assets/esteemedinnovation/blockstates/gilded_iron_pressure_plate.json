@@ -37,22 +37,22 @@
         "model": "block/pressure_plate_down"
       },
       "10": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       },
       "11": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       },
       "12": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       },
       "13": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       },
       "14": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       },
       "15": {
-        "model": "block/pressure_plate_down"
+        "model": "pressure_plate_down"
       }
     }
   }
