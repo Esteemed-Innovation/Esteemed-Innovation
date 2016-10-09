@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "transform": "forge:default-tool",
+    "model": "esteemedinnovation:steam_tool"
+  },
+  "variants": {
+    "inventory": [{}]
+  }
+}

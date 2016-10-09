@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/toolUpgrades/chargePlacer0"
+    "layer0": "esteemedinnovation:items/toolUpgrades/chargePlacerDrill0"
   }
 }

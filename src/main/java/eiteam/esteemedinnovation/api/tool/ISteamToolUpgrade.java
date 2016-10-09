@@ -3,8 +3,6 @@ package eiteam.esteemedinnovation.api.tool;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
-
 public interface ISteamToolUpgrade {
 
     /**
@@ -32,15 +30,14 @@ public interface ISteamToolUpgrade {
     String getInformation(ItemStack me, ItemStack tool);
 
     /**
-     * The two (or six, if isUniversal is true) icons for the upgrade.
-     * If the upgrade is universal, this MUST be in the following order:
-     * 0 and 1: Drill textures
-     * 2 and 3: Saw textures
-     * 4 and 5: Shovel textures
-     * @return The IIcon array.
+     * @return The base icon name. Does not include the name of the tool (Drill, Saw, Shovel) or the index (0, 1).
+     *         Return null if the upgrade does not add any texture to the tool.
+     *
+     * Examples:
+     * The void upgrade would return `esteemedinnovation:toolUpgrades/void`
+     * The thermal upgrade would return `esteemedinnovation:toolUpgrades/thermal`
      */
-    @Nonnull
-    ResourceLocation[] getIIcons();
+    ResourceLocation getBaseIcon();
 
     /**
      * Whether the upgrade is a universal upgrade. This will determine how to load the icons.

@@ -30,12 +30,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Nonnull;
 
 public abstract class ItemSteamTool extends ItemTool implements ISteamChargable, IEngineerable, ISteamTool {
     private boolean hasBrokenBlock = false;
@@ -53,7 +52,11 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
+        /*
+         We have to check the upgrades so that the models reload when you switch between two tools of the same type with
+         different upgrades. Otherwise, it would appear to have oldStack's upgrades on it.
+          */
+        return !UtilSteamTool.getUpgrades(oldStack).equals(UtilSteamTool.getUpgrades(newStack));
     }
 
     @Override

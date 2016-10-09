@@ -8,6 +8,9 @@ import eiteam.esteemedinnovation.item.tool.steam.ItemDrillHeadUpgrade;
 
 import java.util.ArrayList;
 
+// TODO: Use correct ID ranges (1-10? we only have 2 upgrades for each tool). Perhaps instead of using an NBTTagList we
+// could simply have CoreUpgrade and HeadUpgrade NBT tags.
+// TODO: Return pairs instead of lists.
 public class UtilSteamTool {
     /**
      * Checks if the ItemStack has a particular upgrade. Note that you can also call directly on

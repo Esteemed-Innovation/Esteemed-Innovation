@@ -7,37 +7,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
-    private ResourceLocation[] myOverlays;
+    private ResourceLocation baseOverlay;
     private String myInfo;
     private int prio;
     private SteamToolSlot mySlot;
 
     public ItemSteamToolUpgrade(SteamToolSlot slot, String resourceLocation, String info, int priority) {
         mySlot = slot;
-        if (info != null && !info.isEmpty()) {
-            myInfo = info;
-        } else {
-            myInfo = null;
-        }
-        if (resourceLocation != null && !resourceLocation.isEmpty()) {
-            if (isUniversal()) {
-                myOverlays = new ResourceLocation[] {
-                  new ResourceLocation(resourceLocation + "Drill0"),
-                  new ResourceLocation(resourceLocation + "Drill1"),
-                  new ResourceLocation(resourceLocation + "Saw0"),
-                  new ResourceLocation(resourceLocation + "Saw1"),
-                  new ResourceLocation(resourceLocation + "Shovel0"),
-                  new ResourceLocation(resourceLocation + "Shovel1")
-                };
-            } else {
-                myOverlays = new ResourceLocation[] {
-                  new ResourceLocation(resourceLocation + "0"),
-                  new ResourceLocation(resourceLocation + "1")
-                };
-            }
-        } else {
-            myOverlays = new ResourceLocation[] {};
-        }
+        myInfo = info != null && !info.isEmpty() ? info : null;
+        baseOverlay = new ResourceLocation(resourceLocation);
         prio = priority;
     }
 
@@ -62,7 +40,7 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public ResourceLocation[] getIIcons() {
-        return myOverlays;
+    public ResourceLocation getBaseIcon() {
+        return baseOverlay;
     }
 }

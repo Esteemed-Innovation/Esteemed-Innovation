@@ -1,10 +1,8 @@
 package eiteam.esteemedinnovation.client;
 
 import codechicken.lib.render.CCIconRegister;
-import codechicken.lib.render.ModelRegistryHelper;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.block.BlockBeacon;
 import eiteam.esteemedinnovation.block.BlockCrucible;
 import eiteam.esteemedinnovation.block.BlockGenericOre;
@@ -17,7 +15,7 @@ import eiteam.esteemedinnovation.client.render.colorhandlers.SteamDrillHeadUpgra
 import eiteam.esteemedinnovation.client.render.entity.RenderCanister;
 import eiteam.esteemedinnovation.client.render.entity.RenderMortarItem;
 import eiteam.esteemedinnovation.client.render.entity.RenderRocket;
-import eiteam.esteemedinnovation.client.render.item.ItemSteamToolRenderer;
+import eiteam.esteemedinnovation.client.render.item.steamtool.SteamToolModelLoader;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.client.render.tile.*;
 import eiteam.esteemedinnovation.common.CommonProxy;
@@ -60,6 +58,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -155,6 +154,8 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerModels() {
+        ModelLoaderRegistry.registerLoader(new SteamToolModelLoader());
+
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 1, "is_creative=true");
@@ -222,9 +223,7 @@ public class ClientProxy extends CommonProxy {
         }
 
         for (ToolItems.Items item : ToolItems.Items.LOOKUP) {
-            if (!(item.getItem() instanceof ISteamTool)) {
-                registerModel(item.getItem());
-            }
+            registerModel(item.getItem());
         }
 
         for (ToolUpgradeItems.Items item : ToolUpgradeItems.Items.LOOKUP) {
@@ -280,10 +279,6 @@ public class ClientProxy extends CommonProxy {
         }
         colors.registerItemColorHandler(new SteamDrillColorHandler(), ToolItems.Items.STEAM_DRILL.getItem());
         colors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), ToolUpgradeItems.Items.DRILL_HEAD.getItem());
-
-        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_DRILL.getItem(), new ItemSteamToolRenderer());
-        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SAW.getItem(), new ItemSteamToolRenderer());
-        ModelRegistryHelper.registerItemRenderer(ToolItems.Items.STEAM_SHOVEL.getItem(), new ItemSteamToolRenderer());
 
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
         FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);

@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.client.ClientProxy;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
@@ -17,6 +18,7 @@ import eiteam.esteemedinnovation.misc.ItemStackUtility;
 import eiteam.esteemedinnovation.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -32,12 +34,14 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -150,6 +154,24 @@ public class GenericTickHandler {
         }
     }
 
+    private static Field itemInMainHandField;
+    private static Field itemInOffHandField;
+
+    static {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+            FMLLog.info("[EI] Getting some fields from reflection for Tick Handling.");
+            itemInMainHandField = GenericEventHandler.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
+            itemInOffHandField = GenericEventHandler.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
+
+            if (itemInMainHandField != null) {
+                itemInMainHandField.setAccessible(true);
+            }
+            if (itemInOffHandField != null) {
+                itemInOffHandField.setAccessible(true);
+            }
+        }
+    }
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void tickStart(TickEvent.ClientTickEvent event) {
@@ -157,6 +179,28 @@ public class GenericTickHandler {
         Minecraft mc = Minecraft.getMinecraft();
         inUse = false;
         if (event.side == Side.CLIENT && mc.thePlayer != null) {
+            /*
+             Prevents caching of ISteamTool ItemStacks in the ItemRenderer, so that the ItemOverrideList has access to
+             the new NBT added in ItemSteamTool#onUpdate.
+              */
+            ItemStack mainHandStack = mc.thePlayer.getHeldItemMainhand();
+            ItemStack offHandStack = mc.thePlayer.getHeldItemOffhand();
+            if (mainHandStack != null && mainHandStack.getItem() instanceof ISteamTool) {
+                try {
+                    itemInMainHandField.set(mc.getItemRenderer(), mainHandStack);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (offHandStack != null && offHandStack.getItem() instanceof ISteamTool) {
+                try {
+                    itemInOffHandField.set(mc.getItemRenderer(), offHandStack);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiMerchant)) {
                 GenericEventHandler.lastViewVillagerGui = false;
             }

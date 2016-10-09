@@ -10,21 +10,10 @@ import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 
 public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
-    private ResourceLocation[] myOverlays = new ResourceLocation[6];
+    private ResourceLocation baseOverlay;
 
     public ItemTheVoidUpgrade() {
-        String resource = "toolUpgrades/void";
-        String[] overlays = new String[] {
-          resource + "Drill0",
-          resource + "Drill1",
-          resource + "Saw0",
-          resource + "Saw1",
-          resource + "Shovel0",
-          resource + "Shovel1"
-        };
-        for (int i = 0; i < 6; i++) {
-            myOverlays[i] = new ResourceLocation(EsteemedInnovation.MOD_ID, overlays[i]);
-        }
+        baseOverlay = new ResourceLocation(EsteemedInnovation.MOD_ID, "items/toolUpgrades/void");
     }
 
     @Override
@@ -50,8 +39,8 @@ public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public ResourceLocation[] getIIcons() {
-        return myOverlays;
+    public ResourceLocation getBaseIcon() {
+        return baseOverlay;
     }
 
     @Override

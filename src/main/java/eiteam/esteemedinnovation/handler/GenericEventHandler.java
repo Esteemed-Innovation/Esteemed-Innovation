@@ -433,7 +433,7 @@ public class GenericEventHandler {
     private static Field merchantField = null;
     private static Field buyingListField = null;
 
-    private static Field getField(String fieldName, String obfName, Class clazz) {
+    static Field getField(String fieldName, String obfName, Class clazz) {
         Field field = null;
         try {
             field = clazz.getDeclaredField(obfName);

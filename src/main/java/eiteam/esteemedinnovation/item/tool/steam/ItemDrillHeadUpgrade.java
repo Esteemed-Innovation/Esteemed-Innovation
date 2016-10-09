@@ -1,14 +1,14 @@
 package eiteam.esteemedinnovation.item.tool.steam;
 
+import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
+import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
-import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 
 import java.util.List;
 
@@ -72,8 +72,8 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public ResourceLocation[] getIIcons() {
+    public ResourceLocation getBaseIcon() {
         // The Drill Head Upgrade has custom rendering techniques that do not require new textures.
-        return new ResourceLocation[] {};
+        return null;
     }
 }
