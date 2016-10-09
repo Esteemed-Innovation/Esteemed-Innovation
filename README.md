@@ -13,6 +13,7 @@ The goal of EI is innovative content that encourages fun play rather than trying
 * Information can be found on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power).
 * A changelog can be found also on the [FTB Wiki](http://ftb.gamepedia.com/Flaxbeard's_Steam_Power/Changelog)
 * Downloads can be found on [CurseForge](http://minecraft.curseforge.com/mc-mods/224867-flaxbeards-steam-power/)
+* API documentation can be found on [ReadTheDocs](http://esteemed-innovation.rtfd.io/)
 
 ## Contact
-You can contact the team usually within hours here on GitHub through issues. If that's not your style, you can also contact the Esteemed Innovation team on IRC at #TheSteamTank on EsperNet.
+You can contact the team usually within hours here on GitHub through issues. If that's not your style, you can also contact the Esteemed Innovation team on IRC at #TheSteamTank on EsperNet. If *that's* not your style, we also have a [Discord server](https://discord.gg/qtaRXYH).
