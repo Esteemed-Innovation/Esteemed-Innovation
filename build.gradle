@@ -136,15 +136,17 @@ publishing {
 }
 
 bintray {
-    user = bintray_user
-    key = bintray_key
-    publications = ['apiPublication'] 
-    pkg {
-        repo = 'Esteemed-Innovation'
-        name = 'Releases'
-        userOrg = 'esteemed-innovation'
-        version {
-            name = project.version
+    if (System.hasProperty('bintray_user') && System.hasProperty('bintray_key')) {
+        user = bintray_user
+        key = bintray_key
+        publications = ['apiPublication'] 
+        pkg {
+            repo = 'Esteemed-Innovation'
+            name = 'Releases'
+            userOrg = 'esteemed-innovation'
+            version {
+                name = project.version
+            }
         }
     }
 }
