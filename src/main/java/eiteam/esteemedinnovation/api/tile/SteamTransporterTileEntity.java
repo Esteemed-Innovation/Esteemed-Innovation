@@ -1,17 +1,13 @@
 package eiteam.esteemedinnovation.api.tile;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.util.Coord4;
-import eiteam.esteemedinnovation.api.util.SPLog;
-import eiteam.esteemedinnovation.block.BlockRuptureDisc;
-import eiteam.esteemedinnovation.block.BlockSteamGauge;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +23,6 @@ public class SteamTransporterTileEntity extends TileEntityBase implements ISteam
     private float lastPressure = -1F;
     private float pressure;
     protected int capacity;
-    protected SPLog log = EsteemedInnovation.log;
     protected String networkName;
     protected SteamNetwork network;
     protected EnumFacing[] distributionDirections;
@@ -254,8 +249,8 @@ public class SteamTransporterTileEntity extends TileEntityBase implements ISteam
         for (EnumFacing dir : EnumFacing.VALUES) {
             if (acceptsGauge(dir)) {
                 BlockPos offsetPos = pos.offset(dir);
-                Block block = worldObj.getBlockState(offsetPos).getBlock();
-                if (block instanceof BlockSteamGauge || block instanceof BlockRuptureDisc) {
+                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                if (tile instanceof SteamReactorTileEntity) {
                     return true;
                 }
             }
