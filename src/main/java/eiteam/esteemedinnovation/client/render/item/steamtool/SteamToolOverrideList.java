@@ -59,7 +59,7 @@ public final class SteamToolOverrideList extends ItemOverrideList {
             }
         }
 
-        int which = stack.getTagCompound().getInteger("Ticks") > 50 ? 0 : 1;
+        int which = stack.hasTagCompound() && stack.getTagCompound().hasKey("Ticks") && stack.getTagCompound().getInteger("Ticks") > 50 ? 0 : 1;
         builder.put("which", Integer.toString(which));
 
         ImmutableMap<String, String> map = builder.build();
