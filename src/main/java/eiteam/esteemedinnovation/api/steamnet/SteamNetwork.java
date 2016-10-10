@@ -12,8 +12,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 public class SteamNetwork {
     private static Random random = new Random();
@@ -90,7 +92,7 @@ public class SteamNetwork {
         HashSet<ISteamTransporter> out = new HashSet<>();
         Coord4 transCoords = trans.getCoords();
         for (EnumFacing d : trans.getConnectionSides()) {
-            TileEntity te = trans.getWorld().getTileEntity(transCoords.pos.offset(d));
+            TileEntity te = trans.getWorld().getTileEntity(transCoords.getPos().offset(d));
             if (te != null && te instanceof ISteamTransporter && te != trans) {
                 ISteamTransporter t = (ISteamTransporter) te;
                 if (t.getConnectionSides().contains(d.getOpposite())) {
@@ -209,7 +211,7 @@ public class SteamNetwork {
             if (transporters != null) {
                 int totalY = 0;
                 for (Coord4 coord : transporters.keySet()) {
-                    totalY += coord.pos.getY();
+                    totalY += coord.getPos().getY();
                 }
                 int averageY = MathHelper.ceiling_float_int((float) totalY / (float) transporters.size());
                 int networkAltitude = 64 - averageY;
@@ -251,7 +253,7 @@ public class SteamNetwork {
     public synchronized void loadTransporters(World world) {
         for (int i = transporterCoords.length - 1; i >= 0; i--) {
             Coord4 coords = transporterCoords[i];
-            TileEntity te = world.getTileEntity(coords.pos);
+            TileEntity te = world.getTileEntity(coords.getPos());
             if (te instanceof ISteamTransporter) {
                 transporters.put(transporterCoords[i], (ISteamTransporter) te);
             }
@@ -352,7 +354,7 @@ public class SteamNetwork {
         HashSet<ISteamTransporter> out = new HashSet<>();
         Coord4 coords = trans.getCoords();
         for (EnumFacing dir : trans.getConnectionSides()) {
-            TileEntity te = trans.getWorld().getTileEntity(coords.pos.offset(dir));
+            TileEntity te = trans.getWorld().getTileEntity(coords.getPos().offset(dir));
             if (te != null && te instanceof ISteamTransporter) {
                 ISteamTransporter neighbor = (ISteamTransporter) te;
                 out.add(neighbor);
@@ -371,7 +373,7 @@ public class SteamNetwork {
 
     public int getDimension() {
         if (transporters.size() > 0) {
-            return transporters.keySet().iterator().next().dimension;
+            return transporters.keySet().iterator().next().getDimension();
         } else {
             return -999;
         }

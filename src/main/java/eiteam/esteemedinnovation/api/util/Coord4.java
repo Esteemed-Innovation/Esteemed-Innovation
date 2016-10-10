@@ -8,8 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class Coord4 {
-    public int dimension;
-    public BlockPos pos;
+    private int dimension;
+    private BlockPos pos;
 
     public Coord4(BlockPos pos, int dimension) {
         this.pos = pos;
@@ -26,16 +26,17 @@ public class Coord4 {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        BlockPos pos = getPos();
         nbt.setInteger("x", pos.getX());
         nbt.setInteger("y", pos.getY());
         nbt.setInteger("z", pos.getZ());
-        nbt.setInteger("dimension", dimension);
+        nbt.setInteger("dimension", getDimension());
 
         return nbt;
     }
 
     public TileEntity getTileEntity(IBlockAccess world) {
-        return world.getTileEntity(pos);
+        return world.getTileEntity(getPos());
     }
 
     public Block getBlock(IBlockAccess world) {
@@ -43,29 +44,39 @@ public class Coord4 {
     }
 
     public IBlockState getBlockState(IBlockAccess world) {
-        return world.getBlockState(pos);
+        return world.getBlockState(getPos());
     }
 
+    public int getDimension() {
+        return dimension;
+    }
+
+    public BlockPos getPos() {
+        return pos;
+    }
+
+    @Override
     public String toString() {
-        return "Coord4: " + pos.toString() + "; Dimension: " + dimension;
+        return "Coord4: " + getPos() + "; Dimension: " + getDimension();
     }
 
     @Override
     public boolean equals(Object other) {
         if (other instanceof Coord4) {
             Coord4 coord = (Coord4) other;
-            return pos.equals(coord.pos) && dimension == coord.dimension;
+            return getPos().equals(coord.getPos()) && getDimension() == coord.getDimension();
         }
         return false;
     }
 
     @Override
     public int hashCode() {
+        BlockPos pos = getPos();
         int hash = 1;
         hash = 31 * hash + pos.getX();
         hash = 31 * hash + pos.getY();
         hash = 31 * hash + pos.getZ();
-        hash = 31 * hash + dimension;
+        hash = 31 * hash + getDimension();
         return hash;
     }
 }
