@@ -41,11 +41,11 @@ public class ItemAstrolabe extends Item {
                         break;
                     }
                     default: {
-                        dimension = I18n.format("esteemedinnovation.astrolabe.dimension") + " " + dim;
+                        dimension = I18n.format("esteemedinnovation.astrolabe.dimension", dim);
                         break;
                     }
                 }
-                tooltip.add(I18n.format("esteemedinnovation.astrolabe.target") + " " + x + ", " + z + " " + I18n.format("esteemedinnovation.astrolabe.in") + " " + dimension);
+                tooltip.add(I18n.format("esteemedinnovation.astrolabe.target", x, z, dimension));
                 return;
             }
         }

@@ -87,12 +87,9 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     @Override
     public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean par4) {
         super.addInformation(me, player, list, par4);
-        if (me.hasTagCompound()) {
-            if (me.getTagCompound().hasKey("level")) {
-                int level = me.getTagCompound().getInteger("level");
-                // TODO: Proper string formatting.
-                list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level") + " " + level);
-            }
+        if (me.hasTagCompound() && me.getTagCompound().hasKey("level")) {
+            int level = me.getTagCompound().getInteger("level");
+            list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
         }
     }
 }

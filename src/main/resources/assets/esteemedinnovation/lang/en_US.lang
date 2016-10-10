@@ -8,9 +8,9 @@ esteemedinnovation.book.listjoiner=,
 item.esteemedinnovation:book.name=Esteemed Innovation
 potion.partialInvisible=Cloaking
 esteemedinnovation.canned=Canistered
-esteemedinnovation.rocket=Rocket Type:
+esteemedinnovation.rocket=Rocket Type: %s
 
-esteemedinnovation.plate.bonus=Exosuit Effect: 
+esteemedinnovation.plate.bonus=Exosuit Effect: %s
 esteemedinnovation.plate.copper=Blast Protection
 esteemedinnovation.plate.brass=Fire Protection
 esteemedinnovation.plate.iron=Projectile Protection
@@ -44,13 +44,12 @@ esteemedinnovation.color.magenta=Painted Magenta
 esteemedinnovation.color.orange=Painted Orange
 esteemedinnovation.color.white=Painted White
 
-esteemedinnovation.astrolabe.target=Target:
+esteemedinnovation.astrolabe.target=Target: %s, %s in %s
 esteemedinnovation.astrolabe.noTarget=No target
-esteemedinnovation.astrolabe.dimension=dimension
+esteemedinnovation.astrolabe.dimension=dimension %d
 esteemedinnovation.astrolabe.dimension.overworld=the Overworld
 esteemedinnovation.astrolabe.dimension.nether=the Nether
 esteemedinnovation.astrolabe.dimension.end=the End
-esteemedinnovation.astrolabe.in=in
 
 esteemedinnovation.fan.range=Range: %d blocks
 esteemedinnovation.smasher.true=Mode: Block Breaker
@@ -59,7 +58,7 @@ esteemedinnovation.smasher.false=Mode: Smasher
 esteemedinnovation.exosuit.thrustTick=consumed per tick of thruster use
 esteemedinnovation.exosuit.flyTick=consumed per flying tick
 esteemedinnovation.exosuit.shroud=Shrouded
-esteemedinnovation.exosuit.level=Level
+esteemedinnovation.exosuit.level=Level %d
 
 key.monocle.desc=Zoom using monocle
 key.esteemedinnovation.category=Esteemed Innovation

@@ -223,8 +223,7 @@ public class GenericEventHandler {
                 selectedRocketType = 0;
             }
             String name = selectedRocketType == 0 ? "item.esteemedinnovation:rocket.name.2" : ((Item) EnhancementRegistry.rockets.get(selectedRocketType)).getUnlocalizedName() + ".name";
-            // TODO: Proper formatting.
-            String tooltip = I18n.format("esteemedinnovation.rocket") + " " + I18n.format(name);
+            String tooltip = I18n.format("esteemedinnovation.rocket", I18n.format(name));
 
             int tooltipStartX = (width - fontRenderer.getStringWidth(tooltip)) / 2;
             int tooltipStartY = height - 35 - (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode ? 0 : 35);
@@ -719,7 +718,7 @@ public class GenericEventHandler {
         ItemStack stack = event.getItemStack();
         ExosuitPlate plate = UtilPlates.getPlate(stack);
         if (plate != null) {
-            event.getToolTip().add(TextFormatting.BLUE + I18n.format("esteemedinnovation.plate.bonus") + plate.effect());
+            event.getToolTip().add(TextFormatting.BLUE + I18n.format("esteemedinnovation.plate.bonus", plate.effect()));
         }
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
             event.getToolTip().add(TextFormatting.GOLD + I18n.format("esteemedinnovation.canned"));
