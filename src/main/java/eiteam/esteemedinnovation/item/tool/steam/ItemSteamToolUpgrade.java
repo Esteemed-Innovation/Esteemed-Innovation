@@ -25,11 +25,6 @@ public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public int renderPriority() {
-        return prio;
-    }
-
-    @Override
     public SteamToolSlot getToolSlot() {
         return mySlot;
     }

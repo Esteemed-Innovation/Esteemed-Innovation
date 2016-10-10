@@ -21,11 +21,6 @@ public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public int renderPriority() {
-        return 1;
-    }
-
-    @Override
     public SteamToolSlot getToolSlot() {
         return SteamToolSlot.DRILL_HEAD;
     }

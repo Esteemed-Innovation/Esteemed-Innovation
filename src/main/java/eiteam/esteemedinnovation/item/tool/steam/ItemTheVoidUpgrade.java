@@ -17,11 +17,6 @@ public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
     }
 
     @Override
-    public int renderPriority() {
-        return 0;
-    }
-
-    @Override
     public SteamToolSlot getToolSlot() {
         return SteamToolSlot.TOOL_CORE;
     }

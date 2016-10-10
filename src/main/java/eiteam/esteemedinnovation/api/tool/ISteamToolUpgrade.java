@@ -4,16 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public interface ISteamToolUpgrade {
-
-    /**
-     * The priority of the upgrade's rendering. This is essentially the render pass.
-     * Typically, you will use 1 for head upgrades, and 0 for core upgrades because head should go
-     * on top of the body, logically, however you are free to be as creative as you' like.
-     * Each upgrade should have a 0 and 1 texture, for the two different icons rendered at
-     * alternating wound ticks. If you use anything above 1, it will not be rendered at all.
-     */
-    int renderPriority();
-
     /**
      * The slot that the upgrade can be used on
      *
