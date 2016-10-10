@@ -81,7 +81,7 @@ public class CrucibleRegistry {
             while (iter.hasNext()) {
                 Map.Entry<Tuple3, MutablePair<Integer, ItemStack>> entry = iter.next();
                 Tuple3 key = entry.getKey();
-                if (key.first == item && (int) key.second == meta && key.third == liquid) {
+                if (key.getFirst() == item && (int) key.getSecond() == meta && key.getThird() == liquid) {
                     iter.remove();
                 }
             }

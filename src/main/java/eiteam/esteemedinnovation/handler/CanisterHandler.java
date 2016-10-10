@@ -18,9 +18,9 @@ public class CanisterHandler implements IRecipe {
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
         Tuple3<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
-        ItemStack output = triplet.third;
-        boolean hasCan = triplet.second;
-        boolean canCraft = triplet.first;
+        ItemStack output = triplet.getThird();
+        boolean hasCan = triplet.getSecond();
+        boolean canCraft = triplet.getFirst();
 
         return canCraft && hasCan && output != null && !(output.hasTagCompound() &&
           output.getTagCompound().hasKey("canned"));
@@ -29,9 +29,9 @@ public class CanisterHandler implements IRecipe {
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
         Tuple3<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
-        ItemStack output = triplet.third;
-        boolean hasCan = triplet.second;
-        boolean canCraft = triplet.first;
+        ItemStack output = triplet.getThird();
+        boolean hasCan = triplet.getSecond();
+        boolean canCraft = triplet.getFirst();
         if (canCraft && hasCan && output != null) {
             if (output.hasTagCompound() && output.getTagCompound().hasKey("canned")) {
                 return null;
