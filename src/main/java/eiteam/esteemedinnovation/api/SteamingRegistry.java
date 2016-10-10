@@ -1,14 +1,12 @@
 package eiteam.esteemedinnovation.api;
 
 import eiteam.esteemedinnovation.misc.ItemStackUtility;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 public class SteamingRegistry {
     /**
@@ -16,7 +14,6 @@ public class SteamingRegistry {
      * Key: input, Value: output
      */
     private static HashMap<ItemStack, ItemStack> steamingRecipes = new HashMap<>();
-
 
     /**
      * Adds a steaming custom recipe (not a replacement recipe).
@@ -48,11 +45,8 @@ public class SteamingRegistry {
      * Gets the steaming result for the given item. If there is no steaming recipe, returns null.
      */
     public static ItemStack getSteamingResultNoSmelting(@Nonnull ItemStack input) {
-        System.out.println("getting result for " + input.toString());
         for (Map.Entry<ItemStack, ItemStack> entry : steamingRecipes.entrySet()) {
-            System.out.println(entry.getKey().toString());
             if (ItemStackUtility.compareItemStacks(input, entry.getKey())) {
-                System.out.println(input.toString() + " and " + entry.getKey().toString() + " are equal basically");
                 return entry.getValue();
             }
         }
