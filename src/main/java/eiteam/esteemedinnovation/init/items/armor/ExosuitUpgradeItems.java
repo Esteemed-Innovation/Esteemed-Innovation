@@ -32,28 +32,28 @@ public class ExosuitUpgradeItems implements IInitCategory {
     public enum Items {
         JETPACK(new ItemExosuitJetpack(), "jetpack"),
         WINGS(new ItemExosuitWings(), "wings"),
-        POWER_FIST(ExosuitSlot.BODY_HAND, "fireFist", null, 0, "powerFist"),
-        EXTENDO_FIST(ExosuitSlot.BODY_HAND, "extendoFist", null, 0, "extendoFist"),
+        POWER_FIST(ExosuitSlot.BODY_HAND, "fireFist", null, 0, "power_fist"),
+        EXTENDO_FIST(ExosuitSlot.BODY_HAND, "extendoFist", null, 0, "extendo_fist"),
         THRUSTERS(new ItemExosuitSidepack(), "thrusters"),
-        FALL_ASSIST(ExosuitSlot.BOOTS_TOP, "fallUpgrade", null, 0, "fallAssist"),
-        JUMP_ASSIST(ExosuitSlot.BOOTS_TOP, "jumpUpgrade", null, 0, "jumpAssist"),
-        DOUBLE_JUMP(ExosuitSlot.BOOTS_FEET, "doubleJump", null, 1, "doubleJump"),
-        RUN_ASSIST(ExosuitSlot.LEGS_LEGS, "runUpgrade", null, 0, "runAssist"),
+        FALL_ASSIST(ExosuitSlot.BOOTS_TOP, "fallUpgrade", null, 0, "fall_assist"),
+        JUMP_ASSIST(ExosuitSlot.BOOTS_TOP, "jumpUpgrade", null, 0, "jump_assist"),
+        DOUBLE_JUMP(ExosuitSlot.BOOTS_FEET, "doubleJump", null, 1, "double_jump"),
+        RUN_ASSIST(ExosuitSlot.LEGS_LEGS, "runUpgrade", null, 0, "run_assist"),
         CANNING_MACHINE(ExosuitSlot.LEGS_HIPS, "canner", null, 1, "canner"),
-        PITON_DEPLOYER(ExosuitSlot.BODY_HAND, EsteemedInnovation.MOD_ID + ":textures/models/armor/pitonDeployer.png", null, 1, "pitonDeployer"),
-        STEALTH(ExosuitSlot.LEGS_LEGS, "stealthUpgrade", null, 0, "stealthUpgrade"),
-        ENDER_SHROUD(ExosuitSlot.VANITY, "", null, 0, "enderShroud"),
-        REINFORCED_TANK(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforcedTank"),
-        UBER_REINFORCED_TANK(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uberReinforcedTank"),
+        PITON_DEPLOYER(ExosuitSlot.BODY_HAND, "pitonDeployer", null, 1, "piton_deployer"),
+        STEALTH(ExosuitSlot.LEGS_LEGS, "stealthUpgrade", null, 0, "stealth_upgrade"),
+        ENDER_SHROUD(ExosuitSlot.VANITY, null, null, 0, "ender_shroud"),
+        REINFORCED_TANK(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank"),
+        UBER_REINFORCED_TANK(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank"),
         REBREATHER(ExosuitSlot.HEAD_GOGGLES, "rebreatherUpgrade", null, 1, "rebreather"),
-        HYDROPHOBIC_COATINGS(ExosuitSlot.BOOTS_TOP, "", null, 0, "hydrophobicCoatings"),
-        PYROPHOBIC_COATINGS(ExosuitSlot.BOOTS_TOP, "", null, 0, "pyrophobicCoatings"),
-        ANCHOR_HEELS(new ItemExosuitAnchorHeels(), "anchorHeels"),
-        RELOADING_HOLSTERS(new ItemExosuitReloadingHolster(), "reloadingHolsters"),
-        FREQUENCY_SHIFTER(new ItemExosuitFrequencyShifter(), "frequencyShifter"),
-        DRAGON_ROAR(new ItemExosuitDragonRoar(), "dragonRoar"),
-        EXOSUIT_PLATE(new ItemExosuitPlate(), "exosuitPlate"),
-        PISTON_PUSH(ExosuitSlot.BODY_HAND, "", null, 0, "pistonPush");
+        HYDROPHOBIC_COATINGS(ExosuitSlot.BOOTS_TOP, "hydrophobiccoating", null, 0, "hydrophobic_coatings"),
+        PYROPHOBIC_COATINGS(ExosuitSlot.BOOTS_TOP, "pyrophobiccoating", null, 0, "pyrophobic_coatings"),
+        ANCHOR_HEELS(new ItemExosuitAnchorHeels(), "anchor_heels"),
+        RELOADING_HOLSTERS(new ItemExosuitReloadingHolster(), "reloading_holsters"),
+        FREQUENCY_SHIFTER(new ItemExosuitFrequencyShifter(), "frequency_shifter"),
+        DRAGON_ROAR(new ItemExosuitDragonRoar(), "dragon_roar"),
+        EXOSUIT_PLATE(new ItemExosuitPlate(), "exosuit_plate"),
+        PISTON_PUSH(ExosuitSlot.BODY_HAND, "pistonarm", null, 0, "piston_push");
 
         private Item item;
         public static Items[] LOOKUP = new Items[values().length];
@@ -75,7 +75,9 @@ public class ExosuitUpgradeItems implements IInitCategory {
         }
 
         Items(ExosuitSlot slot, String resource, String info, int prio, String name) {
-            resource = EsteemedInnovation.MOD_ID + ":textures/models/armor/" + resource + ".png";
+            if (resource != null) {
+                resource = EsteemedInnovation.MOD_ID + ":textures/models/armor/" + resource + ".png";
+            }
             Item item = new ItemExosuitUpgrade(slot, resource, info, prio);
             item.setUnlocalizedName(EsteemedInnovation.MOD_ID + ":" + name);
             item.setCreativeTab(EsteemedInnovation.tab);
@@ -195,11 +197,11 @@ public class ExosuitUpgradeItems implements IInitCategory {
         }
 
         PlateItems(String id, int metadata, String resource, String langSuffix) {
+            this.metadata = metadata;
+            this.id = id;
             ExosuitPlate plate = new ExosuitPlate(id, createItemStack(), resource, resource,
               EsteemedInnovation.MOD_ID + ".plate." + langSuffix);
             ExosuitRegistry.addExosuitPlate(plate);
-            this.metadata = metadata;
-            this.id = id;
         }
 
         public int getMetadata() {

@@ -2,10 +2,11 @@ package eiteam.esteemedinnovation.api.exosuit;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class ExosuitPlate {
     private String identifier;
@@ -32,12 +33,12 @@ public class ExosuitPlate {
         return plate;
     }
 
-    public String getIcon(ItemExosuitArmor item) {
-        return item.getString() + invMod;
+    public ResourceLocation getIcon(ItemExosuitArmor item) {
+        return new ResourceLocation(item.getString() + invMod);
     }
 
-    public String getArmorLocation(ItemExosuitArmor item, int armorType) {
-        if (armorType != 2) {
+    public String getArmorLocation(ItemExosuitArmor item, EntityEquipmentSlot slot) {
+        if (slot != EntityEquipmentSlot.LEGS) {
             return EsteemedInnovation.MOD_ID + ":textures/models/armor/exoPlate" + armorMod + "_1.png";
         } else {
             return EsteemedInnovation.MOD_ID + ":textures/models/armor/exoPlate" + armorMod + "_2.png";
@@ -45,6 +46,7 @@ public class ExosuitPlate {
     }
 
     public int getDamageReductionAmount(EntityEquipmentSlot slot, DamageSource source) {
+        // TODO: Remove implementation from the API.
         if (getIdentifier().equals("Copper")) {
             if (source.isExplosion()) {
                 return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
@@ -69,6 +71,6 @@ public class ExosuitPlate {
     }
 
     public String effect() {
-        return I18n.translateToLocal(effect);
+        return I18n.format(effect);
     }
 }

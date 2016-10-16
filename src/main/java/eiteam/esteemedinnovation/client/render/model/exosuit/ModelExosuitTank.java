@@ -6,23 +6,28 @@ import eiteam.esteemedinnovation.client.Texture;
 import eiteam.esteemedinnovation.client.render.model.ModelPointer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
-import org.lwjgl.opengl.GL11;
 
 public class ModelExosuitTank extends ModelExosuitUpgrade {
-
-    public static final ModelPointer MODEL_POINTER = new ModelPointer();
-
-    public ModelRenderer tank = new ModelRenderer(this, 0, 0);
+    private ModelPointer pointer = new ModelPointer();
+    private ModelRenderer tank = new ModelRenderer(this, 0, 0);
+    private static final float PX = 1F / 16F;
 
     public ModelExosuitTank() {
         tank.addBox(-4.0F, -1F, 2F, 8, 12, 6);
     }
 
     @Override
+    public void copyRotationAngles(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        copyRotateAngles(tank, parentModel.bipedBody);
+    }
+
+    @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        super.renderModel(parentModel, entityLivingBase);
         ExosuitTexture.TANK.bindTexturePart(1);
 
         float pressure = nbtTagCompound.getFloat("pressure");
@@ -30,40 +35,42 @@ public class ModelExosuitTank extends ModelExosuitUpgrade {
 
         tank.render(0.0625F);
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
         if (dye != -1) {
             ExosuitTexture.TANK_GREY.bindTexturePart(1);
             float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(dye));
-            GL11.glColor3f(color[0], color[1], color[2]);
+            GlStateManager.color(color[0], color[1], color[2]);
             tank.render(0.0625F);
-            GL11.glColor3f(0.5F, 0.5F, 0.5F);
+            GlStateManager.color(0.5F, 0.5F, 0.5F);
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
-        final float px = 1.0F / 16.0F;
+        GlStateManager.pushMatrix();
 
-        GL11.glPushMatrix();
+        // Kinda hacky, but it works... Not sure what else I could do at this point to be honest.
+        if (entityLivingBase.isSneaking()) {
+            GlStateManager.rotate(28F, 1, 0, 0);
+        }
 
-        GL11.glTranslatef(0.0F, 6 * px, 8 * px);
+        GlStateManager.translate(0F, 6 * PX, 8 * PX);
 
-        GL11.glRotatef(90F, 0, 1, 0);
-        GL11.glRotatef(-95.0F, 1, 0, 0);
-        GL11.glRotatef(180F, 1, 0, 0);
+        GlStateManager.rotate(90F, 0, 1, 0);
+        GlStateManager.rotate(95.0F, 1, 0, 0);
 
         float rand = 0.0F;
 
         if (pressure > 0.0F) {
-            rand = (float) ((Math.random() - 0.5F) * 5.0F);
+            rand = (float) ((Math.random() - 0.5F));
             if (pressure >= 1.0F) {
-                rand = (float) ((Math.random() * 50.0F - 25.0F));
+                rand = (float) ((Math.random() * 20.0F - 10.0F));
             }
         }
 
-        GL11.glRotated((Math.min(190.0F * pressure, 190.0F) + rand), 1, 0, 0);
+        GlStateManager.rotate((Math.min(190.0F * pressure, 190.0F) + rand), 1, 0, 0);
         Texture.POINTER.bindTexture();
-        MODEL_POINTER.render();
-        GL11.glPopMatrix();
+        pointer.render();
+        GlStateManager.popMatrix();
     }
 }

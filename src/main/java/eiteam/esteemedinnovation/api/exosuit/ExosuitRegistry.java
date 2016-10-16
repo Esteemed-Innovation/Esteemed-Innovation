@@ -1,9 +1,8 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
-import net.minecraft.inventory.EntityEquipmentSlot;
-import org.apache.commons.lang3.tuple.MutablePair;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ExosuitRegistry {
     /**
@@ -11,11 +10,8 @@ public class ExosuitRegistry {
      * name. Value is the actual plate.
      */
     public static HashMap<String, ExosuitPlate> plates = new HashMap<>();
-    /**
-     * All of the Exosuit Plate icons. Key is a pair of the exosuit slot and the plate. Value is the
-     * IIcon for that slot.
-     */
-    public static HashMap<MutablePair<EntityEquipmentSlot, ExosuitPlate>, String> plateIcons = new HashMap<>();
+
+    public static List<IExosuitUpgrade> upgrades = new ArrayList<>();
 
     /**
      * Registers an ExosuitPlate.
@@ -23,5 +19,13 @@ public class ExosuitRegistry {
      */
     public static void addExosuitPlate(ExosuitPlate plate) {
         plates.put(plate.getIdentifier(), plate);
+    }
+
+    /**
+     * Registers an IExosuitUpgrade.
+     * @param upgrade The upgrade.
+     */
+    public static void addExosuitUpgrade(IExosuitUpgrade upgrade) {
+        upgrades.add(upgrade);
     }
 }

@@ -29,21 +29,21 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
 public class ArmorItems implements IInitCategory {
     public enum Items {
-        EXOSUIT_HEADPIECE(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, Materials.EXOSUIT.getMaterial()), "exoArmorHead", EsteemedInnovation.tab),
-        EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exoArmorBody", EsteemedInnovation.tab),
-        EXOSUIT_LEGPIECE(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, Materials.EXOSUIT.getMaterial()), "exoArmorLegs", EsteemedInnovation.tab),
-        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exoArmorFeet", EsteemedInnovation.tab),
-        GILDED_HELMET(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotGildedIron", "GildedIron"), "helmetGildedIron", EsteemedInnovation.tabTools),
-        GILDED_CHESTPLATE(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotGildedIron", "GildedIron"), "chestGildedIron", EsteemedInnovation.tabTools),
-        GILDED_LEGGINGS(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotGildedIron", "GildedIron"), "legsGildedIron", EsteemedInnovation.tabTools),
-        GILDED_BOOTS(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotGildedIron", "GildedIron"), "feetGildedIron", EsteemedInnovation.tabTools),
-        BRASS_HELMET(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotBrass", "Brass"), "helmetBrass", EsteemedInnovation.tabTools),
-        BRASS_CHESTPLATE(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotBrass", "Brass"), "chestBrass", EsteemedInnovation.tabTools),
-        BRASS_LEGGINGS(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotBrass", "Brass"), "legsBrass", EsteemedInnovation.tabTools),
-        BRASS_BOOTS(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotBrass", "Brass"), "feetBrass", EsteemedInnovation.tabTools),
-        MONOCLE(new ItemGoggles(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monacle", EsteemedInnovation.tabTools),
+        EXOSUIT_HEADPIECE(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, Materials.EXOSUIT.getMaterial()), "exosuit_head", EsteemedInnovation.tab),
+        EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exosuit_body", EsteemedInnovation.tab),
+        EXOSUIT_LEGPIECE(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, Materials.EXOSUIT.getMaterial()), "exosuit_legs", EsteemedInnovation.tab),
+        EXOSUIT_FOOTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.FEET, Materials.EXOSUIT.getMaterial()), "exosuit_feet", EsteemedInnovation.tab),
+        GILDED_HELMET(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotGildedIron", "GildedIron"), "gilded_iron_helmet", EsteemedInnovation.tabTools),
+        GILDED_CHESTPLATE(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotGildedIron", "GildedIron"), "gilded_iron_chestplate", EsteemedInnovation.tabTools),
+        GILDED_LEGGINGS(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotGildedIron", "GildedIron"), "gilded_iron_leggings", EsteemedInnovation.tabTools),
+        GILDED_BOOTS(new ItemGenericArmor(Materials.GILDED.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotGildedIron", "GildedIron"), "gilded_iron_boots", EsteemedInnovation.tabTools),
+        BRASS_HELMET(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.HEAD, "ingotBrass", "Brass"), "brass_helmet", EsteemedInnovation.tabTools),
+        BRASS_CHESTPLATE(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.CHEST, "ingotBrass", "Brass"), "brass_chestplate", EsteemedInnovation.tabTools),
+        BRASS_LEGGINGS(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.LEGS, "ingotBrass", "Brass"), "brass_leggings", EsteemedInnovation.tabTools),
+        BRASS_BOOTS(new ItemGenericArmor(Materials.BRASS.getMaterial(), 2, EntityEquipmentSlot.FEET, "ingotBrass", "Brass"), "brass_boots", EsteemedInnovation.tabTools),
+        MONOCLE(new ItemGoggles(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monocle", EsteemedInnovation.tabTools),
         GOGGLES(new ItemGoggles(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", EsteemedInnovation.tabTools),
-        TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, false), "tophatNoEmerald", EsteemedInnovation.tabTools),
+        TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", EsteemedInnovation.tabTools),
         ENTREPRENEUR_TOP_HAT(new ItemTophat(Materials.MONOCLE.getMaterial(), 2, EntityEquipmentSlot.HEAD, true), "tophat", EsteemedInnovation.tabTools);
 
         private Item item;
@@ -84,10 +84,10 @@ public class ArmorItems implements IInitCategory {
     }
 
     public enum Materials {
-        EXOSUIT(EnumHelper.addArmorMaterial("EXOSUIT", EsteemedInnovation.MOD_ID + ":exo", 15, new int[]{2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F)),
-        GILDED(EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F)),
-        BRASS(EnumHelper.addArmorMaterial("BRASS", EsteemedInnovation.MOD_ID + ":brass", 11, new int[]{2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F)),
-        MONOCLE(EnumHelper.addArmorMaterial("MONOCLE", EsteemedInnovation.MOD_ID + ":monacle", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F));
+        EXOSUIT(EnumHelper.addArmorMaterial("EXOSUIT", EsteemedInnovation.MOD_ID + ":exo", 15, new int[] { 2, 5, 4, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F)),
+        GILDED(EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[] {2, 6, 5, 2 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F)),
+        BRASS(EnumHelper.addArmorMaterial("BRASS", EsteemedInnovation.MOD_ID + ":brass", 11, new int[] { 2, 7, 6, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F)),
+        MONOCLE(EnumHelper.addArmorMaterial("MONOCLE", EsteemedInnovation.MOD_ID + ":monocle", 5, new int[] { 1, 3, 2, 1 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F));
 
         private ItemArmor.ArmorMaterial material;
 

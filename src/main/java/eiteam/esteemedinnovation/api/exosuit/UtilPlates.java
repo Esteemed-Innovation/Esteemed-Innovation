@@ -1,10 +1,11 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.MutablePair;
 
 public class UtilPlates {
     public static ExosuitPlate getPlate(ItemStack item) {
@@ -25,18 +26,12 @@ public class UtilPlates {
         return null;
     }
 
-    public static void registerPlatesForItem(ItemExosuitArmor item) {
-        for (ExosuitPlate plate : ExosuitRegistry.plates.values()) {
-            ExosuitRegistry.plateIcons.put(MutablePair.of(item.slot, plate), plate.getIcon(item));
-        }
-    }
-
-    public static String getIconFromPlate(String string, ItemExosuitArmor item) {
+    public static ResourceLocation getIconFromPlate(String string, ItemExosuitArmor item) {
         ExosuitPlate plate = ExosuitRegistry.plates.get(string);
-        return ExosuitRegistry.plateIcons.get(MutablePair.of(item.slot, plate));
+        return plate.getIcon(item);
     }
 
-    public static String getArmorLocationFromPlate(String string, ItemExosuitArmor item, int armorType) {
+    public static String getArmorLocationFromPlate(String string, ItemExosuitArmor item, EntityEquipmentSlot armorType) {
         ExosuitPlate plate = ExosuitRegistry.plates.get(string);
         return plate.getArmorLocation(item, armorType);
     }

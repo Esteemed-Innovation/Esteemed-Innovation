@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 public class ModelPointer extends ModelBase {
-    public ModelRenderer box;
+    private ModelRenderer box;
 
     public ModelPointer() {
         box = new ModelRenderer(this, 0, 0);
@@ -13,9 +13,7 @@ public class ModelPointer extends ModelBase {
         box.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
-
     public void render() {
-
-        this.box.render(0.0625F);
+        box.render(0.0625F);
     }
 }

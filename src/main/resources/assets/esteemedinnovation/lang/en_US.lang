@@ -449,14 +449,14 @@ item.esteemedinnovation:pistolSilencer.name=Assassin's Flintlock Pistol
 item.esteemedinnovation:pistolSpeedy.name=Breech-loading Flintlock Pistol
 item.esteemedinnovation:blunderbussRecoil.name=Padded Flintlock Blunderbuss
 
-item.esteemedinnovation:exoArmorHead.name=Steam Exosuit Headpiece
-item.esteemedinnovation:exoArmorBody.name=Steam Exosuit Chestpiece
-item.esteemedinnovation:exoArmorLegs.name=Steam Exosuit Legpiece
-item.esteemedinnovation:exoArmorFeet.name=Steam Exosuit Footpiece
+item.esteemedinnovation:exosuit_head.name=Steam Exosuit Headpiece
+item.esteemedinnovation:exosuit_body.name=Steam Exosuit Chestpiece
+item.esteemedinnovation:exosuit_legs.name=Steam Exosuit Legpiece
+item.esteemedinnovation:exosuit_feet.name=Steam Exosuit Footpiece
 
-item.esteemedinnovation:monacle.name=Tinkerer's Monocle
+item.esteemedinnovation:monocle.name=Tinkerer's Monocle
 item.esteemedinnovation:goggles.name=Tinkerer's Goggles
-item.esteemedinnovation:tophatNoEmerald.name=Top Hat
+item.esteemedinnovation:tophat_no_emerald.name=Top Hat
 item.esteemedinnovation:tophat.name=Entrepreneur's Top Hat
 
 
@@ -505,34 +505,26 @@ item.esteemedinnovation:plate.3.name=Gilded Iron Plate
 item.esteemedinnovation:plate.4.name=Iron Plate
 item.esteemedinnovation:plate.5.name=Gold Plate
 
-item.esteemedinnovation:exosuitPlate.0.name=Copper Exosuit Plate
-item.esteemedinnovation:exosuitPlate.1.name=Zinc Exosuit Plate
-item.esteemedinnovation:exosuitPlate.2.name=Iron Exosuit Plate
-item.esteemedinnovation:exosuitPlate.3.name=Gold Exosuit Plate
-item.esteemedinnovation:exosuitPlate.4.name=Brass Exosuit Plate
-item.esteemedinnovation:exosuitPlate.5.name=Thaumium Exosuit Plate
-item.esteemedinnovation:exosuitPlate.6.name=Terrasteel Exosuit Plate
-item.esteemedinnovation:exosuitPlate.7.name=Elementium Exosuit Plate
-item.esteemedinnovation:exosuitPlate.8.name=Fiery Exosuit Plate
-item.esteemedinnovation:exosuitPlate.9.name=Yeti Hide
-item.esteemedinnovation:exosuitPlate.10.name=Sadistic Exosuit Plate
-item.esteemedinnovation:exosuitPlate.11.name=Lead Exosuit Plate
-item.esteemedinnovation:exosuitPlate.12.name=Vibrant Exosuit Plate
-item.esteemedinnovation:exosuitPlate.13.name=Enderium Exosuit Plate
-item.esteemedinnovation:exosuitPlate.14.name=Gilded Iron Exosuit Plate
+item.esteemedinnovation:exosuit_plate.0.name=Iron Exosuit Plate
+item.esteemedinnovation:exosuit_plate.1.name=Gold Exosuit Plate
+item.esteemedinnovation:exosuit_plate.2.name=Copper Exosuit Plate
+item.esteemedinnovation:exosuit_plate.3.name=Zinc Exosuit Plate
+item.esteemedinnovation:exosuit_plate.4.name=Brass Exosuit Plate
+item.esteemedinnovation:exosuit_plate.5.name=Gilded Iron Exosuit Plate
+item.esteemedinnovation:exosuit_plate.6.name=Lead Exosuit Plate
 
-item.esteemedinnovation:reinforcedTank.name=Reinforced Exosuit Tank
-item.esteemedinnovation:uberReinforcedTank.name=Heavily Reinforced Exosuit Tank
+item.esteemedinnovation:reinforced_tank.name=Reinforced Exosuit Tank
+item.esteemedinnovation:uber_reinforced_tank.name=Heavily Reinforced Exosuit Tank
 
 item.esteemedinnovation:ingot_mold.name=Ingot Mold
 item.esteemedinnovation:nugget_mold.name=Nugget Mold
 item.esteemedinnovation:plate_mold.name=Plate Mold
 item.esteemedinnovation:blank_mold.name=Blank Mold
 
-item.esteemedinnovation:helmGildedGold.name=Gilded Iron Helmet
-item.esteemedinnovation:chestGildedGold.name=Gilded Iron Chestplate
-item.esteemedinnovation:legsGildedGold.name=Gilded Iron Leggings
-item.esteemedinnovation:feetGildedGold.name=Gilded Iron Boots
+item.esteemedinnovation:gilded_iron_helmet.name=Gilded Iron Helmet
+item.esteemedinnovation:gilded_iron_chestplate.name=Gilded Iron Chestplate
+item.esteemedinnovation:gilded_iron_leggings.name=Gilded Iron Leggings
+item.esteemedinnovation:gilded_iron_boots.name=Gilded Iron Boots
 
 item.esteemedinnovation:gilded_iron_pickaxe.name=Gilded Iron Pickaxe
 item.esteemedinnovation:gilded_iron_axe.name=Gilded Iron Axe
@@ -540,10 +532,10 @@ item.esteemedinnovation:gilded_iron_shovel.name=Gilded Iron Shovel
 item.esteemedinnovation:gilded_iron_hoe.name=Gilded Iron Hoe
 item.esteemedinnovation:gilded_iron_sword.name=Gilded Iron Sword
 
-item.esteemedinnovation:helmBrass.name=Brass Helmet
-item.esteemedinnovation:chestBrass.name=Brass Chestplate
-item.esteemedinnovation:legsBrass.name=Brass Leggings
-item.esteemedinnovation:feetBrass.name=Brass Boots
+item.esteemedinnovation:brass_helmet.name=Brass Helmet
+item.esteemedinnovation:brass_chestplate.name=Brass Chestplate
+item.esteemedinnovation:brass_leggings.name=Brass Leggings
+item.esteemedinnovation:brass_boots.name=Brass Boots
 
 item.esteemedinnovation:brass_pickaxe.name=Brass Pickaxe
 item.esteemedinnovation:brass_axe.name=Brass Axe
@@ -593,32 +585,32 @@ item.esteemedinnovation:wrench.name=Pipe Wrench
 
 item.esteemedinnovation:survivalist.name=Survivalist's Toolkit
 
-item.esteemedinnovation:powerFist.name=Power Fist
-item.esteemedinnovation:extendoFist.name=Extendo Fist
-item.esteemedinnovation:fallAssist.name=Fall Assist
+item.esteemedinnovation:power_fist.name=Power Fist
+item.esteemedinnovation:extendo_fist.name=Extendo Fist
+item.esteemedinnovation:fall_assist.name=Fall Assist
 item.esteemedinnovation:jetpack.name=Steam Jetpack
 item.esteemedinnovation:wings.name=Steam Wings
 item.esteemedinnovation:goggleUpgrade.name=Mask of Revealing
 item.esteemedinnovation:floralLaurel.name=Floral Laurel
 item.esteemedinnovation:thrusters.name=Thrusters
-item.esteemedinnovation:runAssist.name=Modular Accelerator
-item.esteemedinnovation:doubleJump.name=Pulse Nozzle
-item.esteemedinnovation:jumpAssist.name=Leap Actuator
-item.esteemedinnovation:stealthUpgrade.name=Acoustic Dampener
+item.esteemedinnovation:run_assist.name=Modular Accelerator
+item.esteemedinnovation:double_jump.name=Pulse Nozzle
+item.esteemedinnovation:jump_assist.name=Leap Actuator
+item.esteemedinnovation:stealth_upgrade.name=Acoustic Dampener
 item.esteemedinnovation:canner.name=Canner
-item.esteemedinnovation:pitonDeployer.name=Piton Deployer
-item.esteemedinnovation:enderShroud.name=Ender Shroud
+item.esteemedinnovation:piton_deployer.name=Piton Deployer
+item.esteemedinnovation:ender_shroud.name=Ender Shroud
 item.esteemedinnovation:brassKnuckles.name=Brass Knuckles
 item.esteemedinnovation:foggles.name=Foggles
 item.esteemedinnovation:rainAway.name=Rain-Away
 item.esteemedinnovation:rebreather.name=Rebreather
-item.esteemedinnovation:coatingsHydrophobic.name=Hydrophobic Coatings
-item.esteemedinnovation:coatingsPyrophobic.name=Pyrophobic Coatings
-item.esteemedinnovation:anchorHeels.name=Anchor Heels
-item.esteemedinnovation:pistonPush.name=Piston Push
-item.esteemedinnovation:reloadingHolsters.name=Reloading Holsters
-item.esteemedinnovation:dragonRoar.name=Dragon Roar
-item.esteemedinnovation:frequencyShifter.name=Frequency Shifter
+item.esteemedinnovation:hydrophobic_coatings.name=Hydrophobic Coatings
+item.esteemedinnovation:pyrophobic_coatings.name=Pyrophobic Coatings
+item.esteemedinnovation:anchor_heels.name=Anchor Heels
+item.esteemedinnovation:piston_push.name=Piston Push
+item.esteemedinnovation:reloading_holsters.name=Reloading Holsters
+item.esteemedinnovation:dragon_roar.name=Dragon Roar
+item.esteemedinnovation:frequency_shifter.name=Frequency Shifter
 
 item.esteemedinnovation:canister.name=Item Canister
 

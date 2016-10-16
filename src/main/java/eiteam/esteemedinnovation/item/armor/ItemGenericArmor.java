@@ -11,8 +11,8 @@ public class ItemGenericArmor extends ItemArmor {
 
     public ItemGenericArmor(ArmorMaterial armorMat, int renderIndex, EntityEquipmentSlot armorType, Object repair, String n) {
         super(armorMat, renderIndex, armorType);
-        this.repairMaterial = repair;
-        this.name = n;
+        repairMaterial = repair;
+        name = n;
     }
 
     @Override

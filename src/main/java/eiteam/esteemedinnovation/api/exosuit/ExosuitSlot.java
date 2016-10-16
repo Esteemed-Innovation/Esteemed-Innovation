@@ -11,7 +11,7 @@ public enum ExosuitSlot {
     HEAD_GOGGLES(EntityEquipmentSlot.HEAD, 3),
     HEAD_HELM(EntityEquipmentSlot.HEAD, 2),
     LEGS_HIPS(EntityEquipmentSlot.LEGS, 2),
-    LEGS_LEGS(EntityEquipmentSlot.HEAD, 3),
+    LEGS_LEGS(EntityEquipmentSlot.LEGS, 3),
     VANITY(EntityEquipmentSlot.HEAD, 1);
 
     public int slot;

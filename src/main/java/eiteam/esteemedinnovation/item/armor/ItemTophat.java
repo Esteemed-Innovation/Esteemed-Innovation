@@ -1,11 +1,13 @@
 package eiteam.esteemedinnovation.item.armor;
 
+import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.render.model.ModelTophat;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,10 +20,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
-    private static ModelTophat modelTophat;
+    private static Map<UUID, ModelTophat> tophatModels = new HashMap<>();
     private boolean emerald;
 
     public ItemTophat(ArmorMaterial armorMaterial, int renderIndex, EntityEquipmentSlot armorType, boolean isEmerald) {
@@ -29,6 +34,7 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
         emerald = isEmerald;
     }
 
+    @Override
     public void onCreated(ItemStack me, World world, EntityPlayer player) {
         String name = player.getDisplayName().getFormattedText();
         if ("Flaxbeard".equals(name) || "ForgeDevName".equals(name)) {
@@ -74,6 +80,27 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
     }
 
     @Override
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+        UUID entityID = entityLiving.getUniqueID();
+        boolean contains = tophatModels.containsKey(entityID);
+        ModelTophat hatModel = contains ? tophatModels.get(entityID) : new ModelTophat();
+        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("level")) {
+            hatModel.setLevel(itemStack.getTagCompound().getInteger("level"));
+        }
+
+        if (!contains) {
+            tophatModels.put(entityID, hatModel);
+        }
+
+        return hatModel;
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+        return EsteemedInnovation.MOD_ID + ":textures/models/armor/tophat" + (emerald ? "emerald" : "") + ".png";
+    }
+
+    @Override
     public Class<? extends ModelExosuitUpgrade> getModel() {
         return null;
     }
@@ -91,5 +118,10 @@ public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
             int level = me.getTagCompound().getInteger("level");
             list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
         }
+    }
+
+    @Override
+    public String toString() {
+        return getOverlay().toString();
     }
 }

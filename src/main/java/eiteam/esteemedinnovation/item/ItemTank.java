@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
     public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
         float pressure = 0.0F;
         if (itemStack.getMaxDamage() != 0) {
-            pressure = ((float) itemStack.getMaxDamage() - itemStack.getItemDamage()) / (float) itemStack.getMaxDamage();
+            pressure = itemStack.getItemDamage() / (float) itemStack.getMaxDamage();
         }
 
         modelExosuitUpgrade.nbtTagCompound.setFloat("pressure", pressure);
@@ -56,19 +55,9 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
         int dye = -1;
         ItemExosuitArmor item = ((ItemExosuitArmor) itemStack.getItem());
         if (item.getStackInSlot(itemStack, 2) != null) {
-            Item vanity = item.getStackInSlot(itemStack, 2).getItem();
-            int[] ids = OreDictionary.getOreIDs(item.getStackInSlot(itemStack, 2));
-            outerloop:
-            for (int id : ids) {
-                String str = OreDictionary.getOreName(id);
-                if (str.contains("dye")) {
-                    for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                        if (ModelExosuit.DYES[i].equals(str.substring(3))) {
-                            dye = 15 - i;
-                            break outerloop;
-                        }
-                    }
-                }
+            int dyeIndex = ModelExosuit.findDyeIndexFromItemStack(item.getStackInSlot(itemStack, 2));
+            if (dyeIndex != -1) {
+                dye = dyeIndex;
             }
         }
 
@@ -76,9 +65,7 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
     }
 
     @Override
-    public void writeInfo(List list) {
-        //filler
-    }
+    public void writeInfo(List list) {}
 
     @Override
     public boolean canFill(ItemStack stack) {
@@ -90,4 +77,8 @@ public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
         return capacity;
     }
 
+    @Override
+    public String toString() {
+        return getOverlay().toString();
+    }
 }

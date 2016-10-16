@@ -6,13 +6,9 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 
-/**
- * @author dmillerw
- */
 public class ModelJetpack extends ModelExosuitUpgrade {
-
-    public ModelRenderer jetpack1;
-    public ModelRenderer jetpack2;
+    private ModelRenderer jetpack1;
+    private ModelRenderer jetpack2;
 
     public ModelJetpack() {
         jetpack1 = new ModelRenderer(this, 28, 0);
@@ -23,9 +19,16 @@ public class ModelJetpack extends ModelExosuitUpgrade {
 
     @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        super.renderModel(parentModel, entityLivingBase);
         ExosuitTexture.TANK.bindTexturePart(1);
 
         jetpack1.render(0.0625F);
         jetpack2.render(0.0625F);
+    }
+
+    @Override
+    public void copyRotationAngles(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        copyRotateAngles(jetpack1, parentModel.bipedBody);
+        copyRotateAngles(jetpack2, parentModel.bipedBody);
     }
 }

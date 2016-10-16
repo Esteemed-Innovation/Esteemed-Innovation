@@ -9,6 +9,9 @@ import java.util.List;
 
 /**
  * The interface which allows an item to be upgraded into an Exosuit armor piece.
+ * You must return something unique from {@link Object#toString()}, otherwise the exosuit will not render correctly as
+ * an item (has no effect on the armor rendering). The result of {@link IExosuitUpgrade#getOverlay()} is usually
+ * returned for toString().
  */
 public interface IExosuitUpgrade {
     /**
@@ -26,6 +29,10 @@ public interface IExosuitUpgrade {
      */
     ExosuitSlot getSlot();
 
+    /**
+     * The texture overlay *for the armor model*. This is not for the item texture/model.
+     * @return ResourceLocation or null if it does not add a texture overlay for the armor.
+     */
     ResourceLocation getOverlay();
 
     Class<? extends ModelExosuitUpgrade> getModel();

@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.item.armor.exosuit;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.IEngineerable;
@@ -14,6 +13,7 @@ import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.item.BlockTankItem;
+import eiteam.esteemedinnovation.misc.JavaHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
@@ -26,13 +26,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.ArrayList;
@@ -56,13 +56,12 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     }
 
     public String getString() {
-        String slotName = slot.getName();
-        return EsteemedInnovation.MOD_ID + ":textures/items/exoArmor" + slotName.substring(0, 1).toUpperCase() + slotName.substring(1);
+        return EsteemedInnovation.MOD_ID + ":items/exoArmor" + JavaHelper.capitalize(slot.getName());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
+    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped defaultModel) {
         if (!(entityLiving instanceof EntityPlayer)) {
             return null;
         }
@@ -70,14 +69,16 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         ModelExosuit modelExosuit = ExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
 
         boolean head = armorSlot == EntityEquipmentSlot.HEAD;
-        boolean body = armorSlot == EntityEquipmentSlot.CHEST;
-        boolean legs = armorSlot == EntityEquipmentSlot.LEGS;
-        boolean feet = armorSlot == EntityEquipmentSlot.FEET;
         modelExosuit.bipedHead.showModel = head;
         modelExosuit.bipedHeadwear.showModel = head;
+
+        boolean body = armorSlot == EntityEquipmentSlot.CHEST;
+        boolean legs = armorSlot == EntityEquipmentSlot.LEGS;
         modelExosuit.bipedBody.showModel = body || legs;
         modelExosuit.bipedRightArm.showModel = body;
         modelExosuit.bipedLeftArm.showModel = body;
+
+        boolean feet = armorSlot == EntityEquipmentSlot.FEET;
         modelExosuit.bipedRightLeg.showModel = legs || feet;
         modelExosuit.bipedLeftLeg.showModel = legs || feet;
 
@@ -176,11 +177,11 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     }
 
     public boolean hasPlates(ItemStack me) {
-        if (this.getStackInSlot(me, 1) != null) {
+        if (getStackInSlot(me, 1) != null) {
             if (!me.hasTagCompound()) {
                 me.setTagCompound(new NBTTagCompound());
             }
-            ItemStack clone = this.getStackInSlot(me, 1).copy();
+            ItemStack clone = getStackInSlot(me, 1).copy();
             clone.stackSize = 1;
             if (UtilPlates.getPlate(clone) != null) {
                 me.getTagCompound().setString("plate", UtilPlates.getPlate(clone).getIdentifier());
@@ -233,7 +234,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
                 }
             }
         }
-        this.hasPlates(me);
+        hasPlates(me);
     }
 
     @Override
@@ -243,22 +244,22 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
 
     @Override
     public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
-        if (this.getStackInSlot(me, var1) != null) {
+        if (getStackInSlot(me, var1) != null) {
             ItemStack itemstack;
-            if (this.getStackInSlot(me, var1).stackSize <= var2) {
-                itemstack = this.getStackInSlot(me, var1);
-                this.setInventorySlotContents(me, var1, null);
-                this.hasPlates(me);
+            if (getStackInSlot(me, var1).stackSize <= var2) {
+                itemstack = getStackInSlot(me, var1);
+                setInventorySlotContents(me, var1, null);
+                hasPlates(me);
                 return itemstack;
             } else {
-                ItemStack stack2 = this.getStackInSlot(me, var1);
+                ItemStack stack2 = getStackInSlot(me, var1);
                 itemstack = stack2.splitStack(var2);
-                this.setInventorySlotContents(me, var1, stack2);
+                setInventorySlotContents(me, var1, stack2);
 
-                if (this.getStackInSlot(me, var1).stackSize == 0) {
-                    this.setInventorySlotContents(me, var1, null);
+                if (getStackInSlot(me, var1).stackSize == 0) {
+                    setInventorySlotContents(me, var1, null);
                 }
-                this.hasPlates(me);
+                hasPlates(me);
                 return itemstack;
             }
         } else {
@@ -275,8 +276,9 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         }
         if (upgrade.getItem() instanceof IExosuitUpgrade) {
             IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
-            return (upgradeItem.getSlot().armor == this.slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeItem.getSlot().slot == slotNum);
+            return (upgradeItem.getSlot().armor == slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeItem.getSlot().slot == slotNum);
         } else if (slotNum == ExosuitSlot.VANITY.slot) {
+            // TODO: Optimize by using a static list of dye oredicts generated at load time (OreDictHelper).
             int[] ids = OreDictionary.getOreIDs(upgrade);
             for (int id : ids) {
                 String str = OreDictionary.getOreName(id);
@@ -451,7 +453,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     @Override
     public int getMaxDamage(ItemStack stack) {
         if (slot == EntityEquipmentSlot.CHEST) {
-            return 10000;
+            return 10_000;
         }
         return 0;
     }
@@ -460,7 +462,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     public int getDamage(ItemStack stack) {
         updateSteamNBT(stack);
         return (int) (((double) stack.getTagCompound().getInteger("steamFill")) /
-          (double) stack.getTagCompound().getInteger("maxFill") * 10000.0D);
+          (double) stack.getTagCompound().getInteger("maxFill") * 10_000.0D);
     }
 
     @Override
@@ -497,6 +499,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         ItemExosuitArmor armor = (ItemExosuitArmor) stack.getItem();
         boolean hasKnockback = false;
         double knockbackAmount = 0.0D;
+        // TODO: Abstract into API
         if (armor.hasPlates(stack) &&
           UtilPlates.getPlate(stack.getTagCompound().getString("plate")).getIdentifier().equals("Lead")) {
             hasKnockback = true;
@@ -519,6 +522,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean advanced) {
         super.addInformation(me, player, list, advanced);
         if (me.hasTagCompound()) {
+            // TODO: Abstract into API
             if (hasPlates(me) && !"Thaumium".equals(UtilPlates.getPlate(me.getTagCompound().getString("plate")).getIdentifier()) &&
               !"Terrasteel".equals(UtilPlates.getPlate(me.getTagCompound().getString("plate")).getIdentifier())) {
                 list.add(TextFormatting.BLUE + UtilPlates.getPlate(me.getTagCompound().getString("plate")).effect());
@@ -533,25 +537,17 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
             }
             if (me.getTagCompound().getCompoundTag("inv").hasKey("2")) {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("inv").getCompoundTag("2"));
+                // TODO: Abstract into API
                 if (stack.getItem() == ExosuitUpgradeItems.Items.ENDER_SHROUD.getItem()) {
                     list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
                 } else {
-                    int[] ids = OreDictionary.getOreIDs(stack);
                     int dye = -1;
-                    outerloop:
-                    for (int id : ids) {
-                        String str = OreDictionary.getOreName(id);
-                        if (str.contains("dye")) {
-                            for (int i = 0; i < ModelExosuit.DYES.length; i++) {
-                                if (ModelExosuit.DYES[i].equals(str.substring(3))) {
-                                    dye = 15 - i;
-                                    break outerloop;
-                                }
-                            }
-                        }
+                    int dyeIndex = ModelExosuit.findDyeIndexFromItemStack(stack);
+                    if (dyeIndex != -1) {
+                        dye = dyeIndex;
                     }
                     if (dye != -1) {
-                        list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelExosuit.DYES[15 - dye].toLowerCase()));
+                        list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelExosuit.DYES[dye].toLowerCase()));
                     } else {
                         list.add(TextFormatting.DARK_GREEN + stack.getDisplayName());
                     }
@@ -567,7 +563,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     @Override
     public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(LARGE_ICONS);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getSlotIndex(), 0, 64, 64);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
     }
 
 }

@@ -15,6 +15,7 @@ import eiteam.esteemedinnovation.client.render.colorhandlers.SteamDrillHeadUpgra
 import eiteam.esteemedinnovation.client.render.entity.RenderCanister;
 import eiteam.esteemedinnovation.client.render.entity.RenderMortarItem;
 import eiteam.esteemedinnovation.client.render.entity.RenderRocket;
+import eiteam.esteemedinnovation.client.render.item.exosuit.ExosuitItemModelLoader;
 import eiteam.esteemedinnovation.client.render.item.steamtool.SteamToolModelLoader;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.client.render.tile.*;
@@ -27,6 +28,7 @@ import eiteam.esteemedinnovation.gui.GuiBoiler;
 import eiteam.esteemedinnovation.init.blocks.*;
 import eiteam.esteemedinnovation.init.items.*;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
+import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems;
@@ -62,7 +64,6 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashMap;
@@ -155,6 +156,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerModels() {
         ModelLoaderRegistry.registerLoader(new SteamToolModelLoader());
+        ModelLoaderRegistry.registerLoader(new ExosuitItemModelLoader());
 
         registerModel(SteamNetworkBlocks.Blocks.BOILER.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.TANK.getBlock(), 0, "is_creative=false");
@@ -242,6 +244,20 @@ public class ClientProxy extends CommonProxy {
             registerModel(item.getItem());
         }
 
+        for (ArmorItems.Items item : ArmorItems.Items.LOOKUP) {
+            registerModel(item.getItem());
+        }
+
+        for (ExosuitUpgradeItems.Items item : ExosuitUpgradeItems.Items.LOOKUP) {
+            if (item == ExosuitUpgradeItems.Items.EXOSUIT_PLATE) {
+                for (ExosuitUpgradeItems.PlateItems plate : ExosuitUpgradeItems.PlateItems.LOOKUP) {
+                    registerModelItemStack(plate.createItemStack());
+                }
+            } else {
+                registerModel(item.getItem());
+            }
+        }
+
         // TODO: Durability bars for load progress and current ammo contents.
         for (FirearmItems.Items item : FirearmItems.Items.LOOKUP) {
             List<ModelResourceLocation> locations = UtilEnhancements.registerEnhancementsForItem(item.getItem())
@@ -281,7 +297,6 @@ public class ClientProxy extends CommonProxy {
         colors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), ToolUpgradeItems.Items.DRILL_HEAD.getItem());
 
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
-        FMLCommonHandler.instance().bus().register(ExosuitModelCache.INSTANCE);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, RenderMortarItem::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, RenderCanister::new);

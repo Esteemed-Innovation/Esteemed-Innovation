@@ -62,4 +62,9 @@ public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
         return pri;
     }
 
+    @Override
+    public String toString() {
+        ResourceLocation overlay = getOverlay();
+        return overlay == null ? "" : overlay.toString();
+    }
 }

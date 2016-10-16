@@ -4,19 +4,22 @@ import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.ExosuitTexture;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
 public class ModelSidepack extends ModelExosuitUpgrade {
+    // Holders 1 and 2 are the bottom ones
+    private ModelRenderer holder1;
+    private ModelRenderer holder2;
 
-    public ModelRenderer holder1;
-    public ModelRenderer holder2;
-    public ModelRenderer holder3;
-    public ModelRenderer holder4;
+    // Holders 3 and 4 are the top ones.
+    private ModelRenderer holder3;
+    private ModelRenderer holder4;
 
-    public ModelRenderer jetpack1;
-    public ModelRenderer jetpack2;
+    private ModelRenderer jetpack1;
+    private ModelRenderer jetpack2;
 
     public ModelSidepack() {
         holder1 = new ModelRenderer(this, 0, 6);
@@ -36,6 +39,7 @@ public class ModelSidepack extends ModelExosuitUpgrade {
 
     @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        super.renderModel(parentModel, entityLivingBase);
         ExosuitTexture.TANK.bindTexturePart(1);
 
         float rotation = nbtTagCompound.getFloat("rotation");
@@ -45,9 +49,9 @@ public class ModelSidepack extends ModelExosuitUpgrade {
         holder3.render(0.0625F);
         holder4.render(0.0625F);
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
-        GL11.glTranslatef(-8.0F / 16.0F, 10F / 16.0F, 0F / 16.0F);
+        GlStateManager.translate(-8F / 16F, 10F / 16F, 0F);
 
         if (entityLivingBase instanceof EntityPlayer) {
             GL11.glRotated(-((EntityPlayer) entityLivingBase).renderYawOffset, 0F, 1F, 0F);
@@ -56,19 +60,29 @@ public class ModelSidepack extends ModelExosuitUpgrade {
 
         jetpack1.render(0.0625F);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
-        GL11.glTranslatef(8.0F / 16.0F, 10F / 16.0F, 0F / 16.0F);
+        GlStateManager.translate(8F / 16F, 10F / 16F, 0F);
 
         if (entityLivingBase instanceof EntityPlayer) {
-            GL11.glRotated(-((EntityPlayer) entityLivingBase).renderYawOffset, 0F, 1F, 0F);
-            GL11.glRotated(rotation - 90.0F, 0F, 1F, 0F);
+            GlStateManager.rotate(-((EntityPlayer) entityLivingBase).renderYawOffset, 0F, 1F, 0F);
+            GlStateManager.rotate(rotation - 90.0F, 0F, 1F, 0F);
         }
 
         jetpack2.render(0.0625F);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void copyRotationAngles(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        copyRotateAngles(holder1, parentModel.bipedBody);
+        copyRotateAngles(holder2, parentModel.bipedBody);
+        copyRotateAngles(holder3, parentModel.bipedBody);
+        copyRotateAngles(holder4, parentModel.bipedBody);
+        copyRotateAngles(jetpack1, parentModel.bipedBody);
+        copyRotateAngles(jetpack2, parentModel.bipedBody);
     }
 }

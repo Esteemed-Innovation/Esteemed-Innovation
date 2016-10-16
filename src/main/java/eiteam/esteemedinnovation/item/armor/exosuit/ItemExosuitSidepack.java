@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.item.armor.exosuit;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ModelSidepack;
+import eiteam.esteemedinnovation.misc.EntityHelper;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,8 +26,8 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
     public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
         Vector2d vector = new Vector2d(entityLivingBase.motionX, entityLivingBase.motionZ);
 
-        if (entityLivingBase instanceof EntityPlayer) {
-            float targetRotation = 360.0F * ((float) (Math.atan2(vector.y, vector.x) / (2 * Math.PI)));
+        if (entityLivingBase instanceof EntityPlayer && EntityHelper.hasEntityMoved(entityLivingBase)) {
+            float targetRotation = 360F * ((float) (StrictMath.atan2(vector.y, vector.x) / (2 * Math.PI)));
 
             NBTTagCompound nbt = modelExosuitUpgrade.nbtTagCompound;
 
@@ -34,10 +35,7 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
                 nbt.setFloat("rotation", targetRotation);
             }
 
-            float lastRotation = nbt.getFloat("rotation");
-            float rotation = lastRotation + (targetRotation - lastRotation) / 1000.0F;
-
-            modelExosuitUpgrade.nbtTagCompound.setFloat("rotation", rotation);
+            modelExosuitUpgrade.nbtTagCompound.setFloat("rotation", targetRotation);
         }
     }
 }

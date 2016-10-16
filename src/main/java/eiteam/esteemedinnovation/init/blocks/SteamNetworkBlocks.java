@@ -6,14 +6,15 @@ import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.block.*;
 import eiteam.esteemedinnovation.block.pipe.BlockValvePipe;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
-
+import eiteam.esteemedinnovation.item.BlockTankItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import java.lang.reflect.InvocationTargetException;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.FURNACE;
@@ -24,9 +25,9 @@ public class SteamNetworkBlocks implements IInitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),
-        TANK(new BlockSteamTank(), "steam_tank", true),
+        TANK(new BlockSteamTank(), "steam_tank", BlockTankItem.class),
         STEAM_GAUGE(new BlockSteamGauge(), "steam_gauge"),
-        RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc", true),
+        RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc", BlockTankItem.class),
         STEAM_WHISTLE(new BlockWhistle(), "steam_whistle"),
         PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "fluid_steam_converter");
 
@@ -42,17 +43,24 @@ public class SteamNetworkBlocks implements IInitCategory {
         }
 
         Blocks(Block block, String name) {
-            this(block, name, false);
+            this(block, name, ItemBlock.class);
         }
 
-        Blocks(Block block, String name, boolean meta) {
+        Blocks(Block block, String name, Class<? extends ItemBlock> itemBlockClass) {
             block.setCreativeTab(EsteemedInnovation.tab);
             block.setUnlocalizedName(EsteemedInnovation.MOD_ID + ":" + name);
             block.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(block);
-            ItemBlock itemblock = meta ? new BlockManyMetadataItem(block) : new ItemBlock(block);
-            itemblock.setRegistryName(block.getRegistryName());
-            GameRegistry.register(itemblock);
+            ItemBlock itemBlock = null;
+            try {
+                itemBlock = itemBlockClass.getDeclaredConstructor(Block.class).newInstance(block);
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            if (itemBlock != null) {
+                itemBlock.setRegistryName(block.getRegistryName());
+                GameRegistry.register(itemBlock);
+            }
             this.block = block;
         }
 

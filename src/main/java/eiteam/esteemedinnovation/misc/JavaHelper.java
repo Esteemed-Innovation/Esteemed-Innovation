@@ -12,4 +12,11 @@ public class JavaHelper {
     public static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + (str.substring(1));
     }
+
+    /**
+     * Opposite of {@link JavaHelper#capitalize(String)}.
+     */
+    public static String decapitalize(String str) {
+        return str.substring(0, 1).toLowerCase() + (str.substring(1));
+    }
 }

@@ -4,17 +4,17 @@ import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.ExosuitTexture;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
 
 public class ModelWings extends ModelExosuitUpgrade {
-
     private static final int PARTS = 5;
 
-    public ModelRenderer[] wing1;
-    public ModelRenderer[] wing2;
+    private ModelRenderer[] wing1;
+    private ModelRenderer[] wing2;
 
-    public ModelRenderer frame1;
-    public ModelRenderer frame2;
+    private ModelRenderer frame1;
+    private ModelRenderer frame2;
 
     public ModelWings() {
         wing1 = new ModelRenderer[PARTS];
@@ -41,6 +41,11 @@ public class ModelWings extends ModelExosuitUpgrade {
 
     @Override
     public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        if (entityLivingBase.isSneaking()) {
+            // Same rotation as is done in ModelExosuitTank.
+            GlStateManager.rotate(28F, 1, 0, 0);
+            GlStateManager.translate(0, 0.2, -1.5F / 16F);
+        }
         ExosuitTexture.WINGS.bindTexturePart(1);
 
         float expansion = nbtTagCompound.getFloat("expansion");
@@ -63,4 +68,7 @@ public class ModelWings extends ModelExosuitUpgrade {
         frame1.render(0.0625F);
         frame2.render(0.0625F);
     }
+
+    @Override
+    public void copyRotationAngles(ModelBiped parentModel, EntityLivingBase entityLivingBase) {}
 }

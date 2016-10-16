@@ -6,73 +6,65 @@ import net.minecraft.entity.EntityLivingBase;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.ExosuitTexture;
 
-/**
- * ModelBiped - Either Mojang or a mod author
- * Created using Tabula 4.1.1
- */
 public class ModelFrequencyShifter extends ModelExosuitUpgrade {
-    public ModelRenderer EarR;
-    public ModelRenderer EarL;
-    public ModelRenderer Stem;
-    public ModelRenderer Headband;
-    public ModelRenderer Mic;
+    private ModelRenderer EarR;
+    private ModelRenderer EarL;
+    private ModelRenderer Stem;
+    private ModelRenderer Headband;
+    private ModelRenderer Mic;
 
     public ModelFrequencyShifter() {
-        this.textureWidth = 34;
-        this.textureHeight = 32;
-        
-        this.EarR = new ModelRenderer(this, 0, 0);
-        this.EarR.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.EarR.addBox(-5.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
-        
-        this.EarL = new ModelRenderer(this, 0, 0);
-        this.EarL.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.EarL.addBox(4.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
-        
-        this.Stem = new ModelRenderer(this, 0, 15);
-        this.Stem.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Stem.addBox(4.0F, -10.5F, -4.5F, 1, 16, 1, -0.2F);
-        this.setRotateAngle(Stem, -1.0471975511965976F, 0.0F, 0.0F);
-        
-        this.Headband = new ModelRenderer(this, 10, 0);
-        this.Headband.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Headband.addBox(-5.0F, -9.0F, -1.0F, 10, 4, 2, -0.5F);
-        
-        this.Mic = new ModelRenderer(this, 0, 15);
-        this.Mic.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.Mic.addBox(2.2F, 4.5F, -4.5F, 2, 1, 1, 0.0F);
-        this.Stem.addChild(this.Mic);
+        textureWidth = 34;
+        textureHeight = 32;
+
+        EarR = new ModelRenderer(this, 0, 0);
+        EarR.setRotationPoint(0.0F, 0.0F, 0.0F);
+        EarR.addBox(-5.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
+
+        EarL = new ModelRenderer(this, 0, 0);
+        EarL.setRotationPoint(0.0F, 0.0F, 0.0F);
+        EarL.addBox(4.0F, -6.5F, -2.0F, 1, 4, 4, 0.0F);
+
+        Stem = new ModelRenderer(this, 0, 15);
+        Stem.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Stem.addBox(4.0F, -10.5F, -4.5F, 1, 16, 1, -0.2F);
+        setRotateAngle(Stem, -1.0471975511965976F, 0.0F, 0.0F);
+
+        Headband = new ModelRenderer(this, 10, 0);
+        Headband.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Headband.addBox(-5.0F, -9.0F, -1.0F, 10, 4, 2, -0.5F);
+
+        Mic = new ModelRenderer(this, 0, 15);
+        Mic.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Mic.addBox(2.2F, 4.5F, -4.5F, 2, 1, 1, 0.0F);
+        Stem.addChild(Mic);
     }
 
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+    private static void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
 
-    public void copyRotationAngles(ModelRenderer parent) {
-        float x = parent.rotateAngleX;
-        float y = parent.rotateAngleY;
-        float z = parent.rotateAngleZ;
-
-        setRotateAngle(this.EarR, x, y, z);
-        setRotateAngle(this.EarL, x, y, z);
-        setRotateAngle(this.Headband, x, y, z);
+    @Override
+    public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        setRotateAngle(Stem, parentModel.bipedHeadwear.rotateAngleX - 1.0471975511965976F,
+          parentModel.bipedHeadwear.rotateAngleY, parentModel.bipedHeadwear.rotateAngleZ);
+        super.renderModel(parentModel, entityLivingBase);
+        ExosuitTexture.FREQUENCY_SHIFTER.bindTexturePart(1);
+        EarR.render(0.0625F);
+        EarL.render(0.0625F);
+        Stem.render(0.0625F);
+        Headband.render(0.0625F);
     }
 
     @Override
-    public void renderModel(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
-        ExosuitTexture.FREQUENCY_SHIFTER.bindTexturePart(1);
-        this.EarR.render(0.0625F);
-        this.EarL.render(0.0625F);
-        this.Stem.render(0.0625F);
-        this.Headband.render(0.0625F);
-
-        copyRotationAngles(parentModel.bipedHeadwear);
-        setRotateAngle(this.Stem, parentModel.bipedHeadwear.rotateAngleX - 1.0471975511965976F,
-          parentModel.bipedHeadwear.rotateAngleY, parentModel.bipedHeadwear.rotateAngleZ);
+    public void copyRotationAngles(ModelBiped parentModel, EntityLivingBase entityLivingBase) {
+        copyRotateAngles(EarR, parentModel.bipedHeadwear);
+        copyRotateAngles(EarL, parentModel.bipedHeadwear);
+        copyRotateAngles(Headband, parentModel.bipedHeadwear);
     }
 }

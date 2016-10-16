@@ -15,15 +15,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Map;
 
 public class ExosuitModelCache {
-
     public static final ExosuitModelCache INSTANCE = new ExosuitModelCache();
 
     private final Map<String, ModelExosuit[]> modelCache = Maps.newHashMap();
 
-    private ModelExosuit[] generateNewArray() {
+    private static ModelExosuit[] generateNewArray() {
         ModelExosuit[] array = new ModelExosuit[4];
-        for (int i=0; i<4; i++) {
-            array[i] = new ModelExosuit(i);
+        for (EntityEquipmentSlot slot : ItemStackUtility.EQUIPMENT_SLOTS) {
+            if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
+                array[slot.getIndex()] = new ModelExosuit(slot);
+            }
         }
         return array;
     }
@@ -45,11 +46,14 @@ public class ExosuitModelCache {
                 return;
             }
 
-            for (int i = 0; i < 4; i++) {
-                ItemStack itemStack = mc.thePlayer.inventory.armorInventory[3 - i];
+            for (EntityEquipmentSlot slot : ItemStackUtility.EQUIPMENT_SLOTS) {
+                if (slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
+                    continue;
+                }
 
-                if (itemStack != null && itemStack.getItem() instanceof ItemExosuitArmor) {
-                    getModel(mc.thePlayer, ItemStackUtility.getSlotFromSlotIndex(i)).updateModel(mc.thePlayer, itemStack);
+                ItemStack armorStack = mc.thePlayer.getItemStackFromSlot(slot);
+                if (armorStack != null && armorStack.getItem() instanceof ItemExosuitArmor) {
+                    getModel(mc.thePlayer, slot).updateModel(mc.thePlayer, armorStack);
                 }
             }
         }
