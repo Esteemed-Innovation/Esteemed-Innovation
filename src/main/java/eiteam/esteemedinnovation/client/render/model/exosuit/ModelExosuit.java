@@ -135,7 +135,7 @@ public class ModelExosuit extends ModelBiped {
     private boolean hasPlateOverlay = false;
 
     public ModelExosuit(EntityEquipmentSlot slot) {
-        super(slot == EntityEquipmentSlot.CHEST /*TODO: Test*/ ? 1.0F : 0.5F, 0, 64, 32);
+        super(slot == EntityEquipmentSlot.CHEST ? 1.0F : 0.5F, 0, 64, 32);
         hasPlateOverlay = false;
         this.slot = slot;
 
