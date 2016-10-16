@@ -35,8 +35,8 @@ public interface ISteamTransporter {
     void explode();
 
     /**
-     * @param amount - How much steam can be inserted per
-     * @param face   - The side of the device
+     * @param amount How much steam can be inserted per
+     * @param face The side of the device
      */
     void insertSteam(int amount, EnumFacing face);
 

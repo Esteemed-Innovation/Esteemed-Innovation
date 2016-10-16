@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.item.firearm;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.IRenderItem;
 import eiteam.esteemedinnovation.api.enhancement.*;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
@@ -29,7 +28,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.List;
 
-public class ItemRocketLauncher extends Item implements IEngineerable, IRenderItem {
+public class ItemRocketLauncher extends Item implements IEngineerable {
     public float explosionSize;
     public int reloadTime;
     public int shellCount;
@@ -81,19 +80,6 @@ public class ItemRocketLauncher extends Item implements IEngineerable, IRenderIt
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getNameFromEnhancement(stack) : super.getUnlocalizedName(stack);
-    }
-
-    @Override
-    public ResourceLocation getIcon(ItemStack stack) {
-        if (UtilEnhancements.hasEnhancement(stack)) {
-            return UtilEnhancements.getIconFromEnhancement(stack);
-        }
-        return null;
-    }
-
-    @Override
-    public int renderPasses(ItemStack stack) {
-        return 1;
     }
 
     @Override
