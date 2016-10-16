@@ -30,7 +30,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -331,8 +331,8 @@ public class ItemFirearm extends Item implements IEngineerable {
     // Note: The alternative to this warning is pretty horrible and like 3 lines longer, because generics are not invariant.
     @SuppressWarnings("unchecked")
     @Override
-    public MutablePair<Integer, Integer>[] engineerCoordinates() {
-        return new MutablePair[] { MutablePair.of(53, 29) };
+    public Pair<Integer, Integer>[] engineerCoordinates() {
+        return new Pair[] { Pair.of(53, 29) };
     }
 
     @Override

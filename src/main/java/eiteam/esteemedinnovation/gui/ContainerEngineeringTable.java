@@ -12,7 +12,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class ContainerEngineeringTable extends Container {
     private static final EntityEquipmentSlot[] ARMOR_SLOTS = new EntityEquipmentSlot[] {
@@ -96,9 +96,9 @@ public class ContainerEngineeringTable extends Container {
                 IEngineerable item = (IEngineerable) stackInSlotZero.getItem();
                 hasEngineer = true;
                 int i = 1;
-                for (MutablePair<Integer, Integer> pair : item.engineerCoordinates()) {
-                    int x = pair.left;
-                    int y = pair.right;
+                for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
+                    int x = pair.getLeft();
+                    int y = pair.getRight();
                     ((SlotLimitedStackSize) getSlot(i)).setSlotStackLimit(1);
                     getSlot(i).xDisplayPosition = x + 53;
                     getSlot(i).yDisplayPosition = y + 9;

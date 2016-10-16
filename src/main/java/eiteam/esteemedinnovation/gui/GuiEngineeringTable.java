@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -39,9 +39,9 @@ public class GuiEngineeringTable extends GuiContainer {
                 item.drawBackground(this, 0, k + 52, l + 8);
 
                 int i = 0;
-                for (MutablePair<Integer, Integer> pair : item.engineerCoordinates()) {
-                    int x = pair.left;
-                    int y = pair.right;
+                for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
+                    int x = pair.getLeft();
+                    int y = pair.getRight();
                     item.drawSlot(this, i, k + x + 52, l + y + 8);
                     i++;
                 }

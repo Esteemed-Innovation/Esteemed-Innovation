@@ -33,7 +33,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,46 +134,46 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
 
     @SuppressWarnings("unchecked")
     @Override
-    public MutablePair<Integer, Integer>[] engineerCoordinates() {
+    public Pair<Integer, Integer>[] engineerCoordinates() {
         switch (slot) {
             case HEAD: {
-                return new MutablePair[] {
-                  MutablePair.of(1, 19),
-                  MutablePair.of(1, 1),
-                  MutablePair.of(39, 16),
-                  MutablePair.of(59, 36)
+                return new Pair[] {
+                  Pair.of(1, 19),
+                  Pair.of(1, 1),
+                  Pair.of(39, 16),
+                  Pair.of(59, 36)
                 };
             }
             case CHEST: {
-                return new MutablePair[] {
-                  MutablePair.of(1, 19),
-                  MutablePair.of(1, 1),
-                  MutablePair.of(49, 33),
-                  MutablePair.of(75, 26),
-                  MutablePair.of(1, 37)
+                return new Pair[] {
+                  Pair.of(1, 19),
+                  Pair.of(1, 1),
+                  Pair.of(49, 33),
+                  Pair.of(75, 26),
+                  Pair.of(1, 37)
                 };
             }
             case LEGS: {
-                return new MutablePair[] {
-                  MutablePair.of(1, 19),
-                  MutablePair.of(1, 1),
-                  MutablePair.of(60, 12),
-                  MutablePair.of(37, 40)
+                return new Pair[] {
+                  Pair.of(1, 19),
+                  Pair.of(1, 1),
+                  Pair.of(60, 12),
+                  Pair.of(37, 40)
                 };
             }
             case FEET: {
-                return new MutablePair[] {
-                  MutablePair.of(1, 19),
-                  MutablePair.of(1, 1),
-                  MutablePair.of(60, 18),
-                  MutablePair.of(28, 40)
+                return new Pair[] {
+                  Pair.of(1, 19),
+                  Pair.of(1, 1),
+                  Pair.of(60, 18),
+                  Pair.of(28, 40)
                 };
             }
             default: {
                 break;
             }
         }
-        return new MutablePair[]{MutablePair.of(49, 26)};
+        return new Pair[] { Pair.of(49, 26) };
     }
 
     public boolean hasPlates(ItemStack me) {

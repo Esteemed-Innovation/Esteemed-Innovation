@@ -3,10 +3,10 @@ package eiteam.esteemedinnovation.api;
 import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public interface IEngineerable {
-    MutablePair<Integer, Integer>[] engineerCoordinates();
+    Pair<Integer, Integer>[] engineerCoordinates();
 
     ItemStack getStackInSlot(ItemStack me, int var1);
 

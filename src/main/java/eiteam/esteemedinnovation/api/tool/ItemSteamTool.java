@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -178,7 +179,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
     }
 
     @Override
-    public MutablePair<Integer, Integer>[] engineerCoordinates() {
+    public Pair<Integer, Integer>[] engineerCoordinates() {
         return SteamToolHelper.ENGINEER_COORDINATES;
     }
 

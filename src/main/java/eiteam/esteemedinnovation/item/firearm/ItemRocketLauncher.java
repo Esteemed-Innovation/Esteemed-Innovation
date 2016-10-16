@@ -20,11 +20,14 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
@@ -286,8 +289,8 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
     // See ItemFirearm#engineerCoordinates().
     @SuppressWarnings("unchecked")
     @Override
-    public MutablePair<Integer, Integer>[] engineerCoordinates() {
-        return new MutablePair[]{MutablePair.of(53, 29)};
+    public Pair<Integer, Integer>[] engineerCoordinates() {
+        return new Pair[] { Pair.of(53, 29) };
     }
 
     @Override

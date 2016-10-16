@@ -1,16 +1,15 @@
 package eiteam.esteemedinnovation.item.tool.steam;
 
+import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.tuple.MutablePair;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
-import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-
-import java.util.ArrayList;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 /**
  * Class for internal use in the steam tools. For utils relating to the steam tool, see
@@ -18,9 +17,9 @@ import javax.annotation.Nonnull;
  */
 public class SteamToolHelper {
     @SuppressWarnings("unchecked")
-    public static final MutablePair<Integer, Integer>[] ENGINEER_COORDINATES = new MutablePair[]{
-      MutablePair.of(60, 12),
-      MutablePair.of(37, 40)
+    public static final Pair<Integer, Integer>[] ENGINEER_COORDINATES = new Pair[] {
+      Pair.of(60, 12),
+      Pair.of(37, 40)
     };
 
     /**
