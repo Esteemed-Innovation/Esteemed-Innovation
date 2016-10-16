@@ -13,8 +13,6 @@ Be sure to credit yourself down here when you submit translations:
 | Language code   | Language (English)      | Translators               |
 | --------------- | ----------------------- | ------------------------- |
 | en_US           | American English        | Esteemed Innovation Team  |
-| pt_BR           | Brazilian Portuguese    | matheusxaviersi           |
 | zh_CN           | Chinese                 | Mrkwtkr                   |
 | de_DE           | German                  | Vexatos                   |
-| zh_TW           | Traditional Chinese     | mymagadsl                 |
 | ru_RU           | Russian                 | Adaptivity                |
