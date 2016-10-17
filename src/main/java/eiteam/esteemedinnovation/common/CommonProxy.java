@@ -8,19 +8,19 @@ import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 
-public abstract class CommonProxy {
-    public abstract void registerModels();
+public class CommonProxy {
+    public void registerModels() {}
 
-    public abstract void registerRenderers();
+    public void registerRenderers() {}
 
-    public abstract void registerTexturesToStitch();
+    public void registerTexturesToStitch() {}
 
-    public abstract void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv);
+    public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {}
 
-    public abstract void spawnAsteriskParticles(World world, float x, float y, float z);
-    public abstract void spawnExclamationParticles(World world, float x, float y, float z);
+    public void spawnAsteriskParticles(World world, float x, float y, float z) {}
+    public void spawnExclamationParticles(World world, float x, float y, float z) {}
 
-    public abstract void registerHotkeys();
+    public void registerHotkeys() {}
 
     public void extendRange(Entity entity, double amount) {
         if (entity instanceof EntityPlayerMP) {
@@ -30,7 +30,7 @@ public abstract class CommonProxy {
         }
     }
 
-    public abstract void checkRange(EntityLivingBase entity);
+    public void checkRange(EntityLivingBase entity) {}
 
     public static void logInfo(String string){
         FMLLog.info("[EI]: " + string);
