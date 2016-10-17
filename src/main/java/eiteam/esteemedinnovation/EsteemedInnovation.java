@@ -289,7 +289,9 @@ public class EsteemedInnovation {
         RecipeSorter.register(MOD_ID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
         DrillHeadMaterial.registerDefaults();
         ((ToolUpgradeItems) ItemCategories.TOOL_UPGRADES.getCategory()).postInit();
-        EsteemedInnovationJournal.registerSteamTools();
+        if (event.getSide() == Side.CLIENT) {
+            EsteemedInnovationJournal.registerSteamTools();
+        }
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
             if (category.isEnabled()) {
