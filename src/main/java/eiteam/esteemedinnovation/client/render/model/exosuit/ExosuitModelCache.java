@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.client.render.model.exosuit;
 
 import com.google.common.collect.Maps;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;

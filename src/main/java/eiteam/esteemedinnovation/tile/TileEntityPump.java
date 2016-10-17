@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.block.BlockPump;
 import eiteam.esteemedinnovation.misc.FluidHelper;
@@ -13,7 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler, ISteamTransporter {
+public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler {
     public FluidTank myTank = new FluidTank(1000);
     public int progress = 0;
     public int rotateTicks = 0;

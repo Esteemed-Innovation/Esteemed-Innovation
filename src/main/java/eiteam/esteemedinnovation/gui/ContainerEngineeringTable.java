@@ -126,7 +126,7 @@ public class ContainerEngineeringTable extends Container {
         ItemStack toReturn = super.slotClick(slotID, dragType, clickType, player);
         updateSlots();
         tileEntity.markDirty();
-//        tileEntity.getWorld().markBlockForUpdate(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+//        tileEntity.getWorldObj().markBlockForUpdate(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
         return toReturn;
     }
 }

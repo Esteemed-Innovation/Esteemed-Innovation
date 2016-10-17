@@ -1,9 +1,8 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.misc.FluidHelper;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
 import net.minecraft.block.Block;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityBoiler extends SteamTransporterTileEntity implements ISidedInventory, ISteamTransporter, IWrenchable, IDisguisableBlock {
+public class TileEntityBoiler extends SteamTransporterTileEntity implements ISidedInventory, IWrenchable, IDisguisableBlock {
     private static final int[] slotsTop = new int[]{0, 1};
     private static final int[] slotsBottom = new int[]{0, 1};
     private static final int[] slotsSides = new int[]{0, 1};

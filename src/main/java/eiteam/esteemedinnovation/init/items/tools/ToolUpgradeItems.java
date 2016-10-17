@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.init.items.tools;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.DrillHeadRecipe;
+import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;

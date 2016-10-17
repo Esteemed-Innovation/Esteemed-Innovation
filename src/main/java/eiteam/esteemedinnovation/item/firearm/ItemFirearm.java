@@ -1,18 +1,18 @@
 package eiteam.esteemedinnovation.item.firearm;
 
 import eiteam.esteemedinnovation.Config;
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.IEngineerable;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
-import eiteam.esteemedinnovation.entity.projectile.EntityMusketBall;
-import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -378,7 +378,7 @@ public class ItemFirearm extends Item implements IEngineerable {
 
     @Override
     public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i, int j) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.GUI_TEXTURES);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_GUI_TEXTURES);
         guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
     }
 
@@ -401,7 +401,7 @@ public class ItemFirearm extends Item implements IEngineerable {
     }
 
     @Override
-    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+    public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
         int textureX = 0;
         if (this == FirearmItems.Items.MUSKET.getItem()) {

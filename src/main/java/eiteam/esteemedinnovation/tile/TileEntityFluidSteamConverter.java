@@ -1,9 +1,8 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,7 +18,7 @@ import net.minecraftforge.fluids.*;
 
 import static org.apache.commons.lang3.ArrayUtils.add;
 
-public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements ISteamTransporter, IFluidHandler, IWrenchable {
+public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements IFluidHandler, IWrenchable {
     public int runTicks = 0;
     private boolean lastRunning = false;
 

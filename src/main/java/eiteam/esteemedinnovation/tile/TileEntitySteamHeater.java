@@ -1,11 +1,8 @@
 package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.block.BlockSteamHeater;
-
 import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +21,7 @@ import java.util.ArrayList;
 import static eiteam.esteemedinnovation.tile.TileEntitySteamFurnace.*;
 
 // FIXME: Shift-clicking in the SteamFurnace GUI with things added by addSteamingRecipe are not put into slot 0.
-public class TileEntitySteamHeater extends TileEntitySteamPipe implements ISteamTransporter, IWrenchable {
+public class TileEntitySteamHeater extends TileEntitySteamPipe {
     // When multiple heaters are used on a furnace, there is a single primary heater
     public boolean isPrimaryHeater;
     private boolean isInitialized = false;

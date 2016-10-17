@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntitySteamPipe extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable {
+public class TileEntitySteamPipe extends SteamTransporterTileEntity implements IWrenchable {
     //protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
     public ArrayList<Integer> blacklistedSides = new ArrayList<>();
     public Block disguiseBlock = null;

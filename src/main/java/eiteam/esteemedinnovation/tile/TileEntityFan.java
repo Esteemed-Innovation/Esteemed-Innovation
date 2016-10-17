@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
@@ -36,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class TileEntityFan extends SteamTransporterTileEntity implements ISteamTransporter, IWrenchable, IWrenchDisplay {
+public class TileEntityFan extends SteamTransporterTileEntity implements IWrenchable, IWrenchDisplay {
     public boolean active;
     public boolean powered = false;
     public boolean lastSteam = false;

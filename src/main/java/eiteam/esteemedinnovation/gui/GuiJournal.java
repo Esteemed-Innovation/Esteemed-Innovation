@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.gui;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookPage;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
+import eiteam.esteemedinnovation.api.book.IGuiJournal;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class GuiJournal extends GuiScreen {
+public class GuiJournal extends GuiScreen implements IGuiJournal {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
     private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book2.png");
     private static final ResourceLocation REVERSE_BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/bookReverse.png");
@@ -75,6 +76,16 @@ public class GuiJournal extends GuiScreen {
                 }
             }
         }
+    }
+
+    @Override
+    public Minecraft getMC() {
+        return mc;
+    }
+
+    @Override
+    public String getCurrentEntry() {
+        return viewing;
     }
 
     @Override
@@ -310,6 +321,7 @@ public class GuiJournal extends GuiScreen {
         }
     }
 
+    @Override
     public void renderToolTip(ItemStack stack0, int mouseX, int mouseY, boolean renderHyperlink) {
         List<String> list = stack0.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
         zLevel = 1.0F;
@@ -334,6 +346,7 @@ public class GuiJournal extends GuiScreen {
         zLevel = 0.0F;
     }
 
+    @Override
     public void renderText(String str, int mouseX, int mouseY) {
         List<String> list = new ArrayList<>();
         list.add(I18n.format(str));
@@ -341,6 +354,7 @@ public class GuiJournal extends GuiScreen {
         drawHoveringText(list, mouseX, mouseY, fontRendererObj);
     }
 
+    @Override
     public void itemClicked(ItemStack itemStack) {
          for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {

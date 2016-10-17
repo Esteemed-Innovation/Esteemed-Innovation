@@ -12,6 +12,7 @@ import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
 import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
 import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
@@ -128,6 +129,7 @@ public class GenericEventHandler {
     private static boolean isShiftDown;
     private static final Potion SLOWNESS_POTION = Potion.getPotionById(PotionType.getID(PotionTypes.SLOWNESS));
 
+    // TODO: Migrate to IExosuitArmor#drainSteam.
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
             if (stack.getTagCompound() == null) {
@@ -1261,19 +1263,19 @@ public class GenericEventHandler {
         IBlockState state = event.getState();
 
         if (heldItem instanceof ItemSteamDrill) {
-            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.IRON_PICKAXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         } else if (heldItem instanceof ItemSteamAxe) {
-            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.DIAMOND_AXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         } else if (heldItem instanceof ItemSteamShovel) {
-            NBTTagCompound nbt = SteamToolHelper.checkNBT(heldItemStack);
+            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
             int speed = nbt.getInteger("Speed");
             if (speed > 0 && Items.DIAMOND_SHOVEL.getStrVsBlock(heldItemStack, state) != 1.0F) {
                 event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
@@ -1969,7 +1971,7 @@ public class GenericEventHandler {
 
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            ItemStack upgrade = UtilSteamTool.getHarvestLevelModifier(equipped);
+            ItemStack upgrade = SteamToolHelper.getHarvestLevelModifier(equipped);
             if (!drill.isWound(equipped)) {
                 return;
             }

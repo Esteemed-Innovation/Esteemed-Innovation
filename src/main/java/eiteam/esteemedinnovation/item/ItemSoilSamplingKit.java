@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.item;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks;
 import eiteam.esteemedinnovation.init.items.NaturalPhilosophyItems;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

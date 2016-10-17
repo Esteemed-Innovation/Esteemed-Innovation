@@ -111,16 +111,20 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-        exclude 'api'
-        include 'esteemedinnovation/api'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/api/java']
+        }
     }
 }
 
 task apiJar(type: Jar) {
     classifier = 'api'
-    from(sourceSets.main.output) {
-        include "eiteam/esteemedinnovation/api/**"
-    }
+    from sourceSets.api.allJava
 }
 
 artifacts {

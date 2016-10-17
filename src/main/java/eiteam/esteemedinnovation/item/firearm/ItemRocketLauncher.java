@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.item.firearm;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.IEngineerable;
 import eiteam.esteemedinnovation.api.enhancement.*;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
-import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
-import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -324,7 +324,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
 
     @Override
     public void drawSlot(GuiContainer guiEngineeringTable, int slotnum, int i, int j) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.GUI_TEXTURES);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_GUI_TEXTURES);
         guiEngineeringTable.drawTexturedModalRect(i, j, 176, 0, 18, 18);
     }
 
@@ -347,7 +347,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
     }
 
     @Override
-    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+    public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 192, 64, 64, 64);
     }

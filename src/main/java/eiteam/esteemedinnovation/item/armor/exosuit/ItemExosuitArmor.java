@@ -4,12 +4,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ModelExosuit;
-import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.item.BlockTankItem;
@@ -29,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -39,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngineerable, ISteamChargable {
+public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     public static final ResourceLocation LARGE_ICONS = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/engineering2.png");
 
     public EntityEquipmentSlot slot;
@@ -55,6 +52,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         return false;
     }
 
+    @Override
     public String getString() {
         return EsteemedInnovation.MOD_ID + ":items/exoArmor" + JavaHelper.capitalize(slot.getName());
     }
@@ -306,13 +304,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         }
     }
 
-    /**
-     * Checks whether the ItemStack has the amount of power in its steam storage. The opposite of
-     * @param me The ItemStack
-     * @param powerNeeded The amount of power needed
-     * @return True if it has power, false if it doesn't, or isn't a chestplate.
-     * @see #needsPower(ItemStack, int)
-     */
+    @Override
     public boolean hasPower(ItemStack me, int powerNeeded) {
         if (slot == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
@@ -323,13 +315,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
         return false;
     }
 
-    /**
-     * Checks whether the ItemStack can have the amount of power added to its steam storage.
-     * @param me The ItemStack
-     * @param powerNeeded The amount of power to add
-     * @return True if it will not exceed the limit with this amount of power added to it, false if
-     *         it will, or if it is not a chestplate.
-     */
+    @Override
     public boolean needsPower(ItemStack me, int powerNeeded) {
         if (slot == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
@@ -406,7 +392,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
 
     @Override
     public void drawSlot(GuiContainer guiEngineeringTable, int slotNum, int i, int j) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(GuiEngineeringTable.GUI_TEXTURES);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_GUI_TEXTURES);
         switch (slot) {
             case HEAD:
             case LEGS:
@@ -561,7 +547,7 @@ public class ItemExosuitArmor extends ItemArmor implements ISpecialArmor, IEngin
     }
 
     @Override
-    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+    public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(LARGE_ICONS);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
     }

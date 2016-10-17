@@ -1,17 +1,16 @@
 package eiteam.esteemedinnovation.item.tool.steam;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.gui.GuiEngineeringTable;
 import eiteam.esteemedinnovation.init.items.tools.ToolItems;
-
-import java.util.Set;
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 public class ItemSteamAxe extends ItemSteamTool {
     // Taken from ItemAxe.
@@ -29,7 +28,7 @@ public class ItemSteamAxe extends ItemSteamTool {
     }
 
     @Override
-    public void drawBackground(GuiEngineeringTable guiEngineeringTable, int i, int j, int k) {
+    public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(LARGE_ICONS);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64, 128, 64, 64);
     }

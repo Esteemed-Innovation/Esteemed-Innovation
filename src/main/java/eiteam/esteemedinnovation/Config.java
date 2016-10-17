@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation;
 
+import eiteam.esteemedinnovation.api.Constants;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -107,7 +108,6 @@ public class Config {
 
     public static int villagerId;
 
-    public static boolean wimpMode;
     public static boolean enableRedstoneValvePipe;
 
     // blocks
@@ -446,7 +446,7 @@ public class Config {
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean();
-        wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean();
+        Constants.wimpMode = config.get("Other", "Enable wimp mode (no explosions)", false).getBoolean();
         enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean();
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get("Other", "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();

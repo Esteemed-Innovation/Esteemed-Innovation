@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
-public class TileEntityThumper extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntityThumper extends SteamTransporterTileEntity {
     public int progress = 0;
     private boolean isRunning = false;
     private static final Material[] VALID_MATERIALS = {

@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 
-public class TileEntityItemMortar extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
+public class TileEntityItemMortar extends SteamTransporterTileEntity implements IInventory {
     public int xTarget;
     public int zTarget;
     public boolean hasTarget = false;

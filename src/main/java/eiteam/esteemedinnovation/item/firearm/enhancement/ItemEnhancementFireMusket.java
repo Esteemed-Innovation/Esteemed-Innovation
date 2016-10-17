@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.item.firearm.enhancement;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
-import eiteam.esteemedinnovation.entity.projectile.EntityMusketBall;
+import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

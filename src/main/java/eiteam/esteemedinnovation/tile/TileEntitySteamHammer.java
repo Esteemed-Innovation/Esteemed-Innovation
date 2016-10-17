@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.block.BlockSteamHammer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory, ISteamTransporter {
+public class TileEntitySteamHammer extends SteamTransporterTileEntity implements IInventory {
     public int hammerTicks = 0;
     public String itemName = "";
     public int cost = 0;

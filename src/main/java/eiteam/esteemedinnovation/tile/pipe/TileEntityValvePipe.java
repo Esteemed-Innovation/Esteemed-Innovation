@@ -208,4 +208,9 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         return false;
     }
+
+    @Override
+    public boolean canSteamPassThrough() {
+        return isOpen();
+    }
 }

@@ -23,7 +23,7 @@ import eiteam.esteemedinnovation.common.CommonProxy;
 import eiteam.esteemedinnovation.data.state.StateMapperValvePipe;
 import eiteam.esteemedinnovation.entity.item.EntityCanisterItem;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
-import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiBoiler;
 import eiteam.esteemedinnovation.init.blocks.*;
 import eiteam.esteemedinnovation.init.items.*;

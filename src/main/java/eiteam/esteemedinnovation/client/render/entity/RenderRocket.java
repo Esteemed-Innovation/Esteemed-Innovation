@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.client.render.entity;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.client.render.RenderUtility;
-import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;

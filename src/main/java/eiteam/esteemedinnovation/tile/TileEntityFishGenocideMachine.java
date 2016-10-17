@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.entity.item.EntityFloatingItem;
 import net.minecraft.init.Blocks;
@@ -17,7 +16,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
     public TileEntityFishGenocideMachine() {
         super(new EnumFacing[] {
           EnumFacing.UP,

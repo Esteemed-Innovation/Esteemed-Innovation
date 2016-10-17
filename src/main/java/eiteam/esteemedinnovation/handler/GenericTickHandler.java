@@ -14,7 +14,7 @@ import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
 import eiteam.esteemedinnovation.item.ItemSteamCell;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;

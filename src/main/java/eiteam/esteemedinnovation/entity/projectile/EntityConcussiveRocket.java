@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.entity.projectile;
 
-import eiteam.esteemedinnovation.misc.ExplosionRocket;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
+import eiteam.esteemedinnovation.api.entity.ExplosionRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

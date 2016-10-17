@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation;
 
-import eiteam.esteemedinnovation.api.DrillHeadRecipe;
+import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.block.TileEntityDummyBlock;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
@@ -15,7 +16,7 @@ import eiteam.esteemedinnovation.data.village.SteamEngineerCareer;
 import eiteam.esteemedinnovation.entity.item.EntityCanisterItem;
 import eiteam.esteemedinnovation.entity.item.EntityFloatingItem;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
-import eiteam.esteemedinnovation.entity.projectile.EntityRocket;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiHandler;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.handler.GenericTickHandler;
@@ -74,7 +75,8 @@ import java.util.List;
 
 @Mod(modid = EsteemedInnovation.MOD_ID, name = "Esteemed Innovation", version = Config.VERSION)
 public class EsteemedInnovation {
-    public static final String MOD_ID = "esteemedinnovation";
+    // TODO: Migrate uses of MOD_ID to EI_MODID
+    public static final String MOD_ID = Constants.EI_MODID;
 
     @Mod.Instance(MOD_ID)
     public static EsteemedInnovation instance;

@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.tile;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.block.BlockChargingPad;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class TileEntityChargingPad extends SteamTransporterTileEntity implements ISteamTransporter {
+public class TileEntityChargingPad extends SteamTransporterTileEntity {
     public EntityLivingBase target;
     public int extendTicks;
     public boolean descending = false;

@@ -2,10 +2,8 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.ISteamChargable;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -20,7 +18,7 @@ import net.minecraft.util.text.ITextComponent;
 import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.STEAM_CELL_EMPTY;
 import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.STEAM_CELL_FULL;
 
-public class TileEntitySteamCharger extends SteamTransporterTileEntity implements ISteamTransporter, IInventory {
+public class TileEntitySteamCharger extends SteamTransporterTileEntity implements IInventory {
     public int randomDegrees;
     private boolean isCharging = false;
     private boolean hadItem = false;

@@ -27,7 +27,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer<TileEnt
         } else {
             dist = 0.51F - (Math.sin(Math.toRadians(9D * (smasher.extendedTicks - 15))) * 0.51F);
         }
-        EnumFacing dir = smasher.getWorld().getBlockState(smasher.getPos()).getValue(BlockSmasher.FACING);
+        EnumFacing dir = smasher.getWorldObj().getBlockState(smasher.getPos()).getValue(BlockSmasher.FACING);
         GlStateManager.translate(dist * dir.getFrontOffsetX(), 0, dist * dir.getFrontOffsetZ());
         if (dir == EnumFacing.NORTH) {
             GlStateManager.rotate(180F, 0, 1, 0);

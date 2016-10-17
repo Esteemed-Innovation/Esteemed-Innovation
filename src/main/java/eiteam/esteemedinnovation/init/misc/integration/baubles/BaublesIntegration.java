@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.init.misc.integration.baubles;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;

@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.network;
 
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
-import eiteam.esteemedinnovation.misc.ItemStackUtility;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 
 import net.minecraft.block.Block;

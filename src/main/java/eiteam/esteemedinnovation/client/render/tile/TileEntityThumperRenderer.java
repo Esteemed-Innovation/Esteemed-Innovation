@@ -18,7 +18,7 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer<TileEnt
     public void renderTileEntityAt(TileEntityThumper thumper, double x, double y, double z, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-        EnumFacing facing = thumper.getWorld().getBlockState(thumper.getPos()).getValue(BlockThumper.FACING);
+        EnumFacing facing = thumper.getWorldObj().getBlockState(thumper.getPos()).getValue(BlockThumper.FACING);
         if (facing.getAxis() == EnumFacing.Axis.Z) {
             GlStateManager.rotate(90F, 0, 1, 0);
         }
