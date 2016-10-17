@@ -17,6 +17,7 @@ import eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems;
 import eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids;
 import eiteam.esteemedinnovation.item.ItemTank;
 import eiteam.esteemedinnovation.item.armor.exosuit.*;
+import eiteam.esteemedinnovation.item.armor.exosuit.plates.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -175,12 +176,12 @@ public class ExosuitUpgradeItems implements IInitCategory {
     }
 
     public enum PlateItems {
-        IRON_EXO("Iron", 0, "Iron", "iron"),
+        IRON_EXO(new ExosuitPlateIron(), 0),
         GOLD_EXO("Gold", 1, "Gold", "gold"),
-        COPPER_EXO("Copper", 2, "Copper", "copper"),
+        COPPER_EXO(new ExosuitPlateCopper(), 2),
         ZINC_EXO("Zinc", 3, "Zinc", "zinc"),
-        BRASS_EXO("Brass", 4, "Brass", "brass"),
-        GILDED_IRON_EXO("Gilded Iron", 5, "GildedIron", "gilded"),
+        BRASS_EXO(new ExosuitPlateBrass(), 4),
+        GILDED_IRON_EXO(new ExosuitPlateGildedIron(), 5),
         LEAD_EXO("Lead", 6, "Lead", "lead");
 
         private int metadata;
@@ -194,6 +195,13 @@ public class ExosuitUpgradeItems implements IInitCategory {
                     LOOKUP[item.ordinal()] = item;
                 }
             }
+        }
+
+        PlateItems(ExosuitPlate plate, int metadata) {
+            id = plate.getIdentifier();
+            this.metadata = metadata;
+            plate.setItem(createItemStack());
+            ExosuitRegistry.addExosuitPlate(plate);
         }
 
         PlateItems(String id, int metadata, String resource, String langSuffix) {

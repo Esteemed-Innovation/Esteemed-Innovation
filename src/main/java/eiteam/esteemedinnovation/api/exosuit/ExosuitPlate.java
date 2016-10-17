@@ -14,14 +14,12 @@ public class ExosuitPlate {
     private String armorMod;
     private Object plate;
     private String effect;
-    private DamageSource[] bonusSources;
 
-    public ExosuitPlate(String id, Object item, String invLocMod, String armorLocMod, String effectLoc, DamageSource... sources) {
+    public ExosuitPlate(String id, Object item, String invLocMod, String armorLocMod, String effectLoc) {
         identifier = id;
         invMod = invLocMod;
         armorMod = armorLocMod;
         plate = item;
-        bonusSources = sources;
         effect = effectLoc;
     }
 
@@ -31,6 +29,10 @@ public class ExosuitPlate {
 
     public Object getItem() {
         return plate;
+    }
+
+    public void setItem(Object item) {
+        plate = item;
     }
 
     public ResourceLocation getIcon(ItemExosuitArmor item) {
@@ -45,28 +47,13 @@ public class ExosuitPlate {
         }
     }
 
+    /**
+     * @param slot The armor slot that this plate is installed in
+     * @param source The damage source
+     * @return The damage reduction amount for the slot and the source. Default implementation returns the IRON
+     *         damage reduction amount.
+     */
     public int getDamageReductionAmount(EntityEquipmentSlot slot, DamageSource source) {
-        // TODO: Remove implementation from the API.
-        if (getIdentifier().equals("Copper")) {
-            if (source.isExplosion()) {
-                return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
-            }
-        }
-        if (getIdentifier().equals("Iron")) {
-            if (source.isProjectile()) {
-                return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
-            }
-        }
-        if (getIdentifier().equals("Gilded Iron")) {
-            if (source.isProjectile()) {
-                return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot) - 1;
-            }
-        }
-        if (getIdentifier().equals("Brass")) {
-            if (source.isFireDamage()) {
-                return ItemArmor.ArmorMaterial.DIAMOND.getDamageReductionAmount(slot);
-            }
-        }
         return ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(slot);
     }
 

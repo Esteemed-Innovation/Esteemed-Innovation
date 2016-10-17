@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.item.armor.exosuit;
+package eiteam.esteemedinnovation.item.armor.exosuit.plates;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
@@ -31,6 +31,6 @@ public class ItemExosuitPlate extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + stack.getItemDamage();
+        return getUnlocalizedName() + "." + stack.getItemDamage();
     }
 }
