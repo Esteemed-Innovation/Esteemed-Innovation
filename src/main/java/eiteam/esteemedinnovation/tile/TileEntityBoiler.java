@@ -210,7 +210,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
         ItemStack stackInInput = getStackInSlot(1);
         if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
-            ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank);
+            ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
             setInventorySlotContents(1, drainedItemStack);
         }
 

@@ -94,27 +94,13 @@ public class FluidHelper {
     }
 
     /**
-     * Fills the IFluidTank with the player's currently held item.
-     * @param player The player.
-     * @param tank The tank to fill.
-     */
-    public static void fillTankFromHeldItem(EntityPlayer player, IFluidTank tank) {
-        ItemStack newContainer = fillTankFromItem(ItemStackUtility.getHeldItemStack(player), tank);
-
-        if (player.capabilities.isCreativeMode) {
-            return;
-        }
-
-        replaceHeldItemWithDrainedContainer(player, newContainer);
-    }
-
-    /**
      * Fills the IFluidTank with an ItemStack fluid container.
      * @param container The ItemStack holding the fluid.
      * @param tank The tank to fill.
+     * @param drainContainer Whether to actually drain the `container` ItemStack.
      * @return The modified ItemStack, which probably has no fluid in it anymore.
      */
-    public static ItemStack fillTankFromItem(ItemStack container, IFluidTank tank) {
+    public static ItemStack fillTankFromItem(ItemStack container, IFluidTank tank, boolean drainContainer) {
         if (container == null || !container.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
             return null;
         }
@@ -124,7 +110,7 @@ public class FluidHelper {
         int roomLeftInContainer = getRoomLeftInTank(tank);
 
         if (roomLeftInContainer > 0) {
-            FluidStack drained = handler.drain(roomLeftInContainer, true);
+            FluidStack drained = handler.drain(roomLeftInContainer, drainContainer);
             tank.fill(drained, true);
         }
 
@@ -138,16 +124,6 @@ public class FluidHelper {
      */
     private static int getRoomLeftInTank(IFluidTank tank) {
         return tank.getCapacity() - tank.getFluidAmount();
-    }
-
-    /**
-     * Replaces the player's currently held item with the new ItemStack.
-     * @param player The player.
-     * @param newContainer The new ItemStack.
-     */
-    private static void replaceHeldItemWithDrainedContainer(EntityPlayer player, ItemStack newContainer) {
-        player.inventory.setInventorySlotContents(player.inventory.currentItem, newContainer);
-        player.inventoryContainer.detectAndSendChanges();
     }
 
     /**
