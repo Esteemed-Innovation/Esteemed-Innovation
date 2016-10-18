@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.tile.TileEntityRuptureDisc;
 import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -25,7 +25,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockRuptureDisc extends BlockContainer {
+public class BlockRuptureDisc extends Block {
     public static final PropertyBool IS_BURST = PropertyBool.create("is_burst");
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyBool ON_PIPE = PropertyBool.create("on_pipe");
@@ -93,7 +93,12 @@ public class BlockRuptureDisc extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityRuptureDisc();
     }
 

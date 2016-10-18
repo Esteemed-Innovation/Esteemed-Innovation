@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.block;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHammer;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -21,7 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockSteamHammer extends BlockContainer {
+public class BlockSteamHammer extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockSteamHammer() {
@@ -101,7 +100,12 @@ public class BlockSteamHammer extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntitySteamHammer();
     }
 

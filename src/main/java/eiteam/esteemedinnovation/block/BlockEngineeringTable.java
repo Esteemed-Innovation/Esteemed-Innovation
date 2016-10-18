@@ -2,28 +2,22 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.tile.TileEntityEngineeringTable;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockEngineeringTable extends BlockContainer {
+public class BlockEngineeringTable extends Block {
     public BlockEngineeringTable() {
         super(Material.ROCK);
         setHardness(3.5F);
         setCreativeTab(EsteemedInnovation.tab);
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -42,7 +36,12 @@ public class BlockEngineeringTable extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityEngineeringTable();
     }
 }

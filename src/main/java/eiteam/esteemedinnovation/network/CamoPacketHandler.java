@@ -3,10 +3,7 @@ package eiteam.esteemedinnovation.network;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -43,7 +40,7 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
         IBlockState state = world.getBlockState(pos);
         TileEntity tile = world.getTileEntity(pos);
         EnumBlockRenderType renderType = block.getRenderType(state);
-        if (!(block instanceof BlockContainer) && !(block instanceof ITileEntityProvider) &&
+        if (!block.hasTileEntity(state) &&
           renderType != EnumBlockRenderType.ENTITYBLOCK_ANIMATED && renderType != EnumBlockRenderType.LIQUID &&
           block.isOpaqueCube(state) && (block.isFullBlock(state) || (block == Blocks.GLASS &&
           tile instanceof TileEntitySteamPipe))) {

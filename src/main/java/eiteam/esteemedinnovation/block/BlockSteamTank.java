@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.tile.TileEntityCreativeTank;
 import eiteam.esteemedinnovation.tile.TileEntitySteamTank;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class BlockSteamTank extends BlockContainer {
+public class BlockSteamTank extends Block {
     public static final PropertyBool IS_CREATIVE = PropertyBool.create("is_creative");
 
     public BlockSteamTank() {
@@ -59,8 +59,13 @@ public class BlockSteamTank extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return meta == 1 ? new TileEntityCreativeTank() : new TileEntitySteamTank();
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(IS_CREATIVE) ? new TileEntityCreativeTank() : new TileEntitySteamTank();
     }
 
     @Override

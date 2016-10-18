@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.block;
 import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.tile.TileEntitySteamGauge;
 import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockSteamGauge extends BlockContainer {
+public class BlockSteamGauge extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool ON_PIPE = PropertyBool.create("on_pipe");
     private static final float PX_MIN = 4 / 16F;
@@ -101,7 +101,7 @@ public class BlockSteamGauge extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntitySteamGauge();
     }
 

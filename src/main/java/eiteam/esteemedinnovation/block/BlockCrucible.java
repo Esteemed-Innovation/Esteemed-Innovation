@@ -1,15 +1,14 @@
 package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.Tuple3;
+import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
 import eiteam.esteemedinnovation.tile.TileEntityCrucible;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHeater;
-
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -32,7 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-public class BlockCrucible extends BlockContainer implements IWrenchable {
+public class BlockCrucible extends Block implements IWrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final float PX = (1.0F / 16.0F);
     public static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(PX, PX, PX, 1F - PX, 1F - PX, 1F - PX);
@@ -174,7 +173,7 @@ public class BlockCrucible extends BlockContainer implements IWrenchable {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityCrucible();
     }
 
