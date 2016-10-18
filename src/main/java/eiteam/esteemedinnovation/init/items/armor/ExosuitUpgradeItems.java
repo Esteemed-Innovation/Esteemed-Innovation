@@ -182,7 +182,7 @@ public class ExosuitUpgradeItems implements IInitCategory {
         ZINC_EXO("Zinc", 3, "Zinc", "zinc"),
         BRASS_EXO(new ExosuitPlateBrass(), 4),
         GILDED_IRON_EXO(new ExosuitPlateGildedIron(), 5),
-        LEAD_EXO("Lead", 6, "Lead", "lead");
+        LEAD_EXO(new ExosuitPlateLead(), 6);
 
         private int metadata;
         private String id;
