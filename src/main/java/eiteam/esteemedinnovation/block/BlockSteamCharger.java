@@ -107,7 +107,12 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntitySteamCharger();
     }
 

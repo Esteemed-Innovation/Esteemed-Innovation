@@ -84,7 +84,12 @@ public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityThumper();
     }
 

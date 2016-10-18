@@ -61,7 +61,7 @@ public class BlockValvePipe extends BlockSteamPipe {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityValvePipe();
     }
 
