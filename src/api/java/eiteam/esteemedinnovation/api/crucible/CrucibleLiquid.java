@@ -11,17 +11,23 @@ public class CrucibleLiquid {
     public int cr;
     public int cg;
     public int cb;
+    public int ca;
     public String name;
 
     public CrucibleLiquid(String string, ItemStack ingot1, ItemStack plate1, ItemStack nugget1, CrucibleFormula formula1, int r, int g, int b) {
-        this.name = string;
-        this.ingot = ingot1;
-        this.plate = plate1;
-        this.nugget = nugget1;
-        this.recipe = formula1;
+        this(string, ingot1, plate1, nugget1, formula1, r, g, b, 255);
+    }
+
+    public CrucibleLiquid(String string, ItemStack ingot1, ItemStack plate1, ItemStack nugget1, CrucibleFormula formula1, int r, int g, int b, int a) {
+        name = string;
+        ingot = ingot1;
+        plate = plate1;
+        nugget = nugget1;
+        recipe = formula1;
         //this.color = new Color(r, g, b);
-        this.cr = r;
-        this.cg = g;
-        this.cb = b;
+        cr = r;
+        cg = g;
+        cb = b;
+        ca = a;
     }
 }
