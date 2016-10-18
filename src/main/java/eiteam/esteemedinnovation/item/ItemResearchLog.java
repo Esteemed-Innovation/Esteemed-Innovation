@@ -35,7 +35,7 @@ public class ItemResearchLog extends Item {
                 }
             }
         } else {
-            tooltip.add(TextFormatting.DARK_GRAY.toString() + I18n.format("esteemedinnovation.research.sneakforlist"));
+            tooltip.add(TextFormatting.DARK_GRAY + I18n.format("esteemedinnovation.research.shiftforlist"));
         }
     }
 
