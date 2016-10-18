@@ -1,9 +1,13 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import eiteam.esteemedinnovation.api.Constants;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
@@ -59,5 +63,12 @@ public class ExosuitPlate {
 
     public String effect() {
         return I18n.format(effect);
+    }
+
+    /**
+     * @see IExosuitUpgrade#getAttributeModifiersForExosuit(EntityEquipmentSlot, ItemStack)
+     */
+    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+        return HashMultimap.create();
     }
 }

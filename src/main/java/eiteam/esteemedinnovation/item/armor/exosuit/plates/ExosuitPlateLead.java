@@ -1,10 +1,9 @@
-package eiteam.esteemedinnovation.item.armor.exosuit;
+package eiteam.esteemedinnovation.item.armor.exosuit.plates;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.client.render.model.exosuit.ModelAnchors;
+import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -12,14 +11,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.UUID;
 
-public class ItemExosuitAnchorHeels extends ItemExosuitUpgrade {
-    public ItemExosuitAnchorHeels() {
-        super(ExosuitSlot.BOOTS_FEET, "", null, 0);
-    }
-
-    @Override
-    public Class<? extends ModelExosuitUpgrade> getModel() {
-        return ModelAnchors.class;
+public class ExosuitPlateLead extends ExosuitPlate {
+    public ExosuitPlateLead() {
+        super("Lead", null, "Lead", "Lead", EsteemedInnovation.MOD_ID + ".plate.lead");
     }
 
     @Override

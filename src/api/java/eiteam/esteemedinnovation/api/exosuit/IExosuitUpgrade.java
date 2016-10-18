@@ -1,7 +1,11 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -40,4 +44,15 @@ public interface IExosuitUpgrade {
     void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
 
     void writeInfo(List<String> list);
+
+    /**
+     * Called to add attribute modifiers from the upgrade (or plate) to the exosuit armor piece.
+     * @param armorSlot The slot that the armor is in
+     * @param armorPieceStack The ItemStack holding the armor piece
+     * @return A Multimap that will have all of its entries added to the armor's attribute modifiers. Default implementation
+     *         returns an empty multimap.
+     */
+    default Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+        return HashMultimap.create();
+    }
 }

@@ -16,7 +16,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -34,7 +33,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     public static final ResourceLocation LARGE_ICONS = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/engineering2.png");
@@ -482,24 +480,21 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot armorSlot, ItemStack stack) {
         Multimap<String, AttributeModifier> map = HashMultimap.create();
+
         ItemExosuitArmor armor = (ItemExosuitArmor) stack.getItem();
-        boolean hasKnockback = false;
-        double knockbackAmount = 0.0D;
-        // TODO: Abstract into API
-        if (armor.hasPlates(stack) &&
-          UtilPlates.getPlate(stack.getTagCompound().getString("plate")).getIdentifier().equals("Lead")) {
-            hasKnockback = true;
-            knockbackAmount += 0.25D;
+
+        if (armor.hasPlates(stack)) {
+            ExosuitPlate plate = UtilPlates.getPlate(stack);
+            if (plate != null) {
+                map.putAll(plate.getAttributeModifiersForExosuit(armorSlot, stack));
+            }
         }
-        if (armor.hasUpgrade(stack, ExosuitUpgradeItems.Items.ANCHOR_HEELS.getItem())) {
-            hasKnockback = true;
-            knockbackAmount += 0.25D;
+
+        IExosuitUpgrade[] upgrades = armor.getUpgrades(stack);
+        for (IExosuitUpgrade upgrade : upgrades) {
+            map.putAll(upgrade.getAttributeModifiersForExosuit(armorSlot, stack));
         }
-        if (hasKnockback) {
-            map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getAttributeUnlocalizedName(),
-              new AttributeModifier(new UUID(776437, armorType.getSlotIndex()), "Lead exosuit " + armorType.getName(),
-                knockbackAmount, 0));
-        }
+
         return map;
     }
 
