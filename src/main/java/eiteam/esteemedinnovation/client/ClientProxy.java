@@ -3,11 +3,11 @@ package eiteam.esteemedinnovation.client;
 import codechicken.lib.render.CCIconRegister;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.block.BlockBeacon;
 import eiteam.esteemedinnovation.block.BlockCrucible;
 import eiteam.esteemedinnovation.block.BlockGenericOre;
-import eiteam.esteemedinnovation.client.particle.ParticleAsterisk;
-import eiteam.esteemedinnovation.client.particle.ParticleExclamationPoint;
+import eiteam.esteemedinnovation.client.particle.ParticleAlphabeticGeneric;
 import eiteam.esteemedinnovation.client.render.colorhandlers.ItemExosuitColorHandler;
 import eiteam.esteemedinnovation.client.render.colorhandlers.ItemSmashedOreColorHandler;
 import eiteam.esteemedinnovation.client.render.colorhandlers.SteamDrillColorHandler;
@@ -23,7 +23,6 @@ import eiteam.esteemedinnovation.common.CommonProxy;
 import eiteam.esteemedinnovation.data.state.StateMapperValvePipe;
 import eiteam.esteemedinnovation.entity.item.EntityCanisterItem;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
-import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiBoiler;
 import eiteam.esteemedinnovation.init.blocks.*;
 import eiteam.esteemedinnovation.init.items.*;
@@ -332,12 +331,18 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void spawnAsteriskParticles(World world, float x, float y, float z) {
-        spawnParticles(new ParticleAsterisk(world, x, y, z));
+        // #00c300
+        for (int i = 0; i < world.rand.nextInt(4) + 1; i++) {
+            spawnParticles(new ParticleAlphabeticGeneric(world, x, y, z, 0, 0.765F, 0, 0.75F, 10, 2));
+        }
     }
 
     @Override
     public void spawnExclamationParticles(World world, float x, float y, float z) {
-        spawnParticles(new ParticleExclamationPoint(world, x, y, z));
+        // #FFD700
+        for (int i = 0; i < world.rand.nextInt(4) + 1; i++) {
+            spawnParticles(new ParticleAlphabeticGeneric(world, x, y, z, 1, 0.843F, 0, 0.75F, 1, 2));
+        }
     }
 
     private void spawnParticles(Particle particle) {
