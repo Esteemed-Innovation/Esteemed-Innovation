@@ -2,27 +2,23 @@ package eiteam.esteemedinnovation.client.render.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.block.BlockChargingPad;
-import eiteam.esteemedinnovation.client.render.model.ModelChargingPad;
+import eiteam.esteemedinnovation.client.render.RenderUtility;
 import eiteam.esteemedinnovation.tile.TileEntityChargingPad;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelChargingPad MODEL = new ModelChargingPad();
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/charger.png");
-    private static final int INVENTORY_ROTATION = 180;
+public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer<TileEntityChargingPad> {
+    private static final ResourceLocation POLES_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/charging_pad_poles");
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks, int destroyStage) {
-        TileEntityChargingPad pad = (TileEntityChargingPad) tileEntity;
-
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-        EnumFacing facing = tileEntity.getWorld().getBlockState(tileEntity.getPos()).getValue(BlockChargingPad.FACING);
+    public void renderTileEntityAt(TileEntityChargingPad pad, double x, double y, double z, float partialTicks, int destroyStage) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+        EnumFacing facing = pad.getWorld().getBlockState(pad.getPos()).getValue(BlockChargingPad.FACING);
         int rotation = 0;
         switch (facing) {
             case NORTH: {
@@ -46,42 +42,21 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer imp
             }
         }
 
-        GL11.glRotatef(90.0F, 0F, 1F, 0F);
+        GlStateManager.rotate(90.0F, 0F, 1F, 0F);
 
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
+        GlStateManager.translate(0.5F, 0.5F, 0.5F);
+        GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GlStateManager.translate(0.0F, StrictMath.sin(Math.toRadians((90D / 40D) * pad.extendTicks)), 0.0F);
+        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-        GL11.glTranslated(0.0F, 0.32D + 0.95D * Math.sin(Math.toRadians((90D / 40D) * pad.extendTicks)), 0.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+        RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), POLES_RL);
+        Tessellator.getInstance().draw();
 
-        MODEL.render(pad.extendTicks);
-
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderInventoryTileEntityAt(TileEntity tileEntity, double x, double y, double z, float var8) {
-        GL11.glPushMatrix();
-        GL11.glRotatef(90.0F, 0F, 1F, 0F);
-
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        //System.out.println(pad.extendTicks);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(INVENTORY_ROTATION, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-
-        GL11.glTranslated(0.0F, 0.32D + 0.95D * Math.sin(Math.toRadians((90D / 40D) * 0)), 0.0F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-
-        MODEL.render(0);
-
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 }

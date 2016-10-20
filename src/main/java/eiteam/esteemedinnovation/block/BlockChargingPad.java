@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.tile.TileEntityChargingPad;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -64,4 +64,8 @@ public class BlockChargingPad extends BlockSteamTransporter implements IWrenchab
         return true;
     }
 
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 }
