@@ -690,7 +690,7 @@ public class GenericEventHandler {
             return;
         }
         ItemStack targetLegs = target.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-        if (targetLegs == null || targetLegs.getItem() instanceof ItemExosuitArmor) {
+        if (targetLegs == null || !(targetLegs.getItem() instanceof ItemExosuitArmor)) {
             return;
         }
         ItemExosuitArmor leggings = (ItemExosuitArmor) targetLegs.getItem();
@@ -698,8 +698,7 @@ public class GenericEventHandler {
             return;
         }
         IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        double d0 = iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
-        d0 = d0 / 1.5D;
+        double d0 = (iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue()) / 1.5D;
         List<Entity> list = entity.worldObj.getEntitiesWithinAABB(Entity.class,
           entity.getEntityBoundingBox().expand(d0, 4.0D, d0));
         boolean foundPlayer = false;
