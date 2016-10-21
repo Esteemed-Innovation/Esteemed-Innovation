@@ -73,7 +73,12 @@ import net.minecraftforge.oredict.RecipeSorter;
 import javax.swing.*;
 import java.util.List;
 
-@Mod(modid = EsteemedInnovation.MOD_ID, name = "Esteemed Innovation", version = Config.VERSION)
+@Mod(
+  modid = EsteemedInnovation.MOD_ID,
+  name = "Esteemed Innovation",
+  version = Config.VERSION,
+  dependencies="required-after:CodeChickenLib@[2.4.2,)"
+)
 public class EsteemedInnovation {
     // TODO: Migrate uses of MOD_ID to EI_MODID
     public static final String MOD_ID = Constants.EI_MODID;
@@ -125,19 +130,6 @@ public class EsteemedInnovation {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        try {
-            // Try to get any class in CodeChickenLib.
-            Class.forName("codechicken.lib.raytracer.RayTracer");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            int input = JOptionPane.showOptionDialog(null, "Esteemed Innovation requires CodeChickenLib.",
-              "CodeChickenLib Not Found!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-
-            if (input == JOptionPane.OK_OPTION || input == JOptionPane.CANCEL_OPTION) {
-                FMLCommonHandler.instance().exitJava(1, false);
-            }
-        }
-
         Config.load(event);
 
         CONFIG_DIR = event.getModConfigurationDirectory().toString();
