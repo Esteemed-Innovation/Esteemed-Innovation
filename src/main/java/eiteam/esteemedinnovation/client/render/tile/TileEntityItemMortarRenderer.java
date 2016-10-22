@@ -19,6 +19,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer<Tile
     public void renderTileEntityAt(TileEntityItemMortar mortar, double x, double y, double z, float partialTicks, int destroyStage) {
         BlockPos pos = mortar.getPos();
         int zTile = pos.getZ();
+        int xTile = pos.getX();
         int zTarget = mortar.zTarget;
         int xTarget = mortar.xTarget;
         int fireTicks = mortar.fireTicks;
@@ -32,7 +33,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer<Tile
         if (zTarget == zTile) {
             GlStateManager.rotate(270F, 0, 1, 0);
         } else {
-            GlStateManager.rotate((float) Math.toDegrees((float) StrictMath.atan((float) (xTarget - zTile) / (zTarget - zTile))), 0, 1, 0);
+            GlStateManager.rotate((float) Math.toDegrees(StrictMath.atan2(xTarget - xTile, zTarget - zTile)), 0, 1, 0);
         }
         GlStateManager.translate(-0.5, -0.5, -0.5);
         RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), ELSE_RL);
