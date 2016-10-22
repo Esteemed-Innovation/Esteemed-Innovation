@@ -1,15 +1,12 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "esteemedinnovation:item_mortar_base"
+    "model": "esteemedinnovation:item_mortar_base",
+    "textures": {
+      "particle": "esteemedinnovation:blocksg/blockBrass"
+    }
   },
   "variants": {
-    "facing": {
-      "south": {},
-      "north": {},
-      "east": {},
-      "west": {}
-    },
     "inventory": [{
       "submodel": {
         "cannon1": {
