@@ -1130,26 +1130,32 @@ public class GenericEventHandler {
                 }
             }
         }
-        if (((event.getEntity() instanceof EntityPlayer)) && (((EntityPlayer) event.getEntity()).inventory.armorItemInSlot(1) != null) && (((EntityPlayer) event.getEntity()).inventory.armorItemInSlot(1).getItem() instanceof ItemExosuitArmor)) {
+
+        if (event.getEntity() instanceof EntityPlayer) {
 //            ItemStack stack = ((EntityPlayer) event.getEntity()).inventory.armorItemInSlot(1);
 //            ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
             //if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
-            float amount = event.getAmount();
             EntityPlayer player = ((EntityPlayer) event.getEntity());
-            DamageSource src = event.getSource();
-            if (!player.isEntityInvulnerable(src)) {
-                if (amount <= 0) return;
-                if (!src.isUnblockable() && player.isActiveItemStackBlocking() && amount > 0.0F) {
-                    amount = (1.0F + amount) * 0.5F;
-                }
+            ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+            if (leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
+                float amount = event.getAmount();
+                DamageSource src = event.getSource();
+                if (!player.isEntityInvulnerable(src)) {
+                    if (amount <= 0) {
+                        return;
+                    }
+                    if (!src.isUnblockable() && player.isActiveItemStackBlocking() && amount > 0.0F) {
+                        amount = (1.0F + amount) * 0.5F;
+                    }
 
-                amount = ArmorProperties.applyArmor(player, player.inventory.armorInventory, src, amount);
-                if (amount <= 0) {
-                    return;
+                    amount = ArmorProperties.applyArmor(player, player.inventory.armorInventory, src, amount);
+                    if (amount <= 0) {
+                        return;
+                    }
+                    amount = Math.max(amount - player.getAbsorptionAmount(), 0.0F);
                 }
-                amount = Math.max(amount - player.getAbsorptionAmount(), 0.0F);
+                event.setAmount(amount);
             }
-            event.setAmount(amount);
         }
     }
 
