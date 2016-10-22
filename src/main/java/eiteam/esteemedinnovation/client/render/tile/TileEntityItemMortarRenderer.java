@@ -1,73 +1,61 @@
 package eiteam.esteemedinnovation.client.render.tile;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.client.render.model.ModelMortar;
+import eiteam.esteemedinnovation.client.render.RenderUtility;
 import eiteam.esteemedinnovation.tile.TileEntityItemMortar;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.util.math.BlockPos;
 
-public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
-    private static final ModelMortar MODEL = new ModelMortar();
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/itemMortar.png");
-    private static final float PX = (1.0F / 16.0F);
+public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer<TileEntityItemMortar> {
+    private static final ResourceLocation CANNON1_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/item_mortar_cannon1");
+    private static final ResourceLocation CANNON2_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/item_mortar_cannon2");
+    private static final ResourceLocation ELSE_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/item_mortar_else");
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
-        TileEntityItemMortar mortar = (TileEntityItemMortar) tile;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslated(x, y, z);
+    public void renderTileEntityAt(TileEntityItemMortar mortar, double x, double y, double z, float partialTicks, int destroyStage) {
+        BlockPos pos = mortar.getPos();
+        int zTile = pos.getZ();
+        int zTarget = mortar.zTarget;
+        int xTarget = mortar.xTarget;
+        int fireTicks = mortar.fireTicks;
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-        MODEL.renderBase();
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        if (mortar.zTarget != mortar.getPos().getZ()) {
-            GL11.glRotated(Math.toDegrees((float) Math.atan((float) (mortar.xTarget - mortar.getPos().getZ()) / (float) (mortar.zTarget - mortar.getPos().getZ()))), 0F, 1F, 0F);
+        GlStateManager.pushMatrix();
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(x, y, z);
+
+        bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        GlStateManager.translate(0.5, 0.5, 0.5);
+        if (zTarget == zTile) {
+            GlStateManager.rotate(270F, 0, 1, 0);
         } else {
-            GL11.glRotated(270.0F, 0F, 1F, 0F);
+            GlStateManager.rotate((float) Math.toDegrees((float) StrictMath.atan((float) (xTarget - zTile) / (zTarget - zTile))), 0, 1, 0);
         }
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        MODEL.render();
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotated(2.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        if (mortar.fireTicks > 60 && mortar.fireTicks <= 65) {
-            GL11.glTranslated(0.0F, -0.05F * Math.sin(Math.PI * ((mortar.fireTicks - 60) / 10.0F)), 0.0F);
-        } else if (mortar.fireTicks > 65 && mortar.fireTicks < 80) {
-            GL11.glTranslated(0.0F, -0.05F * (1 - Math.sin(Math.PI * ((mortar.fireTicks - 65) / 30.0F))), 0.0F);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
+        RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), ELSE_RL);
+        Tessellator.getInstance().draw();
+        GlStateManager.translate(0.5, 0.5, 0.5);
+        GlStateManager.rotate(2F, 1, 0, 0);
+        GlStateManager.translate(-0.5, -0.5, -0.5);
+        if (fireTicks > 60 && fireTicks <= 65) {
+            GlStateManager.translate(0, -0.05F * StrictMath.sin(Math.PI * ((fireTicks - 60) / 10.0F)), 0);
+        } else if (fireTicks > 65 && fireTicks < 80) {
+            GlStateManager.translate(0, -0.05F * (1 - StrictMath.sin(Math.PI * ((fireTicks - 65) / 30.0F))), 0);
         }
-        MODEL.renderCannon1();
-        if (mortar.fireTicks > 60 && mortar.fireTicks <= 65) {
-            GL11.glTranslated(0.0F, -0.15F * Math.sin(Math.PI * ((mortar.fireTicks - 60) / 10.0F)), 0.0F);
-        } else if (mortar.fireTicks > 65 && mortar.fireTicks < 80) {
-            GL11.glTranslated(0.0F, -0.15F * (1 - Math.sin(Math.PI * ((mortar.fireTicks - 65) / 30.0F))), 0.0F);
+        RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), CANNON1_RL);
+        Tessellator.getInstance().draw();
+        GlStateManager.translate(0, 1, 0);
+        if (fireTicks > 60 && fireTicks <= 65) {
+            GlStateManager.translate(0, -0.15F * StrictMath.sin(Math.PI * ((fireTicks - 60) / 10.0F)), 0);
+        } else if (fireTicks > 65 && fireTicks < 80) {
+            GlStateManager.translate(0, -0.15F * (1 - StrictMath.sin(Math.PI * ((fireTicks - 65) / 30.0F))), 0);
         }
-        MODEL.renderCannon2();
-        GL11.glPopMatrix();
-        GL11.glRotated(0, 180, 0, 0);
-    }
-
-    @Override
-    public void renderInventoryTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslated(x, y, z);
-
-        Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
-        GL11.glTranslatef(-0.5F, -1.5F, -0.5F);
-        MODEL.renderBase();
-        MODEL.render();
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotated(2.0F, 1F, 0F, 0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        MODEL.renderCannon1();
-        MODEL.renderCannon2();
-        GL11.glPopMatrix();
+        RenderUtility.renderModel(Tessellator.getInstance().getBuffer(), CANNON2_RL);
+        Tessellator.getInstance().draw();
+        GlStateManager.popMatrix();
+        GlStateManager.rotate(0, 180, 0, 0);
     }
 }

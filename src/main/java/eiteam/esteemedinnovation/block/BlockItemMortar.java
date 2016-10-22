@@ -56,4 +56,9 @@ public class BlockItemMortar extends Block {
         }
         super.breakBlock(world, pos, state);
     }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 }

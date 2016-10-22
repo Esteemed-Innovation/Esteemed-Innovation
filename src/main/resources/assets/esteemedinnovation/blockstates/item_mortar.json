@@ -1,0 +1,31 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "esteemedinnovation:item_mortar_base"
+  },
+  "variants": {
+    "facing": {
+      "south": {},
+      "north": {},
+      "east": {},
+      "west": {}
+    },
+    "inventory": [{
+      "submodel": {
+        "cannon1": {
+          "model": "esteemedinnovation:item_mortar_cannon1"
+        },
+        "cannon2": {
+          "model": "esteemedinnovation:item_mortar_cannon2",
+          "transform": {
+            "translation": [ 0, 1, 0 ]
+          }
+        },
+        "else": {
+          "model": "esteemedinnovation:item_mortar_else"
+        }
+      }
+    }],
+    "normal": [{}]
+  }
+}
