@@ -62,18 +62,7 @@ public class TileEntityFunnel extends TileEntity implements ITickable {
                 return;
             }
 
-            IFluidHandler handler = null;
-            if (belowTile.hasCapability(FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
-                handler = belowTile.getCapability(FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
-            } else if (belowTile instanceof IFluidHandler) {
-                handler = (IFluidHandler) belowTile;
-            } else if (belowTile instanceof net.minecraftforge.fluids.IFluidHandler) {
-                // Really... Why are you still using this.
-                net.minecraftforge.fluids.IFluidHandler deprecatedHandler = (net.minecraftforge.fluids.IFluidHandler) belowTile;
-                deprecatedHandler.fill(EnumFacing.UP, fluid, true);
-                tank.drain(fluid, true);
-            }
-
+            IFluidHandler handler = FluidHelper.getFluidHandler(belowTile, EnumFacing.UP);
             if (handler != null) {
                 handler.fill(fluid, true);
                 tank.drain(fluid, true);

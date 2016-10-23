@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.tile.pipe;
 import eiteam.esteemedinnovation.api.tile.TileEntityBase;
 import eiteam.esteemedinnovation.data.capabilities.FluidPipeBlockCapabilities;
 import eiteam.esteemedinnovation.data.capabilities.TemperatureFluidTank;
+import eiteam.esteemedinnovation.misc.FluidHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -78,31 +79,13 @@ public class TileEntityTemperatureFluidPipe extends TileEntityBase implements IT
                 }
             }
             if (transferMode == FluidPipeBlockCapabilities.Mode.INPUT && !(offsetTile instanceof TileEntityTemperatureFluidPipe)) {
-                IFluidHandler cap = null;
-                if (offsetTile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {
-                    cap = offsetTile.getCapability(FLUID_HANDLER_CAPABILITY, dir);
-                } else if (offsetTile instanceof IFluidHandler) {
-                    cap = (IFluidHandler) offsetTile;
-                } else if (offsetTile instanceof net.minecraftforge.fluids.IFluidHandler) {
-                    net.minecraftforge.fluids.IFluidHandler deprecatedHandler = (net.minecraftforge.fluids.IFluidHandler) offsetTile;
-                    tryDrainOurTankDeprecated(deprecatedHandler, dir);
-                    prevInteractSide = dir;
-                }
+                IFluidHandler cap = FluidHelper.getFluidHandler(offsetTile, dir);
                 if (cap != null) {
                     tryDrainOurTank(cap);
                     prevInteractSide = dir;
                 }
             } else if (transferMode == FluidPipeBlockCapabilities.Mode.OUTPUT && !(offsetTile instanceof TileEntityTemperatureFluidPipe)) {
-                IFluidHandler cap = null;
-                if (offsetTile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {
-                    cap = offsetTile.getCapability(FLUID_HANDLER_CAPABILITY, dir);
-                } else if (offsetTile instanceof IFluidHandler) {
-                    cap = (IFluidHandler) offsetTile;
-                } else if (offsetTile instanceof net.minecraftforge.fluids.IFluidHandler) {
-                    net.minecraftforge.fluids.IFluidHandler deprecatedHandler = (net.minecraftforge.fluids.IFluidHandler) offsetTile;
-                    tryFillOurTankDeprecated(deprecatedHandler, dir);
-                    prevInteractSide = dir;
-                }
+                IFluidHandler cap = FluidHelper.getFluidHandler(offsetTile, dir);
                 if (cap != null) {
                     tryFillOurTank(cap);
                     prevInteractSide = dir;
@@ -114,10 +97,6 @@ public class TileEntityTemperatureFluidPipe extends TileEntityBase implements IT
             dirs.remove(prevInteractSide);
             dirs.add(0, prevInteractSide);
         }
-    }
-
-    private boolean tankHasEnoughRooom() {
-        return tank.getFluidAmount() + transferAmount <= tank.getCapacity();
     }
 
     private void safelyFillAndDrain(IFluidHandler toFill, IFluidHandler toDrain) {
@@ -133,48 +112,12 @@ public class TileEntityTemperatureFluidPipe extends TileEntityBase implements IT
         }
     }
 
-    @SuppressWarnings("SimplifiableIfStatement")
     private void tryFillOurTank(IFluidHandler capability) {
         safelyFillAndDrain(tank, capability);
     }
 
-    @SuppressWarnings("SimplifiableIfStatement")
     private void tryDrainOurTank(IFluidHandler capability) {
         safelyFillAndDrain(capability, tank);
-    }
-
-    // Suppress duplicates because the two IFluidHandlers are not interchangeable.
-
-    @SuppressWarnings({"SimplifiableIfStatement", "Duplicates"})
-    private void tryFillOurTankDeprecated(net.minecraftforge.fluids.IFluidHandler handler, EnumFacing dir) {
-        if (tankHasEnoughRooom()) {
-            FluidStack firstDrain = handler.drain(dir, transferAmount, false);
-            if (firstDrain != null) {
-                int testFill = tank.fill(firstDrain, false);
-                if (testFill > 0) {
-                    FluidStack testDrain = handler.drain(dir, testFill, false);
-                    if (testDrain != null) {
-                        handler.drain(dir, tank.fill(firstDrain, true), true);
-                    }
-                }
-            }
-        }
-    }
-
-    @SuppressWarnings({"SimplifiableIfStatement", "Duplicates"})
-    private void tryDrainOurTankDeprecated(net.minecraftforge.fluids.IFluidHandler handler, EnumFacing dir) {
-        if (tank.getFluid() != null) {
-            FluidStack firstDrain = tank.drain(transferAmount, false);
-            if (firstDrain != null) {
-                int testFill = handler.fill(dir, firstDrain, false);
-                if (testFill > 0) {
-                    FluidStack testDrain = tank.drain(testFill, false);
-                    if (testDrain != null) {
-                        tank.drain(handler.fill(dir, firstDrain, true), true);
-                    }
-                }
-            }
-        }
     }
 
     @Override

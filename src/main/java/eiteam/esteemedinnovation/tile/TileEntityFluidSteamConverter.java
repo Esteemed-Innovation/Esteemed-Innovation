@@ -3,6 +3,9 @@ package eiteam.esteemedinnovation.tile;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.block.BlockFluidSteamConverter;
+import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
+import eiteam.esteemedinnovation.misc.FluidHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,20 +17,40 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static org.apache.commons.lang3.ArrayUtils.add;
+import javax.annotation.Nullable;
 
-public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements IFluidHandler, IWrenchable {
+public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements IWrenchable {
     public int runTicks = 0;
     private boolean lastRunning = false;
 
     public boolean pushing = false; // Indicates that converter is pushing steam actively.
     private static final int PUSH_MAX = 250; // in mb a tick
+    @Nullable
+    private FluidTank tank;
+    private final Fluid fluid;
+
+    public TileEntityFluidSteamConverter() {
+        Fluid steam = FluidRegistry.getFluid("steam");
+        if (steam == null && CrossMod.IC2) {
+            steam = FluidRegistry.getFluid("ic2steam");
+        }
+        if (steam != null) {
+            tank = new FluidTank(steam, 0, getCapacity());
+        }
+        fluid = steam;
+    }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getUpdateTag();
+        NBTTagCompound access = getUpdateTag();
         access.setShort("runTicks", (short) runTicks);
         access.setBoolean("pushing", pushing);
 
@@ -50,14 +73,19 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("pushing", pushing);
+        if (tank != null) {
+            tank.writeToNBT(nbt);
+        }
         return nbt;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-
-        pushing = par1NBTTagCompound.getBoolean("pushing");
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        if (tank != null) {
+            tank.readFromNBT(nbt);
+        }
+        pushing = nbt.getBoolean("pushing");
     }
 
     @Override
@@ -69,29 +97,35 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             markForResync();
         }
         lastRunning = runTicks > 0;
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
 
         setDistributionDirections(new EnumFacing[] {
-          EnumFacing.getFront(getBlockMetadata()).getOpposite()
+          dir.getOpposite()
         });
 
-        if (pushing) {
-            int meta = getBlockMetadata();
-            EnumFacing dir = EnumFacing.getFront(meta);
+        if (fluid != null && tank != null && pushing) {
             TileEntity tileEntity = worldObj.getTileEntity(getOffsetPos(dir));
-            SteamNetwork steamNetwork = this.getNetwork();
-            if(tileEntity != null && tileEntity instanceof IFluidHandler && steamNetwork != null) {
-                //To make for some interesting feedback systems, active push amount is based on current network pressure
-                //This could be considered for non pushing systems, but there's no guarantee of consistency of the pull rate
-                //from different mods, so something complicated would have to be done to audit that behaviour.
-                //todo: external config for converter behaviour?
-                //todo: apply limiting mechanism to non-pushing state?
+            if (tileEntity != null) {
+                SteamNetwork steamNetwork = getNetwork();
+                IFluidHandler handler = FluidHelper.getFluidHandler(tileEntity, dir);
+                if (handler != null && steamNetwork != null) {
+                    //To make for some interesting feedback systems, active push amount is based on current network pressure
+                    //This could be considered for non pushing systems, but there's no guarantee of consistency of the pull rate
+                    //from different mods, so something complicated would have to be done to audit that behaviour.
+                    //todo: external config for converter behaviour?
+                    //todo: apply limiting mechanism to non-pushing state?
 
-                IFluidHandler tank = (IFluidHandler) tileEntity;
-                int maxDrain = (int)(PUSH_MAX * steamNetwork.getPressure());
-                if (maxDrain > 0) {
-                    FluidStack avail = drain(dir, maxDrain, false);
-                    int taken = tank.fill(dir.getOpposite(), avail, true);
-                    steamNetwork.decrSteam(taken);
+                    int maxDrain = (int) (PUSH_MAX * steamNetwork.getPressure());
+                    if (maxDrain > 0) {
+                        tank.fill(new FluidStack(fluid, maxDrain), true);
+                        FluidStack avail = tank.drain(maxDrain, false);
+                        int taken = handler.fill(avail, true);
+                        steamNetwork.decrSteam(taken);
+                        if (taken > 0 && runTicks <= 0) {
+                            runTicks = 100;
+                            markForResync();
+                        }
+                    }
                 }
             }
         }
@@ -107,114 +141,29 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             int steam = getSteamShare();
             getNetwork().split(this, true);
             setDistributionDirections(new EnumFacing[] {
-              EnumFacing.getFront(getBlockMetadata()).getOpposite()
+              state.getValue(BlockFluidSteamConverter.FACING).getOpposite()
             });
 
             SteamNetwork.newOrJoin(this);
             getNetwork().addSteam(steam);
         }
+        markForResync();
         return false;
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        int meta = getBlockMetadata();
-
-        if (from.ordinal() != meta) {
-            return 0;
-        }
-
-        if (pushing) {
-            return 0;
-        }
-
-        if (FluidRegistry.getFluid("steam") == resource.getFluid()) {
-            if (doFill) {
-                insertSteam(resource.amount, from);
-                runTicks = runTicks > 0 ? runTicks : 100;
-            }
-            return resource.amount;
-        }
-
-        return 0;
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
+        return (tank != null && dir == facing && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) || super.hasCapability(capability, facing);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        int meta = getBlockMetadata();
-        if (from.ordinal() != meta) {
-            return null;
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
+        if (tank != null && dir == facing && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return (T) tank;
         }
-        Fluid fluid = FluidRegistry.getFluid("steam");
-        int drained = resource.amount;
-        if (getSteamShare() < drained) {
-            drained = this.getSteamShare();
-        }
-
-        FluidStack stack = new FluidStack(fluid, drained);
-        if (doDrain) {
-            this.decrSteam(drained);
-            runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
-        }
-
-        return stack;
+        return super.getCapability(capability, facing);
     }
-
-    @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-        int meta = getBlockMetadata();
-        if (from.ordinal() != meta) {
-            return null;
-        }
-        Fluid fluid = FluidRegistry.getFluid("steam");
-        if (this.getSteamShare() < maxDrain) {
-            maxDrain = this.getSteamShare();
-        }
-        FluidStack stack = new FluidStack(fluid, maxDrain);
-        if (doDrain) {
-            this.decrSteam(maxDrain);
-            runTicks = stack.amount > 0 ? (runTicks > 0 ? runTicks : 100) : runTicks;
-        }
-
-        return stack;
-    }
-
-    @Override
-    public boolean canFill(EnumFacing from, Fluid fluid) {
-        if (pushing) {
-            return false; //steam is blasting out! You can't put it back in!
-        }
-
-        int meta = getBlockMetadata();
-        return from.ordinal() != meta;
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid) {
-        int meta = getBlockMetadata();
-        return from.ordinal() != meta;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from) {
-        int meta = getBlockMetadata();
-        FluidTankInfo[] fti = {};
-        if (from.ordinal() != meta) {
-            return fti;
-        }
-
-        Fluid steam;
-        steam = FluidRegistry.getFluid("steam");
-        if (steam != null) {
-            fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
-        }
-
-        steam = FluidRegistry.getFluid("ic2steam");
-        if (steam != null) {
-            fti = add(fti, new FluidTank(new FluidStack(steam, this.getSteamShare()), this.getCapacity()).getInfo());
-        }
-
-        return fti;
-    }
-
 }

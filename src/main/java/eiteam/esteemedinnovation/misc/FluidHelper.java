@@ -9,17 +9,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
 public class FluidHelper {
     private static Fluid water = FluidRegistry.WATER;
@@ -221,6 +226,24 @@ public class FluidHelper {
                     }
                 }
             }
+        }
+        return null;
+    }
+
+    /**
+     * @param tile The tile (nonnull)
+     * @param dir The direction (can be null)
+     * @return An IFluidHandler for the Tile and direction. If it uses the deprecated API, returns a new wrapper.
+     */
+    public static IFluidHandler getFluidHandler(TileEntity tile, EnumFacing dir) {
+        if (tile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {
+            return tile.getCapability(FLUID_HANDLER_CAPABILITY, dir);
+        }
+        if (tile instanceof IFluidHandler) {
+            return (IFluidHandler) tile;
+        }
+        if (tile instanceof net.minecraftforge.fluids.IFluidHandler) {
+            return new FluidHandlerWrapper((net.minecraftforge.fluids.IFluidHandler) tile, dir);
         }
         return null;
     }

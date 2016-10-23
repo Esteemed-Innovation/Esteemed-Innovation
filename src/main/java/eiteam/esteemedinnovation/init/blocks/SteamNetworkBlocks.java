@@ -29,7 +29,7 @@ public class SteamNetworkBlocks implements IInitCategory {
         STEAM_GAUGE(new BlockSteamGauge(), "steam_gauge"),
         RUPTURE_DISC(new BlockRuptureDisc(), "rupture_disc", BlockTankItem.class),
         STEAM_WHISTLE(new BlockWhistle(), "steam_whistle"),
-        PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "fluid_steam_converter");
+        PRESSURE_CONVERTER(new BlockFluidSteamConverter(), "pressure_converter");
 
         private Block block;
 

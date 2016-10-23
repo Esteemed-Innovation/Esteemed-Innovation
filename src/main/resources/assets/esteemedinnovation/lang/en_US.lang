@@ -680,7 +680,7 @@ tile.esteemedinnovation:rupture_disc.1.name=Burst Rupture Disc
 tile.esteemedinnovation:fan.name=Fan
 tile.esteemedinnovation:vacuum.name=Vacuum
 tile.esteemedinnovation:steam_whistle.name=Steam Whistle
-tile.esteemedinnovation:fluid_steam_converter.name=Pressure Converter
+tile.esteemedinnovation:pressure_converter.name=Pressure Converter
 tile.esteemedinnovation:funnel.name=Funnel
 
 esteemedinnovation.research.shiftforlist=Hold shift to view your keywords

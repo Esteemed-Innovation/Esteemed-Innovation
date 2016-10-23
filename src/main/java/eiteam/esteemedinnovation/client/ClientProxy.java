@@ -167,6 +167,7 @@ public class ClientProxy extends CommonProxy {
         registerModelItemStack(new ItemStack(SteamNetworkBlocks.Blocks.RUPTURE_DISC.getBlock(), 1, 1));
         registerModel(SteamNetworkBlocks.Blocks.STEAM_GAUGE.getBlock());
         registerModel(SteamNetworkBlocks.Blocks.STEAM_WHISTLE.getBlock());
+        registerModel(SteamNetworkBlocks.Blocks.PRESSURE_CONVERTER.getBlock());
 
         registerModel(SteamMachineryBlocks.Blocks.FAN.getBlock());
         registerModel(SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock());
