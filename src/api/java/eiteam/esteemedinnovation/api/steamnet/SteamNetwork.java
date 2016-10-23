@@ -9,10 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 public class SteamNetwork {
     private static Random random = new Random();
@@ -149,10 +146,12 @@ public class SteamNetwork {
             } else {
                 if (transporters != null) {
                     if (getPressure() > 1.2F) {
-                        for (Coord4 coords : transporters.keySet()) {
-                            ISteamTransporter trans = transporters.get(coords);
+                        Iterator<Map.Entry<Coord4, ISteamTransporter>> iter = transporters.entrySet().iterator();
+                        while (iter.hasNext()) {
+                            Map.Entry<Coord4, ISteamTransporter> entry = iter.next();
+                            ISteamTransporter trans = entry.getValue();
                             if ((trans == null || ((TileEntity) trans).isInvalid())) {
-                                transporters.remove(coords);
+                                iter.remove();
                             } else if (!trans.getWorldObj().isRemote && shouldExplode(oneInX(getPressure(), trans.getPressureResistance()))) {
                                 trans.explode();
                             }
