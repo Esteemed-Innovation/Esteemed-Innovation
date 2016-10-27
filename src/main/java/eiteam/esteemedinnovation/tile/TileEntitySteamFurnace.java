@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.tile;
 
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 
+import eiteam.esteemedinnovation.block.BlockSteamHeater;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,19 +24,16 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
         int numHeaters = 0;
 
         for (EnumFacing dir2 : EnumFacing.VALUES) {
-            int x = pos.getX() + dir2.getFrontOffsetX();
-            int y = pos.getY() + dir2.getFrontOffsetY();
-            int z = pos.getZ() + dir2.getFrontOffsetZ();
-            BlockPos offsetPos = new BlockPos(x, y, z);
+            BlockPos offsetPos = pos.offset(dir2);
             TileEntity tile = worldObj.getTileEntity(offsetPos);
             if (tile != null && tile instanceof TileEntitySteamHeater && ((TileEntitySteamHeater) tile).getSteamShare() > 2 &&
-              worldObj.getBlockState(pos).getValue(BlockFurnace.FACING) == dir2.getOpposite()) {
+              worldObj.getBlockState(offsetPos).getValue(BlockSteamHeater.FACING) == dir2.getOpposite()) {
                 numHeaters++;
             }
         }
         numHeaters = Math.min(4, numHeaters);
         if (numHeaters == 0) {
-            TileEntitySteamHeater.replace(this);
+            TileEntitySteamHeater.replaceWith(this, new TileEntityFurnace());
         }
 
         int furnaceBurnTime = super.getField(FURNACE_BURN_TIME_ID);
@@ -134,7 +132,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
                 setInventorySlotContents(2, copy);
             }
 
-            ItemStack copy = output.copy();
+            ItemStack copy = slot0.copy();
             copy.stackSize--;
             if (copy.stackSize == 0) {
                 copy = null;

@@ -32,26 +32,30 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
 
-    public static void replace(TileEntityFurnace furnace) {
-        if (furnace != null) {
+    public static void replaceWith(TileEntityFurnace current, TileEntityFurnace replacement) {
+        if (current != null) {
             ItemStack[] furnaceItemStacks = new ItemStack[] {
-              furnace.getStackInSlot(0),
-              furnace.getStackInSlot(1),
-              furnace.getStackInSlot(2)
+              current.getStackInSlot(0),
+              current.getStackInSlot(1),
+              current.getStackInSlot(2)
             };
-            int furnaceBurnTime = furnace.getField(FURNACE_BURN_TIME_ID);
-            int currentItemBurnTime = furnace.getField(CURRENT_ITEM_BURN_TIME_ID);
-            int furnaceCookTime = furnace.getField(COOK_TIME_ID);
-            furnace.getWorld().setTileEntity(furnace.getPos(), new TileEntitySteamFurnace());
-            TileEntityFurnace furnace2 = (TileEntityFurnace) furnace.getWorld().getTileEntity(furnace.getPos());
-            assert furnace2 != null;
-            furnace2.setInventorySlotContents(0, furnaceItemStacks[0]);
-            furnace2.setInventorySlotContents(1, furnaceItemStacks[1]);
-            furnace2.setInventorySlotContents(2, furnaceItemStacks[2]);
-            furnace2.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime);
-            furnace2.setField(CURRENT_ITEM_BURN_TIME_ID, currentItemBurnTime);
-            furnace2.setField(COOK_TIME_ID, furnaceCookTime);
+            int furnaceBurnTime = current.getField(FURNACE_BURN_TIME_ID);
+            int currentItemBurnTime = current.getField(CURRENT_ITEM_BURN_TIME_ID);
+            int furnaceCookTime = current.getField(COOK_TIME_ID);
+            current.getWorld().setTileEntity(current.getPos(), replacement);
+            TileEntityFurnace replaced = (TileEntityFurnace) current.getWorld().getTileEntity(current.getPos());
+            assert replaced != null;
+            replaced.setInventorySlotContents(0, furnaceItemStacks[0]);
+            replaced.setInventorySlotContents(1, furnaceItemStacks[1]);
+            replaced.setInventorySlotContents(2, furnaceItemStacks[2]);
+            replaced.setField(FURNACE_BURN_TIME_ID, furnaceBurnTime);
+            replaced.setField(CURRENT_ITEM_BURN_TIME_ID, currentItemBurnTime);
+            replaced.setField(COOK_TIME_ID, furnaceCookTime);
         }
+    }
+
+    public static void replace(TileEntityFurnace furnace) {
+        replaceWith(furnace, new TileEntitySteamFurnace());
     }
 
 
