@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 buildscript {
     repositories {
         mavenCentral()
@@ -27,10 +30,45 @@ apply plugin: 'maven-publish'
 
 version = newModVersion
 
+/*
+Usage: `gradle build -Palpha=<version>` where <version> is the next version (different from newModVersion because
+that is updated when we are releasing an actual public update. Modifying that makes reading commit history much more
+confusing). It increments the .alphaversion file's first line at the end, so it can be thought of as "the next alpha version".
+
+Example: `gradle build -Palpha=1.0.0 -Pdev` => version # 1.0.0-alpha1-<commit>
+*/
+def incrementAlphaVersion(int currentValue) {
+    def file = new File('.alphaversion')
+    file.newWriter();
+    file << "${currentValue + 1}"
+}
+
+def getAlphaVersion() {
+    if (!Files.exists(Paths.get('.alphaversion'))) {
+        new File('.alphaversion').createNewFile()
+        incrementAlphaVersion(0)
+    }
+    new File('.alphaversion').withReader { return it.readLine() }
+}
+
+int alpha = getAlphaVersion().toInteger()
+
+if (project.hasProperty('alpha')) {
+    version = project.property('alpha') + "-alpha" + alpha
+}
+
 if (project.hasProperty('dev')) {
     def git = org.ajoberstar.grgit.Grgit.open(file('.'))
-    project.version = project.version + '-' + git.head().abbreviatedId + '-dev'
+    project.version += '-' + git.head().getAbbreviatedId(6)
 }
+
+task finalize << {
+    if (project.hasProperty('alpha')) {
+        incrementAlphaVersion(alpha)
+    }
+}
+
+build.finalizedBy(finalize)
 
 group = "eiteam.esteemedinnovation"
 archivesBaseName = "EsteemedInnovation-1.10"

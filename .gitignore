@@ -19,6 +19,7 @@ MinecraftForge-License.txt
 README.txt
 out/
 logs/
+.alphaversion
 
 # Who made this messy crap? Whatever.
 !/elib/*.jar
