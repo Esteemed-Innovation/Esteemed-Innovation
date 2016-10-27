@@ -24,7 +24,7 @@ public class SteamWorkshopCreationHandler implements VillagerRegistry.IVillageCr
     }
 
     @Override
-    public StructureVillagePieces.House1 buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
+    public StructureVillagePieces.Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         return ComponentSteamWorkshop.buildComponent(startPiece, pieces, random, p1, p2, p3, facing, p5);
     }
 }

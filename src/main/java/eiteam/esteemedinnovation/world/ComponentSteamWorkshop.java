@@ -1,10 +1,13 @@
 package eiteam.esteemedinnovation.world;
 
+import eiteam.esteemedinnovation.block.BlockBoiler;
+import eiteam.esteemedinnovation.block.BlockSteamHeater;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.FoodItems;
 import eiteam.esteemedinnovation.tile.TileEntityBoiler;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.material.Material;
@@ -25,15 +28,25 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.List;
 import java.util.Random;
 
-public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
+public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
     private int averageGroundLevel = -1;
+    private static final IBlockState COBBLESTONE_STATE = Blocks.COBBLESTONE.getDefaultState();
+    private static final IBlockState FENCE_STATE = Blocks.OAK_FENCE.getDefaultState();
+    private static final IBlockState PLANK_STATE = Blocks.PLANKS.getDefaultState();
+    private static final IBlockState STONE_STAIR_STATE = Blocks.STONE_STAIRS.getDefaultState();
+    private static final IBlockState LADDER_STATE = Blocks.LADDER.getDefaultState();
+    private static final IBlockState LOG_STATE = Blocks.LOG.getDefaultState();
+    private static final IBlockState AIR_STATE = Blocks.AIR.getDefaultState();
+    private static final IBlockState PANE_STATE = Blocks.GLASS_PANE.getDefaultState();
+    private static final IBlockState PIPE_STATE = PipeBlocks.Blocks.BRASS_PIPE.getBlock().getDefaultState();
+    private static final IBlockState HEATER_STATE = SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock().getDefaultState();
 
     public ComponentSteamWorkshop() {}
 
     public ComponentSteamWorkshop(StructureVillagePieces.Start villagePiece, int par2, Random par3Random, StructureBoundingBox sbb, EnumFacing coordBaseMode) {
         this();
         setCoordBaseMode(coordBaseMode);
-        this.boundingBox = sbb;
+        boundingBox = sbb;
     }
 
     public static ComponentSteamWorkshop buildComponent(StructureVillagePieces.Start villagePiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
@@ -44,45 +57,33 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
 
     @Override
     public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-        if (this.averageGroundLevel < 0) {
-            this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+        if (averageGroundLevel < 0) {
+            averageGroundLevel = getAverageGroundLevel(world, sbb);
 
-            if (this.averageGroundLevel < 0) {
+            if (averageGroundLevel < 0) {
                 return true;
             }
 
-            this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 5, 0);
+            boundingBox.offset(0, averageGroundLevel - boundingBox.maxY + 5, 0);
         }
-
-        /**
-         * arguments: (World worldObj, StructureBoundingBox structBB, int minX,
-         * int minY, int minZ, int maxX, int maxY, int maxZ, int placeBlockId,
-         * int replaceBlockId, boolean alwaysreplace)
-         */
-
-        IBlockState COBBLESTONE_STATE = Blocks.COBBLESTONE.getDefaultState();
-        IBlockState FENCE_STATE = Blocks.OAK_FENCE.getDefaultState();
-        IBlockState PLANK_STATE = Blocks.PLANKS.getDefaultState();
-        IBlockState STONE_STAIR_STATE = Blocks.STONE_STAIRS.getDefaultState();
-        IBlockState LADDER_STATE = Blocks.LADDER.getDefaultState();
-        IBlockState LOG_STATE = Blocks.LOG.getDefaultState();
-        IBlockState AIR_STATE = Blocks.AIR.getDefaultState();
-        IBlockState PANE_STATE = Blocks.GLASS_PANE.getDefaultState();
 
         fillWithBlocks(world, sbb, 0, 0, 0, 8, 0, 5, COBBLESTONE_STATE, COBBLESTONE_STATE, false); // Base
         fillWithBlocks(world, sbb, 0, 5, 0, 8, 5, 5, FENCE_STATE, FENCE_STATE, false);
         fillWithBlocks(world, sbb, 1, 0, 1, 7, 0, 4, PLANK_STATE, PLANK_STATE, false);
 
-        if (getBlockStateFromPos(world, 4, 0, -1, sbb).getMaterial() == Material.AIR &&
-          getBlockStateFromPos(world, 1, -1, -1, sbb).getMaterial() != Material.AIR) {
-            setBlockState(world, STONE_STAIR_STATE.withProperty(BlockStairs.FACING, getCoordBaseMode()), 4, 0, -1, sbb);
-        } else if (getBlockStateFromPos(world, 4, 0, -1, sbb).getMaterial() == Material.AIR &&
-          getBlockStateFromPos(world, 1, -1, -1, sbb).getMaterial() == Material.AIR) {
-            setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, getCoordBaseMode()), 4, 0, -1, sbb);
-            int f = 0;
-            while (getBlockStateFromPos(world, 4, -1 - f, -1, sbb).getMaterial() == Material.AIR && f < 10) {
-                setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, getCoordBaseMode()), 4, -1 - f, -1, sbb);
-                f++;
+        Material fromPos = getBlockStateFromPos(world, 4, 0, -1, sbb).getMaterial();
+        Material fromPos1 = getBlockStateFromPos(world, 1, -1, -1, sbb).getMaterial();
+
+        if (fromPos == Material.AIR) {
+            if (fromPos1 == Material.AIR) {
+                setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 4, 0, -1, sbb);
+                int f = 0;
+                while (getBlockStateFromPos(world, 4, -1 - f, -1, sbb).getMaterial() == Material.AIR && f < 10) {
+                    setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 4, -1 - f, -1, sbb);
+                    f++;
+                }
+            } else {
+                setBlockState(world, STONE_STAIR_STATE.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 0, -1, sbb);
             }
         }
 
@@ -125,33 +126,31 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.House1 {
         setBlockState(world, PANE_STATE, 8, 2, 2, sbb);
         setBlockState(world, PANE_STATE, 8, 2, 3, sbb);
 
-        setBlockState(world, LADDER_STATE, 7, 1, 4, sbb);
-        setBlockState(world, LADDER_STATE, 7, 2, 4, sbb);
-        setBlockState(world, LADDER_STATE, 7, 3, 4, sbb);
-        setBlockState(world, LADDER_STATE, 7, 4, 4, sbb);
+        setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 7, 1, 4, sbb);
+        setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 7, 2, 4, sbb);
+        setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 7, 3, 4, sbb);
+        setBlockState(world, LADDER_STATE.withProperty(BlockLadder.FACING, EnumFacing.SOUTH), 7, 4, 4, sbb);
 
         setBlockState(world, Blocks.STICKY_PISTON.getDefaultState(), 7, 1, 1, sbb);
 
-        setBlockState(world, SteamNetworkBlocks.Blocks.BOILER.getBlock().getDefaultState(), 1, 1, 4, sbb);
-        int x = this.getXWithOffset(1, 4);
-        int y = this.getYWithOffset(1);
-        int z = this.getZWithOffset(1, 4);
+        setBlockState(world, SteamNetworkBlocks.Blocks.BOILER.getBlock().getDefaultState().withProperty(BlockBoiler.FACING, EnumFacing.NORTH), 1, 1, 4, sbb);
+        int x = getXWithOffset(1, 4);
+        int y = getYWithOffset(1);
+        int z = getZWithOffset(1, 4);
         populateBoiler(world, x, y, z);
 
-        IBlockState PIPE_STATE = PipeBlocks.Blocks.BRASS_PIPE.getBlock().getDefaultState();
         setBlockState(world, PIPE_STATE, 1, 2, 4, sbb);
         setBlockState(world, PIPE_STATE, 2, 2, 4, sbb);
         setBlockState(world, PIPE_STATE, 3, 2, 4, sbb);
         setBlockState(world, PIPE_STATE, 4, 2, 4, sbb);
 
-        IBlockState HEATER_STATE = SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock().getDefaultState();
-        setBlockState(world, HEATER_STATE, 4, 1, 4, sbb);
-        setBlockState(world, HEATER_STATE, 2, 1, 4, sbb);
+        setBlockState(world, HEATER_STATE.withProperty(BlockSteamHeater.FACING, EnumFacing.WEST), 4, 1, 4, sbb);
+        setBlockState(world, HEATER_STATE.withProperty(BlockSteamHeater.FACING, EnumFacing.EAST), 2, 1, 4, sbb);
 
-        setBlockState(world, Blocks.FURNACE.getDefaultState(), 3, 1, 4, sbb);
-        x = this.getXWithOffset(3, 4);
-        y = this.getYWithOffset(1);
-        z = this.getZWithOffset(3, 4);
+        setBlockState(world, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, EnumFacing.NORTH), 3, 1, 4, sbb);
+        x = getXWithOffset(3, 4);
+        y = getYWithOffset(1);
+        z = getZWithOffset(3, 4);
         populateFurnace(world, x, y, z);
 
         for (int l = 0; l < 6; ++l) {
