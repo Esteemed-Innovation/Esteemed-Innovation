@@ -89,7 +89,8 @@ dependencies {
 //    There are some issues that I can't figure out with these mods.
 //    compile mantleVersion
 //    compile ticVersion
-    compile ic2Version
+//    Using different mappings, cannot generate world. TODO: Resolve this.
+//    compile ic2Version
     compile jeiVersion
     compile cclibVersion
     compile eioVersion
