@@ -111,8 +111,7 @@ public class BlockOreDepositGenerator extends Block {
 
     public static boolean canReplace(BlockPos replacePos, World world) {
         IBlockState replaceState = world.getBlockState(replacePos);
-        return replaceState.getBlock().isReplaceableOreGen(replaceState, world, replacePos, BlockMatcher.forBlock(Blocks.STONE)) ||
-          world.isAirBlock(replacePos);
+        return replaceState.getBlock().isReplaceableOreGen(replaceState, world, replacePos, BlockMatcher.forBlock(Blocks.STONE));
     }
 
     private IBlockState getOreState(World world, BlockPos center) {

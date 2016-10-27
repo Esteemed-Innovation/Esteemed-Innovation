@@ -22,7 +22,7 @@ public class WorldGenSingleMinable extends WorldGenerator {
     public boolean generate(World world, Random rand, BlockPos position) {
         //noinspection SimplifiableIfStatement
         if (BlockOreDepositGenerator.canReplace(position, world)) {
-            return world.setBlockState(position, this.state);
+            return world.setBlockState(position, state);
         }
         return false;
     }
