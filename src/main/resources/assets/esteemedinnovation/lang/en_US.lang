@@ -690,3 +690,5 @@ item.esteemedinnovation:research_log_biome.name=Biome Log
 item.esteemedinnovation:pipe_mold.name=Pipe Mold
 tile.esteemedinnovation:brass_pipe.name=Brass Pipe
 tile.esteemedinnovation:copper_pipe.name=Copper Pipe
+
+entity.Villager.steam_engineer=Steam Engineer
