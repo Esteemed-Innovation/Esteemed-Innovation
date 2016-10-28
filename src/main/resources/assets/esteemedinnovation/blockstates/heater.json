@@ -32,45 +32,27 @@
       "apply": { "model": "esteemedinnovation:brass_pipe_no_connections" }
     },
     {
-      "when": { "OR": [
-        { "north": true },
-        { "north": false, "south": true, "east": false, "west": false, "up": false, "down": false }
-      ] },
+      "when": { "north": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection" }
     },
     {
-      "when": { "OR": [
-        { "east": true },
-        { "east": false, "west": true, "north": false, "south": false, "up": false, "down": false }
-      ] },
+      "when": { "east": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 90 }
     },
     {
-      "when": { "OR": [
-        { "south": true },
-        { "south": false, "north": true, "east": false, "west": false, "up": false, "down": false }
-      ] },
+      "when": { "south": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 180 }
     },
     {
-      "when": { "OR": [
-        { "west": true },
-        { "west": false, "east": true, "north": false, "south": false, "up": false, "down": false }
-      ] },
+      "when": { "west": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection", "y": 270 }
     },
     {
-      "when": { "OR": [
-        { "up": true },
-        { "up": false, "down": true, "north": false, "south": false, "east": false, "west": false}
-      ] },
+      "when": { "up": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection", "x": 270 }
     },
     {
-      "when": { "OR": [
-        { "down": true },
-        { "down": false, "up": true, "north": false, "south": false, "east": false, "west": false }
-      ] },
+      "when": { "down": true },
       "apply": { "model": "esteemedinnovation:brass_pipe_connection", "x": 90 }
     }
   ]
