@@ -34,7 +34,7 @@ public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
     public static final PropertyBool WEST = PropertyBool.create("west");
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
-    private static final AxisAlignedBB HEATER_AABB = new AxisAlignedBB(0, 0, 0, 1, 1, 5F / 16F);
+    private static final AxisAlignedBB HEATER_AABB = new AxisAlignedBB(0, 0, 11F / 16F, 1, 1, 1);
 
     public BlockSteamHeater() {
         super();
@@ -92,6 +92,10 @@ public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
 
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
-        super.superAddCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
+        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
+        AxisAlignedBB aabb = BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), HEATER_AABB, true).offset(pos);
+        if (aabb.intersectsWith(entityBox)) {
+            collidingBoxes.add(aabb);
+        }
     }
 }
