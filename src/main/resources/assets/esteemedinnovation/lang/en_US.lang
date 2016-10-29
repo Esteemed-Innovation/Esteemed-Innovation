@@ -498,12 +498,12 @@ item.esteemedinnovation:crafting.3.name=Blunderbuss Barrel
 item.esteemedinnovation:crafting.4.name=Flintlock
 item.esteemedinnovation:crafting.5.name=Brass Turbine
 
-item.esteemedinnovation:plate.0.name=Copper Plate
-item.esteemedinnovation:plate.1.name=Zinc Plate
-item.esteemedinnovation:plate.2.name=Brass Plate
-item.esteemedinnovation:plate.3.name=Gilded Iron Plate
-item.esteemedinnovation:plate.4.name=Iron Plate
-item.esteemedinnovation:plate.5.name=Gold Plate
+item.esteemedinnovation:plate.0.name=Thin Copper Plate
+item.esteemedinnovation:plate.1.name=Thin Zinc Plate
+item.esteemedinnovation:plate.2.name=Thin Brass Plate
+item.esteemedinnovation:plate.3.name=Thin Gilded Iron Plate
+item.esteemedinnovation:plate.4.name=Thin Iron Plate
+item.esteemedinnovation:plate.5.name=Thin Gold Plate
 
 item.esteemedinnovation:exosuit_plate.0.name=Iron Exosuit Plate
 item.esteemedinnovation:exosuit_plate.1.name=Gold Exosuit Plate
