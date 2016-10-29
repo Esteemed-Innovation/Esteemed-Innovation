@@ -126,12 +126,12 @@ public class GenericTickHandler {
                         if (!isServer) {
                             double rotation = Math.toRadians(player.renderYawOffset);
                             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                              player.posX + 0.4 * Math.sin(rotation + 0.9F),
-                              player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation + 0.9F),
+                              player.posX + 0.4 * StrictMath.sin(rotation + 0.9F),
+                              player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation + 0.9F),
                               0.0F, -1.0F, 0.0F);
                             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                              player.posX + 0.4 * Math.sin(rotation - 0.9F),
-                              player.posY - 1F, player.posZ - 0.4 * Math.cos(rotation - 0.9F),
+                              player.posX + 0.4 * StrictMath.sin(rotation - 0.9F),
+                              player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation - 0.9F),
                               0.0F, -1.0F, 0.0F);
                         } else {
                             GenericEventHandler.drainSteam(chest, Config.jetpackConsumption);

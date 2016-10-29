@@ -196,6 +196,21 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     }
 
     @Override
+    public boolean hasUpgrade(ItemStack me, Item check) {
+        if (me != null && check != null && me.hasTagCompound() && me.getTagCompound().hasKey("inv")) {
+            for (int i = 1; i < 10; i++) {
+                if (me.getTagCompound().getCompoundTag("inv").hasKey(Integer.toString(i))) {
+                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
+                    if (stack.getItem() == check) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public ItemStack getStackInSlot(ItemStack me, int var1) {
         if (me.hasTagCompound()) {
             if (me.getTagCompound().hasKey("inv")) {
@@ -319,26 +334,6 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             updateSteamNBT(me);
             if (me.getTagCompound().getInteger("steamFill") + powerNeeded < me.getTagCompound().getInteger("maxFill")) {
                 return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasUpgrade(ItemStack me, Item check) {
-        if (check == null) {
-            return false;
-        }
-
-        if (me.hasTagCompound()) {
-            if (me.getTagCompound().hasKey("inv")) {
-                for (int i = 1; i < 10; i++) {
-                    if (me.getTagCompound().getCompoundTag("inv").hasKey(Integer.toString(i))) {
-                        ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
-                        if (stack.getItem() == check) {
-                            return true;
-                        }
-                    }
-                }
             }
         }
         return false;
@@ -475,6 +470,21 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void drainSteam(ItemStack me, int amountToDrain) {
+        if (me != null) {
+            if (me.getTagCompound() == null) {
+                me.setTagCompound(new NBTTagCompound());
+            }
+            if (!me.getTagCompound().hasKey("steamFill")) {
+                me.getTagCompound().setInteger("steamFill", 0);
+            }
+            int fill = me.getTagCompound().getInteger("steamFill");
+            fill = Math.max(0, fill - amountToDrain);
+            me.getTagCompound().setInteger("steamFill", fill);
+        }
     }
 
     @Override

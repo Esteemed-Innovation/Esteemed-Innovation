@@ -2,11 +2,15 @@ package eiteam.esteemedinnovation.api.exosuit;
 
 import eiteam.esteemedinnovation.api.IEngineerable;
 import eiteam.esteemedinnovation.api.ISteamChargable;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ISpecialArmor;
 
 public interface IExosuitArmor extends ISpecialArmor, IEngineerable, ISteamChargable {
+    /**
+     * TODO Return a ResourceLocation and rename to a more descriptive name.
+     * @return The string representing the location for the armor's item texture.
+     */
     String getString();
 
     /**
@@ -27,17 +31,17 @@ public interface IExosuitArmor extends ISpecialArmor, IEngineerable, ISteamCharg
      */
     boolean needsPower(ItemStack me, int powerNeeded);
 
-    default void drainSteam(ItemStack me, int amountToDrain) {
-        if (me != null) {
-            if (me.getTagCompound() == null) {
-                me.setTagCompound(new NBTTagCompound());
-            }
-            if (!me.getTagCompound().hasKey("steamFill")) {
-                me.getTagCompound().setInteger("steamFill", 0);
-            }
-            int fill = me.getTagCompound().getInteger("steamFill");
-            fill = Math.max(0, fill - amountToDrain);
-            me.getTagCompound().setInteger("steamFill", fill);
-        }
-    }
+    /**
+     * Drains the provided amount of steam from the armor.
+     * @param me The armor piece to drain from.
+     * @param amountToDrain The amount of steam to drain from the armor.
+     */
+    void drainSteam(ItemStack me, int amountToDrain);
+
+    /**
+     * @param me The armor piece to check in.
+     * @param check The item upgrade to check for.
+     * @return Whether the provided piece of armor has the provided exosuit upgrade. Should return false if either are null.
+     */
+    boolean hasUpgrade(ItemStack me, Item check);
 }

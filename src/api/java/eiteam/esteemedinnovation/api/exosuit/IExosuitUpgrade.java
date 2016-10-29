@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -16,6 +17,9 @@ import java.util.List;
  * You must return something unique from {@link Object#toString()}, otherwise the exosuit will not render correctly as
  * an item (has no effect on the armor rendering). The result of {@link IExosuitUpgrade#getOverlay()} is usually
  * returned for toString().
+ *
+ * You must inherit Item as well, or provide a new implementation for isInstalled, as the default implementation
+ * checks if we are an instance of Item.
  */
 public interface IExosuitUpgrade {
     /**
@@ -54,5 +58,15 @@ public interface IExosuitUpgrade {
      */
     default Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
         return HashMultimap.create();
+    }
+
+    /**
+     * @param entity The entity to check
+     * @return Whether this upgrade is installed in its according IExosuitArmor piece worn by the provided entity.
+     */
+    default boolean isInstalled(EntityLivingBase entity) {
+        ItemStack armor = entity.getItemStackFromSlot(getSlot().armor);
+        return this instanceof Item && armor != null && armor.getItem() instanceof IExosuitArmor &&
+          ((IExosuitArmor) armor.getItem()).hasUpgrade(armor, (Item) this);
     }
 }
