@@ -1,5 +1,8 @@
 package eiteam.esteemedinnovation.handler;
 
+import eiteam.esteemedinnovation.Config;
+import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
+import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -17,10 +20,6 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
-import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-
 
 import java.util.UUID;
 
@@ -68,16 +67,18 @@ public class PhobicCoatingHandler {
             if (underState.getMaterial() == Material.WATER) {
                 entity.fallDistance = 0;
 
-                if (isJumping) {
-                    entity.motionY = 0.5D;
-                } else {
-                    entity.motionY = 0;
-                }
+                entity.motionY = isJumping ? 0.5D : 0;
 
                 if (modifierWater == null) {
                     attributes.applyModifier(exoWaterBoost);
                 }
-                GenericEventHandler.drainSteam(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), consumptionHydro);
+                ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                if (chest != null) {
+                    Item chestItem = chest.getItem();
+                    if (chestItem instanceof IExosuitArmor) {
+                        ((IExosuitArmor) chestItem).drainSteam(chest, consumptionHydro);
+                    }
+                }
             }
 
             if (entity.isInWater()) {
@@ -98,16 +99,18 @@ public class PhobicCoatingHandler {
 
             if (underState.getMaterial() == Material.LAVA) {
                 isWalkingInLava = true;
-                if (Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown()) {
-                    entity.motionY = 0.5D;
-                } else {
-                    entity.motionY = 0;
-                }
+                entity.motionY = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown() ? 0.5D : 0;
 
                 if (modifierLava == null) {
                     attributes.applyModifier(exoLavaBoost);
                 }
-                GenericEventHandler.drainSteam(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), consumptionPyro);
+                ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                if (chest != null) {
+                    Item chestItem = chest.getItem();
+                    if (chestItem instanceof IExosuitArmor) {
+                        ((IExosuitArmor) chestItem).drainSteam(chest, consumptionPyro);
+                    }
+                }
             }
 
             if (entity.isInLava()) {
@@ -130,15 +133,16 @@ public class PhobicCoatingHandler {
      * @return True if the player can walk on top of fluids.
      */
     private boolean canWalkOnFluid(EntityPlayer player, int consumption, Item coating, AttributeModifier modifier) {
-        if (GenericEventHandler.hasPower(player, consumption) && modifier == null) {
-            ItemStack equipment = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-            if (equipment != null) {
-                Item boots = equipment.getItem();
-                if (boots instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor bootsArmor = (ItemExosuitArmor) boots;
-                    if (bootsArmor.hasUpgrade(equipment, coating)) {
-                        return true;
-                    }
+        ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        ItemStack feet = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+        if (chest != null && feet != null && modifier == null) {
+            Item chestItem = chest.getItem();
+            Item feetItem = feet.getItem();
+            if (feetItem instanceof IExosuitArmor && chestItem instanceof IExosuitArmor) {
+                IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
+                IExosuitArmor feetArmor = (IExosuitArmor) feetItem;
+                if (chestArmor.hasPower(chest, consumption) && feetArmor.hasUpgrade(feet, coating)) {
+                    return true;
                 }
             }
         }

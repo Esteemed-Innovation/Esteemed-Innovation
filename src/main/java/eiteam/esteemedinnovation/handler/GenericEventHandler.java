@@ -182,6 +182,7 @@ public class GenericEventHandler {
 //        }
 //    }
 
+    // TODO: Migrate to IExosuitArmor#hasPower
     public static boolean hasPower(EntityLivingBase entityLiving, int i) {
         ItemStack equipment = entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         if (equipment != null) {

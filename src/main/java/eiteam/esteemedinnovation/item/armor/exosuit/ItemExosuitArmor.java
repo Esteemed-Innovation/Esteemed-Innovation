@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ModelExosuit;
-import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.item.BlockTankItem;
 import eiteam.esteemedinnovation.misc.JavaHelper;
@@ -124,7 +123,7 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         if (this.slot == EntityEquipmentSlot.CHEST) {
-            GenericEventHandler.drainSteam(stack, damage * 40);
+            drainSteam(stack, damage * 40);
         }
     }
 

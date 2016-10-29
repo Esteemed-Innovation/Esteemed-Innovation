@@ -4,7 +4,9 @@ import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.tool.ISteamTool;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.client.ClientProxy;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
@@ -14,7 +16,6 @@ import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
 import eiteam.esteemedinnovation.item.ItemSteamCell;
 import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
@@ -68,7 +69,7 @@ public class GenericTickHandler {
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         if (!isServer) {
-            this.isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
+            isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
         }
         if (CrossMod.BAUBLES) {
             ticksSinceLastCellFill++;
@@ -88,67 +89,74 @@ public class GenericTickHandler {
                 ticksSinceLastCellFill = -40;
             }
         }
+
+        if (chest == null) {
+            return;
+        }
+        Item chestItem = chest.getItem();
+        if (!(chestItem instanceof IExosuitArmor)) {
+            return;
+        }
+        IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
+        if (boots != null) {
+            Item bootsItem = boots.getItem();
+            if (bootsItem instanceof IExosuitArmor) {
+                IExosuitArmor bootsArmor = (IExosuitArmor) bootsItem;
+                if (bootsArmor.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && chestArmor.hasPower(chest, 15)) {
+                    if (isJumping) {
+                        if (chestArmor.hasPower(chest, 15)) {
+                            if (isServer) {
+                                if (!boots.getTagCompound().hasKey("usedJump")) {
+                                    boots.getTagCompound().setBoolean("usedJump", false);
+                                }
+                                if (!boots.getTagCompound().hasKey("releasedSpace")) {
+                                    boots.getTagCompound().setBoolean("releasedSpace", false);
+                                }
+                            }
+                            if (!player.onGround && boots.getTagCompound().getBoolean("releasedSpace") &&
+                              !boots.getTagCompound().getBoolean("usedJump") &&
+                              !player.capabilities.isFlying) {
+                                if (isServer) {
+                                    boots.getTagCompound().setBoolean("usedJump", true);
+                                    chestArmor.drainSteam(chest, 10);
+                                }
+                                player.motionY = 0.65D;
+                                player.fallDistance = 0.0F;
+                            }
+                            if (isServer) {
+                                boots.getTagCompound().setBoolean("releasedSpace", false);
+                            }
+                        }
+                    } else if (!player.onGround && isServer) {
+                        boots.getTagCompound().setBoolean("releasedSpace", true);
+                    }
+                }
+            }
+        }
+
         if (isJumping) {
-            if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-                if (item.hasUpgrade(boots, DOUBLE_JUMP.getItem()) &&
-                  GenericEventHandler.hasPower(player, 15)) {
+            if (chestArmor.hasUpgrade(chest, JETPACK.getItem()) && chestArmor.hasPower(chest, 5)) {
+                if (!player.onGround && !player.capabilities.isFlying) {
+                    player.motionY += 0.06D;
+                    player.fallDistance = 0.0F;
                     if (isServer) {
-                        if (!boots.getTagCompound().hasKey("usedJump")) {
-                            boots.getTagCompound().setBoolean("usedJump", false);
-                        }
-                        if (!boots.getTagCompound().hasKey("releasedSpace")) {
-                            boots.getTagCompound().setBoolean("releasedSpace", false);
-                        }
-                    }
-                    if (!player.onGround && boots.getTagCompound().getBoolean("releasedSpace") &&
-                      !boots.getTagCompound().getBoolean("usedJump") &&
-                      !player.capabilities.isFlying) {
-                        if (isServer) {
-                            boots.getTagCompound().setBoolean("usedJump", true);
-                            GenericEventHandler.drainSteam(chest, 10);
-                        }
-                        player.motionY = 0.65D;
-                        player.fallDistance = 0.0F;
-                    }
-                    if (isServer) {
-                        boots.getTagCompound().setBoolean("releasedSpace", false);
+                        chestArmor.drainSteam(chest, Config.jetpackConsumption);
+                    } else {
+                        double rotation = Math.toRadians(player.renderYawOffset);
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                          player.posX + 0.4 * StrictMath.sin(rotation + 0.9F),
+                          player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation + 0.9F),
+                          0.0F, -1.0F, 0.0F);
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                          player.posX + 0.4 * StrictMath.sin(rotation - 0.9F),
+                          player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation - 0.9F),
+                          0.0F, -1.0F, 0.0F);
                     }
                 }
             }
-            if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) chest.getItem();
-                if (item.hasUpgrade(chest, JETPACK.getItem()) &&
-                  GenericEventHandler.hasPower(player, 5)) {
-                    if (!player.onGround && !player.capabilities.isFlying) {
-                        player.motionY += 0.06D;
-                        player.fallDistance = 0.0F;
-                        if (!isServer) {
-                            double rotation = Math.toRadians(player.renderYawOffset);
-                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                              player.posX + 0.4 * StrictMath.sin(rotation + 0.9F),
-                              player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation + 0.9F),
-                              0.0F, -1.0F, 0.0F);
-                            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                              player.posX + 0.4 * StrictMath.sin(rotation - 0.9F),
-                              player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation - 0.9F),
-                              0.0F, -1.0F, 0.0F);
-                        } else {
-                            GenericEventHandler.drainSteam(chest, Config.jetpackConsumption);
-                        }
-                    }
-                }
-                if (item.hasUpgrade(chest, PITON_DEPLOYER.getItem()) && isServer) {
-                    if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
-                        chest.getTagCompound().setBoolean("grappled", false);
-                    }
-                }
-            }
-        } else {
-            if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-                if (item.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && !player.onGround && isServer) {
-                    boots.getTagCompound().setBoolean("releasedSpace", true);
+            if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER.getItem()) && isServer) {
+                if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
+                    chest.getTagCompound().setBoolean("grappled", false);
                 }
             }
         }
