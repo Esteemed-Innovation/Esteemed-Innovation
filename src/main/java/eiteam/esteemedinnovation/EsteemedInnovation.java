@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.block.TileEntityDummyBlock;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ExosuitModelCache;
@@ -16,8 +16,8 @@ import eiteam.esteemedinnovation.data.village.SteamEngineerCareer;
 import eiteam.esteemedinnovation.entity.item.EntityCanisterItem;
 import eiteam.esteemedinnovation.entity.item.EntityFloatingItem;
 import eiteam.esteemedinnovation.entity.item.EntityMortarItem;
-import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.gui.GuiHandler;
+import eiteam.esteemedinnovation.handler.FieldHandler;
 import eiteam.esteemedinnovation.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.handler.GenericTickHandler;
 import eiteam.esteemedinnovation.handler.PhobicCoatingHandler;
@@ -29,6 +29,7 @@ import eiteam.esteemedinnovation.init.items.tools.ToolItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
 import eiteam.esteemedinnovation.init.misc.MiscellaneousCategories;
 import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
+import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
 import eiteam.esteemedinnovation.network.*;
 import eiteam.esteemedinnovation.tile.*;
@@ -53,7 +54,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -70,7 +70,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import javax.swing.*;
 import java.util.List;
 
 @Mod(
@@ -141,10 +140,11 @@ public class EsteemedInnovation {
         GameRegistry.registerWorldGenerator(new ExtraDimensionalOreGenerator(), 1);
         GameRegistry.registerWorldGenerator(new SurfaceOreGenerator(), 1);
 
-        channel = NetworkRegistry.INSTANCE.newSimpleChannel(MOD_ID + "Channel");
+        channel = NetworkRegistry.INSTANCE.newSimpleChannel("eiChannel");
         channel.registerMessage(CamoPacketHandler.class, CamoPacket.class, 0, Side.SERVER);
         channel.registerMessage(ItemNamePacketHandler.class, ItemNamePacket.class, 1, Side.SERVER);
         channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
+        channel.registerMessage(JumpValueChangePacketHandler.class, JumpValueChangePacket.class, 3, Side.SERVER);
 
         SOUND_HISS = registerSound("hiss");
         SOUND_CANNON = registerSound("cannon");
@@ -223,6 +223,7 @@ public class EsteemedInnovation {
     public void load(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
+        FieldHandler.init();
         MinecraftForge.EVENT_BUS.register(new GenericEventHandler());
         MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
 

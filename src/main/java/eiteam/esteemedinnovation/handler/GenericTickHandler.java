@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.handler;
 
-import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
@@ -32,7 +31,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
@@ -64,7 +62,6 @@ public class GenericTickHandler {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
-        World world = player.worldObj;
         boolean isServer = event.side == Side.SERVER;
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
@@ -135,25 +132,6 @@ public class GenericTickHandler {
         }
 
         if (isJumping) {
-            if (chestArmor.hasUpgrade(chest, JETPACK.getItem()) && chestArmor.hasPower(chest, 5)) {
-                if (!player.onGround && !player.capabilities.isFlying) {
-                    player.motionY += 0.06D;
-                    player.fallDistance = 0.0F;
-                    if (isServer) {
-                        chestArmor.drainSteam(chest, Config.jetpackConsumption);
-                    } else {
-                        double rotation = Math.toRadians(player.renderYawOffset);
-                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                          player.posX + 0.4 * StrictMath.sin(rotation + 0.9F),
-                          player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation + 0.9F),
-                          0.0F, -1.0F, 0.0F);
-                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                          player.posX + 0.4 * StrictMath.sin(rotation - 0.9F),
-                          player.posY - 1F, player.posZ - 0.4 * StrictMath.cos(rotation - 0.9F),
-                          0.0F, -1.0F, 0.0F);
-                    }
-                }
-            }
             if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER.getItem()) && isServer) {
                 if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
                     chest.getTagCompound().setBoolean("grappled", false);
@@ -168,8 +146,8 @@ public class GenericTickHandler {
     static {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             FMLLog.info("[EI] Getting some fields from reflection for Tick Handling.");
-            itemInMainHandField = GenericEventHandler.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
-            itemInOffHandField = GenericEventHandler.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
+            itemInMainHandField = FieldHandler.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
+            itemInOffHandField = FieldHandler.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
 
             if (itemInMainHandField != null) {
                 itemInMainHandField.setAccessible(true);

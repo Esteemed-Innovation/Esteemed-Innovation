@@ -2,7 +2,9 @@ package eiteam.esteemedinnovation.handler;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.*;
+import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.SmasherRegistry;
+import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
@@ -31,8 +33,10 @@ import eiteam.esteemedinnovation.item.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.item.firearm.ItemFirearm;
 import eiteam.esteemedinnovation.item.firearm.ItemRocketLauncher;
 import eiteam.esteemedinnovation.item.tool.steam.*;
-import eiteam.esteemedinnovation.misc.*;
-
+import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
+import eiteam.esteemedinnovation.misc.EnchantmentUtility;
+import eiteam.esteemedinnovation.misc.FrequencyMerchant;
+import eiteam.esteemedinnovation.misc.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.EnumPushReaction;
@@ -90,7 +94,6 @@ import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -101,7 +104,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -430,67 +432,9 @@ public class GenericEventHandler {
         }
     }
 
-    private static Field lastBuyingPlayerField = null;
-    private static Field timeUntilResetField = null;
-    private static Field merchantField = null;
-    private static Field buyingListField = null;
-
-    static Field getField(String fieldName, String obfName, Class clazz) {
-        Field field = null;
-        try {
-            field = clazz.getDeclaredField(obfName);
-        } catch (NoSuchFieldException e) {
-            FMLLog.warning("[EI] Unable to find field " + fieldName + " with its obfuscated " +
-              "name. Trying to find it by its name " + fieldName);
-            try {
-                field = clazz.getDeclaredField(fieldName);
-            } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
-                boolean builderHasAField = false;
-                StringBuilder builder = new StringBuilder();
-                for (Field field1 : clazz.getDeclaredFields()) {
-                    if (builderHasAField) {
-                        builder.append(", ");
-                    }
-                    builder.append(field1.getName());
-                    builderHasAField = true;
-                }
-                FMLLog.warning("Unable to find " + fieldName + " field in " + clazz.getName() +
-                  ".class. Available fields are: " + builder + ". Things are not going to work right.");
-            }
-        }
-        return field;
-    }
-
     public static EntityEquipmentSlot[] ARMOR_SLOTS = new EntityEquipmentSlot[4];
 
     static {
-        FMLLog.info("[EI] Getting some fields through reflection.");
-        lastBuyingPlayerField = getField("lastBuyingPlayer", "field_82189_bL", EntityVillager.class);
-        timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
-        buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
-
-        if (lastBuyingPlayerField != null) {
-            lastBuyingPlayerField.setAccessible(true);
-        }
-
-        if (timeUntilResetField != null) {
-            timeUntilResetField.setAccessible(true);
-        }
-
-        if (buyingListField != null) {
-            buyingListField.setAccessible(true);
-        }
-
-        try {
-            merchantField = getField("merchant", "field_147037_w", GuiMerchant.class);
-            if (merchantField != null) {
-                merchantField.setAccessible(true);
-            }
-        } catch (NoClassDefFoundError ignore) {
-            FMLLog.warning("[EI] GuiMerchant class not found. You are probably a server.");
-        }
-
         for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
             if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
                 ARMOR_SLOTS[slot.getIndex()] = slot;
@@ -530,7 +474,7 @@ public class GenericEventHandler {
     public void updateVillagersClientSide(GuiScreenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiScreen guiScreen = event.getGui();
-        if (merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
+        if (FieldHandler.merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) guiScreen;
             ItemStack head = mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT.getItem()
@@ -541,7 +485,7 @@ public class GenericEventHandler {
                 updateTradingStackSizes(recipeList);
                 merch.setRecipes(recipeList);
                 try {
-                    merchantField.set(gui, merch);
+                    FieldHandler.merchantField.set(gui, merch);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -552,13 +496,13 @@ public class GenericEventHandler {
     @SubscribeEvent
     public void updateVillagers(LivingUpdateEvent event) {
         EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityVillager && timeUntilResetField != null && lastBuyingPlayerField != null) {
+        if (entityLiving instanceof EntityVillager && FieldHandler.timeUntilResetField != null && FieldHandler.lastBuyingPlayerField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
             Integer timeUntilReset = null;
             String lastBuyingPlayer = null;
             try {
-                timeUntilReset = timeUntilResetField.getInt(villager);
-                lastBuyingPlayer = (String) lastBuyingPlayerField.get(villager);
+                timeUntilReset = FieldHandler.timeUntilResetField.getInt(villager);
+                lastBuyingPlayer = (String) FieldHandler.lastBuyingPlayerField.get(villager);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -594,7 +538,7 @@ public class GenericEventHandler {
                 }
             }
         }
-        if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && buyingListField != null) {
+        if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && FieldHandler.buyingListField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
             Boolean hadCustomer = EsteemedInnovation.VILLAGER_DATA.getDefaultInstance().hadCustomer();
             if (hadCustomer == null) {
@@ -614,7 +558,7 @@ public class GenericEventHandler {
                         updateTradingStackSizes(recipeList);
 
                         try {
-                            buyingListField.set(villager, recipeList);
+                            FieldHandler.buyingListField.set(villager, recipeList);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
@@ -628,7 +572,7 @@ public class GenericEventHandler {
                 // We need to do reflection because we do not have the customer in this case.
                 MerchantRecipeList recipeList = null;
                 try {
-                    recipeList = (MerchantRecipeList) buyingListField.get(villager);
+                    recipeList = (MerchantRecipeList) FieldHandler.buyingListField.get(villager);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -636,7 +580,7 @@ public class GenericEventHandler {
                     updateTradingStackSizes(recipeList);
                 }
                 try {
-                    buyingListField.set(villager, recipeList);
+                    FieldHandler.buyingListField.set(villager, recipeList);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
