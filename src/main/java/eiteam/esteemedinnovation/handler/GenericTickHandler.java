@@ -335,26 +335,6 @@ public class GenericTickHandler {
         }
     }
 
-    @SubscribeEvent
-    public void fallFast(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
-        if (GenericEventHandler.hasPower(player, 1)) {
-            ItemStack bootStack = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-            if (bootStack != null) {
-                Item boots = bootStack.getItem();
-                if (boots instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor bootArmor = (ItemExosuitArmor) boots;
-                    if (bootArmor.hasUpgrade(bootStack, ANCHOR_HEELS.getItem())) {
-                        double newY = player.isInWater() ? -0.6 : -1.1;
-                        if (player.motionY < -0.3 && player.motionY != newY) {
-                            player.motionY = newY;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private int lavaTicks = 0;
     private int chargeTicks = 0;
 

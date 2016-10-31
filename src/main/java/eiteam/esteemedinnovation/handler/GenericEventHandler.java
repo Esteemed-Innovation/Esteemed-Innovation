@@ -9,6 +9,7 @@ import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
+import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
@@ -215,12 +216,14 @@ public class GenericEventHandler {
 //        }
 //    }
 
-    // TODO: Migrate to IExosuitArmor#hasPower
+    // TODO: Migrate to IExosuitArmor#hasPower in cases where access to the chestplate is already needed.
+    // TODO: Move into a proper util class.
     public static boolean hasPower(EntityLivingBase entityLiving, int i) {
         ItemStack equipment = entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         if (equipment != null) {
-            if (equipment.getItem() instanceof ItemExosuitArmor) {
-                return ((ItemExosuitArmor) equipment.getItem()).hasPower(equipment, i);
+            Item item = equipment.getItem();
+            if (item instanceof IExosuitArmor) {
+                return ((IExosuitArmor) item).hasPower(equipment, i);
             }
         }
         return false;
