@@ -1,14 +1,11 @@
 package eiteam.esteemedinnovation.item.armor.exosuit;
 
 import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.client.render.model.exosuit.ModelJetpack;
 import eiteam.esteemedinnovation.handler.FieldHandler;
-import eiteam.esteemedinnovation.network.JumpValueChangePacket;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -16,13 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class ItemExosuitJetpack extends ItemExosuitUpgrade {
     public ItemExosuitJetpack() {
@@ -40,6 +32,11 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
      * was registered to the event bus on the server.
      */
     private class EventHandlers {
+        /**
+         * Checks if the player is capable of flight (see {@link #getArmorAndCanFly(EntityPlayer)}) and produces flight
+         * by increasing their Y motion and negating their fall damage. On the client it produces particles and
+         * on the server it drains steam.
+         */
         @SubscribeEvent
         public void handleJetpackFlight(TickEvent.PlayerTickEvent event) {
             if (FieldHandler.isJumpingField == null) {
@@ -47,32 +44,11 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
             }
             EntityPlayer player = event.player;
             boolean isServer = event.side.isServer();
-            boolean isJumping;
-            try {
-                isJumping = getIsEntityJumping(player);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            ItemStack chest = getArmorAndCanFly(player);
+            if (chest == null) {
                 return;
             }
-
-            if (!isJumping || player.onGround || player.capabilities.isFlying) {
-                return;
-            }
-
-            ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-
-            if (chest == null || !isInstalled(player)) {
-                return;
-            }
-
-            Item chestItem = chest.getItem();
-            if (!(chestItem instanceof IExosuitArmor)) {
-                return;
-            }
-            IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
-            if (!chestArmor.hasPower(chest, 5)) {
-                return;
-            }
+            IExosuitArmor chestArmor = (IExosuitArmor) chest.getItem();
 
             player.motionY += 0.06D;
             player.fallDistance = 0.0F;
@@ -92,31 +68,41 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
             }
         }
 
-        private Map<UUID, Boolean> prevIsJumping = new HashMap<>();
-
-        @SubscribeEvent
-        public void sendPlayerInputPacketToServer(LivingEvent.LivingUpdateEvent event) {
-            EntityLivingBase elb = event.getEntityLiving();
-            if (elb.worldObj.isRemote) {
-                boolean isJumping;
-                try {
-                    isJumping = getIsEntityJumping(elb);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    return;
-                }
-
-                UUID id = elb.getUniqueID();
-
-                if (!prevIsJumping.containsKey(id) || prevIsJumping.get(id) != isJumping) {
-                    prevIsJumping.put(id, isJumping);
-                    EsteemedInnovation.channel.sendToServer(new JumpValueChangePacket(isJumping));
-                }
+        /**
+         * Checks if the player is capable of flying with a jetpack.
+         * @param player The player to check.
+         * @return The ItemStack containing the chest piece. Null if they cannot fly. Null does *not* mean that they
+         *         are not wearing a chestpiece, it simply means they do not match the criteria for jetpack flight.
+         */
+        private ItemStack getArmorAndCanFly(EntityPlayer player) {
+            boolean isJumping;
+            try {
+                isJumping = FieldHandler.getIsEntityJumping(player);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return null;
             }
-        }
 
-        private boolean getIsEntityJumping(EntityLivingBase elb) throws IllegalAccessException {
-            return (boolean) FieldHandler.isJumpingField.get(elb);
+            if (!isJumping || player.onGround || player.capabilities.isFlying) {
+                return null;
+            }
+
+            ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+
+            if (chest == null || !isInstalled(player)) {
+                return null;
+            }
+
+            Item chestItem = chest.getItem();
+            if (!(chestItem instanceof IExosuitArmor)) {
+                return null;
+            }
+            IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
+            if (!chestArmor.hasPower(chest, Config.jetpackConsumption)) {
+                return null;
+            }
+
+            return chest;
         }
     }
 }

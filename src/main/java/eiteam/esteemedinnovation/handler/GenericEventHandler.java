@@ -37,6 +37,7 @@ import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 import eiteam.esteemedinnovation.misc.EnchantmentUtility;
 import eiteam.esteemedinnovation.misc.FrequencyMerchant;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
+import eiteam.esteemedinnovation.network.JumpValueChangePacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.EnumPushReaction;
@@ -143,6 +144,36 @@ public class GenericEventHandler {
             int fill = stack.getTagCompound().getInteger("steamFill");
             fill = Math.max(0, fill - amount);
             stack.getTagCompound().setInteger("steamFill", fill);
+        }
+    }
+
+    private Map<UUID, Boolean> prevIsJumping = new HashMap<>();
+
+    /**
+     * Sends a JumpValueChangePacket to the server from the client whenever an entity's clientside isJumping value
+     * changes. The rationale behind this is that isJumping is only set on the server when the entity is riding
+     * another entity (minecart, horse, etc), and it is different than simply subscribing to LivingJumpEvent because
+     * isJumping is true when the player has already jumped but is still holding the key, whereas LivingJumpEvent is
+     * fired once per physical jump. It is probably a good idea to think of isJumping as isJumpKeybindDown.
+     */
+    @SubscribeEvent
+    public void sendPlayerInputPacketToServer(LivingEvent.LivingUpdateEvent event) {
+        EntityLivingBase elb = event.getEntityLiving();
+        if (elb.worldObj.isRemote) {
+            boolean isJumping;
+            try {
+                isJumping = FieldHandler.getIsEntityJumping(elb);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return;
+            }
+
+            UUID id = elb.getUniqueID();
+
+            if (!prevIsJumping.containsKey(id) || prevIsJumping.get(id) != isJumping) {
+                prevIsJumping.put(id, isJumping);
+                EsteemedInnovation.channel.sendToServer(new JumpValueChangePacket(isJumping));
+            }
         }
     }
 

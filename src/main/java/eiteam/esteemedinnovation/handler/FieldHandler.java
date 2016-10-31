@@ -66,4 +66,8 @@ public class FieldHandler {
             FMLLog.warning("[EI] GuiMerchant class not found. You are probably a server.");
         }
     }
+
+    public static boolean getIsEntityJumping(EntityLivingBase obj) throws IllegalAccessException {
+        return (boolean) isJumpingField.get(obj);
+    }
 }
