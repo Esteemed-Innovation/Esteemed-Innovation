@@ -686,6 +686,9 @@ tile.esteemedinnovation:funnel.name=Funnel
 esteemedinnovation.research.shiftforlist=Hold shift to view your keywords
 item.esteemedinnovation:soil_sampling_kit.name=Soil Sampling Kit
 item.esteemedinnovation:research_log_biome.name=Biome Log
+item.esteemedinnovation:kit_bag.name=Kit Bag
+esteemedinnovation.kitbag.empty=Empty
+esteemedinnovation.kitbag.shiftforlist=Hold shit to view contents
 
 item.esteemedinnovation:pipe_mold.name=Pipe Mold
 tile.esteemedinnovation:brass_pipe.name=Brass Pipe

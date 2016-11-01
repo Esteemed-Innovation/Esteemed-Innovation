@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.init.items;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import eiteam.esteemedinnovation.item.ItemKitBag;
 import eiteam.esteemedinnovation.item.ItemResearchLog;
 import eiteam.esteemedinnovation.item.ItemSoilSamplingKit;
 import net.minecraft.item.Item;
@@ -14,7 +15,8 @@ import static net.minecraft.init.Items.BOOK;
 public class NaturalPhilosophyItems implements IInitCategory {
     public enum Items {
         SOIL_SAPLING_KIT(new ItemSoilSamplingKit(), "soil_sampling_kit"),
-        BIOME_LOG(new ItemResearchLog(), "research_log_biome");
+        BIOME_LOG(new ItemResearchLog(), "research_log_biome"),
+        KIT_BAG(new ItemKitBag(), "kit_bag");
 
         public static Items[] LOOKUP = new Items[values().length];
 
