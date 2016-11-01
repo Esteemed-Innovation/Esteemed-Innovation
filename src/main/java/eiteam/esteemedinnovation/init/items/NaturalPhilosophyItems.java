@@ -8,7 +8,9 @@ import eiteam.esteemedinnovation.item.ItemResearchLog;
 import eiteam.esteemedinnovation.item.ItemSoilSamplingKit;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -59,16 +61,26 @@ public class NaturalPhilosophyItems implements IInitCategory {
                     break;
                 }
                 case SOIL_SAMPLING_KIT: {
-                    GameRegistry.addRecipe(new ShapedOreRecipe(item.getItem(),
-                      "MKS",
-                      "WIW",
-                      " W ",
-                      'M', OreDictEntries.DYE_WHITE,
-                      'K', Items.KIT_BAG.getItem(),
-                      'S', SUGAR,
-                      'W', POTIONITEM,
-                      'I', IRON_SHOVEL
-                    ));
+                    for (Item vItem : Item.REGISTRY) {
+                        if (vItem instanceof ItemSpade) {
+                            NBTTagCompound nbt = new NBTTagCompound();
+                            int max = (int) (vItem.getMaxDamage() / 4F);
+                            nbt.setInteger("MaxDamage", max);
+                            nbt.setInteger("Damage", max);
+                            ItemStack result = new ItemStack(item.getItem());
+                            result.setTagCompound(nbt);
+                            GameRegistry.addRecipe(new ShapedOreRecipe(result,
+                              "MKS",
+                              "WIW",
+                              " W ",
+                              'M', OreDictEntries.DYE_WHITE,
+                              'K', Items.KIT_BAG.getItem(),
+                              'S', SUGAR,
+                              'W', POTIONITEM,
+                              'I', vItem
+                            ));
+                        }
+                    }
                     break;
                 }
                 case KIT_BAG: {
@@ -78,6 +90,13 @@ public class NaturalPhilosophyItems implements IInitCategory {
                       " L ",
                       'S', OreDictEntries.STRING_ORE,
                       'L', OreDictEntries.LEATHER_ORE,
+                      'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
+                    GameRegistry.addRecipe(new ShapedOreRecipe(item.getItem(),
+                      "SSS",
+                      "LWL",
+                      " L ",
+                      'S', OreDictEntries.STRING_ORE,
+                      'L', RABBIT_HIDE,
                       'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
                     break;
                 }
