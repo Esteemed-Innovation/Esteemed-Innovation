@@ -1,5 +1,8 @@
 package eiteam.esteemedinnovation.misc;
 
+import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
+import eiteam.esteemedinnovation.data.capabilities.animal.IAnimalData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -17,35 +20,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
-import eiteam.esteemedinnovation.data.capabilities.animal.IAnimalData;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 import static eiteam.esteemedinnovation.init.items.CraftingComponentItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.FoodItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.MetalItems.Items.BRASS_INGOT;
 import static eiteam.esteemedinnovation.init.items.MetalcastingItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.ITEM_CANISTER;
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
+import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.ITEM_CANISTER;
 
 public class FrequencyMerchant implements IMerchant {
     private final EntityLiving entity;
     private EntityPlayer customer;
     private MerchantRecipeList existingList = null;
-    private ArrayList<ItemStack> currencies = new ArrayList<>();
-    ArrayList<MutablePair<ItemStack, Integer>> saleItems = new ArrayList<>();
+    private List<ItemStack> currencies = new ArrayList<>();
+    private Collection<MutablePair<ItemStack, Integer>> saleItems = new ArrayList<>();
     private String merchantName;
     private MerchantRecipeList stock;
 
     public FrequencyMerchant(EntityLiving entity, String name) {
         this.entity = entity;
         IAnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
-        this.merchantName = data.getMerchantName();
-        this.stock = data.getStock();
+        merchantName = name;
+        stock = data.getStock();
     }
     @Override
     public void setCustomer(EntityPlayer player) {
@@ -59,7 +56,6 @@ public class FrequencyMerchant implements IMerchant {
 
     @Override
     public MerchantRecipeList getRecipes(EntityPlayer player) {
-        Random random = entity.worldObj.rand;
         if (existingList != null) {
             return existingList;
         }
@@ -84,6 +80,7 @@ public class FrequencyMerchant implements IMerchant {
         saleItems.add(MutablePair.of(new ItemStack(Items.POTATO, 3), 2));
         saleItems.add(MutablePair.of(new ItemStack(Items.CARROT_ON_A_STICK), 3));
 
+        Random random = entity.worldObj.rand;
         if (entity instanceof EntityWolf) {
             currencies.add(new ItemStack(STEAMED_BEEF.getItem()));
             currencies.add(new ItemStack(STEAMED_PORKCHOP.getItem()));
@@ -188,6 +185,6 @@ public class FrequencyMerchant implements IMerchant {
 
     @Override
     public ITextComponent getDisplayName() {
-        return entity.hasCustomName() ? entity.getDisplayName() : new TextComponentString(merchantName);
+        return new TextComponentString(merchantName);
     }
 }

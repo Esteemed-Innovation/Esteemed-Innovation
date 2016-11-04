@@ -8,7 +8,15 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 
 public class AnimalDataSerializer implements ICapabilitySerializable<NBTTagCompound> {
-    IAnimalData instance = EsteemedInnovation.ANIMAL_DATA.getDefaultInstance();
+    private IAnimalData instance;
+
+    public AnimalDataSerializer() {
+        this(EsteemedInnovation.ANIMAL_DATA.getDefaultInstance());
+    }
+
+    public AnimalDataSerializer(IAnimalData data) {
+        instance = data;
+    }
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
@@ -17,7 +25,7 @@ public class AnimalDataSerializer implements ICapabilitySerializable<NBTTagCompo
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        return hasCapability(capability, facing) ? EsteemedInnovation.ANIMAL_DATA.<T>cast(instance) : null;
+        return hasCapability(capability, facing) ? EsteemedInnovation.ANIMAL_DATA.cast(instance) : null;
     }
 
     @Override

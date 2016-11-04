@@ -90,6 +90,7 @@ public class ItemFirearm extends Item implements IEngineerable {
             UtilEnhancements.getEnhancementFromItem(stack).onWeaponUpdate(stack, world, entity, itemSlot, isCurrentItem);
         }
 
+        // TODO: Move this out of ItemFirearm.
         // Reloading Holster code.
         if (!isCurrentItem && entity instanceof EntityPlayer && stack.hasTagCompound()) {
             ticksSinceReload += 1;

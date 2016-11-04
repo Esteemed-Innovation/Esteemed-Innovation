@@ -49,6 +49,13 @@ public interface IAnimalData {
         private String merchantName;
         private MerchantRecipeList stock;
 
+        public DefaultImplementation(int maximumTotalTrades, int totalTrades, String merchantName, MerchantRecipeList stock) {
+            this.maximumTotalTrades = maximumTotalTrades;
+            this.totalTrades = totalTrades;
+            this.merchantName = merchantName;
+            this.stock = stock;
+        }
+
         @Override
         public int getMaximumTotalTrades() {
             return maximumTotalTrades;

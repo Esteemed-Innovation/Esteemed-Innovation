@@ -7,7 +7,6 @@ import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
@@ -36,7 +35,6 @@ import eiteam.esteemedinnovation.item.firearm.ItemRocketLauncher;
 import eiteam.esteemedinnovation.item.tool.steam.*;
 import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 import eiteam.esteemedinnovation.misc.EnchantmentUtility;
-import eiteam.esteemedinnovation.misc.FrequencyMerchant;
 import eiteam.esteemedinnovation.misc.OreDictHelper;
 import eiteam.esteemedinnovation.network.JumpValueChangePacket;
 import net.minecraft.block.Block;
@@ -52,7 +50,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
@@ -68,7 +65,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -81,7 +81,6 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -107,9 +106,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static eiteam.esteemedinnovation.data.capabilities.animal.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.init.items.armor.ArmorItems.Items.ENTREPRENEUR_TOP_HAT;
 import static eiteam.esteemedinnovation.init.items.armor.ArmorItems.Items.EXOSUIT_HEADPIECE;
 import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.*;
@@ -237,7 +235,9 @@ public class GenericEventHandler {
         } else if (entity instanceof EntityVillager) {
             event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IVillagerData"), new VillagerDataSerializer());
         } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
-            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IAnimalData"), new AnimalDataSerializer());
+            Random rand = entity.worldObj.rand;
+            IAnimalData data = new IAnimalData.DefaultImplementation(rand.nextInt(7), 0, POSSIBLE_NAMES[rand.nextInt(POSSIBLE_NAMES.length)], null);
+            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IAnimalData"), new AnimalDataSerializer(data));
         }
     }
 
@@ -1346,16 +1346,6 @@ public class GenericEventHandler {
                 boots.getTagCompound().setBoolean("usedJump", false);
             }
         }
-        if (chestStack != null && chestStack.getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor item = (ItemExosuitArmor) chestStack.getItem();
-            if (item.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), WINGS.getItem())) {
-                if (entity.fallDistance > 1.5F && !entity.isSneaking()) {
-                    entity.fallDistance = 1.5F;
-                    entity.motionY = Math.max(entity.motionY, -0.1F);
-                    entity.moveEntity(entity.motionX, 0, entity.motionZ);
-                }
-            }
-        }
 
         if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
             IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
@@ -2438,40 +2428,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void openMerchant(PlayerInteractEvent.EntityInteract event) {
-        EntityPlayer player = event.getEntityPlayer();
-        Entity target = event.getTarget();
-        ItemStack held = player.getHeldItemMainhand();
-        if (playerHasFrequencyShifter(player) && (target instanceof EntityWolf ||
-          target instanceof EntityOcelot)) {
-            boolean flag = held == null || !(held.getItem() instanceof ItemNameTag);
-            if (!flag) {
-                return;
-            }
-            EntityLiving living = (EntityLiving) target;
-            IAnimalData data = target.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
-            if (data.getTotalTrades() > data.getMaximumTotalTrades()) {
-                if (living instanceof EntityWolf) {
-                    EntityWolf wolf = (EntityWolf) living;
-                    wolf.setAngry(true);
-                } else {
-                    EntityOcelot cat = (EntityOcelot) living;
-                    living.targetTasks.addTask(3, new EntityAIHurtByTarget(cat, true));
-                }
-            } else {
-                if (living.hasCustomName()) {
-                    data.setMerchantName(living.getCustomNameTag());
-                }
-                String name = data.getMerchantName();
-                FrequencyMerchant merchant = new FrequencyMerchant(living, name);
-                merchant.setCustomer(player);
-                player.displayVillagerTradeGui(merchant);
-                data.setTotalTrades(data.getTotalTrades() + 1);
-            }
-        }
-    }
-
     @SubscribeEvent
     public void doChainsaw(LivingAttackEvent event) {
         if (!(event.getSource().getSourceOfDamage() instanceof EntityPlayer)) {
@@ -2636,53 +2592,6 @@ public class GenericEventHandler {
                 event.setNewSpeed(newSpeed);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void handlePainfulFrequencies(AnimalTradeEvent event) {
-        EntityLiving entity = event.salesperson;
-        NBTTagCompound nbt = entity.getEntityData();
-        if (nbt.getInteger("totalTrades") > nbt.getInteger("maximumTrades")) {
-            entity.setAttackTarget(event.customer);
-        }
-    }
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void ignoreChatMessage(ClientChatReceivedEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.thePlayer;
-        World world = mc.theWorld;
-        String message = event.getMessage().getUnformattedText();
-        Matcher matcher = Pattern.compile("<(.+?)>").matcher(message);
-        if (matcher.find()) {
-            EntityPlayer messager = world.getPlayerEntityByName(matcher.group(0));
-            if (messager != null) {
-                if (!messager.getDisplayName().equals(player.getDisplayName()) &&
-                  playerHasFrequencyShifter(messager) && playerHasFrequencyShifter(player)) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks whether the given player has the Frequency Shifter upgrade, and enough steam in their suit.
-     * @param player The player to check.
-     * @return True if the player has the Frequency Shifter upgrade.
-     */
-    private boolean playerHasFrequencyShifter(EntityPlayer player) {
-        ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-        if (helmet != null && hasPower(player, 1)) {
-            Item helmetItem = helmet.getItem();
-            if (helmetItem instanceof ItemExosuitArmor) {
-                ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmetItem;
-                if (helmetArmor.hasUpgrade(helmet, FREQUENCY_SHIFTER.getItem())) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     // { x, y, z } relatively
