@@ -16,13 +16,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -41,6 +44,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
 
     protected ItemSteamTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
+        MinecraftForge.EVENT_BUS.register(new ToolUpgradeEventDelegator());
     }
 
     @Override
@@ -71,7 +75,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         if (ticksSpeed.containsKey(stack)) {
             MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
@@ -266,4 +270,153 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
      */
     @Nonnull
     public abstract SteamToolSlot getRedSlot();
+
+    /**
+     * Delegates events to {@link ISteamToolUpgrade}'s according methods.
+     *
+     * Side note: I really wish that Java FP wasn't terrible...
+     */
+    private final class ToolUpgradeEventDelegator {
+        /**
+         * @param tool The ItemStack to check.
+         * @return Whether the provided ItemStack contains a steam tool that is wound up.
+         */
+        private boolean isToolOkay(ItemStack tool) {
+            return tool != null && tool.getItem() != null && tool.getItem() instanceof ISteamTool && ((ISteamTool) tool.getItem()).isWound(tool);
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onPlayerHarvestDropsWithTool(BlockEvent.HarvestDropsEvent, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onHarvestDrops(BlockEvent.HarvestDropsEvent event) {
+            EntityPlayer player = event.getHarvester();
+            IBlockState state = event.getState();
+            Block block = state.getBlock();
+            if (player == null || block == null) {
+                return;
+            }
+            ItemStack equipped = player.getHeldItemMainhand();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                upgrade.onPlayerHarvestDropsWithTool(event, equipped, upgradeStack);
+            }
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed, float, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onBlockBreakSpeedUpdate(PlayerEvent.BreakSpeed event) {
+            ItemStack equipped = event.getEntityPlayer().getHeldItemMainhand();
+            BlockPos pos = event.getPos();
+            World world = event.getEntity().worldObj;
+            IBlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+            if (block == null || !isToolOkay(equipped)) {
+                return;
+            }
+
+            float newSpeed = 0.0F;
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                newSpeed = upgrade.onUpdateBreakSpeedWithTool(event, newSpeed, equipped, upgradeStack);
+            }
+            event.setNewSpeed(newSpeed);
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onBlockBreakWithTool(BlockEvent.BreakEvent, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onBlockBreak(BlockEvent.BreakEvent event) {
+            EntityPlayer player = event.getPlayer();
+            if (player == null) {
+                return;
+            }
+            ItemStack equipped = player.getHeldItemMainhand();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                if (!upgrade.onBlockBreakWithTool(event, equipped, upgradeStack)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onAttackWithTool(EntityPlayer, EntityLivingBase, DamageSource, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onAttack(LivingAttackEvent event) {
+            DamageSource dSource = event.getSource();
+            Entity source = dSource.getSourceOfDamage();
+            if (!(source instanceof EntityPlayer)) {
+                return;
+            }
+            EntityPlayer player = (EntityPlayer) source;
+            ItemStack equipped = player.getHeldItemMainhand();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                if (!upgrade.onAttackWithTool(player, event.getEntityLiving(), dSource, equipped, upgradeStack)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onRightClickBlockWithTool(PlayerInteractEvent.RightClickBlock, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+            ItemStack equipped = event.getItemStack();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                if (!upgrade.onRightClickBlockWithTool(event, equipped, upgradeStack)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
+        /**
+         * Calls {@link ISteamToolUpgrade#onRightClickWithTool(PlayerInteractEvent.RightClickItem, ItemStack, ItemStack)}
+         * for every upgrade in the tool.
+         */
+        @SubscribeEvent
+        public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+            ItemStack equipped = event.getItemStack();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                if (!upgrade.onRightClickWithTool(event, equipped, upgradeStack)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+    }
 }
