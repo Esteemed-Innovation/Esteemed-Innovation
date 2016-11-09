@@ -1350,22 +1350,7 @@ public class GenericEventHandler {
         if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
             IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
-            if (item.hasUpgrade(leggings, THRUSTERS.getItem())) {
-                if (data.getLastMotions() == null) {
-                    data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
-                }
-                double lastX = data.getLastMotions().left;
-                double lastZ = data.getLastMotions().right;
-                if ((lastX != entity.posX || lastZ != entity.posZ) && !entity.onGround && !entity.isInWater() && !player.capabilities.isFlying) {
-                    entity.moveEntity(entity.motionX, 0, entity.motionZ);
-                    if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                        chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
-                    }
-                    if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(chestStack, Config.thrusterConsumption);
-                    }
-                }
-            } else if (item.hasUpgrade(leggings, RUN_ASSIST.getItem())) {
+            if (item.hasUpgrade(leggings, RUN_ASSIST.getItem())) {
                 if (data.getLastMotions() == null) {
                     data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
                 }

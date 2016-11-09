@@ -27,7 +27,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -44,7 +43,8 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
-import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.*;
+import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.DOUBLE_JUMP;
+import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.PITON_DEPLOYER;
 
 public class GenericTickHandler {
     private static float zoom = 0.0F;
@@ -205,26 +205,6 @@ public class GenericTickHandler {
                           (te instanceof IDisguisableBlock)) {
                             EsteemedInnovation.channel.sendToServer(new CamoPacket(blockPos));
                         }
-                    }
-                }
-            }
-
-            ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-            if (GenericEventHandler.hasPower(player, 1) && legs != null && legs.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor leggings = (ItemExosuitArmor) legs.getItem();
-                if (player.worldObj.isRemote && leggings.hasUpgrade(legs, THRUSTERS.getItem())) {
-                    if (!player.onGround && Math.abs(player.motionX) + Math.abs(player.motionZ) > 0.0F && !player.isInWater() && !(player.capabilities.isFlying)) {
-                        double rotation = Math.toRadians(player.renderYawOffset + 90.0F);
-                        double rotation2 = Math.toRadians(player.renderYawOffset + 270.0F);
-
-                        player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                          player.posX + 0.5 * Math.sin(rotation),
-                          player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation),
-                          player.motionX * -0.1F, 0, player.motionZ * -0.1F);
-                        player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
-                          player.posX + 0.5 * Math.sin(rotation2),
-                          player.posY - 1F, player.posZ - 0.5 * Math.cos(rotation2),
-                          player.motionX * -0.1F, 0, player.motionZ * -0.1F);
                     }
                 }
             }
