@@ -197,11 +197,14 @@ public class GenericTickHandler {
                 RayTraceResult pos = mc.objectMouseOver;
                 if (pos != null) {
                     BlockPos blockPos = pos.getBlockPos();
-                    TileEntity te = mc.theWorld.getTileEntity(blockPos);
-                    if (mc.theWorld.getBlockState(blockPos).getBlock() == PipeBlocks.Blocks.BRASS_PIPE.getBlock() ||
-                      (te != null && te instanceof IDisguisableBlock)) {
-                        CamoPacket packet = new CamoPacket(blockPos);
-                        EsteemedInnovation.channel.sendToServer(packet);
+                    // blockPos is null when objectMouseOver is not over a block (on an entity).
+                    //noinspection ConstantConditions
+                    if (blockPos != null) {
+                        TileEntity te = mc.theWorld.getTileEntity(blockPos);
+                        if (mc.theWorld.getBlockState(blockPos).getBlock() == PipeBlocks.Blocks.BRASS_PIPE.getBlock() ||
+                          (te instanceof IDisguisableBlock)) {
+                            EsteemedInnovation.channel.sendToServer(new CamoPacket(blockPos));
+                        }
                     }
                 }
             }
