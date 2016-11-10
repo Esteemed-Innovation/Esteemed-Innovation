@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.ISteamChargable;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
-import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
@@ -63,7 +62,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -73,7 +71,10 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.village.MerchantRecipe;
@@ -1993,13 +1994,6 @@ public class GenericEventHandler {
                 burnBlocks(world, pos);
             }
         }
-
-        if (equipped.getItem() instanceof ISteamTool) {
-            ISteamTool tool = (ISteamTool) equipped.getItem();
-            if (tool.isWound(equipped) && tool.hasUpgrade(equipped, OVERCLOCKER.getItem())) {
-                tool.addSteam(equipped, -tool.steamPerDurability(), player);
-            }
-        }
     }
 
     /**
@@ -2353,16 +2347,6 @@ public class GenericEventHandler {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, ROTARY_BLADES.getItem())) {
                     newSpeed = original * 0.425F;
-                }
-            }
-            if (equipped.getItem() instanceof ISteamTool) {
-                ISteamTool tool = (ISteamTool) equipped.getItem();
-                if (tool.isWound(equipped) && tool.hasUpgrade(equipped, OVERCLOCKER.getItem())) {
-                    if (newSpeed == 0.0F) {
-                        newSpeed = original * 2.5F;
-                    } else {
-                        newSpeed *= 2.5F;
-                    }
                 }
             }
             if (newSpeed != 0.0F) {

@@ -11,10 +11,7 @@ import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.item.tool.steam.ItemDrillHeadUpgrade;
-import eiteam.esteemedinnovation.item.tool.steam.ItemExothermicProjector;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamToolUpgrade;
-import eiteam.esteemedinnovation.item.tool.steam.ItemTheVoidUpgrade;
+import eiteam.esteemedinnovation.item.tool.steam.*;
 import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
 import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
 import net.minecraft.init.Enchantments;
@@ -34,7 +31,7 @@ public class ToolUpgradeItems implements IInitCategory {
     public enum Items {
         THE_VOID(new ItemTheVoidUpgrade(), "the_void"),
         EXOTHERMIC_PROJECTOR(new ItemExothermicProjector(), "exothermic_projector"),
-        OVERCLOCKER(SteamToolSlot.TOOL_CORE, "overclocker", null, 0, "overclocker"),
+        OVERCLOCKER(new ItemOverclockerUpgrade(), "overclocker"),
         BIG_DRILL(SteamToolSlot.DRILL_HEAD, "big", null, 1, "big_drill"),
         BATTLE_DRILL(SteamToolSlot.DRILL_HEAD, "combat", null, 1, "battle_drill"),
         STONE_GRINDER(SteamToolSlot.DRILL_HEAD, "grinder", null, 1, "stone_grinder"),
