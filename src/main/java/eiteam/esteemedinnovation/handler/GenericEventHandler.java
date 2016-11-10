@@ -2151,44 +2151,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void autosmelt(BlockEvent.HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        BlockPos pos = event.getPos();
-        IBlockState state = event.getState();
-        Block block = state.getBlock();
-        if (player == null || block == null) {
-            return;
-        }
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ISteamTool)) {
-            return;
-        }
-        ISteamTool tool = (ISteamTool) equipped.getItem();
-        if (!tool.hasUpgrade(equipped, EXOTHERMIC_PROJECTOR.getItem()) || !tool.isWound(equipped) ||
-          event.getDrops().isEmpty() || !block.isToolEffective(tool.toolClass(), state)) {
-            return;
-        }
-        int itemsSmelted = 0;
-        for (int i = 0; i < event.getDrops().size(); i++) {
-            ItemStack drop = event.getDrops().get(i);
-            if (drop == null || drop.getItem() == null) {
-                continue;
-            }
-
-            ItemStack output = SteamingRegistry.getSteamingResult(drop);
-            if (output == null || output.getItem() == null) {
-                continue;
-            }
-            event.getDrops().remove(i);
-            event.getDrops().add(i, output.copy());
-            itemsSmelted += 1;
-        }
-        if (itemsSmelted > 0) {
-            tool.addSteam(equipped, -(itemsSmelted * tool.steamPerDurability()), player);
-        }
-    }
-
     /**
      * Gets whether the block can be tilled into farmland.
      * @param block The block to check
