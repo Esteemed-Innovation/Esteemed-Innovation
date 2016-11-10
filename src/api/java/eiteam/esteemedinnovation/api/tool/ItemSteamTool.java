@@ -53,6 +53,11 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
     }
 
     @Override
+    public boolean canHarvestBlock(IBlockState state) {
+        return getToolMaterial().getHarvestLevel() >= state.getBlock().getHarvestLevel(state);
+    }
+
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         /*
          We have to check the upgrades so that the models reload when you switch between two tools of the same type with
