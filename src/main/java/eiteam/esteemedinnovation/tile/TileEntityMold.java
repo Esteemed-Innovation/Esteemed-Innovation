@@ -206,7 +206,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory, ITick
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        if (side == EnumFacing.UP) {
+        if (side == EnumFacing.DOWN) {
             return moldSlots;
         }
         return new int[0];
