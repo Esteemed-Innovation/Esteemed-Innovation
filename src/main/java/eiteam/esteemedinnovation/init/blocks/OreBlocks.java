@@ -8,7 +8,8 @@ import eiteam.esteemedinnovation.block.BlockGenericOre;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
 
-import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
+import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_ZINC;
+import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_COPPER;
 
 public class OreBlocks implements IInitCategory {
     public enum Blocks {

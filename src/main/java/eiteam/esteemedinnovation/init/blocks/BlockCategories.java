@@ -9,7 +9,8 @@ public enum BlockCategories {
     PIPE_BLOCKS(new PipeBlocks()),
     STEAM_MACHINERY(new SteamMachineryBlocks()),
     PRESSURE_PLATES(new PressurePlateBlocks()),
-    MISCELLANEOUS(new MiscellaneousBlocks());
+    MISCELLANEOUS(new MiscellaneousBlocks()),
+    ORE_BLOCKS(new OreBlocks());
 
     private IInitCategory category;
 
