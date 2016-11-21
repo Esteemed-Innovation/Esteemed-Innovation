@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.ISteamChargable;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntitySteamCharger;
 
 import net.minecraft.block.BlockHorizontal;
@@ -131,7 +132,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
-            world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+            WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             return true;
         }
         return false;

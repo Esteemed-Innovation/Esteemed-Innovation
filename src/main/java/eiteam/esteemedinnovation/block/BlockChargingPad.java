@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntityChargingPad;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -60,7 +61,7 @@ public class BlockChargingPad extends BlockSteamTransporter implements IWrenchab
         if (facing == EnumFacing.UP || facing == EnumFacing.DOWN) {
             return false;
         }
-        world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+        WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         return true;
     }
 

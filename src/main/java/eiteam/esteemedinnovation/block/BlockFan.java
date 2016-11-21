@@ -1,7 +1,8 @@
 package eiteam.esteemedinnovation.block;
 
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntityFan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -85,10 +86,7 @@ public class BlockFan extends BlockSteamTransporter implements IWrenchable {
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (!player.isSneaking()) {
-            EnumFacing curFacing = state.getValue(FACING);
-            EnumFacing playerFacing = BlockPistonBase.getFacingFromEntity(pos, player);
-            EnumFacing newFacing = curFacing == playerFacing ? playerFacing.getOpposite() : playerFacing;
-            world.setBlockState(pos, state.withProperty(FACING, newFacing), 2);
+            WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         }
         return true;
     }

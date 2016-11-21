@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.block.pipe.BlockSteamPipe;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntitySteamHeater;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
@@ -79,9 +80,7 @@ public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
 
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
-        EnumFacing curFace = state.getValue(FACING);
-        EnumFacing actualFace = curFace == facing ? facing.getOpposite() : facing;
-        world.setBlockState(pos, state.withProperty(FACING, actualFace), 2);
+        WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         return true;
     }
 

@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntityMold;
 
 import net.minecraft.block.Block;
@@ -132,7 +133,7 @@ public class BlockMold extends Block implements IWrenchable {
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
-            world.setBlockState(pos, state.withProperty(FACING, facing));
+            WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             return true;
         }
         return false;

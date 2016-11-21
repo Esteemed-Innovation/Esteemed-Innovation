@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntitySmasher;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -60,7 +61,7 @@ public class BlockSmasher extends BlockSteamTransporter implements IWrenchable {
     @Override
     public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, IBlockState state, float hitX, float hitY, float hitZ) {
         if (!player.isSneaking() && side.getAxis() != EnumFacing.Axis.Y) {
-            world.setBlockState(pos, state.withProperty(FACING, side.getOpposite()), 2);
+            WorldHelper.rotateProperly(FACING, world, state, pos, side);
         }
         return true;
     }

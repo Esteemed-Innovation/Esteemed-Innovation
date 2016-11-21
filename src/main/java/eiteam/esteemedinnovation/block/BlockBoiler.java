@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.misc.FluidHelper;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntityBoiler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -124,34 +125,6 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
     }
 
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(world, pos, state);
-        setDefaultFacing(world, pos, state);
-    }
-
-    private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
-        if (!world.isRemote) {
-            IBlockState north = world.getBlockState(pos.north());
-            IBlockState south = world.getBlockState(pos.south());
-            IBlockState west = world.getBlockState(pos.west());
-            IBlockState east = world.getBlockState(pos.east());
-            EnumFacing enumfacing = state.getValue(FACING);
-
-            if (enumfacing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock()) {
-                enumfacing = EnumFacing.SOUTH;
-            } else if (enumfacing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock()) {
-                enumfacing = EnumFacing.NORTH;
-            } else if (enumfacing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock()) {
-                enumfacing = EnumFacing.EAST;
-            } else if (enumfacing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock()) {
-                enumfacing = EnumFacing.WEST;
-            }
-
-            world.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
-        }
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
         world.setBlockState(pos, state.withProperty(FACING, elb.getHorizontalFacing().getOpposite()));
     }
@@ -205,7 +178,7 @@ public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
         if (player.isSneaking()) {
             return true;
         } else if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
-            world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+            WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         }
         return false;
     }

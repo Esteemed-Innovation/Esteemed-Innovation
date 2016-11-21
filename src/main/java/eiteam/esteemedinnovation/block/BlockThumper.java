@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.block;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
+import eiteam.esteemedinnovation.misc.WorldHelper;
 import eiteam.esteemedinnovation.tile.TileEntityThumper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -98,7 +99,7 @@ public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
         if (facing.getAxis() == EnumFacing.Axis.Y) {
             return false;
         }
-        world.setBlockState(pos, state.withProperty(FACING, facing.getOpposite()), 2);
+        WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         return true;
     }
 
