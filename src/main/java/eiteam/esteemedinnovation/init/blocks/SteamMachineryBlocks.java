@@ -1,19 +1,20 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.block.*;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static eiteam.esteemedinnovation.init.blocks.PipeBlocks.Blocks.BRASS_PIPE;
-import static net.minecraft.init.Blocks.*;
+import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Blocks.FURNACE;
+import static net.minecraft.init.Blocks.IRON_BARS;
 
 public class SteamMachineryBlocks implements IInitCategory {
     public enum Blocks {
@@ -28,7 +29,8 @@ public class SteamMachineryBlocks implements IInitCategory {
         THUMPER(new BlockThumper(), "thumper"),
         THUMPER_DUMMY(new BlockThumperDummy(), "thumper_dummy", true),
         FAN(new BlockFan(), "fan"),
-        VACUUM(new BlockVacuum(), "vacuum");
+        VACUUM(new BlockVacuum(), "vacuum"),
+        SAW(new BlockSaw(), "saw");
 
         private Block block;
 
@@ -93,6 +95,9 @@ public class SteamMachineryBlocks implements IInitCategory {
                 }
                 case VACUUM: {
                     return Config.enableVacuum && FAN.isEnabled();
+                }
+                case SAW: {
+                    return Config.enableSaw;
                 }
             }
             return false;

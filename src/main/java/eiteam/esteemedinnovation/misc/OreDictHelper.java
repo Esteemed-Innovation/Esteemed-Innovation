@@ -2,13 +2,17 @@ package eiteam.esteemedinnovation.misc;
 
 import eiteam.esteemedinnovation.Config;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class OreDictHelper {
     public static ArrayList<MutablePair<Item, Integer>> stones = new ArrayList<>();
@@ -23,6 +27,8 @@ public class OreDictHelper {
     public static HashMap<MutablePair<Item, Integer>, String> gems = new HashMap<>();
     public static ArrayList<MutablePair<Item, Integer>> sticks = new ArrayList<>();
     public static ArrayList<MutablePair<Item, Integer>> logs = new ArrayList<>();
+    public static ArrayList<Pair<Item, Integer>> planks = new ArrayList<>();
+    public static Map<Pair<Item, Integer>, Pair<Item, Integer>> logToPlank = new HashMap<>();
     public static ArrayList<Item> slabWoods = new ArrayList<>();
     public static ArrayList<Item> blockCoals = new ArrayList<>();
     public static ArrayList<Item> saplings = new ArrayList<>();
@@ -90,6 +96,10 @@ public class OreDictHelper {
             logs.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
 
+        if (name.equals(OreDictEntries.PLANK_WOOD)) {
+            planks.add(Pair.of(stack.getItem(), stack.getItemDamage()));
+        }
+
         if (name.equals(OreDictEntries.PLATE_THIN_IRON)) {
             thinIronPlates.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
         }
@@ -119,13 +129,38 @@ public class OreDictHelper {
         }
     }
 
+    public static void initializeGeneral() {
+        InventoryCrafting temporaryCraftingGrid = new InventoryCrafting(new Container() {
+            @Override
+            public boolean canInteractWith(EntityPlayer playerIn) {
+                return false;
+            }
+        }, 3, 3);
+
+        for (int i = 0; i < temporaryCraftingGrid.getSizeInventory(); i++) {
+            temporaryCraftingGrid.setInventorySlotContents(i, null);
+        }
+
+        for (Pair<Item, Integer> log : logs) {
+            temporaryCraftingGrid.setInventorySlotContents(0, new ItemStack(log.getLeft(), 1, log.getRight()));
+            CraftingManager.getInstance().getRecipeList().stream()
+              .filter(recipe -> recipe.matches(temporaryCraftingGrid, null))
+              .forEach(recipe -> {
+                ItemStack result = recipe.getRecipeOutput();
+                if (result != null && arrayContains(planks, MutablePair.of(result.getItem(), result.getItemDamage()))) {
+                    logToPlank.put(log, Pair.of(result.getItem(), result.getItemDamage()));
+                }
+            });
+        }
+    }
+
     /**
      * Gets whether the arraylist has the given value. This checks for WILDCARD OreDict metadata.
      * @param list The ArrayList to check.
      * @param value The value to check for.
      * @return Whether it contains that given value.
      */
-    public static boolean arrayContains(ArrayList list, MutablePair<Item, Integer> value) {
+    public static boolean arrayContains(Collection list, MutablePair<Item, Integer> value) {
         if (value.right == OreDictionary.WILDCARD_VALUE) {
             for (int i = 0; i < 15; i++) {
                 if (list.contains(MutablePair.of(value.left, i))) {

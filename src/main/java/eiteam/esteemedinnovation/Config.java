@@ -135,6 +135,7 @@ public class Config {
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
     public static boolean enableChargingPad;
+    public static boolean enableSaw;
     public static boolean enableWrench;
 
     // items
@@ -308,7 +309,7 @@ public class Config {
 
 
         // BLOCKS
-        //enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean();
+        enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean();
         //enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean();
         enableCharger = config.get("Blocks", "Enable Steam Filler", true).getBoolean();
         enableChargingPad = config.get("Blocks", "Enable Filling Pad", true).getBoolean();

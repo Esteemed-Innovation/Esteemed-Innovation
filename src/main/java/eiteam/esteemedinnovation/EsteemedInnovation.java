@@ -201,6 +201,7 @@ public class EsteemedInnovation {
         registerTileEntity(TileEntityWhistle.class, "whistle");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
         registerTileEntity(TileEntityFunnel.class, "funnel");
+        registerTileEntity(TileEntitySaw.class, "saw");
 
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
           IPlayerData.DefaultImplementation.class);
@@ -277,6 +278,7 @@ public class EsteemedInnovation {
                 OreDictHelper.initializeOreDicts(s, stack);
             }
         }
+        OreDictHelper.initializeGeneral();
         long end = System.currentTimeMillis();
         int time = (int) (end - start);
         FMLLog.info("Finished initializing Esteemed Innovation OreDictHelper in %s ms", time);
