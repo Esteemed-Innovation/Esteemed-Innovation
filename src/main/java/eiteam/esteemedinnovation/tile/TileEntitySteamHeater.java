@@ -70,24 +70,12 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         return nbt;
     }
 
-    private void setValidDistributionDirections(EnumFacing orientation) {
-        EnumFacing[] directions = new EnumFacing[5];
-        int i = 0;
-        for (EnumFacing dir : EnumFacing.VALUES) {
-            if (dir != orientation) {
-                directions[i] = dir;
-                i++;
-            }
-        }
-        setDistributionDirections(directions);
-    }
-
     @Override
     public void update() {
         super.superUpdate();
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
         if (!isInitialized) {
-            setValidDistributionDirections(dir);
+            setValidDistributionDirectionsExcluding(dir);
             isInitialized = true;
         }
 
@@ -161,7 +149,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         int steam = getSteamShare();
         getNetwork().split(this, true);
         EnumFacing dir = state.getValue(BlockSteamHeater.FACING);
-        setValidDistributionDirections(dir);
+        setValidDistributionDirectionsExcluding(dir);
         BlockPos offsetPos = pos.offset(dir);
         worldObj.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
         SteamNetwork.newOrJoin(this);

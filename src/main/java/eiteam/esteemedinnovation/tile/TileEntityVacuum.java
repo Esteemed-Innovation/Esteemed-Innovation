@@ -29,7 +29,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TileEntityVacuum extends SteamTransporterTileEntity implements IWrenchable, IWrenchDisplay {
@@ -102,15 +101,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements IWre
         if (!isInitialized) {
             powered = worldObj.isBlockPowered(pos);
             EnumFacing myDir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
-            EnumFacing[] directions = new EnumFacing[5];
-            int i = 0;
-            for (EnumFacing direction : EnumFacing.VALUES) {
-                if (direction.getAxis() != myDir.getAxis()) {
-                    directions[i] = direction;
-                    i++;
-                }
-            }
-            setDistributionDirections(Arrays.copyOf(directions, i));
+            setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
             isInitialized = true;
         }
         super.update();
@@ -305,16 +296,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements IWre
             int steam = getSteamShare();
 
             getNetwork().split(this, true);
-            EnumFacing myDir = EnumFacing.getFront(getBlockMetadata());
-            EnumFacing[] directions = new EnumFacing[5];
-            int i = 0;
-            for (EnumFacing direction : EnumFacing.VALUES) {
-                if (direction != myDir && direction != myDir.getOpposite()) {
-                    directions[i] = direction;
-                    i++;
-                }
-            }
-            setDistributionDirections(directions);
+            EnumFacing myDir = world.getBlockState(pos).getValue(BlockVacuum.FACING);
+            setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
 
             SteamNetwork.newOrJoin(this);
             getNetwork().addSteam(steam);

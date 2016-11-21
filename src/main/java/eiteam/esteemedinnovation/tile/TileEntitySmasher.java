@@ -156,15 +156,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements IWr
         if (!isInitialized) {
             EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
             addSideToGaugeBlacklist(facing);
-            EnumFacing[] directions = new EnumFacing[4];
-            int i = 0;
-            for (EnumFacing direction : EnumFacing.VALUES) {
-                if (direction != facing && direction != EnumFacing.UP) {
-                    directions[i] = direction;
-                    i++;
-                }
-            }
-            setDistributionDirections(directions);
+            setValidDistributionDirectionsExcluding(facing, EnumFacing.UP);
             isInitialized = true;
         }
         super.update();
@@ -449,16 +441,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements IWr
         } else {
             int steam = getSteamShare();
             getNetwork().split(this, true);
-            EnumFacing[] directions = new EnumFacing[5];
-            int i = 0;
             EnumFacing myFacing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
-            for (EnumFacing direction : EnumFacing.VALUES) {
-                if (direction != myFacing && direction != EnumFacing.UP) {
-                    directions[i] = direction;
-                    i++;
-                }
-            }
-            setDistributionDirections(directions);
+            setValidDistributionDirectionsExcluding(myFacing, EnumFacing.UP);
             SteamNetwork.newOrJoin(this);
             getNetwork().addSteam(steam);
         }

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class SteamTransporterTileEntity extends TileEntityBase implements ISteamTransporter, ITickable {
     public String name = "SteamTransporterTileEntity";
@@ -198,6 +199,23 @@ public class SteamTransporterTileEntity extends TileEntityBase implements ISteam
 
     protected void setPressureResistance(float resistance) {
         pressureResistance = resistance;
+    }
+
+    /**
+     * Sets the distribution directions to everything except the provided directions.
+     * @param exclusions The directions to exclude form the distribution directions.
+     */
+    protected void setValidDistributionDirectionsExcluding(EnumFacing... exclusions) {
+        EnumFacing[] validDirs = new EnumFacing[6 - exclusions.length];
+        int i = 0;
+        List<EnumFacing> exclusionList = Arrays.asList(exclusions);
+        for (EnumFacing dir : EnumFacing.VALUES) {
+            if (!exclusionList.contains(dir)) {
+                validDirs[i] = dir;
+                i++;
+            }
+        }
+        setDistributionDirections(validDirs);
     }
 
     protected void setDistributionDirections(EnumFacing[] faces) {
