@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.vecmath.Vector2d;
@@ -83,6 +84,7 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
          * Checks if the player is wearing thrusters, has power, and is moving, and if so, spawns smoke on each side.
          */
         @SubscribeEvent
+        @SideOnly(Side.CLIENT)
         public void emitSmokeParticles(TickEvent.ClientTickEvent event) {
             if (event.side == Side.CLIENT) {
                 Minecraft mc = Minecraft.getMinecraft();
