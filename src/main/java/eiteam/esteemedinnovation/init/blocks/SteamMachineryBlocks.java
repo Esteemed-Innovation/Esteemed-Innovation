@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.block.*;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
+import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -327,6 +328,18 @@ public class SteamMachineryBlocks implements IInitCategory {
                       'x', PLATE_THIN_BRASS,
                       'p', BRASS_PIPE.getBlock(),
                       'f', Blocks.FAN.getBlock()
+                    ));
+                    break;
+                }
+                case SAW: {
+                    BookRecipeRegistry.addRecipe("saw", new ShapedOreRecipe(block.getBlock(),
+                      "btb",
+                      "p p",
+                      "mmm",
+                      'b', ToolUpgradeItems.Items.TIMBER_CHAIN.getItem(),
+                      't', CraftingComponentItems.Items.BRASS_TURBINE.createItemStack(),
+                      'p', CraftingComponentItems.Items.BRASS_PISTON.createItemStack(),
+                      'm', PLATE_THIN_BRASS
                     ));
                     break;
                 }
