@@ -31,7 +31,8 @@ public class SteamMachineryBlocks implements IInitCategory {
         THUMPER_DUMMY(new BlockThumperDummy(), "thumper_dummy", true),
         FAN(new BlockFan(), "fan"),
         VACUUM(new BlockVacuum(), "vacuum"),
-        SAW(new BlockSaw(), "saw");
+        SAW(new BlockSaw(), "saw"),
+        PLONKER(new BlockPlonker(), "plonker");
 
         private Block block;
 
@@ -99,6 +100,9 @@ public class SteamMachineryBlocks implements IInitCategory {
                 }
                 case SAW: {
                     return Config.enableSaw;
+                }
+                case PLONKER: {
+                    return Config.enablePlonker;
                 }
             }
             return false;
@@ -342,6 +346,16 @@ public class SteamMachineryBlocks implements IInitCategory {
                       'm', PLATE_THIN_BRASS
                     ));
                     break;
+                }
+                case PLONKER: {
+                    BookRecipeRegistry.addRecipe("plonker", new ShapedOreRecipe(block.getBlock(),
+                      "ccb",
+                      "c r",
+                      "ccb",
+                      'c', COBBLESTONE_ORE,
+                      'b', PLATE_THIN_BRASS,
+                      'r', DUST_REDSTONE
+                    ));
                 }
                 default: {
                     break;

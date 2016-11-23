@@ -112,7 +112,7 @@ public class Config {
 
     // blocks
     public static boolean enableFunnel;
-    public static boolean enableBlockPlacer;
+    public static boolean enablePlonker;
     public static boolean enableBoiler;
     public static boolean enableCharger;
     public static boolean enableCrucible;
@@ -310,7 +310,6 @@ public class Config {
 
         // BLOCKS
         enableSaw = config.get("Blocks", "Enable the Buzzsaw", true).getBoolean();
-        //enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean();
         enableCharger = config.get("Blocks", "Enable Steam Filler", true).getBoolean();
         enableChargingPad = config.get("Blocks", "Enable Filling Pad", true).getBoolean();
         enableCrucible = config.get("Blocks", "Enable Crucible", true).getBoolean();
@@ -326,7 +325,7 @@ public class Config {
         enableSmasher = config.get("Blocks", "Enable Rock Smasher", true).getBoolean();
         enableThumper = config.get("Blocks", "Enable Thumper", true).getBoolean();
         enableVacuum = config.get("Blocks", "Enable Vacuum", true).getBoolean();
-        enableBlockPlacer = config.get("Blocks", "Enable Block Placer", true).getBoolean();
+        enablePlonker = config.get("Blocks", "Enable Plonker", true).getBoolean();
         enableFunnel = config.get("Block", "Enable Funnel", true).getBoolean();
 
         // BLOCK CONSUMPTION RATES

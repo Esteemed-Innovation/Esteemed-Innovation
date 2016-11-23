@@ -682,6 +682,7 @@ tile.esteemedinnovation:vacuum.name=Vacuum
 tile.esteemedinnovation:steam_whistle.name=Steam Whistle
 tile.esteemedinnovation:pressure_converter.name=Pressure Converter
 tile.esteemedinnovation:funnel.name=Funnel
+tile.esteemedinnovation:plonker.name=Plonker
 
 esteemedinnovation.research.shiftforlist=Hold shift to view your keywords
 item.esteemedinnovation:soil_sampling_kit.name=Soil Sampling Kit
@@ -693,5 +694,8 @@ esteemedinnovation.kitbag.shiftforlist=Hold shit to view contents
 item.esteemedinnovation:pipe_mold.name=Pipe Mold
 tile.esteemedinnovation:brass_pipe.name=Brass Pipe
 tile.esteemedinnovation:copper_pipe.name=Copper Pipe
+
+esteemedinnovation.plonker.always=Automatically place
+esteemedinnovation.plonker.pulse=Pulse to place
 
 entity.Villager.steam_engineer=Steam Engineer

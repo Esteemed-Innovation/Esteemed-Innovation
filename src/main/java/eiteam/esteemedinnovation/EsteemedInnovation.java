@@ -202,6 +202,7 @@ public class EsteemedInnovation {
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
         registerTileEntity(TileEntityFunnel.class, "funnel");
         registerTileEntity(TileEntitySaw.class, "saw");
+        registerTileEntity(TileEntityPlonker.class, "plonker");
 
         CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
           IPlayerData.DefaultImplementation.class);
