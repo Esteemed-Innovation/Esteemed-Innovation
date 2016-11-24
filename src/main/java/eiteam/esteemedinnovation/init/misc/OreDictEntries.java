@@ -97,7 +97,7 @@ public class OreDictEntries {
     // Nuggets.
     public static String NUGGET_BRASS = PREFIX_NUGGET + MATERIAL_BRASS;
     public static String NUGGET_COPPER = PREFIX_NUGGET + MATERIAL_COPPER;
-    public static String NUGGET_ZINC = PREFIX_NUGGET + MATERIAL_COPPER;
+    public static String NUGGET_ZINC = PREFIX_NUGGET + MATERIAL_ZINC;
     public static String NUGGET_GILDED_IRON = PREFIX_NUGGET + MATERIAL_GILDED_IRON;
     public static String NUGGET_IRON = PREFIX_NUGGET + MATERIAL_IRON;
     public static String NUGGET_LEAD = PREFIX_NUGGET + MATERIAL_LEAD;
