@@ -2,38 +2,42 @@ package eiteam.esteemedinnovation.block;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
 import eiteam.esteemedinnovation.tile.TileEntityFunnel;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFunnel extends Block {
     public static final PropertyBool POWERED = PropertyBool.create("powered");
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != EnumFacing.UP);
 
     public BlockFunnel() {
         super(Material.ANVIL);
         setCreativeTab(EsteemedInnovation.tab);
+        setDefaultState(blockState.getBaseState().withProperty(POWERED, false).withProperty(FACING, EnumFacing.DOWN));
     }
 
     @Override
     public BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, POWERED);
+        return new BlockStateContainer(this, POWERED, FACING);
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState();
+        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return 0;
+        return state.getValue(FACING).getIndex();
     }
 
     @Override
@@ -44,6 +48,12 @@ public class BlockFunnel extends Block {
             powered = funnel.getWorld().isBlockPowered(pos);
         }
         return state.withProperty(POWERED, powered);
+    }
+
+    @Override
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        EnumFacing opposite = facing.getOpposite();
+        return getDefaultState().withProperty(FACING, opposite == EnumFacing.UP ? EnumFacing.DOWN : opposite);
     }
 
     @Override

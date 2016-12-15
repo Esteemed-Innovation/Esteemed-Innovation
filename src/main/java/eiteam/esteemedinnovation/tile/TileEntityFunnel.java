@@ -56,13 +56,14 @@ public class TileEntityFunnel extends TileEntity implements ITickable {
 
         FluidStack fluid = tank.getFluid();
         if (tank.getFluidAmount() > 0 && fluid != null) {
-            BlockPos down = pos.down();
-            TileEntity belowTile = worldObj.getTileEntity(down);
-            if (belowTile == null) {
+            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFunnel.FACING);
+            BlockPos targetPos = pos.offset(dir);
+            TileEntity targetTile = worldObj.getTileEntity(targetPos);
+            if (targetTile == null) {
                 return;
             }
 
-            IFluidHandler handler = FluidHelper.getFluidHandler(belowTile, EnumFacing.UP);
+            IFluidHandler handler = FluidHelper.getFluidHandler(targetTile, dir.getOpposite());
             if (handler != null) {
                 handler.fill(fluid, true);
                 tank.drain(fluid, true);

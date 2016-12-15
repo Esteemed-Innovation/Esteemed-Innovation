@@ -1,12 +1,27 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "esteemedinnovation:funnel"
+    "model": "esteemedinnovation:funnel_side"
   },
   "variants": {
     "powered": {
       "true": {},
       "false": {}
+    },
+    "facing": {
+      "down": {
+        "model": "esteemedinnovation:funnel_down"
+      },
+      "east": {
+        "y": 90
+      },
+      "west": {
+        "y": 270
+      },
+      "south": {
+        "y": 180
+      },
+      "north": {}
     },
     "inventory": [{}]
   }
