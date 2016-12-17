@@ -101,6 +101,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -313,9 +314,9 @@ public class GenericEventHandler {
                         return;
                     }
 
-                    boolean isCannable = OreDictHelper.hashHasItem(OreDictHelper.ingots, item.getItem()) ||
-                      OreDictHelper.hashHasItem(OreDictHelper.gems, item.getItem()) ||
-                      OreDictHelper.arrayHasItem(OreDictHelper.nuggets, item.getItem());
+                    boolean isCannable = OreDictHelper.mapHasItem(OreDictHelper.ingots, item.getItem()) ||
+                      OreDictHelper.mapHasItem(OreDictHelper.gems, item.getItem()) ||
+                      OreDictHelper.listHasItem(OreDictHelper.nuggets, item.getItem());
 
                     if (isCannable) {
                         int numCans = 0;
@@ -1722,7 +1723,7 @@ public class GenericEventHandler {
         Item otherBlockItem = block.getItemDropped(state, rand, 0);
         Item blockItem = Item.getItemFromBlock(block);
         int meta = block.getMetaFromState(state);
-        MutablePair<Item, Integer> pair = MutablePair.of(blockItem, meta);
+        Pair<Item, Integer> pair = Pair.of(blockItem, meta);
         ItemStack equipped = player.getHeldItemMainhand();
         if (equipped == null) {
             return;
@@ -1766,10 +1767,9 @@ public class GenericEventHandler {
                     }
 
                     int index = rand.nextInt(OreDictHelper.stoneGrinderNuggets.size());
-                    MutablePair nuggetPair = OreDictHelper.stoneGrinderNuggets.get(index);
+                    Pair nuggetPair = OreDictHelper.stoneGrinderNuggets.get(index);
                     int size = rand.nextInt(3) + 1;
-                    ItemStack nugget = new ItemStack((Item) nuggetPair.left,
-                      size, (int) nuggetPair.right);
+                    ItemStack nugget = new ItemStack((Item) nuggetPair.getLeft(), size, (int) nuggetPair.getRight());
                     event.getDrops().add(nugget);
                     addedNugget = true;
                 }
@@ -1808,9 +1808,9 @@ public class GenericEventHandler {
                 int chance = rand.nextInt(8);
                 if (chance == 5) {
                     int index = rand.nextInt(OreDictHelper.goldNuggets.size());
-                    MutablePair nuggetPair = OreDictHelper.goldNuggets.get(index);
+                    Pair nuggetPair = OreDictHelper.goldNuggets.get(index);
                     int size = rand.nextInt(3) + 1;
-                    ItemStack nugget = new ItemStack((Item) nuggetPair.left, size, (int) nuggetPair.right);
+                    ItemStack nugget = new ItemStack((Item) nuggetPair.getLeft(), size, (int) nuggetPair.getRight());
                     event.getDrops().add(nugget);
                     return;
                 }
@@ -2105,7 +2105,7 @@ public class GenericEventHandler {
             BlockPos curPos = new BlockPos(startPos.getX(), y, startPos.getZ());
             IBlockState state = world.getBlockState(curPos);
             Block block = state.getBlock();
-            if (OreDictHelper.arrayHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
+            if (OreDictHelper.listHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
                 world.setBlockToAir(curPos);
                 block.harvestBlock(world, player, curPos, state, world.getTileEntity(curPos), axe);
                 if (y % 2 == 0) {
@@ -2509,7 +2509,7 @@ public class GenericEventHandler {
      */
     private boolean isLeaves(Block block, World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        return (OreDictHelper.arrayHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
+        return (OreDictHelper.listHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
           block.isLeaves(state, world, pos) || LEAF_MATERIALS.contains(block.getMaterial(state)));
     }
 }

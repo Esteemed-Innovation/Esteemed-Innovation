@@ -91,7 +91,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         if (item instanceof ItemHoe && ((ItemHoe) item).getMaterialName().equals("WOOD")) {
             return 200;
         }
-        if (OreDictHelper.arrayHasItem(OreDictHelper.sticks, item)) {
+        if (OreDictHelper.listHasItem(OreDictHelper.sticks, item)) {
             return 100;
         }
         if (item == Items.COAL) {

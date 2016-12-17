@@ -9,35 +9,33 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
 public class OreDictHelper {
-    public static ArrayList<MutablePair<Item, Integer>> stones = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> cobblestones = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> stoneGrinderNuggets = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> nuggets = new ArrayList<>();
-    public static HashMap<MutablePair<Item, Integer>, String> ingots = new HashMap<>();
-    public static ArrayList<MutablePair<Item, Integer>> leaves = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> goldNuggets = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> sands = new ArrayList<>();
-    public static HashMap<MutablePair<Item, Integer>, String> blocks = new HashMap<>();
-    public static HashMap<MutablePair<Item, Integer>, String> gems = new HashMap<>();
-    public static ArrayList<MutablePair<Item, Integer>> sticks = new ArrayList<>();
-    public static ArrayList<MutablePair<Item, Integer>> logs = new ArrayList<>();
-    public static ArrayList<Pair<Item, Integer>> planks = new ArrayList<>();
+    public static List<Pair<Item, Integer>> stones = new ArrayList<>();
+    public static List<Pair<Item, Integer>> cobblestones = new ArrayList<>();
+    public static List<Pair<Item, Integer>> stoneGrinderNuggets = new ArrayList<>();
+    public static List<Pair<Item, Integer>> nuggets = new ArrayList<>();
+    public static Map<Pair<Item, Integer>, String> ingots = new HashMap<>();
+    public static List<Pair<Item, Integer>> leaves = new ArrayList<>();
+    public static List<Pair<Item, Integer>> goldNuggets = new ArrayList<>();
+    public static List<Pair<Item, Integer>> sands = new ArrayList<>();
+    public static Map<Pair<Item, Integer>, String> blocks = new HashMap<>();
+    public static Map<Pair<Item, Integer>, String> gems = new HashMap<>();
+    public static List<Pair<Item, Integer>> sticks = new ArrayList<>();
+    public static List<Pair<Item, Integer>> logs = new ArrayList<>();
+    public static List<Pair<Item, Integer>> planks = new ArrayList<>();
     public static Map<Pair<Item, Integer>, Pair<Item, Integer>> logToPlank = new HashMap<>();
-    public static ArrayList<Item> slabWoods = new ArrayList<>();
-    public static ArrayList<Item> blockCoals = new ArrayList<>();
-    public static ArrayList<Item> saplings = new ArrayList<>();
-    public static ArrayList<Item> dirts = new ArrayList<>();
-    public static ArrayList<Item> grasses = new ArrayList<>();
-    public static ArrayList<Item> gravels = new ArrayList<>();
-    public static ArrayList<Item> ores = new ArrayList<>();
-
-    public static ArrayList<MutablePair<Item, Integer>> thinIronPlates = new ArrayList<>();
+    public static List<Item> slabWoods = new ArrayList<>();
+    public static List<Item> blockCoals = new ArrayList<>();
+    public static List<Item> saplings = new ArrayList<>();
+    public static List<Item> dirts = new ArrayList<>();
+    public static List<Item> grasses = new ArrayList<>();
+    public static List<Item> gravels = new ArrayList<>();
+    public static List<Item> ores = new ArrayList<>();
+    public static List<Pair<Item, Integer>> thinIronPlates = new ArrayList<>();
 
     public static void initializeOreDicts(String name, ItemStack stack) {
         if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
@@ -47,53 +45,53 @@ public class OreDictHelper {
             return;
         }
         if (name.equals(OreDictEntries.STONE_ORE)) {
-            stones.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            stones.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.equals(OreDictEntries.COBBLESTONE_ORE)) {
-            MutablePair<Item, Integer> pair = MutablePair.of(stack.getItem(), stack.getItemDamage());
+            Pair<Item, Integer> pair = Pair.of(stack.getItem(), stack.getItemDamage());
             cobblestones.add(pair);
         }
 
         if (name.startsWith(OreDictEntries.PREFIX_NUGGET)) {
-            nuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            nuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             if (name.endsWith(OreDictEntries.MATERIAL_GOLD)) {
-                goldNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+                goldNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
             if (!Config.blacklistedStoneGrinderNuggets.contains(name)) {
-                stoneGrinderNuggets.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+                stoneGrinderNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
         }
 
         if (name.startsWith(OreDictEntries.PREFIX_INGOT)) {
-            ingots.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
+            ingots.put(Pair.of(stack.getItem(), stack.getItemDamage()), name);
         }
 
         if (name.equals(OreDictEntries.TREE_LEAVES)) {
-            leaves.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            leaves.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.equals(OreDictEntries.SAND_ORE)) {
-            sands.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            sands.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.startsWith(OreDictEntries.PREFIX_BLOCK)) {
-            blocks.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
+            blocks.put(Pair.of(stack.getItem(), stack.getItemDamage()), name);
             if (name.endsWith(OreDictEntries.MATERIAL_COAL)) {
                 blockCoals.add(stack.getItem());
             }
         }
 
         if (name.startsWith(OreDictEntries.PREFIX_GEM)) {
-            gems.put(MutablePair.of(stack.getItem(), stack.getItemDamage()), name);
+            gems.put(Pair.of(stack.getItem(), stack.getItemDamage()), name);
         }
 
         if (name.equals(OreDictEntries.STICK_WOOD)) {
-            sticks.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            sticks.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.startsWith(OreDictEntries.PREFIX_LOG)) {
-            logs.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            logs.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.equals(OreDictEntries.PLANK_WOOD)) {
@@ -101,7 +99,7 @@ public class OreDictHelper {
         }
 
         if (name.equals(OreDictEntries.PLATE_THIN_IRON)) {
-            thinIronPlates.add(MutablePair.of(stack.getItem(), stack.getItemDamage()));
+            thinIronPlates.add(Pair.of(stack.getItem(), stack.getItemDamage()));
         }
 
         if (name.equals(OreDictEntries.SLAB_WOOD)) {
@@ -147,7 +145,7 @@ public class OreDictHelper {
               .filter(recipe -> recipe.matches(temporaryCraftingGrid, null))
               .forEach(recipe -> {
                 ItemStack result = recipe.getRecipeOutput();
-                if (result != null && arrayContains(planks, MutablePair.of(result.getItem(), result.getItemDamage()))) {
+                if (result != null && arrayContains(planks, Pair.of(result.getItem(), result.getItemDamage()))) {
                     logToPlank.put(log, Pair.of(result.getItem(), result.getItemDamage()));
                 }
             });
@@ -155,15 +153,15 @@ public class OreDictHelper {
     }
 
     /**
-     * Gets whether the arraylist has the given value. This checks for WILDCARD OreDict metadata.
-     * @param list The ArrayList to check.
+     * Gets whether the collection has the given value. This checks for WILDCARD OreDict metadata.
+     * @param list The collection to check.
      * @param value The value to check for.
      * @return Whether it contains that given value.
      */
-    public static boolean arrayContains(Collection list, MutablePair<Item, Integer> value) {
-        if (value.right == OreDictionary.WILDCARD_VALUE) {
+    public static boolean arrayContains(Collection list, Pair<Item, Integer> value) {
+        if (value.getRight() == OreDictionary.WILDCARD_VALUE) {
             for (int i = 0; i < 15; i++) {
-                if (list.contains(MutablePair.of(value.left, i))) {
+                if (list.contains(Pair.of(value.getLeft(), i))) {
                     return true;
                 }
             }
@@ -172,15 +170,15 @@ public class OreDictHelper {
     }
 
     /**
-     * Gets whether the HashMap has the given key. This checks for WILDCARD OreDict metadata.
-     * @param hash The HashMap to check
+     * Gets whether the Map has the given key. This checks for WILDCARD OreDict metadata.
+     * @param hash The Map to check
      * @param key The key to check for.
      * @return Whether it contains that key.
      */
-    public static boolean containsKey(HashMap hash, MutablePair<Item, Integer> key) {
-        if (key.right == OreDictionary.WILDCARD_VALUE) {
+    public static boolean containsKey(Map hash, Pair<Item, Integer> key) {
+        if (key.getRight() == OreDictionary.WILDCARD_VALUE) {
             for (int i = 0; i < 15; i++) {
-                if (hash.containsKey(MutablePair.of(key.left, i))) {
+                if (hash.containsKey(Pair.of(key.getLeft(), i))) {
                     return true;
                 }
             }
@@ -189,14 +187,14 @@ public class OreDictHelper {
     }
 
     /**
-     * Checks if the ArrayList of the MutablePair<Item, Integer> format has the given Item.
+     * Checks if the iteration of Pair<Item, Integer>s has the given Item.
      * @param list The list to check.
      * @param left The Item to check for.
      * @return Whether it has the item.
      */
-    public static boolean arrayHasItem(ArrayList<MutablePair<Item, Integer>> list, Item left) {
-        for (MutablePair<Item, Integer> s : list) {
-            if (s.left == left) {
+    public static boolean listHasItem(Iterable<Pair<Item, Integer>> list, Item left) {
+        for (Pair<Item, Integer> s : list) {
+            if (s.getLeft() == left) {
                 return true;
             }
         }
@@ -204,14 +202,14 @@ public class OreDictHelper {
     }
 
     /**
-     * @see #arrayHasItem(ArrayList, Item)
+     * @see #listHasItem(Iterable, Item)
      * @param hash The hash to check.
      * @param left The Item to check for.
      * @return Whether it has the item.
      */
-    public static boolean hashHasItem(HashMap<MutablePair<Item, Integer>, String> hash, Item left) {
-        for (MutablePair<Item, Integer> s : hash.keySet()) {
-            if (s.left == left) {
+    public static boolean mapHasItem(Map<Pair<Item, Integer>, String> hash, Item left) {
+        for (Pair<Item, Integer> s : hash.keySet()) {
+            if (s.getLeft() == left) {
                 return true;
             }
         }

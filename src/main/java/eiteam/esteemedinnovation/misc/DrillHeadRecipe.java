@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
             Item item = stack.getItem();
             int meta = stack.getItemDamage();
 
-            if (OreDictHelper.thinIronPlates.contains(MutablePair.of(stack.getItem(), stack.getItemDamage()))) {
+            if (OreDictHelper.thinIronPlates.contains(Pair.of(stack.getItem(), stack.getItemDamage()))) {
                 numIronPlates += 1;
                 continue;
             }

@@ -44,7 +44,7 @@ public class ItemSoilSamplingKit extends Item {
         boolean oreDepositFound = false;
 
         if (OreDictHelper.dirts.contains(itemFromBlock) || OreDictHelper.grasses.contains(itemFromBlock) ||
-          OreDictHelper.arrayHasItem(OreDictHelper.sands, itemFromBlock) || OreDictHelper.gravels.contains(itemFromBlock)) {
+          OreDictHelper.listHasItem(OreDictHelper.sands, itemFromBlock) || OreDictHelper.gravels.contains(itemFromBlock)) {
             BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
             for (int x = -6; x < 6; x++) {
                 for (int z = -6; z < 6; z++) {

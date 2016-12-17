@@ -14,7 +14,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class TileEntitySaw extends SteamTransporterTileEntity {
@@ -66,7 +65,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         if (woodItem == null) {
             return;
         }
-        MutablePair<Item, Integer> pair = MutablePair.of(woodItem, woodBlock.damageDropped(woodState));
+        Pair<Item, Integer> pair = Pair.of(woodItem, woodBlock.damageDropped(woodState));
         ItemStack output = null;
         // If the block is a plankWood, output sticks; if the block is a logWood, output planks.
         if (OreDictHelper.arrayContains(OreDictHelper.planks, pair)) {
