@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class UtilEnhancements {
             if (enhancement.canApplyTo(new ItemStack(item))) {
                 ResourceLocation loc = enhancement.getModel(item);
                 locs.add(loc);
-                EnhancementRegistry.enhancementIcons.put(MutablePair.of(item, enhancement), loc);
+                EnhancementRegistry.enhancementIcons.put(Pair.of(item, enhancement), loc);
             }
         }
         return locs;
@@ -44,7 +44,7 @@ public class UtilEnhancements {
     }
 
     public static ResourceLocation getIconFromEnhancement(ItemStack item, IEnhancement enhancement) {
-        return EnhancementRegistry.enhancementIcons.get(MutablePair.of(item.getItem(), enhancement));
+        return EnhancementRegistry.enhancementIcons.get(Pair.of(item.getItem(), enhancement));
     }
 
     public static ResourceLocation getIconFromEnhancement(ItemStack item) {

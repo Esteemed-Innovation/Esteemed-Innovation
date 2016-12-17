@@ -2,10 +2,11 @@ package eiteam.esteemedinnovation.api.enhancement;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class EnhancementRegistry {
     /**
@@ -13,13 +14,15 @@ public class EnhancementRegistry {
      * Key: A pair of the item, the item as an enhancement.
      * Value: The ResourceLocation for the enhancement.
      */
-    public static HashMap<MutablePair<Item, IEnhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
+    public static Map<Pair<Item, IEnhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
+
     /**
      * The IEnhancements.
      * Key: Enhancement ID
      * Value: IEnhancement
      */
-    public static HashMap<String, IEnhancement> enhancements = new HashMap<>();
+    public static Map<String, IEnhancement> enhancements = new HashMap<>();
+
     /**
      * All of the rockets that the rocket launcher can use.
      */
