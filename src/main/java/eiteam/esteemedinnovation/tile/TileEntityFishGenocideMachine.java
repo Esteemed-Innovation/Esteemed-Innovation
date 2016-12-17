@@ -11,7 +11,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableList;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,26 +29,26 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
     /**
      * @return A new Pair: Chunk, # of water source blocks in chunk at the Y position.
      */
-    public MutablePair<Chunk, Integer> randSourceBlock() {
-        ArrayList<Chunk> cc = new ArrayList<>();
+    private Pair<Chunk, Integer> randSourceBlock() {
+        List<Chunk> chunks = new ArrayList<>();
         int water = 0;
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 BlockPos pos = new BlockPos(this.pos.getX() + x, this.pos.getY(), this.pos.getZ() + z);
                 if (worldObj.getBlockState(pos).getBlock() == Blocks.WATER) {
-                    cc.add(new Chunk(worldObj, pos.getX(), pos.getZ()));
+                    chunks.add(new Chunk(worldObj, pos.getX(), pos.getZ()));
                     water++;
                 }
             }
         }
-        return MutablePair.of(cc.get(worldObj.rand.nextInt(cc.size())), water);
+        return Pair.of(chunks.get(worldObj.rand.nextInt(chunks.size())), water);
     }
 
 
     @Override
     public void update() {
         super.update();
-        MutablePair<Chunk, Integer> pair = randSourceBlock();
+        Pair<Chunk, Integer> pair = randSourceBlock();
         int src = pair.getRight();
         if (getSteamShare() > src) {
             decrSteam(src);
@@ -64,7 +64,7 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
                 if (smeltingResult != null) {
                     output = smeltingResult;
                 }
-                this.dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
+                dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
             }
         }
     }
