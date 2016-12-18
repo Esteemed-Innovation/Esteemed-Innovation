@@ -4,6 +4,8 @@ package eiteam.esteemedinnovation.data.capabilities.player;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface IPlayerData {
     /**
@@ -56,11 +58,19 @@ public interface IPlayerData {
      */
     void setLastMotions(@Nullable MutablePair<Double, Double> value);
 
+    /**
+     * Sets whether the player has unlocked the provided {@link eiteam.esteemedinnovation.api.book.BookEntry} key.
+     * @param entry The entry name
+     * @param unlocked Whether it is being unlocked (true) or locked (false).
+     */
+    void setHasUnlockedAnEntry(String entry, boolean unlocked);
+
     class DefaultImplementation implements IPlayerData {
         private Float previousStepHeight = null;
         private int tickCache = -1;
         private boolean isRangeExtended = false;
         private MutablePair<Double, Double> lastMotions = null;
+        private List<String> entriesUnlocked = new ArrayList<>();
 
         @Override
         public Float getPreviousStepHeight() {
@@ -100,6 +110,15 @@ public interface IPlayerData {
         @Override
         public void setLastMotions(MutablePair<Double, Double> value) {
             lastMotions = value;
+        }
+
+        @Override
+        public void setHasUnlockedAnEntry(String entry, boolean unlocked) {
+            if (unlocked) {
+                entriesUnlocked.add(entry);
+            } else {
+                entriesUnlocked.remove(entry);
+            }
         }
     }
 }
