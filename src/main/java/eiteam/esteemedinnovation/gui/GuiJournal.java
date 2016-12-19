@@ -1,9 +1,7 @@
 package eiteam.esteemedinnovation.gui;
 
 import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.book.BookPage;
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
-import eiteam.esteemedinnovation.api.book.IGuiJournal;
+import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
@@ -20,13 +18,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiJournal extends GuiScreen implements IGuiJournal {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
@@ -46,20 +46,21 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
 
     public GuiJournal(EntityPlayer player) {
         categories = new ArrayList<>();
-        for (String cat : BookPageRegistry.categories) {
-            int pages = 0;
-            for (MutablePair<String, String> research : BookPageRegistry.research) {
-                if (research.right.equals(cat) && BookPageRegistry.researchPages.get(research.left).length > 0) {
-                    pages++;
-                }
+        for (BookCategory cat : BookPageRegistry.categories) {
+            if (cat.isHidden(player) || !cat.isUnlocked(player)) {
+                continue;
             }
+            int pages = Arrays.stream(cat.getEntries()).filter(entry -> entry.getPages().length > 0).toArray().length;
             for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
-                categories.add(cat + (s == 0 ? "" : s));
+                categories.add(cat.getCategoryName() + (s == 0 ? "" : s));
             }
         }
         bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
         if (!viewing.isEmpty()) {
-            bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
+            BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
+            if (entry != null) {
+                bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().length / 2F);
+            }
         }
         ItemStack active = player.getHeldItemMainhand();
         if (active != null && active.getItem() instanceof ItemEsteemedInnovationJournal) {
@@ -144,12 +145,24 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
 
             if (button instanceof GuiButtonSelect) {
                 GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
-                lastIndexPage = currPage;
                 viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
-                currPage = 0;
-                bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
-                updateButtons();
-                mustReleaseMouse = true;
+                BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
+                int numPages = -1;
+                if (entry == null) {
+                    BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
+                    if (category != null && category.isUnlocked(mc.thePlayer)) {
+                        numPages = category.getAllVisiblePages(mc.thePlayer).length;
+                    }
+                } else if (entry.isUnlocked(mc.thePlayer)) {
+                    numPages = entry.getPages().length;
+                }
+                if (numPages != -1) {
+                    lastIndexPage = currPage;
+                    currPage = 0;
+                    bookTotalPages = MathHelper.ceiling_float_int(numPages / 2F);
+                    updateButtons();
+                    mustReleaseMouse = true;
+                }
             }
 
             initGui();
@@ -256,11 +269,20 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
                 int i = 10;
                 int offsetCounter = 0;
                 fontRendererObj.drawString("\u00A7n" + s, k + 40 - 67, 44 + b0, 0x3F3F3F);
-                for (MutablePair<String, String> research : BookPageRegistry.research) {
-                    if (research.right.equals(category) && BookPageRegistry.researchPages.get(research.left).length > 0) {
+                BookCategory actualCategory = BookPageRegistry.getCategoryFromName(category);
+                if (actualCategory != null) {
+                    for (BookEntry entry : Arrays.stream(actualCategory.getEntries()).filter(entry -> entry.getPages().length > 0).collect(Collectors.toList())) {
                         offsetCounter++;
                         if (offsetCounter > offset && offsetCounter < offset + 10) {
-                            s = research.left;
+                            s = entry.getEntryName();
+                            buttonList.add(new GuiButtonSelect(4, k + 50 - 67, b0 + 44 + i, 110, 10, s));
+                            i += 10;
+                        }
+                    }
+                    for (BookCategory subcat : actualCategory.getSubcategories()) {
+                        offsetCounter++;
+                        if (offsetCounter > offset && offsetCounter < offset + 10) {
+                            s = subcat.getCategoryName();
                             buttonList.add(new GuiButtonSelect(4, k + 50 - 67, b0 + 44 + i, 110, 10, s));
                             i += 10;
                         }
@@ -278,11 +300,20 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
                     s = I18n.format(category);
                     i = 10;
                     fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
-                    for (MutablePair<String, String> research : BookPageRegistry.research) {
-                        if (research.right.equals(category) && BookPageRegistry.researchPages.get(research.left).length > 0) {
+                    actualCategory = BookPageRegistry.getCategoryFromName(category);
+                    if (actualCategory != null) {
+                        for (BookEntry entry : Arrays.stream(actualCategory.getEntries()).filter(entry -> entry.getPages().length > 0).collect(Collectors.toList())) {
                             offsetCounter++;
                             if (offsetCounter > offset && offsetCounter < offset + 10) {
-                                s = research.left;
+                                s = entry.getEntryName();
+                                buttonList.add(new GuiButtonSelect(4, k + 50 + 67, b0 + 44 + i, 110, 10, s));
+                                i += 10;
+                            }
+                        }
+                        for (BookCategory subcat : actualCategory.getSubcategories()) {
+                            offsetCounter++;
+                            if (offsetCounter > offset && offsetCounter < offset + 10) {
+                                s = subcat.getCategoryName();
                                 buttonList.add(new GuiButtonSelect(4, k + 50 + 67, b0 + 44 + i, 110, 10, s));
                                 i += 10;
                             }
@@ -296,9 +327,19 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
             fontRendererObj.setUnicodeFlag(unicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
             fontRendererObj.setUnicodeFlag(true);
-            if (BookPageRegistry.researchPages.containsKey(viewing)) {
+            BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
+            BookPage[] pages = null;
+            if (category == null) {
+                BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
+                if (entry != null) {
+                    pages = entry.getPages();
+                }
+            } else {
+                pages = category.getAllVisiblePages(mc.thePlayer);
+            }
+            if (pages != null) {
+                bookTotalPages = MathHelper.ceiling_float_int(pages.length / 2F);
                 GlStateManager.enableBlend();
-                BookPage[] pages = BookPageRegistry.researchPages.get(viewing);
                 int leftPageIndex = currPage * 2;
                 BookPage leftPage = pages[leftPageIndex];
                 GlStateManager.enableBlend();
@@ -316,6 +357,7 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
                     rightPage.renderPageAfter(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
                 }
                 leftPage.renderPageAfter(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                updateButtons();
             }
             fontRendererObj.setUnicodeFlag(unicode);
         }
@@ -358,11 +400,14 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
     public void itemClicked(ItemStack itemStack) {
          for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
-                viewing = BookPageRegistry.bookRecipes.get(stack).left;
-                currPage = MathHelper.floor_float(BookPageRegistry.bookRecipes.get(stack).right / 2.0F);
-                bookTotalPages = MathHelper.ceiling_float_int(BookPageRegistry.researchPages.get(viewing).length / 2F);
-                mustReleaseMouse = true;
-                updateButtons();
+                BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
+                if (entry != null && entry.isUnlocked(mc.thePlayer)) {
+                    viewing = BookPageRegistry.bookRecipes.get(stack).getLeft();
+                    currPage = MathHelper.floor_float(BookPageRegistry.bookRecipes.get(stack).getRight() / 2.0F);
+                    bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().length / 2F);
+                    mustReleaseMouse = true;
+                    updateButtons();
+                }
             }
         }
     }
@@ -443,11 +488,16 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
             return;
         }
         GuiJournal journal = (GuiJournal) gui;
-        MutablePair<String, Integer> page = BookPageRegistry.bookRecipes.get(recipeStack);
-        journal.viewing = page.left;
-        journal.currPage = BookPageRegistry.entriesWithSubEntries.contains(journal.viewing) ? page.right / 2 : 0;
-        journal.lastIndexPage = 1;
-        journal.bookTotalPages = page.right;
-        journal.updateButtons();
+        Pair<String, Integer> page = BookPageRegistry.bookRecipes.get(recipeStack);
+        String pageName = page.getLeft();
+        BookEntry entry = BookPageRegistry.getEntryFromName(pageName);
+        if (entry != null) {
+            journal.viewing = pageName;
+            int pageNumber = page.getRight();
+            journal.currPage = entry != null && entry.getPages().length > 0 ? pageNumber / 2 : 0;
+            journal.lastIndexPage = 1;
+            journal.bookTotalPages = pageNumber;
+            journal.updateButtons();
+        }
     }
 }
