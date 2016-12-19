@@ -60,8 +60,9 @@ public class BookCategory implements BookPiece {
      * @return A flat array of all the pages within this category, including all of its subcategories.
      */
     public BookPage[] getAllPages() {
-        List<BookPage> pages = new ArrayList<>();
-        pages.addAll((Collection<BookPage>) Arrays.stream(getEntries()).flatMap(entry -> Arrays.stream(entry.getPages())).collect(Collectors.toList()));
+        List<BookPage> pages = Arrays.stream(getEntries())
+          .flatMap(entry -> Arrays.stream(entry.getPages()))
+          .collect(Collectors.toList());
         for (BookCategory subcategory : getSubcategories()) {
             pages.addAll(Arrays.asList(subcategory.getAllPages()));
         }
