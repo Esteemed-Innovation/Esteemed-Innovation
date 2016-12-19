@@ -123,8 +123,6 @@ public class SteamNetworkBlocks implements IInitCategory {
                     break;
                 }
                 case VALVE_PIPE: {
-                    BookRecipeRegistry.addRecipe("valvePipe", new ShapelessOreRecipe(block.getBlock(),
-                      PipeBlocks.Blocks.BRASS_PIPE.getBlock(), LEVER));
                     break;
                 }
                 case TANK: {

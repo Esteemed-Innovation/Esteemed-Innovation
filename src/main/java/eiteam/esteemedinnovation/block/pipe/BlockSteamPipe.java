@@ -1,10 +1,11 @@
 package eiteam.esteemedinnovation.block.pipe;
 
-import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
-import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
+import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.tile.pipe.TileEntitySteamPipe;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -27,7 +29,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BlockSteamPipe extends BlockSteamTransporter {
     public static final float BASE_MIN = 4F / 16F;
@@ -39,6 +45,8 @@ public class BlockSteamPipe extends BlockSteamTransporter {
     public static final PropertyBool WEST = PropertyBool.create("west");
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
+
+    private static final Item LEVER = Item.getItemFromBlock(Blocks.LEVER);
 
     public BlockSteamPipe() {
         super(Material.IRON);
@@ -279,5 +287,13 @@ public class BlockSteamPipe extends BlockSteamTransporter {
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (heldItem != null && heldItem.getItem() == LEVER) {
+            return world.setBlockState(pos, SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock().getDefaultState().withProperty(BlockValvePipe.FACING, side));
+        }
+        return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
 }

@@ -513,9 +513,8 @@ public class EsteemedInnovationJournal {
           new BookPageItem("research.Boiler.name", "research.Boiler.0", new ItemStack(BOILER.getBlock())),
           new BookPageCrafting("", "boiler1", "boiler2"));
         BookEntry pipeEntry = new BookEntry("research.Pipe.name",
-          new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE.getBlock())),
-          new BookPageText("research.Pipe.name", "research.Pipe.1"),
-          new BookPageCrafting("", "valvePipe"));
+          new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE.getBlock()), new ItemStack(VALVE_PIPE.getBlock())),
+          new BookPageText("research.Pipe.name", "research.Pipe.1"));
         BookEntry tankEntry = new BookEntry("research.Tank.name",
           new BookPageItem("research.Tank.name", "research.Tank.0", new ItemStack(TANK.getBlock())),
           new BookPageCrafting("", "tank1", "tank2"));
