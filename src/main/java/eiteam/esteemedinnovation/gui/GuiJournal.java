@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 
@@ -48,7 +47,7 @@ public class GuiJournal extends GuiScreen implements IGuiJournal {
     public GuiJournal(EntityPlayer player) {
         categories = new ArrayList<>();
         for (BookCategory cat : BookPageRegistry.categories) {
-            if (cat.isHidden() || !cat.isUnlocked(player)) {
+            if (cat.isHidden(player) || !cat.isUnlocked(player)) {
                 continue;
             }
             int pages = Arrays.stream(cat.getEntries()).filter(entry -> entry.getPages().length > 0).toArray().length;

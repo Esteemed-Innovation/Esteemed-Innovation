@@ -12,10 +12,10 @@ public interface BookPiece {
     }
 
     /**
-     * @return If this piece is ever shown to the player through standard browsing of the journal. Not player-specific
-     *         like {@link #isUnlocked(EntityPlayer)}.
+     * @param player The player who is trying to open this piece.
+     * @return If this piece is ever shown to the player through standard browsing of the journal.
      */
-    default boolean isHidden() {
+    default boolean isHidden(EntityPlayer player) {
         return false;
     }
 }

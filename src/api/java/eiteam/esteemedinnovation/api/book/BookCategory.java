@@ -73,11 +73,11 @@ public class BookCategory implements BookPiece {
      * @return Like getAllPages, but filters out all entries that the player that cannot view.
      */
     public BookPage[] getAllVisiblePages(EntityPlayer player) {
-        if (isHidden() || !isUnlocked(player)) {
+        if (isHidden(player) || !isUnlocked(player)) {
             return new BookPage[] {};
         }
         List<BookPage> pages = Arrays.stream(getEntries())
-          .filter(entry -> entry.isUnlocked(player) && !entry.isHidden())
+          .filter(entry -> entry.isUnlocked(player) && !entry.isHidden(player))
           .flatMap(entry -> Arrays.stream(entry.getPages()))
           .collect(Collectors.toList());
         return pages.toArray(new BookPage[pages.size()]);

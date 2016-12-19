@@ -620,7 +620,7 @@ public class EsteemedInnovationJournal {
           new BookEntry("research.CreativeTank.name", new BookPageItem("research.CreativeTank.name", "research.CreativeTank.0", new ItemStack(Items.BOWL)))
         }) {
             @Override
-            public boolean isHidden() {
+            public boolean isHidden(EntityPlayer player) {
                 return true;
             }
         });
