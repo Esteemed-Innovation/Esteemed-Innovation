@@ -15,7 +15,7 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/craftingSquare.png");
     private CrucibleLiquid input;
     private int amount;
-    private ItemStack[] item1;
+    private ItemStack[] fluidItemRepresentation;
     private ItemStack inputItem;
     private ItemStack resultItem;
 
@@ -23,7 +23,7 @@ public class BookPageDip extends BookPage implements ICraftingPage {
         super(name);
         input = ifluid;
         List<ItemStack> ores = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(input.nugget)[0]));
-        item1 = ores.toArray(new ItemStack[ores.size()]);
+        fluidItemRepresentation = ores.toArray(new ItemStack[ores.size()]);
         inputItem = ip;
         resultItem = res;
         amount = am;
@@ -34,12 +34,12 @@ public class BookPageDip extends BookPage implements ICraftingPage {
         book.getMC().getTextureManager().bindTexture(craftSquareTexture);
         ((Gui) book).drawTexturedModalRect(x + 45, y + 65, 0, 146, 97, 59);
         fontRenderer.setUnicodeFlag(false);
-        int ticks = getTicks(item1);
-        drawItemStack(item1[ticks], x + 40 + 19 + 28, y + 65 + 14, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, true);
-        drawItemStack(inputItem, x + 43, y + 65 + 14, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, true);
-        drawItemStack(resultItem, x + 40 + 90, y + 65 + 14, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, false);
+        int ticks = getTicks(fluidItemRepresentation);
+        drawItemStack(fluidItemRepresentation[ticks], x + 40 + 19 + 28, y + 65 + 14, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, true);
+        drawItemStack(inputItem, x + 43, y + 65 + 14, inputItem.stackSize > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, true);
+        drawItemStack(resultItem, x + 40 + 90, y + 65 + 14, resultItem.stackSize > 1 ? Integer.toString(amount) : "", renderer, fontRenderer, false);
 
-        //this.drawItemStack(item1[ticks], x+40+19, y+65+2, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer);
+        //this.drawItemStack(fluidItemRepresentation[ticks], x+40+19, y+65+2, amount > 1 ? Integer.toString(amount) : "", renderer, fontRenderer);
 
         fontRenderer.setUnicodeFlag(true);
     }
