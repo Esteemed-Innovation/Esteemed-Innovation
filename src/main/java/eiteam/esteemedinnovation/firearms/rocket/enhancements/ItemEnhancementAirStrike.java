@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.firearms.rocket.enhancements;
 
+import eiteam.esteemedinnovation.api.enhancement.IEnhancementRocketLauncher;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.IEnhancementRocketLauncher;
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.EntityRocket;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;

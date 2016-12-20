@@ -1,15 +1,15 @@
 package eiteam.esteemedinnovation.firearms.flintlock.enhancements;
 
+import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.firearm.IEnhancementFirearm;
-import eiteam.esteemedinnovation.api.firearm.EntityMusketBall;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.MUSKET;
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.BLUNDERBUSS;
+import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.MUSKET;
 
 public class ItemEnhancementFireMusket extends Item implements IEnhancementFirearm {
     @Override

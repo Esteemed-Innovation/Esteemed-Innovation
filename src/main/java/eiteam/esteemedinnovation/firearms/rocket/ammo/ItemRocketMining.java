@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.firearms.rocket.ammo;
 
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.IRocket;
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.EntityRocket;
+import eiteam.esteemedinnovation.api.enhancement.IRocket;
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.firearms.rocket.ammo;
 
+import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.EntityRocket;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;

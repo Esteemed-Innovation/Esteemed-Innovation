@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.whistle;
 
-import eiteam.esteemedinnovation.api.steamtransporter.ISteamTransporter;
+import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;

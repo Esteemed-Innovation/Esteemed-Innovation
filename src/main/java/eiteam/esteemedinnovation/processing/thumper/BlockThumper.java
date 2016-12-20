@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.processing.thumper;
 
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
-import eiteam.esteemedinnovation.api.steamtransporter.BlockSteamTransporter;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;

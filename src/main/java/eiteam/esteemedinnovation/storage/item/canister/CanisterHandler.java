@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.storage.item.canister;
 
+import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.util.Tuple3;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

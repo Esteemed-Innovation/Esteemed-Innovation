@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.commons.network;
 
-import eiteam.esteemedinnovation.api.camo.IDisguisableBlock;
+import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;

@@ -1,23 +1,23 @@
 package eiteam.esteemedinnovation.init.items.firearms;
 
-import eiteam.esteemedinnovation.api.firearm.EnhancementRegistry;
+import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
+import eiteam.esteemedinnovation.api.enhancement.IRocket;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketBasic;
+import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketConcussive;
+import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketMining;
+import eiteam.esteemedinnovation.init.IInitCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.api.firearm.rocketlauncher.IRocket;
-import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketBasic;
-import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketConcussive;
-import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketMining;
 
-import static net.minecraft.init.Items.*;
-import static net.minecraft.init.Blocks.*;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
+import static net.minecraft.init.Blocks.SAND;
+import static net.minecraft.init.Items.*;
 
 public class FirearmAmmunitionItems implements IInitCategory {
     public enum Items {

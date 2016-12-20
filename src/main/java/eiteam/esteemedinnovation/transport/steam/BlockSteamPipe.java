@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.transport.steam;
 
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
-import eiteam.esteemedinnovation.api.steamtransporter.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import net.minecraft.block.material.Material;

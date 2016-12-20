@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.fishfarm;
 
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;

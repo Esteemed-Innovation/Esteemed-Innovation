@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.processing.smasher;
 
-import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;

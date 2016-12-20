@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.steamsafety.gauge;
 
-import eiteam.esteemedinnovation.api.steamtransporter.ISteamTransporter;
+import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
-import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

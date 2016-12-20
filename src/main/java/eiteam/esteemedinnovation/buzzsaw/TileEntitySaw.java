@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.buzzsaw;
 
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.boiler;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
-import eiteam.esteemedinnovation.api.steamtransporter.BlockSteamTransporter;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;

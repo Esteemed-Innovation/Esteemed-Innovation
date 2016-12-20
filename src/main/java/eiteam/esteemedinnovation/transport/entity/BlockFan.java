@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.transport.entity;
 
-import eiteam.esteemedinnovation.api.steamtransporter.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;

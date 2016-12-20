@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.charging;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.ISteamChargable;
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

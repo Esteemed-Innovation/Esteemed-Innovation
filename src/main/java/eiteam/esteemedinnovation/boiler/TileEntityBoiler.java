@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.boiler;
 
-import eiteam.esteemedinnovation.api.camo.IDisguisableBlock;
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;

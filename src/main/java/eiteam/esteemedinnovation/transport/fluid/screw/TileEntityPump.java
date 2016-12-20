@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.transport.fluid.screw;
 
+import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.api.steamtransporter.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

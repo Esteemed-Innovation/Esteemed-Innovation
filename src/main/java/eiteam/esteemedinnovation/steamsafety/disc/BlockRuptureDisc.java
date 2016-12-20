@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.disc;
 
-import eiteam.esteemedinnovation.api.steamtransporter.ISteamTransporter;
+import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;

@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.converter;
 
-import eiteam.esteemedinnovation.api.steamtransporter.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
-import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;

@@ -1,21 +1,21 @@
 package eiteam.esteemedinnovation.commons.handler;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.camo.IDisguisableBlock;
-import eiteam.esteemedinnovation.api.firearm.UtilEnhancements;
+import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
+import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
+import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.ClientProxy;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
-import eiteam.esteemedinnovation.charging.ItemSteamCell;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.renderer.ItemRenderer;

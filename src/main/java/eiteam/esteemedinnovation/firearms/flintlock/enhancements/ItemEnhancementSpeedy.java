@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.firearms.flintlock.enhancements;
 
+import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.firearm.IEnhancementFirearm;
-import eiteam.esteemedinnovation.api.firearm.EntityMusketBall;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;

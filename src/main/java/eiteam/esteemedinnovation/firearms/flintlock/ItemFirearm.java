@@ -1,18 +1,18 @@
 package eiteam.esteemedinnovation.firearms.flintlock;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.firearm.IEnhancement;
-import eiteam.esteemedinnovation.api.firearm.IEnhancementFirearm;
-import eiteam.esteemedinnovation.api.firearm.UtilEnhancements;
-import eiteam.esteemedinnovation.api.firearm.EntityMusketBall;
+import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
+import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
+import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
+import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

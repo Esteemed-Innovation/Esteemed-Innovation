@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.metalcasting;
 
-import eiteam.esteemedinnovation.processing.heater.BlockSteamHeater;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.util.Tuple3;
+import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
-import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
+import eiteam.esteemedinnovation.processing.heater.BlockSteamHeater;
 import eiteam.esteemedinnovation.processing.heater.TileEntitySteamHeater;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;

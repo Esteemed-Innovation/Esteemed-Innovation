@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.gauge;
 
-import eiteam.esteemedinnovation.api.steamtransporter.ISteamTransporter;
+import eiteam.esteemedinnovation.api.ISteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
 import net.minecraft.util.EnumFacing;
