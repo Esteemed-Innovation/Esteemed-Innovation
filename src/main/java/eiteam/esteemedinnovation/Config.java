@@ -242,7 +242,7 @@ public class Config {
     public static boolean enableCanister;
 
     public static boolean singleButtonTrackpad;
-
+    public static boolean removeHopperRecipe;
 
     public static void load(FMLPreInitializationEvent event) {
         File configurationDir = event.getModConfigurationDirectory();
@@ -450,6 +450,7 @@ public class Config {
         enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean();
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get("Other", "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();
+        removeHopperRecipe = config.get("Other", "Remove Hopper crafting recipes (can still be made with the crucible)", true).getBoolean();
 
         //INTEGRATION
         enableThaumcraftIntegration = config.get("Integration", "Enable Thaumcraft", true).getBoolean();

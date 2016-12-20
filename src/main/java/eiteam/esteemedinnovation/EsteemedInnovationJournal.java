@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.init.blocks.CastingBlocks.Blocks.*;
 import static eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks.Blocks.FUNNEL;
+import static eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks.Blocks.WOODEN_CONE;
 import static eiteam.esteemedinnovation.init.blocks.OreBlocks.Blocks.OVERWORLD_COPPER_ORE;
 import static eiteam.esteemedinnovation.init.blocks.OreBlocks.Blocks.OVERWORLD_ZINC_ORE;
 import static eiteam.esteemedinnovation.init.blocks.PipeBlocks.Blocks.BRASS_PIPE;
@@ -42,8 +43,7 @@ import static eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems.
 import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.tools.ToolItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems.Items.*;
-import static eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids.Liquids.BRASS_LIQUID;
-import static eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids.Liquids.GOLD_LIQUID;
+import static eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids.Liquids.*;
 
 public class EsteemedInnovationJournal {
     // TODO: Change if (Config.XXX) to if (thing.isEnabled())
@@ -907,7 +907,13 @@ public class EsteemedInnovationJournal {
         if (FUNNEL.isEnabled()) {
             miscFactory.append(new BookEntry("research.Funnel.name",
               new BookPageItem("research.Funnel.name", "research.Funnel.0", true, new ItemStack(FUNNEL.getBlock())),
-              new BookPageCrafting("", "funnel")));
+              new BookPageDip("", COPPER_LIQUID.getLiquid(), 45, new ItemStack(WOODEN_CONE.getBlock(), 1), new ItemStack(FUNNEL.getBlock(), 1))));
+        }
+        if (WOODEN_CONE.isEnabled()) {
+            miscFactory.append(new BookEntry("research.WoodenCone.name",
+              new BookPageItem("research.WoodenCone.name", "research.WoodenCone.0", true, new ItemStack(WOODEN_CONE.getBlock())),
+              new BookPageCrafting("", "woodenCone"),
+              new BookPageDip("", IRON_LIQUID.getLiquid(), 45, new ItemStack(WOODEN_CONE.getBlock(), 1), new ItemStack(Blocks.HOPPER, 1))));
         }
         BookPageRegistry.addTopCategory(miscFactory.build());
     }

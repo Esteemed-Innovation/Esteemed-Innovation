@@ -410,6 +410,8 @@ research.BlockPlacer.0=I may have a machine that will smash the blocks I place d
 category.Misc.name=Miscellaneous
 research.Funnel.name=Funnel
 research.Funnel.0=I've considered the properties of particulates which fall, such as a sand and gravel and come to the conclusion that liquids must obey similar laws. As a result of my experiments I've constructed the funnel, which operates as a hopper does but for fluids. This should ease water collection for various purposes.
+research.WoodenCone.name=Wooden Cone
+research.WoodenCone.0=This primitive device functions as a spike when placed on the ground. It can be dipped in metals to create other cone-like devices like Funnels and Hoppers.
 
 itemGroup.esteemedinnovation=Esteemed Innovation
 itemGroup.esteemedinnovationTools=Esteemed Innovation Tools
@@ -683,6 +685,7 @@ tile.esteemedinnovation:steam_whistle.name=Steam Whistle
 tile.esteemedinnovation:pressure_converter.name=Pressure Converter
 tile.esteemedinnovation:funnel.name=Funnel
 tile.esteemedinnovation:plonker.name=Plonker
+tile.esteemedinnovation:wooden_cone.name=Wooden Cone
 
 esteemedinnovation.research.shiftforlist=Hold shift to view your keywords
 item.esteemedinnovation:soil_sampling_kit.name=Soil Sampling Kit
