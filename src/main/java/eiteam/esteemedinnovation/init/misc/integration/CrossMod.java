@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.init.misc.integration;
 
 import net.minecraftforge.fml.common.Loader;
-import eiteam.esteemedinnovation.Config;
+import eiteam.esteemedinnovation.commons.Config;
 
 public class CrossMod {
     public static final boolean BAUBLES = Loader.isModLoaded("Baubles") && Config.enableBaublesIntegration;

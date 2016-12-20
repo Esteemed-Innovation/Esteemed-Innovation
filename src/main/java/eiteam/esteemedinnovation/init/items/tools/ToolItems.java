@@ -1,15 +1,15 @@
 package eiteam.esteemedinnovation.init.items.tools;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.item.tool.*;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamAxe;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamDrill;
-import eiteam.esteemedinnovation.item.tool.steam.ItemSteamShovel;
+import eiteam.esteemedinnovation.tools.steam.ItemSteamAxe;
+import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
+import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
+import eiteam.esteemedinnovation.tools.standard.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;

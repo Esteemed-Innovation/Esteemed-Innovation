@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.blocks.OreBlocks;
-import eiteam.esteemedinnovation.item.ItemSmashedOre;
-import eiteam.esteemedinnovation.item.ItemMetalIngot;
-import eiteam.esteemedinnovation.item.ItemMetalNugget;
-import eiteam.esteemedinnovation.item.ItemMetalPlate;
+import eiteam.esteemedinnovation.processing.smasher.ItemSmashedOre;
+import eiteam.esteemedinnovation.metals.refined.ItemMetalIngot;
+import eiteam.esteemedinnovation.metals.refined.ItemMetalNugget;
+import eiteam.esteemedinnovation.metals.refined.ItemMetalPlate;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

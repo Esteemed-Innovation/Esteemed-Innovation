@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
-import eiteam.esteemedinnovation.item.ItemKitBag;
-import eiteam.esteemedinnovation.item.ItemResearchLog;
-import eiteam.esteemedinnovation.item.ItemSoilSamplingKit;
+import eiteam.esteemedinnovation.storage.item.ItemKitBag;
+import eiteam.esteemedinnovation.naturalphilosophy.ItemResearchLog;
+import eiteam.esteemedinnovation.naturalphilosophy.ItemSoilSamplingKit;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;

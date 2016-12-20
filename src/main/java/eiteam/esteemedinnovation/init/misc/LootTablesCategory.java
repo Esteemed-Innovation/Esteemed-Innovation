@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init.misc;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

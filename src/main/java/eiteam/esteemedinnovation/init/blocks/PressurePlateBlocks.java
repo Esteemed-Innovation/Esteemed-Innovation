@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.block.pressureplate.BlockClassSensitivePlate;
-import eiteam.esteemedinnovation.block.pressureplate.BlockWeightedPlate;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.redstone.plates.BlockClassSensitivePlate;
+import eiteam.esteemedinnovation.redstone.plates.BlockWeightedPlate;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import net.minecraft.block.Block;

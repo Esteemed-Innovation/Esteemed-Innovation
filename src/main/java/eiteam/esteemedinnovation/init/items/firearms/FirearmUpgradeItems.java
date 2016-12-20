@@ -1,18 +1,21 @@
 package eiteam.esteemedinnovation.init.items.firearms;
 
-import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
+import eiteam.esteemedinnovation.api.firearm.EnhancementRegistry;
+import eiteam.esteemedinnovation.firearms.flintlock.enhancements.*;
+import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
+import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
+import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
+import eiteam.esteemedinnovation.api.firearm.IEnhancement;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.firearm.enhancement.*;
 
 import static net.minecraft.init.Items.*;
 import static net.minecraft.init.Blocks.*;

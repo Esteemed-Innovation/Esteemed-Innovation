@@ -5,9 +5,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import eiteam.esteemedinnovation.block.BlockBeacon;
+import eiteam.esteemedinnovation.metals.refined.BlockBeacon;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
+import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static eiteam.esteemedinnovation.init.misc.CraftingHelpers.add3x3Recipe;

@@ -3,13 +3,13 @@ package eiteam.esteemedinnovation.init.items.firearms;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.firearm.ItemFirearm;
-import eiteam.esteemedinnovation.item.firearm.ItemRocketLauncher;
+import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
+import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 

@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import eiteam.esteemedinnovation.block.BlockGenericOre;
+import eiteam.esteemedinnovation.metals.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
+import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_ZINC;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_COPPER;

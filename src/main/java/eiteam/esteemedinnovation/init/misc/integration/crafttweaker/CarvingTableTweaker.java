@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init.misc.integration.crafttweaker;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import minetweaker.IUndoableAction;
