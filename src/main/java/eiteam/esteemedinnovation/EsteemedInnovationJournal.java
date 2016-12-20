@@ -253,7 +253,7 @@ public class EsteemedInnovationJournal {
             castingFactory.append(new BookEntry("research.GildedGold.name",
               new BookPageItem("research.GildedGold.name", "research.GildedGold.0", GILDED_IRON_INGOT.createItemStack()),
               new BookPageText("research.GildedGold.name", "research.GildedGold.1"),
-              new BookPageDip("", GOLD_LIQUID.getLiquid(), 1, new ItemStack(Items.IRON_INGOT), GILDED_IRON_PLATE.createItemStack())));
+              new BookPageDip("", GOLD_LIQUID.getLiquid(), 1, new ItemStack(Items.IRON_INGOT), GILDED_IRON_INGOT.createItemStack())));
         }
         BookPageRegistry.addTopCategory(castingFactory.build());
     }
