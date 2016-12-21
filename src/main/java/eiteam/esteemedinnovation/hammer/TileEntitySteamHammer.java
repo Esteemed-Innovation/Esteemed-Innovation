@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.hammer;
+package eiteam.esteemedinnovation.hammer;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;

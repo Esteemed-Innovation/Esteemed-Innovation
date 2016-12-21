@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.thumper;
+package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;

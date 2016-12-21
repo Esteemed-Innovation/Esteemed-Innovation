@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.blocks.OreBlocks;
-import eiteam.esteemedinnovation.processing.smasher.ItemSmashedOre;
+import eiteam.esteemedinnovation.smasher.ItemSmashedOre;
 import eiteam.esteemedinnovation.metals.refined.ItemMetalIngot;
 import eiteam.esteemedinnovation.metals.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.metals.refined.ItemMetalPlate;

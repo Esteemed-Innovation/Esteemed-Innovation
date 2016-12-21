@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.hammer;
+package eiteam.esteemedinnovation.hammer;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;

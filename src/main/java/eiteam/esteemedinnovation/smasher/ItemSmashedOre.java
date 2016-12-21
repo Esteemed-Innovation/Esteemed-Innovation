@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.smasher;
+package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 

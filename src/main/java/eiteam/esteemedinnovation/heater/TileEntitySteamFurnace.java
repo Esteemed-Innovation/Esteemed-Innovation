@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.heater;
+package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 import net.minecraft.block.BlockFurnace;

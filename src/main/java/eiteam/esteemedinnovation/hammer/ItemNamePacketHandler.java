@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.hammer;
+package eiteam.esteemedinnovation.hammer;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;

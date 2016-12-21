@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.heater;
+package eiteam.esteemedinnovation.heater;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;

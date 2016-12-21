@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.hammer;
+package eiteam.esteemedinnovation.hammer;
 
 import eiteam.esteemedinnovation.commons.visual.IInventoryTESR;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;

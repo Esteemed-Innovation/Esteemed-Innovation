@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.workshop;
 
 import eiteam.esteemedinnovation.boiler.BlockBoiler;
-import eiteam.esteemedinnovation.processing.heater.BlockSteamHeater;
+import eiteam.esteemedinnovation.heater.BlockSteamHeater;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;

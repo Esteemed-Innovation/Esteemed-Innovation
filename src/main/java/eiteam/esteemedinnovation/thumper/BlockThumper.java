@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.thumper;
+package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;

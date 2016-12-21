@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.heater;
+package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
-import static eiteam.esteemedinnovation.processing.heater.TileEntitySteamFurnace.*;
+import static eiteam.esteemedinnovation.heater.TileEntitySteamFurnace.*;
 
 // FIXME: Shift-clicking in the SteamFurnace GUI with things added by addSteamingRecipe are not put into slot 0.
 public class TileEntitySteamHeater extends TileEntitySteamPipe {

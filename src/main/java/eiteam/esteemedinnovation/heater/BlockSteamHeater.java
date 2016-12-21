@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.heater;
+package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;

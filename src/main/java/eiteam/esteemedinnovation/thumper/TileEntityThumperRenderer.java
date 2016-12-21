@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.processing.thumper;
+package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
