@@ -5,7 +5,12 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 
+import javax.annotation.Nonnull;
+
 public class BookPageText extends BookPage {
+    public static int abdoName;
+    @Nonnull
+    public static String lastViewing = "";
     private String text;
 
     public BookPageText(String name, String string2) {
@@ -21,9 +26,9 @@ public class BookPageText extends BookPage {
     @Override
     public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         super.renderPage(x, y, fontRenderer, book, renderer, isFirstPage, mx, my);
-        if (!BookPageItem.lastViewing.equals(book.getCurrentEntry())) {
-            BookPageItem.abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
-            BookPageItem.lastViewing = book.getCurrentEntry();
+        if (!lastViewing.equals(book.getCurrentEntry())) {
+            abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
+            lastViewing = book.getCurrentEntry();
         }
         int yOffset = y + 30;
         if (isFirstPage || shouldDisplayTitle) {

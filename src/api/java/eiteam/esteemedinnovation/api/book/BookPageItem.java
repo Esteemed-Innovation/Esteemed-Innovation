@@ -9,8 +9,6 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
 
 public class BookPageItem extends BookPageText {
-    public static String lastViewing = "";
-    public static int abdoName;
     private ItemStack[] item;
     private String name;
     private String text;
