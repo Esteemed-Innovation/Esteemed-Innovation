@@ -2,7 +2,7 @@ package misc;
 
 import org.junit.Test;
 
-import static eiteam.esteemedinnovation.misc.MathUtility.*;
+import static eiteam.esteemedinnovation.commons.util.MathUtility.*;
 import static org.junit.Assert.*;
 
 public class MathUtilityTest {

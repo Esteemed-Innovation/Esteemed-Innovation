@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.ItemSteamedFood;
+import eiteam.esteemedinnovation.heater.ItemSteamedFood;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;

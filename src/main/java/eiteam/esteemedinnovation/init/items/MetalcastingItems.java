@@ -1,14 +1,14 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.ItemIngotMold;
-import eiteam.esteemedinnovation.item.ItemNuggetMold;
-import eiteam.esteemedinnovation.item.ItemPipeMold;
-import eiteam.esteemedinnovation.item.ItemPlateMold;
+import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemIngotMold;
+import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemNuggetMold;
+import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemPipeMold;
+import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemPlateMold;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;

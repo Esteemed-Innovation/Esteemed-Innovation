@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
-import eiteam.esteemedinnovation.item.ItemCraftingComponent;
+import eiteam.esteemedinnovation.misc.ItemCraftingComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;

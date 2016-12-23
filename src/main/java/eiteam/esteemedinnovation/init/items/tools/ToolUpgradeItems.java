@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.init.items.tools;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
@@ -11,9 +11,13 @@ import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
-import eiteam.esteemedinnovation.item.tool.steam.*;
-import eiteam.esteemedinnovation.misc.DrillHeadMaterial;
-import eiteam.esteemedinnovation.misc.DrillHeadRecipe;
+import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
+import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadRecipe;
+import eiteam.esteemedinnovation.tools.steam.upgrades.ItemExothermicProjector;
+import eiteam.esteemedinnovation.tools.steam.upgrades.ItemOverclockerUpgrade;
+import eiteam.esteemedinnovation.tools.steam.upgrades.ItemSteamToolUpgrade;
+import eiteam.esteemedinnovation.tools.steam.upgrades.ItemTheVoidUpgrade;
+import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -2,8 +2,8 @@ package misc;
 
 import org.junit.Test;
 
-import static eiteam.esteemedinnovation.misc.JavaHelper.capitalize;
-import static eiteam.esteemedinnovation.misc.JavaHelper.decapitalize;
+import static eiteam.esteemedinnovation.commons.util.JavaHelper.capitalize;
+import static eiteam.esteemedinnovation.commons.util.JavaHelper.decapitalize;
 import static org.junit.Assert.assertEquals;
 
 public class JavaHelperTest {

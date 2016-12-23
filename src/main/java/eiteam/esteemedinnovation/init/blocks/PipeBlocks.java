@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import eiteam.esteemedinnovation.EsteemedInnovation;
-import eiteam.esteemedinnovation.block.pipe.BlockColdFluidPipe;
-import eiteam.esteemedinnovation.block.pipe.BlockSteamPipe;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.transport.fluid.pipes.BlockColdFluidPipe;
+import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

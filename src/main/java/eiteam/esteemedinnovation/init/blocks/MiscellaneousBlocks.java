@@ -1,18 +1,18 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.block.BlockEngineeringTable;
-import eiteam.esteemedinnovation.block.BlockFunnel;
-import eiteam.esteemedinnovation.block.BlockOreDepositGenerator;
-import eiteam.esteemedinnovation.block.BlockWoodenCone;
+import eiteam.esteemedinnovation.engineeringtable.BlockEngineeringTable;
+import eiteam.esteemedinnovation.transport.fluid.funnel.BlockFunnel;
+import eiteam.esteemedinnovation.metals.raw.BlockOreDepositGenerator;
+import eiteam.esteemedinnovation.woodcone.BlockWoodenCone;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
-import eiteam.esteemedinnovation.item.BlockManyMetadataItem;
-import eiteam.esteemedinnovation.misc.RecipeUtility;
+import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

@@ -1,12 +1,17 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.boiler.BlockBoiler;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.block.*;
-import eiteam.esteemedinnovation.block.pipe.BlockValvePipe;
+import eiteam.esteemedinnovation.transport.steam.BlockValvePipe;
+import eiteam.esteemedinnovation.converter.BlockFluidSteamConverter;
 import eiteam.esteemedinnovation.init.IInitCategory;
-import eiteam.esteemedinnovation.item.BlockTankItem;
+import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
+import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
+import eiteam.esteemedinnovation.steamsafety.gauge.BlockSteamGauge;
+import eiteam.esteemedinnovation.steamsafety.whistle.BlockWhistle;
+import eiteam.esteemedinnovation.storage.steam.BlockSteamTank;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -18,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.FURNACE;
-import static net.minecraft.init.Blocks.LEVER;
 import static net.minecraft.init.Items.COMPASS;
 
 public class SteamNetworkBlocks implements IInitCategory {

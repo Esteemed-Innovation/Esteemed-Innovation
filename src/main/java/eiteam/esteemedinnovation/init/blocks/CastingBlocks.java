@@ -6,12 +6,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import eiteam.esteemedinnovation.Config;
-import eiteam.esteemedinnovation.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.block.BlockCarvingTable;
-import eiteam.esteemedinnovation.block.BlockCrucible;
-import eiteam.esteemedinnovation.block.BlockMold;
+import eiteam.esteemedinnovation.metalcasting.mold.BlockCarvingTable;
+import eiteam.esteemedinnovation.metalcasting.BlockCrucible;
+import eiteam.esteemedinnovation.metalcasting.mold.BlockMold;
 import eiteam.esteemedinnovation.init.IInitCategory;
 import eiteam.esteemedinnovation.init.items.MetalcastingItems;
 
