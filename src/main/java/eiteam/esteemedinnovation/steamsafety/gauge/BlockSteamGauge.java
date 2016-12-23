@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.steamsafety.gauge;
 
 import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;
@@ -119,7 +120,7 @@ public class BlockSteamGauge extends Block {
         float maxX = 12 * BlockRuptureDisc.UNIT;
         float maxY = 12 * BlockRuptureDisc.UNIT;
         float maxZ = pipe ? -3 * BlockRuptureDisc.UNIT + 0.0005F : BlockRuptureDisc.UNIT;
-        return BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, false);
+        return WorldHelper.getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, false);
     }
 
     @Override

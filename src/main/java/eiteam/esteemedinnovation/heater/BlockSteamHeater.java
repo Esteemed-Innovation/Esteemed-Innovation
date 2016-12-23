@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.heater;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.properties.PropertyBool;
@@ -92,7 +91,7 @@ public class BlockSteamHeater extends BlockSteamPipe implements IWrenchable {
     @Override
     public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
         super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
-        AxisAlignedBB aabb = BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), HEATER_AABB, true).offset(pos);
+        AxisAlignedBB aabb = WorldHelper.getDirectionalBoundingBox(state.getValue(FACING), HEATER_AABB, true).offset(pos);
         if (aabb.intersectsWith(entityBox)) {
             collidingBoxes.add(aabb);
         }

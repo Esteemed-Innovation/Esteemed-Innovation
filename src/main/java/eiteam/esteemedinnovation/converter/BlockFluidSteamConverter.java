@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.converter;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
@@ -50,7 +49,7 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements I
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing dir = state.getValue(FACING);
-        return BlockRuptureDisc.getDirectionalBoundingBox(dir, AABB, true);
+        return WorldHelper.getDirectionalBoundingBox(dir, AABB, true);
     }
 
     @Override

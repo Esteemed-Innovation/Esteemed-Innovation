@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.steamsafety.whistle;
 
 import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;
@@ -118,6 +119,6 @@ public class BlockWhistle extends Block {
         float maxX = 9.5F * BlockRuptureDisc.UNIT;
         float maxY = 16F * BlockRuptureDisc.UNIT;
         float maxZ = (pipe ? 1.5F : 5.5F) * BlockRuptureDisc.UNIT;
-        return BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, false);
+        return WorldHelper.getDirectionalBoundingBox(state.getValue(FACING), minX, minY, minZ, maxX, maxY, maxZ, false);
     }
 }

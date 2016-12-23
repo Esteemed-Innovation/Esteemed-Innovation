@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.transport.entity;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.IWrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
@@ -103,6 +102,6 @@ public class BlockVacuum extends BlockSteamTransporter implements IWrenchable {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockRuptureDisc.getDirectionalBoundingBox(state.getValue(FACING), VACUUM_AABB, true);
+        return WorldHelper.getDirectionalBoundingBox(state.getValue(FACING), VACUUM_AABB, true);
     }
 }
