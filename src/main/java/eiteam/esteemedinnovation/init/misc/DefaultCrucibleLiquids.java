@@ -18,12 +18,12 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
 public class DefaultCrucibleLiquids extends MiscellaneousCategory {
     public enum Liquids {
-        IRON_LIQUID(new CrucibleLiquid("iron", new ItemStack(Items.IRON_INGOT), MetalItems.Items.IRON_PLATE.createItemStack(), MetalItems.Items.IRON_NUGGET.createItemStack(), null, 200, 200, 200)),
-        GOLD_LIQUID(new CrucibleLiquid("gold", new ItemStack(Items.GOLD_INGOT), MetalItems.Items.GOLD_PLATE.createItemStack(), new ItemStack(Items.GOLD_NUGGET), null, 220, 157, 11)),
-        ZINC_LIQUID(new CrucibleLiquid("zinc", MetalItems.Items.ZINC_INGOT.createItemStack(), MetalItems.Items.ZINC_PLATE.createItemStack(), MetalItems.Items.ZINC_NUGGET.createItemStack(), null, 225, 225, 225)),
-        COPPER_LIQUID(new CrucibleLiquid("copper", MetalItems.Items.COPPER_INGOT.createItemStack(), MetalItems.Items.COPPER_PLATE.createItemStack(), MetalItems.Items.COPPER_NUGGET.createItemStack(), null, 140, 66, 12)),
-        BRASS_LIQUID(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), new CrucibleFormula(ZINC_LIQUID.getLiquid(), 1, COPPER_LIQUID.getLiquid(), 3, 4), 242, 191, 66)),
-        LEAD_LIQUID(new CrucibleLiquid("lead", findFirstOre(INGOT_LEAD), findFirstOre(PLATE_THIN_LEAD), findFirstOre(NUGGET_LEAD), null, 118, 128, 157));
+        IRON_LIQUID(new CrucibleLiquid("iron", new ItemStack(Items.IRON_INGOT), MetalItems.Items.IRON_PLATE.createItemStack(), MetalItems.Items.IRON_NUGGET.createItemStack(), 200, 200, 200)),
+        GOLD_LIQUID(new CrucibleLiquid("gold", new ItemStack(Items.GOLD_INGOT), MetalItems.Items.GOLD_PLATE.createItemStack(), new ItemStack(Items.GOLD_NUGGET), 220, 157, 11)),
+        ZINC_LIQUID(new CrucibleLiquid("zinc", MetalItems.Items.ZINC_INGOT.createItemStack(), MetalItems.Items.ZINC_PLATE.createItemStack(), MetalItems.Items.ZINC_NUGGET.createItemStack(), 225, 225, 225)),
+        COPPER_LIQUID(new CrucibleLiquid("copper", MetalItems.Items.COPPER_INGOT.createItemStack(), MetalItems.Items.COPPER_PLATE.createItemStack(), MetalItems.Items.COPPER_NUGGET.createItemStack(), 140, 66, 12)),
+        BRASS_LIQUID(new CrucibleLiquid("brass", MetalItems.Items.BRASS_INGOT.createItemStack(), MetalItems.Items.BRASS_PLATE.createItemStack(), MetalItems.Items.BRASS_NUGGET.createItemStack(), 242, 191, 66)),
+        LEAD_LIQUID(new CrucibleLiquid("lead", findFirstOre(INGOT_LEAD), findFirstOre(PLATE_THIN_LEAD), findFirstOre(NUGGET_LEAD), 118, 128, 157));
 
         private CrucibleLiquid liquid;
 
@@ -33,6 +33,20 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
 
         public CrucibleLiquid getLiquid() {
             return liquid;
+        }
+    }
+
+    public enum Formulas {
+        BRASS_FORMULA(new CrucibleFormula(Liquids.BRASS_LIQUID.getLiquid(), 4, Liquids.ZINC_LIQUID.getLiquid(), 1, Liquids.COPPER_LIQUID.getLiquid(), 3));
+
+        private final CrucibleFormula formula;
+
+        Formulas(CrucibleFormula formula) {
+            this.formula = formula;
+        }
+
+        public CrucibleFormula getFormula() {
+            return formula;
         }
     }
 
@@ -49,6 +63,9 @@ public class DefaultCrucibleLiquids extends MiscellaneousCategory {
     public void init(FMLInitializationEvent event) {
         for (Liquids liquid : Liquids.values()) {
             CrucibleRegistry.registerLiquid(liquid.getLiquid());
+        }
+        for (Formulas formula : Formulas.values()) {
+            CrucibleRegistry.registerFormula(formula.getFormula());
         }
 
         CrucibleLiquid liquidGold = Liquids.GOLD_LIQUID.getLiquid();

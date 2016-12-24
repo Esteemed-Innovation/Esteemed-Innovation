@@ -8,29 +8,37 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CrucibleRegistry {
     /**
      * All of the CrucibleLiquids that the mod knows about.
      */
-    public static ArrayList<CrucibleLiquid> liquids = new ArrayList<>();
+    public static List<CrucibleLiquid> liquids = new ArrayList<>();
+
+    /**
+     * All of the CrucibleFormulas
+     */
+    public static List<CrucibleFormula> alloyFormulas = new ArrayList<>();
+
     /**
      * All of the CrucibleLiquid recipes.
      * Key: pair of the item and its metadata, -1 if it does not use metadata.
      * Value: pair of the liquid and the amount created.
      */
-    public static HashMap<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> liquidRecipes = new HashMap<>();
+    public static Map<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> liquidRecipes = new HashMap<>();
+
     /**
      * All of the Crucible dunking recipes.
      * Key: A triplet of the Item, the metadata, and the CrucibleLiquid.
      * Value: A pair of the required liquid amount and the output ItemStack.
      */
-    public static HashMap<Tuple3, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
+    public static Map<Tuple3, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
 
     /**
      * All of the CrucibleLiquids that can be cast into pipes, and their according pipe ItemStacks
      */
-    public static HashMap<CrucibleLiquid, ItemStack> pipeLiquids = new HashMap<>();
+    public static Map<CrucibleLiquid, ItemStack> pipeLiquids = new HashMap<>();
 
     /**
      * Gets the given CrucibleLiquid from the name.
@@ -39,7 +47,7 @@ public class CrucibleRegistry {
      */
     public static CrucibleLiquid getLiquidFromName(String name) {
         for (CrucibleLiquid liquid : liquids) {
-            if (liquid.name.equals(name)) {
+            if (liquid.getName().equals(name)) {
                 return liquid;
             }
         }
@@ -226,6 +234,14 @@ public class CrucibleRegistry {
     }
 
     /**
+     * Registers the provided CrucibleFormula
+     * @param formula The formula
+     */
+    public static void registerFormula(CrucibleFormula formula) {
+        alloyFormulas.add(formula);
+    }
+
+    /**
      * Removes the liquid from the list of registered liquids. It also removes all of the liquid's
      * recipes.
      * @param liquid The item
@@ -239,5 +255,22 @@ public class CrucibleRegistry {
                 }
             }
         }
+    }
+
+    /**
+     * Removes the provided CrucibleFormula from the registry.
+     * @param formula The formula
+     */
+    public static void removeFormula(CrucibleFormula formula) {
+        alloyFormulas.remove(formula);
+    }
+
+    /**
+     * Finds all of the alloy formulas that result in the provided liquid.
+     * @param resultLiquid The output liquid
+     * @return A set of all matching formulas
+     */
+    public static List<CrucibleFormula> findRecipesThatResultInLiquid(CrucibleLiquid resultLiquid) {
+        return alloyFormulas.stream().filter(formula -> formula.getOutputLiquid().equals(resultLiquid)).collect(Collectors.toList());
     }
 }

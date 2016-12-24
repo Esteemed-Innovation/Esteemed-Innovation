@@ -22,7 +22,7 @@ public class CrucibleTweaker {
         ItemStack iStack = MineTweakerMC.getItemStack(ingot);
         ItemStack pStack = MineTweakerMC.getItemStack(plate);
         ItemStack nStack = MineTweakerMC.getItemStack(nugget);
-        CrucibleLiquid liquid = new CrucibleLiquid(name, iStack, pStack, nStack, null, r, g, b);
+        CrucibleLiquid liquid = new CrucibleLiquid(name, iStack, pStack, nStack, r, g, b);
         MineTweakerAPI.apply(new AddLiquid(liquid));
     }
 
@@ -35,8 +35,8 @@ public class CrucibleTweaker {
         CrucibleLiquid crucibleLiquid2 = CrucibleRegistry.getLiquidFromName(liquid2);
 
         if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
-            CrucibleFormula formula = new CrucibleFormula(crucibleLiquid1, amount1, crucibleLiquid2, amount2, amountOut);
-            CrucibleLiquid out = new CrucibleLiquid(name, iStack, pStack, nStack, formula, r, g, b);
+            CrucibleLiquid out = new CrucibleLiquid(name, iStack, pStack, nStack, r, g, b);
+            CrucibleFormula formula = new CrucibleFormula(out, amountOut, crucibleLiquid1, amount1, crucibleLiquid2, amount2);
             MineTweakerAPI.apply(new AddLiquid(out));
         } else {
             FMLLog.warning("[EI-MT] One of your liquids is null: " + liquid1 + ", " + liquid2);
@@ -45,13 +45,23 @@ public class CrucibleTweaker {
 
     private static class AddLiquid implements IUndoableAction {
         private final CrucibleLiquid liquid;
-        public AddLiquid(CrucibleLiquid liquid) {
+        private final CrucibleFormula formula;
+
+        AddLiquid(CrucibleLiquid liquid, CrucibleFormula formula) {
             this.liquid = liquid;
+            this.formula = formula;
+        }
+
+        AddLiquid(CrucibleLiquid liquid) {
+            this(liquid, null);
         }
 
         @Override
         public void apply() {
             CrucibleRegistry.registerLiquid(liquid);
+            if (formula != null) {
+                CrucibleRegistry.registerFormula(formula);
+            }
         }
 
         @Override
@@ -62,16 +72,19 @@ public class CrucibleTweaker {
         @Override
         public void undo() {
             CrucibleRegistry.removeLiquid(liquid);
+            if (formula != null) {
+                CrucibleRegistry.registerFormula(formula);
+            }
         }
 
         @Override
         public String describe() {
-            return "Adding CrucibleLiquid " + liquid.name;
+            return "Adding CrucibleLiquid " + liquid.getName();
         }
 
         @Override
         public String describeUndo() {
-            return "Removing CrucibleLiquid " + liquid.name;
+            return "Removing CrucibleLiquid " + liquid.getName();
         }
 
         @Override
@@ -93,7 +106,7 @@ public class CrucibleTweaker {
     private static class RemoveLiquid implements IUndoableAction {
         private final CrucibleLiquid liquid;
 
-        public RemoveLiquid(CrucibleLiquid liquid) {
+        RemoveLiquid(CrucibleLiquid liquid) {
             this.liquid = liquid;
         }
 
@@ -114,12 +127,12 @@ public class CrucibleTweaker {
 
         @Override
         public String describe() {
-            return "Removing CrucibleLiquid " + liquid.name;
+            return "Removing CrucibleLiquid " + liquid.getName();
         }
 
         @Override
         public String describeUndo() {
-            return "Adding CrucibleLiquid " + liquid.name;
+            return "Adding CrucibleLiquid " + liquid.getName();
         }
 
         @Override
@@ -165,7 +178,7 @@ public class CrucibleTweaker {
         private final CrucibleLiquid liquid;
         private final int amountOut;
 
-        public AddMeltRecipe(Object in, CrucibleLiquid liquid, int amountOut) {
+        AddMeltRecipe(Object in, CrucibleLiquid liquid, int amountOut) {
             this.in = in;
             this.liquid = liquid;
             this.amountOut = amountOut;
@@ -204,12 +217,12 @@ public class CrucibleTweaker {
 
         @Override
         public String describe() {
-            return "Adding Crucible melt recipe for " + liquid.name;
+            return "Adding Crucible melt recipe for " + liquid.getName();
         }
 
         @Override
         public String describeUndo() {
-            return "Removing Crucible melt recipe for " + liquid.name;
+            return "Removing Crucible melt recipe for " + liquid.getName();
         }
 
         @Override
@@ -283,7 +296,7 @@ public class CrucibleTweaker {
 
         @Override
         public String describe() {
-            return "Removing melting recipe for " + liquid.name;
+            return "Removing melting recipe for " + liquid.getName();
         }
 
         @Override
@@ -364,9 +377,9 @@ public class CrucibleTweaker {
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Adding dunk recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.name;
+                  " and " + liquid.getName();
             } else if (in instanceof String) {
-                return "Adding dunk recipe for " + in + " and " + liquid.name;
+                return "Adding dunk recipe for " + in + " and " + liquid.getName();
             }
             return null;
         }
@@ -375,9 +388,9 @@ public class CrucibleTweaker {
         public String describeUndo() {
             if (in instanceof ItemStack) {
                 return "Removing dunking recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.name;
+                  " and " + liquid.getName();
             } else if (in instanceof String) {
-                return "Removing dunking recipe for " + in + " and " + liquid.name;
+                return "Removing dunking recipe for " + in + " and " + liquid.getName();
             }
             return null;
         }
@@ -449,9 +462,9 @@ public class CrucibleTweaker {
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Removing dunking recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.name;
+                  " and " + liquid.getName();
             } else if (in instanceof String) {
-                return "Removing dunking recipe for " + in + " and " + liquid.name;
+                return "Removing dunking recipe for " + in + " and " + liquid.getName();
             }
             return null;
         }
@@ -460,9 +473,9 @@ public class CrucibleTweaker {
         public String describeUndo() {
             if (in instanceof ItemStack) {
                 return "Adding dunk recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.name;
+                  " and " + liquid.getName();
             } else if (in instanceof String) {
-                return "Adding dunk recipe for " + in + " and " + liquid.name;
+                return "Adding dunk recipe for " + in + " and " + liquid.getName();
             }
             return null;
         }

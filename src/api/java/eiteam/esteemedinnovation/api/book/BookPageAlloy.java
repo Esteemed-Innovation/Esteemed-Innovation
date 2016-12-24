@@ -24,9 +24,9 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
         super(name);
         output = op;
         formula = form;
-        List<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid1.ingot)[0]));
+        List<ItemStack> ores1 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.getLiquid1().getIngot())[0]));
         item1 = ores1.toArray(new ItemStack[ores1.size()]);
-        List<ItemStack> ores2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.liquid2.ingot)[0]));
+        List<ItemStack> ores2 = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(formula.getLiquid2().getIngot())[0]));
         item2 = ores2.toArray(new ItemStack[ores2.size()]);
     }
 
@@ -38,18 +38,18 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
         fontRenderer.setUnicodeFlag(false);
         int item1Ticks = getTicks(item1);
         int item2Ticks = getTicks(item2);
-        drawItemStack(item1[item1Ticks], x + 40 + 19, y + 65 + 2, formula.liquid1num > 1 ? Integer.toString(formula.liquid1num) : "", renderer, fontRenderer, true);
-        drawItemStack(item2[item2Ticks], x + 40 + 19, y + 65 + 20, formula.liquid2num > 1 ? Integer.toString(formula.liquid2num) : "", renderer, fontRenderer, true);
-        drawItemStack(output.ingot, x + 40 + 75, y + 65 + 14, formula.output > 1 ? Integer.toString(formula.output) : "", renderer, fontRenderer, false);
+        drawItemStack(item1[item1Ticks], x + 40 + 19, y + 65 + 2, formula.getLiquid1Amount() > 1 ? Integer.toString(formula.getLiquid1Amount()) : "", renderer, fontRenderer, true);
+        drawItemStack(item2[item2Ticks], x + 40 + 19, y + 65 + 20, formula.getLiquid2Amount() > 1 ? Integer.toString(formula.getLiquid2Amount()) : "", renderer, fontRenderer, true);
+        drawItemStack(output.getIngot(), x + 40 + 75, y + 65 + 14, formula.getOutputAmount() > 1 ? Integer.toString(formula.getOutputAmount()) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
     }
 
     @Override
     public ItemStack[] getCraftedItem() {
         return new ItemStack[] {
-          output.ingot,
-          output.nugget,
-          output.plate
+          output.getIngot(),
+          output.getNugget(),
+          output.getPlate()
         };
     }
 }

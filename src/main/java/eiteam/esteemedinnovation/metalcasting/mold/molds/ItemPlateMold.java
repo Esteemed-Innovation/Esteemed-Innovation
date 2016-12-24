@@ -21,12 +21,12 @@ public class ItemPlateMold extends Item implements ICrucibleMold {
 
     @Override
     public boolean canUseOn(CrucibleLiquid liquid) {
-        return (liquid.plate != null);
+        return (liquid.getPlate() != null);
     }
 
     @Override
     public ItemStack getItemFromLiquid(CrucibleLiquid liquid) {
-        ItemStack newStack = liquid.plate.copy();
+        ItemStack newStack = liquid.getPlate().copy();
         newStack.stackSize = 1;
         return newStack;
     }

@@ -22,7 +22,7 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     public BookPageDip(String name, CrucibleLiquid ifluid, int am, ItemStack ip, ItemStack res) {
         super(name);
         input = ifluid;
-        List<ItemStack> ores = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(input.nugget)[0]));
+        List<ItemStack> ores = OreDictionary.getOres(OreDictionary.getOreName(OreDictionary.getOreIDs(input.getNugget())[0]));
         fluidItemRepresentation = ores.toArray(new ItemStack[ores.size()]);
         inputItem = ip;
         resultItem = res;

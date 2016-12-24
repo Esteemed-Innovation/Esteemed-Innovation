@@ -64,7 +64,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
         for (CrucibleLiquid liquid : contents) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             nbttagcompound1.setShort("amount", (short) (int) number.get(liquid));
-            nbttagcompound1.setString("name", liquid.name);
+            nbttagcompound1.setString("name", liquid.getName());
             nbttaglist.appendTag(nbttagcompound1);
         }
 
@@ -85,7 +85,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
             if (liquid != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setShort("amount", (short) (int) number.get(liquid));
-                nbttagcompound1.setString("name", liquid.name);
+                nbttagcompound1.setString("name", liquid.getName());
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -170,37 +170,19 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
 
         // Optimization: Don't iterate over all the liquids if we have nothing.
         if (!contents.isEmpty()) {
-            for (CrucibleLiquid liquid : CrucibleRegistry.liquids) {
-                if (liquid.recipe == null) {
-                    continue;
-                }
+            for (CrucibleFormula formula : CrucibleRegistry.alloyFormulas) {
+                if (formula.matches(contents, number)) {
+                    decreaseLiquid(formula.getLiquid1(), formula.getLiquid1Amount());
+                    decreaseLiquid(formula.getLiquid2(), formula.getLiquid2Amount());
 
-                CrucibleFormula recipe = liquid.recipe;
-                if (recipe.matches(contents, number, recipe)) {
-                    int currNum = number.get(recipe.liquid1);
-                    currNum -= recipe.liquid1num;
-                    if (currNum == 0) {
-                        contents.remove(recipe.liquid1);
+                    if (!number.containsKey(formula.getOutputLiquid())) {
+                        contents.add(formula.getOutputLiquid());
+                        number.put(formula.getOutputLiquid(), 0);
                     }
-                    number.remove(recipe.liquid1);
-                    number.put(recipe.liquid1, currNum);
-
-                    currNum = number.get(recipe.liquid2);
-                    currNum -= recipe.liquid2num;
-                    if (currNum == 0) {
-                        contents.remove(recipe.liquid2);
-                    }
-                    number.remove(recipe.liquid2);
-                    number.put(recipe.liquid2, currNum);
-
-                    if (!number.containsKey(liquid)) {
-                        contents.add(liquid);
-                        number.put(liquid, 0);
-                    }
-                    currNum = number.get(liquid);
-                    currNum += recipe.output;
-                    number.remove(liquid);
-                    number.put(liquid, currNum);
+                    int currNum = number.get(formula.getOutputLiquid());
+                    currNum += formula.getOutputAmount();
+                    number.remove(formula.getOutputLiquid());
+                    number.put(formula.getOutputLiquid(), currNum);
                     needsUpdate = true;
                 }
             }
@@ -215,6 +197,21 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
             needsUpdate = false;
         }
 
+    }
+
+    /**
+     * Depletes the liquid contents of the crucible for the provided liquid and amount.
+     * @param liquid The liquid to remove
+     * @param amount The amount of said liquid to remove
+     */
+    private void decreaseLiquid(CrucibleLiquid liquid, int amount) {
+        int currNum = number.get(liquid);
+        currNum -= amount;
+        if (currNum == 0) {
+            contents.remove(liquid);
+        }
+        number.remove(liquid);
+        number.put(liquid, currNum);
     }
 
     public int getFill() {

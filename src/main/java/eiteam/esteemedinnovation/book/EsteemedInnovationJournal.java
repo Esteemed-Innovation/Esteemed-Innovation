@@ -3,11 +3,11 @@ package eiteam.esteemedinnovation.book;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
+import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,10 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.init.blocks.CastingBlocks.Blocks.*;
@@ -44,6 +41,7 @@ import static eiteam.esteemedinnovation.init.items.firearms.FirearmUpgradeItems.
 import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.tools.ToolItems.Items.*;
 import static eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems.Items.*;
+import static eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids.Formulas.BRASS_FORMULA;
 import static eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids.Liquids.*;
 
 public class EsteemedInnovationJournal {
@@ -247,7 +245,7 @@ public class EsteemedInnovationJournal {
             Arrays.stream(PLATES).map(MetalItems.Items::createItemStack).collect(Collectors.toList()).toArray(new ItemStack[PLATES.length])));
         BookEntry brassEntry = new BookEntry("research.Brass.name",
           new BookPageItem("research.Brass.name", "research.Brass.0", BRASS_INGOT.createItemStack()),
-          new BookPageAlloy("", BRASS_LIQUID.getLiquid(), BRASS_LIQUID.getLiquid().recipe));
+          new BookPageAlloy("", BRASS_LIQUID.getLiquid(), BRASS_FORMULA.getFormula()));
         castingFactory.append(platesEntry).append(brassEntry);
 
         if (Config.enableCrucible) {

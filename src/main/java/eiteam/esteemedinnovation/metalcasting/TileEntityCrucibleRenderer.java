@@ -109,10 +109,14 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
 
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         CrucibleLiquid liquid = crucible.contents.get(0);
-        buffer.pos(0.125D, 0, 0.125D).tex(f1, f4).color(liquid.cr, liquid.cg, liquid.cb, liquid.ca).endVertex();
-        buffer.pos(0.875D, 0, 0.125D).tex(f3, f4).color(liquid.cr, liquid.cg, liquid.cb, liquid.ca).endVertex();
-        buffer.pos(0.875D, 0, 0.875D).tex(f3, f2).color(liquid.cr, liquid.cg, liquid.cb, liquid.ca).endVertex();
-        buffer.pos(0.125D, 0, 0.875D).tex(f1, f2).color(liquid.cr, liquid.cg, liquid.cb, liquid.ca).endVertex();
+        int r = liquid.getRed();
+        int g = liquid.getGreen();
+        int b = liquid.getBlue();
+        int a = liquid.getAlpha();
+        buffer.pos(0.125D, 0, 0.125D).tex(f1, f4).color(r, g, b, a).endVertex();
+        buffer.pos(0.875D, 0, 0.125D).tex(f3, f4).color(r, g, b, a).endVertex();
+        buffer.pos(0.875D, 0, 0.875D).tex(f3, f2).color(r, g, b, a).endVertex();
+        buffer.pos(0.125D, 0, 0.875D).tex(f1, f2).color(r, g, b, a).endVertex();
         tessellator.draw();
     }
 }

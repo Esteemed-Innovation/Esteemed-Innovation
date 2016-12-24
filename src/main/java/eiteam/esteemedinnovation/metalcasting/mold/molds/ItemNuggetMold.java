@@ -21,12 +21,12 @@ public class ItemNuggetMold extends Item implements ICrucibleMold {
 
     @Override
     public boolean canUseOn(CrucibleLiquid liquid) {
-        return (liquid.nugget != null);
+        return (liquid.getNugget() != null);
     }
 
     @Override
     public ItemStack getItemFromLiquid(CrucibleLiquid liquid) {
-        ItemStack newStack = liquid.nugget.copy();
+        ItemStack newStack = liquid.getNugget().copy();
         newStack.stackSize = 1;
         return newStack;
     }
