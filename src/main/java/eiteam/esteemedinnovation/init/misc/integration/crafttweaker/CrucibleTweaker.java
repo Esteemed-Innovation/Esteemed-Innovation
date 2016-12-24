@@ -37,7 +37,7 @@ public class CrucibleTweaker {
         if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
             CrucibleLiquid out = new CrucibleLiquid(name, iStack, pStack, nStack, r, g, b);
             CrucibleFormula formula = new CrucibleFormula(out, amountOut, crucibleLiquid1, amount1, crucibleLiquid2, amount2);
-            MineTweakerAPI.apply(new AddLiquid(out));
+            MineTweakerAPI.apply(new AddLiquid(out, formula));
         } else {
             FMLLog.warning("[EI-MT] One of your liquids is null: " + liquid1 + ", " + liquid2);
         }
