@@ -29,10 +29,10 @@ public enum MiscellaneousCategories {
                 return true;
             }
             case TINKERS_INTEGRATION: {
-                return CrossMod.CRAFTTWEAKER;
+                return CrossMod.TINKERS_CONSTRUCT;
             }
             case CRAFTTWEAKER_INTEGRATION: {
-                return CrossMod.TINKERS_CONSTRUCT;
+                return CrossMod.CRAFTTWEAKER;
             }
         }
         return false;
