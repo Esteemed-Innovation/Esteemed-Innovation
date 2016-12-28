@@ -16,7 +16,7 @@ public class PlayerDataSerializer implements ICapabilitySerializable<NBTTagCompo
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        return hasCapability(capability, facing) ? EsteemedInnovation.PLAYER_DATA.<T>cast(instance) : null;
+        return hasCapability(capability, facing) ? EsteemedInnovation.PLAYER_DATA.cast(instance) : null;
     }
 
     @Override

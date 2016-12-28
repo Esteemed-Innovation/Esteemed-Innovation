@@ -10,6 +10,8 @@ import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.IAnimalData;
 import eiteam.esteemedinnovation.armor.tophat.IVillagerData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
 import eiteam.esteemedinnovation.boiler.TileEntityBoiler;
+import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
+import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacketHandler;
 import eiteam.esteemedinnovation.book.EsteemedInnovationJournal;
 import eiteam.esteemedinnovation.buzzsaw.TileEntitySaw;
 import eiteam.esteemedinnovation.charging.TileEntityChargingPad;
@@ -24,6 +26,7 @@ import eiteam.esteemedinnovation.commons.network.*;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.converter.TileEntityFluidSteamConverter;
 import eiteam.esteemedinnovation.engineeringtable.TileEntityEngineeringTable;
+import eiteam.esteemedinnovation.firearms.FlintlockBookCategory;
 import eiteam.esteemedinnovation.fishfarm.EntityFloatingItem;
 import eiteam.esteemedinnovation.init.blocks.BlockCategories;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
@@ -170,6 +173,7 @@ public class EsteemedInnovation {
         channel.registerMessage(ItemNamePacketHandler.class, ItemNamePacket.class, 1, Side.SERVER);
         channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
         channel.registerMessage(JumpValueChangePacketHandler.class, JumpValueChangePacket.class, 3, Side.SERVER);
+        channel.registerMessage(BookPieceUnlockedStateChangePacketHandler.class, BookPieceUnlockedStateChangePacket.class, 4, Side.CLIENT);
 
         SOUND_HISS = registerSound("hiss");
         SOUND_CANNON = registerSound("cannon");
@@ -255,7 +259,7 @@ public class EsteemedInnovation {
         MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
 
         MinecraftForge.EVENT_BUS.register(new GenericTickHandler());
-        MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
+        MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandlers());
 
         if (event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new ExosuitModelCache());

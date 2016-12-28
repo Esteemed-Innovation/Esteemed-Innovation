@@ -2,8 +2,11 @@ package eiteam.esteemedinnovation.commons.capabilities.player;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
@@ -21,6 +24,11 @@ public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
             nbt.setDouble("lastMotionX", pair.left);
             nbt.setDouble("lastMotionZ", pair.right);
         }
+        NBTTagList unlockedPieces = new NBTTagList();
+        for (String p : instance.getAllUnlockedPieces()) {
+            unlockedPieces.appendTag(new NBTTagString(p));
+        }
+        nbt.setTag("UnlockedBookPieces", unlockedPieces);
         return nbt;
     }
 
@@ -39,5 +47,9 @@ public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
         }
         instance.setTickCache(nbt.getInteger("tickCache"));
         instance.setRangeExtended(nbt.getBoolean("isRangeExtended"));
+        NBTTagList unlockedPieces = nbt.getTagList("UnlockedBookPieces", Constants.NBT.TAG_STRING);
+        for (int i = 0; i < unlockedPieces.tagCount(); i++) {
+            instance.setHasUnlockedBookPiece(unlockedPieces.getStringTagAt(i), true);
+        }
     }
 }

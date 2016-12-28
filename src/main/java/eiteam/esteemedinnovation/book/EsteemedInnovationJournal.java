@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.firearms.FlintlockBookCategory;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
@@ -89,15 +90,15 @@ public class EsteemedInnovationJournal {
             return;
         }
 
-        BookEntry entryParts = new BookEntry("research.Parts.name",
+        List<BookEntry> entries = new ArrayList<>();
+        List<BookCategory> subcategories = new ArrayList<>();
+        entries.add(new BookEntry("research.Parts.name",
           new BookPageItem("research.Parts.name", "research.Parts.0", BLUNDERBUSS_BARREL.createItemStack(),
             FLINTLOCK.createItemStack(), GUN_STOCK.createItemStack(), IRON_BARREL.createItemStack()),
           new BookPageCrafting("", "stock"),
           new BookPageCrafting("", "barrel1", "barrel2"),
           new BookPageCrafting("", "blunderBarrel1", "blunderBarrel2"),
-          new BookPageCrafting("", "flintlock1", "flintlock2"));
-        BookCategory.Factory catFlintlockFactory = new BookCategory.Factory("category.Flintlock.name")
-          .append(entryParts);
+          new BookPageCrafting("", "flintlock1", "flintlock2")));
 
         if (Config.enableFirearms) {
             BookEntry entryMusket = new BookEntry("research.Musket.name",
@@ -139,8 +140,8 @@ public class EsteemedInnovationJournal {
                   new BookPageCrafting("", "recoil")));
             }
 
-            catFlintlockFactory.append(catMusketFactory.build());
-            catFlintlockFactory.append(catBlunderbussFactory.build());
+            subcategories.add(catMusketFactory.build());
+            subcategories.add(catBlunderbussFactory.build());
 
             BookEntry entryPistol = new BookEntry("research.Pistol.name",
               new BookPageItem("research.Pistol.name", "research.Pistol.0", new ItemStack(PISTOL.getItem())),
@@ -163,7 +164,7 @@ public class EsteemedInnovationJournal {
                   new BookPageCrafting("", "speedy")));
             }
 
-            catFlintlockFactory.append(catPistol.build());
+            subcategories.add(catPistol.build());
         }
         if (Config.enableRL) {
             BookEntry entryRL = new BookEntry("research.RocketLauncher.name",
@@ -206,10 +207,11 @@ public class EsteemedInnovationJournal {
             }
 
             catRLFactory.append(catRocketsFactory.build());
-            catFlintlockFactory.append(catRLFactory.build());
+            subcategories.add(catRLFactory.build());
         }
 
-        BookPageRegistry.addTopCategory(catFlintlockFactory.build());
+        BookPageRegistry.addTopCategory(new FlintlockBookCategory(entries.toArray(new BookEntry[entries.size()]),
+          subcategories.toArray(new BookCategory[subcategories.size()])));
     }
 
     public static void registerCasting() {

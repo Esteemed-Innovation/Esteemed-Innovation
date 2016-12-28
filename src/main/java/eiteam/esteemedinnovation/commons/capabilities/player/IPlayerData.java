@@ -1,9 +1,13 @@
 package eiteam.esteemedinnovation.commons.capabilities.player;
 
-
+import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import net.minecraft.entity.player.EntityPlayer;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public interface IPlayerData {
     /**
@@ -56,11 +60,26 @@ public interface IPlayerData {
      */
     void setLastMotions(@Nullable MutablePair<Double, Double> value);
 
+    /**
+     * Sets whether the player has unlocked this specific piece in their EI journal.
+     * @param piece The keyname for the piece. This is ideally how you should be handling your
+     *              {@link BookPiece#isUnlocked(EntityPlayer)} implementer.
+     * @param unlocked True if it is being unlocked, false if it is being locked.
+     * @return True if the value changed in any way.
+     */
+    boolean setHasUnlockedBookPiece(String piece, boolean unlocked);
+
+    /**
+     * @return A set of all unlocked pieces. The strings are the keys as utilized in {@link #setHasUnlockedBookPiece(String, boolean)}.
+     */
+    Set<String> getAllUnlockedPieces();
+
     class DefaultImplementation implements IPlayerData {
         private Float previousStepHeight = null;
         private int tickCache = -1;
         private boolean isRangeExtended = false;
         private MutablePair<Double, Double> lastMotions = null;
+        private Set<String> unlockedPieces = new HashSet<>();
 
         @Override
         public Float getPreviousStepHeight() {
@@ -100,6 +119,16 @@ public interface IPlayerData {
         @Override
         public void setLastMotions(MutablePair<Double, Double> value) {
             lastMotions = value;
+        }
+
+        @Override
+        public boolean setHasUnlockedBookPiece(String piece, boolean unlocked) {
+            return unlocked ? unlockedPieces.add(piece) : unlockedPieces.remove(piece);
+        }
+
+        @Override
+        public Set<String> getAllUnlockedPieces() {
+            return unlockedPieces;
         }
     }
 }

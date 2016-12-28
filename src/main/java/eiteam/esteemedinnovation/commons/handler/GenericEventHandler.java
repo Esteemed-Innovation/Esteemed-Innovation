@@ -19,6 +19,7 @@ import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataSerializer;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.IAnimalData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataSerializer;
+import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
 import eiteam.esteemedinnovation.book.GuiJournal;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
@@ -61,6 +62,7 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -243,6 +245,41 @@ public class GenericEventHandler {
             Random rand = entity.worldObj.rand;
             IAnimalData data = new IAnimalData.DefaultImplementation(rand.nextInt(7), 0, POSSIBLE_NAMES[rand.nextInt(POSSIBLE_NAMES.length)], null);
             event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IAnimalData"), new AnimalDataSerializer(data));
+        }
+    }
+
+    @SubscribeEvent
+    public void clonePlayerDataOnDeath(PlayerEvent.Clone event) {
+        if (!event.isWasDeath()) {
+            return;
+        }
+        EntityPlayer original = event.getOriginal();
+        if (original instanceof EntityPlayerMP) {
+            EntityPlayer newP = event.getEntityPlayer();
+            IPlayerData newData = newP.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            IPlayerData originalData = original.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            for (String piece : originalData.getAllUnlockedPieces()) {
+                if (newData.setHasUnlockedBookPiece(piece, true)) {
+                    EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(piece, true), (EntityPlayerMP) newP);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void sendPlayerDataToClientOnRespawn(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent event) {
+        sendPlayerDataToClient(event.player);
+    }
+
+    @SubscribeEvent
+    public void sendPlayerDataToClientOnSpawn(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent event) {
+        sendPlayerDataToClient(event.player);
+    }
+
+    private void sendPlayerDataToClient(EntityPlayer player) {
+        IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        for (String piece : data.getAllUnlockedPieces()) {
+            EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(piece, true), (EntityPlayerMP) player);
         }
     }
 
