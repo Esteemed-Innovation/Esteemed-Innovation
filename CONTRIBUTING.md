@@ -241,7 +241,7 @@ Package names are all lowercase, with consecutive words simply concatenated toge
 #### Class names
 Class names are written in UpperCamelCase.
 
-Class and interface names are typically nouns or noun phrases. Interface names may sometimes be adjectives or adjective phrases.
+Class and interface names are typically nouns or noun phrases. Interface names may sometimes be adjectives or adjective phrases. Interface names do not start with `I`.
 
 Test classes are named statring with the name of the class they are testing, ending with `Test`.
 
@@ -288,7 +288,7 @@ Each type variable is named in one of two styles:
 
 ## Programming practices
 ### @Override
-The `@Override` annotation marks methods in every single legal case, except when the parent method is `@Deprecated`.
+The `@Override` annotation marks methods in every single legal case.
 
 ### Caught exceptions
 Apart from tests, caught exceptions should not be ignored.
@@ -298,3 +298,8 @@ When a reference to a static class member must be qualified, it is qualified wit
 
 ### Finalizers
 Don't use finalizers.
+
+### Packaging
+Package by feature, not layer/type. For example, if you are creating a new machine, create a new package named after the machine where all of its relevant classes (including but not limited to its Block, TileEntity, and TESR).
+
+The `commons` package contains code that is meant to be used across the entire project, but does not belong in the public API. Avoid referencing class across packages. Packages should only be dependent on themselves, the commons package, and the API.
