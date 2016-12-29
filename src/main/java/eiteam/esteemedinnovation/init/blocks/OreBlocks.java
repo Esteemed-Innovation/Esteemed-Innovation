@@ -5,13 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import eiteam.esteemedinnovation.metals.raw.BlockGenericOre;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_ZINC;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.ORE_COPPER;
 
-public class OreBlocks implements IInitCategory {
+public class OreBlocks implements InitCategory {
     public enum Blocks {
         OVERWORLD_COPPER_ORE(0),
         OVERWORLD_ZINC_ORE(1),

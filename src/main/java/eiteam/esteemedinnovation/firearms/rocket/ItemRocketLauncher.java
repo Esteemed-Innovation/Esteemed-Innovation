@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.firearms.rocket;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.IEngineerable;
+import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.api.enhancement.*;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
@@ -32,7 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-public class ItemRocketLauncher extends Item implements IEngineerable {
+public class ItemRocketLauncher extends Item implements Engineerable {
     public float explosionSize;
     public int reloadTime;
     public int shellCount;
@@ -98,9 +98,9 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
 
     private int getEnhancementShells(ItemStack stack) {
         if (UtilEnhancements.hasEnhancement(stack)) {
-            IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(stack);
-            if (enhancement instanceof IEnhancementRocketLauncher) {
-                IEnhancementRocketLauncher enhancementRocketLauncher = (IEnhancementRocketLauncher) enhancement;
+            Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(stack);
+            if (enhancement instanceof EnhancementRocketLauncher) {
+                EnhancementRocketLauncher enhancementRocketLauncher = (EnhancementRocketLauncher) enhancement;
                 return enhancementRocketLauncher.getClipSizeChange(this);
             }
         }
@@ -161,8 +161,8 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
 
         int enhancementReload = 0;
         if (UtilEnhancements.hasEnhancement(stack)) {
-            if (UtilEnhancements.getEnhancementFromItem(stack) instanceof IEnhancementRocketLauncher) {
-                enhancementReload = ((IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(stack)).getReloadChange(this);
+            if (UtilEnhancements.getEnhancementFromItem(stack) instanceof EnhancementRocketLauncher) {
+                enhancementReload = ((EnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(stack)).getReloadChange(this);
             }
         }
 
@@ -211,9 +211,9 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                     float enhancementExplosionSize = 0.0F;
 
                     if (UtilEnhancements.hasEnhancement(self)) {
-                        IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
-                        if (enhancement instanceof IEnhancementRocketLauncher) {
-                            IEnhancementRocketLauncher enhancementRocketLauncher = (IEnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self);
+                        Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
+                        if (enhancement instanceof EnhancementRocketLauncher) {
+                            EnhancementRocketLauncher enhancementRocketLauncher = (EnhancementRocketLauncher) UtilEnhancements.getEnhancementFromItem(self);
                             enhancementAccuracy = enhancementRocketLauncher.getAccuracyChange(this);
                             enhancementExplosionSize = enhancementRocketLauncher.getExplosionChange(this);
                         }
@@ -225,13 +225,13 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                     if (self.hasTagCompound() && self.getTagCompound().hasKey("rocketType")) {
                         selectedRocketType = self.getTagCompound().getInteger("rocketType");
                     }
-                    IRocket irocket = EnhancementRegistry.rockets.get(selectedRocketType);
+                    Rocket irocket = EnhancementRegistry.rockets.get(selectedRocketType);
                     rocket = irocket.changeBullet(rocket);
 
                     if (UtilEnhancements.hasEnhancement(self)) {
-                        IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
-                        if (enhancement instanceof IEnhancementRocketLauncher) {
-                            IEnhancementRocketLauncher enhancementRocketLauncher = (IEnhancementRocketLauncher) enhancement;
+                        Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
+                        if (enhancement instanceof EnhancementRocketLauncher) {
+                            EnhancementRocketLauncher enhancementRocketLauncher = (EnhancementRocketLauncher) enhancement;
                             rocket = enhancementRocketLauncher.changeBullet(rocket);
                         }
                     }
@@ -248,7 +248,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
                     MinecraftForge.EVENT_BUS.post(event);
 
                     nbt.setInteger("loaded", nbt.getInteger("loaded") - 1);
-                    // Used by IEnhancementRocketLauncher to add an additional fire delay.
+                    // Used by EnhancementRocketLauncher to add an additional fire delay.
                     nbt.setInteger("fireDelay", timeBetweenFire);
                     if (UtilEnhancements.hasEnhancement(self)) {
                         UtilEnhancements.getEnhancementFromItem(self).afterRoundFired(self, world, player);
@@ -331,7 +331,7 @@ public class ItemRocketLauncher extends Item implements IEngineerable {
 
     @Override
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
-        return upgrade.getItem() instanceof IEnhancement && ((IEnhancement) upgrade.getItem()).canApplyTo(me);
+        return upgrade.getItem() instanceof Enhancement && ((Enhancement) upgrade.getItem()).canApplyTo(me);
     }
 
     @Override

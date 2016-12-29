@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.api.tile;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 
 /**
  * Similar to the SteamTransporterTileEntity, this tile entity is used for steam "reactor" blocks.
@@ -15,7 +15,7 @@ public class SteamReactorTileEntity extends TileEntityBase {
      * @return The pressure of the attached transporter.
      */
     public float getPressure(EnumFacing dir) {
-        ISteamTransporter transporter = getAdjacentTransporter(dir);
+        SteamTransporter transporter = getAdjacentTransporter(dir);
         return transporter == null ? 0F : transporter.getPressure();
     }
 
@@ -25,7 +25,7 @@ public class SteamReactorTileEntity extends TileEntityBase {
      * @param dir The FACING value for the reactor.
      */
     public void drainSteam(int s, EnumFacing dir) {
-        ISteamTransporter transporter = getAdjacentTransporter(dir);
+        SteamTransporter transporter = getAdjacentTransporter(dir);
         if (transporter != null) {
             transporter.decrSteam(s);
         }
@@ -37,20 +37,20 @@ public class SteamReactorTileEntity extends TileEntityBase {
      * @return The steam in the transporter.
      */
     public int getSteam(EnumFacing dir) {
-        ISteamTransporter transporter = getAdjacentTransporter(dir);
+        SteamTransporter transporter = getAdjacentTransporter(dir);
         return transporter == null ? 0 : transporter.getSteamShare();
     }
 
     /**
      * Gets the attached transporter.
-     * @return null if there is no ISteamTransporter adjacent to it.
+     * @return null if there is no SteamTransporter adjacent to it.
      */
-    public ISteamTransporter getAdjacentTransporter(EnumFacing dir) {
+    public SteamTransporter getAdjacentTransporter(EnumFacing dir) {
         EnumFacing d = dir.getOpposite();
         BlockPos transporterPos = pos.offset(d);
         TileEntity te = worldObj.getTileEntity(transporterPos);
-        if (te != null && te instanceof ISteamTransporter) {
-            return (ISteamTransporter) te;
+        if (te != null && te instanceof SteamTransporter) {
+            return (SteamTransporter) te;
         }
         return null;
     }

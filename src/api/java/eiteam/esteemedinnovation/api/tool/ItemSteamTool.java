@@ -2,9 +2,9 @@ package eiteam.esteemedinnovation.api.tool;
 
 import com.google.common.collect.ImmutableSet;
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.ISteamChargable;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
+import eiteam.esteemedinnovation.api.Engineerable;
+import eiteam.esteemedinnovation.api.SteamChargable;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -37,7 +37,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ItemSteamTool extends ItemTool implements ISteamChargable, IEngineerable, ISteamTool {
+public abstract class ItemSteamTool extends ItemTool implements SteamChargable, Engineerable, SteamTool {
     private boolean hasBrokenBlock = false;
     protected static final ResourceLocation LARGE_ICONS = new ResourceLocation(Constants.EI_MODID + ":textures/gui/engineering2.png");
     private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
@@ -171,10 +171,10 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
         }
         if (amount < 0) {
             ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (chest == null || !(chest.getItem() instanceof IExosuitArmor)) {
+            if (chest == null || !(chest.getItem() instanceof ExosuitArmor)) {
                 return false;
             }
-            IExosuitArmor armor = (IExosuitArmor) chest.getItem();
+            ExosuitArmor armor = (ExosuitArmor) chest.getItem();
             if (armor.hasPower(chest, amount)) {
                 int exoAmount = (-amount) / armor.steamPerDurability();
                 armor.drainSteam(chest, exoAmount);
@@ -246,8 +246,8 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
 
     @Override
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
-        if (upgrade != null && upgrade.getItem() instanceof ISteamToolUpgrade) {
-            ISteamToolUpgrade upgradeItem = (ISteamToolUpgrade) upgrade.getItem();
+        if (upgrade != null && upgrade.getItem() instanceof SteamToolUpgrade) {
+            SteamToolUpgrade upgradeItem = (SteamToolUpgrade) upgrade.getItem();
             return ((upgradeItem.getToolSlot().tool == getToolInteger() &&
               upgradeItem.getToolSlot().slot == slotNum) ||
               upgradeItem.getToolSlot() == SteamToolSlot.TOOL_CORE);
@@ -277,7 +277,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
     public abstract SteamToolSlot getRedSlot();
 
     /**
-     * Delegates events to {@link ISteamToolUpgrade}'s according methods.
+     * Delegates events to {@link SteamToolUpgrade}'s according methods.
      *
      * Side note: I really wish that Java FP wasn't terrible...
      */
@@ -287,11 +287,11 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
          * @return Whether the provided ItemStack contains a steam tool that is wound up.
          */
         private boolean isToolOkay(ItemStack tool) {
-            return tool != null && tool.getItem() != null && tool.getItem() instanceof ISteamTool && ((ISteamTool) tool.getItem()).isWound(tool);
+            return tool != null && tool.getItem() != null && tool.getItem() instanceof SteamTool && ((SteamTool) tool.getItem()).isWound(tool);
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onPlayerHarvestDropsWithTool(BlockEvent.HarvestDropsEvent, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onPlayerHarvestDropsWithTool(BlockEvent.HarvestDropsEvent, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -307,13 +307,13 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
                 return;
             }
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 upgrade.onPlayerHarvestDropsWithTool(event, equipped, upgradeStack);
             }
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed, float, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed, float, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -329,14 +329,14 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
 
             float newSpeed = 0.0F;
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 newSpeed = upgrade.onUpdateBreakSpeedWithTool(event, newSpeed, equipped, upgradeStack);
             }
             event.setNewSpeed(newSpeed);
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onBlockBreakWithTool(BlockEvent.BreakEvent, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onBlockBreakWithTool(BlockEvent.BreakEvent, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -350,7 +350,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
                 return;
             }
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 if (!upgrade.onBlockBreakWithTool(event, equipped, upgradeStack)) {
                     event.setCanceled(true);
                     return;
@@ -359,7 +359,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onAttackWithTool(EntityPlayer, EntityLivingBase, DamageSource, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onAttackWithTool(EntityPlayer, EntityLivingBase, DamageSource, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -376,7 +376,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
             }
 
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 if (!upgrade.onAttackWithTool(player, event.getEntityLiving(), dSource, equipped, upgradeStack)) {
                     event.setCanceled(true);
                     return;
@@ -385,7 +385,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onRightClickBlockWithTool(PlayerInteractEvent.RightClickBlock, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onRightClickBlockWithTool(PlayerInteractEvent.RightClickBlock, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -396,7 +396,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
             }
 
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 if (!upgrade.onRightClickBlockWithTool(event, equipped, upgradeStack)) {
                     event.setCanceled(true);
                     return;
@@ -405,7 +405,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
         }
 
         /**
-         * Calls {@link ISteamToolUpgrade#onRightClickWithTool(PlayerInteractEvent.RightClickItem, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onRightClickWithTool(PlayerInteractEvent.RightClickItem, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
@@ -416,7 +416,7 @@ public abstract class ItemSteamTool extends ItemTool implements ISteamChargable,
             }
 
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
-                ISteamToolUpgrade upgrade = (ISteamToolUpgrade) upgradeStack.getItem();
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
                 if (!upgrade.onRightClickWithTool(event, equipped, upgradeStack)) {
                     event.setCanceled(true);
                     return;

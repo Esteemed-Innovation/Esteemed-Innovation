@@ -1,15 +1,15 @@
 package eiteam.esteemedinnovation.init.items.firearms;
 
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.enhancement.Enhancement;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.firearms.flintlock.enhancements.*;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import net.minecraft.item.Item;
@@ -21,7 +21,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.WOOL;
 import static net.minecraft.init.Items.*;
 
-public class FirearmUpgradeItems implements IInitCategory {
+public class FirearmUpgradeItems implements InitCategory {
     public enum Items {
         BLAZE_BARREL(new ItemEnhancementFireMusket(), "enhancement_blaze"),
         REVOLVER_CHAMBER(new ItemEnhancementRevolver(), "enhancement_revolver"),
@@ -49,8 +49,8 @@ public class FirearmUpgradeItems implements IInitCategory {
             item.setCreativeTab(EsteemedInnovation.tab);
             item.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(item);
-            if (item instanceof IEnhancement) {
-                EnhancementRegistry.registerEnhancement((IEnhancement) item);
+            if (item instanceof Enhancement) {
+                EnhancementRegistry.registerEnhancement((Enhancement) item);
             }
             this.item = item;
         }

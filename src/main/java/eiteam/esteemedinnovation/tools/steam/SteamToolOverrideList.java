@@ -2,8 +2,8 @@ package eiteam.esteemedinnovation.tools.steam;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamTool;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
 import eiteam.esteemedinnovation.commons.util.JavaHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -28,12 +28,12 @@ public final class SteamToolOverrideList extends ItemOverrideList {
 
     @Override
     public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-        List<ISteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
-        // TODO: Improve the API here with a new "resourceSuffix" method in ISteamTool instead of using the toolClass.
+        List<SteamToolUpgrade> upgrades = UtilSteamTool.getUpgrades(stack);
+        // TODO: Improve the API here with a new "resourceSuffix" method in SteamTool instead of using the toolClass.
         String toolName = "drill";
         Item item = stack.getItem();
-        if (item instanceof ISteamTool) {
-            ISteamTool tool = (ISteamTool) item;
+        if (item instanceof SteamTool) {
+            SteamTool tool = (SteamTool) item;
             String toolClass = tool.toolClass();
             if (!"pickaxe".equalsIgnoreCase(toolClass)) {
                 toolName = toolClass;
@@ -45,7 +45,7 @@ public final class SteamToolOverrideList extends ItemOverrideList {
         ResourceLocation core = null;
         ResourceLocation head = null;
 
-        for (ISteamToolUpgrade upgrade : upgrades) {
+        for (SteamToolUpgrade upgrade : upgrades) {
             ResourceLocation baseIcon = upgrade.getBaseIcon();
             if (baseIcon == null) {
                 continue;

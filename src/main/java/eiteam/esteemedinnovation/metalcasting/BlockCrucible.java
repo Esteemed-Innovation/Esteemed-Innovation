@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.metalcasting;
 import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
@@ -32,7 +32,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-public class BlockCrucible extends Block implements IWrenchable {
+public class BlockCrucible extends Block implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final float PX = (1.0F / 16.0F);
     public static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(PX, PX, PX, 1F - PX, 1F - PX, 1F - PX);

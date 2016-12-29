@@ -4,7 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
-public interface IEngineerable {
+public interface Engineerable {
     Pair<Integer, Integer>[] engineerCoordinates();
 
     ItemStack getStackInSlot(ItemStack me, int var1);

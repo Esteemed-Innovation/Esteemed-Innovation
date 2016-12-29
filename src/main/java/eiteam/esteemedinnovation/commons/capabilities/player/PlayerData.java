@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.commons.capabilities.player;
 
-import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.book.BookPiece;
 import net.minecraft.entity.player.EntityPlayer;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -9,7 +8,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public interface IPlayerData {
+public interface PlayerData {
     /**
      * Gets the prevStep for the player.
      * @return Float. Can be null.
@@ -74,7 +73,7 @@ public interface IPlayerData {
      */
     Set<String> getAllUnlockedPieces();
 
-    class DefaultImplementation implements IPlayerData {
+    class DefaultImplementation implements PlayerData {
         private Float previousStepHeight = null;
         private int tickCache = -1;
         private boolean isRangeExtended = false;

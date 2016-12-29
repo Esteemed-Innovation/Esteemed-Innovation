@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public interface ICrucibleMold {
+public interface CrucibleMold {
     ResourceLocation getBlockTexture();
 
     /**

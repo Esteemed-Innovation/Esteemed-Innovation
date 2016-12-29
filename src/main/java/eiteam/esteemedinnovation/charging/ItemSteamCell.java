@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.charging;
 
+import eiteam.esteemedinnovation.api.SteamChargable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -10,7 +11,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.api.ISteamChargable;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 
 public class ItemSteamCell extends Item {
@@ -34,8 +34,8 @@ public class ItemSteamCell extends Item {
         } else {
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                 ItemStack item = player.inventory.getStackInSlot(i);
-                if (item != null && item.getItem() instanceof ISteamChargable) {
-                    ISteamChargable cha = (ISteamChargable) item.getItem();
+                if (item != null && item.getItem() instanceof SteamChargable) {
+                    SteamChargable cha = (SteamChargable) item.getItem();
                     if (cha.canCharge(item) && cha.addSteam(item, steamToAdd, player)) {
                         return true;
                     }

@@ -1,29 +1,29 @@
 package eiteam.esteemedinnovation.commons.handler;
 
-import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
+import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.SPLog;
-import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.PipeWrench;
+import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalData;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataSerializer;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.IAnimalData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataSerializer;
 import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
 import eiteam.esteemedinnovation.book.GuiJournal;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerializer;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.util.EnchantmentUtility;
@@ -138,7 +138,7 @@ public class GenericEventHandler {
     private static boolean isShiftDown;
     private static final Potion SLOWNESS_POTION = Potion.getPotionById(PotionType.getID(PotionTypes.SLOWNESS));
 
-    // TODO: Migrate to IExosuitArmor#drainSteam.
+    // TODO: Migrate to ExosuitArmor#drainSteam.
     public static void drainSteam(ItemStack stack, int amount) {
         if (stack != null) {
             if (stack.getTagCompound() == null) {
@@ -221,14 +221,14 @@ public class GenericEventHandler {
 //        }
 //    }
 
-    // TODO: Migrate to IExosuitArmor#hasPower in cases where access to the chestplate is already needed.
+    // TODO: Migrate to ExosuitArmor#hasPower in cases where access to the chestplate is already needed.
     // TODO: Move into a proper util class.
     public static boolean hasPower(EntityLivingBase entityLiving, int i) {
         ItemStack equipment = entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         if (equipment != null) {
             Item item = equipment.getItem();
-            if (item instanceof IExosuitArmor) {
-                return ((IExosuitArmor) item).hasPower(equipment, i);
+            if (item instanceof ExosuitArmor) {
+                return ((ExosuitArmor) item).hasPower(equipment, i);
             }
         }
         return false;
@@ -238,13 +238,13 @@ public class GenericEventHandler {
     public void initializeEntityCapabilities(AttachCapabilitiesEvent.Entity event) {
         Entity entity = event.getEntity();
         if (entity instanceof EntityPlayer) {
-            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IPlayerData"), new PlayerDataSerializer());
+            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "PlayerData"), new PlayerDataSerializer());
         } else if (entity instanceof EntityVillager) {
-            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IVillagerData"), new VillagerDataSerializer());
+            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "VillagerData"), new VillagerDataSerializer());
         } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
             Random rand = entity.worldObj.rand;
-            IAnimalData data = new IAnimalData.DefaultImplementation(rand.nextInt(7), 0, POSSIBLE_NAMES[rand.nextInt(POSSIBLE_NAMES.length)], null);
-            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "IAnimalData"), new AnimalDataSerializer(data));
+            AnimalData data = new AnimalData.DefaultImplementation(rand.nextInt(7), 0, POSSIBLE_NAMES[rand.nextInt(POSSIBLE_NAMES.length)], null);
+            event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "AnimalData"), new AnimalDataSerializer(data));
         }
     }
 
@@ -256,8 +256,8 @@ public class GenericEventHandler {
         EntityPlayer original = event.getOriginal();
         if (original instanceof EntityPlayerMP) {
             EntityPlayer newP = event.getEntityPlayer();
-            IPlayerData newData = newP.getCapability(EsteemedInnovation.PLAYER_DATA, null);
-            IPlayerData originalData = original.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            PlayerData newData = newP.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            PlayerData originalData = original.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             for (String piece : originalData.getAllUnlockedPieces()) {
                 if (newData.setHasUnlockedBookPiece(piece, true)) {
                     EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(piece, true), (EntityPlayerMP) newP);
@@ -277,7 +277,7 @@ public class GenericEventHandler {
     }
 
     private void sendPlayerDataToClient(EntityPlayer player) {
-        IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         for (String piece : data.getAllUnlockedPieces()) {
             EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(piece, true), (EntityPlayerMP) player);
         }
@@ -474,12 +474,12 @@ public class GenericEventHandler {
             ItemStack equipped = player.getHeldItemMainhand();
             RayTraceResult pos = mc.objectMouseOver;
             if (pos != null && equipped != null && equipped.getItem() != null && pos.typeOfHit == RayTraceResult.Type.BLOCK) {
-                if (equipped.getItem() instanceof IPipeWrench) {
-                    IPipeWrench wrench = (IPipeWrench) equipped.getItem();
+                if (equipped.getItem() instanceof PipeWrench) {
+                    PipeWrench wrench = (PipeWrench) equipped.getItem();
                     if (wrench.canWrench(player, pos.getBlockPos())) {
                         TileEntity te = mc.theWorld.getTileEntity(pos.getBlockPos());
-                        if (te instanceof IWrenchDisplay) {
-                            ((IWrenchDisplay) te).displayWrench(event);
+                        if (te instanceof WrenchDisplay) {
+                            ((WrenchDisplay) te).displayWrench(event);
                         }
                     }
                 }
@@ -745,7 +745,7 @@ public class GenericEventHandler {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
             event.getToolTip().add(TextFormatting.GOLD + I18n.format("esteemedinnovation.canned"));
         }
-        if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof ISteamChargable) {
+        if (stack.getItem() instanceof ItemExosuitArmor || stack.getItem() instanceof SteamChargable) {
             ArrayList<String> linesToRemove = new ArrayList<>();
             for (String str : event.getToolTip()) {
                 if (str.equals("")) {
@@ -1390,7 +1390,7 @@ public class GenericEventHandler {
         }
 
         if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
-            IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
             if (item.hasUpgrade(leggings, RUN_ASSIST.getItem())) {
                 if (data.getLastMotions() == null) {
@@ -1479,7 +1479,7 @@ public class GenericEventHandler {
 //        ItemStack armor2 = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         //EsteemedInnovation.proxy.extendRange(entity,1.0F);
 
-        IPlayerData tag = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData tag = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
 
         if (entity.worldObj.isRemote) {
             updateRangeClient(event);
@@ -1581,7 +1581,7 @@ public class GenericEventHandler {
                 entity.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).removeModifier(exoBoost);
             }
             if (entity instanceof EntityPlayer) {
-                IPlayerData tag = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+                PlayerData tag = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
                 if (tag.getPreviousStepHeight() != null) {
                     entity.stepHeight = tag.getPreviousStepHeight();
                     tag.setPreviousStepHeight(null);
@@ -1677,7 +1677,7 @@ public class GenericEventHandler {
         I don't know about this stuff, since block shapes and stuff are handled with JSON now. I don't know how we are going to check if it is a solid cube.
         TileEntity tile = world.getTileEntity(pos);
         ItemStack held = player.getHeldItem(player.getActiveHand());
-        if (player.isSneaking() && ((tile != null && tile instanceof IDisguisableBlock) ||
+        if (player.isSneaking() && ((tile != null && tile instanceof DisguisableBlock) ||
           block == PipeBlocks.Blocks.BRASS_PIPE.getBlock()) && held != null &&
           held.getItem() instanceof ItemBlock) {
             Block block1 = Block.getBlockFromItem(held.getItem());
@@ -2498,7 +2498,7 @@ public class GenericEventHandler {
             // For some reason, canHarvestBlock is false when using the Steam Shovel.
             String toolClass = block.getHarvestTool(state);
             boolean canHarvest = tool.canHarvestBlock(state, toolStack) ||
-              (isShovel && toolClass != null && toolClass.equals(((ISteamTool) tool).toolClass()));
+              (isShovel && toolClass != null && toolClass.equals(((SteamTool) tool).toolClass()));
             if (block != null && world.isAirBlock(thisPos) && canHarvest) {
 //                world.spawnParticle("")
 //                world.func_147480_a(thisX, thisY, thisZ, false);

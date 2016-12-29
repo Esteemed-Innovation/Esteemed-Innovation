@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.api.tile;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.util.Coord4;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class SteamTransporterTileEntity extends TileEntityBase implements ISteamTransporter, ITickable {
+public class SteamTransporterTileEntity extends TileEntityBase implements SteamTransporter, ITickable {
     public String name = "SteamTransporterTileEntity";
     private float pressureResistance = 0.8F;
     private float lastPressure = -1F;

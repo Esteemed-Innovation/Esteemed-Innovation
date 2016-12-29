@@ -3,10 +3,10 @@ package eiteam.esteemedinnovation.init.items.tools;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
@@ -31,7 +31,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
-public class ToolUpgradeItems implements IInitCategory {
+public class ToolUpgradeItems implements InitCategory {
     public enum Items {
         THE_VOID(new ItemTheVoidUpgrade(), "the_void"),
         EXOTHERMIC_PROJECTOR(new ItemExothermicProjector(), "exothermic_projector"),
@@ -71,7 +71,7 @@ public class ToolUpgradeItems implements IInitCategory {
             item.setCreativeTab(EsteemedInnovation.tabTools);
             item.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(item);
-            ToolUpgradeRegistry.register((ISteamToolUpgrade) item);
+            ToolUpgradeRegistry.register((SteamToolUpgrade) item);
             this.item = item;
         }
 

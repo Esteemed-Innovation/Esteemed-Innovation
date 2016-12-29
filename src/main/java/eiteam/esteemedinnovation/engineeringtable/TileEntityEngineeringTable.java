@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
-import eiteam.esteemedinnovation.api.IEngineerable;
+import eiteam.esteemedinnovation.api.Engineerable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -57,8 +57,8 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
             ItemStack stackInSlotZero = getStackInSlot(0);
             if (stackInSlotZero != null) {
                 Item itemInSlotZero = stackInSlotZero.getItem();
-                if (itemInSlotZero instanceof IEngineerable) {
-                    IEngineerable item = (IEngineerable) itemInSlotZero;
+                if (itemInSlotZero instanceof Engineerable) {
+                    Engineerable item = (Engineerable) itemInSlotZero;
                     return item.getStackInSlot(stackInSlotZero, index);
                 }
             }
@@ -90,8 +90,8 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
             ItemStack stackInSlotZero = getStackInSlot(0);
             if (stackInSlotZero != null) {
                 Item itemInSlotZero = stackInSlotZero.getItem();
-                if (itemInSlotZero instanceof IEngineerable) {
-                    IEngineerable item = (IEngineerable) itemInSlotZero;
+                if (itemInSlotZero instanceof Engineerable) {
+                    Engineerable item = (Engineerable) itemInSlotZero;
                     return item.decrStackSize(stackInSlotZero, index, count);
                 }
             }
@@ -113,8 +113,8 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
             ItemStack stackInSlotZero = getStackInSlot(0);
             if (stackInSlotZero != null) {
                 Item itemInSlotZero = stackInSlotZero.getItem();
-                if (itemInSlotZero instanceof IEngineerable) {
-                    IEngineerable item = (IEngineerable) itemInSlotZero;
+                if (itemInSlotZero instanceof Engineerable) {
+                    Engineerable item = (Engineerable) itemInSlotZero;
                     item.setInventorySlotContents(stackInSlotZero, index, stack);
                 }
             }
@@ -145,8 +145,8 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
             ItemStack stackInSlotZero = getStackInSlot(0);
             if (stackInSlotZero != null) {
                 Item itemInSlotZero = stackInSlotZero.getItem();
-                if (itemInSlotZero instanceof IEngineerable) {
-                    IEngineerable item = (IEngineerable) itemInSlotZero;
+                if (itemInSlotZero instanceof Engineerable) {
+                    Engineerable item = (Engineerable) itemInSlotZero;
                     return item.isItemValidForSlot(stackInSlotZero, index, stack);
                 }
             }

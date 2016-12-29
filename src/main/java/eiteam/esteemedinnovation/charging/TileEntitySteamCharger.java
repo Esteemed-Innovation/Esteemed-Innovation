@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.charging;
 
-import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
@@ -98,8 +98,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                     markForResync();
                 }
 
-                if (inventory.getItem() instanceof ISteamChargable) {
-                    ISteamChargable item = (ISteamChargable) inventory.getItem();
+                if (inventory.getItem() instanceof SteamChargable) {
+                    SteamChargable item = (SteamChargable) inventory.getItem();
                     ItemStack stack = inventory.copy();
                     if (!(item instanceof ItemExosuitArmor)) {
                         if (getSteamShare() > 0 && stack.getItemDamage() > 0) {
@@ -324,7 +324,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack.getItem() instanceof ISteamChargable || stack.getItem() == STEAM_CELL_EMPTY.getItem();
+        return stack.getItem() instanceof SteamChargable || stack.getItem() == STEAM_CELL_EMPTY.getItem();
     }
 
     @Override

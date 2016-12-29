@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.transport.steam;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
+import eiteam.esteemedinnovation.api.wrench.PipeWrench;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -131,8 +131,8 @@ public class BlockSteamPipe extends BlockSteamTransporter {
 					for (ForgeDirection direction : ForgeDirection.values()) {
 						if (pipe.doesConnect(direction) && world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ) != null) {
 							TileEntity tile = world.getTileEntity(i+direction.offsetX, j+direction.offsetY, k+direction.offsetZ);
-							if (tile instanceof ISteamTransporter) {
-								ISteamTransporter target = (ISteamTransporter) tile;
+							if (tile instanceof SteamTransporter) {
+								SteamTransporter target = (SteamTransporter) tile;
 								if (target.doesConnect(direction.getOpposite())) {
 									myDirections.add(direction);
 									if (direction.offsetX == 1) {
@@ -250,8 +250,8 @@ public class BlockSteamPipe extends BlockSteamTransporter {
         BlockPos rtrPos = rtr.getBlockPos();
         if (rtr.typeOfHit == RayTraceResult.Type.BLOCK &&
           player.worldObj.getBlockState(rtr.getBlockPos()).getBlock() instanceof BlockSteamPipe &&
-          equipped instanceof IPipeWrench) {
-            IPipeWrench wrench = (IPipeWrench) equipped;
+          equipped instanceof PipeWrench) {
+            PipeWrench wrench = (PipeWrench) equipped;
             if (wrench.canWrench(player, rtrPos)) {
                 RayTracer.retraceBlock(player.worldObj, player, rtrPos);
             }

@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemExosuitUpgrade extends Item implements IExosuitUpgrade {
+public class ItemExosuitUpgrade extends Item implements ExosuitUpgrade {
     private ResourceLocation myOverlay;
     private String myInfo;
     private int pri;

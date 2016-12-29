@@ -7,7 +7,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 
 public class PlayerDataSerializer implements ICapabilitySerializable<NBTTagCompound> {
-    IPlayerData instance = EsteemedInnovation.PLAYER_DATA.getDefaultInstance();
+    PlayerData instance = EsteemedInnovation.PLAYER_DATA.getDefaultInstance();
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

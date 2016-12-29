@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 /**
  * Implement this interface on subclasses of Item to have the item work as pipe wrench.
  */
-public interface IPipeWrench {
+public interface PipeWrench {
 
     /**
      * Called to ensure the pipe wrench can be used on a block.

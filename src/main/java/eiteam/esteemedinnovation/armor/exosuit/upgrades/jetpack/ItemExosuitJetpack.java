@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades.jetpack;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.handler.FieldHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,7 +48,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
             if (chest == null) {
                 return;
             }
-            IExosuitArmor chestArmor = (IExosuitArmor) chest.getItem();
+            ExosuitArmor chestArmor = (ExosuitArmor) chest.getItem();
 
             player.motionY += 0.06D;
             player.fallDistance = 0.0F;
@@ -94,10 +94,10 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
             }
 
             Item chestItem = chest.getItem();
-            if (!(chestItem instanceof IExosuitArmor)) {
+            if (!(chestItem instanceof ExosuitArmor)) {
                 return null;
             }
-            IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
+            ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
             if (!chestArmor.hasPower(chest, Config.jetpackConsumption)) {
                 return null;
             }

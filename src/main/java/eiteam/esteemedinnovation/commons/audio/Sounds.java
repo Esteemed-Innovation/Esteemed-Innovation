@@ -7,8 +7,8 @@ import net.minecraft.client.audio.SoundHandler;
 public class Sounds {
     private static SoundHandler soundMgr;
 
-    public static void addSoundTile(ISoundTile soundTile) {
-        addSound(new SoundTile(soundTile));
+    public static void addSoundTile(SoundTile soundTile) {
+        addSound(new TickableSoundTile(soundTile));
     }
 
     public static void addSound(ISound sound) {

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
+public class ItemTheVoidUpgrade extends Item implements SteamToolUpgrade {
     private ResourceLocation baseOverlay;
 
     public ItemTheVoidUpgrade() {
@@ -181,9 +181,9 @@ public class ItemTheVoidUpgrade extends Item implements ISteamToolUpgrade {
 
         World world = event.getWorld();
         ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || player.isSneaking() || !(equipped.getItem() instanceof ISteamTool) ||
-          !((ISteamTool) equipped.getItem()).hasUpgrade(equipped, this) ||
-          !((ISteamTool) equipped.getItem()).isWound(equipped)) {
+        if (equipped == null || player.isSneaking() || !(equipped.getItem() instanceof SteamTool) ||
+          !((SteamTool) equipped.getItem()).hasUpgrade(equipped, this) ||
+          !((SteamTool) equipped.getItem()).isWound(equipped)) {
             return;
         }
 

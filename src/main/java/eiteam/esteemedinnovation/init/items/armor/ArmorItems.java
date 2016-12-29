@@ -14,7 +14,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
@@ -27,7 +27,7 @@ import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
-public class ArmorItems implements IInitCategory {
+public class ArmorItems implements InitCategory {
     public enum Items {
         EXOSUIT_HEADPIECE(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, Materials.EXOSUIT.getMaterial()), "exosuit_head", EsteemedInnovation.tab),
         EXOSUIT_CHESTPIECE(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, Materials.EXOSUIT.getMaterial()), "exosuit_body", EsteemedInnovation.tab),

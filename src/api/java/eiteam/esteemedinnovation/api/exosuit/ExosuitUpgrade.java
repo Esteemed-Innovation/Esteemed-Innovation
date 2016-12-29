@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * The interface which allows an item to be upgraded into an Exosuit armor piece.
  * You must return something unique from {@link Object#toString()}, otherwise the exosuit will not render correctly as
- * an item (has no effect on the armor rendering). The result of {@link IExosuitUpgrade#getOverlay()} is usually
+ * an item (has no effect on the armor rendering). The result of {@link ExosuitUpgrade#getOverlay()} is usually
  * returned for toString().
  *
  * You must inherit Item as well, or provide a new implementation for isInstalled, as the default implementation
  * checks if we are an instance of Item.
  */
-public interface IExosuitUpgrade {
+public interface ExosuitUpgrade {
     /**
      * The priority of the upgrade's rendering
      *
@@ -62,11 +62,11 @@ public interface IExosuitUpgrade {
 
     /**
      * @param entity The entity to check
-     * @return Whether this upgrade is installed in its according IExosuitArmor piece worn by the provided entity.
+     * @return Whether this upgrade is installed in its according ExosuitArmor piece worn by the provided entity.
      */
     default boolean isInstalled(EntityLivingBase entity) {
         ItemStack armor = entity.getItemStackFromSlot(getSlot().armor);
-        return this instanceof Item && armor != null && armor.getItem() instanceof IExosuitArmor &&
-          ((IExosuitArmor) armor.getItem()).hasUpgrade(armor, (Item) this);
+        return this instanceof Item && armor != null && armor.getItem() instanceof ExosuitArmor &&
+          ((ExosuitArmor) armor.getItem()).hasUpgrade(armor, (Item) this);
     }
 }

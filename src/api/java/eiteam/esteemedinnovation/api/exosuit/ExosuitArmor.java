@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
-import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.Engineerable;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ISpecialArmor;
 
-public interface IExosuitArmor extends ISpecialArmor, IEngineerable, ISteamChargable {
+public interface ExosuitArmor extends ISpecialArmor, Engineerable, SteamChargable {
     /**
      * TODO Return a ResourceLocation and rename to a more descriptive name.
      * @return The string representing the location for the armor's item texture.

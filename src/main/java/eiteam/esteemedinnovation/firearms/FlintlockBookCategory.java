@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.book.BookCategory;
 import eiteam.esteemedinnovation.api.book.BookEntry;
 import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,7 +19,7 @@ public class FlintlockBookCategory extends BookCategory {
 
     @Override
     public boolean isUnlocked(EntityPlayer player) {
-        IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         return data.getAllUnlockedPieces().contains(NAME);
     }
 
@@ -29,7 +29,7 @@ public class FlintlockBookCategory extends BookCategory {
             for (Entity entity : event.getAffectedEntities()) {
                 if (entity instanceof EntityPlayerMP) {
                     EntityPlayerMP player = (EntityPlayerMP) entity;
-                    IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+                    PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
                     if (data.setHasUnlockedBookPiece(NAME, true)) {
                         EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(NAME, true), player);
                     }

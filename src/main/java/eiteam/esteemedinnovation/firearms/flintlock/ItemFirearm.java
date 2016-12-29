@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.firearms.flintlock;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.IEngineerable;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.Engineerable;
+import eiteam.esteemedinnovation.api.enhancement.Enhancement;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
@@ -36,7 +36,7 @@ import java.util.List;
 
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
 
-public class ItemFirearm extends Item implements IEngineerable {
+public class ItemFirearm extends Item implements Engineerable {
     public float damage;
     public int reloadTime;
     public int shellCount;
@@ -138,9 +138,9 @@ public class ItemFirearm extends Item implements IEngineerable {
             float crouchingBonus = crouched ? 0.10F : 0;
 
             if (UtilEnhancements.hasEnhancement(itemstack)) {
-                IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(itemstack);
-                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
-                    IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+                Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(itemstack);
+                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof EnhancementFirearm) {
+                    EnhancementFirearm enhancementFirearm = (EnhancementFirearm) enhancement;
                     enhancementAccuracy = enhancementFirearm.getAccuracyChange(this);
                     enhancementDamage = enhancementFirearm.getDamageChange(this);
                     enhancementKnockback = enhancementFirearm.getKnockbackChange(this);
@@ -172,8 +172,8 @@ public class ItemFirearm extends Item implements IEngineerable {
                 EntityMusketBall musketBall = new EntityMusketBall(world, player, 2.0F, ((1.0F + accuracy + enhancementAccuracy - crouchingBonus) - timeUsedSecs), (damage + enhancementDamage), true);
 
                 if (UtilEnhancements.hasEnhancement(itemstack)) {
-                    if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
-                        musketBall = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(musketBall);
+                    if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof EnhancementFirearm) {
+                        musketBall = ((EnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(musketBall);
                     }
                 }
 
@@ -194,8 +194,8 @@ public class ItemFirearm extends Item implements IEngineerable {
                               (1.0F + accuracy + enhancementAccuracy - crouchingBonus) - timeUsedSecs,
                               (damage + enhancementDamage), false);
                             if (UtilEnhancements.hasEnhancement(itemstack)) {
-                                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof IEnhancementFirearm) {
-                                    shotgunRound = ((IEnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(shotgunRound);
+                                if (UtilEnhancements.getEnhancementFromItem(itemstack) instanceof EnhancementFirearm) {
+                                    shotgunRound = ((EnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(shotgunRound);
                                 }
                             }
                             world.spawnEntityInWorld(shotgunRound);
@@ -232,9 +232,9 @@ public class ItemFirearm extends Item implements IEngineerable {
 
     private int getEnhancementShells(ItemStack self) {
         if (UtilEnhancements.hasEnhancement(self)) {
-            IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
-            if (enhancement instanceof IEnhancementFirearm) {
-                IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+            Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(self);
+            if (enhancement instanceof EnhancementFirearm) {
+                EnhancementFirearm enhancementFirearm = (EnhancementFirearm) enhancement;
                 return enhancementFirearm.getClipSizeChange(this);
             }
         }
@@ -291,9 +291,9 @@ public class ItemFirearm extends Item implements IEngineerable {
 
         int enhancementReload = 0;
         if (UtilEnhancements.hasEnhancement(stack)) {
-            IEnhancement enhancement = UtilEnhancements.getEnhancementFromItem(stack);
-            if (enhancement instanceof IEnhancementFirearm) {
-                IEnhancementFirearm enhancementFirearm = (IEnhancementFirearm) enhancement;
+            Enhancement enhancement = UtilEnhancements.getEnhancementFromItem(stack);
+            if (enhancement instanceof EnhancementFirearm) {
+                EnhancementFirearm enhancementFirearm = (EnhancementFirearm) enhancement;
                 enhancementReload = enhancementFirearm.getReloadChange(this);
             }
         }
@@ -350,7 +350,7 @@ public class ItemFirearm extends Item implements IEngineerable {
             me.setTagCompound(new NBTTagCompound());
         }
         if (stack != null) {
-            IEnhancement enhancement = (IEnhancement) stack.getItem();
+            Enhancement enhancement = (Enhancement) stack.getItem();
             NBTTagCompound enhancements = new NBTTagCompound();
             enhancements.setString("id", enhancement.getID());
             me.getTagCompound().setTag("enhancements", enhancements);
@@ -385,7 +385,7 @@ public class ItemFirearm extends Item implements IEngineerable {
 
     @Override
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
-        return upgrade.getItem() instanceof IEnhancement && ((IEnhancement) upgrade.getItem()).canApplyTo(me);
+        return upgrade.getItem() instanceof Enhancement && ((Enhancement) upgrade.getItem()).canApplyTo(me);
     }
 
     @Override

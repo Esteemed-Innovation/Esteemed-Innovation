@@ -39,7 +39,7 @@ public class FrequencyMerchant implements IMerchant {
 
     public FrequencyMerchant(EntityLiving entity, String name) {
         this.entity = entity;
-        IAnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+        AnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
         merchantName = name;
         stock = data.getStock();
     }

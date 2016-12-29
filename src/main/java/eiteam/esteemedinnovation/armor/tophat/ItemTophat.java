@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.tophat;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class ItemTophat extends ItemArmor implements IExosuitUpgrade {
+public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
     private static Map<UUID, ModelTophat> tophatModels = new HashMap<>();
     private boolean emerald;
 

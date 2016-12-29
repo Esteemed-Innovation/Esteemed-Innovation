@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.buzzsaw;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockSaw extends BlockSteamTransporter implements IWrenchable {
+public class BlockSaw extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     public BlockSaw() {

@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.api.enhancement;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import net.minecraft.item.Item;
 
-public interface IEnhancementFirearm extends IEnhancement {
+public interface EnhancementFirearm extends Enhancement {
     float getAccuracyChange(Item weapon);
 
     float getKnockbackChange(Item weapon);

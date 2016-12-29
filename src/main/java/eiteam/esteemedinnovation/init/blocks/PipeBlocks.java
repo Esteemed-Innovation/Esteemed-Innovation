@@ -3,12 +3,12 @@ package eiteam.esteemedinnovation.init.blocks;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.transport.fluid.pipes.BlockColdFluidPipe;
 import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class PipeBlocks implements IInitCategory {
+public class PipeBlocks implements InitCategory {
     public enum Blocks {
         BRASS_PIPE(new BlockSteamPipe(), "brass_pipe"),
         COPPER_PIPE(new BlockColdFluidPipe(), "copper_pipe")

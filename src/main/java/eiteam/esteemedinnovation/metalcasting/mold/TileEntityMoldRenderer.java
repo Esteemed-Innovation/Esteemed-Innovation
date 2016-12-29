@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
-import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.CrucibleMold;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.client.renderer.GlStateManager;
@@ -84,7 +84,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
     }
 
     private void renderMold(Item item, boolean bottom) {
-        bindTexture(((ICrucibleMold) item).getBlockTexture());
+        bindTexture(((CrucibleMold) item).getBlockTexture());
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
 //        buffer.putNormal(0F, 0F, 1F);

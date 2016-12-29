@@ -11,7 +11,7 @@ public class ExosuitRegistry {
      */
     public static HashMap<String, ExosuitPlate> plates = new HashMap<>();
 
-    public static List<IExosuitUpgrade> upgrades = new ArrayList<>();
+    public static List<ExosuitUpgrade> upgrades = new ArrayList<>();
 
     /**
      * Registers an ExosuitPlate.
@@ -22,10 +22,10 @@ public class ExosuitRegistry {
     }
 
     /**
-     * Registers an IExosuitUpgrade.
+     * Registers an ExosuitUpgrade.
      * @param upgrade The upgrade.
      */
-    public static void addExosuitUpgrade(IExosuitUpgrade upgrade) {
+    public static void addExosuitUpgrade(ExosuitUpgrade upgrade) {
         upgrades.add(upgrade);
     }
 }

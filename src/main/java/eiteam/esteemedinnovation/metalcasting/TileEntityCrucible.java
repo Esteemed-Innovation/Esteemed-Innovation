@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.metalcasting;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.CrucibleMold;
 import eiteam.esteemedinnovation.api.tile.TileEntityBase;
 import eiteam.esteemedinnovation.metalcasting.mold.TileEntityMold;
 import net.minecraft.block.state.IBlockState;
@@ -141,7 +141,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
                 if (tile != null && tile instanceof TileEntityMold) {
                     TileEntityMold mold = (TileEntityMold) tile;
                     if (mold.canPour() && contents.size() > 0) {
-                        ICrucibleMold crucibleMold = (ICrucibleMold) mold.mold.getItem();
+                        CrucibleMold crucibleMold = (CrucibleMold) mold.mold.getItem();
                         CrucibleLiquid liquid = this.getNextLiquid(crucibleMold);
                         if (liquid != null) {
                             if (!worldObj.isRemote) {
@@ -244,7 +244,7 @@ public class TileEntityCrucible extends TileEntityBase implements ITickable {
         return stack;
     }
 
-    public CrucibleLiquid getNextLiquid(ICrucibleMold mold) {
+    public CrucibleLiquid getNextLiquid(CrucibleMold mold) {
         for (CrucibleLiquid liquid : CrucibleRegistry.liquids) {
             if (number.containsKey(liquid)) {
                 if (mold.canUseOn(liquid) && number.get(liquid) >= mold.getCostToMold(liquid)) {

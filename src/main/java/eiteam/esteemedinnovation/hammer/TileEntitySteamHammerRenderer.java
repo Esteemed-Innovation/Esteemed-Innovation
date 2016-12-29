@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.hammer;
 
-import eiteam.esteemedinnovation.commons.visual.IInventoryTESR;
+import eiteam.esteemedinnovation.commons.visual.InventoryTESR;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
+public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer implements InventoryTESR {
     private static final ModelHammer MODEL = new ModelHammer();
     private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/hammer.png");
     private static final float PX = (1.0F / 16.0F);

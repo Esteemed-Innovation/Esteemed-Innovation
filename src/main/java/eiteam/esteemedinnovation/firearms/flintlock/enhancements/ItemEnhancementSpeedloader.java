@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.firearms.flintlock.enhancements;
 
-import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.item.EnumRarity;
@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.BLUNDERBUSS;
 import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.MUSKET;
 
-public class ItemEnhancementSpeedloader extends Item implements IEnhancementFirearm {
+public class ItemEnhancementSpeedloader extends Item implements EnhancementFirearm {
     @Override
     public boolean canApplyTo(ItemStack stack) {
         return stack.getItem() == MUSKET.getItem() || stack.getItem() == BLUNDERBUSS.getItem();

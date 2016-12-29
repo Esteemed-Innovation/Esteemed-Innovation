@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
-import eiteam.esteemedinnovation.api.IEngineerable;
+import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.commons.gui.SlotLimitedStackSize;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -92,8 +92,8 @@ public class ContainerEngineeringTable extends Container {
 
         ItemStack stackInSlotZero = tileEntity.getStackInSlot(0);
         if (stackInSlotZero != null) {
-            if (stackInSlotZero.getItem() instanceof IEngineerable) {
-                IEngineerable item = (IEngineerable) stackInSlotZero.getItem();
+            if (stackInSlotZero.getItem() instanceof Engineerable) {
+                Engineerable item = (Engineerable) stackInSlotZero.getItem();
                 hasEngineer = true;
                 int i = 1;
                 for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {

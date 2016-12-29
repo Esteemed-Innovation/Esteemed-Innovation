@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.init.items.tools;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamAxe;
@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 
-public class ToolItems implements IInitCategory {
+public class ToolItems implements InitCategory {
     public enum Items {
         STEAM_DRILL(new ItemSteamDrill(), "steam_drill"),
         STEAM_SAW(new ItemSteamAxe(), "steam_saw"),

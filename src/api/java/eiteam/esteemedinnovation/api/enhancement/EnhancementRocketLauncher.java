@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public interface IEnhancementRocketLauncher extends IEnhancement {
+public interface EnhancementRocketLauncher extends Enhancement {
     float getAccuracyChange(Item weapon);
 
     float getExplosionChange(Item weapon);

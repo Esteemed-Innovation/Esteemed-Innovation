@@ -6,7 +6,7 @@ import eiteam.esteemedinnovation.charging.BlockSteamCharger;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.items.CraftingComponentItems;
 import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
 import eiteam.esteemedinnovation.hammer.BlockSteamHammer;
@@ -30,7 +30,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.FURNACE;
 import static net.minecraft.init.Blocks.IRON_BARS;
 
-public class SteamMachineryBlocks implements IInitCategory {
+public class SteamMachineryBlocks implements InitCategory {
     public enum Blocks {
         ARCHIMEDES_SCREW(new BlockPump(), "pump"),
         ROCK_SMASHER(new BlockSmasher(), "smasher"),

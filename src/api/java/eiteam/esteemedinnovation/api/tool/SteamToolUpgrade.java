@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
  * The on* methods all get called *after* making sure the tool is wound up. If you don't care about that, then you
  * need your own event handler.
  */
-public interface ISteamToolUpgrade {
+public interface SteamToolUpgrade {
     /**
      * The slot that the upgrade can be used on
      *

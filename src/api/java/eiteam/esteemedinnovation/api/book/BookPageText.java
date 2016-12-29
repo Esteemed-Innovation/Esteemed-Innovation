@@ -24,7 +24,7 @@ public class BookPageText extends BookPage {
     }
 
     @Override
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         super.renderPage(x, y, fontRenderer, book, renderer, isFirstPage, mx, my);
         if (!lastViewing.equals(book.getCurrentEntry())) {
             abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);

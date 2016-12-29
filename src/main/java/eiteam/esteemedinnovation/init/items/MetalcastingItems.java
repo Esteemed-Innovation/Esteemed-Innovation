@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemIngotMold;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemNuggetMold;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemPipeMold;
@@ -15,7 +15,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static net.minecraft.init.Items.BRICK;
 
-public class MetalcastingItems implements IInitCategory {
+public class MetalcastingItems implements InitCategory {
     public enum Items {
         INGOT_MOLD(new ItemIngotMold(), "ingot_mold", false),
         NUGGET_MOLD(new ItemNuggetMold(), "nugget_mold", false),

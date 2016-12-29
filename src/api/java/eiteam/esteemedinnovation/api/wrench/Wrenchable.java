@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * Implement this when you want your machine to do something when it gets wrenched.
  */
-public interface IWrenchable {
+public interface Wrenchable {
     /**
      * Called when a player uses a wrench on a tile entity.
      * @param stack The ItemStack wrench

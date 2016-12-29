@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +20,7 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
     }
 
     private static int getTicks(Entity entity) {
-        IPlayerData nbt = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData nbt = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         int ticks = nbt.getTickCache();
         if (ticks < 0) {
             nbt.setTickCache(0);
@@ -30,7 +30,7 @@ public class ItemExosuitWings extends ItemExosuitUpgrade {
     }
 
     private static void updateTicks(Entity entity, int ticks) {
-        IPlayerData nbt = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData nbt = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         nbt.setTickCache(ticks);
     }
 

@@ -2,13 +2,13 @@ package eiteam.esteemedinnovation.init.items.firearms;
 
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import eiteam.esteemedinnovation.api.enhancement.IRocket;
+import eiteam.esteemedinnovation.api.enhancement.Rocket;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketBasic;
 import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketConcussive;
 import eiteam.esteemedinnovation.firearms.rocket.ammo.ItemRocketMining;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -19,7 +19,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.SAND;
 import static net.minecraft.init.Items.*;
 
-public class FirearmAmmunitionItems implements IInitCategory {
+public class FirearmAmmunitionItems implements InitCategory {
     public enum Items {
         MUSKET_CARTRIDGE(new Item(), "musket_cartridge"),
         ROCKET(new ItemRocketBasic(), "rocket"),
@@ -43,8 +43,8 @@ public class FirearmAmmunitionItems implements IInitCategory {
             item.setCreativeTab(EsteemedInnovation.tab);
             item.setRegistryName(EsteemedInnovation.MOD_ID, name);
             GameRegistry.register(item);
-            if (item instanceof IRocket) {
-                EnhancementRegistry.registerRocket((IRocket) item);
+            if (item instanceof Rocket) {
+                EnhancementRegistry.registerRocket((Rocket) item);
             }
             this.item = item;
         }

@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import eiteam.esteemedinnovation.metals.refined.BlockBeacon;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static eiteam.esteemedinnovation.init.misc.CraftingHelpers.add3x3Recipe;
 
-public class MetalBlocks implements IInitCategory {
+public class MetalBlocks implements InitCategory {
     public enum Blocks {
         COPPER(0),
         ZINC(1),

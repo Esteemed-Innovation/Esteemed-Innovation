@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ItemSteamToolUpgrade extends Item implements ISteamToolUpgrade {
+public class ItemSteamToolUpgrade extends Item implements SteamToolUpgrade {
     private ResourceLocation baseOverlay;
     private String myInfo;
     private int prio;

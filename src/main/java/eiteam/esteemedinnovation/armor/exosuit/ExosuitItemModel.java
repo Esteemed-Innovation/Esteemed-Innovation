@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -71,7 +71,7 @@ public class ExosuitItemModel implements IModel {
             allArmorIcons.add(new ResourceLocation(baseIcon + "_grey"));
         }
         List<ResourceLocation> allIcons = ExosuitRegistry.upgrades.stream()
-          .map(IExosuitUpgrade::getOverlay)
+          .map(ExosuitUpgrade::getOverlay)
           .collect(Collectors.toList());
         allIcons.addAll(allPlateIcons);
         allIcons.addAll(allArmorIcons);

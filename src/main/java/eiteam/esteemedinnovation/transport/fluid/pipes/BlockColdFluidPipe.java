@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.transport.fluid.pipes;
 
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import static eiteam.esteemedinnovation.transport.fluid.pipes.FluidPipeBlockCapabilities.*;
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
-public class BlockColdFluidPipe extends Block implements IWrenchable {
+public class BlockColdFluidPipe extends Block implements Wrenchable {
     public static final int MAX_TEMPERATURE = 400;
     public static final int MIN_TEMPERATURE = 200;
 

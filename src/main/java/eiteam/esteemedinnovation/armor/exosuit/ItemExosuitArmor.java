@@ -31,7 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
+public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
     public static final ResourceLocation LARGE_ICONS = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/engineering2.png");
 
     public EntityEquipmentSlot slot;
@@ -236,7 +236,7 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             me.getTagCompound().getCompoundTag("inv").setTag(Integer.toString(var1), stc);
             if (var1 == 5 && slot == EntityEquipmentSlot.CHEST) {
                 me.getTagCompound().setInteger("steamFill", 0);
-                me.getTagCompound().setInteger("maxFill", ((IExosuitTank) stack.getItem()).getStorage(me));
+                me.getTagCompound().setInteger("maxFill", ((ExosuitTank) stack.getItem()).getStorage(me));
                 if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
                     me.getTagCompound().setInteger("steamFill", me.getTagCompound().getInteger("maxFill"));
                 }
@@ -282,8 +282,8 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             clone.stackSize = 1;
             return UtilPlates.getPlate(clone) != null;
         }
-        if (upgrade.getItem() instanceof IExosuitUpgrade) {
-            IExosuitUpgrade upgradeItem = (IExosuitUpgrade) upgrade.getItem();
+        if (upgrade.getItem() instanceof ExosuitUpgrade) {
+            ExosuitUpgrade upgradeItem = (ExosuitUpgrade) upgrade.getItem();
             return (upgradeItem.getSlot().armor == slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeItem.getSlot().slot == slotNum);
         } else if (slotNum == ExosuitSlot.VANITY.slot) {
             // TODO: Optimize by using a static list of dye oredicts generated at load time (OreDictHelper).
@@ -355,7 +355,7 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             String s = Integer.toString(i);
             if (inv.hasKey(s)) {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(inv.getCompoundTag(s));
-                if (stack != null && stack.getItem() != null && stack.getItem() instanceof IExosuitTank) {
+                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ExosuitTank) {
                     return true;
                 }
             }
@@ -363,21 +363,21 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
         return false;
     }
 
-    public IExosuitUpgrade[] getUpgrades(ItemStack me) {
-        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<>();
+    public ExosuitUpgrade[] getUpgrades(ItemStack me) {
+        ArrayList<ExosuitUpgrade> upgrades = new ArrayList<>();
         if (me.hasTagCompound()) {
             if (me.getTagCompound().hasKey("inv")) {
                 for (int i = 2; i < 10; i++) {
                     if (me.getTagCompound().getCompoundTag("inv").hasKey(Integer.toString(i))) {
                         ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("inv").getCompoundTag(Integer.toString(i)));
-                        if (stack.getItem() instanceof IExosuitUpgrade) {
-                            upgrades.add((IExosuitUpgrade) stack.getItem());
+                        if (stack.getItem() instanceof ExosuitUpgrade) {
+                            upgrades.add((ExosuitUpgrade) stack.getItem());
                         }
                     }
                 }
             }
         }
-        return upgrades.toArray(new IExosuitUpgrade[0]);
+        return upgrades.toArray(new ExosuitUpgrade[0]);
     }
 
     @Override
@@ -450,8 +450,8 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
     public boolean canCharge(ItemStack stack) {
         if (slot == EntityEquipmentSlot.CHEST) {
             ItemExosuitArmor item = (ItemExosuitArmor) stack.getItem();
-            if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof IExosuitTank) {
-                IExosuitTank tank = (IExosuitTank) item.getStackInSlot(stack, 5).getItem();
+            if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof ExosuitTank) {
+                ExosuitTank tank = (ExosuitTank) item.getStackInSlot(stack, 5).getItem();
                 return tank.canFill(stack);
             }
         }
@@ -497,8 +497,8 @@ public class ItemExosuitArmor extends ItemArmor implements IExosuitArmor {
             }
         }
 
-        IExosuitUpgrade[] upgrades = armor.getUpgrades(stack);
-        for (IExosuitUpgrade upgrade : upgrades) {
+        ExosuitUpgrade[] upgrades = armor.getUpgrades(stack);
+        for (ExosuitUpgrade upgrade : upgrades) {
             map.putAll(upgrade.getAttributeModifiersForExosuit(armorSlot, stack));
         }
 

@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.api;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public interface ISteamChargable {
+public interface SteamChargable {
     /**
      * How much steam is used per use
      */

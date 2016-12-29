@@ -12,12 +12,12 @@ import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.metalcasting.mold.BlockCarvingTable;
 import eiteam.esteemedinnovation.metalcasting.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.mold.BlockMold;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.items.MetalcastingItems;
 
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.PLANK_WOOD;
 
-public class CastingBlocks implements IInitCategory {
+public class CastingBlocks implements InitCategory {
     public enum Blocks {
         CRUCIBLE(new BlockCrucible(), "crucible"),
         NETHER_CRUCIBLE(new BlockCrucible(), "hell_crucible"),

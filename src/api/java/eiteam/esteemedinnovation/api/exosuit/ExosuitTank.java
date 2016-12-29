@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 /**
  * The interface which allows items to be considered steam tanks for use in the exosuit.
  */
-public interface IExosuitTank {
+public interface ExosuitTank {
     /**
      * Whether this tank allows the exosuit to be filled or not.
      * @param stack The armor containing the tank.

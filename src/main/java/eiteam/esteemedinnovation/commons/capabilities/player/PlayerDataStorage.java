@@ -9,9 +9,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
+public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     @Override
-    public NBTBase writeNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side) {
+    public NBTBase writeNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("isRangeExtended", instance.isRangeExtended());
         nbt.setInteger("tickCache", instance.getTickCache());
@@ -33,7 +33,7 @@ public class PlayerDataStorage implements Capability.IStorage<IPlayerData> {
     }
 
     @Override
-    public void readNBT(Capability<IPlayerData> capability, IPlayerData instance, EnumFacing side, NBTBase nbtBase) {
+    public void readNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
         if (nbt.hasKey("lastMotionX") && nbt.hasKey("lastMotionZ")) {
             instance.setLastMotions(MutablePair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));

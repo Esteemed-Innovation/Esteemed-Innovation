@@ -65,8 +65,8 @@ public class BlockSteamHammer extends Block {
         else
         {
             if (player.getHeldItem() != null) {
-                if (player.getHeldItem().getItem() instanceof ISteamChargable) {
-                    ISteamChargable item = (ISteamChargable) player.getHeldItem().getItem();
+                if (player.getHeldItem().getItem() instanceof SteamChargable) {
+                    SteamChargable item = (SteamChargable) player.getHeldItem().getItem();
                     if (item.canCharge(player.getHeldItem())) {
                         ItemStack copy = player.getCurrentEquippedItem().copy();
                         copy.stackSize = 1;

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +20,7 @@ public class ItemExothermicProjector extends ItemSteamToolUpgrade {
     public void onPlayerHarvestDropsWithTool(BlockEvent.HarvestDropsEvent event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
         IBlockState state = event.getState();
         Block block = state.getBlock();
-        ISteamTool tool = (ISteamTool) toolStack.getItem();
+        SteamTool tool = (SteamTool) toolStack.getItem();
         if (event.getDrops().isEmpty() || !block.isToolEffective(tool.toolClass(), state)) {
             return;
         }

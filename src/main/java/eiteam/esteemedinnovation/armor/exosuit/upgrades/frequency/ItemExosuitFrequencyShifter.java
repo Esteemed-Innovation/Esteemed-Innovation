@@ -44,7 +44,7 @@ public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
         @SubscribeEvent
         public void handlePainfulFrequencies(AnimalTradeEvent event) {
             EntityLiving entity = event.salesperson;
-            IAnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+            AnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
             if (data.getTotalTrades() > data.getMaximumTotalTrades()) {
                 entity.setAttackTarget(event.customer);
             }
@@ -80,7 +80,7 @@ public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
                     return;
                 }
                 EntityLiving living = (EntityLiving) target;
-                IAnimalData data = target.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+                AnimalData data = target.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
                 if (data.getTotalTrades() > data.getMaximumTotalTrades()) {
                     if (living instanceof EntityWolf) {
                         EntityWolf wolf = (EntityWolf) living;

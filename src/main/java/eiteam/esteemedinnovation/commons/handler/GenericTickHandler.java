@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.commons.handler;
 
-import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
+import eiteam.esteemedinnovation.api.block.DisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
-import eiteam.esteemedinnovation.api.tool.ISteamTool;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
+import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
@@ -91,14 +91,14 @@ public class GenericTickHandler {
             return;
         }
         Item chestItem = chest.getItem();
-        if (!(chestItem instanceof IExosuitArmor)) {
+        if (!(chestItem instanceof ExosuitArmor)) {
             return;
         }
-        IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
+        ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
         if (boots != null) {
             Item bootsItem = boots.getItem();
-            if (bootsItem instanceof IExosuitArmor) {
-                IExosuitArmor bootsArmor = (IExosuitArmor) bootsItem;
+            if (bootsItem instanceof ExosuitArmor) {
+                ExosuitArmor bootsArmor = (ExosuitArmor) bootsItem;
                 if (bootsArmor.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && chestArmor.hasPower(chest, 15)) {
                     if (isJumping) {
                         if (chestArmor.hasPower(chest, 15)) {
@@ -166,19 +166,19 @@ public class GenericTickHandler {
         inUse = false;
         if (event.side == Side.CLIENT && mc.thePlayer != null) {
             /*
-             Prevents caching of ISteamTool ItemStacks in the ItemRenderer, so that the ItemOverrideList has access to
+             Prevents caching of SteamTool ItemStacks in the ItemRenderer, so that the ItemOverrideList has access to
              the new NBT added in ItemSteamTool#onUpdate.
               */
             ItemStack mainHandStack = mc.thePlayer.getHeldItemMainhand();
             ItemStack offHandStack = mc.thePlayer.getHeldItemOffhand();
-            if (mainHandStack != null && mainHandStack.getItem() instanceof ISteamTool) {
+            if (mainHandStack != null && mainHandStack.getItem() instanceof SteamTool) {
                 try {
                     itemInMainHandField.set(mc.getItemRenderer(), mainHandStack);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
-            if (offHandStack != null && offHandStack.getItem() instanceof ISteamTool) {
+            if (offHandStack != null && offHandStack.getItem() instanceof SteamTool) {
                 try {
                     itemInOffHandField.set(mc.getItemRenderer(), offHandStack);
                 } catch (IllegalAccessException e) {
@@ -202,7 +202,7 @@ public class GenericTickHandler {
                     if (blockPos != null) {
                         TileEntity te = mc.theWorld.getTileEntity(blockPos);
                         if (mc.theWorld.getBlockState(blockPos).getBlock() == PipeBlocks.Blocks.BRASS_PIPE.getBlock() ||
-                          (te instanceof IDisguisableBlock)) {
+                          (te instanceof DisguisableBlock)) {
                             EsteemedInnovation.channel.sendToServer(new CamoPacket(blockPos));
                         }
                     }

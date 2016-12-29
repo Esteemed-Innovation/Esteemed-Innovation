@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockThumper extends BlockSteamTransporter implements IWrenchable {
+public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     // Because the defaults variant cannot have submodels :|
     private static final PropertyBool ALWAYS_TRUE = PropertyBool.create("always_true");

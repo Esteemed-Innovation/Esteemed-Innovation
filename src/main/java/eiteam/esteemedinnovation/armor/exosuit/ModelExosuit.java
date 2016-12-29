@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.commons.visual.Texture;
@@ -234,9 +234,9 @@ public class ModelExosuit extends ModelBiped {
         // Upgrades
         overlayTextures.clear();
         modelClasses.clear();
-        ArrayList<IExosuitUpgrade> upgrades = new ArrayList<>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
+        ArrayList<ExosuitUpgrade> upgrades = new ArrayList<>(Arrays.asList(exosuitArmor.getUpgrades(itemStack)));
         Collections.sort(upgrades, COMPARATOR_UPGRADE);
-        for (IExosuitUpgrade upgrade : upgrades) {
+        for (ExosuitUpgrade upgrade : upgrades) {
             ResourceLocation overlay = upgrade.getOverlay();
             Class<? extends ModelExosuitUpgrade> model = upgrade.getModel();
 

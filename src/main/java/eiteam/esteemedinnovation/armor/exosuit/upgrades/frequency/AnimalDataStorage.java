@@ -6,7 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.common.capabilities.Capability;
 
-public class AnimalDataStorage implements Capability.IStorage<IAnimalData> {
+public class AnimalDataStorage implements Capability.IStorage<AnimalData> {
     public static final String[] POSSIBLE_NAMES = {
       "Jose",
       "Jaunita",
@@ -50,7 +50,7 @@ public class AnimalDataStorage implements Capability.IStorage<IAnimalData> {
 
 
     @Override
-    public NBTBase writeNBT(Capability<IAnimalData> capability, IAnimalData instance, EnumFacing side) {
+    public NBTBase writeNBT(Capability<AnimalData> capability, AnimalData instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("maximumTrades", instance.getMaximumTotalTrades());
         nbt.setInteger("totalTrades", instance.getTotalTrades());
@@ -63,7 +63,7 @@ public class AnimalDataStorage implements Capability.IStorage<IAnimalData> {
     }
 
     @Override
-    public void readNBT(Capability<IAnimalData> capability, IAnimalData instance, EnumFacing side, NBTBase nbtBase) {
+    public void readNBT(Capability<AnimalData> capability, AnimalData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
         instance.setMaximumTotalTrades(nbt.getInteger("maximumTrades"));
         instance.setTotalTrades(nbt.getInteger("totalTrades"));

@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GuiJournal extends GuiScreen implements IGuiJournal {
+public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.api.book.GuiJournal {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
     private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book2.png");
     private static final ResourceLocation REVERSE_BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/bookReverse.png");

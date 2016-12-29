@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -72,7 +72,7 @@ public class SteamToolModel implements IModel {
 
         for (ToolUpgradeItems.Items item : ToolUpgradeItems.Items.LOOKUP) {
             Item vItem = item.getItem();
-            Collections.addAll(resources, ToolUpgradeRegistry.getResources((ISteamToolUpgrade) vItem));
+            Collections.addAll(resources, ToolUpgradeRegistry.getResources((SteamToolUpgrade) vItem));
         }
 
         return resources;

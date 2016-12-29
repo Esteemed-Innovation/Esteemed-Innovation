@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 /**
  * The implementer of this *must* have a superclass of Gui.
  */
-public interface IGuiJournal {
+public interface GuiJournal {
     int BOOK_IMAGE_WIDTH = 192;
     void renderToolTip(ItemStack stack, int mouseX, int mouseY, boolean renderHyperlink);
     void itemClicked(ItemStack itemStack);

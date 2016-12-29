@@ -2,8 +2,8 @@ package eiteam.esteemedinnovation.transport.entity;
 
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class TileEntityVacuum extends SteamTransporterTileEntity implements IWrenchable, IWrenchDisplay {
+public class TileEntityVacuum extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay {
     private static final int VACUUM_STEAM_CONSUMPTION = Config.vacuumConsumption;
 
     // half angle of cone

@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.commons.network;
 
-import eiteam.esteemedinnovation.api.block.IDisguisableBlock;
+import eiteam.esteemedinnovation.api.block.DisguisableBlock;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;
@@ -68,8 +68,8 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
                     tile.markDirty();
                 }
             }
-            if (tile instanceof IDisguisableBlock) {
-                IDisguisableBlock pipe = ((IDisguisableBlock) tile);
+            if (tile instanceof DisguisableBlock) {
+                DisguisableBlock pipe = ((DisguisableBlock) tile);
                 if (pipe.getDisguiseBlock() == null || pipe.getDisguiseBlock() != block ||
                   pipe.getDisguiseMeta() != heldMeta) {
                     if (pipe.getDisguiseBlock() != null &&

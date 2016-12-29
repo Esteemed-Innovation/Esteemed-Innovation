@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.init.items;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
 import eiteam.esteemedinnovation.naturalphilosophy.ItemResearchLog;
@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static net.minecraft.init.Items.*;
 
-public class NaturalPhilosophyItems implements IInitCategory {
+public class NaturalPhilosophyItems implements InitCategory {
     public enum Items {
         SOIL_SAMPLING_KIT(new ItemSoilSamplingKit(), "soil_sampling_kit"),
         BIOME_LOG(new ItemResearchLog(), "research_log_biome"),

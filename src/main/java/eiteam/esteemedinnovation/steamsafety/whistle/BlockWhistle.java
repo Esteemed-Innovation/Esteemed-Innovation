@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.whistle;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
@@ -57,8 +57,8 @@ public class BlockWhistle extends Block {
         }
         TileEntity tile = world.getTileEntity(pos.offset(dir.getOpposite()));
 
-        if (tile != null && tile instanceof ISteamTransporter) {
-            ISteamTransporter trans = (ISteamTransporter) tile;
+        if (tile != null && tile instanceof SteamTransporter) {
+            SteamTransporter trans = (SteamTransporter) tile;
             return trans.acceptsGauge(dir.getOpposite());
         }
         return false;

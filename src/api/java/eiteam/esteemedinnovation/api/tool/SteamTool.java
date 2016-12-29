@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.api.tool;
 
+import eiteam.esteemedinnovation.api.SteamChargable;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import eiteam.esteemedinnovation.api.ISteamChargable;
 
-public interface ISteamTool extends ISteamChargable {
+public interface SteamTool extends SteamChargable {
     /**
      * Checks if the tool is wound up.
      * @param stack The tool

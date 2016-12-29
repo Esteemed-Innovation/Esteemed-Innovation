@@ -3,10 +3,10 @@ package eiteam.esteemedinnovation.transport.steam;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.ConnectPacket;
 import net.minecraft.block.Block;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntitySteamPipe extends SteamTransporterTileEntity implements IWrenchable {
+public class TileEntitySteamPipe extends SteamTransporterTileEntity implements Wrenchable {
     //protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;
     public ArrayList<Integer> blacklistedSides = new ArrayList<>();
     public Block disguiseBlock = null;
@@ -140,8 +140,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         ArrayList<EnumFacing> myDirections = new ArrayList<>();
         for (EnumFacing direction : getConnectionSides()) {
             TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
-            if (tile instanceof ISteamTransporter) {
-                ISteamTransporter target = (ISteamTransporter) tile;
+            if (tile instanceof SteamTransporter) {
+                SteamTransporter target = (SteamTransporter) tile;
                 if (target.doesConnect(direction.getOpposite())) {
                     myDirections.add(direction);
                 }
@@ -266,8 +266,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
     public int canConnectSide(EnumFacing direction) {
         BlockPos pos = getOffsetPos(direction);
         TileEntity tile = worldObj.getTileEntity(pos);
-        if (tile != null && tile instanceof ISteamTransporter) {
-            ISteamTransporter target = (ISteamTransporter) tile;
+        if (tile != null && tile instanceof SteamTransporter) {
+            SteamTransporter target = (SteamTransporter) tile;
             if (target.doesConnect(direction.getOpposite())) {
                 return target instanceof TileEntitySteamPipe ? 2 : 1;
             }
@@ -428,8 +428,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
                     //add to blacklist
                     blacklistedSides.add(subHit);
                     {
-                        if (tile != null && tile instanceof ISteamTransporter) {
-                            ISteamTransporter p = (ISteamTransporter) tile;
+                        if (tile != null && tile instanceof SteamTransporter) {
+                            SteamTransporter p = (SteamTransporter) tile;
                             SteamNetwork network = p.getNetwork();
                             if (network != null) {
                                 network.shouldRefresh();
@@ -481,8 +481,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements I
         //log.debug("Refreshing neighbors");
         for (EnumFacing dir : EnumFacing.VALUES) {
             TileEntity te = worldObj.getTileEntity(getOffsetPos(dir));
-            if (te != null && te instanceof ISteamTransporter) {
-                ISteamTransporter trans = (ISteamTransporter) te;
+            if (te != null && te instanceof SteamTransporter) {
+                SteamTransporter trans = (SteamTransporter) te;
                 SteamNetwork transNetwork = trans.getNetwork();
                 if (transNetwork != null && transNetwork != getNetwork()) {
                     transNetwork.shouldRefresh();

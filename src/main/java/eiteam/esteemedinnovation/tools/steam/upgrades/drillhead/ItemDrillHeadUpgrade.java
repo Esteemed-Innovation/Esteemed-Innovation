@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
-import eiteam.esteemedinnovation.api.tool.ISteamToolUpgrade;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ItemDrillHeadUpgrade extends Item implements ISteamToolUpgrade {
+public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
     public ItemDrillHeadUpgrade() {}
 
     @Override

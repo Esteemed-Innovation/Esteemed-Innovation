@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.tools;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.wrench.IPipeWrench;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.PipeWrench;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemWrench extends Item implements IPipeWrench {
+public class ItemWrench extends Item implements PipeWrench {
     @SideOnly(Side.CLIENT)
     public boolean isFull3D() {
         return true;
@@ -31,17 +31,17 @@ public class ItemWrench extends Item implements IPipeWrench {
         if (!world.isRemote) {
             IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
-            boolean doBlock = block != null && block instanceof IWrenchable;
-            boolean doTile = tile != null && tile instanceof IWrenchable;
+            boolean doBlock = block != null && block instanceof Wrenchable;
+            boolean doTile = tile != null && tile instanceof Wrenchable;
             if (doBlock) {
-                boolean result = ((IWrenchable) block).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
+                boolean result = ((Wrenchable) block).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
                 if (result) {
                     world.playSound(player, pos, EsteemedInnovation.SOUND_WRENCH, SoundCategory.PLAYERS, 2F, 0.9F);
                     endResult = EnumActionResult.SUCCESS;
                 }
             }
             if (doTile) {
-                boolean result = ((IWrenchable) tile).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
+                boolean result = ((Wrenchable) tile).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
                 if (result) {
                     world.playSound(player, pos, EsteemedInnovation.SOUND_WRENCH, SoundCategory.PLAYERS, 2F, 0.9F);
                     endResult = EnumActionResult.SUCCESS;

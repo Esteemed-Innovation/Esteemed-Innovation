@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.transport.entity;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFan extends BlockSteamTransporter implements IWrenchable {
+public class BlockFan extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     private static final AxisAlignedBB FAN_AABB = new AxisAlignedBB(0, 0, 0, 1, 1, 6F / 16F);
 

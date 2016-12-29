@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.api.block;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +14,7 @@ public abstract class BlockSteamTransporter extends Block {
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        ISteamTransporter te = (ISteamTransporter) world.getTileEntity(pos);
+        SteamTransporter te = (SteamTransporter) world.getTileEntity(pos);
         if (te == null) {
             return;
         }

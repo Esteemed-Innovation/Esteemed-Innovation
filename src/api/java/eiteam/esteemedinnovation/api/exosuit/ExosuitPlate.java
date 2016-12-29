@@ -38,11 +38,11 @@ public class ExosuitPlate {
         plate = item;
     }
 
-    public ResourceLocation getIcon(IExosuitArmor item) {
+    public ResourceLocation getIcon(ExosuitArmor item) {
         return new ResourceLocation(item.getString() + invMod);
     }
 
-    public String getArmorLocation(IExosuitArmor item, EntityEquipmentSlot slot) {
+    public String getArmorLocation(ExosuitArmor item, EntityEquipmentSlot slot) {
         // TODO: Abstract out of API
         if (slot != EntityEquipmentSlot.LEGS) {
             return Constants.EI_MODID + ":textures/models/armor/exoPlate" + armorMod + "_1.png";
@@ -66,7 +66,7 @@ public class ExosuitPlate {
     }
 
     /**
-     * @see IExosuitUpgrade#getAttributeModifiersForExosuit(EntityEquipmentSlot, ItemStack)
+     * @see ExosuitUpgrade#getAttributeModifiersForExosuit(EntityEquipmentSlot, ItemStack)
      */
     public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
         return HashMultimap.create();

@@ -2,12 +2,12 @@ package eiteam.esteemedinnovation.metalcasting.mold.molds;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.CrucibleMold;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ItemIngotMold extends Item implements ICrucibleMold {
+public class ItemIngotMold extends Item implements CrucibleMold {
     private ResourceLocation icon = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldIngot.png");
 
     public ItemIngotMold() {

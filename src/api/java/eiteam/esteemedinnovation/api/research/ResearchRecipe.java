@@ -12,22 +12,22 @@ import java.lang.reflect.Field;
 
 /**
  * The ResearchRecipe is a ShapedOreRecipe that requires research to first be unlocked.
- * Its constructor takes an IResearchItem or IResearchBlock. This recipe will only work if the player has unlocked the
- * resulting IResearchObject. See {@link IResearchObject#isUnlocked(EntityPlayer)}.
+ * Its constructor takes an ResearchItem or ResearchBlock. This recipe will only work if the player has unlocked the
+ * resulting ResearchObject. See {@link ResearchObject#isUnlocked(EntityPlayer)}.
  */
 public class ResearchRecipe extends ShapedOreRecipe {
-    private IResearchObject researchItem;
+    private ResearchObject researchItem;
     private static final Field eventHandlerField = ReflectionHelper.findField(InventoryCrafting.class, "eventHandler", "field_70465_c");
     private static final Field playerPlayerField = ReflectionHelper.findField(ContainerPlayer.class, "thePlayer", "field_82862_h");
     private static final Field slotPlayerField = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
 
-    public ResearchRecipe(IResearchObject.IResearchItem result, Object... recipe) {
+    public ResearchRecipe(ResearchObject.ResearchItem result, Object... recipe) {
         super((Item) result, recipe);
 
         researchItem = result;
     }
 
-    public ResearchRecipe(IResearchObject.IResearchBlock result, Object... recipe) {
+    public ResearchRecipe(ResearchObject.ResearchBlock result, Object... recipe) {
         super((Block) result, recipe);
 
         researchItem = result;

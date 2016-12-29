@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.transport.block;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockPistonBase;
@@ -18,7 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockPlonker extends BlockSteamTransporter implements IWrenchable {
+public class BlockPlonker extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
 
     public BlockPlonker() {

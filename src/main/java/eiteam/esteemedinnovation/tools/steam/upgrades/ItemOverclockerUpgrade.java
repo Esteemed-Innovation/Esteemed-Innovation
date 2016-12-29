@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.ISteamChargable;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -16,7 +16,7 @@ public class ItemOverclockerUpgrade extends ItemSteamToolUpgrade {
 
     @Override
     public boolean onBlockBreakWithTool(BlockEvent.BreakEvent event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
-        ISteamChargable tool = (ISteamChargable) toolStack.getItem();
+        SteamChargable tool = (SteamChargable) toolStack.getItem();
         tool.addSteam(toolStack, -tool.steamPerDurability(), event.getPlayer());
         return true;
     }

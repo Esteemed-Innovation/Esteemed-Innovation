@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.disc;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
@@ -65,8 +65,8 @@ public class BlockRuptureDisc extends Block {
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing dir) {
         TileEntity tile = world.getTileEntity(pos.offset(dir.getOpposite()));
 
-        if (tile != null && tile instanceof ISteamTransporter) {
-            ISteamTransporter trans = (ISteamTransporter) tile;
+        if (tile != null && tile instanceof SteamTransporter) {
+            SteamTransporter trans = (SteamTransporter) tile;
             return trans.acceptsGauge(dir.getOpposite());
         }
         return false;

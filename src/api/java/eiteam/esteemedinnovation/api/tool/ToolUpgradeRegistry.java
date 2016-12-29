@@ -12,17 +12,17 @@ public class ToolUpgradeRegistry {
      * Map of the upgrades and their according texture locations. This is used primarily for model rendering, but could
      * be potentially useful in any case where every single upgrade is needed (or its textures).
      */
-    private static Map<ISteamToolUpgrade, ResourceLocation[]> upgrades = new HashMap<>();
+    private static Map<SteamToolUpgrade, ResourceLocation[]> upgrades = new HashMap<>();
 
     /**
-     * Registers an {@link ISteamToolUpgrade} to the {@link ToolUpgradeRegistry#upgrades} map.
-     * @param upgrade The upgrade to register. Uses {@link ISteamToolUpgrade#getBaseIcon()} to determine the locations
-     *                to register. For universal upgrades ({@link ISteamToolUpgrade#isUniversal()} returns `true`),
+     * Registers an {@link SteamToolUpgrade} to the {@link ToolUpgradeRegistry#upgrades} map.
+     * @param upgrade The upgrade to register. Uses {@link SteamToolUpgrade#getBaseIcon()} to determine the locations
+     *                to register. For universal upgrades ({@link SteamToolUpgrade#isUniversal()} returns `true`),
      *                it will use `Drill0`, `Drill1`, `Axe0`, Axe1`, `Shovel0`, and `Shovel1` accordingly. Otherwise,
      *                it will use `Drill`, `Axe`, or `Shovel` according to what is returned by
-     *                {@link ISteamToolUpgrade#getToolSlot()}.
+     *                {@link SteamToolUpgrade#getToolSlot()}.
      */
-    public static void register(ISteamToolUpgrade upgrade) {
+    public static void register(SteamToolUpgrade upgrade) {
         List<ResourceLocation> textures = new ArrayList<>();
         ResourceLocation base = upgrade.getBaseIcon();
         if (base != null) {
@@ -59,7 +59,7 @@ public class ToolUpgradeRegistry {
         upgrades.put(upgrade, textures.toArray(new ResourceLocation[textures.size()]));
     }
 
-    public static ResourceLocation[] getResources(ISteamToolUpgrade upgrade) {
+    public static ResourceLocation[] getResources(SteamToolUpgrade upgrade) {
         return upgrades.get(upgrade);
     }
 }

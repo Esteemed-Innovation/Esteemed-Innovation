@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.gauge;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
 import net.minecraft.util.EnumFacing;
@@ -22,7 +22,7 @@ public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITic
 
     @Override
     public float getPressure(EnumFacing dir) {
-        ISteamTransporter transporter = getAdjacentTransporter(dir);
+        SteamTransporter transporter = getAdjacentTransporter(dir);
         if (transporter == null) {
             return 0F;
         }

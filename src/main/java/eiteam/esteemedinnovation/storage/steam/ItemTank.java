@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.storage.steam;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitTank;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitTank;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.ModelExosuit;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ItemTank extends Item implements IExosuitTank, IExosuitUpgrade {
+public class ItemTank extends Item implements ExosuitTank, ExosuitUpgrade {
     int capacity;
 
     public ItemTank(int cap, String texLoc, String texLocGrey) {

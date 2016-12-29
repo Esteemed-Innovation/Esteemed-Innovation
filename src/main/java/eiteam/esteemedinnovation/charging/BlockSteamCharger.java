@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.charging;
 
-import eiteam.esteemedinnovation.api.ISteamChargable;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import net.minecraft.block.BlockHorizontal;
@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockSteamCharger extends BlockSteamTransporter implements IWrenchable {
+public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final AxisAlignedBB CHARGER_AABB = new AxisAlignedBB(0, 0, 0, 1, 1F / 2F, 1);
 
@@ -66,8 +66,8 @@ public class BlockSteamCharger extends BlockSteamTransporter implements IWrencha
         if (item == null) {
             return false;
         }
-        if (item.getItem() instanceof ISteamChargable) {
-            return ((ISteamChargable) item.getItem()).canCharge(item);
+        if (item.getItem() instanceof SteamChargable) {
+            return ((SteamChargable) item.getItem()).canCharge(item);
         } else {
             /*
             if (CrossMod.TINKERS_CONSTRUCT && item.getItem() instanceof ToolCore) {

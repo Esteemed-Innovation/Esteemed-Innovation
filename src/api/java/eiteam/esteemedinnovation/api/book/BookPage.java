@@ -26,11 +26,11 @@ public class BookPage {
         shouldDisplayTitle = title;
     }
 
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         if (isFirstPage || shouldDisplayTitle) {
             String s = I18n.format(name);
             int l = fontRenderer.getStringWidth(s);
-            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + IGuiJournal.BOOK_IMAGE_WIDTH / 2F - (l / 1.6) - 3),
+            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + GuiJournal.BOOK_IMAGE_WIDTH / 2F - (l / 1.6) - 3),
               y + 30, 0x3F3F3F);
         }
     }
@@ -58,7 +58,7 @@ public class BookPage {
         GlStateManager.popMatrix();
     }
 
-    public void renderPageAfter(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPageAfter(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         for (Tuple4 item : items) {
             int ix = (Integer) item._1();
             int iy = (Integer) item._2();

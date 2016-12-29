@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.init.items;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.heater.ItemSteamedFood;
 
 import net.minecraft.item.Item;
@@ -14,7 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
 
-public class FoodItems implements IInitCategory {
+public class FoodItems implements InitCategory {
     public enum Items {
         STEAMED_FISH(new ItemSteamedFood((ItemFood) COOKED_FISH), "steamed_fish"),
         STEAMED_SALMON(new ItemSteamedFood(new ItemStack(COOKED_FISH, 1, 1)), "steamed_salmon"),

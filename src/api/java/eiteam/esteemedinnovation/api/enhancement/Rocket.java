@@ -2,6 +2,6 @@ package eiteam.esteemedinnovation.api.enhancement;
 
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
 
-public interface IRocket {
+public interface Rocket {
     EntityRocket changeBullet(EntityRocket bullet);
 }

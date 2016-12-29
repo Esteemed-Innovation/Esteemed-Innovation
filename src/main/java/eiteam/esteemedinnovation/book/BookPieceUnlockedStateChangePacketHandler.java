@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.book;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -12,7 +12,7 @@ public class BookPieceUnlockedStateChangePacketHandler implements IMessageHandle
     @Override
     public IMessage onMessage(BookPieceUnlockedStateChangePacket message, MessageContext ctx) {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-        IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+        PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         data.setHasUnlockedBookPiece(message.getPieceChanged(), message.getNewValueForPiece());
         return null;
     }

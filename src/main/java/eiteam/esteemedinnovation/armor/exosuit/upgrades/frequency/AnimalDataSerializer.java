@@ -8,13 +8,13 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 
 public class AnimalDataSerializer implements ICapabilitySerializable<NBTTagCompound> {
-    private IAnimalData instance;
+    private AnimalData instance;
 
     public AnimalDataSerializer() {
         this(EsteemedInnovation.ANIMAL_DATA.getDefaultInstance());
     }
 
-    public AnimalDataSerializer(IAnimalData data) {
+    public AnimalDataSerializer(AnimalData data) {
         instance = data;
     }
 

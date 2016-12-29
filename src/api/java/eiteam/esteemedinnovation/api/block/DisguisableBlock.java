@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.api.block;
 
 import net.minecraft.block.Block;
 
-public interface IDisguisableBlock {
+public interface DisguisableBlock {
     Block getDisguiseBlock();
 
     void setDisguiseBlock(Block block);

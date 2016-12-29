@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency;
 
 import net.minecraft.village.MerchantRecipeList;
 
-public interface IAnimalData {
+public interface AnimalData {
     /**
      * @return The maximum trades this animal can handle before the frequency hurts it.
      */
@@ -43,7 +43,7 @@ public interface IAnimalData {
      */
     void setStock(MerchantRecipeList value);
 
-    class DefaultImplementation implements IAnimalData {
+    class DefaultImplementation implements AnimalData {
         private int maximumTotalTrades;
         private int totalTrades;
         private String merchantName;

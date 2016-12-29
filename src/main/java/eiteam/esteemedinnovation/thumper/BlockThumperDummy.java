@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.thumper;
 
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockThumperDummy extends Block implements IWrenchable {
+public class BlockThumperDummy extends Block implements Wrenchable {
     public BlockThumperDummy() {
         super(Material.IRON);
         setHardness(3.5F);

@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.init.items;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.OreBlocks;
 import eiteam.esteemedinnovation.smasher.ItemSmashedOre;
 import eiteam.esteemedinnovation.metals.refined.ItemMetalIngot;
@@ -21,7 +21,7 @@ import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.GLOWSTONE_DUST;
 import static net.minecraft.init.Items.IRON_INGOT;
 
-public class MetalItems implements IInitCategory {
+public class MetalItems implements InitCategory {
     public enum Items {
         // TODO Lead
         COPPER_INGOT(0, Types.INGOT),

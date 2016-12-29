@@ -4,9 +4,9 @@ import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.util.EntityHelper;
 import net.minecraft.client.Minecraft;
@@ -110,16 +110,16 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
 
             EntityPlayer player = (EntityPlayer) entity;
             ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            IExosuitArmor chestArmor = null;
+            ExosuitArmor chestArmor = null;
             if (chestStack != null) {
                 Item item = chestStack.getItem();
-                if (item instanceof IExosuitArmor) {
-                    chestArmor = (IExosuitArmor) item;
+                if (item instanceof ExosuitArmor) {
+                    chestArmor = (ExosuitArmor) item;
                 }
             }
 
             if (isInstalled(player) && chestArmor != null && chestArmor.hasPower(chestStack, 1)) {
-                IPlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+                PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
                 if (data.getLastMotions() == null) {
                     data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
                 }

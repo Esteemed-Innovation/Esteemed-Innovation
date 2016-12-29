@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BookPageCrafting extends BookPage implements ICraftingPage {
+public class BookPageCrafting extends BookPage implements CraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/craftingSquare.png");
     private ItemStack output;
     private Object[] inputs = new Object[9];
@@ -126,7 +126,7 @@ public class BookPageCrafting extends BookPage implements ICraftingPage {
     }
 
     @Override
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         book.getMC().getTextureManager().bindTexture(craftSquareTexture);
 
         ((Gui) book).drawTexturedModalRect(x + 45, y + 55, 0, 0, 97, 59);

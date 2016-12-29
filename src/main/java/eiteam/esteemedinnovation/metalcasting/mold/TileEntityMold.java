@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
+import eiteam.esteemedinnovation.api.mold.CrucibleMold;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -98,7 +98,7 @@ public class TileEntityMold extends TileEntity implements ISidedInventory, ITick
     }
 
     public void pour(CrucibleLiquid liquid) {
-        inventory = ((ICrucibleMold) mold.getItem()).getItemFromLiquid(liquid);
+        inventory = ((CrucibleMold) mold.getItem()).getItemFromLiquid(liquid);
         inventory.stackSize = 1;
         markDirty();
     }

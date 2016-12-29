@@ -8,7 +8,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 
 public class VillagerDataSerializer implements ICapabilitySerializable<NBTTagByte> {
-    IVillagerData instance = EsteemedInnovation.VILLAGER_DATA.getDefaultInstance();
+    VillagerData instance = EsteemedInnovation.VILLAGER_DATA.getDefaultInstance();
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

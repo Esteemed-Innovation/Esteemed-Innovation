@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
-import eiteam.esteemedinnovation.api.mold.ICrucibleMold;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.mold.CrucibleMold;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 
 import net.minecraft.block.Block;
@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockMold extends Block implements IWrenchable {
+public class BlockMold extends Block implements Wrenchable {
     private static final float px = (1.0F / 16.0F);
     public static PropertyDirection FACING = BlockHorizontal.FACING;
 
@@ -87,7 +87,7 @@ public class BlockMold extends Block implements IWrenchable {
         }
         boolean editingMold = false;
         if (heldItem != null) {
-            if (heldItem.getItem() instanceof ICrucibleMold) {
+            if (heldItem.getItem() instanceof CrucibleMold) {
                 editingMold = true;
             }
         }
@@ -106,7 +106,7 @@ public class BlockMold extends Block implements IWrenchable {
                     // markDirty
                 }
                 if (heldItem != null) {
-                    if (heldItem.getItem() instanceof ICrucibleMold) {
+                    if (heldItem.getItem() instanceof CrucibleMold) {
                         tile.mold = heldItem;
                         if (!player.capabilities.isCreativeMode) {
                             player.inventory.setInventorySlotContents(player.inventory.currentItem, null);

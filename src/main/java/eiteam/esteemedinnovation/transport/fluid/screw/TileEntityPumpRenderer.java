@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.transport.fluid.screw;
 
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
-import eiteam.esteemedinnovation.commons.visual.IInventoryTESR;
+import eiteam.esteemedinnovation.commons.visual.InventoryTESR;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import net.minecraft.client.Minecraft;
@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL12;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements IInventoryTESR {
+public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements InventoryTESR {
     private static final ModelPump MODEL = new ModelPump();
     private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/test.png");
     private static final float PX = (1.0F / 16.0F);

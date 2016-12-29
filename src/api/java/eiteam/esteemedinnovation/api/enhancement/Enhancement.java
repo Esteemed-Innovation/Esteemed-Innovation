@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public interface IEnhancement {
+public interface Enhancement {
     /**
      * Whether this enhancement is valid for the given itemstack.
      * @param stack The ItemStack being upgraded.

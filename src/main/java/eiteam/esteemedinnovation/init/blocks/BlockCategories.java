@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init.blocks;
 
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 
 public enum BlockCategories {
     METAL_BLOCKS(new MetalBlocks()),
@@ -12,13 +12,13 @@ public enum BlockCategories {
     MISCELLANEOUS(new MiscellaneousBlocks()),
     ORE_BLOCKS(new OreBlocks());
 
-    private IInitCategory category;
+    private InitCategory category;
 
-    BlockCategories(IInitCategory category) {
+    BlockCategories(InitCategory category) {
         this.category = category;
     }
 
-    public IInitCategory getCategory() {
+    public InitCategory getCategory() {
         return category;
     }
 }

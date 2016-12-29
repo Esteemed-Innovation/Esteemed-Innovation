@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.tools;
 
-import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
@@ -13,7 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ItemSpyglass extends Item implements IEnhancementFirearm {
+public class ItemSpyglass extends Item implements EnhancementFirearm {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         player.setActiveHand(hand);

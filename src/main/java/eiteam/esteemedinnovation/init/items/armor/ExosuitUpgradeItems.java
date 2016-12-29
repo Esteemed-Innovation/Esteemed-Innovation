@@ -16,7 +16,7 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
@@ -36,7 +36,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
-public class ExosuitUpgradeItems implements IInitCategory {
+public class ExosuitUpgradeItems implements InitCategory {
     public enum Items {
         JETPACK(new ItemExosuitJetpack(), "jetpack"),
         WINGS(new ItemExosuitWings(), "wings"),

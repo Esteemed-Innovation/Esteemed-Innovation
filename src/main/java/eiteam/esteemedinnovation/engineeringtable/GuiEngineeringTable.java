@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.IEngineerable;
+import eiteam.esteemedinnovation.api.Engineerable;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,8 +31,8 @@ public class GuiEngineeringTable extends GuiContainer {
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
         if (tileEntity.getStackInSlot(0) != null) {
-            if (tileEntity.getStackInSlot(0).getItem() instanceof IEngineerable) {
-                IEngineerable item = (IEngineerable) tileEntity.getStackInSlot(0).getItem();
+            if (tileEntity.getStackInSlot(0).getItem() instanceof Engineerable) {
+                Engineerable item = (Engineerable) tileEntity.getStackInSlot(0).getItem();
                 item.drawBackground(this, 0, k + 52, l + 8);
 
                 int i = 0;

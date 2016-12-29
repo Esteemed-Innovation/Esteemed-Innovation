@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.transport.block;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +26,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityPlonker extends SteamTransporterTileEntity implements IWrenchable, IWrenchDisplay, IInventory {
+public class TileEntityPlonker extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, IInventory {
     private static final int CONSUMPTION = 5;
     private static final String MODE_KEY = "Mode";
     private static final String INV_KEY = "Inventory";

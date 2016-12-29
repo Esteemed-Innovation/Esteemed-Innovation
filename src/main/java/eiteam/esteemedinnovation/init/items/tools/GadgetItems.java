@@ -2,12 +2,12 @@ package eiteam.esteemedinnovation.init.items.tools;
 
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import eiteam.esteemedinnovation.api.enhancement.IEnhancement;
+import eiteam.esteemedinnovation.api.enhancement.Enhancement;
 import eiteam.esteemedinnovation.book.ItemEsteemedInnovationJournal;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
@@ -23,7 +23,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
 
-public class GadgetItems implements IInitCategory {
+public class GadgetItems implements InitCategory {
     public enum Items {
         BOOK(new ItemEsteemedInnovationJournal(), "book"),
         SPYGLASS(new ItemSpyglass(), "spyglass"),
@@ -52,8 +52,8 @@ public class GadgetItems implements IInitCategory {
                 item.setCreativeTab(EsteemedInnovation.tab);
                 item.setRegistryName(EsteemedInnovation.MOD_ID, name);
                 GameRegistry.register(item);
-                if (item instanceof IEnhancement) {
-                    EnhancementRegistry.registerEnhancement((IEnhancement) item);
+                if (item instanceof Enhancement) {
+                    EnhancementRegistry.registerEnhancement((Enhancement) item);
                 }
             }
             this.item = item;

@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init.items;
 
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems;
@@ -25,13 +25,13 @@ public enum ItemCategories {
     GADGETS(new GadgetItems()),
     NATURAL_PHILOSOPHY(new NaturalPhilosophyItems());
 
-    private IInitCategory category;
+    private InitCategory category;
 
-    ItemCategories(IInitCategory category) {
+    ItemCategories(InitCategory category) {
         this.category = category;
     }
 
-    public IInitCategory getCategory() {
+    public InitCategory getCategory() {
         return category;
     }
 }

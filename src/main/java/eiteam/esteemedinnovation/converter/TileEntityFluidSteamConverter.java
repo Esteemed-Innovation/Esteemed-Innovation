@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.converter;
 
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements IWrenchable {
+public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity implements Wrenchable {
     public int runTicks = 0;
     private boolean lastRunning = false;
 

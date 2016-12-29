@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import eiteam.esteemedinnovation.commons.util.JavaHelper;
@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ItemGoggles extends ItemGenericArmor implements IExosuitUpgrade {
+public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
 
     public ItemGoggles(ArmorMaterial armorMaterial, int renderIndex, EntityEquipmentSlot armorType, Object repair, String n) {
         super(armorMaterial, renderIndex, armorType, repair, n);

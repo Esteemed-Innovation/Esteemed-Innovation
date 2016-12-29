@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.armor.tophat;
 
-public interface IVillagerData {
+public interface VillagerData {
     /**
      * Gets whether the villager previously had a customer.
      * @return Whether it had a customer, or null.
@@ -13,7 +13,7 @@ public interface IVillagerData {
      */
     void setHadCustomer(Boolean value);
 
-    class DefaultImplementation implements IVillagerData {
+    class DefaultImplementation implements VillagerData {
         private Boolean lastHadCustomer = null;
 
         @Override

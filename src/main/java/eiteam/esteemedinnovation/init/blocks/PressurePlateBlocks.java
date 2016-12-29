@@ -3,14 +3,14 @@ package eiteam.esteemedinnovation.init.blocks;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.redstone.plates.BlockClassSensitivePlate;
 import eiteam.esteemedinnovation.redstone.plates.BlockWeightedPlate;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.items.MetalItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class PressurePlateBlocks implements IInitCategory {
+public class PressurePlateBlocks implements InitCategory {
     public enum Blocks {
         COPPER_PLATE(new BlockClassSensitivePlate<>(MetalItems.Items.COPPER_PLATE.getMetadata(), EntityMob.class), "copper_pressure_plate"),
         ZINC_PLATE(new BlockClassSensitivePlate<>(MetalItems.Items.ZINC_PLATE.getMetadata(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate"),

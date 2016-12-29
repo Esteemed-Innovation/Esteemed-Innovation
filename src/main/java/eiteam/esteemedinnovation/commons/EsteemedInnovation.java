@@ -6,8 +6,8 @@ import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.armor.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.PhobicCoatingHandler;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.IAnimalData;
-import eiteam.esteemedinnovation.armor.tophat.IVillagerData;
+import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalData;
+import eiteam.esteemedinnovation.armor.tophat.VillagerData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
 import eiteam.esteemedinnovation.boiler.TileEntityBoiler;
 import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
@@ -16,7 +16,7 @@ import eiteam.esteemedinnovation.book.EsteemedInnovationJournal;
 import eiteam.esteemedinnovation.buzzsaw.TileEntitySaw;
 import eiteam.esteemedinnovation.charging.TileEntityChargingPad;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
-import eiteam.esteemedinnovation.commons.capabilities.player.IPlayerData;
+import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
 import eiteam.esteemedinnovation.commons.handler.FieldHandler;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
@@ -113,14 +113,14 @@ public class EsteemedInnovation {
     @Mod.Instance(MOD_ID)
     public static EsteemedInnovation instance;
 
-    @CapabilityInject(IPlayerData.class)
-    public static final Capability<IPlayerData> PLAYER_DATA = null;
+    @CapabilityInject(PlayerData.class)
+    public static final Capability<PlayerData> PLAYER_DATA = null;
 
-    @CapabilityInject(IAnimalData.class)
-    public static final Capability<IAnimalData> ANIMAL_DATA = null;
+    @CapabilityInject(AnimalData.class)
+    public static final Capability<AnimalData> ANIMAL_DATA = null;
 
-    @CapabilityInject(IVillagerData.class)
-    public static final Capability<IVillagerData> VILLAGER_DATA = null;
+    @CapabilityInject(VillagerData.class)
+    public static final Capability<VillagerData> VILLAGER_DATA = null;
 
     public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
@@ -233,12 +233,12 @@ public class EsteemedInnovation {
         registerTileEntity(TileEntitySaw.class, "saw");
         registerTileEntity(TileEntityPlonker.class, "plonker");
 
-        CapabilityManager.INSTANCE.register(IPlayerData.class, new PlayerDataStorage(),
-          IPlayerData.DefaultImplementation.class);
-        CapabilityManager.INSTANCE.register(IAnimalData.class, new AnimalDataStorage(),
-          IAnimalData.DefaultImplementation.class);
-        CapabilityManager.INSTANCE.register(IVillagerData.class, new VillagerDataStorage(),
-          IVillagerData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerDataStorage(),
+          PlayerData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(AnimalData.class, new AnimalDataStorage(),
+          AnimalData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(VillagerData.class, new VillagerDataStorage(),
+          VillagerData.DefaultImplementation.class);
 
         for (MiscellaneousCategories category : MiscellaneousCategories.values()) {
             if (category.isEnabled()) {

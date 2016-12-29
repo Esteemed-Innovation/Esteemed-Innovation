@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.steamsafety.gauge;
 
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
@@ -30,7 +30,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
         int offsetZ = dir.getFrontOffsetZ();
         TileEntity tile = world.getTileEntity(gaugePos.offset(dir));
         if (tile != null) {
-            ISteamTransporter trans = (ISteamTransporter) tile;
+            SteamTransporter trans = (SteamTransporter) tile;
             float pressure = trans instanceof TileEntitySteamCharger ? ((TileEntitySteamCharger) trans).getSteamInItem() : trans.getPressure();
             if (trans instanceof TileEntitySteamPipe) {
                 GlStateManager.translate(4F * offsetX / 16.0F, 0.0F, 4F * offsetZ / 16.0F);

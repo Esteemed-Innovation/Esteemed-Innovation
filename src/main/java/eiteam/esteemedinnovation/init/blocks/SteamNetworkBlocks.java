@@ -6,7 +6,7 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.transport.steam.BlockValvePipe;
 import eiteam.esteemedinnovation.converter.BlockFluidSteamConverter;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.steamsafety.gauge.BlockSteamGauge;
@@ -25,7 +25,7 @@ import static eiteam.esteemedinnovation.init.misc.OreDictEntries.*;
 import static net.minecraft.init.Blocks.FURNACE;
 import static net.minecraft.init.Items.COMPASS;
 
-public class SteamNetworkBlocks implements IInitCategory {
+public class SteamNetworkBlocks implements InitCategory {
     public enum Blocks {
         BOILER(new BlockBoiler(), "boiler"),
         VALVE_PIPE(new BlockValvePipe(), "valve_pipe"),

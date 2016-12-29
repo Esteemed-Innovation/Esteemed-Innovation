@@ -56,7 +56,7 @@ public class BookPageItem extends BookPageText {
     }
 
     @Override
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         if (!lastViewing.equals(book.getCurrentEntry())) {
             abdoName = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextInt(7);
             lastViewing = book.getCurrentEntry();
@@ -68,7 +68,7 @@ public class BookPageItem extends BookPageText {
             yOffset = y + 65;
             s = I18n.format(name);
             l = fontRenderer.getStringWidth(s);
-            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + IGuiJournal.BOOK_IMAGE_WIDTH / 2F - (l / 1.6) - 3),
+            fontRenderer.drawString("\u00A7l" + "\u00A7n" + s, (int) (x + GuiJournal.BOOK_IMAGE_WIDTH / 2F - (l / 1.6) - 3),
               y + 30, 0x3F3F3F);
         }
 
@@ -86,7 +86,7 @@ public class BookPageItem extends BookPageText {
         int size = item.length;
         int i = 0;
         for (ItemStack stack : item) {
-            drawItemStack(stack.copy(), x + IGuiJournal.BOOK_IMAGE_WIDTH / 2 - 12 - (size - 1) * 9 + i * 18,
+            drawItemStack(stack.copy(), x + GuiJournal.BOOK_IMAGE_WIDTH / 2 - 12 - (size - 1) * 9 + i * 18,
               y + (isFirstPage || shouldDisplayTitle ? 45 : 35), "", renderer, fontRenderer, false);
             i++;
         }

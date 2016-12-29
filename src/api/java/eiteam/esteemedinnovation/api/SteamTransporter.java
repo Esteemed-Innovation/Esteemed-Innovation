@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import java.util.HashSet;
 
-public interface ISteamTransporter {
+public interface SteamTransporter {
 
     /**
      * The pressure of the device

@@ -25,12 +25,12 @@ public class UtilPlates {
         return null;
     }
 
-    public static ResourceLocation getIconFromPlate(String string, IExosuitArmor item) {
+    public static ResourceLocation getIconFromPlate(String string, ExosuitArmor item) {
         ExosuitPlate plate = ExosuitRegistry.plates.get(string);
         return plate.getIcon(item);
     }
 
-    public static String getArmorLocationFromPlate(String string, IExosuitArmor item, EntityEquipmentSlot armorType) {
+    public static String getArmorLocationFromPlate(String string, ExosuitArmor item, EntityEquipmentSlot armorType) {
         ExosuitPlate plate = ExosuitRegistry.plates.get(string);
         return plate.getArmorLocation(item, armorType);
     }

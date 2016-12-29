@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-public class BookPageDip extends BookPage implements ICraftingPage {
+public class BookPageDip extends BookPage implements CraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/craftingSquare.png");
     private CrucibleLiquid input;
     private int amount;
@@ -30,7 +30,7 @@ public class BookPageDip extends BookPage implements ICraftingPage {
     }
 
     @Override
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         book.getMC().getTextureManager().bindTexture(craftSquareTexture);
         ((Gui) book).drawTexturedModalRect(x + 45, y + 65, 0, 146, 97, 59);
         fontRenderer.setUnicodeFlag(false);

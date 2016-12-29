@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.firearms.flintlock.enhancements;
 
-import eiteam.esteemedinnovation.api.enhancement.IEnhancementFirearm;
+import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ItemEnhancementRecoil extends Item implements IEnhancementFirearm {
+public class ItemEnhancementRecoil extends Item implements EnhancementFirearm {
     @Override
     public boolean canApplyTo(ItemStack stack) {
         return stack.getItem() == FirearmItems.Items.BLUNDERBUSS.getItem();

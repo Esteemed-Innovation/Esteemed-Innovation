@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.boiler;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockBoiler extends BlockSteamTransporter implements IWrenchable {
+public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyBool IS_ON = PropertyBool.create("on");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 

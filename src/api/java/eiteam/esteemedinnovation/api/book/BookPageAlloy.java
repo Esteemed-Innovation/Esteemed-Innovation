@@ -12,7 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-public class BookPageAlloy extends BookPage implements ICraftingPage {
+public class BookPageAlloy extends BookPage implements CraftingPage {
     // TODO: Package API resources with the API instead of the mod.
     private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/craftingSquare.png");
     private CrucibleLiquid output;
@@ -31,7 +31,7 @@ public class BookPageAlloy extends BookPage implements ICraftingPage {
     }
 
     @Override
-    public void renderPage(int x, int y, FontRenderer fontRenderer, IGuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
+    public void renderPage(int x, int y, FontRenderer fontRenderer, GuiJournal book, RenderItem renderer, boolean isFirstPage, int mx, int my) {
         book.getMC().getTextureManager().bindTexture(craftSquareTexture);
 
         ((Gui) book).drawTexturedModalRect(x + 45, y + 65, 0, 82, 97, 59);

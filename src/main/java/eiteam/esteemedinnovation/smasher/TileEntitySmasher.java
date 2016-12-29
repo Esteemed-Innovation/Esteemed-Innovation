@@ -3,8 +3,8 @@ package eiteam.esteemedinnovation.smasher;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.IWrenchDisplay;
-import eiteam.esteemedinnovation.api.wrench.IWrenchable;
+import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ import java.util.List;
 import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
 import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER_DUMMY;
 
-public class TileEntitySmasher extends SteamTransporterTileEntity implements IWrenchable, IWrenchDisplay {
+public class TileEntitySmasher extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay {
     public int spinup = 0;
     private float extendedLength = 0.0F;
     private Block smooshingBlock;

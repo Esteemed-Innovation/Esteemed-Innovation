@@ -2,8 +2,8 @@ package eiteam.esteemedinnovation.storage.steam;
 
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitTank;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitUpgrade;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitTank;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.ModelExosuit;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class BlockTankItem extends BlockManyMetadataItem implements IExosuitTank, IExosuitUpgrade {
+public class BlockTankItem extends BlockManyMetadataItem implements ExosuitTank, ExosuitUpgrade {
 
     public BlockTankItem(Block block) {
         super(block);

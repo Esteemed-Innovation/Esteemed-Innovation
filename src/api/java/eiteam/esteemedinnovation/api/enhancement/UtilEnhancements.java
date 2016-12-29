@@ -18,7 +18,7 @@ public class UtilEnhancements {
      */
     public static List<ResourceLocation> registerEnhancementsForItem(Item item) {
         List<ResourceLocation> locs = new ArrayList<>();
-        for (IEnhancement enhancement : EnhancementRegistry.enhancements.values()) {
+        for (Enhancement enhancement : EnhancementRegistry.enhancements.values()) {
             if (enhancement.canApplyTo(new ItemStack(item))) {
                 ResourceLocation loc = enhancement.getModel(item);
                 locs.add(loc);
@@ -32,7 +32,7 @@ public class UtilEnhancements {
         return getEnhancementFromItem(item) != null;
     }
 
-    public static IEnhancement getEnhancementFromItem(ItemStack item) {
+    public static Enhancement getEnhancementFromItem(ItemStack item) {
         if (item.hasTagCompound()) {
             NBTTagCompound nbt = item.getTagCompound();
             if (nbt.hasKey("enhancements")) {
@@ -43,7 +43,7 @@ public class UtilEnhancements {
         return null;
     }
 
-    public static ResourceLocation getIconFromEnhancement(ItemStack item, IEnhancement enhancement) {
+    public static ResourceLocation getIconFromEnhancement(ItemStack item, Enhancement enhancement) {
         return EnhancementRegistry.enhancementIcons.get(Pair.of(item.getItem(), enhancement));
     }
 
@@ -51,7 +51,7 @@ public class UtilEnhancements {
         return getIconFromEnhancement(item, getEnhancementFromItem(item));
     }
 
-    public static String getNameFromEnhancement(ItemStack item, IEnhancement enhancement) {
+    public static String getNameFromEnhancement(ItemStack item, Enhancement enhancement) {
         return enhancement.getName(item.getItem());
     }
 
@@ -76,7 +76,7 @@ public class UtilEnhancements {
             output.setTagCompound(new NBTTagCompound());
         }
         NBTTagCompound enhancements = new NBTTagCompound();
-        enhancements.setString("id", ((IEnhancement) enhancement.getItem()).getID());
+        enhancements.setString("id", ((Enhancement) enhancement.getItem()).getID());
         output.getTagCompound().setTag("enhancements", enhancements);
 
         return output;

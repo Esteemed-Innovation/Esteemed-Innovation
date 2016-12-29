@@ -8,7 +8,7 @@ import eiteam.esteemedinnovation.engineeringtable.BlockEngineeringTable;
 import eiteam.esteemedinnovation.transport.fluid.funnel.BlockFunnel;
 import eiteam.esteemedinnovation.metals.raw.BlockOreDepositGenerator;
 import eiteam.esteemedinnovation.woodcone.BlockWoodenCone;
-import eiteam.esteemedinnovation.init.IInitCategory;
+import eiteam.esteemedinnovation.init.InitCategory;
 import eiteam.esteemedinnovation.init.misc.DefaultCrucibleLiquids;
 import eiteam.esteemedinnovation.init.misc.OreDictEntries;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class MiscellaneousBlocks implements IInitCategory {
+public class MiscellaneousBlocks implements InitCategory {
     public enum Blocks {
         ENGINEERING_TABLE(new BlockEngineeringTable(), "engineering"),
         WOODEN_CONE(new BlockWoodenCone(), "wooden_cone"),

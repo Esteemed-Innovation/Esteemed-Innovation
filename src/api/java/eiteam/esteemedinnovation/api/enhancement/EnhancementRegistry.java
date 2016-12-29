@@ -14,33 +14,33 @@ public class EnhancementRegistry {
      * Key: A pair of the item, the item as an enhancement.
      * Value: The ResourceLocation for the enhancement.
      */
-    public static Map<Pair<Item, IEnhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
+    public static Map<Pair<Item, Enhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
 
     /**
      * The IEnhancements.
      * Key: Enhancement ID
-     * Value: IEnhancement
+     * Value: Enhancement
      */
-    public static Map<String, IEnhancement> enhancements = new HashMap<>();
+    public static Map<String, Enhancement> enhancements = new HashMap<>();
 
     /**
      * All of the rockets that the rocket launcher can use.
      */
-    public static ArrayList<IRocket> rockets = new ArrayList<>();
+    public static ArrayList<Rocket> rockets = new ArrayList<>();
 
     /**
      * Adds an enhancement to the list of valid enhancements.
-     * @param enhancement The IEnhancement to add.
+     * @param enhancement The Enhancement to add.
      */
-    public static void registerEnhancement(IEnhancement enhancement) {
+    public static void registerEnhancement(Enhancement enhancement) {
         enhancements.put(enhancement.getID(), enhancement);
     }
 
     /**
      * Adds a rocket to the valid rockets for the Rocket Launcher.
-     * @param rocket The IRocket to add.
+     * @param rocket The Rocket to add.
      */
-    public static void registerRocket(IRocket rocket) {
+    public static void registerRocket(Rocket rocket) {
         rockets.add(rocket);
     }
 }

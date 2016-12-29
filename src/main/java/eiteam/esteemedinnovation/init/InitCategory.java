@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.init;
 
-public interface IInitCategory {
+public interface InitCategory {
     /**
      * Initialize all the OreDict entries in the item category. This is called during preInit.
      * It might be a good idea to call values() on your enum to ensure that they are initialized at this time.

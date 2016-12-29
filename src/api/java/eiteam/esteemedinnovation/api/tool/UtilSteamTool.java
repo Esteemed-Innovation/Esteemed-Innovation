@@ -47,13 +47,13 @@ public class UtilSteamTool {
     }
 
     /**
-     * Gets all of the upgrades (except non-standard ones that do not implement ISteamToolUpgrade)
+     * Gets all of the upgrades (except non-standard ones that do not implement SteamToolUpgrade)
      * that are installed in the tool
      * @param me The tool ItemStack.
      * @return The ArrayList of all the upgrades. This can be empty. Expect emptiness.
      */
-    public static ArrayList<ISteamToolUpgrade> getUpgrades(ItemStack me) {
-        ArrayList<ISteamToolUpgrade> upgrades = new ArrayList<>();
+    public static ArrayList<SteamToolUpgrade> getUpgrades(ItemStack me) {
+        ArrayList<SteamToolUpgrade> upgrades = new ArrayList<>();
         if (!me.hasTagCompound() || !me.getTagCompound().hasKey("upgrades")) {
             return upgrades;
         }
@@ -65,8 +65,8 @@ public class UtilSteamTool {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(unbt.getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
-                    if (item != null && item instanceof ISteamToolUpgrade) {
-                        upgrades.add((ISteamToolUpgrade) item);
+                    if (item != null && item instanceof SteamToolUpgrade) {
+                        upgrades.add((SteamToolUpgrade) item);
                     }
                 }
             }
@@ -92,7 +92,7 @@ public class UtilSteamTool {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(unbt.getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
-                    if (item != null && item instanceof ISteamToolUpgrade) {
+                    if (item != null && item instanceof SteamToolUpgrade) {
                         upgrades.add(stack);
                     }
                 }
@@ -160,7 +160,7 @@ public class UtilSteamTool {
         ArrayList<String> strings = new ArrayList<>();
 
         for (ItemStack stack : upgrades) {
-            ISteamToolUpgrade upgrade = (ISteamToolUpgrade) stack.getItem();
+            SteamToolUpgrade upgrade = (SteamToolUpgrade) stack.getItem();
             TextFormatting format = upgrade.getToolSlot() == redSlot ? TextFormatting.RED : TextFormatting.DARK_GREEN;
             String info = upgrade.getInformation(stack, tool);
             String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;

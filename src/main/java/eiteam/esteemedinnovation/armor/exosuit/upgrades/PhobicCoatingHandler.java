@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.api.exosuit.IExosuitArmor;
 import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -75,8 +75,8 @@ public class PhobicCoatingHandler {
                 ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 if (chest != null) {
                     Item chestItem = chest.getItem();
-                    if (chestItem instanceof IExosuitArmor) {
-                        ((IExosuitArmor) chestItem).drainSteam(chest, consumptionHydro);
+                    if (chestItem instanceof ExosuitArmor) {
+                        ((ExosuitArmor) chestItem).drainSteam(chest, consumptionHydro);
                     }
                 }
             }
@@ -107,8 +107,8 @@ public class PhobicCoatingHandler {
                 ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 if (chest != null) {
                     Item chestItem = chest.getItem();
-                    if (chestItem instanceof IExosuitArmor) {
-                        ((IExosuitArmor) chestItem).drainSteam(chest, consumptionPyro);
+                    if (chestItem instanceof ExosuitArmor) {
+                        ((ExosuitArmor) chestItem).drainSteam(chest, consumptionPyro);
                     }
                 }
             }
@@ -138,9 +138,9 @@ public class PhobicCoatingHandler {
         if (chest != null && feet != null && modifier == null) {
             Item chestItem = chest.getItem();
             Item feetItem = feet.getItem();
-            if (feetItem instanceof IExosuitArmor && chestItem instanceof IExosuitArmor) {
-                IExosuitArmor chestArmor = (IExosuitArmor) chestItem;
-                IExosuitArmor feetArmor = (IExosuitArmor) feetItem;
+            if (feetItem instanceof ExosuitArmor && chestItem instanceof ExosuitArmor) {
+                ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
+                ExosuitArmor feetArmor = (ExosuitArmor) feetItem;
                 if (chestArmor.hasPower(chest, consumption) && feetArmor.hasUpgrade(feet, coating)) {
                     return true;
                 }

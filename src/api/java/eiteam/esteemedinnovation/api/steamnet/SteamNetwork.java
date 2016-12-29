@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.api.steamnet;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.ISteamTransporter;
+import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.util.Coord4;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +21,7 @@ public class SteamNetwork {
     private boolean shouldRefresh = false;
     private Coord4[] transporterCoords;
     private int initializedTicks = 0;
-    private HashMap<Coord4, ISteamTransporter> transporters = new HashMap<>();
+    private HashMap<Coord4, SteamTransporter> transporters = new HashMap<>();
 
     public SteamNetwork() {
         this.steam = 0;
@@ -40,12 +40,12 @@ public class SteamNetwork {
         this.name = name;
     }
 
-    public synchronized static SteamNetwork newOrJoin(ISteamTransporter trans) {
+    public synchronized static SteamNetwork newOrJoin(SteamTransporter trans) {
         if (!trans.canSteamPassThrough()) {
             return null;
         }
 
-        HashSet<ISteamTransporter> others = getNeighboringTransporters(trans);
+        HashSet<SteamTransporter> others = getNeighboringTransporters(trans);
         HashSet<SteamNetwork> nets = new HashSet<>();
         SteamNetwork theNetwork = null;
         boolean hasJoinedNetwork = false;
@@ -81,13 +81,13 @@ public class SteamNetwork {
         return theNetwork;
     }
 
-    public static HashSet<ISteamTransporter> getNeighboringTransporters(ISteamTransporter trans) {
-        HashSet<ISteamTransporter> out = new HashSet<>();
+    public static HashSet<SteamTransporter> getNeighboringTransporters(SteamTransporter trans) {
+        HashSet<SteamTransporter> out = new HashSet<>();
         Coord4 transCoords = trans.getCoords();
         for (EnumFacing d : trans.getConnectionSides()) {
             TileEntity te = trans.getWorldObj().getTileEntity(transCoords.getPos().offset(d));
-            if (te != null && te instanceof ISteamTransporter && te != trans) {
-                ISteamTransporter t = (ISteamTransporter) te;
+            if (te != null && te instanceof SteamTransporter && te != trans) {
+                SteamTransporter t = (SteamTransporter) te;
                 if (t.getConnectionSides().contains(d.getOpposite())) {
                     out.add(t);
                 }
@@ -146,10 +146,10 @@ public class SteamNetwork {
             } else {
                 if (transporters != null) {
                     if (getPressure() > 1.2F) {
-                        Iterator<Map.Entry<Coord4, ISteamTransporter>> iter = transporters.entrySet().iterator();
+                        Iterator<Map.Entry<Coord4, SteamTransporter>> iter = transporters.entrySet().iterator();
                         while (iter.hasNext()) {
-                            Map.Entry<Coord4, ISteamTransporter> entry = iter.next();
-                            ISteamTransporter trans = entry.getValue();
+                            Map.Entry<Coord4, SteamTransporter> entry = iter.next();
+                            SteamTransporter trans = entry.getValue();
                             if ((trans == null || ((TileEntity) trans).isInvalid())) {
                                 iter.remove();
                             } else if (!trans.getWorldObj().isRemote && shouldExplode(oneInX(getPressure(), trans.getPressureResistance()))) {
@@ -217,7 +217,7 @@ public class SteamNetwork {
         return transporters.size();
     }
 
-    public synchronized void addTransporter(ISteamTransporter trans) {
+    public synchronized void addTransporter(SteamTransporter trans) {
         if (trans != null && !this.contains(trans)) {
             this.capacity += trans.getCapacity();
             Coord4 transCoords = trans.getCoords();
@@ -244,21 +244,21 @@ public class SteamNetwork {
         for (int i = transporterCoords.length - 1; i >= 0; i--) {
             Coord4 coords = transporterCoords[i];
             TileEntity te = world.getTileEntity(coords.getPos());
-            if (te instanceof ISteamTransporter) {
-                transporters.put(transporterCoords[i], (ISteamTransporter) te);
+            if (te instanceof SteamTransporter) {
+                transporters.put(transporterCoords[i], (SteamTransporter) te);
             }
 
         }
     }
 
-    public synchronized int split(ISteamTransporter split, boolean removeCapacity) {
+    public synchronized int split(SteamTransporter split, boolean removeCapacity) {
         int steamRemoved = 0;
         if (removeCapacity && getSteam() >= split.getCapacity() * this.getPressure()) {
             steamRemoved = (int) Math.floor((double) split.getCapacity() * (double) this.getPressure());
             steam -= steamRemoved;
             capacity -= split.getCapacity();
         }
-        for (ISteamTransporter trans : transporters.values()) {
+        for (SteamTransporter trans : transporters.values()) {
             trans.updateSteam((int) (trans.getCapacity() * getPressure()));
         }
 
@@ -267,7 +267,7 @@ public class SteamNetwork {
         //int x = coords.first, y= coords.second, z=coords.third;
         //HashSet<EnumFacing> dirs = split.getConnectionSides();
         HashSet<SteamNetwork> newNets = new HashSet<>();
-        for (ISteamTransporter trans : getNeighboringTransporters(split)) {
+        for (SteamTransporter trans : getNeighboringTransporters(split)) {
             if (trans.canSteamPassThrough()) {
                 boolean isInNetwork = false;
                 if (newNets.size() > 0) {
@@ -280,7 +280,7 @@ public class SteamNetwork {
                 }
                 if (!isInNetwork) {
                     SteamNetwork net = SteamNetworkRegistry.getInstance().getNewNetwork();
-                    ISteamTransporter ignore = null;
+                    SteamTransporter ignore = null;
                     if (removeCapacity) {
                         ignore = split;
                     }
@@ -302,13 +302,13 @@ public class SteamNetwork {
         return steamRemoved;
     }
 
-    public synchronized void buildFromTransporter(ISteamTransporter trans, SteamNetwork target, ISteamTransporter ignore) {
+    public synchronized void buildFromTransporter(SteamTransporter trans, SteamNetwork target, SteamTransporter ignore) {
         //////EsteemedInnovation.log.debug("Building network!");
-        HashSet<ISteamTransporter> checked = new HashSet<>();
-        HashSet<ISteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
+        HashSet<SteamTransporter> checked = new HashSet<>();
+        HashSet<SteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
         boolean targetIsThis = target == this;
         SteamNetwork net = targetIsThis ? this : SteamNetworkRegistry.getInstance().getNewNetwork();
-        for (ISteamTransporter member : members) {
+        for (SteamTransporter member : members) {
             if (!transporters.containsValue(member)) {
                 target.addTransporter(member);
             }
@@ -316,19 +316,19 @@ public class SteamNetwork {
         net.addTransporter(trans);
     }
 
-    public boolean contains(ISteamTransporter trans) {
+    public boolean contains(SteamTransporter trans) {
         return transporters.containsValue(trans);
     }
 
-    protected HashSet<ISteamTransporter> crawlNetwork(ISteamTransporter trans, HashSet<ISteamTransporter> checked, ISteamTransporter ignore) {
+    protected HashSet<SteamTransporter> crawlNetwork(SteamTransporter trans, HashSet<SteamTransporter> checked, SteamTransporter ignore) {
         if (checked == null) {
             checked = new HashSet<>();
         }
         if (!checked.contains(trans) && trans.canSteamPassThrough()) {
             checked.add(trans);
         }
-        HashSet<ISteamTransporter> neighbors = getNeighboringTransporters(trans);
-        for (ISteamTransporter neighbor : neighbors) {
+        HashSet<SteamTransporter> neighbors = getNeighboringTransporters(trans);
+        for (SteamTransporter neighbor : neighbors) {
             //log.debug(neighbor == ignore ? "Should ignore this." : "Should not be ignored");
 
             if (!checked.contains(neighbor) && neighbor != ignore && trans.canSteamPassThrough()) {
@@ -340,13 +340,13 @@ public class SteamNetwork {
         return checked;
     }
 
-    private HashSet<ISteamTransporter> getNeighborTransporters(ISteamTransporter trans) {
-        HashSet<ISteamTransporter> out = new HashSet<>();
+    private HashSet<SteamTransporter> getNeighborTransporters(SteamTransporter trans) {
+        HashSet<SteamTransporter> out = new HashSet<>();
         Coord4 coords = trans.getCoords();
         for (EnumFacing dir : trans.getConnectionSides()) {
             TileEntity te = trans.getWorldObj().getTileEntity(coords.getPos().offset(dir));
-            if (te != null && te instanceof ISteamTransporter) {
-                ISteamTransporter neighbor = (ISteamTransporter) te;
+            if (te != null && te instanceof SteamTransporter) {
+                SteamTransporter neighbor = (SteamTransporter) te;
                 out.add(neighbor);
             }
         }
@@ -354,7 +354,7 @@ public class SteamNetwork {
     }
 
     public void join(SteamNetwork other) {
-        for (ISteamTransporter trans : other.transporters.values()) {
+        for (SteamTransporter trans : other.transporters.values()) {
             addTransporter(trans);
         }
         //this.steam += other.getSteam();
@@ -389,13 +389,13 @@ public class SteamNetwork {
             SteamNetworkRegistry.getInstance().remove(this);
             return;
         }
-        HashMap<Coord4, ISteamTransporter> temp = (HashMap<Coord4, ISteamTransporter>) transporters.clone();
+        HashMap<Coord4, SteamTransporter> temp = (HashMap<Coord4, SteamTransporter>) transporters.clone();
         for (Coord4 c : temp.keySet()) {
             TileEntity te = c.getTileEntity(this.getWorld());
-            if (te == null || !(te instanceof ISteamTransporter)) {
+            if (te == null || !(te instanceof SteamTransporter)) {
                 this.transporters.remove(c);
             } else {
-                ISteamTransporter trans = (ISteamTransporter) te;
+                SteamTransporter trans = (SteamTransporter) te;
                 if (trans.getNetwork() != this) {
                     this.transporters.remove(c);
                     this.steam -= this.getPressure() * trans.getCapacity();

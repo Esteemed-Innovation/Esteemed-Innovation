@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.api.book;
 
 import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -117,14 +116,14 @@ public class BookPageRegistry {
     }
 
     /**
-     * Helper method that adds all of an entry's crafting pages ({@link ICraftingPage} subclasses) to {@link #bookRecipes}.
+     * Helper method that adds all of an entry's crafting pages ({@link CraftingPage} subclasses) to {@link #bookRecipes}.
      * @param entry The entry to add.
      */
     private static void addEntryPagesToRecipeList(BookEntry entry) {
         int pageNum = 0;
         for (BookPage page : entry.getPages()) {
-            if (page instanceof ICraftingPage) {
-                for (ItemStack craftedItem : ((ICraftingPage) page).getCraftedItem()) {
+            if (page instanceof CraftingPage) {
+                for (ItemStack craftedItem : ((CraftingPage) page).getCraftedItem()) {
                     bookRecipes.put(craftedItem, Pair.of(entry.getEntryName(), pageNum));
                 }
             }
