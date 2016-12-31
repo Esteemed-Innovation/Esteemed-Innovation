@@ -1,10 +1,12 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.Constants;
+import net.minecraft.init.Biomes;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,8 +38,8 @@ public class Config {
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
 
-    public static boolean genCopperOverworld;
-    public static boolean genZincOverworld;
+    public static boolean genCopperOverworldDeposits;
+    public static boolean genZincOverworldDeposits;
     public static boolean genCopperEnd;
     public static boolean genZincEnd;
     public static boolean genCopperNether;
@@ -51,6 +53,21 @@ public class Config {
     public static boolean genPoorZincOre;
     public static int workshopLimit;
     public static int workshopWeight;
+    public static final List<String> copperBiomes = new ArrayList<>();
+    public static final List<String> zincBiomes = new ArrayList<>();
+    private static final String[] COPPER_BIOMES_DEFAULT = {
+      Biomes.EXTREME_HILLS.getBiomeName(),
+      Biomes.EXTREME_HILLS_EDGE.getBiomeName(),
+      Biomes.EXTREME_HILLS_WITH_TREES.getBiomeName()
+    };
+    private static final String[] ZINC_BIOMES_DEFAULT = {
+      Biomes.DESERT.getBiomeName(),
+      Biomes.DESERT_HILLS.getBiomeName(),
+      Biomes.MESA.getBiomeName(),
+      Biomes.MESA_CLEAR_ROCK.getBiomeName(),
+      Biomes.MESA_ROCK.getBiomeName()
+    };
+
 
     public static boolean easterEggs;
 
@@ -250,8 +267,8 @@ public class Config {
         config.load();
 
         // WORLD GEN
-        genCopperOverworld = config.get("World Generation", "Generate Overworld Copper", true).getBoolean();
-        genZincOverworld = config.get("World Generation", "Generate Overworld Zinc", true).getBoolean();
+        genCopperOverworldDeposits = config.get("World Generation", "Generate Overworld Copper deposits", true).getBoolean();
+        genZincOverworldDeposits = config.get("World Generation", "Generate Overworld Zinc deposits", true).getBoolean();
         genCopperEnd = config.get("World Generation", "Generate End Copper", false).getBoolean();
         genZincEnd = config.get("World Generation", "Generate End Zinc", false).getBoolean();
         genCopperNether = config.get("World Generation", "Generate Nether Copper", false).getBoolean();
@@ -264,6 +281,8 @@ public class Config {
         genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get("World Generation", "Workshop spawn weight", 7).getInt(7);
+        copperBiomes.addAll(Arrays.asList(config.get("World Generation", "Biomes to generate normal copper in", COPPER_BIOMES_DEFAULT).getStringList()));
+        zincBiomes.addAll(Arrays.asList(config.get("World Generation", "Biomes to generate normal zinc in", ZINC_BIOMES_DEFAULT).getStringList()));
 
         copperExtraDimensionIDs = getDimensionIDsFromString(copperDims);
         zincExtraDimensionIDs = getDimensionIDsFromString(zincDims);

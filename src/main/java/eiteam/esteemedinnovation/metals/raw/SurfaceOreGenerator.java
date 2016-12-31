@@ -1,12 +1,15 @@
 package eiteam.esteemedinnovation.metals.raw;
 
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks;
-import eiteam.esteemedinnovation.init.misc.LootTablesCategory;
+import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks;
+import eiteam.esteemedinnovation.init.blocks.OreBlocks;
+import eiteam.esteemedinnovation.init.misc.LootTablesCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
@@ -14,29 +17,64 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
 public class SurfaceOreGenerator implements IWorldGenerator {
+    private static final int SEA_LEVEL = 60;
+
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimension() == 0) {
-            boolean doCopper = random.nextInt(16) == 1;
-            boolean doZinc = random.nextInt(16) == 2;
-            if (doCopper) {
-                if (Config.genCopperOverworld) {
-                    generateDepositGenerators(random, chunkX * 16, chunkZ * 16, world, BlockOreDepositGenerator.Types.COPPER);
+            boolean doCopperDeposit = random.nextInt(16) == 1;
+            boolean doZincDeposit = random.nextInt(16) == 2;
+            int coordX = chunkX * 16;
+            int coordZ = chunkZ * 16;
+            if (doCopperDeposit) {
+                if (Config.genCopperOverworldDeposits) {
+                    generateDepositGenerators(random, coordX, coordZ, world, BlockOreDepositGenerator.Types.COPPER);
                 }
-            } else if (doZinc) {
-                if (Config.genZincOverworld) {
-                    generateDepositGenerators(random, chunkX * 16, chunkZ * 16, world, BlockOreDepositGenerator.Types.ZINC);
+            } else if (doZincDeposit) {
+                if (Config.genZincOverworldDeposits) {
+                    generateDepositGenerators(random, coordX, coordZ, world, BlockOreDepositGenerator.Types.ZINC);
                 }
+            }
+
+            String biome = world.getBiomeForCoordsBody(new BlockPos(coordX, 0, coordZ)).getBiomeName();
+            if (Config.copperBiomes.contains(biome)) {
+                generateOre(SEA_LEVEL + 20, 128, coordX, coordZ, random, world, BlockGenericOre.OreBlockTypes.OVERWORLD_COPPER);
+            }
+            if (Config.zincBiomes.contains(biome)) {
+                generateOre(SEA_LEVEL + 5, SEA_LEVEL + 20, coordX, coordZ, random, world, BlockGenericOre.OreBlockTypes.OVERWORLD_ZINC);
             }
         }
     }
 
-    private void generateDepositGenerators(Random random, int baseX, int baseZ, World world, BlockOreDepositGenerator.Types type) {
+    private static void generateOre(int minY, int maxY, int baseX, int baseZ, Random random, World world, BlockGenericOre.OreBlockTypes type) {
+        WorldGenMinable minable = new WorldGenMinable(OreBlocks.Blocks.ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type), 8,
+          state -> {
+            if (state != null) {
+                Block block = state.getBlock();
+                Item item = Item.getItemFromBlock(block);
+                if (item != null) {
+                    return OreDictHelper.listHasItem(OreDictHelper.stones, item) ||
+                      OreDictHelper.dirts.contains(item) || OreDictHelper.grasses.contains(item) ||
+                      OreDictHelper.gravels.contains(item) || OreDictHelper.listHasItem(OreDictHelper.sands, item);
+                }
+            }
+            return false;
+          });
+        for (int i = 0; i < 5; i++) {
+            int x = baseX + random.nextInt(16);
+            int y = minY + random.nextInt(maxY - minY);
+            int z = baseZ + random.nextInt(16);
+            minable.generate(world, random, new BlockPos(x, y, z));
+        }
+    }
+
+    private static void generateDepositGenerators(Random random, int baseX, int baseZ, World world, BlockOreDepositGenerator.Types type) {
         Block block = MiscellaneousBlocks.Blocks.ORE_DEPOSIT_BLOCK.getBlock();
         // 30% of deposits are worked out
         boolean workedOut = random.nextInt(10) <= 3;
