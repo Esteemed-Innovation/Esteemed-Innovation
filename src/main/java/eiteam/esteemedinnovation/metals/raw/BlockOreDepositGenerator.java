@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.metals.raw;
 
-import eiteam.esteemedinnovation.init.blocks.OreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,6 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Random;
+
+import static eiteam.esteemedinnovation.metals.MetalsModule.ORE_BLOCK;
 
 public class BlockOreDepositGenerator extends Block {
     public static final PropertyEnum<Types> VARIANT = PropertyEnum.create("variant", Types.class);
@@ -58,7 +59,7 @@ public class BlockOreDepositGenerator extends Block {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(OreBlocks.Blocks.ORE_BLOCK);
+        return Item.getItemFromBlock(ORE_BLOCK);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class BlockOreDepositGenerator extends Block {
     }
 
     private IBlockState getOreState(IBlockState depositState) {
-        return OreBlocks.Blocks.ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT,
+        return ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT,
           depositState.getValue(VARIANT) == Types.COPPER ? BlockGenericOre.OreBlockTypes.OVERWORLD_COPPER : BlockGenericOre.OreBlockTypes.OVERWORLD_ZINC);
     }
 

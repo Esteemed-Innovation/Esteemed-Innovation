@@ -5,10 +5,10 @@ import com.google.common.collect.Maps;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
-import eiteam.esteemedinnovation.commons.visual.Texture;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
-import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ComparatorUpgrade;
+import eiteam.esteemedinnovation.commons.visual.Texture;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -214,7 +214,7 @@ public class ModelExosuit extends ModelBiped {
 
         // Ender Shroud
         // TODO: Abstract
-        if (exosuitArmor.hasUpgrade(itemStack, ExosuitUpgradeItems.Items.ENDER_SHROUD.getItem())) {
+        if (exosuitArmor.hasUpgrade(itemStack, ArmorModule.ENDER_SHROUD)) {
             shroudEnabled = true;
             if (entityLivingBase.hurtTime != 0) {
                 shroudModifier = entityLivingBase.hurtTime / 9F;

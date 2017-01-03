@@ -9,10 +9,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 
 public class CommonProxy {
-    public void registerModels() {}
-
-    public void registerRenderers() {}
-
     public void registerTexturesToStitch() {}
 
     public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {}

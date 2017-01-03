@@ -4,7 +4,6 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -33,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import static eiteam.esteemedinnovation.transport.TransportationModule.VALVE_PIPE;
 
 public class BlockSteamPipe extends BlockSteamTransporter {
     public static final float BASE_MIN = 4F / 16F;
@@ -291,7 +292,7 @@ public class BlockSteamPipe extends BlockSteamTransporter {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (heldItem != null && heldItem.getItem() == LEVER) {
-            return world.setBlockState(pos, SteamNetworkBlocks.Blocks.VALVE_PIPE.getBlock().getDefaultState().withProperty(BlockValvePipe.FACING, side));
+            return world.setBlockState(pos, VALVE_PIPE.getDefaultState().withProperty(BlockValvePipe.FACING, side));
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }

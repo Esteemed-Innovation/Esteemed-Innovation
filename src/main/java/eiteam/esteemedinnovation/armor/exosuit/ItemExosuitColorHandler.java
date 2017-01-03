@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.armor.exosuit;
 
-import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
@@ -10,15 +9,12 @@ import net.minecraft.item.ItemStack;
 import java.awt.*;
 
 public class ItemExosuitColorHandler implements IItemColor {
-    private ArmorItems.Items item;
-
-    public ItemExosuitColorHandler(ArmorItems.Items item) {
-        this.item = item;
-    }
-
     @Override
     public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        Item item = this.item.getItem();
+        if (stack == null) {
+            return -1;
+        }
+        Item item = stack.getItem();
         if (!(item instanceof ItemExosuitArmor)) {
             return -1;
         }

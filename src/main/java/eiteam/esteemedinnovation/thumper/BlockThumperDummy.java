@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +16,8 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+import static eiteam.esteemedinnovation.thumper.ThumperModule.THUMPER;
+
 public class BlockThumperDummy extends Block implements Wrenchable {
     public BlockThumperDummy() {
         super(Material.IRON);
@@ -30,7 +31,7 @@ public class BlockThumperDummy extends Block implements Wrenchable {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        Item item = Item.getItemFromBlock(SteamMachineryBlocks.Blocks.THUMPER.getBlock());
+        Item item = Item.getItemFromBlock(THUMPER);
         return item == null ? null : new ItemStack(item, 1, 0);
     }
 
@@ -43,7 +44,7 @@ public class BlockThumperDummy extends Block implements Wrenchable {
             BlockPos blockPos = pos.down(i);
             IBlockState blockState = world.getBlockState(blockPos);
             Block block = blockState.getBlock();
-            if (block == SteamMachineryBlocks.Blocks.THUMPER.getBlock()) {
+            if (block == THUMPER) {
                 ((BlockThumper) block).onWrench(stack, player, world, blockPos, hand, facing, blockState, hitX, hitY, hitZ);
                 return true;
             }

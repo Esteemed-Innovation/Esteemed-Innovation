@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.transport.item;
 
-import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +11,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import static eiteam.esteemedinnovation.transport.TransportationModule.ASTROLABE;
 
 public class BlockItemMortar extends Block {
     public BlockItemMortar() {
@@ -36,7 +37,7 @@ public class BlockItemMortar extends Block {
             return false;
         }
 
-        if (heldItem != null && heldItem.getItem() == GadgetItems.Items.ASTROLABE.getItem() &&
+        if (heldItem != null && heldItem.getItem() == ASTROLABE &&
           heldItem.hasTagCompound() && heldItem.getTagCompound().hasKey("targetX") &&
           world.provider.getDimension() == heldItem.getTagCompound().getInteger("dim")) {
             tile.xTarget = heldItem.getTagCompound().getInteger("targetX");

@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.thumper;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -21,6 +20,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import static eiteam.esteemedinnovation.thumper.ThumperModule.THUMPER_DUMMY;
 
 public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -56,7 +57,7 @@ public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         BlockPos above = pos.up();
         TileEntityThumper tile = (TileEntityThumper) world.getTileEntity(pos);
-        if (world.getBlockState(above).getBlock() != SteamMachineryBlocks.Blocks.THUMPER_DUMMY.getBlock() && tile != null) {
+        if (world.getBlockState(above).getBlock() != THUMPER_DUMMY && tile != null) {
             if (!world.isRemote) {
                 dropBlockAsItem(world, pos, getDefaultState(), 0);
             }
@@ -68,7 +69,7 @@ public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         // No need to break the rest of the Thumper dummies as that is handled by BlockThumperDummy#breakBlock.
         BlockPos dummyPos = pos.up();
-        if (world.getBlockState(dummyPos).getBlock() == SteamMachineryBlocks.Blocks.THUMPER_DUMMY.getBlock()) {
+        if (world.getBlockState(dummyPos).getBlock() == THUMPER_DUMMY) {
             world.setBlockToAir(dummyPos);
         }
         super.breakBlock(world, pos, state);
@@ -79,7 +80,7 @@ public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
         world.setBlockState(pos, state.withProperty(FACING, elb.getHorizontalFacing().getOpposite()), 2);
         for (int y = 1; y < 4; y++) {
             BlockPos dummyPos = pos.up(y);
-            world.setBlockState(dummyPos, SteamMachineryBlocks.Blocks.THUMPER_DUMMY.getBlock().getDefaultState());
+            world.setBlockState(dummyPos, THUMPER_DUMMY.getDefaultState());
         }
     }
 

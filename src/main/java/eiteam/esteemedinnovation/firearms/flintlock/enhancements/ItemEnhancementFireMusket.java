@@ -8,13 +8,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.BLUNDERBUSS;
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.MUSKET;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.BLUNDERBUSS;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET;
 
 public class ItemEnhancementFireMusket extends Item implements EnhancementFirearm {
     @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == MUSKET.getItem() || stack.getItem() == BLUNDERBUSS.getItem();
+        return stack.getItem() == MUSKET || stack.getItem() == BLUNDERBUSS;
     }
 
     @Override
@@ -29,13 +29,13 @@ public class ItemEnhancementFireMusket extends Item implements EnhancementFirear
 
     @Override
     public ResourceLocation getModel(Item item) {
-        String weapon = item == MUSKET.getItem() ? "musket" : "blunderbuss";
+        String weapon = item == MUSKET ? "musket" : "blunderbuss";
         return new ResourceLocation(EsteemedInnovation.MOD_ID, weapon + "_blaze");
     }
 
     @Override
     public String getName(Item item) {
-        String weapon = item == MUSKET.getItem() ? "musket" : "blunderbuss";
+        String weapon = item == MUSKET ? "musket" : "blunderbuss";
         return "item.esteemedinnovation:" + weapon + "Ablaze";
     }
 

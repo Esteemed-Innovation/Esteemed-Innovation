@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -51,9 +51,9 @@ public class PhobicCoatingHandler {
         AttributeModifier modifierWater = attributes.getModifier(uuid4);
         AttributeModifier modifierLava = attributes.getModifier(uuid5);
         boolean canHydro = canWalkOnFluid(entity, consumptionHydro,
-          ExosuitUpgradeItems.Items.HYDROPHOBIC_COATINGS.getItem(), modifierWater);
+          ArmorModule.HYDROPHOBIC_COATINGS, modifierWater);
         boolean canPyro = canWalkOnFluid(entity, consumptionPyro,
-          ExosuitUpgradeItems.Items.PYROPHOBIC_COATINGS.getItem(), modifierLava);
+          ArmorModule.PYROPHOBIC_COATINGS, modifierLava);
         int x = MathHelper.floor_double(entity.posX);
         int y = MathHelper.floor_double(entity.getEntityBoundingBox().minY - 0.11F);
         int z = MathHelper.floor_double(entity.posZ);

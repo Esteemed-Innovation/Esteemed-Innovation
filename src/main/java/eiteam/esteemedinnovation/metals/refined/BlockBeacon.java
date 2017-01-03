@@ -13,23 +13,19 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.blocks.MetalBlocks;
-
 import java.util.List;
+
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
 public class BlockBeacon extends Block {
     public static PropertyEnum<MetalBlockTypes> VARIANT = PropertyEnum.create("variant", MetalBlockTypes.class);
 
-    public BlockBeacon(Material material) {
-        super(material);
-        setCreativeTab(EsteemedInnovation.tab);
-        setUnlocalizedName(EsteemedInnovation.MOD_ID + ":metal_storage_block");
+    public BlockBeacon() {
+        super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
         setDefaultState(blockState.getBaseState().withProperty(VARIANT, MetalBlockTypes.byMetadata(0)));
         setSoundType(SoundType.METAL);
-        setRegistryName(EsteemedInnovation.MOD_ID, "metal_storage_block");
     }
 
     @Override
@@ -39,8 +35,8 @@ public class BlockBeacon extends Block {
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (MetalBlocks.Blocks block : MetalBlocks.Blocks.values()) {
-            list.add(block.createItemStack());
+        for (MetalBlockTypes type : MetalBlockTypes.values()) {
+            list.add(new ItemStack(this, 1, type.getMetadata()));
         }
     }
 
@@ -70,23 +66,29 @@ public class BlockBeacon extends Block {
     }
 
     public enum MetalBlockTypes implements IStringSerializable {
-        COPPER("copper", MetalBlocks.Blocks.COPPER.getMetadata()),
-        ZINC("zinc", MetalBlocks.Blocks.ZINC.getMetadata()),
-        BRASS("brass", MetalBlocks.Blocks.BRASS.getMetadata()),
-        GILDED_IRON("gilded_iron", MetalBlocks.Blocks.GILDED_IRON.getMetadata());
+        COPPER("copper", MATERIAL_COPPER, 0),
+        ZINC("zinc", MATERIAL_ZINC, 1),
+        BRASS("brass", MATERIAL_BRASS, 2),
+        GILDED_IRON("gilded_iron", MATERIAL_GILDED_IRON, 3);
 
         private String name;
+        private String oreMaterial;
         private int metadata;
         private static final MetalBlockTypes[] META_LOOKUP = new MetalBlockTypes[values().length];
 
-        MetalBlockTypes(String name, int metadata) {
+        MetalBlockTypes(String name, String oreMaterial, int metadata) {
             this.name = name;
+            this.oreMaterial = oreMaterial;
             this.metadata = metadata;
         }
 
         @Override
         public String getName() {
             return name;
+        }
+
+        public String getOreMaterial() {
+            return oreMaterial;
         }
 
         public int getMetadata() {

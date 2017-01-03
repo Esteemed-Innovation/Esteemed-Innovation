@@ -3,16 +3,17 @@ package eiteam.esteemedinnovation.firearms.flintlock.enhancements;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static eiteam.esteemedinnovation.firearms.FirearmModule.PISTOL;
+
 public class ItemEnhancementRevolver extends Item implements EnhancementFirearm {
     @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == FirearmItems.Items.PISTOL.getItem();
+        return stack.getItem() == PISTOL;
     }
 
     @Override

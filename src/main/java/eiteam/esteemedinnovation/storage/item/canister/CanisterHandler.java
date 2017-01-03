@@ -2,13 +2,14 @@ package eiteam.esteemedinnovation.storage.item.canister;
 
 import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
+
+import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 
 public class CanisterHandler implements IRecipe {
     static {
@@ -60,7 +61,7 @@ public class CanisterHandler implements IRecipe {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             if (inv.getStackInSlot(i) != null) {
                 ItemStack stack = inv.getStackInSlot(i);
-                if (stack.getItem() == GadgetItems.Items.ITEM_CANISTER.getItem()) {
+                if (stack.getItem() == ITEM_CANISTER) {
                     if (!hasCan) {
                         hasCan = true;
                     } else {

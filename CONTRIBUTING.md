@@ -302,4 +302,4 @@ Don't use finalizers.
 ### Packaging
 Package by feature, not layer/type. For example, if you are creating a new machine, create a new package named after the machine where all of its relevant classes (including but not limited to its Block, TileEntity, and TESR).
 
-The `commons` package contains code that is meant to be used across the entire project, but does not belong in the public API. Avoid referencing class across packages. Packages should only be dependent on themselves, the commons package, and the API.
+The `commons` package contains code that is meant to be used across the entire project, but does not belong in the public API. Avoid referencing class across packages. Packages should only be dependent on themselves, the commons package, the API, and sometimes ContentModules.

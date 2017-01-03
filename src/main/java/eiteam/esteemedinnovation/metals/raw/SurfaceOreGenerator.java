@@ -3,9 +3,6 @@ package eiteam.esteemedinnovation.metals.raw;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks;
-import eiteam.esteemedinnovation.init.blocks.OreBlocks;
-import eiteam.esteemedinnovation.init.misc.LootTablesCategory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.init.Blocks;
@@ -21,6 +18,8 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
+
+import static eiteam.esteemedinnovation.metals.MetalsModule.*;
 
 public class SurfaceOreGenerator implements IWorldGenerator {
     private static final int SEA_LEVEL = 60;
@@ -53,7 +52,7 @@ public class SurfaceOreGenerator implements IWorldGenerator {
     }
 
     private static void generateOre(int minY, int maxY, int baseX, int baseZ, Random random, World world, BlockGenericOre.OreBlockTypes type) {
-        WorldGenMinable minable = new WorldGenMinable(OreBlocks.Blocks.ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type), 8,
+        WorldGenMinable minable = new WorldGenMinable(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type), 8,
           state -> {
             if (state != null) {
                 Block block = state.getBlock();
@@ -75,10 +74,9 @@ public class SurfaceOreGenerator implements IWorldGenerator {
     }
 
     private static void generateDepositGenerators(Random random, int baseX, int baseZ, World world, BlockOreDepositGenerator.Types type) {
-        Block block = MiscellaneousBlocks.Blocks.ORE_DEPOSIT_BLOCK.getBlock();
         // 30% of deposits are worked out
         boolean workedOut = random.nextInt(10) <= 3;
-        WorldGenSingleMinable minable = new WorldGenSingleMinable(block.getDefaultState()
+        WorldGenSingleMinable minable = new WorldGenSingleMinable(ORE_DEPOSIT_GENERATOR.getDefaultState()
           .withProperty(BlockOreDepositGenerator.VARIANT, type)
           .withProperty(BlockOreDepositGenerator.WORKED_OUT, workedOut));
         int baseY = random.nextInt(40);
@@ -107,7 +105,7 @@ public class SurfaceOreGenerator implements IWorldGenerator {
                         TileEntity tileentity = world.getTileEntity(offset);
                         if (tileentity instanceof TileEntityChest) {
                             TileEntityChest chest = (TileEntityChest) tileentity;
-                            chest.setLootTable(LootTablesCategory.LootTables.WORKED_OUT_ORE_DEPOSIT_TABLE.getResource(), random.nextLong());
+                            chest.setLootTable(WORKED_OUT_ORE_DEPOSIT_LOOTTABLE, random.nextLong());
                         }
                         genChest = false;
                     } else if (genBench) {

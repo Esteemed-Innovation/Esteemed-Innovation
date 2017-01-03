@@ -1,10 +1,9 @@
 package eiteam.esteemedinnovation.armor;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.JavaHelper;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
@@ -38,7 +37,7 @@ public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-        if (stack.getItem() == ArmorItems.Items.GOGGLES.getItem()) {
+        if (stack.getItem() == ArmorModule.GOGGLES) {
             return EsteemedInnovation.MOD_ID + ":textures/models/armor/" + JavaHelper.decapitalize(name) + "_layer_1.png";
         }
         return null;

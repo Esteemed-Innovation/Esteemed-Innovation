@@ -6,7 +6,6 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.blocks.CastingBlocks;
 import eiteam.esteemedinnovation.heater.BlockSteamHeater;
 import eiteam.esteemedinnovation.heater.TileEntitySteamHeater;
 import net.minecraft.block.Block;
@@ -31,6 +30,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
+
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.NETHER_CRUCIBLE;
 
 public class BlockCrucible extends Block implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -104,8 +105,7 @@ public class BlockCrucible extends Block implements Wrenchable {
         IBlockState stateUnderCrucible = world.getBlockState(underCruciblePosition);
         TileEntity tileUnderCrucible = world.getTileEntity(underCruciblePosition);
 
-        if (this == CastingBlocks.Blocks.NETHER_CRUCIBLE.getBlock() ||
-          stateUnderCrucible.getMaterial() == Material.FIRE ||
+        if (this == NETHER_CRUCIBLE || stateUnderCrucible.getMaterial() == Material.FIRE ||
           stateUnderCrucible.getMaterial() == Material.LAVA) {
             return true;
         }

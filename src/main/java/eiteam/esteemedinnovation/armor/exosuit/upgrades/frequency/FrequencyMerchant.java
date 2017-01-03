@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency;
 
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -21,12 +21,14 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.util.*;
 
-import static eiteam.esteemedinnovation.init.items.CraftingComponentItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.FoodItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.MetalItems.Items.BRASS_INGOT;
-import static eiteam.esteemedinnovation.init.items.MetalcastingItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
-import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.ITEM_CANISTER;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET_CARTRIDGE;
+import static eiteam.esteemedinnovation.heater.HeaterModule.*;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.*;
+import static eiteam.esteemedinnovation.metals.MetalsModule.METAL_INGOT;
+import static eiteam.esteemedinnovation.metals.refined.ItemMetalIngot.Types.BRASS_INGOT;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.*;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 
 public class FrequencyMerchant implements IMerchant {
     private final EntityLiving entity;
@@ -39,7 +41,7 @@ public class FrequencyMerchant implements IMerchant {
 
     public FrequencyMerchant(EntityLiving entity, String name) {
         this.entity = entity;
-        AnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+        AnimalData data = entity.getCapability(ArmorModule.ANIMAL_DATA, null);
         merchantName = name;
         stock = data.getStock();
     }
@@ -81,50 +83,50 @@ public class FrequencyMerchant implements IMerchant {
 
         Random random = entity.worldObj.rand;
         if (entity instanceof EntityWolf) {
-            currencies.add(new ItemStack(STEAMED_BEEF.getItem()));
-            currencies.add(new ItemStack(STEAMED_PORKCHOP.getItem()));
-            currencies.add(new ItemStack(STEAMED_CHICKEN.getItem()));
+            currencies.add(new ItemStack(STEAMED_BEEF));
+            currencies.add(new ItemStack(STEAMED_PORKCHOP));
+            currencies.add(new ItemStack(STEAMED_CHICKEN));
             currencies.add(new ItemStack(Items.BONE));
 
             if (random.nextDouble() < 0.09D) {
-                saleItems.add(MutablePair.of(new ItemStack(MUSKET_CARTRIDGE.getItem(), 2), 12));
+                saleItems.add(MutablePair.of(new ItemStack(MUSKET_CARTRIDGE, 2), 12));
             }
             if (random.nextDouble() < 0.08D) {
-                saleItems.add(MutablePair.of(GUN_STOCK.createItemStack(), 15));
+                saleItems.add(MutablePair.of(new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata()), 15));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(MutablePair.of(IRON_BARREL.createItemStack(), 15));
+                saleItems.add(MutablePair.of(new ItemStack(COMPONENT, 1, IRON_BARREL.getMetadata()), 15));
             }
             if (random.nextDouble() < 0.06D) {
-                saleItems.add(MutablePair.of(BLUNDERBUSS_BARREL.createItemStack(), 15));
+                saleItems.add(MutablePair.of(new ItemStack(COMPONENT, 1, BLUNDERBUSS_BARREL.getMetadata()), 15));
             }
             if (random.nextDouble() < 0.05D) {
-                saleItems.add(MutablePair.of(FLINTLOCK.createItemStack(), 15));
+                saleItems.add(MutablePair.of(new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()), 15));
             }
             if (random.nextDouble() < 0.04D) {
                 saleItems.add(MutablePair.of(new ItemStack(Items.IRON_SWORD), 20));
             }
         } else if (entity instanceof EntityOcelot) {
-            currencies.add(new ItemStack(STEAMED_FISH.getItem()));
-            currencies.add(new ItemStack(STEAMED_SALMON.getItem()));
+            currencies.add(new ItemStack(STEAMED_FISH));
+            currencies.add(new ItemStack(STEAMED_SALMON));
 
             if (random.nextDouble() < 0.09D) {
-                saleItems.add(MutablePair.of(new ItemStack(BLANK_MOLD.getItem(), 2), 6));
+                saleItems.add(MutablePair.of(new ItemStack(BLANK_MOLD, 2), 6));
             }
             if (random.nextDouble() < 0.08D) {
-                saleItems.add(MutablePair.of(new ItemStack(INGOT_MOLD.getItem()), 8));
+                saleItems.add(MutablePair.of(new ItemStack(INGOT_MOLD), 8));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(MutablePair.of(new ItemStack(PLATE_MOLD.getItem()), 8));
+                saleItems.add(MutablePair.of(new ItemStack(PLATE_MOLD), 8));
             }
             if (random.nextDouble() < 0.06D) {
-                saleItems.add(MutablePair.of(new ItemStack(NUGGET_MOLD.getItem()), 8));
+                saleItems.add(MutablePair.of(new ItemStack(NUGGET_MOLD), 8));
             }
             if (random.nextDouble() < 0.05D) {
-                saleItems.add(MutablePair.of(BRASS_INGOT.createItemStack(2), 4));
+                saleItems.add(MutablePair.of(new ItemStack(METAL_INGOT, 2, BRASS_INGOT.getMeta()), 4));
             }
             if (random.nextDouble() < 0.04D) {
-                saleItems.add(MutablePair.of(new ItemStack(ITEM_CANISTER.getItem()), 5));
+                saleItems.add(MutablePair.of(new ItemStack(ITEM_CANISTER), 5));
             }
 
         }

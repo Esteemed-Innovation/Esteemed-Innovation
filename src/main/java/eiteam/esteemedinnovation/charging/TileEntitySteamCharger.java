@@ -15,9 +15,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.ITextComponent;
 
-import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.STEAM_CELL_EMPTY;
-import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.STEAM_CELL_FULL;
-
 public class TileEntitySteamCharger extends SteamTransporterTileEntity implements IInventory {
     public int randomDegrees;
     private boolean isCharging = false;
@@ -86,9 +83,10 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         } else {
             if (inventory != null) {
-                if (inventory.getItem() == STEAM_CELL_EMPTY.getItem() && getSteamShare() > Config.steamCellCapacity) {
+                // TODO: Abstract into API
+                if (inventory.getItem() == ChargingModule.STEAM_CELL_EMPTY && getSteamShare() > Config.steamCellCapacity) {
                     clear();
-                    dropItem(new ItemStack(STEAM_CELL_FULL.getItem()));
+                    dropItem(new ItemStack(ChargingModule.STEAM_CELL_FULL));
                     decrSteam(Config.steamCellCapacity);
                     markForResync();
                     return;
@@ -324,7 +322,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack.getItem() instanceof SteamChargable || stack.getItem() == STEAM_CELL_EMPTY.getItem();
+        return stack.getItem() instanceof SteamChargable || stack.getItem() == ChargingModule.STEAM_CELL_EMPTY;
     }
 
     @Override

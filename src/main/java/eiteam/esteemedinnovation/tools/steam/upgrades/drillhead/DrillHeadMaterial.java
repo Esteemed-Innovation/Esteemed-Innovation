@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 
 import java.awt.Color;
 import java.io.*;

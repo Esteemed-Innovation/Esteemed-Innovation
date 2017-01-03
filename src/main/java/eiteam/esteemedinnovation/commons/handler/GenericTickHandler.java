@@ -5,17 +5,14 @@ import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.ClientProxy;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
-import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
-import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
-import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
-import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
-import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
-import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
+import eiteam.esteemedinnovation.commons.util.BaublesUtility;
+import eiteam.esteemedinnovation.commons.CrossMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -43,8 +40,12 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
-import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.DOUBLE_JUMP;
-import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.PITON_DEPLOYER;
+import static eiteam.esteemedinnovation.armor.ArmorModule.DOUBLE_JUMP;
+import static eiteam.esteemedinnovation.armor.ArmorModule.PITON_DEPLOYER;
+import static eiteam.esteemedinnovation.charging.ChargingModule.STEAM_CELL_FILLER;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 
 public class GenericTickHandler {
     private static float zoom = 0.0F;
@@ -70,7 +71,7 @@ public class GenericTickHandler {
         }
         if (CrossMod.BAUBLES) {
             ticksSinceLastCellFill++;
-            if (BaublesIntegration.checkForSteamCellFiller(player)) {
+            if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
                 if (ticksSinceLastCellFill >= 10) {
                     for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                         ItemStack item = player.inventory.getStackInSlot(i);
@@ -99,7 +100,7 @@ public class GenericTickHandler {
             Item bootsItem = boots.getItem();
             if (bootsItem instanceof ExosuitArmor) {
                 ExosuitArmor bootsArmor = (ExosuitArmor) bootsItem;
-                if (bootsArmor.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && chestArmor.hasPower(chest, 15)) {
+                if (bootsArmor.hasUpgrade(boots, DOUBLE_JUMP) && chestArmor.hasPower(chest, 15)) {
                     if (isJumping) {
                         if (chestArmor.hasPower(chest, 15)) {
                             if (isServer) {
@@ -132,7 +133,7 @@ public class GenericTickHandler {
         }
 
         if (isJumping) {
-            if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER.getItem()) && isServer) {
+            if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER) && isServer) {
                 if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
                     chest.getTagCompound().setBoolean("grappled", false);
                 }
@@ -201,7 +202,7 @@ public class GenericTickHandler {
                     //noinspection ConstantConditions
                     if (blockPos != null) {
                         TileEntity te = mc.theWorld.getTileEntity(blockPos);
-                        if (mc.theWorld.getBlockState(blockPos).getBlock() == PipeBlocks.Blocks.BRASS_PIPE.getBlock() ||
+                        if (mc.theWorld.getBlockState(blockPos).getBlock() == BRASS_PIPE ||
                           (te instanceof DisguisableBlock)) {
                             EsteemedInnovation.channel.sendToServer(new CamoPacket(blockPos));
                         }
@@ -210,10 +211,10 @@ public class GenericTickHandler {
             }
 
             ItemStack hat = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-            Item monacle = ArmorItems.Items.MONOCLE.getItem();
-            Item goggles = ArmorItems.Items.GOGGLES.getItem();
+            Item monacle = ArmorModule.MONOCLE;
+            Item goggles = ArmorModule.GOGGLES;
             boolean hasHat = hat != null && (hat.getItem() == monacle ||
-              hat.getItem() == goggles || (hat.getItem() == ArmorItems.Items.EXOSUIT_HEADPIECE.getItem() &&
+              hat.getItem() == goggles || (hat.getItem() == ArmorModule.EXO_HEAD &&
               (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, goggles) ||
                 ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
             if (hasHat) {
@@ -268,14 +269,14 @@ public class GenericTickHandler {
                 }
             }
             ItemStack item = player.inventory.getStackInSlot(player.inventory.currentItem);
-            if (item != null && item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
+            if (item != null && item.getItem() == SPYGLASS) {
                 if (mc.gameSettings.thirdPersonView == 0) {
                     inUse = true;
                     this.renderTelescopeOverlay();
                 }
             }
-            if (!wasInUse && item != null && player.isHandActive() && item.getItem() == FirearmItems.Items.MUSKET.getItem() &&
-              UtilEnhancements.getEnhancementFromItem(item) == GadgetItems.Items.SPYGLASS.getItem()) {
+            if (!wasInUse && item != null && player.isHandActive() && item.getItem() == MUSKET &&
+              UtilEnhancements.getEnhancementFromItem(item) == SPYGLASS) {
                 boolean isShooting = false;
                 if (item.getTagCompound() != null) {
                     NBTTagCompound nbt = item.getTagCompound();
@@ -303,14 +304,14 @@ public class GenericTickHandler {
                 zoom = 0.0F;
             }
             if (inUse && mc.gameSettings.keyBindAttack.isKeyDown() && zoom > 0F && item != null &&
-              item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
+              item.getItem() == SPYGLASS) {
                 zoom -= 1.0F;
                 mc.gameSettings.fovSetting += 2.5F;
                 mc.gameSettings.mouseSensitivity += 0.01F;
 
             }
             if (inUse && mc.gameSettings.keyBindUseItem.isKeyDown() && mc.gameSettings.fovSetting > 5F &&
-              item != null && item.getItem() == GadgetItems.Items.SPYGLASS.getItem()) {
+              item != null && item.getItem() == SPYGLASS) {
                 zoom += 1.0F;
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;

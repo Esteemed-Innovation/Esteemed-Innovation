@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.commons.util;
 
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;

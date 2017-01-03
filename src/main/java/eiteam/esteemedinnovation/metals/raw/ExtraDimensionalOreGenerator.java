@@ -1,8 +1,6 @@
 package eiteam.esteemedinnovation.metals.raw;
 
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.init.blocks.OreBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -15,9 +13,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static net.minecraft.init.Blocks.STONE;
-import static net.minecraft.init.Blocks.END_STONE;
-import static net.minecraft.init.Blocks.NETHERRACK;
+import static eiteam.esteemedinnovation.metals.MetalsModule.ORE_BLOCK;
+import static net.minecraft.init.Blocks.*;
 
 public class ExtraDimensionalOreGenerator implements IWorldGenerator {
     //Support for World Generation Manager
@@ -96,7 +93,7 @@ public class ExtraDimensionalOreGenerator implements IWorldGenerator {
 
     private WorldGenMinable getOre(BlockGenericOre.OreBlockTypes type, int count, Block block) {
         BlockMatcher matcher = BlockMatcher.forBlock(block);
-        IBlockState state = OreBlocks.Blocks.ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type);
+        IBlockState state = ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type);
         return new WorldGenMinable(state, count, matcher);
     }
 

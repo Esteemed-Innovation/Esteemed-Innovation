@@ -1,16 +1,17 @@
 package eiteam.esteemedinnovation.tools.steam;
 
 import com.google.common.collect.Sets;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.init.items.tools.ToolItems;
+import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
+
+import static eiteam.esteemedinnovation.tools.ToolsModule.STEAMDRILL_MAT;
 
 public class ItemSteamDrill extends ItemSteamTool {
     // Taken from ItemPickaxe.
@@ -23,7 +24,7 @@ public class ItemSteamDrill extends ItemSteamTool {
       Blocks.STONE_PRESSURE_PLATE);
 
     public ItemSteamDrill() {
-        super(1F, -2.8F, ToolItems.Materials.STEAM_SHOVEL.getMaterial(), EFFECTIVE_ON);
+        super(1F, -2.8F, STEAMDRILL_MAT, EFFECTIVE_ON);
     }
 
     @Override

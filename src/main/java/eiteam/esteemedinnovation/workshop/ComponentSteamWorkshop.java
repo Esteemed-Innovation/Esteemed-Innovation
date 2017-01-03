@@ -1,12 +1,9 @@
 package eiteam.esteemedinnovation.workshop;
 
 import eiteam.esteemedinnovation.boiler.BlockBoiler;
-import eiteam.esteemedinnovation.heater.BlockSteamHeater;
-import eiteam.esteemedinnovation.init.blocks.PipeBlocks;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
-import eiteam.esteemedinnovation.init.items.FoodItems;
+import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.boiler.TileEntityBoiler;
+import eiteam.esteemedinnovation.heater.BlockSteamHeater;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.BlockStairs;
@@ -28,6 +25,9 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.List;
 import java.util.Random;
 
+import static eiteam.esteemedinnovation.heater.HeaterModule.*;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+
 public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
     private int averageGroundLevel = -1;
     private static final IBlockState COBBLESTONE_STATE = Blocks.COBBLESTONE.getDefaultState();
@@ -38,8 +38,8 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
     private static final IBlockState LOG_STATE = Blocks.LOG.getDefaultState();
     private static final IBlockState AIR_STATE = Blocks.AIR.getDefaultState();
     private static final IBlockState PANE_STATE = Blocks.GLASS_PANE.getDefaultState();
-    private static final IBlockState PIPE_STATE = PipeBlocks.Blocks.BRASS_PIPE.getBlock().getDefaultState();
-    private static final IBlockState HEATER_STATE = SteamMachineryBlocks.Blocks.STEAM_HEATER.getBlock().getDefaultState();
+    private static final IBlockState PIPE_STATE = BRASS_PIPE.getDefaultState();
+    private static final IBlockState HEATER_STATE = STEAM_HEATER.getDefaultState();
 
     public ComponentSteamWorkshop() {}
 
@@ -133,7 +133,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
 
         setBlockState(world, Blocks.STICKY_PISTON.getDefaultState(), 7, 1, 1, sbb);
 
-        setBlockState(world, SteamNetworkBlocks.Blocks.BOILER.getBlock().getDefaultState().withProperty(BlockBoiler.FACING, EnumFacing.NORTH), 1, 1, 4, sbb);
+        setBlockState(world, BoilerModule.BOILER.getDefaultState().withProperty(BlockBoiler.FACING, EnumFacing.NORTH), 1, 1, 4, sbb);
         int x = getXWithOffset(1, 4);
         int y = getYWithOffset(1);
         int z = getZWithOffset(1, 4);
@@ -171,9 +171,9 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
         if (tile instanceof TileEntityFurnace) {
             TileEntityFurnace furnace = (TileEntityFurnace) tile;
             ItemStack[] possibleLoot = {
-              new ItemStack(FoodItems.Items.STEAMED_BEEF.getItem()),
-              new ItemStack(FoodItems.Items.STEAMED_PORKCHOP.getItem()),
-              new ItemStack(FoodItems.Items.STEAMED_CHICKEN.getItem())
+              new ItemStack(STEAMED_BEEF),
+              new ItemStack(STEAMED_PORKCHOP),
+              new ItemStack(STEAMED_CHICKEN)
             };
             ItemStack loot = possibleLoot[rand.nextInt(possibleLoot.length)];
             loot.stackSize = rand.nextInt(3) + 1;

@@ -6,13 +6,11 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
-import eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
@@ -70,9 +68,8 @@ public class SteamToolModel implements IModel {
         resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseHead0"));
         resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseHead1"));
 
-        for (ToolUpgradeItems.Items item : ToolUpgradeItems.Items.LOOKUP) {
-            Item vItem = item.getItem();
-            Collections.addAll(resources, ToolUpgradeRegistry.getResources((SteamToolUpgrade) vItem));
+        for (SteamToolUpgrade upgrade : ToolUpgradeRegistry.getUpgrades()) {
+            Collections.addAll(resources, ToolUpgradeRegistry.getResources(upgrade));
         }
 
         return resources;

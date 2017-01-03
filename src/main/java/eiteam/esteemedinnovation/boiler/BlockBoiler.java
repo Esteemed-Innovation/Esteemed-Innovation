@@ -5,7 +5,6 @@ import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.blocks.SteamNetworkBlocks;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -169,7 +168,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
 
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(SteamNetworkBlocks.Blocks.BOILER.getBlock());
+        return new ItemStack(BoilerModule.BOILER);
     }
 
     @Override

@@ -31,8 +31,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
-import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER_DUMMY;
+import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER;
+import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER_DUMMY;
 
 public class TileEntitySmasher extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay {
     public int spinup = 0;
@@ -241,7 +241,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                                     smooshingMeta = middleBlock.getMetaFromState(middleBlockState);
                                     smooshedStack = smooshingBlock.getDrops(worldObj, middleBlockPos, middleBlockState, 0);
                                     markForResync();
-                                    worldObj.setBlockState(middleBlockPos, ROCK_SMASHER_DUMMY.getBlock().getDefaultState());
+                                    worldObj.setBlockState(middleBlockPos, ROCK_SMASHER_DUMMY.getDefaultState());
                                 }
                             } else {
                                 if (hasPartner()) {
@@ -289,13 +289,13 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                         running = false;
                         markForResync();
                         extendedTicks = 0;
-                        if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY.getBlock()) {
+                        if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY) {
                             worldObj.setBlockToAir(middleBlockPos);
                         }
                     }
                 }
                 // Sync.
-            } else if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY.getBlock() && isPrimary()) {
+            } else if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY && isPrimary()) {
                 worldObj.setBlockToAir(middleBlockPos);
             }
         } else {
@@ -382,7 +382,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
         if (partnerTE == null || !(partnerTE instanceof TileEntitySmasher)) {
             return false;
         }
-        if (partner == ROCK_SMASHER.getBlock() && ((TileEntitySmasher) partnerTE).getSteamShare() > 100 &&
+        if (partner == ROCK_SMASHER && ((TileEntitySmasher) partnerTE).getSteamShare() > 100 &&
           partner.getMetaFromState(partnerState) == opposite) {
             TileEntitySmasher partnerSmasher = (TileEntitySmasher) partnerTE;
             if (partnerSmasher.blockBreakerMode != blockBreakerMode) {
@@ -428,7 +428,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
             BlockPos pos2 = new BlockPos(x2, y2, z2);
             IBlockState state2 = world.getBlockState(pos2);
             Block block = state2.getBlock();
-            if (block == ROCK_SMASHER.getBlock() && block.getMetaFromState(state2) == opposite) {
+            if (block == ROCK_SMASHER && block.getMetaFromState(state2) == opposite) {
                 TileEntitySmasher smasher = (TileEntitySmasher) world.getTileEntity(pos2);
                 if (smasher != null) {
                     smasher.blockBreakerMode = blockBreakerMode;

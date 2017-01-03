@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.firearms.rocket.enhancements;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRocketLauncher;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -11,10 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
+
 public class ItemEnhancementAirStrike extends Item implements EnhancementRocketLauncher {
     @Override
     public boolean canApplyTo(ItemStack stack) {
-        return stack.getItem() == FirearmItems.Items.ROCKET_LAUNCHER.getItem();
+        return stack.getItem() == ROCKET_LAUNCHER;
     }
 
     @Override

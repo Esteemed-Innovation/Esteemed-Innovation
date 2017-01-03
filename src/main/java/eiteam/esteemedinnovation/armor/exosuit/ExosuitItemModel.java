@@ -4,15 +4,15 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
-import eiteam.esteemedinnovation.init.items.armor.ArmorItems;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
@@ -20,10 +20,7 @@ import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExosuitItemModel implements IModel {
@@ -39,7 +36,7 @@ public class ExosuitItemModel implements IModel {
     public ExosuitItemModel(List<ResourceLocation> locations) {
         // Headpiece fallback. The list can never be empty because it is used in #bake.
         if (locations.isEmpty()) {
-            locations.add(new ResourceLocation(((ItemExosuitArmor) ArmorItems.Items.EXOSUIT_HEADPIECE.getItem()).getString()));
+            locations.add(new ResourceLocation(((ExosuitArmor) ArmorModule.EXO_HEAD).getString()));
         }
         this.locations = locations;
     }
@@ -51,13 +48,7 @@ public class ExosuitItemModel implements IModel {
 
     @Override
     public Collection<ResourceLocation> getTextures() {
-        Collection<ItemExosuitArmor> armors = new ArrayList<>();
-        for (ArmorItems.Items enumItem : ArmorItems.Items.LOOKUP) {
-            Item item = enumItem.getItem();
-            if (item instanceof ItemExosuitArmor) {
-                armors.add((ItemExosuitArmor) item);
-            }
-        }
+        List<? extends ItemExosuitArmor> armors = Arrays.asList(ArmorModule.EXO_BOOTS, ArmorModule.EXO_CHEST, ArmorModule.EXO_HEAD, ArmorModule.EXO_LEGS);
         Collection<ResourceLocation> allPlateIcons = new ArrayList<>();
         Collection<ResourceLocation> allArmorIcons = new ArrayList<>();
         for (ItemExosuitArmor armor : armors) {

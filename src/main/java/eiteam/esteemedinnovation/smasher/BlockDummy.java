@@ -1,8 +1,6 @@
 package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.misc.TileEntityDummyBlock;
-import eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import static eiteam.esteemedinnovation.init.blocks.SteamMachineryBlocks.Blocks.ROCK_SMASHER;
+import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER;
 
 public class BlockDummy extends Block {
     public BlockDummy() {
@@ -44,10 +42,10 @@ public class BlockDummy extends Block {
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         int smasherCount = 0;
-        smasherCount += world.getBlockState(pos.east()).getBlock() == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(pos.west()) == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(pos.north()) == ROCK_SMASHER.getBlock() ? 1 : 0;
-        smasherCount += world.getBlockState(pos.south()) == ROCK_SMASHER.getBlock() ? 1 : 0;
+        smasherCount += world.getBlockState(pos.east()).getBlock() == ROCK_SMASHER ? 1 : 0;
+        smasherCount += world.getBlockState(pos.west()) == ROCK_SMASHER ? 1 : 0;
+        smasherCount += world.getBlockState(pos.north()) == ROCK_SMASHER ? 1 : 0;
+        smasherCount += world.getBlockState(pos.south()) == ROCK_SMASHER ? 1 : 0;
 
         if (smasherCount < 2) {
             world.setBlockToAir(pos);
@@ -81,6 +79,6 @@ public class BlockDummy extends Block {
 
     @Override
     public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-        return new ItemStack(SteamMachineryBlocks.Blocks.ROCK_SMASHER.getBlock());
+        return new ItemStack(ROCK_SMASHER);
     }
 }

@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.steamsafety.disc;
 import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.misc.OreDictEntries;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;

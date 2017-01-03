@@ -56,6 +56,17 @@ public class BookPageRegistry {
     }
 
     /**
+     * Adds a top level research category in a specific location in the list. Shifts everything to the right.
+     * @see List#add(int, Object)
+     * @param index The index
+     * @param category The category
+     */
+    public static void addTopCategory(int index, BookCategory category) {
+        categories.add(index, category);
+        addCategoriesToFlatList(category);
+    }
+
+    /**
      * Adds a research entry to a category. This will use the default BookEntry which is always unlocked. Use the other
      * addEntryToCategory method to use your own custom BookEntry.
      * @param name The name of the entry.

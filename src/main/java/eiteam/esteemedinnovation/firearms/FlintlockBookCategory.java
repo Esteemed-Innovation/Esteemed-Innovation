@@ -12,7 +12,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class FlintlockBookCategory extends BookCategory {
-    static final String NAME = "category.Flintlock.name";
+    public static final String NAME = "category.Flintlock.name";
     public FlintlockBookCategory(BookEntry[] entries, BookCategory... subcategories) {
         super(NAME, entries, subcategories);
     }

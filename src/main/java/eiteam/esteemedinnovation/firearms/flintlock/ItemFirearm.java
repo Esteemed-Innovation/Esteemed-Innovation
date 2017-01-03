@@ -8,11 +8,10 @@ import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.UtilMisc;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
-import eiteam.esteemedinnovation.init.items.firearms.FirearmItems;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -34,7 +33,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmAmmunitionItems.Items.MUSKET_CARTRIDGE;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.*;
 
 public class ItemFirearm extends Item implements Engineerable {
     public float damage;
@@ -101,9 +100,9 @@ public class ItemFirearm extends Item implements Engineerable {
                 Item legsItem = legs.getItem();
                 if (legsItem instanceof ItemExosuitArmor) {
                     ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
-                    if (legsArmor.hasUpgrade(legs, ExosuitUpgradeItems.Items.RELOADING_HOLSTERS.getItem()) &&
+                    if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
                       GenericEventHandler.hasPower(player, Config.reloadingConsumption) &&
-                      ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
+                      ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
                         onItemRightClick(stack, world, player, player.getActiveHand());
                         GenericEventHandler.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
@@ -150,7 +149,7 @@ public class ItemFirearm extends Item implements Engineerable {
             if (entity instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entity;
                 ArrowLooseEvent event = new ArrowLooseEvent(player, itemstack, world, timeUsed,
-                  ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem()));
+                  ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE));
                 MinecraftForge.EVENT_BUS.post(event);
 
                 if (event.isCanceled()) {
@@ -251,18 +250,18 @@ public class ItemFirearm extends Item implements Engineerable {
         EntityPlayer player = (EntityPlayer) entity;
         boolean infiniteShots = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
         int enhancementShells = getEnhancementShells(stack);
-        if (infiniteShots || ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
+        if (infiniteShots || ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
             if (!nbt.getBoolean("done")) {
                 nbt.setInteger("numloaded", 1);
                 if (infiniteShots) {
                     nbt.setInteger("numloaded", shellCount + enhancementShells);
                 } else {
-                    ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE.getItem());
+                    ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE);
                     int totalShells = shellCount + enhancementShells;
                     if (totalShells > 1) {
                         for (int i = 1; i < totalShells; i++) {
-                            if (ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE.getItem())) {
-                                ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE.getItem());
+                            if (ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
+                                ItemStackUtility.consumePlayerInventoryItem(player.inventory, MUSKET_CARTRIDGE);
                                 nbt.setInteger("numloaded", nbt.getInteger("numloaded") + 1);
                             }
                         }
@@ -405,11 +404,11 @@ public class ItemFirearm extends Item implements Engineerable {
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
         int textureX = 0;
-        if (this == FirearmItems.Items.MUSKET.getItem()) {
+        if (this == MUSKET) {
             textureX = 0;
-        } else if (this == FirearmItems.Items.BLUNDERBUSS.getItem()) {
+        } else if (this == BLUNDERBUSS) {
             textureX = 64;
-        } else if (this == FirearmItems.Items.PISTOL.getItem()) {
+        } else if (this == PISTOL) {
             textureX = 128;
         }
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, textureX, 64, 64, 64);

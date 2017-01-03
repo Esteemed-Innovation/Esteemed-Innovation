@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades.plates;
 
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -24,8 +24,8 @@ public class ItemExosuitPlate extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> subItems) {
-        for (ExosuitUpgradeItems.PlateItems plate : ExosuitUpgradeItems.PlateItems.values()) {
-            subItems.add(plate.createItemStack());
+        for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
+            subItems.add(ArmorModule.plateStack(i));
         }
     }
 

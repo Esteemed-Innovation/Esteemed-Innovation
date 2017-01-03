@@ -2,9 +2,8 @@ package eiteam.esteemedinnovation.naturalphilosophy;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
-import eiteam.esteemedinnovation.init.blocks.MiscellaneousBlocks;
-import eiteam.esteemedinnovation.init.items.NaturalPhilosophyItems;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
+import eiteam.esteemedinnovation.metals.MetalsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static eiteam.esteemedinnovation.naturalphilosophy.NaturalPhilosophyModule.BIOME_LOG;
 
 public class ItemSoilSamplingKit extends Item {
     public ItemSoilSamplingKit() {
@@ -62,7 +63,7 @@ public class ItemSoilSamplingKit extends Item {
                                     ores.replace(itemFromBlockCheck, currentlyInMap + 1);
                                 }
                             }
-                            if (blockCheck == MiscellaneousBlocks.Blocks.ORE_DEPOSIT_BLOCK.getBlock()) {
+                            if (blockCheck == MetalsModule.ORE_DEPOSIT_GENERATOR) {
                                 oreDepositFound = true;
                             }
                         }
@@ -91,11 +92,10 @@ public class ItemSoilSamplingKit extends Item {
             EsteemedInnovation.proxy.spawnExclamationParticles(world, pos.getX(), pos.getY(), pos.getZ());
         }
 
-        ItemResearchLog biomeLogItem = (ItemResearchLog) NaturalPhilosophyItems.Items.BIOME_LOG.getItem();
-        ItemStack biomeLog = ItemStackUtility.findItemStackFromInventory(player.inventory, biomeLogItem);
+        ItemStack biomeLog = ItemStackUtility.findItemStackFromInventory(player.inventory, BIOME_LOG);
         if (biomeLog != null) {
             String biomeName = world.getBiome(pos).getBiomeName();
-            biomeLogItem.addKeyword(biomeLog, biomeName);
+            ((ItemResearchLog) BIOME_LOG).addKeyword(biomeLog, biomeName);
         }
 
         damage(item, player);

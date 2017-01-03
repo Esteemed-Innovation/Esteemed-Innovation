@@ -1,16 +1,17 @@
 package eiteam.esteemedinnovation.tools.steam;
 
 import com.google.common.collect.Sets;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.init.items.tools.ToolItems;
+import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
+
+import static eiteam.esteemedinnovation.tools.ToolsModule.STEAMSAW_MAT;
 
 public class ItemSteamAxe extends ItemSteamTool {
     // Taken from ItemAxe.
@@ -19,7 +20,7 @@ public class ItemSteamAxe extends ItemSteamTool {
       Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
 
     public ItemSteamAxe() {
-        super(8F, -3.2F, ToolItems.Materials.STEAM_SAW.getMaterial(), EFFECTIVE_ON);
+        super(8F, -3.2F, STEAMSAW_MAT, EFFECTIVE_ON);
     }
 
     @Override

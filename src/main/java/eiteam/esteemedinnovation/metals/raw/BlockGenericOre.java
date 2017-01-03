@@ -1,7 +1,5 @@
 package eiteam.esteemedinnovation.metals.raw;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.init.blocks.OreBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,18 +15,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+import static eiteam.esteemedinnovation.commons.OreDictEntries.MATERIAL_COPPER;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.MATERIAL_ZINC;
+
 public class BlockGenericOre extends Block {
     public static final PropertyEnum<OreBlockTypes> VARIANT = PropertyEnum.create("variant", OreBlockTypes.class);
 
-    public BlockGenericOre(String name) {
+    public BlockGenericOre() {
         super(Material.ROCK);
         setResistance(5F);
         setHardness(3F);
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 1);
-        setCreativeTab(EsteemedInnovation.tab);
-        setUnlocalizedName(EsteemedInnovation.MOD_ID + ":" + name);
-        setRegistryName(EsteemedInnovation.MOD_ID, name);
     }
 
     @Override
@@ -49,8 +47,8 @@ public class BlockGenericOre extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (OreBlocks.Blocks block : OreBlocks.Blocks.values()) {
-            list.add(block.createItemStack());
+        for (OreBlockTypes type : OreBlockTypes.LOOKUP) {
+            list.add(new ItemStack(this, 1, type.getMetadata()));
         }
     }
 
@@ -60,18 +58,20 @@ public class BlockGenericOre extends Block {
     }
 
     public enum OreBlockTypes implements IStringSerializable {
-        OVERWORLD_COPPER(0),
-        OVERWORLD_ZINC(1),
-        NETHER_COPPER(2),
-        NETHER_ZINC(3),
-        END_COPPER(4),
-        END_ZINC(5);
+        OVERWORLD_COPPER(0, MATERIAL_COPPER),
+        OVERWORLD_ZINC(1, MATERIAL_ZINC),
+        NETHER_COPPER(2, MATERIAL_COPPER),
+        NETHER_ZINC(3, MATERIAL_ZINC),
+        END_COPPER(4, MATERIAL_COPPER),
+        END_ZINC(5, MATERIAL_ZINC);
 
         private int meta;
+        private String oreMaterial;
         public static OreBlockTypes[] LOOKUP = new OreBlockTypes[values().length];
 
-        OreBlockTypes(int meta) {
+        OreBlockTypes(int meta, String oreMaterial) {
             this.meta = meta;
+            this.oreMaterial = oreMaterial;
         }
 
         public int getMetadata() {
@@ -81,6 +81,10 @@ public class BlockGenericOre extends Block {
         @Override
         public String getName() {
             return name().toLowerCase();
+        }
+
+        public String getOreMaterial() {
+            return oreMaterial;
         }
 
         static {

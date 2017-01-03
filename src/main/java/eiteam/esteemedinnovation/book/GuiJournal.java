@@ -2,9 +2,8 @@ package eiteam.esteemedinnovation.book;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
-import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
-import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
+import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -26,6 +25,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static eiteam.esteemedinnovation.book.BookModule.BOOK;
 
 public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.api.book.GuiJournal {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
@@ -66,7 +67,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             book = active;
         } else {
             if (CrossMod.ENCHIRIDION) {
-                book = EnchiridionIntegration.findBook(GadgetItems.Items.BOOK.getItem(), player);
+                book = EnchiridionIntegration.findBook(BOOK, player);
             }
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stack = player.inventory.getStackInSlot(i);

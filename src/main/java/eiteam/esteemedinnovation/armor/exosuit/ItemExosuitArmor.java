@@ -2,13 +2,13 @@ package eiteam.esteemedinnovation.armor.exosuit;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.exosuit.*;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
-import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
+import eiteam.esteemedinnovation.armor.ArmorModule;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.JavaHelper;
+import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
@@ -526,7 +526,7 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
             if (me.getTagCompound().getCompoundTag("inv").hasKey("2")) {
                 ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("inv").getCompoundTag("2"));
                 // TODO: Abstract into API
-                if (stack.getItem() == ExosuitUpgradeItems.Items.ENDER_SHROUD.getItem()) {
+                if (stack.getItem() == ArmorModule.ENDER_SHROUD) {
                     list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
                 } else {
                     int dye = -1;

@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency;
 
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
@@ -44,7 +44,7 @@ public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
         @SubscribeEvent
         public void handlePainfulFrequencies(AnimalTradeEvent event) {
             EntityLiving entity = event.salesperson;
-            AnimalData data = entity.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+            AnimalData data = entity.getCapability(ArmorModule.ANIMAL_DATA, null);
             if (data.getTotalTrades() > data.getMaximumTotalTrades()) {
                 entity.setAttackTarget(event.customer);
             }
@@ -80,7 +80,7 @@ public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
                     return;
                 }
                 EntityLiving living = (EntityLiving) target;
-                AnimalData data = target.getCapability(EsteemedInnovation.ANIMAL_DATA, null);
+                AnimalData data = target.getCapability(ArmorModule.ANIMAL_DATA, null);
                 if (data.getTotalTrades() > data.getMaximumTotalTrades()) {
                     if (living instanceof EntityWolf) {
                         EntityWolf wolf = (EntityWolf) living;

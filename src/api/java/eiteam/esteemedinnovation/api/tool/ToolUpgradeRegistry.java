@@ -2,10 +2,7 @@ package eiteam.esteemedinnovation.api.tool;
 
 import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ToolUpgradeRegistry {
     /**
@@ -61,5 +58,9 @@ public class ToolUpgradeRegistry {
 
     public static ResourceLocation[] getResources(SteamToolUpgrade upgrade) {
         return upgrades.get(upgrade);
+    }
+
+    public static Set<SteamToolUpgrade> getUpgrades() {
+        return upgrades.keySet();
     }
 }

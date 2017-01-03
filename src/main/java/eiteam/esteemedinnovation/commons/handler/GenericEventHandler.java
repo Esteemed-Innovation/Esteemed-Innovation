@@ -26,14 +26,13 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerializer;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
+import eiteam.esteemedinnovation.commons.util.BaublesUtility;
 import eiteam.esteemedinnovation.commons.util.EnchantmentUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
-import eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems;
-import eiteam.esteemedinnovation.init.misc.integration.CrossMod;
-import eiteam.esteemedinnovation.init.misc.integration.EnchiridionIntegration;
-import eiteam.esteemedinnovation.init.misc.integration.baubles.BaublesIntegration;
+import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamAxe;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
@@ -114,13 +113,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
+import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
-import static eiteam.esteemedinnovation.init.items.armor.ArmorItems.Items.ENTREPRENEUR_TOP_HAT;
-import static eiteam.esteemedinnovation.init.items.armor.ArmorItems.Items.EXOSUIT_HEADPIECE;
-import static eiteam.esteemedinnovation.init.items.armor.ExosuitUpgradeItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.firearms.FirearmItems.Items.ROCKET_LAUNCHER;
-import static eiteam.esteemedinnovation.init.items.tools.GadgetItems.Items.*;
-import static eiteam.esteemedinnovation.init.items.tools.ToolUpgradeItems.Items.*;
+import static eiteam.esteemedinnovation.book.BookModule.BOOK;
+import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
+import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
+import static eiteam.esteemedinnovation.tools.ToolsModule.*;
 
 public class GenericEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -289,7 +287,7 @@ public class GenericEventHandler {
         Minecraft mc = Minecraft.getMinecraft();
         ItemStack heldStack = ItemStackUtility.getHeldItemStack(mc.thePlayer);
         if (event.getType() == ElementType.ALL && heldStack != null &&
-          heldStack.getItem() == ROCKET_LAUNCHER.getItem()) {
+          heldStack.getItem() == ROCKET_LAUNCHER) {
             ScaledResolution resolution = new ScaledResolution(mc);
             int width = resolution.getScaledWidth();
             int height = resolution.getScaledHeight();
@@ -348,7 +346,7 @@ public class GenericEventHandler {
             ItemStack legStack = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
             if (hasPower(player, 10) && legStack != null && legStack.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor leggings = (ItemExosuitArmor) legStack.getItem();
-                if (leggings.hasUpgrade(legStack, CANNING_MACHINE.getItem())) {
+                if (leggings.hasUpgrade(legStack, CANNING_MACHINE)) {
 
                     ItemStack item = event.getItem().getEntityItem().copy();
                     if (item.hasTagCompound() && item.getTagCompound().hasKey("canned")) {
@@ -363,7 +361,7 @@ public class GenericEventHandler {
                         int numCans = 0;
                         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                             ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-                            if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER.getItem()) {
+                            if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER) {
                                 numCans += stackInSlot.stackSize;
                             }
                         }
@@ -374,7 +372,7 @@ public class GenericEventHandler {
                             item.getTagCompound().setInteger("canned", 0);
                             event.getItem().setEntityItemStack(item);
                             for (int i = 0; i < item.stackSize; i++) {
-                                consumeInventoryItem(player, ITEM_CANISTER.getItem());
+                                consumeInventoryItem(player, ITEM_CANISTER);
                                 player.inventoryContainer.detectAndSendChanges();
                             }
                         } else if (numCans != 0) {
@@ -389,7 +387,7 @@ public class GenericEventHandler {
                             EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item2);
                             player.worldObj.spawnEntityInWorld(entityItem);
                             for (int i = 0; i < numCans; i++) {
-                                consumeInventoryItem(player, ITEM_CANISTER.getItem());
+                                consumeInventoryItem(player, ITEM_CANISTER);
                                 player.inventoryContainer.detectAndSendChanges();
                             }
                         }
@@ -484,7 +482,7 @@ public class GenericEventHandler {
                     }
                 }
 
-                if (equipped.getItem() == BOOK.getItem()) {
+                if (equipped.getItem() == BOOK) {
                     IBlockState state = mc.theWorld.getBlockState(pos.getBlockPos());
                     Block block = state.getBlock();
                     ItemStack stack = block.getPickBlock(state, pos, player.worldObj, pos.getBlockPos(), player);
@@ -495,7 +493,7 @@ public class GenericEventHandler {
                                 int x = event.getResolution().getScaledWidth() / 2 - 8;
                                 int y = event.getResolution().getScaledHeight() / 2 - 8;
 
-                                mc.getRenderItem().renderItemIntoGUI(new ItemStack(BOOK.getItem()), x, y);
+                                mc.getRenderItem().renderItemIntoGUI(new ItemStack(BOOK), x, y);
                                 GL11.glDisable(GL11.GL_LIGHTING);
                                 mc.fontRendererObj.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
                                 GL11.glPopMatrix();
@@ -553,9 +551,8 @@ public class GenericEventHandler {
         if (FieldHandler.merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) guiScreen;
             ItemStack head = mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-            if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT.getItem()
-              || (head.getItem() == EXOSUIT_HEADPIECE.getItem()
-              && ((ItemExosuitArmor) head.getItem()).hasUpgrade(head, ENTREPRENEUR_TOP_HAT.getItem())))) {
+            if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT || (head.getItem() == EXO_HEAD
+              && ((ItemExosuitArmor) head.getItem()).hasUpgrade(head, ENTREPRENEUR_TOP_HAT)))) {
                 IMerchant merch = gui.getMerchant();
                 MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
                 updateTradingStackSizes(recipeList);
@@ -587,7 +584,7 @@ public class GenericEventHandler {
                 EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
                 if (player != null) {
                     ItemStack hat = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                    if (hat != null && hat.getItem() == ENTREPRENEUR_TOP_HAT.getItem()) {
+                    if (hat != null && hat.getItem() == ENTREPRENEUR_TOP_HAT) {
                         if (!hat.hasTagCompound()) {
                             hat.setTagCompound(new NBTTagCompound());
                         }
@@ -597,8 +594,8 @@ public class GenericEventHandler {
                         int level = hat.getTagCompound().getInteger("level");
                         level++;
                         hat.getTagCompound().setInteger("level", level);
-                    } else if (hat != null && hat.getItem() == EXOSUIT_HEADPIECE.getItem() &&
-                      ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, ENTREPRENEUR_TOP_HAT.getItem())) {
+                    } else if (hat != null && hat.getItem() == EXO_HEAD &&
+                      ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, ENTREPRENEUR_TOP_HAT)) {
                         ItemStack exoHat = ((ItemExosuitArmor) hat.getItem()).getStackInSlot(hat, 3);
                         if (!exoHat.hasTagCompound()) {
                             exoHat.setTagCompound(new NBTTagCompound());
@@ -616,7 +613,7 @@ public class GenericEventHandler {
         }
         if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && FieldHandler.buyingListField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
-            Boolean hadCustomer = EsteemedInnovation.VILLAGER_DATA.getDefaultInstance().hadCustomer();
+            Boolean hadCustomer = VILLAGER_DATA.getDefaultInstance().hadCustomer();
             if (hadCustomer == null) {
                 hadCustomer = false;
             }
@@ -624,9 +621,9 @@ public class GenericEventHandler {
             if (villager.getCustomer() != null) {
                 EntityPlayer player = villager.getCustomer();
                 ItemStack head = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT.getItem() ||
-                  (head.getItem() == EXOSUIT_HEADPIECE.getItem() &&
-                  ((ItemExosuitArmor) head.getItem()).hasUpgrade(head, ENTREPRENEUR_TOP_HAT.getItem())))) {
+                if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT ||
+                  (head.getItem() == EXO_HEAD &&
+                  ((ItemExosuitArmor) head.getItem()).hasUpgrade(head, ENTREPRENEUR_TOP_HAT)))) {
                     hasCustomer = true;
 
                     if (!hadCustomer) {
@@ -663,7 +660,7 @@ public class GenericEventHandler {
             }
 
             hadCustomer = hasCustomer;
-            EsteemedInnovation.VILLAGER_DATA.getDefaultInstance().setHadCustomer(hadCustomer);
+            VILLAGER_DATA.getDefaultInstance().setHadCustomer(hadCustomer);
         }
     }
 
@@ -681,7 +678,7 @@ public class GenericEventHandler {
                 ItemStack legs = entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
                 if (legs != null && legs.getItem() instanceof ItemExosuitArmor) {
                     ItemExosuitArmor leggings = (ItemExosuitArmor) legs.getItem();
-                    if (leggings.hasUpgrade(legs, STEALTH.getItem())) {
+                    if (leggings.hasUpgrade(legs, STEALTH)) {
                         event.setResultSound(null);
                     }
                 }
@@ -715,7 +712,7 @@ public class GenericEventHandler {
             return;
         }
         ItemExosuitArmor leggings = (ItemExosuitArmor) targetLegs.getItem();
-        if (!leggings.hasUpgrade(targetLegs, STEALTH.getItem())) {
+        if (!leggings.hasUpgrade(targetLegs, STEALTH)) {
             return;
         }
         IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
@@ -773,8 +770,8 @@ public class GenericEventHandler {
         if (mc.currentScreen instanceof GuiContainer) {
             for (ItemStack stack2 : BookPageRegistry.bookRecipes.keySet()) {
                 if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
-                    boolean foundBook = (CrossMod.ENCHIRIDION && EnchiridionIntegration.hasBook(BOOK.getItem(), player)) ||
-                      player.inventory.hasItemStack(new ItemStack(BOOK.getItem()));
+                    boolean foundBook = (CrossMod.ENCHIRIDION && EnchiridionIntegration.hasBook(BOOK, player)) ||
+                      player.inventory.hasItemStack(new ItemStack(BOOK));
                     if (foundBook) {
                         event.getToolTip().add(TextFormatting.ITALIC + "" + TextFormatting.GRAY +
                           I18n.format("esteemedinnovation.book.shiftright"));
@@ -857,7 +854,7 @@ public class GenericEventHandler {
             if (hasPower && stack != null && entity.getHeldItemMainhand() == null &&
               stack.getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) stack.getItem();
-                if (chest.hasUpgrade(stack, POWER_FIST.getItem())) {
+                if (chest.hasUpgrade(stack, POWER_FIST)) {
                     entity.worldObj.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,
                       SoundCategory.PLAYERS, 4F, (1F + (entity.worldObj.rand.nextFloat() - entity.worldObj.rand.nextFloat()) * 0.2F) * 0.7F, false);
                     entity.motionX += 3.0F * entity.getLookVec().normalize().xCoord;
@@ -882,7 +879,7 @@ public class GenericEventHandler {
             Item chest = chestStack.getItem();
             if (chest instanceof ItemExosuitArmor) {
                 ItemExosuitArmor armor = (ItemExosuitArmor) chest;
-                if (armor.hasUpgrade(chestStack, PISTON_PUSH.getItem())) {
+                if (armor.hasUpgrade(chestStack, PISTON_PUSH)) {
                     World world = event.getWorld();
                     EnumFacing face = event.getFace();
                     if (face == null) {
@@ -956,7 +953,7 @@ public class GenericEventHandler {
                 Item helmet = head.getItem();
                 if (hasPower(entity, consumption) && helmet instanceof ItemExosuitArmor) {
                     ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
-                    if (helmetArmor.hasUpgrade(head, DRAGON_ROAR.getItem())) {
+                    if (helmetArmor.hasUpgrade(head, DRAGON_ROAR)) {
                         if (world.isRemote) {
                             world.playSound(entity.posX, entity.posY, entity.posZ,
                               SoundEvents.ENTITY_ENDERDRAGON_GROWL, SoundCategory.PLAYERS, 5.0F,
@@ -1138,7 +1135,7 @@ public class GenericEventHandler {
             EntityLivingBase entity = event.getEntityLiving();
             if (hasPower && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor boots = (ItemExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem();
-                if (boots.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.FEET), FALL_ASSIST.getItem())) {
+                if (boots.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.FEET), FALL_ASSIST)) {
                     if (event.getAmount() <= 6.0F) {
                         event.setAmount(0F);
                     }
@@ -1207,7 +1204,7 @@ public class GenericEventHandler {
             boolean shiftJump = entity.isSneaking() && hasPower;
 
             if (shiftJump || hasPower(entityLiving, Config.jumpBoostConsumption)) {
-                if (boots.hasUpgrade(stack, JUMP_ASSIST.getItem())) {
+                if (boots.hasUpgrade(stack, JUMP_ASSIST)) {
                     if (shiftJump) {
                         Vec3d vector = entityLiving.getLook(0.5F);
                         double total = Math.abs(vector.zCoord + vector.xCoord);
@@ -1229,7 +1226,7 @@ public class GenericEventHandler {
                 }
             }
 
-            if (boots.hasUpgrade(stack, DOUBLE_JUMP.getItem())) {
+            if (boots.hasUpgrade(stack, DOUBLE_JUMP)) {
                 stack.getTagCompound().setBoolean("releasedSpace", false);
             }
         }
@@ -1270,7 +1267,7 @@ public class GenericEventHandler {
         Survivalist's Toolkit
          */
         if (CrossMod.BAUBLES) {
-            if (BaublesIntegration.checkForSurvivalist(player)) {
+            if (BaublesUtility.checkForUpgrade(player, SURVIVALIST_TOOLKIT)) {
                 if (heldItem instanceof ItemTool) {
                     if (itemDamage >= maxDamage - 1) {
                         event.setNewSpeed(0F);
@@ -1278,7 +1275,7 @@ public class GenericEventHandler {
                 }
 
             }
-        } else if (hasItemInHotbar(player, SURVIVALIST_TOOLKIT.getItem())) {
+        } else if (hasItemInHotbar(player, SURVIVALIST_TOOLKIT)) {
             if (heldItem instanceof ItemTool) {
                 if (itemDamage >= maxDamage - 1) {
                     event.setNewSpeed(0F);
@@ -1322,7 +1319,7 @@ public class GenericEventHandler {
         if (chestStack != null && chestStack.getItem() instanceof ItemExosuitArmor && chestStack.hasTagCompound()) {
             NBTTagCompound compound = chestStack.getTagCompound();
             ItemExosuitArmor chest = (ItemExosuitArmor) chestStack.getItem();
-            if (chest.hasUpgrade(chestStack, PITON_DEPLOYER.getItem())) {
+            if (chest.hasUpgrade(chestStack, PITON_DEPLOYER)) {
                 if (compound.hasKey("grappled") && compound.getBoolean("grappled")) {
                     double lastX = compound.getFloat("x");
                     double lastY = compound.getFloat("y");
@@ -1384,7 +1381,7 @@ public class GenericEventHandler {
 
         if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
             ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-            if (item.hasUpgrade(boots, DOUBLE_JUMP.getItem()) && player.onGround && boots.hasTagCompound()) {
+            if (item.hasUpgrade(boots, DOUBLE_JUMP) && player.onGround && boots.hasTagCompound()) {
                 boots.getTagCompound().setBoolean("usedJump", false);
             }
         }
@@ -1392,7 +1389,7 @@ public class GenericEventHandler {
         if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
-            if (item.hasUpgrade(leggings, RUN_ASSIST.getItem())) {
+            if (item.hasUpgrade(leggings, RUN_ASSIST)) {
                 if (data.getLastMotions() == null) {
                     data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
                 }
@@ -1452,7 +1449,7 @@ public class GenericEventHandler {
             }
             if (chestItem instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) chestItem;
-                if (chest.hasUpgrade(chestStack, EXTENDO_FIST.getItem())) {
+                if (chest.hasUpgrade(chestStack, EXTENDO_FIST)) {
                     EsteemedInnovation.proxy.checkRange(entity);
 
                     wearing = true;
@@ -1488,7 +1485,7 @@ public class GenericEventHandler {
 
             if (entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemExosuitArmor) {
                 ItemExosuitArmor chest = (ItemExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
-                if (chest.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), EXTENDO_FIST.getItem())) {
+                if (chest.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), EXTENDO_FIST)) {
                     if (!tag.isRangeExtended()) {
                         wearing = true;
                         tag.setRangeExtended(true);
@@ -1655,7 +1652,7 @@ public class GenericEventHandler {
                         canStick = true;
                     }
                 }
-                if (canStick && chestArmor.hasUpgrade(chest, PITON_DEPLOYER.getItem())) {
+                if (canStick && chestArmor.hasUpgrade(chest, PITON_DEPLOYER)) {
                     if (!world.isRemote) {
                         chest.getTagCompound().setFloat("x", (float) player.posX);
                         chest.getTagCompound().setFloat("z", (float) player.posZ);
@@ -1730,7 +1727,7 @@ public class GenericEventHandler {
                         }
                     }
                     if (hasZincPlate) {
-                        ItemStack zincPlates = ExosuitUpgradeItems.PlateItems.ZINC_EXO.createItemStack(2);
+                        ItemStack zincPlates = plateStack(ZINC_PLATE_META, 2);
                         World world = player.worldObj;
                         drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ZINC_CONSUMPTION);
                         UtilPlates.removePlate(stackWithPlate);
@@ -1776,7 +1773,7 @@ public class GenericEventHandler {
                 return;
             }
 
-            if (drill.hasUpgrade(equipped, MULTIPLICATIVE_RESONATOR.getItem())) {
+            if (drill.hasUpgrade(equipped, MULTIPLICATIVE_RESONATOR)) {
                 event.getDrops().clear();
                 List<ItemStack> trueDrops = block.getDrops(world, pos, state, EnchantmentUtility.getFortuneModifier(player) + 2);
                 event.getDrops().addAll(trueDrops);
@@ -1786,7 +1783,7 @@ public class GenericEventHandler {
                 return;
             }
 
-            if (drill.hasUpgrade(equipped, STONE_GRINDER.getItem())) {
+            if (drill.hasUpgrade(equipped, STONE_GRINDER)) {
                 String harvestTool = block.getHarvestTool(state);
                 // Docs say it can be null.
                 //noinspection ConstantConditions
@@ -1816,7 +1813,7 @@ public class GenericEventHandler {
                 }
             }
 
-            if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT.getItem())) {
+            if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
                 ItemStack out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta));
                 if (out != null) {
                     if (rand.nextInt(100) >= Config.smasherDoubleChance) {
@@ -1834,7 +1831,7 @@ public class GenericEventHandler {
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (!shovel.hasUpgrade(equipped, SIFTER.getItem()) || !shovel.isWound(equipped)) {
+            if (!shovel.hasUpgrade(equipped, SIFTER) || !shovel.isWound(equipped)) {
                 return;
             }
 
@@ -1908,7 +1905,7 @@ public class GenericEventHandler {
                 return;
             }
 
-            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD.getItem()) &&
+            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD) &&
               ForgeHooks.canHarvestBlock(block, player, world, pos)) {
                 ItemStack toAdd = new ItemStack(block, 1, meta);
                 if (toAdd.getItem() == null) {
@@ -1940,7 +1937,7 @@ public class GenericEventHandler {
                     Item helmet = equipment.getItem();
                     if (helmet instanceof ItemExosuitArmor) {
                         ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
-                        if (helmetArmor.hasUpgrade(equipment, REBREATHER.getItem())) {
+                        if (helmetArmor.hasUpgrade(equipment, REBREATHER)) {
                             drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), consumption);
                             event.setCanceled(true);
                         }
@@ -1985,11 +1982,11 @@ public class GenericEventHandler {
                     event.setCanceled(true);
                 }
             }
-            if (drill.hasUpgrade(equipped, BIG_DRILL.getItem()) &&
+            if (drill.hasUpgrade(equipped, BIG_DRILL) &&
               block.isToolEffective(drill.toolClass(), state)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, drill, equipped, player);
             }
-            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD.getItem())) {
+            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD)) {
                 event.setExpToDrop(0);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
@@ -1997,10 +1994,10 @@ public class GenericEventHandler {
             if (!shovel.isWound(equipped)) {
                 return;
             }
-            if (shovel.hasUpgrade(equipped, ROTARY_BLADES.getItem()) &&
+            if (shovel.hasUpgrade(equipped, ROTARY_BLADES) &&
               block.isToolEffective(shovel.toolClass(), state)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, shovel, equipped, player);
-            } else if (shovel.hasUpgrade(equipped, BACKHOE.getItem())) {
+            } else if (shovel.hasUpgrade(equipped, BACKHOE)) {
                 boolean isFalling = block instanceof BlockFalling;
                 int end = isFalling ? pos.getY() + Config.backhoeRange : pos.getY();
                 for (int i = pos.getY() - Config.backhoeRange; i < end; i++) {
@@ -2027,11 +2024,11 @@ public class GenericEventHandler {
             if (!axe.isWound(equipped)) {
                 return;
             }
-            if (axe.hasUpgrade(equipped, TIMBER_CHAIN.getItem()) &&
+            if (axe.hasUpgrade(equipped, TIMBER_CHAIN) &&
               block.isToolEffective(axe.toolClass(), state)) {
                 fellBlocks(world, pos, player, equipped);
             }
-            if (axe.hasUpgrade(equipped, FOREST_FIRE.getItem())) {
+            if (axe.hasUpgrade(equipped, FOREST_FIRE)) {
                 burnBlocks(world, pos);
             }
         }
@@ -2060,7 +2057,7 @@ public class GenericEventHandler {
         }
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, THERMAL_DRILL.getItem()) && drill.isWound(equipped)) {
+            if (drill.hasUpgrade(equipped, THERMAL_DRILL) && drill.isWound(equipped)) {
                 world.setBlockState(pos, Blocks.LAVA.getDefaultState());
                 quickLavaBlocks.put(MutablePair.of(player.dimension, pos), new Random().nextInt(30) + 1);
                 event.getDrops().clear();
@@ -2090,7 +2087,7 @@ public class GenericEventHandler {
         }
         if (equipped.getItem() instanceof ItemSteamDrill) {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, CHARGE_PLACER.getItem()) && drill.isWound(equipped)) {
+            if (drill.hasUpgrade(equipped, CHARGE_PLACER) && drill.isWound(equipped)) {
                 Random rand = new Random();
                 drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
                 if (player.worldObj.getDifficulty() == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
@@ -2215,12 +2212,12 @@ public class GenericEventHandler {
                 return;
             }
 
-            if (axe.hasUpgrade(equipped, LEAF_BLOWER.getItem())) {
+            if (axe.hasUpgrade(equipped, LEAF_BLOWER)) {
                 blowLeaves(getExtraBlock9Coordinates(sideHit), pos, world, player, equipped);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (shovel.hasUpgrade(equipped, CULTIVATOR.getItem()) &&
+            if (shovel.hasUpgrade(equipped, CULTIVATOR) &&
               shovel.isWound(equipped)) {
                 int[][] coords = extraBlocksVertical;
                 for (int[] aCoordinateArray : coords) {
@@ -2251,7 +2248,7 @@ public class GenericEventHandler {
             return;
         }
         ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-        if (!axe.isWound(equipped) || !axe.hasUpgrade(equipped, CHAINSAW.getItem())) {
+        if (!axe.isWound(equipped) || !axe.hasUpgrade(equipped, CHAINSAW)) {
             return;
         }
 
@@ -2276,7 +2273,7 @@ public class GenericEventHandler {
             return;
         }
         ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
-        if (!drill.isWound(equipped) || !drill.hasUpgrade(equipped, BATTLE_DRILL.getItem())) {
+        if (!drill.isWound(equipped) || !drill.hasUpgrade(equipped, BATTLE_DRILL)) {
             return;
         }
 
@@ -2337,25 +2334,25 @@ public class GenericEventHandler {
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
                 if (drill.isWound(equipped)) {
-                    if (drill.hasUpgrade(equipped, BIG_DRILL.getItem())) {
+                    if (drill.hasUpgrade(equipped, BIG_DRILL)) {
                         newSpeed = original * 0.7F;
                     }
-                    if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT.getItem())) {
+                    if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original / 2;
                         } else {
                             newSpeed /= 2;
                         }
                     }
-                    if (drill.hasUpgrade(equipped, THERMAL_DRILL.getItem()) ||
-                      drill.hasUpgrade(equipped, CHARGE_PLACER.getItem())) {
+                    if (drill.hasUpgrade(equipped, THERMAL_DRILL) ||
+                      drill.hasUpgrade(equipped, CHARGE_PLACER)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original * 5;
                         } else {
                             newSpeed *= 5;
                         }
                     }
-                    if (drill.hasUpgrade(equipped, BATTLE_DRILL.getItem())) {
+                    if (drill.hasUpgrade(equipped, BATTLE_DRILL)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original / 1.7F;
                         } else {
@@ -2366,17 +2363,17 @@ public class GenericEventHandler {
             } else if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
                 if (axe.isWound(equipped)) {
-                    if (axe.hasUpgrade(equipped, LEAF_BLOWER.getItem())) {
+                    if (axe.hasUpgrade(equipped, LEAF_BLOWER)) {
                         newSpeed = original / 5F;
                     }
-                    if (axe.hasUpgrade(equipped, TIMBER_CHAIN.getItem())) {
+                    if (axe.hasUpgrade(equipped, TIMBER_CHAIN)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original * 0.7F;
                         } else {
                             newSpeed *= 0.7F;
                         }
                     }
-                    if (axe.hasUpgrade(equipped, CHAINSAW.getItem())) {
+                    if (axe.hasUpgrade(equipped, CHAINSAW)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original / 1.7F;
                         } else {
@@ -2386,7 +2383,7 @@ public class GenericEventHandler {
                 }
             } else if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-                if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, ROTARY_BLADES.getItem())) {
+                if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, ROTARY_BLADES)) {
                     newSpeed = original * 0.425F;
                 }
             }

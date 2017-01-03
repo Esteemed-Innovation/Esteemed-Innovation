@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import eiteam.esteemedinnovation.init.items.tools.GadgetItems;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -75,7 +74,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
                 return nbt.getCompoundTag("InfiTool").hasKey("Steam");
             }
             */
-            return item.getItem() == GadgetItems.Items.STEAM_CELL_EMPTY.getItem();
+            return item.getItem() == ChargingModule.STEAM_CELL_EMPTY;
         }
     }
 
