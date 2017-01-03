@@ -292,16 +292,21 @@ public class MetalsModule extends ContentModule {
 
         if (Config.enableCrucible) {
             BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.GildedGold.name",
-              new BookPageItem("research.GildedGold.name", "research.GildedGold.0", new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
+              new BookPageItem("research.GildedGold.name", "research.GildedGold.0",
+                new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()),
+                new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()),
+                new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta())),
               new BookPageText("research.GildedGold.name", "research.GildedGold.1"),
-              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(IRON_INGOT), new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()))));
+              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(IRON_INGOT), new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
+              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()), new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
+              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()), new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta()))));
         }
     }
 
     @Override
     public void preInitClient() {
         registerModelAllVariants(STORAGE_BLOCK, BlockBeacon.VARIANT.getName(), BlockBeacon.MetalBlockTypes.values());
-        registerModelAllVariants(ORE_BLOCK, BlockGenericOre.VARIANT.getName(), BlockGenericOre.OreBlockTypes.LOOKUP);
+        registerModelAllVariants(ORE_BLOCK, BlockGenericOre.VARIANT.getName(), LOOKUP);
         for (int i = 0; i < 4; i++) {
             String variant = "variant=" + (i % 2 == 0 ? "copper" : "zinc") + ",worked_out=" + (i > 1 ? "true" : "false");
             registerModel(ORE_DEPOSIT_GENERATOR, i, variant);
