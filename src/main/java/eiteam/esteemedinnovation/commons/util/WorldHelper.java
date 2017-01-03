@@ -2,10 +2,14 @@ package eiteam.esteemedinnovation.commons.util;
 
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.Random;
 
@@ -85,5 +89,16 @@ public class WorldHelper {
             }
         }
         return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    /**
+     * Thread-safe world mutation-safe version of getTileEntity. This should be used in methods which might be called
+     * on alternative threads, namely getActualState and getExtendedState.
+     * @param world The world
+     * @param pos The position
+     * @return The tile entity in the position
+     */
+    public static TileEntity getTileEntitySafely(IBlockAccess world, BlockPos pos) {
+        return world instanceof ChunkCache ? ((ChunkCache) world).func_190300_a(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
     }
 }

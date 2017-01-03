@@ -4,6 +4,7 @@ import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.raytracer.RayTracer;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -76,7 +77,7 @@ public class BlockSteamPipe extends BlockSteamTransporter {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = WorldHelper.getTileEntitySafely(world, pos);
         HashMap<IProperty, Boolean> vals = new HashMap<>();
         if (tile == null || !(tile instanceof TileEntitySteamPipe)) {
             vals.put(NORTH, false);

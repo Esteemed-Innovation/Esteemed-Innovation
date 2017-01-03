@@ -53,7 +53,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = WorldHelper.getTileEntitySafely(world, pos);
         if (tile instanceof TileEntityBoiler) {
             TileEntityBoiler boiler = (TileEntityBoiler) tile;
             return getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(IS_ON, boiler.isBurning());

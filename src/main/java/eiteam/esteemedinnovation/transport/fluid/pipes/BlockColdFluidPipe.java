@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.transport.fluid.pipes;
 
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -51,7 +52,7 @@ public class BlockColdFluidPipe extends Block implements Wrenchable {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = WorldHelper.getTileEntitySafely(world, pos);
         if (tile != null && tile instanceof TileEntityColdFluidPipe) {
             return state
               .withProperty(NORTH, isFluidTransporter(world, pos, EnumFacing.NORTH))

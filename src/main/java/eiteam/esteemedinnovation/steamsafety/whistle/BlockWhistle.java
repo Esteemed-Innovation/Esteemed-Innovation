@@ -46,8 +46,8 @@ public class BlockWhistle extends Block {
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos.offset(state.getValue(FACING).getOpposite()));
-        return state.withProperty(ON_PIPE, tile != null && tile instanceof TileEntitySteamPipe);
+        TileEntity tile = WorldHelper.getTileEntitySafely(world, pos.offset(state.getValue(FACING).getOpposite()));
+        return state.withProperty(ON_PIPE, tile instanceof TileEntitySteamPipe);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.transport.fluid.funnel;
 
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -42,7 +43,7 @@ public class BlockFunnel extends Block {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         boolean powered = false;
-        TileEntityFunnel funnel = (TileEntityFunnel) world.getTileEntity(pos);
+        TileEntityFunnel funnel = (TileEntityFunnel) WorldHelper.getTileEntitySafely(world, pos);
         if (funnel != null) {
             powered = funnel.getWorld().isBlockPowered(pos);
         }
