@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.metalcasting.mold.*;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemIngotMold;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.PLANK_WOOD;
 import static net.minecraft.init.Items.BRICK;
 
@@ -97,24 +97,23 @@ public class MetalcastingModule extends ContentModule {
             MineTweakerAPI.registerClass(CarvingTableTweaker.class);
         }
 
-        BookCategory.Factory castingFactory = new BookCategory.Factory(EsteemedInnovation.CASTING_CATEGORY);
         if (Config.enableCrucible) {
-            castingFactory.append(new BookEntry("research.Crucible.name",
+            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Crucible.name",
               new BookPageItem("research.Crucible.name", "research.Crucible.0", new ItemStack(CRUCIBLE)),
               new BookPageText("research.Crucible.name", "research.Crucible.1"),
               new BookPageCrafting("", "crucible")));
             if (Config.enableHellCrucible) {
-                castingFactory.append(new BookEntry("research.HellCrucible.name",
+                BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.HellCrucible.name",
                   new BookPageItem("research.HellCrucible.name", "research.HellCrucible.0", new ItemStack(NETHER_CRUCIBLE)),
                   new BookPageCrafting("", "hellCrucible")));
             }
         }
         if (Config.enableMold) {
-            castingFactory.append(new BookEntry("research.Mold.name",
+            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Mold.name",
               new BookPageItem("research.Mold.name", "research.Mold.0", new ItemStack(MOLD)),
               new BookPageText("research.Mold.name", "research.Mold.1"),
               new BookPageCrafting("", "mold")));
-            castingFactory.append(new BookEntry("research.Molds.name",
+            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Molds.name",
               new BookPageItem("research.Molds.name", "research.Molds.0",
                 new ItemStack(PLATE_MOLD),
                 new ItemStack(INGOT_MOLD),
@@ -123,8 +122,6 @@ public class MetalcastingModule extends ContentModule {
               new BookPageCrafting("", "blankMold"),
               new BookPageCrafting("", "carving")));
         }
-
-        BookPageRegistry.addTopCategory(castingFactory.build());
     }
 
     @Override

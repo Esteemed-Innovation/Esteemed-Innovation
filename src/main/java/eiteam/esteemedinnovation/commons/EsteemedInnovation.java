@@ -1,9 +1,7 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.book.BookCategory;
-import eiteam.esteemedinnovation.api.book.BookEntry;
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
+import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
@@ -157,13 +155,19 @@ public class EsteemedInnovation {
         // We set up all of the top categories before calling #finish, so that every module has access to every category.
         // Ideally we'd have a better way to deal with this. I can't really think of anything that is better though.
         BookPageRegistry.addTopCategory(new BookCategory(BASICS_CATEGORY, new BookEntry[] {}));
+        // This is actually the Preface section that starts the book. It's barely about the journal, so that's why it's
+        // not in the BookModule. If it is in the BookModule it might get pushed into a strange location in the Basics
+        // category.
+        BookPageRegistry.addEntryToCategory(BASICS_CATEGORY, new BookEntry("research.Book.name",
+          new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK)),
+          new BookPageCrafting("", "book")));
         BookPageRegistry.addTopCategory(new FlintlockBookCategory(new BookEntry[] {}));
         BookPageRegistry.addTopCategory(new BookCategory(CASTING_CATEGORY, new BookEntry[] {}));
         BookPageRegistry.addTopCategory(new BookCategory(GADGET_CATEGORY, new BookEntry[] {}));
         BookPageRegistry.addTopCategory(new BookCategory(STEAMPOWER_CATEGORY, new BookEntry[] {}));
         BookPageRegistry.addTopCategory(new BookCategory(EXOSUIT_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(MISC_CATEGORY, new BookEntry[] {}));
         BookPageRegistry.addTopCategory(new BookCategory(STEAMTOOL_CATEGORY, new BookEntry[] {}));
+        BookPageRegistry.addTopCategory(new BookCategory(MISC_CATEGORY, new BookEntry[] {}));
         ContentModuleHandler.postInit();
     }
 
