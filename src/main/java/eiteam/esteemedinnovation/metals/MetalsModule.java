@@ -285,7 +285,7 @@ public class MetalsModule extends ContentModule {
 
         BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Plates.name",
           new BookPageItem("research.Plates.name", "research.Plates.0",
-            Arrays.stream(ItemMetalPlate.Types.values()).map(type -> new ItemStack(METAL_PLATE, type.getMeta())).collect(Collectors.toList()).toArray(new ItemStack[ItemMetalPlate.Types.values().length]))));
+            Arrays.stream(ItemMetalPlate.Types.values()).map(type -> new ItemStack(METAL_PLATE, 1, type.getMeta())).collect(Collectors.toList()).toArray(new ItemStack[ItemMetalPlate.Types.values().length]))));
         BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Brass.name",
           new BookPageItem("research.Brass.name", "research.Brass.0", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta())),
           new BookPageAlloy("", BRASS_LIQUID, BRASS_FORMULA)));
