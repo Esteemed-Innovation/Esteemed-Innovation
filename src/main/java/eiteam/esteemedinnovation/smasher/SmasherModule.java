@@ -33,6 +33,7 @@ public class SmasherModule extends ContentModule {
             SMASHED_ORE.registerEntry(type);
         }
         registerTileEntity(TileEntitySmasher.class, "smasher");
+        registerTileEntity(TileEntityDummyBlock.class, "dummy");
     }
 
     @Override

@@ -24,7 +24,6 @@ public class MiscellaneousModule extends ContentModule {
     @Override
     public void create(Side side) {
         COMPONENT = setup(new ItemCraftingComponent(), "crafting");
-        registerTileEntity(TileEntityDummyBlock.class, "dummy");
     }
 
     @Override

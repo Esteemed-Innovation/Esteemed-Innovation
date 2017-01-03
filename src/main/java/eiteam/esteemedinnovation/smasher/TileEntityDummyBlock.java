@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.misc;
+package eiteam.esteemedinnovation.smasher;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -21,15 +21,15 @@ public class TileEntityDummyBlock extends TileEntity implements ITickable {
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        this.timeToLive = access.getInteger("ttl");
+        timeToLive = access.getInteger("ttl");
         markDirty();
     }
 
     @Override
     public void update() {
-        if (this.timeToLive <= 0) {
+        if (timeToLive <= 0) {
             worldObj.setBlockToAir(pos);
         }
-        this.timeToLive--;
+        timeToLive--;
     }
 }
