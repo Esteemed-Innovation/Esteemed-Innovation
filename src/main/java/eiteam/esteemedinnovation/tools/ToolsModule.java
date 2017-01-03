@@ -595,7 +595,7 @@ public class ToolsModule extends ContentModule {
 
                 if (Config.enableBigDrill) {
                     drillHeadFactory.append(new BookEntry("research.BigDrill.name",
-                      new BookPageItem("research.BigDrill.name", "reseach.BigDrill.0", true, new ItemStack(BIG_DRILL)),
+                      new BookPageItem("research.BigDrill.name", "research.BigDrill.0", true, new ItemStack(BIG_DRILL)),
                       new BookPageCrafting("", "bigDrill")));
                 }
 
