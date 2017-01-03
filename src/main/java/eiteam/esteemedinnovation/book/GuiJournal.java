@@ -337,10 +337,10 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             } else {
                 pages = category.getAllVisiblePages(mc.thePlayer);
             }
-            if (pages != null) {
+            int leftPageIndex = currPage * 2;
+            if (pages != null && pages.length > leftPageIndex) {
                 bookTotalPages = MathHelper.ceiling_float_int(pages.length / 2F);
                 GlStateManager.enableBlend();
-                int leftPageIndex = currPage * 2;
                 BookPage leftPage = pages[leftPageIndex];
                 GlStateManager.enableBlend();
                 GlStateManager.pushMatrix();
