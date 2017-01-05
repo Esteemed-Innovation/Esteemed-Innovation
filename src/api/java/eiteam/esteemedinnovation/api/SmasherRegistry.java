@@ -112,7 +112,7 @@ public final class SmasherRegistry {
      * @param output The output ItemStack
      */
     public static void registerSmashable(ItemStack input, ItemStack output) {
-        registerSmashable(input, new TypicalInputOutput(input, output));
+        registerSmashable(input, new TypicalBiFunction(output));
     }
 
     /**
@@ -148,21 +148,19 @@ public final class SmasherRegistry {
      * You should probably just use this unless you need special behavior (e.g., doubling, randomization, etc.), or just
      * use the above helper methods. Those methods (the ones that don't take a function) use this anyway.
      */
-    public static class TypicalInputOutput implements BiFunction<ItemStack, World, List<ItemStack>> {
-        private final ItemStack in;
+    public static class TypicalBiFunction implements BiFunction<ItemStack, World, List<ItemStack>> {
         private final List<ItemStack> out;
 
-        public TypicalInputOutput(ItemStack in, ItemStack out) {
-            this(in, Collections.singletonList(out));
+        public TypicalBiFunction(ItemStack out) {
+            this(Collections.singletonList(out));
         }
 
-        public TypicalInputOutput(ItemStack in, List<ItemStack> out) {
-            this.in = in;
+        public TypicalBiFunction(List<ItemStack> out) {
             this.out = out;
         }
 
         @Override
-        public List<ItemStack> apply(ItemStack itemStack, World world) {
+        public List<ItemStack> apply(ItemStack input, World world) {
             return out;
         }
     }
