@@ -23,7 +23,7 @@ public class ItemCraftingComponent extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + stack.getItemDamage();
+        return getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     public enum Types {
@@ -32,7 +32,10 @@ public class ItemCraftingComponent extends Item {
         GUN_STOCK(2),
         FLINTLOCK(3),
         IRON_BARREL(4),
-        BLUNDERBUSS_BARREL(5);
+        BLUNDERBUSS_BARREL(5),
+        NETHERBRICK_DUST(6),
+        HELLFORGE_BRICK_RAW(7),
+        HELLFORGE_BRICK(8);
 
         private int metadata;
 

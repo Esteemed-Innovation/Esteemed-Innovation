@@ -82,8 +82,10 @@ research.Ores.0=While delving into the depths of this world, I've found many dep
 research.Book.name=Preface
 research.Book.0=I have decided to delve into the fantastical world of steam technology. I created this spiffy journal to record my exciting discoveries.\nAny time I stumble upon something new, I'll jot it down, lest I need it later.
 research.Bits.name=Bits and Bobs
-research.Bits.0=Here I will document various components I may need for crafting.\nPlating a piston assembly with brass increases durability and makes it useful for applications within steam apparatus.
+research.Bits.0=Here I will document various components I may need for crafting.\n\nPlating a piston assembly with brass increases durability and makes it useful for applications within steam apparatus.
 research.Bits.1=A simple turbine shape made of brass proves a valuable component, no doubt useful for many purposes, especially making things spin.
+research.HellforgeMaterials.name=Hellforge Materials
+research.HellforgeMaterials.0=Smashing bricks from the Hell world yields a dust which, when combined with zinc and magma creams, allows me to construct a new type of brick that has powerful heating properties.
 research.Spyglass.name=Spyglass
 research.Spyglass.0=Who knew a few glass lenses in a brass housing could work as a magnifier? Now I can spot loot from a mile away!\nHolding this device and pressing right click will zoom in, left clicking will zoom out.
 research.Survivalist.name=Survivalist's Toolkit
@@ -93,14 +95,12 @@ research.SurvivalistBaubles.0=Too many times I've broken my valuable enchanted t
 research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
 
-
-
 category.MetalCasting.name=Metal Casting
 research.Crucible.name=Crucible
 research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!\nTo use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.
 research.Crucible.1=This metal will melt into a liquid, and form into alloys if possible. Right clicking on the crucible with an empty hand will pour this liquid metal into an adjacent mold.
-research.HellCrucible.name=Nether Crucible
-research.HellCrucible.0=Sometimes dumping a bucket of lava in my home is not exactly convenient. No matter, my new nether crucible, fueled by the infernal power of the nether, has no need for external heat.
+research.HellCrucible.name=Hellforge Crucible
+research.HellCrucible.0=Sometimes dumping a bucket of lava in my home is not exactly convenient. No matter, my new hellforge crucible, fueled by the infernal power of the nether, has no need for external heat.
 research.Mold.name=Mold Block
 research.Mold.0=The crucible is useless without a way to cast the melted metal into usable shapes. That's where molds come in.\nSimply place a mold block with the open end facing a crucible.
 research.Mold.1=Right clicking the mold block will open or close it. Right clicking with a mold will place it in the mold block. The mold can be removed by shift right clicking.\nTo cast metal, I first close the mold and pour in liquid metal. Then, I open the mold and retrieve my casted metal.
@@ -499,6 +499,9 @@ item.esteemedinnovation:crafting.2.name=Iron Barrel
 item.esteemedinnovation:crafting.3.name=Blunderbuss Barrel
 item.esteemedinnovation:crafting.4.name=Flintlock
 item.esteemedinnovation:crafting.5.name=Brass Turbine
+item.esteemedinnovation:crafting.6.name=Nether Brick Dust
+item.esteemedinnovation:crafting.7.name=Raw Hellforge Brick
+item.esteemedinnovation:crafting.8.name=Hellforge Brick
 
 item.esteemedinnovation:plate.0.name=Thin Copper Plate
 item.esteemedinnovation:plate.1.name=Thin Zinc Plate
@@ -649,7 +652,7 @@ tile.esteemedinnovation:blockPlacer.name=Block Placer
 tile.esteemedinnovation:charger.name=Steam Filler
 tile.esteemedinnovation:charging_pad.name=Filling Pad
 tile.esteemedinnovation:crucible.name=Crucible
-tile.esteemedinnovation:hell_crucible.name=Nether Crucible
+tile.esteemedinnovation:hell_crucible.name=Hellforge Crucible
 tile.esteemedinnovation:mold.name=Mold
 tile.esteemedinnovation:valve_pipe.name=Valve Pipe
 tile.esteemedinnovation:boiler.name=Boiler

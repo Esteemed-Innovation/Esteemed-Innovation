@@ -10,9 +10,9 @@ import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemIngotMold;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemNuggetMold;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemPipeMold;
 import eiteam.esteemedinnovation.metalcasting.mold.molds.ItemPlateMold;
+import eiteam.esteemedinnovation.misc.ItemCraftingComponent;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -21,11 +21,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.PLANK_WOOD;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static net.minecraft.init.Items.BRICK;
 
 public class MetalcastingModule extends ContentModule {
     public static Block CRUCIBLE;
-    public static Block NETHER_CRUCIBLE;
+    public static Block HELL_CRUCIBLE;
     public static Block CARVING_TABLE;
     public static Block MOLD;
     public static Item BLANK_MOLD;
@@ -37,7 +38,7 @@ public class MetalcastingModule extends ContentModule {
     @Override
     public void create(Side side) {
         CRUCIBLE = setup(new BlockCrucible(), "crucible");
-        NETHER_CRUCIBLE = setup(new BlockCrucible(), "hell_crucible");
+        HELL_CRUCIBLE = setup(new BlockCrucible(), "hell_crucible");
         CARVING_TABLE = setup(new BlockCarvingTable(), "carving_table");
         MOLD = setup(new BlockMold(), "mold");
         BLANK_MOLD = setup(new Item().setMaxStackSize(1), "blank_mold");
@@ -65,11 +66,11 @@ public class MetalcastingModule extends ContentModule {
               'x', BRICK
             );
             if (Config.enableHellCrucible) {
-                BookRecipeRegistry.addRecipe("hellCrucible", new ItemStack(NETHER_CRUCIBLE),
+                BookRecipeRegistry.addRecipe("hellCrucible", new ItemStack(HELL_CRUCIBLE),
                   "x x",
                   "x x",
                   "xxx",
-                  'x', Items.NETHERBRICK
+                  'x', new ItemStack(COMPONENT, 1, ItemCraftingComponent.Types.HELLFORGE_BRICK.getMetadata())
                 );
             }
         }
@@ -104,7 +105,7 @@ public class MetalcastingModule extends ContentModule {
               new BookPageCrafting("", "crucible")));
             if (Config.enableHellCrucible) {
                 BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.HellCrucible.name",
-                  new BookPageItem("research.HellCrucible.name", "research.HellCrucible.0", new ItemStack(NETHER_CRUCIBLE)),
+                  new BookPageItem("research.HellCrucible.name", "research.HellCrucible.0", new ItemStack(HELL_CRUCIBLE)),
                   new BookPageCrafting("", "hellCrucible")));
             }
         }
@@ -127,7 +128,7 @@ public class MetalcastingModule extends ContentModule {
     @Override
     public void preInitClient() {
         registerModel(CRUCIBLE);
-        registerModel(NETHER_CRUCIBLE);
+        registerModel(HELL_CRUCIBLE);
         registerModel(CARVING_TABLE);
         registerModel(MOLD);
         registerModel(BLANK_MOLD);

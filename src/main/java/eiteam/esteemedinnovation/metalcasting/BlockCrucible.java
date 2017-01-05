@@ -31,7 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.MutablePair;
 
-import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.NETHER_CRUCIBLE;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.HELL_CRUCIBLE;
 
 public class BlockCrucible extends Block implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -105,7 +105,7 @@ public class BlockCrucible extends Block implements Wrenchable {
         IBlockState stateUnderCrucible = world.getBlockState(underCruciblePosition);
         TileEntity tileUnderCrucible = world.getTileEntity(underCruciblePosition);
 
-        if (this == NETHER_CRUCIBLE || stateUnderCrucible.getMaterial() == Material.FIRE ||
+        if (this == HELL_CRUCIBLE || stateUnderCrucible.getMaterial() == Material.FIRE ||
           stateUnderCrucible.getMaterial() == Material.LAVA) {
             return true;
         }

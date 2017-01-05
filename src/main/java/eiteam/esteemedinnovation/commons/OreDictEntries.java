@@ -19,6 +19,7 @@ public class OreDictEntries {
     public static final String PREFIX_DYE = "dye";
     // Primarily used by Harvestcraft.
     public static final String PREFIX_LIST_ALL = "listAll";
+    public static final String PREFIX_BRICK = "brick";
 
     // Materials.
     public static final String MATERIAL_BRASS = "Brass";
@@ -45,6 +46,8 @@ public class OreDictEntries {
     public static final String MATERIAL_OSMIUM = "Osmium";
     public static final String MATERIAL_COBALT = "Cobalt";
     public static final String MATERIAL_ARDITE = "Ardite";
+    public static final String MATERIAL_HELLFORGE = "Hellforge";
+    public static final String MATERIAL_NETHERBRICK = "NetherBrick";
 
     // Colors.
     public static final String COLOR_WHITE = "White";
@@ -144,6 +147,7 @@ public class OreDictEntries {
     public static final String DUST_ZINC = PREFIX_DUST + MATERIAL_ZINC;
     public static final String DUST_BRASS = PREFIX_DUST + MATERIAL_BRASS;
     public static final String DUST_LEAD = PREFIX_DUST + MATERIAL_LEAD;
+    public static final String DUST_NETHERBRICK = PREFIX_DUST + MATERIAL_NETHERBRICK;
 
     // Tiny Dusts.
     public static final String DUST_TINY_GOLD = PREFIX_DUST_TINY + MATERIAL_GOLD;
@@ -196,6 +200,8 @@ public class OreDictEntries {
     public static final String LOG_WOOD = PREFIX_LOG + MATERIAL_WOOD;
     public static final String SLAB_WOOD = PREFIX_SLAB + MATERIAL_WOOD;
     public static final String TREE_SAPLING = PREFIX_TREE + MATERIAL_SAPLING;
+
+    public static final String BRICK_HELLFORGE = PREFIX_BRICK + MATERIAL_HELLFORGE;
 
 
     // Disambiguated vanilla ore entries.
