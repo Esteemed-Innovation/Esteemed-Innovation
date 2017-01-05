@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.SteamChargable;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -9,9 +8,11 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import javax.annotation.Nonnull;
 
+import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
+
 public class ItemOverclockerUpgrade extends ItemSteamToolUpgrade {
     public ItemOverclockerUpgrade() {
-        super(SteamToolSlot.TOOL_CORE, EsteemedInnovation.MOD_ID + ":items/toolUpgrades/overclocker", null, 0);
+        super(SteamToolSlot.TOOL_CORE, upgradeResource("overclocker"), null, 0);
     }
 
     @Override

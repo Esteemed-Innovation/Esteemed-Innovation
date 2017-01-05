@@ -148,7 +148,7 @@ public class ToolsModule extends ContentModule {
         return (Item) upgrade;
     }
 
-    private static String upgradeResource(String resource) {
+    public static String upgradeResource(String resource) {
         return Constants.EI_MODID + ":items/toolUpgrades/" + resource;
     }
 

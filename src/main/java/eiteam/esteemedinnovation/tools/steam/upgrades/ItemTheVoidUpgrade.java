@@ -1,9 +1,8 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.tool.SteamTool;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -29,11 +28,13 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
+
 public class ItemTheVoidUpgrade extends Item implements SteamToolUpgrade {
     private ResourceLocation baseOverlay;
 
     public ItemTheVoidUpgrade() {
-        baseOverlay = new ResourceLocation(EsteemedInnovation.MOD_ID, "items/toolUpgrades/void");
+        baseOverlay = new ResourceLocation(upgradeResource("void"));
         MinecraftForge.EVENT_BUS.register(this);
     }
 

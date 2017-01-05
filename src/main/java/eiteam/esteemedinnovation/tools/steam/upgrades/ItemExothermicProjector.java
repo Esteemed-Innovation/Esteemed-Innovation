@@ -1,8 +1,7 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
-import eiteam.esteemedinnovation.api.tool.SteamTool;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
+import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -11,9 +10,11 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import javax.annotation.Nonnull;
 
+import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
+
 public class ItemExothermicProjector extends ItemSteamToolUpgrade {
     public ItemExothermicProjector() {
-        super(SteamToolSlot.TOOL_CORE, EsteemedInnovation.MOD_ID + ":items/toolUpgrades/furnace", null, 0);
+        super(SteamToolSlot.TOOL_CORE, upgradeResource("furnace"), null, 0);
     }
 
     @Override
