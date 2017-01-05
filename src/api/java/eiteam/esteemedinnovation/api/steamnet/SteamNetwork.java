@@ -203,11 +203,11 @@ public class SteamNetwork {
                 for (Coord4 coord : transporters.keySet()) {
                     totalY += coord.getPos().getY();
                 }
-                int averageY = MathHelper.ceiling_float_int((float) totalY / (float) transporters.size());
+                int averageY = MathHelper.ceiling_float_int(totalY / (float) transporters.size());
                 int networkAltitude = 64 - averageY;
-                altitudePressureModifier = (float) -(Math.sqrt(Math.abs((float) networkAltitude / 100F))) + 1;
+                altitudePressureModifier = (float) (Math.sqrt(Math.abs(networkAltitude / 100F))) + 1;
             }
-            return ((float) getSteam() / (float) getCapacity()) * altitudePressureModifier;
+            return (getSteam() / (float) getCapacity()) * altitudePressureModifier;
         }
         return 0;
 
