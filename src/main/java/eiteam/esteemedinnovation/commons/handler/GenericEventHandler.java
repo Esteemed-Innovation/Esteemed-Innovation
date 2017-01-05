@@ -1814,18 +1814,17 @@ public class GenericEventHandler {
             }
 
             if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
-                ItemStack out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta));
-                if (out != null) {
-                    if (rand.nextInt(100) >= Config.smasherDoubleChance) {
-                        out.stackSize *= 2;
-                    }
-                    for (int i = 0; i < event.getDrops().size(); i++) {
-                        ItemStack drop = event.getDrops().get(i);
-                        if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
-                            event.getDrops().remove(i);
+                List<ItemStack> out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta), world);
+                if (!out.isEmpty()) {
+                    for (ItemStack item : out) {
+                        for (int i = 0; i < event.getDrops().size(); i++) {
+                            ItemStack drop = event.getDrops().get(i);
+                            if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
+                                event.getDrops().remove(i);
+                            }
                         }
+                        event.getDrops().add(item);
                     }
-                    event.getDrops().add(out);
                     drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
                 }
             }

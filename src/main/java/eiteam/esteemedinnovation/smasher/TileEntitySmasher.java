@@ -5,7 +5,6 @@ import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -29,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER;
@@ -266,7 +266,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                     } else if (extendedLength < 0.5F && !shouldStop) {
                         extendedLength += 0.1F;
                         if (extendedTicks == 3 && isPrimary() && !worldObj.isRemote) {
-                            spawnItems(middleBlockPos);
+                            spawnOutputForSmashedBlock(middleBlockPos);
                         }
                         extendedTicks++;
 
@@ -331,28 +331,28 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
         return worldObj.getBlockState(pos).getValue(BlockSmasher.FACING).getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE;
     }
 
-    private void spawnItems(BlockPos position) {
+    private void spawnOutputForSmashedBlock(BlockPos position) {
         if (smooshedStack != null) {
+            double x = position.getX() + 0.5F;
+            double y = position.getY() + 0.1F;
+            double z = position.getZ() + 0.5F;
             for (ItemStack stack : smooshedStack) {
-                ItemStack output = SmasherRegistry.getOutput(stack);
-                double x = position.getX() + 0.5F;
-                double y = position.getY() + 0.1F;
-                double z = position.getZ() + 0.5F;
+                List<ItemStack> output = SmasherRegistry.getOutput(stack, worldObj);
                 
-                if (output == null || blockBreakerMode) {
-                    output = stack;
-                    EntityItem entityItem = new EntityItem(worldObj, x, y, z, output);
-                    worldObj.spawnEntityInWorld(entityItem);
+                if (output.isEmpty() || blockBreakerMode) {
+                    spawnItems(x, y, z, Collections.singletonList(stack));
                 } else {
-                    // Ore doubling
-                    if (worldObj.rand.nextInt(100) >= Config.smasherDoubleChance) {
-                        output.stackSize *= 2;
-                    }
-                    EntityItem entityItem = new EntityItem(worldObj, x, y, z, output);
-                    worldObj.spawnEntityInWorld(entityItem);
+                    spawnItems(x, y, z, output);
                     smooshedStack = null;
                 }
             }
+        }
+    }
+
+    private void spawnItems(double x, double y, double z, List<ItemStack> items) {
+        for (ItemStack item : items) {
+            EntityItem entityItem = new EntityItem(worldObj, x, y, z, item);
+            worldObj.spawnEntityInWorld(entityItem);
         }
     }
 

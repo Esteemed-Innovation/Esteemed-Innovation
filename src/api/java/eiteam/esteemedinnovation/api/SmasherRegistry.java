@@ -2,58 +2,64 @@ package eiteam.esteemedinnovation.api;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public final class SmasherRegistry {
     /**
-     * The smasher recipe map. Key: Input, Value: Output
+     * The smasher recipe map. Key: Input, Value: Function that passes the input and world and returns the output
      */
-    public static final Map<ItemStack, ItemStack> registry = new HashMap<>();
+    public static final Map<ItemStack, BiFunction<ItemStack, World, List<ItemStack>>> registry = new HashMap<>();
 
     /**
      * Gets the smasher output for the provided ItemStack.
      * @param input The input ItemStack
-     * @return The output ItemStack. Can be null.
+     * @param world The current world
+     * @return The output ItemStacks.
      */
-    public static ItemStack getOutput(ItemStack input) {
+    @Nonnull
+    public static List<ItemStack> getOutput(ItemStack input, World world) {
         if (input == null) {
-            return null;
+            return Collections.emptyList();
         }
 
-        ItemStack output = null;
-        for (Map.Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
+        List<ItemStack> output = new ArrayList<>();
+        for (Map.Entry<ItemStack, BiFunction<ItemStack, World, List<ItemStack>>> entry : registry.entrySet()) {
             if (ItemStack.areItemStacksEqual(entry.getKey(), input)) {
-                output = entry.getValue();
-                if (output != null) {
+                output = entry.getValue().apply(input, world);
+                if (!output.isEmpty()) {
                     break;
                 }
             }
         }
 
-        return ItemStack.copyItemStack(output);
+        return output.stream().map(ItemStack::copyItemStack).collect(Collectors.toList());
     }
 
     /**
      * Gets all of the input ItemStacks that will produce the provided output. This does not respect stacksize.
      * @param output The desired output
-     * @return A list of all ItemStacks that produce the output. Can be null if the output is null.
+     * @param world The current world
+     * @return A list of all ItemStacks that produce the output. Can be null if the output is null. Because the function
+     *         might use randomization (or other such things) to return its outputs, this might not be 100% accurate all of the time.
      */
-    public static List<ItemStack> getInputs(ItemStack output) {
+    public static List<ItemStack> getInputs(ItemStack output, World world) {
         if (output == null) {
             return null;
         }
 
         List<ItemStack> inputs = new ArrayList<>();
-
-        for (Map.Entry<ItemStack, ItemStack> entry : registry.entrySet()) {
-            if (output.isItemEqual(entry.getValue())) {
-                inputs.add(entry.getKey());
+        for (Map.Entry<ItemStack, BiFunction<ItemStack, World, List<ItemStack>>> entry : registry.entrySet()) {
+            for (ItemStack out : entry.getValue().apply(entry.getKey(), world)) {
+                if (out.isItemEqual(output)) {
+                    inputs.add(entry.getKey());
+                }
             }
         }
 
@@ -73,6 +79,17 @@ public final class SmasherRegistry {
 
     /**
      * Registers a smasher recipe
+     * @param input The input OreDictionary entry. Will register a recipe for every single ItemSTack in that OreDict.
+     * @param function The function that returns the output.
+     */
+    public static void registerSmashable(String input, BiFunction<ItemStack, World, List<ItemStack>> function) {
+        for (ItemStack stack : OreDictionary.getOres(input)) {
+            registerSmashable(stack, function);
+        }
+    }
+
+    /**
+     * Registers a smasher recipe
      * @param input The input block, or the block being smashed.
      * @param output The output ItemStack
      */
@@ -82,11 +99,29 @@ public final class SmasherRegistry {
 
     /**
      * Registers a smasher recipe
+     * @param input The input block, or the block being smashed.
+     * @param function The function that returns the output.
+     */
+    public static void registerSmashable(Block input, BiFunction<ItemStack, World, List<ItemStack>> function) {
+        registerSmashable(new ItemStack(input), function);
+    }
+
+    /**
+     * Registers a smasher recipe
      * @param input The input ItemStack
      * @param output The output ItemStack
      */
     public static void registerSmashable(ItemStack input, ItemStack output) {
-        registry.put(input, output);
+        registerSmashable(input, new TypicalInputOutput(input, output));
+    }
+
+    /**
+     * Registers a smasher recipe
+     * @param input The input ItemStack
+     * @param function The function that returns the output.
+     */
+    public static void registerSmashable(ItemStack input, BiFunction<ItemStack, World, List<ItemStack>> function) {
+        registry.put(input, function);
     }
 
     /**
@@ -106,5 +141,29 @@ public final class SmasherRegistry {
      */
     public static void removeSmashable(ItemStack input) {
         registry.remove(input);
+    }
+
+    /**
+     * A helper function class that takes a input ItemStack and returns the provided output.
+     * You should probably just use this unless you need special behavior (e.g., doubling, randomization, etc.), or just
+     * use the above helper methods. Those methods (the ones that don't take a function) use this anyway.
+     */
+    public static class TypicalInputOutput implements BiFunction<ItemStack, World, List<ItemStack>> {
+        private final ItemStack in;
+        private final List<ItemStack> out;
+
+        public TypicalInputOutput(ItemStack in, ItemStack out) {
+            this(in, Collections.singletonList(out));
+        }
+
+        public TypicalInputOutput(ItemStack in, List<ItemStack> out) {
+            this.in = in;
+            this.out = out;
+        }
+
+        @Override
+        public List<ItemStack> apply(ItemStack itemStack, World world) {
+            return out;
+        }
     }
 }

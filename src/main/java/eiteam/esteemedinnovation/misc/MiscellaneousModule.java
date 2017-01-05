@@ -122,7 +122,6 @@ public class MiscellaneousModule extends ContentModule {
           'i', PLATE_THIN_BRASS
         ));
 
-        // TODO: Change the API to use functions instead of standard ItemStacks for the output. Function returns list of itemstacks
         // TODO: Yield 3 bricks and 1 dust
         SmasherRegistry.registerSmashable(NETHER_BRICK, new ItemStack(COMPONENT, 2, Types.NETHERBRICK_DUST.getMetadata()));
 

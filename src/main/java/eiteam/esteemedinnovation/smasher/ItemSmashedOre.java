@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
-
+import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,6 @@ public class ItemSmashedOre extends Item {
     public static final Map<Integer, Integer> colors = new HashMap<>();
 
     public ItemSmashedOre() {
-        super();
         setHasSubtypes(true);
 
         //Potentially removes a recipe
@@ -31,7 +31,14 @@ public class ItemSmashedOre extends Item {
 
     public void registerEntry(Types entry) {
         int meta = entry.getMeta();
-        SmasherRegistry.registerSmashable(entry.getInputOre(), new ItemStack(this, 1, meta));
+        SmasherRegistry.registerSmashable(entry.getInputOre(), (input, world) -> {
+            // Ore doubling
+            int amount = input.stackSize;
+            if (world.rand.nextInt(100) >= Config.smasherDoubleChance) {
+                amount *= 2;
+            }
+            return Collections.singletonList(new ItemStack(this, amount, meta));
+        });
         map.put(meta, new String[] { entry.getName(), entry.getSmeltingResult() });
         colors.put(meta, entry.getColor());
     }
