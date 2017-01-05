@@ -119,6 +119,18 @@ public interface SteamToolUpgrade {
     }
 
     /**
+     * Called in {@link ItemSteamTool.ToolUpgradeEventDelegator#onLeftClickBlock(PlayerInteractEvent.LeftClickBlock)}
+     * for every upgrade in the steam tool.
+     * @param event The actual event container.
+     * @param toolStack The ItemStack containing the tool
+     * @param thisUpgradeStack The ItemStack containing this upgrade.
+     * @return Return false to cancel the click and prevent any other processing from happening.
+     */
+    default boolean onLeftClickBlockWithTool(PlayerInteractEvent.LeftClickBlock event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
+        return true;
+    }
+
+    /**
      * Called in {@link ItemSteamTool.ToolUpgradeEventDelegator#onAttack(LivingAttackEvent)} for every upgrade in the
      * steam tool.
      * @param attacker The player attacking.

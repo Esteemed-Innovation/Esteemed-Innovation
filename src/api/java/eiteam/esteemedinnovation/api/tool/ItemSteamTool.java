@@ -404,6 +404,22 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
             }
         }
 
+        @SubscribeEvent
+        public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+            ItemStack equipped = event.getItemStack();
+            if (!isToolOkay(equipped)) {
+                return;
+            }
+
+            for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
+                SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
+                if (!upgrade.onLeftClickBlockWithTool(event, equipped, upgradeStack)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
         /**
          * Calls {@link SteamToolUpgrade#onRightClickWithTool(PlayerInteractEvent.RightClickItem, ItemStack, ItemStack)}
          * for every upgrade in the tool.
