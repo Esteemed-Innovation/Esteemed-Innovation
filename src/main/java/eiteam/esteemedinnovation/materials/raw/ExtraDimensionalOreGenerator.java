@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.raw;
+package eiteam.esteemedinnovation.materials.raw;
 
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.block.Block;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.ORE_BLOCK;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.ORE_BLOCK;
 import static net.minecraft.init.Blocks.*;
 
 public class ExtraDimensionalOreGenerator implements IWorldGenerator {

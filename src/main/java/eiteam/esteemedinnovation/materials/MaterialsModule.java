@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals;
+package eiteam.esteemedinnovation.materials;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
@@ -9,17 +9,17 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.metals.raw.BlockGenericOre;
-import eiteam.esteemedinnovation.metals.raw.BlockOreDepositGenerator;
-import eiteam.esteemedinnovation.metals.raw.ExtraDimensionalOreGenerator;
-import eiteam.esteemedinnovation.metals.raw.SurfaceOreGenerator;
-import eiteam.esteemedinnovation.metals.refined.BlockBeacon;
-import eiteam.esteemedinnovation.metals.refined.BlockBeacon.MetalBlockTypes;
-import eiteam.esteemedinnovation.metals.refined.ItemMetalIngot;
-import eiteam.esteemedinnovation.metals.refined.ItemMetalNugget;
-import eiteam.esteemedinnovation.metals.refined.plates.BlockClassSensitivePlate;
-import eiteam.esteemedinnovation.metals.refined.plates.BlockWeightedPlate;
-import eiteam.esteemedinnovation.metals.refined.plates.ItemMetalPlate;
+import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
+import eiteam.esteemedinnovation.materials.raw.BlockOreDepositGenerator;
+import eiteam.esteemedinnovation.materials.raw.ExtraDimensionalOreGenerator;
+import eiteam.esteemedinnovation.materials.raw.SurfaceOreGenerator;
+import eiteam.esteemedinnovation.materials.refined.BlockBeacon;
+import eiteam.esteemedinnovation.materials.refined.BlockBeacon.MetalBlockTypes;
+import eiteam.esteemedinnovation.materials.refined.ItemMetalIngot;
+import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
+import eiteam.esteemedinnovation.materials.refined.plates.BlockClassSensitivePlate;
+import eiteam.esteemedinnovation.materials.refined.plates.BlockWeightedPlate;
+import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
@@ -43,17 +43,17 @@ import java.util.stream.Collectors;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
-import static eiteam.esteemedinnovation.metals.raw.BlockGenericOre.OreBlockTypes.*;
-import static eiteam.esteemedinnovation.metals.refined.ItemMetalIngot.Types.*;
-import static eiteam.esteemedinnovation.metals.refined.ItemMetalNugget.Types.*;
-import static eiteam.esteemedinnovation.metals.refined.plates.ItemMetalPlate.Types.*;
+import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTypes.*;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
+import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
 import static eiteam.esteemedinnovation.tools.ToolsModule.*;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
-public class MetalsModule extends ContentModule {
+public class MaterialsModule extends ContentModule {
     public static final ResourceLocation WORKED_OUT_ORE_DEPOSIT_LOOTTABLE = new ResourceLocation(Constants.EI_MODID, "worked_out_ore_deposit");
     public static Block STORAGE_BLOCK;
     public static Block ORE_DEPOSIT_GENERATOR;

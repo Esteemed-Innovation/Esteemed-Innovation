@@ -63,7 +63,7 @@ import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.REVOLVER_CHAMBER;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
 import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
-import static eiteam.esteemedinnovation.metals.MetalsModule.*;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static eiteam.esteemedinnovation.steamsafety.SafetyModule.STEAM_GAUGE;

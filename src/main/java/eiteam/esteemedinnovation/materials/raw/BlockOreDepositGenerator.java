@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.raw;
+package eiteam.esteemedinnovation.materials.raw;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.ORE_BLOCK;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.ORE_BLOCK;
 
 public class BlockOreDepositGenerator extends Block {
     public static final PropertyEnum<Types> VARIANT = PropertyEnum.create("variant", Types.class);

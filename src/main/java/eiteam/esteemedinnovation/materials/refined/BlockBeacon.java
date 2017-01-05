@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.refined;
+package eiteam.esteemedinnovation.materials.refined;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

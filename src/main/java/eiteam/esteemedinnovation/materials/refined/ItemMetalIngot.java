@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.refined;
+package eiteam.esteemedinnovation.materials.refined;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -8,8 +8,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemMetalNugget extends Item {
-    public ItemMetalNugget() {
+public class ItemMetalIngot extends Item {
+    public ItemMetalIngot() {
         setHasSubtypes(true);
     }
 
@@ -22,16 +22,15 @@ public class ItemMetalNugget extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName() + "." + par1ItemStack.getItemDamage();
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     public enum Types {
-        COPPER_NUGGET(0),
-        ZINC_NUGGET(1),
-        BRASS_NUGGET(2),
-        GILDED_IRON_NUGGET(3),
-        IRON_NUGGET(4); // I hate you, Vanilla, and your lack of iron nuggets.
+        COPPER_INGOT(0),
+        ZINC_INGOT(1),
+        BRASS_INGOT(2),
+        GILDED_IRON_INGOT(3);
 
         private final int meta;
 

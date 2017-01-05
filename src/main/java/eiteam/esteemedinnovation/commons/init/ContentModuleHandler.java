@@ -13,7 +13,7 @@ import eiteam.esteemedinnovation.hammer.HammerModule;
 import eiteam.esteemedinnovation.heater.HeaterModule;
 import eiteam.esteemedinnovation.island.IslandModule;
 import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
-import eiteam.esteemedinnovation.metals.MetalsModule;
+import eiteam.esteemedinnovation.materials.MaterialsModule;
 import eiteam.esteemedinnovation.misc.MiscellaneousModule;
 import eiteam.esteemedinnovation.naturalphilosophy.NaturalPhilosophyModule;
 import eiteam.esteemedinnovation.smasher.SmasherModule;
@@ -51,7 +51,7 @@ public class ContentModuleHandler {
           new HeaterModule(),
           new IslandModule(),
           new MetalcastingModule(),
-          new MetalsModule(),
+          new MaterialsModule(),
           new MiscellaneousModule(),
           new NaturalPhilosophyModule(),
           new SmasherModule(),

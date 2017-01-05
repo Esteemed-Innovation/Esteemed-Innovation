@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.refined.plates;
+package eiteam.esteemedinnovation.materials.refined.plates;
 
 import net.minecraft.block.BlockPressurePlateWeighted;
 import net.minecraft.block.SoundType;
@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.METAL_PLATE;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.METAL_PLATE;
 
 public class BlockWeightedPlate extends BlockPressurePlateWeighted {
     private int plateMeta;

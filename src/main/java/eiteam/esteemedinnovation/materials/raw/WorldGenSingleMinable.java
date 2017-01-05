@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.raw;
+package eiteam.esteemedinnovation.materials.raw;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;

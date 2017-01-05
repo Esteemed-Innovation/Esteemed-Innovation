@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.workshop;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.metals.refined.plates.ItemMetalPlate;
+import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.METAL_PLATE;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.METAL_PLATE;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;

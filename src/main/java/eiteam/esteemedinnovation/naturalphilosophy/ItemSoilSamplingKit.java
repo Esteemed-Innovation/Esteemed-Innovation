@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.naturalphilosophy;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
-import eiteam.esteemedinnovation.metals.MetalsModule;
+import eiteam.esteemedinnovation.materials.MaterialsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -63,7 +63,7 @@ public class ItemSoilSamplingKit extends Item {
                                     ores.replace(itemFromBlockCheck, currentlyInMap + 1);
                                 }
                             }
-                            if (blockCheck == MetalsModule.ORE_DEPOSIT_GENERATOR) {
+                            if (blockCheck == MaterialsModule.ORE_DEPOSIT_GENERATOR) {
                                 oreDepositFound = true;
                             }
                         }

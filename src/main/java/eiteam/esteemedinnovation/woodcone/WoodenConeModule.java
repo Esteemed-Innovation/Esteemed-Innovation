@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_CATEGORY;
-import static eiteam.esteemedinnovation.metals.MetalsModule.IRON_LIQUID;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.IRON_LIQUID;
 
 public class WoodenConeModule extends ContentModule {
     public static Block WOODEN_CONE;

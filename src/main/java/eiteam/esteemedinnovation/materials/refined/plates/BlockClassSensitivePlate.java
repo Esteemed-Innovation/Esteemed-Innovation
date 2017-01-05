@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.refined.plates;
+package eiteam.esteemedinnovation.materials.refined.plates;
 
 import net.minecraft.block.BlockBasePressurePlate;
 import net.minecraft.block.SoundType;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.METAL_PLATE;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.METAL_PLATE;
 
 public class BlockClassSensitivePlate<T extends Entity> extends BlockBasePressurePlate {
     private static final IProperty<Boolean> POWERED = PropertyBool.create("powered");

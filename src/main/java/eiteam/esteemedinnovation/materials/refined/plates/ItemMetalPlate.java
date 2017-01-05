@@ -1,6 +1,6 @@
-package eiteam.esteemedinnovation.metals.refined.plates;
+package eiteam.esteemedinnovation.materials.refined.plates;
 
-import eiteam.esteemedinnovation.metals.MetalsModule;
+import eiteam.esteemedinnovation.materials.MaterialsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -46,7 +46,7 @@ public class ItemMetalPlate extends Item {
             return EnumActionResult.FAIL;
         }
 
-        Block plateBlock = MetalsModule.getPressurePlateFromItemMetadata(stack.getItemDamage());
+        Block plateBlock = MaterialsModule.getPressurePlateFromItemMetadata(stack.getItemDamage());
         if (plateBlock == null) {
             return EnumActionResult.FAIL;
         }

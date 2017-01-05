@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metals.raw;
+package eiteam.esteemedinnovation.materials.raw;
 
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.metals.MetalsModule.*;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
 
 public class SurfaceOreGenerator implements IWorldGenerator {
     private static final int SEA_LEVEL = 60;

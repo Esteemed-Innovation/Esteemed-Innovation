@@ -30,7 +30,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.metals.MetalsModule.COPPER_LIQUID;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.COPPER_LIQUID;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
