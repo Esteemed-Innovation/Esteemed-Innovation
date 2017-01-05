@@ -131,7 +131,7 @@ public class ToolsModule extends ContentModule {
         MULTIPLICATIVE_RESONATOR = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("fortune"), null, 1), "multiplicative_resonator");
         CHARGE_PLACER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("chargePlacer"), null, 1), "charge_placer");
         DRILL_HEAD = setupUpgrade(new ItemDrillHeadUpgrade(), "drill_head");
-        INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("processor"), null, 0), "internal_processing_unit");
+        INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_CORE, upgradeResource("processor"), null, 0), "internal_processing_unit");
         LEAF_BLOWER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("blower"), null, 1), "leaf_blower");
         TIMBER_CHAIN = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("timberHead"), null, 1), "timber_chain");
         CHAINSAW = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("chain"), null, 1), "chainsaw");
