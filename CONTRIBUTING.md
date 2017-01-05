@@ -28,14 +28,13 @@ We're pretty lenient about these guidelines, so it's not a huge deal if it's not
   * :art: `:art:` when dealing with textures, either loading them or adding new ones.
   * :saxophone: `:saxophone:` when dealing with sounds, either loading them or adding new ones.
   * Any of the earths (:earth_africa: :earth_asia: :earth_americas: :globe_with_meridians: `:earth_africa: :earth_asia: :earth_americas: :globe_with_meridians:`) when dealing with localization.
-  * :hatching_chick: `:hatching_chick:` when finishing an unfinished feature.
-  * :seedling: `:seedling:` when starting a feature, but not finishing it.
-  * :fu: `:fu:` when fixing code format or style.
+  * :lipstick: `:lipstick:` when changing the cosmetics of code.
+  * :package: `:package:` when refactoring.
   * :birthday: `:birthday:` when updating the mod version number.
   * :arrow_up: `:arrow_up:` when upgrading dependency versions.
   * :arrow_down: `:arrow_down:` when downgrading dependency versions.
   * :white_check_mark: `:white_check_mark:` when adding tests.
-  * :broken_heart: `:broken_heart:` when deleting code or files.
+  * :broken_heart: `:broken_heart:` when deleting code or files (not replacing it).
   * :apple: `:apple:` when dealing with OS X specifically.
   * :penguin: `:penguin:` when dealing with Linux specifically.
   * :checkered_flag: `:checkered_flag:` when dealing with Windows specifically.
@@ -44,10 +43,10 @@ We're pretty lenient about these guidelines, so it's not a huge deal if it's not
   * :book: `:book:` when updating or adding docs.
   * :bug: `:bug:` when fixing a bug.
   * :shirt: `:shirt:` when resolving linter warnings.
-  * :gem: `:gem:` when adding a fully fleshed out feature.
+  * :gem: `:gem:` when adding a feature.
   * :wrench: `:wrench:` when tweaking a feature.
-  * :moneybag: `:moneybag:` when improving balance.
   * :notebook: `:notebook:` when adding Esteemed Innovation journal entries.
+  * :octocat: `:octocat:` for meta commits.
 
 You are not required to use emojis, but it is allowed and encouraged, as it allows for quickly knowing the purpose of a commit.
 
