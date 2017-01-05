@@ -1757,7 +1757,6 @@ public class GenericEventHandler {
         World world = event.getWorld();
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
-        Item otherBlockItem = block.getItemDropped(state, rand, 0);
         Item blockItem = Item.getItemFromBlock(block);
         int meta = block.getMetaFromState(state);
         Pair<Item, Integer> pair = Pair.of(blockItem, meta);
@@ -1825,56 +1824,6 @@ public class GenericEventHandler {
                         event.getDrops().add(item);
                     }
                     drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
-                }
-            }
-        } else if (equipped.getItem() instanceof ItemSteamShovel) {
-            ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (!shovel.hasUpgrade(equipped, SIFTER) || !shovel.isWound(equipped)) {
-                return;
-            }
-
-            for (int i = 0; i < event.getDrops().size(); i++) {
-                Item item = event.getDrops().get(i).getItem();
-                if (item == blockItem || item == otherBlockItem) {
-                    event.getDrops().remove(i);
-                }
-            }
-
-            if (OreDictHelper.sands.contains(pair)) {
-                int chance = rand.nextInt(8);
-                if (chance == 5) {
-                    int index = rand.nextInt(OreDictHelper.goldNuggets.size());
-                    Pair nuggetPair = OreDictHelper.goldNuggets.get(index);
-                    int size = rand.nextInt(3) + 1;
-                    ItemStack nugget = new ItemStack((Item) nuggetPair.getLeft(), size, (int) nuggetPair.getRight());
-                    event.getDrops().add(nugget);
-                    return;
-                }
-            }
-
-            if (block == Blocks.DIRT || block == Blocks.GRASS || block == Blocks.FARMLAND) {
-                int chance = rand.nextInt(6);
-                if (chance == 4) {
-                    int boneOrSeeds = rand.nextInt(2);
-                    int stackSize = rand.nextInt(3) + 1;
-                    ItemStack itemstack;
-                    if (boneOrSeeds == 1) {
-                        itemstack = new ItemStack(Items.BONE);
-                    } else {
-                        itemstack = new ItemStack(Items.WHEAT_SEEDS);
-                    }
-                    itemstack.stackSize = stackSize;
-                    event.getDrops().add(itemstack);
-                    return;
-                }
-            }
-
-            if (block == Blocks.GRAVEL) {
-                for (int i = 0; i < event.getDrops().size(); i++) {
-                    if (event.getDrops().get(i).getItem() == Items.FLINT) {
-                        event.setDropChance(90);
-                        return;
-                    }
                 }
             }
         }

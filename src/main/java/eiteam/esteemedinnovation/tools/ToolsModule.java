@@ -133,7 +133,7 @@ public class ToolsModule extends ContentModule {
         FOREST_FIRE = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("fire"), null, 1), "forest_fire");
         CULTIVATOR = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("cultivatorHead"), null, 1), "cultivator");
         ROTARY_BLADES = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("rotary"), null, 1), "rotary_blades");
-        SIFTER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_CORE, upgradeResource("sifter"), null, 0), "sifter");
+        SIFTER = setupUpgrade(new ItemSifterUpgrade(), "sifter");
         BACKHOE = setupUpgrade(new ItemBackhoeUpgrade(), "backhoe");
     }
 
