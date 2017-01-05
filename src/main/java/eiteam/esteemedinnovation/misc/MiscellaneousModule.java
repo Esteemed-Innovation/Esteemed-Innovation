@@ -15,6 +15,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.Arrays;
+
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Blocks.NETHER_BRICK;
@@ -122,8 +124,9 @@ public class MiscellaneousModule extends ContentModule {
           'i', PLATE_THIN_BRASS
         ));
 
-        // TODO: Yield 3 bricks and 1 dust
-        SmasherRegistry.registerSmashable(NETHER_BRICK, new ItemStack(COMPONENT, 2, Types.NETHERBRICK_DUST.getMetadata()));
+        SmasherRegistry.registerSmashable(NETHER_BRICK, new SmasherRegistry.TypicalBiFunction(Arrays.asList(
+          new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
+          new ItemStack(NETHERBRICK, 3))));
 
         BookRecipeRegistry.addRecipe("hellforgeBrick", new ShapelessOreRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata())));
