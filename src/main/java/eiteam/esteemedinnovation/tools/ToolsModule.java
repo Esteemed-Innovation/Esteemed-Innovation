@@ -12,10 +12,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
 import eiteam.esteemedinnovation.tools.steam.*;
-import eiteam.esteemedinnovation.tools.steam.upgrades.ItemExothermicProjector;
-import eiteam.esteemedinnovation.tools.steam.upgrades.ItemOverclockerUpgrade;
-import eiteam.esteemedinnovation.tools.steam.upgrades.ItemSteamToolUpgrade;
-import eiteam.esteemedinnovation.tools.steam.upgrades.ItemTheVoidUpgrade;
+import eiteam.esteemedinnovation.tools.steam.upgrades.*;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadRecipe;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
@@ -38,9 +35,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_CATEGORY;
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMTOOL_CATEGORY;
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.tabTools;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
@@ -139,7 +134,7 @@ public class ToolsModule extends ContentModule {
         CULTIVATOR = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("cultivatorHead"), null, 1), "cultivator");
         ROTARY_BLADES = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("rotary"), null, 1), "rotary_blades");
         SIFTER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_CORE, upgradeResource("sifter"), null, 0), "sifter");
-        BACKHOE = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("backhoe"), null, 1), "backhoe");
+        BACKHOE = setupUpgrade(new ItemBackhoeUpgrade(), "backhoe");
     }
 
     private Item setupUpgrade(SteamToolUpgrade upgrade, String path) {

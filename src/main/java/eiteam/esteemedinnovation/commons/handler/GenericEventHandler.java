@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.commons.handler;
 
-import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
@@ -22,6 +22,7 @@ import eiteam.esteemedinnovation.armor.tophat.VillagerDataSerializer;
 import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
 import eiteam.esteemedinnovation.book.GuiJournal;
 import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerializer;
@@ -31,7 +32,6 @@ import eiteam.esteemedinnovation.commons.util.EnchantmentUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
-import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamAxe;
@@ -41,7 +41,6 @@ import eiteam.esteemedinnovation.tools.steam.SteamToolHelper;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1996,27 +1995,6 @@ public class GenericEventHandler {
             if (shovel.hasUpgrade(equipped, ROTARY_BLADES) &&
               block.isToolEffective(shovel.toolClass(), state)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, shovel, equipped, player);
-            } else if (shovel.hasUpgrade(equipped, BACKHOE)) {
-                boolean isFalling = block instanceof BlockFalling;
-                int end = isFalling ? pos.getY() + Config.backhoeRange : pos.getY();
-                for (int i = pos.getY() - Config.backhoeRange; i < end; i++) {
-                    if (i < 0) {
-                        continue;
-                    }
-                    BlockPos pos1 = new BlockPos(pos.getX(), i, pos.getZ());
-                    IBlockState state1 = world.getBlockState(pos1);
-                    Block block1 = state1.getBlock();
-                    if (!block1.isToolEffective(shovel.toolClass(), state1) ||
-                      !block1.canHarvestBlock(world, pos1, player)) {
-                        continue;
-                    }
-                    if (Item.getItemFromBlock(block) == Item.getItemFromBlock(block1)) {
-                        world.setBlockToAir(pos1);
-                        block.harvestBlock(world, player, pos1, state1, world.getTileEntity(pos1), equipped);
-                    } else {
-                        break;
-                    }
-                }
             }
         } else if (equipped.getItem() instanceof ItemSteamAxe) {
             ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
