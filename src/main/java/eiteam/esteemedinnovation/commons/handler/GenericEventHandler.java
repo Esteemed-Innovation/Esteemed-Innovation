@@ -28,7 +28,6 @@ import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerializer;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
-import eiteam.esteemedinnovation.commons.util.EnchantmentUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
@@ -1769,12 +1768,6 @@ public class GenericEventHandler {
             ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
             if (!drill.isWound(equipped)) {
                 return;
-            }
-
-            if (drill.hasUpgrade(equipped, MULTIPLICATIVE_RESONATOR)) {
-                event.getDrops().clear();
-                List<ItemStack> trueDrops = block.getDrops(world, pos, state, EnchantmentUtility.getFortuneModifier(player) + 2);
-                event.getDrops().addAll(trueDrops);
             }
 
             if (OreDictHelper.cobblestones.contains(pair)) {
