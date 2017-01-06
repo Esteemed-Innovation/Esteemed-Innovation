@@ -1774,36 +1774,6 @@ public class GenericEventHandler {
                 return;
             }
 
-            if (drill.hasUpgrade(equipped, STONE_GRINDER)) {
-                String harvestTool = block.getHarvestTool(state);
-                // Docs say it can be null.
-                //noinspection ConstantConditions
-                if (harvestTool == null || !harvestTool.equals(drill.toolClass())) {
-                    return;
-                }
-                boolean addedNugget = false;
-                for (int i = 0; i < event.getDrops().size(); i++) {
-                    ItemStack drop = event.getDrops().get(i);
-                    MutablePair item = MutablePair.of(drop.getItem(), drop.getItemDamage());
-                    if (!OreDictHelper.stones.contains(item) && !OreDictHelper.cobblestones.contains(item)) {
-                        continue;
-                    }
-
-                    event.getDrops().remove(i);
-                    int chance = rand.nextInt(5);
-                    if (chance != 3 || addedNugget) {
-                        continue;
-                    }
-
-                    int index = rand.nextInt(OreDictHelper.stoneGrinderNuggets.size());
-                    Pair nuggetPair = OreDictHelper.stoneGrinderNuggets.get(index);
-                    int size = rand.nextInt(3) + 1;
-                    ItemStack nugget = new ItemStack((Item) nuggetPair.getLeft(), size, (int) nuggetPair.getRight());
-                    event.getDrops().add(nugget);
-                    addedNugget = true;
-                }
-            }
-
             if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
                 List<ItemStack> out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta), world);
                 if (!out.isEmpty()) {
