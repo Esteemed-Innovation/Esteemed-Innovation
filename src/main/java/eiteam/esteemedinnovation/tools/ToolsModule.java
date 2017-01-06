@@ -129,7 +129,7 @@ public class ToolsModule extends ContentModule {
         INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_CORE, upgradeResource("processor"), null, 0), "internal_processing_unit");
         LEAF_BLOWER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("blower"), null, 1), "leaf_blower");
         TIMBER_CHAIN = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("timberHead"), null, 1), "timber_chain");
-        CHAINSAW = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("chain"), null, 1), "chainsaw");
+        CHAINSAW = setupUpgrade(new ItemChainsawUpgrade(), "chainsaw");
         FOREST_FIRE = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("fire"), null, 1), "forest_fire");
         CULTIVATOR = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("cultivatorHead"), null, 1), "cultivator");
         ROTARY_BLADES = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("rotary"), null, 1), "rotary_blades");

@@ -2164,27 +2164,6 @@ public class GenericEventHandler {
     }
 
     @SubscribeEvent
-    public void doChainsaw(LivingAttackEvent event) {
-        if (!(event.getSource().getSourceOfDamage() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getSource().getSourceOfDamage();
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || equipped.getItem() == null || !(equipped.getItem() instanceof ItemSteamAxe)) {
-            return;
-        }
-        ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-        if (!axe.isWound(equipped) || !axe.hasUpgrade(equipped, CHAINSAW)) {
-            return;
-        }
-
-        if (!player.worldObj.isRemote) {
-            event.getEntityLiving().attackEntityFrom(DamageSource.generic, 9.0F);
-            event.getEntityLiving().addPotionEffect(new PotionEffect(SLOWNESS_POTION, 10, 10));
-        }
-    }
-
-    @SubscribeEvent
     public void toggleDrillDash(LivingEvent.LivingJumpEvent event) {
         if (!(event.getEntityLiving() instanceof EntityPlayer)) {
             return;
@@ -2297,13 +2276,6 @@ public class GenericEventHandler {
                             newSpeed = original * 0.7F;
                         } else {
                             newSpeed *= 0.7F;
-                        }
-                    }
-                    if (axe.hasUpgrade(equipped, CHAINSAW)) {
-                        if (newSpeed == 0.0F) {
-                            newSpeed = original / 1.7F;
-                        } else {
-                            newSpeed /= 1.7F;
                         }
                     }
                 }
