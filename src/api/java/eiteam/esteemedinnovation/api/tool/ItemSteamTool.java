@@ -152,6 +152,22 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         return true;
     }
 
+    /**
+     * @param itemStack The tool's ItemStack
+     * @return The mining speed against a valid block
+     */
+    protected float getSpeed(ItemStack itemStack) {
+        return getSpeed(UtilSteamTool.checkNBT(itemStack).getInteger("Speed"));
+    }
+
+    /**
+     * @param speed The speed value in the tool's NBT
+     * @return The mining speed against a valid block
+     */
+    protected float getSpeed(int speed) {
+        return 11F * (speed / 1000F);
+    }
+
     @Override
     public boolean canCharge(ItemStack me) {
         return true;
@@ -327,12 +343,10 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
                 return;
             }
 
-            float newSpeed = 0.0F;
             for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(equipped)) {
                 SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
-                newSpeed = upgrade.onUpdateBreakSpeedWithTool(event, newSpeed, equipped, upgradeStack);
+                upgrade.onUpdateBreakSpeedWithTool(event, equipped, upgradeStack);
             }
-            event.setNewSpeed(newSpeed);
         }
 
         /**

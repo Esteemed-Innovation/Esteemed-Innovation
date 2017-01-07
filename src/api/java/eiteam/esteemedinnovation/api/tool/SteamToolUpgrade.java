@@ -94,7 +94,8 @@ public interface SteamToolUpgrade {
      * @param event The actual event container. A few things in the event are sanitized before this method is called.
      *              The things sanitized/checked before this is called:
      *              * The block and blockstate at the position are not null.
-     * @param newSpeed The speed that has been modified by each upgrade so far. It starts at 0.
+     *              Use {@link net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed#setNewSpeed(float)} to set
+     *              the new speed value, just as you would if you had subscribed to this event normally.
      * @param toolStack The ItemStack containing the tool (player's main hand). Confirmed to be nonnull and contain an
      *                  ISteamTool.
      * @param thisUpgradeStack The ItemStack containing this upgrade.
@@ -102,9 +103,7 @@ public interface SteamToolUpgrade {
      *         eventually set to the event's new speed, after all of the upgrades have been called. Return the newSpeed
      *         parameter to not change anything (this is what the default impl does).
      */
-    default float onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, float newSpeed, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
-        return newSpeed;
-    }
+    default void onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {}
 
     /**
      * Called in {@link ItemSteamTool.ToolUpgradeEventDelegator#onRightClickBlock(PlayerInteractEvent.RightClickBlock)}

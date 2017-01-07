@@ -3,10 +3,15 @@ package eiteam.esteemedinnovation.tools.steam;
 import com.google.common.collect.Sets;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
+import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -48,5 +53,12 @@ public class ItemSteamShovel extends ItemSteamTool {
     @Nonnull
     public SteamToolSlot getRedSlot() {
         return SteamToolSlot.SHOVEL_HEAD;
+    }
+
+    @Override
+    public float getStrVsBlock(ItemStack stack, IBlockState state) {
+        NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
+        int speed = nbt.getInteger("Speed");
+        return Items.DIAMOND_SHOVEL.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 }

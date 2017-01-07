@@ -23,7 +23,7 @@ public class ItemOverclockerUpgrade extends ItemSteamToolUpgrade {
     }
 
     @Override
-    public float onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, float newSpeed, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
-        return 2.5F / (newSpeed == 0F ? event.getOriginalSpeed() : newSpeed);
+    public void onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
+        event.setNewSpeed(2F * event.getNewSpeed());
     }
 }

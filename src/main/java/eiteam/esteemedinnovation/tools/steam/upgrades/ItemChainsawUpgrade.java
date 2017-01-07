@@ -23,8 +23,8 @@ public class ItemChainsawUpgrade extends ItemSteamToolUpgrade {
     }
 
     @Override
-    public float onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, float newSpeed, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
-        return (newSpeed == 0F ? event.getOriginalSpeed() : newSpeed) / 1.7F;
+    public void onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
+        event.setNewSpeed(event.getNewSpeed() / 1.7F);
     }
 
     @Override

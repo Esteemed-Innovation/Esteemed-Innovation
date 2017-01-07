@@ -10,7 +10,6 @@ import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
-import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
@@ -61,7 +60,6 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -1278,28 +1276,6 @@ public class GenericEventHandler {
                 if (itemDamage >= maxDamage - 1) {
                     event.setNewSpeed(0F);
                 }
-            }
-        }
-
-        IBlockState state = event.getState();
-
-        if (heldItem instanceof ItemSteamDrill) {
-            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.IRON_PICKAXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
-                event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
-            }
-        } else if (heldItem instanceof ItemSteamAxe) {
-            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.DIAMOND_AXE.getStrVsBlock(heldItemStack, state) != 1.0F) {
-                event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
-            }
-        } else if (heldItem instanceof ItemSteamShovel) {
-            NBTTagCompound nbt = UtilSteamTool.checkNBT(heldItemStack);
-            int speed = nbt.getInteger("Speed");
-            if (speed > 0 && Items.DIAMOND_SHOVEL.getStrVsBlock(heldItemStack, state) != 1.0F) {
-                event.setNewSpeed(event.getNewSpeed() * 1F + 11F * (speed / 1000F));
             }
         }
     }
