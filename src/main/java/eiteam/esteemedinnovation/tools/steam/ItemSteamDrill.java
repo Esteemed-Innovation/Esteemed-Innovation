@@ -63,7 +63,6 @@ public class ItemSteamDrill extends ItemSteamTool {
     public float getStrVsBlock(ItemStack stack, IBlockState state) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         int speed = nbt.getInteger("Speed");
-        float ironPickaxeStrVsBlock = Items.IRON_PICKAXE.getStrVsBlock(stack, state);
-        return ironPickaxeStrVsBlock != 1F && speed > 0 ? getSpeed(speed) : 0F;
+        return Items.IRON_PICKAXE.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 }
