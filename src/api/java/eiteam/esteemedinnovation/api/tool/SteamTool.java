@@ -1,8 +1,11 @@
 package eiteam.esteemedinnovation.api.tool;
 
 import eiteam.esteemedinnovation.api.SteamChargable;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 
 public interface SteamTool extends SteamChargable {
     /**
@@ -24,4 +27,10 @@ public interface SteamTool extends SteamChargable {
      * @return The Vanilla tool class associated with this tool.
      */
     String toolClass();
+
+    /**
+     * Public version of the {@link Item#rayTrace(World, EntityPlayer, boolean)} method. Default implementation in
+     * {@link ItemSteamTool} delegates to the Item method.
+     */
+    RayTraceResult rayTrace(World world, EntityPlayer player, boolean useLiquids);
 }

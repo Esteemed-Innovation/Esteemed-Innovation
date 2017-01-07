@@ -1893,9 +1893,6 @@ public class GenericEventHandler {
               block.isToolEffective(axe.toolClass(), state)) {
                 fellBlocks(world, pos, player, equipped);
             }
-            if (axe.hasUpgrade(equipped, FOREST_FIRE)) {
-                burnBlocks(world, pos);
-            }
         }
     }
 
@@ -2018,32 +2015,6 @@ public class GenericEventHandler {
                 }
             } else {
                 break;
-            }
-        }
-    }
-
-    /**
-     * Burns all log blocks within a 5 block radius.
-     * @param world The world
-     * @param startPos The starting Block Position
-     */
-    private void burnBlocks(World world, BlockPos startPos) {
-        int startX = startPos.getX();
-        int startY = startPos.getY();
-        int startZ = startPos.getZ();
-        for (int x = startX - 5; x < startX + 5; x++) {
-            for (int y = startY - 5; y < startY + 5; y++) {
-                for (int z = startZ - 5; z < startZ + 5; z++) {
-                    BlockPos curPos = new BlockPos(x, y, z);
-                    IBlockState state = world.getBlockState(curPos);
-                    Block block = state.getBlock();
-                    if (block == null || world.isAirBlock(curPos)) {
-                        continue;
-                    }
-                    if (block.isFlammable(world, curPos, EnumFacing.getFront(sideHit))) {
-                        world.setBlockState(curPos, Blocks.FIRE.getDefaultState());
-                    }
-                }
             }
         }
     }

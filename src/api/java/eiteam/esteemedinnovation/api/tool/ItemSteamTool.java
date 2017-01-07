@@ -18,6 +18,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -281,6 +282,11 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         return UtilSteamTool.hasUpgrade(me, check);
     }
 
+    @Override
+    public RayTraceResult rayTrace(World world, EntityPlayer player, boolean useLiquids) {
+        return super.rayTrace(world, player, useLiquids);
+    }
+
     /**
      * Returns the according integer from SteamToolSlot that corresponds with this tool.
      */
@@ -329,7 +335,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         }
 
         /**
-         * Calls {@link SteamToolUpgrade#onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed, float, ItemStack, ItemStack)}
+         * Calls {@link SteamToolUpgrade#onUpdateBreakSpeedWithTool(PlayerEvent.BreakSpeed, ItemStack, ItemStack)}
          * for every upgrade in the tool.
          */
         @SubscribeEvent
