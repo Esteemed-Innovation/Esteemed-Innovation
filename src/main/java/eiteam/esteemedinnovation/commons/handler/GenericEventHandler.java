@@ -1735,8 +1735,6 @@ public class GenericEventHandler {
         }
     }
 
-    private int sideHit;
-
     @SubscribeEvent
     public void onBlockBreak(BlockEvent.BreakEvent event) {
         EntityPlayer player = event.getPlayer();
@@ -1771,10 +1769,5 @@ public class GenericEventHandler {
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        sideHit = event.getFace().getIndex();
     }
 }
