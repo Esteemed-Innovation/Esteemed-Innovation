@@ -1768,49 +1768,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void doPreciseCuttingHead(BlockEvent.HarvestDropsEvent event) {
-        if (event.getHarvester() == null) {
-            return;
-        }
-
-        EntityPlayer player = event.getHarvester();
-        BlockPos pos = event.getPos();
-        World world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        int meta = block.getMetaFromState(state);
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null) {
-            return;
-        }
-
-        if (equipped.getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (!drill.isWound(equipped)) {
-                return;
-            }
-
-            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD) &&
-              ForgeHooks.canHarvestBlock(block, player, world, pos)) {
-                ItemStack toAdd = new ItemStack(block, 1, meta);
-                if (toAdd.getItem() == null) {
-                    // Special case because lit redstone ore and redstone ore are different blocks entirely...
-                    // Hopefully this is changed, or there is a better way to do this available in 1.9.
-                    if (block == Blocks.LIT_REDSTONE_ORE) {
-                        toAdd = new ItemStack(Blocks.REDSTONE_ORE);
-                    } else {
-                        toAdd = null;
-                    }
-                }
-                if (toAdd != null) {
-                    event.getDrops().clear();
-                    event.getDrops().add(toAdd);
-                }
-            }
-        }
-    }
-
     @SubscribeEvent
     public void rebreath(LivingAttackEvent event) {
         int consumption = Config.rebreatherConsumption;
@@ -1867,9 +1824,6 @@ public class GenericEventHandler {
                 } else {
                     event.setCanceled(true);
                 }
-            }
-            if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD)) {
-                event.setExpToDrop(0);
             }
         } else if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
