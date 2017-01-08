@@ -43,9 +43,12 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     protected static final ResourceLocation LARGE_ICONS = new ResourceLocation(Constants.EI_MODID + ":textures/gui/engineering2.png");
     private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
 
+    static {
+        MinecraftForge.EVENT_BUS.register(new ToolUpgradeEventDelegator());
+    }
+
     protected ItemSteamTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
-        MinecraftForge.EVENT_BUS.register(new ToolUpgradeEventDelegator());
     }
 
     @Override
@@ -303,7 +306,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
      *
      * Side note: I really wish that Java FP wasn't terrible...
      */
-    private final class ToolUpgradeEventDelegator {
+    private static final class ToolUpgradeEventDelegator {
         /**
          * @param tool The ItemStack to check.
          * @return Whether the provided ItemStack contains a steam tool that is wound up.
