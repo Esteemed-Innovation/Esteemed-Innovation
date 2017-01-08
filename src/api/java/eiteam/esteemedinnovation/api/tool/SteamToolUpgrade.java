@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.api.tool;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -141,5 +142,30 @@ public interface SteamToolUpgrade {
      */
     default boolean onAttackWithTool(@Nonnull EntityPlayer attacker, @Nonnull EntityLivingBase victim, DamageSource damageSource, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
         return true;
+    }
+
+    /**
+     * Gets the strength against the mined block for a tool with this upgrade. This is called only if {@link #modifiesToolStrength()}
+     * returns true. This should be treated just as a normal {@link net.minecraft.item.Item#getStrVsBlock(ItemStack, IBlockState)}
+     * method implementation would be.
+     * @param baseSpeed The base speed value (the value in the NBT).
+     * @param modifiedSpeed The speed value with the applied math used to determine the actual strength. If baseSpeed is
+     *                      greater than 0 and modifiesToolStrength is false, this is the value that would be used for
+     *                      the strength against the block.
+     * @param toolStack The ItemStack for the tool being used to mine.
+     * @param state The block state being used to mine.
+     * @return The strength against the block.
+     */
+    default float getToolStrength(int baseSpeed, float modifiedSpeed, ItemStack toolStack, IBlockState state) {
+        return 0F;
+    }
+
+    /**
+     * @return If true, {@link #getToolStrength(int, float, ItemStack, IBlockState)} will be used for the tool's
+     *         {@link net.minecraft.item.Item#getStrVsBlock(ItemStack, IBlockState)} implementation instead of the
+     *         standard value.
+     */
+    default boolean modifiesToolStrength() {
+        return false;
     }
 }

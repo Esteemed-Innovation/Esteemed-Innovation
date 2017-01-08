@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
-import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
+import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

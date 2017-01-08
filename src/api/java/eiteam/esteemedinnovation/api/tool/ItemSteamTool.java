@@ -42,13 +42,19 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     private boolean hasBrokenBlock = false;
     protected static final ResourceLocation LARGE_ICONS = new ResourceLocation(Constants.EI_MODID + ":textures/gui/engineering2.png");
     private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
+    /**
+     * The Item used in getStrVsBlock. Basically, assuming there are no strength modifying upgrades, this item's getStrVsBlock
+     * will be called to determine the strength (along with the speed, of course).
+     */
+    private final Item itemForStrength;
 
     static {
         MinecraftForge.EVENT_BUS.register(new ToolUpgradeEventDelegator());
     }
 
-    protected ItemSteamTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn) {
+    protected ItemSteamTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, Item itemForStrength) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
+        this.itemForStrength = itemForStrength;
     }
 
     @Override
@@ -170,6 +176,19 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
      */
     protected float getSpeed(int speed) {
         return 11F * (speed / 1000F);
+    }
+
+    @Override
+    public float getStrVsBlock(ItemStack stack, IBlockState state) {
+        NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
+        int speed = nbt.getInteger("Speed");
+        float modifiedSpeed = getSpeed(speed);
+        for (SteamToolUpgrade upgrade : UtilSteamTool.getUpgrades(stack)) {
+            if (upgrade.modifiesToolStrength()) {
+                return upgrade.getToolStrength(speed, modifiedSpeed, stack, state);
+            }
+        }
+        return itemForStrength.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 
     @Override

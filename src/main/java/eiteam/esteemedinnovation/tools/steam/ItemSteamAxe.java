@@ -3,15 +3,11 @@ package eiteam.esteemedinnovation.tools.steam;
 import com.google.common.collect.Sets;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -25,7 +21,7 @@ public class ItemSteamAxe extends ItemSteamTool {
       Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE);
 
     public ItemSteamAxe() {
-        super(8F, -3.2F, STEAMSAW_MAT, EFFECTIVE_ON);
+        super(8F, -3.2F, STEAMSAW_MAT, EFFECTIVE_ON, Items.DIAMOND_AXE);
     }
 
     @Override
@@ -53,12 +49,5 @@ public class ItemSteamAxe extends ItemSteamTool {
     @Override
     public SteamToolSlot getRedSlot() {
         return SteamToolSlot.SAW_HEAD;
-    }
-
-    @Override
-    public float getStrVsBlock(ItemStack stack, IBlockState state) {
-        NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
-        int speed = nbt.getInteger("Speed");
-        return Items.DIAMOND_AXE.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 }
