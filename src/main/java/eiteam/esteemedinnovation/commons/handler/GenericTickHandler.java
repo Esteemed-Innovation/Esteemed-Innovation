@@ -320,30 +320,14 @@ public class GenericTickHandler {
         }
     }
 
-    private int lavaTicks = 0;
     private int chargeTicks = 0;
 
     @SubscribeEvent
-    public void deleteLavaAndExplodeCharges(TickEvent.WorldTickEvent event) {
+    public void explodeCharges(TickEvent.WorldTickEvent event) {
         if (event.side.isClient()) {
             return;
         }
-        lavaTicks++;
         chargeTicks++;
-
-        Iterator<Map.Entry<MutablePair<Integer, BlockPos>, Integer>> lava = GenericEventHandler.quickLavaBlocks.entrySet().iterator();
-        while (lava.hasNext()) {
-            Map.Entry<MutablePair<Integer, BlockPos>, Integer> entry = lava.next();
-            MutablePair<Integer, BlockPos> dimCoords = entry.getKey();
-            BlockPos pos = dimCoords.getRight();
-            int dim = dimCoords.getLeft();
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
-            int waitTicks = entry.getValue();
-            if (lavaTicks == waitTicks) {
-                worldServer.setBlockToAir(pos);
-                lava.remove();
-            }
-        }
 
         Iterator<Map.Entry<MutablePair<EntityPlayer, BlockPos>, Integer>> charge = GenericEventHandler.charges.entrySet().iterator();
         while (charge.hasNext()) {
@@ -364,9 +348,6 @@ public class GenericTickHandler {
             }
         }
 
-        if (lavaTicks >= 30) {
-            lavaTicks = 0;
-        }
         if (chargeTicks >= GenericEventHandler.HARD_CHARGE_CAP) {
             chargeTicks = 0;
         }

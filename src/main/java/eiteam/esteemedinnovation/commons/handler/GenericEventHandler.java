@@ -1846,37 +1846,6 @@ public class GenericEventHandler {
         }
     }
 
-    /**
-     * The Hash of quick lava blocks to delete.
-     * Key: Pair of dimension ID and BlockPos.
-     * Value: Integer, number of ticks to wait. Cannot be more than 30 or bad things will happen.
-     */
-    public static HashMap<MutablePair<Integer, BlockPos>, Integer> quickLavaBlocks = new HashMap<>();
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void placeLava(BlockEvent.HarvestDropsEvent event) {
-        EntityPlayer player = event.getHarvester();
-        IBlockState state = event.getState();
-        BlockPos pos = event.getPos();
-        Block block = state.getBlock();
-        World world = event.getWorld();
-        if (player == null) {
-            return;
-        }
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || equipped.getItem() == null || block == null) {
-            return;
-        }
-        if (equipped.getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, THERMAL_DRILL) && drill.isWound(equipped)) {
-                world.setBlockState(pos, Blocks.LAVA.getDefaultState());
-                quickLavaBlocks.put(MutablePair.of(player.dimension, pos), new Random().nextInt(30) + 1);
-                event.getDrops().clear();
-            }
-        }
-    }
-
     public static HashMap<MutablePair<EntityPlayer, BlockPos>, Integer> charges = new HashMap<>();
     public static final int PEACEFUL_CHARGE = 12 * 20;
     public static final int EASY_CHARGE_CAP = 14 * 20;
@@ -2042,8 +2011,7 @@ public class GenericEventHandler {
                             newSpeed /= 2;
                         }
                     }
-                    if (drill.hasUpgrade(equipped, THERMAL_DRILL) ||
-                      drill.hasUpgrade(equipped, CHARGE_PLACER)) {
+                    if (drill.hasUpgrade(equipped, CHARGE_PLACER)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original * 5;
                         } else {

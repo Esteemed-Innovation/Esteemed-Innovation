@@ -122,7 +122,7 @@ public class ToolsModule extends ContentModule {
         BATTLE_DRILL = setupUpgrade(new ItemBattleDrillUpgrade(), "battle_drill");
         STONE_GRINDER = setupUpgrade(new ItemStoneGrinderUpgrade(), "stone_grinder");
         PRECISE_CUTTING_HEAD = setupUpgrade(new ItemPreciseCuttingHeadUpgrade(), "precise_cutting_head");
-        THERMAL_DRILL = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("thermal"), null, 1), "thermal_drill");
+        THERMAL_DRILL = setupUpgrade(new ItemThermalDrillUpgrade(), "thermal_drill");
         MULTIPLICATIVE_RESONATOR = setupUpgrade(new ItemMultiplicativeResonatorUpgrade(), "multiplicative_resonator");
         CHARGE_PLACER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("chargePlacer"), null, 1), "charge_placer");
         DRILL_HEAD = setupUpgrade(new ItemDrillHeadUpgrade(), "drill_head");
