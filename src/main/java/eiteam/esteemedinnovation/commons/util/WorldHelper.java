@@ -1,7 +1,13 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import eiteam.esteemedinnovation.api.tool.SteamTool;
+import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -100,5 +106,117 @@ public class WorldHelper {
      */
     public static TileEntity getTileEntitySafely(IBlockAccess world, BlockPos pos) {
         return world instanceof ChunkCache ? ((ChunkCache) world).func_190300_a(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
+    }
+
+    // { x, y, z } relatively
+
+    public static final int[][] EXTRA_BLOCKS_SIDE = {
+      { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 },
+      { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 },
+      { 0, -1, 0 }, { 0, -1, 0 }, { 0, -1, 1 }
+    };
+
+    public static final int[][] EXTRA_BLOCKS_FORWARD = {
+      { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 },
+      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
+      { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }
+    };
+
+    public static final int[][] EXTRA_BLOCKS_VERTICAL = {
+      { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 },
+      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
+      { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }
+    };
+
+    public static final int[][] EXTRA_BLOCKS_9_SIDE = {
+      { 0, 4, -4 }, { 0, 4, -3 }, { 0, 4, -2 }, { 0, 4, -1 }, { 0, 4, 0 }, { 0, 4, 1 }, { 0, 4, 2 }, { 0, 4, 3 }, { 0, 4, 4 },
+      { 0, 3, -4 }, { 0, 3, -3 }, { 0, 3, -2 }, { 0, 3, -1 }, { 0, 3, 0 }, { 0, 3, 1 }, { 0, 3, 2 }, { 0, 3, 3 }, { 0, 3, 4 },
+      { 0, 2, -4 }, { 0, 3, -3 }, { 0, 2, -2 }, { 0, 2, -1 }, { 0, 2, 0 }, { 0, 2, 1 }, { 0, 2, 2 }, { 0, 2, 3 }, { 0, 2, 4 },
+      { 0, 1, -4 }, { 0, 2, -3 }, { 0, 1, -2 }, { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 }, { 0, 1, 2 }, { 0, 1, 3 }, { 0, 1, 4 },
+      { 0, 0, -4 }, { 0, 0, -3 }, { 0, 0, -2 }, { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 }, { 0, 0, 2 }, { 0, 0, 3 }, { 0, 0, 4 },
+      { 0, -1, -4 }, { 0, -1, -3 }, { 0, -1, -2 }, { 0, -1, -1 }, { 0, -1, 0 }, { 0, -1, 1 }, { 0, -1, 2 }, { 0, -1, 3 }, { 0, -1, 4 },
+      { 0, -2, -4 }, { 0, -2, -3 }, { 0, -2, -2 }, { 0, -2, -1 }, { 0, -2, 0 }, { 0, -2, 1 }, { 0, -2, 2 }, { 0, -2, 3 }, { 0, -2, 4 },
+      { 0, -3, -4 }, { 0, -3, -3 }, { 0, -3, -2 }, { 0, -3, -1 }, { 0, -3, 0 }, { 0, -3, 1 }, { 0, -3, 2 }, { 0, -3, 3 }, { 0, -3, 4 },
+      { 0, -4, -4 }, { 0, -4, -3 }, { 0, -4, -2 }, { 0, -4, -1 }, { 0, -4, 0 }, { 0, -4, 1 }, { 0, -4, 2 }, { 0, -4, 3 }, { 0, -4, 4 },
+    };
+
+    public static final int[][] EXTRA_BLOCKS_9_FORWARD = {
+      { -4, 4, 0 }, { -3, 4, 0 }, { -2, 4, 0 }, { -1, 4, 0 }, { 0, 4, 0 }, { 1, 4, 0 }, { 2, 4, 0 }, { 3, 4, 0 }, { 4, 4, 0 },
+      { -4, 3, 0 }, { -3, 3, 0 }, { -2, 3, 0 }, { -1, 3, 0 }, { 0, 3, 0 }, { 1, 3, 0 }, { 2, 3, 0 }, { 3, 3, 0 }, { 4, 3, 0 },
+      { -4, 2, 0 }, { -3, 2, 0 }, { -2, 2, 0 }, { -1, 2, 0 }, { 0, 2, 0 }, { 1, 2, 0 }, { 2, 2, 0 }, { 3, 2, 0 }, { 4, 2, 0 },
+      { -4, 1, 0 }, { -3, 1, 0 }, { -2, 1, 0 }, { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 }, { 2, 1, 0 }, { 3, 1, 0 }, { 4, 1, 0 },
+      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0 , 0 }, { 4, 0, 0 },
+      { -4, -1, 0 }, { -3, -1, 0 }, { -2, -1, 0 }, { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }, { 2, -1, 0 }, { 3, -1, 0 }, { 4, -1, 0 },
+      { -4, -2, 0 }, { -3, -2, 0 }, { -2, -2, 0 }, { -1, -2, 0 }, { 0, -2, 0 }, { 1, -2, 0 }, { 2, -2, 0 }, { 3, -2, 0 }, { 4, -2, 0 },
+      { -4, -3, 0 }, { -3, -3, 0 }, { -2, -3, 0 }, { -1, -3, 0 }, { 0, -3, 0 }, { 1, -3, 0 }, { 2, -3, 0 }, { 3, -3, 0 }, { 4, -3, 0 },
+      { -4, -4, 0 }, { -3, -4, 0 }, { -2, -4, 0 }, { -1, -4, 0 }, { 0, -4, 0 }, { 1, -4, 0 }, { 2, -4, 0 }, { 3, -4, 0 }, { 4, -4, 0 },
+    };
+
+    public static final int[] [] EXTRA_BLOCKS_9_VERTICAL = {
+      { -4, 0, 4 }, { -4, 0, 4 }, { -2, 0, 4 }, { -4, 0, 4 }, { 0, 0, 4 }, { 1, 0, 4 }, { 2, 0, 4 }, { 3, 0, 4 }, { 4, 0, 4},
+      { -4, 0, 3 }, { -3, 0, 3 }, { -2, 0, 3 }, { -3, 0, 3 }, { 0, 0, 3 }, { 1, 0, 3 }, { 2, 0, 3 }, { 3, 0, 3 }, { 4, 0, 3},
+      { -4, 0, 2 }, { -3, 0, 2 }, { -2, 0, 2 }, { -1, 0, 2 }, { 0, 0, 2 }, { 1, 0, 2 }, { 2, 0, 2 }, { 3, 0, 2 }, { 4, 0, 2 },
+      { -4, 0, 1 }, { -3, 0, 1 }, { -2, 0, 1 }, { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 }, { 2, 0, 1 }, { 3, 0, 1 }, { 4, 0, 1 },
+      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 },
+      { -4, 0, -1 }, { -3, 0, -1 }, { -2, 0, -1 }, { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }, { 2, 0, -1 }, { 3, 0, -1 }, { 4, 0, -1 },
+      { -4, 0, -2 }, { -3, 0, -2 }, { -2, 0, -2 }, { -1, 0, -2 }, { 0, 0, -2 }, { 1, 0, -2 }, { 2, 0, -2 }, { 3, 0, -2 }, { 4, 0, -2 },
+      { -4, 0, -3 }, { -3, 0, -3 }, { -2, 0, -3 }, { -1, 0, -3 }, { 0, 0, -3 }, { 1, 0, -3 }, { 2, 0, -3 }, { 3, 0, -3 }, { 4, 0, -3 },
+      { -4, 0, -4 }, { -3, 0, -4 }, { -2, 0, -4 }, { -1, 0, -4 }, { 0, 0, -4 }, { 1, 0, -4 }, { 2, 0, -4 }, { 3, 0, -4 }, { 4, 0, -4 },
+    };
+
+    public static int[][] getExtraBlockCoordinates(int sideHit) {
+        switch (sideHit) {
+            case 5: return EXTRA_BLOCKS_SIDE;
+            case 4: return EXTRA_BLOCKS_SIDE;
+            case 3: return EXTRA_BLOCKS_FORWARD;
+            case 1: return EXTRA_BLOCKS_VERTICAL;
+            case 0: return EXTRA_BLOCKS_VERTICAL;
+            default: return EXTRA_BLOCKS_FORWARD;
+        }
+    }
+
+    public static int[][] getExtraBlock9Coordinates(int sideHit) {
+        switch (sideHit) {
+            case 5: return EXTRA_BLOCKS_9_SIDE;
+            case 4: return EXTRA_BLOCKS_9_SIDE;
+            case 3: return EXTRA_BLOCKS_9_FORWARD;
+            case 1: return EXTRA_BLOCKS_9_VERTICAL;
+            case 0: return EXTRA_BLOCKS_9_VERTICAL;
+            default: return EXTRA_BLOCKS_9_FORWARD;
+        }
+    }
+
+    /**
+     * This mines the extra blocks within the coordinate array.
+     * @param coordinateArray The array of arrays containing the coordinates to add to x, y, z.
+     * @param startPos The starting position
+     * @param world The world.
+     * @param tool The tool mining.
+     * @param toolStack The ItemStack of the tool.
+     * @param player The player mining.
+     */
+    public static void mineExtraBlocks(int[][] coordinateArray, BlockPos startPos, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
+//        boolean isDrill = tool instanceof ItemSteamDrill;
+//        boolean isAxe = tool instanceof ItemSteamAxe;
+        boolean isShovel = tool instanceof ItemSteamShovel;
+        for (int[] aCoordinateArray : coordinateArray) {
+            int thisX = startPos.getX() + aCoordinateArray[0];
+            int thisY = startPos.getY() + aCoordinateArray[1];
+            int thisZ = startPos.getZ() + aCoordinateArray[2];
+            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
+            IBlockState state = world.getBlockState(thisPos);
+            Block block = state.getBlock();
+
+            // For some reason, canHarvestBlock is false when using the Steam Shovel.
+            String toolClass = block.getHarvestTool(state);
+            boolean canHarvest = tool.canHarvestBlock(state, toolStack) ||
+              (isShovel && toolClass != null && toolClass.equals(((SteamTool) tool).toolClass()));
+            if (block != null && world.isAirBlock(thisPos) && canHarvest) {
+//                world.spawnParticle("")
+//                world.func_147480_a(thisX, thisY, thisZ, false);
+                world.setBlockToAir(thisPos);
+                block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), toolStack);
+            }
+        }
     }
 }

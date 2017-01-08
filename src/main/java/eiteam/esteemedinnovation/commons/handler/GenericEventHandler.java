@@ -9,7 +9,6 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
-import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
@@ -112,6 +111,7 @@ import java.util.*;
 import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
+import static eiteam.esteemedinnovation.commons.util.WorldHelper.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 import static eiteam.esteemedinnovation.tools.ToolsModule.*;
@@ -2055,8 +2055,7 @@ public class GenericEventHandler {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
             if (shovel.hasUpgrade(equipped, CULTIVATOR) &&
               shovel.isWound(equipped)) {
-                int[][] coords = extraBlocksVertical;
-                for (int[] aCoordinateArray : coords) {
+                for (int[] aCoordinateArray : EXTRA_BLOCKS_VERTICAL) {
                     int thisX = pos.getX() + aCoordinateArray[0];
                     int thisY = pos.getY() + aCoordinateArray[1];
                     int thisZ = pos.getZ() + aCoordinateArray[2];
@@ -2197,118 +2196,6 @@ public class GenericEventHandler {
             }
             if (newSpeed != 0.0F) {
                 event.setNewSpeed(newSpeed);
-            }
-        }
-    }
-
-    // { x, y, z } relatively
-
-    private static int[][] extraBlocksSide = {
-      { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 },
-      { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 },
-      { 0, -1, 0 }, { 0, -1, 0 }, { 0, -1, 1 }
-    };
-
-    private static int[][] extraBlocksForward = {
-      { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 },
-      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
-      { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }
-    };
-
-    private static int[][] extraBlocksVertical = {
-      { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 },
-      { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 },
-      { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }
-    };
-
-    private static int[][] extraBlocks9Side = {
-      { 0, 4, -4 }, { 0, 4, -3 }, { 0, 4, -2 }, { 0, 4, -1 }, { 0, 4, 0 }, { 0, 4, 1 }, { 0, 4, 2 }, { 0, 4, 3 }, { 0, 4, 4 },
-      { 0, 3, -4 }, { 0, 3, -3 }, { 0, 3, -2 }, { 0, 3, -1 }, { 0, 3, 0 }, { 0, 3, 1 }, { 0, 3, 2 }, { 0, 3, 3 }, { 0, 3, 4 },
-      { 0, 2, -4 }, { 0, 3, -3 }, { 0, 2, -2 }, { 0, 2, -1 }, { 0, 2, 0 }, { 0, 2, 1 }, { 0, 2, 2 }, { 0, 2, 3 }, { 0, 2, 4 },
-      { 0, 1, -4 }, { 0, 2, -3 }, { 0, 1, -2 }, { 0, 1, -1 }, { 0, 1, 0 }, { 0, 1, 1 }, { 0, 1, 2 }, { 0, 1, 3 }, { 0, 1, 4 },
-      { 0, 0, -4 }, { 0, 0, -3 }, { 0, 0, -2 }, { 0, 0, -1 }, { 0, 0, 0 }, { 0, 0, 1 }, { 0, 0, 2 }, { 0, 0, 3 }, { 0, 0, 4 },
-      { 0, -1, -4 }, { 0, -1, -3 }, { 0, -1, -2 }, { 0, -1, -1 }, { 0, -1, 0 }, { 0, -1, 1 }, { 0, -1, 2 }, { 0, -1, 3 }, { 0, -1, 4 },
-      { 0, -2, -4 }, { 0, -2, -3 }, { 0, -2, -2 }, { 0, -2, -1 }, { 0, -2, 0 }, { 0, -2, 1 }, { 0, -2, 2 }, { 0, -2, 3 }, { 0, -2, 4 },
-      { 0, -3, -4 }, { 0, -3, -3 }, { 0, -3, -2 }, { 0, -3, -1 }, { 0, -3, 0 }, { 0, -3, 1 }, { 0, -3, 2 }, { 0, -3, 3 }, { 0, -3, 4 },
-      { 0, -4, -4 }, { 0, -4, -3 }, { 0, -4, -2 }, { 0, -4, -1 }, { 0, -4, 0 }, { 0, -4, 1 }, { 0, -4, 2 }, { 0, -4, 3 }, { 0, -4, 4 },
-    };
-
-    private static int[][] extraBlocks9Forward = {
-      { -4, 4, 0 }, { -3, 4, 0 }, { -2, 4, 0 }, { -1, 4, 0 }, { 0, 4, 0 }, { 1, 4, 0 }, { 2, 4, 0 }, { 3, 4, 0 }, { 4, 4, 0 },
-      { -4, 3, 0 }, { -3, 3, 0 }, { -2, 3, 0 }, { -1, 3, 0 }, { 0, 3, 0 }, { 1, 3, 0 }, { 2, 3, 0 }, { 3, 3, 0 }, { 4, 3, 0 },
-      { -4, 2, 0 }, { -3, 2, 0 }, { -2, 2, 0 }, { -1, 2, 0 }, { 0, 2, 0 }, { 1, 2, 0 }, { 2, 2, 0 }, { 3, 2, 0 }, { 4, 2, 0 },
-      { -4, 1, 0 }, { -3, 1, 0 }, { -2, 1, 0 }, { -1, 1, 0 }, { 0, 1, 0 }, { 1, 1, 0 }, { 2, 1, 0 }, { 3, 1, 0 }, { 4, 1, 0 },
-      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0 , 0 }, { 4, 0, 0 },
-      { -4, -1, 0 }, { -3, -1, 0 }, { -2, -1, 0 }, { -1, -1, 0 }, { 0, -1, 0 }, { 1, -1, 0 }, { 2, -1, 0 }, { 3, -1, 0 }, { 4, -1, 0 },
-      { -4, -2, 0 }, { -3, -2, 0 }, { -2, -2, 0 }, { -1, -2, 0 }, { 0, -2, 0 }, { 1, -2, 0 }, { 2, -2, 0 }, { 3, -2, 0 }, { 4, -2, 0 },
-      { -4, -3, 0 }, { -3, -3, 0 }, { -2, -3, 0 }, { -1, -3, 0 }, { 0, -3, 0 }, { 1, -3, 0 }, { 2, -3, 0 }, { 3, -3, 0 }, { 4, -3, 0 },
-      { -4, -4, 0 }, { -3, -4, 0 }, { -2, -4, 0 }, { -1, -4, 0 }, { 0, -4, 0 }, { 1, -4, 0 }, { 2, -4, 0 }, { 3, -4, 0 }, { 4, -4, 0 },
-    };
-
-    private static int[] [] extraBlocks9Vertical = {
-      { -4, 0, 4 }, { -4, 0, 4 }, { -2, 0, 4 }, { -4, 0, 4 }, { 0, 0, 4 }, { 1, 0, 4 }, { 2, 0, 4 }, { 3, 0, 4 }, { 4, 0, 4},
-      { -4, 0, 3 }, { -3, 0, 3 }, { -2, 0, 3 }, { -3, 0, 3 }, { 0, 0, 3 }, { 1, 0, 3 }, { 2, 0, 3 }, { 3, 0, 3 }, { 4, 0, 3},
-      { -4, 0, 2 }, { -3, 0, 2 }, { -2, 0, 2 }, { -1, 0, 2 }, { 0, 0, 2 }, { 1, 0, 2 }, { 2, 0, 2 }, { 3, 0, 2 }, { 4, 0, 2 },
-      { -4, 0, 1 }, { -3, 0, 1 }, { -2, 0, 1 }, { -1, 0, 1 }, { 0, 0, 1 }, { 1, 0, 1 }, { 2, 0, 1 }, { 3, 0, 1 }, { 4, 0, 1 },
-      { -4, 0, 0 }, { -3, 0, 0 }, { -2, 0, 0 }, { -1, 0, 0 }, { 0, 0, 0 }, { 1, 0, 0 }, { 2, 0, 0 }, { 3, 0, 0 }, { 4, 0, 0 },
-      { -4, 0, -1 }, { -3, 0, -1 }, { -2, 0, -1 }, { -1, 0, -1 }, { 0, 0, -1 }, { 1, 0, -1 }, { 2, 0, -1 }, { 3, 0, -1 }, { 4, 0, -1 },
-      { -4, 0, -2 }, { -3, 0, -2 }, { -2, 0, -2 }, { -1, 0, -2 }, { 0, 0, -2 }, { 1, 0, -2 }, { 2, 0, -2 }, { 3, 0, -2 }, { 4, 0, -2 },
-      { -4, 0, -3 }, { -3, 0, -3 }, { -2, 0, -3 }, { -1, 0, -3 }, { 0, 0, -3 }, { 1, 0, -3 }, { 2, 0, -3 }, { 3, 0, -3 }, { 4, 0, -3 },
-      { -4, 0, -4 }, { -3, 0, -4 }, { -2, 0, -4 }, { -1, 0, -4 }, { 0, 0, -4 }, { 1, 0, -4 }, { 2, 0, -4 }, { 3, 0, -4 }, { 4, 0, -4 },
-    };
-
-    private int[][] getExtraBlockCoordinates(int sideHit) {
-        switch (sideHit) {
-            case 5: return extraBlocksSide;
-            case 4: return extraBlocksSide;
-            case 3: return extraBlocksForward;
-            case 1: return extraBlocksVertical;
-            case 0: return extraBlocksVertical;
-            default: return extraBlocksForward;
-        }
-    }
-
-    private int[][] getExtraBlock9Coordinates(int sideHit) {
-        switch (sideHit) {
-            case 5: return extraBlocks9Side;
-            case 4: return extraBlocks9Side;
-            case 3: return extraBlocks9Forward;
-            case 1: return extraBlocks9Vertical;
-            case 0: return extraBlocks9Vertical;
-            default: return extraBlocks9Forward;
-        }
-    }
-
-    /**
-     * This mines the extra blocks within the coordinate array.
-     * @param coordinateArray The array of arrays containing the coordinates to add to x, y, z.
-     * @param startPos The starting position
-     * @param world The world.
-     * @param tool The tool mining.
-     * @param toolStack The ItemStack of the tool.
-     * @param player The player mining.
-     */
-    private void mineExtraBlocks(int[][] coordinateArray, BlockPos startPos, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
-//        boolean isDrill = tool instanceof ItemSteamDrill;
-//        boolean isAxe = tool instanceof ItemSteamAxe;
-        boolean isShovel = tool instanceof ItemSteamShovel;
-        for (int[] aCoordinateArray : coordinateArray) {
-            int thisX = startPos.getX() + aCoordinateArray[0];
-            int thisY = startPos.getY() + aCoordinateArray[1];
-            int thisZ = startPos.getZ() + aCoordinateArray[2];
-            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-            IBlockState state = world.getBlockState(thisPos);
-            Block block = state.getBlock();
-
-            // For some reason, canHarvestBlock is false when using the Steam Shovel.
-            String toolClass = block.getHarvestTool(state);
-            boolean canHarvest = tool.canHarvestBlock(state, toolStack) ||
-              (isShovel && toolClass != null && toolClass.equals(((SteamTool) tool).toolClass()));
-            if (block != null && world.isAirBlock(thisPos) && canHarvest) {
-//                world.spawnParticle("")
-//                world.func_147480_a(thisX, thisY, thisZ, false);
-                world.setBlockToAir(thisPos);
-                block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), toolStack);
             }
         }
     }
