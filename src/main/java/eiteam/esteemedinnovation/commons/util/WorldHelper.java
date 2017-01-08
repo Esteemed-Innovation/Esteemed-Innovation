@@ -164,6 +164,10 @@ public class WorldHelper {
       { -4, 0, -4 }, { -3, 0, -4 }, { -2, 0, -4 }, { -1, 0, -4 }, { 0, 0, -4 }, { 1, 0, -4 }, { 2, 0, -4 }, { 3, 0, -4 }, { 4, 0, -4 },
     };
 
+    public static int[][] getExtraBlockCoordinates(EnumFacing sideHit) {
+        return getExtraBlockCoordinates(sideHit.getIndex());
+    }
+
     public static int[][] getExtraBlockCoordinates(int sideHit) {
         switch (sideHit) {
             case 5: return EXTRA_BLOCKS_SIDE;
@@ -173,6 +177,10 @@ public class WorldHelper {
             case 0: return EXTRA_BLOCKS_VERTICAL;
             default: return EXTRA_BLOCKS_FORWARD;
         }
+    }
+
+    public static int[][] getExtraBlock9Coordinates(EnumFacing sideHit) {
+        return getExtraBlockCoordinates(sideHit.getIndex());
     }
 
     public static int[][] getExtraBlock9Coordinates(int sideHit) {
@@ -211,7 +219,7 @@ public class WorldHelper {
             String toolClass = block.getHarvestTool(state);
             boolean canHarvest = tool.canHarvestBlock(state, toolStack) ||
               (isShovel && toolClass != null && toolClass.equals(((SteamTool) tool).toolClass()));
-            if (block != null && world.isAirBlock(thisPos) && canHarvest) {
+            if (block != null && !world.isAirBlock(thisPos) && canHarvest) {
 //                world.spawnParticle("")
 //                world.func_147480_a(thisX, thisY, thisZ, false);
                 world.setBlockToAir(thisPos);
