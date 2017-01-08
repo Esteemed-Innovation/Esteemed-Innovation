@@ -31,7 +31,6 @@ import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
-import eiteam.esteemedinnovation.tools.steam.ItemSteamAxe;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
 import eiteam.esteemedinnovation.tools.steam.SteamToolHelper;
@@ -1782,42 +1781,6 @@ public class GenericEventHandler {
               block.isToolEffective(shovel.toolClass(), state)) {
                 mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, shovel, equipped, player);
             }
-        } else if (equipped.getItem() instanceof ItemSteamAxe) {
-            ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-            if (!axe.isWound(equipped)) {
-                return;
-            }
-            if (axe.hasUpgrade(equipped, TIMBER_CHAIN) &&
-              block.isToolEffective(axe.toolClass(), state)) {
-                fellBlocks(world, pos, player, equipped);
-            }
-        }
-    }
-
-    /**
-     * Mines all of the log blocks above the starting coordinate.
-     * @param world The world instance.
-     * @param startPos The starting Block Position
-     * @param player The player doing the felling.
-     * @param axe The axe's ItemStack
-     */
-    private void fellBlocks(World world, BlockPos startPos, EntityPlayer player, ItemStack axe) {
-        ItemSteamAxe sAxe = (ItemSteamAxe) axe.getItem();
-        for (int y = startPos.getY(); y < 256; y++) {
-            BlockPos curPos = new BlockPos(startPos.getX(), y, startPos.getZ());
-            IBlockState state = world.getBlockState(curPos);
-            Block block = state.getBlock();
-            if (OreDictHelper.listHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {
-                world.setBlockToAir(curPos);
-                block.harvestBlock(world, player, curPos, state, world.getTileEntity(curPos), axe);
-                if (y % 2 == 0) {
-                    if (!sAxe.addSteam(axe, -sAxe.steamPerDurability(), player)) {
-                        break;
-                    }
-                }
-            } else {
-                break;
-            }
         }
     }
 
@@ -1875,18 +1838,7 @@ public class GenericEventHandler {
         if (equipped != null && equipped.getItem() != null && block != null) {
             float newSpeed = 0.0F;
             float original = event.getOriginalSpeed();
-            if (equipped.getItem() instanceof ItemSteamAxe) {
-                ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-                if (axe.isWound(equipped)) {
-                    if (axe.hasUpgrade(equipped, TIMBER_CHAIN)) {
-                        if (newSpeed == 0.0F) {
-                            newSpeed = original * 0.7F;
-                        } else {
-                            newSpeed *= 0.7F;
-                        }
-                    }
-                }
-            } else if (equipped.getItem() instanceof ItemSteamShovel) {
+            if (equipped.getItem() instanceof ItemSteamShovel) {
                 ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
                 if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, ROTARY_BLADES)) {
                     newSpeed = original * 0.425F;
