@@ -152,11 +152,12 @@ public interface SteamToolUpgrade {
      * @param modifiedSpeed The speed value with the applied math used to determine the actual strength. If baseSpeed is
      *                      greater than 0 and modifiesToolStrength is false, this is the value that would be used for
      *                      the strength against the block.
+     * @param upgradeStack The ItemStack for the upgrade
      * @param toolStack The ItemStack for the tool being used to mine.
      * @param state The block state being used to mine.
      * @return The strength against the block.
      */
-    default float getToolStrength(int baseSpeed, float modifiedSpeed, ItemStack toolStack, IBlockState state) {
+    default float getToolStrength(int baseSpeed, float modifiedSpeed, ItemStack upgradeStack, ItemStack toolStack, IBlockState state) {
         return 0F;
     }
 

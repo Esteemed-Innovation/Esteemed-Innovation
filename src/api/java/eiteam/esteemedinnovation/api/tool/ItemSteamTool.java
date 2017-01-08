@@ -183,9 +183,10 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         int speed = nbt.getInteger("Speed");
         float modifiedSpeed = getSpeed(speed);
-        for (SteamToolUpgrade upgrade : UtilSteamTool.getUpgrades(stack)) {
+        for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(stack)) {
+            SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
             if (upgrade.modifiesToolStrength()) {
-                return upgrade.getToolStrength(speed, modifiedSpeed, stack, state);
+                return upgrade.getToolStrength(speed, modifiedSpeed, upgradeStack, stack, state);
             }
         }
         return itemForStrength.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
