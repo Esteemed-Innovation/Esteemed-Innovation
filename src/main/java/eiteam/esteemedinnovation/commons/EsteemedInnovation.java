@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
-import eiteam.esteemedinnovation.commons.handler.FieldHandler;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.handler.GenericTickHandler;
 import eiteam.esteemedinnovation.commons.handler.GuiHandler;
@@ -127,7 +127,7 @@ public class EsteemedInnovation {
     public void load(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
-        FieldHandler.init();
+        ReflectionHelper.init();
         MinecraftForge.EVENT_BUS.register(new GenericEventHandler());
 
         MinecraftForge.EVENT_BUS.register(new GenericTickHandler());

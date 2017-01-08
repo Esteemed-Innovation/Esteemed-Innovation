@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.handler.FieldHandler;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -39,7 +39,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
          */
         @SubscribeEvent
         public void handleJetpackFlight(TickEvent.PlayerTickEvent event) {
-            if (FieldHandler.isJumpingField == null) {
+            if (ReflectionHelper.isJumpingField == null) {
                 return;
             }
             EntityPlayer player = event.player;
@@ -77,7 +77,7 @@ public class ItemExosuitJetpack extends ItemExosuitUpgrade {
         private ItemStack getArmorAndCanFly(EntityPlayer player) {
             boolean isJumping;
             try {
-                isJumping = FieldHandler.getIsEntityJumping(player);
+                isJumping = ReflectionHelper.getIsEntityJumping(player);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 return null;

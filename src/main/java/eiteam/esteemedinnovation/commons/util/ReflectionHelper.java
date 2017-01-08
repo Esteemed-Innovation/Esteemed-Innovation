@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.commons.handler;
+package eiteam.esteemedinnovation.commons.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -10,8 +10,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-// TODO: Rename to ReflectionHandler or ReflectionHelper, move to utils.
-public class FieldHandler {
+public class ReflectionHelper {
     public static Field lastBuyingPlayerField;
     public static Field timeUntilResetField;
     public static Field merchantField;

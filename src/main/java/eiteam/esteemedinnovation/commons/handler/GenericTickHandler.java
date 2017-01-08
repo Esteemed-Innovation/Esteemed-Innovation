@@ -13,6 +13,7 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
 import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -147,8 +148,8 @@ public class GenericTickHandler {
     static {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             FMLLog.info("[EI] Getting some fields from reflection for Tick Handling.");
-            itemInMainHandField = FieldHandler.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
-            itemInOffHandField = FieldHandler.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
+            itemInMainHandField = ReflectionHelper.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
+            itemInOffHandField = ReflectionHelper.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
 
             if (itemInMainHandField != null) {
                 itemInMainHandField.setAccessible(true);

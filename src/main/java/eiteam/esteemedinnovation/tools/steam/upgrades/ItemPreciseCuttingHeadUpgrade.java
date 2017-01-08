@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.commons.handler.FieldHandler;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +36,7 @@ public class ItemPreciseCuttingHeadUpgrade extends ItemSteamToolUpgrade {
 
         if (ForgeHooks.canHarvestBlock(block, player, world, pos) && block.canSilkHarvest(world, pos, state, player)) {
             try {
-                ItemStack toAdd = (ItemStack) FieldHandler.createStackedBlockMethod.invoke(block, state);
+                ItemStack toAdd = (ItemStack) ReflectionHelper.createStackedBlockMethod.invoke(block, state);
                 if (toAdd != null) {
                     event.getDrops().clear();
                     event.getDrops().add(toAdd);

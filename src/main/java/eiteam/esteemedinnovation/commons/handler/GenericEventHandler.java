@@ -27,6 +27,7 @@ import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerialize
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
@@ -85,7 +86,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -162,7 +162,7 @@ public class GenericEventHandler {
         if (elb.worldObj.isRemote) {
             boolean isJumping;
             try {
-                isJumping = FieldHandler.getIsEntityJumping(elb);
+                isJumping = ReflectionHelper.getIsEntityJumping(elb);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 return;
@@ -544,7 +544,7 @@ public class GenericEventHandler {
     public void updateVillagersClientSide(GuiScreenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         GuiScreen guiScreen = event.getGui();
-        if (FieldHandler.merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
+        if (ReflectionHelper.merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) guiScreen;
             ItemStack head = mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT || (head.getItem() == EXO_HEAD
@@ -554,7 +554,7 @@ public class GenericEventHandler {
                 updateTradingStackSizes(recipeList);
                 merch.setRecipes(recipeList);
                 try {
-                    FieldHandler.merchantField.set(gui, merch);
+                    ReflectionHelper.merchantField.set(gui, merch);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -565,13 +565,13 @@ public class GenericEventHandler {
     @SubscribeEvent
     public void updateVillagers(LivingUpdateEvent event) {
         EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityVillager && FieldHandler.timeUntilResetField != null && FieldHandler.lastBuyingPlayerField != null) {
+        if (entityLiving instanceof EntityVillager && ReflectionHelper.timeUntilResetField != null && ReflectionHelper.lastBuyingPlayerField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
             Integer timeUntilReset = null;
             String lastBuyingPlayer = null;
             try {
-                timeUntilReset = FieldHandler.timeUntilResetField.getInt(villager);
-                lastBuyingPlayer = (String) FieldHandler.lastBuyingPlayerField.get(villager);
+                timeUntilReset = ReflectionHelper.timeUntilResetField.getInt(villager);
+                lastBuyingPlayer = (String) ReflectionHelper.lastBuyingPlayerField.get(villager);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -607,7 +607,7 @@ public class GenericEventHandler {
                 }
             }
         }
-        if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && FieldHandler.buyingListField != null) {
+        if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && ReflectionHelper.buyingListField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
             Boolean hadCustomer = VILLAGER_DATA.getDefaultInstance().hadCustomer();
             if (hadCustomer == null) {
@@ -627,7 +627,7 @@ public class GenericEventHandler {
                         updateTradingStackSizes(recipeList);
 
                         try {
-                            FieldHandler.buyingListField.set(villager, recipeList);
+                            ReflectionHelper.buyingListField.set(villager, recipeList);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
@@ -641,7 +641,7 @@ public class GenericEventHandler {
                 // We need to do reflection because we do not have the customer in this case.
                 MerchantRecipeList recipeList = null;
                 try {
-                    recipeList = (MerchantRecipeList) FieldHandler.buyingListField.get(villager);
+                    recipeList = (MerchantRecipeList) ReflectionHelper.buyingListField.get(villager);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -649,7 +649,7 @@ public class GenericEventHandler {
                     updateTradingStackSizes(recipeList);
                 }
                 try {
-                    FieldHandler.buyingListField.set(villager, recipeList);
+                    ReflectionHelper.buyingListField.set(villager, recipeList);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
