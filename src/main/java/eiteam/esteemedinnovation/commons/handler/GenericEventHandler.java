@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.commons.handler;
 
-import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
@@ -80,7 +79,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
-import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -1721,54 +1719,6 @@ public class GenericEventHandler {
     }
 
     @SubscribeEvent
-    public void dropDrops(BlockEvent.HarvestDropsEvent event) {
-        if (event.getHarvester() == null) {
-            return;
-        }
-
-        Random rand = new Random();
-        BlockPos pos = event.getPos();
-        EntityPlayer player = event.getHarvester();
-        World world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        Item blockItem = Item.getItemFromBlock(block);
-        int meta = block.getMetaFromState(state);
-        Pair<Item, Integer> pair = Pair.of(blockItem, meta);
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null) {
-            return;
-        }
-
-        if (equipped.getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (!drill.isWound(equipped)) {
-                return;
-            }
-
-            if (OreDictHelper.cobblestones.contains(pair)) {
-                return;
-            }
-
-            if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
-                List<ItemStack> out = SmasherRegistry.getOutput(new ItemStack(block, 1, meta), world);
-                if (!out.isEmpty()) {
-                    for (ItemStack item : out) {
-                        for (int i = 0; i < event.getDrops().size(); i++) {
-                            ItemStack drop = event.getDrops().get(i);
-                            if (drop.getItem() == Item.getItemFromBlock(block) && drop.getItemDamage() == meta) {
-                                event.getDrops().remove(i);
-                            }
-                        }
-                        event.getDrops().add(item);
-                    }
-                    drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void rebreath(LivingAttackEvent event) {
         int consumption = Config.rebreatherConsumption;
         if (event.getSource() == DamageSource.drown) {
@@ -1936,18 +1886,7 @@ public class GenericEventHandler {
         if (equipped != null && equipped.getItem() != null && block != null) {
             float newSpeed = 0.0F;
             float original = event.getOriginalSpeed();
-            if (equipped.getItem() instanceof ItemSteamDrill) {
-                ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-                if (drill.isWound(equipped)) {
-                    if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
-                        if (newSpeed == 0.0F) {
-                            newSpeed = original / 2;
-                        } else {
-                            newSpeed /= 2;
-                        }
-                    }
-                }
-            } else if (equipped.getItem() instanceof ItemSteamAxe) {
+            if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
                 if (axe.isWound(equipped)) {
                     if (axe.hasUpgrade(equipped, LEAF_BLOWER)) {
