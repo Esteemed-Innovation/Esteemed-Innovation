@@ -148,6 +148,9 @@ public class ToolsModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
+        RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
+        DrillHeadMaterial.registerDefaults();
+
         BookRecipeRegistry.addRecipe("wrench1", new ShapedOreRecipe(WRENCH,
           "  i",
           " bb",
@@ -530,9 +533,6 @@ public class ToolsModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
-        DrillHeadMaterial.registerDefaults();
-
         if (Config.enableWrench) {
             BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Wrench.name",
               new BookPageItem("research.Wrench.name", "research.Wrench.0", new ItemStack(WRENCH)),

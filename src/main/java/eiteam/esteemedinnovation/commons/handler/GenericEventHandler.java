@@ -31,10 +31,6 @@ import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
-import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
-import eiteam.esteemedinnovation.tools.steam.SteamToolHelper;
-import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
-import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
@@ -87,7 +83,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -1730,42 +1725,6 @@ public class GenericEventHandler {
                             event.setCanceled(true);
                         }
                     }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onBlockBreak(BlockEvent.BreakEvent event) {
-        EntityPlayer player = event.getPlayer();
-        BlockPos pos = event.getPos();
-        World world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        TileEntity tile = world.getTileEntity(pos);
-        if (player == null) {
-            return;
-        }
-//            Vec3 vec = player.getLookVec();
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || equipped.getItem() == null || block == null) {
-            return;
-        }
-
-        if (equipped.getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            ItemStack upgrade = SteamToolHelper.getHarvestLevelModifier(equipped);
-            if (!drill.isWound(equipped)) {
-                return;
-            }
-            if (upgrade != null) {
-                String mat = ItemDrillHeadUpgrade.getMyMaterial(upgrade);
-                int harvestLevel = DrillHeadMaterial.materials.get(mat).harvestLevel;
-                if (harvestLevel >= block.getHarvestLevel(state)) {
-                    block.harvestBlock(world, player, pos, state, tile, equipped);
-                    world.setBlockToAir(pos);
-                } else {
-                    event.setCanceled(true);
                 }
             }
         }

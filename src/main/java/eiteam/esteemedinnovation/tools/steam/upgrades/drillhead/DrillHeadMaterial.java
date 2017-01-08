@@ -92,8 +92,8 @@ public class DrillHeadMaterial {
     public static void registerDrillMaterial(String materialName, String locName, int harvestLevel, String color) {
         DrillHeadMaterial material = new DrillHeadMaterial(materialName, locName, harvestLevel, true, color);
         materials.put(materialName, material);
-        List<ItemStack> ingots = OreDictionary.getOres("ingot" + materialName);
-        List<ItemStack> nuggets = OreDictionary.getOres("nugget" + materialName);
+        List<ItemStack> ingots = OreDictionary.getOres(OreDictEntries.PREFIX_INGOT + materialName);
+        List<ItemStack> nuggets = OreDictionary.getOres(OreDictEntries.PREFIX_NUGGET + materialName);
         materialOres.put(materialName, MutablePair.of(ingots, nuggets));
     }
 

@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,8 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import java.util.List;
 
 public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
-    public ItemDrillHeadUpgrade() {}
-
     @Override
     public boolean isUniversal() {
         return false;
@@ -35,6 +34,16 @@ public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
     public void addInformation(ItemStack self, EntityPlayer player, List<String> list, boolean advanced) {
         super.addInformation(self, player, list, advanced);
         list.add(getInformation(self, null));
+    }
+
+    @Override
+    public int getToolStrength(IBlockState state, ItemStack toolStack, ItemStack upgradeStack) {
+        return DrillHeadMaterial.materials.get(getMyMaterial(upgradeStack)).harvestLevel;
+    }
+
+    @Override
+    public boolean modifiesToolStrength() {
+        return true;
     }
 
     /**
