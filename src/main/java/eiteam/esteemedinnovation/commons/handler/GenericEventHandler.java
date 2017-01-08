@@ -111,6 +111,7 @@ import java.util.*;
 import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
+import static eiteam.esteemedinnovation.commons.util.EntityHelper.getEntityFromPlayer;
 import static eiteam.esteemedinnovation.commons.util.WorldHelper.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
@@ -2104,31 +2105,6 @@ public class GenericEventHandler {
 
         target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
         drill.addSteam(equipped, -(Config.battleDrillConsumption * drill.steamPerDurability()), player);
-    }
-
-    /**
-     * Gets a single entity from the player's look vec. Scans in a 5 block radius around the player,
-     * and returns the "first" result.
-     * @param player The player
-     * @return The EntityLivingBase near the player.
-     */
-    private EntityLivingBase getEntityFromPlayer(EntityPlayer player) {
-        Vec3d vec = player.getLookVec();
-        double x = vec.xCoord + player.posX;
-        double y = vec.yCoord + player.posY;
-        double z = vec.zCoord + player.posZ;
-
-        AxisAlignedBB aabb = new AxisAlignedBB(x - 5, y - 5, z - 5, x + 5, y + 5, z + 5);
-        List entities = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, aabb);
-        for (Object object : entities) {
-            if (object instanceof EntityLivingBase) {
-                EntityLivingBase target = (EntityLivingBase) object;
-                if (player.canEntityBeSeen(target) && target.canBeCollidedWith()) {
-                    return target;
-                }
-            }
-        }
-        return null;
     }
 
     @SubscribeEvent

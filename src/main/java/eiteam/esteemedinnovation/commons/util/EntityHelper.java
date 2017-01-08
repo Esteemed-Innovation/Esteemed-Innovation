@@ -1,6 +1,12 @@
 package eiteam.esteemedinnovation.commons.util;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.List;
 
 public class EntityHelper {
     /**
@@ -13,5 +19,30 @@ public class EntityHelper {
         return (int) entity.posX != (int) entity.prevPosX ||
           (int) entity.posY != (int) entity.prevPosY ||
           (int) entity.posZ != (int) entity.prevPosZ;
+    }
+
+    /**
+     * Gets a single entity from the player's look vec. Scans in a 5 block radius around the player,
+     * and returns the "first" result.
+     * @param player The player
+     * @return The EntityLivingBase near the player.
+     */
+    public static EntityLivingBase getEntityFromPlayer(EntityPlayer player) {
+        Vec3d vec = player.getLookVec();
+        double x = vec.xCoord + player.posX;
+        double y = vec.yCoord + player.posY;
+        double z = vec.zCoord + player.posZ;
+
+        AxisAlignedBB aabb = new AxisAlignedBB(x - 5, y - 5, z - 5, x + 5, y + 5, z + 5);
+        List<Entity> entities = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, aabb);
+        for (Entity entity : entities) {
+            if (entity instanceof EntityLivingBase) {
+                EntityLivingBase target = (EntityLivingBase) entity;
+                if (player.canEntityBeSeen(target) && target.canBeCollidedWith()) {
+                    return target;
+                }
+            }
+        }
+        return null;
     }
 }
