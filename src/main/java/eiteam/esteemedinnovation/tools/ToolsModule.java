@@ -75,7 +75,7 @@ public class ToolsModule extends ContentModule {
     public static Item PRECISE_CUTTING_HEAD;
     public static Item THERMAL_DRILL;
     public static Item MULTIPLICATIVE_RESONATOR;
-    public static Item CHARGE_PLACER;
+    public static Item CALAMITY_INJECTOR;
     public static Item DRILL_HEAD;
     public static Item INTERNAL_PROCESSING_UNIT;
     public static Item LEAF_BLOWER;
@@ -124,7 +124,7 @@ public class ToolsModule extends ContentModule {
         PRECISE_CUTTING_HEAD = setupUpgrade(new ItemPreciseCuttingHeadUpgrade(), "precise_cutting_head");
         THERMAL_DRILL = setupUpgrade(new ItemThermalDrillUpgrade(), "thermal_drill");
         MULTIPLICATIVE_RESONATOR = setupUpgrade(new ItemMultiplicativeResonatorUpgrade(), "multiplicative_resonator");
-        CHARGE_PLACER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("chargePlacer"), null, 1), "charge_placer");
+        CALAMITY_INJECTOR = setupUpgrade(new ItemCalamityInjectorUpgrade(), "charge_placer");
         DRILL_HEAD = setupUpgrade(new ItemDrillHeadUpgrade(), "drill_head");
         INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_CORE, upgradeResource("processor"), null, 0), "internal_processing_unit");
         LEAF_BLOWER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("blower"), null, 1), "leaf_blower");
@@ -388,7 +388,7 @@ public class ToolsModule extends ContentModule {
             }
             if (Config.enableChargePlacer) {
                 BookRecipeRegistry.addRecipe("chargePlacer",
-                  new ShapedOreRecipe(CHARGE_PLACER,
+                  new ShapedOreRecipe(CALAMITY_INJECTOR,
                     "g g",
                     "vbv",
                     "sps",
@@ -620,7 +620,7 @@ public class ToolsModule extends ContentModule {
 
                 if (Config.enableChargePlacer) {
                     drillHeadFactory.append(new BookEntry("research.CalamityInjector.name",
-                      new BookPageItem("research.CalamityInjector.name", "research.CalamityInjector.0", true, new ItemStack(CHARGE_PLACER)),
+                      new BookPageItem("research.CalamityInjector.name", "research.CalamityInjector.0", true, new ItemStack(CALAMITY_INJECTOR)),
                       new BookPageCrafting("", "chargePlacer")));
                 }
 
@@ -763,7 +763,7 @@ public class ToolsModule extends ContentModule {
         registerModel(PRECISE_CUTTING_HEAD);
         registerModel(THERMAL_DRILL);
         registerModel(MULTIPLICATIVE_RESONATOR);
-        registerModel(CHARGE_PLACER);
+        registerModel(CALAMITY_INJECTOR);
         registerModel(DRILL_HEAD);
         registerModel(INTERNAL_PROCESSING_UNIT);
         registerModel(LEAF_BLOWER);

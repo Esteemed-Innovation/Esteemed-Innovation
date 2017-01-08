@@ -52,7 +52,7 @@ public class ItemThermalDrillUpgrade extends ItemSteamToolUpgrade {
     }
 
     @SubscribeEvent
-    public void deleteLavaAndExplodeCharges(TickEvent.WorldTickEvent event) {
+    public void deleteLava(TickEvent.WorldTickEvent event) {
         if (event.side.isClient()) {
             return;
         }

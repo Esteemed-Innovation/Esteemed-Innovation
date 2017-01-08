@@ -9,10 +9,10 @@ import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.ClientProxy;
+import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
-import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
@@ -28,18 +28,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.MutablePair;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.Map;
 
 import static eiteam.esteemedinnovation.armor.ArmorModule.DOUBLE_JUMP;
 import static eiteam.esteemedinnovation.armor.ArmorModule.PITON_DEPLOYER;
@@ -317,39 +313,6 @@ public class GenericTickHandler {
                 mc.gameSettings.fovSetting -= 2.5F;
                 mc.gameSettings.mouseSensitivity -= 0.01F;
             }
-        }
-    }
-
-    private int chargeTicks = 0;
-
-    @SubscribeEvent
-    public void explodeCharges(TickEvent.WorldTickEvent event) {
-        if (event.side.isClient()) {
-            return;
-        }
-        chargeTicks++;
-
-        Iterator<Map.Entry<MutablePair<EntityPlayer, BlockPos>, Integer>> charge = GenericEventHandler.charges.entrySet().iterator();
-        while (charge.hasNext()) {
-            Map.Entry<MutablePair<EntityPlayer, BlockPos>, Integer> entry = charge.next();
-            MutablePair<EntityPlayer, BlockPos> playerCoords = entry.getKey();
-            BlockPos pos = playerCoords.getRight();
-            EntityPlayer player = playerCoords.getLeft();
-            int dim = player.dimension;
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
-            int waitTicks = entry.getValue();
-            if (chargeTicks >= waitTicks) {
-                // Explosion is half the size of a TNT explosion.
-                double x = (double) pos.getX();
-                double y = (double) pos.getY();
-                double z = (double) pos.getZ();
-                worldServer.createExplosion(player, x, y, z, 2.0F, true);
-                charge.remove();
-            }
-        }
-
-        if (chargeTicks >= GenericEventHandler.HARD_CHARGE_CAP) {
-            chargeTicks = 0;
         }
     }
 

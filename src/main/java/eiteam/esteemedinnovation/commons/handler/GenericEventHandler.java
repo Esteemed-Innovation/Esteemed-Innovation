@@ -1846,71 +1846,6 @@ public class GenericEventHandler {
         }
     }
 
-    public static HashMap<MutablePair<EntityPlayer, BlockPos>, Integer> charges = new HashMap<>();
-    public static final int PEACEFUL_CHARGE = 12 * 20;
-    public static final int EASY_CHARGE_CAP = 14 * 20;
-    public static final int EASY_CHARGE_MIN = 8 * 20;
-    public static final int NORMAL_CHARGE_CAP = 16 * 20;
-    public static final int NORMAL_CHARGE_MIN = 6 * 20;
-    public static final int HARD_CHARGE_CAP = 18 * 20;
-    public static final int HARD_CHARGE_MIN = 4 * 20;
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void placeCharge(BlockEvent.BreakEvent event) {
-        EntityPlayer player = event.getPlayer();
-        BlockPos pos = event.getPos();
-        if (player == null) {
-            return;
-        }
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || equipped.getItem() == null) {
-            return;
-        }
-        if (equipped.getItem() instanceof ItemSteamDrill) {
-            ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
-            if (drill.hasUpgrade(equipped, CHARGE_PLACER) && drill.isWound(equipped)) {
-                Random rand = new Random();
-                drill.addSteam(equipped, -(2 * drill.steamPerDurability()), player);
-                if (player.worldObj.getDifficulty() == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
-                    return;
-                }
-                int max = 0;
-                int min = 0;
-                int constant = 0;
-                boolean useConstant = false;
-                switch (player.worldObj.getDifficulty()) {
-                    case HARD: {
-                        max = HARD_CHARGE_CAP;
-                        min = HARD_CHARGE_MIN;
-                        break;
-                    }
-                    case NORMAL: {
-                        max = NORMAL_CHARGE_CAP;
-                        min = NORMAL_CHARGE_MIN;
-                        break;
-                    }
-                    case EASY: {
-                        max = EASY_CHARGE_CAP;
-                        min = EASY_CHARGE_MIN;
-                        break;
-                    }
-                    case PEACEFUL: {
-                        constant = PEACEFUL_CHARGE;
-                        useConstant = true;
-                        break;
-                    }
-                    default: {}
-                }
-                MutablePair<EntityPlayer, BlockPos> pair = MutablePair.of(player, pos);
-                if (useConstant) {
-                    charges.put(pair, constant);
-                } else {
-                    charges.put(pair, rand.nextInt((max - min) + 1) + min);
-                }
-            }
-        }
-    }
-
     /**
      * Mines all of the log blocks above the starting coordinate.
      * @param world The world instance.
@@ -2009,13 +1944,6 @@ public class GenericEventHandler {
                             newSpeed = original / 2;
                         } else {
                             newSpeed /= 2;
-                        }
-                    }
-                    if (drill.hasUpgrade(equipped, CHARGE_PLACER)) {
-                        if (newSpeed == 0.0F) {
-                            newSpeed = original * 5;
-                        } else {
-                            newSpeed *= 5;
                         }
                     }
                 }
