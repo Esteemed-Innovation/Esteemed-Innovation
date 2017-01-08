@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -249,5 +250,14 @@ public class WorldHelper {
         IBlockState state = world.getBlockState(pos);
         return (OreDictHelper.listHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
           block.isLeaves(state, world, pos) || LEAF_MATERIALS.contains(block.getMaterial(state)));
+    }
+
+    /**
+     * Gets whether the block can be tilled into farmland.
+     * @param block The block to check
+     * @return True if it is dirt or grass, else false.
+     */
+    public static boolean isFarmable(Block block) {
+        return (block != null && (block == Blocks.DIRT || block == Blocks.GRASS));
     }
 }

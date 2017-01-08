@@ -1784,48 +1784,9 @@ public class GenericEventHandler {
         }
     }
 
-    /**
-     * Gets whether the block can be tilled into farmland.
-     * @param block The block to check
-     * @return True if it is dirt or grass, else false.
-     */
-    private boolean isFarmable(Block block) {
-        return (block != null && (block == Blocks.DIRT || block == Blocks.GRASS));
-    }
-
     @SubscribeEvent
     public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
-        // TODO: Perhaps make sideHit an EnumFacing?
         sideHit = event.getFace().getIndex();
-        World world = event.getWorld();
-        if (world.isRemote) {
-            return;
-        }
-        EntityPlayer player = event.getEntityPlayer();
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null) {
-            return;
-        }
-        BlockPos pos = event.getPos();
-        if (equipped.getItem() instanceof ItemSteamShovel) {
-            ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (shovel.hasUpgrade(equipped, CULTIVATOR) &&
-              shovel.isWound(equipped)) {
-                for (int[] aCoordinateArray : EXTRA_BLOCKS_VERTICAL) {
-                    int thisX = pos.getX() + aCoordinateArray[0];
-                    int thisY = pos.getY() + aCoordinateArray[1];
-                    int thisZ = pos.getZ() + aCoordinateArray[2];
-
-                    BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-
-                    Block block1 = world.getBlockState(thisPos).getBlock();
-                    if (isFarmable(block1)) {
-                        world.setBlockToAir(thisPos);
-                        world.setBlockState(thisPos, Blocks.FARMLAND.getDefaultState());
-                    }
-                }
-            }
-        }
     }
 
     @SubscribeEvent
