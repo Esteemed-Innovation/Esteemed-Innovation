@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -363,6 +364,8 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
         return false;
     }
 
+    @Override
+    @Nonnull
     public ExosuitUpgrade[] getUpgrades(ItemStack me) {
         ArrayList<ExosuitUpgrade> upgrades = new ArrayList<>();
         if (me.hasTagCompound()) {

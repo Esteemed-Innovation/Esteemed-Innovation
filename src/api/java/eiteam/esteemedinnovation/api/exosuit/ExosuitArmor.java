@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ISpecialArmor;
 
+import javax.annotation.Nonnull;
+
 public interface ExosuitArmor extends ISpecialArmor, Engineerable, SteamChargable {
     /**
      * TODO Return a ResourceLocation and rename to a more descriptive name.
@@ -44,4 +46,11 @@ public interface ExosuitArmor extends ISpecialArmor, Engineerable, SteamChargabl
      * @return Whether the provided piece of armor has the provided exosuit upgrade. Should return false if either are null.
      */
     boolean hasUpgrade(ItemStack me, Item check);
+
+    /**
+     * @param self The ItemStack containing the armor piece
+     * @return An array of all of the ExosuitUpgrades in this armor piece. Cannot be null.
+     */
+    @Nonnull
+    ExosuitUpgrade[] getUpgrades(ItemStack self);
 }
