@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.tools;
 import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.commons.Config;
@@ -132,7 +131,7 @@ public class ToolsModule extends ContentModule {
         CHAINSAW = setupUpgrade(new ItemChainsawUpgrade(), "chainsaw");
         FOREST_FIRE = setupUpgrade(new ItemForestFireUpgrade(), "forest_fire");
         CULTIVATOR = setupUpgrade(new ItemCultivatorUpgrade(), "cultivator");
-        ROTARY_BLADES = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SHOVEL_HEAD, upgradeResource("rotary"), null, 1), "rotary_blades");
+        ROTARY_BLADES = setupUpgrade(new ItemRotaryBladesUpgrade(), "rotary_blades");
         SIFTER = setupUpgrade(new ItemSifterUpgrade(), "sifter");
         BACKHOE = setupUpgrade(new ItemBackhoeUpgrade(), "backhoe");
     }

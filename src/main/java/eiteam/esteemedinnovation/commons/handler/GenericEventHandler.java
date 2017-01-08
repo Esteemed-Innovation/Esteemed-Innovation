@@ -32,7 +32,6 @@ import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
-import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
 import eiteam.esteemedinnovation.tools.steam.SteamToolHelper;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMaterial;
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
@@ -106,10 +105,9 @@ import java.util.*;
 import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
-import static eiteam.esteemedinnovation.commons.util.WorldHelper.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
-import static eiteam.esteemedinnovation.tools.ToolsModule.*;
+import static eiteam.esteemedinnovation.tools.ToolsModule.SURVIVALIST_TOOLKIT;
 
 public class GenericEventHandler {
     private static final UUID uuid = UUID.fromString("bbd786a9-611f-4c31-88ad-36dc9da3e15c");
@@ -1772,42 +1770,11 @@ public class GenericEventHandler {
                     event.setCanceled(true);
                 }
             }
-        } else if (equipped.getItem() instanceof ItemSteamShovel) {
-            ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-            if (!shovel.isWound(equipped)) {
-                return;
-            }
-            if (shovel.hasUpgrade(equipped, ROTARY_BLADES) &&
-              block.isToolEffective(shovel.toolClass(), state)) {
-                mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, shovel, equipped, player);
-            }
         }
     }
 
     @SubscribeEvent
     public void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         sideHit = event.getFace().getIndex();
-    }
-
-    @SubscribeEvent
-    public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
-        ItemStack equipped = event.getEntityPlayer().getHeldItemMainhand();
-        BlockPos pos = event.getPos();
-        World world = event.getEntity().worldObj;
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        if (equipped != null && equipped.getItem() != null && block != null) {
-            float newSpeed = 0.0F;
-            float original = event.getOriginalSpeed();
-            if (equipped.getItem() instanceof ItemSteamShovel) {
-                ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
-                if (shovel.isWound(equipped) && shovel.hasUpgrade(equipped, ROTARY_BLADES)) {
-                    newSpeed = original * 0.425F;
-                }
-            }
-            if (newSpeed != 0.0F) {
-                event.setNewSpeed(newSpeed);
-            }
-        }
     }
 }
