@@ -1868,10 +1868,6 @@ public class GenericEventHandler {
                     event.setCanceled(true);
                 }
             }
-            if (drill.hasUpgrade(equipped, BIG_DRILL) &&
-              block.isToolEffective(drill.toolClass(), state)) {
-                mineExtraBlocks(getExtraBlockCoordinates(sideHit), pos, world, drill, equipped, player);
-            }
             if (drill.hasUpgrade(equipped, PRECISE_CUTTING_HEAD)) {
                 event.setExpToDrop(0);
             }
@@ -2148,9 +2144,6 @@ public class GenericEventHandler {
             if (equipped.getItem() instanceof ItemSteamDrill) {
                 ItemSteamDrill drill = (ItemSteamDrill) equipped.getItem();
                 if (drill.isWound(equipped)) {
-                    if (drill.hasUpgrade(equipped, BIG_DRILL)) {
-                        newSpeed = original * 0.7F;
-                    }
                     if (drill.hasUpgrade(equipped, INTERNAL_PROCESSING_UNIT)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original / 2;
