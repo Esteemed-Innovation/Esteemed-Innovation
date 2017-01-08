@@ -157,7 +157,7 @@ public interface SteamToolUpgrade {
     }
 
     /**
-     * @return If true, {@link #getToolStrength(ItemStack, ItemStack, IBlockState)} will be used for the tool's
+     * @return If true, {@link #getToolStrength(IBlockState, ItemStack, ItemStack)} will be used for the tool's
      *         {@link net.minecraft.item.Item#canHarvestBlock(IBlockState, ItemStack)} implementation instead of the
      *         standard value.
      */
