@@ -1,11 +1,14 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import com.google.common.collect.ImmutableList;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntity;
@@ -226,5 +229,25 @@ public class WorldHelper {
                 block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), toolStack);
             }
         }
+    }
+
+    public static final ImmutableList<Material> LEAF_MATERIALS = new ImmutableList.Builder<Material>()
+      .add(Material.LEAVES)
+      .add(Material.CORAL)
+      .add(Material.CRAFTED_SNOW)
+      .add(Material.PLANTS)
+      .build();
+
+    /**
+     * Returns whether the block can be blown by the leaf blower.
+     * @param block The block
+     * @param world The world
+     * @param pos The block's position
+     * @return Whether the leaf blower should blow this block away.
+     */
+    public static boolean isLeaves(Block block, World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return (OreDictHelper.listHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
+          block.isLeaves(state, world, pos) || LEAF_MATERIALS.contains(block.getMaterial(state)));
     }
 }

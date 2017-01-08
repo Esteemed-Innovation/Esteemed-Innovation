@@ -127,7 +127,7 @@ public class ToolsModule extends ContentModule {
         CALAMITY_INJECTOR = setupUpgrade(new ItemCalamityInjectorUpgrade(), "charge_placer");
         DRILL_HEAD = setupUpgrade(new ItemDrillHeadUpgrade(), "drill_head");
         INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemInternalProcessingUnitUpgrade(), "internal_processing_unit");
-        LEAF_BLOWER = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("blower"), null, 1), "leaf_blower");
+        LEAF_BLOWER = setupUpgrade(new ItemLeafBlowerUpgrade(), "leaf_blower");
         TIMBER_CHAIN = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.SAW_HEAD, upgradeResource("timberHead"), null, 1), "timber_chain");
         CHAINSAW = setupUpgrade(new ItemChainsawUpgrade(), "chainsaw");
         FOREST_FIRE = setupUpgrade(new ItemForestFireUpgrade(), "forest_fire");

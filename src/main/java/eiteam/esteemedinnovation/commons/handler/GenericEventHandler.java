@@ -39,7 +39,6 @@ import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.DrillHeadMateria
 import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.ItemDrillHeadUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -99,7 +98,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -1846,16 +1844,7 @@ public class GenericEventHandler {
             return;
         }
         BlockPos pos = event.getPos();
-        if (equipped.getItem() instanceof ItemSteamAxe) {
-            ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
-            if (!axe.isWound(equipped)) {
-                return;
-            }
-
-            if (axe.hasUpgrade(equipped, LEAF_BLOWER)) {
-                blowLeaves(getExtraBlock9Coordinates(sideHit), pos, world, player, equipped);
-            }
-        } else if (equipped.getItem() instanceof ItemSteamShovel) {
+        if (equipped.getItem() instanceof ItemSteamShovel) {
             ItemSteamShovel shovel = (ItemSteamShovel) equipped.getItem();
             if (shovel.hasUpgrade(equipped, CULTIVATOR) &&
               shovel.isWound(equipped)) {
@@ -1889,9 +1878,6 @@ public class GenericEventHandler {
             if (equipped.getItem() instanceof ItemSteamAxe) {
                 ItemSteamAxe axe = (ItemSteamAxe) equipped.getItem();
                 if (axe.isWound(equipped)) {
-                    if (axe.hasUpgrade(equipped, LEAF_BLOWER)) {
-                        newSpeed = original / 5F;
-                    }
                     if (axe.hasUpgrade(equipped, TIMBER_CHAIN)) {
                         if (newSpeed == 0.0F) {
                             newSpeed = original * 0.7F;
@@ -1910,51 +1896,5 @@ public class GenericEventHandler {
                 event.setNewSpeed(newSpeed);
             }
         }
-    }
-
-    /**
-     * Harvests the coordinates in the coordinate array.
-     * @param coordinateArray The two-dimensional array containing coordinates to add to x, y, z.
-     * @param startPos The starting position
-     * @param world The world.
-     * @param player The player mining.
-     * @param stack The tool being used to mine.
-     */
-    private void blowLeaves(int[][] coordinateArray, BlockPos startPos, World world, EntityPlayer player, ItemStack stack) {
-        for (int[] aCoordinateArray : coordinateArray) {
-            int thisX = startPos.getX() + aCoordinateArray[0];
-            int thisY = startPos.getY() + aCoordinateArray[1];
-            int thisZ = startPos.getZ() + aCoordinateArray[2];
-            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-            IBlockState state = world.getBlockState(thisPos);
-            Block block = state.getBlock();
-            if (block == null || world.isAirBlock(thisPos)) {
-                continue;
-            }
-            if (isLeaves(block, world, thisPos)) {
-                world.setBlockToAir(thisPos);
-                block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), stack);
-            }
-        }
-    }
-
-    private ArrayList<Material> LEAF_MATERIALS = new ArrayList<Material>() { {
-        add(Material.LEAVES);
-        add(Material.CORAL);
-        add(Material.CRAFTED_SNOW);
-        add(Material.PLANTS);
-    }};
-
-    /**
-     * Returns whether the block can be blown by the leaf blower.
-     * @param block The block
-     * @param world The world
-     * @param pos The block's position
-     * @return Whether the leaf blower should blow this block away.
-     */
-    private boolean isLeaves(Block block, World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-        return (OreDictHelper.listHasItem(OreDictHelper.leaves, Item.getItemFromBlock(block)) ||
-          block.isLeaves(state, world, pos) || LEAF_MATERIALS.contains(block.getMaterial(state)));
     }
 }
