@@ -119,7 +119,7 @@ public class ToolsModule extends ContentModule {
         EXOTHERMIC_PROJECTOR = setupUpgrade(new ItemExothermicProjector(), "exothermic_projector");
         OVERCLOCKER = setupUpgrade(new ItemOverclockerUpgrade(), "overclocker");
         BIG_DRILL = setupUpgrade(new ItemBigDrillUpgrade(), "big_drill");
-        BATTLE_DRILL = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("combat"), null, 1), "battle_drill");
+        BATTLE_DRILL = setupUpgrade(new ItemBattleDrillUpgrade(), "battle_drill");
         STONE_GRINDER = setupUpgrade(new ItemStoneGrinderUpgrade(), "stone_grinder");
         PRECISE_CUTTING_HEAD = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("preciseCuttingHead"), null, 1), "precise_cutting_head");
         THERMAL_DRILL = setupUpgrade(new ItemSteamToolUpgrade(SteamToolSlot.DRILL_HEAD, upgradeResource("thermal"), null, 1), "thermal_drill");

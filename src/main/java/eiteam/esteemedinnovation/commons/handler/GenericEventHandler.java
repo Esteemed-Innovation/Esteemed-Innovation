@@ -111,7 +111,6 @@ import java.util.*;
 import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
-import static eiteam.esteemedinnovation.commons.util.EntityHelper.getEntityFromPlayer;
 import static eiteam.esteemedinnovation.commons.util.WorldHelper.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
@@ -2070,44 +2069,6 @@ public class GenericEventHandler {
     }
 
     @SubscribeEvent
-    public void toggleDrillDash(LivingEvent.LivingJumpEvent event) {
-        if (!(event.getEntityLiving() instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        ItemStack equipped = player.getHeldItemMainhand();
-        if (equipped == null || !player.isSneaking()) {
-            return;
-        }
-        Item equippedItem = equipped.getItem();
-        if (equippedItem == null || !(equippedItem instanceof ItemSteamDrill)) {
-            return;
-        }
-        ItemSteamDrill drill = (ItemSteamDrill) equippedItem;
-        if (!drill.isWound(equipped) || !drill.hasUpgrade(equipped, BATTLE_DRILL)) {
-            return;
-        }
-
-        Vec3d vector = player.getLook(0.5F);
-
-        double total = Math.abs(vector.zCoord + vector.xCoord);
-//        if (vector.yCoord < total) {
-//            vector.yCoord = total;
-//        }
-
-        player.motionZ += vector.zCoord * 2.5;
-        player.motionX += vector.xCoord * 2.5;
-
-        EntityLivingBase target = getEntityFromPlayer(player);
-        if (target == null) {
-            return;
-        }
-
-        target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
-        drill.addSteam(equipped, -(Config.battleDrillConsumption * drill.steamPerDurability()), player);
-    }
-
-    @SubscribeEvent
     public void updateBlockBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack equipped = event.getEntityPlayer().getHeldItemMainhand();
         BlockPos pos = event.getPos();
@@ -2133,13 +2094,6 @@ public class GenericEventHandler {
                             newSpeed = original * 5;
                         } else {
                             newSpeed *= 5;
-                        }
-                    }
-                    if (drill.hasUpgrade(equipped, BATTLE_DRILL)) {
-                        if (newSpeed == 0.0F) {
-                            newSpeed = original / 1.7F;
-                        } else {
-                            newSpeed /= 1.7F;
                         }
                     }
                 }
