@@ -145,25 +145,20 @@ public interface SteamToolUpgrade {
     }
 
     /**
-     * Gets the strength against the mined block for a tool with this upgrade. This is called only if {@link #modifiesToolStrength()}
-     * returns true. This should be treated just as a normal {@link net.minecraft.item.Item#getStrVsBlock(ItemStack, IBlockState)}
-     * method implementation would be.
-     * @param baseSpeed The base speed value (the value in the NBT).
-     * @param modifiedSpeed The speed value with the applied math used to determine the actual strength. If baseSpeed is
-     *                      greater than 0 and modifiesToolStrength is false, this is the value that would be used for
-     *                      the strength against the block.
-     * @param upgradeStack The ItemStack for the upgrade
-     * @param toolStack The ItemStack for the tool being used to mine.
+     * Gets the harvest level for a tool with this upgrade installed. This is called only if {@link #modifiesToolStrength()}
+     * returns true.
      * @param state The block state being used to mine.
+     * @param toolStack The ItemStack for the tool being used to mine.
+     * @param upgradeStack The ItemStack for the upgrade.
      * @return The strength against the block.
      */
-    default float getToolStrength(int baseSpeed, float modifiedSpeed, ItemStack upgradeStack, ItemStack toolStack, IBlockState state) {
-        return 0F;
+    default int getToolStrength(IBlockState state, ItemStack toolStack, ItemStack upgradeStack) {
+        return 0;
     }
 
     /**
-     * @return If true, {@link #getToolStrength(int, float, ItemStack, IBlockState)} will be used for the tool's
-     *         {@link net.minecraft.item.Item#getStrVsBlock(ItemStack, IBlockState)} implementation instead of the
+     * @return If true, {@link #getToolStrength(ItemStack, ItemStack, IBlockState)} will be used for the tool's
+     *         {@link net.minecraft.item.Item#canHarvestBlock(IBlockState, ItemStack)} implementation instead of the
      *         standard value.
      */
     default boolean modifiesToolStrength() {

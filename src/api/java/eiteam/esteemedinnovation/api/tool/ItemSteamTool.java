@@ -63,7 +63,13 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState state) {
+    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(stack)) {
+            SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
+            if (upgrade.modifiesToolStrength()) {
+                return upgrade.getToolStrength(state, stack, upgradeStack) >= state.getBlock().getHarvestLevel(state);
+            }
+        }
         return getToolMaterial().getHarvestLevel() >= state.getBlock().getHarvestLevel(state);
     }
 
@@ -182,13 +188,6 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     public float getStrVsBlock(ItemStack stack, IBlockState state) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         int speed = nbt.getInteger("Speed");
-        float modifiedSpeed = getSpeed(speed);
-        for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(stack)) {
-            SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
-            if (upgrade.modifiesToolStrength()) {
-                return upgrade.getToolStrength(speed, modifiedSpeed, upgradeStack, stack, state);
-            }
-        }
         return itemForStrength.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 
