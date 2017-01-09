@@ -6,13 +6,12 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.UUID;
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class ItemExosuitAnchorHeels extends ItemExosuitUpgrade {
     public ItemExosuitAnchorHeels() {
         super(ExosuitSlot.BOOTS_FEET, "", null, 0);
-        MinecraftForge.EVENT_BUS.register(new EventHandlers());
     }
 
     @Override
@@ -37,15 +35,18 @@ public class ItemExosuitAnchorHeels extends ItemExosuitUpgrade {
         return map;
     }
 
-    private class EventHandlers {
-        @SubscribeEvent
-        public void fallFast(TickEvent.PlayerTickEvent event) {
-            EntityPlayer player = event.player;
-            if (GenericEventHandler.hasPower(player, 1) && isInstalled(player)) {
-                double newY = player.isInWater() ? -0.6 : -1.1;
-                if (player.motionY < -0.3 && player.motionY != newY) {
+    @Override
+    public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+        EntityPlayer player = event.player;
+        if (GenericEventHandler.hasPower(player, 1)) {
+            boolean inWater = player.isInWater();
+            double newY = inWater ? -0.6 : -1.1;
+            try {
+                if (((inWater && !ReflectionHelper.getIsEntityJumping(player)) || player.motionY < -0.3) && player.motionY != newY) {
                     player.motionY = newY;
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }
