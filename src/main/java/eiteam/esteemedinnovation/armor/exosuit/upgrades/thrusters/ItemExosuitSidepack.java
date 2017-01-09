@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades.thrusters;
 
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
-import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.util.EntityHelper;
@@ -14,7 +14,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -56,15 +55,38 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
         }
     }
 
-    private final class EventHandlers {
-        /**
-         * @param player The Player
-         * @return Whether the player is not in water or flying.
-         */
-        private boolean isPlayerNotInWaterOrFlying(EntityPlayer player) {
-            return !player.isInWater() && !player.capabilities.isFlying;
+    @Override
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+        if (GenericEventHandler.hasPower(player, 1)) {
+            PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
+            if (data.getLastMotions() == null) {
+                data.setLastMotions(MutablePair.of(player.posX, player.posZ));
+            }
+            MutablePair<Double, Double> lastMotions = data.getLastMotions();
+            if ((lastMotions.getLeft() != player.posX || lastMotions.getRight() != player.posZ) &&
+              !player.onGround && isPlayerNotInWaterOrFlying(player)) {
+                player.moveEntity(player.motionX, 0, player.motionZ);
+                ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                ExosuitArmor chestArmor = (ExosuitArmor) chestStack.getItem();
+                if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
+                    chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
+                }
+                if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
+                    chestArmor.drainSteam(chestStack, Config.thrusterConsumption);
+                }
+            }
         }
+    }
 
+    /**
+     * @param player The Player
+     * @return Whether the player is not in water or flying.
+     */
+    private static boolean isPlayerNotInWaterOrFlying(EntityPlayer player) {
+        return !player.isInWater() && !player.capabilities.isFlying;
+    }
+
+    private final class EventHandlers {
         /**
          * @param player The player to check
          * @return Whether the player is moving at all, is not in water, and is not flying.
@@ -93,46 +115,6 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
                   GenericEventHandler.hasPower(player, 1) && isMoving(player)) {
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 90.0F));
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 270.0F));
-                }
-            }
-        }
-
-        /**
-         * Sets the last motions in the player data, and prevents them from moving upward further (in order to extend
-         * the horizontal distance). Also drains some steam from the chestpiece.
-         */
-        @SubscribeEvent
-        public void handleThrusterLogic(LivingEvent.LivingUpdateEvent event) {
-            EntityLivingBase entity = event.getEntityLiving();
-            if (!(entity instanceof EntityPlayer)) {
-                return;
-            }
-
-            EntityPlayer player = (EntityPlayer) entity;
-            ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            ExosuitArmor chestArmor = null;
-            if (chestStack != null) {
-                Item item = chestStack.getItem();
-                if (item instanceof ExosuitArmor) {
-                    chestArmor = (ExosuitArmor) item;
-                }
-            }
-
-            if (isInstalled(player) && chestArmor != null && chestArmor.hasPower(chestStack, 1)) {
-                PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
-                if (data.getLastMotions() == null) {
-                    data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
-                }
-                MutablePair<Double, Double> lastMotions = data.getLastMotions();
-                if ((lastMotions.getLeft() != entity.posX || lastMotions.getRight() != entity.posZ) &&
-                  !entity.onGround && isPlayerNotInWaterOrFlying(player)) {
-                    entity.moveEntity(entity.motionX, 0, entity.motionZ);
-                    if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                        chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
-                    }
-                    if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
-                        chestArmor.drainSteam(chestStack, Config.thrusterConsumption);
-                    }
                 }
             }
         }
