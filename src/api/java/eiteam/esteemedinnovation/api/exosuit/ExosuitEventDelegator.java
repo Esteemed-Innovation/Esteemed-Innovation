@@ -15,6 +15,7 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 /**
  * Do not register this class to the event bus, or you will cause the ExosuitUpgrade methods to get called multiple times (bad).
@@ -91,14 +92,56 @@ class ExosuitEventDelegator {
     }
 
     @SubscribeEvent
+    public void onPlayerInteractsWithEntitySpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerInteractsWithEntitySpecific(event, armor, slot));
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteractsWithEntity(PlayerInteractEvent.EntityInteract event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerInteractsWithEntity(event, armor, slot));
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerRightClickBlock(event, armor, slot));
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerRightClickItem(event, armor, slot));
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerRightClickEmpty(event, armor, slot));
+    }
+
+    @SubscribeEvent
     public void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         EntityPlayer player = event.getEntityPlayer();
         doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerLeftClickBlock(event, armor, slot));
     }
 
     @SubscribeEvent
+    public void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        EntityPlayer player = event.getEntityPlayer();
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerLeftClickEmpty(event, armor, slot));
+    }
+
+    @SubscribeEvent
     public void onEntityItemPickedUp(EntityItemPickupEvent event) {
         EntityPlayer player = event.getEntityPlayer();
         doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerPickupItem(event, armor, slot));
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        EntityPlayer player = event.player;
+        doMethodForEachUpgrade(player, (handler, armor, slot) -> handler.onPlayerTick(event, armor, slot));
     }
 }

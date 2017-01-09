@@ -9,6 +9,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 /**
  * This represents a thing that can be put into an {@link ExosuitArmor} implementer (plates, upgrades, for example, but
@@ -74,12 +75,60 @@ public interface ExosuitEventHandler {
     default void onPlayerPickupXP(PlayerPickupXpEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {}
 
     /**
+     * Called when the player interacts with an entity a block while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerInteractsWithEntitySpecific(PlayerInteractEvent.EntityInteractSpecific event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called when the player interacts with an entity while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerInteractsWithEntity(PlayerInteractEvent.EntityInteract event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called when the player right clicks a block while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called when the player right clicks an item while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called when the player right clicks nothing while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
      * Called when the player left clicks a block while wearing the exosuit with this installed.
      * @param event The event. This contains the player, so it is not passed as an additional argument.
      * @param armorStack The ItemStack containing the armor piece that this is installed in.
      * @param slot The EntityEquipmentSlot that the armorStack is contained in.
      */
     default void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called when the player left clicks nothing while wearing the exosuit with this installed.
+     * @param event The event. This contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerLeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event, ItemStack armorStack, EntityEquipmentSlot slot) {}
 
     /**
      * Called when the player picks up an item from the world (an {@link net.minecraft.entity.item.EntityItem}) while
@@ -89,4 +138,12 @@ public interface ExosuitEventHandler {
      * @param slot The EntityEquipmentSlot that the armorStack is contained in.
      */
     default void onPlayerPickupItem(EntityItemPickupEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {}
+
+    /**
+     * Called each player tick for players who are wearing an exosuit with this installed.
+     * @param event The event. Contains the player, so it is not passed as an additional argument.
+     * @param armorStack The ItemStack containing the armor piece that this is installed in.
+     * @param slot The EntityEquipmentSlot that the armorStack is contained in.
+     */
+    default void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {}
 }
