@@ -48,6 +48,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -1055,6 +1056,7 @@ public class ArmorModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         ModelLoaderRegistry.registerLoader(new ExosuitItemModelLoader());
@@ -1064,6 +1066,7 @@ public class ArmorModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         ItemColors colors = Minecraft.getMinecraft().getItemColors();

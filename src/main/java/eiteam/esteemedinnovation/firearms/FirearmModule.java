@@ -30,6 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -470,6 +471,7 @@ public class FirearmModule extends ContentModule {
         entries.forEach(entry -> BookPageRegistry.addEntryToCategory(FlintlockBookCategory.NAME, entry));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(SPYGLASS);
@@ -510,6 +512,7 @@ public class FirearmModule extends ContentModule {
         });
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, RenderRocket::new);

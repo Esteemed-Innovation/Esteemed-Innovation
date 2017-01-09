@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -149,6 +150,7 @@ public class MiscellaneousModule extends ContentModule {
           new BookPageCrafting("", "hellforgeBrick")));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         for (ItemCraftingComponent.Types type : ItemCraftingComponent.Types.values()) {

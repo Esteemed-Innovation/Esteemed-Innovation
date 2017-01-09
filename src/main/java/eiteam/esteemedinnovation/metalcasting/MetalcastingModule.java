@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
@@ -125,6 +126,7 @@ public class MetalcastingModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(CRUCIBLE);
@@ -138,6 +140,7 @@ public class MetalcastingModule extends ContentModule {
         registerModel(PIPE_MOLD);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TileEntityCrucibleRenderer());

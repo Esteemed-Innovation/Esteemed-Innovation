@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
@@ -58,6 +59,7 @@ public class BoilerModule extends ContentModule {
           new BookPageCrafting("", "boiler1", "boiler2")));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(BOILER);

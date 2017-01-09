@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -51,6 +52,7 @@ public class NaturalPhilosophyModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(SOIL_SAMPLING_KIT);

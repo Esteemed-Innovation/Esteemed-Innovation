@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -116,6 +117,7 @@ public class HeaterModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(STEAM_HEATER);

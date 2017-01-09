@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -104,6 +105,7 @@ public class SafetyModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModelItemStack(new ItemStack(RUPTURE_DISC, 1, 0));
@@ -112,6 +114,7 @@ public class SafetyModule extends ContentModule {
         registerModel(STEAM_WHISTLE);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());

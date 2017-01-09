@@ -26,6 +26,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
@@ -236,6 +237,7 @@ public class TransportationModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(BRASS_PIPE);
@@ -248,6 +250,7 @@ public class TransportationModule extends ContentModule {
         registerModel(ASTROLABE);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         RenderingRegistry.registerEntityRenderingHandler(EntityMortarItem.class, RenderMortarItem::new);

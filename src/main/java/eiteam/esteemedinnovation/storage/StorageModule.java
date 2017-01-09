@@ -19,6 +19,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
@@ -107,6 +108,7 @@ public class StorageModule extends ContentModule {
         BookPageRegistry.addTopCategory(new CreativeTankBookCategory());
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(STEAM_TANK, 0, "is_creative=false");
@@ -115,6 +117,7 @@ public class StorageModule extends ContentModule {
         registerModel(KIT_BAG);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, RenderCanister::new);

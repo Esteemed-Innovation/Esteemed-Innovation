@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class EngineeringTableModule extends ContentModule {
@@ -30,6 +31,7 @@ public class EngineeringTableModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(ENGINEERING_TABLE);

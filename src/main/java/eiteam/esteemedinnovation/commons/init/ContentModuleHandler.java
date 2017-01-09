@@ -12,8 +12,8 @@ import eiteam.esteemedinnovation.fishfarm.FishFarmModule;
 import eiteam.esteemedinnovation.hammer.HammerModule;
 import eiteam.esteemedinnovation.heater.HeaterModule;
 import eiteam.esteemedinnovation.island.IslandModule;
-import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import eiteam.esteemedinnovation.materials.MaterialsModule;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import eiteam.esteemedinnovation.misc.MiscellaneousModule;
 import eiteam.esteemedinnovation.naturalphilosophy.NaturalPhilosophyModule;
 import eiteam.esteemedinnovation.smasher.SmasherModule;
@@ -27,86 +27,79 @@ import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class ContentModuleHandler {
     private static final Set<ContentModule> modules = new HashSet<>();
 
     // This isn't preferential, however I fail to see good alternatives.
     static {
-        registerAllModules(
-          new ArmorModule(),
-          new BoilerModule(),
-          new BookModule(),
-          new BuzzsawModule(),
-          new ChargingModule(),
-          new ConverterModule(),
-          new EngineeringTableModule(),
-          new FirearmModule(),
-          new FishFarmModule(),
-          new HammerModule(),
-          new HeaterModule(),
-          new IslandModule(),
-          new MetalcastingModule(),
-          new MaterialsModule(),
-          new MiscellaneousModule(),
-          new NaturalPhilosophyModule(),
-          new SmasherModule(),
-          new SafetyModule(),
-          new StorageModule(),
-          new ThumperModule(),
-          new ToolsModule(),
-          new TransportationModule(),
-          new WoodenConeModule(),
-          new SteamWorkshopModule()
-        );
+        registerModule(new ArmorModule());
+        registerModule(new BoilerModule());
+        registerModule(new BookModule());
+        registerModule(new BuzzsawModule());
+        registerModule(new ChargingModule());
+        registerModule(new ConverterModule());
+        registerModule(new EngineeringTableModule());
+        registerModule(new FirearmModule());
+        registerModule(new FishFarmModule());
+        registerModule(new HammerModule());
+        registerModule(new HeaterModule());
+        registerModule(new IslandModule());
+        registerModule(new MetalcastingModule());
+        registerModule(new MaterialsModule());
+        registerModule(new MiscellaneousModule());
+        registerModule(new NaturalPhilosophyModule());
+        registerModule(new SmasherModule());
+        registerModule(new SafetyModule());
+        registerModule(new StorageModule());
+        registerModule(new ThumperModule());
+        registerModule(new ToolsModule());
+        registerModule(new TransportationModule());
+        registerModule(new WoodenConeModule());
+        registerModule(new SteamWorkshopModule());
     }
 
-    public static void registerModule(ContentModule module) {
+    private static void registerModule(ContentModule module) {
         modules.add(module);
     }
 
-    public static void registerAllModules(ContentModule... modules) {
-        ContentModuleHandler.modules.addAll(Arrays.asList(modules));
-    }
-
     public static void preInit() {
-        doForEachModule(false, module -> { module.create(getSide()); module.oreDict(getSide()); }, ContentModule::preInitClient);
+        Side side = getSide();
+        boolean isClient = side == Side.CLIENT;
+        for (ContentModule module : modules) {
+            module.create(side);
+            module.oreDict(side);
+            if (isClient) {
+                module.preInitClient();
+            }
+        }
     }
 
     public static void init() {
-        doForEachModule(false, (contentModule) -> contentModule.recipes(getSide()), ContentModule::initClient);
+        Side side = getSide();
+        boolean isClient = side == Side.CLIENT;
+        for (ContentModule module : modules) {
+            module.recipes(side);
+            if (isClient) {
+                module.initClient();
+            }
+        }
     }
 
     public static void postInit() {
-        doForEachModule(true, (contentModule) -> contentModule.finish(getSide()), ContentModule::postInitClient);
-    }
-
-    private static boolean isClient() {
-        return getSide() == Side.CLIENT;
+        Side side = getSide();
+        boolean isClient = side == Side.CLIENT;
+        for (ContentModule module : modules) {
+            if (isClient) {
+                module.postInitClient();
+            }
+            module.finish(side);
+        }
     }
 
     private static Side getSide() {
         return FMLCommonHandler.instance().getEffectiveSide();
-    }
-
-    private static void doForEachModule(boolean clientFirst, Consumer<ContentModule> common, Consumer<ContentModule> client) {
-        boolean isClient = isClient();
-        for (ContentModule module : modules) {
-            if (clientFirst) {
-                if (isClient) {
-                    client.accept(module);
-                }
-                common.accept(module);
-            } else {
-                common.accept(module);
-                if (isClient) {
-                    client.accept(module);
-                }
-            }
-        }
     }
 }

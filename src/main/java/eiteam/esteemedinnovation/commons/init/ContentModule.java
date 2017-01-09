@@ -13,6 +13,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.function.Function;
@@ -55,17 +56,20 @@ public class ContentModule {
      * Handle any client-side preInit stuff here. Most likely, you'll want to use this to register your models. Called
      * in preInit on the client after {@link #oreDict(Side)}.
      */
+    @SideOnly(Side.CLIENT)
     public void preInitClient() {}
 
     /**
      * Handle any client-side init stuff here. Use this to, for example, register client-side event handlers or register
      * color handlers. Called in init on the client after {@link #recipes(Side)}.
      */
+    @SideOnly(Side.CLIENT)
     public void initClient() {}
 
     /**
      * Handle any client-side postInit stuff here. Called in postInit before {@link #finish(Side)}.
      */
+    @SideOnly(Side.CLIENT)
     public void postInitClient() {}
 
     /**

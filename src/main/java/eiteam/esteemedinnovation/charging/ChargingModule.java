@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_CATEGORY;
@@ -120,6 +121,7 @@ public class ChargingModule extends ContentModule {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
         registerModel(STEAM_FILLER);
@@ -129,6 +131,7 @@ public class ChargingModule extends ContentModule {
         registerModel(STEAM_CELL_FILLER);
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamCharger.class, new TileEntitySteamChargerRenderer());
