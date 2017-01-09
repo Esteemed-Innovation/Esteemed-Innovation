@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
-public class ExosuitPlate {
+public class ExosuitPlate implements ExosuitEventHandler {
     private String identifier;
     private String invMod;
     private String armorMod;

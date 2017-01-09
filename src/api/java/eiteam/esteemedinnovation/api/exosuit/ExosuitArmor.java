@@ -53,4 +53,13 @@ public interface ExosuitArmor extends ISpecialArmor, Engineerable, SteamChargabl
      */
     @Nonnull
     ExosuitUpgrade[] getUpgrades(ItemStack self);
+
+    /**
+     * @param self The ItemStack containing the armor piece.
+     * @return An array of all the ExosuitEventHandlers installed in the armor piece. This includes both ExosuitUpgrades
+     *         and ExosuitPlates, along with anything else that you may create that implements ExosuitEventHandler.
+     *         This is used for event handling delegation, but is not limited to that. Cannot be null.
+     */
+    @Nonnull
+    ExosuitEventHandler[] getInstalledEventHandlers(ItemStack self);
 }

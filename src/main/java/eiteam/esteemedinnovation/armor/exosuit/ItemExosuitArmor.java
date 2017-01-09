@@ -30,6 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
@@ -557,4 +558,13 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
     }
 
+    @Nonnull
+    @Override
+    public ExosuitEventHandler[] getInstalledEventHandlers(ItemStack self) {
+        List<ExosuitEventHandler> handlers = Arrays.asList(getUpgrades(self));
+        if (self.hasTagCompound() && self.getTagCompound().hasKey("plate")) {
+            handlers.add(UtilPlates.getPlate(self.getTagCompound().getString("plate")));
+        }
+        return handlers.toArray(new ExosuitEventHandler[handlers.size()]);
+    }
 }

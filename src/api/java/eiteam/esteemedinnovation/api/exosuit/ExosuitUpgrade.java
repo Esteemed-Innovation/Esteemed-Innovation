@@ -21,7 +21,7 @@ import java.util.List;
  * You must inherit Item as well, or provide a new implementation for isInstalled, as the default implementation
  * checks if we are an instance of Item.
  */
-public interface ExosuitUpgrade {
+public interface ExosuitUpgrade extends ExosuitEventHandler {
     /**
      * The priority of the upgrade's rendering
      *
