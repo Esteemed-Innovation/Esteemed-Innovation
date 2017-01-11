@@ -16,6 +16,7 @@ import eiteam.esteemedinnovation.materials.MaterialsModule;
 import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import eiteam.esteemedinnovation.misc.MiscellaneousModule;
 import eiteam.esteemedinnovation.naturalphilosophy.NaturalPhilosophyModule;
+import eiteam.esteemedinnovation.pendulum.PendulumModule;
 import eiteam.esteemedinnovation.smasher.SmasherModule;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.storage.StorageModule;
@@ -59,6 +60,7 @@ public class ContentModuleHandler {
         registerModule(new TransportationModule());
         registerModule(new WoodenConeModule());
         registerModule(new SteamWorkshopModule());
+        registerModule(new PendulumModule());
     }
 
     private static void registerModule(ContentModule module) {

@@ -701,6 +701,11 @@ item.esteemedinnovation:pipe_mold.name=Pipe Mold
 tile.esteemedinnovation:brass_pipe.name=Brass Pipe
 tile.esteemedinnovation:copper_pipe.name=Copper Pipe
 
+tile.esteemedinnovation:pendulum_torch.name=Pendulum Torch
+tile.esteemedinnovation:pendulum_string.name=Pendulum String
+research.Pendulum.name=Redstone Pendulum
+research.Pendulum.0=I can hang a torch from the ceiling using a string to cause redstone pulses. It takes about a second per meter for the pulse to travel back down to the torch.
+
 esteemedinnovation.plonker.always=Automatically place
 esteemedinnovation.plonker.pulse=Pulse to place
 

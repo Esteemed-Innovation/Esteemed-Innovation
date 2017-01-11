@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "lit_redstone_torch",
+    "x": 180
+  },
+  "variants": {
+    "lit": {
+      "true": {},
+      "false": {
+        "model": "unlit_redstone_torch"
+      }
+    },
+    "normal": [{}]
+  }
+}
