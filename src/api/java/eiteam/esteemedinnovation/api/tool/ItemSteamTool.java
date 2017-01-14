@@ -64,13 +64,17 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
 
     @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+        int blockHarvestLevel = state.getBlock().getHarvestLevel(state);
+        if (blockHarvestLevel < 0) {
+            return false;
+        }
         for (ItemStack upgradeStack : UtilSteamTool.getUpgradeStacks(stack)) {
             SteamToolUpgrade upgrade = (SteamToolUpgrade) upgradeStack.getItem();
             if (upgrade.modifiesToolStrength()) {
-                return upgrade.getToolStrength(state, stack, upgradeStack) >= state.getBlock().getHarvestLevel(state);
+                return upgrade.getToolStrength(state, stack, upgradeStack) >= blockHarvestLevel;
             }
         }
-        return getToolMaterial().getHarvestLevel() >= state.getBlock().getHarvestLevel(state);
+        return getToolMaterial().getHarvestLevel() >= blockHarvestLevel;
     }
 
     @Override
