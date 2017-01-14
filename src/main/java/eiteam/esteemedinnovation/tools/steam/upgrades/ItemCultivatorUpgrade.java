@@ -20,19 +20,20 @@ public class ItemCultivatorUpgrade extends ItemSteamToolUpgrade {
 
     @Override
     public boolean onLeftClickBlockWithTool(PlayerInteractEvent.LeftClickBlock event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
-        BlockPos pos = event.getPos();
+        BlockPos startPos = event.getPos();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(startPos);
         World world = event.getWorld();
+        // TODO: See ItemLeafBlowerUpgrade#blowLeaves.
         for (int[] aCoordinateArray : WorldHelper.EXTRA_BLOCKS_VERTICAL) {
-            int thisX = pos.getX() + aCoordinateArray[0];
-            int thisY = pos.getY() + aCoordinateArray[1];
-            int thisZ = pos.getZ() + aCoordinateArray[2];
-
-            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-            Block block1 = world.getBlockState(thisPos).getBlock();
+            int thisX = startPos.getX() + aCoordinateArray[0];
+            int thisY = startPos.getY() + aCoordinateArray[1];
+            int thisZ = startPos.getZ() + aCoordinateArray[2];
+            pos.setPos(thisX, thisY, thisZ);
+            Block block1 = world.getBlockState(pos).getBlock();
 
             if (WorldHelper.isFarmable(block1)) {
-                world.setBlockToAir(thisPos);
-                world.setBlockState(thisPos, Blocks.FARMLAND.getDefaultState());
+                world.setBlockToAir(pos);
+                world.setBlockState(pos, Blocks.FARMLAND.getDefaultState());
             }
         }
 

@@ -33,6 +33,8 @@ public class ItemLeafBlowerUpgrade extends ItemSteamToolUpgrade {
 
     /**
      * Harvests the coordinates in the coordinate array.
+     * TODO Convert this to use mineExtraBlocks (or an equivalent) to reduce redundant code. This code is identical to
+     * that method, except that it checks for isLeaves instead of canHarvest. Perhaps that method should take a predicate.
      * @param coordinateArray The two-dimensional array containing coordinates to add to x, y, z.
      * @param startPos The starting position
      * @param world The world.
@@ -40,19 +42,20 @@ public class ItemLeafBlowerUpgrade extends ItemSteamToolUpgrade {
      * @param stack The tool being used to mine.
      */
     private void blowLeaves(int[][] coordinateArray, BlockPos startPos, World world, EntityPlayer player, ItemStack stack) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(startPos);
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = startPos.getX() + aCoordinateArray[0];
             int thisY = startPos.getY() + aCoordinateArray[1];
             int thisZ = startPos.getZ() + aCoordinateArray[2];
-            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-            IBlockState state = world.getBlockState(thisPos);
+            pos.setPos(thisX, thisY, thisZ);
+            IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
-            if (block == null || world.isAirBlock(thisPos)) {
+            if (block == null || world.isAirBlock(pos)) {
                 continue;
             }
-            if (WorldHelper.isLeaves(block, world, thisPos)) {
-                world.setBlockToAir(thisPos);
-                block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), stack);
+            if (WorldHelper.isLeaves(block, world, pos)) {
+                world.setBlockToAir(pos);
+                block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
             }
         }
     }

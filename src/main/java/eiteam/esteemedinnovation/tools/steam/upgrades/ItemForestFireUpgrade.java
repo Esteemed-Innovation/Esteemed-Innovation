@@ -42,10 +42,11 @@ public class ItemForestFireUpgrade extends ItemSteamToolUpgrade {
         int startX = startPos.getX();
         int startY = startPos.getY();
         int startZ = startPos.getZ();
+        BlockPos.MutableBlockPos curPos = new BlockPos.MutableBlockPos(startPos);
         for (int x = startX - 5; x < startX + 5; x++) {
             for (int y = startY - 5; y < startY + 5; y++) {
                 for (int z = startZ - 5; z < startZ + 5; z++) {
-                    BlockPos curPos = new BlockPos(x, y, z);
+                    curPos.setPos(x, y, z);
                     IBlockState state = world.getBlockState(curPos);
                     Block block = state.getBlock();
                     if (block == null || world.isAirBlock(curPos)) {

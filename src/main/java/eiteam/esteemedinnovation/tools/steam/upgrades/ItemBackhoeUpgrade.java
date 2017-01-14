@@ -25,26 +25,27 @@ public class ItemBackhoeUpgrade extends ItemSteamToolUpgrade {
     @Override
     public boolean onBlockBreakWithTool(BlockEvent.BreakEvent event, @Nonnull ItemStack toolStack, @Nonnull ItemStack thisUpgradeStack) {
         EntityPlayer player = event.getPlayer();
-        BlockPos pos = event.getPos();
+        BlockPos startPos = event.getPos();
         World world = event.getWorld();
-        IBlockState state = world.getBlockState(pos);
+        IBlockState state = world.getBlockState(startPos);
         Block block = state.getBlock();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(startPos);
         boolean isFalling = block instanceof BlockFalling;
-        int end = isFalling ? pos.getY() + Config.backhoeRange : pos.getY();
-        for (int i = pos.getY() - Config.backhoeRange; i < end; i++) {
+        int end = isFalling ? startPos.getY() + Config.backhoeRange : startPos.getY();
+        for (int i = startPos.getY() - Config.backhoeRange; i < end; i++) {
             if (i < 0) {
                 continue;
             }
-            BlockPos pos1 = new BlockPos(pos.getX(), i, pos.getZ());
-            IBlockState state1 = world.getBlockState(pos1);
+            pos.setY(i);
+            IBlockState state1 = world.getBlockState(pos);
             Block block1 = state1.getBlock();
             if (!block1.isToolEffective(((SteamTool) toolStack.getItem()).toolClass(), state1) ||
-              !block1.canHarvestBlock(world, pos1, player)) {
+              !block1.canHarvestBlock(world, pos, player)) {
                 continue;
             }
             if (Item.getItemFromBlock(block) == Item.getItemFromBlock(block1)) {
-                world.setBlockToAir(pos1);
-                block.harvestBlock(world, player, pos1, state1, world.getTileEntity(pos1), toolStack);
+                world.setBlockToAir(pos);
+                block.harvestBlock(world, player, pos, state1, world.getTileEntity(pos), toolStack);
             } else {
                 break;
             }

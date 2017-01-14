@@ -42,8 +42,9 @@ public class ItemTimberChainUpgrade extends ItemSteamToolUpgrade {
      */
     private static void fellBlocks(World world, BlockPos startPos, EntityPlayer player, ItemStack axe) {
         SteamChargable chargable = (SteamChargable) axe.getItem();
+        BlockPos.MutableBlockPos curPos = new BlockPos.MutableBlockPos(startPos);
         for (int y = startPos.getY(); y < 256; y++) {
-            BlockPos curPos = new BlockPos(startPos.getX(), y, startPos.getZ());
+            curPos.setY(y);
             IBlockState state = world.getBlockState(curPos);
             Block block = state.getBlock();
             if (OreDictHelper.listHasItem(OreDictHelper.logs, Item.getItemFromBlock(block))) {

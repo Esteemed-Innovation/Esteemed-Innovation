@@ -206,19 +206,20 @@ public class WorldHelper {
      * @param player The player mining.
      */
     public static void mineExtraBlocks(int[][] coordinateArray, BlockPos startPos, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(startPos);
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = startPos.getX() + aCoordinateArray[0];
             int thisY = startPos.getY() + aCoordinateArray[1];
             int thisZ = startPos.getZ() + aCoordinateArray[2];
-            BlockPos thisPos = new BlockPos(thisX, thisY, thisZ);
-            IBlockState state = world.getBlockState(thisPos);
+            pos.setPos(thisX, thisY, thisZ);
+            IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
 
-            if (block != null && !world.isAirBlock(thisPos) && tool.canHarvestBlock(state, toolStack)) {
+            if (block != null && !world.isAirBlock(pos) && tool.canHarvestBlock(state, toolStack)) {
 //                world.spawnParticle("")
 //                world.func_147480_a(thisX, thisY, thisZ, false);
-                world.setBlockToAir(thisPos);
-                block.harvestBlock(world, player, thisPos, state, world.getTileEntity(thisPos), toolStack);
+                world.setBlockToAir(pos);
+                block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), toolStack);
             }
         }
     }
