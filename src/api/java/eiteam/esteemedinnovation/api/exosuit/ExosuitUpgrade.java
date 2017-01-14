@@ -65,7 +65,7 @@ public interface ExosuitUpgrade extends ExosuitEventHandler {
      * @return Whether this upgrade is installed in its according ExosuitArmor piece worn by the provided entity.
      */
     default boolean isInstalled(EntityLivingBase entity) {
-        ItemStack armor = entity.getItemStackFromSlot(getSlot().armor);
+        ItemStack armor = entity.getItemStackFromSlot(getSlot().getArmorPiece());
         return this instanceof Item && armor != null && armor.getItem() instanceof ExosuitArmor &&
           ((ExosuitArmor) armor.getItem()).hasUpgrade(armor, (Item) this);
     }

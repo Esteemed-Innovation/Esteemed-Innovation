@@ -14,11 +14,19 @@ public enum ExosuitSlot {
     LEGS_LEGS(EntityEquipmentSlot.LEGS, 3),
     VANITY(EntityEquipmentSlot.HEAD, 1);
 
-    public int slot;
-    public EntityEquipmentSlot armor;
+    private final int slot;
+    private final EntityEquipmentSlot armor;
 
-    ExosuitSlot(EntityEquipmentSlot a, int s) {
-        slot = s;
-        armor = a;
+    ExosuitSlot(EntityEquipmentSlot armor, int slot) {
+        this.armor = armor;
+        this.slot = slot;
+    }
+
+    public int getEngineeringSlot() {
+        return slot;
+    }
+
+    public EntityEquipmentSlot getArmorPiece() {
+        return armor;
     }
 }

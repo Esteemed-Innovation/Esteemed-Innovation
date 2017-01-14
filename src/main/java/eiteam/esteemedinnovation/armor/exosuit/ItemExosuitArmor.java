@@ -286,8 +286,9 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
         }
         if (upgrade.getItem() instanceof ExosuitUpgrade) {
             ExosuitUpgrade upgradeItem = (ExosuitUpgrade) upgrade.getItem();
-            return (upgradeItem.getSlot().armor == slot && upgradeItem.getSlot().slot == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeItem.getSlot().slot == slotNum);
-        } else if (slotNum == ExosuitSlot.VANITY.slot) {
+            ExosuitSlot upgradeSlot = upgradeItem.getSlot();
+            return (upgradeSlot.getArmorPiece() == slot && upgradeSlot.getEngineeringSlot() == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeSlot.getEngineeringSlot() == slotNum);
+        } else if (slotNum == ExosuitSlot.VANITY.getEngineeringSlot()) {
             // TODO: Optimize by using a static list of dye oredicts generated at load time (OreDictHelper).
             int[] ids = OreDictionary.getOreIDs(upgrade);
             for (int id : ids) {
