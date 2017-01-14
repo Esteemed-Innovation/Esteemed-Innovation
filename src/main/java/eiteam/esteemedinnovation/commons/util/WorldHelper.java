@@ -1,8 +1,6 @@
 package eiteam.esteemedinnovation.commons.util;
 
 import com.google.common.collect.ImmutableList;
-import eiteam.esteemedinnovation.api.tool.SteamTool;
-import eiteam.esteemedinnovation.tools.steam.ItemSteamShovel;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -208,9 +206,6 @@ public class WorldHelper {
      * @param player The player mining.
      */
     public static void mineExtraBlocks(int[][] coordinateArray, BlockPos startPos, World world, ItemTool tool, ItemStack toolStack, EntityPlayer player) {
-//        boolean isDrill = tool instanceof ItemSteamDrill;
-//        boolean isAxe = tool instanceof ItemSteamAxe;
-        boolean isShovel = tool instanceof ItemSteamShovel;
         for (int[] aCoordinateArray : coordinateArray) {
             int thisX = startPos.getX() + aCoordinateArray[0];
             int thisY = startPos.getY() + aCoordinateArray[1];
@@ -219,11 +214,7 @@ public class WorldHelper {
             IBlockState state = world.getBlockState(thisPos);
             Block block = state.getBlock();
 
-            // For some reason, canHarvestBlock is false when using the Steam Shovel.
-            String toolClass = block.getHarvestTool(state);
-            boolean canHarvest = tool.canHarvestBlock(state, toolStack) ||
-              (isShovel && toolClass != null && toolClass.equals(((SteamTool) tool).toolClass()));
-            if (block != null && !world.isAirBlock(thisPos) && canHarvest) {
+            if (block != null && !world.isAirBlock(thisPos) && tool.canHarvestBlock(state, toolStack)) {
 //                world.spawnParticle("")
 //                world.func_147480_a(thisX, thisY, thisZ, false);
                 world.setBlockToAir(thisPos);
