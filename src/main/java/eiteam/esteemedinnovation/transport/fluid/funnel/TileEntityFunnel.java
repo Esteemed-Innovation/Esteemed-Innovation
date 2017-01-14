@@ -83,16 +83,21 @@ public class TileEntityFunnel extends TileEntity implements ITickable {
         return tag;
     }
 
+    private boolean hasTankCapability(Capability<?> capability, EnumFacing face) {
+        return capability == FLUID_HANDLER_CAPABILITY &&
+          (face == EnumFacing.UP || face == worldObj.getBlockState(pos).getValue(BlockFunnel.FACING));
+    }
+
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return facing.getAxis() == EnumFacing.Axis.Y && capability == FLUID_HANDLER_CAPABILITY ||
+        return hasTankCapability(capability, facing) ||
           super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == FLUID_HANDLER_CAPABILITY && facing.getAxis() == EnumFacing.Axis.Y) {
+        if (hasTankCapability(capability, facing)) {
             return (T) tank;
         }
         return super.getCapability(capability, facing);
