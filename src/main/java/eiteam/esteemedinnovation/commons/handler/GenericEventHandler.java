@@ -1117,61 +1117,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void playerJumps(LivingEvent.LivingJumpEvent event) {
-        EntityLivingBase entityLiving = event.getEntityLiving();
-        Entity entity = event.getEntity();
-
-        if (!(entity instanceof EntityPlayer)) {
-            return;
-        }
-
-        EntityPlayer player = (EntityPlayer) entity;
-
-        boolean hasPower = hasPower(entityLiving, Config.jumpBoostConsumptionShiftJump);
-
-        ItemStack stack = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-
-        if (stack == null) {
-            return;
-        }
-
-        Item item = stack.getItem();
-
-        if (item instanceof ItemExosuitArmor) {
-            ItemExosuitArmor boots = (ItemExosuitArmor) item;
-
-            boolean shiftJump = entity.isSneaking() && hasPower;
-
-            if (shiftJump || hasPower(entityLiving, Config.jumpBoostConsumption)) {
-                if (boots.hasUpgrade(stack, JUMP_ASSIST)) {
-                    if (shiftJump) {
-                        Vec3d vector = entityLiving.getLook(0.5F);
-                        double total = Math.abs(vector.zCoord + vector.xCoord);
-                        double jump = 0;
-                        if (jump >= 1) {
-                            jump = (jump + 2D) / 4D;
-                        }
-
-                        double y = vector.yCoord < total ? total : vector.yCoord;
-
-                        entityLiving.motionY += ((jump + 1) * y) / 1.5F;
-                        entityLiving.motionZ += (jump + 1) * vector.zCoord * 2;
-                        entityLiving.motionX += (jump + 1) * vector.xCoord * 2;
-                        drainSteam(entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump);
-                    } else {
-                        drainSteam(entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption);
-                        entityLiving.motionY += 0.2750000059604645D;
-                    }
-                }
-            }
-
-            if (boots.hasUpgrade(stack, DOUBLE_JUMP)) {
-                stack.getTagCompound().setBoolean("releasedSpace", false);
-            }
-        }
-    }
-
     public boolean hasItemInHotbar(EntityPlayer player, Item item) {
         for (int i = 0; i < 10; i++) {
             ItemStack stackInSlot = player.inventory.getStackInSlot(i);
