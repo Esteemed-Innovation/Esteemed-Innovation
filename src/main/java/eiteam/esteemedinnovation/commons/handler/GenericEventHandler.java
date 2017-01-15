@@ -1242,13 +1242,6 @@ public class GenericEventHandler {
         }
         */
 
-        if (boots != null && boots.getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor item = (ItemExosuitArmor) boots.getItem();
-            if (item.hasUpgrade(boots, DOUBLE_JUMP) && player.onGround && boots.hasTagCompound()) {
-                boots.getTagCompound().setBoolean("usedJump", false);
-            }
-        }
-
         if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();

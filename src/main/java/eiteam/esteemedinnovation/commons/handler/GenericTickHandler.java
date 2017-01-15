@@ -37,7 +37,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 
-import static eiteam.esteemedinnovation.armor.ArmorModule.DOUBLE_JUMP;
 import static eiteam.esteemedinnovation.armor.ArmorModule.PITON_DEPLOYER;
 import static eiteam.esteemedinnovation.charging.ChargingModule.STEAM_CELL_FILLER;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET;
@@ -62,7 +61,6 @@ public class GenericTickHandler {
         EntityPlayer player = event.player;
         boolean isServer = event.side == Side.SERVER;
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         if (!isServer) {
             isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
         }
@@ -93,41 +91,6 @@ public class GenericTickHandler {
             return;
         }
         ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
-        if (boots != null) {
-            Item bootsItem = boots.getItem();
-            if (bootsItem instanceof ExosuitArmor) {
-                ExosuitArmor bootsArmor = (ExosuitArmor) bootsItem;
-                if (bootsArmor.hasUpgrade(boots, DOUBLE_JUMP) && chestArmor.hasPower(chest, 15)) {
-                    if (isJumping) {
-                        if (chestArmor.hasPower(chest, 15)) {
-                            if (isServer) {
-                                if (!boots.getTagCompound().hasKey("usedJump")) {
-                                    boots.getTagCompound().setBoolean("usedJump", false);
-                                }
-                                if (!boots.getTagCompound().hasKey("releasedSpace")) {
-                                    boots.getTagCompound().setBoolean("releasedSpace", false);
-                                }
-                            }
-                            if (!player.onGround && boots.getTagCompound().getBoolean("releasedSpace") &&
-                              !boots.getTagCompound().getBoolean("usedJump") &&
-                              !player.capabilities.isFlying) {
-                                if (isServer) {
-                                    boots.getTagCompound().setBoolean("usedJump", true);
-                                    chestArmor.drainSteam(chest, 10);
-                                }
-                                player.motionY = 0.65D;
-                                player.fallDistance = 0.0F;
-                            }
-                            if (isServer) {
-                                boots.getTagCompound().setBoolean("releasedSpace", false);
-                            }
-                        }
-                    } else if (!player.onGround && isServer) {
-                        boots.getTagCompound().setBoolean("releasedSpace", true);
-                    }
-                }
-            }
-        }
 
         if (isJumping) {
             if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER) && isServer) {
