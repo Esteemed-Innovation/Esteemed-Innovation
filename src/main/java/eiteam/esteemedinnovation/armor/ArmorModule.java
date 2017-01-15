@@ -12,6 +12,7 @@ import eiteam.esteemedinnovation.armor.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitColorHandler;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemPowerFistUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.PhobicCoatingHandler;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.anchors.ItemExosuitAnchorHeels;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalData;
@@ -155,7 +156,7 @@ public class ArmorModule extends ContentModule {
 
         JETPACK = setup(new ItemExosuitJetpack(), "jetpack");
         WINGS = setup(new ItemExosuitWings(), "wings");
-        POWER_FIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("fireFist"), null, 0), "power_fist");
+        POWER_FIST = setup(new ItemPowerFistUpgrade(), "power_fist");
         EXTENDO_FIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
         THRUSTERS = setup(new ItemExosuitSidepack(), "thrusters");
         FALL_ASSIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("fallUpgrade"), null, 0), "fall_assist");
@@ -226,7 +227,7 @@ public class ArmorModule extends ContentModule {
         return startingItem;
     }
 
-    private static String resource(@Nonnull String base) {
+    public static String resource(@Nonnull String base) {
         return Constants.EI_MODID + ":textures/models/armor/" + base + ".png";
     }
 

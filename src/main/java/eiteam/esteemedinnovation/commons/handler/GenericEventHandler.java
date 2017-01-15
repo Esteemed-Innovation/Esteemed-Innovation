@@ -828,31 +828,6 @@ public class GenericEventHandler {
     }
 
     @SubscribeEvent
-    public void handleFirePunch(LivingAttackEvent event) {
-        DamageSource source = event.getSource();
-        Entity sourceEntity = source.getSourceOfDamage();
-        if (sourceEntity instanceof EntityLivingBase) {
-            EntityLivingBase entity = (EntityLivingBase) sourceEntity;
-            boolean hasPower = hasPower(entity, Config.powerFistConsumption);
-            ItemStack stack = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (hasPower && stack != null && entity.getHeldItemMainhand() == null &&
-              stack.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor chest = (ItemExosuitArmor) stack.getItem();
-                if (chest.hasUpgrade(stack, POWER_FIST)) {
-                    entity.worldObj.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,
-                      SoundCategory.PLAYERS, 4F, (1F + (entity.worldObj.rand.nextFloat() - entity.worldObj.rand.nextFloat()) * 0.2F) * 0.7F, false);
-                    entity.motionX += 3.0F * entity.getLookVec().normalize().xCoord;
-                    entity.motionY += (entity.getLookVec().normalize().yCoord > 0.0F ? 2.0F * entity.getLookVec().normalize().yCoord : 0.0F) + 1.5F;
-                    entity.motionZ += 3.0F * entity.getLookVec().normalize().zCoord;
-                    entity.motionX += -0.5F * entity.getLookVec().normalize().xCoord;
-                    entity.motionZ += -0.5F * entity.getLookVec().normalize().zCoord;
-                    drainSteam(stack, Config.powerFistConsumption);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void handlePistonPunch(PlayerInteractEvent.LeftClickBlock event) {
         EntityPlayer entity = event.getEntityPlayer();
         int consumption = Config.pistonPushConsumption;
