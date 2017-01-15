@@ -18,7 +18,7 @@ public class SteamNetworkRegistry {
     /**
      * Key: Dimension ID, Value: All networks in that dimension.
      */
-    private HashMap<Integer, ArrayList<SteamNetwork>> networks = new HashMap<>();
+    private final HashMap<Integer, ArrayList<SteamNetwork>> networks = new HashMap<>();
 
     public static SteamNetworkRegistry getInstance() {
         return INSTANCE;
@@ -52,13 +52,9 @@ public class SteamNetworkRegistry {
 
     @SubscribeEvent
     public void onTick(TickEvent.ServerTickEvent e) {
-        for (ArrayList<SteamNetwork> nets : networks.values()) {
-            Iterator<SteamNetwork> dimension = nets.iterator();
-            while (dimension.hasNext()) {
-                SteamNetwork net = dimension.next();
-                if (!net.tick()) {
-                    dimension.remove();
-                }
+        synchronized (networks) {
+            for (ArrayList<SteamNetwork> nets : networks.values()) {
+                nets.removeIf(net -> !net.tick());
             }
         }
     }
@@ -70,7 +66,7 @@ public class SteamNetworkRegistry {
         return net;
     }
 
-    public void add(SteamNetwork network) {
+    public synchronized void add(SteamNetwork network) {
         if (!networks.containsKey(network.getDimension())) {
             networks.put(network.getDimension(), new ArrayList<>());
         }
@@ -82,7 +78,7 @@ public class SteamNetworkRegistry {
         }
     }
 
-    public void remove(SteamNetwork network) {
+    public synchronized void remove(SteamNetwork network) {
         if (networks.containsKey(network.getDimension())) {
             ArrayList<SteamNetwork> dimension = networks.get(network.getDimension());
             dimension.remove(network);
