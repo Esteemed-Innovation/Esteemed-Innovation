@@ -18,6 +18,7 @@ import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStor
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.ItemExosuitFrequencyShifter;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.jetpack.ItemExosuitJetpack;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.plates.*;
+import eiteam.esteemedinnovation.armor.exosuit.upgrades.pulsenozzle.*;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.reloading.ItemExosuitReloadingHolster;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.roar.ItemExosuitDragonRoar;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.thrusters.ItemExosuitSidepack;
@@ -207,9 +208,11 @@ public class ArmorModule extends ContentModule {
         TOP_HAT = setup(new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", EsteemedInnovation.tabTools);
         ENTREPRENEUR_TOP_HAT = setup(new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, true), "tophat", EsteemedInnovation.tabTools);
 
-
         CapabilityManager.INSTANCE.register(AnimalData.class, new AnimalDataStorage(), AnimalData.DefaultImplementation.class);
         CapabilityManager.INSTANCE.register(VillagerData.class, new VillagerDataStorage(), VillagerData.DefaultImplementation.class);
+
+        EsteemedInnovation.channel.registerMessage(DoubleJumpServerActionPacketHandler.class, DoubleJumpServerActionPacket.class, 5, Side.SERVER);
+        EsteemedInnovation.channel.registerMessage(DoubleJumpClientResponsePacketHandler.class, DoubleJumpClientResponsePacket.class, 6, Side.CLIENT);
     }
 
     @Override
