@@ -12,6 +12,7 @@ import eiteam.esteemedinnovation.armor.exosuit.ExosuitModelCache;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitColorHandler;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemFallAssistUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemPowerFistUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.PhobicCoatingHandler;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.anchors.ItemExosuitAnchorHeels;
@@ -159,7 +160,7 @@ public class ArmorModule extends ContentModule {
         POWER_FIST = setup(new ItemPowerFistUpgrade(), "power_fist");
         EXTENDO_FIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
         THRUSTERS = setup(new ItemExosuitSidepack(), "thrusters");
-        FALL_ASSIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("fallUpgrade"), null, 0), "fall_assist");
+        FALL_ASSIST = setup(new ItemFallAssistUpgrade(), "fall_assist");
         JUMP_ASSIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("jumpUpgrade"), null, 0), "jump_assist");
         DOUBLE_JUMP = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_FEET, resource("doubleJump"), null, 1), "double_jump");
         RUN_ASSIST = setup(new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, resource("runUpgrade"), null, 0), "run_assist");

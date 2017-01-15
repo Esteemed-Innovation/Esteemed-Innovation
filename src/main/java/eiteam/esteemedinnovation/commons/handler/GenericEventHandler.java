@@ -85,7 +85,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -1086,24 +1085,6 @@ public class GenericEventHandler {
                 }
                 if (chillLevel > 0) {
                     ((EntityLivingBase) event.getSource().getEntity()).addPotionEffect(new PotionEffect(SLOWNESS_POTION, chillLevel * 3 + 5, MathHelper.ceiling_float_int((float) chillLevel / 2F)));
-                }
-            }
-        }
-        if (event.getSource() == DamageSource.fall) {
-            boolean hasPower = hasPower(event.getEntityLiving(), (int) (event.getAmount() / Config.fallAssistDivisor));
-            EntityLivingBase entity = event.getEntityLiving();
-            if (hasPower && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor boots = (ItemExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem();
-                if (boots.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.FEET), FALL_ASSIST)) {
-                    if (event.getAmount() <= 6.0F) {
-                        event.setAmount(0F);
-                    }
-                    event.setAmount(event.getAmount() / 3F);
-                    drainSteam(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), (int) (event.getAmount() / Config.fallAssistDivisor));
-                    if (event.getAmount() == 0.0F) {
-                        event.setResult(Event.Result.DENY);
-                        event.setCanceled(true);
-                    }
                 }
             }
         }
