@@ -37,6 +37,6 @@ public class ItemJumpAssistUpgrade extends ItemExosuitUpgrade {
         }
 
         //noinspection ConstantConditions
-        jumper.getItemStackFromSlot(EntityEquipmentSlot.FEET).getTagCompound().setBoolean("releasedSpace", false);
+        armorStack.getTagCompound().setBoolean("releasedSpace", false);
     }
 }
