@@ -1151,16 +1151,7 @@ public class GenericEventHandler {
         /*
         Survivalist's Toolkit
          */
-        if (CrossMod.BAUBLES) {
-            if (BaublesUtility.checkForUpgrade(player, SURVIVALIST_TOOLKIT)) {
-                if (heldItem instanceof ItemTool) {
-                    if (itemDamage >= maxDamage - 1) {
-                        event.setNewSpeed(0F);
-                    }
-                }
-
-            }
-        } else if (hasItemInHotbar(player, SURVIVALIST_TOOLKIT)) {
+        if (BaublesUtility.checkForUpgrade(player, SURVIVALIST_TOOLKIT)) {
             if (heldItem instanceof ItemTool) {
                 if (itemDamage >= maxDamage - 1) {
                     event.setNewSpeed(0F);

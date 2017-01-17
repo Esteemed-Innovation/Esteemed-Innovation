@@ -82,7 +82,6 @@ public class Config {
     public static boolean enableIC2Integration;
     public static boolean enableNaturaIntegration;
     public static boolean enableTinkersConstruct;
-    public static boolean enableBaublesIntegration;
     public static boolean enableRailcraftIntegration;
     public static boolean enableNEIIntegration;
 
@@ -483,7 +482,6 @@ public class Config {
         enableIC2Integration = config.get("Integration", "Enable IC2", true).getBoolean();
         enableNaturaIntegration = config.get("Integration", "Enable Natura", true).getBoolean();
         enableTinkersConstruct = config.get("Integration", "Enable Tinker's Construct", true).getBoolean();
-        enableBaublesIntegration = config.get("Integration", "Enable Baubles", true).getBoolean();
         enableRailcraftIntegration = config.get("Integration", "Enable Railcraft", true).getBoolean();
         enableNEIIntegration = config.get("Integration", "Enable NEI", true).getBoolean();
 

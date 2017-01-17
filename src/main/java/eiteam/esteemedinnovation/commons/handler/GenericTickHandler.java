@@ -9,7 +9,6 @@ import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.ClientProxy;
-import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
@@ -64,23 +63,21 @@ public class GenericTickHandler {
         if (!isServer) {
             isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
         }
-        if (CrossMod.BAUBLES) {
-            ticksSinceLastCellFill++;
-            if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
-                if (ticksSinceLastCellFill >= 10) {
-                    for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-                        ItemStack item = player.inventory.getStackInSlot(i);
-                        if (item != null && item.getItem() instanceof ItemSteamCell &&
-                          ItemSteamCell.chargeItems(player, false)) {
-                            player.inventory.decrStackSize(i, 1);
-                            ticksSinceLastCellFill = 0;
-                            break;
-                        }
+        ticksSinceLastCellFill++;
+        if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
+            if (ticksSinceLastCellFill >= 10) {
+                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+                    ItemStack item = player.inventory.getStackInSlot(i);
+                    if (item != null && item.getItem() instanceof ItemSteamCell &&
+                      ItemSteamCell.chargeItems(player, false)) {
+                        player.inventory.decrStackSize(i, 1);
+                        ticksSinceLastCellFill = 0;
+                        break;
                     }
                 }
-            } else {
-                ticksSinceLastCellFill = -40;
             }
+        } else {
+            ticksSinceLastCellFill = -40;
         }
 
         if (chest == null) {

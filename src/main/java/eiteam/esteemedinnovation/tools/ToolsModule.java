@@ -6,7 +6,6 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
@@ -97,7 +96,7 @@ public class ToolsModule extends ContentModule {
     @Override
     public void create(Side side) {
         WRENCH = setup(new ItemWrench(), "wrench");
-        SURVIVALIST_TOOLKIT = setup(CrossMod.BAUBLES ? new ItemBauble(BaubleType.BELT).setMaxStackSize(1) : new Item().setMaxStackSize(1), "survivalist");
+        SURVIVALIST_TOOLKIT = setup(new ItemBauble(BaubleType.BELT).setMaxStackSize(1), "survivalist");
 
         BRASS_SWORD = setup(new ItemGenericSword(BRASS_MAT, INGOT_BRASS), "brass_sword", tabTools);
         BRASS_PICKAXE = setup(new ItemGenericPickaxe(BRASS_MAT, INGOT_BRASS), "brass_pickaxe", tabTools);
@@ -542,7 +541,7 @@ public class ToolsModule extends ContentModule {
         }
         if (Config.enableSurvivalist) {
             BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Survivalist.name",
-              new BookPageItem("research.Survivalist.name", String.format("research.Survivalist%s.0", CrossMod.BAUBLES ? "Baubles": ""), new ItemStack(SURVIVALIST_TOOLKIT)),
+              new BookPageItem("research.Survivalist.name", "research.Survivalist.0", new ItemStack(SURVIVALIST_TOOLKIT)),
               new BookPageCrafting("", "survivalist")));
         }
 

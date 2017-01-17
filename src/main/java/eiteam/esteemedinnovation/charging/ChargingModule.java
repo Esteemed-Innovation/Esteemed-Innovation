@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.charging;
 import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import net.minecraft.block.Block;
@@ -34,7 +33,7 @@ public class ChargingModule extends ContentModule {
         STEAM_FILLER = setup(new BlockSteamCharger(), "charger");
         STEAM_CELL_FULL = setup(new ItemSteamCell(), "steamcell_full");
         STEAM_CELL_EMPTY = setup(new Item(), "steamcell_empty");
-        STEAM_CELL_FILLER = CrossMod.BAUBLES ? setup(new ItemBauble(BaubleType.AMULET).setMaxStackSize(1), "steamcell_filler") : null;
+        STEAM_CELL_FILLER = setup(new ItemBauble(BaubleType.AMULET).setMaxStackSize(1), "steamcell_filler");
 
         registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
@@ -80,7 +79,7 @@ public class ChargingModule extends ContentModule {
                 'b', NETHERBRICK,
                 'p', BLAZE_POWDER
               ));
-            if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+            if (Config.enableSteamCellBauble) {
                 BookRecipeRegistry.addRecipe("steamcellFiller",
                   new ShapedOreRecipe(STEAM_CELL_FILLER,
                     " p ",
@@ -101,7 +100,7 @@ public class ChargingModule extends ContentModule {
               new BookPageCrafting("", "steamcell")));
         }
 
-        if (Config.enableSteamCellBauble && CrossMod.BAUBLES) {
+        if (Config.enableSteamCellBauble) {
             BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.SteamCellFiller.name",
               new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0", new ItemStack(STEAM_CELL_FILLER)),
               new BookPageCrafting("", "steamcellFiller")));
