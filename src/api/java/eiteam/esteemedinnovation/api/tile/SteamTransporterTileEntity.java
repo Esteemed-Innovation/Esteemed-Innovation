@@ -31,6 +31,8 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
     private int steam = 0;
     private ArrayList<EnumFacing> gaugeSideBlacklist = new ArrayList<>();
     private boolean isInitialized = false;
+    private boolean shouldExplode;
+    private boolean hasExploded;
 
     public SteamTransporterTileEntity() {
         this(EnumFacing.VALUES);
@@ -136,6 +138,11 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
                     net.markDirty();
                 }
             }
+            if (shouldExplode) {
+                shouldExplode = false;
+                explode();
+                hasExploded = true;
+            }
         }
     }
 
@@ -161,6 +168,15 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
         net.decrSteam((int) (net.getSteam() * 0.1F));
         net.split(this, true);
         worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 4F, true);
+    }
+
+    @Override
+    public void shouldExplode() {
+        shouldExplode = true;
+    }
+
+    protected boolean hasExploded() {
+        return hasExploded;
     }
 
     private boolean isValidSteamSide(EnumFacing face) {

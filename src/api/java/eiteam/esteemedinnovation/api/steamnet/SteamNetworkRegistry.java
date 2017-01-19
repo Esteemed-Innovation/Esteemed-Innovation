@@ -52,10 +52,8 @@ public class SteamNetworkRegistry {
 
     @SubscribeEvent
     public void onTick(TickEvent.ServerTickEvent e) {
-        synchronized (networks) {
-            for (ArrayList<SteamNetwork> nets : networks.values()) {
-                nets.removeIf(net -> !net.tick());
-            }
+        for (ArrayList<SteamNetwork> nets : networks.values()) {
+            nets.removeIf(net -> !net.tick());
         }
     }
 
@@ -66,7 +64,7 @@ public class SteamNetworkRegistry {
         return net;
     }
 
-    public synchronized void add(SteamNetwork network) {
+    public void add(SteamNetwork network) {
         if (!networks.containsKey(network.getDimension())) {
             networks.put(network.getDimension(), new ArrayList<>());
         }
@@ -78,7 +76,7 @@ public class SteamNetworkRegistry {
         }
     }
 
-    public synchronized void remove(SteamNetwork network) {
+    public void remove(SteamNetwork network) {
         if (networks.containsKey(network.getDimension())) {
             ArrayList<SteamNetwork> dimension = networks.get(network.getDimension());
             dimension.remove(network);

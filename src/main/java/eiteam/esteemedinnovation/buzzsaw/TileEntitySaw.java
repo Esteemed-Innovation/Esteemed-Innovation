@@ -37,8 +37,6 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
             isInitialized = true;
         }
 
-        super.update();
-
         // Redstone to turn it off.
         if (getSteamShare() < CONSUMPTION || worldObj.isBlockPowered(pos)) {
             resetWinding();
@@ -81,6 +79,8 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
                 decrSteam(CONSUMPTION);
             }
         }
+
+        super.update();
     }
 
     private void resetWinding() {

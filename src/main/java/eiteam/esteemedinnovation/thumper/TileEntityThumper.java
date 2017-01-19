@@ -45,7 +45,6 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
 
     @Override
     public void update() {
-        super.update();
         if (worldObj.isRemote) {
             if (isRunning) {
                 if (progress < 110) {
@@ -161,6 +160,8 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
                 }
             }
         }
+
+        super.update();
     }
 
     @SideOnly(Side.CLIENT)

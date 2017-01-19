@@ -86,7 +86,6 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 
     @Override
     public void update() {
-        super.update();
         if (!worldObj.isRemote) {
             BlockPos thisPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
             ItemStack stackInSlotZero = getStackInSlot(0);
@@ -140,6 +139,8 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                 }
             }
         }
+
+        super.update();
     }
 
     @Override

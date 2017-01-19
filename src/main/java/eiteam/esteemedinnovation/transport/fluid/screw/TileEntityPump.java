@@ -121,7 +121,6 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 
     @Override
     public void update() {
-        super.update();
         if (worldObj.isRemote) {
             if (running && progress < 100) {
                 progress++;
@@ -172,5 +171,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
                 markDirty();
             }
         }
+
+        super.update();
     }
 }

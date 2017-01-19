@@ -18,7 +18,6 @@ public class TileEntityCreativeTank extends TileEntitySteamTank implements ITick
 
     @Override
     public void update() {
-        super.update();
         SteamNetwork net = getNetwork();
         if (net != null && net.getCapacity() > 100 && net.getPressure() < 1F) {
             int capacity = net.getCapacity();
@@ -28,5 +27,7 @@ public class TileEntityCreativeTank extends TileEntitySteamTank implements ITick
                 insertSteam((int) (Math.floor((double) toAdd)), EnumFacing.UP);
             }
         }
+
+        super.update();
     }
 }

@@ -60,7 +60,6 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
 
     @Override
     public void update() {
-        super.update();
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockChargingPad.FACING);
 
         switch (facing) {
@@ -238,5 +237,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
                 }
             }
         }
+
+        super.update();
     }
 }

@@ -75,7 +75,6 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public void update() {
-        super.update();
         if (worldObj.isRemote) {
             if (inventory != null && isCharging) {
                 worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
@@ -218,6 +217,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         }
 
+        super.update();
     }
 
     @Override

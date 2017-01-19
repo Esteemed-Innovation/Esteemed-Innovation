@@ -32,7 +32,17 @@ public interface SteamTransporter {
 
     int getSteamShare();
 
+    /**
+     * Explodes the transporter and removes it from the steamnet. This should handle any reductions in steamnet steam
+     * or pressure. You do not have to actually make an explosion if you don't want to. This is called if
+     * {@link #shouldExplode()} has been called. It must be called during the block/tile entity's update/tick.
+     */
     void explode();
+
+    /**
+     * Queues up the block for an explosion.
+     */
+    void shouldExplode();
 
     /**
      * @param amount How much steam can be inserted per

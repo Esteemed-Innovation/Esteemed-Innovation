@@ -197,7 +197,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public void update() {
-        super.update();
         /*
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
@@ -263,6 +262,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             wasBurning = isBurning();
             markForResync();
         }
+
+        super.update();
     }
 
     private boolean canSmelt() {

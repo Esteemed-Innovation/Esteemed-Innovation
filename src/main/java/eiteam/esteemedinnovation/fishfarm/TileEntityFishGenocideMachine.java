@@ -46,7 +46,6 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
 
     @Override
     public void update() {
-        super.update();
         Pair<Chunk, Integer> pair = randSourceBlock();
         int src = pair.getRight();
         if (getSteamShare() > src) {
@@ -66,6 +65,7 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
                 dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
             }
         }
+        super.update();
     }
 
     /**

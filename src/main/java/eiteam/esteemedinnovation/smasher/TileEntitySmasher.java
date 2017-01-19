@@ -158,7 +158,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
             setValidDistributionDirectionsExcluding(facing, EnumFacing.UP);
             isInitialized = true;
         }
-        super.update();
         if (!worldObj.isRemote) {
             int[] target = getTarget(1);
 
@@ -325,6 +324,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                 extendedTicks = 0;
             }
         }
+
+        super.update();
     }
 
     private boolean isPrimary() {

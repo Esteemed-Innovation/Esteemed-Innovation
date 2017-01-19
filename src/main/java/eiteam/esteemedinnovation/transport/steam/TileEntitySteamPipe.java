@@ -205,7 +205,6 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
 
     @Override
     public void update() {
-        super.update();
         /*
         TODO: Port this.
         if (worldObj.isRemote) {
@@ -217,6 +216,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
         }
         */
         leak();
+        super.update();
     }
 
     @Override

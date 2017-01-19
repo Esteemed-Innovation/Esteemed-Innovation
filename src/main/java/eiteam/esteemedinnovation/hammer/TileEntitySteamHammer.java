@@ -44,7 +44,6 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             setDistributionDirections(dirs);
             isInitialized = true;
         }
-        super.update();
         if (worldObj.isRemote) {
             if (isWorking) {
                 if (cost > 0 && progress < cost && hammerTicks == 355) {
@@ -119,6 +118,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 }
             }
         }
+
+        super.update();
     }
 
     private void playHammerSound(SoundEvent sound, float volume, float pitch) {

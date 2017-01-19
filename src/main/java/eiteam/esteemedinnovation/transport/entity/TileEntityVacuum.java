@@ -103,7 +103,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
             isInitialized = true;
         }
-        super.update();
         if (!worldObj.isRemote) {
             if ((getSteamShare() < VACUUM_STEAM_CONSUMPTION) || powered) {
                 active = false;
@@ -204,6 +203,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
                 }
             }
         }
+
+        super.update();
     }
 
     private void putInInventory(EntityItem item, int slot, IInventory inv) {

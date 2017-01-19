@@ -49,7 +49,6 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
             setValidDistributionDirectionsExcluding(dir);
             isInitialized = true;
         }
-        super.update();
 
         if (getSteamShare() < CONSUMPTION) {
             return;
@@ -66,6 +65,8 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         }
 
         prevRedstoneActivated = worldObj.isBlockPowered(pos);
+
+        super.update();
     }
 
     private boolean isTargetAvailable() {

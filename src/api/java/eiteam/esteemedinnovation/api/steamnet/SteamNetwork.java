@@ -40,7 +40,7 @@ public class SteamNetwork {
         this.name = name;
     }
 
-    public synchronized static SteamNetwork newOrJoin(SteamTransporter trans) {
+    public static SteamNetwork newOrJoin(SteamTransporter trans) {
         if (!trans.canSteamPassThrough()) {
             return null;
         }
@@ -153,7 +153,7 @@ public class SteamNetwork {
                             if ((trans == null || ((TileEntity) trans).isInvalid())) {
                                 iter.remove();
                             } else if (!trans.getWorldObj().isRemote && shouldExplode(oneInX(getPressure(), trans.getPressureResistance()))) {
-                                trans.explode();
+                                trans.shouldExplode();
                             }
                         }
                     }
@@ -167,12 +167,12 @@ public class SteamNetwork {
         return true;
     }
 
-    public synchronized void addSteam(int amount) {
+    public void addSteam(int amount) {
         steam += amount;
         shouldRefresh();
     }
 
-    public synchronized void decrSteam(int amount) {
+    public void decrSteam(int amount) {
         steam -= amount;
         if (steam < 0) {
             steam = 0;
@@ -217,7 +217,7 @@ public class SteamNetwork {
         return transporters.size();
     }
 
-    public synchronized void addTransporter(SteamTransporter trans) {
+    public void addTransporter(SteamTransporter trans) {
         if (trans != null && !this.contains(trans)) {
             this.capacity += trans.getCapacity();
             Coord4 transCoords = trans.getCoords();
@@ -234,13 +234,13 @@ public class SteamNetwork {
         transporterCoords = coords;
     }
 
-    public synchronized void init(World world) {
+    public void init(World world) {
         if (transporterCoords != null) {
             this.loadTransporters(world);
         }
     }
 
-    public synchronized void loadTransporters(World world) {
+    public void loadTransporters(World world) {
         for (int i = transporterCoords.length - 1; i >= 0; i--) {
             Coord4 coords = transporterCoords[i];
             TileEntity te = world.getTileEntity(coords.getPos());
@@ -251,7 +251,7 @@ public class SteamNetwork {
         }
     }
 
-    public synchronized int split(SteamTransporter split, boolean removeCapacity) {
+    public int split(SteamTransporter split, boolean removeCapacity) {
         int steamRemoved = 0;
         if (removeCapacity && getSteam() >= split.getCapacity() * this.getPressure()) {
             steamRemoved = (int) Math.floor((double) split.getCapacity() * (double) this.getPressure());
@@ -302,7 +302,7 @@ public class SteamNetwork {
         return steamRemoved;
     }
 
-    public synchronized void buildFromTransporter(SteamTransporter trans, SteamNetwork target, SteamTransporter ignore) {
+    public void buildFromTransporter(SteamTransporter trans, SteamNetwork target, SteamTransporter ignore) {
         //////EsteemedInnovation.log.debug("Building network!");
         HashSet<SteamTransporter> checked = new HashSet<>();
         HashSet<SteamTransporter> members = target.crawlNetwork(trans, checked, ignore);
@@ -382,7 +382,7 @@ public class SteamNetwork {
         SteamNetworkRegistry.markDirty(this);
     }
 
-    public synchronized void refresh() {
+    public void refresh() {
         float press = getPressure();
         int targetCapacity = 0;
         if (transporters.size() == 0) {

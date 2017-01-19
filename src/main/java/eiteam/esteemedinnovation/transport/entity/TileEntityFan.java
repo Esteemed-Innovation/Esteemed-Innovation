@@ -134,7 +134,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
             setDistributionDirections(new EnumFacing[] { worldObj.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
             isInitialized = true;
         }
-        super.update();
         if (active && worldObj.isRemote) {
             rotateTicks++;
         }
@@ -195,6 +194,8 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
                 }
             }
         }
+
+        super.update();
     }
 
     public void updateRedstoneState(boolean flag) {
