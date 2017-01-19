@@ -337,19 +337,6 @@ public class SteamNetwork {
         return checked;
     }
 
-    private HashSet<SteamTransporter> getNeighborTransporters(SteamTransporter trans) {
-        HashSet<SteamTransporter> out = new HashSet<>();
-        Coord4 coords = trans.getCoords();
-        for (EnumFacing dir : trans.getConnectionSides()) {
-            TileEntity te = trans.getWorldObj().getTileEntity(coords.getPos().offset(dir));
-            if (te != null && te instanceof SteamTransporter) {
-                SteamTransporter neighbor = (SteamTransporter) te;
-                out.add(neighbor);
-            }
-        }
-        return out;
-    }
-
     public void join(SteamNetwork other) {
         for (SteamTransporter trans : other.transporters.values()) {
             addTransporter(trans);
