@@ -6,7 +6,6 @@ import eiteam.esteemedinnovation.api.util.Coord4;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -179,10 +178,16 @@ public class SteamNetwork {
         }
     }
 
+    /**
+     * @return The total amount of steam currently contained in the network.
+     */
     public int getSteam() {
         return steam;
     }
 
+    /**
+     * @return The total capacity of steam that the steam network can hold.
+     */
     public int getCapacity() {
         return capacity;
     }
@@ -195,21 +200,13 @@ public class SteamNetwork {
         return oneInX <= 1 || random.nextInt(oneInX - 1) == 0;
     }
 
+    /**
+     * @return The total pressure of the network. Calculated as steam / capacity in the default implementation.
+     *         In the default implementation 1.2F pressure is considered dangerously high and capable of exploding.
+     */
     public float getPressure() {
-        if (capacity > 0) {
-            float altitudePressureModifier = 1F;
-            if (transporters != null) {
-                int totalY = 0;
-                for (Coord4 coord : transporters.keySet()) {
-                    totalY += coord.getPos().getY();
-                }
-                int averageY = MathHelper.ceiling_float_int(totalY / (float) transporters.size());
-                int networkAltitude = 64 - averageY;
-                altitudePressureModifier = (float) (Math.sqrt(Math.abs(networkAltitude / 100F))) + 1;
-            }
-            return (getSteam() / (float) getCapacity()) * altitudePressureModifier;
-        }
-        return 0;
+        float capacity = getCapacity();
+        return capacity > 0 ? getSteam() / capacity : 0;
 
     }
 
