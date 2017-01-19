@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.armor;
 
-import eiteam.esteemedinnovation.api.util.UtilMisc;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ public class ItemGenericArmor extends ItemArmor {
             return repair.isItemEqual((ItemStack) repairMaterial) || super.getIsRepairable(toRepair, repair);
         }
         if (repairMaterial instanceof String) {
-            return UtilMisc.doesMatch(repair, (String) repairMaterial) || super.getIsRepairable(toRepair, repair);
+            return ItemStackUtility.isItemOreDictedAs(repair, (String) repairMaterial) || super.getIsRepairable(toRepair, repair);
         }
         return super.getIsRepairable(toRepair, repair);
     }

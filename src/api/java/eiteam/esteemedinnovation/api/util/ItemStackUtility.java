@@ -6,6 +6,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 
@@ -123,5 +124,19 @@ public class ItemStackUtility {
         if (stack.stackSize == 0) {
             inventory.deleteStack(stack);
         }
+    }
+
+    /**
+     * @param item The ItemStack to check
+     * @param oreDict The OreDictionary value to check
+     * @return Whether the provided Item (metadata specific) is in the OreDictionary under the provided oreDict value.
+     */
+    public static boolean isItemOreDictedAs(ItemStack item, String oreDict) {
+        for (ItemStack i : OreDictionary.getOres(oreDict)) {
+            if (i.isItemEqual(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -7,7 +7,6 @@ import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
-import eiteam.esteemedinnovation.api.util.UtilMisc;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
@@ -394,7 +393,7 @@ public class ItemFirearm extends Item implements Engineerable {
                 return repair.isItemEqual((ItemStack) repairMaterial) || super.getIsRepairable(toRepair, repair);
             }
             if (repairMaterial instanceof String) {
-                return UtilMisc.doesMatch(repair, (String) repairMaterial) || super.getIsRepairable(toRepair, repair);
+                return ItemStackUtility.isItemOreDictedAs(repair, (String) repairMaterial) || super.getIsRepairable(toRepair, repair);
             }
         }
         return super.getIsRepairable(toRepair, repair);

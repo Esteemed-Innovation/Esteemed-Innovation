@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.steamsafety.disc;
 
 import eiteam.esteemedinnovation.api.SteamTransporter;
-import eiteam.esteemedinnovation.api.util.UtilMisc;
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
@@ -114,7 +114,7 @@ public class BlockRuptureDisc extends Block {
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (state.getValue(IS_BURST) && heldItem != null && UtilMisc.doesMatch(heldItem, OreDictEntries.PLATE_THIN_ZINC)) {
+        if (state.getValue(IS_BURST) && heldItem != null && ItemStackUtility.isItemOreDictedAs(heldItem, OreDictEntries.PLATE_THIN_ZINC)) {
             state.cycleProperty(IS_BURST);
             if (!player.capabilities.isCreativeMode) {
                 heldItem.stackSize -= 1;
