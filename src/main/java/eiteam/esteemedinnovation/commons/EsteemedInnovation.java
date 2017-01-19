@@ -13,6 +13,8 @@ import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.commons.network.*;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.firearms.FlintlockBookCategory;
+import eiteam.esteemedinnovation.transport.steam.ConnectPacket;
+import eiteam.esteemedinnovation.transport.steam.ConnectPacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -105,7 +107,6 @@ public class EsteemedInnovation {
 
         channel = NetworkRegistry.INSTANCE.newSimpleChannel("eiChannel");
         channel.registerMessage(CamoPacketHandler.class, CamoPacket.class, 0, Side.SERVER);
-        channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
         channel.registerMessage(JumpValueChangePacketHandler.class, JumpValueChangePacket.class, 3, Side.SERVER);
 
         SOUND_HISS = registerSound("hiss");

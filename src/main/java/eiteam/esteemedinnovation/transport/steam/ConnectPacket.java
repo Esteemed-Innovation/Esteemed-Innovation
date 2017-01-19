@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.commons.network;
+package eiteam.esteemedinnovation.transport.steam;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;

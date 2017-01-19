@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.network.ConnectPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyBool;

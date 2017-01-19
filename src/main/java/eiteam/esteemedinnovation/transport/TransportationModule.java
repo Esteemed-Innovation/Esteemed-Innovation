@@ -63,6 +63,8 @@ public class TransportationModule extends ContentModule {
         COPPER_PIPE = setup(new BlockColdFluidPipe(), "copper_pipe");
         VALVE_PIPE = setup(new BlockValvePipe(), "valve_pipe");
 
+        channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
+
         EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, instance, 64, 20, true);
 
         registerTileEntity(TileEntitySteamPipe.class, "brass_pipe");
