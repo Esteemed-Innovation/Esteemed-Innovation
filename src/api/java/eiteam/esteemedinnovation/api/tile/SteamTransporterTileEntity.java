@@ -141,7 +141,6 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
             if (shouldExplode) {
                 shouldExplode = false;
                 explode();
-                hasExploded = true;
             }
         }
     }
@@ -173,10 +172,6 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
     @Override
     public void shouldExplode() {
         shouldExplode = true;
-    }
-
-    protected boolean hasExploded() {
-        return hasExploded;
     }
 
     private boolean isValidSteamSide(EnumFacing face) {
