@@ -1,11 +1,12 @@
 package eiteam.esteemedinnovation.api.crucible;
 
-import eiteam.esteemedinnovation.api.Tuple3;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class CrucibleRegistry {
      * Key: A triplet of the Item, the metadata, and the CrucibleLiquid.
      * Value: A pair of the required liquid amount and the output ItemStack.
      */
-    public static Map<Tuple3, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
+    public static Map<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
 
     /**
      * All of the CrucibleLiquids that can be cast into pipes, and their according pipe ItemStacks
@@ -63,7 +64,7 @@ public class CrucibleRegistry {
      * @param result The output ItemStack.
      */
     public static void registerDunkRecipe(Item item, int meta, CrucibleLiquid liquid, int liquidAmount, ItemStack result) {
-        dunkRecipes.put(new Tuple3<>(item, meta, liquid), MutablePair.of(liquidAmount, result));
+        dunkRecipes.put(new ImmutableTriple<>(item, meta, liquid), MutablePair.of(liquidAmount, result));
     }
 
     /**
@@ -85,11 +86,11 @@ public class CrucibleRegistry {
      */
     public static void removeDunkRecipe(Item item, int meta, CrucibleLiquid liquid) {
         if (dunkRecipes != null) {
-            Iterator<Map.Entry<Tuple3, MutablePair<Integer, ItemStack>>> iter = dunkRecipes.entrySet().iterator();
+            Iterator<Map.Entry<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>>> iter = dunkRecipes.entrySet().iterator();
             while (iter.hasNext()) {
-                Map.Entry<Tuple3, MutablePair<Integer, ItemStack>> entry = iter.next();
-                Tuple3 key = entry.getKey();
-                if (key.getFirst() == item && (int) key.getSecond() == meta && key.getThird() == liquid) {
+                Map.Entry<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>> entry = iter.next();
+                Triple<Item, Integer, CrucibleLiquid> key = entry.getKey();
+                if (key.getLeft() == item && key.getMiddle() == meta && key.getRight() == liquid) {
                     iter.remove();
                 }
             }

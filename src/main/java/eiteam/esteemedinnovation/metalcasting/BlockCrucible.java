@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.metalcasting;
 
-import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
@@ -29,7 +28,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Triple;
 
 import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.HELL_CRUCIBLE;
 
@@ -191,17 +192,17 @@ public class BlockCrucible extends Block implements Wrenchable {
             }
         } else if (heldItem != null) {
             for (CrucibleLiquid liquid : tile.contents) {
-                Tuple3<Item, Integer, CrucibleLiquid> tuple = new Tuple3<>(heldItem.getItem(), heldItem.getItemDamage(), liquid);
+                Triple<Item, Integer, CrucibleLiquid> triple = new ImmutableTriple<>(heldItem.getItem(), heldItem.getItemDamage(), liquid);
                 boolean valid;
-                if (!CrucibleRegistry.dunkRecipes.containsKey(tuple)) {
-                    tuple = new Tuple3<>(heldItem.getItem(), -1, liquid);
-                    valid = CrucibleRegistry.dunkRecipes.containsKey(tuple);
+                if (!CrucibleRegistry.dunkRecipes.containsKey(triple)) {
+                    triple = new ImmutableTriple<>(heldItem.getItem(), -1, liquid);
+                    valid = CrucibleRegistry.dunkRecipes.containsKey(triple);
                 } else {
                     valid = true;
                 }
 
                 if (valid) {
-                    MutablePair<Integer, ItemStack> pair = CrucibleRegistry.dunkRecipes.get(tuple);
+                    MutablePair<Integer, ItemStack> pair = CrucibleRegistry.dunkRecipes.get(triple);
                     int needed = pair.getLeft();
                     ItemStack result = pair.getRight().copy();
                     if (tile.number.get(liquid) >= needed) {

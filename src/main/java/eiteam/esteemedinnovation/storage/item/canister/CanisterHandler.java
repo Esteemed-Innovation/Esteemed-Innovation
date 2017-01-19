@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.storage.item.canister;
 
-import eiteam.esteemedinnovation.api.Tuple3;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -8,6 +7,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
 
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 
@@ -18,10 +19,10 @@ public class CanisterHandler implements IRecipe {
 
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
-        Tuple3<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
-        ItemStack output = triplet.getThird();
-        boolean hasCan = triplet.getSecond();
-        boolean canCraft = triplet.getFirst();
+        Triple<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
+        ItemStack output = triplet.getRight();
+        boolean hasCan = triplet.getMiddle();
+        boolean canCraft = triplet.getLeft();
 
         return canCraft && hasCan && output != null && !(output.hasTagCompound() &&
           output.getTagCompound().hasKey("canned"));
@@ -29,10 +30,10 @@ public class CanisterHandler implements IRecipe {
 
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-        Tuple3<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
-        ItemStack output = triplet.getThird();
-        boolean hasCan = triplet.getSecond();
-        boolean canCraft = triplet.getFirst();
+        Triple<Boolean, Boolean, ItemStack> triplet = getCanCraftAndHasCanAndOutput(inv);
+        ItemStack output = triplet.getRight();
+        boolean hasCan = triplet.getMiddle();
+        boolean canCraft = triplet.getLeft();
         if (canCraft && hasCan && output != null) {
             if (output.hasTagCompound() && output.getTagCompound().hasKey("canned")) {
                 return null;
@@ -52,9 +53,9 @@ public class CanisterHandler implements IRecipe {
      * Chained/combined returning in order to prevent A) more duplicate code, and B) more iterations.
      * It's sort of a strange approach, but it makes the most sense for the best performance.
      * @param inv The crafting inventory
-     * @return A tuple3 of 2 booleans (canCraft, hasCan) and the ItemStack output
+     * @return A triple of 2 booleans (canCraft, hasCan) and the ItemStack output
      */
-    private Tuple3<Boolean, Boolean, ItemStack> getCanCraftAndHasCanAndOutput(InventoryCrafting inv) {
+    private Triple<Boolean, Boolean, ItemStack> getCanCraftAndHasCanAndOutput(InventoryCrafting inv) {
         ItemStack output = null;
         boolean hasCan = false;
         boolean canCraft = true;
@@ -76,7 +77,7 @@ public class CanisterHandler implements IRecipe {
                 }
             }
         }
-        return new Tuple3<>(canCraft, hasCan, output);
+        return new ImmutableTriple<>(canCraft, hasCan, output);
     }
 
     @Override
