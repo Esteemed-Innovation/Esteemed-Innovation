@@ -7,7 +7,7 @@ import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.util.JavaHelper;
+import eiteam.esteemedinnovation.api.util.StringUtility;
 import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
@@ -51,7 +51,7 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
 
     @Override
     public String getString() {
-        return EsteemedInnovation.MOD_ID + ":items/exoArmor" + JavaHelper.capitalize(slot.getName());
+        return EsteemedInnovation.MOD_ID + ":items/exoArmor" + StringUtility.capitalize(slot.getName());
     }
 
     @Override

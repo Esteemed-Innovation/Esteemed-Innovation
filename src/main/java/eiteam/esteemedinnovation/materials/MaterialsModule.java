@@ -90,12 +90,12 @@ public class MaterialsModule extends ContentModule {
         METAL_NUGGET = setup(new ItemMetalNugget(), "nugget");
         METAL_PLATE = setup(new ItemMetalPlate(), "plate");
 
-        IRON_LIQUID = new CrucibleLiquid("iron", new ItemStack(IRON_INGOT), new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()), new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()), 200, 200, 200);
-        GOLD_LIQUID = new CrucibleLiquid("gold", new ItemStack(GOLD_INGOT), new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()), new ItemStack(GOLD_NUGGET), 220, 157, 11);
-        ZINC_LIQUID = new CrucibleLiquid("zinc", new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()), new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()), 225, 225, 225);
-        COPPER_LIQUID = new CrucibleLiquid("copper", new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()), new ItemStack(METAL_NUGGET, 1, COPPER_NUGGET.getMeta()), 140, 66, 12);
-        BRASS_LIQUID = new CrucibleLiquid("brass", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), new ItemStack(METAL_PLATE, 1, BRASS_PLATE.getMeta()), new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()), 242, 191, 66);
-        LEAD_LIQUID = new CrucibleLiquid("lead", findFirstOre(INGOT_LEAD), findFirstOre(PLATE_THIN_LEAD), findFirstOre(NUGGET_LEAD), 118, 128, 157);
+        IRON_LIQUID = new CrucibleLiquid("iron", 200, 200, 200);
+        GOLD_LIQUID = new CrucibleLiquid("gold", 220, 157, 11);
+        ZINC_LIQUID = new CrucibleLiquid("zinc", 225, 225, 225);
+        COPPER_LIQUID = new CrucibleLiquid("copper", 140, 66, 12);
+        BRASS_LIQUID = new CrucibleLiquid("brass", 242, 191, 66);
+        LEAD_LIQUID = new CrucibleLiquid("lead", 118, 128, 157);
 
         BRASS_FORMULA = new CrucibleFormula(BRASS_LIQUID, 4, ZINC_LIQUID, 1, COPPER_LIQUID, 3);
 
@@ -116,15 +116,6 @@ public class MaterialsModule extends ContentModule {
 
     public static Block getPressurePlateFromItemMetadata(int meta) {
         return pressurePlatesByMetadata.get(meta);
-    }
-
-    private static ItemStack findFirstOre(String ore) {
-        for (ItemStack stack : OreDictionary.getOres(ore)) {
-            if (stack != null) {
-                return stack;
-            }
-        }
-        return null;
     }
 
     @Override

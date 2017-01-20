@@ -1,6 +1,8 @@
 package eiteam.esteemedinnovation.api.mold;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -12,12 +14,16 @@ public interface CrucibleMold {
      *
      * @return true if the mold can be used
      */
-    boolean canUseOn(CrucibleLiquid liquid);
+    default boolean canUseOn(CrucibleLiquid liquid) {
+        return getItemFromLiquid(liquid) != null;
+    }
 
     /**
      * @param liquid - The liquid in the Crucible
      */
-    ItemStack getItemFromLiquid(CrucibleLiquid liquid);
+    default ItemStack getItemFromLiquid(CrucibleLiquid liquid) {
+        return CrucibleRegistry.getMoldingOutput(liquid, (Item) this);
+    }
 
     /**
      * @param liquid - The liquid in the Crucible

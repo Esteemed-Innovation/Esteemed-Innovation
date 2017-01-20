@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.util.JavaHelper;
+import eiteam.esteemedinnovation.api.util.StringUtility;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,13 +32,13 @@ public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
 
     @Override
     public ResourceLocation getOverlay() {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/armor/" + JavaHelper.decapitalize(name) + "Exosuit.png");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/armor/" + StringUtility.decapitalize(name) + "Exosuit.png");
     }
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
         if (stack.getItem() == ArmorModule.GOGGLES) {
-            return EsteemedInnovation.MOD_ID + ":textures/models/armor/" + JavaHelper.decapitalize(name) + "_layer_1.png";
+            return EsteemedInnovation.MOD_ID + ":textures/models/armor/" + StringUtility.decapitalize(name) + "_layer_1.png";
         }
         return null;
     }

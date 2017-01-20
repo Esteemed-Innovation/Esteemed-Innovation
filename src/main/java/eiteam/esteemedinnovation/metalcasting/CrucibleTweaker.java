@@ -18,24 +18,18 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods." + EsteemedInnovation.MOD_ID + ".Crucible")
 public class CrucibleTweaker {
     @ZenMethod
-    public static void addBasicLiquid(String name, IItemStack ingot, IItemStack plate, IItemStack nugget, int r, int g, int b) {
-        ItemStack iStack = MineTweakerMC.getItemStack(ingot);
-        ItemStack pStack = MineTweakerMC.getItemStack(plate);
-        ItemStack nStack = MineTweakerMC.getItemStack(nugget);
-        CrucibleLiquid liquid = new CrucibleLiquid(name, iStack, pStack, nStack, r, g, b);
+    public static void addBasicLiquid(String name, int r, int g, int b) {
+        CrucibleLiquid liquid = new CrucibleLiquid(name, r, g, b);
         MineTweakerAPI.apply(new AddLiquid(liquid));
     }
 
     @ZenMethod
-    public static void addAlloyLiquid(String name, IItemStack ingot, IItemStack plate, IItemStack nugget, String liquid1, int amount1, String liquid2, int amount2, int amountOut, int r, int g, int b) {
-        ItemStack iStack = MineTweakerMC.getItemStack(ingot);
-        ItemStack pStack = MineTweakerMC.getItemStack(plate);
-        ItemStack nStack = MineTweakerMC.getItemStack(nugget);
+    public static void addAlloyLiquid(String name, String liquid1, int amount1, String liquid2, int amount2, int amountOut, int r, int g, int b) {
         CrucibleLiquid crucibleLiquid1 = CrucibleRegistry.getLiquidFromName(liquid1);
         CrucibleLiquid crucibleLiquid2 = CrucibleRegistry.getLiquidFromName(liquid2);
 
         if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
-            CrucibleLiquid out = new CrucibleLiquid(name, iStack, pStack, nStack, r, g, b);
+            CrucibleLiquid out = new CrucibleLiquid(name, r, g, b);
             CrucibleFormula formula = new CrucibleFormula(out, amountOut, crucibleLiquid1, amount1, crucibleLiquid2, amount2);
             MineTweakerAPI.apply(new AddLiquid(out, formula));
         } else {

@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.UtilSteamTool;
-import eiteam.esteemedinnovation.commons.util.JavaHelper;
+import eiteam.esteemedinnovation.api.util.StringUtility;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.entity.EntityLivingBase;
@@ -71,9 +71,9 @@ public final class SteamToolOverrideList extends ItemOverrideList {
         }
 
         ResourceLocation trueCore = core == null ? null : new ResourceLocation(core.getResourceDomain(),
-          core.getResourcePath() + JavaHelper.capitalize(toolName) + which);
+          core.getResourcePath() + StringUtility.capitalize(toolName) + which);
         ResourceLocation trueHead = head == null ? null : new ResourceLocation(head.getResourceDomain(),
-          head.getResourcePath() + JavaHelper.capitalize(toolName) + which);
+          head.getResourcePath() + StringUtility.capitalize(toolName) + which);
 
         IModel processed = new SteamToolModel(trueCore, trueHead, which, toolName);
 

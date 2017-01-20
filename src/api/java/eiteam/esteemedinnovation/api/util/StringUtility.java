@@ -1,6 +1,6 @@
-package eiteam.esteemedinnovation.commons.util;
+package eiteam.esteemedinnovation.api.util;
 
-public class JavaHelper {
+public class StringUtility {
     /**
      * Capitalizes the first letter in the provided String.
      * @param str The string to capitalize.
@@ -14,7 +14,7 @@ public class JavaHelper {
     }
 
     /**
-     * Opposite of {@link JavaHelper#capitalize(String)}.
+     * Opposite of {@link StringUtility#capitalize(String)}.
      */
     public static String decapitalize(String str) {
         return str.substring(0, 1).toLowerCase() + (str.substring(1));

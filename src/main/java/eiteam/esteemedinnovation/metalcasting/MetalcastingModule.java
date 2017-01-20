@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.metalcasting;
 
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
@@ -18,12 +19,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.PLANK_WOOD;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.BRASS_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.COPPER_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.ZINC_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
+import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static net.minecraft.init.Items.BRICK;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
+import static net.minecraft.init.Items.*;
 
 public class MetalcastingModule extends ContentModule {
     public static Block CRUCIBLE;
@@ -57,8 +67,43 @@ public class MetalcastingModule extends ContentModule {
         registerTileEntity(TileEntityMold.class, "mold");
     }
 
+    private static ItemStack findFirstOre(String ore) {
+        for (ItemStack stack : OreDictionary.getOres(ore)) {
+            if (stack != null) {
+                return stack;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void recipes(Side side) {
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, INGOT_MOLD, new ItemStack(IRON_INGOT));
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, NUGGET_MOLD, new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, PLATE_MOLD, new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
+
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, INGOT_MOLD, new ItemStack(GOLD_INGOT));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, NUGGET_MOLD, new ItemStack(GOLD_NUGGET));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, PLATE_MOLD, new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()));
+
+        CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, INGOT_MOLD, new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, NUGGET_MOLD, new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, PLATE_MOLD, new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
+
+        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, INGOT_MOLD, new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, NUGGET_MOLD, new ItemStack(METAL_NUGGET, 1, COPPER_NUGGET.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, PLATE_MOLD, new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, PIPE_MOLD, new ItemStack(COPPER_PIPE));
+
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, INGOT_MOLD, new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, NUGGET_MOLD, new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, PLATE_MOLD, new ItemStack(METAL_PLATE, 1, BRASS_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, PIPE_MOLD, new ItemStack(BRASS_PIPE));
+
+        CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, INGOT_MOLD, findFirstOre(INGOT_LEAD));
+        CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, NUGGET_MOLD, findFirstOre(NUGGET_LEAD));
+        CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, PLATE_MOLD, findFirstOre(PLATE_THIN_LEAD));
+
         if (Config.enableCrucible) {
             BookRecipeRegistry.addRecipe("crucible", new ItemStack(CRUCIBLE),
               "x x",

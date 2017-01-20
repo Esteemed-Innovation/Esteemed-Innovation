@@ -6,8 +6,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,11 +37,6 @@ public class CrucibleRegistry {
      * Value: A pair of the required liquid amount and the output ItemStack.
      */
     public static Map<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
-
-    /**
-     * All of the CrucibleLiquids that can be cast into pipes, and their according pipe ItemStacks
-     */
-    public static Map<CrucibleLiquid, ItemStack> pipeLiquids = new HashMap<>();
 
     /**
      * Gets the given CrucibleLiquid from the name.
@@ -273,5 +270,32 @@ public class CrucibleRegistry {
      */
     public static List<CrucibleFormula> findRecipesThatResultInLiquid(CrucibleLiquid resultLiquid) {
         return alloyFormulas.stream().filter(formula -> formula.getOutputLiquid().equals(resultLiquid)).collect(Collectors.toList());
+    }
+
+    /**
+     * The recipes for casting molds.
+     * Key: Input liquid, input mold.
+     * Value: Output item.
+     */
+    private static final Map<Pair<CrucibleLiquid, Item>, ItemStack> moldingRecipes = new HashMap<>();
+
+    /**
+     * Registers a casting recipe.
+     * @param inputLiquid The input liquid
+     * @param mold The input mold
+     * @param out The output
+     */
+    public static void registerMoldingRecipe(CrucibleLiquid inputLiquid, Item mold, ItemStack out) {
+        moldingRecipes.put(Pair.of(inputLiquid, mold), out);
+    }
+
+    /**
+     * @param inputLiquid The input liquid
+     * @param mold The input mold
+     * @return The output ItemStack
+     */
+    @Nullable
+    public static ItemStack getMoldingOutput(CrucibleLiquid inputLiquid, Item mold) {
+        return moldingRecipes.get(Pair.of(inputLiquid, mold));
     }
 }

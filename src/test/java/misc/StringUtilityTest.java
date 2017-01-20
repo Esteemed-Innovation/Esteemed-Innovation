@@ -2,11 +2,11 @@ package misc;
 
 import org.junit.Test;
 
-import static eiteam.esteemedinnovation.commons.util.JavaHelper.capitalize;
-import static eiteam.esteemedinnovation.commons.util.JavaHelper.decapitalize;
+import static eiteam.esteemedinnovation.api.util.StringUtility.capitalize;
+import static eiteam.esteemedinnovation.api.util.StringUtility.decapitalize;
 import static org.junit.Assert.assertEquals;
 
-public class JavaHelperTest {
+public class StringUtilityTest {
     @Test
     public void testCapitalize() {
         assertEquals(capitalize("title"), "Title");
