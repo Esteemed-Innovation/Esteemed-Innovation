@@ -53,7 +53,7 @@ public class BlockMold extends Block implements Wrenchable {
 
         if (tileentitymold != null) {
             InventoryHelper.dropInventoryItems(world, pos, tileentitymold);
-
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), tileentitymold.mold);
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
         super.breakBlock(world, pos, state);
