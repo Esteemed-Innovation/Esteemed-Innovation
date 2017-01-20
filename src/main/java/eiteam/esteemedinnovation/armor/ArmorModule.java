@@ -161,7 +161,7 @@ public class ArmorModule extends ContentModule {
         FALL_ASSIST = setup(new ItemFallAssistUpgrade(), "fall_assist");
         JUMP_ASSIST = setup(new ItemJumpAssistUpgrade(), "jump_assist");
         DOUBLE_JUMP = setup(new ItemDoubleJumpUpgrade(), "double_jump");
-        RUN_ASSIST = setup(new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, resource("runUpgrade"), null, 0), "run_assist");
+        RUN_ASSIST = setup(new ItemModularAcceleratorUpgrade(), "run_assist");
         CANNING_MACHINE = setup(new ItemExosuitUpgrade(ExosuitSlot.LEGS_HIPS, resource("canner"), null, 1), "canner");
         PITON_DEPLOYER = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("pitonDeployer"), null, 1), "piton_deployer");
         STEALTH = setup(new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, resource("stealthUpgrade"), null, 0), "stealth_upgrade");

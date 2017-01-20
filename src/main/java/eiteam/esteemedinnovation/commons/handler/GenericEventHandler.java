@@ -1233,27 +1233,6 @@ public class GenericEventHandler {
         }
         */
 
-        if (hasPower && leggings != null && leggings.getItem() instanceof ItemExosuitArmor) {
-            PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
-            ItemExosuitArmor item = (ItemExosuitArmor) leggings.getItem();
-            if (item.hasUpgrade(leggings, RUN_ASSIST)) {
-                if (data.getLastMotions() == null) {
-                    data.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
-                }
-                double lastX = data.getLastMotions().left;
-                double lastZ = data.getLastMotions().right;
-                if ((entity.moveForward > 0.0F) && (lastX != entity.posX || lastZ != entity.posZ) && entity.onGround && !entity.isInWater()) {
-                    entity.moveRelative(0F, 1F, 0.075F); //entity.moveFlying(0.0F, 1.0F, 0.075F); TODO Test this.
-                    if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                        chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
-                    }
-                    if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
-                        drainSteam(chestStack, Config.runAssistConsumption);
-                    }
-                }
-            }
-        }
-
         /*
         if (hasPower(entity,100) && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
             ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem();
