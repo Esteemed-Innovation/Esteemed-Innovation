@@ -833,64 +833,7 @@ public class GenericEventHandler {
         boolean hasPower = hasPower(entity, consumption);
         ItemStack heldItem = entity.getHeldItemMainhand();
         if (hasPower && heldItem == null) {
-            ItemStack chestStack = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            Item chest = chestStack.getItem();
-            if (chest instanceof ItemExosuitArmor) {
-                ItemExosuitArmor armor = (ItemExosuitArmor) chest;
-                if (armor.hasUpgrade(chestStack, PISTON_PUSH)) {
-                    World world = event.getWorld();
-                    EnumFacing face = event.getFace();
-                    if (face == null) {
-                        return;
-                    }
-                    BlockPos curPos = event.getPos();
-                    int x = curPos.getX();
-                    int y = curPos.getY();
-                    int z = curPos.getZ();
-                    switch (face) {
-                        case UP: {
-                            if (y != 0) {
-                                y--;
-                            }
-                        }
-                        case DOWN: {
-                            if (y != 0) {
-                                y++;
-                            }
-                        }
-                        case WEST: {
-                            x--;
-                        }
-                        case EAST: {
-                            x++;
-                        }
-                        case SOUTH: {
-                            z++;
-                        }
-                        case NORTH: {
-                            z--;
-                        }
-                    }
-                    BlockPos newPos = new BlockPos(x, y, z);
 
-                    IBlockState clickedState = world.getBlockState(curPos);
-                    IBlockState stateInPlace = world.getBlockState(newPos);
-                    Block clickedBlock = clickedState.getBlock();
-                    Block blockInPlace = stateInPlace.getBlock();
-                    EnumPushReaction reaction = clickedBlock.getMobilityFlag(clickedState);
-                    if ((blockInPlace == null || blockInPlace == Blocks.AIR ||
-                      blockInPlace instanceof BlockFluidBase) &&
-                      clickedBlock.getBlockHardness(clickedState, world, curPos) >= 0.0F &&
-                      reaction != EnumPushReaction.IGNORE && reaction != EnumPushReaction.DESTROY &&
-                      clickedBlock != Blocks.OBSIDIAN &&
-                      !clickedBlock.hasTileEntity(clickedState)) {
-                        world.setBlockToAir(curPos);
-                        world.setBlockState(newPos, clickedState, 3);
-                        world.playSound(x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.BLOCK_PISTON_EXTEND,
-                          SoundCategory.PLAYERS, 0.5F, world.rand.nextFloat() * 0.25F + 0.6F, false);
-                    }
-                }
-            }
         }
     }
 

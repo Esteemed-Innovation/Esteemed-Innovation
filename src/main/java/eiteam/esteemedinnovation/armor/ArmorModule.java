@@ -176,7 +176,7 @@ public class ArmorModule extends ContentModule {
         FREQUENCY_SHIFTER = setup(new ItemExosuitFrequencyShifter(), "frequency_shifter");
         DRAGON_ROAR = setup(new ItemExosuitDragonRoar(), "dragon_roar");
         EXOSUIT_PLATE = setup(new ItemExosuitPlate(), "exosuit_plate", EsteemedInnovation.tab, false);
-        PISTON_PUSH = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("pistonarm"), null, 0), "piston_push");
+        PISTON_PUSH = setup(new ItemPistonPushUpgrade(), "piston_push");
 
         IRON_PLATE.setItem(plateStack(IRON_PLATE_META));
         ExosuitRegistry.addExosuitPlate(IRON_PLATE);
