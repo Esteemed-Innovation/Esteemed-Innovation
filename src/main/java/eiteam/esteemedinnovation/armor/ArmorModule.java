@@ -168,7 +168,7 @@ public class ArmorModule extends ContentModule {
         ENDER_SHROUD = setup(new ItemExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
         REINFORCED_TANK = setup(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
         UBER_REINFORCED_TANK = setup(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
-        REBREATHER = setup(new ItemExosuitUpgrade(ExosuitSlot.HEAD_GOGGLES, resource("rebreatherUpgrade"), null, 1), "rebreather");
+        REBREATHER = setup(new ItemRebreatherUpgrade(), "rebreather");
         HYDROPHOBIC_COATINGS = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("hydrophobiccoating"), null, 0), "hydrophobic_coatings");
         PYROPHOBIC_COATINGS = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("pyrophobiccoating"), null, 0), "pyrophobic_coatings");
         ANCHOR_HEELS = setup(new ItemExosuitAnchorHeels(), "anchor_heels");

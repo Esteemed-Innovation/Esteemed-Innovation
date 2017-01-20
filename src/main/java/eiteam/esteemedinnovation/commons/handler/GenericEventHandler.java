@@ -1571,26 +1571,4 @@ public class GenericEventHandler {
             }
         }
     }
-
-    @SubscribeEvent
-    public void rebreath(LivingAttackEvent event) {
-        int consumption = Config.rebreatherConsumption;
-        if (event.getSource() == DamageSource.drown) {
-            EntityLivingBase entity = event.getEntityLiving();
-            if (entity instanceof EntityPlayer && hasPower(entity, consumption)) {
-                EntityPlayer player = (EntityPlayer) entity;
-                ItemStack equipment = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-                if (equipment != null) {
-                    Item helmet = equipment.getItem();
-                    if (helmet instanceof ItemExosuitArmor) {
-                        ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
-                        if (helmetArmor.hasUpgrade(equipment, REBREATHER)) {
-                            drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), consumption);
-                            event.setCanceled(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
