@@ -32,7 +32,6 @@ import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -51,7 +50,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -68,7 +66,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
@@ -84,7 +85,6 @@ import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -1103,96 +1103,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void handleFlippers(LivingEvent.LivingUpdateEvent event) {
-        EntityLivingBase entity = event.getEntityLiving();
-        if (!(entity instanceof EntityPlayer)) {
-            return;
-        }
-        boolean hasPower = hasPower(entity, 1);
-        EntityPlayer player = (EntityPlayer) entity;
-
-        ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (chestStack != null && chestStack.getItem() instanceof ItemExosuitArmor && chestStack.hasTagCompound()) {
-            NBTTagCompound compound = chestStack.getTagCompound();
-            ItemExosuitArmor chest = (ItemExosuitArmor) chestStack.getItem();
-            if (chest.hasUpgrade(chestStack, PITON_DEPLOYER)) {
-                if (compound.hasKey("grappled") && compound.getBoolean("grappled")) {
-                    double lastX = compound.getFloat("x");
-                    double lastY = compound.getFloat("y");
-                    double lastZ = compound.getFloat("z");
-                    int blockX = compound.getInteger("blockX");
-                    int blockY = compound.getInteger("blockY");
-                    int blockZ = compound.getInteger("blockZ");
-
-                    BlockPos blockPos = new BlockPos(blockX, blockY, blockZ);
-
-                    if ((Math.abs(lastX - entity.posX) > 0.1F || Math.abs(lastZ - entity.posZ) > 0.1F || entity.isSneaking() || entity.worldObj.isAirBlock(blockPos))) {
-                        compound.setBoolean("grappled", false);
-                    } else {
-                        entity.motionX = 0.0F;
-                        entity.motionY = (entity.motionY > 0) ? entity.motionY : 0.0F;
-                        entity.motionZ = 0.0F;
-                    }
-                }
-            }
-        }
-
-        ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-        ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-        /*
-        if (armorItem1 != null && armorItem1.getItem() instanceof ItemExosuitArmor) {
-            if (item.hasUpgrade(stack, SteamcraftItems.doubleJump)) {
-                if (!stack.getTagCompound().hasKey("aidTicks")) {
-                    stack.getTagCompound().setInteger("aidTicks", -1);
-                }
-                int aidTicks = stack.getTagCompound().getInteger("aidTicks");
-
-                if (aidTicks > 0) {
-                    aidTicks--;
-                }
-                if (aidTicks == 0) {
-                    if (!stack.getTagCompound().hasKey("ticksNextHeal")) {
-                        stack.getTagCompound().setInteger("ticksNextHeal", 0);
-                    }
-                    float damageAmount = stack.getTagCompound().getInteger("damageAmount");
-                    int ticksNextHeal = stack.getTagCompound().getInteger("ticksNextHeal");
-                    if (ticksNextHeal > 0) {
-                        ticksNextHeal--;
-                    }
-                    if (ticksNextHeal == 0) {
-                        //event.entityLiving.heal(1.0F);
-                        damageAmount -=1.0F;
-                        stack.getTagCompound().setFloat("damageAmount", damageAmount);
-                        ticksNextHeal=5;
-                    }
-                    if (damageAmount == 0.0F) {
-                        aidTicks = -1;
-                    }
-                    stack.getTagCompound().setInteger("ticksNextHeal", ticksNextHeal);
-                }
-                stack.getTagCompound().setInteger("aidTicks", aidTicks);
-            }
-        }
-        */
-
-        /*
-        if (hasPower(entity,100) && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() instanceof ItemExosuitArmor && !entity.worldObj.isRemote) {
-            ItemExosuitArmor leggings = (ItemExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem();
-            if (leggings.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS), SteamcraftItems.antiFire)) {
-                if (entity.isBurning()) {
-
-                    event.entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST).damageItem(10, event.entityLiving);
-                    if (entity.worldObj.isAirBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ).isReplaceable(entity.worldObj, (int)entity.posX, (int)entity.posY, (int)entity.posZ) || entity.worldObj.getBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ) == Blocks.fire) {
-
-                        entity.worldObj.setBlock((int)entity.posX, (int)entity.posY, (int)entity.posZ, Blocks.water, 1, 1);
-                    }
-                }
-            }
-        }
-        */
-    }
-
     @SideOnly(Side.CLIENT)
     public void updateRangeClient(LivingEvent.LivingUpdateEvent event) {
         EntityLivingBase entity = event.getEntityLiving();
@@ -1386,75 +1296,6 @@ public class GenericEventHandler {
             }
         }
         return num;
-    }
-
-    @SubscribeEvent
-    public void clickLeft(PlayerInteractEvent.RightClickBlock event) {
-        BlockPos pos = event.getPos();
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
-
-        World world = event.getWorld();
-        EnumFacing face = event.getFace();
-        EntityPlayer player = event.getEntityPlayer();
-        ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        IBlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        if (face != EnumFacing.UP && block.isSideSolid(state, world, pos, face)) {
-            if (chest != null && chest.getItem() instanceof ItemExosuitArmor) {
-                AxisAlignedBB aabb;
-                if (face == EnumFacing.DOWN) {
-                    aabb = new AxisAlignedBB(x - 0.5F, y + (face.getFrontOffsetY() / 6F) - 0.4F,
-                      z - 0.20F, x + 0.5F + 1, y + (face.getFrontOffsetY() / 6F) + 1, z + 0.5F + 1);
-                } else {
-                    aabb = new AxisAlignedBB(x + (face.getFrontOffsetX() / 6F),
-                      y + (face.getFrontOffsetY() / 6F) - 1.0F, z + (face.getFrontOffsetZ() / 6F),
-                      x + (face.getFrontOffsetX() / 6F) + 1, y + (face.getFrontOffsetY() / 6F) + 2.0F,
-                      z + (face.getFrontOffsetZ() / 6F) + 1);
-                }
-                ItemExosuitArmor chestArmor = (ItemExosuitArmor) chest.getItem();
-                boolean canStick = false;
-                List list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
-                for (Object obj : list) {
-                    if (obj == player) {
-                        canStick = true;
-                    }
-                }
-                if (canStick && chestArmor.hasUpgrade(chest, PITON_DEPLOYER)) {
-                    if (!world.isRemote) {
-                        chest.getTagCompound().setFloat("x", (float) player.posX);
-                        chest.getTagCompound().setFloat("z", (float) player.posZ);
-                        chest.getTagCompound().setFloat("y", (float) player.posY);
-                        chest.getTagCompound().setInteger("blockX", x);
-                        chest.getTagCompound().setInteger("blockY", y);
-                        chest.getTagCompound().setInteger("blockZ", z);
-                        chest.getTagCompound().setBoolean("grappled", true);
-                    }
-                    player.motionX = 0.0F;
-                    player.motionY = 0.0F;
-                    player.motionZ = 0.0F;
-                    player.fallDistance = 0.0F;
-                }
-            }
-        }
-
-        /*
-        I don't know about this stuff, since block shapes and stuff are handled with JSON now. I don't know how we are going to check if it is a solid cube.
-        TileEntity tile = world.getTileEntity(pos);
-        ItemStack held = player.getHeldItem(player.getActiveHand());
-        if (player.isSneaking() && ((tile != null && tile instanceof DisguisableBlock) ||
-          block == PipeBlocks.Blocks.BRASS_PIPE.getBlock()) && held != null &&
-          held.getItem() instanceof ItemBlock) {
-            Block block1 = Block.getBlockFromItem(held.getItem());
-            if (!(block1 instanceof BlockContainer) && !(block1 instanceof ITileEntityProvider) &&
-              (block1.getRenderType(state) == EnumBlockRenderType.LIQUID || block1.getRenderType() == 39 ||
-                block1.getRenderType() == 31) && (block1.renderAsNormalBlock() ||
-              (block1 == Blocks.glass && block == SteamcraftBlocks.pipe))) {
-                event.setCanceled(true);
-            }
-        }
-        */
     }
 
     List<DamageSource> invalidSources = Arrays.asList(

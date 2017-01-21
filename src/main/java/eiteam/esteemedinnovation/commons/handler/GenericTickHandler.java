@@ -36,7 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 
-import static eiteam.esteemedinnovation.armor.ArmorModule.PITON_DEPLOYER;
 import static eiteam.esteemedinnovation.charging.ChargingModule.STEAM_CELL_FILLER;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
@@ -88,14 +87,6 @@ public class GenericTickHandler {
             return;
         }
         ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
-
-        if (isJumping) {
-            if (chestArmor.hasUpgrade(chest, PITON_DEPLOYER) && isServer) {
-                if (chest.getTagCompound().hasKey("grappled") && chest.getTagCompound().getBoolean("grappled")) {
-                    chest.getTagCompound().setBoolean("grappled", false);
-                }
-            }
-        }
     }
 
     private static Field itemInMainHandField;
