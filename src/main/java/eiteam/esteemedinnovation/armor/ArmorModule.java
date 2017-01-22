@@ -147,6 +147,8 @@ public class ArmorModule extends ContentModule {
     public static Item GOGGLES;
     public static Item TOP_HAT;
     public static Item ENTREPRENEUR_TOP_HAT;
+
+    @SideOnly(Side.CLIENT)
     public static KeyBinding MONOCLE_KEY;
 
     private static Set<Item> toRegisterNormally = new HashSet<>();
