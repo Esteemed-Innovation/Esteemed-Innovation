@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
-import eiteam.esteemedinnovation.commons.ClientProxy;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
@@ -167,7 +166,7 @@ public class GenericTickHandler {
                 ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
-                    if (ClientProxy.keyBindings.get("monocle").isKeyDown() && !lastPressingKey) {
+                    if (ArmorModule.MONOCLE_KEY.isKeyDown() && !lastPressingKey) {
                         zoomSettingOn++;
                         zoomSettingOn = zoomSettingOn % 4;
                         switch (zoomSettingOn) {
@@ -210,7 +209,7 @@ public class GenericTickHandler {
                                 break;
                         }
                         lastPressingKey = true;
-                    } else if (!ClientProxy.keyBindings.get("monocle").isKeyDown()) {
+                    } else if (!ArmorModule.MONOCLE_KEY.isKeyDown()) {
                         lastPressingKey = false;
                     }
                     inUse = zoomSettingOn != 0;

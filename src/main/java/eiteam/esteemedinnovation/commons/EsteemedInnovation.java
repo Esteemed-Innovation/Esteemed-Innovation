@@ -5,16 +5,17 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
-import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.handler.GenericTickHandler;
 import eiteam.esteemedinnovation.commons.handler.GuiHandler;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.commons.network.*;
+import eiteam.esteemedinnovation.commons.network.CamoPacket;
+import eiteam.esteemedinnovation.commons.network.CamoPacketHandler;
+import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
+import eiteam.esteemedinnovation.commons.network.JumpValueChangePacketHandler;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
+import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.firearms.FlintlockBookCategory;
-import eiteam.esteemedinnovation.transport.steam.ConnectPacket;
-import eiteam.esteemedinnovation.transport.steam.ConnectPacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -130,9 +131,7 @@ public class EsteemedInnovation {
 
         ReflectionHelper.init();
         MinecraftForge.EVENT_BUS.register(new GenericEventHandler());
-
         MinecraftForge.EVENT_BUS.register(new GenericTickHandler());
-        proxy.registerHotkeys();
 
         ContentModuleHandler.init();
     }

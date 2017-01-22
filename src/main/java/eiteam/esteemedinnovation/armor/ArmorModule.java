@@ -32,6 +32,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.storage.steam.ItemTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -46,12 +47,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -60,6 +63,7 @@ import java.util.Set;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.EXOSUIT_CATEGORY;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MOD_ID;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.REVOLVER_CHAMBER;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
@@ -143,6 +147,7 @@ public class ArmorModule extends ContentModule {
     public static Item GOGGLES;
     public static Item TOP_HAT;
     public static Item ENTREPRENEUR_TOP_HAT;
+    public static KeyBinding MONOCLE_KEY;
 
     private static Set<Item> toRegisterNormally = new HashSet<>();
 
@@ -1077,6 +1082,9 @@ public class ArmorModule extends ContentModule {
         colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_HEAD);
         colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_LEGS);
         MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
+
+        MONOCLE_KEY = new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key." + MOD_ID + ".category");
+        ClientRegistry.registerKeyBinding(MONOCLE_KEY);
     }
 
     public static ItemStack plateStack(int meta, int size) {

@@ -16,8 +16,6 @@ public class CommonProxy {
     public void spawnAsteriskParticles(World world, float x, float y, float z) {}
     public void spawnExclamationParticles(World world, float x, float y, float z) {}
 
-    public void registerHotkeys() {}
-
     public void extendRange(Entity entity, double amount) {
         if (entity instanceof EntityPlayerMP) {
             PlayerInteractionManager mgr = ((EntityPlayerMP) entity).interactionManager;

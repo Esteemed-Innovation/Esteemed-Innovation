@@ -11,28 +11,15 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleDigging;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
-
-import java.util.HashMap;
 
 public class ClientProxy extends CommonProxy {
-    public static HashMap<String, KeyBinding> keyBindings = new HashMap<>();
     public static final ResourceLocation FONT_ASCII = new ResourceLocation("minecraft", "textures/font/ascii.png");
-
-    @Override
-    public void registerHotkeys() {
-        keyBindings.put("monocle", new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key.esteemedinnovation.category"));
-
-        keyBindings.values().forEach(ClientRegistry::registerKeyBinding);
-    }
 
     @Override
     public void registerTexturesToStitch() {
