@@ -21,7 +21,8 @@ public class VillagerDataSerializer implements ICapabilitySerializable<NBTTagByt
 
     @Override
     public NBTTagByte serializeNBT() {
-        return (NBTTagByte) ArmorModule.VILLAGER_DATA.getStorage().writeNBT(ArmorModule.VILLAGER_DATA, instance, null);
+        NBTTagByte nbtByte = (NBTTagByte) ArmorModule.VILLAGER_DATA.getStorage().writeNBT(ArmorModule.VILLAGER_DATA, instance, null);
+        return nbtByte == null ? new NBTTagByte((byte) 0) : nbtByte;
     }
 
     @Override
