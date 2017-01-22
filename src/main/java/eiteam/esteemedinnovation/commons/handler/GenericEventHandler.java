@@ -837,39 +837,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void hearMeRoar(LivingAttackEvent event) {
-        // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
-        DamageSource source = event.getSource();
-        Entity sourceEntity = source.getSourceOfDamage();
-        if (sourceEntity instanceof EntityLivingBase && !source.isExplosion()) {
-            EntityLivingBase entity = (EntityLivingBase) sourceEntity;
-            World world = entity.worldObj;
-            ItemStack head = entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-            ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (entity.getHeldItemMainhand() == null && entity.isSneaking() && head != null &&
-              chest != null && chest.getItem() instanceof ItemExosuitArmor &&
-              chest.hasTagCompound()) {
-                int consumption = (chest.getTagCompound().getInteger("maxFill") / 2) + Config.dragonRoarConsumption;
-                Item helmet = head.getItem();
-                if (hasPower(entity, consumption) && helmet instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor helmetArmor = (ItemExosuitArmor) helmet;
-                    if (helmetArmor.hasUpgrade(head, DRAGON_ROAR)) {
-                        if (world.isRemote) {
-                            world.playSound(entity.posX, entity.posY, entity.posZ,
-                              SoundEvents.ENTITY_ENDERDRAGON_GROWL, SoundCategory.PLAYERS, 5.0F,
-                              0.8F + world.rand.nextFloat() * 0.3F, false);
-                        } else {
-                            world.createExplosion(entity, entity.posX + 0.5F, entity.posY,
-                              entity.posZ + 0.5F, 10.0F, false);
-                        }
-                        drainSteam(chest, consumption);
-                    }
-                }
-            }
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleFallDamage(LivingHurtEvent event) {
         EntityLivingBase entityLiving = event.getEntityLiving();
