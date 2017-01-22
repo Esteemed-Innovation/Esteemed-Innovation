@@ -63,7 +63,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -1207,63 +1206,5 @@ public class GenericEventHandler {
             }
         }
         return num;
-    }
-
-    List<DamageSource> invalidSources = Arrays.asList(
-      DamageSource.drown,
-      DamageSource.outOfWorld,
-      DamageSource.starve,
-      DamageSource.wither
-    );
-
-    private static final int ZINC_CONSUMPTION = Config.zincPlateConsumption;
-
-    @SubscribeEvent
-    public void burstZincPlate(LivingHurtEvent event) {
-        EntityLivingBase entity = event.getEntityLiving();
-        float amount = event.getAmount();
-
-        if (!invalidSources.contains(event.getSource())) {
-            if (entity instanceof EntityPlayer && hasPower(entity, ZINC_CONSUMPTION)) {
-                EntityPlayer player = (EntityPlayer) entity;
-                float health = player.getHealth();
-                float maxHealth = player.getMaxHealth();
-                float halfOfMax = maxHealth / 2;
-                if (amount >= halfOfMax || health <= halfOfMax) {
-                    ItemStack stackWithPlate = null;
-                    boolean hasZincPlate = false;
-                    for (int i = 1; i < 5; i++) {
-                        ItemStack equipment = entity.getItemStackFromSlot(ItemStackUtility.getSlotFromSlotIndex(i));
-                        if (equipment != null) {
-                            Item item = equipment.getItem();
-                            if (item instanceof ItemExosuitArmor) {
-                                ItemExosuitArmor armor = (ItemExosuitArmor) item;
-                                if (armor.hasPlates(equipment) &&
-                                  UtilPlates.getPlate(equipment.getTagCompound().getString("plate")).getIdentifier().equals("Zinc")) {
-                                    stackWithPlate = equipment;
-                                    hasZincPlate = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (hasZincPlate) {
-                        ItemStack zincPlates = plateStack(ZINC_PLATE_META, 2);
-                        World world = player.worldObj;
-                        drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ZINC_CONSUMPTION);
-                        UtilPlates.removePlate(stackWithPlate);
-                        EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
-                          player.posZ, zincPlates);
-                        world.spawnEntityInWorld(entityItem);
-//                        player.setHealth(health - (amount - 10.0F));
-                        player.setHealth(health);
-                        player.performHurtAnimation();
-                        world.playSound(player.posX, player.posY, player.posZ, EsteemedInnovation.SOUND_HISS,
-                          SoundCategory.PLAYERS, 2F, 0.9F, false);
-                        event.setCanceled(true);
-                    }
-                }
-            }
-        }
     }
 }
