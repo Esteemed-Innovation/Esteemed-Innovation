@@ -25,7 +25,6 @@ import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataSerializer;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.util.BaublesUtility;
-import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
@@ -51,7 +50,6 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.PotionTypes;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -81,9 +79,15 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.event.entity.player.*;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -100,7 +104,6 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.*;
 import static eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage.POSSIBLE_NAMES;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.ROCKET_LAUNCHER;
-import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 import static eiteam.esteemedinnovation.tools.ToolsModule.SURVIVALIST_TOOLKIT;
 
 public class GenericEventHandler {
@@ -320,65 +323,6 @@ public class GenericEventHandler {
 //            GL11.glDepthMask(true);
 //        }
 //    }
-
-    @SubscribeEvent
-    public void handleCanningMachine(EntityItemPickupEvent event) {
-        EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityPlayer && !entityLiving.worldObj.isRemote) {
-            EntityPlayer player = (EntityPlayer) entityLiving;
-            ItemStack legStack = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-            if (hasPower(player, 10) && legStack != null && legStack.getItem() instanceof ItemExosuitArmor) {
-                ItemExosuitArmor leggings = (ItemExosuitArmor) legStack.getItem();
-                if (leggings.hasUpgrade(legStack, CANNING_MACHINE)) {
-
-                    ItemStack item = event.getItem().getEntityItem().copy();
-                    if (item.hasTagCompound() && item.getTagCompound().hasKey("canned")) {
-                        return;
-                    }
-
-                    boolean isCannable = OreDictHelper.mapHasItem(OreDictHelper.ingots, item.getItem()) ||
-                      OreDictHelper.mapHasItem(OreDictHelper.gems, item.getItem()) ||
-                      OreDictHelper.listHasItem(OreDictHelper.nuggets, item.getItem());
-
-                    if (isCannable) {
-                        int numCans = 0;
-                        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                            ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-                            if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER) {
-                                numCans += stackInSlot.stackSize;
-                            }
-                        }
-                        if (numCans >= item.stackSize) {
-                            if (!item.hasTagCompound()) {
-                                item.setTagCompound(new NBTTagCompound());
-                            }
-                            item.getTagCompound().setInteger("canned", 0);
-                            event.getItem().setEntityItemStack(item);
-                            for (int i = 0; i < item.stackSize; i++) {
-                                consumeInventoryItem(player, ITEM_CANISTER);
-                                player.inventoryContainer.detectAndSendChanges();
-                            }
-                        } else if (numCans != 0) {
-                            item.stackSize -= numCans;
-                            event.getItem().setEntityItemStack(item);
-                            ItemStack item2 = item.copy();
-                            item2.stackSize = numCans;
-                            if (!item2.hasTagCompound()) {
-                                item2.setTagCompound(new NBTTagCompound());
-                            }
-                            item2.getTagCompound().setInteger("canned", 0);
-                            EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item2);
-                            player.worldObj.spawnEntityInWorld(entityItem);
-                            for (int i = 0; i < numCans; i++) {
-                                consumeInventoryItem(player, ITEM_CANISTER);
-                                player.inventoryContainer.detectAndSendChanges();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     public static void consumeInventoryItem(EntityPlayer player, Item item) {
         for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
