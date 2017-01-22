@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
-import eiteam.esteemedinnovation.storage.item.canister.CanisterHandler;
+import eiteam.esteemedinnovation.storage.item.canister.CanisterRecipe;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.storage.item.canister.RenderCanister;
 import eiteam.esteemedinnovation.storage.steam.*;
@@ -78,7 +78,7 @@ public class StorageModule extends ContentModule {
           'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
 
         if (Config.enableCanister) {
-            GameRegistry.addRecipe(new CanisterHandler());
+            GameRegistry.addRecipe(new CanisterRecipe());
             BookRecipeRegistry.addRecipe("canister", new ShapedOreRecipe(ITEM_CANISTER,
               " i ",
               "i i",
