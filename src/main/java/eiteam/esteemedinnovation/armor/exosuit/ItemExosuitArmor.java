@@ -562,7 +562,7 @@ public class ItemExosuitArmor extends ItemArmor implements ExosuitArmor {
     @Nonnull
     @Override
     public ExosuitEventHandler[] getInstalledEventHandlers(ItemStack self) {
-        List<ExosuitEventHandler> handlers = Arrays.asList(getUpgrades(self));
+        List<ExosuitEventHandler> handlers = new ArrayList<>(Arrays.asList(getUpgrades(self)));
         if (self.hasTagCompound() && self.getTagCompound().hasKey("plate")) {
             handlers.add(UtilPlates.getPlate(self.getTagCompound().getString("plate")));
         }
