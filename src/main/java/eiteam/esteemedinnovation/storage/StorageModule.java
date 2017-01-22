@@ -115,11 +115,6 @@ public class StorageModule extends ContentModule {
         registerModel(STEAM_TANK, 1, "is_creative=true");
         registerModel(ITEM_CANISTER);
         registerModel(KIT_BAG);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void initClient() {
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, RenderCanister::new);
     }
 }

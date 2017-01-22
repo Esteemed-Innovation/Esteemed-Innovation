@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -13,8 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderCanister extends Render {
-    private static final ResourceLocation texture = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortarItem.png");
+public class RenderCanister extends Render<EntityCanisterItem> {
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortarItem.png");
     private static final ModelCanister model = new ModelCanister();
 
     public RenderCanister(RenderManager renderManager) {
@@ -22,12 +21,11 @@ public class RenderCanister extends Render {
     }
 
     @Override
-    public void doRender(Entity var1, double x, double y, double z, float var8, float var9) {
+    public void doRender(EntityCanisterItem myItem, double x, double y, double z, float entityYaw, float partialTicks) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
-        EntityCanisterItem myItem = (EntityCanisterItem) var1;
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+        bindEntityTexture(myItem);
         GL11.glRotatef(myItem.randomDir, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(myItem.randomDir2, 1.0F, 0.0F, 0.0F);
 
@@ -49,7 +47,7 @@ public class RenderCanister extends Render {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(Entity var1) {
-        return null;
+    protected ResourceLocation getEntityTexture(EntityCanisterItem var1) {
+        return TEXTURE;
     }
 }
