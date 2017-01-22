@@ -49,6 +49,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         }
 
         GlStateManager.pushMatrix();
+        GlStateManager.disableBlend();
         GlStateManager.enableRescaleNormal();
         GlStateManager.color(1F, 1F, 1F, 1F);
         GlStateManager.translate(x, y, z);

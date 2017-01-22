@@ -25,6 +25,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
     @Override
     public void renderTileEntityAt(TileEntityMold mold, double x, double y, double z, float partialTicks, int destroyStage) {
         GlStateManager.pushMatrix();
+        GlStateManager.disableBlend();
         GlStateManager.color(1, 1, 1, 1);
         GlStateManager.translate(x, y, z);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
