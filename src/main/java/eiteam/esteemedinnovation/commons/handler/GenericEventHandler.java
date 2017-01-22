@@ -3,8 +3,8 @@ package eiteam.esteemedinnovation.commons.handler;
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
@@ -120,21 +120,6 @@ public class GenericEventHandler {
     private static boolean isShiftDown;
     private static final Potion SLOWNESS_POTION = Potion.getPotionById(PotionType.getID(PotionTypes.SLOWNESS));
 
-    // TODO: Migrate to ExosuitArmor#drainSteam.
-    public static void drainSteam(ItemStack stack, int amount) {
-        if (stack != null) {
-            if (stack.getTagCompound() == null) {
-                stack.setTagCompound(new NBTTagCompound());
-            }
-            if (!stack.getTagCompound().hasKey("steamFill")) {
-                stack.getTagCompound().setInteger("steamFill", 0);
-            }
-            int fill = stack.getTagCompound().getInteger("steamFill");
-            fill = Math.max(0, fill - amount);
-            stack.getTagCompound().setInteger("steamFill", fill);
-        }
-    }
-
     private Map<UUID, Boolean> prevIsJumping = new HashMap<>();
 
     /**
@@ -202,19 +187,6 @@ public class GenericEventHandler {
 //            }
 //        }
 //    }
-
-    // TODO: Migrate to ExosuitArmor#hasPower in cases where access to the chestplate is already needed.
-    // TODO: Move into a proper util class.
-    public static boolean hasPower(EntityLivingBase entityLiving, int i) {
-        ItemStack equipment = entityLiving.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (equipment != null) {
-            Item item = equipment.getItem();
-            if (item instanceof ExosuitArmor) {
-                return ((ExosuitArmor) item).hasPower(equipment, i);
-            }
-        }
-        return false;
-    }
 
     @SubscribeEvent
     public void initializeEntityCapabilities(AttachCapabilitiesEvent.Entity event) {
@@ -951,8 +923,8 @@ public class GenericEventHandler {
             return;
         }
 
-        boolean hasPower = hasPower(entity, 1);
-        int armor = getExoArmor(entity);
+        boolean hasPower = ExosuitUtility.hasPower(entity, 1);
+        int armor = ExosuitUtility.getExoArmor(entity);
         if (hasPower && armor == 4) {
             event.setNewSpeed(event.getNewSpeed() * 1.2F);
         }
@@ -1024,8 +996,8 @@ public class GenericEventHandler {
         if (!(entity instanceof EntityPlayer)) {
             return;
         }
-        boolean hasPower = hasPower(entity, 1);
-        int armor = getExoArmor(entity);
+        boolean hasPower = ExosuitUtility.hasPower(entity, 1);
+        int armor = ExosuitUtility.getExoArmor(entity);
 //        ItemStack armor2 = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         //EsteemedInnovation.proxy.extendRange(entity,1.0F);
 
@@ -1083,7 +1055,7 @@ public class GenericEventHandler {
             double lastZ = tag.getLastMotions().right;
             if (ticksLeft <= 0) {
                 if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
-                    drainSteam(stack, 1);
+                    ExosuitUtility.drainSteam(stack, 1);
                 }
                 ticksLeft = 2;
             }
@@ -1155,20 +1127,4 @@ public class GenericEventHandler {
         }
     }
 
-    /**
-     * Returns the number of Exosuit pieces the Entity is wearing.
-     * @param entityLiving The entity being checked against.
-     * @return int
-     */
-    public int getExoArmor(EntityLivingBase entityLiving) {
-        int num = 0;
-
-        for (EntityEquipmentSlot armor : ARMOR_SLOTS) {
-            ItemStack stack = entityLiving.getItemStackFromSlot(armor);
-            if (stack != null && stack.getItem() instanceof ItemExosuitArmor) {
-                num++;
-            }
-        }
-        return num;
-    }
 }

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -20,13 +20,13 @@ public class ItemFallAssistUpgrade extends ItemExosuitUpgrade {
     @Override
     public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
         if (event.getSource() == DamageSource.fall) {
-            boolean hasPower = GenericEventHandler.hasPower(event.getEntityLiving(), (int) (event.getAmount() / Config.fallAssistDivisor));
+            boolean hasPower = ExosuitUtility.hasPower(event.getEntityLiving(), (int) (event.getAmount() / Config.fallAssistDivisor));
             if (hasPower) {
                 if (event.getAmount() <= 6.0F) {
                     event.setAmount(0F);
                 }
                 event.setAmount(event.getAmount() / 3F);
-                GenericEventHandler.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), (int) (event.getAmount() / Config.fallAssistDivisor));
+                ExosuitUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), (int) (event.getAmount() / Config.fallAssistDivisor));
                 if (event.getAmount() == 0.0F) {
                     event.setResult(Event.Result.DENY);
                     event.setCanceled(true);

@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.util.InventoryUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +25,7 @@ public class ItemCanningMachineUpgrade extends ItemExosuitUpgrade {
             return;
         }
 
-        if (GenericEventHandler.hasPower(player, 10)) {
+        if (ExosuitUtility.hasPower(player, 10)) {
             ItemStack item = event.getItem().getEntityItem();
             if (item.hasTagCompound() && item.getTagCompound().hasKey("canned")) {
                 return;

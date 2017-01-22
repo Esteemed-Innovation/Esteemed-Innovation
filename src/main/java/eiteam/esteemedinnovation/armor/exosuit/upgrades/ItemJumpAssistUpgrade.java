@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -18,9 +18,9 @@ public class ItemJumpAssistUpgrade extends ItemExosuitUpgrade {
 
     @Override
     public void onPlayerJump(LivingEvent.LivingJumpEvent event, EntityPlayer jumper, ItemStack armorStack, EntityEquipmentSlot slot) {
-        boolean shiftJump = jumper.isSneaking() && GenericEventHandler.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
+        boolean shiftJump = jumper.isSneaking() && ExosuitUtility.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
 
-        if (shiftJump || GenericEventHandler.hasPower(jumper, Config.jumpBoostConsumption)) {
+        if (shiftJump || ExosuitUtility.hasPower(jumper, Config.jumpBoostConsumption)) {
             if (shiftJump) {
                 Vec3d vector = jumper.getLook(0.5F);
                 double total = Math.abs(vector.zCoord + vector.xCoord);
@@ -29,9 +29,9 @@ public class ItemJumpAssistUpgrade extends ItemExosuitUpgrade {
                 jumper.motionY += (y) / 1.5F;
                 jumper.motionZ += vector.zCoord * 2;
                 jumper.motionX += vector.xCoord * 2;
-                GenericEventHandler.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump);
+                ExosuitUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump);
             } else {
-                GenericEventHandler.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption);
+                ExosuitUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption);
                 jumper.motionY += 0.2750000059604645D;
             }
         }

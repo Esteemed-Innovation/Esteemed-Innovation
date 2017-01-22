@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static eiteam.esteemedinnovation.commons.handler.GenericEventHandler.hasPower;
+import static eiteam.esteemedinnovation.api.exosuit.ExosuitUtility.hasPower;
 
 public class ItemExosuitFrequencyShifter extends ItemExosuitUpgrade {
     public ItemExosuitFrequencyShifter() {

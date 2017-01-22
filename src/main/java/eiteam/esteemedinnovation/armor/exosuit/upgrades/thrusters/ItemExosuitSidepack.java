@@ -2,12 +2,12 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades.thrusters;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.util.EntityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -57,7 +57,7 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
 
     @Override
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (GenericEventHandler.hasPower(player, 1)) {
+        if (ExosuitUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             if (data.getLastMotions() == null) {
                 data.setLastMotions(MutablePair.of(player.posX, player.posZ));
@@ -112,7 +112,7 @@ public class ItemExosuitSidepack extends ItemExosuitUpgrade {
                 Minecraft mc = Minecraft.getMinecraft();
                 EntityPlayer player = mc.thePlayer;
                 if (player != null && player.worldObj.isRemote && isInstalled(player) &&
-                  GenericEventHandler.hasPower(player, 1) && isMoving(player)) {
+                  ExosuitUtility.hasPower(player, 1) && isMoving(player)) {
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 90.0F));
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 270.0F));
                 }

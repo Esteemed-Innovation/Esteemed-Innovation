@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades.pulsenozzle;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -12,7 +12,7 @@ public class DoubleJumpServerActionPacketHandler implements IMessageHandler<Doub
     @Override
     public DoubleJumpClientResponsePacket onMessage(DoubleJumpServerActionPacket message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
-        if (GenericEventHandler.hasPower(player, 15)) {
+        if (ExosuitUtility.hasPower(player, 15)) {
             // We know that this slot has the armor and that armor has the upgrade. Don't need to check any of that,
             // because it is handled automatically in ItemDoubleJumpUpgrade.
             ItemStack armorStack = player.getItemStackFromSlot(message.getSlot());

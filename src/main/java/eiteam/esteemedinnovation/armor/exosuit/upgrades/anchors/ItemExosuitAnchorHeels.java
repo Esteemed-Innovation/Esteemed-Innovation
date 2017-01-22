@@ -3,9 +3,9 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades.anchors;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.upgrades.ItemExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -38,7 +38,7 @@ public class ItemExosuitAnchorHeels extends ItemExosuitUpgrade {
     @Override
     public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = event.player;
-        if (GenericEventHandler.hasPower(player, 1)) {
+        if (ExosuitUtility.hasPower(player, 1)) {
             boolean inWater = player.isInWater();
             double newY = inWater ? -0.6 : -1.1;
             try {

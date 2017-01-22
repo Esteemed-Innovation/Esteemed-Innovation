@@ -6,11 +6,11 @@ import eiteam.esteemedinnovation.api.enhancement.Enhancement;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -100,11 +100,11 @@ public class ItemFirearm extends Item implements Engineerable {
                 if (legsItem instanceof ItemExosuitArmor) {
                     ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
-                      GenericEventHandler.hasPower(player, Config.reloadingConsumption) &&
+                      ExosuitUtility.hasPower(player, Config.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
                         onItemRightClick(stack, world, player, player.getActiveHand());
-                        GenericEventHandler.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
+                        ExosuitUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
                           Config.reloadingConsumption);
                         ticksSinceReload = 0;
                         // TODO: Reload sound

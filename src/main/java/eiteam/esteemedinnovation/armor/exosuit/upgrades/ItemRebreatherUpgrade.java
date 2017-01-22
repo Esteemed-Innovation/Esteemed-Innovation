@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
+import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,8 @@ public class ItemRebreatherUpgrade extends ItemExosuitUpgrade {
 
     @Override
     public void onPlayerAttacked(LivingAttackEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (event.getSource() == DamageSource.drown && GenericEventHandler.hasPower(victim, Config.rebreatherConsumption)) {
-            GenericEventHandler.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.rebreatherConsumption);
+        if (event.getSource() == DamageSource.drown && ExosuitUtility.hasPower(victim, Config.rebreatherConsumption)) {
+            ExosuitUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.rebreatherConsumption);
             event.setCanceled(true);
         }
     }
