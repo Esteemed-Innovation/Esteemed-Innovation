@@ -323,20 +323,6 @@ public class GenericEventHandler {
 //        }
 //    }
 
-    public static void consumeInventoryItem(EntityPlayer player, Item item) {
-        for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++) {
-            ItemStack stackInSlot = player.inventory.getStackInSlot(slot);
-            if (stackInSlot != null && stackInSlot.getItem() == item) {
-                if (stackInSlot.stackSize > 1) {
-                    stackInSlot.stackSize--;
-                    player.inventory.setInventorySlotContents(slot, stackInSlot);
-                } else {
-                    player.inventory.setInventorySlotContents(slot, null);
-                }
-            }
-        }
-    }
-
     @SubscribeEvent
     public void handleCans(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();

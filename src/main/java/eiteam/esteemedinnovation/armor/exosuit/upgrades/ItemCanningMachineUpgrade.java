@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.upgrades;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
+import eiteam.esteemedinnovation.commons.util.InventoryUtility;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -50,7 +51,7 @@ public class ItemCanningMachineUpgrade extends ItemExosuitUpgrade {
                 }
                 item.getTagCompound().setInteger("canned", 0);
                 for (int i = 0; i < item.stackSize; i++) {
-                    GenericEventHandler.consumeInventoryItem(player, ITEM_CANISTER);
+                    InventoryUtility.consumeInventoryItem(player, ITEM_CANISTER);
                     player.inventoryContainer.detectAndSendChanges();
                 }
             } else if (numCans != 0) {
@@ -63,7 +64,7 @@ public class ItemCanningMachineUpgrade extends ItemExosuitUpgrade {
                 }
                 item2.getTagCompound().setInteger("canned", 0);
                 for (int i = 0; i < numCans; i++) {
-                    GenericEventHandler.consumeInventoryItem(player, ITEM_CANISTER);
+                    InventoryUtility.consumeInventoryItem(player, ITEM_CANISTER);
                     player.inventoryContainer.detectAndSendChanges();
                 }
             }
