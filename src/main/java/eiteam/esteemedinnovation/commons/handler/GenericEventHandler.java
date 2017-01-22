@@ -85,7 +85,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -755,17 +754,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void handlePistonPunch(PlayerInteractEvent.LeftClickBlock event) {
-        EntityPlayer entity = event.getEntityPlayer();
-        int consumption = Config.pistonPushConsumption;
-        boolean hasPower = hasPower(entity, consumption);
-        ItemStack heldItem = entity.getHeldItemMainhand();
-        if (hasPower && heldItem == null) {
-
-        }
-    }
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void handleFallDamage(LivingHurtEvent event) {
         EntityLivingBase entityLiving = event.getEntityLiving();
@@ -954,16 +942,6 @@ public class GenericEventHandler {
                 event.setAmount(amount);
             }
         }
-    }
-
-    public boolean hasItemInHotbar(EntityPlayer player, Item item) {
-        for (int i = 0; i < 10; i++) {
-            ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-            if (stackInSlot != null && stackInSlot.getItem() == item) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @SubscribeEvent

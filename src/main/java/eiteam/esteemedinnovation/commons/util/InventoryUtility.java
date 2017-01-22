@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.commons.util;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,5 +32,20 @@ public class InventoryUtility {
                 }
             }
         }
+    }
+
+    /**
+     * @param player The player to check the hotbar of
+     * @param item The item to search for
+     * @return Whether the provided item is in the player's 10 slot hotbar.
+     */
+    public static boolean hasItemInHotbar(EntityPlayer player, Item item) {
+        for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
+            ItemStack stackInSlot = player.inventory.getStackInSlot(i);
+            if (stackInSlot != null && stackInSlot.getItem() == item) {
+                return true;
+            }
+        }
+        return false;
     }
 }
