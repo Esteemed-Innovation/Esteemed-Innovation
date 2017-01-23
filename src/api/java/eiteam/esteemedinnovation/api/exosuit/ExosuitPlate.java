@@ -39,15 +39,15 @@ public class ExosuitPlate implements ExosuitEventHandler {
     }
 
     public ResourceLocation getIcon(ExosuitArmor item) {
-        return new ResourceLocation(item.getString() + invMod);
+        return new ResourceLocation(item.getString() + "_" + invMod);
     }
 
     public String getArmorLocation(ExosuitArmor item, EntityEquipmentSlot slot) {
         // TODO: Abstract out of API
         if (slot != EntityEquipmentSlot.LEGS) {
-            return Constants.EI_MODID + ":textures/models/armor/exoPlate" + armorMod + "_1.png";
+            return Constants.EI_MODID + ":textures/models/armor/exo_plate_" + armorMod + "_1.png";
         } else {
-            return Constants.EI_MODID + ":textures/models/armor/exoPlate" + armorMod + "_2.png";
+            return Constants.EI_MODID + ":textures/models/armor/exo_plate_" + armorMod + "_2.png";
         }
     }
 

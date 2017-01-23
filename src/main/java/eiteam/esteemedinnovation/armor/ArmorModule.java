@@ -7,22 +7,22 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.armor.exosuit.ExosuitItemModelLoader;
-import eiteam.esteemedinnovation.armor.exosuit.ExosuitModelCache;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitColorHandler;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.*;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.anchors.ItemExosuitAnchorHeels;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalData;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.AnimalDataStorage;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.frequency.ItemExosuitFrequencyShifter;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.jetpack.ItemExosuitJetpack;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.plates.*;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.pulsenozzle.*;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.reloading.ItemExosuitReloadingHolster;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.roar.ItemExosuitDragonRoar;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.thrusters.ItemExosuitSidepack;
-import eiteam.esteemedinnovation.armor.exosuit.upgrades.wings.ItemExosuitWings;
+import eiteam.esteemedinnovation.armor.exosuit.steam.SteamExosuitItemModelLoader;
+import eiteam.esteemedinnovation.armor.exosuit.steam.SteamExosuitModelCache;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitColorHandler;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.*;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.anchors.ItemAnchorHeelsUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalData;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalDataStorage;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.ItemFrequencyShifterUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.jetpack.ItemJetpackUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.plates.*;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.pulsenozzle.*;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.reloading.ItemReloadingHolsterUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.roar.ItemDragonRoarUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.thrusters.ItemSidepackUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.wings.ItemWingsUpgrade;
 import eiteam.esteemedinnovation.armor.tophat.ItemTophat;
 import eiteam.esteemedinnovation.armor.tophat.VillagerData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
@@ -78,16 +78,16 @@ import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class ArmorModule extends ContentModule {
-    public static final ItemArmor.ArmorMaterial EXO_MAT = EnumHelper.addArmorMaterial("EXOSUIT", EsteemedInnovation.MOD_ID + ":exo", 15, new int[] { 2, 5, 4, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
+    public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[] { 2, 5, 4, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
     @CapabilityInject(AnimalData.class)
     public static final Capability<AnimalData> ANIMAL_DATA = null;
     @CapabilityInject(VillagerData.class)
     public static final Capability<VillagerData> VILLAGER_DATA = null;
 
-    public static ItemExosuitArmor EXO_HEAD;
-    public static ItemExosuitArmor EXO_CHEST;
-    public static ItemExosuitArmor EXO_LEGS;
-    public static ItemExosuitArmor EXO_BOOTS;
+    public static ItemSteamExosuitArmor STEAM_EXO_HEAD;
+    public static ItemSteamExosuitArmor STEAM_EXO_CHEST;
+    public static ItemSteamExosuitArmor STEAM_EXO_LEGS;
+    public static ItemSteamExosuitArmor STEAM_EXO_BOOTS;
 
     public static Item JETPACK;
     public static Item WINGS;
@@ -117,7 +117,7 @@ public class ArmorModule extends ContentModule {
     public static final int IRON_PLATE_META = 0;
     public static ExosuitPlate IRON_PLATE = new ExosuitPlateIron();
     public static final int GOLD_PLATE_META = 1;
-    public static ExosuitPlate GOLD_PLATE = new ExosuitPlate("Gold", null, "Gold", "Gold", Constants.EI_MODID + ".plate.gold");
+    public static ExosuitPlate GOLD_PLATE = new ExosuitPlate("Gold", null, "gold", "gold", Constants.EI_MODID + ".plate.gold");
     public static final int COPPER_PLATE_META = 2;
     public static ExosuitPlate COPPER_PLATE = new ExosuitPlateCopper();
     public static final int ZINC_PLATE_META = 3;
@@ -155,33 +155,33 @@ public class ArmorModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        EXO_HEAD = (ItemExosuitArmor) setup(new ItemExosuitArmor(EntityEquipmentSlot.HEAD, EXO_MAT), "exosuit_head");
-        EXO_CHEST = (ItemExosuitArmor) setup(new ItemExosuitArmor(EntityEquipmentSlot.CHEST, EXO_MAT), "exosuit_body");
-        EXO_LEGS = (ItemExosuitArmor) setup(new ItemExosuitArmor(EntityEquipmentSlot.LEGS, EXO_MAT), "exosuit_legs");
-        EXO_BOOTS = (ItemExosuitArmor) setup(new ItemExosuitArmor(EntityEquipmentSlot.FEET, EXO_MAT), "exosuit_feet");
+        STEAM_EXO_HEAD = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.HEAD, STEAM_EXO_MAT), "steam_exosuit_head");
+        STEAM_EXO_CHEST = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.CHEST, STEAM_EXO_MAT), "steam_exosuit_body");
+        STEAM_EXO_LEGS = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.LEGS, STEAM_EXO_MAT), "steam_exosuit_legs");
+        STEAM_EXO_BOOTS = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.FEET, STEAM_EXO_MAT), "steam_exosuit_feet");
 
-        JETPACK = setup(new ItemExosuitJetpack(), "jetpack");
-        WINGS = setup(new ItemExosuitWings(), "wings");
+        JETPACK = setup(new ItemJetpackUpgrade(), "jetpack");
+        WINGS = setup(new ItemWingsUpgrade(), "wings");
         POWER_FIST = setup(new ItemPowerFistUpgrade(), "power_fist");
-        EXTENDO_FIST = setup(new ItemExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
-        THRUSTERS = setup(new ItemExosuitSidepack(), "thrusters");
+        EXTENDO_FIST = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
+        THRUSTERS = setup(new ItemSidepackUpgrade(), "thrusters");
         FALL_ASSIST = setup(new ItemFallAssistUpgrade(), "fall_assist");
         JUMP_ASSIST = setup(new ItemJumpAssistUpgrade(), "jump_assist");
         DOUBLE_JUMP = setup(new ItemDoubleJumpUpgrade(), "double_jump");
         RUN_ASSIST = setup(new ItemModularAcceleratorUpgrade(), "run_assist");
         CANNING_MACHINE = setup(new ItemCanningMachineUpgrade(), "canner");
         PITON_DEPLOYER = setup(new ItemPitonDeployerUpgrade(), "piton_deployer");
-        STEALTH = setup(new ItemExosuitUpgrade(ExosuitSlot.LEGS_LEGS, resource("stealthUpgrade"), null, 0), "stealth_upgrade");
-        ENDER_SHROUD = setup(new ItemExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
+        STEALTH = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.LEGS_LEGS, resource("stealthUpgrade"), null, 0), "stealth_upgrade");
+        ENDER_SHROUD = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
         REINFORCED_TANK = setup(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
         UBER_REINFORCED_TANK = setup(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
         REBREATHER = setup(new ItemRebreatherUpgrade(), "rebreather");
-        HYDROPHOBIC_COATINGS = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("hydrophobiccoating"), null, 0), "hydrophobic_coatings");
-        PYROPHOBIC_COATINGS = setup(new ItemExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("pyrophobiccoating"), null, 0), "pyrophobic_coatings");
-        ANCHOR_HEELS = setup(new ItemExosuitAnchorHeels(), "anchor_heels");
-        RELOADING_HOLSTERS = setup(new ItemExosuitReloadingHolster(), "reloading_holsters");
-        FREQUENCY_SHIFTER = setup(new ItemExosuitFrequencyShifter(), "frequency_shifter");
-        DRAGON_ROAR = setup(new ItemExosuitDragonRoar(), "dragon_roar");
+        HYDROPHOBIC_COATINGS = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("hydrophobiccoating"), null, 0), "hydrophobic_coatings");
+        PYROPHOBIC_COATINGS = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("pyrophobiccoating"), null, 0), "pyrophobic_coatings");
+        ANCHOR_HEELS = setup(new ItemAnchorHeelsUpgrade(), "anchor_heels");
+        RELOADING_HOLSTERS = setup(new ItemReloadingHolsterUpgrade(), "reloading_holsters");
+        FREQUENCY_SHIFTER = setup(new ItemFrequencyShifterUpgrade(), "frequency_shifter");
+        DRAGON_ROAR = setup(new ItemDragonRoarUpgrade(), "dragon_roar");
         EXOSUIT_PLATE = setup(new ItemExosuitPlate(), "exosuit_plate", EsteemedInnovation.tab, false);
         PISTON_PUSH = setup(new ItemPistonPushUpgrade(), "piston_push");
 
@@ -291,7 +291,7 @@ public class ArmorModule extends ContentModule {
             }
         }
         if (Config.enableExosuit) {
-            BookRecipeRegistry.addRecipe("exoHead", new ShapedOreRecipe(EXO_HEAD,
+            BookRecipeRegistry.addRecipe("steamExoHead", new ShapedOreRecipe(STEAM_EXO_HEAD,
               "xyx",
               "p p",
               "xyx",
@@ -299,8 +299,8 @@ public class ArmorModule extends ContentModule {
               'y', NUGGET_BRASS,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("exoBody", new ShapedOreRecipe(
-              new ItemStack(EXO_CHEST, 1, EXO_CHEST.getMaxDamage() - 1),
+            BookRecipeRegistry.addRecipe("steamExoBody", new ShapedOreRecipe(
+              new ItemStack(STEAM_EXO_CHEST, 1, STEAM_EXO_CHEST.getMaxDamage() - 1),
               "p p",
               "ygy",
               "xxx",
@@ -309,7 +309,7 @@ public class ArmorModule extends ContentModule {
               'g', STEAM_GAUGE,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("exoLegs", new ShapedOreRecipe(EXO_LEGS,
+            BookRecipeRegistry.addRecipe("steamExoLegs", new ShapedOreRecipe(STEAM_EXO_LEGS,
               "yxy",
               "p p",
               "x x",
@@ -317,7 +317,7 @@ public class ArmorModule extends ContentModule {
               'y', NUGGET_BRASS,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("exoFeet", new ShapedOreRecipe(EXO_BOOTS,
+            BookRecipeRegistry.addRecipe("steamExoFeet", new ShapedOreRecipe(STEAM_EXO_BOOTS,
               "p p",
               "x x",
               'x', PLATE_THIN_BRASS,
@@ -795,18 +795,18 @@ public class ArmorModule extends ContentModule {
         }
 
         if (Config.enableExosuit && Config.enableEngineering) {
-            BookPageRegistry.addEntryToCategory(EXOSUIT_CATEGORY, new BookEntry("research.Exosuit.name",
-              new BookPageItem("research.Exosuit.name", "research.Exosuit.0",
-                new ItemStack(EXO_HEAD),
-                new ItemStack(EXO_CHEST),
-                new ItemStack(EXO_LEGS),
-                new ItemStack(EXO_BOOTS)),
-              new BookPageText("research.Exosuit.name", "research.Exosuit.1"),
+            BookPageRegistry.addEntryToCategory(EXOSUIT_CATEGORY, new BookEntry("research.SteamExosuit.name",
+              new BookPageItem("research.SteamExosuit.name", "research.SteamExosuit.0",
+                new ItemStack(STEAM_EXO_HEAD),
+                new ItemStack(STEAM_EXO_CHEST),
+                new ItemStack(STEAM_EXO_LEGS),
+                new ItemStack(STEAM_EXO_BOOTS)),
+              new BookPageText("research.SteamExosuit.name", "research.SteamExosuit.1"),
               new BookPageCrafting("", "engineering"),
-              new BookPageCrafting("", "exoHead"),
-              new BookPageCrafting("", "exoBody"),
-              new BookPageCrafting("", "exoLegs"),
-              new BookPageCrafting("", "exoFeet")));
+              new BookPageCrafting("", "steamExoHead"),
+              new BookPageCrafting("", "steamExoBody"),
+              new BookPageCrafting("", "steamExoLegs"),
+              new BookPageCrafting("", "steamExoFeet")));
 
             {
                 BookCategory.Factory tankFactory = new BookCategory.Factory("research.ExoTank.name")
@@ -829,7 +829,7 @@ public class ArmorModule extends ContentModule {
             {
                 ItemStack[] stacks = new ItemStack[4];
                 for (int i = 0; i < 4; i++) {
-                    ItemStack stack = new ItemStack(EXO_CHEST);
+                    ItemStack stack = new ItemStack(STEAM_EXO_CHEST);
                     stack.setTagCompound(new NBTTagCompound());
                     ItemStack plate = null;
                     Collection<ExosuitPlate> values = ExosuitRegistry.plates.values();
@@ -841,7 +841,7 @@ public class ArmorModule extends ContentModule {
                     } else if (item instanceof ItemStack) {
                         plate = (ItemStack) item;
                     }
-                    ((ItemExosuitArmor) stack.getItem()).setInventorySlotContents(stack, 1, plate);
+                    ((ItemSteamExosuitArmor) stack.getItem()).setInventorySlotContents(stack, 1, plate);
                     stacks[i] = stack;
                 }
 
@@ -885,10 +885,10 @@ public class ArmorModule extends ContentModule {
             {
                 ItemStack[] stacks = new ItemStack[4];
                 for (int i = 0; i < 4; i++) {
-                    ItemStack stack = new ItemStack(EXO_CHEST);
+                    ItemStack stack = new ItemStack(STEAM_EXO_CHEST);
                     stack.setTagCompound(new NBTTagCompound());
                     ItemStack dye = new ItemStack(DYE, 1, i);
-                    ((ItemExosuitArmor) stack.getItem()).setInventorySlotContents(stack, 2, dye);
+                    ((ItemSteamExosuitArmor) stack.getItem()).setInventorySlotContents(stack, 2, dye);
                     stacks[i] = stack;
                 }
                 ItemStack[] dyes = {
@@ -1068,7 +1068,7 @@ public class ArmorModule extends ContentModule {
     @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
-        ModelLoaderRegistry.registerLoader(new ExosuitItemModelLoader());
+        ModelLoaderRegistry.registerLoader(new SteamExosuitItemModelLoader());
         toRegisterNormally.forEach(this::registerModel);
         for (int i = 0; i < MAX_PLATE_META; i++) {
             registerModelItemStack(plateStack(i));
@@ -1079,11 +1079,11 @@ public class ArmorModule extends ContentModule {
     @Override
     public void initClient() {
         ItemColors colors = Minecraft.getMinecraft().getItemColors();
-        colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_BOOTS);
-        colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_CHEST);
-        colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_HEAD);
-        colors.registerItemColorHandler(new ItemExosuitColorHandler(), EXO_LEGS);
-        MinecraftForge.EVENT_BUS.register(ExosuitModelCache.INSTANCE);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_BOOTS);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_CHEST);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_HEAD);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_LEGS);
+        MinecraftForge.EVENT_BUS.register(SteamExosuitModelCache.INSTANCE);
 
         MONOCLE_KEY = new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key." + MOD_ID + ".category");
         ClientRegistry.registerKeyBinding(MONOCLE_KEY);

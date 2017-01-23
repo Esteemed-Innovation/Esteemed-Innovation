@@ -11,7 +11,7 @@ public abstract class ModelExosuitUpgrade extends ModelBase {
     public final NBTTagCompound nbtTagCompound = new NBTTagCompound();
 
     /**
-     * Called in {ModelExosuit#render. Handle the rendering of
+     * Called in {ModelSteamExosuit#render. Handle the rendering of
      * your model here. Call the super method to handle rotation angle copying and sneak translation. You probably want
      * to call the super method at the start of renderModel rather than elsewhere.
      * @param parentModel The exosuit model

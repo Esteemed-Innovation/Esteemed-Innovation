@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.charging;
 
 import eiteam.esteemedinnovation.api.SteamChargable;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -11,7 +12,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 
 public class ItemSteamCell extends Item {
     public ItemSteamCell() {
@@ -27,8 +27,8 @@ public class ItemSteamCell extends Item {
     public static boolean chargeItems(EntityPlayer player, boolean skipExo) {
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         int steamToAdd = Config.steamCellCapacity;
-        if (!skipExo && chest != null && chest.getItem() instanceof ItemExosuitArmor) {
-            ItemExosuitArmor armor = (ItemExosuitArmor) chest.getItem();
+        if (!skipExo && chest != null && chest.getItem() instanceof ItemSteamExosuitArmor) {
+            ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) chest.getItem();
             boolean bool = armor.addSteam(chest, steamToAdd, player);
             return bool || chargeItems(player, true);
         } else {

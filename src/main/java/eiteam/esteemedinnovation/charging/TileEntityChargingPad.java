@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.charging;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -98,9 +98,9 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
 
             if (entity != null) {
                 ItemStack equipment = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                if (equipment != null && equipment.getItem() instanceof ItemExosuitArmor && entity == target &&
+                if (equipment != null && equipment.getItem() instanceof ItemSteamExosuitArmor && entity == target &&
                   Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.06F) {
-                    ItemExosuitArmor armorItem = (ItemExosuitArmor) equipment.getItem();
+                    ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) equipment.getItem();
                     if (armorItem.getStackInSlot(equipment, 5) != null) {
                         if (extendTicks < 40) {
                             extendTicks++;

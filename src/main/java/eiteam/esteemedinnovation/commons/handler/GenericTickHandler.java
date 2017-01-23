@@ -6,7 +6,7 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
@@ -161,9 +161,9 @@ public class GenericTickHandler {
             Item monacle = ArmorModule.MONOCLE;
             Item goggles = ArmorModule.GOGGLES;
             boolean hasHat = hat != null && (hat.getItem() == monacle ||
-              hat.getItem() == goggles || (hat.getItem() == ArmorModule.EXO_HEAD &&
-              (((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, goggles) ||
-                ((ItemExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
+              hat.getItem() == goggles || (hat.getItem() == ArmorModule.STEAM_EXO_HEAD &&
+              (((ItemSteamExosuitArmor) hat.getItem()).hasUpgrade(hat, goggles) ||
+                ((ItemSteamExosuitArmor) hat.getItem()).hasUpgrade(hat, monacle))));
             if (hasHat) {
                 if (mc.gameSettings.thirdPersonView == 0) {
                     if (ArmorModule.MONOCLE_KEY.isKeyDown() && !lastPressingKey) {

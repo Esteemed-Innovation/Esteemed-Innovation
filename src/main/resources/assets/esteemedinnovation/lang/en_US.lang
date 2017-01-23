@@ -141,7 +141,7 @@ research.Filler.name=Steam Filler
 research.Filler.0=Pipes are great for transporting steam to fixed machines, but they're not much good to supply power to tools or armor. That's where the steam filler comes in.\nI simply place in a steam-using device and wait.
 research.Filler.1=Furthermore, I do not have to remove the item in order to check its progress. If I attach a gauge to the steam filler, I can measure the current steam level of the item being filled.
 research.FillingPad.name=Filling Pad
-research.FillingPad.0=Filling my exosuit can be extremely time-consuming. I've created a device that allows me to charge my suit much more quickly and easily. Simply standing on this pad will deploy pipes to charge my exosuit, at around twice the rate of the filler.
+research.FillingPad.0=Filling my steam exosuit can be extremely time-consuming. I've created a device that allows me to charge my suit much more quickly and easily. Simply standing on this pad will deploy pipes to charge my exosuit, at around twice the rate of the filler.
 research.ItemMortar.name=Item Mortar
 research.ItemMortar.0=I've found an ingenious way to transport items - a pressurized steam cannon!\nThis mortar will launch items skyward, at a high trajectory, to land at a targeted location.
 research.ItemMortar.1=Simply insert items via a hopper, set a target, and watch items fly.\nAn astrolabe is my device of choice for aiming the mortar. First, I have to shift-right click on the targeted location with an astrolabe, and then right click on the mortar to calibrate it.
@@ -165,17 +165,17 @@ research.FSC.0=While plenty of my gadgets are built to handle the high pressure 
 research.FSC.1=As an alternative to manually extracting liquid steam, I can disengage the pump ring of the Pressure Converter by using a wrench while sneaking. This will use the system's high pressure to force fluid steam into nearby tanks. However, doing so will prevent the Pressure Converter from converting liquid steam back into high pressure.
 research.FSC.2=The rate at which the Pressure Converter ejects fluid steam depends on the pressure in the system. Operating at high pressure, I have witnessed no less than 4 buckets of steam per second.
 
-category.Exosuit.name=Exosuit
-research.Exosuit.name=Exosuit
-research.Exosuit.0=I've been able to manipulate the world to my desire using the power of steam... What left is there to improve but me?\nThis is where my exosuit comes in, a versatile armor set powered by steam.
-research.Exosuit.1=Upgrades can be placed in the suit using an engineering table. First things first, I need to place a steam tank in the cuboid shaped slot in the exosuit chestpiece. I then can fill the chestpiece with steam.\nA full set of exosuit parts will provide a small mining and speed boost, but without steam I will be slowed.
+category.SteamExosuit.name=Steam Exosuit
+research.SteamExosuit.name=Steam Exosuit
+research.SteamExosuit.0=I've been able to manipulate the world to my desire using the power of steam... What left is there to improve but me?\nThis is where my steam exosuit comes in, a versatile armor set powered by steam.
+research.SteamExosuit.1=Upgrades can be placed in the suit using an engineering table. First things first, I need to place a steam tank in the cuboid shaped slot in the steam exosuit chestpiece. I then can fill the chestpiece with steam.\nA full set of steam exosuit parts will provide a small mining and speed boost, but without steam I will be slowed.
 
-research.ExoTank.name=Exosuit Tanks
-research.ExoTank.0=The most crucial component of an exosuit is the tank. The tank stores the steam to power the motion pistons and various installed upgrades, and is placed in the chestpiece.
+research.ExoTank.name=Steam Exosuit Tanks
+research.ExoTank.0=The most crucial component of a steam exosuit is the tank. The tank stores the steam to power the motion pistons and various installed upgrades, and is placed in the chestpiece.
 research.ExoTankBase.name=Base Tank
-research.ExoTankBase.0=The most easy to acquire exosuit tank is a simple steam tank that I use in my steam systems. It has the benefit of being cheap and quick to make, but it cannot hold as much steam as other tanks.
+research.ExoTankBase.0=The most easy to acquire steam exosuit tank is a simple steam tank that I use in my steam systems. It has the benefit of being cheap and quick to make, but it cannot hold as much steam as other tanks.
 research.ExoTankReinforced.name=Reinforced Tank
-research.ExoTankReinforced.0=I've developed a tank built specifically for use in the exosuit using my steam tank as a base. It has extra layers of reinforcement to allow it to accomodate more steam in less space, holding roughly double that of the base tank.
+research.ExoTankReinforced.0=I've developed a tank built specifically for use in the steam exosuit using my steam tank as a base. It has extra layers of reinforcement to allow it to accomodate more steam in less space, holding roughly double that of the base tank.
 research.ExoTankUberReinforced.name=Heavily Reinforced Tank
 research.ExoTankUberReinforced.0=Although it uses large amounts of brass, I've found a way to reinforce a tank even further, allowing it to hold unprecedented levels of steam, roughly twice that of my reinforced tank.
 
@@ -214,7 +214,7 @@ research.PlateZinc.name=Zinc Plate
 research.PlateZinc.0=Through studying the function of the rupture disc, I've learned how to make an armor plate which contains steam within it. When sufficiently damaged, this plate explodes off of my body more than negating the force of a potentially critical blow.
 
 research.ExoVanity.name=Vanity Slot
-research.ExoVanity.0=Not only is my exosuit a versatile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
+research.ExoVanity.0=Not only is my steam exosuit a versatile framework, it is also a customizable one. Each exosuit piece includes a vanity slot that can be used to adjust the appearance of the exosuit to my liking, using various vanity upgrades.
 research.ExoDyes.name=Exosuit Painting
 research.ExoDyes.0=Ordinary dyes of all sorts can be placed in the vanity slot in order to paint the exosuit framework to better suit the look I am looking for. Adding paint will not change the color of installed plates or upgrades.
 research.EnderShroud.name=Ender Shroud
@@ -451,10 +451,10 @@ item.esteemedinnovation:pistolSilencer.name=Assassin's Flintlock Pistol
 item.esteemedinnovation:pistolSpeedy.name=Breech-loading Flintlock Pistol
 item.esteemedinnovation:blunderbussRecoil.name=Padded Flintlock Blunderbuss
 
-item.esteemedinnovation:exosuit_head.name=Steam Exosuit Headpiece
-item.esteemedinnovation:exosuit_body.name=Steam Exosuit Chestpiece
-item.esteemedinnovation:exosuit_legs.name=Steam Exosuit Legpiece
-item.esteemedinnovation:exosuit_feet.name=Steam Exosuit Footpiece
+item.esteemedinnovation:steam_exosuit_head.name=Steam Exosuit Headpiece
+item.esteemedinnovation:steam_exosuit_body.name=Steam Exosuit Chestpiece
+item.esteemedinnovation:steam_exosuit_legs.name=Steam Exosuit Legpiece
+item.esteemedinnovation:steam_exosuit_feet.name=Steam Exosuit Footpiece
 
 item.esteemedinnovation:monocle.name=Tinkerer's Monocle
 item.esteemedinnovation:goggles.name=Tinkerer's Goggles

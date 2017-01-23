@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.charging;
 
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,7 +98,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                 if (inventory.getItem() instanceof SteamChargable) {
                     SteamChargable item = (SteamChargable) inventory.getItem();
                     ItemStack stack = inventory.copy();
-                    if (!(item instanceof ItemExosuitArmor)) {
+                    if (!(item instanceof ItemSteamExosuitArmor)) {
                         if (getSteamShare() > 0 && stack.getItemDamage() > 0) {
                             if (!isCharging) {
                                 isCharging = true;
@@ -262,7 +262,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         if (stack == null) {
             return 0F;
         }
-        if (stack.getItem() instanceof ItemExosuitArmor) {
+        if (stack.getItem() instanceof ItemSteamExosuitArmor) {
             if (!stack.hasTagCompound()) {
                 stack.setTagCompound(new NBTTagCompound());
             }

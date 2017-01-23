@@ -9,7 +9,7 @@ import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -97,8 +97,8 @@ public class ItemFirearm extends Item implements Engineerable {
             ItemStack legs = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
             if (legs != null && nbt.getInteger("loaded") < 1 && ticksSinceReload >= (reloadTime + 10)) {
                 Item legsItem = legs.getItem();
-                if (legsItem instanceof ItemExosuitArmor) {
-                    ItemExosuitArmor legsArmor = (ItemExosuitArmor) legsItem;
+                if (legsItem instanceof ItemSteamExosuitArmor) {
+                    ItemSteamExosuitArmor legsArmor = (ItemSteamExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
                       ExosuitUtility.hasPower(player, Config.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
@@ -401,7 +401,7 @@ public class ItemFirearm extends Item implements Engineerable {
 
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemExosuitArmor.LARGE_ICONS);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemSteamExosuitArmor.LARGE_ICONS);
         int textureX = 0;
         if (this == MUSKET) {
             textureX = 0;

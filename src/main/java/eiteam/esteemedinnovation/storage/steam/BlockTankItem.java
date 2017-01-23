@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.storage.steam;
 
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ModelSteamExosuit;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitTank;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.armor.exosuit.ModelExosuit;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
@@ -52,9 +52,9 @@ public class BlockTankItem extends BlockManyMetadataItem implements ExosuitTank,
         modelExosuitUpgrade.nbtTagCompound.setFloat("pressure", pressure);
 
         int dye = -1;
-        ItemExosuitArmor item = ((ItemExosuitArmor) itemStack.getItem());
+        ItemSteamExosuitArmor item = ((ItemSteamExosuitArmor) itemStack.getItem());
         if (item.getStackInSlot(itemStack, 2) != null) {
-            int dyeIndex = ModelExosuit.findDyeIndexFromItemStack(item.getStackInSlot(itemStack, 2));
+            int dyeIndex = ModelSteamExosuit.findDyeIndexFromItemStack(item.getStackInSlot(itemStack, 2));
             if (dyeIndex != -1) {
                 dye = dyeIndex;
             }
@@ -74,7 +74,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements ExosuitTank,
     @Override
     public int getStorage(ItemStack stack) {
         int cap = Config.basicTankCapacity;
-        if (((ItemExosuitArmor) stack.getItem()).getStackInSlot(stack, 5).getItemDamage() == 1) {
+        if (((ItemSteamExosuitArmor) stack.getItem()).getStackInSlot(stack, 5).getItemDamage() == 1) {
             cap = Integer.MAX_VALUE;
         }
         return cap;

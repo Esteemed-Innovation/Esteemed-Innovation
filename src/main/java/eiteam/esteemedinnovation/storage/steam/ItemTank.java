@@ -4,8 +4,8 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitTank;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
-import eiteam.esteemedinnovation.armor.exosuit.ModelExosuit;
-import eiteam.esteemedinnovation.armor.exosuit.ItemExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
+import eiteam.esteemedinnovation.armor.exosuit.steam.ModelSteamExosuit;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -52,9 +52,9 @@ public class ItemTank extends Item implements ExosuitTank, ExosuitUpgrade {
         modelExosuitUpgrade.nbtTagCompound.setFloat("pressure", pressure);
 
         int dye = -1;
-        ItemExosuitArmor item = ((ItemExosuitArmor) itemStack.getItem());
+        ItemSteamExosuitArmor item = ((ItemSteamExosuitArmor) itemStack.getItem());
         if (item.getStackInSlot(itemStack, 2) != null) {
-            int dyeIndex = ModelExosuit.findDyeIndexFromItemStack(item.getStackInSlot(itemStack, 2));
+            int dyeIndex = ModelSteamExosuit.findDyeIndexFromItemStack(item.getStackInSlot(itemStack, 2));
             if (dyeIndex != -1) {
                 dye = dyeIndex;
             }

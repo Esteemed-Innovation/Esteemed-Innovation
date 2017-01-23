@@ -87,7 +87,7 @@ public class EsteemedInnovation {
     public static final String CASTING_CATEGORY = "category.MetalCasting.name";
     public static final String GADGET_CATEGORY = "category.Gadgets.name";
     public static final String STEAMPOWER_CATEGORY = "category.SteamPower.name";
-    public static final String EXOSUIT_CATEGORY = "category.Exosuit.name";
+    public static final String EXOSUIT_CATEGORY = "category.SteamExosuit.name";
     public static final String MISC_CATEGORY = "category.Misc.name";
     public static final String STEAMTOOL_CATEGORY = "category.SteamTools.name";
 
