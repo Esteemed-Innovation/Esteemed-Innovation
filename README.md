@@ -1,4 +1,4 @@
-![Esteemed Innovation](https://github.com/Esteemed-Innovation/Esteemed-Innovation/blob/1.10/src/main/resources/logoblank.png)
+![Esteemed Innovation](src/main/resources/logoblank.png)
 
 [![Build Status](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation.svg?branch=1.10)](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation)
 [![Total Downloads](http://modshields.herokuapp.com/totaldl?id=flaxbeards-steam-power)](http://minecraft.curseforge.com/projects/flaxbeards-steam-power)
@@ -17,3 +17,8 @@ The goal of EI is innovative content that encourages fun play rather than trying
 
 ## Contact
 You can contact the team usually within hours here on GitHub through issues. If that's not your style, you can also contact the Esteemed Innovation team on IRC at #TheSteamTank on EsperNet. If *that's* not your style, we also have a [Discord server](https://discord.gg/qtaRXYH).
+
+## Contributing
+* [Code of Conduct](CODE_OF_CONDUCT.md)
+* [License](LICENSE.md)
+* [Contributing](CONTRIBUTING.md)
