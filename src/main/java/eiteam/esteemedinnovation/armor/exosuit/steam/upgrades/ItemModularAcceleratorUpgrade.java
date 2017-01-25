@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
@@ -20,7 +20,7 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (ExosuitUtility.hasPower(player, 1)) {
+        if (ChargableUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
 
             if (data.getLastMotions() == null) {
@@ -35,7 +35,7 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
                     chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
                 }
                 if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
-                    ExosuitUtility.drainSteam(chestStack, Config.runAssistConsumption);
+                    ChargableUtility.drainSteam(chestStack, Config.runAssistConsumption, player);
                 }
             }
         }

@@ -1,17 +1,16 @@
 package eiteam.esteemedinnovation.api.tool;
 
 import com.google.common.collect.ImmutableSet;
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.api.SteamChargable;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -157,7 +156,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         boolean result = false;
         if (speed <= 1000) {
             speed += Math.min(90, 1000 - speed);
-            result = addSteam(stack, -steamPerDurability(), player);
+            result = drainSteam(stack, steamPerDurability(), player);
         }
 
         if (result) {
@@ -201,7 +200,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
+    public boolean addSteam(ItemStack me, int amount, EntityLivingBase entity) {
         int trueAmount = -amount / steamPerDurability();
         int newAmount = me.getItemDamage() + trueAmount;
         if (newAmount <= 0) {
@@ -213,18 +212,34 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
             return true;
         }
         if (amount < 0) {
-            ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (chest == null || !(chest.getItem() instanceof ExosuitArmor)) {
-                return false;
-            }
-            ExosuitArmor armor = (ExosuitArmor) chest.getItem();
-            if (armor.hasPower(chest, amount)) {
-                int exoAmount = (-amount) / armor.steamPerDurability();
-                armor.drainSteam(chest, exoAmount);
-                return true;
+            ItemStack armor = ChargableUtility.findFirstChargableArmor(entity);
+            if (armor != null) {
+                SteamChargable chargable = (SteamChargable) armor.getItem();
+                if (chargable.hasPower(armor, amount)) {
+                    int armorAmount = (-amount) / chargable.steamPerDurability();
+                    chargable.drainSteam(armor, armorAmount, entity);
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean hasPower(ItemStack me, int powerNeeded) {
+        int truePowerNeeded = -powerNeeded / steamPerDurability();
+        return me.getItemDamage() >= truePowerNeeded;
+    }
+
+    @Override
+    public boolean needsPower(ItemStack me, int powerNeeded) {
+        int truePowerNeeded = -powerNeeded / steamPerDurability();
+        return truePowerNeeded >= (me.getMaxDamage() - me.getItemDamage());
+    }
+
+    @Override
+    public boolean drainSteam(ItemStack me, int amountToDrain, EntityLivingBase entity) {
+        return addSteam(me, -amountToDrain, entity);
     }
 
     @Override

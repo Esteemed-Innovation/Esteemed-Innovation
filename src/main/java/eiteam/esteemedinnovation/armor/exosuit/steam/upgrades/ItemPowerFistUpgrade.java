@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer attacker, ItemStack armorStack, EntityEquipmentSlot slot) {
-        boolean hasPower = ExosuitUtility.hasPower(attacker, Config.powerFistConsumption);
+        boolean hasPower = ChargableUtility.hasPower(attacker, Config.powerFistConsumption);
         ItemStack stack = attacker.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         if (hasPower && attacker.getHeldItemMainhand() == null) {
             Entity victim = event.getEntity();
@@ -35,7 +35,7 @@ public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
             victim.motionZ += 3.0F * normalizedLookVec.zCoord;
             victim.motionX += -0.5F * normalizedLookVec.xCoord;
             victim.motionZ += -0.5F * normalizedLookVec.zCoord;
-            ExosuitUtility.drainSteam(stack, Config.powerFistConsumption);
+            ChargableUtility.drainSteam(stack, Config.powerFistConsumption, attacker);
         }
     }
 }

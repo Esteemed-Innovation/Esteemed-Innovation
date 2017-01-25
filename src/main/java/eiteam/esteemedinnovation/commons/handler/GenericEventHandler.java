@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.commons.handler;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
@@ -674,13 +675,10 @@ public class GenericEventHandler {
     @SubscribeEvent
     public void doubleExp(PlayerPickupXpEvent event) {
         EntityPlayer player = event.getEntityPlayer();
-        for (int i = 0; i < ItemStackUtility.EQUIPMENT_SLOTS.length; i++) {
+        for (int i = 0; i < ItemStackUtility.ARMOR_SLOTS.length; i++) {
             float multiplier = 1;
             EntityEquipmentSlot slot = ItemStackUtility.getSlotFromSlotIndex(i);
             if (slot == null) {
-                continue;
-            }
-            if (slot.getSlotType() == EntityEquipmentSlot.Type.HAND) {
                 continue;
             }
             ItemStack stack = player.getItemStackFromSlot(slot);
@@ -735,11 +733,8 @@ public class GenericEventHandler {
             EntityPlayer player = (EntityPlayer) entityLiving;
             if (player.getHealth() <= 5.0F) {
                 int vibrantLevel = 0;
-                for (int i = 0; i < ItemStackUtility.EQUIPMENT_SLOTS.length; i++) {
+                for (int i = 0; i < ItemStackUtility.ARMOR_SLOTS.length; i++) {
                     EntityEquipmentSlot slot = ItemStackUtility.getSlotFromSlotIndex(i);
-                    if (slot.getSlotType() == EntityEquipmentSlot.Type.HAND) {
-                        continue;
-                    }
                     ItemStack armor = player.getItemStackFromSlot(slot);
                     if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                         ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
@@ -923,7 +918,7 @@ public class GenericEventHandler {
             return;
         }
 
-        boolean hasPower = ExosuitUtility.hasPower(entity, 1);
+        boolean hasPower = ChargableUtility.hasPower(entity, 1);
         int armor = ExosuitUtility.getExoArmor(entity);
         if (hasPower && armor == 4) {
             event.setNewSpeed(event.getNewSpeed() * 1.2F);
@@ -996,7 +991,7 @@ public class GenericEventHandler {
         if (!(entity instanceof EntityPlayer)) {
             return;
         }
-        boolean hasPower = ExosuitUtility.hasPower(entity, 1);
+        boolean hasPower = ChargableUtility.hasPower(entity, 1);
         int armor = ExosuitUtility.getExoArmor(entity);
 //        ItemStack armor2 = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         //EsteemedInnovation.proxy.extendRange(entity,1.0F);
@@ -1055,7 +1050,7 @@ public class GenericEventHandler {
             double lastZ = tag.getLastMotions().right;
             if (ticksLeft <= 0) {
                 if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
-                    ExosuitUtility.drainSteam(stack, 1);
+                    ChargableUtility.drainSteam(stack, 1, entity);
                 }
                 ticksLeft = 2;
             }

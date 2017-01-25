@@ -2,8 +2,8 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.anchors;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
@@ -38,7 +38,7 @@ public class ItemAnchorHeelsUpgrade extends ItemSteamExosuitUpgrade {
     @Override
     public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = event.player;
-        if (ExosuitUtility.hasPower(player, 1)) {
+        if (ChargableUtility.hasPower(player, 1)) {
             boolean inWater = player.isInWater();
             double newY = inWater ? -0.6 : -1.1;
             try {

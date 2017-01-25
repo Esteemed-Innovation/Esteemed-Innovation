@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,9 +18,9 @@ public class ItemJumpAssistUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerJump(LivingEvent.LivingJumpEvent event, EntityPlayer jumper, ItemStack armorStack, EntityEquipmentSlot slot) {
-        boolean shiftJump = jumper.isSneaking() && ExosuitUtility.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
+        boolean shiftJump = jumper.isSneaking() && ChargableUtility.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
 
-        if (shiftJump || ExosuitUtility.hasPower(jumper, Config.jumpBoostConsumption)) {
+        if (shiftJump || ChargableUtility.hasPower(jumper, Config.jumpBoostConsumption)) {
             if (shiftJump) {
                 Vec3d vector = jumper.getLook(0.5F);
                 double total = Math.abs(vector.zCoord + vector.xCoord);
@@ -29,9 +29,9 @@ public class ItemJumpAssistUpgrade extends ItemSteamExosuitUpgrade {
                 jumper.motionY += (y) / 1.5F;
                 jumper.motionZ += vector.zCoord * 2;
                 jumper.motionX += vector.xCoord * 2;
-                ExosuitUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump);
+                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump, jumper);
             } else {
-                ExosuitUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption);
+                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption, jumper);
                 jumper.motionY += 0.2750000059604645D;
             }
         }

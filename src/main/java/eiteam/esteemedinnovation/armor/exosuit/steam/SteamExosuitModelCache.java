@@ -20,10 +20,8 @@ public class SteamExosuitModelCache {
 
     private static ModelSteamExosuit[] generateNewArray() {
         ModelSteamExosuit[] array = new ModelSteamExosuit[4];
-        for (EntityEquipmentSlot slot : ItemStackUtility.EQUIPMENT_SLOTS) {
-            if (slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR) {
-                array[slot.getIndex()] = new ModelSteamExosuit(slot);
-            }
+        for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
+            array[slot.getIndex()] = new ModelSteamExosuit(slot);
         }
         return array;
     }
@@ -45,11 +43,7 @@ public class SteamExosuitModelCache {
                 return;
             }
 
-            for (EntityEquipmentSlot slot : ItemStackUtility.EQUIPMENT_SLOTS) {
-                if (slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
-                    continue;
-                }
-
+            for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
                 ItemStack armorStack = mc.thePlayer.getItemStackFromSlot(slot);
                 if (armorStack != null && armorStack.getItem() instanceof ItemSteamExosuitArmor) {
                     getModel(mc.thePlayer, slot).updateModel(mc.thePlayer, armorStack);

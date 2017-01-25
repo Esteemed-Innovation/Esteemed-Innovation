@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.roar;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
@@ -39,7 +39,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
             if (entity.getHeldItemMainhand() == null && entity.isSneaking() && chest != null &&
               chest.getItem() instanceof ItemSteamExosuitArmor && chest.hasTagCompound()) {
                 int consumption = (chest.getTagCompound().getInteger("maxFill") / 2) + Config.dragonRoarConsumption;
-                if (ExosuitUtility.hasPower(entity, consumption)) {
+                if (ChargableUtility.hasPower(entity, consumption)) {
                     if (world.isRemote) {
                         world.playSound(entity.posX, entity.posY, entity.posZ,
                           SoundEvents.ENTITY_ENDERDRAGON_GROWL, SoundCategory.PLAYERS, 5.0F,
@@ -48,7 +48,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
                         world.createExplosion(entity, entity.posX + 0.5F, entity.posY,
                           entity.posZ + 0.5F, 10.0F, false);
                     }
-                    ExosuitUtility.drainSteam(chest, consumption);
+                    ChargableUtility.drainSteam(chest, consumption, entity);
                 }
             }
         }

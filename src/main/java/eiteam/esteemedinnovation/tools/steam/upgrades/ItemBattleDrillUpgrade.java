@@ -65,6 +65,6 @@ public class ItemBattleDrillUpgrade extends ItemSteamToolUpgrade {
         }
 
         target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
-        drill.addSteam(equipped, -(Config.battleDrillConsumption * drill.steamPerDurability()), player);
+        drill.drainSteam(equipped, (Config.battleDrillConsumption * drill.steamPerDurability()), player);
     }
 }

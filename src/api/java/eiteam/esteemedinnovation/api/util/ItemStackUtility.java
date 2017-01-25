@@ -9,12 +9,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ItemStackUtility {
     /**
      * A performance-friendly cache of all the equipment slots.
      */
     public static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = EntityEquipmentSlot.values();
+
+    /**
+     * A performance-friendly cache of all armor slots (excludes hand slots).
+     */
+    public static final EntityEquipmentSlot[] ARMOR_SLOTS = new ArrayList<>(Arrays.asList(EQUIPMENT_SLOTS))
+      .stream()
+      .filter(slot -> slot.getSlotType() == EntityEquipmentSlot.Type.ARMOR)
+      .collect(Collectors.toList())
+      .toArray(new EntityEquipmentSlot[] {});
 
     /**
      * Public version of {@link net.minecraft.item.crafting.FurnaceRecipes#compareItemStacks(ItemStack, ItemStack)}

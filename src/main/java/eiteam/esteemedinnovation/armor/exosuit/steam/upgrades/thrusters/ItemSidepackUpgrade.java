@@ -1,8 +1,9 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.thrusters;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.Config;
@@ -14,6 +15,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -57,7 +59,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (ExosuitUtility.hasPower(player, 1)) {
+        if (ChargableUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             if (data.getLastMotions() == null) {
                 data.setLastMotions(MutablePair.of(player.posX, player.posZ));
@@ -67,12 +69,16 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
               !player.onGround && isPlayerNotInWaterOrFlying(player)) {
                 player.moveEntity(player.motionX, 0, player.motionZ);
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                ExosuitArmor chestArmor = (ExosuitArmor) chestStack.getItem();
-                if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                    chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
-                }
-                if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
-                    chestArmor.drainSteam(chestStack, Config.thrusterConsumption);
+                if (chestStack != null) {
+                    Item chestItem = chestStack.getItem();
+                    if (chestItem instanceof ExosuitArmor && chestItem instanceof SteamChargable) {
+                        if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
+                            chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
+                        }
+                        if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
+                            ((SteamChargable) chestItem).drainSteam(chestStack, Config.thrusterConsumption, player);
+                        }
+                    }
                 }
             }
         }
@@ -112,7 +118,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
                 Minecraft mc = Minecraft.getMinecraft();
                 EntityPlayer player = mc.thePlayer;
                 if (player != null && player.worldObj.isRemote && isInstalled(player) &&
-                  ExosuitUtility.hasPower(player, 1) && isMoving(player)) {
+                  ChargableUtility.hasPower(player, 1) && isMoving(player)) {
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 90.0F));
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 270.0F));
                 }

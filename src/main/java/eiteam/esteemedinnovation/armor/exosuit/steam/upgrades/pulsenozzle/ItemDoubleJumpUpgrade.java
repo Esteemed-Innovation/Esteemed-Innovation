@@ -1,10 +1,12 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.pulsenozzle;
 
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -32,6 +34,12 @@ public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
         if (player.onGround && armorStack.hasTagCompound()) {
             armorStack.getTagCompound().setBoolean("usedJump", false);
         }
+    }
+
+    @Override
+    public boolean isInstalled(EntityLivingBase entity) {
+        ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        return super.isInstalled(entity) && chest != null && chest.getItem() instanceof SteamChargable;
     }
 
     public class EventHandler {

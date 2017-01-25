@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.armor.exosuit.steam;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor {
+public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, SteamChargable {
     public static final ResourceLocation LARGE_ICONS = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/engineering2.png");
 
     public EntityEquipmentSlot slot;
@@ -122,7 +123,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         if (this.slot == EntityEquipmentSlot.CHEST) {
-            drainSteam(stack, damage * 40);
+            drainSteam(stack, damage * 40, entity);
         }
     }
 
@@ -463,7 +464,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor {
     }
 
     @Override
-    public boolean addSteam(ItemStack me, int amount, EntityPlayer player) {
+    public boolean addSteam(ItemStack me, int amount, EntityLivingBase player) {
         int curSteam = me.getTagCompound().getInteger("steamFill");
         int newSteam = curSteam + amount;
         if (needsPower(me, amount)) {
@@ -474,7 +475,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor {
     }
 
     @Override
-    public void drainSteam(ItemStack me, int amountToDrain) {
+    public boolean drainSteam(ItemStack me, int amountToDrain, EntityLivingBase entity) {
         if (me != null) {
             if (me.getTagCompound() == null) {
                 me.setTagCompound(new NBTTagCompound());
@@ -485,7 +486,9 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor {
             int fill = me.getTagCompound().getInteger("steamFill");
             fill = Math.max(0, fill - amountToDrain);
             me.getTagCompound().setInteger("steamFill", fill);
+            return true;
         }
+        return false;
     }
 
     @Override

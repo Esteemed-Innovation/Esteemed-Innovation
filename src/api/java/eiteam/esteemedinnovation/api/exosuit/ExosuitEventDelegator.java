@@ -30,7 +30,7 @@ class ExosuitEventDelegator {
      *             containing this armor.
      */
     private static void doMethodForEachUpgrade(EntityPlayer player, TriConsumer<ExosuitEventHandler, ItemStack, EntityEquipmentSlot> func) {
-        for (EntityEquipmentSlot slot : ItemStackUtility.EQUIPMENT_SLOTS) {
+        for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
             if (slot.getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
                 continue;
             }

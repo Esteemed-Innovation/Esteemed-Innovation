@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.firearms.flintlock;
 
+import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.api.enhancement.Enhancement;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementFirearm;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
@@ -100,12 +100,12 @@ public class ItemFirearm extends Item implements Engineerable {
                 if (legsItem instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor legsArmor = (ItemSteamExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
-                      ExosuitUtility.hasPower(player, Config.reloadingConsumption) &&
+                      ChargableUtility.hasPower(player, Config.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
                         onItemRightClick(stack, world, player, player.getActiveHand());
-                        ExosuitUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
-                          Config.reloadingConsumption);
+                        ChargableUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
+                          Config.reloadingConsumption, player);
                         ticksSinceReload = 0;
                         // TODO: Reload sound
                         // TODO: Out of ammo- cannot reload sound
