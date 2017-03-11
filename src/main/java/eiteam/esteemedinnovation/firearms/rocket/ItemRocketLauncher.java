@@ -5,7 +5,6 @@ import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.api.enhancement.*;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
-import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -348,7 +347,7 @@ public class ItemRocketLauncher extends Item implements Engineerable {
 
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemSteamExosuitArmor.LARGE_ICONS);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_ARMOR_TEXTURES);
         guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 192, 64, 64, 64);
     }
 

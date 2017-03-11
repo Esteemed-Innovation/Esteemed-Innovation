@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 public interface Engineerable {
-    Pair<Integer, Integer>[] engineerCoordinates();
+    Pair[] engineerCoordinates();
 
     ItemStack getStackInSlot(ItemStack me, int var1);
 

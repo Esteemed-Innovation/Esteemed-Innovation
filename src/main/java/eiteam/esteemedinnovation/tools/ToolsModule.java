@@ -7,6 +7,7 @@ import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
 import eiteam.esteemedinnovation.tools.steam.*;
@@ -21,6 +22,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -738,7 +740,7 @@ public class ToolsModule extends ContentModule {
     @SideOnly(Side.CLIENT)
     @Override
     public void preInitClient() {
-        ModelLoaderRegistry.registerLoader(new SteamToolModelLoader());
+        ModelLoaderRegistry.registerLoader(new GenericModelLoaderLocationMatch(SteamToolModel.GENERIC_MODEL, new ResourceLocation(MOD_ID, "models/block/steam_tool")));
         registerModel(SURVIVALIST_TOOLKIT);
         registerModel(WRENCH);
         registerModel(BRASS_SWORD);

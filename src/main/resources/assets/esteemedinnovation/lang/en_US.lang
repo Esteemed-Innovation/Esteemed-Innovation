@@ -709,4 +709,9 @@ research.Pendulum.0=I can hang a torch from the ceiling using a string to cause 
 esteemedinnovation.plonker.always=Automatically place
 esteemedinnovation.plonker.pulse=Pulse to place
 
+item.esteemedinnovation:leather_exosuit_head.name=Leather Exosuit Headpiece
+item.esteemedinnovation:leather_exosuit_body.name=Leather Exosuit Chestpiece
+item.esteemedinnovation:leather_exosuit_legs.name=Leather Exosuit Legpiece
+item.esteemedinnovation:leather_exosuit_feet.name=Leather Exosuit Footpiece
+
 entity.Villager.steam_engineer=Steam Engineer

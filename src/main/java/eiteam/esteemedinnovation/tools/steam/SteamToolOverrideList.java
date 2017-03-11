@@ -66,8 +66,8 @@ public final class SteamToolOverrideList extends ItemOverrideList {
         String mapString = map.toString();
 
         SteamToolBakedModel steamToolBakedModel = (SteamToolBakedModel) originalModel;
-        if (steamToolBakedModel.cache.containsKey(mapString)) {
-            return steamToolBakedModel.cache.get(mapString);
+        if (steamToolBakedModel.isCached(mapString)) {
+            return steamToolBakedModel.getCachedModel(mapString);
         }
 
         ResourceLocation trueCore = core == null ? null : new ResourceLocation(core.getResourceDomain(),
@@ -77,8 +77,8 @@ public final class SteamToolOverrideList extends ItemOverrideList {
 
         IModel processed = new SteamToolModel(trueCore, trueHead, which, toolName);
 
-        IBakedModel bakedModel = processed.bake(new SimpleModelState(steamToolBakedModel.transforms), steamToolBakedModel.format, ModelLoader.defaultTextureGetter());
-        steamToolBakedModel.cache.put(mapString, bakedModel);
+        IBakedModel bakedModel = processed.bake(new SimpleModelState(steamToolBakedModel.getTransforms()), steamToolBakedModel.getFormat(), ModelLoader.defaultTextureGetter());
+        steamToolBakedModel.cacheModel(mapString, bakedModel);
 
         return bakedModel;
     }

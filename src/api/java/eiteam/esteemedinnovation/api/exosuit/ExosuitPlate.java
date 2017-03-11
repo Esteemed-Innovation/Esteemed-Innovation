@@ -51,6 +51,10 @@ public class ExosuitPlate implements ExosuitEventHandler {
         }
     }
 
+    public String getArmorMod() {
+        return armorMod;
+    }
+
     /**
      * @param slot The armor slot that this plate is installed in
      * @param source The damage source

@@ -173,6 +173,8 @@ public class Config {
     public static boolean enableEnhancementAmmo;
     public static boolean enableEnhancementAirStrike;
     public static boolean enableExosuit;
+    public static boolean enableSteamExosuit;
+    public static boolean enableLeatherExosuit;
     public static boolean enableFallAssist;
     public static boolean enableJetpack;
     public static boolean enableFirearms;
@@ -355,7 +357,9 @@ public class Config {
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean();
-        enableExosuit = config.get("Exosuit", "Enable Exosuit (disabling also disables all upgrades)", true).getBoolean();
+        enableExosuit = config.get("Exosuit", "Enable Exosuits in general (disabling disables both suits, all upgrades, and plates)", true).getBoolean();
+        enableSteamExosuit = config.get("Exosuit", "Enable Steam Exosuit (disabling disabled all its upgrades, as well)", true).getBoolean();
+        enableLeatherExosuit = config.get("Exosuit", "Enable Leather Exosuit (disabling only disables the suit)", true).getBoolean();
         exoConsumption = config.get("Exosuit", "The amount of steam the Exosuit consumes", EXO_CONSUMPTION_DEFAULT).getInt();
         jumpBoostConsumption = config.get("Exosuit", "The amount of steam jump boost consumes", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
         jetpackConsumption = config.get("Exosuit", "The amount of steam the Jetpack consumes", JETPACK_CONSUMPTION_DEFAULT).getInt();

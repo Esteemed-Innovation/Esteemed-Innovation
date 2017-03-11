@@ -401,7 +401,7 @@ public class ItemFirearm extends Item implements Engineerable {
 
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(ItemSteamExosuitArmor.LARGE_ICONS);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_ARMOR_TEXTURES);
         int textureX = 0;
         if (this == MUSKET) {
             textureX = 0;

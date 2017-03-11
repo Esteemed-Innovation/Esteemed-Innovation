@@ -68,8 +68,8 @@ public class SteamExosuitItemOverrideList extends ItemOverrideList {
 
         String cacheKey = String.format("armor=%s,plate=%s,isDyed=%b", armor.getRegistryName(), plate, isArmorDyed);
 
-        IBakedModel bakedModel = processed.bake(new SimpleModelState(exosuitItemBakedModel.transforms), exosuitItemBakedModel.format, ModelLoader.defaultTextureGetter());
-        exosuitItemBakedModel.cache.put(cacheKey, bakedModel);
+        IBakedModel bakedModel = processed.bake(new SimpleModelState(exosuitItemBakedModel.getTransforms()), exosuitItemBakedModel.getFormat(), ModelLoader.defaultTextureGetter());
+        exosuitItemBakedModel.cacheModel(cacheKey, bakedModel);
 
         return bakedModel;
     }

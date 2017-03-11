@@ -41,7 +41,7 @@ public class UtilPlates {
 
     /**
      * Removes Exosuit Plates from the given Exosuit piece.
-     *
+     * TODO: This is too detail-focused and does not work for non-steam suits.
      * @param exosuitPiece The Exosuit Piece to remove the plates from.
      */
     public static void removePlate(ItemStack exosuitPiece) {

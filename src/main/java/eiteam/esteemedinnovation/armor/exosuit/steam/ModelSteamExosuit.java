@@ -7,6 +7,7 @@ import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.ExosuitTexture;
+import eiteam.esteemedinnovation.armor.exosuit.ModelExosuit;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ComparatorUpgrade;
 import eiteam.esteemedinnovation.commons.visual.Texture;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
@@ -27,7 +28,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class ModelSteamExosuit extends ModelBiped {
+public class ModelSteamExosuit extends ModelBiped implements ModelExosuit {
     public static final ComparatorUpgrade COMPARATOR_UPGRADE = new ComparatorUpgrade();
 
     public static final String[] DYES = {"Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta", "Orange", "White"};
@@ -198,7 +199,8 @@ public class ModelSteamExosuit extends ModelBiped {
         hornRightBase.addChild(hornRightPart5);
     }
 
-    public void updateModel(EntityLivingBase entityLivingBase, ItemStack itemStack) {
+    @Override
+    public void updateModel(EntityLivingBase entityLivingBase, ItemStack itemStack, EntityEquipmentSlot slot) {
         ItemSteamExosuitArmor exosuitArmor = (ItemSteamExosuitArmor) itemStack.getItem();
 
         // Yeti Horns

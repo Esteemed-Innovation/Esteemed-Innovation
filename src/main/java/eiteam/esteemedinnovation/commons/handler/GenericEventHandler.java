@@ -992,7 +992,8 @@ public class GenericEventHandler {
             return;
         }
         boolean hasPower = ChargableUtility.hasPower(entity, 1);
-        int armor = ExosuitUtility.getExoArmor(entity);
+        // We only handle the boosts for the steam-powered suits.
+        int armor = ExosuitUtility.getExoArmorMatchesPredicate(entity, (slot, stack) -> stack.getItem() instanceof ItemSteamExosuitArmor);
 //        ItemStack armor2 = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
         //EsteemedInnovation.proxy.extendRange(entity,1.0F);
 

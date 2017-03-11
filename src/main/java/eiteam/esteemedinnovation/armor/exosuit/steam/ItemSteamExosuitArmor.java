@@ -21,7 +21,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,7 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, SteamChargable {
-    public static final ResourceLocation LARGE_ICONS = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/engineering2.png");
 
     public EntityEquipmentSlot slot;
 
@@ -61,7 +59,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             return null;
         }
 
-        ModelSteamExosuit modelExosuit = SteamExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
+        ModelSteamExosuit modelExosuit = (ModelSteamExosuit) SteamExosuitModelCache.INSTANCE.getModel((EntityPlayer) entityLiving, armorSlot);
 
         boolean head = armorSlot == EntityEquipmentSlot.HEAD;
         modelExosuit.bipedHead.showModel = head;
@@ -557,8 +555,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
-        guiEngineeringTable.mc.getTextureManager().bindTexture(LARGE_ICONS);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
+        guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_ARMOR_TEXTURES);
     }
 
     @Nonnull
