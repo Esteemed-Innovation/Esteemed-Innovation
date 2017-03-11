@@ -1,15 +1,27 @@
 package eiteam.esteemedinnovation.api.tile;
 
+import eiteam.esteemedinnovation.api.SteamTransporter;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import eiteam.esteemedinnovation.api.SteamTransporter;
 
 /**
  * Similar to the SteamTransporterTileEntity, this tile entity is used for steam "reactor" blocks.
  * For example: Steam Whistle, Rupture Disc.
+ *
+ * It provides default safe update (see {@link TileEntityTickableSafe}) methods that do nothing, because it is
+ * completely possible to make a steam reactor that does not tick.
  */
-public class SteamReactorTileEntity extends TileEntityBase {
+public class SteamReactorTileEntity extends TileEntityTickableSafe {
+    @Override
+    public boolean canUpdate(IBlockState target) {
+        return false;
+    }
+
+    @Override
+    public void safeUpdate() {}
+
     /**
      * @param dir The FACING value for the reactor.
      * @return The pressure of the attached transporter.

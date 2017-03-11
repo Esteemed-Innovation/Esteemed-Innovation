@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.commons.Config;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -74,7 +75,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == ChargingModule.STEAM_FILLER;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote) {
             if (inventory != null && isCharging) {
                 worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
@@ -217,7 +223,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     @Override

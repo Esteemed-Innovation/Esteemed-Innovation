@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.transport.fluid.funnel;
 
+import eiteam.esteemedinnovation.api.tile.TileEntityTickableSafe;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
-
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -21,11 +21,16 @@ import java.util.HashSet;
 import static net.minecraftforge.fluids.Fluid.BUCKET_VOLUME;
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
-public class TileEntityFunnel extends TileEntity implements ITickable {
+public class TileEntityFunnel extends TileEntityTickableSafe {
     protected FluidTank tank = new FluidTank(BUCKET_VOLUME);
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.FUNNEL;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote || worldObj.getBlockState(pos).getActualState(worldObj, pos).getValue(BlockFunnel.POWERED)) {
             return;
         }

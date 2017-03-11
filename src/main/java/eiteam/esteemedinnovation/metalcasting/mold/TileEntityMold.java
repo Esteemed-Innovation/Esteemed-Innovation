@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.metalcasting.mold;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.mold.CrucibleMold;
+import eiteam.esteemedinnovation.api.tile.TileEntityBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -9,12 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 
-public class TileEntityMold extends TileEntity implements ISidedInventory, ITickable {
+public class TileEntityMold extends TileEntityBase implements ISidedInventory, ITickable {
     private static final int[] moldSlots = new int[] {0};
     public boolean isOpen = true;
     public ItemStack mold;

@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -92,7 +93,12 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.VACUUM;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (lastSteam != getSteamShare() > VACUUM_STEAM_CONSUMPTION) {
             markForResync();
         }
@@ -204,7 +210,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     private void putInInventory(EntityItem item, int slot, IInventory inv) {

@@ -1,15 +1,15 @@
 package eiteam.esteemedinnovation.pendulum;
 
-import eiteam.esteemedinnovation.api.tile.TileEntityBase;
+import eiteam.esteemedinnovation.api.tile.TileEntityTickableSafe;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 
-public class TileEntityPendulumTorch extends TileEntityBase implements ITickable {
+public class TileEntityPendulumTorch extends TileEntityTickableSafe {
     private int timer;
     private int numStrings;
     private int requiredTicks;
@@ -28,7 +28,12 @@ public class TileEntityPendulumTorch extends TileEntityBase implements ITickable
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == PendulumModule.PENDULUM_TORCH;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (!initialized) {
             init();
         }

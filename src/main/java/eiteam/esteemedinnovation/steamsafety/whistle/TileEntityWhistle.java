@@ -4,7 +4,9 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
 import eiteam.esteemedinnovation.commons.audio.SoundTile;
 import eiteam.esteemedinnovation.commons.audio.TickableSoundTile;
+import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -13,7 +15,7 @@ import net.minecraft.util.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTile, ITickable {
+public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTile {
     private float volume;
     private boolean isSoundRegistered;
     private boolean isSounding;
@@ -39,7 +41,12 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == SafetyModule.STEAM_WHISTLE;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote) {
             updateSound();
         } else {

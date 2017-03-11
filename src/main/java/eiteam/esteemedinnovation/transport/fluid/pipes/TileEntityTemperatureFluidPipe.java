@@ -1,11 +1,12 @@
 package eiteam.esteemedinnovation.transport.fluid.pipes;
 
-import eiteam.esteemedinnovation.api.tile.TileEntityBase;
+import eiteam.esteemedinnovation.api.tile.TileEntityTickableSafe;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.transport.TransportationModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,7 +18,7 @@ import java.util.List;
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
 // TODO: Impellers
-public class TileEntityTemperatureFluidPipe extends TileEntityBase implements ITickable {
+public class TileEntityTemperatureFluidPipe extends TileEntityTickableSafe {
     private int transferAmount;
     private int tickCounter = 0;
     private EnumFacing prevInteractSide = null;
@@ -36,7 +37,12 @@ public class TileEntityTemperatureFluidPipe extends TileEntityBase implements IT
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.COPPER_PIPE; // TODO: Generalize
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote) {
             return;
         }

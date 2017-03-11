@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.fishfarm;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -43,9 +44,13 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
         return Pair.of(chunks.get(worldObj.rand.nextInt(chunks.size())), water);
     }
 
+    @Override
+    public boolean canUpdate(IBlockState target) {
+        return false; // TODO
+    }
 
     @Override
-    public void update() {
+    public void safeUpdate() {
         Pair<Chunk, Integer> pair = randSourceBlock();
         int src = pair.getRight();
         if (getSteamShare() > src) {
@@ -65,7 +70,7 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
                 dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
             }
         }
-        super.update();
+        super.safeUpdate();
     }
 
     /**

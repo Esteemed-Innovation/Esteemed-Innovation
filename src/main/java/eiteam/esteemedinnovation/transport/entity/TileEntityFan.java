@@ -7,6 +7,7 @@ import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockTrapDoor;
@@ -121,7 +122,12 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.FAN;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (lastSteam != getSteamShare() >= STEAM_CONSUMPTION) {
             markForResync();
         }
@@ -195,7 +201,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     public void updateRedstoneState(boolean flag) {

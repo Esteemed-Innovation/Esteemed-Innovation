@@ -114,7 +114,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     @Override
-    public void update() {
+    public void safeUpdate() {
         super.superUpdate();
         if (worldObj.isRemote) {
             if (turning && turnTicks < 10) {

@@ -9,7 +9,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -18,7 +17,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class SteamTransporterTileEntity extends TileEntityBase implements SteamTransporter, ITickable {
+public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe implements SteamTransporter {
     public String name = "SteamTransporterTileEntity";
     private float pressureResistance = 0.8F;
     private float lastPressure = -1F;
@@ -120,7 +119,7 @@ public class SteamTransporterTileEntity extends TileEntityBase implements SteamT
     }
 
     @Override
-    public void update() {
+    public void safeUpdate() {
         if (!isInitialized || shouldJoin) {
             refresh();
         }

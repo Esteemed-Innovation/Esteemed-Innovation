@@ -196,7 +196,12 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == BoilerModule.BOILER;
+    }
+
+    @Override
+    public void safeUpdate() {
         /*
         if (worldObj.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
@@ -263,7 +268,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             markForResync();
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     private boolean canSmelt() {

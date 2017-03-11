@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.storage.steam;
 
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 
-public class TileEntityCreativeTank extends TileEntitySteamTank implements ITickable {
+public class TileEntityCreativeTank extends TileEntitySteamTank {
     public TileEntityCreativeTank() {
         super();
         name = "Creative Tank";
@@ -17,7 +17,12 @@ public class TileEntityCreativeTank extends TileEntitySteamTank implements ITick
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return super.canUpdate(target) && target.getValue(BlockSteamTank.IS_CREATIVE);
+    }
+
+    @Override
+    public void safeUpdate() {
         SteamNetwork net = getNetwork();
         if (net != null && net.getCapacity() > 100 && net.getPressure() < 1F) {
             int capacity = net.getCapacity();
@@ -28,6 +33,6 @@ public class TileEntityCreativeTank extends TileEntitySteamTank implements ITick
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 }

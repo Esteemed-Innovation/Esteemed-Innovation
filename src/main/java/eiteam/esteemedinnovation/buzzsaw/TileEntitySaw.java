@@ -29,7 +29,12 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == BuzzsawModule.BUZZSAW;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (!isInitialized) {
             EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSaw.FACING);
             addSideToGaugeBlacklist(dir);
@@ -80,7 +85,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     private void resetWinding() {

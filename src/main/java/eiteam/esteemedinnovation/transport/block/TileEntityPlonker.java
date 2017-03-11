@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.transport.block;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,7 +43,12 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.PLONKER;
+    }
+
+    @Override
+    public void safeUpdate() {
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
         if (!isInitialized) {
             addSideToGaugeBlacklist(dir);
@@ -66,7 +72,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
 
         prevRedstoneActivated = worldObj.isBlockPowered(pos);
 
-        super.update();
+        super.safeUpdate();
     }
 
     private boolean isTargetAvailable() {

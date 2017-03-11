@@ -124,7 +124,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
     TODO: Create a base TileEntityPipe class for TileEntitySteamPipe (this), TileEntityValvePipe, and TileEntitySteamHeater to inherit.
      */
     protected void superUpdate() {
-        super.update();
+        super.safeUpdate();
    }
 
     protected NBTTagCompound superWriteToNBT(NBTTagCompound access) {
@@ -203,7 +203,12 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() instanceof BlockSteamPipe;
+    }
+
+    @Override
+    public void safeUpdate() {
         /*
         TODO: Port this.
         if (worldObj.isRemote) {
@@ -215,7 +220,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
         }
         */
         leak();
-        super.update();
+        super.safeUpdate();
     }
 
     @Override

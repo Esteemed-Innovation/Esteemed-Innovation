@@ -3,14 +3,20 @@ package eiteam.esteemedinnovation.steamsafety.gauge;
 import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
 import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
+import eiteam.esteemedinnovation.steamsafety.SafetyModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 
-public class TileEntitySteamGauge extends SteamReactorTileEntity implements ITickable {
+public class TileEntitySteamGauge extends SteamReactorTileEntity {
     private int lastCompOutput;
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == SafetyModule.STEAM_GAUGE;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (!worldObj.isRemote) {
             int compOutput = getComparatorOutput(worldObj.getBlockState(pos).getValue(BlockSteamGauge.FACING));
             if (compOutput != lastCompOutput) {

@@ -3,6 +3,8 @@ package eiteam.esteemedinnovation.transport.fluid.screw;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.transport.TransportationModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -120,7 +122,12 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.ARCHIMEDES_SCREW;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote) {
             if (running && progress < 100) {
                 progress++;
@@ -172,6 +179,6 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 }

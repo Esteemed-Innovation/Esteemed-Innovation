@@ -151,7 +151,12 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == ROCK_SMASHER;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (!isInitialized) {
             EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
             addSideToGaugeBlacklist(facing);
@@ -325,7 +330,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     private boolean isPrimary() {

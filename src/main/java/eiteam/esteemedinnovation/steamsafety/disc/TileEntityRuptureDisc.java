@@ -1,17 +1,17 @@
 package eiteam.esteemedinnovation.steamsafety.disc;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.tile.SteamReactorTileEntity;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 
-public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITickable {
+public class TileEntityRuptureDisc extends SteamReactorTileEntity {
     private boolean isLeaking = false;
 
     @Override
@@ -30,7 +30,12 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity implements ITi
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == SafetyModule.RUPTURE_DISC;
+    }
+
+    @Override
+    public void safeUpdate() {
         IBlockState startingState = worldObj.getBlockState(pos);
         EnumFacing dir = startingState.getValue(BlockRuptureDisc.FACING);
         if (worldObj.isRemote) {

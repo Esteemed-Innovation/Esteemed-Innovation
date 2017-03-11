@@ -44,7 +44,12 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == ThumperModule.THUMPER;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (worldObj.isRemote) {
             if (isRunning) {
                 if (progress < 110) {
@@ -161,7 +166,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     @SideOnly(Side.CLIENT)

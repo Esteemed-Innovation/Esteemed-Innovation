@@ -2,6 +2,8 @@ package eiteam.esteemedinnovation.transport.item;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.transport.TransportationModule;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -85,7 +87,12 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == TransportationModule.ITEM_MORTAR;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (!worldObj.isRemote) {
             BlockPos thisPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
             ItemStack stackInSlotZero = getStackInSlot(0);
@@ -140,7 +147,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     @Override

@@ -70,7 +70,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
     }
 
     @Override
-    public void update() {
+    public void safeUpdate() {
         super.superUpdate();
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
         if (!isInitialized) {

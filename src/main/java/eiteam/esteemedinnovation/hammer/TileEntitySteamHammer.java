@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.hammer;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -36,7 +37,12 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == HammerModule.STEAM_HAMMER;
+    }
+
+    @Override
+    public void safeUpdate() {
         EnumFacing dir = myDir();
         if (!isInitialized) {
 
@@ -119,7 +125,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     private void playHammerSound(SoundEvent sound, float volume, float pitch) {

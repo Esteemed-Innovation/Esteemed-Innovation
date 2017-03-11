@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.charging;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -59,7 +60,12 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == ChargingModule.FILLING_PAD;
+    }
+
+    @Override
+    public void safeUpdate() {
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockChargingPad.FACING);
 
         switch (facing) {
@@ -238,6 +244,6 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 }

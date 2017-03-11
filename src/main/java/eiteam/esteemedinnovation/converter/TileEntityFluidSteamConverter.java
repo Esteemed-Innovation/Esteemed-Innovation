@@ -88,7 +88,12 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     }
 
     @Override
-    public void update() {
+    public boolean canUpdate(IBlockState target) {
+        return target.getBlock() == ConverterModule.PRESSURE_CONVERTER;
+    }
+
+    @Override
+    public void safeUpdate() {
         if (runTicks > 0) {
             runTicks--;
         }
@@ -129,7 +134,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             }
         }
 
-        super.update();
+        super.safeUpdate();
     }
 
     @Override
