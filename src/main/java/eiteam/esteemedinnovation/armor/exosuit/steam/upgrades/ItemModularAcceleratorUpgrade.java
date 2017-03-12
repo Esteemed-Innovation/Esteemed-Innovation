@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
@@ -24,10 +24,10 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
 
             if (data.getLastMotions() == null) {
-                data.setLastMotions(MutablePair.of(player.posX, player.posZ));
+                data.setLastMotions(Pair.of(player.posX, player.posZ));
             }
-            double lastX = data.getLastMotions().left;
-            double lastZ = data.getLastMotions().right;
+            double lastX = data.getLastMotions().getLeft();
+            double lastZ = data.getLastMotions().getRight();
             if ((player.moveForward > 0.0F) && (lastX != player.posX || lastZ != player.posZ) && player.onGround && !player.isInWater()) {
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 player.moveRelative(0F, 1F, 0.075F); //entity.moveFlying(0.0F, 1.0F, 0.075F); TODO Test this.

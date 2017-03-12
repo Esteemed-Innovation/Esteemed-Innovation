@@ -91,7 +91,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -934,7 +934,7 @@ public class GenericEventHandler {
             */
 
             if (tag.getLastMotions() == null) {
-                tag.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
+                tag.setLastMotions(Pair.of(entity.posX, entity.posZ));
             }
             if (entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(uuid2) != null) {
                 entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(exoBoostBad);
@@ -951,8 +951,8 @@ public class GenericEventHandler {
                 stack.getTagCompound().setInteger("ticksUntilConsume", 2);
             }
             int ticksLeft = stack.getTagCompound().getInteger("ticksUntilConsume");
-            double lastX = tag.getLastMotions().left;
-            double lastZ = tag.getLastMotions().right;
+            double lastX = tag.getLastMotions().getLeft();
+            double lastZ = tag.getLastMotions().getRight();
             if (ticksLeft <= 0) {
                 if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
                     ChargableUtility.drainSteam(stack, 1, entity);
@@ -960,7 +960,7 @@ public class GenericEventHandler {
                 ticksLeft = 2;
             }
 
-            tag.setLastMotions(MutablePair.of(entity.posX, entity.posZ));
+            tag.setLastMotions(Pair.of(entity.posX, entity.posZ));
 
             ticksLeft--;
             stack.getTagCompound().setInteger("ticksUntilConsume", ticksLeft);

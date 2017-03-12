@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.vecmath.Vector2d;
 
@@ -62,9 +62,9 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
         if (ChargableUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             if (data.getLastMotions() == null) {
-                data.setLastMotions(MutablePair.of(player.posX, player.posZ));
+                data.setLastMotions(Pair.of(player.posX, player.posZ));
             }
-            MutablePair<Double, Double> lastMotions = data.getLastMotions();
+            Pair<Double, Double> lastMotions = data.getLastMotions();
             if ((lastMotions.getLeft() != player.posX || lastMotions.getRight() != player.posZ) &&
               !player.onGround && isPlayerNotInWaterOrFlying(player)) {
                 player.moveEntity(player.motionX, 0, player.motionZ);

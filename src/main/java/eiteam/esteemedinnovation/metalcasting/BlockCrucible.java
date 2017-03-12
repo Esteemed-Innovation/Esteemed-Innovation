@@ -29,7 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.HELL_CRUCIBLE;
@@ -129,17 +129,17 @@ public class BlockCrucible extends Block implements Wrenchable {
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
             if (isCrucibleHeated(world, pos)) {
-                MutablePair output;
-                if (CrucibleRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
-                    output = CrucibleRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
-                } else if (CrucibleRegistry.liquidRecipes.containsKey(MutablePair.of(item.getEntityItem().getItem(), -1))) {
-                    output = CrucibleRegistry.liquidRecipes.get(MutablePair.of(item.getEntityItem().getItem(), -1));
+                Pair<CrucibleLiquid, Integer> output;
+                if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
+                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
+                } else if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getEntityItem().getItem(), -1))) {
+                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getEntityItem().getItem(), -1));
 
                 } else {
                     return;
                 }
                 TileEntityCrucible crucible = (TileEntityCrucible) world.getTileEntity(pos);
-                int amount = (Integer) output.right;
+                int amount = output.getRight();
                 if (crucible != null) {
                     // TODO: Waiting for response to MinecraftForge#3092. If it is not accepted, we will have to do
                     // reflection to get the delayBeforeCanPickup value.
@@ -202,7 +202,7 @@ public class BlockCrucible extends Block implements Wrenchable {
                 }
 
                 if (valid) {
-                    MutablePair<Integer, ItemStack> pair = CrucibleRegistry.dunkRecipes.get(triple);
+                    Pair<Integer, ItemStack> pair = CrucibleRegistry.dunkRecipes.get(triple);
                     int needed = pair.getLeft();
                     ItemStack result = pair.getRight().copy();
                     if (tile.number.get(liquid) >= needed) {

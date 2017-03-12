@@ -15,7 +15,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -226,11 +226,11 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         return fill;
     }
 
-    public ItemStack fillWith(ItemStack stack, int amount, MutablePair output) {
+    public ItemStack fillWith(ItemStack stack, int amount, Pair<CrucibleLiquid, Integer> output) {
         int fill = getFill();
         if (!worldObj.isRemote) {
             if (fill + amount <= 90 && hasUpdated) {
-                CrucibleLiquid fluid = (CrucibleLiquid) output.left;
+                CrucibleLiquid fluid = output.getLeft();
                 if (!contents.contains(fluid)) {
                     contents.add(fluid);
                     number.put(fluid, 0);

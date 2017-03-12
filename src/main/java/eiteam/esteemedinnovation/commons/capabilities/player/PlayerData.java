@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.commons.capabilities.player;
 
 import eiteam.esteemedinnovation.api.book.BookPiece;
 import net.minecraft.entity.player.EntityPlayer;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -30,10 +30,10 @@ public interface PlayerData {
 
     /**
      * Gets the player's previous X, Z motions.
-     * @return MutablePair of doubles.
+     * @return Pair of doubles.
      */
     @Nullable
-    MutablePair<Double, Double> getLastMotions();
+    Pair<Double, Double> getLastMotions();
 
     /**
      * Sets the previous step height
@@ -57,7 +57,7 @@ public interface PlayerData {
      * Sets the player's previous X, Z motions.
      * @param value a pair of doubles
      */
-    void setLastMotions(@Nullable MutablePair<Double, Double> value);
+    void setLastMotions(@Nullable Pair<Double, Double> value);
 
     /**
      * Sets whether the player has unlocked this specific piece in their EI journal.
@@ -77,7 +77,7 @@ public interface PlayerData {
         private Float previousStepHeight = null;
         private int tickCache = -1;
         private boolean isRangeExtended = false;
-        private MutablePair<Double, Double> lastMotions = null;
+        private Pair<Double, Double> lastMotions = null;
         private Set<String> unlockedPieces = new HashSet<>();
 
         @Override
@@ -96,7 +96,7 @@ public interface PlayerData {
         }
 
         @Override
-        public MutablePair<Double, Double> getLastMotions() {
+        public Pair<Double, Double> getLastMotions() {
             return lastMotions;
         }
 
@@ -116,7 +116,7 @@ public interface PlayerData {
         }
 
         @Override
-        public void setLastMotions(MutablePair<Double, Double> value) {
+        public void setLastMotions(Pair<Double, Double> value) {
             lastMotions = value;
         }
 

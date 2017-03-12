@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     @Override
@@ -19,10 +19,10 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
         if (step != null) {
             nbt.setFloat("prevStep", step);
         }
-        MutablePair<Double, Double> pair = instance.getLastMotions();
+        Pair<Double, Double> pair = instance.getLastMotions();
         if (pair != null) {
-            nbt.setDouble("lastMotionX", pair.left);
-            nbt.setDouble("lastMotionZ", pair.right);
+            nbt.setDouble("lastMotionX", pair.getLeft());
+            nbt.setDouble("lastMotionZ", pair.getLeft());
         }
         NBTTagList unlockedPieces = new NBTTagList();
         for (String p : instance.getAllUnlockedPieces()) {
@@ -36,7 +36,7 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     public void readNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
         if (nbt.hasKey("lastMotionX") && nbt.hasKey("lastMotionZ")) {
-            instance.setLastMotions(MutablePair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));
+            instance.setLastMotions(Pair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));
         } else {
             instance.setLastMotions(null);
         }

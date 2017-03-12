@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.util.StringUtility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +65,13 @@ public class CrucibleLiquid {
         List<ItemStack> items = new ArrayList<>();
 
         if (isInput) {
-            for (Map.Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> entry : CrucibleRegistry.liquidRecipes.entrySet()) {
-                MutablePair<CrucibleLiquid, Integer> output = entry.getValue();
+            for (Map.Entry<Pair<Item, Integer>, Pair<CrucibleLiquid, Integer>> entry : CrucibleRegistry.liquidRecipes.entrySet()) {
+                Pair<CrucibleLiquid, Integer> output = entry.getValue();
                 CrucibleLiquid liquid = output.getLeft();
                 int amountCreated = output.getRight();
 
                 if (liquid == this && amountCreated == amount) {
-                    MutablePair<Item, Integer> input = entry.getKey();
+                    Pair<Item, Integer> input = entry.getKey();
                     Item melted = input.getLeft();
                     int meta = input.getRight();
                     items.add(meta == -1 ? new ItemStack(melted) : new ItemStack(melted, 1, meta));

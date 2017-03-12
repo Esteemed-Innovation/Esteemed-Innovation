@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -29,14 +28,14 @@ public class CrucibleRegistry {
      * Key: pair of the item and its metadata, -1 if it does not use metadata.
      * Value: pair of the liquid and the amount created.
      */
-    public static Map<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> liquidRecipes = new HashMap<>();
+    public static Map<Pair<Item, Integer>, Pair<CrucibleLiquid, Integer>> liquidRecipes = new HashMap<>();
 
     /**
      * All of the Crucible dunking recipes.
      * Key: A triplet of the Item, the metadata, and the CrucibleLiquid.
      * Value: A pair of the required liquid amount and the output ItemStack.
      */
-    public static Map<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
+    public static Map<Triple<Item, Integer, CrucibleLiquid>, Pair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
 
     /**
      * Gets the given CrucibleLiquid from the name.
@@ -61,7 +60,7 @@ public class CrucibleRegistry {
      * @param result The output ItemStack.
      */
     public static void registerDunkRecipe(Item item, int meta, CrucibleLiquid liquid, int liquidAmount, ItemStack result) {
-        dunkRecipes.put(new ImmutableTriple<>(item, meta, liquid), MutablePair.of(liquidAmount, result));
+        dunkRecipes.put(new ImmutableTriple<>(item, meta, liquid), Pair.of(liquidAmount, result));
     }
 
     /**
@@ -83,9 +82,9 @@ public class CrucibleRegistry {
      */
     public static void removeDunkRecipe(Item item, int meta, CrucibleLiquid liquid) {
         if (dunkRecipes != null) {
-            Iterator<Map.Entry<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>>> iter = dunkRecipes.entrySet().iterator();
+            Iterator<Map.Entry<Triple<Item, Integer, CrucibleLiquid>, Pair<Integer, ItemStack>>> iter = dunkRecipes.entrySet().iterator();
             while (iter.hasNext()) {
-                Map.Entry<Triple<Item, Integer, CrucibleLiquid>, MutablePair<Integer, ItemStack>> entry = iter.next();
+                Map.Entry<Triple<Item, Integer, CrucibleLiquid>, Pair<Integer, ItemStack>> entry = iter.next();
                 Triple<Item, Integer, CrucibleLiquid> key = entry.getKey();
                 if (key.getLeft() == item && key.getMiddle() == meta && key.getRight() == liquid) {
                     iter.remove();
@@ -137,7 +136,7 @@ public class CrucibleRegistry {
      * @param m The output liquid amount.
      */
     public static void registerMeltRecipe(Item item, int i, CrucibleLiquid liquid, int m) {
-        liquidRecipes.put(MutablePair.of(item, i), MutablePair.of(liquid, m));
+        liquidRecipes.put(Pair.of(item, i), Pair.of(liquid, m));
     }
 
     /**
@@ -147,7 +146,7 @@ public class CrucibleRegistry {
      * @param m The amount of liquid.
      */
     public static void registerMeltRecipe(Item item, CrucibleLiquid liquid, int m) {
-        liquidRecipes.put(MutablePair.of(item, -1), MutablePair.of(liquid, m));
+        liquidRecipes.put(Pair.of(item, -1), Pair.of(liquid, m));
     }
 
     /**
@@ -171,7 +170,7 @@ public class CrucibleRegistry {
      */
     public static void registerMeltRecipeTool(Item item, CrucibleLiquid liquid, int m) {
         for (int i = 0; i < item.getMaxDamage(); i++) {
-            liquidRecipes.put(MutablePair.of(item, i), MutablePair.of(liquid, MathHelper.floor_double(m * ((float) (item.getMaxDamage() - i) / (float) item.getMaxDamage()))));
+            liquidRecipes.put(Pair.of(item, i), Pair.of(liquid, MathHelper.floor_double(m * ((float) (item.getMaxDamage() - i) / (float) item.getMaxDamage()))));
         }
     }
 
@@ -205,10 +204,10 @@ public class CrucibleRegistry {
      * @param liquid Output liquid.
      */
     public static void removeMeltRecipe(Item item, int meta, CrucibleLiquid liquid) {
-        MutablePair input = MutablePair.of(item, meta);
+        Pair input = Pair.of(item, meta);
         if (liquidRecipes.containsKey(input)) {
-            MutablePair output = liquidRecipes.get(input);
-            if (output.left == liquid) {
+            Pair output = liquidRecipes.get(input);
+            if (output.getLeft() == liquid) {
                 liquidRecipes.remove(input);
             }
         }
@@ -247,8 +246,8 @@ public class CrucibleRegistry {
     public static void removeLiquid(CrucibleLiquid liquid) {
         liquids.remove(liquid);
         if (liquidRecipes != null) {
-            for (Map.Entry<MutablePair<Item, Integer>, MutablePair<CrucibleLiquid, Integer>> entry : liquidRecipes.entrySet()) {
-                if ((entry.getValue()).left == liquid) {
+            for (Map.Entry<Pair<Item, Integer>, Pair<CrucibleLiquid, Integer>> entry : liquidRecipes.entrySet()) {
+                if ((entry.getValue()).getLeft() == liquid) {
                     liquidRecipes.remove(entry.getKey());
                 }
             }
