@@ -1,12 +1,9 @@
 package eiteam.esteemedinnovation.materials.raw;
 
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
@@ -14,16 +11,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
 
-import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.ORE_DEPOSIT_GENERATOR;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.WORKED_OUT_ORE_DEPOSIT_LOOTTABLE;
 
-public class SurfaceOreGenerator implements IWorldGenerator {
-    private static final int SEA_LEVEL = 60;
-
+public class SurfaceDepositOreGenerator implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimension() == 0) {
@@ -40,36 +35,6 @@ public class SurfaceOreGenerator implements IWorldGenerator {
                     generateDepositGenerators(random, coordX, coordZ, world, BlockOreDepositGenerator.Types.ZINC);
                 }
             }
-
-            String biome = world.getBiomeForCoordsBody(new BlockPos(coordX, 0, coordZ)).getBiomeName();
-            if (Config.copperBiomes.contains(biome)) {
-                generateOre(SEA_LEVEL + 20, 128, coordX, coordZ, random, world, BlockGenericOre.OreBlockTypes.OVERWORLD_COPPER);
-            }
-            if (Config.zincBiomes.contains(biome)) {
-                generateOre(SEA_LEVEL + 5, SEA_LEVEL + 20, coordX, coordZ, random, world, BlockGenericOre.OreBlockTypes.OVERWORLD_ZINC);
-            }
-        }
-    }
-
-    private static void generateOre(int minY, int maxY, int baseX, int baseZ, Random random, World world, BlockGenericOre.OreBlockTypes type) {
-        WorldGenMinable minable = new WorldGenMinable(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, type), 8,
-          state -> {
-            if (state != null) {
-                Block block = state.getBlock();
-                Item item = Item.getItemFromBlock(block);
-                if (item != null) {
-                    return OreDictHelper.listHasItem(OreDictHelper.stones, item) ||
-                      OreDictHelper.dirts.contains(item) || OreDictHelper.grasses.contains(item) ||
-                      OreDictHelper.gravels.contains(item) || OreDictHelper.listHasItem(OreDictHelper.sands, item);
-                }
-            }
-            return false;
-          });
-        for (int i = 0; i < 5; i++) {
-            int x = baseX + random.nextInt(16);
-            int y = minY + random.nextInt(maxY - minY);
-            int z = baseZ + random.nextInt(16);
-            minable.generate(world, random, new BlockPos(x, y, z));
         }
     }
 

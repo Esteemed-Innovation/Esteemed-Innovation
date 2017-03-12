@@ -8,11 +8,13 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.BlockOreDepositGenerator;
-import eiteam.esteemedinnovation.materials.raw.ExtraDimensionalOreGenerator;
-import eiteam.esteemedinnovation.materials.raw.SurfaceOreGenerator;
+import eiteam.esteemedinnovation.materials.raw.SurfaceDepositOreGenerator;
+import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
+import eiteam.esteemedinnovation.materials.raw.config.OreConfigurationParser;
 import eiteam.esteemedinnovation.materials.refined.BlockBeacon;
 import eiteam.esteemedinnovation.materials.refined.BlockBeacon.MetalBlockTypes;
 import eiteam.esteemedinnovation.materials.refined.ItemMetalIngot;
@@ -22,11 +24,13 @@ import eiteam.esteemedinnovation.materials.refined.plates.BlockWeightedPlate;
 import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import net.minecraft.block.Block;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -35,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,8 +47,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTypes.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
@@ -78,10 +83,18 @@ public class MaterialsModule extends ContentModule {
 
     private static final List<Block> pressurePlatesByMetadata = new ArrayList<>();
 
+    public static OreConfigurationParser oresConfig;
+
     @Override
     public void create(Side side) {
-        GameRegistry.registerWorldGenerator(new ExtraDimensionalOreGenerator(), 1);
-        GameRegistry.registerWorldGenerator(new SurfaceOreGenerator(), 1);
+        oresConfig = new OreConfigurationParser(EsteemedInnovation.CONFIG_DIR + "/" + Constants.EI_MODID_CAPITALIZED + "/Ores.json");
+        try {
+            oresConfig.load();
+        } catch (IOException e) {
+            throw new ReportedException(CrashReport.makeCrashReport(e, "Error loading Esteemed Innovation Ores config"));
+        }
+        GameRegistry.registerWorldGenerator(new ConfigurableOreGenerator(), 1);
+        GameRegistry.registerWorldGenerator(new SurfaceDepositOreGenerator(), 1);
 
         STORAGE_BLOCK = setup(new BlockBeacon(), "metal_storage_block", BlockManyMetadataItem::new);
         ORE_DEPOSIT_GENERATOR = setup(new BlockOreDepositGenerator(), "ore_deposit_generator", BlockManyMetadataItem::new);

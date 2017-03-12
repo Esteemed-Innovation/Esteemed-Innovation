@@ -1,12 +1,10 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.Constants;
-import net.minecraft.init.Biomes;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,34 +38,11 @@ public class Config {
 
     public static boolean genCopperOverworldDeposits;
     public static boolean genZincOverworldDeposits;
-    public static boolean genCopperEnd;
-    public static boolean genZincEnd;
-    public static boolean genCopperNether;
-    public static boolean genZincNether;
-    public static int[] zincExtraDimensionIDs;
-    public static int[] copperExtraDimensionIDs;
-    public static boolean genZincExtras;
-    public static boolean genCopperExtras;
     public static boolean passiveDrain;
     public static boolean disableParticles;
     public static boolean genPoorZincOre;
     public static int workshopLimit;
     public static int workshopWeight;
-    public static final List<String> copperBiomes = new ArrayList<>();
-    public static final List<String> zincBiomes = new ArrayList<>();
-    private static final String[] COPPER_BIOMES_DEFAULT = {
-      Biomes.EXTREME_HILLS.getBiomeName(),
-      Biomes.EXTREME_HILLS_EDGE.getBiomeName(),
-      Biomes.EXTREME_HILLS_WITH_TREES.getBiomeName()
-    };
-    private static final String[] ZINC_BIOMES_DEFAULT = {
-      Biomes.DESERT.getBiomeName(),
-      Biomes.DESERT_HILLS.getBiomeName(),
-      Biomes.MESA.getBiomeName(),
-      Biomes.MESA_CLEAR_ROCK.getBiomeName(),
-      Biomes.MESA_ROCK.getBiomeName()
-    };
-
 
     public static boolean easterEggs;
 
@@ -270,23 +245,10 @@ public class Config {
         // WORLD GEN
         genCopperOverworldDeposits = config.get("World Generation", "Generate Overworld Copper deposits", true).getBoolean();
         genZincOverworldDeposits = config.get("World Generation", "Generate Overworld Zinc deposits", true).getBoolean();
-        genCopperEnd = config.get("World Generation", "Generate End Copper", false).getBoolean();
-        genZincEnd = config.get("World Generation", "Generate End Zinc", false).getBoolean();
-        genCopperNether = config.get("World Generation", "Generate Nether Copper", false).getBoolean();
-        genZincNether = config.get("World Generation", "Generate Nether Zinc", false).getBoolean();
-        String zincDims = config.get("World Generation", "Extra dimensions to generate Zinc in, separate by ;", "").getString();
-        String copperDims = config.get("World Generation", "Extra dimensions to generate Copper in, separate by ;", "").getString();
-        genZincExtras = config.get("World Generation", "Generate Zinc in the above extra dimensions", true).getBoolean();
-        genCopperExtras = config.get("World Generation", "Generate Copper in the above extra dimensions", true).getBoolean();
         villagerId = config.get("World Generation", "Villager ID", 694).getInt();
         genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get("World Generation", "Workshop spawn weight", 7).getInt(7);
-        copperBiomes.addAll(Arrays.asList(config.get("World Generation", "Biomes to generate normal copper in", COPPER_BIOMES_DEFAULT).getStringList()));
-        zincBiomes.addAll(Arrays.asList(config.get("World Generation", "Biomes to generate normal zinc in", ZINC_BIOMES_DEFAULT).getStringList()));
-
-        copperExtraDimensionIDs = getDimensionIDsFromString(copperDims);
-        zincExtraDimensionIDs = getDimensionIDsFromString(zincDims);
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
@@ -492,26 +454,5 @@ public class Config {
         hasAllCrucial = enableBoiler && enableGauge && enableTank && enablePipe;
 
         config.save();
-    }
-
-    private static int[] getDimensionIDsFromString(String dims) {
-        if (!dims.isEmpty()) {
-            try {
-                String replacedDims = dims.replaceAll("[a-zA-Z\\s]", "");
-                String[] array = replacedDims.split(";");
-                final int[] ids = new int[array.length];
-                for (int i = 0; i < array.length; i++) {
-                    int id = Integer.parseInt(array[i]);
-                    // Do not store vanilla dimensions.
-                    if (id == 0 || Math.abs(id) == 1) {
-                        continue;
-                    }
-                    ids[i] = id;
-                }
-                return ids;
-                //This exception needs to be ignored for when the value is null.
-            } catch (NumberFormatException ignore) {}
-        }
-        return new int[] {};
     }
 }

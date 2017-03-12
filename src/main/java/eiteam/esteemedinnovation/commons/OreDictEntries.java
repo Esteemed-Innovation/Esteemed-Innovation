@@ -217,4 +217,6 @@ public class OreDictEntries {
     public static final String SAND_ORE = "sand";
     public static final String DIRT_ORE = "dirt";
     public static final String GRASS_ORE = "grass";
+    public static final String NETHERRACK_ORE = "netherrack";
+    public static final String ENDSTONE_ORE = "endstone";
 }
