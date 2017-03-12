@@ -8,7 +8,6 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -102,7 +101,7 @@ public class ContainerBoiler extends Container {
             int current = tileEntity.getTank().getFluidAmount();
             int diff = data - current;
             if (diff > 0) {
-                tileEntity.getTank().fill(new FluidStack(FluidRegistry.WATER, diff), true);
+                tileEntity.getTank().fill(new FluidStack(FluidHelper.getWaterFluid(), diff), true);
             } else {
                 tileEntity.getTank().drain(-1 * diff, true);
             }

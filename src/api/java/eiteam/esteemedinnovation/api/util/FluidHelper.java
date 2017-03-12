@@ -29,10 +29,14 @@ public class FluidHelper {
 
     /**
      * If this mod is used with other mods that use different types of water (fresh water, salt water etc),
-     * this can change which fluid FSB consider water thus increasing compatibility.
+     * this can change which fluid EI considers water thus increasing compatibility.
      */
     public static void changeWaterFluid(Fluid newWater) {
         water = newWater;
+    }
+
+    public static Fluid getWaterFluid() {
+        return water;
     }
 
     /**

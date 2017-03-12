@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.workshop;
 
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.boiler.BlockBoiler;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.boiler.TileEntityBoiler;
@@ -19,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
@@ -189,7 +189,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
             TileEntityBoiler boiler = (TileEntityBoiler) tile;
             boiler.refresh();
             boiler.insertSteam(1000 + rand.nextInt(3000), EnumFacing.UP);
-            boiler.myTank.setFluid(new FluidStack(FluidRegistry.WATER, 2000 + rand.nextInt(3000)));
+            boiler.myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), 2000 + rand.nextInt(3000)));
         }
     }
 /* TODO

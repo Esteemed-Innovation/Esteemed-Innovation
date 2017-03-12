@@ -40,7 +40,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     private static final int[] slotsTop = new int[]{0, 1};
     private static final int[] slotsBottom = new int[]{0, 1};
     private static final int[] slotsSides = new int[]{0, 1};
-    public FluidTank myTank = new FluidTank(new FluidStack(FluidRegistry.WATER, 0), 10000);
+    public FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
     public int furnaceCookTime;
     public int furnaceBurnTime;
     public int currentItemBurnTime;
@@ -126,7 +126,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        myTank.setFluid(new FluidStack(FluidRegistry.WATER, access.getInteger("water")));
+        myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), access.getInteger("water")));
         furnaceBurnTime = access.getShort("BurnTime");
         currentItemBurnTime = access.getShort("cIBT");
         furnaceCookTime = access.getShort("CookTime");
@@ -159,7 +159,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         }
 
         if (nbt.hasKey("water")) {
-            myTank.setFluid(new FluidStack(FluidRegistry.WATER, nbt.getShort("water")));
+            myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), nbt.getShort("water")));
         }
         disguiseBlock = Block.getBlockById(nbt.getInteger("disguiseBlock"));
         disguiseMeta = nbt.getInteger("disguiseMeta");
