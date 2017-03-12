@@ -130,7 +130,7 @@ public class ArmorModule extends ContentModule {
     public static final int IRON_PLATE_META = 0;
     public static ExosuitPlate IRON_PLATE = new ExosuitPlateIron();
     public static final int GOLD_PLATE_META = 1;
-    public static ExosuitPlate GOLD_PLATE = new ExosuitPlate("Gold", null, "gold", "gold", Constants.EI_MODID + ".plate.gold");
+    public static ExosuitPlate GOLD_PLATE = new ExosuitPlateGold();
     public static final int COPPER_PLATE_META = 2;
     public static ExosuitPlate COPPER_PLATE = new ExosuitPlateCopper();
     public static final int ZINC_PLATE_META = 3;

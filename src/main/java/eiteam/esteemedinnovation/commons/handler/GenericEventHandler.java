@@ -86,7 +86,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -602,34 +601,6 @@ public class GenericEventHandler {
                     }
                 }
             }
-        }
-    }
-
-    @SubscribeEvent
-    public void doubleExp(PlayerPickupXpEvent event) {
-        EntityPlayer player = event.getEntityPlayer();
-        for (int i = 0; i < ItemStackUtility.ARMOR_SLOTS.length; i++) {
-            float multiplier = 1;
-            EntityEquipmentSlot slot = ItemStackUtility.getSlotFromSlotIndex(i);
-            if (slot == null) {
-                continue;
-            }
-            ItemStack stack = player.getItemStackFromSlot(slot);
-            if (stack != null) {
-                if (stack.getItem() instanceof ItemSteamExosuitArmor) {
-                    ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) stack.getItem();
-                    if (armor.hasPlates(stack)) {
-                        ExosuitPlate plate = UtilPlates.getPlate(stack.getTagCompound().getString("plate"));
-                        String id = plate.getIdentifier();
-                        if (id.equals("Gold")) {
-                            multiplier *= 1.25F;
-                        } else if (id.equals("Gilded Iron")) {
-                            multiplier *= 1.125;
-                        }
-                    }
-                }
-            }
-            event.getOrb().xpValue = MathHelper.ceiling_float_int(event.getOrb().xpValue * multiplier);
         }
     }
 
