@@ -40,9 +40,11 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -75,7 +77,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -83,7 +84,6 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -545,73 +545,6 @@ public class GenericEventHandler {
 
             hadCustomer = hasCustomer;
             VILLAGER_DATA.getDefaultInstance().setHadCustomer(hadCustomer);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void muffleSounds(PlaySoundEvent event) {
-        if (event.getName().contains("step")) {
-            float x = event.getSound().getXPosF();
-            float y = event.getSound().getYPosF();
-            float z = event.getSound().getZPosF();
-            List entities = Minecraft.getMinecraft().thePlayer.worldObj.getEntitiesWithinAABB(
-              EntityLivingBase.class, new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F));
-            for (Object obj : entities) {
-                EntityLivingBase entity = (EntityLivingBase) obj;
-                ItemStack legs = entity.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-                if (legs != null && legs.getItem() instanceof ItemSteamExosuitArmor) {
-                    ItemSteamExosuitArmor leggings = (ItemSteamExosuitArmor) legs.getItem();
-                    if (leggings.hasUpgrade(legs, STEALTH)) {
-                        event.setResultSound(null);
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void hideCloakedPlayers(LivingUpdateEvent event) {
-        EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityLiving) {
-            EntityLiving entity = (EntityLiving) entityLiving;
-            hideCloakedPlayers(entity, entity.getAttackTarget());
-        }
-    }
-
-    @SubscribeEvent
-    public void hideCloakedPlayers(LivingSetAttackTargetEvent event) {
-        EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityLiving) {
-            hideCloakedPlayers((EntityLiving) entityLiving, event.getTarget());
-        }
-    }
-
-    private void hideCloakedPlayers(EntityLiving entity, EntityLivingBase target) {
-        if (target == null) {
-            return;
-        }
-        ItemStack targetLegs = target.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-        if (targetLegs == null || !(targetLegs.getItem() instanceof ItemSteamExosuitArmor)) {
-            return;
-        }
-        ItemSteamExosuitArmor leggings = (ItemSteamExosuitArmor) targetLegs.getItem();
-        if (!leggings.hasUpgrade(targetLegs, STEALTH)) {
-            return;
-        }
-        IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        double d0 = (iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue()) / 1.5D;
-        List<Entity> list = entity.worldObj.getEntitiesWithinAABB(Entity.class,
-          entity.getEntityBoundingBox().expand(d0, 4.0D, d0));
-        boolean foundPlayer = false;
-        for (Entity mob : list) {
-            if (mob == target) {
-                foundPlayer = true;
-                break;
-            }
-        }
-        if (!foundPlayer) {
-            entity.setAttackTarget(null);
         }
     }
 
