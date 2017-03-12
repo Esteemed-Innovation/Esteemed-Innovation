@@ -138,7 +138,7 @@ public class SteamNetwork {
         }
         if (initializedTicks >= 1200) {
 
-            if (Constants.wimpMode) {
+            if (Constants.safeMode) {
                 if (getPressure() > 1.09F) {
                     steam = (int) Math.floor((double) capacity * 1.09D);
                 }
