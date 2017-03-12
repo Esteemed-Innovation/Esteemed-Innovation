@@ -19,12 +19,16 @@ public class OreGenerationDefinition {
         return oreName;
     }
 
-    public BlockGenericOre.OreBlockTypes getOreType() {
+    public BlockGenericOre.OreBlockTypes getOreType(int dimension) {
+        BlockGenericOre.OreBlockTypes fallback = null;
         for (BlockGenericOre.OreBlockTypes type : BlockGenericOre.OreBlockTypes.LOOKUP) {
             if (type.getOreMaterial().equals(getOreName())) {
-                return type;
+                fallback = type;
+                if (type.getPreferredDimension() == dimension) {
+                    return type;
+                }
             }
         }
-        return null;
+        return fallback;
     }
 }

@@ -25,7 +25,7 @@ public class ConfigurableOreGenerator implements IWorldGenerator {
                 if (biome.getDimension() == world.provider.getDimension()) {
                     Biome currentBiome = world.getBiomeForCoordsBody(new BlockPos(coordX, 0, coordZ));
                     if (currentBiome.getRegistryName().equals(biome.getBiome().getRegistryName())) {
-                        generateOre(biome, coordX, coordZ, ore.getOreType(), random, world);
+                        generateOre(biome, coordX, coordZ, ore.getOreType(biome.getDimension()), random, world);
                     }
                 }
             }

@@ -58,20 +58,22 @@ public class BlockGenericOre extends Block {
     }
 
     public enum OreBlockTypes implements IStringSerializable {
-        OVERWORLD_COPPER(0, MATERIAL_COPPER),
-        OVERWORLD_ZINC(1, MATERIAL_ZINC),
-        NETHER_COPPER(2, MATERIAL_COPPER),
-        NETHER_ZINC(3, MATERIAL_ZINC),
-        END_COPPER(4, MATERIAL_COPPER),
-        END_ZINC(5, MATERIAL_ZINC);
+        OVERWORLD_COPPER(0, MATERIAL_COPPER, 0),
+        OVERWORLD_ZINC(1, MATERIAL_ZINC, 0),
+        NETHER_COPPER(2, MATERIAL_COPPER, -1),
+        NETHER_ZINC(3, MATERIAL_ZINC, -1),
+        END_COPPER(4, MATERIAL_COPPER, 1),
+        END_ZINC(5, MATERIAL_ZINC, 1);
 
         private int meta;
         private String oreMaterial;
+        private int preferredDimension;
         public static OreBlockTypes[] LOOKUP = new OreBlockTypes[values().length];
 
-        OreBlockTypes(int meta, String oreMaterial) {
+        OreBlockTypes(int meta, String oreMaterial, int preferredDimension) {
             this.meta = meta;
             this.oreMaterial = oreMaterial;
+            this.preferredDimension = preferredDimension;
         }
 
         public int getMetadata() {
@@ -85,6 +87,10 @@ public class BlockGenericOre extends Block {
 
         public String getOreMaterial() {
             return oreMaterial;
+        }
+
+        public int getPreferredDimension() {
+            return preferredDimension;
         }
 
         static {
