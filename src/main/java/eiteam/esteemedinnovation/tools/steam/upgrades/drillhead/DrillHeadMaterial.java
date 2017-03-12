@@ -1,17 +1,21 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
 import com.google.gson.*;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.OreDictEntries;
-
-import java.awt.Color;
-import java.io.*;
-import java.util.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DrillHeadMaterial {
     /**
@@ -26,7 +30,7 @@ public class DrillHeadMaterial {
      * Key: material name (e.g., "iron").
      * Value: Pair of all oredict entries "ingotMaterial" (left) and "nuggetMaterial" (right).
      */
-    public static HashMap<String, MutablePair<List<ItemStack>, List<ItemStack>>> materialOres = new HashMap<>();
+    public static HashMap<String, Pair<List<ItemStack>, List<ItemStack>>> materialOres = new HashMap<>();
 
     /**
      * The materials organized by their oredicts.
@@ -94,7 +98,7 @@ public class DrillHeadMaterial {
         materials.put(materialName, material);
         List<ItemStack> ingots = OreDictionary.getOres(OreDictEntries.PREFIX_INGOT + materialName);
         List<ItemStack> nuggets = OreDictionary.getOres(OreDictEntries.PREFIX_NUGGET + materialName);
-        materialOres.put(materialName, MutablePair.of(ingots, nuggets));
+        materialOres.put(materialName, Pair.of(ingots, nuggets));
     }
 
     /**

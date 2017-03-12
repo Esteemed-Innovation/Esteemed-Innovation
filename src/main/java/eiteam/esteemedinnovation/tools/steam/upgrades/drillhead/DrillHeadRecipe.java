@@ -5,7 +5,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -41,10 +40,10 @@ public class DrillHeadRecipe extends ShapedOreRecipe {
                 continue;
             }
 
-            for (Map.Entry<String, MutablePair<List<ItemStack>, List<ItemStack>>> entry : DrillHeadMaterial.materialOres.entrySet()) {
+            for (Map.Entry<String, Pair<List<ItemStack>, List<ItemStack>>> entry : DrillHeadMaterial.materialOres.entrySet()) {
                 String material = entry.getKey();
-                List<ItemStack> ingots = entry.getValue().left;
-                List<ItemStack> nuggets = entry.getValue().right;
+                List<ItemStack> ingots = entry.getValue().getLeft();
+                List<ItemStack> nuggets = entry.getValue().getRight();
                 for (ItemStack ingot : ingots) {
                     if (ingot.getItem() == item && ingot.getItemDamage() == meta) {
                         numIngots += 1;
