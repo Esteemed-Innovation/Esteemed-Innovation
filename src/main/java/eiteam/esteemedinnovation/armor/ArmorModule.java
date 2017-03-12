@@ -189,7 +189,7 @@ public class ArmorModule extends ContentModule {
         RUN_ASSIST = setup(new ItemModularAcceleratorUpgrade(), "run_assist");
         CANNING_MACHINE = setup(new ItemCanningMachineUpgrade(), "canner");
         PITON_DEPLOYER = setup(new ItemPitonDeployerUpgrade(), "piton_deployer");
-        STEALTH = setup(new ItemAcousticDampener(), "stealth_upgrade");
+        STEALTH = setup(new ItemAcousticDampenerUpgrade(), "stealth_upgrade");
         ENDER_SHROUD = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
         REINFORCED_TANK = setup(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
         UBER_REINFORCED_TANK = setup(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
