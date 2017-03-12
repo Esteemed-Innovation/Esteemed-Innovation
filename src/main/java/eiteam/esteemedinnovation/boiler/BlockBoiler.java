@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.boiler;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;

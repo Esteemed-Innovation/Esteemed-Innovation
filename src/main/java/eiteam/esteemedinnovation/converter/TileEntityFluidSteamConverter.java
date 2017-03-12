@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.converter;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

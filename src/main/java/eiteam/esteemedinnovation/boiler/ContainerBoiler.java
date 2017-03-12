@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.boiler;
 
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

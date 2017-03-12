@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.boiler;
 import eiteam.esteemedinnovation.api.block.DisguisableBlock;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

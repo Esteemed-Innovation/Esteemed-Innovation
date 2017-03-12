@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.transport.fluid.funnel;
 
 import eiteam.esteemedinnovation.api.tile.TileEntityTickableSafe;
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

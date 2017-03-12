@@ -1,6 +1,5 @@
-package eiteam.esteemedinnovation.commons.util;
+package eiteam.esteemedinnovation.api.util;
 
-import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -14,7 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
@@ -64,11 +62,11 @@ public class FluidHelper {
      * @return The FluidStack in the ItemStack fluid container.
      */
     private static FluidStack getFluidFromItemStack(ItemStack itemStack) {
-        if (itemStack == null || !itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+        if (itemStack == null || !itemStack.hasCapability(FLUID_HANDLER_CAPABILITY, null)) {
             return null;
         }
 
-        IFluidHandler handler = itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        IFluidHandler handler = itemStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
         for (IFluidTankProperties prop : handler.getTankProperties()) {
             FluidStack fluid = prop.getContents();
             if (fluid != null) {
@@ -106,11 +104,11 @@ public class FluidHelper {
      * @return The modified ItemStack, which probably has no fluid in it anymore.
      */
     public static ItemStack fillTankFromItem(ItemStack container, IFluidTank tank, boolean drainContainer) {
-        if (container == null || !container.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+        if (container == null || !container.hasCapability(FLUID_HANDLER_CAPABILITY, null)) {
             return null;
         }
 
-        IFluidHandler handler = container.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+        IFluidHandler handler = container.getCapability(FLUID_HANDLER_CAPABILITY, null);
 
         int roomLeftInContainer = getRoomLeftInTank(tank);
 

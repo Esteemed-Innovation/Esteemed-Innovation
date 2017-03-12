@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.transport.fluid.screw;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.visual.InventoryTESR;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.commons.util.FluidHelper;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
