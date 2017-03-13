@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
 
 public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.api.book.GuiJournal {
-    private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book.png");
-    private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book2.png");
-    private static final ResourceLocation REVERSE_BOOK_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/bookReverse.png");
+    private static final ResourceLocation BOOK_RIGHT_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_right.png");
+    private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_front.png");
+    private static final ResourceLocation BOOK_LEFT_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_left.png");
     private int bookTotalPages = 1;
     private int currPage;
     private int lastIndexPage;
@@ -200,9 +200,9 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             mc.getTextureManager().bindTexture(BOOK_FRONT_TEXTURES);
             drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
         } else {
-            mc.getTextureManager().bindTexture(REVERSE_BOOK_GUI_TEXTURES);
+            mc.getTextureManager().bindTexture(BOOK_LEFT_GUI_TEXTURES);
             drawTexturedModalRect(k - 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
-            mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
+            mc.getTextureManager().bindTexture(BOOK_RIGHT_GUI_TEXTURES);
             drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
         }
 
@@ -429,7 +429,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(xPosition, mouseX, xPosition + width) &&
                   MathUtility.isBetweenMinInclusive(yPosition, mouseY, yPosition + height);
                 GlStateManager.color(1, 1, 1, 1);
-                minecraft.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
+                minecraft.getTextureManager().bindTexture(BOOK_RIGHT_GUI_TEXTURES);
                 int k = 0;
                 int l = 192;
 

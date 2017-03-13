@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class BookPageCrafting extends BookPage implements CraftingPage {
-    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/craftingSquare.png");
+    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/book_crafting.png");
     private ItemStack output;
     private Object[] inputs = new Object[9];
     private boolean shapeless;
