@@ -199,6 +199,7 @@ public class MaterialsModule extends ContentModule {
         CrucibleRegistry.registerLiquid(IRON_LIQUID);
         CrucibleRegistry.registerLiquid(GOLD_LIQUID);
         CrucibleRegistry.registerLiquid(COPPER_LIQUID);
+        CrucibleRegistry.registerLiquid(ZINC_LIQUID);
         CrucibleRegistry.registerLiquid(BRASS_LIQUID);
         CrucibleRegistry.registerLiquid(LEAD_LIQUID);
 
