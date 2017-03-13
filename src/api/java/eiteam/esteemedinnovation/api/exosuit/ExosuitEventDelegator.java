@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
  * Do not register this class to the event bus, or you will cause the ExosuitUpgrade methods to get called multiple times (bad).
  * This is registered in the static initializer for {@link ExosuitRegistry}.
  */
-class ExosuitEventDelegator {
+public class ExosuitEventDelegator {
     /**
      * Iterates over each armor slot, gets the exosuit armor in that slot, and calls the provided function for every
      * installed {@link ExosuitEventHandler}.

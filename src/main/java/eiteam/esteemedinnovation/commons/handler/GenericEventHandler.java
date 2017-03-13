@@ -314,16 +314,6 @@ public class GenericEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void handleWorldLoad(WorldEvent.Load event) {
-        World world = event.getWorld();
-        if (!world.isRemote) {
-            SteamNetworkData.get(world);
-            SteamNetworkRegistry.initialize();
-        }
-
-    }
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onDrawScreen(RenderGameOverlayEvent.Post event) {

@@ -20,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -46,10 +45,6 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
      * will be called to determine the strength (along with the speed, of course).
      */
     private final Item itemForStrength;
-
-    static {
-        MinecraftForge.EVENT_BUS.register(new ToolUpgradeEventDelegator());
-    }
 
     protected ItemSteamTool(float attackDamageIn, float attackSpeedIn, ToolMaterial materialIn, Set<Block> effectiveBlocksIn, Item itemForStrength) {
         super(attackDamageIn, attackSpeedIn, materialIn, effectiveBlocksIn);
@@ -344,7 +339,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
      *
      * Side note: I really wish that Java FP wasn't terrible...
      */
-    private static final class ToolUpgradeEventDelegator {
+    public static final class ToolUpgradeEventDelegator {
         /**
          * @param tool The ItemStack to check.
          * @return Whether the provided ItemStack contains a steam tool that is wound up.

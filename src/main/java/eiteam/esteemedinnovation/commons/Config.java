@@ -1,10 +1,8 @@
 package eiteam.esteemedinnovation.commons;
 
-import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.api.APIConfig;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -237,9 +235,8 @@ public class Config {
     public static boolean singleButtonTrackpad;
     public static boolean removeHopperRecipe;
 
-    public static void load(FMLPreInitializationEvent event) {
-        File configurationDir = event.getModConfigurationDirectory();
-        Configuration config = new Configuration(new File(configurationDir, "EsteemedInnovation.cfg"));
+    public static void load() {
+        Configuration config = new Configuration(APIConfig.getConfigFile("EsteemedInnovation.cfg"));
         config.load();
 
         // WORLD GEN
@@ -430,7 +427,6 @@ public class Config {
 
         // OTHER
         easterEggs = config.get("Other", "Enable Easter Eggs", true).getBoolean();
-        Constants.safeMode = config.get("Other", "Enable safe mode (no explosions)", false).getBoolean();
         enableRedstoneValvePipe = config.get("Other", "Enable redstone support for Valve Pipes", true).getBoolean();
         disableParticles = config.get("Other", "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get("Other", "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();

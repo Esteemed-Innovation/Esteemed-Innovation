@@ -1,16 +1,10 @@
 package eiteam.esteemedinnovation.api.exosuit;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ExosuitRegistry {
-    static {
-        MinecraftForge.EVENT_BUS.register(new ExosuitEventDelegator());
-    }
-
     /**
      * All of the registered Exosuit Plates. Key is the plate ID, which is typically the material's
      * name. Value is the actual plate.

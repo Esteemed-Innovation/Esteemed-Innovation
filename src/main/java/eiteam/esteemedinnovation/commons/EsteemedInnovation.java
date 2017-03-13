@@ -50,7 +50,7 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.BRASS_PICKAXE;
   modid = EsteemedInnovation.MOD_ID,
   name = "Esteemed Innovation",
   version = Config.VERSION,
-  dependencies = "required-after:CodeChickenLib@[2.4.2,);required-after:Baubles"
+  dependencies = "required-after:CodeChickenLib@[2.4.2,);required-after:Baubles;required-after:" + Constants.API_MODID
 )
 public class EsteemedInnovation {
     // TODO: Migrate uses of MOD_ID to EI_MODID
@@ -78,8 +78,6 @@ public class EsteemedInnovation {
     public static SoundEvent SOUND_LEAK;
     public static SoundEvent SOUND_WHISTLE;
 
-    public static String CONFIG_DIR;
-
     @SidedProxy(clientSide = "eiteam.esteemedinnovation.commons.ClientProxy", serverSide = "eiteam.esteemedinnovation.commons.CommonProxy")
     public static CommonProxy proxy;
 
@@ -98,9 +96,8 @@ public class EsteemedInnovation {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Config.load(event);
+        Config.load();
 
-        CONFIG_DIR = event.getModConfigurationDirectory().toString();
         tab = new EsteemedInnovationTab(CreativeTabs.getNextID(), MOD_ID, false).setBackgroundImageName("item_search.png");
         tabTools = new EsteemedInnovationTab(CreativeTabs.getNextID(), MOD_ID + "Tools", true);
 

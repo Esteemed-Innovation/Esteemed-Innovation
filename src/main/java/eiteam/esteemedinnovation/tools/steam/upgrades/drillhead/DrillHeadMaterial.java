@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
 import com.google.gson.*;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -126,8 +126,7 @@ public class DrillHeadMaterial {
      * This method must be called AFTER ore dictionary entries have been registered.
      */
     public static void registerDefaults() {
-        String jsonFilePath = EsteemedInnovation.CONFIG_DIR + "/EI-materials.json";
-        File jsonFile = new File(jsonFilePath);
+        File jsonFile = APIConfig.getConfigFile("DrillHeadMaterials.json");
         if (jsonFile.exists()) {
             try {
                 String str = FileUtils.readFileToString(jsonFile);
@@ -165,7 +164,7 @@ public class DrillHeadMaterial {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(materials);
         try {
-            FileWriter writer = new FileWriter(jsonFilePath);
+            FileWriter writer = new FileWriter(jsonFile.getPath());
             writer.write(json);
             writer.close();
         } catch (IOException e) {

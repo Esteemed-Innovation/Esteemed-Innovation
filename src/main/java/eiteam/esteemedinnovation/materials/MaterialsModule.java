@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials;
 
+import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
@@ -8,7 +9,6 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.BlockOreDepositGenerator;
@@ -87,7 +87,7 @@ public class MaterialsModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        oresConfig = new OreConfigurationParser(EsteemedInnovation.CONFIG_DIR + "/" + Constants.EI_MODID_CAPITALIZED + "/Ores.json");
+        oresConfig = new OreConfigurationParser(APIConfig.getConfigFile("Ores.json").getPath());
         try {
             oresConfig.load();
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.api.steamnet;
 
-import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.util.Coord4;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,7 +138,7 @@ public class SteamNetwork {
         }
         if (initializedTicks >= 1200) {
 
-            if (Constants.safeMode) {
+            if (APIConfig.safeMode) {
                 if (getPressure() > 1.09F) {
                     steam = (int) Math.floor((double) capacity * 1.09D);
                 }

@@ -28,7 +28,7 @@ apply plugin: 'java'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
-version = newModVersion
+version = newModVersion + '-api' + newAPIVersion
 
 /*
 Usage: `gradle build -Palpha=<version>` where <version> is the next version (different from newModVersion because
@@ -80,7 +80,8 @@ minecraft {
     version = project.forgeVersion
     mappings = project.mcpMappings
     runDir = "eclipse"
-    replace "@VERSION@", project.version
+    replace "@VERSION@", newModVersion
+    replace "@APIVERSION@", newAPIVersion
 }
 
 repositories {
