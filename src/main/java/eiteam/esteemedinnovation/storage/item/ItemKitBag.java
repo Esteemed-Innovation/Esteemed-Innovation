@@ -96,15 +96,21 @@ public class ItemKitBag extends Item {
      * @param inventory The inventory populate
      */
     private static void depopulate(ItemStack itemStack, InventoryPlayer inventory) {
-        NBTTagList list = itemStack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-            ItemStack stack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i));
+        NBTTagList list = itemStack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND).copy();
+        NBTTagList remainingItems = new NBTTagList();
+        for (int i = 0; i < list.tagCount(); i++) {
+            ItemStack containedStack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i));
+            int emptySlotID = inventory.getFirstEmptyStack();
             // loadItemStackFromNBT can in fact return null.
             //noinspection ConstantConditions
-            if (stack != null) {
-                inventory.setInventorySlotContents(inventory.getFirstEmptyStack(), stack);
+            if (containedStack != null) {
+                if (emptySlotID == -1) {
+                    remainingItems.appendTag(containedStack.serializeNBT());
+                } else {
+                    inventory.setInventorySlotContents(emptySlotID, containedStack);
+                }
             }
         }
-        itemStack.getTagCompound().removeTag("Items");
+        itemStack.getTagCompound().setTag("Items", remainingItems);
     }
 }
