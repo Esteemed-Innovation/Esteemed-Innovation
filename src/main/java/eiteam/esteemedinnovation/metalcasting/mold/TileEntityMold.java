@@ -98,7 +98,7 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     }
 
     public void pour(CrucibleLiquid liquid) {
-        inventory = ((CrucibleMold) mold.getItem()).getItemFromLiquid(liquid);
+        inventory = ((CrucibleMold) mold.getItem()).getItemFromLiquid(liquid, mold);
         inventory.stackSize = 1;
         markDirty();
     }

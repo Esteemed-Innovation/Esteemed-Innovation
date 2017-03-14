@@ -145,14 +145,15 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
                 if (tile != null && tile instanceof TileEntityMold) {
                     TileEntityMold mold = (TileEntityMold) tile;
                     if (mold.canPour() && contents.size() > 0) {
-                        CrucibleMold crucibleMold = (CrucibleMold) mold.mold.getItem();
-                        CrucibleLiquid liquid = this.getNextLiquid(crucibleMold);
+                        ItemStack moldStack = mold.mold;
+                        CrucibleMold crucibleMold = (CrucibleMold) moldStack.getItem();
+                        CrucibleLiquid liquid = getNextLiquid(crucibleMold, moldStack);
                         if (liquid != null) {
                             if (!worldObj.isRemote) {
                                 mold.pour(liquid);
                             }
                             int currNum = number.get(liquid);
-                            currNum -= crucibleMold.getCostToMold(liquid);
+                            currNum -= crucibleMold.getCostToMold(liquid, moldStack);
                             if (currNum == 0) {
                                 contents.remove(liquid);
                             }
@@ -248,10 +249,10 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         return stack;
     }
 
-    public CrucibleLiquid getNextLiquid(CrucibleMold mold) {
+    public CrucibleLiquid getNextLiquid(CrucibleMold mold, ItemStack moldStack) {
         for (CrucibleLiquid liquid : CrucibleRegistry.liquids) {
             if (number.containsKey(liquid)) {
-                if (mold.canUseOn(liquid) && number.get(liquid) >= mold.getCostToMold(liquid)) {
+                if (mold.canUseOn(liquid, moldStack) && number.get(liquid) >= mold.getCostToMold(liquid, moldStack)) {
                     return liquid;
                 }
             }

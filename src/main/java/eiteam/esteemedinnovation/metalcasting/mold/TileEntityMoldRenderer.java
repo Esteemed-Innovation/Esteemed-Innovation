@@ -1,15 +1,15 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
 import eiteam.esteemedinnovation.api.mold.CrucibleMold;
-import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -44,7 +44,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
         GlStateManager.translate(-0.5, (3.999F / 16F), -0.5);
 
         if (mold.mold != null) {
-            renderMold(mold.mold.getItem(), true);
+            renderMold(mold.mold, true);
         }
         GlStateManager.translate(0, 0.001, 0);
         GlStateManager.popMatrix();
@@ -76,7 +76,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
         GlStateManager.translate(0, 4 * PX, 6 * PX);
         GlStateManager.translate(0, 3.999 * PX, 0);
         if (mold.mold != null) {
-            renderMold(mold.mold.getItem(), true);
+            renderMold(mold.mold, true);
         }
 
         GlStateManager.popMatrix();
@@ -84,8 +84,8 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
         GlStateManager.popMatrix();
     }
 
-    private void renderMold(Item item, boolean bottom) {
-        bindTexture(((CrucibleMold) item).getBlockTexture());
+    private void renderMold(ItemStack item, boolean bottom) {
+        bindTexture(((CrucibleMold) item.getItem()).getBlockTexture(item));
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
 //        buffer.putNormal(0F, 0F, 1F);
