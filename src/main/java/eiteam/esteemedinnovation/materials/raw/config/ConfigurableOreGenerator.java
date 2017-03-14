@@ -33,7 +33,7 @@ public class ConfigurableOreGenerator implements IWorldGenerator {
     }
 
     private static void generateOre(BiomeDefinition biomeDef, int baseX, int baseZ, BlockGenericOre.OreBlockTypes ore, Random random, World world) {
-        WorldGenMinable minable = new WorldGenMinable(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, ore), 8, biomeDef::matches);
+        WorldGenMinable minable = new WorldGenMinable(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, ore), biomeDef.getMaxVeinSize(), biomeDef::matches);
         int minY = biomeDef.getMinY();
         int maxY = biomeDef.getMaxY();
         for (int i = 0; i < biomeDef.getMaxVeinsPerChunk(); i++) {

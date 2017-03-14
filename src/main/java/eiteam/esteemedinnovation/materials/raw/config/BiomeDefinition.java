@@ -21,15 +21,17 @@ public class BiomeDefinition {
     protected final int minY;
     protected final int maxY;
     protected final int maxVeinsPerChunk;
+    protected final int maxVeinSize;
     protected final List<String> replaceableBlocksOreDict;
     protected final List<Pair<Block, Integer>> replaceableBlocksAndMeta;
 
-    public BiomeDefinition(int dimension, @Nonnull Biome biome, int minY, int maxY, int maxVeinsPerChunk, List<String> replaceableBlocksOreDict, List<Pair<Block, Integer>> replaceableBlocksAndMeta) {
+    public BiomeDefinition(int dimension, @Nonnull Biome biome, int minY, int maxY, int maxVeinSize, int maxVeinsPerChunk, List<String> replaceableBlocksOreDict, List<Pair<Block, Integer>> replaceableBlocksAndMeta) {
         this.dimension = dimension;
         this.biome = biome;
         this.minY = minY;
         this.maxY = maxY;
         this.maxVeinsPerChunk = maxVeinsPerChunk;
+        this.maxVeinSize = maxVeinSize;
         this.replaceableBlocksOreDict = replaceableBlocksOreDict;
         this.replaceableBlocksAndMeta = replaceableBlocksAndMeta;
     }
@@ -52,6 +54,10 @@ public class BiomeDefinition {
 
     public int getMaxVeinsPerChunk() {
         return maxVeinsPerChunk;
+    }
+
+    public int getMaxVeinSize() {
+        return maxVeinSize;
     }
 
     public ImmutableList<String> getReplaceableBlocksOreDict() {

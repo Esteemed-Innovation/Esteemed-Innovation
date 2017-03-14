@@ -92,22 +92,22 @@ public class OreConfigurationParser {
     private static final OreGenerationDefinition[] DEFAULT_ORES = {
       new OreGenerationDefinition(
         new BiomeDefinition[] {
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS, 80, 128, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS_EDGE, 80, 128, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS_WITH_TREES, 80, 128, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(-1, Biomes.HELL, 0, 128, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(1, Biomes.SKY, 0, 128, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS_EDGE, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS_WITH_TREES, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(-1, Biomes.HELL, 0, 128, 8, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(1, Biomes.SKY, 0, 128, 8, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
         },
         OreDictEntries.MATERIAL_COPPER),
       new OreGenerationDefinition(
         new BiomeDefinition[] {
-          new BiomeDefinition(0, Biomes.DESERT, 65, 80, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.DESERT_HILLS, 65, 80, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA, 65, 80, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA_CLEAR_ROCK, 65, 80, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA_ROCK, 65, 80, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(-1, Biomes.HELL, 0, 128, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(1, Biomes.SKY, 0, 128, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
+          new BiomeDefinition(0, Biomes.DESERT, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.DESERT_HILLS, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.MESA, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.MESA_CLEAR_ROCK, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.MESA_ROCK, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(-1, Biomes.HELL, 0, 128, 8, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(1, Biomes.SKY, 0, 128, 8, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
         },
         OreDictEntries.MATERIAL_ZINC)
     };
@@ -144,7 +144,7 @@ public class OreConfigurationParser {
 
     /**
      * Converts a {@link BiomeDefinition} into a JsonObject, with keys "Dimension", "Biome", "MinY", "MaxY",
-     * "MaxVeinsPerChunk", and "ReplaceableBlocks".
+     * "MaxVeinSize", "MaxVeinsPerChunk", and "ReplaceableBlocks".
      */
     private JsonObject writeBiomeToObject(BiomeDefinition biome) {
         JsonObject obj = new JsonObject();
@@ -152,6 +152,7 @@ public class OreConfigurationParser {
         obj.addProperty("Biome", biome.getBiome().getRegistryName().toString());
         obj.addProperty("MinY", biome.getMinY());
         obj.addProperty("MaxY", biome.getMaxY());
+        obj.addProperty("MaxVeinSize", biome.getMaxVeinSize());
         obj.addProperty("MaxVeinsPerChunk", biome.getMaxVeinsPerChunk());
 
         JsonArray oreDicts = writeStringsToArray(biome.getReplaceableBlocksOreDict());
@@ -248,7 +249,7 @@ public class OreConfigurationParser {
 
     /**
      * Converts a JsonObject into a {@link BiomeDefinition}. It expects "Biome", "ReplaceableBlocks", "Dimension",
-     * "MinY", "MaxY", and "MaxVeinsPerChunk" keys.
+     * "MinY", "MaxY", "MaxVeinSize", and "MaxVeinsPerChunk" keys.
      */
     private BiomeDefinition parseBiome(JsonObject obj) {
         Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(obj.get("Biome").getAsString()));
@@ -256,7 +257,8 @@ public class OreConfigurationParser {
         List<String> oreDicts = getOreDictsFromArray(replaceableBlocksAry);
         List<Pair<Block, Integer>> blockMetaPairs = getBlockMetaPairsFromArray(replaceableBlocksAry);
         return new BiomeDefinition(obj.get("Dimension").getAsInt(), biome, obj.get("MinY").getAsInt(),
-          obj.get("MaxY").getAsInt(), obj.get("MaxVeinsPerChunk").getAsInt(), oreDicts, blockMetaPairs);
+          obj.get("MaxY").getAsInt(), obj.get("MaxVeinSize").getAsInt(), obj.get("MaxVeinsPerChunk").getAsInt(),
+          oreDicts, blockMetaPairs);
     }
 
     /**
