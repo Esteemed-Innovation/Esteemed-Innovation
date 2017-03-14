@@ -52,9 +52,11 @@ public class BookPageAlloy extends BookPage implements CraftingPage {
     public ItemStack[] getCraftedItem() {
         List<ItemStack> items = new ArrayList<>();
         for (Item mold : MoldRegistry.molds) {
-            ItemStack out = CrucibleRegistry.getMoldingOutput(output, mold);
-            if (out != null) {
-                items.add(out);
+            for (int meta = 0; meta < mold.getMaxDamage(); meta++) {
+                ItemStack out = CrucibleRegistry.getMoldingOutput(output, new ItemStack(mold, 1, meta));
+                if (out != null) {
+                    items.add(out);
+                }
             }
         }
         return items.toArray(new ItemStack[items.size()]);

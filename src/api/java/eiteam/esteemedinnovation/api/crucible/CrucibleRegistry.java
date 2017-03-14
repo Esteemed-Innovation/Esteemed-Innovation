@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.api.crucible;
 
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -276,7 +277,7 @@ public class CrucibleRegistry {
      * Key: Input liquid, input mold.
      * Value: Output item.
      */
-    private static final Map<Pair<CrucibleLiquid, Item>, ItemStack> moldingRecipes = new HashMap<>();
+    private static final Map<Pair<CrucibleLiquid, ItemStack>, ItemStack> moldingRecipes = new HashMap<>();
 
     /**
      * Registers a casting recipe.
@@ -284,7 +285,7 @@ public class CrucibleRegistry {
      * @param mold The input mold
      * @param out The output
      */
-    public static void registerMoldingRecipe(CrucibleLiquid inputLiquid, Item mold, ItemStack out) {
+    public static void registerMoldingRecipe(CrucibleLiquid inputLiquid, ItemStack mold, ItemStack out) {
         moldingRecipes.put(Pair.of(inputLiquid, mold), out);
     }
 
@@ -294,7 +295,13 @@ public class CrucibleRegistry {
      * @return The output ItemStack
      */
     @Nullable
-    public static ItemStack getMoldingOutput(CrucibleLiquid inputLiquid, Item mold) {
-        return moldingRecipes.get(Pair.of(inputLiquid, mold));
+    public static ItemStack getMoldingOutput(CrucibleLiquid inputLiquid, ItemStack mold) {
+        for (Map.Entry<Pair<CrucibleLiquid, ItemStack>, ItemStack> entry : moldingRecipes.entrySet()) {
+            Pair<CrucibleLiquid, ItemStack> input = entry.getKey();
+            if (ItemStackUtility.compareItemStacks(mold, input.getRight()) && input.getLeft().equals(inputLiquid)) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 }

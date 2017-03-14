@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.api.mold;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -28,7 +27,7 @@ public interface CrucibleMold {
      * @return The output item when the mold block is opened with this mold and liquid inside of it.
      */
     default ItemStack getItemFromLiquid(CrucibleLiquid liquid, ItemStack moldStack) {
-        return CrucibleRegistry.getMoldingOutput(liquid, (Item) this);
+        return CrucibleRegistry.getMoldingOutput(liquid, moldStack);
     }
 
     /**
