@@ -3,14 +3,19 @@ package eiteam.esteemedinnovation.thumper;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.transport.entity.BlockVacuum;
+import eiteam.esteemedinnovation.transport.entity.TileEntityVacuum;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,7 +23,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.List;
 
 public class TileEntityThumper extends SteamTransporterTileEntity {
     public int progress = 0;
@@ -154,12 +161,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
                             i++;
                         }
                         if (hasTarget) {
-                            IBlockState state = worldObj.getBlockState(target);
-                            Block block = state.getBlock();
-                            if (Config.dropItem) {
-                                block.dropBlockAsItem(worldObj, target, state, 0);
-                            }
-                            worldObj.setBlockToAir(target);
+                            harvestBlock(target);
                         }
                     }
                 }
@@ -167,6 +169,46 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
         }
 
         super.safeUpdate();
+    }
+
+    private void harvestBlock(BlockPos position) {
+        IBlockState state = worldObj.getBlockState(position);
+        Block block = state.getBlock();
+        if (Config.dropItem) {
+            EnumFacing vacuumDir = getAdjacentFacingVacuum();
+            if (vacuumDir == null) {
+                block.dropBlockAsItem(worldObj, position, state, 0);
+            } else {
+                List<ItemStack> drops = block.getDrops(worldObj, position, state, 0);
+                BlockPos dropPosition = pos.offset(vacuumDir, 2);
+                for (ItemStack item : drops) {
+                    worldObj.spawnEntityInWorld(new EntityItem(
+                      worldObj, dropPosition.getX() + 0.5D, dropPosition.getY() + 0.5D, dropPosition.getZ() + 0.5D, item)
+                    );
+                }
+            }
+        }
+        worldObj.setBlockToAir(position);
+    }
+
+    /**
+     * @return Finds a Vacuum adjacent to and facing the Thumper. Returns null if there is no adjacent vacuum.
+     */
+    @Nullable
+    private EnumFacing getAdjacentFacingVacuum() {
+        for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+            BlockPos vacuumPos = pos.offset(dir);
+            IBlockState vacuumState = worldObj.getBlockState(vacuumPos);
+            if (vacuumState.getBlock() instanceof BlockVacuum) {
+                if (dir.getOpposite() == vacuumState.getValue(BlockVacuum.FACING)) {
+                    TileEntity te = worldObj.getTileEntity(vacuumPos);
+                    if (te instanceof TileEntityVacuum && ((TileEntityVacuum) te).active) {
+                        return dir;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
