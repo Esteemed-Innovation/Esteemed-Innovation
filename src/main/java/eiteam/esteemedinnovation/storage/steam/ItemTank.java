@@ -75,9 +75,4 @@ public class ItemTank extends Item implements ExosuitTank, ExosuitUpgrade {
     public int getStorage(ItemStack stack) {
         return capacity;
     }
-
-    @Override
-    public String toString() {
-        return getOverlay().toString();
-    }
 }

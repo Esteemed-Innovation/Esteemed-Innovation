@@ -64,7 +64,7 @@ public class RenderUtility {
 
             // Stupid vanilla, throwing generic exceptions
         } catch (Exception e) {
-            throw new ReportedException(new CrashReport("Error loading custom model " + loc.toString(), e));
+            throw new ReportedException(new CrashReport("Error loading custom model " + loc, e));
         }
     }
 

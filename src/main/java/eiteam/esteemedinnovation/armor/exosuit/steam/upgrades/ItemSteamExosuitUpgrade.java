@@ -61,10 +61,4 @@ public class ItemSteamExosuitUpgrade extends Item implements ExosuitUpgrade {
     public int renderPriority() {
         return pri;
     }
-
-    @Override
-    public String toString() {
-        ResourceLocation overlay = getOverlay();
-        return overlay == null ? "" : overlay.toString();
-    }
 }

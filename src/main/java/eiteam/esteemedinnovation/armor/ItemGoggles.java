@@ -53,9 +53,4 @@ public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
 
     @Override
     public void writeInfo(List list) {}
-
-    @Override
-    public String toString() {
-        return getOverlay().toString();
-    }
 }

@@ -79,9 +79,4 @@ public class BlockTankItem extends BlockManyMetadataItem implements ExosuitTank,
         }
         return cap;
     }
-
-    @Override
-    public String toString() {
-        return getOverlay().toString();
-    }
 }

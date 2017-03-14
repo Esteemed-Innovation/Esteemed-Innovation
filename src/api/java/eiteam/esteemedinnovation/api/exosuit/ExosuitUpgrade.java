@@ -14,11 +14,8 @@ import java.util.List;
 
 /**
  * The interface which allows an item to be upgraded into an Exosuit armor piece.
- * You must return something unique from {@link Object#toString()}, otherwise the exosuit will not render correctly as
- * an item (has no effect on the armor rendering). The result of {@link ExosuitUpgrade#getOverlay()} is usually
- * returned for toString().
  *
- * You must inherit Item as well, or provide a new implementation for isInstalled, as the default implementation
+ * You must inherit Item, or provide a new implementation for isInstalled, as the default implementation
  * checks if we are an instance of Item.
  */
 public interface ExosuitUpgrade extends ExosuitEventHandler {

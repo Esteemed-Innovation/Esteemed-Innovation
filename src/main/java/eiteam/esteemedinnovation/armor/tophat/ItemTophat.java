@@ -121,9 +121,4 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
             list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
         }
     }
-
-    @Override
-    public String toString() {
-        return getOverlay().toString();
-    }
 }
