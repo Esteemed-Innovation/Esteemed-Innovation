@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -51,12 +50,10 @@ public class BookPageAlloy extends BookPage implements CraftingPage {
     @Override
     public ItemStack[] getCraftedItem() {
         List<ItemStack> items = new ArrayList<>();
-        for (Item mold : MoldRegistry.molds) {
-            for (int meta = 0; meta < mold.getMaxDamage(); meta++) {
-                ItemStack out = CrucibleRegistry.getMoldingOutput(output, new ItemStack(mold, 1, meta));
-                if (out != null) {
-                    items.add(out);
-                }
+        for (ItemStack mold : MoldRegistry.molds) {
+            ItemStack out = CrucibleRegistry.getMoldingOutput(output, mold);
+            if (out != null) {
+                items.add(out);
             }
         }
         return items.toArray(new ItemStack[items.size()]);

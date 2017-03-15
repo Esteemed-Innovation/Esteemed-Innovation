@@ -25,11 +25,11 @@ public class BlockCarvingTable extends Block {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (held != null) {
             Item heldItem = held.getItem();
-            if (MoldRegistry.molds.contains(heldItem)) {
+            if (MoldRegistry.molds.stream().anyMatch(s -> s.getItem() == heldItem)) {
                 int index = 0;
                 int i = 0;
-                for (Item item : MoldRegistry.molds) {
-                    if (heldItem == item) {
+                for (ItemStack item : MoldRegistry.molds) {
+                    if (heldItem == item.getItem() && held.getItemDamage() == item.getItemDamage()) {
                         index = i;
                     }
                     i++;
@@ -37,10 +37,8 @@ public class BlockCarvingTable extends Block {
                 if (index + 1 == MoldRegistry.molds.size()) {
                     index = -1;
                 }
-                Item next = MoldRegistry.molds.get(index + 1);
                 InventoryPlayer inventory = player.inventory;
-                ItemStack stack = new ItemStack(next);
-                inventory.setInventorySlotContents(inventory.currentItem, stack);
+                inventory.setInventorySlotContents(inventory.currentItem, MoldRegistry.molds.get(index + 1));
                 return true;
             }
         }
