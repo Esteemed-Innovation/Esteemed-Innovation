@@ -234,6 +234,7 @@ public class Config {
 
     public static boolean singleButtonTrackpad;
     public static boolean removeHopperRecipe;
+    public static boolean removeVanillaMetalToolRecipes;
 
     public static void load() {
         Configuration config = new Configuration(APIConfig.getConfigFile("EsteemedInnovation.cfg"));
@@ -397,6 +398,7 @@ public class Config {
         enableSteamCell = config.get("Items", "Enable Steam Cell", true).getBoolean();
         steamCellCapacity = config.get("Items", "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
         enableSteamCellBauble = config.get("Items", "Enable Steam Cell Bauble", true).getBoolean();
+        removeVanillaMetalToolRecipes = config.get("Items", "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
 
         // STEAM TOOL UPGRADES
         enableBigDrill = config.get("Steam Tool Upgrades", "Enable Steam Drill's Hammer Head upgrade", true).getBoolean();

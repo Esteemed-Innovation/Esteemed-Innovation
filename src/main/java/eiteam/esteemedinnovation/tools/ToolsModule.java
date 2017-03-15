@@ -3,11 +3,14 @@ package eiteam.esteemedinnovation.tools;
 import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
+import eiteam.esteemedinnovation.metalcasting.mold.ItemMold;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
 import eiteam.esteemedinnovation.tools.steam.*;
@@ -32,13 +35,14 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.BRASS_LIQUID;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.GOLD_LIQUID;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.MOLD_ITEM;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
@@ -521,11 +525,23 @@ public class ToolsModule extends ContentModule {
             }
         }
 
-        addAxeRecipe(BRASS_AXE, INGOT_BRASS);
-        addPickaxeRecipe(BRASS_PICKAXE, INGOT_BRASS);
-        addShovelRecipe(BRASS_SHOVEL, INGOT_BRASS);
-        addSwordRecipe(BRASS_SWORD, INGOT_BRASS);
-        addHoeRecipe(BRASS_HOE, INGOT_BRASS);
+        List<Item> castableTools = Arrays.asList(GOLDEN_AXE, GOLDEN_PICKAXE, GOLDEN_SHOVEL, GOLDEN_SWORD, GOLDEN_HOE);
+
+        if (Config.removeVanillaMetalToolRecipes) {
+            castableTools.forEach(RecipeUtility::removeRecipeByOutput);
+        }
+
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.AXE.createItemStack(MOLD_ITEM), new ItemStack(GOLDEN_AXE));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.PICKAXE.createItemStack(MOLD_ITEM), new ItemStack(GOLDEN_PICKAXE));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.SHOVEL.createItemStack(MOLD_ITEM), new ItemStack(GOLDEN_SHOVEL));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.SWORD.createItemStack(MOLD_ITEM), new ItemStack(GOLDEN_SWORD));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.HOE.createItemStack(MOLD_ITEM), new ItemStack(GOLDEN_HOE));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.AXE.createItemStack(MOLD_ITEM), new ItemStack(BRASS_AXE));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.PICKAXE.createItemStack(MOLD_ITEM), new ItemStack(BRASS_PICKAXE));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.SHOVEL.createItemStack(MOLD_ITEM), new ItemStack(BRASS_SHOVEL));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.SWORD.createItemStack(MOLD_ITEM), new ItemStack(BRASS_SWORD));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.HOE.createItemStack(MOLD_ITEM), new ItemStack(BRASS_HOE));
+
         addAxeRecipe(GILDED_IRON_AXE, INGOT_GILDED_IRON);
         addPickaxeRecipe(GILDED_IRON_PICKAXE, INGOT_GILDED_IRON);
         addShovelRecipe(GILDED_IRON_SHOVEL, INGOT_GILDED_IRON);

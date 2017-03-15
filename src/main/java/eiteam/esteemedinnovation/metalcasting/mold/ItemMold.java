@@ -45,7 +45,12 @@ public class ItemMold extends Item implements CrucibleMold {
         INGOT(0, 9, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldIngot.png")),
         NUGGET(1, 1, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldNugget.png")),
         PLATE(2, 6, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldPlate.png")),
-        PIPE(3, 54, INGOT.getBlockTexture() /* TODO: Texture */);
+        PIPE(3, 54, INGOT.getBlockTexture() /* TODO: Texture */),
+        AXE(4, 27, INGOT.getBlockTexture() /* TODO: Texture */),
+        HOE(5, 18, INGOT.getBlockTexture() /* TODO: Texture */),
+        PICKAXE(6, 27, INGOT.getBlockTexture() /* TODO: Texture */),
+        SHOVEL(7, 9, INGOT.getBlockTexture() /* TODO: Texture */),
+        SWORD(8, 18, INGOT.getBlockTexture() /* TODO: Texture */);
 
         private final int meta;
         private final int costToMold;

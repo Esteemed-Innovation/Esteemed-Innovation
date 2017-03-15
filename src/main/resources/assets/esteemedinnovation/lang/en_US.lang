@@ -525,6 +525,11 @@ item.esteemedinnovation:mold_item.ingot.name=Ingot Mold
 item.esteemedinnovation:mold_item.nugget.name=Nugget Mold
 item.esteemedinnovation:mold_item.plate.name=Plate Mold
 item.esteemedinnovation:mold_item.pipe.name=Pipe Mold
+item.esteemedinnovation:mold_item.axe.name=Axe Mold
+item.esteemedinnovation:mold_item.hoe.name=Hoe Mold
+item.esteemedinnovation:mold_item.pickaxe.name=Pickaxe Mold
+item.esteemedinnovation:mold_item.shovel.name=Shovel Mold
+item.esteemedinnovation:mold_item.sword.name=Sword Mold
 item.esteemedinnovation:blank_mold.name=Blank Mold
 
 item.esteemedinnovation:gilded_iron_helmet.name=Gilded Iron Helmet

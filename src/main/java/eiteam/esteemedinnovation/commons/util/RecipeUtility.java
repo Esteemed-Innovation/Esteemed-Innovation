@@ -1,5 +1,8 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import eiteam.esteemedinnovation.api.util.ItemStackUtility;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.FMLLog;
@@ -21,5 +24,24 @@ public class RecipeUtility {
                 iter.remove();
             }
         }
+    }
+
+    /**
+     * Removes recipes that result in the provided ItemStack.
+     * @param removeFor The ItemStack to remove recipes for.
+     */
+    public static void removeRecipeByOutput(ItemStack removeFor) {
+        removeRecipe(recipe -> {
+            ItemStack out = recipe.getRecipeOutput();
+            return out != null && ItemStackUtility.compareItemStacks(out, removeFor);
+        });
+    }
+
+    /**
+     * Removes recipes that result in the provided Item.
+     * @param removeFor The Item to remove recipes for, assumes meta 0.
+     */
+    public static void removeRecipeByOutput(Item removeFor) {
+        removeRecipeByOutput(new ItemStack(removeFor));
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "esteemedinnovation:items/axeBrass"
+    "layer0": "esteemedinnovation:items/brass_axe"
   }
 }
