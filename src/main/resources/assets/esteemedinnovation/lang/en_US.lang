@@ -521,9 +521,10 @@ item.esteemedinnovation:exosuit_plate.6.name=Lead Exosuit Plate
 item.esteemedinnovation:reinforced_tank.name=Reinforced Exosuit Tank
 item.esteemedinnovation:uber_reinforced_tank.name=Heavily Reinforced Exosuit Tank
 
-item.esteemedinnovation:ingot_mold.name=Ingot Mold
-item.esteemedinnovation:nugget_mold.name=Nugget Mold
-item.esteemedinnovation:plate_mold.name=Plate Mold
+item.esteemedinnovation:mold_item.ingot.name=Ingot Mold
+item.esteemedinnovation:mold_item.nugget.name=Nugget Mold
+item.esteemedinnovation:mold_item.plate.name=Plate Mold
+item.esteemedinnovation:mold_item.pipe.name=Pipe Mold
 item.esteemedinnovation:blank_mold.name=Blank Mold
 
 item.esteemedinnovation:gilded_iron_helmet.name=Gilded Iron Helmet
@@ -697,7 +698,6 @@ item.esteemedinnovation:kit_bag.name=Kit Bag
 esteemedinnovation.kitbag.empty=Empty
 esteemedinnovation.kitbag.shiftforlist=Hold shit to view contents
 
-item.esteemedinnovation:pipe_mold.name=Pipe Mold
 tile.esteemedinnovation:brass_pipe.name=Brass Pipe
 tile.esteemedinnovation:copper_pipe.name=Copper Pipe
 

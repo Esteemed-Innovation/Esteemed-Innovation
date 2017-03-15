@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency;
 
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.armor.ArmorModule;
+import eiteam.esteemedinnovation.metalcasting.mold.ItemMold;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -25,7 +26,8 @@ import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET_CARTRIDGE;
 import static eiteam.esteemedinnovation.heater.HeaterModule.*;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.METAL_INGOT;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.BRASS_INGOT;
-import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.*;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.BLANK_MOLD;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.MOLD_ITEM;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.*;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
@@ -114,13 +116,13 @@ public class FrequencyMerchant implements IMerchant {
                 saleItems.add(Pair.of(new ItemStack(BLANK_MOLD, 2), 6));
             }
             if (random.nextDouble() < 0.08D) {
-                saleItems.add(Pair.of(new ItemStack(INGOT_MOLD), 8));
+                saleItems.add(Pair.of(ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), 8));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(Pair.of(new ItemStack(PLATE_MOLD), 8));
+                saleItems.add(Pair.of(ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), 8));
             }
             if (random.nextDouble() < 0.06D) {
-                saleItems.add(Pair.of(new ItemStack(NUGGET_MOLD), 8));
+                saleItems.add(Pair.of(ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), 8));
             }
             if (random.nextDouble() < 0.05D) {
                 saleItems.add(Pair.of(new ItemStack(METAL_INGOT, 2, BRASS_INGOT.getMeta()), 4));
