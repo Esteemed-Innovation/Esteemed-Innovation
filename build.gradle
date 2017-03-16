@@ -138,6 +138,7 @@ dependencies {
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'eilib', include: '*.jar')
 
+    testCompile sourceSets.api.output
     testCompile 'junit:junit:4.12'
 }
 
@@ -154,21 +155,34 @@ processResources {
     }
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', 'src/api/java']
-        }
+task apiJar(type: Jar) {
+    classifier = 'api'
+    from sourceSets.api.output
+
+    // TODO: when FG bug is fixed, remove allJava from the api jar.
+    // https://github.com/MinecraftForge/ForgeGradle/issues/369
+    // Gradle should be able to pull them from the -sources jar.
+    from sourceSets.api.allJava
+}
+
+task allJar(type: Jar) {
+    classifier = 'all'
+    from sourceSets.main.output
+    from (sourceSets.api.output) {
+        exclude("logoblank.png", "mcmod.info")
     }
 }
 
-task apiJar(type: Jar) {
-    classifier = 'api'
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
     from sourceSets.api.allJava
 }
 
 artifacts {
     archives apiJar
+    archives allJar
+    archives sourcesJar
 }
 
 publishing {

@@ -27,3 +27,4 @@ logs/
 /bin/
 .DS_Store
 *.launch
+classes/
