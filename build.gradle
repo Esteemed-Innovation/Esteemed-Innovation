@@ -165,14 +165,6 @@ task apiJar(type: Jar) {
     from sourceSets.api.allJava
 }
 
-task allJar(type: Jar) {
-    classifier = 'all'
-    from sourceSets.main.output
-    from (sourceSets.api.output) {
-        exclude("logoblank.png", "mcmod.info")
-    }
-}
-
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allJava
@@ -181,7 +173,6 @@ task sourcesJar(type: Jar) {
 
 artifacts {
     archives apiJar
-    archives allJar
     archives sourcesJar
 }
 
