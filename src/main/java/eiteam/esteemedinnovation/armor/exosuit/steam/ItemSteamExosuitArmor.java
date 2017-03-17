@@ -33,12 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, SteamChargable {
-
-    public EntityEquipmentSlot slot;
-
     public ItemSteamExosuitArmor(EntityEquipmentSlot slot, ArmorMaterial mat) {
         super(mat, 1, slot);
-        this.slot = slot;
         setMaxDamage(0);
     }
 
@@ -49,7 +45,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public String getString() {
-        return EsteemedInnovation.MOD_ID + ":items/steam_exosuit_" + slot.getName();
+        return EsteemedInnovation.MOD_ID + ":items/steam_exosuit_" + armorType.getName();
     }
 
     @Override
@@ -79,14 +75,14 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int armorType) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         if (armor.hasTagCompound()) {
             if (armor.getTagCompound().hasKey("plate")) {
                 ExosuitPlate plate = UtilPlates.getPlate(armor.getTagCompound().getString("plate"));
-                return new ArmorProperties(0, plate.getDamageReductionAmount(slot, source) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(slot));
+                return new ArmorProperties(0, plate.getDamageReductionAmount(armorType, source) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(armorType));
             }
         }
-        return new ArmorProperties(0, ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(slot) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(slot));
+        return new ArmorProperties(0, ItemArmor.ArmorMaterial.IRON.getDamageReductionAmount(armorType) / 25.0D, ItemArmor.ArmorMaterial.IRON.getDurability(armorType));
     }
 
     @Override
@@ -108,19 +104,19 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int armorType) {
+    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
         if (armor.hasTagCompound()) {
             if (armor.getTagCompound().hasKey("plate")) {
                 ExosuitPlate plate = UtilPlates.getPlate(armor.getTagCompound().getString("plate"));
-                return plate.getDamageReductionAmount(slot, DamageSource.generic);
+                return plate.getDamageReductionAmount(armorType, DamageSource.generic);
             }
         }
-        return ItemArmor.ArmorMaterial.LEATHER.getDamageReductionAmount(slot);
+        return ItemArmor.ArmorMaterial.LEATHER.getDamageReductionAmount(armorType);
     }
 
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-        if (this.slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
             drainSteam(stack, damage * 40, entity);
         }
     }
@@ -128,7 +124,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     @SuppressWarnings("unchecked")
     @Override
     public Pair<Integer, Integer>[] engineerCoordinates() {
-        switch (slot) {
+        switch (armorType) {
             case HEAD: {
                 return new Pair[] {
                   Pair.of(1, 19),
@@ -234,7 +230,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (stack != null) {
             stack.writeToNBT(stc);
             me.getTagCompound().getCompoundTag("inv").setTag(Integer.toString(var1), stc);
-            if (var1 == 5 && slot == EntityEquipmentSlot.CHEST) {
+            if (var1 == 5 && armorType == EntityEquipmentSlot.CHEST) {
                 me.getTagCompound().setInteger("steamFill", 0);
                 me.getTagCompound().setInteger("maxFill", ((ExosuitTank) stack.getItem()).getStorage(me));
                 if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
@@ -285,7 +281,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (upgrade.getItem() instanceof ExosuitUpgrade) {
             ExosuitUpgrade upgradeItem = (ExosuitUpgrade) upgrade.getItem();
             ExosuitSlot upgradeSlot = upgradeItem.getSlot();
-            return (upgradeSlot.getArmorPiece() == slot && upgradeSlot.getEngineeringSlot() == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeSlot.getEngineeringSlot() == slotNum);
+            return (upgradeSlot.getArmorPiece() == armorType && upgradeSlot.getEngineeringSlot() == slotNum) || (upgradeItem.getSlot() == ExosuitSlot.VANITY && upgradeSlot.getEngineeringSlot() == slotNum);
         } else if (slotNum == ExosuitSlot.VANITY.getEngineeringSlot()) {
             // TODO: Optimize by using a static list of dye oredicts generated at load time (OreDictHelper).
             int[] ids = OreDictionary.getOreIDs(upgrade);
@@ -317,7 +313,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public boolean hasPower(ItemStack me, int powerNeeded) {
-        if (slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
             if (me.getTagCompound().getInteger("steamFill") > powerNeeded) {
                 return true;
@@ -328,7 +324,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public boolean needsPower(ItemStack me, int powerNeeded) {
-        if (slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
             if (me.getTagCompound().getInteger("steamFill") + powerNeeded < me.getTagCompound().getInteger("maxFill")) {
                 return true;
@@ -342,7 +338,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
      * @param me The ItemStack
      */
     public boolean hasTank(ItemStack me) {
-        if (slot != EntityEquipmentSlot.CHEST) {
+        if (armorType != EntityEquipmentSlot.CHEST) {
             return false;
         }
         if (!me.hasTagCompound()) {
@@ -386,7 +382,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     @Override
     public void drawSlot(GuiContainer guiEngineeringTable, int slotNum, int i, int j) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_GUI_TEXTURES);
-        switch (slot) {
+        switch (armorType) {
             case HEAD:
             case LEGS:
             case FEET: {
@@ -431,7 +427,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        if (slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
             return 10_000;
         }
         return 0;
@@ -441,7 +437,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     public int getDamage(ItemStack stack) {
         updateSteamNBT(stack);
         return (int) (((double) stack.getTagCompound().getInteger("steamFill")) /
-          (double) stack.getTagCompound().getInteger("maxFill") * 10_000.0D);
+          stack.getTagCompound().getInteger("maxFill") * 10_000.0D);
     }
 
     @Override
@@ -451,7 +447,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public boolean canCharge(ItemStack stack) {
-        if (slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
             ItemSteamExosuitArmor item = (ItemSteamExosuitArmor) stack.getItem();
             if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof ExosuitTank) {
                 ExosuitTank tank = (ExosuitTank) item.getStackInSlot(stack, 5).getItem();
@@ -464,9 +460,8 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     @Override
     public boolean addSteam(ItemStack me, int amount, EntityLivingBase player) {
         int curSteam = me.getTagCompound().getInteger("steamFill");
-        int newSteam = curSteam + amount;
         if (needsPower(me, amount)) {
-            me.getTagCompound().setInteger("steamFill", newSteam);
+            me.getTagCompound().setInteger("steamFill", curSteam + amount);
             return true;
         }
         return false;
@@ -548,7 +543,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             }
         }
         updateSteamNBT(me);
-        if (slot == EntityEquipmentSlot.CHEST) {
+        if (armorType == EntityEquipmentSlot.CHEST) {
            list.add(TextFormatting.WHITE + "" + me.getTagCompound().getInteger("steamFill") * 5 + "/" + me.getTagCompound().getInteger("maxFill") * 5 + " SU");
         }
     }
@@ -556,7 +551,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_ARMOR_TEXTURES);
-        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * armorType.getIndex(), 0, 64, 64);
     }
 
     @Nonnull
