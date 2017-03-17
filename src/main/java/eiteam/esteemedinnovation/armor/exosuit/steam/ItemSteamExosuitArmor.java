@@ -556,6 +556,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     @Override
     public void drawBackground(GuiContainer guiEngineeringTable, int i, int j, int k) {
         guiEngineeringTable.mc.getTextureManager().bindTexture(Constants.ENG_ARMOR_TEXTURES);
+        guiEngineeringTable.drawTexturedModalRect(j + 26, k + 3, 64 * slot.getIndex(), 0, 64, 64);
     }
 
     @Nonnull
