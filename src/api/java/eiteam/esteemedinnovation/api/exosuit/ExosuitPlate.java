@@ -39,7 +39,7 @@ public class ExosuitPlate implements ExosuitEventHandler {
     }
 
     public ResourceLocation getIcon(ExosuitArmor item) {
-        return new ResourceLocation(item.getString() + "_" + invMod);
+        return new ResourceLocation(item.getItemIconResource() + "_" + invMod);
     }
 
     public String getArmorLocation(ExosuitArmor item, EntityEquipmentSlot slot) {

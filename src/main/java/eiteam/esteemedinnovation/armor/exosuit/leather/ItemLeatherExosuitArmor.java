@@ -136,8 +136,8 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     }
 
     @Override
-    public String getString() {
-        return EI_MODID + ":items/leather_exosuit/" + armorType.getName();
+    public ResourceLocation getItemIconResource() {
+        return new ResourceLocation(EI_MODID, "items/leather_exosuit/" + armorType.getName());
     }
 
     @Override

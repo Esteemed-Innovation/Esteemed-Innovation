@@ -34,7 +34,7 @@ public class LeatherExosuitItemModel implements IModel {
     public LeatherExosuitItemModel(List<ResourceLocation> locations) {
         // Headpiece fallback. The list can never be empty because it is used in #bake.
         if (locations.isEmpty()) {
-            locations.add(new ResourceLocation((ArmorModule.LEATHER_EXO_HEAD).getString()));
+            locations.add((ArmorModule.LEATHER_EXO_HEAD).getItemIconResource());
         }
         this.locations = locations;
     }
@@ -59,8 +59,7 @@ public class LeatherExosuitItemModel implements IModel {
                 .map(p -> p.getIcon(armor))
                 .collect(Collectors.toList())
             );
-            String baseIcon = armor.getString();
-            allArmorIcons.add(new ResourceLocation(baseIcon));
+            allArmorIcons.add(armor.getItemIconResource());
         }
         Collection<ResourceLocation> allIcons = new ArrayList<>();
         allIcons.addAll(allPlateIcons);

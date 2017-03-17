@@ -28,9 +28,7 @@ public class LeatherExosuitItemOverrideList extends ItemOverrideList {
         ItemLeatherExosuitArmor armor = (ItemLeatherExosuitArmor) stack.getItem();
 
         List<ResourceLocation> locations = new ArrayList<>();
-        String armorString = armor.getString();
-        ResourceLocation baseArmorRL = new ResourceLocation(armorString);
-        locations.add(baseArmorRL);
+        locations.add(armor.getItemIconResource());
         ExosuitPlate plate = armor.getPlate(stack);
         if (plate != null) {
             locations.add(UtilPlates.getIconFromPlate(plate.getIdentifier(), armor));

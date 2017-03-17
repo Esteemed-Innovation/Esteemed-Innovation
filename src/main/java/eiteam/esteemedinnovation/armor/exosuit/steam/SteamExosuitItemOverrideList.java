@@ -46,11 +46,10 @@ public class SteamExosuitItemOverrideList extends ItemOverrideList {
          on if it was dyed. The last one was either the plate texture or the base *again*.
           */
         List<ResourceLocation> locations = new ArrayList<>();
-        String armorString = armor.getString();
-        ResourceLocation baseArmorRL = new ResourceLocation(armorString);
+        ResourceLocation baseArmorRL = armor.getItemIconResource();
         locations.add(baseArmorRL);
         if (isArmorDyed) {
-            locations.add(new ResourceLocation(armorString + "_grey"));
+            locations.add(new ResourceLocation(baseArmorRL + "_grey"));
         } else {
             locations.add(baseArmorRL);
         }

@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.armor.ArmorModule;
@@ -36,7 +35,7 @@ public class SteamExosuitItemModel implements IModel {
     public SteamExosuitItemModel(List<ResourceLocation> locations) {
         // Headpiece fallback. The list can never be empty because it is used in #bake.
         if (locations.isEmpty()) {
-            locations.add(new ResourceLocation(((ExosuitArmor) ArmorModule.STEAM_EXO_HEAD).getString()));
+            locations.add((ArmorModule.STEAM_EXO_HEAD).getItemIconResource());
         }
         this.locations = locations;
     }
@@ -57,8 +56,8 @@ public class SteamExosuitItemModel implements IModel {
                 .map(p -> p.getIcon(armor))
                 .collect(Collectors.toList())
             );
-            String baseIcon = armor.getString();
-            allArmorIcons.add(new ResourceLocation(baseIcon));
+            ResourceLocation baseIcon = armor.getItemIconResource();
+            allArmorIcons.add(baseIcon);
             allArmorIcons.add(new ResourceLocation(baseIcon + "_grey"));
         }
         List<ResourceLocation> allIcons = ExosuitRegistry.upgrades.stream()

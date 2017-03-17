@@ -21,6 +21,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,8 +45,8 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public String getString() {
-        return EsteemedInnovation.MOD_ID + ":items/steam_exosuit_" + armorType.getName();
+    public ResourceLocation getItemIconResource() {
+        return new ResourceLocation(EsteemedInnovation.MOD_ID, "items/steam_exosuit_" + armorType.getName());
     }
 
     @Override
