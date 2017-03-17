@@ -4,6 +4,7 @@ import com.google.gson.*;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.block.Block;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.FMLLog;
@@ -61,6 +62,11 @@ public class OreConfigurationParser {
         add(OreDictEntries.GRASS_ORE);
     }};
 
+    private static final List<Pair<Block, Integer>> DEFAULT_MESA_REPLACEABLE_BLOCKS = new ArrayList<Pair<Block, Integer>>() {{
+        add(Pair.of(Blocks.HARDENED_CLAY, OreDictionary.WILDCARD_VALUE));
+        add(Pair.of(Blocks.STAINED_HARDENED_CLAY, OreDictionary.WILDCARD_VALUE));
+    }};
+
     /**
      * The default replaceable OreDict values for nether ores (dim -1).
      */
@@ -92,20 +98,20 @@ public class OreConfigurationParser {
     private static final OreGenerationDefinition[] DEFAULT_ORES = {
       new OreGenerationDefinition(
         new BiomeDefinition[] {
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS_EDGE, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.EXTREME_HILLS_WITH_TREES, 80, 128, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS, 60, 90, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS_EDGE, 60, 90, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.EXTREME_HILLS_WITH_TREES, 60, 90, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
           new BiomeDefinition(-1, Biomes.HELL, 0, 128, 8, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
           new BiomeDefinition(1, Biomes.SKY, 0, 128, 8, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
         },
         OreDictEntries.MATERIAL_COPPER),
       new OreGenerationDefinition(
         new BiomeDefinition[] {
-          new BiomeDefinition(0, Biomes.DESERT, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.DESERT_HILLS, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA_CLEAR_ROCK, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
-          new BiomeDefinition(0, Biomes.MESA_ROCK, 65, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.DESERT, 40, 70, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.DESERT_HILLS, 60, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, new ArrayList<>()),
+          new BiomeDefinition(0, Biomes.MESA, 40, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, DEFAULT_MESA_REPLACEABLE_BLOCKS),
+          new BiomeDefinition(0, Biomes.MESA_CLEAR_ROCK, 40, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, DEFAULT_MESA_REPLACEABLE_BLOCKS),
+          new BiomeDefinition(0, Biomes.MESA_ROCK, 40, 80, 8, 5, DEFAULT_SURFACE_REPLACEABLE_OREDICTS, DEFAULT_MESA_REPLACEABLE_BLOCKS),
           new BiomeDefinition(-1, Biomes.HELL, 0, 128, 8, 10, DEFAULT_NETHER_REPLACEABLE_OREDICTS, new ArrayList<>()),
           new BiomeDefinition(1, Biomes.SKY, 0, 128, 8, 10, DEFAULT_END_REPLACEABLE_OREDICTS, new ArrayList<>())
         },
