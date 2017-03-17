@@ -137,7 +137,7 @@ public class OreConfigurationParser {
             if (meta != OreDictionary.WILDCARD_VALUE) {
                 out.append(":").append(meta);
             }
-            ary.add(gson.fromJson(out.toString(), JsonElement.class));
+            ary.add(new JsonPrimitive(out.toString()));
         }
         return ary;
     }
