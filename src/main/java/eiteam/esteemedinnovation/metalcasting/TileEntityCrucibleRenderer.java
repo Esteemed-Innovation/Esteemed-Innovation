@@ -16,8 +16,6 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucible> {
-    private int frame = 0;
-
     @Override
     public void renderTileEntityAt(TileEntityCrucible crucible, double x, double y, double z, float partialTicks, int destroyStage) {
         IBlockState state = crucible.getWorld().getBlockState(crucible.getPos());
@@ -80,27 +78,18 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         int fill = crucible.getFill();
         if (fill > 0) {
             GlStateManager.disableBlend();
-            float height = (2F + (fill / 90F) * 11F) / 16F;
             GlStateManager.rotate(180F, 1F, 0F, 0F);
+            float height = (2F + (fill / 90F) * 11F) / 16F;
             GlStateManager.translate(0F, -height, -1F);
             renderLiquid(crucible);
             GlStateManager.enableBlend();
         }
         GlStateManager.popMatrix();
-
-        frame++;
-        if (frame == 20) {
-            frame = 0;
-        }
     }
 
     private void renderLiquid(TileEntityCrucible crucible) {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(BlockCrucible.LIQUID_ICON_RL.toString());
-        // See crucible_liquid mcmeta
-        if (frame % 2 == 0) {
-            icon.updateAnimation();
-        }
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer buffer = tessellator.getBuffer();
         float f1 = icon.getMaxU();
