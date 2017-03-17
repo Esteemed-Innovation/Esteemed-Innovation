@@ -154,12 +154,12 @@ public class DrillHeadMaterial {
             }
         }
 
-        registerDrillMaterial("Gold", "drill.gold", 1, "#CED652");
-        registerDrillMaterial("Iron", "drill.iron", 2, "#DEDEDE");
-        registerDrillMaterial("Brass", "drill.brass", 2, "#FABD3F");
-        registerNonStandardDrillMaterial("Diamond", OreDictEntries.GEM_DIAMOND, "drill.diamond", 3, "#29C6AD");
-        registerNonStandardDrillMaterial("Emerald", OreDictEntries.GEM_EMERALD, "drill.emerald", 3, "#17DD62");
-//        registerDrillMaterial("gildedGold", "drill.gilded", 2); TODO OreDictionary entry for gilded gold.
+        registerDrillMaterial(OreDictEntries.MATERIAL_GOLD, "drill.gold", 1, "#CED652");
+        registerDrillMaterial(OreDictEntries.MATERIAL_IRON, "drill.iron", 2, "#DEDEDE");
+        registerDrillMaterial(OreDictEntries.MATERIAL_BRASS, "drill.brass", 2, "#FABD3F");
+        registerDrillMaterial(OreDictEntries.MATERIAL_GILDED_IRON, "drill.gilded_iron", 2, "#CED652");
+        registerNonStandardDrillMaterial(OreDictEntries.MATERIAL_DIAMOND, OreDictEntries.GEM_DIAMOND, "drill.diamond", 3, "#29C6AD");
+        registerNonStandardDrillMaterial(OreDictEntries.MATERIAL_EMERALD, OreDictEntries.GEM_EMERALD, "drill.emerald", 3, "#17DD62");
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(materials);

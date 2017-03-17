@@ -586,6 +586,7 @@ drill.iron=Iron
 drill.brass=Brass
 drill.diamond=Diamond
 drill.emerald=Emerald
+drill.gilded_iron=Gilded Iron
 
 item.esteemedinnovation:steamcell_empty.name=Empty Steam Cell
 item.esteemedinnovation:steamcell_full.name=Full Steam Cell
