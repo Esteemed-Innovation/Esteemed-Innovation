@@ -159,12 +159,20 @@ sourceSets {
         java {
             srcDirs = ['src/main/java', 'src/api/java']
         }
+        resources {
+            srcDirs = ['src/main/resources', 'src/api/resources']
+        }
     }
 }
 
 task apiJar(type: Jar) {
     classifier = 'api'
     from sourceSets.api.allJava
+    from(sourceSets.api.resources.srcDirs) {
+        filter {
+            it.replaceAll('@APIVERSION@', newAPIVersion)
+        }
+    }
 }
 
 artifacts {
