@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials.raw.config;
 
+import eiteam.esteemedinnovation.commons.util.WorldGenMinableBase;
 import eiteam.esteemedinnovation.materials.MaterialsModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +34,7 @@ public class ConfigurableOreGenerator implements IWorldGenerator {
     }
 
     private static void generateOre(BiomeDefinition biomeDef, int baseX, int baseZ, BlockGenericOre.OreBlockTypes ore, Random random, World world) {
-        WorldGenMinable minable = new WorldGenMinable(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, ore), biomeDef.getMaxVeinSize(), biomeDef::matches);
+        WorldGenMinable minable = new WorldGenMinableBase(ORE_BLOCK.getDefaultState().withProperty(BlockGenericOre.VARIANT, ore), biomeDef.getMaxVeinSize(), biomeDef::matches);
         int minY = biomeDef.getMinY();
         int maxY = biomeDef.getMaxY();
         for (int i = 0; i < biomeDef.getMaxVeinsPerChunk(); i++) {
