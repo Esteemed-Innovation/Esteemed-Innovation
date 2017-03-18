@@ -1,5 +1,7 @@
 import java.nio.file.Files
 import java.nio.file.Paths
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
 
 buildscript {
     repositories {
@@ -66,6 +68,9 @@ task finalize << {
     if (project.hasProperty('alpha')) {
         incrementAlphaVersion(alpha)
     }
+
+    // This file is genereated by processResources before getting put into the jar.
+    new File('./mcmod.info').delete()
 }
 
 build.finalizedBy(finalize)
@@ -142,19 +147,26 @@ dependencies {
 }
 
 processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        filter {
-            it.replaceAll('@VERSION@', newModVersion)
-        }
-    }
+    // Combine the main and api mcmod.info files and replace their versions.
+    def slurper = new JsonSlurper()
 
-    from(sourceSets.api.resources.srcDirs) {
-        include 'mcmod.info' // TODO: Figure out multiple mcmod.infos solution
-        filter {
-            it.replaceAll('@APIVERSION@', newAPIVersion)
-        }
-    }
+    def mainInfo = new File('src/main/resources/mcmod.info').text
+    def apiInfo = new File('src/api/resources/mcmod.info').text
+
+    def mainJson = slurper.parseText(mainInfo)
+    def apiJson = slurper.parseText(apiInfo)
+
+    mainJson[0].version = newModVersion
+    apiJson[0].version = newAPIVersion
+
+    def outputInfo = [
+            mainJson[0],
+            apiJson[0]
+    ]
+
+    new File('./mcmod.info').write(JsonOutput.toJson(outputInfo))
+
+    from 'mcmod.info'
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
