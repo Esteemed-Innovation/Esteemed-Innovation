@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookPageAlloy extends BookPage implements CraftingPage {
-    // TODO: Package API resources with the API instead of the mod.
-    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/book_crafting.png");
+    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.API_MODID + ":textures/gui/book_crafting.png");
     private CrucibleLiquid output;
     private CrucibleFormula formula;
     private ItemStack[] outItems;

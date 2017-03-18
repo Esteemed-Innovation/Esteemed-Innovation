@@ -1,10 +1,14 @@
 package eiteam.esteemedinnovation.book;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.api.book.BookCategory;
+import eiteam.esteemedinnovation.api.book.BookEntry;
+import eiteam.esteemedinnovation.api.book.BookPage;
+import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.commons.CrossMod;
-import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
+import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -29,9 +33,9 @@ import java.util.stream.Collectors;
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
 
 public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.api.book.GuiJournal {
-    private static final ResourceLocation BOOK_RIGHT_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_right.png");
-    private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_front.png");
-    private static final ResourceLocation BOOK_LEFT_GUI_TEXTURES = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/gui/book_left.png");
+    private static final ResourceLocation BOOK_RIGHT_GUI_TEXTURES = new ResourceLocation(Constants.API_MODID, "textures/gui/book_right.png");
+    private static final ResourceLocation BOOK_FRONT_TEXTURES = new ResourceLocation(Constants.API_MODID, "textures/gui/book_front.png");
+    private static final ResourceLocation BOOK_LEFT_GUI_TEXTURES = new ResourceLocation(Constants.API_MODID, "textures/gui/book_left.png");
     private int bookTotalPages = 1;
     private int currPage;
     private int lastIndexPage;

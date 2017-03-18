@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class BookPageDip extends BookPage implements CraftingPage {
-    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.EI_MODID + ":textures/gui/book_crafting.png");
+    private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.API_MODID + ":textures/gui/book_crafting.png");
     private CrucibleLiquid input;
     private int liquidAmount;
     private ItemStack[] fluidItemRepresentation;
