@@ -145,22 +145,49 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
         filter {
-            it.replaceAll('@VERSION@', project.version)
+            it.replaceAll('@VERSION@', newModVersion)
+        }
+    }
+
+    from(sourceSets.api.resources.srcDirs) {
+        include 'mcmod.info' // TODO: Figure out multiple mcmod.infos solution
+        filter {
+            it.replaceAll('@APIVERSION@', newAPIVersion)
         }
     }
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+
+    from(sourceSets.api.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }
 
 sourceSets {
-    main {
+    api {
         java {
-            srcDirs = ['src/main/java', 'src/api/java']
+            srcDirs = ['src/api/java']
         }
         resources {
-            srcDirs = ['src/main/resources', 'src/api/resources']
+            srcDirs = ['src/api/resources']
+        }
+    }
+    modOnly {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+    main {
+        java {
+            srcDirs = modOnly.java.srcDirs + api.java.srcDirs
+        }
+        resources {
+            srcDirs = modOnly.resources.srcDirs + api.resources.srcDirs
         }
     }
 }
@@ -169,9 +196,14 @@ task apiJar(type: Jar) {
     classifier = 'api'
     from sourceSets.api.allJava
     from(sourceSets.api.resources.srcDirs) {
+        include 'mcmod.info'
         filter {
             it.replaceAll('@APIVERSION@', newAPIVersion)
         }
+    }
+
+    from(sourceSets.api.resources) {
+        exclude 'mcmod.info'
     }
 }
 
