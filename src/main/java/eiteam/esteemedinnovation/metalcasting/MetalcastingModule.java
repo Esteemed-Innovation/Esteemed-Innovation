@@ -1,18 +1,24 @@
 package eiteam.esteemedinnovation.metalcasting;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutComponent;
+import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutCreationHandler;
 import eiteam.esteemedinnovation.metalcasting.mold.*;
 import eiteam.esteemedinnovation.misc.ItemCraftingComponent;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -30,6 +36,7 @@ import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PI
 import static net.minecraft.init.Items.*;
 
 public class MetalcastingModule extends ContentModule {
+    public static final ResourceLocation CARVING_TABLE_LOOT = new ResourceLocation(Constants.EI_MODID, "metalcasting_hut_mold_chest");
     public static Block CRUCIBLE;
     public static Block HELL_CRUCIBLE;
     public static Block CARVING_TABLE;
@@ -52,6 +59,9 @@ public class MetalcastingModule extends ContentModule {
 
         registerTileEntity(TileEntityCrucible.class, "crucible");
         registerTileEntity(TileEntityMold.class, "mold");
+
+        VillagerRegistry.instance().registerVillageCreationHandler(new MetalcastingHutCreationHandler());
+        MapGenStructureIO.registerStructureComponent(MetalcastingHutComponent.class, Constants.EI_MODID + ":metalcasting_hut");
     }
 
     private static ItemStack findFirstOre(String ore) {

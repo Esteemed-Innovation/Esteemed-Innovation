@@ -1,0 +1,18 @@
+{
+  "pools": [
+    {
+      "name": "main",
+      "rolls": {
+        "min": 0,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "esteemedinnovation:blank_mold",
+          "weight": 3
+        }
+      ]
+    }
+  ]
+}

@@ -41,6 +41,8 @@ public class Config {
     public static boolean genPoorZincOre;
     public static int workshopLimit;
     public static int workshopWeight;
+    public static int metalcastingHutLimit;
+    public static int metalcastingHutWeight;
 
     public static boolean easterEggs;
 
@@ -247,6 +249,8 @@ public class Config {
         genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get("World Generation", "Workshop spawn weight", 7).getInt(7);
+        metalcastingHutLimit = config.get("World Generation", "Maximum number of Metalcasting Huts allowed to generate per village", 1).getInt();
+        metalcastingHutWeight = config.get("World Generation", "Metalcasting Hut spawn weight", 5).getInt();
 
         // WEAPONS
         expensiveMusketRecipes = config.get("Weapons", "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
