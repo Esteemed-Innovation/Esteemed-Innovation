@@ -199,43 +199,59 @@ public class TransportationModule extends ContentModule {
             MinecraftForge.EVENT_BUS.register(BRASS_PIPE);
         }
 
-        BookPageRegistry.addEntryToCategory(BASICS_CATEGORY, new BookEntry("research.Camouflage.name",
-          new BookPageItem("research.Camouflage.name", "research.Camouflage.0", new ItemStack(BRASS_PIPE), new ItemStack(Blocks.STONEBRICK)),
-          new BookPageText("research.Camouflage.name", "research.Camouflage.1")));
+        BookPageRegistry.addCategoryToSection(BASICS_SECTION, 4,
+          new BookCategory("category.Camouflage.name",
+            new BookEntry("research.Camouflage.name",
+              new BookPageItem("research.Camouflage.name", "research.Camouflage.0",
+                new ItemStack(BRASS_PIPE),
+                new ItemStack(Blocks.STONEBRICK)),
+              new BookPageText("research.Camouflage.name", "research.Camouflage.1"))));
 
-        BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Pipe.name",
-          new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE), new ItemStack(VALVE_PIPE)),
-          new BookPageText("research.Pipe.name", "research.Pipe.1")));
+        BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 1,
+          new BookCategory("category.Pipe.name",
+            new BookEntry("research.Pipe.name",
+              new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE), new ItemStack(VALVE_PIPE)),
+              new BookPageText("research.Pipe.name", "research.Pipe.1"))));
 
         if (Config.enableMortar && Config.enableAstrolabe) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.ItemMortar.name",
-              new BookPageItem("research.ItemMortar.name", "research.ItemMortar.0", new ItemStack(ITEM_MORTAR)),
-              new BookPageText("research.ItemMortar.name", "research.ItemMortar.1"),
-              new BookPageCrafting("", "astrolabe"),
-              new BookPageCrafting("", "itemMortar2", "itemMortar3")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 9,
+              new BookCategory("category.ItemMortar.name",
+                new BookEntry("research.ItemMortar.name",
+                  new BookPageItem("research.ItemMortar.name", "research.ItemMortar.0", new ItemStack(ITEM_MORTAR)),
+                  new BookPageText("research.ItemMortar.name", "research.ItemMortar.1"),
+                  new BookPageCrafting("", "astrolabe"),
+                  new BookPageCrafting("", "itemMortar2", "itemMortar3"))));
         }
 
         if (Config.enablePump) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Screw.name",
-              new BookPageItem("research.Screw.name", "research.Screw.0", new ItemStack(ARCHIMEDES_SCREW)),
-              new BookPageCrafting("", "pump1", "pump2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 11,
+              new BookCategory("category.Screw.name",
+                new BookEntry("research.Screw.name",
+                  new BookPageItem("research.Screw.name", "research.Screw.0", new ItemStack(ARCHIMEDES_SCREW)),
+                  new BookPageCrafting("", "pump1", "pump2"))));
         }
 
         if (Config.enableFan) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Fan.name",
-              new BookPageItem("research.Fan.name", "research.Fan.0", new ItemStack(FAN)),
-              new BookPageCrafting("", "fan1", "fan2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 14,
+              new BookCategory("category.Fan.name",
+                new BookEntry("research.Fan.name",
+                  new BookPageItem("research.Fan.name", "research.Fan.0", new ItemStack(FAN)),
+                  new BookPageCrafting("", "fan1", "fan2"))));
             if (Config.enableVacuum) {
-                BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Vacuum.name",
-                  new BookPageItem("research.Vacuum.name", "research.Vacuum.0", new ItemStack(VACUUM)),
-                  new BookPageCrafting("", "vacuum1", "vacuum2")));
+                BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 15,
+                  new BookCategory("category.Vacuum.name",
+                    new BookEntry("research.Vacuum.name",
+                      new BookPageItem("research.Vacuum.name", "research.Vacuum.0", new ItemStack(VACUUM)),
+                      new BookPageCrafting("", "vacuum1", "vacuum2"))));
             }
         }
 
         if (Config.enableFunnel) {
-            BookPageRegistry.addEntryToCategory(MISC_CATEGORY, new BookEntry("research.Funnel.name",
-              new BookPageItem("research.Funnel.name", "research.Funnel.0", true, new ItemStack(FUNNEL)),
-              new BookPageDip("", COPPER_LIQUID, 45, new ItemStack(WOODEN_CONE), new ItemStack(FUNNEL))));
+            BookPageRegistry.addCategoryToSection(MISC_SECTION,
+              new BookCategory("category.Funnel.name",
+                new BookEntry("research.Funnel.name",
+                  new BookPageItem("research.Funnel.name", "research.Funnel.0", true, new ItemStack(FUNNEL)),
+                  new BookPageDip("", COPPER_LIQUID, 45, new ItemStack(WOODEN_CONE), new ItemStack(FUNNEL)))));
         }
     }
 

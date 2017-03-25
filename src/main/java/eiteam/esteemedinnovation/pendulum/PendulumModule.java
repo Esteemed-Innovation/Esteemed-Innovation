@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_SECTION;
 
 public class PendulumModule extends ContentModule {
     public static Block PENDULUM_TORCH;
@@ -35,9 +35,11 @@ public class PendulumModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        BookPageRegistry.addEntryToCategory(MISC_CATEGORY, new BookEntry("research.Pendulum.name",
-          new BookPageItem("research.Pendulum.name", "research.Pendulum.0", true, new ItemStack(PENDULUM_TORCH)),
-          new BookPageCrafting("", "pendulum_torch")));
+        BookPageRegistry.addCategoryToSection(MISC_SECTION,
+          new BookCategory("category.Pendulum.name",
+            new BookEntry("research.Pendulum.name",
+              new BookPageItem("research.Pendulum.name", "research.Pendulum.0", true, new ItemStack(PENDULUM_TORCH)),
+              new BookPageCrafting("", "pendulum_torch"))));
     }
 
     @Override

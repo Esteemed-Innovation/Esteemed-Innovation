@@ -1,10 +1,7 @@
 package eiteam.esteemedinnovation.book;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.book.BookCategory;
-import eiteam.esteemedinnovation.api.book.BookEntry;
-import eiteam.esteemedinnovation.api.book.BookPage;
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
+import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
@@ -25,10 +22,8 @@ import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
 
@@ -46,24 +41,24 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
     public static final int BOOK_IMAGE_HEIGHT = 192;
     private GuiJournal.NextPageButton buttonNextPage;
     private GuiJournal.NextPageButton buttonPreviousPage;
-    private List<String> categories;
+    private final List<String> sections;
 
     public GuiJournal(EntityPlayer player) {
-        categories = new ArrayList<>();
-        for (BookCategory cat : BookPageRegistry.categories) {
-            if (cat.isHidden(player) || !cat.isUnlocked(player)) {
+        sections = new ArrayList<>();
+        for (BookSection section : BookPageRegistry.sections.values()) {
+            if (section.isHidden(player) || !section.isUnlocked(player)) {
                 continue;
             }
-            int pages = Arrays.stream(cat.getEntries()).filter(entry -> entry.getPages().length > 0).toArray().length;
+            int pages = section.getCategories().size();
             for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
-                categories.add(cat.getCategoryName() + (s == 0 ? "" : s));
+                sections.add(section.getName() + (s == 0 ? "" : s));
             }
         }
-        bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
+        bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
         if (!viewing.isEmpty()) {
             BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
             if (entry != null) {
-                bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().length / 2F);
+                bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().size() / 2F);
             }
         }
         ItemStack active = player.getHeldItemMainhand();
@@ -158,7 +153,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                         numPages = category.getAllVisiblePages(mc.thePlayer).length;
                     }
                 } else if (entry.isUnlocked(mc.thePlayer)) {
-                    numPages = entry.getPages().length;
+                    numPages = entry.getPages().size();
                 }
                 if (numPages != -1) {
                     lastIndexPage = currPage;
@@ -178,7 +173,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         if (keyCode == 1 && !viewing.isEmpty()) {
             viewing = "";
             currPage = lastIndexPage;
-            bookTotalPages = MathHelper.ceiling_float_int(categories.size() / 2F) + 1;
+            bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
             updateButtons();
         } else {
             super.keyTyped(typedChar, keyCode);
@@ -263,61 +258,45 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                     buttonList.remove(button);
                 }
 
-                String category = categories.get((currPage - 1) * 2);
+                String sectionName = sections.get((currPage - 1) * 2);
                 int offset = 0;
-                if (category.substring(category.length() - 1, category.length()).matches("-?\\d+")) {
-                    offset = 9 * Integer.parseInt(category.substring(category.length() - 1, category.length()));
-                    category = category.substring(0, category.length() - 1);
+                if (sectionName.substring(sectionName.length() - 1, sectionName.length()).matches("-?\\d+")) {
+                    offset = 9 * Integer.parseInt(sectionName.substring(sectionName.length() - 1, sectionName.length()));
+                    sectionName = sectionName.substring(0, sectionName.length() - 1);
                 }
-                s = I18n.format(category);
+                s = I18n.format(sectionName);
                 int i = 10;
                 int offsetCounter = 0;
                 fontRendererObj.drawString("\u00A7n" + s, k + 40 - 67, 44 + b0, 0x3F3F3F);
-                BookCategory actualCategory = BookPageRegistry.getCategoryFromName(category);
-                if (actualCategory != null) {
-                    for (BookEntry entry : Arrays.stream(actualCategory.getEntries()).filter(entry -> entry.getPages().length > 0).collect(Collectors.toList())) {
+                BookSection section = BookPageRegistry.getSectionFromName(sectionName);
+                if (section != null) {
+                    for (BookCategory cat : section.getCategories()) {
                         offsetCounter++;
                         if (offsetCounter > offset && offsetCounter < offset + 10) {
-                            s = entry.getEntryName();
-                            buttonList.add(new GuiButtonSelect(4, k + 50 - 67, b0 + 44 + i, 110, 10, s));
-                            i += 10;
-                        }
-                    }
-                    for (BookCategory subcat : actualCategory.getSubcategories()) {
-                        offsetCounter++;
-                        if (offsetCounter > offset && offsetCounter < offset + 10) {
-                            s = subcat.getCategoryName();
+                            s = cat.getName();
                             buttonList.add(new GuiButtonSelect(4, k + 50 - 67, b0 + 44 + i, 110, 10, s));
                             i += 10;
                         }
                     }
                 }
 
-                if (categories.size() > 1 + ((currPage - 1) * 2)) {
-                    category = categories.get(((currPage - 1) * 2) + 1);
+                if (sections.size() > 1 + ((currPage - 1) * 2)) {
+                    sectionName = sections.get(((currPage - 1) * 2) + 1);
                     offset = 0;
                     offsetCounter = 0;
-                    if (category.substring(category.length() - 1, category.length()).matches("-?\\d+")) {
-                        offset = 9 * Integer.parseInt(category.substring(category.length() - 1, category.length()));
-                        category = category.substring(0, category.length() - 1);
+                    if (sectionName.substring(sectionName.length() - 1, sectionName.length()).matches("-?\\d+")) {
+                        offset = 9 * Integer.parseInt(sectionName.substring(sectionName.length() - 1, sectionName.length()));
+                        sectionName = sectionName.substring(0, sectionName.length() - 1);
                     }
-                    s = I18n.format(category);
+                    s = I18n.format(sectionName);
                     i = 10;
                     fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
-                    actualCategory = BookPageRegistry.getCategoryFromName(category);
-                    if (actualCategory != null) {
-                        for (BookEntry entry : Arrays.stream(actualCategory.getEntries()).filter(entry -> entry.getPages().length > 0).collect(Collectors.toList())) {
+                    section = BookPageRegistry.getSectionFromName(sectionName);
+                    if (section != null) {
+                        for (BookCategory cat : section.getCategories()) {
                             offsetCounter++;
                             if (offsetCounter > offset && offsetCounter < offset + 10) {
-                                s = entry.getEntryName();
-                                buttonList.add(new GuiButtonSelect(4, k + 50 + 67, b0 + 44 + i, 110, 10, s));
-                                i += 10;
-                            }
-                        }
-                        for (BookCategory subcat : actualCategory.getSubcategories()) {
-                            offsetCounter++;
-                            if (offsetCounter > offset && offsetCounter < offset + 10) {
-                                s = subcat.getCategoryName();
+                                s = cat.getName();
                                 buttonList.add(new GuiButtonSelect(4, k + 50 + 67, b0 + 44 + i, 110, 10, s));
                                 i += 10;
                             }
@@ -336,7 +315,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             if (category == null) {
                 BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
                 if (entry != null) {
-                    pages = entry.getPages();
+                    pages = entry.getPages().toArray(new BookPage[entry.getPages().size()]);
                 }
             } else {
                 pages = category.getAllVisiblePages(mc.thePlayer);
@@ -408,7 +387,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 if (entry != null && entry.isUnlocked(mc.thePlayer)) {
                     viewing = BookPageRegistry.bookRecipes.get(stack).getLeft();
                     currPage = MathHelper.floor_float(BookPageRegistry.bookRecipes.get(stack).getRight() / 2.0F);
-                    bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().length / 2F);
+                    bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().size() / 2F);
                     mustReleaseMouse = true;
                     updateButtons();
                 }
@@ -498,7 +477,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         if (entry != null) {
             journal.viewing = pageName;
             int pageNumber = page.getRight();
-            journal.currPage = entry != null && entry.getPages().length > 0 ? pageNumber / 2 : 0;
+            journal.currPage = 0;
             journal.lastIndexPage = 1;
             journal.bookTotalPages = pageNumber;
             journal.updateButtons();

@@ -6,25 +6,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 
 /**
- * The registry for all book related stuff. If you are creating your own categories in the book, the best way is to use
- * the BookCategory Factory (assuming you are not making your own subclasses of BookCategory) and simply add it to the
- * registry with {@link #addTopCategory(BookCategory)}. It's much more complicated and confusing to use the other methods
- * to try to construct an entire category. If you are adding stuff to the existing things, then use the other methods.
+ * The registry for all book related stuff.
  *
- * Because the methods, {@link #getCategoryFromName(String)} and {@link #getEntryFromName(String)} search the flat list
- * of all categories, it is very important to use *unique* keynames (unlocalized names) for your entries and categories.
+ * It is very important to use *unique* keynames (unlocalized names) for your sections, categories, and entries.
  */
 public class BookPageRegistry {
     /**
-     * All of the Esteemed Innovation categories. This, logically, contains all entries and all pages as well.
-     * These are actually just the top level categories.
+     * All of the Esteemed Innovation sections. This, logically, contains all categories, entries, and pages as well.
+     * The key is simply the stable position of the section in the book.
      */
-    public static final List<BookCategory> categories = new ArrayList<>();
-
-    /**
-     * All of the categories, including other categories' subcategories.
-     */
-    public static final List<BookCategory> allCategoriesFlat = new ArrayList<>();
+    public static final TreeMap<Integer, BookSection> sections = new TreeMap<>();
 
     /**
      * All of the research pages showcasing crafting recipes.
@@ -34,36 +25,55 @@ public class BookPageRegistry {
     public static final Map<ItemStack, Pair<String, Integer>> bookRecipes = new HashMap<>();
 
     /**
-     * Adds a simple top level category with no entries. It is recommended to use a factory to construct your category
-     * entirely, and then register with {@link #addTopCategory(BookCategory)}, but you can use this.
+     * Adds a simple section with no categories. It is probably better in most cases to use the version of this
+     * method that explicitly adds a {@link BookSection} instance ({@link #addSection(BookSection)}).
      *
-     * In order to use this, you first register the category with this entry, and then use the other addTHING methods
-     * to append to the category. Again, it's recommended to use the other method instead with a fully constructed
-     * category.
-     * @param categoryName The unlocalized name for the category.
+     * In order to use this, you first register the section with this name, and then use the other addTHING methods
+     * to append to the section. Again, it's recommended to use the other method instead with a fully constructed
+     * section.
+     * @param name The unlocalized name for the section.
      */
-    public static void addTopCategory(String categoryName) {
-        addTopCategory(new BookCategory(categoryName, new BookEntry[] {}));
+    public static void addSection(String name) {
+        addSection(new BookSection(name));
     }
 
     /**
-     * Adds a top level research category.
-     * @param category The category.
+     * Adds a research section.
+     * @param section The section.
      */
-    public static void addTopCategory(BookCategory category) {
-        categories.add(category);
-        addCategoriesToFlatList(category);
+    public static void addSection(BookSection section) {
+        sections.put(sections.lastKey() + 1, section);
     }
 
     /**
-     * Adds a top level research category in a specific location in the list. Shifts everything to the right.
-     * @see List#add(int, Object)
-     * @param index The index
-     * @param category The category
+     * Position-sensitive version of {@link #addSection(BookSection)}.
      */
-    public static void addTopCategory(int index, BookCategory category) {
-        categories.add(index, category);
-        addCategoriesToFlatList(category);
+    public static void addSection(int position, BookSection section) {
+        sections.put(position, section);
+    }
+
+    /**
+     * Adds a research category to a section.
+     * @param sectionName The name of the section being added to.
+     * @param category The category to add.
+     */
+    public static void addCategoryToSection(String sectionName, BookCategory category) {
+        BookSection section = getSectionFromName(sectionName);
+        if (section != null) {
+            section.addCategories(category);
+            category.getEntries().forEach(BookPageRegistry::addEntryPagesToRecipeList);
+        }
+    }
+
+    /**
+     * Position-sensitive version of {@link #addCategoryToSection(String, BookCategory)}.
+     */
+    public static void addCategoryToSection(String sectionName, int position, BookCategory category) {
+        BookSection section = getSectionFromName(sectionName);
+        if (section != null) {
+            section.addCategory(position, category);
+            category.getEntries().forEach(BookPageRegistry::addEntryPagesToRecipeList);
+        }
     }
 
     /**
@@ -89,6 +99,17 @@ public class BookPageRegistry {
     }
 
     /**
+     * Position-sensitive version of {@link #addEntryToCategory(String, BookEntry)}.
+     */
+    public static void addEntryToCategory(String categoryName, int position, BookEntry entry) {
+        BookCategory category = getCategoryFromName(categoryName);
+        if (category != null) {
+            category.insertEntry(position, entry);
+            addEntryPagesToRecipeList(entry);
+        }
+    }
+
+    /**
      * Adds a set of pages to the given entry.
      * @param entryName The name of the entry.
      * @param pages The pages to add to the entry.
@@ -102,31 +123,6 @@ public class BookPageRegistry {
     }
 
     /**
-     * Adds a subcategory to a preexisting already registered category. The subcategory will also be added to
-     * {@link #allCategoriesFlat}.
-     * @param categoryName The name of the already-registered category to append to.
-     * @param subcategory The subcategory to add to the category.
-     */
-    public static void addSubcategoryToCategory(String categoryName, BookCategory subcategory) {
-        BookCategory category = getCategoryFromName(categoryName);
-        if (category != null) {
-            category.appendCategories(subcategory);
-            addCategoriesToFlatList(subcategory);
-        }
-    }
-
-    /**
-     * Helper method that recursively adds all categories within a category to {@link #allCategoriesFlat}.
-     * @param category The category to add to the list.
-     */
-    private static void addCategoriesToFlatList(BookCategory category) {
-        allCategoriesFlat.add(category);
-        for (BookCategory sub : category.getSubcategories()) {
-            addCategoriesToFlatList(sub);
-        }
-    }
-
-    /**
      * Helper method that adds all of an entry's crafting pages ({@link CraftingPage} subclasses) to {@link #bookRecipes}.
      * @param entry The entry to add.
      */
@@ -135,7 +131,7 @@ public class BookPageRegistry {
         for (BookPage page : entry.getPages()) {
             if (page instanceof CraftingPage) {
                 for (ItemStack craftedItem : ((CraftingPage) page).getCraftedItem()) {
-                    bookRecipes.put(craftedItem, Pair.of(entry.getEntryName(), pageNum));
+                    bookRecipes.put(craftedItem, Pair.of(entry.getName(), pageNum));
                 }
             }
             pageNum++;
@@ -144,14 +140,15 @@ public class BookPageRegistry {
 
     /**
      * @param name The entry name to search for
-     * @return The BookEntry tied to the provided name. It searches in {@link #allCategoriesFlat}, so this will search
-     *         entries of subcategories as well. Null if it is not present in any category.
+     * @return The BookEntry tied to the provided name. Null if it is not present in any category.
      */
     public static BookEntry getEntryFromName(String name) {
-        for (BookCategory category : allCategoriesFlat) {
-            for (BookEntry entry : category.getEntries()) {
-                if (entry.getEntryName().equals(name)) {
-                    return entry;
+        for (BookSection section : sections.values()) {
+            for (BookCategory category : section.getCategories()) {
+                for (BookEntry entry : category.getEntries()) {
+                    if (entry.getName().equals(name)) {
+                        return entry;
+                    }
                 }
             }
         }
@@ -160,13 +157,27 @@ public class BookPageRegistry {
 
     /**
      * @param name The category name to search for.
-     * @return The BookCategory tied to the provided name. It searches in {@link #allCategoriesFlat}, so this will
-     *         yield subcategories as well. Null if no category is found.
+     * @return The BookCategory tied to the provided name. Null if no category is found.
      */
     public static BookCategory getCategoryFromName(String name) {
-        for (BookCategory category : allCategoriesFlat) {
-            if (category.getCategoryName().equals(name)) {
-                return category;
+        for (BookSection section : sections.values()) {
+            for (BookCategory category : section.getCategories()) {
+                if (category.getName().equals(name)) {
+                    return category;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param name The section name to search for.
+     * @return The BookSection tied to the provided name. Null if no section is found.
+     */
+    public static BookSection getSectionFromName(String name) {
+        for (BookSection section : sections.values()) {
+            if (section.getName().equals(name)) {
+                return section;
             }
         }
         return null;

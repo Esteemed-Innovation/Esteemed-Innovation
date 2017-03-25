@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
 public class ConverterModule extends ContentModule {
@@ -48,11 +48,13 @@ public class ConverterModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableFluidSteamConverter) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.FSC.name",
-              new BookPageItem("research.FSC.name", "research.FSC.0", new ItemStack(PRESSURE_CONVERTER)),
-              new BookPageCrafting("", "fsc1", "fsc2"),
-              new BookPageText("", "research.FSC.1"),
-              new BookPageText("", "research.FSC.2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 16,
+              new BookCategory("category.FSC.name",
+                new BookEntry("research.FSC.name",
+                  new BookPageItem("research.FSC.name", "research.FSC.0", new ItemStack(PRESSURE_CONVERTER)),
+                  new BookPageCrafting("", "fsc1", "fsc2"),
+                  new BookPageText("", "research.FSC.1"),
+                  new BookPageText("", "research.FSC.2"))));
         }
     }
 

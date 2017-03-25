@@ -15,7 +15,7 @@ import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacketHandler;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
-import eiteam.esteemedinnovation.firearms.FlintlockBookCategory;
+import eiteam.esteemedinnovation.firearms.FlintlockBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -81,13 +81,13 @@ public class EsteemedInnovation {
     @SidedProxy(clientSide = "eiteam.esteemedinnovation.commons.ClientProxy", serverSide = "eiteam.esteemedinnovation.commons.CommonProxy")
     public static CommonProxy proxy;
 
-    public static final String BASICS_CATEGORY = "category.Basics.name";
-    public static final String CASTING_CATEGORY = "category.MetalCasting.name";
-    public static final String GADGET_CATEGORY = "category.Gadgets.name";
-    public static final String STEAMPOWER_CATEGORY = "category.SteamPower.name";
-    public static final String EXOSUIT_CATEGORY = "category.SteamExosuit.name";
-    public static final String MISC_CATEGORY = "category.Misc.name";
-    public static final String STEAMTOOL_CATEGORY = "category.SteamTools.name";
+    public static final String BASICS_SECTION = "section.Basics.name";
+    public static final String CASTING_SECTION = "section.MetalCasting.name";
+    public static final String GADGET_SECTION = "section.Gadgets.name";
+    public static final String STEAMPOWER_SECTION = "section.SteamPower.name";
+    public static final String EXOSUIT_SECTION = "section.SteamExosuit.name";
+    public static final String MISC_SECTION = "section.Misc.name";
+    public static final String STEAMTOOL_SECTION = "section.SteamTools.name";
 
     private static SoundEvent registerSound(String soundName) {
         final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
@@ -151,20 +151,22 @@ public class EsteemedInnovation {
 
         // We set up all of the top categories before calling #finish, so that every module has access to every category.
         // Ideally we'd have a better way to deal with this. I can't really think of anything that is better though.
-        BookPageRegistry.addTopCategory(new BookCategory(BASICS_CATEGORY, new BookEntry[] {}));
+        BookPageRegistry.addSection(0, new BookSection(BASICS_SECTION));
         // This is actually the Preface section that starts the book. It's barely about the journal, so that's why it's
         // not in the BookModule. If it is in the BookModule it might get pushed into a strange location in the Basics
         // category.
-        BookPageRegistry.addEntryToCategory(BASICS_CATEGORY, new BookEntry("research.Book.name",
-          new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK)),
-          new BookPageCrafting("", "book")));
-        BookPageRegistry.addTopCategory(new FlintlockBookCategory(new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(CASTING_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(GADGET_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(STEAMPOWER_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(EXOSUIT_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(STEAMTOOL_CATEGORY, new BookEntry[] {}));
-        BookPageRegistry.addTopCategory(new BookCategory(MISC_CATEGORY, new BookEntry[] {}));
+        BookPageRegistry.addCategoryToSection(BASICS_SECTION, 0,
+          new BookCategory("category.Book.name",
+            new BookEntry("research.Book.name",
+              new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK)),
+              new BookPageCrafting("", "book"))));
+        BookPageRegistry.addSection(1, new FlintlockBookSection());
+        BookPageRegistry.addSection(2, new BookSection(CASTING_SECTION));
+        BookPageRegistry.addSection(3, new BookSection(GADGET_SECTION));
+        BookPageRegistry.addSection(4, new BookSection(STEAMPOWER_SECTION));
+        BookPageRegistry.addSection(5, new BookSection(EXOSUIT_SECTION));
+        BookPageRegistry.addSection(6, new BookSection(STEAMTOOL_SECTION));
+        BookPageRegistry.addSection(7, new BookSection(MISC_SECTION));
         ContentModuleHandler.postInit();
     }
 

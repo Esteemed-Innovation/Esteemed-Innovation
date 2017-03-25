@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
@@ -88,10 +88,12 @@ public class SmasherModule extends ContentModule {
         }
 
         if (Config.enableSmasher) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Smasher.name",
-              new BookPageItem("research.Smasher.name", "research.Smasher.0", new ItemStack(ROCK_SMASHER)),
-              new BookPageText("research.Smasher.name", "research.Smasher.1"),
-              new BookPageCrafting("", "smasher1", "smasher2", "smasher3", "smasher4")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 12,
+              new BookCategory("category.Smasher.name",
+                new BookEntry("research.Smasher.name",
+                  new BookPageItem("research.Smasher.name", "research.Smasher.0", new ItemStack(ROCK_SMASHER)),
+                  new BookPageText("research.Smasher.name", "research.Smasher.1"),
+                  new BookPageCrafting("", "smasher1", "smasher2", "smasher3", "smasher4"))));
         }
     }
 

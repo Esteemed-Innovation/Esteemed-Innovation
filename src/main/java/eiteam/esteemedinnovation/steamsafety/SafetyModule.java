@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_ZINC;
 import static net.minecraft.init.Items.COMPASS;
@@ -86,22 +86,28 @@ public class SafetyModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableRuptureDisc) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.RuptureDisc.name",
-              new BookPageItem("research.RuptureDisc.name", "research.RuptureDisc.0", new ItemStack(RUPTURE_DISC)),
-              new BookPageText("research.RuptureDisc.name", "research.RuptureDisc.1"),
-              new BookPageCrafting("", "disc")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 2,
+              new BookCategory("category.RuptureDisc.name",
+                new BookEntry("research.RuptureDisc.name",
+                  new BookPageItem("research.RuptureDisc.name", "research.RuptureDisc.0", new ItemStack(RUPTURE_DISC)),
+                  new BookPageText("research.RuptureDisc.name", "research.RuptureDisc.1"),
+                  new BookPageCrafting("", "disc"))));
         }
 
         if (Config.enableHorn) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY,new BookEntry("research.Whistle.name",
-              new BookPageItem("research.Whistle.name", "research.Whistle.0", new ItemStack(STEAM_WHISTLE)),
-              new BookPageCrafting("", "whistle1", "whistle2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 3,
+              new BookCategory("category.Whistle.name",
+                new BookEntry("research.Whistle.name",
+                  new BookPageItem("research.Whistle.name", "research.Whistle.0", new ItemStack(STEAM_WHISTLE)),
+                  new BookPageCrafting("", "whistle1", "whistle2"))));
         }
 
         if (Config.enableGauge) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY,new BookEntry("research.Gauge.name",
-              new BookPageItem("research.Gauge.name", "research.Gauge.0", new ItemStack(STEAM_GAUGE)),
-              new BookPageCrafting("", "gauge")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 4,
+              new BookCategory("category.Gauge.name",
+                new BookEntry("research.Gauge.name",
+                  new BookPageItem("research.Gauge.name", "research.Gauge.0", new ItemStack(STEAM_GAUGE)),
+                  new BookPageCrafting("", "gauge"))));
         }
     }
 

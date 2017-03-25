@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_SECTION;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.IRON_LIQUID;
 
 public class WoodenConeModule extends ContentModule {
@@ -46,9 +46,11 @@ public class WoodenConeModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        BookPageRegistry.addEntryToCategory(MISC_CATEGORY, new BookEntry("research.WoodenCone.name",
-          new BookPageItem("research.WoodenCone.name", "research.WoodenCone.0", true, new ItemStack(WOODEN_CONE)),
-          new BookPageCrafting("", "woodenCone"),
-          new BookPageDip("", IRON_LIQUID, 45, new ItemStack(WOODEN_CONE), new ItemStack(Blocks.HOPPER))));
+        BookPageRegistry.addCategoryToSection(MISC_SECTION,
+          new BookCategory("category.WoodenCone.name",
+            new BookEntry("research.WoodenCone.name",
+              new BookPageItem("research.WoodenCone.name", "research.WoodenCone.0", true, new ItemStack(WOODEN_CONE)),
+              new BookPageCrafting("", "woodenCone"),
+              new BookPageDip("", IRON_LIQUID, 45, new ItemStack(WOODEN_CONE), new ItemStack(Blocks.HOPPER)))));
     }
 }

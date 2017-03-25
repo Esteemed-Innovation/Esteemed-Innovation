@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_CATEGORY;
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 import static net.minecraft.init.Items.BLAZE_POWDER;
@@ -95,28 +95,35 @@ public class ChargingModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableSteamCell) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.SteamCell.name",
-              new BookPageItem("research.SteamCell.name", "research.SteamCell.0", new ItemStack(STEAM_CELL_EMPTY), new ItemStack(STEAM_CELL_FULL)),
-              new BookPageCrafting("", "steamcell")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 7,
+              new BookCategory("category.SteamCells.name",
+                new BookEntry("research.SteamCell.name",
+                  new BookPageItem("research.SteamCell.name", "research.SteamCell.0", new ItemStack(STEAM_CELL_EMPTY), new ItemStack(STEAM_CELL_FULL)),
+                  new BookPageCrafting("", "steamcell"))));
         }
 
         if (Config.enableSteamCellBauble) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.SteamCellFiller.name",
-              new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0", new ItemStack(STEAM_CELL_FILLER)),
-              new BookPageCrafting("", "steamcellFiller")));
+            BookPageRegistry.addEntryToCategory("category.SteamCells.name",
+              new BookEntry("research.SteamCellFiller.name",
+                new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0", new ItemStack(STEAM_CELL_FILLER)),
+                new BookPageCrafting("", "steamcellFiller")));
         }
 
         if (Config.enableCharger) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Filler.name",
-              new BookPageItem("research.Filler.name", "research.Filler.0", new ItemStack(STEAM_FILLER)),
-              new BookPageText("research.Filler.name", "research.Filler.1"),
-              new BookPageCrafting("", "filler")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 6,
+              new BookCategory("category.Filler.name",
+                new BookEntry("research.Filler.name",
+                  new BookPageItem("research.Filler.name", "research.Filler.0", new ItemStack(STEAM_FILLER)),
+                  new BookPageText("research.Filler.name", "research.Filler.1"),
+                  new BookPageCrafting("", "filler"))));
         }
 
         if (Config.enableChargingPad && Config.enableCharger) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.FillingPad.name",
-              new BookPageItem("research.FillingPad.name", "research.FillingPad.0", new ItemStack(FILLING_PAD)),
-              new BookPageCrafting("", "fillingPad1", "fillingPad2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 7,
+              new BookCategory("category.FillingPad.name",
+                new BookEntry("research.Filler.name",
+                  new BookPageItem("research.FillingPad.name", "research.FillingPad.0", new ItemStack(FILLING_PAD)),
+                  new BookPageCrafting("", "fillingPad1", "fillingPad2"))));
         }
     }
 

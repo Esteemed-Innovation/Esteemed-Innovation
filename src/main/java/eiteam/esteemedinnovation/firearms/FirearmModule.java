@@ -34,11 +34,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.*;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
@@ -315,7 +314,7 @@ public class FirearmModule extends ContentModule {
             ));
         }
 
-        MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandlers());
+        MinecraftForge.EVENT_BUS.register(new FlintlockBookSection.EventHandlers());
     }
 
     private static void addRocketLauncherRecipe(String name, String brassOre, String copperOre) {
@@ -337,138 +336,134 @@ public class FirearmModule extends ContentModule {
         if (!Config.enableFirearms && !Config.enableRL) {
             return;
         }
-
-        List<BookEntry> entries = new ArrayList<>();
-        List<BookCategory> subcategories = new ArrayList<>();
-        entries.add(new BookEntry("research.Parts.name",
-          new BookPageItem("research.Parts.name", "research.Parts.0",
-            new ItemStack(COMPONENT, 1, BLUNDERBUSS_BARREL.getMetadata()),
-            new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()),
-            new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata()),
-            new ItemStack(COMPONENT, 1, IRON_BARREL.getMetadata())),
-          new BookPageCrafting("", "stock"),
-          new BookPageCrafting("", "barrel1", "barrel2"),
-          new BookPageCrafting("", "blunderBarrel1", "blunderBarrel2"),
-          new BookPageCrafting("", "flintlock1", "flintlock2")));
+        BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME,
+          new BookCategory("category.Parts.name",
+            new BookEntry("research.Parts.name",
+              new BookPageItem("research.Parts.name", "research.Parts.0",
+                new ItemStack(COMPONENT, 1, BLUNDERBUSS_BARREL.getMetadata()),
+                new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()),
+                new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata()),
+                new ItemStack(COMPONENT, 1, IRON_BARREL.getMetadata())),
+              new BookPageCrafting("", "stock"),
+              new BookPageCrafting("", "barrel1", "barrel2"),
+              new BookPageCrafting("", "blunderBarrel1", "blunderBarrel2"),
+              new BookPageCrafting("", "flintlock1", "flintlock2"))));
 
         if (Config.enableFirearms) {
-            BookEntry entryMusket = new BookEntry("research.Musket.name",
-              new BookPageItem("research.Musket.name", "research.Musket.0", new ItemStack(MUSKET)),
-              new BookPageCrafting("", "cartridge1", "cartridge2", "cartridge3", "cartridge4"),
-              new BookPageCrafting("", "musket"));
-            BookCategory.Factory catMusketFactory = new BookCategory.Factory("research.Musket.name").append(entryMusket);
-
-            BookEntry entryBlunderbuss = new BookEntry("research.Blunderbuss.name",
-              new BookPageItem("research.Blunderbuss.name", "research.Blunderbuss.0",
-                new ItemStack(BLUNDERBUSS)), new BookPageCrafting("", "blunderbuss"));
-            BookCategory.Factory catBlunderbussFactory = new BookCategory.Factory("research.Blunderbuss.name").append(entryBlunderbuss);
+            BookCategory musketCategory = new BookCategory("category.Musket.name",
+              new BookEntry("research.Musket.name",
+                new BookPageItem("research.Musket.name", "research.Musket.0", new ItemStack(MUSKET)),
+                new BookPageCrafting("", "cartridge1", "cartridge2", "cartridge3", "cartridge4"),
+                new BookPageCrafting("", "musket")));
+            BookCategory blunderbussCategory = new BookCategory("category.Blunderbuss.name",
+              new BookEntry("research.Blunderbuss.name",
+                new BookPageItem("research.Blunderbuss.name", "research.Blunderbuss.0", new ItemStack(BLUNDERBUSS)),
+                new BookPageCrafting("", "blunderbuss")));
 
             if (Config.enableSpyglass) {
-                catMusketFactory.append(new BookEntry("research.EnhancementSpyglass.name",
+                musketCategory.appendEntries(new BookEntry("research.EnhancementSpyglass.name",
                   new BookPageItem("research.EnhancementSpyglass.name", "research.EnhancementSpyglass.0", true, new ItemStack(SPYGLASS))));
             }
             if (Config.enableEnhancementAblaze) {
                 BookPageCrafting ablazeCraft = new BookPageCrafting("", "ablaze");
-                catMusketFactory.append(new BookEntry("research.EnhancementAblaze.name",
+                musketCategory.appendEntries(new BookEntry("research.EnhancementAblaze.name",
                   new BookPageItem("research.EnhancementAblaze.name", "research.EnhancementAblaze.0", true, new ItemStack(BLAZE_BARREL)),
                   ablazeCraft));
-                catBlunderbussFactory.append(new BookEntry("research.EnhancementAblaze2.name",
+                blunderbussCategory.appendEntries(new BookEntry("research.EnhancementAblaze2.name",
                   new BookPageItem("research.EnhancementAblaze2.name", "research.EnhancementAblaze2.0", true, new ItemStack(BLAZE_BARREL)),
                   ablazeCraft));
             }
             if (Config.enableEnhancementSpeedloader) {
                 BookPageCrafting speedloaderCraft = new BookPageCrafting("", "speedloader1", "speedloader2");
-                catMusketFactory.append(new BookEntry("research.EnhancementSpeedloader.name",
+                musketCategory.appendEntries(new BookEntry("research.EnhancementSpeedloader.name",
                   new BookPageItem("research.EnhancementSpeedloader.name", "research.EnhancementSpeedloader.0", true, new ItemStack(BOLT_ACTION)),
                   speedloaderCraft));
-                catBlunderbussFactory.append(new BookEntry("research.EnhancementSpeedloader2.name",
+                blunderbussCategory.appendEntries(new BookEntry("research.EnhancementSpeedloader2.name",
                   new BookPageItem("research.EnhancementSpeedloader2.name", "research.EnhancementSpeedloader2.0", true, new ItemStack(BOLT_ACTION)),
                   speedloaderCraft));
             }
             if (Config.enableEnhancementRecoil) {
-                catBlunderbussFactory.append(new BookEntry("research.EnhancementRecoil.name",
+                blunderbussCategory.appendEntries(new BookEntry("research.EnhancementRecoil.name",
                   new BookPageItem("research.EnhancementRecoil.name", "research.EnhancementRecoil.0", true, new ItemStack(RECOIL_PAD)),
                   new BookPageCrafting("", "recoil")));
             }
 
-            subcategories.add(catMusketFactory.build());
-            subcategories.add(catBlunderbussFactory.build());
-
-            BookEntry entryPistol = new BookEntry("research.Pistol.name",
-              new BookPageItem("research.Pistol.name", "research.Pistol.0", new ItemStack(PISTOL)),
-              new BookPageCrafting("", "pistol"));
-            BookCategory.Factory catPistol = new BookCategory.Factory("research.Pistol.name").append(entryPistol);
+            BookCategory pistolCategory = new BookCategory("category.Pistol.name",
+              new BookEntry("research.Pistol.name",
+                new BookPageItem("research.Pistol.name", "research.Pistol.0", new ItemStack(PISTOL)),
+                new BookPageCrafting("", "pistol")));
 
             if (Config.enableEnhancementRevolver) {
-                catPistol.append(new BookEntry("research.EnhancementRevolver.name",
+                pistolCategory.appendEntries(new BookEntry("research.EnhancementRevolver.name",
                   new BookPageItem("research.EnhancementRevolver.name", "research.EnhancementRevolver.0", true, new ItemStack(REVOLVER_CHAMBER)),
                   new BookPageCrafting("", "revolver")));
             }
             if (Config.enableEnhancementSilencer) {
-                catPistol.append(new BookEntry("research.EnhancementSilencer.name",
+                pistolCategory.appendEntries(new BookEntry("research.EnhancementSilencer.name",
                   new BookPageItem("research.EnhancementSilencer.name", "research.EnhancementSilencer.0", true, new ItemStack(MAKESHIFT_SUPPRESSOR)),
                   new BookPageCrafting("", "silencer")));
             }
             if (Config.enableEnhancementSpeedy) {
-                catPistol.append(new BookEntry("research.EnhancementSpeedy.name",
+                pistolCategory.appendEntries(new BookEntry("research.EnhancementSpeedy.name",
                   new BookPageItem("research.EnhancementSpeedy.name", "research.EnhancementSpeedy.0", true, new ItemStack(BREECH)),
                   new BookPageCrafting("", "speedy")));
             }
 
-            subcategories.add(catPistol.build());
+            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, musketCategory);
+            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, blunderbussCategory);
+            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, pistolCategory);
         }
         if (Config.enableRL) {
-            BookEntry entryRL = new BookEntry("research.RocketLauncher.name",
-              new BookPageItem("research.RocketLauncher.name", "research.RocketLauncher.0", new ItemStack(ROCKET_LAUNCHER)),
-              new BookPageCrafting("", "rocket1", "rocket2", "rocket3", "rocket4"));
-            BookCategory.Factory catRLFactory = new BookCategory.Factory("research.RocketLauncher.name").append(entryRL);
+            BookCategory rocketLauncherCategory = new BookCategory("category.RocketLauncher.name",
+              new BookEntry("research.RocketLauncher.name",
+                new BookPageItem("research.RocketLauncher.name", "research.RocketLauncher.0", new ItemStack(ROCKET_LAUNCHER)),
+                new BookPageCrafting("", "rocket1", "rocket2", "rocket3", "rocket4")));
 
             if (Config.enableEnhancementFastRockets) {
-                catRLFactory.append(new BookEntry("research.EnhancementFastRockets.name",
+                rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancementFastRockets.name",
                   new BookPageItem("research.EnhancementFastRockets.name", "research.EnhancementFastRockets.0", true, new ItemStack(STREAMLINED_BARREL)),
                   new BookPageCrafting("", "fastRockets")));
             }
             if (Config.enableEnhancementAmmo) {
-                catRLFactory.append(new BookEntry("research.EnhancementAmmo.name",
+                rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancementAmmo.name",
                   new BookPageItem("research.EnhancementAmmo.name", "research.EnhancementAmmo.0", true, new ItemStack(EXTENDED_MAGAZINE)),
                   new BookPageCrafting("", "ammo1", "ammo2")));
             }
             if (Config.enableEnhancementAirStrike) {
-                catRLFactory.append(new BookEntry("research.EnhancemenAirStrike.name",
+                rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancemenAirStrike.name",
                   new BookPageItem("research.EnhancementAirStrike.name", "research.EnhancementAirStrike.0", true, new ItemStack(AIR_STRIKE_CONVERSION_KIT)),
                   new BookPageCrafting("", "airStrike1", "airStrike2")));
             }
 
-            BookCategory.Factory catRocketsFactory = new BookCategory.Factory("research.Rockets.name");
+            BookCategory rocketsCategory = new BookCategory("category.Rockets.name");
             if (Config.enableRocket) {
-                catRocketsFactory.append(new BookEntry("research.Rocket.name",
+                rocketsCategory.appendEntries(new BookEntry("research.Rocket.name",
                   new BookPageItem("research.Rocket.name", "research.Rocket.0", true, new ItemStack(ROCKET)),
                   new BookPageCrafting("", "normalRocket1", "normalRocket2")));
             }
             if (Config.enableRocketConcussive) {
                 BookPageCrafting crafting = Config.enableRocket ? new BookPageCrafting("", "concussiveRocket") : new BookPageCrafting("", "concussiveRocket1", "concussiveRocket2");
-                catRocketsFactory.append(new BookEntry("research.RocketConcussive.name",
+                rocketsCategory.appendEntries(new BookEntry("research.RocketConcussive.name",
                   new BookPageItem("research.RocketConcussive.name", "research.RocketConcussive.0", true, new ItemStack(CONCUSSIVE_ROCKET)),
                   crafting));
             }
             if (Config.enableRocketMining) {
-                catRocketsFactory.append(new BookEntry("research.RocketMining.name",
+                rocketsCategory.appendEntries(new BookEntry("research.RocketMining.name",
                   new BookPageItem("research.RocketMining.name", "research.RocketMining.0", true, new ItemStack(MINING_ROCKET)),
                   new BookPageCrafting("", "miningRocket")));
             }
 
-            catRLFactory.append(catRocketsFactory.build());
-            subcategories.add(catRLFactory.build());
+            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, rocketLauncherCategory);
+            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, rocketsCategory);
         }
 
         if (Config.enableSpyglass) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Spyglass.name",
-              new BookPageItem("research.Spyglass.name", "research.Spyglass.0", new ItemStack(SPYGLASS)),
-              new BookPageCrafting("", "spyglass1", "spyglass2")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 1,
+              new BookCategory("category.Spyglass.name",
+                new BookEntry("research.Spyglass.name",
+                  new BookPageItem("research.Spyglass.name", "research.Spyglass.0", new ItemStack(SPYGLASS)),
+                  new BookPageCrafting("", "spyglass1", "spyglass2"))));
         }
-
-        subcategories.forEach(sub -> BookPageRegistry.addSubcategoryToCategory(FlintlockBookCategory.NAME, sub));
-        entries.forEach(entry -> BookPageRegistry.addEntryToCategory(FlintlockBookCategory.NAME, entry));
     }
 
     @SideOnly(Side.CLIENT)

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
@@ -57,10 +57,12 @@ public class ThumperModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableThumper) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Thumper.name",
-              new BookPageItem("research.Thumper.name", "research.Thumper.0", new ItemStack(THUMPER)),
-              new BookPageText("research.Thumper.name", "research.Thumper.1"),
-              new BookPageCrafting("", "thumper1", "thumper2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 13,
+              new BookCategory("category.Thumper.name",
+                new BookEntry("research.Thumper.name",
+                  new BookPageItem("research.Thumper.name", "research.Thumper.0", new ItemStack(THUMPER)),
+                  new BookPageText("research.Thumper.name", "research.Thumper.1"),
+                  new BookPageCrafting("", "thumper1", "thumper2"))));
         }
     }
 

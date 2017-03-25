@@ -833,56 +833,77 @@ public class ArmorModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableTopHat) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.TopHat.name",
-              new BookPageItem("research.TopHat.name", "research.TopHat.0", new ItemStack(TOP_HAT)),
-              new BookPageCrafting("", "hat")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 4,
+              new BookCategory("category.TopHat.name",
+                new BookEntry("research.TopHat.name",
+                  new BookPageItem("research.TopHat.name", "research.TopHat.0", new ItemStack(TOP_HAT)),
+                  new BookPageCrafting("", "hat")
+                )
+              )
+            );
             if (Config.enableEmeraldHat) {
-                BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.TopHatEmerald.name",
-                  new BookPageItem("research.TopHatEmerald.name", "research.TopHatEmerald.0", new ItemStack(ENTREPRENEUR_TOP_HAT)),
-                  new BookPageCrafting("", "hatEmerald")));
+                BookPageRegistry.addCategoryToSection(GADGET_SECTION, 5,
+                  new BookCategory("category.TopHatEmerald.name",
+                    new BookEntry("research.TopHatEmerald.name",
+                      new BookPageItem("research.TopHatEmerald.name", "research.TopHatEmerald.0", new ItemStack(ENTREPRENEUR_TOP_HAT)),
+                      new BookPageCrafting("", "hatEmerald")
+                    )
+                  )
+                );
             }
         }
 
         if (Config.enableGoggles) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Goggles.name",
-              new BookPageItem("research.Goggles.name", "research.Goggles.0", new ItemStack(GOGGLES), new ItemStack(MONOCLE)),
-              new BookPageCrafting("", "goggles1", "goggles2"),
-              new BookPageCrafting("", "monocle1", "monocle2")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 6,
+              new BookCategory("category.Goggles.name",
+                new BookEntry("research.Goggles.name",
+                  new BookPageItem("research.Goggles.name", "research.Goggles.0", new ItemStack(GOGGLES), new ItemStack(MONOCLE)),
+                  new BookPageCrafting("", "goggles1", "goggles2"),
+                  new BookPageCrafting("", "monocle1", "monocle2")
+                )
+              )
+            );
         }
 
         if (Config.enableExosuit && Config.enableEngineering) {
-            BookPageRegistry.addEntryToCategory(EXOSUIT_CATEGORY, new BookEntry("research.SteamExosuit.name",
-              new BookPageItem("research.SteamExosuit.name", "research.SteamExosuit.0",
-                new ItemStack(STEAM_EXO_HEAD),
-                new ItemStack(STEAM_EXO_CHEST),
-                new ItemStack(STEAM_EXO_LEGS),
-                new ItemStack(STEAM_EXO_BOOTS)),
-              new BookPageText("research.SteamExosuit.name", "research.SteamExosuit.1"),
-              new BookPageCrafting("", "engineering"),
-              new BookPageCrafting("", "steamExoHead"),
-              new BookPageCrafting("", "steamExoBody"),
-              new BookPageCrafting("", "steamExoLegs"),
-              new BookPageCrafting("", "steamExoFeet")));
+            BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION,
+              new BookCategory("category.SteamExosuit.name",
+                new BookEntry("research.SteamExosuit.name",
+                  new BookPageItem("research.SteamExosuit.name", "research.SteamExosuit.0",
+                    new ItemStack(STEAM_EXO_HEAD),
+                    new ItemStack(STEAM_EXO_CHEST),
+                    new ItemStack(STEAM_EXO_LEGS),
+                    new ItemStack(STEAM_EXO_BOOTS)),
+                  new BookPageText("research.SteamExosuit.name", "research.SteamExosuit.1"),
+                  new BookPageCrafting("", "engineering"),
+                  new BookPageCrafting("", "steamExoHead"),
+                  new BookPageCrafting("", "steamExoBody"),
+                  new BookPageCrafting("", "steamExoLegs"),
+                  new BookPageCrafting("", "steamExoFeet")
+                )
+              )
+            );
 
             // TODO: Entries for Leather Exosuit
 
-            {
-                BookCategory.Factory tankFactory = new BookCategory.Factory("research.ExoTank.name")
-                  .append(new BookEntry("research.ExoTank.name",
-                    new BookPageItem("research.ExoTank.name", "research.ExoTank.0", new ItemStack(STEAM_TANK)),
-                    new BookPageItem("research.ExoTankBase.name", "research.ExoTankBase.0", true, new ItemStack(STEAM_TANK))));
-                if (Config.enableReinforcedTank) {
-                    tankFactory.append(new BookEntry("research.ExoTankReinforced.name",
-                      new BookPageItem("research.ExoTankReinforced.name", "research.ExoTankReinforced.0", true, new ItemStack(REINFORCED_TANK)),
-                      new BookPageCrafting("", "reinforcedTank1", "reinforcedTank2")));
-                }
-                if (Config.enableUberReinforcedTank) {
-                    tankFactory.append(new BookEntry("research.ExoTankUberReinforced",
-                      new BookPageItem("research.ExoTankUberReinforced.name", "research.ExoTankUberReinforced.0", true, new ItemStack(UBER_REINFORCED_TANK)),
-                      new BookPageCrafting("", "uberReinforcedTank1", "uberReinforcedTank2")));
-                }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, tankFactory.build());
+            BookCategory tankCategory = new BookCategory("category.ExoTank.name",
+              new BookEntry("research.ExoTank.name",
+                new BookPageItem("research.ExoTank.name", "research.ExoTank.0", new ItemStack(STEAM_TANK)),
+                new BookPageItem("research.ExoTankBase.name", "research.ExoTankBase.0", true, new ItemStack(STEAM_TANK))
+              )
+            );
+
+            if (Config.enableReinforcedTank) {
+                tankCategory.appendEntries(new BookEntry("research.ExoTankUberReinforced",
+                  new BookPageItem("research.ExoTankUberReinforced.name", "research.ExoTankUberReinforced.0", true, new ItemStack(UBER_REINFORCED_TANK)),
+                  new BookPageCrafting("", "uberReinforcedTank1", "uberReinforcedTank2")));
             }
+            if (Config.enableUberReinforcedTank) {
+                tankCategory.appendEntries(new BookEntry("research.ExoTankUberReinforced",
+                  new BookPageItem("research.ExoTankUberReinforced.name", "research.ExoTankUberReinforced.0", true, new ItemStack(UBER_REINFORCED_TANK)),
+                  new BookPageCrafting("", "uberReinforcedTank1", "uberReinforcedTank2")));
+            }
+            BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, tankCategory);
 
             {
                 ItemStack[] stacks = new ItemStack[4];
@@ -903,42 +924,44 @@ public class ArmorModule extends ContentModule {
                     stacks[i] = stack;
                 }
 
-                BookCategory.Factory plateFactory = new BookCategory.Factory("research.ExoPlates.name")
-                  .append(new BookEntry("research.ExoPlates.name",
+                BookCategory plateCategory = new BookCategory("category.ExoPlates.name",
+                  new BookEntry("research.ExoPlates.name",
                     new BookPageItem("research.ExoPlates.name", "research.ExoPlates.0", stacks),
-                    new BookPageText("", "research.ExoPlates.1")));
+                    new BookPageText("", "research.ExoPlates.1")
+                  )
+                );
 
                 if (Config.enableCopperPlate) {
-                    plateFactory.append(new BookEntry("research.PlateCopper.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateCopper.name",
                       new BookPageItem("research.PlateCopper.name", "research.PlateCopper.0", true, plateStack(COPPER_PLATE_META)),
                       new BookPageCrafting("", "exoCopper")));
                 }
                 if (Config.enableIronPlate) {
-                    plateFactory.append(new BookEntry("research.PlateIron.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateIron.name",
                       new BookPageItem("research.PlateIron.name", "research.PlateIron.0", true, plateStack(IRON_PLATE_META)),
                       new BookPageCrafting("", "exoIron")));
                 }
                 if (Config.enableBrassPlate) {
-                    plateFactory.append(new BookEntry("research.PlateBrass.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateBrass.name",
                       new BookPageItem("research.PlateBrass.name", "research.PlateBrass.0", true, plateStack(BRASS_PLATE_META)),
                       new BookPageCrafting("", "exoBrass")));
                 }
                 if (Config.enableGoldPlate) {
-                    plateFactory.append(new BookEntry("research.PlateGold.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateGold.name",
                       new BookPageItem("research.PlateGold.name", "research.PlateGold.0", true, plateStack(GOLD_PLATE_META)),
                       new BookPageCrafting("", "exoGold")));
                 }
                 if (Config.enableGildedIronPlate) {
-                    plateFactory.append(new BookEntry("research.PlateGilded.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateGilded.name",
                       new BookPageItem("research.PlateGilded.name", "research.PlateGilded.0", true, plateStack(GILDED_IRON_PLATE_META)),
                       new BookPageCrafting("", "exoGildedIron")));
                 }
                 if (Config.enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty()) {
-                    plateFactory.append(new BookEntry("research.PlateLead.name",
+                    plateCategory.appendEntries(new BookEntry("research.PlateLead.name",
                       new BookPageItem("research.PlateLead.name", "research.PlateLead.0", true, plateStack(LEAD_PLATE_META)),
                       new BookPageCrafting("", "exoLead")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, plateFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, plateCategory);
             }
             {
                 ItemStack[] stacks = new ItemStack[4];
@@ -955,133 +978,134 @@ public class ArmorModule extends ContentModule {
                   new ItemStack(DYE, 1, 2),
                   new ItemStack(DYE, 1, 3)
                 };
-                BookCategory.Factory vanityFactory = new BookCategory.Factory("research.ExoVanity.name")
-                  .append(new BookEntry("research.ExoVanity.name",
-                    new BookPageItem("research.ExoVanity.name", "research.ExoVanity.0", stacks)))
-                  .append(new BookEntry("research.ExoDyes.name",
+                BookCategory vanityCategory = new BookCategory("category.ExoVanity.name",
+                  new BookEntry("research.ExoVanity.name",
+                    new BookPageItem("research.ExoVanity.name", "research.ExoVanity.0", stacks)),
+                  new BookEntry("research.ExoDyes.name",
                     new BookPageItem("research.ExoDyes.name", "research.ExoDyes.0", true, dyes)));
                 if (Config.enableEnderShroud) {
-                    vanityFactory.append(new BookEntry("research.EnderShroud.name",
-                      new BookPageItem("research.EnderShroud.name", "research.EnderShroud.0", true, new ItemStack(ENDER_SHROUD)),
-                      new BookPageCrafting("", "enderShroud")));
+                    vanityCategory.appendEntries(
+                      new BookEntry("research.EnderShroud.name",
+                        new BookPageItem("research.EnderShroud.name", "research.EnderShroud.0", true, new ItemStack(ENDER_SHROUD)),
+                        new BookPageCrafting("", "enderShroud")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, vanityFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, vanityCategory);
             }
 
             {
-                BookCategory.Factory headHelmFactory = new BookCategory.Factory("research.ExoHeadHelm.name");
+                BookCategory headHelmCategory = new BookCategory("category.ExoHeadHelm.name");
                 if (Config.enableTopHat) {
-                    headHelmFactory.append(new BookEntry("research.ExoTopHat.name",
+                    headHelmCategory.appendEntries(new BookEntry("research.ExoTopHat.name",
                       new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(TOP_HAT), new ItemStack(ENTREPRENEUR_TOP_HAT)),
                       new BookPage("")));
                 }
                 if (Config.enableFrequencyShifter) {
-                    headHelmFactory.append(new BookEntry("research.FrequencyShifter.name",
+                    headHelmCategory.appendEntries(new BookEntry("research.FrequencyShifter.name",
                       new BookPageItem("research.FrequencyShifter.name", "research.FrequencyShifter.0", true, new ItemStack(FREQUENCY_SHIFTER)),
                       new BookPageCrafting("", "frequencyShifter")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, headHelmFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, headHelmCategory);
             }
 
             {
-                BookCategory.Factory headGoggleFactory = new BookCategory.Factory("research.ExoHeadGoggle.name");
+                BookCategory headGoggleCategory = new BookCategory("category.ExoHeadGoggle.name");
                 if (Config.enableGoggles) {
-                    headGoggleFactory.append(new BookEntry("research.ExoGoggles.name",
+                    headGoggleCategory.appendEntries(new BookEntry("research.ExoGoggles.name",
                       new BookPageItem("research.ExoGoggles.name", "research.ExoGoggles.0", true, new ItemStack(GOGGLES), new ItemStack(MONOCLE)),
                       new BookPage("")));
                 }
                 if (Config.enableRebreather) {
-                    headGoggleFactory.append(new BookEntry("research.Rebreather.name",
+                    headGoggleCategory.appendEntries(new BookEntry("research.Rebreather.name",
                       new BookPageItem("research.Rebreather.name", "research.Rebreather.0", true, new ItemStack(REBREATHER)),
                       new BookPageCrafting("", "rebreather")));
                 }
                 if (Config.enableDragonRoar) {
-                    headGoggleFactory.append(new BookEntry("research.DragonRoar.name",
+                    headGoggleCategory.appendEntries(new BookEntry("research.DragonRoar.name",
                       new BookPageItem("research.DragonRoar.name", "research.DragonRoar.0", true, new ItemStack(DRAGON_ROAR)),
                       new BookPageCrafting("", "dragonRoar")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, headGoggleFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, headGoggleCategory);
             }
 
             {
-                BookCategory.Factory backFactory = new BookCategory.Factory("research.ExoBack.name");
+                BookCategory backCategory = new BookCategory("category.ExoBack.name");
                 if (Config.enableJetpack) {
-                    backFactory.append(new BookEntry("research.Jetpack.name",
+                    backCategory.appendEntries(new BookEntry("research.Jetpack.name",
                       new BookPageItem("research.Jetpack.name", "research.Jetpack.0", true, new ItemStack(JETPACK)),
                       new BookPageCrafting("", "jetpack1", "jetpack2")));
                 }
                 if (Config.enableWings) {
-                    backFactory.append(new BookEntry("research.Wings.name",
+                    backCategory.appendEntries(new BookEntry("research.Wings.name",
                       new BookPageItem("research.Wings.name", "research.Wings.0", true, new ItemStack(WINGS)),
                       new BookPageCrafting("", "wings1", "wings2")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, backFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, backCategory);
             }
 
             {
-                BookCategory.Factory armFactory = new BookCategory.Factory("research.ExoArm.name");
+                BookCategory armCategory = new BookCategory("category.ExoArm.name");
                 if (Config.enablePowerFist) {
-                    armFactory.append(new BookEntry("research.Fist.name",
+                    armCategory.appendEntries(new BookEntry("research.Fist.name",
                       new BookPageItem("research.Fist.name", "research.Fist.0", true, new ItemStack(POWER_FIST)),
                       new BookPageCrafting("", "powerFist1", "powerFist2")));
                 }
                 if (Config.enableExtendoFist) {
-                    armFactory.append(new BookEntry("research.ExtendoFist.name",
+                    armCategory.appendEntries(new BookEntry("research.ExtendoFist.name",
                       new BookPageItem("research.ExtendoFist.name", "research.ExtendoFist.0", true, new ItemStack(EXTENDO_FIST)),
                       new BookPageCrafting("", "extendoFist1", "extendoFist2")));
                 }
                 if (Config.enablePitonDeployer) {
-                    armFactory.append(new BookEntry("research.PitonDeployer.name",
+                    armCategory.appendEntries(new BookEntry("research.PitonDeployer.name",
                       new BookPageItem("research.PitonDeployer.name", "research.PitonDeployer.0", true, new ItemStack(PITON_DEPLOYER)),
                       new BookPageCrafting("", "pitonDeployer")));
                 }
                 if (Config.enablePistonPush) {
-                    armFactory.append(new BookEntry("research.PistonPush.name",
+                    armCategory.appendEntries(new BookEntry("research.PistonPush.name",
                       new BookPageItem("research.PistonPush.name", "research.PistonPush.0", true, new ItemStack(PISTON_PUSH)),
                       new BookPageCrafting("", "pistonPush")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, armFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, armCategory);
             }
 
             {
-                BookCategory.Factory hipFactory = new BookCategory.Factory("research.ExoHip.name");
+                BookCategory hipCategory = new BookCategory("category.ExoHip.name");
                 if (Config.enableThrusters) {
-                    hipFactory.append(new BookEntry("research.Thrusters.name",
+                    hipCategory.appendEntries(new BookEntry("research.Thrusters.name",
                       new BookPageItem("research.Thrusters.name", "research.Thrusters.0", true, new ItemStack(THRUSTERS)),
                       new BookPageCrafting("", "thrusters1", "thrusters2")));
                 }
                 if (Config.enableCanningMachine) {
-                    hipFactory.append(new BookEntry("research.Canner.name",
+                    hipCategory.appendEntries(new BookEntry("research.Canner.name",
                       new BookPageItem("research.Canner.name", "research.Canner.0", true, new ItemStack(CANNING_MACHINE)),
                       new BookPageCrafting("", "canner1", "canner2", "canner3", "canner4")));
                 }
                 if (Config.enableReloadingHolsters) {
-                    hipFactory.append(new BookEntry("research.ReloadingHolsters.name",
+                    hipCategory.appendEntries(new BookEntry("research.ReloadingHolsters.name",
                       new BookPageItem("research.ReloadingHolsters.name", "research.ReloadingHolsters.0", true, new ItemStack(RELOADING_HOLSTERS)),
                       new BookPageCrafting("", "reloadingHolsters")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, hipFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, hipCategory);
             }
 
             {
-                BookCategory.Factory legFactory = new BookCategory.Factory("research.ExoLeg.name");
+                BookCategory legCategory = new BookCategory("category.ExoLeg.name");
                 if (Config.enableRunAssist) {
-                    legFactory.append(new BookEntry("research.RunAssist.name",
+                    legCategory.appendEntries(new BookEntry("research.RunAssist.name",
                       new BookPageItem("research.RunAssist.name", "research.RunAssist.0", true, new ItemStack(RUN_ASSIST)),
                       new BookPageCrafting("", "runAssist1", "runAssist2")));
                 }
                 if (Config.enableStealthUpgrade) {
-                    legFactory.append(new BookEntry("research.StealthUpgrade.name",
+                    legCategory.appendEntries(new BookEntry("research.StealthUpgrade.name",
                       new BookPageItem("research.StealthUpgrade.name", "research.StealthUpgrade.0", true, new ItemStack(STEALTH)),
                       new BookPageCrafting("", "stealthUpgrade")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, legFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, legCategory);
             }
 
             {
-                BookCategory.Factory heelFactory = new BookCategory.Factory("research.ExoHell.name");
+                BookCategory heelCategory = new BookCategory("category.ExoHeel.name");
                 if (Config.enableFallAssist) {
-                    heelFactory.append(new BookEntry("research.FallAssist.name",
+                    heelCategory.appendEntries(new BookEntry("research.FallAssist.name",
                       new BookPageItem("research.FallAssist.name", "research.FallAssist.0", true, new ItemStack(FALL_ASSIST)),
                       new BookPageCrafting("", "noFall")));
                 }
@@ -1089,36 +1113,36 @@ public class ArmorModule extends ContentModule {
                     boolean lead = Config.enableLeadPlate &&
                       !OreDictionary.getOres(INGOT_LEAD).isEmpty() && !Config.enableAnchorAnvilRecipe;
                     String desc = lead ? "research.AnchorHeelsLead.0" : "research.AnchorHeelsIron.0";
-                    heelFactory.append(new BookEntry("research.AnchorHeels.name",
+                    heelCategory.appendEntries(new BookEntry("research.AnchorHeels.name",
                       new BookPageItem("research.AnchorHeels.name", desc, true, new ItemStack(ANCHOR_HEELS)),
                       new BookPageCrafting("", "anchorHeels")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, heelFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, heelCategory);
             }
 
             {
-                BookCategory.Factory footFactory = new BookCategory.Factory("research.ExoFoot.name");
+                BookCategory footCategory = new BookCategory("category.ExoFoot.name");
                 if (Config.enableDoubleJump) {
-                    footFactory.append(new BookEntry("research.DoubleJump.name",
+                    footCategory.appendEntries(new BookEntry("research.DoubleJump.name",
                       new BookPageItem("research.DoubleJump.name", "research.DoubleJump.0", true, new ItemStack(DOUBLE_JUMP)),
                       new BookPageCrafting("", "doubleJump1", "doubleJump2")));
                 }
                 if (Config.enableHydrophobic) {
-                    footFactory.append(new BookEntry("research.Hydrophobic.name",
+                    footCategory.appendEntries(new BookEntry("research.Hydrophobic.name",
                       new BookPageItem("research.Hydrophobic.name", "research.Hydrophobic.0", true, new ItemStack(HYDROPHOBIC_COATINGS)),
                       new BookPageCrafting("", "hydrophobic")));
                 }
                 if (Config.enablePyrophobic) {
-                    footFactory.append(new BookEntry("research.Pyrophobic.name",
+                    footCategory.appendEntries(new BookEntry("research.Pyrophobic.name",
                       new BookPageItem("research.Pyrophobic.name", "research.Pyrophobic.0", true, new ItemStack(PYROPHOBIC_COATINGS)),
                       new BookPageCrafting("", "pyrophobic")));
                 }
                 if (Config.enableJumpAssist) {
-                    footFactory.append(new BookEntry("research.JumpAssist.name",
+                    footCategory.appendEntries(new BookEntry("research.JumpAssist.name",
                       new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(JUMP_ASSIST)),
                       new BookPageCrafting("", "jumpAssist1", "jumpAssist2")));
                 }
-                BookPageRegistry.addSubcategoryToCategory(EXOSUIT_CATEGORY, footFactory.build());
+                BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, footCategory);
             }
         }
     }

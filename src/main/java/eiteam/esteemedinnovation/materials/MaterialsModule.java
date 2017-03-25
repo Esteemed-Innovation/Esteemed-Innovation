@@ -46,8 +46,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTypes.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
@@ -280,32 +280,50 @@ public class MaterialsModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        BookPageRegistry.addEntryToCategory(BASICS_CATEGORY, new BookEntry("research.Ores.name",
-          new BookPageItem("research.Ores.name", "research.Ores.0",
-            new ItemStack(ORE_BLOCK, 1, OVERWORLD_COPPER.getMetadata()),
-            new ItemStack(ORE_BLOCK, 1, NETHER_COPPER.getMetadata()),
-            new ItemStack(ORE_BLOCK, 1, END_COPPER.getMetadata()),
-            new ItemStack(ORE_BLOCK, 1, OVERWORLD_ZINC.getMetadata()),
-            new ItemStack(ORE_BLOCK, 1, NETHER_ZINC.getMetadata()),
-            new ItemStack(ORE_BLOCK, 1, END_ZINC.getMetadata()))));
+        BookPageRegistry.addCategoryToSection(BASICS_SECTION, 1,
+          new BookCategory("category.Ores.name",
+            new BookEntry("research.Ores.name",
+              new BookPageItem("research.Ores.name", "research.Ores.0",
+                new ItemStack(ORE_BLOCK, 1, OVERWORLD_COPPER.getMetadata()),
+                new ItemStack(ORE_BLOCK, 1, NETHER_COPPER.getMetadata()),
+                new ItemStack(ORE_BLOCK, 1, END_COPPER.getMetadata()),
+                new ItemStack(ORE_BLOCK, 1, OVERWORLD_ZINC.getMetadata()),
+                new ItemStack(ORE_BLOCK, 1, NETHER_ZINC.getMetadata()),
+                new ItemStack(ORE_BLOCK, 1, END_ZINC.getMetadata())))));
 
-        BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Plates.name",
-          new BookPageItem("research.Plates.name", "research.Plates.0",
-            Arrays.stream(ItemMetalPlate.Types.values()).map(type -> new ItemStack(METAL_PLATE, 1, type.getMeta())).collect(Collectors.toList()).toArray(new ItemStack[ItemMetalPlate.Types.values().length]))));
-        BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Brass.name",
-          new BookPageItem("research.Brass.name", "research.Brass.0", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta())),
-          new BookPageAlloy("", BRASS_LIQUID, BRASS_FORMULA)));
+        BookPageRegistry.addCategoryToSection(CASTING_SECTION, 4,
+          new BookCategory("category.Plates.name",
+            new BookEntry("research.Plates.name",
+              new BookPageItem("research.Plates.name", "research.Plates.0",
+                Arrays.stream(ItemMetalPlate.Types.values())
+                  .map(type -> new ItemStack(METAL_PLATE, 1, type.getMeta()))
+                  .collect(Collectors.toList())
+                  .toArray(new ItemStack[ItemMetalPlate.Types.values().length])))));
+        BookPageRegistry.addCategoryToSection(CASTING_SECTION, 5,
+          new BookCategory("category.Brass.name",
+            new BookEntry("research.Brass.name",
+              new BookPageItem("research.Brass.name", "research.Brass.0",
+                new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta())),
+              new BookPageAlloy("", BRASS_LIQUID, BRASS_FORMULA))));
 
         if (Config.enableCrucible) {
-            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.GildedGold.name",
-              new BookPageItem("research.GildedGold.name", "research.GildedGold.0",
-                new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()),
-                new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()),
-                new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta())),
-              new BookPageText("research.GildedGold.name", "research.GildedGold.1"),
-              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(IRON_INGOT), new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
-              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()), new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
-              new BookPageDip("", GOLD_LIQUID, 1, new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()), new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta()))));
+            BookPageRegistry.addCategoryToSection(CASTING_SECTION, 6,
+              new BookCategory("category.GildedGold.name",
+                new BookEntry("research.GildedGold.name",
+                  new BookPageItem("research.GildedGold.name", "research.GildedGold.0",
+                    new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()),
+                    new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()),
+                    new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta())),
+                  new BookPageText("research.GildedGold.name", "research.GildedGold.1"),
+                  new BookPageDip("", GOLD_LIQUID, 1,
+                    new ItemStack(IRON_INGOT),
+                    new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
+                  new BookPageDip("", GOLD_LIQUID, 1,
+                    new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()),
+                    new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
+                  new BookPageDip("", GOLD_LIQUID, 1,
+                    new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()),
+                    new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta())))));
         }
     }
 

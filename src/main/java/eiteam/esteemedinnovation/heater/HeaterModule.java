@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Blocks.FURNACE;
 import static net.minecraft.init.Items.*;
@@ -111,9 +111,11 @@ public class HeaterModule extends ContentModule {
         }
 
         if (Config.enableHeater) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Heater.name",
-              new BookPageItem("research.Heater.name", "research.Heater.0", new ItemStack(STEAM_HEATER)),
-              new BookPageCrafting("", "heater1", "heater2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 8,
+              new BookCategory("category.Heater.name",
+                new BookEntry("research.Heater.name",
+                  new BookPageItem("research.Heater.name", "research.Heater.0", new ItemStack(STEAM_HEATER)),
+                  new BookPageCrafting("", "heater1", "heater2"))));
         }
     }
 

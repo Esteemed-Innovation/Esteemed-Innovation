@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
@@ -142,29 +142,37 @@ public class MetalcastingModule extends ContentModule {
         }
 
         if (Config.enableCrucible) {
-            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Crucible.name",
-              new BookPageItem("research.Crucible.name", "research.Crucible.0", new ItemStack(CRUCIBLE)),
-              new BookPageText("research.Crucible.name", "research.Crucible.1"),
-              new BookPageCrafting("", "crucible")));
+            BookPageRegistry.addCategoryToSection(CASTING_SECTION, 0,
+              new BookCategory("category.Crucible.name",
+                new BookEntry("research.Crucible.name",
+                  new BookPageItem("research.Crucible.name", "research.Crucible.0", new ItemStack(CRUCIBLE)),
+                  new BookPageText("research.Crucible.name", "research.Crucible.1"),
+                  new BookPageCrafting("", "crucible"))));
             if (Config.enableHellCrucible) {
-                BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.HellCrucible.name",
-                  new BookPageItem("research.HellCrucible.name", "research.HellCrucible.0", new ItemStack(HELL_CRUCIBLE)),
-                  new BookPageCrafting("", "hellCrucible")));
+                BookPageRegistry.addCategoryToSection(CASTING_SECTION, 1,
+                  new BookCategory("category.HellCrucible.name",
+                    new BookEntry("research.HellCrucible.name",
+                      new BookPageItem("research.HellCrucible.name", "research.HellCrucible.0", new ItemStack(HELL_CRUCIBLE)),
+                      new BookPageCrafting("", "hellCrucible"))));
             }
         }
         if (Config.enableMold) {
-            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Mold.name",
-              new BookPageItem("research.Mold.name", "research.Mold.0", new ItemStack(MOLD)),
-              new BookPageText("research.Mold.name", "research.Mold.1"),
-              new BookPageCrafting("", "mold")));
-            BookPageRegistry.addEntryToCategory(CASTING_CATEGORY, new BookEntry("research.Molds.name",
-              new BookPageItem("research.Molds.name", "research.Molds.0",
-                ItemMold.Type.PLATE.createItemStack(MOLD_ITEM),
-                ItemMold.Type.INGOT.createItemStack(MOLD_ITEM),
-                ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM),
-                ItemMold.Type.PIPE.createItemStack(MOLD_ITEM)),
-              new BookPageCrafting("", "blankMold"),
-              new BookPageCrafting("", "carving")));
+            BookPageRegistry.addCategoryToSection(CASTING_SECTION, 2,
+              new BookCategory("category.Mold.name",
+                new BookEntry("research.Mold.name",
+                  new BookPageItem("research.Mold.name", "research.Mold.0", new ItemStack(MOLD)),
+                  new BookPageText("research.Mold.name", "research.Mold.1"),
+                  new BookPageCrafting("", "mold"))));
+            BookPageRegistry.addCategoryToSection(CASTING_SECTION, 3,
+              new BookCategory("category.Molds.name",
+                new BookEntry("research.Molds.name",
+                  new BookPageItem("research.Molds.name", "research.Molds.0",
+                    ItemMold.Type.PLATE.createItemStack(MOLD_ITEM),
+                    ItemMold.Type.INGOT.createItemStack(MOLD_ITEM),
+                    ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM),
+                    ItemMold.Type.PIPE.createItemStack(MOLD_ITEM)),
+                  new BookPageCrafting("", "blankMold"),
+                  new BookPageCrafting("", "carving"))));
         }
     }
 

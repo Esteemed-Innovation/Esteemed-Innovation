@@ -552,28 +552,36 @@ public class ToolsModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableWrench) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Wrench.name",
-              new BookPageItem("research.Wrench.name", "research.Wrench.0", new ItemStack(WRENCH)),
-              new BookPageText("research.Wrench.name", "research.Wrench.1"),
-              new BookPageCrafting("", "wrench1", "wrench2")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 0,
+              new BookCategory("category.Wrench.name",
+                new BookEntry("research.Wrench.name",
+                  new BookPageItem("research.Wrench.name", "research.Wrench.0", new ItemStack(WRENCH)),
+                  new BookPageText("research.Wrench.name", "research.Wrench.1"),
+                  new BookPageCrafting("", "wrench1", "wrench2"))));
         }
         if (Config.enableSurvivalist) {
-            BookPageRegistry.addEntryToCategory(GADGET_CATEGORY, new BookEntry("research.Survivalist.name",
-              new BookPageItem("research.Survivalist.name", "research.Survivalist.0", new ItemStack(SURVIVALIST_TOOLKIT)),
-              new BookPageCrafting("", "survivalist")));
+            BookPageRegistry.addCategoryToSection(GADGET_SECTION, 2,
+              new BookCategory("category.Survivalist.name",
+                new BookEntry("research.Survivalist.name",
+                  new BookPageItem("research.Survivalist.name", "research.Survivalist.0", new ItemStack(SURVIVALIST_TOOLKIT)),
+                  new BookPageCrafting("", "survivalist"))));
         }
 
         if (Config.enableSteamTools) {
-            BookPageRegistry.addEntryToCategory(STEAMTOOL_CATEGORY, new BookEntry("research.SteamTools.name",
-              new BookPageItem("research.SteamTools.name", "research.SteamTools.0",
-                new ItemStack(STEAM_DRILL), new ItemStack(STEAM_SAW), new ItemStack(STEAM_SHOVEL)),
-              new BookPageText("research.SteamTools.name", "research.SteamTools.1"),
-              new BookPageCrafting("", "drill1", "drill2", "drill3", "drill4"),
-              new BookPageCrafting("", "axe1", "axe2", "axe3", "axe4"),
-              new BookPageCrafting("", "shovel1", "shovel2", "shovel3", "shovel4")));
+            BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION,
+              new BookCategory("category.SteamTools.name",
+                new BookEntry("research.SteamTools.name",
+                  new BookPageItem("research.SteamTools.name", "research.SteamTools.0",
+                    new ItemStack(STEAM_DRILL),
+                    new ItemStack(STEAM_SAW),
+                    new ItemStack(STEAM_SHOVEL)),
+                  new BookPageText("research.SteamTools.name", "research.SteamTools.1"),
+                  new BookPageCrafting("", "drill1", "drill2", "drill3", "drill4"),
+                  new BookPageCrafting("", "axe1", "axe2", "axe3", "axe4"),
+                  new BookPageCrafting("", "shovel1", "shovel2", "shovel3", "shovel4"))));
 
             {
-                BookCategory.Factory drillHeadFactory = new BookCategory.Factory("research.SteamDrillHead.name");
+                BookCategory drillHeadCategory = new BookCategory("category.SteamDrillHead.name");
 
                 // FIXME: Because of I18n, this can only exist in the client.
                 if (side == Side.CLIENT) {
@@ -594,161 +602,161 @@ public class ToolsModule extends ContentModule {
                         }
                     }
 
-                    drillHeadFactory.append(new BookEntry("research.SteamDrillHead.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.SteamDrillHead.name",
                       new BookPageItem("research.DrillHeads.name", "research.DrillHeads.0", new Object[]{drillMats.toString()}, true, new ItemStack(DRILL_HEAD)),
                       new BookPage("")));
                 }
 
                 if (Config.enableFortune) {
-                    drillHeadFactory.append(new BookEntry("research.MultiplicativeResonator.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.MultiplicativeResonator.name",
                       new BookPageItem("research.MultiplicativeResonator.name", "research.MultiplicativeResonator.0", true, new ItemStack(MULTIPLICATIVE_RESONATOR)),
                       new BookPageCrafting("", "multiplicativeResonator")));
                 }
 
                 if (Config.enableBigDrill) {
-                    drillHeadFactory.append(new BookEntry("research.BigDrill.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.BigDrill.name",
                       new BookPageItem("research.BigDrill.name", "research.BigDrill.0", true, new ItemStack(BIG_DRILL)),
                       new BookPageCrafting("", "bigDrill")));
                 }
 
                 if (Config.enableBattleDrill) {
-                    drillHeadFactory.append(new BookEntry("research.BattleDrill.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.BattleDrill.name",
                       new BookPageItem("research.BattleDrill.name", "research.BattleDrill.0", true, new ItemStack(BATTLE_DRILL)),
                       new BookPageCrafting("", "battleDrill")));
                 }
 
                 if (Config.enablePreciseCuttingHead) {
-                    drillHeadFactory.append(new BookEntry("research.PreciseCuttingHead.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.PreciseCuttingHead.name",
                       new BookPageItem("research.PreciseCuttingHead.name", "research.PreciseCuttingHead.0", true, new ItemStack(PRECISE_CUTTING_HEAD)),
                       new BookPageCrafting("", "preciseCuttingHead")));
                 }
 
                 if (Config.enableStoneGrinder) {
-                    drillHeadFactory.append(new BookEntry("research.StoneGrinder.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.StoneGrinder.name",
                       new BookPageItem("research.StoneGrinder.name", "research.StoneGrinder.0", true, new ItemStack(STONE_GRINDER)),
                       new BookPageCrafting("", "stoneGrinder")));
                 }
 
                 if (Config.enableThermalDrill) {
-                    drillHeadFactory.append(new BookEntry("research.ThermalDrill.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.ThermalDrill.name",
                       new BookPageItem("research.ThermalDrill.name", "research.ThermalDrill.0", true, new ItemStack(THERMAL_DRILL)),
                       new BookPageCrafting("", "thermalDrill")));
                 }
 
                 if (Config.enableChargePlacer) {
-                    drillHeadFactory.append(new BookEntry("research.CalamityInjector.name",
+                    drillHeadCategory.appendEntries(new BookEntry("research.CalamityInjector.name",
                       new BookPageItem("research.CalamityInjector.name", "research.CalamityInjector.0", true, new ItemStack(CALAMITY_INJECTOR)),
                       new BookPageCrafting("", "chargePlacer")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, drillHeadFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, drillHeadCategory);
             }
             {
-                BookCategory.Factory drillCoreFactory = new BookCategory.Factory("research.SteamDrillCore.name");
+                BookCategory drillCoreCategory = new BookCategory("category.SteamDrillCore.name");
 
                 if (Config.enableInternalProcessingUnit) {
-                    drillCoreFactory.append(new BookEntry("research.InternalProcessingUnit.name",
+                    drillCoreCategory.appendEntries(new BookEntry("research.InternalProcessingUnit.name",
                       new BookPageItem("research.InternalProcessingUnit.name", "research.InternalProcessingUnit.0", true, new ItemStack(INTERNAL_PROCESSING_UNIT)),
                       new BookPageCrafting("", "internalProcessingUnit")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, drillCoreFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, drillCoreCategory);
             }
 
             {
-                BookCategory.Factory sawHeadFactory = new BookCategory.Factory("research.SteamSawHead.name");
+                BookCategory sawHeadCategory = new BookCategory("category.SteamSawHead.name");
 
                 if (Config.enableForestFire) {
-                    sawHeadFactory.append(new BookEntry("research.ForestFire.name",
+                    sawHeadCategory.appendEntries(new BookEntry("research.ForestFire.name",
                       new BookPageItem("research.ForestFire.name", "research.ForestFire.0", true, new ItemStack(FOREST_FIRE)),
                       new BookPageCrafting("", "forestFire")));
                 }
 
                 if (Config.enableTreeFeller) {
-                    sawHeadFactory.append(new BookEntry("research.TimberChain.name",
+                    sawHeadCategory.appendEntries(new BookEntry("research.TimberChain.name",
                       new BookPageItem("research.TimberChain.name", "research.TimberChain.0", true, new ItemStack(TIMBER_CHAIN)),
                       new BookPageCrafting("", "treeFeller")));
                 }
 
                 if (Config.enableLeafBlower) {
-                    sawHeadFactory.append(new BookEntry("research.LeafBlower.name",
+                    sawHeadCategory.appendEntries(new BookEntry("research.LeafBlower.name",
                       new BookPageItem("research.LeafBlower.name", "research.LeafBlower.0", true, new ItemStack(LEAF_BLOWER)),
                       new BookPageCrafting("", "leafBlower")));
                 }
 
                 if (Config.enableChainsaw) {
-                    sawHeadFactory.append(new BookEntry("research.Chainsaw.name",
+                    sawHeadCategory.appendEntries(new BookEntry("research.Chainsaw.name",
                       new BookPageItem("research.Chainsaw.name", "research.Chainsaw.0", true, new ItemStack(CHAINSAW)),
                       new BookPageCrafting("", "chainsaw")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, sawHeadFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, sawHeadCategory);
             }
 
             {
-                BookCategory.Factory sawCoreFactory = new BookCategory.Factory("research.SteamSawCore.name");
+                BookCategory sawCoreCategory = new BookCategory("category.SteamSawCore.name");
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, sawCoreFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, sawCoreCategory);
             }
 
             {
-                BookCategory.Factory shovelHeadFactory = new BookCategory.Factory("research.SteamShovelHead.name");
+                BookCategory shovelHeadCategory = new BookCategory("category.SteamShovelHead.name");
 
                 if (Config.enableBackhoe) {
-                    shovelHeadFactory.append(new BookEntry("research.Backhoe.name",
+                    shovelHeadCategory.appendEntries(new BookEntry("research.Backhoe.name",
                       new BookPageItem("research.Backhoe.name", "research.Backhoe.0", true, new ItemStack(BACKHOE)),
                       new BookPageCrafting("", "backhoe")));
                 }
 
                 if (Config.enableCultivator) {
-                    shovelHeadFactory.append(new BookEntry("research.Cultivator.name",
+                    shovelHeadCategory.appendEntries(new BookEntry("research.Cultivator.name",
                       new BookPageItem("research.Cultivator.name", "research.Cultivator.0", true, new ItemStack(CULTIVATOR)),
                       new BookPageCrafting("", "cultivator")));
                 }
 
                 if (Config.enableRotaryBlades) {
-                    shovelHeadFactory.append(new BookEntry("research.RotaryBlades.name",
+                    shovelHeadCategory.appendEntries(new BookEntry("research.RotaryBlades.name",
                       new BookPageItem("research.RotaryBlades.name", "research.RotaryBlades.0", true, new ItemStack(ROTARY_BLADES)),
                       new BookPageCrafting("", "rotaryBlades")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, shovelHeadFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, shovelHeadCategory);
             }
 
             {
-                BookCategory.Factory shovelCoreFactory = new BookCategory.Factory("research.SteamShovelCore.name");
+                BookCategory shovelCoreCategory = new BookCategory("category.SteamShovelCore.name");
 
                 if (Config.enableSifter) {
-                    shovelCoreFactory.append(new BookEntry("research.Sifter.name",
+                    shovelCoreCategory.appendEntries(new BookEntry("research.Sifter.name",
                       new BookPageItem("research.Sifter.name", "research.Sifter.0", true, new ItemStack(SIFTER)),
                       new BookPageCrafting("", "sifter")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, shovelCoreFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, shovelCoreCategory);
             }
 
             {
-                BookCategory.Factory universalCoreFactory = new BookCategory.Factory("research.SteamUniversalCore.name");
+                BookCategory universalCoreCategory = new BookCategory("category.SteamUniversalCore.name");
 
                 if (Config.enableOverclocker) {
-                    universalCoreFactory.append(new BookEntry("research.Overclocker.name",
+                    universalCoreCategory.appendEntries(new BookEntry("research.Overclocker.name",
                       new BookPageItem("research.Overclocker.name", "research.Overclocker.0", true, new ItemStack(OVERCLOCKER)),
                       new BookPageCrafting("", "overclocker")));
                 }
 
                 if (Config.enableAutosmelting) {
-                    universalCoreFactory.append(new BookEntry("research.ExothermicProjector.name",
+                    universalCoreCategory.appendEntries(new BookEntry("research.ExothermicProjector.name",
                       new BookPageItem("research.ExothermicProjector.name", "research.ExothermicProjector.0", true, new ItemStack(EXOTHERMIC_PROJECTOR)),
                       new BookPageCrafting("", "autosmelting")));
                 }
 
                 if (Config.enableTheVoid) {
-                    universalCoreFactory.append(new BookEntry("research.TheVoid.name",
+                    universalCoreCategory.appendEntries(new BookEntry("research.TheVoid.name",
                       new BookPageItem("research.TheVoid.name", "research.TheVoid.0", true, new ItemStack(THE_VOID)),
                       new BookPageCrafting("", "theVoid")));
                 }
 
-                BookPageRegistry.addSubcategoryToCategory(STEAMTOOL_CATEGORY, universalCoreFactory.build());
+                BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION, universalCoreCategory);
             }
         }
     }

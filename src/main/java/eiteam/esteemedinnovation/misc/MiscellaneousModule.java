@@ -18,7 +18,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.Arrays;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Blocks.NETHER_BRICK;
 import static net.minecraft.init.Blocks.PISTON;
@@ -138,16 +138,18 @@ public class MiscellaneousModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        BookPageRegistry.addEntryToCategory(BASICS_CATEGORY, new BookEntry("research.Bits.name",
-          new BookPageItem("research.Bits.name", "research.Bits.0",
-            new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata())),
-          new BookPageItem("research.Bits.name", "research.Bits.1", false,
-            new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata())),
-          new BookPageItem("research.HellforgeMaterials.name", "research.HellforgeMaterials.0",
-            new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
-            new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
-            new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata())),
-          new BookPageCrafting("", "hellforgeBrick")));
+        BookPageRegistry.addCategoryToSection(BASICS_SECTION, 2,
+          new BookCategory("category.Bits.name",
+            new BookEntry("research.Bits.name",
+              new BookPageItem("research.Bits.name", "research.Bits.0",
+                new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata())),
+              new BookPageItem("research.Bits.name", "research.Bits.1", false,
+                new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata())),
+              new BookPageItem("research.HellforgeMaterials.name", "research.HellforgeMaterials.0",
+                new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
+                new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+                new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata())),
+              new BookPageCrafting("", "hellforgeBrick"))));
     }
 
     @SideOnly(Side.CLIENT)

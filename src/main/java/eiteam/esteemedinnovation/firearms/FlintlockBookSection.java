@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.firearms;
 
 import eiteam.esteemedinnovation.api.book.BookCategory;
-import eiteam.esteemedinnovation.api.book.BookEntry;
+import eiteam.esteemedinnovation.api.book.BookSection;
 import eiteam.esteemedinnovation.book.BookPieceUnlockedStateChangePacket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
@@ -11,10 +11,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class FlintlockBookCategory extends BookCategory {
-    public static final String NAME = "category.Flintlock.name";
-    public FlintlockBookCategory(BookEntry[] entries, BookCategory... subcategories) {
-        super(NAME, entries, subcategories);
+public class FlintlockBookSection extends BookSection {
+    public static final String NAME = "section.Flintlock.name";
+
+    public FlintlockBookSection(BookCategory... categories) {
+        super(NAME, categories);
     }
 
     @Override

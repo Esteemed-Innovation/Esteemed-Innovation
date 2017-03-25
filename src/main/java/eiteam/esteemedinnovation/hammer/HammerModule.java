@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_CATEGORY;
+import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.channel;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
@@ -47,10 +47,12 @@ public class HammerModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (Config.enableHammer) {
-            BookPageRegistry.addEntryToCategory(STEAMPOWER_CATEGORY, new BookEntry("research.Hammer.name",
-              new BookPageItem("research.Hammer.name", "research.Hammer.0", new ItemStack(STEAM_HAMMER)),
-              new BookPageText("research.Hammer.name", "research.Hammer.1"),
-              new BookPageCrafting("", "hammer1", "hammer2")));
+            BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 10,
+              new BookCategory("category.Hammer.name",
+                new BookEntry("research.Hammer.name",
+                  new BookPageItem("research.Hammer.name", "research.Hammer.0", new ItemStack(STEAM_HAMMER)),
+                  new BookPageText("research.Hammer.name", "research.Hammer.1"),
+                  new BookPageCrafting("", "hammer1", "hammer2"))));
         }
     }
 
