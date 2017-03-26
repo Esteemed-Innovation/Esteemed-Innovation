@@ -22,7 +22,6 @@ import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
@@ -76,6 +75,14 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 }
             }
         }
+    }
+
+    private int getWidth() {
+        return (width - BOOK_IMAGE_WIDTH) / 2;
+    }
+
+    private int getHeight() {
+        return (height - BOOK_IMAGE_HEIGHT) / 2;
     }
 
     @Override
@@ -180,8 +187,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         }
     }
 
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    private void handleDWheelMovement() {
         int dWheelRecentMovement = Mouse.getDWheel();
         if (dWheelRecentMovement < 0 && buttonNextPage.visible) {
             actionPerformed(buttonNextPage);
@@ -189,125 +195,116 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         if (dWheelRecentMovement > 0 && buttonPreviousPage.visible) {
             actionPerformed(buttonPreviousPage);
         }
+    }
+
+    private boolean isOnFrontPage() {
+        return currPage == 0 && viewing.isEmpty();
+    }
+
+    private void drawBookCover(int width, int height) {
+        mc.getTextureManager().bindTexture(BOOK_FRONT_TEXTURES);
+        drawTexturedModalRect(width + 67, height, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
+
+        String bookTitle = book.getDisplayName();
+        int titleWidth = fontRendererObj.getStringWidth(bookTitle);
+        fontRendererObj.drawStringWithShadow(bookTitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height + 80, 0xC19E51);
+
+        String bookSubtitle = I18n.format(Constants.EI_MODID + ".book.info");
+        int subtitleWidth = fontRendererObj.getStringWidth(bookSubtitle);
+        fontRendererObj.drawString("\u00A7o" + bookSubtitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - subtitleWidth / 2 - 3, height + 90, 0xC19E51);
+
+        String author = I18n.format(Constants.EI_MODID + ".book.by", mc.thePlayer.getDisplayNameString());
+        int authorWidth = fontRendererObj.getStringWidth(author);
+        fontRendererObj.drawString("\u00A7o" + author, width + 67 + BOOK_IMAGE_WIDTH / 2 - authorWidth / 2 - 3, height + 105, 0xC19E51);
+    }
+
+    private void drawBookPagesBase(int width, int height) {
+        mc.getTextureManager().bindTexture(BOOK_LEFT_GUI_TEXTURES);
+        drawTexturedModalRect(width - 67, height, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
+        mc.getTextureManager().bindTexture(BOOK_RIGHT_GUI_TEXTURES);
+        drawTexturedModalRect(width + 67, height, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
+
+        int pageIncr = viewing.isEmpty() ? -2 : 0;
+
+        String pageOfLeft = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 3 + pageIncr, bookTotalPages * 2 + pageIncr);
+        int pageOfLeftWidth = fontRendererObj.getStringWidth(pageOfLeft);
+        fontRendererObj.drawString(pageOfLeft, width + pageOfLeftWidth - BOOK_IMAGE_WIDTH + 54 + 67, height + 16, 0x3F3F3F);
+
+        String pageOfRight = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 4 + pageIncr, bookTotalPages * 2 + pageIncr);
+        int pageOfRightWidth = fontRendererObj.getStringWidth(pageOfRight);
+        fontRendererObj.drawString(pageOfRight, width - pageOfRightWidth + BOOK_IMAGE_WIDTH - 44 + 67, height + 16, 0x3F3F3F);
+    }
+
+    private void drawTitleOnTopOfScreen(int width, int height) {
+        String title = book.getDisplayName();
+        int titleWidth = fontRendererObj.getStringWidth(title);
+        fontRendererObj.drawStringWithShadow(title, width + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height - 15, 0xFFFFFF);
+    }
+
+    private void drawIndexString(int width, int height) {
+        String indexString = I18n.format("esteemedinnovation.book.index");
+        int indexWidth = fontRendererObj.getStringWidth(indexString);
+        fontRendererObj.drawString("\u00A7l" + "\u00A7n" + indexString, width - 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
+        fontRendererObj.drawString("\u00A7l" + "\u00A7n" + indexString, width + 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
+    }
+
+    private void populateButtonListWithCategories(boolean isRightPage, int width, int height) {
+        String sectionName = sections.get(((currPage - 1) * 2) + (isRightPage ? 1 : 0));
+        int offset = 0;
+        if (Character.isDigit(sectionName.charAt(sectionName.length() - 1))) {
+            offset = 9 * Integer.parseInt(String.valueOf(sectionName.charAt(sectionName.length() - 1)));
+            sectionName = sectionName.substring(0, sectionName.length() - 1);
+        }
+        String s = I18n.format(sectionName);
+        int widthOffset = isRightPage ? 67 : -67;
+        fontRendererObj.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
+        BookSection section = BookPageRegistry.getSectionFromName(sectionName);
+        if (section != null) {
+            int offsetCounter = 0;
+            int i = 10;
+            for (BookCategory cat : section.getCategories()) {
+                offsetCounter++;
+                if (offsetCounter > offset && offsetCounter < offset + 10) {
+                    s = cat.getName();
+                    buttonList.add(new GuiButtonSelect(4, width + 50 + widthOffset, height + 44 + i, 110, 10, s));
+                    i += 10;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        handleDWheelMovement();
         if (mustReleaseMouse && !Mouse.isButtonDown(0)) {
             mustReleaseMouse = false;
         }
         GlStateManager.color(1, 1, 1, 1);
-        int k = (width - BOOK_IMAGE_WIDTH) / 2;
-        int b0 = (height - BOOK_IMAGE_HEIGHT) / 2;
-        if (currPage == 0 && viewing.isEmpty()) {
-            mc.getTextureManager().bindTexture(BOOK_FRONT_TEXTURES);
-            drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
-        } else {
-            mc.getTextureManager().bindTexture(BOOK_LEFT_GUI_TEXTURES);
-            drawTexturedModalRect(k - 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
-            mc.getTextureManager().bindTexture(BOOK_RIGHT_GUI_TEXTURES);
-            drawTexturedModalRect(k + 67, b0, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
-        }
-
-
-        String s = book.getDisplayName();
-        int l = fontRendererObj.getStringWidth(s);
-
-        fontRendererObj.drawStringWithShadow(s, k + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 - 15, 0xFFFFFF);
-
-        boolean unicode = fontRendererObj.getUnicodeFlag();
+        int width = getWidth();
+        int height = getHeight();
+        boolean prevUnicode = fontRendererObj.getUnicodeFlag();
         fontRendererObj.setUnicodeFlag(true);
-        if (currPage != 0 || !viewing.isEmpty()) {
-            s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 4, bookTotalPages * 2);
-            if (viewing.isEmpty()) {
-                s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 2, bookTotalPages * 2 - 2);
-            }
-
-            l = fontRendererObj.getStringWidth(s);
-            fontRendererObj.drawString(s, k - l + BOOK_IMAGE_WIDTH - 44 + 67, b0 + 16, 0x3F3F3F);
-
-            s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 3, bookTotalPages * 2);
-            if (viewing.isEmpty()) {
-                s = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 1, bookTotalPages * 2 - 2);
-            }
-
-            fontRendererObj.drawString(s, k + l - BOOK_IMAGE_WIDTH + 54 + 67, b0 + 16, 0x3F3F3F);
+        if (isOnFrontPage()) {
+            drawBookCover(width, height);
         } else {
-            fontRendererObj.setUnicodeFlag(unicode);
-            fontRendererObj.drawStringWithShadow(s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 80, 0xC19E51);
-            fontRendererObj.setUnicodeFlag(true);
-            s = I18n.format("esteemedinnovation.book.info");
-            l = fontRendererObj.getStringWidth(s);
-            fontRendererObj.drawString("\u00A7o" + s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 90, 0xC19E51);
-            s = I18n.format("esteemedinnovation.book.by");
-            l = fontRendererObj.getStringWidth(s + " " + mc.thePlayer.getDisplayNameString());
-            fontRendererObj.drawString("\u00A7o" + s + " " + mc.thePlayer.getDisplayNameString(),
-              k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 3, b0 + 105, 0xC19E51);
+            drawBookPagesBase(width, height);
         }
 
         if (viewing.isEmpty()) {
             if (currPage > 0) {
-                s = I18n.format("esteemedinnovation.book.index");
-                l = fontRendererObj.getStringWidth(s);
-                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k - 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
-                fontRendererObj.drawString("\u00A7l" + "\u00A7n" + s, k + 67 + BOOK_IMAGE_WIDTH / 2 - l / 2 - 5, b0 + 30, 0x3F3F3F);
+                drawIndexString(width, height);
 
-                Collection<GuiButtonSelect> thingsToRemove = new ArrayList<>();
-                for (GuiButton button : buttonList) {
-                    if (button instanceof GuiButtonSelect) {
-                        thingsToRemove.add((GuiButtonSelect) button);
-                    }
-                }
-                for (GuiButtonSelect button : thingsToRemove) {
-                    buttonList.remove(button);
-                }
-
-                String sectionName = sections.get((currPage - 1) * 2);
-                int offset = 0;
-                if (sectionName.substring(sectionName.length() - 1, sectionName.length()).matches("-?\\d+")) {
-                    offset = 9 * Integer.parseInt(sectionName.substring(sectionName.length() - 1, sectionName.length()));
-                    sectionName = sectionName.substring(0, sectionName.length() - 1);
-                }
-                s = I18n.format(sectionName);
-                int i = 10;
-                int offsetCounter = 0;
-                fontRendererObj.drawString("\u00A7n" + s, k + 40 - 67, 44 + b0, 0x3F3F3F);
-                BookSection section = BookPageRegistry.getSectionFromName(sectionName);
-                if (section != null) {
-                    for (BookCategory cat : section.getCategories()) {
-                        offsetCounter++;
-                        if (offsetCounter > offset && offsetCounter < offset + 10) {
-                            s = cat.getName();
-                            buttonList.add(new GuiButtonSelect(4, k + 50 - 67, b0 + 44 + i, 110, 10, s));
-                            i += 10;
-                        }
-                    }
-                }
-
+                // Remove and replace category buttons.
+                buttonList.removeIf(button -> button instanceof GuiButtonSelect);
+                populateButtonListWithCategories(false, width, height);
                 if (sections.size() > 1 + ((currPage - 1) * 2)) {
-                    sectionName = sections.get(((currPage - 1) * 2) + 1);
-                    offset = 0;
-                    offsetCounter = 0;
-                    if (sectionName.substring(sectionName.length() - 1, sectionName.length()).matches("-?\\d+")) {
-                        offset = 9 * Integer.parseInt(sectionName.substring(sectionName.length() - 1, sectionName.length()));
-                        sectionName = sectionName.substring(0, sectionName.length() - 1);
-                    }
-                    s = I18n.format(sectionName);
-                    i = 10;
-                    fontRendererObj.drawString("\u00A7n" + s, k + 40 + 67, 44 + b0, 0x3F3F3F);
-                    section = BookPageRegistry.getSectionFromName(sectionName);
-                    if (section != null) {
-                        for (BookCategory cat : section.getCategories()) {
-                            offsetCounter++;
-                            if (offsetCounter > offset && offsetCounter < offset + 10) {
-                                s = cat.getName();
-                                buttonList.add(new GuiButtonSelect(4, k + 50 + 67, b0 + 44 + i, 110, 10, s));
-                                i += 10;
-                            }
-                        }
-                    }
+                    populateButtonListWithCategories(true, width, height);
                 }
             }
-            fontRendererObj.setUnicodeFlag(unicode);
+            fontRendererObj.setUnicodeFlag(prevUnicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
         } else {
-            fontRendererObj.setUnicodeFlag(unicode);
+            fontRendererObj.setUnicodeFlag(prevUnicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
             fontRendererObj.setUnicodeFlag(true);
             BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
@@ -327,23 +324,24 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 BookPage leftPage = pages[leftPageIndex];
                 GlStateManager.enableBlend();
                 GlStateManager.pushMatrix();
-                leftPage.renderPage(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                leftPage.renderPage(width - 67, height, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
                 GlStateManager.popMatrix();
                 GlStateManager.enableBlend();
                 int rightPageIndex = leftPageIndex + 1;
                 if (pages.length > rightPageIndex) {
                     BookPage rightPage = pages[rightPageIndex];
                     GlStateManager.pushMatrix();
-                    rightPage.renderPage(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    rightPage.renderPage(width + 67, height, fontRendererObj, this, itemRender, false, mouseX, mouseY);
                     GlStateManager.popMatrix();
 
-                    rightPage.renderPageAfter(k + 67, b0, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    rightPage.renderPageAfter(width + 67, height, fontRendererObj, this, itemRender, false, mouseX, mouseY);
                 }
-                leftPage.renderPageAfter(k - 67, b0, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                leftPage.renderPageAfter(width - 67, height, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
                 updateButtons();
             }
-            fontRendererObj.setUnicodeFlag(unicode);
+            fontRendererObj.setUnicodeFlag(prevUnicode);
         }
+        drawTitleOnTopOfScreen(width, height);
     }
 
     @Override
@@ -433,7 +431,6 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         public String name;
 
         GuiButtonSelect(int buttonID, int x, int y, int width, int height, String buttonText) {
-
             super(buttonID, x, y, width, height, I18n.format(buttonText.contains("#") ? buttonText.substring(1) : buttonText));
             name = buttonText;
         }
