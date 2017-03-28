@@ -45,12 +45,16 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
     public GuiJournal(EntityPlayer player) {
         sections = new ArrayList<>();
         for (BookSection section : BookPageRegistry.sections.values()) {
-            if (section.isHidden(player) || !section.isUnlocked(player)) {
+            if (section.isHidden(player)) {
                 continue;
             }
-            int pages = section.getCategories().size();
-            for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
-                sections.add(section.getName() + (s == 0 ? "" : s));
+            if (section.isUnlocked(player)) {
+                int pages = section.getCategories().size();
+                for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
+                    sections.add(section.getName() + (s == 0 ? "" : s));
+                }
+            } else if (section.getUnlocalizedHint() != null) {
+                sections.add(section.getName());
             }
         }
         bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
@@ -255,14 +259,22 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         fontRendererObj.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
         BookSection section = BookPageRegistry.getSectionFromName(sectionName);
         if (section != null) {
-            int offsetCounter = 0;
-            int i = 10;
-            for (BookCategory cat : section.getCategories()) {
-                offsetCounter++;
-                if (offsetCounter > offset && offsetCounter < offset + 10) {
-                    s = cat.getName();
-                    buttonList.add(new GuiButtonSelect(4, width + 50 + widthOffset, height + 44 + i, 110, 10, s));
-                    i += 10;
+            if (section.isUnlocked(mc.thePlayer)) {
+                int offsetCounter = 0;
+                int i = 10;
+                for (BookCategory cat : section.getCategories()) {
+                    offsetCounter++;
+                    if (offsetCounter > offset && offsetCounter < offset + 10) {
+                        s = cat.getName();
+                        buttonList.add(new GuiButtonSelect(4, width + 50 + widthOffset, height + 44 + i, 110, 10, s));
+                        i += 10;
+                    }
+                }
+            } else {
+                String hint = section.getUnlocalizedHint();
+                if (hint != null) {
+                    String localizedHint = TextFormatting.ITALIC + I18n.format(hint);
+                    fontRendererObj.drawSplitString(localizedHint, width + 40 + widthOffset, 54 + height, width - 10, 0x3F3F3F);
                 }
             }
         }

@@ -18,4 +18,12 @@ public interface BookPiece {
     default boolean isHidden(EntityPlayer player) {
         return false;
     }
+
+    /**
+     * @return The unlocalized string that is translated to this piece's locked hint. Return null to have no hint. If
+     *         the piece is locked but has no hint, it will not be rendered.
+     */
+    default String getUnlocalizedHint() {
+        return null;
+    }
 }
