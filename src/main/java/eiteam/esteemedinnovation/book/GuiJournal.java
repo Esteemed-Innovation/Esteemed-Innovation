@@ -152,15 +152,10 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             if (button instanceof GuiButtonSelect) {
                 GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
                 viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
-                BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
                 int numPages = -1;
-                if (entry == null) {
-                    BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
-                    if (category != null && category.isUnlocked(mc.thePlayer)) {
-                        numPages = category.getAllVisiblePages(mc.thePlayer).length;
-                    }
-                } else if (entry.isUnlocked(mc.thePlayer)) {
-                    numPages = entry.getPages().size();
+                BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
+                if (category != null && category.isUnlocked(mc.thePlayer)) {
+                    numPages = category.getAllVisiblePages(mc.thePlayer).length;
                 }
                 if (numPages != -1) {
                     lastIndexPage = currPage;
