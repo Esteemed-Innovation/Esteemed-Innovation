@@ -109,6 +109,7 @@ research.Plates.name=Plates
 research.Plates.0=Using my new metal casting apparatus, I have devised a way to use metals more efficiently. I am able to cast metal plates at a fraction of the cost of an ingot, and these plates may be used in place of ingots in many instances.
 
 section.MetalCasting.name=Metal Casting
+section.MetalCasting.hint=Metal is only so malleable when It comes out of the furnace, I could do more with it if I could control its shape better.
 category.Crucible.name=Crucible
 research.Crucible.name=Crucible
 research.Crucible.0=I have finally found a way to create alloys out of various metals, the crucible!\nTo use it, I place the ceramic crucible over a hot fire. I can then toss in various types of processed metal, but not ores.

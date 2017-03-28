@@ -4,6 +4,8 @@ import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
+import eiteam.esteemedinnovation.api.research.ResearchObject;
+import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
@@ -17,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -102,12 +105,12 @@ public class MetalcastingModule extends ContentModule {
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
 
         if (Config.enableCrucible) {
-            BookRecipeRegistry.addRecipe("crucible", new ItemStack(CRUCIBLE),
+            BookRecipeRegistry.addRecipe("crucible", new ResearchRecipe((ResearchObject.ResearchBlock) CRUCIBLE,
               "x x",
               "x x",
               "xxx",
               'x', BRICK
-            );
+            ));
             if (Config.enableHellCrucible) {
                 BookRecipeRegistry.addRecipe("hellCrucible", new ItemStack(HELL_CRUCIBLE),
                   "x x",
@@ -118,20 +121,22 @@ public class MetalcastingModule extends ContentModule {
             }
         }
         if (Config.enableMold) {
-            BookRecipeRegistry.addRecipe("carving", new ShapedOreRecipe(CARVING_TABLE,
+            BookRecipeRegistry.addRecipe("carving", new ResearchRecipe((ResearchObject.ResearchBlock) CARVING_TABLE,
               "xzx",
               "x x",
               "xxx",
               'x', PLANK_WOOD,
               'z', BLANK_MOLD
             ));
-            BookRecipeRegistry.addRecipe("mold", new ItemStack(MOLD),
+            BookRecipeRegistry.addRecipe("mold", new ResearchRecipe((ResearchObject.ResearchBlock) MOLD,
               "xxx",
               "xxx",
               'x', BRICK
-            );
+            ));
             BookRecipeRegistry.addRecipe("blankMold", new ShapedOreRecipe(BLANK_MOLD, "xx", 'x', BRICK));
         }
+
+        MinecraftForge.EVENT_BUS.register(new MetalcastingBookSection.Unlocker());
     }
 
     @Override

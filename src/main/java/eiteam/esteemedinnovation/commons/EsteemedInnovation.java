@@ -16,6 +16,7 @@ import eiteam.esteemedinnovation.commons.network.JumpValueChangePacketHandler;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.firearms.FlintlockBookSection;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -161,7 +162,7 @@ public class EsteemedInnovation {
               new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK)),
               new BookPageCrafting("", "book"))));
         BookPageRegistry.addSection(1, new FlintlockBookSection());
-        BookPageRegistry.addSection(2, new BookSection(CASTING_SECTION));
+        BookPageRegistry.addSection(2, new MetalcastingBookSection());
         BookPageRegistry.addSection(3, new BookSection(GADGET_SECTION));
         BookPageRegistry.addSection(4, new BookSection(STEAMPOWER_SECTION));
         BookPageRegistry.addSection(5, new BookSection(EXOSUIT_SECTION));
