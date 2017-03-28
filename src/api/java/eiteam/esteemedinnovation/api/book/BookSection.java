@@ -4,12 +4,12 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 /**
- * A BookCategory is a set of BookEntries tied to a single concept.
- * For example, the Helmet Slot BookCategory might contain some Entries about various Helmet Slot upgrades.
+ * A BookSection is a set of BookCategories tied to a single concept.
+ * For example, the Basics sections contains BookCategories on components, the preface, etc.
  *
  * Here is an example tree:
  * * Tool: {@link BookSection}
- * ** Piece A: BookCategory
+ * ** Piece A: {@link BookCategory}
  * *** Upgrade X: {@link BookEntry}
  * **** Description page: {@link BookPage}
  * **** Crafting page: {@link BookPage}

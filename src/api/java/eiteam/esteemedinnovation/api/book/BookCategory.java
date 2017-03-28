@@ -7,8 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * A BookSection is a set of BookCategories tied to a single concept.
- * For example, the Steam Power BookSection might contain some Categories about various steam machines.
+ * A BookCategory is a set of BookEntries tied to a single concept.
+ * For example, the Helmet Slot category might contain various BookEntries for Helmet Slot upgrades.
  */
 public class BookCategory implements BookPiece {
     @Nonnull
