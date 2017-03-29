@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.transport.fluid.pipes;
 
 import eiteam.esteemedinnovation.api.tile.TileEntityTickableSafe;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
-import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -17,11 +16,15 @@ import java.util.List;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
+/**
+ * Base class for TileEntities which transport fluids within a certain fluid range.
+ * Child classes must implement the {@link TileEntityTickableSafe#canUpdate(IBlockState)}.
+ */
 // TODO: Impellers
-public class TileEntityTemperatureFluidPipe extends TileEntityTickableSafe {
+public abstract class TileEntityTemperatureFluidPipe extends TileEntityTickableSafe {
     private int transferAmount;
-    private int tickCounter = 0;
-    private EnumFacing prevInteractSide = null;
+    private int tickCounter;
+    private EnumFacing prevInteractSide;
     private List<EnumFacing> dirs = new ArrayList<EnumFacing>() {{
         add(EnumFacing.DOWN);
         for (EnumFacing dir : EnumFacing.HORIZONTALS) {
@@ -34,11 +37,6 @@ public class TileEntityTemperatureFluidPipe extends TileEntityTickableSafe {
     public TileEntityTemperatureFluidPipe(int transferAmount, int minTemp, int maxTemp) {
         this.transferAmount = transferAmount;
         tank = new TemperatureFluidTank(minTemp, maxTemp);
-    }
-
-    @Override
-    public boolean canUpdate(IBlockState target) {
-        return target.getBlock() == TransportationModule.COPPER_PIPE; // TODO: Generalize
     }
 
     @Override
