@@ -82,6 +82,7 @@ public class BlockColdFluidPipe extends Block implements Wrenchable {
             TileEntity tile = world.getTileEntity(pos);
             if (tile != null && tile instanceof TileEntityColdFluidPipe) {
                 FluidStack stackF = ((TileEntityColdFluidPipe) tile).tank.getFluid();
+                // TODO: Remove this when model and textures are made.
                 player.addChatMessage(new TextComponentString(stackF == null ? "No fluid" : stackF.getLocalizedName() + "x" + stackF.amount));
             }
             return true;
