@@ -16,14 +16,15 @@ public class TileEntityEngineeringTable extends TileEntity implements IInventory
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        NBTTagList nbttaglist = (NBTTagList) compound.getTag("Items");
         contents = new ItemStack[getSizeInventory()];
+        if (compound.hasKey("Items")) {
+            NBTTagList nbttaglist = (NBTTagList) compound.getTag("Items");
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
+            byte b0 = nbttagcompound1.getByte("Slot");
 
-        NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
-        byte b0 = nbttagcompound1.getByte("Slot");
-
-        if (b0 >= 0 && b0 < contents.length) {
-            contents[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            if (b0 >= 0 && b0 < contents.length) {
+                contents[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            }
         }
     }
 
