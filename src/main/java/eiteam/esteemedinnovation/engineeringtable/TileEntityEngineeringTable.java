@@ -1,16 +1,16 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
 import eiteam.esteemedinnovation.api.Engineerable;
+import eiteam.esteemedinnovation.api.tile.TileEntityBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 
-public class TileEntityEngineeringTable extends TileEntity implements IInventory {
+public class TileEntityEngineeringTable extends TileEntityBase implements IInventory {
     private ItemStack[] contents = new ItemStack[1];
     
     @Override
