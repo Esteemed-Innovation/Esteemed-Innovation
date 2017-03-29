@@ -41,7 +41,6 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     public boolean lastSteam = false;
     public int rotateTicks = 0;
     public int range = 9;
-    private boolean isInitialized = false;
 
     public static boolean isLyingInCone(float[] x, float[] t, float[] b, float aperture) {
         // This is for our convenience
@@ -98,17 +97,19 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     }
 
     @Override
+    public void initialUpdate() {
+        super.initialUpdate();
+        powered = worldObj.isBlockPowered(pos);
+        EnumFacing myDir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
+        setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
+    }
+
+    @Override
     public void safeUpdate() {
         if (lastSteam != getSteamShare() > VACUUM_STEAM_CONSUMPTION) {
             markForResync();
         }
         lastSteam = getSteamShare() > VACUUM_STEAM_CONSUMPTION;
-        if (!isInitialized) {
-            powered = worldObj.isBlockPowered(pos);
-            EnumFacing myDir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
-            setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
-            isInitialized = true;
-        }
         if (!worldObj.isRemote) {
             if ((getSteamShare() < VACUUM_STEAM_CONSUMPTION) || powered) {
                 active = false;

@@ -20,7 +20,6 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     private static final int PASSIVE_CONSUMPTION = 1;
     private static final int WINDUP_TICKS_MAX = 50;
     private static final String WINDUP_TICKS_KEY = "WindupTicks";
-    private boolean isInitialized;
     private boolean isWoundUp;
     private int windupTicks;
 
@@ -34,14 +33,15 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     }
 
     @Override
-    public void safeUpdate() {
-        if (!isInitialized) {
-            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSaw.FACING);
-            addSideToGaugeBlacklist(dir);
-            setValidDistributionDirectionsExcluding(dir, EnumFacing.UP);
-            isInitialized = true;
-        }
+    public void initialUpdate() {
+        super.initialUpdate();
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSaw.FACING);
+        addSideToGaugeBlacklist(dir);
+        setValidDistributionDirectionsExcluding(dir, EnumFacing.UP);
+    }
 
+    @Override
+    public void safeUpdate() {
         // Redstone to turn it off.
         if (getSteamShare() < CONSUMPTION || worldObj.isBlockPowered(pos)) {
             resetWinding();
@@ -88,15 +88,15 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         super.safeUpdate();
     }
 
+    void uninitialize() {
+        setInitialized(false);
+    }
+
     private void resetWinding() {
         if (windupTicks != 0) {
             windupTicks--;
         }
         isWoundUp = false;
-    }
-
-    public void uninitialize() {
-        isInitialized = false;
     }
 
     @Override

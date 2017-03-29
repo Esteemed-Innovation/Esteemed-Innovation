@@ -14,18 +14,6 @@ public class TileEntityPendulumTorch extends TileEntityTickableSafe {
     private int numStrings;
     private int requiredTicks;
     private int maximumTicks;
-    private boolean initialized;
-
-    private void init() {
-        BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(pos.up());
-        while (worldObj.getBlockState(mutPos).getBlock() == PendulumModule.PENDULUM_STRING) {
-            numStrings++;
-            mutPos.move(EnumFacing.UP);
-        }
-        requiredTicks = numStrings * 20;
-        maximumTicks = requiredTicks + 20;
-        initialized = true;
-    }
 
     @Override
     public boolean canUpdate(IBlockState target) {
@@ -33,11 +21,19 @@ public class TileEntityPendulumTorch extends TileEntityTickableSafe {
     }
 
     @Override
-    public void safeUpdate() {
-        if (!initialized) {
-            init();
+    public void initialUpdate() {
+        super.initialUpdate();
+        BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(pos.up());
+        while (worldObj.getBlockState(mutPos).getBlock() == PendulumModule.PENDULUM_STRING) {
+            numStrings++;
+            mutPos.move(EnumFacing.UP);
         }
+        requiredTicks = numStrings * 20;
+        maximumTicks = requiredTicks + 20;
+    }
 
+    @Override
+    public void safeUpdate() {
         if (timer > maximumTicks) {
             timer = 0;
         }

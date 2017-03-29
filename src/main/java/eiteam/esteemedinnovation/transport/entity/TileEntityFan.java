@@ -41,7 +41,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     public boolean lastSteam = false;
     public int rotateTicks = 0;
     public int range = 9;
-    private boolean isInitialized = false;
     private static final int STEAM_CONSUMPTION = Config.fanConsumption;
 
     public TileEntityFan() {
@@ -127,6 +126,13 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     }
 
     @Override
+    public void initialUpdate() {
+        super.initialUpdate();
+        powered = worldObj.isBlockPowered(pos);
+        setDistributionDirections(new EnumFacing[] { worldObj.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
+    }
+
+    @Override
     public void safeUpdate() {
         if (lastSteam != getSteamShare() >= STEAM_CONSUMPTION) {
             markForResync();
@@ -134,11 +140,6 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
         lastSteam = getSteamShare() > STEAM_CONSUMPTION;
         if (!lastSteam && !worldObj.isRemote && active) {
             markForResync();
-        }
-        if (!isInitialized) {
-            powered = worldObj.isBlockPowered(pos);
-            setDistributionDirections(new EnumFacing[] { worldObj.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
-            isInitialized = true;
         }
         if (active && worldObj.isRemote) {
             rotateTicks++;

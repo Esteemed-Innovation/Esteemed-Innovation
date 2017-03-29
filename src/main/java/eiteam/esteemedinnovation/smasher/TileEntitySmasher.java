@@ -44,7 +44,6 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     private boolean isActive = false;
     private boolean isBreaking = false;
     private boolean shouldStop = false;
-    private boolean isInitialized = false;
     private boolean running = false;
     private boolean smashNextRound = false;
     private boolean blockBreakerMode = false;
@@ -156,13 +155,15 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
+    public void initialUpdate() {
+        super.initialUpdate();
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+        addSideToGaugeBlacklist(facing);
+        setValidDistributionDirectionsExcluding(facing, EnumFacing.UP);
+    }
+
+    @Override
     public void safeUpdate() {
-        if (!isInitialized) {
-            EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
-            addSideToGaugeBlacklist(facing);
-            setValidDistributionDirectionsExcluding(facing, EnumFacing.UP);
-            isInitialized = true;
-        }
         if (!worldObj.isRemote) {
             int[] target = getTarget(1);
 

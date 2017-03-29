@@ -31,7 +31,6 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     private static final int CONSUMPTION = 5;
     private static final String MODE_KEY = "Mode";
     private static final String INV_KEY = "Inventory";
-    private boolean isInitialized;
     private boolean prevRedstoneActivated;
     private boolean curRedstoneActivated;
     @Nonnull
@@ -48,14 +47,16 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
+    public void initialUpdate() {
+        super.initialUpdate();
+        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
+        addSideToGaugeBlacklist(dir);
+        setValidDistributionDirectionsExcluding(dir);
+    }
+
+    @Override
     public void safeUpdate() {
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
-        if (!isInitialized) {
-            addSideToGaugeBlacklist(dir);
-            setValidDistributionDirectionsExcluding(dir);
-            isInitialized = true;
-        }
-
         if (getSteamShare() < CONSUMPTION) {
             return;
         }

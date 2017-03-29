@@ -29,7 +29,6 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
     private boolean shouldJoin = false;
     private int steam = 0;
     private ArrayList<EnumFacing> gaugeSideBlacklist = new ArrayList<>();
-    private boolean isInitialized = false;
     private boolean shouldExplode;
     private boolean hasExploded;
 
@@ -119,8 +118,14 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
     }
 
     @Override
+    public void initialUpdate() {
+        refresh();
+        setInitialized(true);
+    }
+
+    @Override
     public void safeUpdate() {
-        if (!isInitialized || shouldJoin) {
+        if (shouldJoin) {
             refresh();
         }
         if (!worldObj.isRemote) {
@@ -306,7 +311,6 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
 				}
 				*/
                 SteamNetwork.newOrJoin(this);
-                isInitialized = true;
                 markForResync();
             }
         }

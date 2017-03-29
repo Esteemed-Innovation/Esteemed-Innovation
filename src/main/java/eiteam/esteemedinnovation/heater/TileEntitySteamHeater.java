@@ -23,7 +23,6 @@ import static eiteam.esteemedinnovation.heater.TileEntitySteamFurnace.*;
 public class TileEntitySteamHeater extends TileEntitySteamPipe {
     // When multiple heaters are used on a furnace, there is a single primary heater
     public boolean isPrimaryHeater;
-    private boolean isInitialized = false;
     public static final int CONSUMPTION = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
@@ -70,13 +69,15 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
     }
 
     @Override
+    public void initialUpdate() {
+        super.initialUpdate();
+        setValidDistributionDirectionsExcluding(worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING));
+    }
+
+    @Override
     public void safeUpdate() {
         super.superUpdate();
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
-        if (!isInitialized) {
-            setValidDistributionDirectionsExcluding(dir);
-            isInitialized = true;
-        }
 
         ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
