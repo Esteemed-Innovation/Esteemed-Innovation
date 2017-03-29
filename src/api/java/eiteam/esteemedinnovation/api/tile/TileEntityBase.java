@@ -11,14 +11,14 @@ public class TileEntityBase extends TileEntity {
      * Marks the tile entity for a server -> client resync, with a specific old state.
      * @param old The old state
      */
-    protected void markForResync(IBlockState old) {
+    public void markForResync(IBlockState old) {
         worldObj.notifyBlockUpdate(pos, old, worldObj.getBlockState(pos), 0);
     }
 
     /**
      * Marks the tile entity for a server -> client resync, using the same blockstate for both the "newState" and "oldState" parameters.
      */
-    protected void markForResync() {
+    public void markForResync() {
         markForResync(worldObj.getBlockState(pos));
     }
 }
