@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.transport.entity;
 
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.ThumperAdjacentBehaviorModifier;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.Config;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -29,9 +31,11 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class TileEntityVacuum extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay {
+public class TileEntityVacuum extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, ThumperAdjacentBehaviorModifier {
     private static final int VACUUM_STEAM_CONSUMPTION = Config.vacuumConsumption;
 
     // half angle of cone
@@ -193,8 +197,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             // TODO: This may be able to be optimized by iterating over the entire list. Test.
             if (!list.isEmpty()) {
                 EntityItem item = list.get(0);
-                BlockPos offsetPos = new BlockPos(pos.getX() - dir.getFrontOffsetX(),
-                  pos.getY() - dir.getFrontOffsetY(), pos.getZ() - dir.getFrontOffsetZ());
+                BlockPos offsetPos = pos.offset(dir, -1);
                 TileEntity tile = worldObj.getTileEntity(offsetPos);
                 if (tile instanceof ISidedInventory) {
                     ISidedInventory inv = (ISidedInventory) tile;
@@ -328,5 +331,31 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     @Override
     public void displayWrench(Post event) {
         TileEntityFan.rangeDisplay(event, range);
+    }
+
+    @Override
+    public void dropItems(SteamTransporterTileEntity thumper, List<ItemStack> drops, IBlockState state, Collection<ThumperAdjacentBehaviorModifier> allBehaviorModifiers, EnumFacing directionIn) {
+        BlockPos offsetPos = pos.offset(directionIn);
+        TileEntity invTile = worldObj.getTileEntity(offsetPos);
+        // This will never happen because of isValidBehaviorModifier, but it won't compile without it :(
+        if (!(invTile instanceof IInventory)) {
+            return;
+        }
+        Collection<ItemStack> newDrops = new ArrayList<>();
+        for (ItemStack drop : drops) {
+            ItemStack remaining = TileEntityHopper.putStackInInventoryAllSlots((IInventory) invTile, drop, directionIn);
+            if (remaining != null && remaining.stackSize > 0) {
+                newDrops.add(remaining);
+            }
+        }
+        drops.clear();
+        drops.addAll(newDrops);
+    }
+
+    @Override
+    public boolean isValidBehaviorModifier(SteamTransporterTileEntity thumper, EnumFacing directionIn) {
+        BlockPos offsetPos = pos.offset(directionIn);
+        TileEntity tile = worldObj.getTileEntity(offsetPos);
+        return tile instanceof IInventory;
     }
 }

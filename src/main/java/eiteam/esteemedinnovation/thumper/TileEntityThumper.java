@@ -1,14 +1,12 @@
 package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
+import eiteam.esteemedinnovation.api.tile.ThumperAdjacentBehaviorModifier;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.transport.entity.BlockVacuum;
-import eiteam.esteemedinnovation.transport.entity.TileEntityVacuum;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -23,9 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TileEntityThumper extends SteamTransporterTileEntity {
     public int progress = 0;
@@ -175,40 +175,35 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
         IBlockState state = worldObj.getBlockState(position);
         Block block = state.getBlock();
         if (Config.dropItem) {
-            EnumFacing vacuumDir = getAdjacentFacingVacuum();
-            if (vacuumDir == null) {
-                block.dropBlockAsItem(worldObj, position, state, 0);
-            } else {
-                List<ItemStack> drops = block.getDrops(worldObj, position, state, 0);
-                BlockPos dropPosition = pos.offset(vacuumDir, 2);
-                for (ItemStack item : drops) {
-                    worldObj.spawnEntityInWorld(new EntityItem(
-                      worldObj, dropPosition.getX() + 0.5D, dropPosition.getY() + 0.5D, dropPosition.getZ() + 0.5D, item)
-                    );
-                }
+            Map<EnumFacing, ThumperAdjacentBehaviorModifier> modifiers = getAllAdjacentBehaviorModifiers();
+            List<ItemStack> drops = block.getDrops(worldObj, position, state, 0);
+            for (Map.Entry<EnumFacing, ThumperAdjacentBehaviorModifier> entry : modifiers.entrySet()) {
+                entry.getValue().dropItems(this, drops, state, modifiers.values(), entry.getKey());
+            }
+            // Default Thumper behavior.
+            for (ItemStack drop : drops) {
+                Block.spawnAsEntity(worldObj, position, drop);
             }
         }
         worldObj.setBlockToAir(position);
     }
 
     /**
-     * @return Finds a Vacuum adjacent to and facing the Thumper. Returns null if there is no adjacent vacuum.
+     * @return All of the behavior modifiers that are adjacent to this tile entity.
      */
-    @Nullable
-    private EnumFacing getAdjacentFacingVacuum() {
+    @Nonnull
+    private Map<EnumFacing, ThumperAdjacentBehaviorModifier> getAllAdjacentBehaviorModifiers() {
+        Map<EnumFacing, ThumperAdjacentBehaviorModifier> behaviorModifiers = new HashMap<>();
         for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-            BlockPos vacuumPos = pos.offset(dir);
-            IBlockState vacuumState = worldObj.getBlockState(vacuumPos);
-            if (vacuumState.getBlock() instanceof BlockVacuum) {
-                if (dir.getOpposite() == vacuumState.getValue(BlockVacuum.FACING)) {
-                    TileEntity te = worldObj.getTileEntity(vacuumPos);
-                    if (te instanceof TileEntityVacuum && ((TileEntityVacuum) te).active) {
-                        return dir;
-                    }
+            TileEntity behaviorModTE = worldObj.getTileEntity(pos.offset(dir));
+            if (behaviorModTE instanceof ThumperAdjacentBehaviorModifier) {
+                ThumperAdjacentBehaviorModifier behaviorModifier = (ThumperAdjacentBehaviorModifier) behaviorModTE;
+                if (behaviorModifier.isValidBehaviorModifier(this, dir)) {
+                    behaviorModifiers.put(dir, behaviorModifier);
                 }
             }
         }
-        return null;
+        return behaviorModifiers;
     }
 
     @SideOnly(Side.CLIENT)
