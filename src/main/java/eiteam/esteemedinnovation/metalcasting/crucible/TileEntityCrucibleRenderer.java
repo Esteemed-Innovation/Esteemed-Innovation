@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metalcasting;
+package eiteam.esteemedinnovation.metalcasting.crucible;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import net.minecraft.block.state.IBlockState;

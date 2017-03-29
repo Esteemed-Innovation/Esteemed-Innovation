@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.commons;
 import codechicken.lib.render.CCIconRegister;
 import eiteam.esteemedinnovation.boiler.GuiBoiler;
 import eiteam.esteemedinnovation.commons.particle.ParticleAlphabeticGeneric;
-import eiteam.esteemedinnovation.metalcasting.BlockCrucible;
+import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.misc.PlayerController;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

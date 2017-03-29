@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.metalcasting;
+package eiteam.esteemedinnovation.metalcasting.crucible;
 
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.book.BookSection;
@@ -10,6 +10,8 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.heater.BlockSteamHeater;
 import eiteam.esteemedinnovation.heater.TileEntitySteamHeater;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
