@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.api.wrench;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -18,13 +17,4 @@ public interface PipeWrench {
      * @return true if wrenching is possible; false if not.
      */
     boolean canWrench(EntityPlayer player, BlockPos pos);
-
-    /**
-     * Called after the pipe wrench has been used.
-     *
-     * @param player The player wrenching
-     * @param pos The position of the block being wrenched
-     * @param hand The hand holding the wrench.
-     */
-    void wrenchUsed(EntityPlayer player, BlockPos pos, EnumHand hand);
 }

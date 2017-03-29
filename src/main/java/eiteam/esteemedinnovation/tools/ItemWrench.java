@@ -57,12 +57,7 @@ public class ItemWrench extends Item implements PipeWrench {
     }
 
     @Override
-    public boolean canWrench(EntityPlayer player, BlockPos pos){
+    public boolean canWrench(EntityPlayer player, BlockPos pos) {
         return true;
-    }
-
-    @Override
-    public void wrenchUsed(EntityPlayer player, BlockPos pos, EnumHand hand){
-        player.swingArm(hand);
     }
 }
