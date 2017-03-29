@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ContainerEngineeringTable extends Container {
-    private static final EntityEquipmentSlot[] ARMOR_SLOTS = new EntityEquipmentSlot[] {
+    private static final EntityEquipmentSlot[] ARMOR_SLOTS = {
       EntityEquipmentSlot.HEAD,
       EntityEquipmentSlot.CHEST,
       EntityEquipmentSlot.LEGS,
@@ -125,8 +125,8 @@ public class ContainerEngineeringTable extends Container {
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player) {
         ItemStack toReturn = super.slotClick(slotID, dragType, clickType, player);
         updateSlots();
-        tileEntity.markDirty();
-//        tileEntity.getWorldObj().markBlockForUpdate(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+        detectAndSendChanges();
+        tileEntity.markForResync();
         return toReturn;
     }
 }
