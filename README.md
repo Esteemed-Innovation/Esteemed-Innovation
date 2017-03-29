@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation.svg?branch=1.10)](https://travis-ci.org/Esteemed-Innovation/Esteemed-Innovation)
 [![Total Downloads](http://modshields.herokuapp.com/totaldl?id=flaxbeards-steam-power)](http://minecraft.curseforge.com/projects/flaxbeards-steam-power)
 [![Latest Version](http://modshields.herokuapp.com/latestversion?id=flaxbeards-steam-power)](http://minecraft.curseforge.com/projects/flaxbeards-steam-power/files/latest)
-[![Wiki Status](http://modshields.herokuapp.com/wiki?article=Flaxbeard's Steam Power)](http://ftb.gamepedia.com/Flaxbeard's Steam Power)
+[![Wiki Status](http://modshields.herokuapp.com/wiki?article=Esteemed_Innovation)](http://ftb.gamepedia.com/Esteemed_Innovation)
 
 Esteemed Innovation, or EI for short, is a tech mod for Minecraft based on steam power as its core. The mod includes a variety of steam tech, with upgradeable steam powered armor and tools and steam powered machinery to aid the player in a fun and innovative way.
 
