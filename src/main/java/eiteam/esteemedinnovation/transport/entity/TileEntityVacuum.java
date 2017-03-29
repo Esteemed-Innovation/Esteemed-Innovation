@@ -190,21 +190,25 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
               pos.getY() + 1.0D + dir.getFrontOffsetY() * 0.25F, pos.getZ() + 1.0D + dir.getFrontOffsetZ() * 0.25F));
 
             // TODO: This may be able to be optimized by iterating over the entire list. Test.
-            if (list.size() > 0) {
+            if (!list.isEmpty()) {
                 EntityItem item = list.get(0);
                 BlockPos offsetPos = new BlockPos(pos.getX() - dir.getFrontOffsetX(),
                   pos.getY() - dir.getFrontOffsetY(), pos.getZ() - dir.getFrontOffsetZ());
                 TileEntity tile = worldObj.getTileEntity(offsetPos);
-                if (tile != null && tile instanceof ISidedInventory) {
+                if (tile instanceof ISidedInventory) {
                     ISidedInventory inv = (ISidedInventory) tile;
                     int[] access = inv.getSlotsForFace(dir.getOpposite());
                     for (int slot : access) {
-                        putInInventory(item, slot, inv);
+                        if (putInInventory(item, slot, inv)) {
+                            break;
+                        }
                     }
-                } else if (tile != null && tile instanceof IInventory) {
+                } else if (tile instanceof IInventory) {
                     IInventory inv = (IInventory) tile;
                     for (int i = 0; i < inv.getSizeInventory(); i++) {
-                        putInInventory(item, i, inv);
+                        if (putInInventory(item, i, inv)) {
+                            break;
+                        }
                     }
                 }
             }
@@ -213,7 +217,13 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
         super.safeUpdate();
     }
 
-    private void putInInventory(EntityItem item, int slot, IInventory inv) {
+    /**
+     * @param item The item to put inside the inventory, held in an EntityItem.
+     * @param slot The slot in which to put the item in within the inventory.
+     * @param inv The inventory to put the item inside of.
+     * @return Whether it was added or not.
+     */
+    private boolean putInInventory(EntityItem item, int slot, IInventory inv) {
         ItemStack checkStack1 = null;
         ItemStack checkStack2 = null;
         ItemStack stackInSlot = inv.getStackInSlot(slot);
@@ -246,7 +256,9 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             if (setDead) {
                 item.setDead();
             }
+            return true;
         }
+        return false;
     }
 
     @Override
