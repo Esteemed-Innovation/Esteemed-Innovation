@@ -41,6 +41,11 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
     private GuiJournal.NextPageButton buttonNextPage;
     private GuiJournal.NextPageButton buttonPreviousPage;
     private final List<String> sections;
+    /**
+     * The Ideas section is generated every time you open the book to that section, not during game load, so it cannot
+     * be a real section. It is handled as a special case.
+     */
+    private static final String FAKE_SECTION_IDEAS = "section.Ideas.name";
 
     public GuiJournal(EntityPlayer player) {
         sections = new ArrayList<>();
@@ -53,10 +58,9 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
                     sections.add(section.getName() + (s == 0 ? "" : s));
                 }
-            } else if (section.getUnlocalizedHint() != null) {
-                sections.add(section.getName());
             }
         }
+        sections.add(FAKE_SECTION_IDEAS);
         bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
         if (!viewing.isEmpty()) {
             BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
@@ -257,9 +261,32 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         String s = I18n.format(sectionName);
         int widthOffset = isRightPage ? 67 : -67;
         fontRendererObj.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
-        BookSection section = BookPageRegistry.getSectionFromName(sectionName);
-        if (section != null) {
-            if (section.isUnlocked(mc.thePlayer)) {
+        if (sectionName.equals(FAKE_SECTION_IDEAS)) {
+            int offsetCounter = 0;
+            for (String hint : BookModule.ALL_UNLOCALIZED_PIECES_WITH_HINTS) {
+                if (offsetCounter > offset && offsetCounter < offset + 10) {
+                    break;
+                }String name = hint + ".name";
+                BookPiece piece = BookPageRegistry.getFirstPieceFromName(name);
+                StringBuilder hintBuilder = new StringBuilder()
+                  .append("\u2022 ");
+                if (piece != null && piece.isUnlocked(mc.thePlayer)) {
+                    hintBuilder.append(TextFormatting.STRIKETHROUGH);
+                }
+                hintBuilder.append(TextFormatting.ITALIC)
+                  .append(I18n.format(hint + ".hint"));
+
+                List<String> splitHint = fontRendererObj.listFormattedStringToWidth(hintBuilder.toString(), 100);
+                offsetCounter += splitHint.size();
+                int i = 10;
+                for (String splitHintStr : splitHint) {
+                    fontRendererObj.drawString(splitHintStr, width + 50 + widthOffset, height + 44 + i, 0x3F3F3F);
+                    i += 10;
+                }
+            }
+        } else {
+            BookSection section = BookPageRegistry.getSectionFromName(sectionName);
+            if (section != null && section.isUnlocked(mc.thePlayer)) {
                 int offsetCounter = 0;
                 int i = 10;
                 for (BookCategory cat : section.getCategories()) {
@@ -269,12 +296,6 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                         buttonList.add(new GuiButtonSelect(4, width + 50 + widthOffset, height + 44 + i, 110, 10, s));
                         i += 10;
                     }
-                }
-            } else {
-                String hint = section.getUnlocalizedHint();
-                if (hint != null) {
-                    String localizedHint = TextFormatting.ITALIC + I18n.format(hint);
-                    fontRendererObj.drawSplitString(localizedHint, width + 40 + widthOffset, 54 + height, width - 10, 0x3F3F3F);
                 }
             }
         }

@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.api.book;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -178,6 +179,30 @@ public class BookPageRegistry {
         for (BookSection section : sections.values()) {
             if (section.getName().equals(name)) {
                 return section;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param name {@inheritDoc}
+     * @return The first BookPiece found with this name, or null.
+     */
+    @Nullable
+    public static BookPiece getFirstPieceFromName(String name) {
+        for (BookSection section : sections.values()) {
+            if (section.getName().equals(name)) {
+                return section;
+            }
+            for (BookCategory category : section.getCategories()) {
+                if (category.getName().equals(name)) {
+                    return category;
+                }
+                for (BookEntry entry : category.getEntries()) {
+                    if (entry.getName().equals(name)) {
+                        return entry;
+                    }
+                }
             }
         }
         return null;

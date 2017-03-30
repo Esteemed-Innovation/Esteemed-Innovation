@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.commons;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.util.SPLog;
+import eiteam.esteemedinnovation.book.BookModule;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
 import eiteam.esteemedinnovation.commons.handler.GenericEventHandler;
@@ -169,6 +170,8 @@ public class EsteemedInnovation {
         BookPageRegistry.addSection(6, new BookSection(STEAMTOOL_SECTION));
         BookPageRegistry.addSection(7, new BookSection(MISC_SECTION));
         ContentModuleHandler.postInit();
+        // FIXME: This is terrible object oriented design.
+        BookModule.generateAllHints();
     }
 
     // FIXME: This is terrible OOD.

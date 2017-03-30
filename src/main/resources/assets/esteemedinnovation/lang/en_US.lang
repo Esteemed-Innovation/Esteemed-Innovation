@@ -808,3 +808,5 @@ item.esteemedinnovation:leather_exosuit_legs.name=Leather Exosuit Legpiece
 item.esteemedinnovation:leather_exosuit_feet.name=Leather Exosuit Footpiece
 
 entity.Villager.steam_engineer=Steam Engineer
+
+section.Ideas.name=Ideas

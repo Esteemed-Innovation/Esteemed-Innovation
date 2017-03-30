@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.book;
 
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
+import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -8,12 +8,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.channel;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.ORE_COPPER;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.ORE_ZINC;
 
 public class BookModule extends ContentModule {
     public static Item BOOK;
+    /**
+     * A list of all the pieces' base names that have hints. This does not contain ".name" or ".hint". For example,
+     * the MetalCasting section would be in this list as "section.MetalCasting".
+     */
+    public static final List<String> ALL_UNLOCALIZED_PIECES_WITH_HINTS = new ArrayList<>();
 
     @Override
     public void create(Side side) {
@@ -23,8 +31,27 @@ public class BookModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("book", new ShapelessOreRecipe(BOOK, Items.BOOK,
-          ORE_COPPER, ORE_ZINC));
+        BookRecipeRegistry.addRecipe("book", new ShapelessOreRecipe(BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC));
+    }
+
+    public static void generateAllHints() {
+        for (BookSection section : BookPageRegistry.sections.values()) {
+            addHint(section);
+            for (BookCategory category : section.getCategories()) {
+                addHint(category);
+                for (BookEntry entry : category.getEntries()) {
+                    addHint(entry);
+                }
+            }
+        }
+    }
+
+    private static void addHint(BookPiece bookPiece) {
+        String hint = bookPiece.getUnlocalizedHint();
+        if (hint != null) {
+            hint = hint.replace(".hint", "");
+            ALL_UNLOCALIZED_PIECES_WITH_HINTS.add(hint);
+        }
     }
 
     @SideOnly(Side.CLIENT)
