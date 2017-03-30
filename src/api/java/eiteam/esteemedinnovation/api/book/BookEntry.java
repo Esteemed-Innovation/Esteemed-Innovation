@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.api.book;
 
 import codechicken.lib.util.ArrayUtils;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,8 @@ public class BookEntry implements BookPiece {
         appendPages(pages);
     }
 
-    /**
-     * @return The unlocalized name of the entry.
-     */
+    @Override
+    @Nonnull
     public String getName() {
         return name;
     }

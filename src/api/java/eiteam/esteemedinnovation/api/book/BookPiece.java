@@ -2,6 +2,8 @@ package eiteam.esteemedinnovation.api.book;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+import javax.annotation.Nonnull;
+
 public interface BookPiece {
     /**
      * @param player The player who is trying to open this piece.
@@ -26,4 +28,10 @@ public interface BookPiece {
     default String getUnlocalizedHint() {
         return null;
     }
+
+    /**
+     * @return The unlocalized name for this piece.
+     */
+    @Nonnull
+    String getName();
 }

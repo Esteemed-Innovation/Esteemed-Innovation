@@ -49,6 +49,7 @@ public class BookSection implements BookPiece {
         categories.put(position, category);
     }
 
+    @Override
     @Nonnull
     public String getName() {
         return name;

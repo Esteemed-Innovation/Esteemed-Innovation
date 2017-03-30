@@ -20,9 +20,7 @@ public class BookCategory implements BookPiece {
         appendEntries(entries);
     }
 
-    /**
-     * @return The unlocalized name of the category
-     */
+    @Override
     @Nonnull
     public String getName() {
         return name;
