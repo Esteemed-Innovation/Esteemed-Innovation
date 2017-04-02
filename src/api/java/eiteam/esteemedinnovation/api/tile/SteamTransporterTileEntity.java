@@ -47,18 +47,12 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        super.getUpdatePacket();
-        NBTTagCompound access = new NBTTagCompound();
-        if (networkName != null) {
-            access.setString("networkName", networkName);
-            access.setFloat("pressure", getPressure());
-        }
-        return new SPacketUpdateTileEntity(pos, 1, access);
+        return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
     }
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        NBTTagCompound access = new NBTTagCompound();
+        NBTTagCompound access = writeToNBT(new NBTTagCompound());
         if (networkName != null) {
 //            EsteemedInnovation.log.debug("Setting pressure!");
             access.setString("networkName", networkName);
@@ -71,12 +65,12 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
+        readFromNBT(access);
         if (access.hasKey("networkName")) {
             networkName = access.getString("networkName");
             pressure = access.getFloat("pressure");
 //            EsteemedInnovation.log.debug("Set pressure to "+this.pressure);
         }
-        markForResync();
     }
 
     @Override
