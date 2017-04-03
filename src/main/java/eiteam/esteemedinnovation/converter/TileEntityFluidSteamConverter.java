@@ -50,8 +50,8 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = getUpdateTag();
-        access.setShort("runTicks", (short) runTicks);
-        access.setBoolean("pushing", pushing);
+        access.setShort("RunTicks", (short) runTicks);
+        access.setBoolean("IsPushing", pushing);
 
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
@@ -61,17 +61,17 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        if (runTicks == 0 && access.getShort("runTicks") != 0) {
-            runTicks = access.getShort("runTicks");
+        if (runTicks == 0 && access.getShort("RunTicks") != 0) {
+            runTicks = access.getShort("RunTicks");
         }
-        pushing = access.getBoolean("pushing");
+        pushing = access.getBoolean("IsPushing");
         markForResync();
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setBoolean("pushing", pushing);
+        nbt.setBoolean("IsPushing", pushing);
         if (tank != null) {
             tank.writeToNBT(nbt);
         }
@@ -84,7 +84,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
         if (tank != null) {
             tank.readFromNBT(nbt);
         }
-        pushing = nbt.getBoolean("pushing");
+        pushing = nbt.getBoolean("IsPushing");
     }
 
     @Override
