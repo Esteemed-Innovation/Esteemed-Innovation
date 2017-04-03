@@ -155,7 +155,8 @@ public class OreConfigurationParser {
     private JsonObject writeBiomeToObject(BiomeDefinition biome) {
         JsonObject obj = new JsonObject();
         obj.addProperty("Dimension", biome.getDimension());
-        obj.addProperty("Biome", biome.getBiome().getRegistryName().toString());
+        Biome actualBiome = biome.getBiomeMatcher().getBiome();
+        obj.addProperty("Biome", actualBiome == null ? "*" : actualBiome.getRegistryName().toString());
         obj.addProperty("MinY", biome.getMinY());
         obj.addProperty("MaxY", biome.getMaxY());
         obj.addProperty("MaxVeinSize", biome.getMaxVeinSize());
@@ -258,11 +259,14 @@ public class OreConfigurationParser {
      * "MinY", "MaxY", "MaxVeinSize", and "MaxVeinsPerChunk" keys.
      */
     private BiomeDefinition parseBiome(JsonObject obj) {
-        Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(obj.get("Biome").getAsString()));
         JsonArray replaceableBlocksAry = obj.getAsJsonArray("ReplaceableBlocks");
         List<String> oreDicts = getOreDictsFromArray(replaceableBlocksAry);
         List<Pair<Block, Integer>> blockMetaPairs = getBlockMetaPairsFromArray(replaceableBlocksAry);
-        return new BiomeDefinition(obj.get("Dimension").getAsInt(), biome, obj.get("MinY").getAsInt(),
+
+        String biomeString = obj.get("Biome").getAsString();
+        BiomeMatcher biomeMatcher = new BiomeMatcher("*".equals(biomeString) ? null : Biome.REGISTRY.getObject(new ResourceLocation(biomeString)));
+
+        return new BiomeDefinition(obj.get("Dimension").getAsInt(), biomeMatcher, obj.get("MinY").getAsInt(),
           obj.get("MaxY").getAsInt(), obj.get("MaxVeinSize").getAsInt(), obj.get("MaxVeinsPerChunk").getAsInt(),
           oreDicts, blockMetaPairs);
     }

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class BiomeDefinition {
     protected final int dimension;
-    protected final Biome biome;
+    protected final BiomeMatcher biome;
     protected final int minY;
     protected final int maxY;
     protected final int maxVeinsPerChunk;
@@ -26,6 +26,10 @@ public class BiomeDefinition {
     protected final List<Pair<Block, Integer>> replaceableBlocksAndMeta;
 
     public BiomeDefinition(int dimension, @Nonnull Biome biome, int minY, int maxY, int maxVeinSize, int maxVeinsPerChunk, List<String> replaceableBlocksOreDict, List<Pair<Block, Integer>> replaceableBlocksAndMeta) {
+        this(dimension, new BiomeMatcher(biome), minY, maxY, maxVeinSize, maxVeinsPerChunk, replaceableBlocksOreDict, replaceableBlocksAndMeta);
+    }
+
+    public BiomeDefinition(int dimension, @Nonnull BiomeMatcher biome, int minY, int maxY, int maxVeinSize, int maxVeinsPerChunk, List<String> replaceableBlocksOreDict, List<Pair<Block, Integer>> replaceableBlocksAndMeta) {
         this.dimension = dimension;
         this.biome = biome;
         this.minY = minY;
@@ -40,7 +44,7 @@ public class BiomeDefinition {
         return dimension;
     }
 
-    public Biome getBiome() {
+    public BiomeMatcher getBiomeMatcher() {
         return biome;
     }
 
