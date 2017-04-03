@@ -86,8 +86,8 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
         UUID entityID = entityLiving.getUniqueID();
         boolean contains = tophatModels.containsKey(entityID);
         ModelTophat hatModel = contains ? tophatModels.get(entityID) : new ModelTophat();
-        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("level")) {
-            hatModel.setLevel(itemStack.getTagCompound().getInteger("level"));
+        if (itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("NewTradesLevel")) {
+            hatModel.setLevel(itemStack.getTagCompound().getInteger("NewTradesLevel"));
         }
 
         if (!contains) {
@@ -116,8 +116,8 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
     @Override
     public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean par4) {
         super.addInformation(me, player, list, par4);
-        if (me.hasTagCompound() && me.getTagCompound().hasKey("level")) {
-            int level = me.getTagCompound().getInteger("level");
+        if (me.hasTagCompound() && me.getTagCompound().hasKey("NewTradesLevel")) {
+            int level = me.getTagCompound().getInteger("NewTradesLevel");
             list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
         }
     }

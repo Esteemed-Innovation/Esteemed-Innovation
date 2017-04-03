@@ -461,24 +461,24 @@ public class GenericEventHandler {
                         if (!hat.hasTagCompound()) {
                             hat.setTagCompound(new NBTTagCompound());
                         }
-                        if (!hat.getTagCompound().hasKey("level")) {
-                            hat.getTagCompound().setInteger("level", 0);
+                        if (!hat.getTagCompound().hasKey("NewTradesLevel")) {
+                            hat.getTagCompound().setInteger("NewTradesLevel", 0);
                         }
-                        int level = hat.getTagCompound().getInteger("level");
+                        int level = hat.getTagCompound().getInteger("NewTradesLevel");
                         level++;
-                        hat.getTagCompound().setInteger("level", level);
+                        hat.getTagCompound().setInteger("NewTradesLevel", level);
                     } else if (hat != null && hat.getItem() == STEAM_EXO_HEAD &&
                       ((ItemSteamExosuitArmor) hat.getItem()).hasUpgrade(hat, ENTREPRENEUR_TOP_HAT)) {
                         ItemStack exoHat = ((ItemSteamExosuitArmor) hat.getItem()).getStackInSlot(hat, 3);
                         if (!exoHat.hasTagCompound()) {
                             exoHat.setTagCompound(new NBTTagCompound());
                         }
-                        if (!exoHat.getTagCompound().hasKey("level")) {
-                            exoHat.getTagCompound().setInteger("level", 0);
+                        if (!exoHat.getTagCompound().hasKey("NewTradesLevel")) {
+                            exoHat.getTagCompound().setInteger("NewTradesLevel", 0);
                         }
-                        int level = exoHat.getTagCompound().getInteger("level");
+                        int level = exoHat.getTagCompound().getInteger("NewTradesLevel");
                         level++;
-                        exoHat.getTagCompound().setInteger("level", level);
+                        exoHat.getTagCompound().setInteger("NewTradesLevel", level);
                         ((ItemSteamExosuitArmor) player.inventory.armorInventory[3].getItem()).setInventorySlotContents(player.inventory.armorInventory[3], 3, hat);
                     }
                 }
