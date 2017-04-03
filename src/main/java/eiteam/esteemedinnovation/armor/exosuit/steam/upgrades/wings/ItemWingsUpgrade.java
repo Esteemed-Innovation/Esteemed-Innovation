@@ -43,7 +43,7 @@ public class ItemWingsUpgrade extends ItemSteamExosuitUpgrade {
         int ticks = getTicks(entityLivingBase);
         float expansion = (float) (0.1F + (Math.sin(Math.toRadians(ticks * (20.0F / 15.0F) * 4.5F))) * 0.8F);
 
-        modelExosuitUpgrade.nbtTagCompound.setFloat("expansion", expansion);
+        modelExosuitUpgrade.nbtTagCompound.setFloat("Expansion", expansion);
 
         if (!entityLivingBase.onGround && entityLivingBase.motionY < 0.0F && !entityLivingBase.isSneaking() && entityLivingBase.fallDistance > 1.4F && ticks < 15) {
             ticks++;

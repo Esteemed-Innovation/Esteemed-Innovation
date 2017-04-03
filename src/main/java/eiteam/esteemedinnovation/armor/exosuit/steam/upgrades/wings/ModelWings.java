@@ -48,7 +48,7 @@ public class ModelWings extends ModelExosuitUpgrade {
         }
         ExosuitTexture.WINGS.bindTexturePart(1);
 
-        float expansion = nbtTagCompound.getFloat("expansion");
+        float expansion = nbtTagCompound.getFloat("Expansion");
 
         for (int i = 0; i < PARTS; i++) {
             wing1[i].rotateAngleZ = expansion * (float) (Math.PI / 1.8F - (Math.PI * i / 10F));
