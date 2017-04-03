@@ -72,10 +72,10 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
                 if (chestStack != null) {
                     Item chestItem = chestStack.getItem();
                     if (chestItem instanceof ExosuitArmor && chestItem instanceof SteamChargable) {
-                        if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                            chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
+                        if (!chestStack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
+                            chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
                         }
-                        if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
+                        if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
                             ((SteamChargable) chestItem).drainSteam(chestStack, Config.thrusterConsumption, player);
                         }
                     }

@@ -31,10 +31,10 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
             if ((player.moveForward > 0.0F) && (lastX != player.posX || lastZ != player.posZ) && player.onGround && !player.isInWater()) {
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 player.moveRelative(0F, 1F, 0.075F); //entity.moveFlying(0.0F, 1.0F, 0.075F); TODO Test this.
-                if (!chestStack.getTagCompound().hasKey("ticksUntilConsume")) {
-                    chestStack.getTagCompound().setInteger("ticksUntilConsume", 2);
+                if (!chestStack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
+                    chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
                 }
-                if (chestStack.getTagCompound().getInteger("ticksUntilConsume") <= 0) {
+                if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
                     ChargableUtility.drainSteam(chestStack, Config.runAssistConsumption, player);
                 }
             }

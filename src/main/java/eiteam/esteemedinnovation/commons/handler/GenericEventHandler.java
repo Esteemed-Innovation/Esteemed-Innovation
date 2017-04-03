@@ -937,10 +937,10 @@ public class GenericEventHandler {
             if (!stack.hasTagCompound()) {
                 stack.setTagCompound(new NBTTagCompound());
             }
-            if (!stack.getTagCompound().hasKey("ticksUntilConsume")) {
-                stack.getTagCompound().setInteger("ticksUntilConsume", 2);
+            if (!stack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
+                stack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
             }
-            int ticksLeft = stack.getTagCompound().getInteger("ticksUntilConsume");
+            int ticksLeft = stack.getTagCompound().getInteger("TicksUntilSteamDrain");
             double lastX = tag.getLastMotions().getLeft();
             double lastZ = tag.getLastMotions().getRight();
             if (ticksLeft <= 0) {
@@ -953,7 +953,7 @@ public class GenericEventHandler {
             tag.setLastMotions(Pair.of(entity.posX, entity.posZ));
 
             ticksLeft--;
-            stack.getTagCompound().setInteger("ticksUntilConsume", ticksLeft);
+            stack.getTagCompound().setInteger("TicksUntilSteamDrain", ticksLeft);
             if (armor == 4) {
                 if (entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getModifier(uuid) == null) {
                     entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(exoBoost);
