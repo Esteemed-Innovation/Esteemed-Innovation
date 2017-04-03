@@ -52,12 +52,12 @@ public class AnimalDataStorage implements Capability.IStorage<AnimalData> {
     @Override
     public NBTBase writeNBT(Capability<AnimalData> capability, AnimalData instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("maximumTrades", instance.getMaximumTotalTrades());
-        nbt.setInteger("totalTrades", instance.getTotalTrades());
-        nbt.setString("merchantName", instance.getMerchantName());
+        nbt.setInteger("MaximumTrades", instance.getMaximumTotalTrades());
+        nbt.setInteger("TotalTrades", instance.getTotalTrades());
+        nbt.setString("MerchantName", instance.getMerchantName());
         MerchantRecipeList stock = instance.getStock();
         if (stock != null) {
-            nbt.setTag("stock", stock.getRecipiesAsTags());
+            nbt.setTag("Stock", stock.getRecipiesAsTags());
         }
         return nbt;
     }
@@ -65,11 +65,11 @@ public class AnimalDataStorage implements Capability.IStorage<AnimalData> {
     @Override
     public void readNBT(Capability<AnimalData> capability, AnimalData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
-        instance.setMaximumTotalTrades(nbt.getInteger("maximumTrades"));
-        instance.setTotalTrades(nbt.getInteger("totalTrades"));
-        instance.setMerchantName(nbt.getString("merchantName"));
-        if (nbt.hasKey("stock")) {
-            NBTTagCompound stock = nbt.getCompoundTag("stock");
+        instance.setMaximumTotalTrades(nbt.getInteger("MaximumTrades"));
+        instance.setTotalTrades(nbt.getInteger("TotalTrades"));
+        instance.setMerchantName(nbt.getString("MerchantName"));
+        if (nbt.hasKey("Stock")) {
+            NBTTagCompound stock = nbt.getCompoundTag("Stock");
             MerchantRecipeList recipes = stock.hasNoTags() ? new MerchantRecipeList() : new MerchantRecipeList(stock);
             instance.setStock(recipes);
         }
