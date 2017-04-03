@@ -11,8 +11,8 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
-public class ItemJumpAssistUpgrade extends ItemSteamExosuitUpgrade {
-    public ItemJumpAssistUpgrade() {
+public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
+    public ItemLeapActuatorUpgrade() {
         super(ExosuitSlot.BOOTS_TOP, resource("jumpUpgrade"), null, 0);
     }
 

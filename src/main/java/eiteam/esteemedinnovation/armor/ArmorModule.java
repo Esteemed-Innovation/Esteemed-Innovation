@@ -108,7 +108,7 @@ public class ArmorModule extends ContentModule {
     public static Item EXTENDO_FIST;
     public static Item THRUSTERS;
     public static Item FALL_ASSIST;
-    public static Item JUMP_ASSIST;
+    public static Item LEAP_ACTUATOR;
     public static Item DOUBLE_JUMP;
     public static Item RUN_ASSIST;
     public static Item CANNING_MACHINE;
@@ -184,7 +184,7 @@ public class ArmorModule extends ContentModule {
         EXTENDO_FIST = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
         THRUSTERS = setup(new ItemSidepackUpgrade(), "thrusters");
         FALL_ASSIST = setup(new ItemFallAssistUpgrade(), "fall_assist");
-        JUMP_ASSIST = setup(new ItemJumpAssistUpgrade(), "jump_assist");
+        LEAP_ACTUATOR = setup(new ItemLeapActuatorUpgrade(), "jump_assist");
         DOUBLE_JUMP = setup(new ItemDoubleJumpUpgrade(), "double_jump");
         RUN_ASSIST = setup(new ItemModularAcceleratorUpgrade(), "run_assist");
         CANNING_MACHINE = setup(new ItemCanningMachineUpgrade(), "canner");
@@ -440,7 +440,7 @@ public class ArmorModule extends ContentModule {
                     ));
                 }
                 if (Config.enableJumpAssist) {
-                    BookRecipeRegistry.addRecipe("jumpAssist1", new ShapedOreRecipe(JUMP_ASSIST,
+                    BookRecipeRegistry.addRecipe("jumpAssist1", new ShapedOreRecipe(LEAP_ACTUATOR,
                       "s s",
                       "pbp",
                       "s s",
@@ -448,7 +448,7 @@ public class ArmorModule extends ContentModule {
                       'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                       's', INGOT_BRASS
                     ));
-                    BookRecipeRegistry.addRecipe("jumpAssist2", new ShapedOreRecipe(JUMP_ASSIST,
+                    BookRecipeRegistry.addRecipe("jumpAssist2", new ShapedOreRecipe(LEAP_ACTUATOR,
                       "s s",
                       "pbp",
                       "s s",
@@ -1139,7 +1139,7 @@ public class ArmorModule extends ContentModule {
                 }
                 if (Config.enableJumpAssist) {
                     footCategory.appendEntries(new BookEntry("research.JumpAssist.name",
-                      new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(JUMP_ASSIST)),
+                      new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(LEAP_ACTUATOR)),
                       new BookPageCrafting("", "jumpAssist1", "jumpAssist2")));
                 }
                 BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION, footCategory);
