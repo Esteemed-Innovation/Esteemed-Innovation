@@ -20,7 +20,7 @@ import java.util.List;
 public class TileEntityChargingPad extends SteamTransporterTileEntity {
     public EntityLivingBase target;
     public int extendTicks;
-    public boolean descending = false;
+    public boolean descending = true;
     public float rotation = -1;
     public boolean lastDescending = false;
 
