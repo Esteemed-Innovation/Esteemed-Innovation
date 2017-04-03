@@ -54,8 +54,8 @@ public class SteamExosuitItemOverrideList extends ItemOverrideList {
             locations.add(baseArmorRL);
         }
         String plate = null;
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("plate")) {
-            plate = stack.getTagCompound().getString("plate");
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Plate")) {
+            plate = stack.getTagCompound().getString("Plate");
             locations.add(UtilPlates.getIconFromPlate(plate, armor));
         } else {
             locations.add(baseArmorRL);

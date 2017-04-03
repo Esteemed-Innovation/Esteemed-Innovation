@@ -632,7 +632,7 @@ public class GenericEventHandler {
                     ItemStack armor = player.getItemStackFromSlot(slot);
                     if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                         ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
-                        if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("plate")).getIdentifier().equals("Vibrant")) {
+                        if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier().equals("Vibrant")) {
                             vibrantLevel += 1;
                         }
                     }
@@ -698,7 +698,7 @@ public class GenericEventHandler {
                 ItemStack armor = player.inventory.armorInventory[i];
                 if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
-                    if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("plate")).getIdentifier() == "Enderium") {
+                    if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Enderium") {
                         enderiumLevel += 1;
                     }
                 }
@@ -751,7 +751,7 @@ public class GenericEventHandler {
                 ItemStack armor = player.inventory.armorInventory[i];
                 if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
-                    if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("plate")).getIdentifier() == "Fiery") {
+                    if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Fiery") {
                         fireLevel += 3;
                     }
                 }
@@ -766,7 +766,7 @@ public class GenericEventHandler {
                     ItemStack armor = player.inventory.armorInventory[i];
                     if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                         ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
-                        if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("plate")).getIdentifier() == "Yeti") {
+                        if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Yeti") {
                             chillLevel += 1;
                         }
                     }

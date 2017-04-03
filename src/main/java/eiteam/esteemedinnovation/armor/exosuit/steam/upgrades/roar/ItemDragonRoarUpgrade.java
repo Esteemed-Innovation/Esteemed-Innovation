@@ -38,7 +38,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
             ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             if (entity.getHeldItemMainhand() == null && entity.isSneaking() && chest != null &&
               chest.getItem() instanceof ItemSteamExosuitArmor && chest.hasTagCompound()) {
-                int consumption = (chest.getTagCompound().getInteger("maxFill") / 2) + Config.dragonRoarConsumption;
+                int consumption = (chest.getTagCompound().getInteger("SteamCapacity") / 2) + Config.dragonRoarConsumption;
                 if (ChargableUtility.hasPower(entity, consumption)) {
                     if (world.isRemote) {
                         world.playSound(entity.posX, entity.posY, entity.posZ,

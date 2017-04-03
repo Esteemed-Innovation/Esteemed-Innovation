@@ -115,12 +115,12 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
 
                         if (extendTicks == 40 && equipment.hasTagCompound()) {
                             NBTTagCompound compound = equipment.getTagCompound();
-                            if (compound.getInteger("steamFill") < compound.getInteger("maxFill")) {
+                            if (compound.getInteger("SteamStored") < compound.getInteger("SteamCapacity")) {
                                 int i = 0;
                                 while (i < 39 && (this.getSteamShare() > armorItem.steamPerDurability() &&
-                                  compound.getInteger("steamFill") < compound.getInteger("maxFill"))) {
+                                  compound.getInteger("SteamStored") < compound.getInteger("SteamCapacity"))) {
                                     decrSteam(armorItem.steamPerDurability());
-                                    compound.setInteger("steamFill", compound.getInteger("steamFill") + 1);
+                                    compound.setInteger("SteamStored", compound.getInteger("SteamStored") + 1);
                                     i++;
                                 }
                                 if (entity instanceof EntityPlayer) {

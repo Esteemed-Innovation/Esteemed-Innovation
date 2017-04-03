@@ -21,7 +21,7 @@ public class ItemSteamExosuitColorHandler implements IItemColor {
         ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) item;
 
         ItemStack vanity = armor.getStackInSlot(stack, 2);
-        if (vanity != null && (tintIndex == 1 || (tintIndex > 1 && !stack.getTagCompound().hasKey("plate")))) {
+        if (vanity != null && (tintIndex == 1 || (tintIndex > 1 && !stack.getTagCompound().hasKey("Plate")))) {
             int dye = ModelSteamExosuit.findDyeIndexFromItemStack(vanity);
             if (dye != -1) {
                 float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(dye));

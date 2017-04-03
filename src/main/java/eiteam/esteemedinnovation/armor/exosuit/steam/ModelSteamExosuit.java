@@ -205,12 +205,12 @@ public class ModelSteamExosuit extends ModelBiped implements ModelExosuit {
 
         // Yeti Horns
         // TODO: Abstract
-        yetiHorns = slot == EntityEquipmentSlot.HEAD && exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.getTagCompound().getString("plate")).getIdentifier().equals("Yeti");
+        yetiHorns = slot == EntityEquipmentSlot.HEAD && exosuitArmor.hasPlates(itemStack) && UtilPlates.getPlate(itemStack.getTagCompound().getString("Plate")).getIdentifier().equals("Yeti");
 
         // Plates
         if (exosuitArmor.hasPlates(itemStack)) {
             hasPlateOverlay = true;
-            plateOverlayTexture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(itemStack.getTagCompound().getString("plate"), exosuitArmor, slot));
+            plateOverlayTexture = new ResourceLocation(UtilPlates.getArmorLocationFromPlate(itemStack.getTagCompound().getString("Plate"), exosuitArmor, slot));
         } else {
             hasPlateOverlay = false;
         }

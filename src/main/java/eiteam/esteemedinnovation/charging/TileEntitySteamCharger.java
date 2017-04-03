@@ -137,14 +137,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                         if (!stack.hasTagCompound()) {
                             stack.setTagCompound(new NBTTagCompound());
                         }
-                        if (!stack.getTagCompound().hasKey("steamFill")) {
-                            stack.getTagCompound().setInteger("steamFill", 0);
+                        if (!stack.getTagCompound().hasKey("SteamStored")) {
+                            stack.getTagCompound().setInteger("SteamStored", 0);
                         }
-                        if (!stack.getTagCompound().hasKey("maxFill")) {
-                            stack.getTagCompound().setInteger("maxFill", 0);
+                        if (!stack.getTagCompound().hasKey("SteamCapacity")) {
+                            stack.getTagCompound().setInteger("SteamCapacity", 0);
                         }
                         if (getSteamShare() > 0 &&
-                          stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill")) {
+                          stack.getTagCompound().getInteger("SteamStored") < stack.getTagCompound().getInteger("SteamCapacity")) {
                             if (!isCharging) {
                                 isCharging = true;
                                 markForResync();
@@ -156,14 +156,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                             }
                         }
                         if (getSteamShare() > item.steamPerDurability()
-                          && stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill")) {
+                          && stack.getTagCompound().getInteger("SteamStored") < stack.getTagCompound().getInteger("SteamCapacity")) {
                             int i = 0;
 
                             while (i < 19 && (getSteamShare() > item.steamPerDurability() &&
-                              stack.getTagCompound().getInteger("steamFill") < stack.getTagCompound().getInteger("maxFill"))) {
+                              stack.getTagCompound().getInteger("SteamStored") < stack.getTagCompound().getInteger("SteamCapacity"))) {
                                 decrSteam(item.steamPerDurability());
-                                stack.getTagCompound().setInteger("steamFill",
-                                  stack.getTagCompound().getInteger("steamFill") + 1);
+                                stack.getTagCompound().setInteger("SteamStored",
+                                  stack.getTagCompound().getInteger("SteamStored") + 1);
                                 this.setInventorySlotContents(0, stack);
                                 i++;
                             }
@@ -272,14 +272,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
             if (!stack.hasTagCompound()) {
                 stack.setTagCompound(new NBTTagCompound());
             }
-            if (!stack.getTagCompound().hasKey("steamFill")) {
-                stack.getTagCompound().setInteger("steamFill", 0);
+            if (!stack.getTagCompound().hasKey("SteamStored")) {
+                stack.getTagCompound().setInteger("SteamStored", 0);
             }
-            if (!stack.getTagCompound().hasKey("maxFill")) {
-                stack.getTagCompound().setInteger("maxFill", 0);
+            if (!stack.getTagCompound().hasKey("SteamCapacity")) {
+                stack.getTagCompound().setInteger("SteamCapacity", 0);
             }
-            int maxFill = stack.getTagCompound().getInteger("maxFill");
-            int steamFill = stack.getTagCompound().getInteger("steamFill");
+            int maxFill = stack.getTagCompound().getInteger("SteamCapacity");
+            int steamFill = stack.getTagCompound().getInteger("SteamStored");
             return ((float) steamFill / (float) maxFill);
         }
         return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
