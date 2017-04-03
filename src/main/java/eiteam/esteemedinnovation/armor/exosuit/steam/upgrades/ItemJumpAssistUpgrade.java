@@ -35,8 +35,5 @@ public class ItemJumpAssistUpgrade extends ItemSteamExosuitUpgrade {
                 jumper.motionY += 0.2750000059604645D;
             }
         }
-
-        //noinspection ConstantConditions
-        armorStack.getTagCompound().setBoolean("releasedSpace", false);
     }
 }
