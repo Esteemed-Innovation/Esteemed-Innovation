@@ -13,16 +13,16 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     @Override
     public NBTBase writeNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side) {
         NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("isRangeExtended", instance.isRangeExtended());
-        nbt.setInteger("tickCache", instance.getTickCache());
+        nbt.setBoolean("IsRangeExtended", instance.isRangeExtended());
+        nbt.setInteger("TickCache", instance.getTickCache());
         Float step = instance.getPreviousStepHeight();
         if (step != null) {
-            nbt.setFloat("prevStep", step);
+            nbt.setFloat("PreviousStepHeight", step);
         }
         Pair<Double, Double> pair = instance.getLastMotions();
         if (pair != null) {
-            nbt.setDouble("lastMotionX", pair.getLeft());
-            nbt.setDouble("lastMotionZ", pair.getLeft());
+            nbt.setDouble("PreviousPositionX", pair.getLeft());
+            nbt.setDouble("PreviousPositionZ", pair.getLeft());
         }
         NBTTagList unlockedPieces = new NBTTagList();
         for (String p : instance.getAllUnlockedPieces()) {
@@ -35,18 +35,18 @@ public class PlayerDataStorage implements Capability.IStorage<PlayerData> {
     @Override
     public void readNBT(Capability<PlayerData> capability, PlayerData instance, EnumFacing side, NBTBase nbtBase) {
         NBTTagCompound nbt = (NBTTagCompound) nbtBase;
-        if (nbt.hasKey("lastMotionX") && nbt.hasKey("lastMotionZ")) {
-            instance.setLastMotions(Pair.of(nbt.getDouble("lastMotionX"), nbt.getDouble("lastMotionZ")));
+        if (nbt.hasKey("PreviousPositionX") && nbt.hasKey("PreviousPositionZ")) {
+            instance.setLastMotions(Pair.of(nbt.getDouble("PreviousPositionX"), nbt.getDouble("PreviousPositionZ")));
         } else {
             instance.setLastMotions(null);
         }
-        if (nbt.hasKey("prevStep")) {
-            instance.setPreviousStepHeight(nbt.getFloat("prevStep"));
+        if (nbt.hasKey("PreviousStepHeight")) {
+            instance.setPreviousStepHeight(nbt.getFloat("PreviousStepHeight"));
         } else {
             instance.setPreviousStepHeight(null);
         }
-        instance.setTickCache(nbt.getInteger("tickCache"));
-        instance.setRangeExtended(nbt.getBoolean("isRangeExtended"));
+        instance.setTickCache(nbt.getInteger("TickCache"));
+        instance.setRangeExtended(nbt.getBoolean("IsRangeExtended"));
         NBTTagList unlockedPieces = nbt.getTagList("UnlockedBookPieces", Constants.NBT.TAG_STRING);
         for (int i = 0; i < unlockedPieces.tagCount(); i++) {
             instance.setHasUnlockedBookPiece(unlockedPieces.getStringTagAt(i), true);
