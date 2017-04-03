@@ -30,18 +30,18 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
         if (armorStack.hasTagCompound()) {
             NBTTagCompound compound = armorStack.getTagCompound();
-            if (compound.hasKey("grappled") && compound.getBoolean("grappled")) {
-                double lastX = compound.getFloat("x");
-                double lastY = compound.getFloat("y");
-                double lastZ = compound.getFloat("z");
-                int blockX = compound.getInteger("blockX");
-                int blockY = compound.getInteger("blockY");
-                int blockZ = compound.getInteger("blockZ");
+            if (compound.hasKey("IsGrappled") && compound.getBoolean("IsGrappled")) {
+                double lastX = compound.getFloat("PlayerX");
+                double lastY = compound.getFloat("PlayerY");
+                double lastZ = compound.getFloat("PlayerZ");
+                int blockX = compound.getInteger("BlockX");
+                int blockY = compound.getInteger("BlockY");
+                int blockZ = compound.getInteger("BlockZ");
 
                 BlockPos blockPos = new BlockPos(blockX, blockY, blockZ);
 
                 if ((Math.abs(lastX - player.posX) > 0.1F || Math.abs(lastZ - player.posZ) > 0.1F || player.isSneaking() || player.worldObj.isAirBlock(blockPos))) {
-                    compound.setBoolean("grappled", false);
+                    compound.setBoolean("IsGrappled", false);
                 } else {
                     player.motionX = 0.0F;
                     player.motionY = (player.motionY > 0) ? player.motionY : 0.0F;
@@ -83,13 +83,13 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
             }
             if (canStick) {
                 if (!world.isRemote) {
-                    armorStack.getTagCompound().setFloat("x", (float) player.posX);
-                    armorStack.getTagCompound().setFloat("z", (float) player.posZ);
-                    armorStack.getTagCompound().setFloat("y", (float) player.posY);
-                    armorStack.getTagCompound().setInteger("blockX", x);
-                    armorStack.getTagCompound().setInteger("blockY", y);
-                    armorStack.getTagCompound().setInteger("blockZ", z);
-                    armorStack.getTagCompound().setBoolean("grappled", true);
+                    armorStack.getTagCompound().setFloat("PlayerX", (float) player.posX);
+                    armorStack.getTagCompound().setFloat("PlayerZ", (float) player.posZ);
+                    armorStack.getTagCompound().setFloat("PlayerY", (float) player.posY);
+                    armorStack.getTagCompound().setInteger("BlockX", x);
+                    armorStack.getTagCompound().setInteger("BlockY", y);
+                    armorStack.getTagCompound().setInteger("BlockZ", z);
+                    armorStack.getTagCompound().setBoolean("IsGrappled", true);
                 }
                 player.motionX = 0.0F;
                 player.motionY = 0.0F;
@@ -108,9 +108,9 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
             e.printStackTrace();
         }
 
-        if (isJumping && event.side == Side.SERVER && armorStack.getTagCompound().hasKey("grappled") &&
-          armorStack.getTagCompound().getBoolean("grappled")) {
-            armorStack.getTagCompound().setBoolean("grappled", false);
+        if (isJumping && event.side == Side.SERVER && armorStack.getTagCompound().hasKey("IsGrappled") &&
+          armorStack.getTagCompound().getBoolean("IsGrappled")) {
+            armorStack.getTagCompound().setBoolean("IsGrappled", false);
         }
     }
 }
