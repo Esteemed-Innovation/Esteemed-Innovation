@@ -42,9 +42,9 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getUpdateTag();
 
-        access.setBoolean("descending", descending);
+        access.setBoolean("IsDescending", descending);
         if (target != null) {
-            access.setInteger("target", target.getEntityId());
+            access.setInteger("TargetEntity", target.getEntityId());
         }
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
@@ -54,8 +54,8 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        descending = access.getBoolean("descending");
-        target = access.hasKey("target") ? (EntityLivingBase) worldObj.getEntityByID(access.getInteger("target")) : null;
+        descending = access.getBoolean("IsDescending");
+        target = access.hasKey("TargetEntity") ? (EntityLivingBase) worldObj.getEntityByID(access.getInteger("TargetEntity")) : null;
         markForResync();
     }
 

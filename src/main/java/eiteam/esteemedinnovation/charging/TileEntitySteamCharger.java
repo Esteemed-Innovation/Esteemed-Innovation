@@ -32,8 +32,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         randomDegrees = (int) (Math.random() * 360);
-        if (nbt.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
+        if (nbt.hasKey("Inventory")) {
+            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Inventory"));
         }
     }
 
@@ -43,7 +43,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         if (inventory != null) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             inventory.writeToNBT(nbttagcompound1);
-            nbt.setTag("inventory", nbttagcompound1);
+            nbt.setTag("Inventory", nbttagcompound1);
         }
         return nbt;
     }
@@ -55,9 +55,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         if (inventory != null) {
             NBTTagCompound nbttagcompound1 = new NBTTagCompound();
             inventory.writeToNBT(nbttagcompound1);
-            access.setTag("inventory", nbttagcompound1);
+            access.setTag("Inventory", nbttagcompound1);
         }
-        access.setBoolean("isCharging", isCharging);
+        access.setBoolean("IsCharging", isCharging);
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
@@ -65,12 +65,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        if (access.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
+        if (access.hasKey("Inventory")) {
+            inventory = ItemStack.loadItemStackFromNBT(access.getCompoundTag("Inventory"));
         } else {
             clear();
         }
-        isCharging = access.getBoolean("isCharging");
+        isCharging = access.getBoolean("IsCharging");
         markForResync();
     }
 
