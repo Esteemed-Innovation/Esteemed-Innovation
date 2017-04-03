@@ -32,7 +32,7 @@ public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
     @Override
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
         if (player.onGround && armorStack.hasTagCompound()) {
-            armorStack.getTagCompound().setBoolean("usedJump", false);
+            armorStack.getTagCompound().setBoolean("HasUsedDoubleJump", false);
         }
     }
 

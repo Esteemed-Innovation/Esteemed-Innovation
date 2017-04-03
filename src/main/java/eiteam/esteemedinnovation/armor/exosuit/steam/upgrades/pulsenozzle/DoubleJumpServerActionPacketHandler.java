@@ -17,12 +17,12 @@ public class DoubleJumpServerActionPacketHandler implements IMessageHandler<Doub
             // because it is handled automatically in ItemDoubleJumpUpgrade.
             ItemStack armorStack = player.getItemStackFromSlot(message.getSlot());
 
-            if (!armorStack.getTagCompound().hasKey("usedJump")) {
-                armorStack.getTagCompound().setBoolean("usedJump", false);
+            if (!armorStack.getTagCompound().hasKey("HasUsedDoubleJump")) {
+                armorStack.getTagCompound().setBoolean("HasUsedDoubleJump", false);
             }
 
-            if (!armorStack.getTagCompound().getBoolean("usedJump") && !player.capabilities.isFlying) {
-                armorStack.getTagCompound().setBoolean("usedJump", true);
+            if (!armorStack.getTagCompound().getBoolean("HasUsedDoubleJump") && !player.capabilities.isFlying) {
+                armorStack.getTagCompound().setBoolean("HasUsedDoubleJump", true);
                 ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 ((SteamChargable) chest.getItem()).drainSteam(chest, 10, player);
                 player.motionY = 0.65D;
