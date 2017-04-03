@@ -49,11 +49,11 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
 
             NBTTagCompound nbt = modelExosuitUpgrade.nbtTagCompound;
 
-            if (!nbt.hasKey("rotation")) {
-                nbt.setFloat("rotation", targetRotation);
+            if (!nbt.hasKey("PlayerRotation")) {
+                nbt.setFloat("PlayerRotation", targetRotation);
             }
 
-            modelExosuitUpgrade.nbtTagCompound.setFloat("rotation", targetRotation);
+            modelExosuitUpgrade.nbtTagCompound.setFloat("PlayerRotation", targetRotation);
         }
     }
 

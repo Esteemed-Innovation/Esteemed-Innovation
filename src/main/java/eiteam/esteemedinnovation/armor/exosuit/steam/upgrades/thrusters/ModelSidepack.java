@@ -42,7 +42,7 @@ public class ModelSidepack extends ModelExosuitUpgrade {
         super.renderModel(parentModel, entityLivingBase);
         ExosuitTexture.TANK.bindTexturePart(1);
 
-        float rotation = nbtTagCompound.getFloat("rotation");
+        float rotation = nbtTagCompound.getFloat("PlayerRotation");
 
         holder1.render(0.0625F);
         holder2.render(0.0625F);
