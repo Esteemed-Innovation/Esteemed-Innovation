@@ -2,8 +2,8 @@ package eiteam.esteemedinnovation.boiler;
 
 import eiteam.esteemedinnovation.api.block.DisguisableBlock;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
+import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -28,7 +28,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -112,12 +111,12 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getUpdateTag();
-        access.setInteger("water", myTank.getFluidAmount());
+        access.setInteger("WaterStored", myTank.getFluidAmount());
         access.setShort("BurnTime", (short) furnaceBurnTime);
         access.setShort("CookTime", (short) furnaceCookTime);
-        access.setShort("cIBT", (short) currentItemBurnTime);
-        access.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
-        access.setInteger("disguiseMeta", disguiseMeta);
+        access.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
+        access.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
+        access.setInteger("DisguiseMetadata", disguiseMeta);
 
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
@@ -126,12 +125,12 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
-        myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), access.getInteger("water")));
+        myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), access.getInteger("WaterStored")));
         furnaceBurnTime = access.getShort("BurnTime");
-        currentItemBurnTime = access.getShort("cIBT");
+        currentItemBurnTime = access.getShort("CurrentItemBurnTime");
         furnaceCookTime = access.getShort("CookTime");
-        disguiseBlock = Block.getBlockById(access.getInteger("disguiseBlock"));
-        disguiseMeta = access.getInteger("disguiseMeta");
+        disguiseBlock = Block.getBlockById(access.getInteger("DisguiseBlock"));
+        disguiseMeta = access.getInteger("DisguiseMetadata");
         super.markForResync();
     }
 
@@ -152,28 +151,28 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
         furnaceBurnTime = nbt.getShort("BurnTime");
         furnaceCookTime = nbt.getShort("CookTime");
-        currentItemBurnTime = nbt.getShort("cIBT");
+        currentItemBurnTime = nbt.getShort("CurrentItemBurnTime");
 
         if (nbt.hasKey("CustomName")) {
             customName = nbt.getString("CustomName");
         }
 
-        if (nbt.hasKey("water")) {
-            myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), nbt.getShort("water")));
+        if (nbt.hasKey("WaterStored")) {
+            myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), nbt.getShort("WaterStored")));
         }
-        disguiseBlock = Block.getBlockById(nbt.getInteger("disguiseBlock"));
-        disguiseMeta = nbt.getInteger("disguiseMeta");
+        disguiseBlock = Block.getBlockById(nbt.getInteger("DisguiseBlock"));
+        disguiseMeta = nbt.getInteger("DisguiseMetadata");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setShort("BurnTime", (short) furnaceBurnTime);
-        nbt.setShort("water", (short) myTank.getFluidAmount());
+        nbt.setShort("WaterStored", (short) myTank.getFluidAmount());
         nbt.setShort("CookTime", (short) furnaceCookTime);
-        nbt.setShort("cIBT", (short) currentItemBurnTime);
-        nbt.setInteger("disguiseBlock", Block.getIdFromBlock(disguiseBlock));
-        nbt.setInteger("disguiseMeta", disguiseMeta);
+        nbt.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
+        nbt.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
+        nbt.setInteger("DisguiseMetadata", disguiseMeta);
 
         NBTTagList nbttaglist = new NBTTagList();
 
