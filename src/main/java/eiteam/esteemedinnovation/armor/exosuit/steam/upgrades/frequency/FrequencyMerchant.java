@@ -119,7 +119,7 @@ public class FrequencyMerchant implements IMerchant {
                 saleItems.add(Pair.of(ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), 8));
             }
             if (random.nextDouble() < 0.07D) {
-                saleItems.add(Pair.of(ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), 8));
+                saleItems.add(Pair.of(ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), 8));
             }
             if (random.nextDouble() < 0.06D) {
                 saleItems.add(Pair.of(ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), 8));

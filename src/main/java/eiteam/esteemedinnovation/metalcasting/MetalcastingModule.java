@@ -84,29 +84,29 @@ public class MetalcastingModule extends ContentModule {
     public void recipes(Side side) {
         CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(IRON_INGOT));
         CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()));
-        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
 
         CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(GOLD_INGOT));
         CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(GOLD_NUGGET));
-        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()));
 
         CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()));
-        CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(ZINC_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
 
         CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, COPPER_NUGGET.getMeta()));
-        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(COPPER_LIQUID, ItemMold.Type.PIPE.createItemStack(MOLD_ITEM), new ItemStack(COPPER_PIPE));
 
         CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()));
-        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, BRASS_PLATE.getMeta()));
+        CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, BRASS_PLATE.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.PIPE.createItemStack(MOLD_ITEM), new ItemStack(BRASS_PIPE));
 
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), findFirstOre(INGOT_LEAD));
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), findFirstOre(NUGGET_LEAD));
-        CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
+        CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
 
         if (Config.enableCrucible) {
             BookRecipeRegistry.addRecipe("crucible", new ResearchRecipe((ResearchObject.ResearchBlock) CRUCIBLE,
@@ -176,7 +176,7 @@ public class MetalcastingModule extends ContentModule {
               new BookCategory("category.Molds.name",
                 new BookEntry("research.Molds.name",
                   new BookPageItem("research.Molds.name", "research.Molds.0",
-                    ItemMold.Type.PLATE.createItemStack(MOLD_ITEM),
+                    ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM),
                     ItemMold.Type.INGOT.createItemStack(MOLD_ITEM),
                     ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM),
                     ItemMold.Type.PIPE.createItemStack(MOLD_ITEM)),
@@ -195,7 +195,7 @@ public class MetalcastingModule extends ContentModule {
         registerModel(BLANK_MOLD);
         registerModelItemStack(ItemMold.Type.INGOT.createItemStack(MOLD_ITEM));
         registerModelItemStack(ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM));
-        registerModelItemStack(ItemMold.Type.PLATE.createItemStack(MOLD_ITEM));
+        registerModelItemStack(ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM));
         registerModelItemStack(ItemMold.Type.PIPE.createItemStack(MOLD_ITEM));
     }
 
