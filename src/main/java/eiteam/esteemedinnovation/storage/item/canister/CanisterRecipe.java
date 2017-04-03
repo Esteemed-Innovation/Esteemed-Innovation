@@ -31,7 +31,7 @@ public class CanisterRecipe implements IRecipe {
             if (!toCan.hasTagCompound()) {
                 toCan.setTagCompound(new NBTTagCompound());
             }
-            toCan.getTagCompound().setInteger("canned", 0);
+            toCan.getTagCompound().setInteger("Canned", 0);
             toCan.stackSize = 1;
             return toCan;
         }
@@ -62,7 +62,7 @@ public class CanisterRecipe implements IRecipe {
             }
         }
 
-        if (output != null && output.hasTagCompound() && output.getTagCompound().hasKey("canned")) {
+        if (output != null && output.hasTagCompound() && output.getTagCompound().hasKey("Canned")) {
             return null;
         }
 

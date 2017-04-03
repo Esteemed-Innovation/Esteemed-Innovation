@@ -96,7 +96,7 @@ public class StorageModule extends ContentModule {
         if (Config.enableCanister) {
             ItemStack output = new ItemStack(Items.DIAMOND_SWORD);
             output.setTagCompound(new NBTTagCompound());
-            output.getTagCompound().setInteger("canned", 0);
+            output.getTagCompound().setInteger("Canned", 0);
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 3,
               new BookCategory("category.Canister.name",
                 new BookEntry("research.Canister.name",

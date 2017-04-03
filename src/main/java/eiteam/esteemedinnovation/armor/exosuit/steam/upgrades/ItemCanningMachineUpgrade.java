@@ -27,7 +27,7 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
 
         if (ChargableUtility.hasPower(player, 10)) {
             ItemStack item = event.getItem().getEntityItem();
-            if (item.hasTagCompound() && item.getTagCompound().hasKey("canned")) {
+            if (item.hasTagCompound() && item.getTagCompound().hasKey("Canned")) {
                 return;
             }
 
@@ -49,7 +49,7 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
                 if (!item.hasTagCompound()) {
                     item.setTagCompound(new NBTTagCompound());
                 }
-                item.getTagCompound().setInteger("canned", 0);
+                item.getTagCompound().setInteger("Canned", 0);
                 for (int i = 0; i < item.stackSize; i++) {
                     InventoryUtility.consumeInventoryItem(player, ITEM_CANISTER);
                     player.inventoryContainer.detectAndSendChanges();
@@ -62,7 +62,7 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
                 if (!item2.hasTagCompound()) {
                     item2.setTagCompound(new NBTTagCompound());
                 }
-                item2.getTagCompound().setInteger("canned", 0);
+                item2.getTagCompound().setInteger("Canned", 0);
                 for (int i = 0; i < numCans; i++) {
                     InventoryUtility.consumeInventoryItem(player, ITEM_CANISTER);
                     player.inventoryContainer.detectAndSendChanges();

@@ -300,7 +300,7 @@ public class GenericEventHandler {
         if (entity instanceof EntityItem && !(entity instanceof EntityCanisterItem)) {
             EntityItem item = (EntityItem) entity;
             ItemStack stack = item.getEntityItem();
-            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Canned")) {
                 if (!event.getWorld().isRemote) {
                     EntityCanisterItem item2 = new EntityCanisterItem(item.worldObj, item.posX, item.posY, item.posZ, item);
                     item2.motionX = item.motionX;
@@ -545,7 +545,7 @@ public class GenericEventHandler {
         if (plate != null) {
             event.getToolTip().add(TextFormatting.BLUE + I18n.format("esteemedinnovation.plate.bonus", plate.effect()));
         }
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("canned")) {
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Canned")) {
             event.getToolTip().add(TextFormatting.GOLD + I18n.format("esteemedinnovation.canned"));
         }
         if (stack.getItem() instanceof ItemSteamExosuitArmor || stack.getItem() instanceof SteamChargable) {
