@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
+import eiteam.esteemedinnovation.storage.item.canister.CanisterEntityCreator;
 import eiteam.esteemedinnovation.storage.item.canister.CanisterRecipe;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.storage.item.canister.RenderCanister;
@@ -19,6 +20,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -88,6 +90,7 @@ public class StorageModule extends ContentModule {
               " i ",
               'i', NUGGET_ZINC
             ));
+            MinecraftForge.EVENT_BUS.register(new CanisterEntityCreator());
         }
     }
 
