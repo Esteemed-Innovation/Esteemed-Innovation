@@ -1,17 +1,12 @@
 package eiteam.esteemedinnovation.metalcasting.crucible;
 
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
-import eiteam.esteemedinnovation.api.book.BookSection;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.api.research.ResearchObject;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.heater.BlockSteamHeater;
 import eiteam.esteemedinnovation.heater.TileEntitySteamHeater;
-import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
-import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -36,7 +31,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.HELL_CRUCIBLE;
 
-public class BlockCrucible extends Block implements Wrenchable, ResearchObject.ResearchBlock {
+public class BlockCrucible extends Block implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     private static final float PX = (1.0F / 16.0F);
     public static final AxisAlignedBB CRUCIBLE_AABB = new AxisAlignedBB(PX, PX, PX, 1F - PX, 1F - PX, 1F - PX);
@@ -246,15 +241,6 @@ public class BlockCrucible extends Block implements Wrenchable, ResearchObject.R
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
             WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isUnlocked(EntityPlayer player) {
-        if (this == MetalcastingModule.CRUCIBLE) {
-            BookSection section = BookPageRegistry.getSectionFromName(MetalcastingBookSection.NAME);
-            return section != null && section.isUnlocked(player);
         }
         return false;
     }

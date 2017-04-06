@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import eiteam.esteemedinnovation.api.research.ResearchObject;
 import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
@@ -109,7 +108,7 @@ public class MetalcastingModule extends ContentModule {
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
 
         if (Config.enableCrucible) {
-            BookRecipeRegistry.addRecipe("crucible", new ResearchRecipe((ResearchObject.ResearchBlock) CRUCIBLE,
+            BookRecipeRegistry.addRecipe("crucible", new ResearchRecipe(new ItemStack(CRUCIBLE), MetalcastingBookSection.NAME,
               "x x",
               "x x",
               "xxx",
@@ -125,14 +124,14 @@ public class MetalcastingModule extends ContentModule {
             }
         }
         if (Config.enableMold) {
-            BookRecipeRegistry.addRecipe("carving", new ResearchRecipe((ResearchObject.ResearchBlock) CARVING_TABLE,
+            BookRecipeRegistry.addRecipe("carving", new ResearchRecipe(new ItemStack(CARVING_TABLE), MetalcastingBookSection.NAME,
               "xzx",
               "x x",
               "xxx",
               'x', PLANK_WOOD,
               'z', BLANK_MOLD
             ));
-            BookRecipeRegistry.addRecipe("mold", new ResearchRecipe((ResearchObject.ResearchBlock) MOLD,
+            BookRecipeRegistry.addRecipe("mold", new ResearchRecipe(new ItemStack(MOLD), MetalcastingBookSection.NAME,
               "xxx",
               "xxx",
               'x', BRICK

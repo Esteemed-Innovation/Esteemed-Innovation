@@ -1,10 +1,6 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
-import eiteam.esteemedinnovation.api.book.BookSection;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import eiteam.esteemedinnovation.api.research.ResearchObject;
-import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,7 +14,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockCarvingTable extends Block implements ResearchObject.ResearchBlock {
+public class BlockCarvingTable extends Block {
     public BlockCarvingTable() {
         super(Material.WOOD);
         setHardness(3.5F);
@@ -47,11 +43,5 @@ public class BlockCarvingTable extends Block implements ResearchObject.ResearchB
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean isUnlocked(EntityPlayer player) {
-        BookSection section = BookPageRegistry.getSectionFromName(MetalcastingBookSection.NAME);
-        return section != null && section.isUnlocked(player);
     }
 }

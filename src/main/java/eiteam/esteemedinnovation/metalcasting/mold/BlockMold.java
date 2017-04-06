@@ -1,13 +1,8 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
-import eiteam.esteemedinnovation.api.book.BookPageRegistry;
-import eiteam.esteemedinnovation.api.book.BookSection;
 import eiteam.esteemedinnovation.api.mold.CrucibleMold;
-import eiteam.esteemedinnovation.api.research.ResearchObject;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
-
-import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -29,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockMold extends Block implements Wrenchable, ResearchObject.ResearchBlock {
+public class BlockMold extends Block implements Wrenchable {
     private static final float px = (1.0F / 16.0F);
     public static PropertyDirection FACING = BlockHorizontal.FACING;
 
@@ -162,11 +157,5 @@ public class BlockMold extends Block implements Wrenchable, ResearchObject.Resea
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
-    }
-
-    @Override
-    public boolean isUnlocked(EntityPlayer player) {
-        BookSection section = BookPageRegistry.getSectionFromName(MetalcastingBookSection.NAME);
-        return section != null && section.isUnlocked(player);
     }
 }
