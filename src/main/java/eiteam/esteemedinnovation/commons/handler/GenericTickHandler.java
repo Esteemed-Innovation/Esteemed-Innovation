@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.commons.handler;
 
 import eiteam.esteemedinnovation.api.block.DisguisableBlock;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
-import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
@@ -50,20 +49,14 @@ public class GenericTickHandler {
     private float sensitivity = 0;
     private int zoomSettingOn = 0;
     private boolean lastPressingKey = false;
-    private boolean isJumping = false;
     private int ticksSinceLastCellFill = 0;
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
-        boolean isServer = event.side == Side.SERVER;
-        ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (!isServer) {
-            isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown();
-        }
         ticksSinceLastCellFill++;
-        if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
-            if (ticksSinceLastCellFill >= 10) {
+        if (ticksSinceLastCellFill >= 10) {
+            if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
                 for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                     ItemStack item = player.inventory.getStackInSlot(i);
                     if (item != null && item.getItem() instanceof ItemSteamCell &&
@@ -73,19 +66,10 @@ public class GenericTickHandler {
                         break;
                     }
                 }
+            } else {
+                ticksSinceLastCellFill = -40;
             }
-        } else {
-            ticksSinceLastCellFill = -40;
         }
-
-        if (chest == null) {
-            return;
-        }
-        Item chestItem = chest.getItem();
-        if (!(chestItem instanceof ExosuitArmor)) {
-            return;
-        }
-        ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
     }
 
     private static Field itemInMainHandField;
