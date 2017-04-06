@@ -1,12 +1,14 @@
 package eiteam.esteemedinnovation.api;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitEventDelegator;
+import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.api.steamnet.WorldLoadHandler;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.oredict.RecipeSorter;
 
 import java.io.File;
 
@@ -28,5 +30,6 @@ public class APIMod {
         MinecraftForge.EVENT_BUS.register(new ItemSteamTool.ToolUpgradeEventDelegator());
         MinecraftForge.EVENT_BUS.register(new ExosuitEventDelegator());
         MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
+        RecipeSorter.register(Constants.API_MODID + ":research_recipe", ResearchRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
     }
 }
