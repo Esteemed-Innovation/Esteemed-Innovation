@@ -6,16 +6,13 @@ import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
-import eiteam.esteemedinnovation.charging.ItemSteamCell;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.network.CamoPacket;
-import eiteam.esteemedinnovation.commons.util.BaublesUtility;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -34,7 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 
-import static eiteam.esteemedinnovation.charging.ChargingModule.STEAM_CELL_FILLER;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET;
 import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
@@ -49,28 +45,6 @@ public class GenericTickHandler {
     private float sensitivity = 0;
     private int zoomSettingOn = 0;
     private boolean lastPressingKey = false;
-    private int ticksSinceLastCellFill = 0;
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        EntityPlayer player = event.player;
-        ticksSinceLastCellFill++;
-        if (ticksSinceLastCellFill >= 10) {
-            if (BaublesUtility.checkForUpgrade(player, STEAM_CELL_FILLER)) {
-                for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-                    ItemStack item = player.inventory.getStackInSlot(i);
-                    if (item != null && item.getItem() instanceof ItemSteamCell &&
-                      ItemSteamCell.chargeItems(player, false)) {
-                        player.inventory.decrStackSize(i, 1);
-                        ticksSinceLastCellFill = 0;
-                        break;
-                    }
-                }
-            } else {
-                ticksSinceLastCellFill = -40;
-            }
-        }
-    }
 
     private static Field itemInMainHandField;
     private static Field itemInOffHandField;

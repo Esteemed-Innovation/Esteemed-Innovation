@@ -1,10 +1,8 @@
 package eiteam.esteemedinnovation.charging;
 
-import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.misc.ItemBauble;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +31,7 @@ public class ChargingModule extends ContentModule {
         STEAM_FILLER = setup(new BlockSteamCharger(), "charger");
         STEAM_CELL_FULL = setup(new ItemSteamCell(), "steamcell_full");
         STEAM_CELL_EMPTY = setup(new Item(), "steamcell_empty");
-        STEAM_CELL_FILLER = setup(new ItemBauble(BaubleType.AMULET).setMaxStackSize(1), "steamcell_filler");
+        STEAM_CELL_FILLER = setup(new ItemSteamCellFiller(), "steamcell_filler");
 
         registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
