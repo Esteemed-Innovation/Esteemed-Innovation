@@ -371,6 +371,7 @@ research.ExoTopHat.name=Top Hat
 research.ExoTopHat.0=Both the plain and emerald-adorned versions of my top hat can be affixed to my exosuit, allowing me a mix between protection and style.
 
 section.Flintlock.name=Flintlock Weapons
+category.Flintlock.hint=Boom!
 category.Parts.name=Weapon Parts
 research.Parts.name=Weapon Parts
 research.Parts.0=Flintlock weapons are extremely intricate devices, and I'll need to craft some complex devices in order to make them. This section details exactly how to do that.

@@ -16,7 +16,6 @@ import eiteam.esteemedinnovation.commons.network.JumpValueChangePacket;
 import eiteam.esteemedinnovation.commons.network.JumpValueChangePacketHandler;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
-import eiteam.esteemedinnovation.firearms.FlintlockBookSection;
 import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -84,6 +83,7 @@ public class EsteemedInnovation {
     public static CommonProxy proxy;
 
     public static final String BASICS_SECTION = "section.Basics.name";
+    public static final String FLINTLOCK_SECTION = "section.Flintlock.name";
     public static final String CASTING_SECTION = "section.MetalCasting.name";
     public static final String GADGET_SECTION = "section.Gadgets.name";
     public static final String STEAMPOWER_SECTION = "section.SteamPower.name";
@@ -162,7 +162,7 @@ public class EsteemedInnovation {
             new BookEntry("research.Book.name",
               new BookPageItem("research.Book.name", "research.Book.0", new ItemStack(BOOK)),
               new BookPageCrafting("", "book"))));
-        BookPageRegistry.addSection(1, new FlintlockBookSection());
+        BookPageRegistry.addSection(1, new BookSection(FLINTLOCK_SECTION));
         BookPageRegistry.addSection(2, new MetalcastingBookSection());
         BookPageRegistry.addSection(3, new BookSection(GADGET_SECTION));
         BookPageRegistry.addSection(4, new BookSection(STEAMPOWER_SECTION));

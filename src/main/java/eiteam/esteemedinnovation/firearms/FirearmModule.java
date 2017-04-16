@@ -6,9 +6,12 @@ import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.enhancement.Rocket;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
+import eiteam.esteemedinnovation.api.research.ResearchRecipe;
+import eiteam.esteemedinnovation.api.research.ShapelessResearchRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.firearms.flintlock.FlintlockBookCategory;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.flintlock.enhancements.*;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
@@ -190,7 +193,7 @@ public class FirearmModule extends ContentModule {
             }
         }
         if (Config.enableFirearms) {
-            BookRecipeRegistry.addRecipe("musket", new ShapedOreRecipe(MUSKET,
+            BookRecipeRegistry.addRecipe("musket", new ResearchRecipe(new ItemStack(MUSKET), "category.Musket.name",
               "b  ",
               " bf",
               "  s",
@@ -198,7 +201,7 @@ public class FirearmModule extends ContentModule {
               'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()),
               's', new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("pistol", new ShapedOreRecipe(PISTOL,
+            BookRecipeRegistry.addRecipe("pistol", new ResearchRecipe(new ItemStack(PISTOL), "category.Pistol.name",
               "b  ",
               " pf",
               " p ",
@@ -206,7 +209,7 @@ public class FirearmModule extends ContentModule {
               'p', PLANK_WOOD,
               'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("blunderbuss", new ShapedOreRecipe(BLUNDERBUSS,
+            BookRecipeRegistry.addRecipe("blunderbuss", new ResearchRecipe(new ItemStack(BLUNDERBUSS), "category.Blunderbuss.name",
               "b  ",
               " bf",
               "  s",
@@ -214,20 +217,20 @@ public class FirearmModule extends ContentModule {
               'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()),
               's', new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata())
             ));
+            // TODO: ShapelessResearchRecipe
             String[] ores = { NUGGET_IRON, NUGGET_LEAD, NUGGET_STEEL, NUGGET_SILVER };
             if (Config.expensiveMusketRecipes) {
                 int i = 1;
                 for (String ore : ores) {
-                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessOreRecipe(MUSKET_CARTRIDGE,
-                      ore, PAPER, GUNPOWDER
-                    ));
+                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE),
+                      "category.Musket.name", ore, PAPER, GUNPOWDER));
                     i++;
                 }
             } else {
                 int i = 1;
                 for (String ore : ores) {
-                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessOreRecipe(
-                      new ItemStack(MUSKET_CARTRIDGE, 2, 0), ore, ore, PAPER, PAPER, GUNPOWDER));
+                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE, 2, 0),
+                      "category.Musket.name", ore, ore, PAPER, PAPER, GUNPOWDER));
                     i++;
                 }
             }
@@ -314,7 +317,7 @@ public class FirearmModule extends ContentModule {
             ));
         }
 
-        MinecraftForge.EVENT_BUS.register(new FlintlockBookSection.EventHandlers());
+        MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandler());
     }
 
     private static void addRocketLauncherRecipe(String name, String brassOre, String copperOre) {
@@ -336,7 +339,7 @@ public class FirearmModule extends ContentModule {
         if (!Config.enableFirearms && !Config.enableRL) {
             return;
         }
-        BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME,
+        BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION,
           new BookCategory("category.Parts.name",
             new BookEntry("research.Parts.name",
               new BookPageItem("research.Parts.name", "research.Parts.0",
@@ -350,12 +353,12 @@ public class FirearmModule extends ContentModule {
               new BookPageCrafting("", "flintlock1", "flintlock2"))));
 
         if (Config.enableFirearms) {
-            BookCategory musketCategory = new BookCategory("category.Musket.name",
+            BookCategory musketCategory = new FlintlockBookCategory("category.Musket.name",
               new BookEntry("research.Musket.name",
                 new BookPageItem("research.Musket.name", "research.Musket.0", new ItemStack(MUSKET)),
                 new BookPageCrafting("", "cartridge1", "cartridge2", "cartridge3", "cartridge4"),
                 new BookPageCrafting("", "musket")));
-            BookCategory blunderbussCategory = new BookCategory("category.Blunderbuss.name",
+            BookCategory blunderbussCategory = new FlintlockBookCategory("category.Blunderbuss.name",
               new BookEntry("research.Blunderbuss.name",
                 new BookPageItem("research.Blunderbuss.name", "research.Blunderbuss.0", new ItemStack(BLUNDERBUSS)),
                 new BookPageCrafting("", "blunderbuss")));
@@ -388,7 +391,7 @@ public class FirearmModule extends ContentModule {
                   new BookPageCrafting("", "recoil")));
             }
 
-            BookCategory pistolCategory = new BookCategory("category.Pistol.name",
+            BookCategory pistolCategory = new FlintlockBookCategory("category.Pistol.name",
               new BookEntry("research.Pistol.name",
                 new BookPageItem("research.Pistol.name", "research.Pistol.0", new ItemStack(PISTOL)),
                 new BookPageCrafting("", "pistol")));
@@ -409,9 +412,9 @@ public class FirearmModule extends ContentModule {
                   new BookPageCrafting("", "speedy")));
             }
 
-            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, musketCategory);
-            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, blunderbussCategory);
-            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, pistolCategory);
+            BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, musketCategory);
+            BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, blunderbussCategory);
+            BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, pistolCategory);
         }
         if (Config.enableRL) {
             BookCategory rocketLauncherCategory = new BookCategory("category.RocketLauncher.name",
@@ -453,8 +456,8 @@ public class FirearmModule extends ContentModule {
                   new BookPageCrafting("", "miningRocket")));
             }
 
-            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, rocketLauncherCategory);
-            BookPageRegistry.addCategoryToSection(FlintlockBookSection.NAME, rocketsCategory);
+            BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, rocketLauncherCategory);
+            BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, rocketsCategory);
         }
 
         if (Config.enableSpyglass) {
