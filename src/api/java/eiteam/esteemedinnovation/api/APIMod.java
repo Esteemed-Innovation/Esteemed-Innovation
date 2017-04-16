@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.api;
 
 import eiteam.esteemedinnovation.api.exosuit.ExosuitEventDelegator;
 import eiteam.esteemedinnovation.api.research.ResearchRecipe;
+import eiteam.esteemedinnovation.api.research.ShapelessResearchRecipe;
 import eiteam.esteemedinnovation.api.steamnet.WorldLoadHandler;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,11 +13,13 @@ import net.minecraftforge.oredict.RecipeSorter;
 
 import java.io.File;
 
-@Mod(modid = Constants.API_MODID, name = Constants.API_NAME, version = Constants.API_VERSION)
+import static eiteam.esteemedinnovation.api.Constants.API_MODID;
+
+@Mod(modid = API_MODID, name = Constants.API_NAME, version = Constants.API_VERSION)
 public class APIMod {
     File configDir;
 
-    @Mod.Instance(Constants.API_MODID)
+    @Mod.Instance(API_MODID)
     public static APIMod INSTANCE;
 
     @Mod.EventHandler
@@ -30,6 +33,7 @@ public class APIMod {
         MinecraftForge.EVENT_BUS.register(new ItemSteamTool.ToolUpgradeEventDelegator());
         MinecraftForge.EVENT_BUS.register(new ExosuitEventDelegator());
         MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
-        RecipeSorter.register(Constants.API_MODID + ":research_recipe", ResearchRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
+        RecipeSorter.register(API_MODID + ":research_recipe", ResearchRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
+        RecipeSorter.register(API_MODID + ":shapeless_research_recipe", ShapelessResearchRecipe.class, RecipeSorter.Category.SHAPELESS, "before:forge:shapelessore");
     }
 }
