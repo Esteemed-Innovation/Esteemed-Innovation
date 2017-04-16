@@ -41,7 +41,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     protected static final ResourceLocation LARGE_ICONS = new ResourceLocation(Constants.EI_MODID + ":textures/gui/engineering2.png");
     private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
     /**
-     * The Item used in getStrVsBlock. Basically, assuming there are no strength modifying upgrades, this item's getStrVsBlock
+     * The Item used in getStrVsBlock. Basically, assuming there are no strength modifying upgrades, this item's {@link #getStrVsBlock(ItemStack, IBlockState)}
      * will be called to determine the strength (along with the speed, of course).
      */
     private final Item itemForStrength;
@@ -324,20 +324,18 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     /**
-     * Returns the according integer from SteamToolSlot that corresponds with this tool.
+     * @return the according integer from {@link SteamToolSlot} that corresponds with this tool.
      */
     public abstract int getToolInteger();
 
     /**
-     * Returns the according SteamToolSlot that shows red text for upgrades in the tooltip.
+     * @return the according {@link SteamToolSlot} that shows red text for upgrades in the tooltip.
      */
     @Nonnull
     public abstract SteamToolSlot getRedSlot();
 
     /**
      * Delegates events to {@link SteamToolUpgrade}'s according methods.
-     *
-     * Side note: I really wish that Java FP wasn't terrible...
      */
     public static final class ToolUpgradeEventDelegator {
         /**

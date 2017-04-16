@@ -18,9 +18,10 @@ public interface EnhancementRocketLauncher extends Enhancement {
     int getClipSizeChange(Item weapon);
 
     /**
-    * Called to make the upgrade use shots
-    * This can be used to change features of the base EntityMusketBall bullet
-    */
+     * Called to make the upgrade use shots
+     * <p>
+     * This can be used to change features of the base EntityMusketBall bullet
+     */
     EntityRocket changeBullet(EntityRocket bullet);
 
     @Override

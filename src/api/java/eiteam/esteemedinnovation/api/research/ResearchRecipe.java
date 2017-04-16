@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 
 /**
  * The ResearchRecipe is a ShapedOreRecipe that requires research to first be unlocked.
- *
+ * <p>
  * Well, it actually requires a predicate to match. By default, this predicate will check if the player has unlocked
  * a certain {@link BookPiece}. However, using the constructor which passes a {@link TriPredicate} allows for any number
  * of checks.
@@ -23,7 +23,7 @@ public class ResearchRecipe extends ShapedOreRecipe {
     /**
      * The predicate used to check if the recipe is valid. When this is executed, it already checks that the shape is
      * valid, and the player is not null (e.g., autocrafting).
-     *
+     * <p>
      * The predicate passes the current {@link InventoryCrafting}, the {@link EntityPlayer} crafting it, and the
      * {@link World} they are currently in.
      */

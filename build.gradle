@@ -177,6 +177,14 @@ processResources {
     }
 }
 
+// TODO: Automate for when a new API package is built/published.
+javadoc {
+    source = sourceSets.api.allJava
+    destinationDir = file('./docs/')
+    options.memberLevel = JavadocMemberLevel.PRIVATE
+    title = 'Esteemed Innovation API version ' + newAPIVersion
+}
+
 sourceSets {
     api {
         java {

@@ -11,15 +11,19 @@ import java.util.Map;
 public class EnhancementRegistry {
     /**
      * The icons for all of the IEnhancements.
-     * Key: A pair of the item, the item as an enhancement.
-     * Value: The ResourceLocation for the enhancement.
+     * <ul>
+     *     <li>Key: A pair of the item, the item as an enhancement.</li>
+     *     <li>Value: The ResourceLocation for the enhancement.</li>
+     * </ul>
      */
     public static Map<Pair<Item, Enhancement>, ResourceLocation> enhancementIcons = new HashMap<>();
 
     /**
      * The IEnhancements.
-     * Key: Enhancement ID
-     * Value: Enhancement
+     * <ul>
+     *     <li>Key: Enhancement ID</li>
+     *     <li>Value: Enhancement</li>
+     * </ul>
      */
     public static Map<String, Enhancement> enhancements = new HashMap<>();
 

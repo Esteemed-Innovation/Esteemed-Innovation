@@ -8,7 +8,7 @@ import java.util.*;
 
 /**
  * The registry for all book related stuff.
- *
+ * <p>
  * It is very important to use *unique* keynames (unlocalized names) for your sections, categories, and entries.
  */
 public class BookPageRegistry {
@@ -20,15 +20,17 @@ public class BookPageRegistry {
 
     /**
      * All of the research pages showcasing crafting recipes.
-     * Key: The output item.
-     * Value: A pair of the entry name and the page number.
+     * <ul>
+     *     <li>Key: The output item.</li>
+     *     <li>Value: A pair of the entry name and the page number.</li>
+     * </ul>
      */
     public static final Map<ItemStack, Pair<String, Integer>> bookRecipes = new HashMap<>();
 
     /**
      * Adds a simple section with no categories. It is probably better in most cases to use the version of this
      * method that explicitly adds a {@link BookSection} instance ({@link #addSection(BookSection)}).
-     *
+     * <p>
      * In order to use this, you first register the section with this name, and then use the other addTHING methods
      * to append to the section. Again, it's recommended to use the other method instead with a fully constructed
      * section.

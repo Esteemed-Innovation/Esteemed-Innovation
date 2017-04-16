@@ -21,9 +21,9 @@ public class UtilSteamTool {
     };
 
     /**
-     * Checks if the ItemStack has a particular upgrade. Note that you can also call directly on
-     * the ISteamTool item rather than this. This is only used internally by EI for the actual
-     * ISteamTool#hasUpgrade(ItemStack, Item) overrides in the steam tool classes.
+     * Checks if the ItemStack has a particular upgrade. You can also call directly on the {@link SteamTool} item
+     * rather than this. This is only used internally by EI for the actual {@link SteamTool#hasUpgrade(ItemStack, Item)}
+     * implementations in the steam tool classes.
      * @param me The ItemStack version of the drill
      * @param check The item that is being checked against, or the upgrade
      * @return Whether it has any upgrades.
@@ -47,10 +47,10 @@ public class UtilSteamTool {
     }
 
     /**
-     * Gets all of the upgrades (except non-standard ones that do not implement SteamToolUpgrade)
+     * Gets all of the upgrades (except non-standard ones that do not implement {@link SteamToolUpgrade})
      * that are installed in the tool
      * @param me The tool ItemStack.
-     * @return The ArrayList of all the upgrades. This can be empty. Expect emptiness.
+     * @return The {@link ArrayList} of all the upgrades. This can be empty. Expect emptiness.
      */
     public static ArrayList<SteamToolUpgrade> getUpgrades(ItemStack me) {
         ArrayList<SteamToolUpgrade> upgrades = new ArrayList<>();
@@ -76,7 +76,7 @@ public class UtilSteamTool {
     }
 
     /**
-     * Exactly like getUpgrades, but obtains ItemStacks instead of ISteamToolUpgrades.
+     * Exactly like {@link #getUpgrades(ItemStack)}, but obtains ItemStacks instead of {@link SteamToolUpgrade}.
      * @param self The ItemStack of the tool
      * @return An ArrayList of all the upgrade ItemStacks.
      */
@@ -146,9 +146,9 @@ public class UtilSteamTool {
     }
 
     /**
-     * The same as getInformation(ArrayList, SteamToolSlot), but relies on itemstacks instead of ISteamToolUpgrades
-     * @param upgrades The ItemStacks that are being tested against; see #getUpgradeStacks
-     * @param redSlot The slot that should be red. See getInformation.
+     * Gets an ArrayList of the Strings that should be put in the item's tooltip.
+     * @param upgrades The ItemStacks that are being tested against. See {@link #getUpgradeStacks(ItemStack)}
+     * @param redSlot The slot that should be red. See {@link ItemSteamTool#getRedSlot()}.
      * @return The strings. Will return an empty array if there are no upgrades or strings.
      */
     @Nonnull

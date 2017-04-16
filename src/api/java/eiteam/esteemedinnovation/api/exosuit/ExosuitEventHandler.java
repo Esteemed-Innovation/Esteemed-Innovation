@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 /**
  * This represents a thing that can be put into an {@link ExosuitArmor} implementer (plates, upgrades, for example, but
  * it is only limited by your imagination) and be handled by the various provided events.
- *
+ * <p>
  * Implementers of this interface will be handled by the {@link ExosuitEventDelegator}. These methods do not check
  * for steam existing in the exosuit before calling the methods. So if you require steam for your handler, you must
  * manually check within your handler.

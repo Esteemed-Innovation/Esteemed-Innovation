@@ -26,15 +26,19 @@ public class CrucibleRegistry {
 
     /**
      * All of the CrucibleLiquid recipes.
-     * Key: pair of the item and its metadata, -1 if it does not use metadata.
-     * Value: pair of the liquid and the amount created.
+     * <ul>
+     *     <li>Key: pair of the item and its metadata, -1 if it does not use metadata.</li>
+     *     <li>Value: pair of the liquid and the amount created.</li>
+     * </ul>
      */
     public static Map<Pair<Item, Integer>, Pair<CrucibleLiquid, Integer>> liquidRecipes = new HashMap<>();
 
     /**
      * All of the Crucible dunking recipes.
-     * Key: A triplet of the Item, the metadata, and the CrucibleLiquid.
-     * Value: A pair of the required liquid amount and the output ItemStack.
+     * <ul>
+     *     <li>Key: A triplet of the Item, the metadata, and the {@link CrucibleLiquid}.</li>
+     *     <li>Value: A pair of the required liquid amount and the output ItemStack.</li>
+     * </ul>
      */
     public static Map<Triple<Item, Integer, CrucibleLiquid>, Pair<Integer, ItemStack>> dunkRecipes = new HashMap<>();
 

@@ -16,6 +16,7 @@ public interface EnhancementFirearm extends Enhancement {
 
     /**
      * Called to make the upgrade use shots
+     * <p>
      * This can be used to change features of the base EntityMusketBall bullet
      */
     EntityMusketBall changeBullet(EntityMusketBall bullet);

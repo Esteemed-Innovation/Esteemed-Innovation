@@ -145,6 +145,7 @@ public final class SmasherRegistry {
 
     /**
      * A helper function class that takes a input ItemStack and returns the provided output.
+     * <p>
      * You should probably just use this unless you need special behavior (e.g., doubling, randomization, etc.), or just
      * use the above helper methods. Those methods (the ones that don't take a function) use this anyway.
      */

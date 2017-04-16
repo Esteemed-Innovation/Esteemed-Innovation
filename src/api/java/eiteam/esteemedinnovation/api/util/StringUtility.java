@@ -7,9 +7,11 @@ public class StringUtility {
      * Capitalizes the first letter in the provided String.
      * @param str The string to capitalize.
      * @return The string with the first character capitalized. Examples:
-     * capitalize("title") // => "Title"
-     * capitalize("Title") // => "Title"
-     * capitalize("él") // => "Él"
+     * <pre>
+     *     capitalize("title"); // {@literal =>} "Title"
+     *     capitalize("Title"); // {@literal =>} "Title"
+     *     capitalize("él"); // {@literal =>} "Él"
+     * </pre>
      */
     public static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase(Locale.US) + (str.substring(1));

@@ -26,7 +26,8 @@ public interface Enhancement {
     /**
      * The location of the new model for the weapon. This is not the same as the enhancement's
      * texture name. The "inventory" is assumed by the firearms' mesher.
-     * For example: EsteemedInnovation.MOD_ID + ":rocket_launcher_air_strike". Follow the existing MC way of doing this.
+     * <p>
+     * For example: <code>EsteemedInnovation.MOD_ID + ":rocket_launcher_air_strike";</code> Follow the existing MC way of doing this.
      * @param item The weapon item.
      * @return The resource location string for the new weapon created by upgrading it.
      */
@@ -35,7 +36,8 @@ public interface Enhancement {
     /**
      * The unlocalized name, exactly as it is in the lang file, for the weapon that will be created
      * by installing this upgrade.
-     * For example: "item.esteemedinnovation:rocketLauncherAirStrike".
+     * <p>
+     * For example: {@code item.esteemedinnovation:rocketLauncherAirStrike}.
      * @param item The weapon item.
      * @return The unlocalized name of the new weapon.
      */
@@ -63,7 +65,7 @@ public interface Enhancement {
     }
 
     /**
-     * Called <i>after</i> the weapon fires a round and the entity is spawned. This is after the ArrowLooseEvent is sent
+     * Called after the weapon fires a round and the entity is spawned. This is after the ArrowLooseEvent is sent
      * and after the ItemStack's loaded NBT key is decremented.
      * @param weaponStack The ItemStack for the weapon
      * @param world The world

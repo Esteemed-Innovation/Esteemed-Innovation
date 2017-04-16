@@ -14,23 +14,23 @@ import java.util.List;
 
 /**
  * The interface which allows an item to be upgraded into an Exosuit armor piece.
- *
+ * <p>
  * You must inherit Item, or provide a new implementation for isInstalled, as the default implementation
  * checks if we are an instance of Item.
  */
 public interface ExosuitUpgrade extends ExosuitEventHandler {
     /**
      * The priority of the upgrade's rendering
-     *
+     * <p>
      * Use 1 if it should overwrite the exosuit's rendering
+     * <p>
      * Use 0 if it should not overwrite the exosuit's rendering
      */
     int renderPriority();
 
     /**
      * The slot that the upgrade can be used on
-     *
-     * See ExosuitSlot.java for the list of slots.
+     * @see ExosuitSlot for the list of slots.
      */
     ExosuitSlot getSlot();
 

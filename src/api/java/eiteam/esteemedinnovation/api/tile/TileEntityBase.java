@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class TileEntityBase extends TileEntity {
     /**
-     * Marks the tile entity for a server -> client resync, with a specific old state.
+     * Marks the tile entity for a server to client resync, with a specific old state.
      * @param old The old state
      */
     public void markForResync(IBlockState old) {
@@ -16,7 +16,7 @@ public class TileEntityBase extends TileEntity {
     }
 
     /**
-     * Marks the tile entity for a server -> client resync, using the same blockstate for both the "newState" and "oldState" parameters.
+     * Marks the tile entity for a server to client resync, using the same blockstate for both the "newState" and "oldState" parameters.
      */
     public void markForResync() {
         markForResync(worldObj.getBlockState(pos));

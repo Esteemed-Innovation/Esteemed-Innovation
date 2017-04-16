@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.api;
 
+import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -28,9 +29,9 @@ public class ChargableUtility {
      * find the proper armor piece, null check, type check, and check for the power every time.
      * @param entityLiving The entity to check for power. It will check every equipment slot.
      * @param i The amount of power required.
-     * @return Whether the player has any ExosuitArmor piece in their inventory with the required amount of power.
-     *         It will return as soon as it finds a single piece (so you could have 1 piece with no power, and 1 with `i`
-     *         power, and it will return true as soon as it finds the one with `i` power).
+     * @return Whether the player has any {@link ExosuitArmor} piece in their inventory with the required amount of power.
+     *         It will return as soon as it finds a single piece (so you could have 1 piece with no power, and 1 with
+     *         {@code i} power, and it will return true as soon as it finds the one with {@code i} power).
      */
     public static boolean hasPower(EntityLivingBase entityLiving, int i) {
         boolean hasPower = false;
@@ -51,8 +52,8 @@ public class ChargableUtility {
 
     /**
      * @param elb The entity to check
-     * @return The steamPerDurability value in the first found SteamChargable armor piece that the entity is wearing.
-     *         0 if not found.
+     * @return The {@link SteamChargable#steamPerDurability()} value in the first found {@link SteamChargable} armor
+     *         piece that the entity is wearing. 0 if not found.
      */
     public static int steamPerDurabilityInArmor(EntityLivingBase elb) {
         ItemStack chargableArmor = findFirstChargableArmor(elb);
@@ -64,7 +65,7 @@ public class ChargableUtility {
 
     /**
      * @param elb The entity to check
-     * @return The first SteamChargable item that the entity is wearing. Null if not found.
+     * @return The first {@link SteamChargable} item that the entity is wearing. Null if not found.
      */
     @Nullable
     public static ItemStack findFirstChargableArmor(EntityLivingBase elb) {

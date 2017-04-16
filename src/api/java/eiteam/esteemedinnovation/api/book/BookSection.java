@@ -6,16 +6,30 @@ import java.util.*;
 /**
  * A BookSection is a set of BookCategories tied to a single concept.
  * For example, the Basics sections contains BookCategories on components, the preface, etc.
- *
+ * <p>
  * Here is an example tree:
- * * Tool: {@link BookSection}
- * ** Piece A: {@link BookCategory}
- * *** Upgrade X: {@link BookEntry}
- * **** Description page: {@link BookPage}
- * **** Crafting page: {@link BookPage}
- * *** Upgrade Y: {@link BookEntry}
- * **** Description page: {@link BookPage}
- * **** Crafting page: {@link BookPage}
+ * <ul>
+ *     <li>Tool: {@link BookSection}
+ *         <ul>
+ *             <li>Piece A: {@link BookCategory}
+ *                 <ul>
+ *                     <li>Upgrade X: {@link BookEntry}
+ *                         <ul>
+ *                             <li>Description page: {@link BookPage}</li>
+ *                             <li>Crafting page: {@link BookPage}</li>
+ *                         </ul>
+ *                     </li>
+ *                     <li>Upgrade Y: {@link BookEntry}
+ *                         <ul>
+ *                             <li>Description page: {@link BookPage}</li>
+ *                             <li>Crafting page: {@link BookPage}</li>
+ *                         </ul>
+ *                     </li>
+ *                 </ul>
+ *             </li>
+ *         </ul>
+ *     </li>
+ * </ul>
  */
 public class BookSection implements BookPiece {
     @Nonnull

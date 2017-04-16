@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * An adjacent block modifier for the Thumper is a Tile Entity which modifies the behavior of the Thumper when it
  * is adjacent.
- *
+ * <p>
  * ThumperAdjacentBehaviorModifiers are expected to be Tile Entities.
  */
 public interface ThumperAdjacentBehaviorModifier {

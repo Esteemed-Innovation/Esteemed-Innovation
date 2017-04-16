@@ -82,7 +82,7 @@ public class FluidHelper {
     }
 
     /**
-     * Returns the Fluid for the given blockstate. Special handling for vanilla fluids (wooo >.>)
+     * Returns the Fluid for the given blockstate. Special handling for vanilla fluids (wooo {@literal >.>})
      * @param state The blockstate
      * @return The fluid. If the blockstate's material is WATER or LAVA, returns the according fluid from FluidRegistry.
      *         Can be null.
@@ -153,7 +153,7 @@ public class FluidHelper {
     }
 
     /**
-     * Gets the current fluid level for the block. Handles Forge and Minecraft fluids differently >.>
+     * Gets the current fluid level for the block. Handles Forge and Minecraft fluids differently {@literal >.>}
      * @param world The world
      * @param pos The pos
      * @return The current level
@@ -233,9 +233,10 @@ public class FluidHelper {
     }
 
     /**
+     * TODO: Deprecate and use {@link FluidUtil#getFluidHandler(World, BlockPos, EnumFacing)} instead.
      * @param tile The tile (nonnull)
      * @param dir The direction (can be null)
-     * @return An IFluidHandler for the Tile and direction. If it uses the deprecated API, returns a new wrapper.
+     * @return An {@link IFluidHandler} for the Tile and direction. If it uses the deprecated API, returns a new wrapper.
      */
     public static IFluidHandler getFluidHandler(TileEntity tile, EnumFacing dir) {
         if (tile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {

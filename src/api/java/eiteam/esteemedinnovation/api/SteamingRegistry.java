@@ -11,6 +11,7 @@ import java.util.Map;
 public class SteamingRegistry {
     /**
      * All of the custom steaming recipes for the Steam Heater. These recipes will replace existing smelting recipes.
+     * <p>
      * Key: input, Value: output
      */
     private static HashMap<ItemStack, ItemStack> steamingRecipes = new HashMap<>();

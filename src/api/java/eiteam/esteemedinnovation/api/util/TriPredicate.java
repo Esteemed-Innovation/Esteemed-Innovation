@@ -4,7 +4,6 @@ import java.util.Objects;
 
 /**
  * A {@link java.util.function.Predicate} which provides 3 input arguments.
- *
  * @see java.util.function.BiPredicate
  * @since 1.0.0
  */

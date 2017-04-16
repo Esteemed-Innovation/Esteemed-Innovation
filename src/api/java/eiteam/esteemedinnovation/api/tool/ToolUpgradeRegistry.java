@@ -14,10 +14,10 @@ public class ToolUpgradeRegistry {
     /**
      * Registers an {@link SteamToolUpgrade} to the {@link ToolUpgradeRegistry#upgrades} map.
      * @param upgrade The upgrade to register. Uses {@link SteamToolUpgrade#getBaseIcon()} to determine the locations
-     *                to register. For universal upgrades ({@link SteamToolUpgrade#isUniversal()} returns `true`),
-     *                it will use `Drill0`, `Drill1`, `Axe0`, Axe1`, `Shovel0`, and `Shovel1` accordingly. Otherwise,
-     *                it will use `Drill`, `Axe`, or `Shovel` according to what is returned by
-     *                {@link SteamToolUpgrade#getToolSlot()}.
+     *                to register. For universal upgrades ({@link SteamToolUpgrade#isUniversal()} returns {@code true}),
+     *                it will use {@code Drill0}, {@code Drill1}, {@code Axe0}, {@code Axe1}, {@code Shovel0},
+     *                and {@code Shovel1} accordingly. Otherwise, it will use {@code Drill}, {@code Axe}, or
+     *                {@code Shovel} according to what is returned by {@link SteamToolUpgrade#getToolSlot()}.
      */
     public static void register(SteamToolUpgrade upgrade) {
         List<ResourceLocation> textures = new ArrayList<>();

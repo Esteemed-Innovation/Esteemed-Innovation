@@ -7,9 +7,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * Similar to the SteamTransporterTileEntity, this tile entity is used for steam "reactor" blocks.
+ * Similar to the {@link SteamTransporterTileEntity}, this tile entity is used for steam "reactor" blocks.
  * For example: Steam Whistle, Rupture Disc.
- *
+ * <p>
  * It provides default safe update (see {@link TileEntityTickableSafe}) methods that do nothing, because it is
  * completely possible to make a steam reactor that does not tick.
  */

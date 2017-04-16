@@ -11,9 +11,7 @@ public interface SteamChargable {
 
     /**
      * Called to ensure the item can be charged with steam devices
-     *
      * @param me The itemstack of the item
-     *
      * @return true if the item can charge
      */
     boolean canCharge(ItemStack me);
