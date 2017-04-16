@@ -14,10 +14,38 @@ import net.minecraftforge.event.world.BlockEvent;
 import javax.annotation.Nonnull;
 
 /**
- * TODO: Write proper documentation for the interface.
+ * This interface is used to create your own upgrades for {@link SteamTool SteamTools}. Below describes how you can
+ * go about creating and registering your own own upgrades.
+ *
+ * <h2>Creating an upgrade</h2>
+ * In most cases, you will need to create a new custom object/class in order to create a new upgrade for a steam tool.
+ * It must inherit the interface, {@link SteamToolUpgrade}. Sometimes, you can get
+ * away with using a generic base-class that provides simple and generic implementations of all of the required
+ * {@link SteamToolUpgrade} methods.
+ *
+ * <h3>Special behavior</h3>
+ * The methods above on their own do not provide any special behavior. They simply allow the upgrade to be put into
+ * tools, and provide new icon overlays and tooltip info for them. SteamToolUpgrade
+ * provides a variety of {@code on*} methods for special behavior. It is recommended to simply look at the methods
+ * provided by the interface to see what is possible.
  * <p>
- * The on* methods all get called *after* making sure the tool is wound up. If you don't care about that, then you
+ * The {@code on*} methods that return a boolean will cancel their according event when false is returned by any
+ * upgrade, preventing any further processing. There is no ensured order in which upgrade {@code on*} methods are called.
+ * <p>
+ * The {@code on*} methods all get called after making sure the tool is wound up. If you don't care about that, then you
  * need your own event handler.
+ *
+ * <h4>Tool strength</h4>
+ * There are two methods that allow the upgrade to modify the tool's strength:
+ * <ul>
+ *     <li>{@link SteamToolUpgrade#getToolStrength(IBlockState, ItemStack, ItemStack)}</li>
+ *     <li>{@link SteamToolUpgrade#modifiesToolStrength()}</li>
+ * </ul>
+ *
+ * <h2>Registering an upgrade</h2>
+ * The upgrade must be registered accordingly, otherwise it will not work. First, it must be registered as an
+ * ordinary item. Then, it must be registered using
+ * {@link ToolUpgradeRegistry#register(SteamToolUpgrade)}.
  */
 public interface SteamToolUpgrade {
     /**
