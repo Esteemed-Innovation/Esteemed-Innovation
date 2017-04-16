@@ -262,11 +262,9 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         int widthOffset = isRightPage ? 67 : -67;
         fontRendererObj.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
         if (sectionName.equals(FAKE_SECTION_IDEAS)) {
-            int offsetCounter = 0;
+            int hintNum = 1;
             for (String hint : BookModule.ALL_UNLOCALIZED_PIECES_WITH_HINTS) {
-                if (offsetCounter > offset && offsetCounter < offset + 10) {
-                    break;
-                }String name = hint + ".name";
+                String name = hint + ".name";
                 BookPiece piece = BookPageRegistry.getFirstPieceFromName(name);
                 StringBuilder hintBuilder = new StringBuilder()
                   .append("\u2022 ");
@@ -277,12 +275,12 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                   .append(I18n.format(hint + ".hint"));
 
                 List<String> splitHint = fontRendererObj.listFormattedStringToWidth(hintBuilder.toString(), 100);
-                offsetCounter += splitHint.size();
-                int i = 10;
+                int i = 10 * hintNum;
                 for (String splitHintStr : splitHint) {
                     fontRendererObj.drawString(splitHintStr, width + 50 + widthOffset, height + 44 + i, 0x3F3F3F);
                     i += 10;
                 }
+                hintNum++;
             }
         } else {
             BookSection section = BookPageRegistry.getSectionFromName(sectionName);
