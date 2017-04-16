@@ -233,7 +233,6 @@ public class FluidHelper {
     }
 
     /**
-     * TODO: Deprecate and use {@link FluidUtil#getFluidHandler(World, BlockPos, EnumFacing)} instead.
      * @param tile The tile (nonnull)
      * @param dir The direction (can be null)
      * @return An {@link IFluidHandler} for the Tile and direction. If it uses the deprecated API, returns a new wrapper.
