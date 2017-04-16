@@ -8,8 +8,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.channel;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.ORE_COPPER;
@@ -21,7 +21,7 @@ public class BookModule extends ContentModule {
      * A list of all the pieces' base names that have hints. This does not contain ".name" or ".hint". For example,
      * the MetalCasting section would be in this list as "section.MetalCasting".
      */
-    public static final List<String> ALL_UNLOCALIZED_PIECES_WITH_HINTS = new ArrayList<>();
+    public static final Set<String> ALL_UNLOCALIZED_PIECES_WITH_HINTS = new HashSet<>();
 
     @Override
     public void create(Side side) {
