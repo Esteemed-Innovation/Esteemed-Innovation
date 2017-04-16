@@ -288,6 +288,9 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 int offsetCounter = 0;
                 int i = 10;
                 for (BookCategory cat : section.getCategories()) {
+                    if (!cat.isUnlocked(mc.thePlayer)) {
+                        continue;
+                    }
                     offsetCounter++;
                     if (offsetCounter > offset && offsetCounter < offset + 10) {
                         s = cat.getName();
