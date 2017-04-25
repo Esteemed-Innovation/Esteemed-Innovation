@@ -100,7 +100,7 @@ public class PhobicCoatingHandler {
 
             if (underState.getMaterial() == Material.LAVA) {
                 isWalkingInLava = true;
-                entity.motionY = Minecraft.getMinecraft().gameSettings.keyBindJump.isKeyDown() ? 0.5D : 0;
+                entity.motionY = isJumping ? 0.5D : 0;
 
                 if (modifierLava == null) {
                     attributes.applyModifier(exoLavaBoost);
