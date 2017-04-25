@@ -21,6 +21,8 @@ import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalDa
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalDataStorage;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.ItemFrequencyShifterUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.jetpack.ItemJetpackUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.phobiccoatings.ItemHydrophobicCoatingUpgrade;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.phobiccoatings.ItemPyrophobicCoatingUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.pulsenozzle.*;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.reloading.ItemReloadingHolsterUpgrade;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.roar.ItemDragonRoarUpgrade;
@@ -194,8 +196,8 @@ public class ArmorModule extends ContentModule {
         REINFORCED_TANK = setup(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
         UBER_REINFORCED_TANK = setup(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
         REBREATHER = setup(new ItemRebreatherUpgrade(), "rebreather");
-        HYDROPHOBIC_COATINGS = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("hydrophobiccoating"), null, 0), "hydrophobic_coatings");
-        PYROPHOBIC_COATINGS = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BOOTS_TOP, resource("pyrophobiccoating"), null, 0), "pyrophobic_coatings");
+        HYDROPHOBIC_COATINGS = setup(new ItemHydrophobicCoatingUpgrade(), "hydrophobic_coatings");
+        PYROPHOBIC_COATINGS = setup(new ItemPyrophobicCoatingUpgrade(), "pyrophobic_coatings");
         ANCHOR_HEELS = setup(new ItemAnchorHeelsUpgrade(), "anchor_heels");
         RELOADING_HOLSTERS = setup(new ItemReloadingHolsterUpgrade(), "reloading_holsters");
         FREQUENCY_SHIFTER = setup(new ItemFrequencyShifterUpgrade(), "frequency_shifter");
@@ -760,8 +762,6 @@ public class ArmorModule extends ContentModule {
         addLegRecipe(BRASS_LEGS, INGOT_BRASS);
         addFootRecipe(GILDED_BOOTS, INGOT_GILDED_IRON);
         addFootRecipe(BRASS_BOOTS, INGOT_BRASS);
-
-        MinecraftForge.EVENT_BUS.register(new PhobicCoatingHandler());
     }
 
     private static void addLegRecipe(Item item, String ore) {

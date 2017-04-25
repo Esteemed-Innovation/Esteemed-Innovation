@@ -1,9 +1,12 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
@@ -44,5 +47,17 @@ public class EntityHelper {
             }
         }
         return null;
+    }
+
+    /**
+     * @param entity The entity.
+     * @return The block state that is currently underneath the player.
+     */
+    public static IBlockState getBlockUnderEntity(Entity entity) {
+        int x = MathHelper.floor_double(entity.posX);
+        int y = MathHelper.floor_double(entity.getEntityBoundingBox().minY - 0.11F);
+        int z = MathHelper.floor_double(entity.posZ);
+        BlockPos underPos = new BlockPos(x, y, z);
+        return entity.worldObj.getBlockState(underPos);
     }
 }
