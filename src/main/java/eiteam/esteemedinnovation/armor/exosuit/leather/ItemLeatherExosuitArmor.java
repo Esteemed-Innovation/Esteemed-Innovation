@@ -16,6 +16,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -198,6 +200,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
         if (!(entityLiving instanceof EntityPlayer)) {
