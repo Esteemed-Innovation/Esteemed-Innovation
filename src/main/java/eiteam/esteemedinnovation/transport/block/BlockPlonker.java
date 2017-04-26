@@ -25,6 +25,8 @@ public class BlockPlonker extends BlockSteamTransporter implements Wrenchable {
 
     public BlockPlonker() {
         super(Material.IRON);
+        setHardness(3.5F);
+        setResistance(7.5F);
     }
 
     @Override
