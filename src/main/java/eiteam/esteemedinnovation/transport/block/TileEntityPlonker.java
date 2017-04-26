@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.transport.block;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
+import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -29,7 +30,6 @@ import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 public class TileEntityPlonker extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, IInventory {
-    private static final int CONSUMPTION = 5;
     private static final String MODE_KEY = "Mode";
     private static final String INV_KEY = "Inventory";
     private boolean prevRedstoneActivated;
@@ -58,7 +58,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     @Override
     public void safeUpdate() {
         EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
-        if (getSteamShare() < CONSUMPTION) {
+        if (getSteamShare() < Config.plonkerConsumption) {
             return;
         }
 
@@ -68,7 +68,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
             FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
             inventory.getItem().onItemUse(inventory, player, worldObj, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
             if (mode == Mode.ALWAYS_ON) {
-                decrSteam(CONSUMPTION);
+                decrSteam(Config.plonkerConsumption);
             }
         }
 

@@ -84,6 +84,7 @@ public class Config {
     public static int screwConsumption;
     public static int heaterConsumption;
     public static int vacuumConsumption;
+    public static int plonkerConsumption;
     public static int zincPlateConsumption;
     public static int rebreatherConsumption;
     public static int hydrophobicConsumption;
@@ -318,6 +319,7 @@ public class Config {
         screwConsumption = config.get("Consumption", "Archimedes Screw consumption", 100).getInt();
         heaterConsumption = config.get("Consumption", "Steam Heater consumption", 20).getInt();
         vacuumConsumption = config.get("Consumption", "Vacuum consumption", 3).getInt();
+        plonkerConsumption = config.get("Consumption", "Plonker consumption", 5).getInt();
 
         // EXOSUIT
         passiveDrain = config.get("Exosuit", "Passively drain steam while in use", true).getBoolean();
