@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 public class TileEntityPlonker extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, IInventory {
     private static final int CONSUMPTION = 5;
@@ -82,24 +83,12 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         return worldObj.getBlockState(target).getBlock().isReplaceable(worldObj, target);
     }
 
-    private boolean isReadyToPlace() {
-        switch (mode) {
-            case ALWAYS_ON: {
-                return true;
-            }
-            case REDSTONE_ACTIVATED: {
-                return !prevRedstoneActivated && curRedstoneActivated;
-            }
-        }
-        return false;
-    }
-
     private static boolean canSwitchMode(EntityPlayer player) {
         return player.isSneaking();
     }
 
     private boolean canPlace() {
-        return inventory != null && isReadyToPlace() && isTargetAvailable();
+        return inventory != null && mode.canPlace(this) && isTargetAvailable();
     }
 
     @Override
@@ -216,8 +205,8 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     enum Mode {
-        ALWAYS_ON("always"),
-        REDSTONE_ACTIVATED("pulse");
+        ALWAYS_ON("always", (plonker) -> true),
+        REDSTONE_ACTIVATED("pulse", (plonker) -> plonker.curRedstoneActivated && !plonker.prevRedstoneActivated);
 
         static final Mode[] LOOKUP = new Mode[2];
         static {
@@ -227,9 +216,11 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
         }
 
         private final String locKey;
+        private final Predicate<TileEntityPlonker> canPlace;
 
-        Mode(String locKey) {
+        Mode(String locKey, Predicate<TileEntityPlonker> canPlace) {
             this.locKey = locKey;
+            this.canPlace = canPlace;
         }
 
         Mode cycle() {
@@ -238,6 +229,10 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
 
         String localizationKey() {
             return locKey;
+        }
+
+        boolean canPlace(TileEntityPlonker plonker) {
+            return canPlace.test(plonker);
         }
     }
 
