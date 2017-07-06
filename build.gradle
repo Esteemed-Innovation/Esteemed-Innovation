@@ -143,6 +143,7 @@ dependencies {
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'eilib', include: '*.jar')
 
+    testCompile sourceSets.api.getOutput()
     testCompile 'junit:junit:4.12'
 }
 
@@ -185,36 +186,10 @@ javadoc {
     title = 'Esteemed Innovation API version ' + newAPIVersion
 }
 
-sourceSets {
-    api {
-        java {
-            srcDirs = ['src/api/java']
-        }
-        resources {
-            srcDirs = ['src/api/resources']
-        }
-    }
-    modOnly {
-        java {
-            srcDirs = ['src/main/java']
-        }
-        resources {
-            srcDirs = ['src/main/resources']
-        }
-    }
-    main {
-        java {
-            srcDirs = modOnly.java.srcDirs + api.java.srcDirs
-        }
-        resources {
-            srcDirs = modOnly.resources.srcDirs + api.resources.srcDirs
-        }
-    }
-}
-
 task apiJar(type: Jar) {
+    version = newAPIVersion
     classifier = 'api'
-    from sourceSets.api.allJava
+    from sourceSets.api.output
     from(sourceSets.api.resources.srcDirs) {
         include 'mcmod.info'
         filter {
@@ -225,6 +200,11 @@ task apiJar(type: Jar) {
     from(sourceSets.api.resources) {
         exclude 'mcmod.info'
     }
+}
+
+jar {
+    dependsOn compileApiJava
+    from sourceSets.api.output.classesDir
 }
 
 artifacts {
