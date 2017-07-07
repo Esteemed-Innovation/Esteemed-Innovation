@@ -20,6 +20,7 @@ import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Mouse;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             }
         }
         ItemStack active = player.getHeldItemMainhand();
-        if (active != null && active.getItem() instanceof ItemEsteemedInnovationJournal) {
+        if (active.getItem() instanceof ItemEsteemedInnovationJournal) {
             book = active;
         } else {
             if (CrossMod.ENCHIRIDION) {
@@ -77,7 +78,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             }
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
-                if (stack != null && stack.getItem() instanceof ItemEsteemedInnovationJournal) {
+                if (stack.getItem() instanceof ItemEsteemedInnovationJournal) {
                     book = stack;
                     break;
                 }
@@ -106,11 +107,6 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
     @Override
     public boolean doesGuiPauseGame() {
         return false;
-    }
-
-    @Override
-    public void updateScreen() {
-        super.updateScreen();
     }
 
     @Override
@@ -159,7 +155,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
 
             if (button instanceof GuiButtonSelect) {
                 GuiButtonSelect buttonSelect = (GuiButtonSelect) button;
-                viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
+                viewing = buttonSelect.name.startsWith("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
                 int numPages = -1;
                 BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
                 if (category != null && category.isUnlocked(mc.player)) {
@@ -434,7 +430,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         }
 
         @Override
-        public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+        public void drawButton(@Nonnull Minecraft minecraft, int mouseX, int mouseY) {
             if (visible) {
                 boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(x, mouseX, x + width) &&
                   MathUtility.isBetweenMinInclusive(y, mouseY, y + height);
@@ -469,7 +465,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         }
 
         @Override
-        public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+        public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
             if (visible) {
                 FontRenderer fontRenderer = mc.fontRenderer;
                 GlStateManager.color(1, 1, 1, 1);

@@ -15,17 +15,21 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class ItemEsteemedInnovationJournal extends Item {
     public ItemEsteemedInnovationJournal() {
-        this.setMaxStackSize(1);
+        setMaxStackSize(1);
     }
 
+    @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         player.openGui(EsteemedInnovation.instance, 1, world, 0, 0, 0);
         return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
+    @Nonnull
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (player.isSneaking() && world.isRemote) {
@@ -33,8 +37,7 @@ public class ItemEsteemedInnovationJournal extends Item {
             RayTraceResult rtr = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos);
             ItemStack stack = state.getBlock().getPickBlock(state, rtr, world, pos, player);
 
-            //noinspection ConstantConditions
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 for (ItemStack stack2 : BookPageRegistry.bookRecipes.keySet()) {
                     if (stack2.getItem() == stack.getItem() && stack2.getItemDamage() == stack.getItemDamage()) {
                         GuiJournal.openRecipeFor(stack2, player);
