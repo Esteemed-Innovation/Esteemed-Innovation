@@ -117,6 +117,7 @@ repositories {
 }
 
 /*
+TODO Update this.
 Coherent list of mods that we added integration for which do not support 1.9 yet:
 - Natura
 - CoFH Core/Thermal Foundation
@@ -137,8 +138,9 @@ dependencies {
 //    compile ic2Version
     compile jeiVersion
     compile cclibVersion
-    compile eioVersion
-    compile ecoreVersion
+//    These are dependent on libs which do not compile successfully.
+//    compile eioVersion
+//    compile ecoreVersion
 
     // Avoiding using the generic "lib".
     compile fileTree(dir: 'eilib', include: '*.jar')
