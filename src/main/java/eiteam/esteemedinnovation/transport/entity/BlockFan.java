@@ -5,7 +5,6 @@ import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -48,7 +47,7 @@ public class BlockFan extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity != null && tileEntity instanceof TileEntityFan) {
             boolean poweredByRedstone = world.isBlockPowered(pos);
@@ -59,12 +58,12 @@ public class BlockFan extends BlockSteamTransporter implements Wrenchable {
 
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-        neighborChanged(state, world, pos, null);
+        neighborChanged(state, world, pos, null, null);
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
-        world.setBlockState(pos, state.withProperty(FACING, BlockPistonBase.getFacingFromEntity(pos, elb)), 2);
+        world.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, elb)), 2);
     }
 
     @Override

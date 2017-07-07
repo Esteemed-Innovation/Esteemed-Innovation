@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.transport.fluid.screw;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
+import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler {
     public FluidTank myTank = new FluidTank(1000);
@@ -79,7 +80,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     private EnumFacing getInputDirection() {
-        return worldObj.getBlockState(pos).getValue(BlockPump.FACING);
+        return world.getBlockState(pos).getValue(BlockPump.FACING);
     }
 
     @Override
@@ -128,7 +129,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (running && progress < 100) {
                 progress++;
                 rotateTicks++;
@@ -136,12 +137,12 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
         } else {
             EnumFacing inputDir = getInputDirection();
             BlockPos offsetPos = getOffsetPos(inputDir);
-            Fluid fluid = FluidHelper.getFluidFromBlockState(worldObj.getBlockState(offsetPos));
+            Fluid fluid = FluidHelper.getFluidFromBlockState(world.getBlockState(offsetPos));
             if (getSteamShare() >= STEAM_CONSUMPTION && myTank.getFluidAmount() == 0 && fluid != null &&
               myTank.getFluidAmount() < 1000) {
                 myTank.fill(new FluidStack(fluid, 1000), true);
-                if (!FluidHelper.isInfiniteWaterSource(worldObj, offsetPos, fluid)) {
-                    worldObj.setBlockToAir(offsetPos);
+                if (!FluidHelper.isInfiniteWaterSource(world, offsetPos, fluid)) {
+                    world.setBlockToAir(offsetPos);
                 }
                 progress = 0;
                 decrSteam(STEAM_CONSUMPTION);
@@ -155,7 +156,7 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             EnumFacing outputDir = getOutputDirection();
             offsetPos = getOffsetPos(outputDir);
             if (myTank.getFluidAmount() > 0 && progress == 100) {
-                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile != null && tile instanceof IFluidHandler) {
                     IFluidHandler fluidHandler = (IFluidHandler) tile;
                     if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {

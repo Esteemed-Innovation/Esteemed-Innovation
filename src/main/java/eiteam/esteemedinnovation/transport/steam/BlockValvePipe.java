@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.transport.steam;
 
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -45,7 +44,7 @@ public class BlockValvePipe extends BlockSteamPipe {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
-        world.setBlockState(pos, state.withProperty(FACING, BlockPistonBase.getFacingFromEntity(pos, elb)), 2);
+        world.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, elb)), 2);
     }
 
     @Override
@@ -65,7 +64,8 @@ public class BlockValvePipe extends BlockSteamPipe {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         if (heldItem == null || !(heldItem.getItem() instanceof ItemBlock)) {
             TileEntityValvePipe tile = (TileEntityValvePipe) world.getTileEntity(pos);
             if (tile != null && !tile.isTurning()) {

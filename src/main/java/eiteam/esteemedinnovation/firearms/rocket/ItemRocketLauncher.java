@@ -196,7 +196,8 @@ public class ItemRocketLauncher extends Item implements Engineerable {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack self, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack self = player.getHeldItem(hand);
         NBTTagCompound nbt = self.getTagCompound();
         boolean crouched = player.isSneaking();
 
@@ -240,7 +241,7 @@ public class ItemRocketLauncher extends Item implements Engineerable {
                     world.playSound(player, player.getPosition(), EsteemedInnovation.SOUND_ROCKET, SoundCategory.PLAYERS, vol, pitch);
 
                     if (!world.isRemote) {
-                        world.spawnEntityInWorld(rocket);
+                        world.spawnEntity(rocket);
                     }
                     ArrowLooseEvent event = new ArrowLooseEvent(player, self, world, 1, ItemStackUtility.inventoryHasItem(player.inventory, (Item) irocket));
                     MinecraftForge.EVENT_BUS.post(event);
@@ -273,9 +274,9 @@ public class ItemRocketLauncher extends Item implements Engineerable {
             nbt.setInteger("rocketType", selectedRocketType);
             if (selectedRocketType != prevRocketType && self.getTagCompound().getInteger("loaded") > 0) {
                 ItemStack stack = new ItemStack(((Item) EnhancementRegistry.rockets.get(prevRocketType)), nbt.getInteger("loaded"), 0);
-                if (!player.worldObj.isRemote) {
-                    EntityItem entityItem = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, stack);
-                    player.worldObj.spawnEntityInWorld(entityItem);
+                if (!player.world.isRemote) {
+                    EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, stack);
+                    player.world.spawnEntity(entityItem);
                 }
                 nbt.setInteger("loaded", 0);
             }

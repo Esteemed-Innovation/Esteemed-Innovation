@@ -56,8 +56,8 @@ public class ItemBattleDrillUpgrade extends ItemSteamToolUpgrade {
 //            vector.yCoord = total;
 //        }
 
-        player.motionZ += vector.zCoord * 2.5;
-        player.motionX += vector.xCoord * 2.5;
+        player.motionZ += vector.z * 2.5;
+        player.motionX += vector.x * 2.5;
 
         EntityLivingBase target = EntityHelper.getEntityFromPlayer(player);
         if (target == null) {

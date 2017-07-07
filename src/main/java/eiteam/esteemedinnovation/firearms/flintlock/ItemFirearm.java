@@ -103,7 +103,7 @@ public class ItemFirearm extends Item implements Engineerable {
                       ChargableUtility.hasPower(player, Config.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
-                        onItemRightClick(stack, world, player, player.getActiveHand());
+                        onItemRightClick(world, player, player.getActiveHand());
                         ChargableUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
                           Config.reloadingConsumption, player);
                         ticksSinceReload = 0;
@@ -196,10 +196,10 @@ public class ItemFirearm extends Item implements Engineerable {
                                     shotgunRound = ((EnhancementFirearm) UtilEnhancements.getEnhancementFromItem(itemstack)).changeBullet(shotgunRound);
                                 }
                             }
-                            world.spawnEntityInWorld(shotgunRound);
+                            world.spawnEntity(shotgunRound);
                         }
                     } else {
-                        world.spawnEntityInWorld(musketBall);
+                        world.spawnEntity(musketBall);
                     }
                 }
 
@@ -315,7 +315,8 @@ public class ItemFirearm extends Item implements Engineerable {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack itemStack = player.getHeldItem(hand);
         initializeNBT(itemStack);
         NBTTagCompound nbt = itemStack.getTagCompound();
         if (player.capabilities.isCreativeMode) {

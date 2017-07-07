@@ -57,7 +57,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (isRunning) {
                 if (progress < 110) {
                     progress++;
@@ -82,7 +82,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
                 markForResync();
             }
             if (progress == 15) {
-                worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, EsteemedInnovation.SOUND_HISS,
+                world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, EsteemedInnovation.SOUND_HISS,
                   SoundCategory.BLOCKS, ANVIL_VOLUME, 0.9F, false);
             }
 
@@ -91,18 +91,18 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
             }
             if (progress >= 110) {
                 progress = 0;
-                worldObj.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 8F,
-                  (1F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-                //	        List players = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord-4.5F, yCoord-4.5F, zCoord-4.5F, xCoord+5.5F, yCoord+5.5F, zCoord+5.5F));
+                world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 8F,
+                  (1F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F) * 0.7F);
+                //	        List players = this.world.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord-4.5F, yCoord-4.5F, zCoord-4.5F, xCoord+5.5F, yCoord+5.5F, zCoord+5.5F));
                 //	        for (Object obj : players) {
-                //	        	if (obj instanceof EntityPlayer && this.worldObj.isRemote) {
+                //	        	if (obj instanceof EntityPlayer && this.world.isRemote) {
                 //	        		EntityPlayer player = (EntityPlayer) obj;
-                //		        	player.rotationPitch += (this.worldObj.rand.nextInt(9) - 4)*1F;
-                //		        	player.rotationYaw += (this.worldObj.rand.nextInt(9) - 4)*1F;
+                //		        	player.rotationPitch += (this.world.rand.nextInt(9) - 4)*1F;
+                //		        	player.rotationYaw += (this.world.rand.nextInt(9) - 4)*1F;
                 //	        	}
                 //
                 //	        }
-                if (!worldObj.isRemote) {
+                if (!world.isRemote) {
                     for (int z = 0; z < 4; z++) {
                         boolean hasTarget = false;
                         int i = 0;
@@ -130,28 +130,28 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
                         }
 
                         while (!hasTarget && i < 160) {
-                            if (!worldObj.isAirBlock(target) &&
-                              Arrays.asList(VALID_MATERIALS).contains(worldObj.getBlockState(target).getMaterial()) &&
-                              (worldObj.getBlockState(target).getBlockHardness(worldObj, target) != -1.0F) &&
-                              !worldObj.canBlockSeeSky(new BlockPos(target.getX() - 1, target.getY() + 1, target.getZ())) &&
-                              !worldObj.canBlockSeeSky(new BlockPos(target.getX() + 1, target.getY() + 1, target.getZ())) &&
-                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() - 1)) &&
-                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() + 1)) &&
-                              !worldObj.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ()))) {
+                            if (!world.isAirBlock(target) &&
+                              Arrays.asList(VALID_MATERIALS).contains(world.getBlockState(target).getMaterial()) &&
+                              (world.getBlockState(target).getBlockHardness(world, target) != -1.0F) &&
+                              !world.canBlockSeeSky(new BlockPos(target.getX() - 1, target.getY() + 1, target.getZ())) &&
+                              !world.canBlockSeeSky(new BlockPos(target.getX() + 1, target.getY() + 1, target.getZ())) &&
+                              !world.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() - 1)) &&
+                              !world.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ() + 1)) &&
+                              !world.canBlockSeeSky(new BlockPos(target.getX(), target.getY() + 1, target.getZ()))) {
                                 hasTarget = true;
                             } else {
                                 if (target.getY() < pos.getY() - 3) {
-                                    EnumFacing direction = moveDirs[worldObj.rand.nextInt(moveDirs.length)];
-                                    if (worldObj.rand.nextInt(50) == 0) {
-                                        direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
+                                    EnumFacing direction = moveDirs[world.rand.nextInt(moveDirs.length)];
+                                    if (world.rand.nextInt(50) == 0) {
+                                        direction = forbiddenDirs[world.rand.nextInt(forbiddenDirs.length)];
                                     }
                                     target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
                                       target.getY() + direction.getFrontOffsetY(),
                                       target.getZ() + direction.getFrontOffsetZ());
                                 } else {
-                                    EnumFacing direction = moveDirsNotUp[worldObj.rand.nextInt(moveDirsNotUp.length)];
-                                    if (worldObj.rand.nextInt(50) == 0) {
-                                        direction = forbiddenDirs[worldObj.rand.nextInt(forbiddenDirs.length)];
+                                    EnumFacing direction = moveDirsNotUp[world.rand.nextInt(moveDirsNotUp.length)];
+                                    if (world.rand.nextInt(50) == 0) {
+                                        direction = forbiddenDirs[world.rand.nextInt(forbiddenDirs.length)];
                                     }
                                     target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
                                       target.getY() + direction.getFrontOffsetY(),
@@ -172,20 +172,20 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
     }
 
     private void harvestBlock(BlockPos position) {
-        IBlockState state = worldObj.getBlockState(position);
+        IBlockState state = world.getBlockState(position);
         Block block = state.getBlock();
         if (Config.dropItem) {
             Map<EnumFacing, ThumperAdjacentBehaviorModifier> modifiers = getAllAdjacentBehaviorModifiers();
-            List<ItemStack> drops = block.getDrops(worldObj, position, state, 0);
+            List<ItemStack> drops = block.getDrops(world, position, state, 0);
             for (Map.Entry<EnumFacing, ThumperAdjacentBehaviorModifier> entry : modifiers.entrySet()) {
                 entry.getValue().dropItems(this, drops, state, modifiers.values(), entry.getKey());
             }
             // Default Thumper behavior.
             for (ItemStack drop : drops) {
-                Block.spawnAsEntity(worldObj, position, drop);
+                Block.spawnAsEntity(world, position, drop);
             }
         }
-        worldObj.setBlockToAir(position);
+        world.setBlockToAir(position);
     }
 
     /**
@@ -195,7 +195,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
     private Map<EnumFacing, ThumperAdjacentBehaviorModifier> getAllAdjacentBehaviorModifiers() {
         Map<EnumFacing, ThumperAdjacentBehaviorModifier> behaviorModifiers = new HashMap<>();
         for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-            TileEntity behaviorModTE = worldObj.getTileEntity(pos.offset(dir));
+            TileEntity behaviorModTE = world.getTileEntity(pos.offset(dir));
             if (behaviorModTE instanceof ThumperAdjacentBehaviorModifier) {
                 ThumperAdjacentBehaviorModifier behaviorModifier = (ThumperAdjacentBehaviorModifier) behaviorModTE;
                 if (behaviorModifier.isValidBehaviorModifier(this, dir)) {

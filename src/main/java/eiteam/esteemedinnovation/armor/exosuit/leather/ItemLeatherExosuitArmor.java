@@ -38,7 +38,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         NBTTagCompound plateNBT = getPlateNBT(stack);
         if (plateNBT != null) {
-            ItemStack plateStack = ItemStack.loadItemStackFromNBT(plateNBT.getCompoundTag("Stack"));
+            ItemStack plateStack = new ItemStack(plateNBT.getCompoundTag("Stack"));
             if (plateStack != null) {
                 tooltip.add(TextFormatting.BLUE + plateStack.getDisplayName());
             }
@@ -67,7 +67,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     public ItemStack getStackInSlot(ItemStack me, int slot) {
         NBTTagCompound plateNBT = getPlateNBT(me);
         if (plateNBT != null) {
-            return ItemStack.loadItemStackFromNBT(plateNBT.getCompoundTag("Stack"));
+            return new ItemStack(plateNBT.getCompoundTag("Stack"));
         }
         return null;
     }
@@ -113,7 +113,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     public ItemStack decrStackSize(ItemStack me, int slot, int size) {
         NBTTagCompound plateNBT = getPlateNBT(me);
         if (plateNBT != null) {
-            ItemStack toBeRemoved = ItemStack.loadItemStackFromNBT(plateNBT.getCompoundTag("Stack"));
+            ItemStack toBeRemoved = new ItemStack(plateNBT.getCompoundTag("Stack"));
             me.getTagCompound().removeTag("Plate");
             return toBeRemoved;
         }
@@ -145,7 +145,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     @Override
     public boolean hasUpgrade(ItemStack me, Item check) {
         NBTTagCompound plateNBT = getPlateNBT(me);
-        return plateNBT != null && ItemStack.loadItemStackFromNBT(plateNBT.getCompoundTag("Stack")).getItem() == check;
+        return plateNBT != null && new ItemStack(plateNBT.getCompoundTag("Stack")).getItem() == check;
     }
 
     @Nonnull
@@ -174,7 +174,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
         NBTTagCompound plateNBT = getPlateNBT(armor);
         if (plateNBT != null) {
-            return UtilPlates.getPlate(plateNBT.getString("ID")).getDamageReductionAmount(armorType, DamageSource.generic);
+            return UtilPlates.getPlate(plateNBT.getString("ID")).getDamageReductionAmount(armorType, DamageSource.GENERIC);
         }
         return ArmorMaterial.LEATHER.getDamageReductionAmount(armorType);
     }
@@ -185,11 +185,11 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
         if (plateNBT != null) {
             ExosuitPlate plate = UtilPlates.getPlate(plateNBT.getString("ID"));
             int damageReduction = plate.getDamageReductionAmount(armorType, source);
-            if ((entity.worldObj.rand.nextInt(20 - damage) + 1) > damageReduction) {
+            if ((entity.world.rand.nextInt(20 - damage) + 1) > damageReduction) {
                 if (plateNBT.hasKey("Damage")) {
                     plateNBT.setInteger("Damage", plateNBT.getInteger("Damage") - 1);
                 } else {
-                    plateNBT.setInteger("Damage", plate.getDamageReductionAmount(armorType, DamageSource.generic));
+                    plateNBT.setInteger("Damage", plate.getDamageReductionAmount(armorType, DamageSource.GENERIC));
                 }
             }
         }

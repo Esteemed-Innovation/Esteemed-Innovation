@@ -10,11 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class BlockSteamTank extends Block {
     public static final PropertyBool IS_CREATIVE = PropertyBool.create("is_creative");
@@ -47,7 +46,7 @@ public class BlockSteamTank extends Block {
     }
 
     @Override
-    public ItemStack createStackedBlock(IBlockState state) {
+    public ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(Item.getItemFromBlock(this), 1, damageDropped(state));
     }
 
@@ -68,7 +67,7 @@ public class BlockSteamTank extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> subBlocks) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> subBlocks) {
         subBlocks.add(new ItemStack(item, 1, 0));
         subBlocks.add(new ItemStack(item, 1, 1));
     }

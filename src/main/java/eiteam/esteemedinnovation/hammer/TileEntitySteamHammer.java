@@ -50,7 +50,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             setDistributionDirections(dirs);
             isInitialized = true;
         }
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (isWorking) {
                 if (cost > 0 && progress < cost && hammerTicks == 355) {
                     progress++;
@@ -58,7 +58,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 hammerTicks = (hammerTicks + 5) % 360;
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
-                        EsteemedInnovation.proxy.spawnBreakParticles(worldObj,
+                        EsteemedInnovation.proxy.spawnBreakParticles(world,
                           pos.getX() + 0.5F + 0.25F * dir.getFrontOffsetX(), pos.getY(),
                           pos.getZ() + 0.5F + 0.25F * dir.getFrontOffsetZ(), Blocks.ANVIL,
                           (float) (Math.random() - 0.5F) / 12F, 0F, (float) (Math.random() - 0.5F) / 12F
@@ -129,7 +129,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     private void playHammerSound(SoundEvent sound, float volume, float pitch) {
-        this.worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
+        this.world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
           sound, SoundCategory.BLOCKS, volume, pitch, false);
     }
 
@@ -138,7 +138,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     private EnumFacing myDir() {
-        return worldObj.getBlockState(pos).getValue(BlockSteamHammer.FACING);
+        return world.getBlockState(pos).getValue(BlockSteamHammer.FACING);
     }
 
     @Override
@@ -156,14 +156,14 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         if (inventory[index] != null) {
             ItemStack itemstack;
 
-            if (inventory[index].stackSize <= count) {
+            if (inventory[index].getCount() <= count) {
                 itemstack = inventory[index];
                 inventory[index] = null;
                 return itemstack;
             } else {
                 itemstack = inventory[index].splitStack(count);
 
-                if (inventory[index].stackSize == 0) {
+                if (inventory[index].isEmpty()) {
                     inventory[index] = null;
                 }
 
@@ -189,8 +189,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     public void setInventorySlotContents(int index, ItemStack stack) {
         inventory[index] = stack;
 
-        if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
+        if (stack != null && stack.getCount() > getInventoryStackLimit()) {
+            stack.setCount(getInventoryStackLimit());
         }
     }
 
@@ -215,8 +215,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getTileEntity(pos) == this &&
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return world.getTileEntity(pos) == this &&
           player.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
     }
 
@@ -266,7 +266,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < inventory.length) {
-                inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                inventory[b0] = new ItemStack(nbttagcompound1);
             }
         }
 
@@ -342,5 +342,16 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
         for (int i = 0; i < getSizeInventory(); i++) {
             inventory[i] = null;
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // TODO: Rewrite completely
+        for (ItemStack stack : inventory) {
+            if (stack != null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

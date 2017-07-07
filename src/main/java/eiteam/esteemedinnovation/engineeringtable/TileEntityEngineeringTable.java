@@ -23,7 +23,7 @@ public class TileEntityEngineeringTable extends TileEntityBase implements IInven
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < contents.length) {
-                contents[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                contents[b0] = new ItemStack(nbttagcompound1);
             }
         }
     }
@@ -72,14 +72,14 @@ public class TileEntityEngineeringTable extends TileEntityBase implements IInven
         if (index == 0) {
             if (contents[index] != null) {
                 ItemStack itemstack;
-                if (contents[index].stackSize <= count) {
+                if (contents[index].getCount() <= count) {
                     itemstack = contents[index];
                     contents[index] = null;
                     return itemstack;
                 } else {
                     itemstack = contents[index].splitStack(count);
 
-                    if (contents[index].stackSize == 0) {
+                    if (contents[index].isEmpty()) {
                         contents[index] = null;
                     }
                     return itemstack;
@@ -128,7 +128,7 @@ public class TileEntityEngineeringTable extends TileEntityBase implements IInven
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -188,5 +188,17 @@ public class TileEntityEngineeringTable extends TileEntityBase implements IInven
         for (int i = 0; i < contents.length; i++) {
             contents[i] = null;
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // TODO: Rewrite this entirely
+        int nonnulls = 0;
+        for (ItemStack stack : contents) {
+            if (stack != null) {
+                nonnulls++;
+            }
+        }
+        return nonnulls == 0;
     }
 }

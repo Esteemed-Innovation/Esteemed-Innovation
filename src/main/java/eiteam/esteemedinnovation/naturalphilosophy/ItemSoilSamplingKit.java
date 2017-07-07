@@ -113,7 +113,7 @@ public class ItemSoilSamplingKit extends Item {
             if (newDamage == -1) {
                 player.renderBrokenItemStack(item);
                 player.addStat(StatList.getObjectBreakStats(item.getItem()));
-                item.stackSize = 0;
+                item.setCount(0);
             } else {
                 item.getTagCompound().setInteger("Damage", newDamage);
             }

@@ -28,7 +28,7 @@ public class TileEntityDummyBlock extends TileEntityBase implements ITickable {
     @Override
     public void update() {
         if (timeToLive <= 0) {
-            worldObj.setBlockToAir(pos);
+            world.setBlockToAir(pos);
         }
         timeToLive--;
     }

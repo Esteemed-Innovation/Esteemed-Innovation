@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -61,7 +62,7 @@ public class ItemWingsUpgrade extends ItemSteamExosuitUpgrade {
         if (player.fallDistance > 1.5F && !player.isSneaking()) {
             player.fallDistance = 1.5F;
             player.motionY = Math.max(player.motionY, -0.1F);
-            player.moveEntity(player.motionX, 0, player.motionZ);
+            player.move(MoverType.SELF, player.motionX, 0, player.motionZ);
         }
     }
 }

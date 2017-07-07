@@ -50,37 +50,37 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockPlonker.FACING);
         addSideToGaugeBlacklist(dir);
         setValidDistributionDirectionsExcluding(dir);
     }
 
     @Override
     public void safeUpdate() {
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockPlonker.FACING);
         if (getSteamShare() < Config.plonkerConsumption) {
             return;
         }
 
-        curRedstoneActivated = worldObj.isBlockPowered(pos);
+        curRedstoneActivated = world.isBlockPowered(pos);
 
-        if (canPlace() && worldObj instanceof WorldServer) {
-            FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) worldObj);
-            inventory.getItem().onItemUse(inventory, player, worldObj, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
+        if (canPlace() && world instanceof WorldServer) {
+            FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) world);
+            inventory.getItem().onItemUse(player, world, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
             if (mode == Mode.ALWAYS_ON) {
                 decrSteam(Config.plonkerConsumption);
             }
         }
 
-        prevRedstoneActivated = worldObj.isBlockPowered(pos);
+        prevRedstoneActivated = world.isBlockPowered(pos);
 
         super.safeUpdate();
     }
 
     private boolean isTargetAvailable() {
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockPlonker.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockPlonker.FACING);
         BlockPos target = getOffsetPos(dir);
-        return worldObj.getBlockState(target).getBlock().isReplaceable(worldObj, target);
+        return world.getBlockState(target).getBlock().isReplaceable(world, target);
     }
 
     private static boolean canSwitchMode(EntityPlayer player) {
@@ -94,11 +94,11 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     @Override
     public void displayWrench(RenderGameOverlayEvent.Post event) {
         GlStateManager.pushMatrix();
-        int color = canSwitchMode(Minecraft.getMinecraft().thePlayer) ? 0xC6C6C6 : 0x777777;
+        int color = canSwitchMode(Minecraft.getMinecraft().player) ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
         String loc = I18n.format("esteemedinnovation.plonker." + mode.localizationKey());
-        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(loc, x + 15, y + 13, color);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(loc, x + 15, y + 13, color);
         GlStateManager.popMatrix();
     }
 
@@ -126,7 +126,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     @Nullable
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        inventory.stackSize--;
+        inventory.shrink(1);
         return inventory;
     }
 
@@ -149,7 +149,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return false;
     }
 
@@ -170,6 +170,12 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     }
 
     @Override
+    public boolean isEmpty() {
+        // TODO
+        return inventory == null;
+    }
+
+    @Override
     public boolean hasCustomName() {
         return false;
     }
@@ -178,7 +184,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     public void readFromNBT(NBTTagCompound access) {
         super.readFromNBT(access);
         mode = Mode.LOOKUP[access.getInteger(MODE_KEY)];
-        inventory = access.hasKey(INV_KEY) ? ItemStack.loadItemStackFromNBT(access.getCompoundTag(INV_KEY)) : null;
+        inventory = access.hasKey(INV_KEY) ? new ItemStack(access.getCompoundTag(INV_KEY)) : null;
     }
 
     @Override

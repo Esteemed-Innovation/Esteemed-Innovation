@@ -55,7 +55,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
         descending = access.getBoolean("IsDescending");
-        target = access.hasKey("TargetEntity") ? (EntityLivingBase) worldObj.getEntityByID(access.getInteger("TargetEntity")) : null;
+        target = access.hasKey("TargetEntity") ? (EntityLivingBase) world.getEntityByID(access.getInteger("TargetEntity")) : null;
         markForResync();
     }
 
@@ -66,7 +66,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
 
     @Override
     public void safeUpdate() {
-        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockChargingPad.FACING);
+        EnumFacing facing = world.getBlockState(pos).getValue(BlockChargingPad.FACING);
 
         switch (facing) {
             case NORTH: {
@@ -90,9 +90,9 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
             }
         }
 
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             EntityLivingBase entity = null;
-            List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
+            List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
             for (EntityLivingBase ent : list) {
                 if (entity == null) {
                     entity = ent;
@@ -202,7 +202,7 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
                 extendTicks--;
             }
             EntityLivingBase entity = null;
-            List list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
+            List list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos.getX() + 0.25F, pos.getY(), pos.getZ() + 0.25F, pos.getX() + 0.75F, pos.getY() + 2, pos.getZ() + 0.75F));
             for (Object obj : list) {
                 if (entity == null) {
                     entity = (EntityLivingBase) obj;

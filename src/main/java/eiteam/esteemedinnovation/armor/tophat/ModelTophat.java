@@ -50,12 +50,12 @@ public class ModelTophat extends ModelBiped {
         }
         for (int i = 0; i < level; i++) {
             GlStateManager.pushMatrix();
-            EntityItem item = new EntityItem(entity.worldObj, 0.0F, 0.0F, 0.0F, itemStack);
+            EntityItem item = new EntityItem(entity.world, 0.0F, 0.0F, 0.0F, itemStack);
             item.hoverStart = 0.0F;
-            GlStateManager.rotate((float) (Minecraft.getMinecraft().thePlayer.ticksExisted * 10.0D) % 360 + (360F / level) * i, 0, 1, 0);
+            GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 10.0D) % 360 + (360F / level) * i, 0, 1, 0);
             GlStateManager.translate(0.75F, 0.0F, 0.0F);
-            GlStateManager.rotate((float) (Minecraft.getMinecraft().thePlayer.ticksExisted * 11D) % 360, 0, 1, 0);
-            Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().thePlayer.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F, true);
+            GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 11D) % 360, 0, 1, 0);
+            Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().player.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F, true);
             GlStateManager.popMatrix();
         }
         GlStateManager.popMatrix();

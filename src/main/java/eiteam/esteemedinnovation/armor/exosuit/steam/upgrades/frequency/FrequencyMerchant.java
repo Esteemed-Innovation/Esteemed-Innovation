@@ -11,10 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -83,7 +85,7 @@ public class FrequencyMerchant implements IMerchant {
         saleItems.add(Pair.of(new ItemStack(Items.POTATO, 3), 2));
         saleItems.add(Pair.of(new ItemStack(Items.CARROT_ON_A_STICK), 3));
 
-        Random random = entity.worldObj.rand;
+        Random random = entity.world.rand;
         if (entity instanceof EntityWolf) {
             currencies.add(new ItemStack(STEAMED_BEEF));
             currencies.add(new ItemStack(STEAMED_PORKCHOP));
@@ -148,7 +150,7 @@ public class FrequencyMerchant implements IMerchant {
                 ItemStack currency = currencies.get(random.nextInt(currencies.size()));
                 int multiplier = saleItem.getRight();
                 ItemStack cost = currency.copy();
-                cost.stackSize = multiplier;
+                cost.setCount(multiplier);
                 MerchantRecipe recipe = new MerchantRecipe(cost, stack);
 //                recipe.func_82783_a(0 - (6 - random.nextInt(2)));
                 existingList.add(recipe);
@@ -167,7 +169,7 @@ public class FrequencyMerchant implements IMerchant {
 
     @Override
     public void useRecipe(MerchantRecipe recipe) {
-        if (entity != null && entity.isEntityAlive() && !entity.worldObj.isRemote) {
+        if (entity != null && entity.isEntityAlive() && !entity.world.isRemote) {
             recipe.incrementToolUses();
             if (existingList != null) {
                 NBTTagCompound nbt = entity.getEntityData();
@@ -189,5 +191,15 @@ public class FrequencyMerchant implements IMerchant {
     @Override
     public ITextComponent getDisplayName() {
         return new TextComponentString(merchantName);
+    }
+
+    @Override
+    public World getWorld() {
+        return customer.world;
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return new BlockPos(customer);
     }
 }

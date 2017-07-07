@@ -19,7 +19,7 @@ public class ExosuitPlateLead extends ExosuitPlate {
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
         Multimap<String, AttributeModifier> map = HashMultimap.create();
-        map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getAttributeUnlocalizedName(),
+        map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(),
           new AttributeModifier(new UUID(776437, armorSlot.getSlotIndex()), "Lead exosuit " + armorSlot.getName(),
             0.25D, 0));
         return map;

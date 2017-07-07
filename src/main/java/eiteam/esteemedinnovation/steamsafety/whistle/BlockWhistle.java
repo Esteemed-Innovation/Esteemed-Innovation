@@ -81,8 +81,8 @@ public class BlockWhistle extends Block {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return super.onBlockPlaced(world, pos, side, hitX, hitY, hitZ, meta, placer).withProperty(FACING, side);
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return super.getStateForPlacement(world, pos, side, hitX, hitY, hitZ, meta, placer).withProperty(FACING, side);
     }
 
     @Override

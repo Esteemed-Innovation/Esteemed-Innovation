@@ -56,7 +56,7 @@ public class ItemJetpackUpgrade extends ItemSteamExosuitUpgrade {
             if (isServer) {
                 ((SteamChargable) chestArmor).drainSteam(chest, Config.jetpackConsumption, player);
             } else {
-                World world = player.worldObj;
+                World world = player.world;
                 double rotation = Math.toRadians(player.renderYawOffset);
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
                   player.posX + 0.4 * StrictMath.sin(rotation + 0.9F),

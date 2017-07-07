@@ -55,10 +55,10 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         }
 
         if (access.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(access.getCompoundTag("inventory"));
+            inventory = new ItemStack(access.getCompoundTag("inventory"));
         }
 
-        mold = access.hasKey("mold") ? ItemStack.loadItemStackFromNBT(access.getCompoundTag("mold")) : null;
+        mold = access.hasKey("mold") ? new ItemStack(access.getCompoundTag("mold")) : null;
     }
 
 
@@ -68,10 +68,10 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         isOpen = nbt.getBoolean("isOpen");
 
         if (nbt.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
+            inventory = new ItemStack(nbt.getCompoundTag("inventory"));
         }
 
-        mold = nbt.hasKey("mold") ? ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("mold")) : null;
+        mold = nbt.hasKey("mold") ? new ItemStack(nbt.getCompoundTag("mold")) : null;
     }
 
     @Override
@@ -99,13 +99,13 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
 
     public void pour(CrucibleLiquid liquid) {
         inventory = ((CrucibleMold) mold.getItem()).getItemFromLiquid(liquid, mold);
-        inventory.stackSize = 1;
+        inventory.setCount(1);
         markDirty();
     }
 
     public void dropItem(ItemStack item) {
-        EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5F, pos.getY() + 1.5F, pos.getZ() + 0.5F, item);
-        worldObj.spawnEntityInWorld(entityItem);
+        EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5F, pos.getY() + 1.5F, pos.getZ() + 0.5F, item);
+        world.spawnEntity(entityItem);
     }
 
     @Override
@@ -121,13 +121,13 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
         markDirty();
-        if (inventory.stackSize <= amt) {
+        if (inventory.getCount() <= amt) {
             ItemStack itemstack = inventory;
             inventory = null;
             return itemstack;
         }
         ItemStack itemstack = inventory.splitStack(amt);
-        if (inventory.stackSize == 0) {
+        if (inventory.isEmpty()) {
             inventory = null;
         }
         return itemstack;
@@ -169,7 +169,7 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return this.isOpen;
     }
 
@@ -205,6 +205,12 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     }
 
     @Override
+    public boolean isEmpty() {
+        // TODO
+        return inventory == null;
+    }
+
+    @Override
     public int[] getSlotsForFace(EnumFacing side) {
         if (side == EnumFacing.DOWN) {
             return moldSlots;
@@ -228,7 +234,7 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
             changeTicks--;
         }
         if (isOpen && inventory != null && changeTicks < 10) {
-            if (!worldObj.isRemote) {
+            if (!world.isRemote) {
                 dropItem(inventory);
             }
             inventory = null;

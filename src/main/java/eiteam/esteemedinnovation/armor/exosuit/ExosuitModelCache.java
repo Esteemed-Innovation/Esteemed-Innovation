@@ -47,15 +47,15 @@ public abstract class ExosuitModelCache {
     @SideOnly(Side.CLIENT)
     public void onPlayerTick(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        if (event.side == Side.CLIENT && mc.thePlayer != null) {
+        if (event.side == Side.CLIENT && mc.player != null) {
             if (event.phase == TickEvent.Phase.START) {
                 return;
             }
 
             for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
-                ItemStack armorStack = mc.thePlayer.getItemStackFromSlot(slot);
+                ItemStack armorStack = mc.player.getItemStackFromSlot(slot);
                 if (armorStack != null && armorType.isAssignableFrom(armorStack.getItem().getClass())) {
-                    getModel(mc.thePlayer, slot).updateModel(mc.thePlayer, armorStack, slot);
+                    getModel(mc.player, slot).updateModel(mc.player, armorStack, slot);
                 }
             }
         }

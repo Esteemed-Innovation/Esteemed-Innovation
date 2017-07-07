@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class ConnectPacketHandler implements IMessageHandler<ConnectPacket, IMessage> {
     @Override
     public IMessage onMessage(ConnectPacket message, MessageContext ctx) {
-        World world = ctx.getServerHandler().playerEntity.worldObj;
+        World world = ctx.getServerHandler().player.world;
         int x = message.x;
         int y = message.y;
         int z = message.z;

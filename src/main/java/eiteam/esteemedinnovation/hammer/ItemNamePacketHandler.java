@@ -10,9 +10,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class ItemNamePacketHandler implements IMessageHandler<ItemNamePacket, IMessage> {
     @Override
     public IMessage onMessage(ItemNamePacket message, MessageContext ctx) {
-        EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+        EntityPlayerMP player = ctx.getServerHandler().player;
         BlockPos pos = new BlockPos(message.x, message.y, message.z);
-        TileEntity hammer = player.worldObj.getTileEntity(pos);
+        TileEntity hammer = player.world.getTileEntity(pos);
         if (hammer != null && hammer instanceof TileEntitySteamHammer) {
             ContainerSteamAnvil anvil = (ContainerSteamAnvil) player.openContainer;
             anvil.updateItemName(message.name);

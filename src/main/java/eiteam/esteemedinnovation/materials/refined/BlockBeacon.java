@@ -10,10 +10,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-
-import java.util.List;
 
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
@@ -34,7 +33,7 @@ public class BlockBeacon extends Block {
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
         for (MetalBlockTypes type : MetalBlockTypes.values()) {
             list.add(new ItemStack(this, 1, type.getMetadata()));
         }
@@ -56,7 +55,7 @@ public class BlockBeacon extends Block {
     }
 
     @Override
-    public ItemStack createStackedBlock(IBlockState state) {
+    public ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(Item.getItemFromBlock(this), 1, damageDropped(state));
     }
 

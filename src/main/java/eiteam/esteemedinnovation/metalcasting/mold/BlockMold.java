@@ -91,11 +91,12 @@ public class BlockMold extends Block implements Wrenchable {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntityMold tile = (TileEntityMold) world.getTileEntity(pos);
         if (tile == null) {
             return false;
         }
+        ItemStack heldItem = player.getHeldItem(hand);
         boolean editingMold = false;
         if (heldItem != null) {
             if (heldItem.getItem() instanceof CrucibleMold) {

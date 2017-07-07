@@ -14,6 +14,6 @@ public class ExosuitPlateGold extends ExosuitPlate {
 
     @Override
     public void onPlayerPickupXP(PlayerPickupXpEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
-        event.getOrb().xpValue = MathHelper.ceiling_float_int(event.getOrb().xpValue * 1.25F);
+        event.getOrb().xpValue = MathHelper.ceil(event.getOrb().xpValue * 1.25F);
     }
 }

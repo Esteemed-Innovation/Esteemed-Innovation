@@ -13,7 +13,7 @@ public class EntityCanisterItem extends EntityItem {
     }
 
     public EntityCanisterItem(World world, double x, double y, double z, EntityItem item) {
-        super(world, x, y, z, item.getEntityItem());
+        super(world, x, y, z, item.getItem());
         motionX = item.motionX;
         motionY = item.motionY;
         motionZ = item.motionZ;
@@ -29,10 +29,10 @@ public class EntityCanisterItem extends EntityItem {
     public void onUpdate() {
         super.onUpdate();
         if (randomDir == 0) {
-            randomDir = worldObj.rand.nextInt(360);
+            randomDir = world.rand.nextInt(360);
         }
         if (randomDir2 == 0) {
-            randomDir2 = worldObj.rand.nextInt(15) + 10;
+            randomDir2 = world.rand.nextInt(15) + 10;
         }
     }
 }

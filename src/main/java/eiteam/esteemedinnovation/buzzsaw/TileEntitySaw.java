@@ -35,7 +35,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSaw.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockSaw.FACING);
         addSideToGaugeBlacklist(dir);
         setValidDistributionDirectionsExcluding(dir, EnumFacing.UP);
     }
@@ -43,7 +43,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     @Override
     public void safeUpdate() {
         // Redstone to turn it off.
-        if (getSteamShare() < CONSUMPTION || worldObj.isBlockPowered(pos)) {
+        if (getSteamShare() < CONSUMPTION || world.isBlockPowered(pos)) {
             resetWinding();
             return;
         }
@@ -60,8 +60,8 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
             }
         }
 
-        BlockPos woodPos = getOffsetPos(worldObj.getBlockState(pos).getValue(BlockSaw.FACING));
-        IBlockState woodState = worldObj.getBlockState(woodPos);
+        BlockPos woodPos = getOffsetPos(world.getBlockState(pos).getValue(BlockSaw.FACING));
+        IBlockState woodState = world.getBlockState(woodPos);
         Block woodBlock = woodState.getBlock();
         Item woodItem = Item.getItemFromBlock(woodBlock);
         if (woodItem == null) {
@@ -71,16 +71,16 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         ItemStack output = null;
         // If the block is a plankWood, output sticks; if the block is a logWood, output planks.
         if (OreDictHelper.arrayContains(OreDictHelper.planks, pair)) {
-            output = new ItemStack(Items.STICK, worldObj.rand.nextInt(2) + 2);
+            output = new ItemStack(Items.STICK, world.rand.nextInt(2) + 2);
         } else if (OreDictHelper.arrayContains(OreDictHelper.logToPlank.keySet(), pair)) {
             Pair<Item, Integer> outPair = OreDictHelper.logToPlank.get(pair);
-            output = new ItemStack(outPair.getLeft(), worldObj.rand.nextInt(3) + 4, outPair.getRight());
+            output = new ItemStack(outPair.getLeft(), world.rand.nextInt(3) + 4, outPair.getRight());
         }
 
         if (output != null) {
-            worldObj.destroyBlock(woodPos, false);
-            worldObj.spawnEntityInWorld(new EntityItem(worldObj, woodPos.getX() + 0.5, woodPos.getY() + 0.5, woodPos.getZ() + 0.5, output));
-            if (!worldObj.isRemote) {
+            world.destroyBlock(woodPos, false);
+            world.spawnEntity(new EntityItem(world, woodPos.getX() + 0.5, woodPos.getY() + 0.5, woodPos.getZ() + 0.5, output));
+            if (!world.isRemote) {
                 decrSteam(CONSUMPTION);
             }
         }

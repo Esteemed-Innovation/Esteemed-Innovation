@@ -68,7 +68,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            smooshedStack.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
+            smooshedStack.add(new ItemStack(nbttagcompound1));
         }
     }
 
@@ -112,13 +112,13 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     }
 
     private void decodeAndCreateParticles() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (extendedTicks > 15) {
                 float xVelocity = 0F;
                 float zVelocity = 0F;
                 double xOffset = 0D;
                 double zOffset = 0D;
-                EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+                EnumFacing facing = world.getBlockState(pos).getValue(BlockSmasher.FACING);
                 if (facing.getAxis() == EnumFacing.Axis.X) {
                     xVelocity = 0.05F * -facing.getFrontOffsetX();
                     xOffset = 0.1D * -facing.getFrontOffsetX();
@@ -129,7 +129,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                 double xParticle = pos.getX() + 0.5D + xOffset;
                 double yParticle = pos.getY() + 1.1D;
                 double zParticle = pos.getZ() + 0.5D + zOffset;
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xParticle, yParticle, zParticle, xVelocity, 0.05F, zVelocity);
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xParticle, yParticle, zParticle, xVelocity, 0.05F, zVelocity);
             }
         }
     }
@@ -157,14 +157,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+        EnumFacing facing = world.getBlockState(pos).getValue(BlockSmasher.FACING);
         addSideToGaugeBlacklist(facing);
         setValidDistributionDirectionsExcluding(facing, EnumFacing.UP);
     }
 
     @Override
     public void safeUpdate() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             int[] target = getTarget(1);
 
             int x = target[0];
@@ -172,20 +172,20 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
             int z = target[1];
             BlockPos soundPos = new BlockPos(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
             if (spinup == 1) {
-                worldObj.playSound(null, soundPos, EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS,
+                world.playSound(null, soundPos, EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS,
                   SoundType.ANVIL.getVolume(), 0.9F);
             }
             if (extendedTicks > 15) {
-                worldObj.playSound(null, soundPos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
+                world.playSound(null, soundPos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
             }
             if (extendedTicks == 5) {
                 float pitch = (0.75F * (float) Math.random() * 0.1F);
-                worldObj.playSound(null, soundPos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5F, pitch);
+                world.playSound(null, soundPos, SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 0.5F, pitch);
             }
             if (extendedTicks > 0 && extendedTicks < 6 && smooshingBlock != null) {
-                SoundType smooshingSoundType = smooshingBlock.getSoundType(worldObj.getBlockState(soundPos), worldObj, soundPos, null);
+                SoundType smooshingSoundType = smooshingBlock.getSoundType(world.getBlockState(soundPos), world, soundPos, null);
                 SoundEvent breakSound = smooshingSoundType.getBreakSound();
-                worldObj.playSound(null, soundPos, breakSound, SoundCategory.BLOCKS,
+                world.playSound(null, soundPos, breakSound, SoundCategory.BLOCKS,
                   smooshingSoundType.getVolume(), smooshingSoundType.getPitch());
             }
             //handle state changes
@@ -228,7 +228,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                         shouldStop = true;
                         int[] tc = getTarget(2);
                         BlockPos position = new BlockPos(tc[0], y, tc[1]);
-                        TileEntitySmasher partner = (TileEntitySmasher) worldObj.getTileEntity(position);
+                        TileEntitySmasher partner = (TileEntitySmasher) world.getTileEntity(position);
                         if (partner != null) {
                             partner.shouldStop = true;
                         }
@@ -237,22 +237,22 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                     if (spinup < 41) {
                         // spinup complete. SMAASH!
                         if (spinup == 40) {
-                            IBlockState middleBlockState = worldObj.getBlockState(middleBlockPos);
+                            IBlockState middleBlockState = world.getBlockState(middleBlockPos);
                             Block middleBlock = middleBlockState.getBlock();
                             if (hasSomethingToSmash()) {
                                 spinup++;
                                 if (isPrimary()) {
                                     smooshingBlock = middleBlock;
                                     smooshingMeta = middleBlock.getMetaFromState(middleBlockState);
-                                    smooshedStack = smooshingBlock.getDrops(worldObj, middleBlockPos, middleBlockState, 0);
+                                    smooshedStack = smooshingBlock.getDrops(world, middleBlockPos, middleBlockState, 0);
                                     markForResync();
-                                    worldObj.setBlockState(middleBlockPos, ROCK_SMASHER_DUMMY.getDefaultState());
+                                    world.setBlockState(middleBlockPos, ROCK_SMASHER_DUMMY.getDefaultState());
                                 }
                             } else {
                                 if (hasPartner()) {
                                     int[] pc = getTarget(2);
                                     BlockPos partnerPosition = new BlockPos(pc[0], y, pc[1]);
-                                    TileEntitySmasher partner = (TileEntitySmasher) worldObj.getTileEntity(partnerPosition);
+                                    TileEntitySmasher partner = (TileEntitySmasher) world.getTileEntity(partnerPosition);
                                     //noinspection ConstantConditions
                                     if (partner.spinup < 41 || (partner.spinup >= 41 && partner.shouldStop)) {
                                         shouldStop = true;
@@ -270,7 +270,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
 //                     if we've spun up, extend
                     } else if (extendedLength < 0.5F && !shouldStop) {
                         extendedLength += 0.1F;
-                        if (extendedTicks == 3 && isPrimary() && !worldObj.isRemote) {
+                        if (extendedTicks == 3 && isPrimary() && !world.isRemote) {
                             spawnOutputForSmashedBlock(middleBlockPos);
                         }
                         extendedTicks++;
@@ -294,14 +294,14 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                         running = false;
                         markForResync();
                         extendedTicks = 0;
-                        if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY) {
-                            worldObj.setBlockToAir(middleBlockPos);
+                        if (world.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY) {
+                            world.setBlockToAir(middleBlockPos);
                         }
                     }
                 }
                 // Sync.
-            } else if (worldObj.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY && isPrimary()) {
-                worldObj.setBlockToAir(middleBlockPos);
+            } else if (world.getBlockState(middleBlockPos).getBlock() == ROCK_SMASHER_DUMMY && isPrimary()) {
+                world.setBlockToAir(middleBlockPos);
             }
         } else {
             if (running) {
@@ -315,9 +315,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                     int z = tc[2];
                     BlockPos targetPosition = new BlockPos(x, y, z);
                     spinup++;
-                    if (!worldObj.isAirBlock(targetPosition) && worldObj.getTileEntity(targetPosition) == null) {
-                        IBlockState blockState = worldObj.getBlockState(targetPosition);
-                        if (blockState.getBlockHardness(worldObj, targetPosition) < 50F && isPrimary()) {
+                    if (!world.isAirBlock(targetPosition) && world.getTileEntity(targetPosition) == null) {
+                        IBlockState blockState = world.getBlockState(targetPosition);
+                        if (blockState.getBlockHardness(world, targetPosition) < 50F && isPrimary()) {
                             smooshingBlock = blockState.getBlock();
                             smooshingMeta = blockState.getBlock().getMetaFromState(blockState);
                         }
@@ -335,7 +335,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     }
 
     private boolean isPrimary() {
-        return worldObj.getBlockState(pos).getValue(BlockSmasher.FACING).getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE;
+        return world.getBlockState(pos).getValue(BlockSmasher.FACING).getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE;
     }
 
     private void spawnOutputForSmashedBlock(BlockPos position) {
@@ -344,7 +344,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
             double y = position.getY() + 0.1F;
             double z = position.getZ() + 0.5F;
             for (ItemStack stack : smooshedStack) {
-                List<ItemStack> output = SmasherRegistry.getOutput(stack, worldObj);
+                List<ItemStack> output = SmasherRegistry.getOutput(stack, world);
                 
                 if (output.isEmpty() || blockBreakerMode) {
                     spawnItems(x, y, z, Collections.singletonList(stack));
@@ -358,8 +358,8 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
 
     private void spawnItems(double x, double y, double z, List<ItemStack> items) {
         for (ItemStack item : items) {
-            EntityItem entityItem = new EntityItem(worldObj, x, y, z, item);
-            worldObj.spawnEntityInWorld(entityItem);
+            EntityItem entityItem = new EntityItem(world, x, y, z, item);
+            world.spawnEntity(entityItem);
         }
     }
 
@@ -369,10 +369,10 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
         int y = pos.getY();
         int z = target[1];
         BlockPos position = new BlockPos(x, y, z);
-        IBlockState blockState = worldObj.getBlockState(position);
+        IBlockState blockState = world.getBlockState(position);
         Block block = blockState.getBlock();
-        return !worldObj.isAirBlock(position) && block != Blocks.BEDROCK &&
-          worldObj.getTileEntity(position) == null && blockState.getBlockHardness(worldObj, position) < 50F;
+        return !world.isAirBlock(position) && block != Blocks.BEDROCK &&
+          world.getTileEntity(position) == null && blockState.getBlockHardness(world, position) < 50F;
     }
 
     public boolean hasPartner() {
@@ -383,9 +383,9 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
         int opposite = target[2];
 
         BlockPos partnerPos = new BlockPos(x, y, z);
-        IBlockState partnerState = worldObj.getBlockState(partnerPos);
+        IBlockState partnerState = world.getBlockState(partnerPos);
         Block partner = partnerState.getBlock();
-        TileEntity partnerTE = worldObj.getTileEntity(partnerPos);
+        TileEntity partnerTE = world.getTileEntity(partnerPos);
         if (partnerTE == null || !(partnerTE instanceof TileEntitySmasher)) {
             return false;
         }
@@ -416,7 +416,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
      *         facing horizontal index.
      */
     private int[] getTarget(int distance) {
-        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+        EnumFacing facing = world.getBlockState(pos).getValue(BlockSmasher.FACING);
         EnumFacing opposite = facing.getOpposite();
         BlockPos target = pos.offset(facing, distance);
         return new int[] { target.getX(), target.getZ(), opposite.getHorizontalIndex() };
@@ -447,7 +447,7 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
         } else {
             int steam = getSteamShare();
             getNetwork().split(this, true);
-            EnumFacing myFacing = worldObj.getBlockState(pos).getValue(BlockSmasher.FACING);
+            EnumFacing myFacing = world.getBlockState(pos).getValue(BlockSmasher.FACING);
             setValidDistributionDirectionsExcluding(myFacing, EnumFacing.UP);
             SteamNetwork.newOrJoin(this);
             getNetwork().addSteam(steam);
@@ -459,11 +459,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
     @Override
     public void displayWrench(Post event) {
         GlStateManager.pushMatrix();
-        int color = Minecraft.getMinecraft().thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
+        int color = Minecraft.getMinecraft().player.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
         String loc = I18n.format("esteemedinnovation.smasher." + blockBreakerMode);
-        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(loc, x + 15, y + 13, color);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(loc, x + 15, y + 13, color);
         GlStateManager.popMatrix();
     }
 }

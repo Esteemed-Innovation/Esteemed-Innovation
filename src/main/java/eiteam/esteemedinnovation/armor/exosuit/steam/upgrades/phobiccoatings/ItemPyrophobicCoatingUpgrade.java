@@ -55,7 +55,7 @@ public class ItemPyrophobicCoatingUpgrade extends ItemPhobicCoatingUpgrade {
     }
 
     private boolean isHotDamageSource(DamageSource source) {
-        return source == DamageSource.lava || source == DamageSource.inFire || source == DamageSource.onFire;
+        return source == DamageSource.LAVA || source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE;
     }
 
     private boolean isInHotness(Entity entity) {

@@ -27,6 +27,6 @@ public class BlockWoodenCone extends Block {
 
     @Override
     public void onEntityWalk(World world, BlockPos pos, Entity entity) {
-        entity.attackEntityFrom(DamageSource.cactus, 1);
+        entity.attackEntityFrom(DamageSource.CACTUS, 1);
     }
 }

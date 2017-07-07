@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class DoubleJumpClientResponsePacketHandler implements IMessageHandler<DoubleJumpClientResponsePacket, IMessage> {
     @Override
     public IMessage onMessage(DoubleJumpClientResponsePacket message, MessageContext ctx) {
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
         player.motionY = 0.65D;
         player.fallDistance = 0.0F;
         return null;

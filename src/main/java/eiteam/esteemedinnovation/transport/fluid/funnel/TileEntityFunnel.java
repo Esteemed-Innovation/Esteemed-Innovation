@@ -31,26 +31,26 @@ public class TileEntityFunnel extends TileEntityTickableSafe {
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote || worldObj.getBlockState(pos).getActualState(worldObj, pos).getValue(BlockFunnel.POWERED)) {
+        if (world.isRemote || world.getBlockState(pos).getActualState(world, pos).getValue(BlockFunnel.POWERED)) {
             return;
         }
 
         if (tank.getFluidAmount() == 0) {
             BlockPos up = pos.up();
-            IBlockState aboveState = worldObj.getBlockState(up);
+            IBlockState aboveState = world.getBlockState(up);
             Fluid fluid = FluidHelper.getFluidFromBlockState(aboveState);
             if (fluid != null) {
-                BlockPos source = FluidHelper.findSourceBlockPos(worldObj, up, fluid, new HashSet<>());
+                BlockPos source = FluidHelper.findSourceBlockPos(world, up, fluid, new HashSet<>());
                 if (source != null) {
-                    IBlockState sourceState = worldObj.getBlockState(source);
+                    IBlockState sourceState = world.getBlockState(source);
                     Block sourceBlock = sourceState.getBlock();
                     FluidStack fluidStack;
                     if (sourceBlock instanceof IFluidBlock) {
-                        fluidStack = ((IFluidBlock) sourceBlock).drain(worldObj, source, true);
+                        fluidStack = ((IFluidBlock) sourceBlock).drain(world, source, true);
                     } else {
                         fluidStack = new FluidStack(fluid, BUCKET_VOLUME);
-                        if (!FluidHelper.isInfiniteWaterSource(worldObj, up, fluid)) {
-                            worldObj.setBlockToAir(source);
+                        if (!FluidHelper.isInfiniteWaterSource(world, up, fluid)) {
+                            world.setBlockToAir(source);
                         }
                     }
                     tank.fill(fluidStack, true);
@@ -60,9 +60,9 @@ public class TileEntityFunnel extends TileEntityTickableSafe {
 
         FluidStack fluid = tank.getFluid();
         if (tank.getFluidAmount() > 0 && fluid != null) {
-            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFunnel.FACING);
+            EnumFacing dir = world.getBlockState(pos).getValue(BlockFunnel.FACING);
             BlockPos targetPos = pos.offset(dir);
-            TileEntity targetTile = worldObj.getTileEntity(targetPos);
+            TileEntity targetTile = world.getTileEntity(targetPos);
             if (targetTile == null) {
                 return;
             }
@@ -90,7 +90,7 @@ public class TileEntityFunnel extends TileEntityTickableSafe {
 
     private boolean hasTankCapability(Capability<?> capability, EnumFacing face) {
         return capability == FLUID_HANDLER_CAPABILITY &&
-          (face == EnumFacing.UP || face == worldObj.getBlockState(pos).getValue(BlockFunnel.FACING));
+          (face == EnumFacing.UP || face == world.getBlockState(pos).getValue(BlockFunnel.FACING));
     }
 
     @Override

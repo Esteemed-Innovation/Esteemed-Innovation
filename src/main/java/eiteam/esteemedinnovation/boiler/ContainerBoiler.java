@@ -41,10 +41,10 @@ public class ContainerBoiler extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceCookTime);
-        listener.sendProgressBarUpdate(this, 1, tileEntity.furnaceBurnTime);
-        listener.sendProgressBarUpdate(this, 2, TileEntityBoiler.getItemBurnTime(null));
-        listener.sendProgressBarUpdate(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
+        listener.sendWindowProperty(this, 0, tileEntity.furnaceCookTime);
+        listener.sendWindowProperty(this, 1, tileEntity.furnaceBurnTime);
+        listener.sendWindowProperty(this, 2, TileEntityBoiler.getItemBurnTime(null));
+        listener.sendWindowProperty(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
     }
 
     @Override
@@ -53,23 +53,23 @@ public class ContainerBoiler extends Container {
 
         for (IContainerListener listener : listeners) {
             if (lastCookTime != tileEntity.furnaceCookTime) {
-                listener.sendProgressBarUpdate(this, 0, tileEntity.furnaceCookTime);
+                listener.sendWindowProperty(this, 0, tileEntity.furnaceCookTime);
             }
 
             if (lastBurnTime != tileEntity.furnaceBurnTime) {
-                listener.sendProgressBarUpdate(this, 1, tileEntity.furnaceBurnTime);
+                listener.sendWindowProperty(this, 1, tileEntity.furnaceBurnTime);
             }
 
             if (lastItemBurnTime != tileEntity.currentItemBurnTime) {
-                listener.sendProgressBarUpdate(this, 2, tileEntity.currentItemBurnTime);
+                listener.sendWindowProperty(this, 2, tileEntity.currentItemBurnTime);
             }
 
             if (lastPressure != tileEntity.getPressureAsInt()) {
-                listener.sendProgressBarUpdate(this, 3, tileEntity.getPressureAsInt());
+                listener.sendWindowProperty(this, 3, tileEntity.getPressureAsInt());
             }
 
             if (this.lastWater != tileEntity.getTank().getFluidAmount()) {
-                listener.sendProgressBarUpdate(this, 4, tileEntity.getTank().getFluidAmount());
+                listener.sendWindowProperty(this, 4, tileEntity.getTank().getFluidAmount());
             }
         }
 
@@ -110,7 +110,7 @@ public class ContainerBoiler extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-        return tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -144,17 +144,17 @@ public class ContainerBoiler extends Container {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0) {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.stackSize == itemstack.stackSize) {
+            if (itemstack1.getCount() == itemstack.getCount()) {
                 return null;
             }
 
-            slot.onPickupFromSlot(player, itemstack1);
+            slot.onTake(player, itemstack1);
         }
 
         return itemstack;

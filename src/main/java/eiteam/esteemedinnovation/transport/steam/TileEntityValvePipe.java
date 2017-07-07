@@ -81,7 +81,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     }
 
     public EnumFacing dir() {
-        return worldObj.getBlockState(pos).getValue(BlockValvePipe.FACING);
+        return world.getBlockState(pos).getValue(BlockValvePipe.FACING);
     }
 
     @Override
@@ -109,14 +109,14 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
          No super call, because the valve pipe does not actually get a share of the network. For the valve pipe,
          we have to actually check the amount of steam in the network that it is connected to.
           */
-        return isOpen() && net.getSteam() > 0 && (worldObj.isAirBlock(dirPos) ||
-          !worldObj.isSideSolid(dirPos, direction.getOpposite()));
+        return isOpen() && net.getSteam() > 0 && (world.isAirBlock(dirPos) ||
+          !world.isSideSolid(dirPos, direction.getOpposite()));
     }
 
     @Override
     public void safeUpdate() {
         super.superUpdate();
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (turning && turnTicks < 10) {
                 turnTicks++;
             }
@@ -176,7 +176,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
     private void setOpen(boolean open) {
         this.open = open;
         boolean changed = true;
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (open) {
                 //EsteemedInnovation.log.debug("Joining");
                 if (SteamNetworkRegistry.getInstance().isInitialized(getDimension())) {

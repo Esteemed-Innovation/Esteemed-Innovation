@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class DoubleJumpServerActionPacketHandler implements IMessageHandler<DoubleJumpServerActionPacket, DoubleJumpClientResponsePacket> {
     @Override
     public DoubleJumpClientResponsePacket onMessage(DoubleJumpServerActionPacket message, MessageContext ctx) {
-        EntityPlayer player = ctx.getServerHandler().playerEntity;
+        EntityPlayer player = ctx.getServerHandler().player;
         if (ChargableUtility.hasPower(player, 15)) {
             // We know that this slot has the armor and that armor has the upgrade. Don't need to check any of that,
             // because it is handled automatically in ItemDoubleJumpUpgrade.

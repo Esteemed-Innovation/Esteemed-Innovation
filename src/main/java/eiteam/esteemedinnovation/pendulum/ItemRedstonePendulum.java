@@ -18,7 +18,8 @@ public class ItemRedstonePendulum extends ItemBlock {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = player.getHeldItem(hand);
         BlockPos actualPos = pos.down();
         if (facing != EnumFacing.DOWN || !player.canPlayerEdit(actualPos, facing, stack)) {
             return EnumActionResult.FAIL;
@@ -30,6 +31,6 @@ public class ItemRedstonePendulum extends ItemBlock {
 
         // Technically, this immediately gets set back to air. However the post-place logic will replace it in the
         // correct position. See BlockPendulumTorch for more information.
-        return super.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ);
+        return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
 }

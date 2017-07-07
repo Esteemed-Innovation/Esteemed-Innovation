@@ -30,7 +30,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void spawnBreakParticles(World world, float x, float y, float z, Block block, float xv, float yv, float zv) {
 //      The first argument of getEntityFX is the particle ID, and it is not used in the method at all.
-        spawnParticles(new ParticleDigging.Factory().getEntityFX(0, world, x, y, z, xv, yv, zv, 2));
+        spawnParticles(new ParticleDigging.Factory().createParticle(0, world, x, y, z, xv, yv, zv, 2));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ClientProxy extends CommonProxy {
 
     private void setController(Minecraft minecraft) {
         PlayerControllerMP controller = minecraft.playerController;
-        World world = minecraft.theWorld;
+        World world = minecraft.world;
         if (!(controller instanceof PlayerController)) {
             GameType type = world.getWorldInfo().getGameType();
             NetHandlerPlayClient net = minecraft.getConnection();
@@ -71,7 +71,7 @@ public class ClientProxy extends CommonProxy {
     public void extendRange(Entity entity, double amount) {
         super.extendRange(entity, amount);
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.thePlayer;
+        EntityPlayer player = mc.player;
         if (entity == player) {
             setController(mc);
 
@@ -82,7 +82,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void checkRange(EntityLivingBase entity) {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.thePlayer;
+        EntityPlayer player = mc.player;
         if (entity == player) {
             setController(mc);
             if (((PlayerController) mc.playerController).getReachDistanceExtension() <= 2.0F) {

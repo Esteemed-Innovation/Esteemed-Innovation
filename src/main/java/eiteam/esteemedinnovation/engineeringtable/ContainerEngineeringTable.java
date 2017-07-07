@@ -100,8 +100,8 @@ public class ContainerEngineeringTable extends Container {
                     int x = pair.getLeft();
                     int y = pair.getRight();
                     ((SlotLimitedStackSize) getSlot(i)).setSlotStackLimit(1);
-                    getSlot(i).xDisplayPosition = x + 53;
-                    getSlot(i).yDisplayPosition = y + 9;
+                    getSlot(i).xPos = x + 53;
+                    getSlot(i).yPos = y + 9;
 
                     i++;
                 }
@@ -110,8 +110,8 @@ public class ContainerEngineeringTable extends Container {
 
         if (!hasEngineer) {
             for (int i = 1; i < 10; i++) {
-                getSlot(i).xDisplayPosition = -1000;
-                getSlot(i).yDisplayPosition = -1000;
+                getSlot(i).xPos = -1000;
+                getSlot(i).yPos = -1000;
             }
         }
     }

@@ -62,9 +62,9 @@ public class EntityMortarItem extends EntityItem {
             motionX = 0;
             motionZ = 0;
             if (!lastOnGround) {
-                randomDir = worldObj.rand.nextInt(360);
-                randomDir2 = worldObj.rand.nextInt(25) + 10;
-                randomSprite = worldObj.rand.nextInt(5);
+                randomDir = world.rand.nextInt(360);
+                randomDir2 = world.rand.nextInt(25) + 10;
+                randomSprite = world.rand.nextInt(5);
             }
         }
         if (goingUp) {
@@ -75,8 +75,8 @@ public class EntityMortarItem extends EntityItem {
             if (posY > 256) {
                 motionY = 0.0F;
                 int r = Config.mortarRadius;
-                setPosition(xTarget + (worldObj.rand.nextInt((2 * r) + 1) - r), 256,
-                  zTarget + (worldObj.rand.nextInt((2 * r) + 1) - r));
+                setPosition(xTarget + (world.rand.nextInt((2 * r) + 1) - r), 256,
+                  zTarget + (world.rand.nextInt((2 * r) + 1) - r));
                 goingUp = false;
             } else {
                 motionY = 2.0F;
@@ -84,11 +84,11 @@ public class EntityMortarItem extends EntityItem {
         }
         lastPos = posY;
         lastOnGround = onGround;
-        List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this,
-          getEntityBoundingBox().addCoord(motionX, motionY, motionZ));
+        List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this,
+          getEntityBoundingBox().grow(motionX, motionY, motionZ));
         for (Entity entity : list) {
             if (entity.canBeCollidedWith() && motionY < -1.0F) {
-                entity.attackEntityFrom(DamageSource.fallingBlock, 3.0F);
+                entity.attackEntityFrom(DamageSource.FALLING_BLOCK, 3.0F);
             }
         }
     }

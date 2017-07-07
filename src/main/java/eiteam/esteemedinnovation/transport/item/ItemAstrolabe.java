@@ -53,8 +53,9 @@ public class ItemAstrolabe extends Item {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
+            ItemStack item = player.getHeldItem(hand);
             if (!item.hasTagCompound()) {
                 item.setTagCompound(new NBTTagCompound());
             }

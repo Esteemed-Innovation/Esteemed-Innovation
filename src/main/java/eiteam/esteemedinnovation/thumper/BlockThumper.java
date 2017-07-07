@@ -54,7 +54,7 @@ public class BlockThumper extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         BlockPos above = pos.up();
         TileEntityThumper tile = (TileEntityThumper) world.getTileEntity(pos);
         if (world.getBlockState(above).getBlock() != THUMPER_DUMMY && tile != null) {

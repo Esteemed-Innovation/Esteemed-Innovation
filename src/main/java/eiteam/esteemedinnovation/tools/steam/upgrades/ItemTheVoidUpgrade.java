@@ -159,8 +159,8 @@ public class ItemTheVoidUpgrade extends Item implements SteamToolUpgrade {
                     break;
                 } else if (stackInSlot.getItem() == drop.getItem() &&
                   stackInSlot.getItemDamage() == drop.getItemDamage() &&
-                  stackInSlot.stackSize + drop.stackSize < stackInSlot.getMaxStackSize()) {
-                    stackInSlot.stackSize += drop.stackSize;
+                  stackInSlot.getCount() + drop.getCount() < stackInSlot.getMaxStackSize()) {
+                    stackInSlot.grow(drop.getCount());
                     inv.setInventorySlotContents(i, stackInSlot);
                     added = true;
                     break;

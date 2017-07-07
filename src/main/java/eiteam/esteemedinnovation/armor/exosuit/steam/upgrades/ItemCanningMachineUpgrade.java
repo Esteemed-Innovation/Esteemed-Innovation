@@ -20,12 +20,12 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
     @Override
     public void onPlayerPickupItem(EntityItemPickupEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             return;
         }
 
         if (ChargableUtility.hasPower(player, 10)) {
-            ItemStack item = event.getItem().getEntityItem();
+            ItemStack item = event.getItem().getItem();
             if (item.hasTagCompound() && item.getTagCompound().hasKey("Canned")) {
                 return;
             }
@@ -41,23 +41,23 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stackInSlot = player.inventory.getStackInSlot(i);
                 if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER) {
-                    numCans += stackInSlot.stackSize;
+                    numCans += stackInSlot.getCount();
                 }
             }
-            if (numCans >= item.stackSize) {
+            if (numCans >= item.getCount()) {
                 if (!item.hasTagCompound()) {
                     item.setTagCompound(new NBTTagCompound());
                 }
                 item.getTagCompound().setInteger("Canned", 0);
-                for (int i = 0; i < item.stackSize; i++) {
+                for (int i = 0; i < item.getCount(); i++) {
                     eiteam.esteemedinnovation.api.util.InventoryUtility.consumeInventoryItem(player, ITEM_CANISTER);
                     player.inventoryContainer.detectAndSendChanges();
                 }
             } else if (numCans != 0) {
-                item.stackSize -= numCans;
-                event.getItem().setEntityItemStack(item);
+                item.shrink(numCans);
+                event.getItem().setItem(item);
                 ItemStack item2 = item.copy();
-                item2.stackSize = numCans;
+                item2.setCount(numCans);
                 if (!item2.hasTagCompound()) {
                     item2.setTagCompound(new NBTTagCompound());
                 }

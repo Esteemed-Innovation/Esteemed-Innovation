@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -20,13 +19,13 @@ public class BlockEngineeringTable extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             return true;
         } else {
             TileEntity tileentity = world.getTileEntity(pos);
 
-            if (tileentity != null && tileentity instanceof TileEntityEngineeringTable) {
+            if (tileentity instanceof TileEntityEngineeringTable) {
                 player.openGui(EsteemedInnovation.instance, 2, world, pos.getX(), pos.getY(), pos.getZ());
             }
 

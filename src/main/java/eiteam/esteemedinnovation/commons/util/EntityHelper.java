@@ -32,12 +32,12 @@ public class EntityHelper {
      */
     public static EntityLivingBase getEntityFromPlayer(EntityPlayer player) {
         Vec3d vec = player.getLookVec();
-        double x = vec.xCoord + player.posX;
-        double y = vec.yCoord + player.posY;
-        double z = vec.zCoord + player.posZ;
+        double x = vec.x + player.posX;
+        double y = vec.y + player.posY;
+        double z = vec.z + player.posZ;
 
         AxisAlignedBB aabb = new AxisAlignedBB(x - 5, y - 5, z - 5, x + 5, y + 5, z + 5);
-        List<Entity> entities = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, aabb);
+        List<Entity> entities = player.world.getEntitiesWithinAABBExcludingEntity(player, aabb);
         for (Entity entity : entities) {
             if (entity instanceof EntityLivingBase) {
                 EntityLivingBase target = (EntityLivingBase) entity;
@@ -54,10 +54,10 @@ public class EntityHelper {
      * @return The block state that is currently underneath the player.
      */
     public static IBlockState getBlockUnderEntity(Entity entity) {
-        int x = MathHelper.floor_double(entity.posX);
-        int y = MathHelper.floor_double(entity.getEntityBoundingBox().minY - 0.11F);
-        int z = MathHelper.floor_double(entity.posZ);
+        int x = MathHelper.floor(entity.posX);
+        int y = MathHelper.floor(entity.getEntityBoundingBox().minY - 0.11F);
+        int z = MathHelper.floor(entity.posZ);
         BlockPos underPos = new BlockPos(x, y, z);
-        return entity.worldObj.getBlockState(underPos);
+        return entity.world.getBlockState(underPos);
     }
 }

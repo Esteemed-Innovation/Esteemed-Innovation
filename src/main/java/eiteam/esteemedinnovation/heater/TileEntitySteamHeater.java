@@ -71,17 +71,17 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        setValidDistributionDirectionsExcluding(worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING));
+        setValidDistributionDirectionsExcluding(world.getBlockState(pos).getValue(BlockSteamHeater.FACING));
     }
 
     @Override
     public void safeUpdate() {
         super.superUpdate();
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockSteamHeater.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockSteamHeater.FACING);
 
         ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
-        TileEntity tile = worldObj.getTileEntity(offsetPos);
+        TileEntity tile = world.getTileEntity(offsetPos);
         if (tile == null || !(tile instanceof TileEntityFurnace)) {
             return;
         }
@@ -94,8 +94,8 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             int y = pos.getY() + dir.getFrontOffsetY() + dir2.getFrontOffsetY();
             int z = pos.getZ() + dir.getFrontOffsetZ() + dir2.getFrontOffsetZ();
             BlockPos pos2 = new BlockPos(x, y, z);
-            TileEntity tile2 = worldObj.getTileEntity(pos2);
-            IBlockState state2 = worldObj.getBlockState(pos2);
+            TileEntity tile2 = world.getTileEntity(pos2);
+            IBlockState state2 = world.getBlockState(pos2);
             if (tile2 != null)  {
                 if (tile2 instanceof TileEntitySteamHeater) {
                     TileEntitySteamHeater heater2 = (TileEntitySteamHeater) tile2;
@@ -126,7 +126,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             if ((furnaceBurnTime == 1 || furnaceBurnTime == 0) && getSteamShare() >= CONSUMPTION &&
               ((TileEntitySteamFurnace) furnace).canSmelt()) {
                 if (furnaceBurnTime == 0) {
-                    BlockFurnace.setState(true, worldObj, offsetPos);
+                    BlockFurnace.setState(true, world, offsetPos);
                 }
 
                 for (TileEntitySteamHeater heater : secondaryHeaters) {
@@ -139,7 +139,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
                     int newCookTime = Math.min(furnaceCookTime + 2 * numHeaters - 1, 199);
                     furnace.setField(COOK_TIME_ID, newCookTime);
                 }
-                worldObj.notifyBlockUpdate(offsetPos, worldObj.getBlockState(offsetPos), worldObj.getBlockState(offsetPos), 0);
+                world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
             }
         }
     }
@@ -151,7 +151,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         EnumFacing dir = state.getValue(BlockSteamHeater.FACING);
         setValidDistributionDirectionsExcluding(dir);
         BlockPos offsetPos = pos.offset(dir);
-        worldObj.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
+        world.notifyBlockUpdate(offsetPos, world.getBlockState(offsetPos), world.getBlockState(offsetPos), 0);
         SteamNetwork.newOrJoin(this);
         getNetwork().addSteam(steam);
         return true;

@@ -47,7 +47,7 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             updateSound();
         } else {
             if (shouldPlay()) {
@@ -66,15 +66,15 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
     @SideOnly(Side.CLIENT)
     private void updateSound() {
         if (!isSoundRegistered) {
-            worldObj.playSound(null, pos, EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, volume, 1F);
+            world.playSound(null, pos, EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, volume, 1F);
 //                Sounds.addSoundTile(this);
             isSoundRegistered = true;
         }
 
         if (isSounding) {
             if (steamTick == 0) {
-                EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockWhistle.FACING).getOpposite();
-                TileEntity te = worldObj.getTileEntity(pos.offset(dir));
+                EnumFacing dir = world.getBlockState(pos).getValue(BlockWhistle.FACING).getOpposite();
+                TileEntity te = world.getTileEntity(pos.offset(dir));
                 float offset = 2.0F / 16.0F;
                 if (te instanceof TileEntitySteamPipe) {
                     offset = 6.0F / 16.0F;
@@ -86,10 +86,10 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
                 float yOffset = dir.getFrontOffsetY() * offset;
                 float xOffset2 = dir.getFrontOffsetX() * offset2;
                 float zOffset2 = dir.getFrontOffsetZ() * offset2;
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + xOffset,
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + xOffset,
                   pos.getY() + 0.7D + yOffset, pos.getZ() + 0.5D + zOffset, 0F - xOffset2, 0.05F, 0F - zOffset2);
 
-                worldObj.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
                   EsteemedInnovation.SOUND_WHISTLE, SoundCategory.BLOCKS, volume, 1F, true);
             }
             steamTick++;
@@ -109,7 +109,7 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
 
     @Override
     public boolean shouldPlay() {
-        return getPressure(worldObj.getBlockState(pos).getValue(BlockWhistle.FACING)) > 1.02F;
+        return getPressure(world.getBlockState(pos).getValue(BlockWhistle.FACING)) > 1.02F;
     }
 
     @Override

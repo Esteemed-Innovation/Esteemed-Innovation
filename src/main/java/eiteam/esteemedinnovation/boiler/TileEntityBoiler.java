@@ -145,7 +145,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < furnaceItemStacks.length) {
-                furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                furnaceItemStacks[b0] = new ItemStack(nbttagcompound1);
             }
         }
 
@@ -224,15 +224,15 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         }
 
 
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (furnaceBurnTime == 0 && canSmelt()) {
                 currentItemBurnTime = furnaceBurnTime = getItemBurnTime(furnaceItemStacks[0]);
 
                 if (furnaceBurnTime > 0) {
                     if (furnaceItemStacks[0] != null) {
-                        --furnaceItemStacks[0].stackSize;
+                        furnaceItemStacks[0].shrink(1);
 
-                        if (furnaceItemStacks[0].stackSize == 0) {
+                        if (furnaceItemStacks[0].isEmpty()) {
                             furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
                         }
                     }
@@ -298,6 +298,18 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
+    public boolean isEmpty() {
+        // TODO: Rewrite this entirely
+        int nonnulls = 0;
+        for (ItemStack stack : furnaceItemStacks) {
+            if (stack != null) {
+                nonnulls++;
+            }
+        }
+        return nonnulls == 0;
+    }
+
+    @Override
     public ItemStack getStackInSlot(int slot) {
         return furnaceItemStacks[slot];
     }
@@ -307,14 +319,14 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         if (furnaceItemStacks[par1] != null) {
             ItemStack itemstack;
 
-            if (furnaceItemStacks[par1].stackSize <= par2) {
+            if (furnaceItemStacks[par1].getCount() <= par2) {
                 itemstack = furnaceItemStacks[par1];
                 furnaceItemStacks[par1] = null;
                 return itemstack;
             } else {
                 itemstack = furnaceItemStacks[par1].splitStack(par2);
 
-                if (furnaceItemStacks[par1].stackSize == 0) {
+                if (furnaceItemStacks[par1].isEmpty()) {
                     furnaceItemStacks[par1] = null;
                 }
 
@@ -340,8 +352,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
         furnaceItemStacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > getInventoryStackLimit()) {
-            par2ItemStack.stackSize = getInventoryStackLimit();
+        if (par2ItemStack != null && par2ItemStack.getCount() > getInventoryStackLimit()) {
+            par2ItemStack.setCount(getInventoryStackLimit());
         }
     }
 
@@ -367,8 +379,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getTileEntity(pos) == this && player.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return world.getTileEntity(pos) == this && player.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -429,7 +441,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             if (disguiseBlock != null) {
                 if (!player.capabilities.isCreativeMode) {
                     EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock, 1, disguiseMeta));
-                    world.spawnEntityInWorld(entityItem);
+                    world.spawnEntity(entityItem);
                 }
                 SoundType sound = disguiseBlock.getSoundType();
                 world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F),

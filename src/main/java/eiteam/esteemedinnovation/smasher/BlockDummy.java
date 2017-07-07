@@ -24,7 +24,7 @@ public class BlockDummy extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         return true;
     }
 
@@ -39,7 +39,7 @@ public class BlockDummy extends Block {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
         int smasherCount = 0;
         smasherCount += world.getBlockState(pos.east()).getBlock() == ROCK_SMASHER ? 1 : 0;
         smasherCount += world.getBlockState(pos.west()) == ROCK_SMASHER ? 1 : 0;

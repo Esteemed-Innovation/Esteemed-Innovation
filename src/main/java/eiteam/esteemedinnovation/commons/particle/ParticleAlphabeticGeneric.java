@@ -70,9 +70,9 @@ public class ParticleAlphabeticGeneric extends Particle {
         if (particleAngle != 0.0F) {
             float f8 = particleAngle + (particleAngle - prevParticleAngle) * partialTicks;
             float f9 = MathHelper.cos(f8 * 0.5F);
-            float f10 = MathHelper.sin(f8 * 0.5F) * (float) field_190016_K.xCoord;
-            float f11 = MathHelper.sin(f8 * 0.5F) * (float) field_190016_K.yCoord;
-            float f12 = MathHelper.sin(f8 * 0.5F) * (float) field_190016_K.zCoord;
+            float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
+            float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
+            float f12 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.z;
             Vec3d vec3d = new Vec3d(f10, f11, f12);
 
             for (int l = 0; l < 4; ++l) {
@@ -81,10 +81,10 @@ public class ParticleAlphabeticGeneric extends Particle {
         }
 
 
-        buffer.pos(f5 + avec3d[0].xCoord, f6 + avec3d[0].yCoord, f7 + avec3d[0].zCoord).tex(f1, f3).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos(f5 + avec3d[1].xCoord, f6 + avec3d[1].yCoord, f7 + avec3d[1].zCoord).tex(f1, f2).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos(f5 + avec3d[2].xCoord, f6 + avec3d[2].yCoord, f7 + avec3d[2].zCoord).tex(f, f2).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
-        buffer.pos(f5 + avec3d[3].xCoord, f6 + avec3d[3].yCoord, f7 + avec3d[3].zCoord).tex(f, f3).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos(f5 + avec3d[0].x, f6 + avec3d[0].y, f7 + avec3d[0].z).tex(f1, f3).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos(f5 + avec3d[1].x, f6 + avec3d[1].y, f7 + avec3d[1].z).tex(f1, f2).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos(f5 + avec3d[2].x, f6 + avec3d[2].y, f7 + avec3d[2].z).tex(f, f2).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
+        buffer.pos(f5 + avec3d[3].x, f6 + avec3d[3].y, f7 + avec3d[3].z).tex(f, f3).color(particleRed, particleGreen, particleBlue, particleAlpha).lightmap(j, k).endVertex();
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(ClientProxy.FONT_ASCII);
     }

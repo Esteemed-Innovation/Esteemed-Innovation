@@ -56,15 +56,15 @@ public class RenderMortarItem extends Render {
         if (myItem.motionY > 0) {
             GL11.glRotatef(180, 1.0F, 0.0F, 0.0F);
         }
-        EntityItem item = new EntityItem(myItem.worldObj, 0.0F, 0.0F, 0.0F, myItem.getEntityItem());
+        EntityItem item = new EntityItem(myItem.world, 0.0F, 0.0F, 0.0F, myItem.getItem());
         item.hoverStart = 0.0F;
 
         GL11.glTranslated(0, 0.85F, 0);
         if (!renderManager.options.fancyGraphics) {
             GL11.glScalef(1.25F, 1.25F, 1.25F);
         }
-        if (renderManager.options.fancyGraphics || item.getEntityItem().getItem() instanceof ItemBlock) {
-            GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
+        if (renderManager.options.fancyGraphics || item.getItem().getItem() instanceof ItemBlock) {
+            GL11.glRotatef(Minecraft.getMinecraft().player.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
         }
         renderManager.doRenderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
         GL11.glPopMatrix();

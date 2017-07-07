@@ -35,13 +35,13 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
         for (int x = -3; x < 4; x++) {
             for (int z = -3; z < 4; z++) {
                 BlockPos pos = new BlockPos(this.pos.getX() + x, this.pos.getY(), this.pos.getZ() + z);
-                if (worldObj.getBlockState(pos).getBlock() == Blocks.WATER) {
-                    chunks.add(new Chunk(worldObj, pos.getX(), pos.getZ()));
+                if (world.getBlockState(pos).getBlock() == Blocks.WATER) {
+                    chunks.add(new Chunk(world, pos.getX(), pos.getZ()));
                     water++;
                 }
             }
         }
-        return Pair.of(chunks.get(worldObj.rand.nextInt(chunks.size())), water);
+        return Pair.of(chunks.get(world.rand.nextInt(chunks.size())), water);
     }
 
     @Override
@@ -55,19 +55,19 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
         int src = pair.getRight();
         if (getSteamShare() > src) {
             decrSteam(src);
-            if (worldObj.rand.nextInt((int) (300.0F / src)) == 0 && !worldObj.isRemote) {
+            if (world.rand.nextInt((int) (300.0F / src)) == 0 && !world.isRemote) {
                 Chunk loc = pair.getLeft();
-                LootContext lootContext = new LootContext.Builder((WorldServer) worldObj).build();
+                LootContext lootContext = new LootContext.Builder((WorldServer) world).build();
 
-                List<ItemStack> fishes = worldObj.getLootTableManager().getLootTableFromLocation(
-                  LootTableList.GAMEPLAY_FISHING_FISH).generateLootForPools(worldObj.rand, lootContext);
-                ItemStack output = fishes.get(worldObj.rand.nextInt(fishes.size()));
+                List<ItemStack> fishes = world.getLootTableManager().getLootTableFromLocation(
+                  LootTableList.GAMEPLAY_FISHING_FISH).generateLootForPools(world.rand, lootContext);
+                ItemStack output = fishes.get(world.rand.nextInt(fishes.size()));
 
                 ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(output);
                 if (smeltingResult != null) {
                     output = smeltingResult;
                 }
-                dropItem(output, loc.xPosition + 0.5F, pos.getY() + 1.0F, loc.zPosition + 0.5F);
+                dropItem(output, loc.x + 0.5F, pos.getY() + 1.0F, loc.z + 0.5F);
             }
         }
         super.safeUpdate();
@@ -81,7 +81,7 @@ public class TileEntityFishGenocideMachine extends SteamTransporterTileEntity {
      * @param z Z position
      */
     public void dropItem(ItemStack item, float x, float y, float z) {
-        EntityFloatingItem entityItem = new EntityFloatingItem(worldObj, x, y, z, item);
-        worldObj.spawnEntityInWorld(entityItem);
+        EntityFloatingItem entityItem = new EntityFloatingItem(world, x, y, z, item);
+        world.spawnEntity(entityItem);
     }
 }

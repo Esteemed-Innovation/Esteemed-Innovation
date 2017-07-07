@@ -7,8 +7,6 @@ import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
-import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
-import eiteam.esteemedinnovation.api.steamnet.data.SteamNetworkData;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
@@ -30,7 +28,6 @@ import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
 import eiteam.esteemedinnovation.firearms.rocket.ItemRocketLauncher;
 import eiteam.esteemedinnovation.misc.integration.EnchiridionIntegration;
-import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -45,7 +42,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
@@ -61,7 +57,6 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -73,20 +68,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -118,7 +110,8 @@ public class GenericEventHandler {
     boolean worldStartUpdate = false;
     private SPLog log = EsteemedInnovation.log;
     private static boolean isShiftDown;
-    private static final Potion SLOWNESS_POTION = Potion.getPotionById(PotionType.getID(PotionTypes.SLOWNESS));
+    // TODO: Potion Helper class
+    public static final Potion SLOWNESS_POTION = Potion.getPotionFromResourceLocation(PotionTypes.SLOWNESS.getRegistryName().toString());
 
     private Map<UUID, Boolean> prevIsJumping = new HashMap<>();
 
@@ -132,7 +125,7 @@ public class GenericEventHandler {
     @SubscribeEvent
     public void sendPlayerInputPacketToServer(LivingEvent.LivingUpdateEvent event) {
         EntityLivingBase elb = event.getEntityLiving();
-        if (elb.worldObj.isRemote) {
+        if (elb.world.isRemote) {
             boolean isJumping;
             try {
                 isJumping = ReflectionHelper.getIsEntityJumping(elb);
@@ -159,7 +152,7 @@ public class GenericEventHandler {
 //                    gunpowder+=drop.getEntityItem().stackSize;
 //                }
 //            }
-//            if (gunpowder >= 2 && !event.entityLiving.worldObj.isRemote && event.entityLiving.worldObj.rand.nextBoolean()) {
+//            if (gunpowder >= 2 && !event.entityLiving.world.isRemote && event.entityLiving.world.rand.nextBoolean()) {
 //                int dropsLeft = 2;
 //                ArrayList<EntityItem> dropsToRemove = new ArrayList<EntityItem>();
 //                EntityItem baseItem = null;
@@ -196,7 +189,7 @@ public class GenericEventHandler {
         } else if (entity instanceof EntityVillager) {
             event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "VillagerData"), new VillagerDataSerializer());
         } else if (entity instanceof EntityWolf || entity instanceof EntityOcelot) {
-            Random rand = entity.worldObj.rand;
+            Random rand = entity.world.rand;
             AnimalData data = new AnimalData.DefaultImplementation(rand.nextInt(7), 0, POSSIBLE_NAMES[rand.nextInt(POSSIBLE_NAMES.length)], null);
             event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "AnimalData"), new AnimalDataSerializer(data));
         }
@@ -241,13 +234,13 @@ public class GenericEventHandler {
     @SideOnly(Side.CLIENT)
     public void handleRocketDisplay(RenderGameOverlayEvent.Post event) {
         Minecraft mc = Minecraft.getMinecraft();
-        ItemStack heldStack = ItemStackUtility.getHeldItemStack(mc.thePlayer);
+        ItemStack heldStack = ItemStackUtility.getHeldItemStack(mc.player);
         if (event.getType() == ElementType.ALL && heldStack != null &&
           heldStack.getItem() == ROCKET_LAUNCHER) {
             ScaledResolution resolution = new ScaledResolution(mc);
             int width = resolution.getScaledWidth();
             int height = resolution.getScaledHeight();
-            FontRenderer fontRenderer = mc.fontRendererObj;
+            FontRenderer fontRenderer = mc.fontRenderer;
             int selectedRocketType = 0;
             if (heldStack.hasTagCompound()) {
                 if (heldStack.getTagCompound().hasKey("rocketType")) {
@@ -261,7 +254,7 @@ public class GenericEventHandler {
             String tooltip = I18n.format("esteemedinnovation.rocket", I18n.format(name));
 
             int tooltipStartX = (width - fontRenderer.getStringWidth(tooltip)) / 2;
-            int tooltipStartY = height - 35 - (Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode ? 0 : 35);
+            int tooltipStartY = height - 35 - (Minecraft.getMinecraft().player.capabilities.isCreativeMode ? 0 : 35);
 
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
@@ -299,7 +292,7 @@ public class GenericEventHandler {
     public void onDrawScreen(RenderGameOverlayEvent.Post event) {
         if (event.getType() == ElementType.ALL) {
             Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayer player = mc.thePlayer;
+            EntityPlayer player = mc.player;
             /*if (!player.capabilities.isCreativeMode && player.inventory.armorItemInSlot(1) != null && player.inventory.armorItemInSlot(1).getItem() instanceof ItemSteamExosuitArmor) {
                 ItemStack stack = player.inventory.armorItemInSlot(1);
                 ItemSteamExosuitArmor item = (ItemSteamExosuitArmor) stack.getItem();
@@ -328,7 +321,7 @@ public class GenericEventHandler {
                 if (equipped.getItem() instanceof PipeWrench) {
                     PipeWrench wrench = (PipeWrench) equipped.getItem();
                     if (wrench.canWrench(player, pos.getBlockPos())) {
-                        TileEntity te = mc.theWorld.getTileEntity(pos.getBlockPos());
+                        TileEntity te = mc.world.getTileEntity(pos.getBlockPos());
                         if (te instanceof WrenchDisplay) {
                             ((WrenchDisplay) te).displayWrench(event);
                         }
@@ -336,9 +329,9 @@ public class GenericEventHandler {
                 }
 
                 if (equipped.getItem() == BOOK) {
-                    IBlockState state = mc.theWorld.getBlockState(pos.getBlockPos());
+                    IBlockState state = mc.world.getBlockState(pos.getBlockPos());
                     Block block = state.getBlock();
-                    ItemStack stack = block.getPickBlock(state, pos, player.worldObj, pos.getBlockPos(), player);
+                    ItemStack stack = block.getPickBlock(state, pos, player.world, pos.getBlockPos(), player);
                     if (stack != null) {
                         for (ItemStack s : BookPageRegistry.bookRecipes.keySet()) {
                             if (s.getItem() == stack.getItem() && s.getItemDamage() == stack.getItemDamage()) {
@@ -348,7 +341,7 @@ public class GenericEventHandler {
 
                                 mc.getRenderItem().renderItemIntoGUI(new ItemStack(BOOK), x, y);
                                 GL11.glDisable(GL11.GL_LIGHTING);
-                                mc.fontRendererObj.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
+                                mc.fontRenderer.drawStringWithShadow("", x + 15, y + 13, 0xC6C6C6);
                                 GL11.glPopMatrix();
                                 GL11.glEnable(GL11.GL_BLEND);
                             }
@@ -374,23 +367,23 @@ public class GenericEventHandler {
             for (Object obj : recipeList) {
                 MerchantRecipe recipe = (MerchantRecipe) obj;
                 ItemStack toSell = recipe.getItemToSell();
-                int stackSizeToSell = toSell.stackSize;
+                int stackSizeToSell = toSell.getCount();
                 ItemStack toBuy = recipe.getItemToBuy();
-                int stackSizeToBuy = toBuy.stackSize;
+                int stackSizeToBuy = toBuy.getCount();
                 ItemStack secondBuy = recipe.getSecondItemToBuy();
-                int stackSizeSecond = secondBuy.stackSize;
-                if (stackSizeToSell > 1 && stackSizeToSell != MathHelper.floor_float(stackSizeToSell * 1.25F)) {
-                    stackSizeToSell = MathHelper.floor_float(stackSizeToSell * 1.25F);
+                int stackSizeSecond = secondBuy.getCount();
+                if (stackSizeToSell > 1 && stackSizeToSell != MathHelper.floor(stackSizeToSell * 1.25F)) {
+                    stackSizeToSell = MathHelper.floor(stackSizeToSell * 1.25F);
                 } else if (stackSizeToBuy > 1 &&
-                  stackSizeToBuy != MathHelper.ceiling_float_int(stackSizeToBuy / 1.25F)) {
-                    stackSizeToBuy = MathHelper.ceiling_float_int(stackSizeToBuy / 1.25F);
+                  stackSizeToBuy != MathHelper.ceil(stackSizeToBuy / 1.25F)) {
+                    stackSizeToBuy = MathHelper.ceil(stackSizeToBuy / 1.25F);
                 } else if (secondBuy != null && stackSizeSecond > 1 &&
-                  stackSizeSecond != MathHelper.ceiling_float_int(stackSizeSecond / 1.25F)) {
-                    stackSizeSecond = MathHelper.ceiling_float_int(stackSizeSecond / 1.25F);
+                  stackSizeSecond != MathHelper.ceil(stackSizeSecond / 1.25F)) {
+                    stackSizeSecond = MathHelper.ceil(stackSizeSecond / 1.25F);
                 }
-                toSell.stackSize = stackSizeToSell;
-                toBuy.stackSize = stackSizeToBuy;
-                secondBuy.stackSize = stackSizeSecond;
+                toSell.setCount(stackSizeToSell);
+                toBuy.setCount(stackSizeToBuy);
+                secondBuy.setCount(stackSizeSecond);
             }
             lastViewVillagerGui = true;
         }
@@ -403,11 +396,11 @@ public class GenericEventHandler {
         GuiScreen guiScreen = event.getGui();
         if (ReflectionHelper.merchantField != null && guiScreen instanceof GuiMerchant && !lastViewVillagerGui) {
             GuiMerchant gui = (GuiMerchant) guiScreen;
-            ItemStack head = mc.thePlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+            ItemStack head = mc.player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
             if (head != null && (head.getItem() == ENTREPRENEUR_TOP_HAT || (head.getItem() == STEAM_EXO_HEAD
               && ((ItemSteamExosuitArmor) head.getItem()).hasUpgrade(head, ENTREPRENEUR_TOP_HAT)))) {
                 IMerchant merch = gui.getMerchant();
-                MerchantRecipeList recipeList = merch.getRecipes(mc.thePlayer);
+                MerchantRecipeList recipeList = merch.getRecipes(mc.player);
                 updateTradingStackSizes(recipeList);
                 merch.setRecipes(recipeList);
                 try {
@@ -434,7 +427,7 @@ public class GenericEventHandler {
             }
             if (!villager.isTrading() && timeUntilReset != null && timeUntilReset == 39 &&
               lastBuyingPlayer != null) {
-                EntityPlayer player = villager.worldObj.getPlayerEntityByName(lastBuyingPlayer);
+                EntityPlayer player = villager.world.getPlayerEntityByName(lastBuyingPlayer);
                 if (player != null) {
                     ItemStack hat = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
                     if (hat != null && hat.getItem() == ENTREPRENEUR_TOP_HAT) {
@@ -459,12 +452,12 @@ public class GenericEventHandler {
                         int level = exoHat.getTagCompound().getInteger("NewTradesLevel");
                         level++;
                         exoHat.getTagCompound().setInteger("NewTradesLevel", level);
-                        ((ItemSteamExosuitArmor) player.inventory.armorInventory[3].getItem()).setInventorySlotContents(player.inventory.armorInventory[3], 3, hat);
+                        ((ItemSteamExosuitArmor) player.inventory.armorInventory.get(3).getItem()).setInventorySlotContents(player.inventory.armorInventory.get(3), 3, hat);
                     }
                 }
             }
         }
-        if (entityLiving instanceof EntityVillager && !entityLiving.worldObj.isRemote && ReflectionHelper.buyingListField != null) {
+        if (entityLiving instanceof EntityVillager && !entityLiving.world.isRemote && ReflectionHelper.buyingListField != null) {
             EntityVillager villager = (EntityVillager) entityLiving;
             Boolean hadCustomer = VILLAGER_DATA.getDefaultInstance().hadCustomer();
             if (hadCustomer == null) {
@@ -552,7 +545,7 @@ public class GenericEventHandler {
         }
 
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.thePlayer;
+        EntityPlayer player = mc.player;
         if (mc.currentScreen instanceof GuiContainer) {
             for (ItemStack stack2 : BookPageRegistry.bookRecipes.keySet()) {
                 if (stack2.getItem() == stack.getItem() && (stack2.getItemDamage() == stack.getItemDamage() || stack.getItem() instanceof ItemArmor || stack.getItem() instanceof ItemTool)) {
@@ -602,8 +595,8 @@ public class GenericEventHandler {
     public void handleFallDamage(LivingHurtEvent event) {
         EntityLivingBase entityLiving = event.getEntityLiving();
         DamageSource source = event.getSource();
-        if (entityLiving instanceof EntityPlayer && source.damageType.equals("mob") && source.getEntity() != null &&
-          !entityLiving.worldObj.isRemote) {
+        if (entityLiving instanceof EntityPlayer && source.damageType.equals("mob") && source.getImmediateSource() != null &&
+          !entityLiving.world.isRemote) {
             EntityPlayer player = (EntityPlayer) entityLiving;
             if (player.getHealth() <= 5.0F) {
                 int vibrantLevel = 0;
@@ -618,8 +611,8 @@ public class GenericEventHandler {
                     }
                 }
 
-                if ((vibrantLevel > 0) && (player.worldObj.rand.nextInt(5 - vibrantLevel) == 0)) {
-                    int startRotation = player.worldObj.rand.nextInt(360);
+                if ((vibrantLevel > 0) && (player.world.rand.nextInt(5 - vibrantLevel) == 0)) {
+                    int startRotation = player.world.rand.nextInt(360);
                     boolean foundSpot = false;
                     int range = 14;
                     int counter = 0;
@@ -634,16 +627,16 @@ public class GenericEventHandler {
                         tX = (int) (player.posX + range * Math.sin(Math.toRadians(startRotation)));
                         tZ = (int) (player.posZ + range * Math.cos(Math.toRadians(startRotation)));
                         tY = (int) player.posY + yO;
-                        List mobs = player.worldObj.getEntitiesWithinAABB(EntityMob.class,
+                        List mobs = player.world.getEntitiesWithinAABB(EntityMob.class,
                           new AxisAlignedBB(tX + 0.5F - safeRange, tY + 0.5F - safeRange, tZ + 0.5F - safeRange,
                             tX + 0.5F + safeRange, tY + 0.5F + safeRange, tZ + 0.5F + safeRange));
                         BlockPos posBase = new BlockPos(tX, tY, tZ);
                         BlockPos posDown = new BlockPos(tX, tY - 1, tZ);
                         BlockPos posUp = new BlockPos(tX, tY + 1, tZ);
-                        if (mobs.size() == 0 && player.worldObj.isSideSolid(posDown, EnumFacing.UP) &&
-                          !player.worldObj.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
-                          player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY)) &&
-                          player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
+                        if (mobs.size() == 0 && player.world.isSideSolid(posDown, EnumFacing.UP) &&
+                          !player.world.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
+                          player.world.isAirBlock(new BlockPos(tX, tZ, tY)) &&
+                          player.world.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
                             foundSpot = true;
                         } else {
                             if (counter >= 36) {
@@ -663,19 +656,19 @@ public class GenericEventHandler {
                     }
 
                     if (foundSpot) {
-                        player.setPositionAndRotation(tX, tY, tZ, player.worldObj.rand.nextInt(360), player.rotationPitch);
+                        player.setPositionAndRotation(tX, tY, tZ, player.world.rand.nextInt(360), player.rotationPitch);
                     }
                 }
             }
         }
 
-        if (entityLiving instanceof EntityPlayer && source.damageType.equals("mob") && source.getEntity() != null &&
-          !entityLiving.worldObj.isRemote) {
+        if (entityLiving instanceof EntityPlayer && source.damageType.equals("mob") && source.getImmediateSource() != null &&
+          !entityLiving.world.isRemote) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-            Entity mob = event.getSource().getEntity();
+            Entity mob = event.getSource().getImmediateSource();
             int enderiumLevel = 0;
-            for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-                ItemStack armor = player.inventory.armorInventory[i];
+            for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
+                ItemStack armor = player.inventory.armorInventory.get(i);
                 if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
                     if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Enderium") {
@@ -683,8 +676,8 @@ public class GenericEventHandler {
                     }
                 }
             }
-            if ((enderiumLevel > 0) && (player.worldObj.rand.nextFloat() < (enderiumLevel * 0.075F))) {
-                int startRotation = player.worldObj.rand.nextInt(360);
+            if ((enderiumLevel > 0) && (player.world.rand.nextFloat() < (enderiumLevel * 0.075F))) {
+                int startRotation = player.world.rand.nextInt(360);
                 boolean foundSpot = false;
                 int range = 8;
                 int counter = 0;
@@ -697,9 +690,9 @@ public class GenericEventHandler {
                     safe++;
                     tX = (int) (mob.posX + range * Math.sin(Math.toRadians(startRotation)));
                     tZ = (int) (mob.posZ + range * Math.cos(Math.toRadians(startRotation)));
-                    if (player.worldObj.isSideSolid(new BlockPos(tX, tY - 1, tZ), EnumFacing.UP) &&
-                      !player.worldObj.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
-                      player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY)) && player.worldObj.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
+                    if (player.world.isSideSolid(new BlockPos(tX, tY - 1, tZ), EnumFacing.UP) &&
+                      !player.world.containsAnyLiquid(new AxisAlignedBB(tX, tY - 1, tZ, tX, tY + 1, tZ)) &&
+                      player.world.isAirBlock(new BlockPos(tX, tZ, tY)) && player.world.isAirBlock(new BlockPos(tX, tZ, tY + 1))) {
                         foundSpot = true;
                     } else {
                         if (counter >= 36) {
@@ -724,11 +717,11 @@ public class GenericEventHandler {
             }
         }
         if (((event.getEntityLiving() instanceof EntityPlayer)) && (event.getSource().damageType.equals("mob")) &&
-          (event.getSource().getEntity() != null)) {
+          (event.getSource().getImmediateSource() != null)) {
             EntityPlayer player = (EntityPlayer) event.getEntityLiving();
             int fireLevel = 0;
-            for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-                ItemStack armor = player.inventory.armorInventory[i];
+            for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
+                ItemStack armor = player.inventory.armorInventory.get(i);
                 if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
                     if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Fiery") {
@@ -736,14 +729,14 @@ public class GenericEventHandler {
                     }
                 }
             }
-            if ((fireLevel > 0) && (player.worldObj.rand.nextInt(25) < fireLevel)) {
-                event.getSource().getEntity().setFire(fireLevel / 2);
+            if ((fireLevel > 0) && (player.world.rand.nextInt(25) < fireLevel)) {
+                event.getSource().getImmediateSource().setFire(fireLevel / 2);
             }
 
-            if (event.getSource().getEntity() instanceof EntityLivingBase) {
+            if (event.getSource().getImmediateSource() instanceof EntityLivingBase) {
                 int chillLevel = 0;
-                for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-                    ItemStack armor = player.inventory.armorInventory[i];
+                for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
+                    ItemStack armor = player.inventory.armorInventory.get(i);
                     if (armor != null && armor.getItem() instanceof ItemSteamExosuitArmor) {
                         ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) armor.getItem();
                         if (armorItem.hasPlates(armor) && UtilPlates.getPlate(armor.getTagCompound().getString("Plate")).getIdentifier() == "Yeti") {
@@ -752,7 +745,7 @@ public class GenericEventHandler {
                     }
                 }
                 if (chillLevel > 0) {
-                    ((EntityLivingBase) event.getSource().getEntity()).addPotionEffect(new PotionEffect(SLOWNESS_POTION, chillLevel * 3 + 5, MathHelper.ceiling_float_int((float) chillLevel / 2F)));
+                    ((EntityLivingBase) event.getSource().getImmediateSource()).addPotionEffect(new PotionEffect(SLOWNESS_POTION, chillLevel * 3 + 5, MathHelper.ceil((float) chillLevel / 2F)));
                 }
             }
         }
@@ -821,7 +814,7 @@ public class GenericEventHandler {
     @SideOnly(Side.CLIENT)
     public void updateRangeClient(LivingEvent.LivingUpdateEvent event) {
         EntityLivingBase entity = event.getEntityLiving();
-        if (entity == Minecraft.getMinecraft().thePlayer) {
+        if (entity == Minecraft.getMinecraft().player) {
 //            if (!worldStartUpdate && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != null && entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemSteamExosuitArmor) {
 //                ItemSteamExosuitArmor chest = (ItemSteamExosuitArmor) entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem();
 //                if (chest.hasUpgrade(entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST), SteamcraftItems.extendoFist)) {
@@ -849,10 +842,10 @@ public class GenericEventHandler {
                     wearing = true;
                 }
             }
-//            if (wearing && !lastWearing && entity.worldObj.isRemote) {
+//            if (wearing && !lastWearing && entity.world.isRemote) {
 //                EsteemedInnovation.proxy.extendRange(entity,Config.extendedRange);
 //            }
-            if (!wearing && lastWearing && entity.worldObj.isRemote) {
+            if (!wearing && lastWearing && entity.world.isRemote) {
                 EsteemedInnovation.proxy.extendRange(entity, -Config.extendedRange);
             }
             lastWearing = wearing;
@@ -873,7 +866,7 @@ public class GenericEventHandler {
 
         PlayerData tag = entity.getCapability(EsteemedInnovation.PLAYER_DATA, null);
 
-        if (entity.worldObj.isRemote) {
+        if (entity.world.isRemote) {
             updateRangeClient(event);
         } else {
             boolean wearing = false;

@@ -79,7 +79,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntitySteamCharger tile = (TileEntitySteamCharger) world.getTileEntity(pos);
         if (tile == null) {
             return false;
@@ -92,11 +92,12 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
             tile.setInventorySlotContents(0, null);
             return true;
         } else {
+            ItemStack heldItem = player.getHeldItem(hand);
             if (canItemBeCharged(heldItem)) {
                 ItemStack copy = heldItem.copy();
-                copy.stackSize = 1;
+                copy.setCount(1);
                 tile.setInventorySlotContents(0, copy);
-                heldItem.stackSize -= 1;
+                heldItem.shrink(1);
                 tile.randomDegrees = world.rand.nextInt(361);
                 return true;
             }

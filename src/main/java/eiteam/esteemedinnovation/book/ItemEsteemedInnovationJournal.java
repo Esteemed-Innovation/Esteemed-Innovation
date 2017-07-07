@@ -21,13 +21,13 @@ public class ItemEsteemedInnovationJournal extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         player.openGui(EsteemedInnovation.instance, 1, world, 0, 0, 0);
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (player.isSneaking() && world.isRemote) {
             IBlockState state = world.getBlockState(pos);
             RayTraceResult rtr = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos);

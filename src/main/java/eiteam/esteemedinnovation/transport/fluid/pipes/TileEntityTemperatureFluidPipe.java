@@ -41,7 +41,7 @@ public abstract class TileEntityTemperatureFluidPipe extends TileEntityTickableS
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
 
@@ -55,12 +55,12 @@ public abstract class TileEntityTemperatureFluidPipe extends TileEntityTickableS
             return;
         }
 
-        FluidPipeBlockCapabilities.Mode transferMode = worldObj.getBlockState(pos).getValue(FluidPipeBlockCapabilities.MODE);
+        FluidPipeBlockCapabilities.Mode transferMode = world.getBlockState(pos).getValue(FluidPipeBlockCapabilities.MODE);
 
         // TODO: Impeller
         for (EnumFacing dir : dirs) {
             BlockPos offset = pos.offset(dir);
-            TileEntity offsetTile = worldObj.getTileEntity(offset);
+            TileEntity offsetTile = world.getTileEntity(offset);
             if (offsetTile == null) {
                 continue;
             }
@@ -68,7 +68,7 @@ public abstract class TileEntityTemperatureFluidPipe extends TileEntityTickableS
 
             if (transferMode == FluidPipeBlockCapabilities.Mode.TRANSFER) {
                 if (offsetTile instanceof TileEntityTemperatureFluidPipe && offsetTile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {
-                    FluidPipeBlockCapabilities.Mode offsetMode = worldObj.getBlockState(offset).getValue(FluidPipeBlockCapabilities.MODE);
+                    FluidPipeBlockCapabilities.Mode offsetMode = world.getBlockState(offset).getValue(FluidPipeBlockCapabilities.MODE);
                     IFluidHandler handler = offsetTile.getCapability(FLUID_HANDLER_CAPABILITY, dir);
                     if (offsetMode != FluidPipeBlockCapabilities.Mode.INPUT) {
                         tryFillOurTank(handler);

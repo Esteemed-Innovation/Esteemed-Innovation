@@ -128,8 +128,8 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        powered = worldObj.isBlockPowered(pos);
-        setDistributionDirections(new EnumFacing[] { worldObj.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
+        powered = world.isBlockPowered(pos);
+        setDistributionDirections(new EnumFacing[] { world.getBlockState(pos).getValue(BlockFan.FACING).getOpposite() });
     }
 
     @Override
@@ -138,21 +138,21 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
             markForResync();
         }
         lastSteam = getSteamShare() > STEAM_CONSUMPTION;
-        if (!lastSteam && !worldObj.isRemote && active) {
+        if (!lastSteam && !world.isRemote && active) {
             markForResync();
         }
-        if (active && worldObj.isRemote) {
+        if (active && world.isRemote) {
             rotateTicks++;
         }
 
-        if (active && worldObj.isRemote || (getSteamShare() >= STEAM_CONSUMPTION && !powered)) {
-            if (!worldObj.isRemote) {
+        if (active && world.isRemote || (getSteamShare() >= STEAM_CONSUMPTION && !powered)) {
+            if (!world.isRemote) {
                 decrSteam(STEAM_CONSUMPTION);
             }
-            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFan.FACING);
+            EnumFacing dir = world.getBlockState(pos).getValue(BlockFan.FACING);
             double[] positions = getSmokePositions(dir);
             double[] speeds = getSmokeSpeeds(dir);
-            worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, positions[0], positions[1], positions[2],
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, positions[0], positions[1], positions[2],
               speeds[0], speeds[1], speeds[2]);
             int blocksInFront = 0;
             boolean blocked = false;
@@ -161,23 +161,23 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
                 int y = pos.getY() + dir.getFrontOffsetY() * i;
                 int z = pos.getZ() + dir.getFrontOffsetZ() * i;
                 BlockPos offsetPos = new BlockPos(x, y, z);
-                IBlockState offsetState = worldObj.getBlockState(offsetPos);
+                IBlockState offsetState = world.getBlockState(offsetPos);
                 Block offsetBlock = offsetState.getBlock();
-                if (!worldObj.isRemote && worldObj.rand.nextInt(20) == 0 && !blocked && offsetBlock != Blocks.AIR &&
-                  offsetBlock.isReplaceable(worldObj, offsetPos) || offsetBlock instanceof BlockCrops) {
+                if (!world.isRemote && world.rand.nextInt(20) == 0 && !blocked && offsetBlock != Blocks.AIR &&
+                  offsetBlock.isReplaceable(world, offsetPos) || offsetBlock instanceof BlockCrops) {
                     // We don't need to check the other FluidBlock classes because they all inherit Base.
                     if (offsetBlock instanceof BlockFluidBase) {
                         for (int v = 0; v < 5; v++) {
-                            EsteemedInnovation.proxy.spawnBreakParticles(worldObj, x + 0.5F, y + 0.5F, z + 0.5F, offsetBlock, 0F, 0F, 0F);
+                            EsteemedInnovation.proxy.spawnBreakParticles(world, x + 0.5F, y + 0.5F, z + 0.5F, offsetBlock, 0F, 0F, 0F);
                         }
                     }
-                    worldObj.setBlockToAir(offsetPos);
+                    world.setBlockToAir(offsetPos);
                 }
-                if (!blocked && (offsetBlock.isReplaceable(worldObj, offsetPos) || worldObj.isAirBlock(offsetPos) ||
-                  offsetBlock instanceof BlockTrapDoor || offsetState.getCollisionBoundingBox(worldObj, offsetPos) == null)) {
+                if (!blocked && (offsetBlock.isReplaceable(world, offsetPos) || world.isAirBlock(offsetPos) ||
+                  offsetBlock instanceof BlockTrapDoor || offsetState.getCollisionBoundingBox(world, offsetPos) == null)) {
                     blocksInFront = i;
                     if (i != range - 1) {
-                        worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + getRandomOrSlight(dir.getFrontOffsetX()),
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + getRandomOrSlight(dir.getFrontOffsetX()),
                           y + getRandomOrSlight(dir.getFrontOffsetY()), z + getRandomOrSlight(dir.getFrontOffsetZ()),
                           speeds[0], speeds[1], speeds[2]);
                     }
@@ -185,7 +185,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
                     blocked = true;
                 }
             }
-            List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + (dir.getFrontOffsetX() < 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + (dir.getFrontOffsetY() < 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + (dir.getFrontOffsetZ() < 0 ? dir.getFrontOffsetZ() * blocksInFront : 0), pos.getX() + 1 + (dir.getFrontOffsetX() > 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + 1 + (dir.getFrontOffsetY() > 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + 1 + (dir.getFrontOffsetZ() > 0 ? dir.getFrontOffsetZ() * blocksInFront : 0)));
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + (dir.getFrontOffsetX() < 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + (dir.getFrontOffsetY() < 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + (dir.getFrontOffsetZ() < 0 ? dir.getFrontOffsetZ() * blocksInFront : 0), pos.getX() + 1 + (dir.getFrontOffsetX() > 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + 1 + (dir.getFrontOffsetY() > 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + 1 + (dir.getFrontOffsetZ() > 0 ? dir.getFrontOffsetZ() * blocksInFront : 0)));
             for (Entity entity : entities) {
                 if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                     if (entity instanceof EntityPlayer && entity.isSneaking()) {
@@ -231,10 +231,10 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     public static void rangeDisplay(Post event, int range) {
         GL11.glPushMatrix();
         Minecraft mc =  Minecraft.getMinecraft();
-        int color = mc.thePlayer.isSneaking() ? 0xC6C6C6 : 0x777777;
+        int color = mc.player.isSneaking() ? 0xC6C6C6 : 0x777777;
         int x = event.getResolution().getScaledWidth() / 2 - 8;
         int y = event.getResolution().getScaledHeight() / 2 - 8;
-        mc.fontRendererObj.drawStringWithShadow(I18n.format("esteemedinnovation.fan.range", range), x + 15, y + 13, color);
+        mc.fontRenderer.drawStringWithShadow(I18n.format("esteemedinnovation.fan.range", range), x + 15, y + 13, color);
         GL11.glPopMatrix();
     }
 

@@ -11,6 +11,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -20,7 +21,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
@@ -33,7 +33,7 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
     private boolean canEdit = false;
 
     public GuiSteamAnvil(InventoryPlayer inv, TileEntitySteamHammer hammer, World world, int x, int y, int z) {
-        super(new ContainerSteamAnvil(inv, hammer, world, x, y, z, Minecraft.getMinecraft().thePlayer));
+        super(new ContainerSteamAnvil(inv, hammer, world, x, y, z, Minecraft.getMinecraft().player));
         this.playerInv = inv;
         this.container = (ContainerSteamAnvil) this.inventorySlots;
         this.hammer = hammer;
@@ -45,7 +45,7 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
         Keyboard.enableRepeatEvents(true);
         int i = (width - xSize) / 2;
         int j = (height - ySize) / 2;
-        textField = new GuiTextField(0, fontRendererObj, i + 62, j + 24, 103, 12);
+        textField = new GuiTextField(0, fontRenderer, i + 62, j + 24, 103, 12);
         textField.setTextColor(-1);
         textField.setDisabledTextColour(-1);
         textField.setEnableBackgroundDrawing(false);
@@ -67,24 +67,24 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
-        fontRendererObj.drawString(I18n.format("container.repair"), 60, 6, 4210752);
+        fontRenderer.drawString(I18n.format("container.repair"), 60, 6, 4210752);
 
 
         if (this.container.hammer.cost > 0) {
             boolean flag = true;
             String s = I18n.format("container.repair.cost", container.hammer.cost);
 
-            if (this.container.hammer.cost >= 40 && !mc.thePlayer.capabilities.isCreativeMode) {
+            if (this.container.hammer.cost >= 40 && !mc.player.capabilities.isCreativeMode) {
                 s = I18n.format("container.repair.expensive");
             } else if (!container.getSlot(2).getHasStack()) {
                 flag = false;
             }
 
             if (flag) {
-                int i1 = this.xSize - 8 - fontRendererObj.getStringWidth(s);
+                int i1 = this.xSize - 8 - fontRenderer.getStringWidth(s);
                 byte b0 = 67;
 
-                if (fontRendererObj.getUnicodeFlag()) {
+                if (fontRenderer.getUnicodeFlag()) {
                     drawRect(i1 - 3, b0 - 2, this.xSize - 7, b0 + 10, -16777216);
                     drawRect(i1 - 2, b0 - 1, this.xSize - 8, b0 + 9, -12895429);
                 }
@@ -146,7 +146,7 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
 
         if (hammer.cost > 0 && hammer.getStackInSlot(2) != null) {
             mc.getTextureManager().bindTexture(ARROW);
-            drawTexturedModalRect(k + 102, l + 48, 177, 14, MathHelper.floor_float(22.0F *
+            drawTexturedModalRect(k + 102, l + 48, 177, 14, MathHelper.floor(22.0F *
               (((float) hammer.progress + (float) hammer.hammerTicks / 360.0F) / (float) hammer.cost)), 16);
         }
 
@@ -161,7 +161,7 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
     }
 
     @Override
-    public void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList) {
+    public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
         sendSlotContents(containerToSend, 0, containerToSend.getSlot(0).getStack());
     }
 
@@ -178,7 +178,7 @@ public class GuiSteamAnvil extends GuiContainer implements IContainerListener {
     }
 
     @Override
-    public void sendProgressBarUpdate(Container container, int varToUpdate, int newVal) {}
+    public void sendWindowProperty(Container container, int varToUpdate, int newVal) {}
 
     @Override
     public void sendAllWindowProperties(Container containerIn, IInventory inventory) {}

@@ -55,17 +55,17 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             }
             if (section.isUnlocked(player)) {
                 int pages = section.getCategories().size();
-                for (int s = 0; s < MathHelper.ceiling_float_int(pages / 9.0F); s++) {
+                for (int s = 0; s < MathHelper.ceil(pages / 9.0F); s++) {
                     sections.add(section.getName() + (s == 0 ? "" : s));
                 }
             }
         }
         sections.add(FAKE_SECTION_IDEAS);
-        bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
+        bookTotalPages = MathHelper.ceil(sections.size() / 2F) + 1;
         if (!viewing.isEmpty()) {
             BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
             if (entry != null) {
-                bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().size() / 2F);
+                bookTotalPages = MathHelper.ceil(entry.getPages().size() / 2F);
             }
         }
         ItemStack active = player.getHeldItemMainhand();
@@ -153,7 +153,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
 //            	int i = 0;
 //        		String lastCategory = "";
 //        		boolean canDo = true;
-//        		this.bookTotalPages = MathHelper.ceiling_float_int(GeneralRegistry.categories.size()/2F)+1;
+//        		this.bookTotalPages = MathHelper.ceil(GeneralRegistry.categories.size()/2F)+1;
 //                this.updateButtons();
 //            }
 
@@ -162,13 +162,13 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 viewing = buttonSelect.name.substring(0, 1).equals("#") ? buttonSelect.name.substring(1) : buttonSelect.name;
                 int numPages = -1;
                 BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
-                if (category != null && category.isUnlocked(mc.thePlayer)) {
-                    numPages = category.getAllVisiblePages(mc.thePlayer).length;
+                if (category != null && category.isUnlocked(mc.player)) {
+                    numPages = category.getAllVisiblePages(mc.player).length;
                 }
                 if (numPages != -1) {
                     lastIndexPage = currPage;
                     currPage = 0;
-                    bookTotalPages = MathHelper.ceiling_float_int(numPages / 2F);
+                    bookTotalPages = MathHelper.ceil(numPages / 2F);
                     updateButtons();
                     mustReleaseMouse = true;
                 }
@@ -183,7 +183,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         if (keyCode == 1 && !viewing.isEmpty()) {
             viewing = "";
             currPage = lastIndexPage;
-            bookTotalPages = MathHelper.ceiling_float_int(sections.size() / 2F) + 1;
+            bookTotalPages = MathHelper.ceil(sections.size() / 2F) + 1;
             updateButtons();
         } else {
             super.keyTyped(typedChar, keyCode);
@@ -209,16 +209,16 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         drawTexturedModalRect(width + 67, height, 0, 0, BOOK_IMAGE_WIDTH, BOOK_IMAGE_HEIGHT);
 
         String bookTitle = book.getDisplayName();
-        int titleWidth = fontRendererObj.getStringWidth(bookTitle);
-        fontRendererObj.drawStringWithShadow(bookTitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height + 80, 0xC19E51);
+        int titleWidth = fontRenderer.getStringWidth(bookTitle);
+        fontRenderer.drawStringWithShadow(bookTitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height + 80, 0xC19E51);
 
         String bookSubtitle = I18n.format(Constants.EI_MODID + ".book.info");
-        int subtitleWidth = fontRendererObj.getStringWidth(bookSubtitle);
-        fontRendererObj.drawString("\u00A7o" + bookSubtitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - subtitleWidth / 2 - 3, height + 90, 0xC19E51);
+        int subtitleWidth = fontRenderer.getStringWidth(bookSubtitle);
+        fontRenderer.drawString("\u00A7o" + bookSubtitle, width + 67 + BOOK_IMAGE_WIDTH / 2 - subtitleWidth / 2 - 3, height + 90, 0xC19E51);
 
-        String author = I18n.format(Constants.EI_MODID + ".book.by", mc.thePlayer.getDisplayNameString());
-        int authorWidth = fontRendererObj.getStringWidth(author);
-        fontRendererObj.drawString("\u00A7o" + author, width + 67 + BOOK_IMAGE_WIDTH / 2 - authorWidth / 2 - 3, height + 105, 0xC19E51);
+        String author = I18n.format(Constants.EI_MODID + ".book.by", mc.player.getDisplayNameString());
+        int authorWidth = fontRenderer.getStringWidth(author);
+        fontRenderer.drawString("\u00A7o" + author, width + 67 + BOOK_IMAGE_WIDTH / 2 - authorWidth / 2 - 3, height + 105, 0xC19E51);
     }
 
     private void drawBookPagesBase(int width, int height) {
@@ -230,25 +230,25 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         int pageIncr = viewing.isEmpty() ? -2 : 0;
 
         String pageOfLeft = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 3 + pageIncr, bookTotalPages * 2 + pageIncr);
-        int pageOfLeftWidth = fontRendererObj.getStringWidth(pageOfLeft);
-        fontRendererObj.drawString(pageOfLeft, width + pageOfLeftWidth - BOOK_IMAGE_WIDTH + 54 + 67, height + 16, 0x3F3F3F);
+        int pageOfLeftWidth = fontRenderer.getStringWidth(pageOfLeft);
+        fontRenderer.drawString(pageOfLeft, width + pageOfLeftWidth - BOOK_IMAGE_WIDTH + 54 + 67, height + 16, 0x3F3F3F);
 
         String pageOfRight = I18n.format("book.pageIndicator", (currPage - 1) * 2 + 4 + pageIncr, bookTotalPages * 2 + pageIncr);
-        int pageOfRightWidth = fontRendererObj.getStringWidth(pageOfRight);
-        fontRendererObj.drawString(pageOfRight, width - pageOfRightWidth + BOOK_IMAGE_WIDTH - 44 + 67, height + 16, 0x3F3F3F);
+        int pageOfRightWidth = fontRenderer.getStringWidth(pageOfRight);
+        fontRenderer.drawString(pageOfRight, width - pageOfRightWidth + BOOK_IMAGE_WIDTH - 44 + 67, height + 16, 0x3F3F3F);
     }
 
     private void drawTitleOnTopOfScreen(int width, int height) {
         String title = book.getDisplayName();
-        int titleWidth = fontRendererObj.getStringWidth(title);
-        fontRendererObj.drawStringWithShadow(title, width + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height - 15, 0xFFFFFF);
+        int titleWidth = fontRenderer.getStringWidth(title);
+        fontRenderer.drawStringWithShadow(title, width + BOOK_IMAGE_WIDTH / 2 - titleWidth / 2 - 3, height - 15, 0xFFFFFF);
     }
 
     private void drawIndexString(int width, int height) {
         String indexString = I18n.format("esteemedinnovation.book.index");
-        int indexWidth = fontRendererObj.getStringWidth(indexString);
-        fontRendererObj.drawString("\u00A7l" + "\u00A7n" + indexString, width - 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
-        fontRendererObj.drawString("\u00A7l" + "\u00A7n" + indexString, width + 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
+        int indexWidth = fontRenderer.getStringWidth(indexString);
+        fontRenderer.drawString("\u00A7l" + "\u00A7n" + indexString, width - 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
+        fontRenderer.drawString("\u00A7l" + "\u00A7n" + indexString, width + 67 + BOOK_IMAGE_WIDTH / 2 - indexWidth / 2 - 5, height + 30, 0x3F3F3F);
     }
 
     private void populateButtonListWithCategories(boolean isRightPage, int width, int height) {
@@ -260,7 +260,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         }
         String s = I18n.format(sectionName);
         int widthOffset = isRightPage ? 67 : -67;
-        fontRendererObj.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
+        fontRenderer.drawString("\u00A7n" + s, width + 40 + widthOffset, 44 + height, 0x3F3F3F);
         if (sectionName.equals(FAKE_SECTION_IDEAS)) {
             int hintNum = 1;
             for (String hint : BookModule.ALL_UNLOCALIZED_PIECES_WITH_HINTS) {
@@ -268,27 +268,27 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                 BookPiece piece = BookPageRegistry.getFirstPieceFromName(name);
                 StringBuilder hintBuilder = new StringBuilder()
                   .append("\u2022 ");
-                if (piece != null && piece.isUnlocked(mc.thePlayer)) {
+                if (piece != null && piece.isUnlocked(mc.player)) {
                     hintBuilder.append(TextFormatting.STRIKETHROUGH);
                 }
                 hintBuilder.append(TextFormatting.ITALIC)
                   .append(I18n.format(hint + ".hint"));
 
-                List<String> splitHint = fontRendererObj.listFormattedStringToWidth(hintBuilder.toString(), 100);
+                List<String> splitHint = fontRenderer.listFormattedStringToWidth(hintBuilder.toString(), 100);
                 int i = 10 * hintNum;
                 for (String splitHintStr : splitHint) {
-                    fontRendererObj.drawString(splitHintStr, width + 50 + widthOffset, height + 44 + i, 0x3F3F3F);
+                    fontRenderer.drawString(splitHintStr, width + 50 + widthOffset, height + 44 + i, 0x3F3F3F);
                     i += 10;
                 }
                 hintNum++;
             }
         } else {
             BookSection section = BookPageRegistry.getSectionFromName(sectionName);
-            if (section != null && section.isUnlocked(mc.thePlayer)) {
+            if (section != null && section.isUnlocked(mc.player)) {
                 int offsetCounter = 0;
                 int i = 10;
                 for (BookCategory cat : section.getCategories()) {
-                    if (!cat.isUnlocked(mc.thePlayer)) {
+                    if (!cat.isUnlocked(mc.player)) {
                         continue;
                     }
                     offsetCounter++;
@@ -311,8 +311,8 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         GlStateManager.color(1, 1, 1, 1);
         int width = getWidth();
         int height = getHeight();
-        boolean prevUnicode = fontRendererObj.getUnicodeFlag();
-        fontRendererObj.setUnicodeFlag(true);
+        boolean prevUnicode = fontRenderer.getUnicodeFlag();
+        fontRenderer.setUnicodeFlag(true);
         if (isOnFrontPage()) {
             drawBookCover(width, height);
         } else {
@@ -330,12 +330,12 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                     populateButtonListWithCategories(true, width, height);
                 }
             }
-            fontRendererObj.setUnicodeFlag(prevUnicode);
+            fontRenderer.setUnicodeFlag(prevUnicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
         } else {
-            fontRendererObj.setUnicodeFlag(prevUnicode);
+            fontRenderer.setUnicodeFlag(prevUnicode);
             super.drawScreen(mouseX, mouseY, partialTicks);
-            fontRendererObj.setUnicodeFlag(true);
+            fontRenderer.setUnicodeFlag(true);
             BookCategory category = BookPageRegistry.getCategoryFromName(viewing);
             BookPage[] pages = null;
             if (category == null) {
@@ -344,38 +344,38 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                     pages = entry.getPages().toArray(new BookPage[entry.getPages().size()]);
                 }
             } else {
-                pages = category.getAllVisiblePages(mc.thePlayer);
+                pages = category.getAllVisiblePages(mc.player);
             }
             int leftPageIndex = currPage * 2;
             if (pages != null && pages.length > leftPageIndex) {
-                bookTotalPages = MathHelper.ceiling_float_int(pages.length / 2F);
+                bookTotalPages = MathHelper.ceil(pages.length / 2F);
                 GlStateManager.enableBlend();
                 BookPage leftPage = pages[leftPageIndex];
                 GlStateManager.enableBlend();
                 GlStateManager.pushMatrix();
-                leftPage.renderPage(width - 67, height, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                leftPage.renderPage(width - 67, height, fontRenderer, this, itemRender, currPage == 0, mouseX, mouseY);
                 GlStateManager.popMatrix();
                 GlStateManager.enableBlend();
                 int rightPageIndex = leftPageIndex + 1;
                 if (pages.length > rightPageIndex) {
                     BookPage rightPage = pages[rightPageIndex];
                     GlStateManager.pushMatrix();
-                    rightPage.renderPage(width + 67, height, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    rightPage.renderPage(width + 67, height, fontRenderer, this, itemRender, false, mouseX, mouseY);
                     GlStateManager.popMatrix();
 
-                    rightPage.renderPageAfter(width + 67, height, fontRendererObj, this, itemRender, false, mouseX, mouseY);
+                    rightPage.renderPageAfter(width + 67, height, fontRenderer, this, itemRender, false, mouseX, mouseY);
                 }
-                leftPage.renderPageAfter(width - 67, height, fontRendererObj, this, itemRender, currPage == 0, mouseX, mouseY);
+                leftPage.renderPageAfter(width - 67, height, fontRenderer, this, itemRender, currPage == 0, mouseX, mouseY);
                 updateButtons();
             }
-            fontRendererObj.setUnicodeFlag(prevUnicode);
+            fontRenderer.setUnicodeFlag(prevUnicode);
         }
         drawTitleOnTopOfScreen(width, height);
     }
 
     @Override
     public void renderToolTip(ItemStack stack0, int mouseX, int mouseY, boolean renderHyperlink) {
-        List<String> list = stack0.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
+        List<String> list = stack0.getTooltip(mc.player, mc.gameSettings.advancedItemTooltips);
         zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k) {
             if (k == 0) {
@@ -394,7 +394,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
 
         FontRenderer font = stack0.getItem().getFontRenderer(stack0);
         drawHoveringText(list, mouseX, mouseY);
-        drawHoveringText(list, mouseX, mouseY, (font == null ? fontRendererObj : font));
+        drawHoveringText(list, mouseX, mouseY, (font == null ? fontRenderer : font));
         zLevel = 0.0F;
     }
 
@@ -403,7 +403,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         List<String> list = new ArrayList<>();
         list.add(I18n.format(str));
         drawHoveringText(list, mouseX, mouseY);
-        drawHoveringText(list, mouseX, mouseY, fontRendererObj);
+        drawHoveringText(list, mouseX, mouseY, fontRenderer);
     }
 
     @Override
@@ -411,10 +411,10 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
          for (ItemStack stack : BookPageRegistry.bookRecipes.keySet()) {
             if (!mustReleaseMouse && stack.getItem() == itemStack.getItem() && stack.getItemDamage() == itemStack.getItemDamage()) {
                 BookEntry entry = BookPageRegistry.getEntryFromName(viewing);
-                if (entry != null && entry.isUnlocked(mc.thePlayer)) {
+                if (entry != null && entry.isUnlocked(mc.player)) {
                     viewing = BookPageRegistry.bookRecipes.get(stack).getLeft();
-                    currPage = MathHelper.floor_float(BookPageRegistry.bookRecipes.get(stack).getRight() / 2.0F);
-                    bookTotalPages = MathHelper.ceiling_float_int(entry.getPages().size() / 2F);
+                    currPage = MathHelper.floor(BookPageRegistry.bookRecipes.get(stack).getRight() / 2.0F);
+                    bookTotalPages = MathHelper.ceil(entry.getPages().size() / 2F);
                     mustReleaseMouse = true;
                     updateButtons();
                 }
@@ -436,8 +436,8 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         @Override
         public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
             if (visible) {
-                boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(xPosition, mouseX, xPosition + width) &&
-                  MathUtility.isBetweenMinInclusive(yPosition, mouseY, yPosition + height);
+                boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(x, mouseX, x + width) &&
+                  MathUtility.isBetweenMinInclusive(y, mouseY, y + height);
                 GlStateManager.color(1, 1, 1, 1);
                 minecraft.getTextureManager().bindTexture(BOOK_RIGHT_GUI_TEXTURES);
                 int k = 0;
@@ -451,7 +451,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
                     l += 13;
                 }
 
-                drawTexturedModalRect(xPosition, yPosition, k, l, 23, 13);
+                drawTexturedModalRect(x, y, k, l, 23, 13);
             }
         }
     }
@@ -471,16 +471,16 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         @Override
         public void drawButton(Minecraft mc, int mouseX, int mouseY) {
             if (visible) {
-                FontRenderer fontRenderer = mc.fontRendererObj;
+                FontRenderer fontRenderer = mc.fontRenderer;
                 GlStateManager.color(1, 1, 1, 1);
-                boolean isMouseOverBook = MathUtility.isBetweenMinInclusive(xPosition, mouseX, xPosition + width) &&
-                  MathUtility.isBetweenMinInclusive(yPosition, mouseY, yPosition + height);
+                boolean isMouseOverBook = MathUtility.isBetweenMinInclusive(x, mouseX, x + width) &&
+                  MathUtility.isBetweenMinInclusive(y, mouseY, y + height);
                 mouseDragged(mc, mouseX, mouseY);
-                boolean unicodeBeforeSet = fontRendererObj.getUnicodeFlag();
-                fontRendererObj.setUnicodeFlag(true);
-                drawCenteredStringWithoutShadow(fontRenderer, "\u2022 " + displayString, xPosition + (isMouseOverBook ? 1 : 0),
-                  yPosition + (height - 8) / 2, 0x3F3F3F);
-                fontRendererObj.setUnicodeFlag(unicodeBeforeSet);
+                boolean unicodeBeforeSet = fontRenderer.getUnicodeFlag();
+                fontRenderer.setUnicodeFlag(true);
+                drawCenteredStringWithoutShadow(fontRenderer, "\u2022 " + displayString, x + (isMouseOverBook ? 1 : 0),
+                  y + (height - 8) / 2, 0x3F3F3F);
+                fontRenderer.setUnicodeFlag(unicodeBeforeSet);
             }
         }
     }
@@ -491,7 +491,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
      * @param player The player opening the GUI.
      */
     public static void openRecipeFor(ItemStack recipeStack, EntityPlayer player) {
-        player.openGui(EsteemedInnovation.instance, 1, player.worldObj, 0, 0, 0);
+        player.openGui(EsteemedInnovation.instance, 1, player.world, 0, 0, 0);
         GuiScreen gui = Minecraft.getMinecraft().currentScreen;
         if (!(gui instanceof GuiJournal)) {
             return;

@@ -23,9 +23,9 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
 
         for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockPos offsetPos = pos.offset(dir2);
-            TileEntity tile = worldObj.getTileEntity(offsetPos);
+            TileEntity tile = world.getTileEntity(offsetPos);
             if (tile != null && tile instanceof TileEntitySteamHeater && ((TileEntitySteamHeater) tile).getSteamShare() > 2 &&
-              worldObj.getBlockState(offsetPos).getValue(BlockSteamHeater.FACING) == dir2.getOpposite()) {
+              world.getBlockState(offsetPos).getValue(BlockSteamHeater.FACING) == dir2.getOpposite()) {
                 numHeaters++;
             }
         }
@@ -43,7 +43,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
             furnaceBurnTime--;
         }
 
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (furnaceBurnTime == 0 && canSmelt()) {
                 ItemStack inSlot1 = getStackInSlot(1);
                 int currentItemBurnTime = furnaceBurnTime = getItemBurnTime(inSlot1);
@@ -55,10 +55,10 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
 
                     if (inSlot1 != null) {
                         ItemStack copy = inSlot1.copy();
-                        copy.stackSize--;
+                        copy.shrink(1);
                         setInventorySlotContents(1, copy);
 
-                        if (inSlot1.stackSize == 0) {
+                        if (inSlot1.isEmpty()) {
                             setInventorySlotContents(1, inSlot1.getItem().getContainerItem(inSlot1));
                         }
                     }
@@ -84,7 +84,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
 
             if (flag != furnaceBurnTime > 0) {
                 flag1 = true;
-                BlockFurnace.setState(furnaceBurnTime > 0, worldObj, pos);
+                BlockFurnace.setState(furnaceBurnTime > 0, world, pos);
             }
         }
 
@@ -109,7 +109,7 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
             if (!slot2.isItemEqual(output)) {
                 return false;
             }
-            int result = slot2.stackSize + output.stackSize;
+            int result = slot2.getCount() + output.getCount();
             // Forge BugFix: Make it respect stack sizes properly.
             return result <= getInventoryStackLimit() && result <= slot2.getMaxStackSize();
         }
@@ -126,13 +126,13 @@ public class TileEntitySteamFurnace extends TileEntityFurnace {
                 setInventorySlotContents(2, output.copy());
             } else if (slot2.getItem() == output.getItem()) {
                 ItemStack copy = slot2.copy();
-                copy.stackSize += output.stackSize;
+                copy.grow(output.getCount());
                 setInventorySlotContents(2, copy);
             }
 
             ItemStack copy = slot0.copy();
-            copy.stackSize--;
-            if (copy.stackSize == 0) {
+            copy.shrink(1);
+            if (copy.isEmpty()) {
                 copy = null;
             }
             setInventorySlotContents(0, copy);

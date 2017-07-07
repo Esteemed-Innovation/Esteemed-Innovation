@@ -3,10 +3,9 @@ package eiteam.esteemedinnovation.misc;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemCraftingComponent extends Item {
     public ItemCraftingComponent() {
@@ -15,7 +14,7 @@ public class ItemCraftingComponent extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> subItems) {
+    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
         for (Types component : Types.values()) {
             subItems.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
         }

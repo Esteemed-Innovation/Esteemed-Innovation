@@ -110,7 +110,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
 
         setBlockState(world, PANE_STATE, 2, 2, 0, sbb);
         //  this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 2, 2, 0, sbb);
-        func_189927_a(world, sbb, random, 4, 1, 0, getCoordBaseMode());
+        createVillageDoor(world, sbb, random, 4, 1, 0, getCoordBaseMode());
         // this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 4, 2, 0, sbb);
         setBlockState(world, PANE_STATE, 6, 2, 0, sbb);
         setBlockState(world, PANE_STATE, 6, 2, 0, sbb);
@@ -176,7 +176,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
               new ItemStack(STEAMED_CHICKEN)
             };
             ItemStack loot = possibleLoot[rand.nextInt(possibleLoot.length)];
-            loot.stackSize = rand.nextInt(3) + 1;
+            loot.setCount(rand.nextInt(3) + 1);
             furnace.setInventorySlotContents(2, loot);
         }
     }

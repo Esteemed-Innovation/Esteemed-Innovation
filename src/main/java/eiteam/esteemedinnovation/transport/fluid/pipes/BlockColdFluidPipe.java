@@ -46,8 +46,7 @@ public class BlockColdFluidPipe extends Block implements Wrenchable {
 
     private boolean isFluidTransporter(IBlockAccess world, BlockPos pos, EnumFacing dir) {
         TileEntity tile = world.getTileEntity(pos.offset(dir));
-        return tile != null && (tile.hasCapability(FLUID_HANDLER_CAPABILITY, dir) || tile instanceof IFluidHandler ||
-          tile instanceof net.minecraftforge.fluids.IFluidHandler);
+        return tile != null && (tile.hasCapability(FLUID_HANDLER_CAPABILITY, dir) || tile instanceof IFluidHandler);
     }
 
     @Override
@@ -83,7 +82,7 @@ public class BlockColdFluidPipe extends Block implements Wrenchable {
             if (tile != null && tile instanceof TileEntityColdFluidPipe) {
                 FluidStack stackF = ((TileEntityColdFluidPipe) tile).tank.getFluid();
                 // TODO: Remove this when model and textures are made.
-                player.addChatMessage(new TextComponentString(stackF == null ? "No fluid" : stackF.getLocalizedName() + "x" + stackF.amount));
+                player.sendMessage(new TextComponentString(stackF == null ? "No fluid" : stackF.getLocalizedName() + "x" + stackF.amount));
             }
             return true;
         }

@@ -46,9 +46,10 @@ public class ItemSteamCell extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack me, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack me = player.getHeldItem(hand);
         if (chargeItems(player, false)) {
-            me.stackSize--;
+            me.shrink(1);
         }
         return ActionResult.newResult(EnumActionResult.PASS, me);
     }

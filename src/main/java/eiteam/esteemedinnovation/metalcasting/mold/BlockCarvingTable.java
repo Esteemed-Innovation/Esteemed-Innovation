@@ -22,7 +22,8 @@ public class BlockCarvingTable extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack held, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack held = player.getHeldItem(hand);
         if (held != null) {
             Item heldItem = held.getItem();
             if (MoldRegistry.molds.stream().anyMatch(s -> s.getItem() == heldItem)) {

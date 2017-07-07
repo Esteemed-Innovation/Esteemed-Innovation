@@ -3,10 +3,9 @@ package eiteam.esteemedinnovation.materials.refined;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemMetalNugget extends Item {
     public ItemMetalNugget() {
@@ -15,7 +14,7 @@ public class ItemMetalNugget extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> subItems) {
+    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
         for (Types type : Types.values()) {
             subItems.add(new ItemStack(this, 1, type.getMeta()));
         }

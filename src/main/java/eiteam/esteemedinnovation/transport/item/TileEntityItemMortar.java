@@ -43,7 +43,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         hasTarget = nbt.getBoolean("hasTarget");
 
         if (nbt.hasKey("inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("inventory"));
+            inventory = new ItemStack(nbt.getCompoundTag("inventory"));
         }
     }
 
@@ -93,10 +93,10 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
 
     @Override
     public void safeUpdate() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             BlockPos thisPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
             ItemStack stackInSlotZero = getStackInSlot(0);
-            if ((stackInSlotZero != null && worldObj.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
+            if ((stackInSlotZero != null && world.canBlockSeeSky(thisPos)) || fireTicks >= 60) {
                 ItemStack stack = null;
                 if (fireTicks < 60 && stackInSlotZero != null) {
                     stack = stackInSlotZero.copy();
@@ -107,21 +107,21 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
                     }
                     fireTicks++;
                     if (fireTicks == 10) {
-                        worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
+                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
                           EsteemedInnovation.SOUND_HISS, SoundCategory.BLOCKS, Blocks.ANVIL.getSoundType().getVolume(), 0.9F, false);
                     }
                     if (fireTicks == 60 && stack != null) {
-                        worldObj.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
+                        world.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F,
                           EsteemedInnovation.SOUND_CANNON, SoundCategory.BLOCKS, 2F, 0.8F, false);
                         decrSteam(2000);
                         ItemStack stack2 = stack.copy();
-                        stack2.stackSize = 1;
-                        EntityMortarItem entityItem = new EntityMortarItem(worldObj, pos.getX() + 0.5F,
+                        stack2.setCount(1);
+                        EntityMortarItem entityItem = new EntityMortarItem(world, pos.getX() + 0.5F,
                           pos.getY() + 1.25F, pos.getZ() + 0.5F, stack2, xTarget, zTarget);
-                        worldObj.spawnEntityInWorld(entityItem);
+                        world.spawnEntity(entityItem);
                         entityItem.motionY = 1.0F;
-                        if (stack.stackSize > 1) {
-                            stack.stackSize--;
+                        if (stack.getCount() > 1) {
+                            stack.shrink(1);
                             setInventorySlotContents(0, stack);
                         } else {
                             setInventorySlotContents(0, null);
@@ -165,14 +165,14 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
         if (inventory != null) {
             ItemStack itemstack;
 
-            if (inventory.stackSize <= var2) {
+            if (inventory.getCount() <= var2) {
                 itemstack = inventory;
                 inventory = null;
                 return itemstack;
             } else {
                 itemstack = inventory.splitStack(var2);
 
-                if (inventory.stackSize == 0) {
+                if (inventory.isEmpty()) {
                     inventory = null;
                 }
 
@@ -214,7 +214,7 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return true;
     }
 
@@ -275,5 +275,11 @@ public class TileEntityItemMortar extends SteamTransporterTileEntity implements 
     @Override
     public void clear() {
         inventory = null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // TODO
+        return inventory == null;
     }
 }

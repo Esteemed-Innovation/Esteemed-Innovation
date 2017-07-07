@@ -2,7 +2,8 @@ package eiteam.esteemedinnovation.tools.standard;
 
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +20,7 @@ public class ItemGenericHoe extends ItemHoe {
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass) {
+    public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState state) {
         return harvestLevel;
     }
 

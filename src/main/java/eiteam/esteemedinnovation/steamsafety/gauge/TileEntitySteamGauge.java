@@ -17,8 +17,8 @@ public class TileEntitySteamGauge extends SteamReactorTileEntity {
 
     @Override
     public void safeUpdate() {
-        if (!worldObj.isRemote) {
-            int compOutput = getComparatorOutput(worldObj.getBlockState(pos).getValue(BlockSteamGauge.FACING));
+        if (!world.isRemote) {
+            int compOutput = getComparatorOutput(world.getBlockState(pos).getValue(BlockSteamGauge.FACING));
             if (compOutput != lastCompOutput) {
                 lastCompOutput = compOutput;
                 markForUpdate();

@@ -19,7 +19,7 @@ public class SteamToolHelper {
     public static ItemStack getHarvestLevelModifier(ItemStack me) {
         for (int i = 0; i < 10; i++) {
             if (me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(
+                ItemStack stack = new ItemStack(
                   me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();

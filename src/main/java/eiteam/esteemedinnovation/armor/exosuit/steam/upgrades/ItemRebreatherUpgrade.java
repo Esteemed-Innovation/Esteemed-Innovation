@@ -18,7 +18,7 @@ public class ItemRebreatherUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerAttacked(LivingAttackEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (event.getSource() == DamageSource.drown && ChargableUtility.hasPower(victim, Config.rebreatherConsumption)) {
+        if (event.getSource() == DamageSource.DROWN && ChargableUtility.hasPower(victim, Config.rebreatherConsumption)) {
             ChargableUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.rebreatherConsumption, victim);
             event.setCanceled(true);
         }

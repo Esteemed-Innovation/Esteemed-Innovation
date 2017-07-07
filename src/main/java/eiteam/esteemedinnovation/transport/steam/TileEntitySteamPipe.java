@@ -138,7 +138,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
     public ArrayList<EnumFacing> getMyDirections() {
         ArrayList<EnumFacing> myDirections = new ArrayList<>();
         for (EnumFacing direction : getConnectionSides()) {
-            TileEntity tile = worldObj.getTileEntity(getOffsetPos(direction));
+            TileEntity tile = world.getTileEntity(getOffsetPos(direction));
             if (tile instanceof SteamTransporter) {
                 SteamTransporter target = (SteamTransporter) tile;
                 if (target.doesConnect(direction.getOpposite())) {
@@ -163,11 +163,11 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
         while (!doesConnect(direction) || direction == myDirections.get(0)) {
             direction = EnumFacing.VALUES[(direction.ordinal() + 1) % 5];
         }
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             int i = 0;
-            IBlockState myState = worldObj.getBlockState(pos);
+            IBlockState myState = world.getBlockState(pos);
             if (canLeak(direction)) {
-                worldObj.playSound(null, pos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
+                world.playSound(null, pos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
                 if (!isLeaking) {
                     isLeaking = true;
                     markForResync(myState);
@@ -185,7 +185,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
                 i++;
             }
         } else if (isLeaking) {
-            worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
               pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
               direction.getFrontOffsetZ() * 0.1F);
         }
@@ -198,8 +198,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
      */
     public boolean canLeak(EnumFacing direction) {
         BlockPos dirPos = getOffsetPos(direction);
-        return (getSteamShare() > 0 && (worldObj.isAirBlock(dirPos) ||
-          !worldObj.isSideSolid(dirPos, direction.getOpposite())));
+        return (getSteamShare() > 0 && (world.isAirBlock(dirPos) ||
+          !world.isSideSolid(dirPos, direction.getOpposite())));
     }
 
     @Override
@@ -211,7 +211,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
     public void safeUpdate() {
         /*
         TODO: Port this.
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             boolean hasWrench = BlockSteamPipeRenderer.updateWrenchStatus();
             if (hasWrench != lastWrench && !(disguiseBlock == null || disguiseBlock == Blocks.AIR)) {
                 markDirty();
@@ -269,7 +269,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
      */
     public int canConnectSide(EnumFacing direction) {
         BlockPos pos = getOffsetPos(direction);
-        TileEntity tile = worldObj.getTileEntity(pos);
+        TileEntity tile = world.getTileEntity(pos);
         if (tile != null && tile instanceof SteamTransporter) {
             SteamTransporter target = (SteamTransporter) tile;
             if (target.doesConnect(direction.getOpposite())) {
@@ -327,7 +327,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        IBlockState actualState = worldObj.getBlockState(pos).getActualState(worldObj, pos);
+        IBlockState actualState = world.getBlockState(pos).getActualState(world, pos);
         boolean hasDown = actualState.getValue(BlockSteamPipe.DOWN);
         boolean hasUp = actualState.getValue(BlockSteamPipe.UP);
         boolean hasNorth = actualState.getValue(BlockSteamPipe.NORTH);
@@ -374,7 +374,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
             if (this.disguiseBlock != null) {
                 if (!player.capabilities.isCreativeMode) {
                     EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock, 1, disguiseMeta));
-                    world.spawnEntityInWorld(entityItem);
+                    world.spawnEntity(entityItem);
                 }
                 SoundType sound = disguiseBlock.getSoundType();
                 world.playSound((double) pos.getX() + 0.5F, (double) (pos.getY() + 0.5F),
@@ -385,7 +385,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
                 return true;
             }
         } else {
-            if (this.worldObj.isRemote) {
+            if (this.world.isRemote) {
                 RayTraceResult hit = RayTracer.retraceBlock(world, player, pos);
                 // Use ryatracer to get the subpart that was hit. The # corresponds with a forge direction.
                 if (hit == null) {
@@ -484,7 +484,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
     private void refreshNeighbors() {
         //log.debug("Refreshing neighbors");
         for (EnumFacing dir : EnumFacing.VALUES) {
-            TileEntity te = worldObj.getTileEntity(getOffsetPos(dir));
+            TileEntity te = world.getTileEntity(getOffsetPos(dir));
             if (te != null && te instanceof SteamTransporter) {
                 SteamTransporter trans = (SteamTransporter) te;
                 SteamNetwork transNetwork = trans.getNetwork();

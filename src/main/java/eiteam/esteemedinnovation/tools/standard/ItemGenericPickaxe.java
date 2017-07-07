@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.tools.standard;
 
 import com.google.common.collect.ImmutableSet;
-
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
@@ -28,7 +28,7 @@ public class ItemGenericPickaxe extends ItemPickaxe {
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass) {
+    public int getHarvestLevel(ItemStack stack, String toolClass, EntityPlayer player, IBlockState state) {
         return harvestLevel;
     }
 

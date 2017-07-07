@@ -1,10 +1,9 @@
 package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
+import eiteam.esteemedinnovation.transport.steam.BlockSteamPipe;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -69,7 +68,7 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        world.setBlockState(pos, state.withProperty(FACING, BlockPistonBase.getFacingFromEntity(pos, placer)), 2);
+        world.setBlockState(pos, state.withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)), 2);
     }
 
     @Override
@@ -89,10 +88,10 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
-        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean uselessParameter) {
+        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, uselessParameter);
         AxisAlignedBB aabb = WorldHelper.getDirectionalBoundingBox(state.getValue(FACING), HEATER_AABB, true).offset(pos);
-        if (aabb.intersectsWith(entityBox)) {
+        if (aabb.intersects(entityBox)) {
             collidingBoxes.add(aabb);
         }
     }

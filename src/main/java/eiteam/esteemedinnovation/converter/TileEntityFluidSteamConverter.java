@@ -101,14 +101,14 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
             markForResync();
         }
         lastRunning = runTicks > 0;
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
 
         setDistributionDirections(new EnumFacing[] {
           dir.getOpposite()
         });
 
         if (fluid != null && tank != null && pushing) {
-            TileEntity tileEntity = worldObj.getTileEntity(getOffsetPos(dir));
+            TileEntity tileEntity = world.getTileEntity(getOffsetPos(dir));
             if (tileEntity != null) {
                 SteamNetwork steamNetwork = getNetwork();
                 IFluidHandler handler = FluidHelper.getFluidHandler(tileEntity, dir);
@@ -157,14 +157,14 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
         return (tank != null && dir == facing && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
+        EnumFacing dir = world.getBlockState(pos).getValue(BlockFluidSteamConverter.FACING);
         if (tank != null && dir == facing && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) tank;
         }

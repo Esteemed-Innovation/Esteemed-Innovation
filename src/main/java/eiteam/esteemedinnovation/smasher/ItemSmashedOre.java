@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +34,7 @@ public class ItemSmashedOre extends Item {
         int meta = entry.getMeta();
         SmasherRegistry.registerSmashable(entry.getInputOre(), (input, world) -> {
             // Ore doubling
-            int amount = input.stackSize;
+            int amount = input.getCount();
             if (world.rand.nextInt(100) >= Config.smasherDoubleChance) {
                 amount *= 2;
             }
@@ -63,7 +64,7 @@ public class ItemSmashedOre extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
         for (Entry<Integer, String[]> entry : map.entrySet()) {
             list.add(new ItemStack(item, 1, entry.getKey()));
         }

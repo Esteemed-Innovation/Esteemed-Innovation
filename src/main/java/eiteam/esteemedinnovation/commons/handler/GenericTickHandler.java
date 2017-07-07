@@ -70,13 +70,13 @@ public class GenericTickHandler {
         wasInUse = inUse;
         Minecraft mc = Minecraft.getMinecraft();
         inUse = false;
-        if (event.side == Side.CLIENT && mc.thePlayer != null) {
+        if (event.side == Side.CLIENT && mc.player != null) {
             /*
              Prevents caching of SteamTool ItemStacks in the ItemRenderer, so that the ItemOverrideList has access to
              the new NBT added in ItemSteamTool#onUpdate.
               */
-            ItemStack mainHandStack = mc.thePlayer.getHeldItemMainhand();
-            ItemStack offHandStack = mc.thePlayer.getHeldItemOffhand();
+            ItemStack mainHandStack = mc.player.getHeldItemMainhand();
+            ItemStack offHandStack = mc.player.getHeldItemOffhand();
             if (mainHandStack != null && mainHandStack.getItem() instanceof SteamTool) {
                 try {
                     itemInMainHandField.set(mc.getItemRenderer(), mainHandStack);
@@ -96,7 +96,7 @@ public class GenericTickHandler {
             if (mc.currentScreen == null || !(mc.currentScreen instanceof GuiMerchant)) {
                 GenericEventHandler.lastViewVillagerGui = false;
             }
-            EntityPlayer player = mc.thePlayer;
+            EntityPlayer player = mc.player;
             ItemStack held = ItemStackUtility.getHeldItemStack(player);
             if (mc.gameSettings.keyBindUseItem.isKeyDown() && player.isSneaking() && held != null &&
               held.getItem() instanceof ItemBlock) {
@@ -106,8 +106,8 @@ public class GenericTickHandler {
                     // blockPos is null when objectMouseOver is not over a block (on an entity).
                     //noinspection ConstantConditions
                     if (blockPos != null) {
-                        TileEntity te = mc.theWorld.getTileEntity(blockPos);
-                        if (mc.theWorld.getBlockState(blockPos).getBlock() == BRASS_PIPE ||
+                        TileEntity te = mc.world.getTileEntity(blockPos);
+                        if (mc.world.getBlockState(blockPos).getBlock() == BRASS_PIPE ||
                           (te instanceof DisguisableBlock)) {
                             EsteemedInnovation.channel.sendToServer(new CamoPacket(blockPos));
                         }

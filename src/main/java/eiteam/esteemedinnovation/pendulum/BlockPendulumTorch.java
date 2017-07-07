@@ -44,7 +44,7 @@ public class BlockPendulumTorch extends Block {
 
 
     @Override
-    public void neighborChanged(IBlockState selfState, World world, BlockPos selfPos, Block neighbor) {
+    public void neighborChanged(IBlockState selfState, World world, BlockPos selfPos, Block neighbor, BlockPos fromPos) {
         if (world.getBlockState(selfPos.up()).getMaterial() == Material.AIR) {
             dropBlockAsItem(world, selfPos, selfState, 0);
             world.setBlockToAir(selfPos);
@@ -103,7 +103,7 @@ public class BlockPendulumTorch extends Block {
 
     @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return NULL_AABB;
     }
 

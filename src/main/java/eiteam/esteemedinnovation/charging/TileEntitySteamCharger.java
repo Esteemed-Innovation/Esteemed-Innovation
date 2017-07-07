@@ -33,7 +33,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.readFromNBT(nbt);
         randomDegrees = (int) (Math.random() * 360);
         if (nbt.hasKey("Inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Inventory"));
+            inventory = new ItemStack(nbt.getCompoundTag("Inventory"));
         }
     }
 
@@ -66,7 +66,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
         if (access.hasKey("Inventory")) {
-            inventory = ItemStack.loadItemStackFromNBT(access.getCompoundTag("Inventory"));
+            inventory = new ItemStack(access.getCompoundTag("Inventory"));
         } else {
             clear();
         }
@@ -81,9 +81,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
 
     @Override
     public void safeUpdate() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (inventory != null && isCharging) {
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
                   pos.getZ() + 0.5F, (Math.random() - 0.5F) / 12F, 0F, (Math.random() - 0.5F) / 12F);
             }
         } else {
@@ -232,8 +232,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     public void dropItem(ItemStack item) {
-        EntityItem entityItem = new EntityItem(worldObj, pos.getX() + 0.5F, pos.getY() + 1.25F, pos.getZ() + 0.5F, item);
-        worldObj.spawnEntityInWorld(entityItem);
+        EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5F, pos.getY() + 1.25F, pos.getZ() + 0.5F, item);
+        world.spawnEntity(entityItem);
     }
 
     @Override
@@ -246,14 +246,14 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         if (inventory != null) {
             ItemStack itemstack;
 
-            if (inventory.stackSize <= count) {
+            if (inventory.getCount() <= count) {
                 itemstack = inventory;
                 clear();
                 return itemstack;
             } else {
                 itemstack = inventory.splitStack(count);
 
-                if (inventory.stackSize == 0) {
+                if (inventory.isEmpty()) {
                     clear();
                 }
 
@@ -316,7 +316,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -349,6 +349,12 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     @Override
     public void clear() {
         inventory = null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        // TODO
+        return inventory == null;
     }
 
     public float getSteamInItem() {

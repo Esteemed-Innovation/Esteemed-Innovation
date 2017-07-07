@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -251,21 +250,22 @@ public class BlockSteamPipe extends BlockSteamTransporter {
         RayTraceResult rtr = event.getTarget();
         BlockPos rtrPos = rtr.getBlockPos();
         if (rtr.typeOfHit == RayTraceResult.Type.BLOCK &&
-          player.worldObj.getBlockState(rtr.getBlockPos()).getBlock() instanceof BlockSteamPipe &&
+          player.world.getBlockState(rtr.getBlockPos()).getBlock() instanceof BlockSteamPipe &&
           equipped instanceof PipeWrench) {
             PipeWrench wrench = (PipeWrench) equipped;
             if (wrench.canWrench(player, rtrPos)) {
-                RayTracer.retraceBlock(player.worldObj, player, rtrPos);
+                RayTracer.retraceBlock(player.world, player, rtrPos);
             }
         }
     }
 
     protected void superAddCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
-        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity);
+        // last param does nothing
+        super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, true);
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity) {
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean uselessParameter) {
         TileEntity tile = world.getTileEntity(pos);
         if (tile == null || !(tile instanceof TileEntitySteamPipe)) {
             return;
@@ -274,7 +274,7 @@ public class BlockSteamPipe extends BlockSteamTransporter {
         ((TileEntitySteamPipe) tile).addTraceableCuboids(cuboids);
         for (IndexedCuboid6 cuboid : cuboids) {
             AxisAlignedBB aabb = cuboid.aabb();
-            if (aabb.intersectsWith(entityBox)) {
+            if (aabb.intersects(entityBox)) {
                 collidingBoxes.add(aabb);
             }
         }
@@ -291,10 +291,11 @@ public class BlockSteamPipe extends BlockSteamTransporter {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         if (heldItem != null && heldItem.getItem() == LEVER) {
             return world.setBlockState(pos, VALVE_PIPE.getDefaultState().withProperty(BlockValvePipe.FACING, side));
         }
-        return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
     }
 }

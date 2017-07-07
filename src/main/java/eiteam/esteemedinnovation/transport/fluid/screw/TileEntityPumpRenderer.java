@@ -154,7 +154,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glRotatef(Minecraft.getMinecraft().thePlayer.ticksExisted * 10.0F, 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(Minecraft.getMinecraft().player.ticksExisted * 10.0F, 0.0F, 0.0F, 1.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
         MODEL.render();

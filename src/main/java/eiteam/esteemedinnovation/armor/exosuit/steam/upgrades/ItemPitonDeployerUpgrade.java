@@ -40,7 +40,7 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
 
                 BlockPos blockPos = new BlockPos(blockX, blockY, blockZ);
 
-                if ((Math.abs(lastX - player.posX) > 0.1F || Math.abs(lastZ - player.posZ) > 0.1F || player.isSneaking() || player.worldObj.isAirBlock(blockPos))) {
+                if ((Math.abs(lastX - player.posX) > 0.1F || Math.abs(lastZ - player.posZ) > 0.1F || player.isSneaking() || player.world.isAirBlock(blockPos))) {
                     compound.setBoolean("IsGrappled", false);
                 } else {
                     player.motionX = 0.0F;

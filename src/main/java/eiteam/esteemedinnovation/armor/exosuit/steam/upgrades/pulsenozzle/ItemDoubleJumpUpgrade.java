@@ -51,7 +51,7 @@ public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
             }
 
             Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayer player = mc.thePlayer;
+            EntityPlayer player = mc.player;
             if (mc.gameSettings.keyBindJump.isKeyDown() && !player.onGround && isInstalled(player)) {
                 EsteemedInnovation.channel.sendToServer(new DoubleJumpServerActionPacket(getSlot().getArmorPiece()));
             }

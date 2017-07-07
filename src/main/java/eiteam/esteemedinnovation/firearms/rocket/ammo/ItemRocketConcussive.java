@@ -8,6 +8,6 @@ import net.minecraft.item.Item;
 public class ItemRocketConcussive extends Item implements Rocket {
     @Override
     public EntityRocket changeBullet(EntityRocket bullet) {
-        return new EntityConcussiveRocket(bullet.worldObj, (EntityPlayer) bullet.shootingEntity, bullet.inputParam4, bullet.explosionSize);
+        return new EntityConcussiveRocket(bullet.world, (EntityPlayer) bullet.shootingEntity, bullet.inputParam4, bullet.explosionSize);
     }
 }

@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.workshop;
 
 import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
+import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -58,7 +59,7 @@ public class SteamEngineerCareer extends VillagerRegistry.VillagerCareer {
         }
 
         @Override
-        public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random) {
+        public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
             recipeList.add(new MerchantRecipe(in, out));
         }
     }

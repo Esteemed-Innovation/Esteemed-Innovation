@@ -8,6 +8,6 @@ import net.minecraft.item.Item;
 public class ItemRocketMining extends Item implements Rocket {
     @Override
     public EntityRocket changeBullet(EntityRocket bullet) {
-        return new EntityMiningRocket(bullet.worldObj, (EntityPlayer) bullet.shootingEntity, bullet.inputParam4, bullet.explosionSize);
+        return new EntityMiningRocket(bullet.world, (EntityPlayer) bullet.shootingEntity, bullet.inputParam4, bullet.explosionSize);
     }
 }

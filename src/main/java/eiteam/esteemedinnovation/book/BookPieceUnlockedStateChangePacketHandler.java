@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class BookPieceUnlockedStateChangePacketHandler implements IMessageHandler<BookPieceUnlockedStateChangePacket, IMessage> {
     @Override
     public IMessage onMessage(BookPieceUnlockedStateChangePacket message, MessageContext ctx) {
-        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
         PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
         data.setHasUnlockedBookPiece(message.getPieceChanged(), message.getNewValueForPiece());
         return null;

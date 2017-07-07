@@ -25,7 +25,7 @@ public class ItemWrench extends Item implements PipeWrench {
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
         TileEntity tile = world.getTileEntity(pos);
         EnumActionResult endResult = EnumActionResult.PASS;
         if (!world.isRemote) {
@@ -33,6 +33,7 @@ public class ItemWrench extends Item implements PipeWrench {
             Block block = state.getBlock();
             boolean doBlock = block != null && block instanceof Wrenchable;
             boolean doTile = tile != null && tile instanceof Wrenchable;
+            ItemStack stack = player.getHeldItem(hand);
             if (doBlock) {
                 boolean result = ((Wrenchable) block).onWrench(stack, player, world, pos, hand, side, state, hitX, hitY, hitZ);
                 if (result) {
@@ -52,7 +53,7 @@ public class ItemWrench extends Item implements PipeWrench {
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         return EnumActionResult.FAIL;
     }
 

@@ -36,8 +36,8 @@ public class RenderRocket extends Render {
         GL11.glTranslatef((float) x, (float) y, (float) z);
         Vec3d vec = new Vec3d(rocket.motionX, rocket.motionY, rocket.motionZ);
         vec = vec.normalize();
-        float pitch = (float) Math.asin(vec.yCoord);
-        float yaw = (float) Math.atan2(vec.xCoord, vec.zCoord);
+        float pitch = (float) Math.asin(vec.y);
+        float yaw = (float) Math.atan2(vec.x, vec.z);
         GL11.glRotatef((float) Math.toDegrees(yaw) - 90, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef((float) Math.toDegrees(pitch), 0.0F, 0.0F, 1.0F);
         Tessellator tessellator = Tessellator.getInstance();

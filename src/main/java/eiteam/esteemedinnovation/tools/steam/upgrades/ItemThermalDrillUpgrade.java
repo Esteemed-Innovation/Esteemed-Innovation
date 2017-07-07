@@ -64,7 +64,7 @@ public class ItemThermalDrillUpgrade extends ItemSteamToolUpgrade {
             Pair<Integer, BlockPos> dimCoords = entry.getKey();
             BlockPos pos = dimCoords.getRight();
             int dim = dimCoords.getLeft();
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim);
             int waitTicks = entry.getValue();
             if (lavaTicks == waitTicks) {
                 worldServer.setBlockToAir(pos);

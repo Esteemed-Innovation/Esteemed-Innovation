@@ -59,7 +59,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0.0F, -(7.0F / 32.0F), 0.0F);
             ItemStack copy = stackInSlotZero.copy();
-            copy.stackSize = 1;
+            copy.setCount(1);
             EntityItem item = new EntityItem(te.getWorld(), 0.0F, 0.0F, 0.0F, copy);
             item.hoverStart = 0.0F;
             boolean fancy = settings.fancyGraphics;
@@ -82,7 +82,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         MODEL.renderNoRotate();
         GL11.glTranslatef(0, 10 * PX, PX);
-        int ticks = getTicks(Minecraft.getMinecraft().thePlayer.ticksExisted * 5);
+        int ticks = getTicks(Minecraft.getMinecraft().player.ticksExisted * 5);
         float sin = MathHelper.sin((float) Math.toRadians(ticks - 60));
         GL11.glRotatef(40 + sin * (42.5F + 9.5F * (1 - sin)) - 52F, 1F, 0F, 0F);
         GL11.glPushMatrix();

@@ -6,11 +6,10 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemMold extends Item implements CrucibleMold {
     public ItemMold() {
@@ -30,7 +29,7 @@ public class ItemMold extends Item implements CrucibleMold {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> subItems) {
+    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
         for (Type type : Type.LOOKUP) {
             subItems.add(new ItemStack(this, 1, type.ordinal()));
         }

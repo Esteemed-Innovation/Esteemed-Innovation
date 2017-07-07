@@ -13,6 +13,7 @@ import eiteam.esteemedinnovation.commons.util.EntityHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -67,7 +68,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
             Pair<Double, Double> lastMotions = data.getLastMotions();
             if ((lastMotions.getLeft() != player.posX || lastMotions.getRight() != player.posZ) &&
               !player.onGround && isPlayerNotInWaterOrFlying(player)) {
-                player.moveEntity(player.motionX, 0, player.motionZ);
+                player.move(MoverType.SELF, player.motionX, 0, player.motionZ);
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                 if (chestStack != null) {
                     Item chestItem = chestStack.getItem();
@@ -102,7 +103,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
         }
 
         private void spawnSmoke(EntityPlayer player, double rotation) {
-            player.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+            player.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
               player.posX + 0.5 * StrictMath.sin(rotation),
               player.posY - 1F, player.posZ - 0.5 * StrictMath.cos(rotation),
               player.motionX * -0.1F, 0, player.motionZ * -0.1F);
@@ -116,8 +117,8 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
         public void emitSmokeParticles(TickEvent.ClientTickEvent event) {
             if (event.side == Side.CLIENT) {
                 Minecraft mc = Minecraft.getMinecraft();
-                EntityPlayer player = mc.thePlayer;
-                if (player != null && player.worldObj.isRemote && isInstalled(player) &&
+                EntityPlayer player = mc.player;
+                if (player != null && player.world.isRemote && isInstalled(player) &&
                   ChargableUtility.hasPower(player, 1) && isMoving(player)) {
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 90.0F));
                     spawnSmoke(player, Math.toRadians(player.renderYawOffset + 270.0F));

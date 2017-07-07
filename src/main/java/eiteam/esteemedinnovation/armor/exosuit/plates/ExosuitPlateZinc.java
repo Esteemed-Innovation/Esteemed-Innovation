@@ -28,7 +28,7 @@ public class ExosuitPlateZinc extends ExosuitPlate {
     }
 
     private static final List<DamageSource> INVALID_SOURCES = ImmutableList.of(
-      DamageSource.drown, DamageSource.outOfWorld, DamageSource.starve, DamageSource.wither);
+      DamageSource.DROWN, DamageSource.OUT_OF_WORLD, DamageSource.STARVE, DamageSource.WITHER);
 
     @Override
     public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
@@ -41,11 +41,11 @@ public class ExosuitPlateZinc extends ExosuitPlate {
             float halfOfMax = maxHealth / 2;
             if (amount >= halfOfMax || health <= halfOfMax) {
                 ItemStack zincPlates = new ItemStack(METAL_PLATE, 2, ItemMetalPlate.Types.ZINC_PLATE.getMeta());
-                World world = victim.worldObj;
+                World world = victim.world;
                 ChargableUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.zincPlateConsumption, victim);
                 UtilPlates.removePlate(armorStack);
                 EntityItem entityItem = new EntityItem(world, victim.posX, victim.posY, victim.posZ, zincPlates);
-                world.spawnEntityInWorld(entityItem);
+                world.spawnEntity(entityItem);
 //                        player.setHealth(health - (amount - 10.0F));
                 victim.setHealth(health);
                 victim.performHurtAnimation();

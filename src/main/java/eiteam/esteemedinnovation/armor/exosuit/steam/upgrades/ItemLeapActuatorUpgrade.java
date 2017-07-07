@@ -23,12 +23,12 @@ public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
         if (shiftJump || ChargableUtility.hasPower(jumper, Config.jumpBoostConsumption)) {
             if (shiftJump) {
                 Vec3d vector = jumper.getLook(0.5F);
-                double total = Math.abs(vector.zCoord + vector.xCoord);
-                double y = vector.yCoord < total ? total : vector.yCoord;
+                double total = Math.abs(vector.z + vector.x);
+                double y = vector.y < total ? total : vector.y;
 
                 jumper.motionY += (y) / 1.5F;
-                jumper.motionZ += vector.zCoord * 2;
-                jumper.motionX += vector.xCoord * 2;
+                jumper.motionZ += vector.z * 2;
+                jumper.motionX += vector.x * 2;
                 ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump, jumper);
             } else {
                 ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption, jumper);

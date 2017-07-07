@@ -61,12 +61,12 @@ public class WorldGenMinableBase extends WorldGenMinable {
             double z3 = z1 + (z2 - z1) * f1;
             double d9 = rand.nextDouble() * blockCount / 16.0D;
             double d10 = (MathHelper.sin((float) Math.PI * f1) + 1.0F) * d9 + 1.0D;
-            int minX = MathHelper.floor_double(x3 - d10 / 2.0D);
-            int minY = MathHelper.floor_double(y3 - d10 / 2.0D);
-            int minZ = MathHelper.floor_double(z3 - d10 / 2.0D);
-            int maxX = MathHelper.floor_double(x3 + d10 / 2.0D);
-            int maxY = MathHelper.floor_double(y3 + d10 / 2.0D);
-            int maxZ = MathHelper.floor_double(z3 + d10 / 2.0D);
+            int minX = MathHelper.floor(x3 - d10 / 2.0D);
+            int minY = MathHelper.floor(y3 - d10 / 2.0D);
+            int minZ = MathHelper.floor(z3 - d10 / 2.0D);
+            int maxX = MathHelper.floor(x3 + d10 / 2.0D);
+            int maxY = MathHelper.floor(y3 + d10 / 2.0D);
+            int maxZ = MathHelper.floor(z3 + d10 / 2.0D);
 
             BlockPos.MutableBlockPos posToReplace = new BlockPos.MutableBlockPos();
             for (int xBlock = minX; xBlock <= maxX; ++xBlock) {

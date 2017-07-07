@@ -70,7 +70,7 @@ public class ContainerSteamAnvil extends Container {
             }
 
             @Override
-            public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
+            public ItemStack onTake(EntityPlayer player, ItemStack stack) {
                 hammer.progress = 0;
                 hammer.setInventorySlotContents(0, null);
                 onCraftMatrixChanged(hammer);
@@ -78,8 +78,8 @@ public class ContainerSteamAnvil extends Container {
                 if (ContainerSteamAnvil.this.stackSizeToBeUsedInRepair > 0) {
                     ItemStack itemstack1 = hammer.getStackInSlot(1);
 
-                    if (itemstack1 != null && itemstack1.stackSize > ContainerSteamAnvil.this.stackSizeToBeUsedInRepair) {
-                        itemstack1.stackSize -= ContainerSteamAnvil.this.stackSizeToBeUsedInRepair;
+                    if (itemstack1 != null && itemstack1.getCount() > ContainerSteamAnvil.this.stackSizeToBeUsedInRepair) {
+                        itemstack1.shrink(ContainerSteamAnvil.this.stackSizeToBeUsedInRepair);
                         hammer.setInventorySlotContents(1, itemstack1);
                         onCraftMatrixChanged(hammer);
                     } else {
@@ -110,6 +110,7 @@ public class ContainerSteamAnvil extends Container {
                 } else if (!world.isRemote) {
                     world.playBroadcastSound(1030, pos, 0);
                 }
+                return stack;
             }
         });
         int i;
@@ -173,7 +174,7 @@ public class ContainerSteamAnvil extends Container {
                         return;
                     }
 
-                    for (l = 0; k > 0 && l < itemstack2.stackSize; ++l) {
+                    for (l = 0; k > 0 && l < itemstack2.getCount(); ++l) {
                         i1 = itemstack1.getItemDamage() - k;
                         itemstack1.setItemDamage(i1);
                         i += Math.max(1, k / 100) + map.size();
@@ -236,7 +237,7 @@ public class ContainerSteamAnvil extends Container {
                         for (Object o : map.keySet()) {
                             int j2 = ((Integer) o);
 
-                            if (j2 != i1 && !enchantment.canApplyTogether(Enchantment.getEnchantmentByID(j2))) {
+                            if (j2 != i1 && !enchantment.func_191560_c(Enchantment.getEnchantmentByID(j2))) {
                                 flag1 = false;
                                 i += i2;
                             }
@@ -282,12 +283,12 @@ public class ContainerSteamAnvil extends Container {
 
             if (StringUtils.isBlank(hammer.itemName)) {
                 if (itemstack.hasDisplayName()) {
-                    j = itemstack.isItemStackDamageable() ? 7 : itemstack.stackSize * 5;
+                    j = itemstack.isItemStackDamageable() ? 7 : itemstack.getCount() * 5;
                     i += j;
                     itemstack1.clearCustomName();
                 }
             } else if (!hammer.itemName.equals(itemstack.getDisplayName())) {
-                j = itemstack.isItemStackDamageable() ? 7 : itemstack.stackSize * 5;
+                j = itemstack.isItemStackDamageable() ? 7 : itemstack.getCount() * 5;
                 i += j;
 
                 if (itemstack.hasDisplayName()) {
@@ -389,7 +390,7 @@ public class ContainerSteamAnvil extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendProgressBarUpdate(this, 0, hammer.cost);
+        listener.sendWindowProperty(this, 0, hammer.cost);
     }
 
     @Override
@@ -435,17 +436,17 @@ public class ContainerSteamAnvil extends Container {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0) {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.stackSize == itemstack.stackSize) {
+            if (itemstack1.getCount() == itemstack.getCount()) {
                 return null;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+            slot.onTake(par1EntityPlayer, itemstack1);
         }
         onCraftMatrixChanged(hammer);
         return itemstack;

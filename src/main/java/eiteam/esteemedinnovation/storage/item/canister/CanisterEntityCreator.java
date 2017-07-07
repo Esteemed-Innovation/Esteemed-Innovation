@@ -12,15 +12,15 @@ public class CanisterEntityCreator {
         Entity entity = event.getEntity();
         if (entity instanceof EntityItem && !(entity instanceof EntityCanisterItem)) {
             EntityItem item = (EntityItem) entity;
-            ItemStack stack = item.getEntityItem();
+            ItemStack stack = item.getItem();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Canned")) {
                 if (!event.getWorld().isRemote) {
-                    EntityCanisterItem item2 = new EntityCanisterItem(item.worldObj, item.posX, item.posY, item.posZ, item);
+                    EntityCanisterItem item2 = new EntityCanisterItem(item.world, item.posX, item.posY, item.posZ, item);
                     item2.motionX = item.motionX;
                     item2.motionY = item.motionY;
                     item2.motionZ = item.motionZ;
 //                    item2.delayBeforeCanPickup = item.delayBeforeCanPickup;
-                    item.worldObj.spawnEntityInWorld(item2);
+                    item.world.spawnEntity(item2);
                 }
                 item.setDead();
             }

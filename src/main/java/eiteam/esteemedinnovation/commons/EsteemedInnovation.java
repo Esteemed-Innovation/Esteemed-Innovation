@@ -19,7 +19,6 @@ import eiteam.esteemedinnovation.commons.util.ReflectionHelper;
 import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -42,6 +41,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
@@ -184,10 +184,11 @@ public class EsteemedInnovation {
         }
 
 
+        @Nonnull
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return isToolTab ? BRASS_PICKAXE : BOOK;
+        public ItemStack getTabIconItem() {
+            return new ItemStack(isToolTab ? BRASS_PICKAXE : BOOK);
         }
 
         @Override

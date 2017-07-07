@@ -21,8 +21,8 @@ public class EnchiridionIntegration {
                 if (nbttaglist != null) {
                     for (int i = 0; i < nbttaglist.tagCount(); i++) {
                         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null &&
-                          ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
+                        if (new ItemStack(nbttagcompound1) != null &&
+                          new ItemStack(nbttagcompound1).getItem() == class1) {
                             foundBook = true;
                             break;
                         }
@@ -44,9 +44,9 @@ public class EnchiridionIntegration {
                 if (nbttaglist != null) {
                     for (int i = 0; i < nbttaglist.tagCount(); i++) {
                         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-                        if (ItemStack.loadItemStackFromNBT(nbttagcompound1) != null &&
-                          ItemStack.loadItemStackFromNBT(nbttagcompound1).getItem() == class1) {
-                            return ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                        if (new ItemStack(nbttagcompound1) != null &&
+                          new ItemStack(nbttagcompound1).getItem() == class1) {
+                            return new ItemStack(nbttagcompound1);
                         }
                     }
                 }

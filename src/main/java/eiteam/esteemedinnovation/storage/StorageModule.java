@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.storage;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
@@ -20,6 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -45,7 +47,7 @@ public class StorageModule extends ContentModule {
         KIT_BAG = setup(new ItemKitBag(), "kit_bag");
         ITEM_CANISTER = setup(new Item(), "canister");
 
-        EntityRegistry.registerModEntity(EntityCanisterItem.class, "CanisterItem", 2, EsteemedInnovation.instance, 64, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "CanisterItem"), EntityCanisterItem.class, "CanisterItem", 2, EsteemedInnovation.instance, 64, 20, true);
         registerTileEntity(TileEntitySteamTank.class, "steamTank");
         registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
     }

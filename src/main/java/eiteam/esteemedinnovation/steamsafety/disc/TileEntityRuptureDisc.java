@@ -36,25 +36,25 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity {
 
     @Override
     public void safeUpdate() {
-        IBlockState startingState = worldObj.getBlockState(pos);
+        IBlockState startingState = world.getBlockState(pos);
         EnumFacing dir = startingState.getValue(BlockRuptureDisc.FACING);
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (isLeaking) {
                 float offset = 10.0F / 16.0F;
                 float xOffset = dir.getOpposite().getFrontOffsetX() * offset;
                 float yOffset = dir.getOpposite().getFrontOffsetY() * offset;
                 float zOffset = dir.getOpposite().getFrontOffsetZ() * offset;
-                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F + xOffset,
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F + xOffset,
                   pos.getY() + 0.5F + yOffset, pos.getZ() + 0.5F + zOffset, dir.getFrontOffsetX() * 0.1F,
                   dir.getFrontOffsetY() * 0.1F, dir.getFrontOffsetZ() * 0.1F);
             }
         } else {
             if (getPressure(dir) > 1.1F && !startingState.getValue(BlockRuptureDisc.IS_BURST)) {
-                worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
-                worldObj.setBlockState(pos, startingState.withProperty(BlockRuptureDisc.IS_BURST, true));
+                world.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 0.0F, true);
+                world.setBlockState(pos, startingState.withProperty(BlockRuptureDisc.IS_BURST, true));
             }
             // We may or may not change the state up there^
-            startingState = worldObj.getBlockState(pos);
+            startingState = world.getBlockState(pos);
             if (startingState.getValue(BlockRuptureDisc.IS_BURST)) {
                 int i = 0;
                 if (getSteam(dir) > 0) {
@@ -64,7 +64,7 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity {
                         markDirty();
                     }
 
-                    worldObj.playSound(null, pos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
+                    world.playSound(null, pos, EsteemedInnovation.SOUND_LEAK, SoundCategory.BLOCKS, 2F, 0.9F);
                 } else {
                     if (isLeaking) {
                         isLeaking = false;

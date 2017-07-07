@@ -109,7 +109,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (armor.hasTagCompound()) {
             if (armor.getTagCompound().hasKey("Plate")) {
                 ExosuitPlate plate = UtilPlates.getPlate(armor.getTagCompound().getString("Plate"));
-                return plate.getDamageReductionAmount(armorType, DamageSource.generic);
+                return plate.getDamageReductionAmount(armorType, DamageSource.GENERIC);
             }
         }
         return ItemArmor.ArmorMaterial.LEATHER.getDamageReductionAmount(armorType);
@@ -172,7 +172,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                 me.setTagCompound(new NBTTagCompound());
             }
             ItemStack clone = getStackInSlot(me, 1).copy();
-            clone.stackSize = 1;
+            clone.setCount(1);
             if (UtilPlates.getPlate(clone) != null) {
                 me.getTagCompound().setString("Plate", UtilPlates.getPlate(clone).getIdentifier());
                 return true;
@@ -194,7 +194,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (me != null && check != null && me.hasTagCompound() && me.getTagCompound().hasKey("Upgrades")) {
             for (int i = 1; i < 10; i++) {
                 if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
+                    ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
                     if (stack.getItem() == check) {
                         return true;
                     }
@@ -209,7 +209,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (me.hasTagCompound()) {
             if (me.getTagCompound().hasKey("Upgrades")) {
                 if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(var1))) {
-                    return ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(var1)));
+                    return new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(var1)));
                 }
             }
         }
@@ -251,7 +251,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
         if (getStackInSlot(me, var1) != null) {
             ItemStack itemstack;
-            if (getStackInSlot(me, var1).stackSize <= var2) {
+            if (getStackInSlot(me, var1).getCount() <= var2) {
                 itemstack = getStackInSlot(me, var1);
                 setInventorySlotContents(me, var1, null);
                 hasPlates(me);
@@ -261,7 +261,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                 itemstack = stack2.splitStack(var2);
                 setInventorySlotContents(me, var1, stack2);
 
-                if (getStackInSlot(me, var1).stackSize == 0) {
+                if (getStackInSlot(me, var1).isEmpty()) {
                     setInventorySlotContents(me, var1, null);
                 }
                 hasPlates(me);
@@ -276,7 +276,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
         if (slotNum == 0) {
             ItemStack clone = upgrade.copy();
-            clone.stackSize = 1;
+            clone.setCount(1);
             return UtilPlates.getPlate(clone) != null;
         }
         if (upgrade.getItem() instanceof ExosuitUpgrade) {
@@ -352,7 +352,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         for (int i = 1; i < 10; i++) {
             String s = Integer.toString(i);
             if (inv.hasKey(s)) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(inv.getCompoundTag(s));
+                ItemStack stack = new ItemStack(inv.getCompoundTag(s));
                 if (stack != null && stack.getItem() != null && stack.getItem() instanceof ExosuitTank) {
                     return true;
                 }
@@ -369,7 +369,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             if (me.getTagCompound().hasKey("Upgrades")) {
                 for (int i = 2; i < 10; i++) {
                     if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
-                        ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
+                        ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
                         if (stack.getItem() instanceof ExosuitUpgrade) {
                             upgrades.add((ExosuitUpgrade) stack.getItem());
                         }
@@ -519,13 +519,13 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             if (me.getTagCompound().hasKey("Upgrades")) {
                 for (int i = 3; i < 10; i++) {
                     if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
-                        ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
+                        ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
                         list.add(TextFormatting.RED + stack.getDisplayName());
                     }
                 }
             }
             if (me.getTagCompound().getCompoundTag("Upgrades").hasKey("2")) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag("2"));
+                ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag("2"));
                 // TODO: Abstract into API
                 if (stack.getItem() == ArmorModule.ENDER_SHROUD) {
                     list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));

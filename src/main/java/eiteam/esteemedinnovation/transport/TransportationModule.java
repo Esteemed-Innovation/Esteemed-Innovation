@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.transport;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.commons.Config;
@@ -20,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -65,7 +67,7 @@ public class TransportationModule extends ContentModule {
 
         channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
 
-        EntityRegistry.registerModEntity(EntityMortarItem.class, "MortarItem", 1, instance, 64, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "MortarItem"), EntityMortarItem.class, "MortarItem", 1, instance, 64, 20, true);
 
         registerTileEntity(TileEntitySteamPipe.class, "brass_pipe");
         registerTileEntity(TileEntityColdFluidPipe.class, "copper_pipe");

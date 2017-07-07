@@ -19,7 +19,7 @@ public class ItemFallAssistUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
-        if (event.getSource() == DamageSource.fall) {
+        if (event.getSource() == DamageSource.FALL) {
             boolean hasPower = ChargableUtility.hasPower(event.getEntityLiving(), (int) (event.getAmount() / Config.fallAssistDivisor));
             if (hasPower) {
                 if (event.getAmount() <= 6.0F) {

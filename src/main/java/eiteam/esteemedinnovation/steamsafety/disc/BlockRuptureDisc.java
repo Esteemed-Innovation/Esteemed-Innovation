@@ -86,8 +86,8 @@ public class BlockRuptureDisc extends Block {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return super.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, meta, placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer)
             .withProperty(IS_BURST, meta == 1)
             .withProperty(FACING, facing);
     }
@@ -103,7 +103,7 @@ public class BlockRuptureDisc extends Block {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World world, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         return null;
     }
 
@@ -113,11 +113,12 @@ public class BlockRuptureDisc extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        ItemStack heldItem = player.getHeldItem(hand);
         if (state.getValue(IS_BURST) && heldItem != null && ItemStackUtility.isItemOreDictedAs(heldItem, OreDictEntries.PLATE_THIN_ZINC)) {
             state.cycleProperty(IS_BURST);
             if (!player.capabilities.isCreativeMode) {
-                heldItem.stackSize -= 1;
+                heldItem.shrink(1);
             }
             return true;
         }

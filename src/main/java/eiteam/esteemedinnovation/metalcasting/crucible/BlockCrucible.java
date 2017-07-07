@@ -137,10 +137,10 @@ public class BlockCrucible extends Block implements Wrenchable {
             EntityItem item = (EntityItem) entity;
             if (isCrucibleHeated(world, pos)) {
                 Pair<CrucibleLiquid, Integer> output;
-                if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()))) {
-                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getEntityItem().getItem(), item.getEntityItem().getItemDamage()));
-                } else if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getEntityItem().getItem(), -1))) {
-                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getEntityItem().getItem(), -1));
+                if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getItem().getItem(), item.getItem().getItemDamage()))) {
+                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getItem().getItem(), item.getItem().getItemDamage()));
+                } else if (CrucibleRegistry.liquidRecipes.containsKey(Pair.of(item.getItem().getItem(), -1))) {
+                    output = CrucibleRegistry.liquidRecipes.get(Pair.of(item.getItem().getItem(), -1));
 
                 } else {
                     return;
@@ -153,16 +153,16 @@ public class BlockCrucible extends Block implements Wrenchable {
 //                    if (item.delayBeforeCanPickup > 2){
 //                        item.delayBeforeCanPickup = 2;
 //                    } else if (item.delayBeforeCanPickup <= 1) {
-                        ItemStack stack = item.getEntityItem();
+                        ItemStack stack = item.getItem();
                         ItemStack out = crucible.fillWith(stack, amount, output);
                         if (crucible.getFill() + amount <= 90) {
 //                            item.delayBeforeCanPickup = 2;
                         }
 
-                        if (out.stackSize <= 0) {
+                        if (out.getCount() <= 0) {
                             entity.setDead();
                         } else {
-                            item.setEntityItemStack(out);
+                            item.setItem(out);
                         }
                         crucible.needsUpdate = true;
 //                    }
@@ -187,11 +187,12 @@ public class BlockCrucible extends Block implements Wrenchable {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         TileEntityCrucible tile = (TileEntityCrucible) world.getTileEntity(pos);
         if (tile == null) {
             return false;
         }
+        ItemStack heldItem = player.getHeldItem(hand);
         if (!player.isSneaking() && heldItem == null) {
             if (!tile.isTipping()) {
                 tile.setTipping();
@@ -222,7 +223,7 @@ public class BlockCrucible extends Block implements Wrenchable {
                         tile.number.remove(liquid);
                         tile.number.put(liquid, currNum);
                         if (!player.inventory.addItemStackToInventory(result)) {
-                            if (!player.worldObj.isRemote) {
+                            if (!player.world.isRemote) {
                                 player.entityDropItem(result, 0.0F);
                             }
                         }

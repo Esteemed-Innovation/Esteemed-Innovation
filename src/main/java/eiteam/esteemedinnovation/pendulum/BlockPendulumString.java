@@ -21,7 +21,7 @@ public class BlockPendulumString extends Block {
     }
 
     @Override
-    public void neighborChanged(IBlockState self, World world, BlockPos selfPos, Block neighborBlock) {
+    public void neighborChanged(IBlockState self, World world, BlockPos selfPos, Block neighborBlock, BlockPos fromPos) {
         if (canSelfBeRemoved(world, selfPos, EnumFacing.UP) || canSelfBeRemoved(world, selfPos, EnumFacing.DOWN)) {
             world.setBlockToAir(selfPos);
         }
@@ -40,7 +40,7 @@ public class BlockPendulumString extends Block {
 
     @Nullable
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
         return NULL_AABB;
     }
 

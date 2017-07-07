@@ -45,7 +45,7 @@ public class ItemCalamityInjectorUpgrade extends ItemSteamToolUpgrade {
         EntityPlayer player = event.getPlayer();
         BlockPos pos = event.getPos();
         SteamChargable drill = (SteamChargable) toolStack.getItem();
-        World world = player.worldObj;
+        World world = player.world;
         Random rand = world.rand;
         drill.addSteam(toolStack, -(2 * drill.steamPerDurability()), player);
         if (world.getDifficulty() == EnumDifficulty.HARD && rand.nextInt(100) < 15) {
@@ -55,7 +55,7 @@ public class ItemCalamityInjectorUpgrade extends ItemSteamToolUpgrade {
         int min = 0;
         int constant = 0;
         boolean useConstant = false;
-        switch (player.worldObj.getDifficulty()) {
+        switch (player.world.getDifficulty()) {
             case HARD: {
                 max = HARD_CHARGE_CAP;
                 min = HARD_CHARGE_MIN;
@@ -102,7 +102,7 @@ public class ItemCalamityInjectorUpgrade extends ItemSteamToolUpgrade {
             BlockPos pos = playerCoords.getRight();
             EntityPlayer player = playerCoords.getLeft();
             int dim = player.dimension;
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim);
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim);
             int waitTicks = entry.getValue();
             if (chargeTicks >= waitTicks) {
                 // Strength is half the size of a TNT explosion.

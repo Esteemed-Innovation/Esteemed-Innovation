@@ -51,7 +51,7 @@ public class ItemAcousticDampenerUpgrade extends ItemSteamExosuitUpgrade {
                 float x = event.getSound().getXPosF();
                 float y = event.getSound().getYPosF();
                 float z = event.getSound().getZPosF();
-                List<EntityLivingBase> entities = Minecraft.getMinecraft().thePlayer.worldObj.getEntitiesWithinAABB(
+                List<EntityLivingBase> entities = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(
                   EntityLivingBase.class, new AxisAlignedBB(x - 0.5F, y - 0.5F, z - 0.5F, x + 0.5F, y + 0.5F, z + 0.5F));
                 for (EntityLivingBase entity : entities) {
                     if (isInstalled(entity)) {
@@ -68,7 +68,7 @@ public class ItemAcousticDampenerUpgrade extends ItemSteamExosuitUpgrade {
 
             IAttributeInstance iattributeinstance = entity.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
             double d0 = (iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue()) / 1.5D;
-            List<Entity> list = entity.worldObj.getEntitiesWithinAABB(Entity.class,
+            List<Entity> list = entity.world.getEntitiesWithinAABB(Entity.class,
               entity.getEntityBoundingBox().expand(d0, 4.0D, d0));
             boolean foundPlayer = false;
             for (Entity mob : list) {

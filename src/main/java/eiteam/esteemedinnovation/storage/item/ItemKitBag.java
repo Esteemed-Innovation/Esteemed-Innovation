@@ -32,7 +32,7 @@ public class ItemKitBag extends Item {
             if (GuiScreen.isShiftKeyDown()) {
                 NBTTagList list = stack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < list.tagCount(); i++) {
-                    String unloc = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i)).getUnlocalizedName();
+                    String unloc = new ItemStack(list.getCompoundTagAt(i)).getUnlocalizedName();
                     tooltip.add(I18n.format(unloc + ".name"));
                 }
             } else {
@@ -42,8 +42,9 @@ public class ItemKitBag extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if (!world.isRemote) {
+            ItemStack itemStack = player.getHeldItem(hand);
             if (isEmpty(itemStack)) {
                 populate(itemStack, player.inventory);
             } else {
@@ -52,7 +53,7 @@ public class ItemKitBag extends Item {
 
             return ActionResult.newResult(EnumActionResult.SUCCESS, itemStack);
         }
-        return super.onItemRightClick(itemStack, world, player, hand);
+        return super.onItemRightClick(world, player, hand);
     }
 
     /**
@@ -99,7 +100,7 @@ public class ItemKitBag extends Item {
         NBTTagList list = itemStack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND).copy();
         NBTTagList remainingItems = new NBTTagList();
         for (int i = 0; i < list.tagCount(); i++) {
-            ItemStack containedStack = ItemStack.loadItemStackFromNBT(list.getCompoundTagAt(i));
+            ItemStack containedStack = new ItemStack(list.getCompoundTagAt(i));
             int emptySlotID = inventory.getFirstEmptyStack();
             // loadItemStackFromNBT can in fact return null.
             //noinspection ConstantConditions

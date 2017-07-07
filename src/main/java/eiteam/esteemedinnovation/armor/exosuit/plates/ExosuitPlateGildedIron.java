@@ -24,6 +24,6 @@ public class ExosuitPlateGildedIron extends ExosuitPlate {
 
     @Override
     public void onPlayerPickupXP(PlayerPickupXpEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
-        event.getOrb().xpValue = MathHelper.ceiling_float_int(event.getOrb().xpValue * 1.125F);
+        event.getOrb().xpValue = MathHelper.ceil(event.getOrb().xpValue * 1.125F);
     }
 }

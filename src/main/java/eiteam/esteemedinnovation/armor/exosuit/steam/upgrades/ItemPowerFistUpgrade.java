@@ -26,15 +26,15 @@ public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
         ItemStack stack = attacker.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         if (hasPower && attacker.getHeldItemMainhand() == null) {
             Entity victim = event.getEntity();
-            World world = victim.worldObj;
+            World world = victim.world;
             world.playSound(victim.posX, victim.posY, victim.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,
               SoundCategory.PLAYERS, 4F, (1F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F) * 0.7F, false);
             Vec3d normalizedLookVec = attacker.getLookVec().normalize();
-            victim.motionX += 3.0F * normalizedLookVec.xCoord;
-            victim.motionY += (normalizedLookVec.yCoord > 0.0F ? 2.0F * normalizedLookVec.yCoord : 0.0F) + 1.5F;
-            victim.motionZ += 3.0F * normalizedLookVec.zCoord;
-            victim.motionX += -0.5F * normalizedLookVec.xCoord;
-            victim.motionZ += -0.5F * normalizedLookVec.zCoord;
+            victim.motionX += 3.0F * normalizedLookVec.x;
+            victim.motionY += (normalizedLookVec.y > 0.0F ? 2.0F * normalizedLookVec.y : 0.0F) + 1.5F;
+            victim.motionZ += 3.0F * normalizedLookVec.z;
+            victim.motionX += -0.5F * normalizedLookVec.x;
+            victim.motionZ += -0.5F * normalizedLookVec.z;
             ChargableUtility.drainSteam(stack, Config.powerFistConsumption, attacker);
         }
     }

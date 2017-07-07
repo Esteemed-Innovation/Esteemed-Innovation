@@ -54,8 +54,8 @@ public class ItemFrequencyShifterUpgrade extends ItemSteamExosuitUpgrade {
         @SideOnly(Side.CLIENT)
         public void ignoreChatMessage(ClientChatReceivedEvent event) {
             Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayer player = mc.thePlayer;
-            World world = mc.theWorld;
+            EntityPlayer player = mc.player;
+            World world = mc.world;
             String message = event.getMessage().getUnformattedText();
             Matcher matcher = Pattern.compile("<(.+?)>").matcher(message);
             if (matcher.find()) {

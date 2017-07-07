@@ -79,7 +79,7 @@ public class MetalcastingHutComponent extends StructureVillagePieces.Village {
         fillWithBlocks(world, sbb, 1, 0, 0, 5, 3, 0, CLAY_STATE, CLAY_STATE, false);
         setBlockState(world, AIR_STATE, 4, 0, 1, sbb);
         setBlockState(world, AIR_STATE, 4, 1, 1, sbb);
-        func_189927_a(world, sbb, rand, 3, 0, 0, dir);
+        createVillageDoor(world, sbb, rand, 3, 0, 0, dir);
         setBlockState(world, BUTTON_STATE.withRotation(Rotation.CLOCKWISE_180), 1, 2, -1, sbb);
         setBlockState(world, BUTTON_STATE.withRotation(Rotation.CLOCKWISE_180), 3, 2, -1, sbb);
         setBlockState(world, BUTTON_STATE.withRotation(Rotation.CLOCKWISE_180), 5, 2, -1, sbb);

@@ -128,20 +128,20 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         if (this.getFill() == targetFill) {
             hasUpdated = true;
         }
-        IBlockState state = worldObj.getBlockState(pos);
+        IBlockState state = world.getBlockState(pos);
         EnumFacing myDir = state.getValue(BlockCrucible.FACING);
 
-        if (worldObj.isBlockIndirectlyGettingPowered(pos) > 0) {
+        if (world.isBlockIndirectlyGettingPowered(pos) > 0) {
             isPowered = true;
         }
         if (tipping || isPowered) {
             tipTicks++;
-            if (tipTicks == 45 && !worldObj.isRemote) {
+            if (tipTicks == 45 && !world.isRemote) {
                 int posX = pos.getX() + myDir.getFrontOffsetX();
                 int posY = pos.getY();
                 int posZ = pos.getZ() + myDir.getFrontOffsetZ();
                 BlockPos offsetPos = new BlockPos(posX, posY, posZ);
-                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile != null && tile instanceof TileEntityMold) {
                     TileEntityMold mold = (TileEntityMold) tile;
                     if (mold.canPour() && contents.size() > 0) {
@@ -149,7 +149,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
                         CrucibleMold crucibleMold = (CrucibleMold) moldStack.getItem();
                         CrucibleLiquid liquid = getNextLiquid(crucibleMold, moldStack);
                         if (liquid != null) {
-                            if (!worldObj.isRemote) {
+                            if (!world.isRemote) {
                                 mold.pour(liquid);
                             }
                             int currNum = number.get(liquid);
@@ -229,7 +229,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
 
     public ItemStack fillWith(ItemStack stack, int amount, Pair<CrucibleLiquid, Integer> output) {
         int fill = getFill();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (fill + amount <= 90 && hasUpdated) {
                 CrucibleLiquid fluid = output.getLeft();
                 if (!contents.contains(fluid)) {
@@ -240,7 +240,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
                 currAmount += amount;
                 number.remove(fluid);
                 number.put(fluid, currAmount);
-                stack.stackSize--;
+                stack.shrink(1);
                 hasUpdated = false;
                 targetFill = fill + amount;
                 needsUpdate = true;

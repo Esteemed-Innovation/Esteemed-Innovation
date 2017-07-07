@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.firearms;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.enhancement.Enhancement;
 import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
@@ -102,7 +103,7 @@ public class FirearmModule extends ContentModule {
         EXTENDED_MAGAZINE = setup(new ItemEnhancementAmmo(), "enhancement_ammo");
         EnhancementRegistry.registerEnhancement((Enhancement) EXTENDED_MAGAZINE);
 
-        EntityRegistry.registerModEntity(EntityRocket.class, "Rocket", 3, EsteemedInnovation.instance, 64, 20, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "Rocket"), EntityRocket.class, "Rocket", 3, EsteemedInnovation.instance, 64, 20, true);
     }
 
     @Override

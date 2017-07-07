@@ -103,8 +103,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     @Override
     public void initialUpdate() {
         super.initialUpdate();
-        powered = worldObj.isBlockPowered(pos);
-        EnumFacing myDir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
+        powered = world.isBlockPowered(pos);
+        EnumFacing myDir = world.getBlockState(pos).getValue(BlockVacuum.FACING);
         setValidDistributionDirectionsExcluding(myDir, myDir.getOpposite());
     }
 
@@ -114,7 +114,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             markForResync();
         }
         lastSteam = getSteamShare() > VACUUM_STEAM_CONSUMPTION;
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if ((getSteamShare() < VACUUM_STEAM_CONSUMPTION) || powered) {
                 active = false;
             } else {
@@ -123,10 +123,10 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             }
         }
         if (active) {
-            if (worldObj.isRemote) {
+            if (world.isRemote) {
                 rotateTicks++;
             }
-            EnumFacing dir = worldObj.getBlockState(pos).getValue(BlockVacuum.FACING);
+            EnumFacing dir = world.getBlockState(pos).getValue(BlockVacuum.FACING);
             float[] M = {
               pos.getX() + 0.5F,
               pos.getY() + 0.5F,
@@ -137,22 +137,22 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
               pos.getY() + 0.5F + range * dir.getFrontOffsetY(),
               pos.getZ() + 0.5F + range * dir.getFrontOffsetZ()
             };
-            //List entities = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
-            List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class,
+            //List entities = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class,
               new AxisAlignedBB(pos.getX() - 20, pos.getY() - 20, pos.getZ() - 20, pos.getX() + 20, pos.getY() + 20, pos.getZ() + 20));
             for (int i = 0; i < 200; i++) {
                 float[] X = {
-                  (worldObj.rand.nextFloat() * 40.0F) - 20.0F + pos.getX(),
-                  (worldObj.rand.nextFloat() * 40.0F) - 20.0F + pos.getY(),
-                  (worldObj.rand.nextFloat() * 40.0F) - 20.0F + pos.getZ()
+                  (world.rand.nextFloat() * 40.0F) - 20.0F + pos.getX(),
+                  (world.rand.nextFloat() * 40.0F) - 20.0F + pos.getY(),
+                  (world.rand.nextFloat() * 40.0F) - 20.0F + pos.getZ()
                 };
-                if (isLyingInCone(X, M, N, THETA) && worldObj.rayTraceBlocks(new Vec3d(X[0], X[1], X[2]),
+                if (isLyingInCone(X, M, N, THETA) && world.rayTraceBlocks(new Vec3d(X[0], X[1], X[2]),
                   new Vec3d(pos.getX() + 0.5F + dir.getFrontOffsetX(), pos.getY() + 0.5F + dir.getFrontOffsetY(),
                   pos.getZ() + 0.5F + dir.getFrontOffsetZ())) == null) {
                     Vec3d vec = new Vec3d(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
                     vec = vec.normalize();
-                    worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, X[0], X[1], X[2], -vec.xCoord * 0.5F,
-                      -vec.yCoord * 0.5F, -vec.zCoord * 0.5F);
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, X[0], X[1], X[2], -vec.x * 0.5F,
+                      -vec.y * 0.5F, -vec.z * 0.5F);
                 }
             }
 
@@ -163,7 +163,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
                   (float) entity.posZ
                 };
 
-                if (isLyingInCone(X, M, N, THETA) && worldObj.rayTraceBlocks(
+                if (isLyingInCone(X, M, N, THETA) && world.rayTraceBlocks(
                   new Vec3d(entity.posX, entity.posY, entity.posZ),
                   new Vec3d(pos.getX() + 0.5F + dir.getFrontOffsetX(), pos.getY() + 0.5F + dir.getFrontOffsetY(),
                   pos.getZ() + 0.5F + dir.getFrontOffsetZ())) == null) {
@@ -171,9 +171,9 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
                       ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                         Vec3d vec = new Vec3d(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
                         vec = vec.normalize();
-                        double y = vec.yCoord;
-                        double x = vec.xCoord;
-                        double z = vec.zCoord;
+                        double y = vec.y;
+                        double x = vec.x;
+                        double z = vec.z;
                         y *= 1;
                         if (entity.isSneaking()) {
                             x *= 0.25F;
@@ -189,7 +189,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
                 }
             }
 
-            List<EntityItem> list = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(
+            List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(
               pos.getX() + dir.getFrontOffsetX() * 0.25F, pos.getY() + dir.getFrontOffsetY() * 0.25F,
               pos.getZ() + dir.getFrontOffsetZ() * 0.25F, pos.getX() + 1.0D + dir.getFrontOffsetX() * 0.25F,
               pos.getY() + 1.0D + dir.getFrontOffsetY() * 0.25F, pos.getZ() + 1.0D + dir.getFrontOffsetZ() * 0.25F));
@@ -198,7 +198,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             if (!list.isEmpty()) {
                 EntityItem item = list.get(0);
                 BlockPos offsetPos = pos.offset(dir, -1);
-                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile instanceof ISidedInventory) {
                     ISidedInventory inv = (ISidedInventory) tile;
                     int[] access = inv.getSlotsForFace(dir.getOpposite());
@@ -233,27 +233,27 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
         ItemStack stackInSlot = inv.getStackInSlot(slot);
         if (inv.getStackInSlot(slot) != null) {
             checkStack1 = stackInSlot.copy();
-            checkStack1.stackSize = 1;
-            checkStack2 = item.getEntityItem().copy();
-            checkStack2.stackSize = 1;
+            checkStack1.setCount(1);
+            checkStack2 = item.getItem().copy();
+            checkStack2.setCount(1);
         }
         if ((stackInSlot == null || (ItemStack.areItemStacksEqual(checkStack1, checkStack2) &&
-          stackInSlot.stackSize < stackInSlot.getMaxStackSize())) &&
-          inv.isItemValidForSlot(slot, item.getEntityItem())) {
-            ItemStack stack = item.getEntityItem().copy();
+          stackInSlot.getCount() < stackInSlot.getMaxStackSize())) &&
+          inv.isItemValidForSlot(slot, item.getItem())) {
+            ItemStack stack = item.getItem().copy();
             boolean setDead = true;
             if (inv.getStackInSlot(slot) != null) {
-                if ((stackInSlot.stackSize + stack.stackSize) > stack.getMaxStackSize() &&
+                if ((stackInSlot.getCount() + stack.getCount()) > stack.getMaxStackSize() &&
                   checkStack2 != null) {
                     setDead = false;
-                    int total = stackInSlot.stackSize + stack.stackSize;
-                    stack.stackSize = stack.getMaxStackSize();
+                    int total = stackInSlot.getCount() + stack.getCount();
+                    stack.setCount(stack.getMaxStackSize());
                     total -= stack.getMaxStackSize();
-                    checkStack2.stackSize = total;
-                    item.setEntityItemStack(checkStack2);
+                    checkStack2.setCount(total);
+                    item.setItem(checkStack2);
                     //item.getEntityItem().stackSize = (inv.getStackInSlot(slot).stackSize + stack.stackSize - stack.getMaxStackSize());
                 } else {
-                    stack.stackSize = stackInSlot.stackSize + item.getEntityItem().stackSize;
+                    stack.setCount(stackInSlot.getCount() + item.getItem().getCount());
                 }
             }
             inv.setInventorySlotContents(slot, stack);
@@ -336,15 +336,15 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     @Override
     public void dropItems(SteamTransporterTileEntity thumper, List<ItemStack> drops, IBlockState state, Collection<ThumperAdjacentBehaviorModifier> allBehaviorModifiers, EnumFacing directionIn) {
         BlockPos offsetPos = pos.offset(directionIn);
-        TileEntity invTile = worldObj.getTileEntity(offsetPos);
+        TileEntity invTile = world.getTileEntity(offsetPos);
         // This will never happen because of isValidBehaviorModifier, but it won't compile without it :(
         if (!(invTile instanceof IInventory)) {
             return;
         }
         Collection<ItemStack> newDrops = new ArrayList<>();
         for (ItemStack drop : drops) {
-            ItemStack remaining = TileEntityHopper.putStackInInventoryAllSlots((IInventory) invTile, drop, directionIn);
-            if (remaining != null && remaining.stackSize > 0) {
+            ItemStack remaining = TileEntityHopper.putStackInInventoryAllSlots(null, (IInventory) invTile, drop, directionIn);
+            if (remaining != null && !remaining.isEmpty()) {
                 newDrops.add(remaining);
             }
         }
@@ -355,7 +355,7 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
     @Override
     public boolean isValidBehaviorModifier(SteamTransporterTileEntity thumper, EnumFacing directionIn) {
         BlockPos offsetPos = pos.offset(directionIn);
-        TileEntity tile = worldObj.getTileEntity(offsetPos);
+        TileEntity tile = world.getTileEntity(offsetPos);
         return tile instanceof IInventory;
     }
 }

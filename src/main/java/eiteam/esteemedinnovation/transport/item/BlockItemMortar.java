@@ -31,12 +31,13 @@ public class BlockItemMortar extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntityItemMortar tile = (TileEntityItemMortar) world.getTileEntity(pos);
         if (tile == null) {
             return false;
         }
 
+        ItemStack heldItem = player.getHeldItem(hand);
         if (heldItem != null && heldItem.getItem() == ASTROLABE &&
           heldItem.hasTagCompound() && heldItem.getTagCompound().hasKey("targetX") &&
           world.provider.getDimension() == heldItem.getTagCompound().getInteger("dim")) {

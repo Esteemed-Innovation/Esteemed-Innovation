@@ -22,8 +22,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> {
     @Override
     public IMessage onMessage(CamoPacket message, MessageContext context) {
-        EntityPlayerMP player = context.getServerHandler().playerEntity;
-        World world = player.worldObj;
+        EntityPlayerMP player = context.getServerHandler().player;
+        World world = player.world;
         int x = message.blockX;
         int y = message.blockY;
         int z = message.blockZ;
@@ -52,13 +52,13 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
                       !pipe.disguiseBlock.isAir(state, world, pos)) {
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, new ItemStack(pipe.disguiseBlock, 1, pipe.disguiseMeta));
-                        world.spawnEntityInWorld(entityItem);
+                        world.spawnEntity(entityItem);
                         pipe.disguiseBlock = null;
                     }
 
                     pipe.disguiseBlock = block;
                     if (!player.capabilities.isCreativeMode) {
-                        player.inventory.getCurrentItem().stackSize--;
+                        player.inventory.getCurrentItem().shrink(1);
                         player.inventoryContainer.detectAndSendChanges();
                     }
 
@@ -78,13 +78,13 @@ public class CamoPacketHandler implements IMessageHandler<CamoPacket, IMessage> 
                         EntityItem entityItem = new EntityItem(world, player.posX, player.posY,
                           player.posZ, new ItemStack(pipe.getDisguiseBlock(), 1,
                           pipe.getDisguiseMeta()));
-                        world.spawnEntityInWorld(entityItem);
+                        world.spawnEntity(entityItem);
                         pipe.setDisguiseBlock(null);
                     }
 
                     pipe.setDisguiseBlock(block);
                     if (!player.capabilities.isCreativeMode) {
-                        player.inventory.getCurrentItem().stackSize--;
+                        player.inventory.getCurrentItem().shrink(1);
                         player.inventoryContainer.detectAndSendChanges();
                     }
                     playSound(block, world, pos);

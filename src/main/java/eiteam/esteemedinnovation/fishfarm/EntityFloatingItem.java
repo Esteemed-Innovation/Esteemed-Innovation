@@ -17,7 +17,7 @@ public class EntityFloatingItem extends EntityItem {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (worldObj.getBlockState(getPosition()).getBlock() == Blocks.WATER) {
+        if (world.getBlockState(getPosition()).getBlock() == Blocks.WATER) {
             this.motionY = 0.1F;
         }
     }

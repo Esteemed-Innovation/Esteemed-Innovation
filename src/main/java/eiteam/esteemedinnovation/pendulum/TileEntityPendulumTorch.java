@@ -24,7 +24,7 @@ public class TileEntityPendulumTorch extends TileEntityTickableSafe {
     public void initialUpdate() {
         super.initialUpdate();
         BlockPos.MutableBlockPos mutPos = new BlockPos.MutableBlockPos(pos.up());
-        while (worldObj.getBlockState(mutPos).getBlock() == PendulumModule.PENDULUM_STRING) {
+        while (world.getBlockState(mutPos).getBlock() == PendulumModule.PENDULUM_STRING) {
             numStrings++;
             mutPos.move(EnumFacing.UP);
         }
@@ -38,8 +38,8 @@ public class TileEntityPendulumTorch extends TileEntityTickableSafe {
             timer = 0;
         }
         // FIXME: This might be bad for performance. Test.
-        worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
-        worldObj.notifyNeighborsOfStateChange(pos, worldObj.getBlockState(pos).getBlock());
+        world.checkLightFor(EnumSkyBlock.BLOCK, pos);
+        world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), true);
         timer++;
     }
 

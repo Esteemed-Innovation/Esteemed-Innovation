@@ -31,10 +31,10 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
     public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
         // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
         DamageSource source = event.getSource();
-        Entity sourceEntity = source.getSourceOfDamage();
+        Entity sourceEntity = source.getTrueSource();
         if (sourceEntity instanceof EntityLivingBase && !source.isExplosion()) {
             EntityLivingBase entity = (EntityLivingBase) sourceEntity;
-            World world = entity.worldObj;
+            World world = entity.world;
             ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             if (entity.getHeldItemMainhand() == null && entity.isSneaking() && chest != null &&
               chest.getItem() instanceof ItemSteamExosuitArmor && chest.hasTagCompound()) {

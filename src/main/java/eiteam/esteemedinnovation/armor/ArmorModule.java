@@ -819,12 +819,12 @@ public class ArmorModule extends ContentModule {
         BookRecipeRegistry.addRecipe(str, new ShapedOreRecipe(plate, "xx", "xx", 'x', ingredient));
         if (ingredient instanceof ItemStack) {
             ItemStack stack = ((ItemStack) ingredient).copy();
-            stack.stackSize = 4;
+            stack.setCount(4);
             GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
         } else if (ingredient instanceof String) {
             for (ItemStack ore : OreDictionary.getOres((String) ingredient)) {
                 ItemStack stack = ore.copy();
-                stack.stackSize = 4;
+                stack.setCount(4);
                 GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
             }
         }
