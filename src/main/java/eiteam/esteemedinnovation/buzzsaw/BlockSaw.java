@@ -17,6 +17,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class BlockSaw extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
@@ -32,15 +34,17 @@ public class BlockSaw extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
         return new TileEntitySaw();
     }
 
+    @Nonnull
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
@@ -57,7 +61,7 @@ public class BlockSaw extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (!player.isSneaking() && facing.getAxis() != EnumFacing.Axis.Y) {
             WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             TileEntity te = world.getTileEntity(pos);

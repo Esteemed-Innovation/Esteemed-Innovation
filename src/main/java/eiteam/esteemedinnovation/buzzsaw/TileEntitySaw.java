@@ -15,6 +15,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
+
 public class TileEntitySaw extends SteamTransporterTileEntity {
     private static final int CONSUMPTION = 10;
     private static final int PASSIVE_CONSUMPTION = 1;
@@ -23,7 +25,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     private boolean isWoundUp;
     private int windupTicks;
 
-    public TileEntitySaw() {
+    TileEntitySaw() {
         super(new EnumFacing[] { EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST, EnumFacing.NORTH, EnumFacing.SOUTH });
     }
 
@@ -64,11 +66,11 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         IBlockState woodState = world.getBlockState(woodPos);
         Block woodBlock = woodState.getBlock();
         Item woodItem = Item.getItemFromBlock(woodBlock);
-        if (woodItem == null) {
+        if (woodItem == Items.AIR) {
             return;
         }
         Pair<Item, Integer> pair = Pair.of(woodItem, woodBlock.damageDropped(woodState));
-        ItemStack output = null;
+        ItemStack output = ItemStack.EMPTY;
         // If the block is a plankWood, output sticks; if the block is a logWood, output planks.
         if (OreDictHelper.arrayContains(OreDictHelper.planks, pair)) {
             output = new ItemStack(Items.STICK, world.rand.nextInt(2) + 2);
@@ -77,7 +79,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
             output = new ItemStack(outPair.getLeft(), world.rand.nextInt(3) + 4, outPair.getRight());
         }
 
-        if (output != null) {
+        if (!output.isEmpty()) {
             world.destroyBlock(woodPos, false);
             world.spawnEntity(new EntityItem(world, woodPos.getX() + 0.5, woodPos.getY() + 0.5, woodPos.getZ() + 0.5, output));
             if (!world.isRemote) {
@@ -105,6 +107,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         windupTicks = access.getInteger(WINDUP_TICKS_KEY);
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound access) {
         super.writeToNBT(access);
