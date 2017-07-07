@@ -11,11 +11,21 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public class TileEntityPump extends SteamTransporterTileEntity implements IFluidHandler {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+public class TileEntityPump extends SteamTransporterTileEntity {
     public FluidTank myTank = new FluidTank(1000);
+    private final IFluidHandler inputHandler = new InputOnlyFluidHandler(myTank);
+    private final IFluidHandler outputHandler = new OutputOnlyFluidHandler(myTank);
     public int progress = 0;
     public int rotateTicks = 0;
     private boolean running = false;
@@ -84,45 +94,6 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        if (from != this.getOutputDirection()) {
-            return null;
-        }
-        if (resource == null || !resource.isFluidEqual(myTank.getFluid())) {
-            return null;
-        }
-        return myTank.drain(resource.amount, doDrain);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-        if (from == this.getOutputDirection()) {
-            return myTank.drain(maxDrain, doDrain);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean canFill(EnumFacing from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid) {
-        return (from == this.getOutputDirection());
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from) {
-        return new FluidTankInfo[]{myTank.getInfo()};
-    }
-
-    @Override
     public boolean canUpdate(IBlockState target) {
         return target.getBlock() == TransportationModule.ARCHIMEDES_SCREW;
     }
@@ -157,10 +128,11 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
             offsetPos = getOffsetPos(outputDir);
             if (myTank.getFluidAmount() > 0 && progress == 100) {
                 TileEntity tile = world.getTileEntity(offsetPos);
-                if (tile != null && tile instanceof IFluidHandler) {
-                    IFluidHandler fluidHandler = (IFluidHandler) tile;
-                    if (fluidHandler.canFill(inputDir, myTank.getFluid().getFluid())) {
-                        int amnt = fluidHandler.fill(inputDir, myTank.getFluid(), true);
+                IFluidHandler fluidHandler = FluidHelper.getFluidHandler(tile, outputDir);
+                if (fluidHandler != null) {
+                    int testFill = fluidHandler.fill(myTank.getFluid(), false);
+                    if (testFill != 0) {
+                        int amnt = fluidHandler.fill(myTank.getFluid(), true);
                         if (amnt > 0) {
                             myTank.drain(amnt, true);
                             if (myTank.getFluidAmount() == 0) {
@@ -181,5 +153,28 @@ public class TileEntityPump extends SteamTransporterTileEntity implements IFluid
         }
 
         super.safeUpdate();
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            EnumFacing output = getOutputDirection();
+            return facing == output || facing == output.getOpposite();
+        }
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            EnumFacing output = getOutputDirection();
+            if (facing == output) {
+                return (T) outputHandler;
+            } else if (facing == output.getOpposite()) {
+                return (T) inputHandler;
+            }
+        }
+        return null;
     }
 }
