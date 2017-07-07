@@ -131,9 +131,9 @@ public class ItemStackUtility {
         if (stack == null) {
             return;
         }
-        --stack.stackSize;
+        stack.shrink(1);
 
-        if (stack.stackSize == 0) {
+        if (stack.isEmpty()) {
             inventory.deleteStack(stack);
         }
     }

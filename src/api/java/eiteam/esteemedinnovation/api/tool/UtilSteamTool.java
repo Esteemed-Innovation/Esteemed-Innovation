@@ -36,7 +36,7 @@ public class UtilSteamTool {
         if (me.hasTagCompound() && me.getTagCompound().hasKey("upgrades")) {
             for (int i = 1; i < 10; i++) {
                 if (me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(i))) {
-                    ItemStack stack = ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
+                    ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(i)));
                     if (stack.getItem() == check) {
                         return true;
                     }
@@ -62,7 +62,7 @@ public class UtilSteamTool {
 
         for (int i = 1; i < 10; i++) {
             if (unbt.hasKey(Integer.toString(i))) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(unbt.getCompoundTag(Integer.toString(i)));
+                ItemStack stack = new ItemStack(unbt.getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
                     if (item != null && item instanceof SteamToolUpgrade) {
@@ -89,7 +89,7 @@ public class UtilSteamTool {
         NBTTagCompound unbt = self.getTagCompound().getCompoundTag("upgrades");
         for (int i = 0; i < 10; i++) {
             if (unbt.hasKey(Integer.toString(i))) {
-                ItemStack stack = ItemStack.loadItemStackFromNBT(unbt.getCompoundTag(Integer.toString(i)));
+                ItemStack stack = new ItemStack(unbt.getCompoundTag(Integer.toString(i)));
                 if (stack != null) {
                     Item item = stack.getItem();
                     if (item != null && item instanceof SteamToolUpgrade) {

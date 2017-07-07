@@ -98,9 +98,9 @@ public class ExplosionRocket extends Explosion {
                         d7 = explosionZ;
 
                         for (float f2 = 0.3F; f1 > 0.0F; f1 -= f2 * 0.75F) {
-                            int j1 = MathHelper.floor_double(d5);
-                            int k1 = MathHelper.floor_double(d6);
-                            int l1 = MathHelper.floor_double(d7);
+                            int j1 = MathHelper.floor(d5);
+                            int k1 = MathHelper.floor(d6);
+                            int l1 = MathHelper.floor(d7);
                             BlockPos currentPos = new BlockPos(j1, k1, l1);
                             IBlockState state = worldObj.getBlockState(currentPos);
 
@@ -109,7 +109,7 @@ public class ExplosionRocket extends Explosion {
                                 f1 -= (resistance + 0.3F) * f2;
                             }
 
-                            if (f1 > 0.0F && (exploder == null || exploder.verifyExplosion(this, worldObj, currentPos, state, f1))) {
+                            if (f1 > 0.0F && (exploder == null || exploder.canExplosionDestroyBlock(this, worldObj, currentPos, state, f1))) {
                                 hashset.add(currentPos);
                             }
 
@@ -124,12 +124,12 @@ public class ExplosionRocket extends Explosion {
 
         affectedBlockPositions.addAll(hashset);
         explosionSize *= 2.0F;
-        int minX = MathHelper.floor_double(explosionX - (double) explosionSize - 1.0D);
-        int maxX = MathHelper.floor_double(explosionX + (double) explosionSize + 1.0D);
-        int minY = MathHelper.floor_double(explosionY - (double) explosionSize - 1.0D);
-        int maxY = MathHelper.floor_double(explosionY + (double) explosionSize + 1.0D);
-        int minZ = MathHelper.floor_double(explosionZ - (double) explosionSize - 1.0D);
-        int maxZ = MathHelper.floor_double(explosionZ + (double) explosionSize + 1.0D);
+        int minX = MathHelper.floor(explosionX - (double) explosionSize - 1.0D);
+        int maxX = MathHelper.floor(explosionX + (double) explosionSize + 1.0D);
+        int minY = MathHelper.floor(explosionY - (double) explosionSize - 1.0D);
+        int maxY = MathHelper.floor(explosionY + (double) explosionSize + 1.0D);
+        int minZ = MathHelper.floor(explosionZ - (double) explosionSize - 1.0D);
+        int maxZ = MathHelper.floor(explosionZ + (double) explosionSize + 1.0D);
         AxisAlignedBB explosionBounding = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
         List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, explosionBounding);
         Vec3d vec3 = new Vec3d(explosionX, explosionY, explosionZ);
@@ -141,7 +141,7 @@ public class ExplosionRocket extends Explosion {
                 d5 = entity.posX - explosionX;
                 d6 = entity.posY + (double) entity.getEyeHeight() + 0.5F - explosionY;
                 d7 = entity.posZ - explosionZ;
-                double d9 = (double) MathHelper.sqrt_double(d5 * d5 + d6 * d6 + d7 * d7);
+                double d9 = (double) MathHelper.sqrt(d5 * d5 + d6 * d6 + d7 * d7);
 
                 if (d9 != 0.0D) {
                     d5 /= d9;
@@ -206,7 +206,7 @@ public class ExplosionRocket extends Explosion {
                     double d3 = d0 - explosionX;
                     double d4 = d1 - explosionY;
                     double d5 = d2 - explosionZ;
-                    double d6 = (double) MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+                    double d6 = (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
                     d3 /= d6;
                     d4 /= d6;
                     d5 /= d6;

@@ -60,7 +60,7 @@ public class ExosuitEventDelegator {
             doMethodForEachUpgrade(playerVictim, (handler, armor, slot) -> handler.onPlayerAttacked(event, playerVictim, armor, slot));
         }
         DamageSource source = event.getSource();
-        Entity entitySource = source.getSourceOfDamage();
+        Entity entitySource = source.getTrueSource();
         if (entitySource instanceof EntityPlayer) {
             EntityPlayer playerAttacker = (EntityPlayer) entitySource;
             doMethodForEachUpgrade(playerAttacker, (handler, armor, slot) -> handler.onPlayerAttacksOther(event, playerAttacker, armor, slot));

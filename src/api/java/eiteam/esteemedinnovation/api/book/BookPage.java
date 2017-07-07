@@ -75,7 +75,7 @@ public class BookPage {
     }
 
     public int getTicks(ItemStack[] stacks) {
-        return MathHelper.floor_double((Minecraft.getMinecraft().thePlayer.ticksExisted % (stacks.length * 20D)) / 20D);
+        return MathHelper.floor((Minecraft.getMinecraft().player.ticksExisted % (stacks.length * 20D)) / 20D);
     }
 
     public ItemStack getStackFromTicks(ItemStack[] stacks) {

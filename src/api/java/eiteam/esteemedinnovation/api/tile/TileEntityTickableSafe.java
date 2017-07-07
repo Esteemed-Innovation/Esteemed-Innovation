@@ -60,13 +60,13 @@ public abstract class TileEntityTickableSafe extends TileEntityBase implements I
      *         {@literal @}Override
      *         public void initialUpdate() {
      *             super.initialUpdate();
-     *             facing = worldObj.getBlockState(pos).getValue(SomeBlock.FACING);
+     *             facing = world.getBlockState(pos).getValue(SomeBlock.FACING);
      *         }
      *
      *         {@literal @}Override
      *         public void safeUpdate() {
      *             // Destroys the block in the direction it is facing, for example.
-     *             worldObj.destroyBlock(pos.offset(facing), true);
+     *             world.destroyBlock(pos.offset(facing), true);
      *         }
      *
      *         void uninitialize() {
@@ -108,7 +108,7 @@ public abstract class TileEntityTickableSafe extends TileEntityBase implements I
 
     @Override
     public void update() {
-        if (canUpdate(worldObj.getBlockState(pos))) {
+        if (canUpdate(world.getBlockState(pos))) {
             if (!isInitialized()) {
                 initialUpdate();
             }

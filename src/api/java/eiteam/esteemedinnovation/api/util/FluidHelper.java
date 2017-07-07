@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fluids.capability.wrappers.FluidHandlerWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -243,9 +242,6 @@ public class FluidHelper {
         }
         if (tile instanceof IFluidHandler) {
             return (IFluidHandler) tile;
-        }
-        if (tile instanceof net.minecraftforge.fluids.IFluidHandler) {
-            return new FluidHandlerWrapper((net.minecraftforge.fluids.IFluidHandler) tile, dir);
         }
         return null;
     }

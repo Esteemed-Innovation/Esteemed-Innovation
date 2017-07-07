@@ -39,7 +39,7 @@ public final class SmasherRegistry {
             }
         }
 
-        return output.stream().map(ItemStack::copyItemStack).collect(Collectors.toList());
+        return output.stream().map(ItemStack::copy).collect(Collectors.toList());
     }
 
     /**

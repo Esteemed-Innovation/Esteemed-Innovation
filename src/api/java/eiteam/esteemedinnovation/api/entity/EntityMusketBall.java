@@ -76,7 +76,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
 
     @Override
     public void setThrowableHeading(double x, double y, double z, float velocity, float inaccuracy) {
-        float var9 = MathHelper.sqrt_double(x * x + y * y + z * z);
+        float var9 = MathHelper.sqrt(x * x + y * y + z * z);
         x /= (double) var9;
         y /= (double) var9;
         z /= (double) var9;
@@ -89,7 +89,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
-        float var10 = MathHelper.sqrt_double(x * x + z * z);
+        float var10 = MathHelper.sqrt(x * x + z * z);
         //noinspection SuspiciousNameCombination
         this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(y, (double) var10) * 180.0D / Math.PI);
@@ -104,7 +104,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
         motionZ = z;
 
         if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
-            float var7 = MathHelper.sqrt_double(x * x + z * z);
+            float var7 = MathHelper.sqrt(x * x + z * z);
             //noinspection SuspiciousNameCombination
             prevRotationYaw = rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch = (float) (Math.atan2(y, (double) var7) * 180.0D / Math.PI);
@@ -120,19 +120,19 @@ public class EntityMusketBall extends Entity implements IProjectile {
         super.onUpdate();
 
         if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
-            float var1 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+            float var1 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
             //noinspection SuspiciousNameCombination
             prevRotationYaw = rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch = (float) (Math.atan2(motionY, (double) var1) * 180.0D / Math.PI);
         }
 
-        IBlockState state = worldObj.getBlockState(tilePos);
+        IBlockState state = world.getBlockState(tilePos);
         Block block = state.getBlock();
 
         if (block != null) {
             if (state.getMaterial() != Material.AIR) {
-                AxisAlignedBB aabb = block.getCollisionBoundingBox(state, worldObj, tilePos);
-                if (aabb != null && aabb.isVecInside(new Vec3d(posX, posY, posZ))) {
+                AxisAlignedBB aabb = block.getCollisionBoundingBox(state, world, tilePos);
+                if (aabb != null && aabb.contains(new Vec3d(posX, posY, posZ))) {
                     inGround = true;
                 }
             }
@@ -169,7 +169,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             ++ticksInAir;
             Vec3d posVec = new Vec3d(posX, posY, posZ);
             Vec3d motionVec = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
-            RayTraceResult rayTraceResult = worldObj.rayTraceBlocks(posVec, motionVec, false, true, false);
+            RayTraceResult rayTraceResult = world.rayTraceBlocks(posVec, motionVec, false, true, false);
             posVec = new Vec3d(posX, posY, posZ);
             motionVec = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
 
@@ -178,8 +178,8 @@ public class EntityMusketBall extends Entity implements IProjectile {
             }
 
             Entity entity = null;
-            List<Entity> entities = worldObj.getEntitiesWithinAABBExcludingEntity(this,
-              getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this,
+              getEntityBoundingBox().grow(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
             double d1 = 0.0D;
             float f1 = 0.3F;
 
@@ -222,7 +222,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
                         if (rayTraceResult.entityHit instanceof EntityLiving) {
                             EntityLiving entityHit = (EntityLiving) rayTraceResult.entityHit;
 
-                            if (!worldObj.isRemote) {
+                            if (!world.isRemote) {
                                 entityHit.setArrowCountInEntity(entityHit.getArrowCountInEntity() + 1);
                             }
                         }
@@ -240,13 +240,13 @@ public class EntityMusketBall extends Entity implements IProjectile {
                     }
                 } else {
                     tilePos = rayTraceResult.getBlockPos();
-                    IBlockState inState = worldObj.getBlockState(tilePos);
+                    IBlockState inState = world.getBlockState(tilePos);
                     inTile = inState.getBlock();
                     inData = inTile.getMetaFromState(inState);
-                    motionX = (double) ((float) (rayTraceResult.hitVec.xCoord - posX));
-                    motionY = (double) ((float) (rayTraceResult.hitVec.yCoord - posY));
-                    motionZ = (double) ((float) (rayTraceResult.hitVec.zCoord - posZ));
-                    float root = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+                    motionX = (double) ((float) (rayTraceResult.hitVec.x - posX));
+                    motionY = (double) ((float) (rayTraceResult.hitVec.y - posY));
+                    motionZ = (double) ((float) (rayTraceResult.hitVec.z - posZ));
+                    float root = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
                     posX -= motionX / (double) root * 0.05000000074505806D;
                     posY -= motionY / (double) root * 0.05000000074505806D;
                     posZ -= motionZ / (double) root * 0.05000000074505806D;
@@ -255,7 +255,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
                     arrowShake = 7;
 
                     if (inTile != null) {
-                        inTile.onEntityCollidedWithBlock(worldObj, tilePos, inState, this);
+                        inTile.onEntityCollidedWithBlock(world, tilePos, inState, this);
                     }
                 }
             }
@@ -285,7 +285,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             if (this.isInWater()) {
                 double f2 = 0.25D;
                 for (int i = 0; i < 4; ++i) {
-                    worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f2, posY - motionY * f2,
+                    world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f2, posY - motionY * f2,
                       posZ - motionZ * f2, motionX, motionY, motionZ);
                 }
 

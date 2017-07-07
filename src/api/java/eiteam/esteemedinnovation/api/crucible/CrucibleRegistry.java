@@ -175,7 +175,7 @@ public class CrucibleRegistry {
      */
     public static void registerMeltRecipeTool(Item item, CrucibleLiquid liquid, int m) {
         for (int i = 0; i < item.getMaxDamage(); i++) {
-            liquidRecipes.put(Pair.of(item, i), Pair.of(liquid, MathHelper.floor_double(m * ((float) (item.getMaxDamage() - i) / (float) item.getMaxDamage()))));
+            liquidRecipes.put(Pair.of(item, i), Pair.of(liquid, MathHelper.floor(m * ((float) (item.getMaxDamage() - i) / (float) item.getMaxDamage()))));
         }
     }
 

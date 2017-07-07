@@ -32,8 +32,8 @@ public class BookPageDip extends BookPage implements CraftingPage {
         fontRenderer.setUnicodeFlag(false);
         int ticks = getTicks(fluidItemRepresentation);
         drawItemStack(fluidItemRepresentation[ticks], x + 40 + 19 + 28, y + 65 + 14, liquidAmount > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer, true);
-        drawItemStack(inputItem, x + 43, y + 65 + 14, inputItem.stackSize > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer, true);
-        drawItemStack(resultItem, x + 40 + 90, y + 65 + 14, resultItem.stackSize > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer, false);
+        drawItemStack(inputItem, x + 43, y + 65 + 14, inputItem.getCount() > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer, true);
+        drawItemStack(resultItem, x + 40 + 90, y + 65 + 14, resultItem.getCount() > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer, false);
 
         //this.drawItemStack(fluidItemRepresentation[ticks], x+40+19, y+65+2, liquidAmount > 1 ? Integer.toString(liquidAmount) : "", renderer, fontRenderer);
 

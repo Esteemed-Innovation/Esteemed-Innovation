@@ -143,7 +143,8 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
 
         int ticks = nbt.getInteger("Ticks");
@@ -246,7 +247,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     public ItemStack getStackInSlot(ItemStack me, int slot) {
         if (me.hasTagCompound() && me.getTagCompound().hasKey("upgrades") &&
           me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(slot))) {
-            return ItemStack.loadItemStackFromNBT(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(slot)));
+            return new ItemStack(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(slot)));
         }
         return null;
     }
@@ -265,14 +266,14 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
         if (getStackInSlot(me, var1) != null) {
             ItemStack stack;
-            if (getStackInSlot(me, var1).stackSize <= var2) {
+            if (getStackInSlot(me, var1).getCount() <= var2) {
                 stack = getStackInSlot(me, var1);
                 setInventorySlotContents(me, var1, null);
             } else {
                 stack = getStackInSlot(me, var1).splitStack(var2);
                 setInventorySlotContents(me, var1, getStackInSlot(me, var1));
 
-                if (getStackInSlot(me, var1).stackSize == 0) {
+                if (getStackInSlot(me, var1).isEmpty()) {
                     setInventorySlotContents(me, var1, null);
                 }
             }
@@ -376,7 +377,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         public void onBlockBreakSpeedUpdate(PlayerEvent.BreakSpeed event) {
             ItemStack equipped = event.getEntityPlayer().getHeldItemMainhand();
             BlockPos pos = event.getPos();
-            World world = event.getEntity().worldObj;
+            World world = event.getEntity().world;
             IBlockState state = world.getBlockState(pos);
             Block block = state.getBlock();
             if (block == null || !isToolOkay(equipped)) {
@@ -419,7 +420,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         @SubscribeEvent
         public void onAttack(LivingAttackEvent event) {
             DamageSource dSource = event.getSource();
-            Entity source = dSource.getSourceOfDamage();
+            Entity source = dSource.getTrueSource();
             if (!(source instanceof EntityPlayer)) {
                 return;
             }

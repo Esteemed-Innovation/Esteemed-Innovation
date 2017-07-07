@@ -20,12 +20,12 @@ public final class InventoryUtility {
     private static final Field INVENTORYCRAFTING_EVENT_HANDLER_FIELD = ReflectionHelper.findField(InventoryCrafting.class, "eventHandler", "field_70465_c");
 
     /**
-     * A Field for use with reflection which retrieves the {@link ContainerPlayer#thePlayer} field.
+     * A Field for use with reflection which retrieves the {@link ContainerPlayer#player} field.
      */
     private static final Field CONTAINERPLAYER_PLAYER_FIELD = ReflectionHelper.findField(ContainerPlayer.class, "thePlayer", "field_82862_h");
 
     /**
-     * A Field for use with reflection which retrieves the {@link SlotCrafting#thePlayer} field.
+     * A Field for use with reflection which retrieves the {@link SlotCrafting#player} field.
      */
     private static final Field SLOTCRAFTING_PLAYER_FIELD = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
 
@@ -67,8 +67,8 @@ public final class InventoryUtility {
         for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
             ItemStack stackInSlot = inventory.getStackInSlot(slot);
             if (stackInSlot != null && stackInSlot.getItem() == item) {
-                if (stackInSlot.stackSize > 1) {
-                    stackInSlot.stackSize--;
+                if (stackInSlot.getCount() > 1) {
+                    stackInSlot.shrink(1);
                     inventory.setInventorySlotContents(slot, stackInSlot);
                 } else {
                     inventory.setInventorySlotContents(slot, null);

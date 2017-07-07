@@ -59,11 +59,11 @@ public class EntityRocket extends Entity {
         posX -= 1.0D * (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         posZ -= 1.0D * (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         motionX = motionY = motionZ = 0.0D;
-        double p_i1760_8_ = player.getLookVec().xCoord;
-        double p_i1760_10_ = player.getLookVec().yCoord;
-        double p_i1760_12_ = player.getLookVec().zCoord;
+        double p_i1760_8_ = player.getLookVec().x;
+        double p_i1760_10_ = player.getLookVec().y;
+        double p_i1760_12_ = player.getLookVec().z;
 
-        double d6 = (double) MathHelper.sqrt_double(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
+        double d6 = (double) MathHelper.sqrt(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
         motionX = p_i1760_8_ / d6 * 1.0D;
         motionY = p_i1760_10_ / d6 * 1.0D;
         motionZ = p_i1760_12_ / d6 * 1.0D;
@@ -71,7 +71,7 @@ public class EntityRocket extends Entity {
 //        this.posY += this.motionY*1.0D;
 //        this.posZ += this.motionZ*1.0D;
         displayRotationYaw = rotationYaw;
-        float f3 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+        float f3 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
 
         displayRotationPitch = (float) (Math.atan2(motionY, (double) f3) * 180.0D / Math.PI);
     }
@@ -88,10 +88,10 @@ public class EntityRocket extends Entity {
 
     @Override
     public void onUpdate() {
-        IBlockState state = worldObj.getBlockState(getPosition());
-        Block block = worldObj.getBlockState(getPosition()).getBlock();
-        if (!worldObj.isRemote && (shootingEntity != null && shootingEntity.isDead ||
-          (block.isAir(state, worldObj, getPosition())))) {
+        IBlockState state = world.getBlockState(getPosition());
+        Block block = world.getBlockState(getPosition()).getBlock();
+        if (!world.isRemote && (shootingEntity != null && shootingEntity.isDead ||
+          (block.isAir(state, world, getPosition())))) {
             setDead();
         } else {
             super.onUpdate();
@@ -99,7 +99,7 @@ public class EntityRocket extends Entity {
 
             if (inGround) {
                 // TODO: Test if this BlockPos is any different from the one given by getPosition().
-                if (worldObj.getBlockState(new BlockPos(x, y, z)) == blockInside) {
+                if (world.getBlockState(new BlockPos(x, y, z)) == blockInside) {
                     ++ticksAlive;
 
                     if (ticksAlive == 200) {
@@ -127,7 +127,7 @@ public class EntityRocket extends Entity {
 
             Vec3d vec3 = new Vec3d(posX, posY, posZ);
             Vec3d vec31 = new Vec3d(posX + motionX, posY + motionY, posZ + motionY);
-            RayTraceResult trace = this.worldObj.rayTraceBlocks(vec3, vec31, false, true, false);
+            RayTraceResult trace = this.world.rayTraceBlocks(vec3, vec31, false, true, false);
             vec3 = new Vec3d(posX, posY, posZ);
             vec31 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
 
@@ -136,8 +136,8 @@ public class EntityRocket extends Entity {
             }
 
             Entity entity = null;
-            List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this,
-              getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(0.5D, 0.5D, 0.5D));
+            List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this,
+              getEntityBoundingBox().grow(motionX, motionY, motionZ).expand(0.5D, 0.5D, 0.5D));
             double d0 = 0.0D;
 
             for (Entity entity1 : list) {
@@ -190,7 +190,7 @@ public class EntityRocket extends Entity {
                 for (int j = 0; j < 4; ++j) {
                     double f3 = 0.25D;
 
-                    worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f3, posY - motionY * f3,
+                    world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f3, posY - motionY * f3,
                       posZ - motionZ * f3, motionX, motionY, motionZ);
                 }
             }
@@ -201,9 +201,9 @@ public class EntityRocket extends Entity {
 //            this.motionX *= (double)f2;
 //            this.motionY *= (double)f2;
 //            this.motionZ *= (double)f2;
-            worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX - motionX * 3F, posY - motionY * 3F,
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX - motionX * 3F, posY - motionY * 3F,
               posZ - motionZ * 3F, 0D, 0D, 0D);
-            worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX - motionX * 1.5F, posY - motionY * 1.5F,
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX - motionX * 1.5F, posY - motionY * 1.5F,
               posZ - motionZ * 1.5F, 0D, 0D, 0D);
             setPosition(posX, posY, posZ);
         }
@@ -211,11 +211,11 @@ public class EntityRocket extends Entity {
 
 
     protected void onImpact() {
-        if (!this.worldObj.isRemote) {
-            //newExplosion(world, (Entity)null, this.posX, this.posY, this.posZ, (float)2.0F, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+        if (!this.world.isRemote) {
+            //newExplosion(world, (Entity)null, this.posX, this.posY, this.posZ, (float)2.0F, true, this.world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
 
-            newExplosion(worldObj, shootingEntity, posX, posY, posZ, explosionSize, true,
-              worldObj.getGameRules().getBoolean("mobGriefing"));
+            newExplosion(world, shootingEntity, posX, posY, posZ, explosionSize, true,
+              world.getGameRules().getBoolean("mobGriefing"));
             this.setDead();
         }
     }
@@ -282,13 +282,13 @@ public class EntityRocket extends Entity {
             return false;
         } else {
             setBeenAttacked();
-            Entity entity = source.getEntity();
+            Entity entity = source.getTrueSource();
             if (entity != null) {
                 Vec3d vec3 = entity.getLookVec();
 
-                motionX = vec3.xCoord;
-                motionY = vec3.yCoord;
-                motionZ = vec3.zCoord;
+                motionX = vec3.x;
+                motionY = vec3.y;
+                motionZ = vec3.z;
 
                 if (entity instanceof EntityLivingBase) {
                     shootingEntity = (EntityLivingBase) entity;

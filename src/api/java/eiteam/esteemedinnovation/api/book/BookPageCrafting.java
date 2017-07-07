@@ -4,11 +4,13 @@ import eiteam.esteemedinnovation.api.Constants;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,7 +20,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class BookPageCrafting extends BookPage implements CraftingPage {
     private static final ResourceLocation craftSquareTexture = new ResourceLocation(Constants.API_MODID + ":textures/gui/book_crafting.png");
@@ -165,8 +166,8 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                                 if (obj instanceof ItemStack) {
                                     ItemStack item = (ItemStack) obj;
                                     if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-                                        List<ItemStack> list = new ArrayList<>();
-                                        item.getItem().getSubItems(item.getItem(), null, list);
+                                        NonNullList<ItemStack> list = NonNullList.create();
+                                        item.getItem().getSubItems(item.getItem(), CreativeTabs.SEARCH, list);
                                         list2.addAll(list);
                                     } else {
                                         list2.add(item);
@@ -181,7 +182,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
             }
         }
         fontRenderer.setUnicodeFlag(false);
-        drawItemStack(output, x + 45 + 76, y + 55 + 23, output.stackSize > 1 ? Integer.toString(output.stackSize) : "", renderer, fontRenderer, false);
+        drawItemStack(output, x + 45 + 76, y + 55 + 23, output.getCount() > 1 ? Integer.toString(output.getCount()) : "", renderer, fontRenderer, false);
         fontRenderer.setUnicodeFlag(true);
         if (shapeless) {
             int ix = x + 120;

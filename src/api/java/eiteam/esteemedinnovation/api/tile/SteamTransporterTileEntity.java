@@ -122,7 +122,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         if (shouldJoin) {
             refresh();
         }
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (steam != getSteamShare()) {
                 steam = getSteamShare();
                 markDirty();
@@ -164,7 +164,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         SteamNetwork net = getNetwork();
         net.decrSteam((int) (net.getSteam() * 0.1F));
         net.split(this, true);
-        worldObj.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 4F, true);
+        world.createExplosion(null, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, 4F, true);
     }
 
     @Override
@@ -240,7 +240,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
 
     @Override
     public Coord4 getCoords() {
-        return new Coord4(pos, worldObj.provider.getDimension());
+        return new Coord4(pos, world.provider.getDimension());
     }
 
     @Override
@@ -276,7 +276,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         for (EnumFacing dir : EnumFacing.VALUES) {
             if (acceptsGauge(dir)) {
                 BlockPos offsetPos = pos.offset(dir);
-                TileEntity tile = worldObj.getTileEntity(offsetPos);
+                TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile instanceof SteamReactorTileEntity) {
                     return true;
                 }
@@ -288,11 +288,11 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
     @Override
     public void refresh() {
         /*
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             FMLRelaunchLog.info("Refreshing", null);
         }
         */
-        if (getNetwork() == null && !worldObj.isRemote) {
+        if (getNetwork() == null && !world.isRemote) {
             if (SteamNetworkRegistry.getInstance().isInitialized(getDimension())) {
                 /*
                 EsteemedInnovation.log.debug("Null network");
@@ -312,12 +312,12 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
 
     @Override
     public int getDimension() {
-        return worldObj.provider.getDimension();
+        return world.provider.getDimension();
     }
 
     @Override
-    public World getWorldObj() {
-        return worldObj;
+    public World getWorld() {
+        return world;
     }
 
     @Override
