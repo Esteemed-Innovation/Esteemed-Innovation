@@ -7,6 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ChargableUtility {
@@ -18,10 +19,11 @@ public class ChargableUtility {
      * @param entity The entity using the thing.
      * @return Whether it was successfully drained.
      */
-    public static boolean drainSteam(ItemStack stack, int amount, EntityLivingBase entity) {
-        return stack != null && stack.getItem() instanceof SteamChargable &&
-          ((SteamChargable) stack.getItem()).canCharge(stack) &&
-          ((SteamChargable) stack.getItem()).drainSteam(stack, amount, entity);
+    public static boolean drainSteam(@Nonnull ItemStack stack, int amount, EntityLivingBase entity) {
+        Item item = stack.getItem();
+        return item instanceof SteamChargable &&
+          ((SteamChargable) item).canCharge(stack) &&
+          ((SteamChargable) item).drainSteam(stack, amount, entity);
     }
 
     /**
@@ -37,11 +39,9 @@ public class ChargableUtility {
         boolean hasPower = false;
         for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
             ItemStack equipment = entityLiving.getItemStackFromSlot(slot);
-            if (equipment != null) {
-                Item item = equipment.getItem();
-                if (item instanceof SteamChargable && ((SteamChargable) item).canCharge(equipment)) {
-                    hasPower = ((SteamChargable) item).hasPower(equipment, i);
-                }
+            Item item = equipment.getItem();
+            if (item instanceof SteamChargable && ((SteamChargable) item).canCharge(equipment)) {
+                hasPower = ((SteamChargable) item).hasPower(equipment, i);
             }
             if (hasPower) {
                 break;
@@ -71,11 +71,9 @@ public class ChargableUtility {
     public static ItemStack findFirstChargableArmor(EntityLivingBase elb) {
         for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
             ItemStack equipment = elb.getItemStackFromSlot(slot);
-            if (equipment != null) {
-                Item item = equipment.getItem();
-                if (item instanceof SteamChargable && ((SteamChargable) item).canCharge(equipment)) {
-                    return equipment;
-                }
+            Item item = equipment.getItem();
+            if (item instanceof SteamChargable && ((SteamChargable) item).canCharge(equipment)) {
+                return equipment;
             }
         }
         return null;

@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public interface EnhancementRocketLauncher extends Enhancement {
     float getAccuracyChange(Item weapon);
 
@@ -25,7 +27,7 @@ public interface EnhancementRocketLauncher extends Enhancement {
     EntityRocket changeBullet(EntityRocket bullet);
 
     @Override
-    default void afterRoundFired(ItemStack weaponStack, World world, EntityPlayer player) {
+    default void afterRoundFired(@Nonnull ItemStack weaponStack, World world, EntityPlayer player) {
         if (player.capabilities.isFlying && !player.onGround && weaponStack.hasTagCompound()) {
             int timeBetweenFire = weaponStack.getTagCompound().getInteger("fireDelay");
             weaponStack.getTagCompound().setInteger("fireDelay", timeBetweenFire + getFireDelayChange(weaponStack));

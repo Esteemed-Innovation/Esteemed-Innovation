@@ -58,21 +58,16 @@ public final class InventoryUtility {
     }
 
     /**
-     * Removes 1 of the provided item from the provided inventory. It will try to deplete the stack size, but if it is
-     * already 1, it will remove the stack completely.
+     * Removes 1 of the provided item from the provided inventory. It will deplete the stack size as handled by vanilla.
      * @param inventory The inventory to remove the item from
      * @param item The item to deplete
      */
     public static void consumeInventoryItem(IInventory inventory, Item item) {
         for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
             ItemStack stackInSlot = inventory.getStackInSlot(slot);
-            if (stackInSlot != null && stackInSlot.getItem() == item) {
-                if (stackInSlot.getCount() > 1) {
-                    stackInSlot.shrink(1);
-                    inventory.setInventorySlotContents(slot, stackInSlot);
-                } else {
-                    inventory.setInventorySlotContents(slot, null);
-                }
+            if (!stackInSlot.isEmpty() && stackInSlot.getItem() == item) {
+                stackInSlot.shrink(1);
+                inventory.setInventorySlotContents(slot, stackInSlot);
             }
         }
     }
@@ -85,7 +80,7 @@ public final class InventoryUtility {
     public static boolean hasItemInHotbar(EntityPlayer player, Item item) {
         for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
             ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-            if (stackInSlot != null && stackInSlot.getItem() == item) {
+            if (stackInSlot.getItem() == item) {
                 return true;
             }
         }

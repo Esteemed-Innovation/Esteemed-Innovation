@@ -21,7 +21,7 @@ public class SteamingRegistry {
      * @param input The input ItemStack
      * @param output The output ItemStack
      */
-    public static void addSteamingRecipe(ItemStack input, ItemStack output) {
+    public static void addSteamingRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) {
         steamingRecipes.put(input, output);
     }
 
@@ -29,7 +29,7 @@ public class SteamingRegistry {
      * Removes a steaming custom recipe (not a replacement recipe).
      * @param input The input ItemStack.
      */
-    public static void removeSteamingRecipe(ItemStack input) {
+    public static void removeSteamingRecipe(@Nonnull ItemStack input) {
         steamingRecipes.remove(input);
     }
 

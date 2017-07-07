@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 
+import javax.annotation.Nonnull;
+
 public class SteamNetworkData extends WorldSavedData {
 
     private static final String ID = "EISteamNetworkData";
@@ -32,13 +34,14 @@ public class SteamNetworkData extends WorldSavedData {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
+    public void readFromNBT(@Nonnull NBTTagCompound nbt) {
         dimID = nbt.getInteger("dimID");
         SteamNetworkRegistry.getInstance().readFromNBT(nbt, dimID);
     }
 
+    @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound nbt) {
         nbt.setInteger("dimID", dimID);
         SteamNetworkRegistry.getInstance().writeToNBT(nbt, dimID);
 

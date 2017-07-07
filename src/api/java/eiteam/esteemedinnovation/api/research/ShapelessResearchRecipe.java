@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import javax.annotation.Nonnull;
+
 /**
  * A version of the {@link ResearchRecipe} which is a shapeless ore recipe rather than a shaped ore recipe.
  * @see ResearchRecipe for detailed information
@@ -24,7 +26,7 @@ public class ShapelessResearchRecipe extends ShapelessOreRecipe {
      * @param recipe The shapeless recipe params (see {@link ShapelessOreRecipe})
      * @see ResearchRecipe#ResearchRecipe(ItemStack, TriPredicate, Object...)
      */
-    public ShapelessResearchRecipe(ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
+    public ShapelessResearchRecipe(@Nonnull ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
         super(result, recipe);
         this.matcher = matcher;
     }
@@ -33,7 +35,7 @@ public class ShapelessResearchRecipe extends ShapelessOreRecipe {
      * @param recipe The shapeless recipe params (see {@link ShapelessOreRecipe})
      * @see ResearchRecipe#ResearchRecipe(ItemStack, String, Object...)
      */
-    public ShapelessResearchRecipe(ItemStack result, String requiredBookPieceName, Object... recipe) {
+    public ShapelessResearchRecipe(@Nonnull ItemStack result, String requiredBookPieceName, Object... recipe) {
         this(result, (inv, player, world) -> {
             BookPiece piece = BookPageRegistry.getFirstPieceFromName(requiredBookPieceName);
             return piece != null && piece.isUnlocked(player);

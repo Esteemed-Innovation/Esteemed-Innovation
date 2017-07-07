@@ -8,13 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public interface Enhancement {
     /**
      * Whether this enhancement is valid for the given itemstack.
      * @param stack The ItemStack being upgraded.
      * @return Whether the enhancement can be used on the ItemStack.
      */
-    boolean canApplyTo(ItemStack stack);
+    boolean canApplyTo(@Nonnull ItemStack stack);
 
     /**
      * The enhancement's unique identifier. This should be something humanly readable and easily
@@ -71,5 +73,5 @@ public interface Enhancement {
      * @param world The world
      * @param player The player firing the round.
      */
-    default void afterRoundFired(ItemStack weaponStack, World world, EntityPlayer player) {}
+    default void afterRoundFired(@Nonnull ItemStack weaponStack, World world, EntityPlayer player) {}
 }

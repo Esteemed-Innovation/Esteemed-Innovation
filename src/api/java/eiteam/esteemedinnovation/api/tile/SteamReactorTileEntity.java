@@ -61,7 +61,7 @@ public class SteamReactorTileEntity extends TileEntityTickableSafe {
         EnumFacing d = dir.getOpposite();
         BlockPos transporterPos = pos.offset(d);
         TileEntity te = world.getTileEntity(transporterPos);
-        if (te != null && te instanceof SteamTransporter) {
+        if (te instanceof SteamTransporter) {
             return (SteamTransporter) te;
         }
         return null;

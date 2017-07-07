@@ -3,6 +3,8 @@ package eiteam.esteemedinnovation.api;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public interface SteamChargable {
     /**
      * How much steam is used per use
@@ -14,7 +16,7 @@ public interface SteamChargable {
      * @param me The itemstack of the item
      * @return true if the item can charge
      */
-    boolean canCharge(ItemStack me);
+    boolean canCharge(@Nonnull ItemStack me);
 
     /**
      * Adds an amount of steam to the item.
@@ -23,7 +25,7 @@ public interface SteamChargable {
      * @param entity The entity using the thing.
      * @return Whether it was a successful add.
      */
-    boolean addSteam(ItemStack me, int amount, EntityLivingBase entity);
+    boolean addSteam(@Nonnull ItemStack me, int amount, EntityLivingBase entity);
 
     /**
      * Checks whether the ItemStack has the amount of power in its steam storage. The opposite of
@@ -32,7 +34,7 @@ public interface SteamChargable {
      * @return True if it has power, false if it doesn't.
      * @see #needsPower(ItemStack, int)
      */
-    boolean hasPower(ItemStack me, int powerNeeded);
+    boolean hasPower(@Nonnull ItemStack me, int powerNeeded);
 
     /**
      * Checks whether the ItemStack can have the amount of power added to its steam storage.
@@ -41,7 +43,7 @@ public interface SteamChargable {
      * @return True if it will not exceed the limit with this amount of power added to it, false if
      *         it will, or if it is not a chestplate.
      */
-    boolean needsPower(ItemStack me, int powerNeeded);
+    boolean needsPower(@Nonnull ItemStack me, int powerNeeded);
 
     /**
      * Drains the provided amount of steam from the armor.
@@ -50,5 +52,5 @@ public interface SteamChargable {
      * @param entity The entity using the thing.
      * @return Whether steam was successfully drained.
      */
-    boolean drainSteam(ItemStack me, int amountToDrain, EntityLivingBase entity);
+    boolean drainSteam(@Nonnull ItemStack me, int amountToDrain, EntityLivingBase entity);
 }

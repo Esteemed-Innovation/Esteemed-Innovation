@@ -60,7 +60,7 @@ public interface SteamToolUpgrade {
      * @param tool The ItemStack containing the tool
      * @return The information string. Can be null, expect null.
      */
-    String getInformation(ItemStack me, ItemStack tool);
+    String getInformation(@Nonnull ItemStack me, @Nonnull ItemStack tool);
 
     /**
      * @return The base icon name. Does not include the name of the tool (Drill, Saw, Shovel) or the index (0, 1).
@@ -182,7 +182,7 @@ public interface SteamToolUpgrade {
      * @param upgradeStack The ItemStack for the upgrade.
      * @return The strength against the block.
      */
-    default int getToolStrength(IBlockState state, ItemStack toolStack, ItemStack upgradeStack) {
+    default int getToolStrength(IBlockState state, @Nonnull ItemStack toolStack, @Nonnull ItemStack upgradeStack) {
         return 0;
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public interface ExosuitUpgrade extends ExosuitEventHandler {
 
     Class<? extends ModelExosuitUpgrade> getModel();
 
-    void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
+    void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade);
 
     void writeInfo(List<String> list);
 
@@ -53,7 +54,7 @@ public interface ExosuitUpgrade extends ExosuitEventHandler {
      * @return A Multimap that will have all of its entries added to the armor's attribute modifiers. Default implementation
      *         returns an empty multimap.
      */
-    default Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+    default Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, @Nonnull ItemStack armorPieceStack) {
         return HashMultimap.create();
     }
 
@@ -63,7 +64,7 @@ public interface ExosuitUpgrade extends ExosuitEventHandler {
      */
     default boolean isInstalled(EntityLivingBase entity) {
         ItemStack armor = entity.getItemStackFromSlot(getSlot().getArmorPiece());
-        return this instanceof Item && armor != null && armor.getItem() instanceof ExosuitArmor &&
+        return this instanceof Item && armor.getItem() instanceof ExosuitArmor &&
           ((ExosuitArmor) armor.getItem()).hasUpgrade(armor, (Item) this);
     }
 }

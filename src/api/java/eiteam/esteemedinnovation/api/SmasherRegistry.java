@@ -24,8 +24,8 @@ public final class SmasherRegistry {
      * @return The output ItemStacks.
      */
     @Nonnull
-    public static List<ItemStack> getOutput(ItemStack input, World world) {
-        if (input == null) {
+    public static List<ItemStack> getOutput(@Nonnull ItemStack input, World world) {
+        if (input.isEmpty()) {
             return Collections.emptyList();
         }
 
@@ -49,8 +49,8 @@ public final class SmasherRegistry {
      * @return A list of all ItemStacks that produce the output. Can be null if the output is null. Because the function
      *         might use randomization (or other such things) to return its outputs, this might not be 100% accurate all of the time.
      */
-    public static List<ItemStack> getInputs(ItemStack output, World world) {
-        if (output == null) {
+    public static List<ItemStack> getInputs(@Nonnull ItemStack output, World world) {
+        if (output.isEmpty()) {
             return null;
         }
 
@@ -71,7 +71,7 @@ public final class SmasherRegistry {
      * @param input The input OreDictionary entry. Will register a recipe for every single ItemStack in that OreDict.
      * @param output The output ItemStack
      */
-    public static void registerSmashable(String input, ItemStack output) {
+    public static void registerSmashable(String input, @Nonnull ItemStack output) {
         for (ItemStack stack : OreDictionary.getOres(input)) {
             registerSmashable(stack, output);
         }
@@ -93,7 +93,7 @@ public final class SmasherRegistry {
      * @param input The input block, or the block being smashed.
      * @param output The output ItemStack
      */
-    public static void registerSmashable(Block input, ItemStack output) {
+    public static void registerSmashable(Block input, @Nonnull ItemStack output) {
         registerSmashable(new ItemStack(input), output);
     }
 
@@ -111,7 +111,7 @@ public final class SmasherRegistry {
      * @param input The input ItemStack
      * @param output The output ItemStack
      */
-    public static void registerSmashable(ItemStack input, ItemStack output) {
+    public static void registerSmashable(@Nonnull ItemStack input, @Nonnull ItemStack output) {
         registerSmashable(input, new TypicalBiFunction(output));
     }
 
@@ -120,7 +120,7 @@ public final class SmasherRegistry {
      * @param input The input ItemStack
      * @param function The function that returns the output.
      */
-    public static void registerSmashable(ItemStack input, BiFunction<ItemStack, World, List<ItemStack>> function) {
+    public static void registerSmashable(@Nonnull ItemStack input, BiFunction<ItemStack, World, List<ItemStack>> function) {
         registry.put(input, function);
     }
 
@@ -139,7 +139,7 @@ public final class SmasherRegistry {
      * Removes a smasher recipe
      * @param input The input ItemStack whose recipe is being removed
      */
-    public static void removeSmashable(ItemStack input) {
+    public static void removeSmashable(@Nonnull ItemStack input) {
         registry.remove(input);
     }
 
@@ -152,7 +152,7 @@ public final class SmasherRegistry {
     public static class TypicalBiFunction implements BiFunction<ItemStack, World, List<ItemStack>> {
         private final List<ItemStack> out;
 
-        public TypicalBiFunction(ItemStack out) {
+        public TypicalBiFunction(@Nonnull ItemStack out) {
             this(Collections.singletonList(out));
         }
 
@@ -161,7 +161,7 @@ public final class SmasherRegistry {
         }
 
         @Override
-        public List<ItemStack> apply(ItemStack input, World world) {
+        public List<ItemStack> apply(@Nonnull ItemStack input, World world) {
             return out;
         }
     }

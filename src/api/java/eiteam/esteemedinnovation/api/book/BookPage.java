@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import scala.Tuple4;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 public class BookPage {
@@ -35,7 +36,7 @@ public class BookPage {
         }
     }
 
-    protected void drawItemStack(ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj, boolean canHyperlink) {
+    protected void drawItemStack(@Nonnull ItemStack stack, int x, int y, String str, RenderItem itemRender, FontRenderer fontRendererObj, boolean canHyperlink) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, 0, 32F);
         GlStateManager.enableBlend();
@@ -45,7 +46,7 @@ public class BookPage {
         GlStateManager.enableDepth();
         itemRender.zLevel = 200.0F;
         FontRenderer font = null;
-        if (stack != null && stack.getItem() != null) {
+        if (!stack.isEmpty()) {
             font = stack.getItem().getFontRenderer(stack);
         }
         if (font == null) {

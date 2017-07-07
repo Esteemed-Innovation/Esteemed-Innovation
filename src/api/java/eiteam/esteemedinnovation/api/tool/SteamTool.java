@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public interface SteamTool extends SteamChargable {
     /**
      * Checks if the tool is wound up.
@@ -32,5 +34,6 @@ public interface SteamTool extends SteamChargable {
      * Public version of the {@link Item#rayTrace(World, EntityPlayer, boolean)} method. Default implementation in
      * {@link ItemSteamTool} delegates to the Item method.
      */
+    @Nonnull
     RayTraceResult rayTrace(World world, EntityPlayer player, boolean useLiquids);
 }

@@ -8,6 +8,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 /**
  * Implement this when you want your machine to do something when it gets wrenched.
  */
@@ -26,5 +28,5 @@ public interface Wrenchable {
      * @param hitZ See Item#onItemUseFirst
      * @return Whether it was successful
      */
-    boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ);
+    boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ);
 }

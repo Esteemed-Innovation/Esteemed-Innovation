@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -50,6 +51,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound access = writeToNBT(new NBTTagCompound());
@@ -86,6 +88,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         }
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -315,6 +318,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         return world.provider.getDimension();
     }
 
+    @Nonnull
     @Override
     public World getWorld() {
         return world;

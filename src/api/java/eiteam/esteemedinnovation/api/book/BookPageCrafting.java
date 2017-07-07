@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.apache.commons.lang3.ArrayUtils;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -98,7 +99,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapelessOreRecipe) recipe).getInput().size() > i && ((ShapelessOreRecipe) recipe).getInput().get(i) != null) {
+                    if (((ShapelessOreRecipe) recipe).getInput().size() > i && !((ItemStack) ((ShapelessOreRecipe) recipe).getInput().get(i)).isEmpty()) {
                         if (((ShapelessOreRecipe) recipe).getInput().get(i) instanceof Collection) {
                             newList.addAll((Collection) ((ShapelessOreRecipe) recipe).getInput().get(i));
                         } else {
@@ -120,7 +121,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         return recipes.toArray(new IRecipe[recipes.size()]);
     }
 
-    private void drawItemStackInPage(ItemStack itemStack, FontRenderer fontRenderer, int x, int j, int y, int i, RenderItem renderer) {
+    private void drawItemStackInPage(@Nonnull ItemStack itemStack, FontRenderer fontRenderer, int x, int j, int y, int i, RenderItem renderer) {
         fontRenderer.setUnicodeFlag(false);
         drawItemStack(itemStack, x + 49 + j * 19, y + 59 + i * 19, "", renderer, fontRenderer, true);
         fontRenderer.setUnicodeFlag(true);

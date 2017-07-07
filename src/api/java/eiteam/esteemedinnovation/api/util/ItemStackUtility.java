@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class ItemStackUtility {
     /**
      * Public version of {@link net.minecraft.item.crafting.FurnaceRecipes#compareItemStacks(ItemStack, ItemStack)}
      */
-    public static boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
+    public static boolean compareItemStacks(@Nonnull ItemStack stack1, @Nonnull ItemStack stack2) {
         return stack2.getItem() == stack1.getItem() &&
                 (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
     }
@@ -64,19 +65,15 @@ public class ItemStackUtility {
     /**
      * Gets the player's held item by priority (main, off, null)
      * @param player The player
-     * @return The main hand itemstack, offhand itemstack, or null.
+     * @return The main hand itemstack, offhand itemstack, or null if both were empty itemstacks.
      */
     @Nullable
     public static ItemStack getHeldItemStack(EntityPlayer player) {
         ItemStack mainHand = player.getHeldItemMainhand();
         ItemStack offHand = player.getHeldItemOffhand();
 
-        if (mainHand == null) {
-            if (offHand == null) {
-                return null;
-            } else {
-                return offHand;
-            }
+        if (mainHand.isEmpty()) {
+            return offHand.isEmpty() ? null : offHand;
         } else {
             return mainHand;
         }
@@ -98,10 +95,11 @@ public class ItemStackUtility {
      * @param needle The item to search for
      * @return The itemstack, or null
      */
+    @Nullable
     public static ItemStack findItemStackFromInventory(IInventory haystack, Item needle) {
         for (int slot = 0; slot < haystack.getSizeInventory(); slot++) {
             ItemStack inSlot = haystack.getStackInSlot(slot);
-            if (inSlot == null) {
+            if (inSlot.isEmpty()) {
                 continue;
             }
             if (inSlot.getItem() == needle) {
@@ -121,7 +119,7 @@ public class ItemStackUtility {
         ItemStack stack = null;
         for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
             ItemStack inSlot = inventory.getStackInSlot(slot);
-            if (inSlot == null) {
+            if (inSlot.isEmpty()) {
                 continue;
             }
             if (inSlot.getItem() == item) {

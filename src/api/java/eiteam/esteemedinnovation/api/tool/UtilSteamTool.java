@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.api.tool;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,6 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 // TODO: Use correct ID ranges (1-10? we only have 2 upgrades for each tool). Perhaps instead of using an NBTTagList we
@@ -28,8 +30,8 @@ public class UtilSteamTool {
      * @param check The item that is being checked against, or the upgrade
      * @return Whether it has any upgrades.
      */
-    public static boolean hasUpgrade(ItemStack me, Item check) {
-        if (check == null) {
+    public static boolean hasUpgrade(@Nonnull ItemStack me, @Nonnull Item check) {
+        if (check == Items.AIR) {
             return false;
         }
 
@@ -52,7 +54,7 @@ public class UtilSteamTool {
      * @param me The tool ItemStack.
      * @return The {@link ArrayList} of all the upgrades. This can be empty. Expect emptiness.
      */
-    public static ArrayList<SteamToolUpgrade> getUpgrades(ItemStack me) {
+    public static ArrayList<SteamToolUpgrade> getUpgrades(@Nonnull ItemStack me) {
         ArrayList<SteamToolUpgrade> upgrades = new ArrayList<>();
         if (!me.hasTagCompound() || !me.getTagCompound().hasKey("upgrades")) {
             return upgrades;
@@ -62,12 +64,9 @@ public class UtilSteamTool {
 
         for (int i = 1; i < 10; i++) {
             if (unbt.hasKey(Integer.toString(i))) {
-                ItemStack stack = new ItemStack(unbt.getCompoundTag(Integer.toString(i)));
-                if (stack != null) {
-                    Item item = stack.getItem();
-                    if (item != null && item instanceof SteamToolUpgrade) {
-                        upgrades.add((SteamToolUpgrade) item);
-                    }
+                Item item = new ItemStack(unbt.getCompoundTag(Integer.toString(i))).getItem();
+                if (item instanceof SteamToolUpgrade) {
+                    upgrades.add((SteamToolUpgrade) item);
                 }
             }
         }
@@ -80,7 +79,7 @@ public class UtilSteamTool {
      * @param self The ItemStack of the tool
      * @return An ArrayList of all the upgrade ItemStacks.
      */
-    public static ArrayList<ItemStack> getUpgradeStacks(ItemStack self) {
+    public static ArrayList<ItemStack> getUpgradeStacks(@Nonnull ItemStack self) {
         ArrayList<ItemStack> upgrades = new ArrayList<>();
         if (!self.hasTagCompound() || !self.getTagCompound().hasKey("upgrades")) {
             return upgrades;
@@ -90,11 +89,9 @@ public class UtilSteamTool {
         for (int i = 0; i < 10; i++) {
             if (unbt.hasKey(Integer.toString(i))) {
                 ItemStack stack = new ItemStack(unbt.getCompoundTag(Integer.toString(i)));
-                if (stack != null) {
-                    Item item = stack.getItem();
-                    if (item != null && item instanceof SteamToolUpgrade) {
-                        upgrades.add(stack);
-                    }
+                Item item = stack.getItem();
+                if (item instanceof SteamToolUpgrade) {
+                    upgrades.add(stack);
                 }
             }
         }
@@ -109,7 +106,7 @@ public class UtilSteamTool {
      * @param stack ???
      * Note: The original method was not documented, so I don't know what these params actually are.
      */
-    public static void setNBTInventory(ItemStack me, int slot, ItemStack stack) {
+    public static void setNBTInventory(@Nonnull ItemStack me, int slot, @Nonnull ItemStack stack) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
@@ -120,7 +117,7 @@ public class UtilSteamTool {
             me.getTagCompound().getCompoundTag("upgrades").removeTag(Integer.toString(slot));
         }
         NBTTagCompound stc = new NBTTagCompound();
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             stack.writeToNBT(stc);
             me.getTagCompound().getCompoundTag("upgrades").setTag(Integer.toString(slot), stc);
         }
@@ -132,7 +129,8 @@ public class UtilSteamTool {
      * @param me The ItemStack of the tool
      * @return The NBTTagCompound of the tool.
      */
-    public static NBTTagCompound checkNBT(ItemStack me) {
+    @Nonnull
+    public static NBTTagCompound checkNBT(@Nonnull ItemStack me) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
@@ -152,7 +150,7 @@ public class UtilSteamTool {
      * @return The strings. Will return an empty array if there are no upgrades or strings.
      */
     @Nonnull
-    public static ArrayList<String> getInformationFromStacks(ArrayList<ItemStack> upgrades, SteamToolSlot redSlot, ItemStack tool) {
+    public static ArrayList<String> getInformationFromStacks(@Nullable ArrayList<ItemStack> upgrades, @Nonnull SteamToolSlot redSlot, @Nonnull ItemStack tool) {
         if (upgrades == null) {
             return new ArrayList<>();
         }

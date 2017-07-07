@@ -10,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import javax.annotation.Nonnull;
+
 /**
  * The ResearchRecipe is a ShapedOreRecipe that requires research to first be unlocked.
  * <p>
@@ -33,7 +35,7 @@ public class ResearchRecipe extends ShapedOreRecipe {
      * @param matcher The predicate (see {@link #matcher}).
      * @param recipe The recipe shape (see {@link ShapedOreRecipe}).
      */
-    public ResearchRecipe(ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
+    public ResearchRecipe(@Nonnull ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
         super(result, recipe);
         this.matcher = matcher;
     }
@@ -46,7 +48,7 @@ public class ResearchRecipe extends ShapedOreRecipe {
      * @param requiredBookPieceName The unlocalized name for the {@link BookPiece} to be checked against.
      * @param recipe The recipe shape (see {@link ShapedOreRecipe}).
      */
-    public ResearchRecipe(ItemStack result, String requiredBookPieceName, Object... recipe) {
+    public ResearchRecipe(@Nonnull ItemStack result, String requiredBookPieceName, Object... recipe) {
         this(result, (inv, player, world) -> {
             BookPiece piece = BookPageRegistry.getFirstPieceFromName(requiredBookPieceName);
             return piece != null && piece.isUnlocked(player);

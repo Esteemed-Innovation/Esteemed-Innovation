@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -289,7 +289,7 @@ public class CrucibleRegistry {
      * @param mold The input mold
      * @param out The output
      */
-    public static void registerMoldingRecipe(CrucibleLiquid inputLiquid, ItemStack mold, ItemStack out) {
+    public static void registerMoldingRecipe(CrucibleLiquid inputLiquid, @Nonnull ItemStack mold, @Nonnull ItemStack out) {
         moldingRecipes.put(Pair.of(inputLiquid, mold), out);
     }
 
@@ -298,14 +298,14 @@ public class CrucibleRegistry {
      * @param mold The input mold
      * @return The output ItemStack
      */
-    @Nullable
-    public static ItemStack getMoldingOutput(CrucibleLiquid inputLiquid, ItemStack mold) {
+    @Nonnull
+    public static ItemStack getMoldingOutput(CrucibleLiquid inputLiquid, @Nonnull ItemStack mold) {
         for (Map.Entry<Pair<CrucibleLiquid, ItemStack>, ItemStack> entry : moldingRecipes.entrySet()) {
             Pair<CrucibleLiquid, ItemStack> input = entry.getKey();
             if (ItemStackUtility.compareItemStacks(mold, input.getRight()) && input.getLeft().equals(inputLiquid)) {
                 return entry.getValue();
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 }

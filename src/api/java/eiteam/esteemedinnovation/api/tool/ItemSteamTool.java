@@ -51,13 +51,14 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         this.itemForStrength = itemForStrength;
     }
 
+    @Nonnull
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
         return ImmutableSet.of(toolClass());
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
+    public boolean canHarvestBlock(@Nonnull IBlockState state, ItemStack stack) {
         int blockHarvestLevel = state.getBlock().getHarvestLevel(state);
         if (blockHarvestLevel < 0) {
             return false;
@@ -72,7 +73,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
         /*
          We have to check the upgrades so that the models reload when you switch between two tools of the same type with
          different upgrades. Otherwise, it would appear to have oldStack's upgrades on it.
@@ -94,7 +95,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+    public boolean onBlockDestroyed(@Nonnull ItemStack stack, World world, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EntityLivingBase entityLiving) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         if (ticksSpeed.containsKey(stack)) {
             MutablePair<Integer, Integer> pair = ticksSpeed.get(stack);
@@ -142,8 +143,9 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         }
     }
 
+    @Nonnull
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
 
@@ -163,7 +165,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
+    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, @Nonnull EntityLivingBase par3EntityLivingBase) {
         return true;
     }
 
@@ -184,7 +186,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public float getStrVsBlock(ItemStack stack, IBlockState state) {
+    public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         int speed = nbt.getInteger("Speed");
         return itemForStrength.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
@@ -319,6 +321,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         return UtilSteamTool.hasUpgrade(me, check);
     }
 
+    @Nonnull
     @Override
     public RayTraceResult rayTrace(World world, EntityPlayer player, boolean useLiquids) {
         return super.rayTrace(world, player, useLiquids);
@@ -343,8 +346,8 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
          * @param tool The ItemStack to check.
          * @return Whether the provided ItemStack contains a steam tool that is wound up.
          */
-        private boolean isToolOkay(ItemStack tool) {
-            return tool != null && tool.getItem() != null && tool.getItem() instanceof SteamTool && ((SteamTool) tool.getItem()).isWound(tool);
+        private boolean isToolOkay(@Nonnull ItemStack tool) {
+            return tool.getItem() instanceof SteamTool && ((SteamTool) tool.getItem()).isWound(tool);
         }
 
         /**

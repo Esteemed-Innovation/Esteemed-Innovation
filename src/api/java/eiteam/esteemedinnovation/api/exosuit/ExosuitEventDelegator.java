@@ -35,7 +35,7 @@ public class ExosuitEventDelegator {
                 continue;
             }
             ItemStack armor = player.getItemStackFromSlot(slot);
-            if (armor != null && armor.getItem() instanceof ExosuitArmor) {
+            if (armor.getItem() instanceof ExosuitArmor) {
                 for (ExosuitEventHandler thing : ((ExosuitArmor) armor.getItem()).getInstalledEventHandlers(armor)) {
                     func.accept(thing, armor, slot);
                 }

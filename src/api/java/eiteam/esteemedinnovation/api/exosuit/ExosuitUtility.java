@@ -26,7 +26,7 @@ public class ExosuitUtility {
 
         for (EntityEquipmentSlot armor : ItemStackUtility.ARMOR_SLOTS) {
             ItemStack stack = entityLiving.getItemStackFromSlot(armor);
-            if (stack != null && stack.getItem() instanceof ExosuitArmor && predicate.test(armor, stack)) {
+            if (stack.getItem() instanceof ExosuitArmor && predicate.test(armor, stack)) {
                 num++;
             }
         }

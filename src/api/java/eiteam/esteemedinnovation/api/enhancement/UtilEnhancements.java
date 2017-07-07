@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,11 @@ public class UtilEnhancements {
         return locs;
     }
 
-    public static boolean hasEnhancement(ItemStack item) {
+    public static boolean hasEnhancement(@Nonnull ItemStack item) {
         return getEnhancementFromItem(item) != null;
     }
 
-    public static Enhancement getEnhancementFromItem(ItemStack item) {
+    public static Enhancement getEnhancementFromItem(@Nonnull ItemStack item) {
         if (item.hasTagCompound()) {
             NBTTagCompound nbt = item.getTagCompound();
             if (nbt.hasKey("enhancements")) {
@@ -43,34 +44,34 @@ public class UtilEnhancements {
         return null;
     }
 
-    public static ResourceLocation getIconFromEnhancement(ItemStack item, Enhancement enhancement) {
+    public static ResourceLocation getIconFromEnhancement(@Nonnull ItemStack item, Enhancement enhancement) {
         return EnhancementRegistry.enhancementIcons.get(Pair.of(item.getItem(), enhancement));
     }
 
-    public static ResourceLocation getIconFromEnhancement(ItemStack item) {
+    public static ResourceLocation getIconFromEnhancement(@Nonnull ItemStack item) {
         return getIconFromEnhancement(item, getEnhancementFromItem(item));
     }
 
-    public static String getNameFromEnhancement(ItemStack item, Enhancement enhancement) {
+    public static String getNameFromEnhancement(@Nonnull ItemStack item, Enhancement enhancement) {
         return enhancement.getName(item.getItem());
     }
 
-    public static String getNameFromEnhancement(ItemStack item) {
+    public static String getNameFromEnhancement(@Nonnull ItemStack item) {
         return getNameFromEnhancement(item, getEnhancementFromItem(item));
     }
 
-    public static String getEnhancementDisplayText(ItemStack item) {
+    public static String getEnhancementDisplayText(@Nonnull ItemStack item) {
         if (hasEnhancement(item)) {
             return TextFormatting.RED + new ItemStack(((Item) getEnhancementFromItem(item))).getDisplayName();
         }
         return "";
     }
 
-    public static boolean canEnhance(ItemStack item) {
+    public static boolean canEnhance(@Nonnull ItemStack item) {
         return !item.hasTagCompound() || !item.getTagCompound().hasKey("enhancements");
     }
 
-    public static ItemStack getEnhancedItem(ItemStack item, ItemStack enhancement) {
+    public static ItemStack getEnhancedItem(@Nonnull ItemStack item, @Nonnull ItemStack enhancement) {
         ItemStack output = item.copy();
         if (!output.hasTagCompound()) {
             output.setTagCompound(new NBTTagCompound());
@@ -82,7 +83,7 @@ public class UtilEnhancements {
         return output;
     }
 
-    public static void removeEnhancement(ItemStack item) {
+    public static void removeEnhancement(@Nonnull ItemStack item) {
         if (item.hasTagCompound() && item.getTagCompound().hasKey("enhancements")) {
             item.getTagCompound().removeTag("enhancements");
         }
