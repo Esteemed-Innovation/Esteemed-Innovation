@@ -54,7 +54,7 @@ public abstract class ExosuitModelCache {
 
             for (EntityEquipmentSlot slot : ItemStackUtility.ARMOR_SLOTS) {
                 ItemStack armorStack = mc.player.getItemStackFromSlot(slot);
-                if (armorStack != null && armorType.isAssignableFrom(armorStack.getItem().getClass())) {
+                if (armorType.isAssignableFrom(armorStack.getItem().getClass())) {
                     getModel(mc.player, slot).updateModel(mc.player, armorStack, slot);
                 }
             }

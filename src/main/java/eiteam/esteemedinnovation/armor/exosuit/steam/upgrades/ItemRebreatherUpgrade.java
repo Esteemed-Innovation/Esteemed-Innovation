@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemRebreatherUpgrade extends ItemSteamExosuitUpgrade {
@@ -17,7 +19,7 @@ public class ItemRebreatherUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerAttacked(LivingAttackEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerAttacked(LivingAttackEvent event, EntityPlayer victim, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (event.getSource() == DamageSource.DROWN && ChargableUtility.hasPower(victim, Config.rebreatherConsumption)) {
             ChargableUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.rebreatherConsumption, victim);
             event.setCanceled(true);

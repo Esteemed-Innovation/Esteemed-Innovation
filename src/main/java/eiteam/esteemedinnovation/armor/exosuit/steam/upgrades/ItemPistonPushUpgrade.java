@@ -18,6 +18,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemPistonPushUpgrade extends ItemSteamExosuitUpgrade {
@@ -26,13 +28,13 @@ public class ItemPistonPushUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerLeftClickBlock(PlayerInteractEvent.LeftClickBlock event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         EnumFacing face = event.getFace();
         if (face == null) {
             return;
         }
         EntityPlayer player = event.getEntityPlayer();
-        if (player.getHeldItemMainhand() == null && ChargableUtility.hasPower(player, Config.pistonPushConsumption)) {
+        if (player.getHeldItemMainhand().isEmpty() && ChargableUtility.hasPower(player, Config.pistonPushConsumption)) {
             World world = event.getWorld();
             BlockPos curPos = event.getPos();
             BlockPos newPos = curPos.offset(face.getOpposite());

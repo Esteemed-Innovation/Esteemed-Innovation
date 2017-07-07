@@ -10,6 +10,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemFallAssistUpgrade extends ItemSteamExosuitUpgrade {
@@ -18,7 +20,7 @@ public class ItemFallAssistUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (event.getSource() == DamageSource.FALL) {
             boolean hasPower = ChargableUtility.hasPower(event.getEntityLiving(), (int) (event.getAmount() / Config.fallAssistDivisor));
             if (hasPower) {

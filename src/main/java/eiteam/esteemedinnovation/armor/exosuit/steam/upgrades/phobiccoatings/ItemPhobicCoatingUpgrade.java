@@ -14,6 +14,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 import static net.minecraft.entity.SharedMonsterAttributes.MOVEMENT_SPEED;
@@ -46,7 +47,7 @@ public abstract class ItemPhobicCoatingUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerTick(TickEvent.PlayerTickEvent event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = event.player;
         IAttributeInstance attributes = player.getEntityAttribute(MOVEMENT_SPEED);
         AttributeModifier modifierFromAttributes = attributes.getModifier(modifierID);
@@ -90,7 +91,10 @@ public abstract class ItemPhobicCoatingUpgrade extends ItemSteamExosuitUpgrade {
         player.motionY = isJumping ? 0.5D : 0;
 
         attributes.applyModifier(modifier);
-        ChargableUtility.drainSteam(ChargableUtility.findFirstChargableArmor(player), getConsumption(), player);
+        ItemStack chargable = ChargableUtility.findFirstChargableArmor(player);
+        if (chargable != null) {
+            ChargableUtility.drainSteam(chargable, getConsumption(), player);
+        }
     }
 
     /**

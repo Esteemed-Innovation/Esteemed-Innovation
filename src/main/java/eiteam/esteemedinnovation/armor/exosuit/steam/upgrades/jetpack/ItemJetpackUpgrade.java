@@ -90,7 +90,7 @@ public class ItemJetpackUpgrade extends ItemSteamExosuitUpgrade {
 
             ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
 
-            if (chest == null || !isInstalled(player)) {
+            if (!isInstalled(player)) {
                 return null;
             }
 

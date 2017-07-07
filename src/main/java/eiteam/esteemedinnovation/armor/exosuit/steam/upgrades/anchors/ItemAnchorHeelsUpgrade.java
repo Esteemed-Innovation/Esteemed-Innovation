@@ -14,6 +14,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class ItemAnchorHeelsUpgrade extends ItemSteamExosuitUpgrade {
@@ -27,7 +28,7 @@ public class ItemAnchorHeelsUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, @Nonnull ItemStack armorPieceStack) {
         Multimap<String, AttributeModifier> map = HashMultimap.create();
         map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(),
           new AttributeModifier(new UUID(776437, armorSlot.getSlotIndex()), "Lead exosuit " + armorSlot.getName(),
@@ -36,7 +37,7 @@ public class ItemAnchorHeelsUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerTick(TickEvent.PlayerTickEvent event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = event.player;
         if (ChargableUtility.hasPower(player, 1)) {
             boolean inWater = player.isInWater();

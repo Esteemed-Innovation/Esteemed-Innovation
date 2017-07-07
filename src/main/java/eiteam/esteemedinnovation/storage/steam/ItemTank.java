@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemTank extends Item implements ExosuitTank, ExosuitUpgrade {
@@ -43,7 +44,7 @@ public class ItemTank extends Item implements ExosuitTank, ExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
         float pressure = 0.0F;
         if (itemStack.getMaxDamage() != 0) {
             pressure = itemStack.getItemDamage() / (float) itemStack.getMaxDamage();

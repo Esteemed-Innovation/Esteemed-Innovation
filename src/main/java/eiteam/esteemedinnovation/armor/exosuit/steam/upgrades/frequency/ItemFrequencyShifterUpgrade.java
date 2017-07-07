@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency;
 
-import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
 import eiteam.esteemedinnovation.api.event.AnimalTradeEvent;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
+import eiteam.esteemedinnovation.armor.ArmorModule;
+import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -74,11 +74,10 @@ public class ItemFrequencyShifterUpgrade extends ItemSteamExosuitUpgrade {
             EntityPlayer player = event.getEntityPlayer();
             Entity target = event.getTarget();
             ItemStack held = player.getHeldItemMainhand();
+            if (held.getItem() instanceof ItemNameTag) {
+                return;
+            }
             if (playerCanUseFrequencyShifter(player) && (target instanceof EntityWolf || target instanceof EntityOcelot)) {
-                boolean flag = held == null || !(held.getItem() instanceof ItemNameTag);
-                if (!flag) {
-                    return;
-                }
                 EntityLiving living = (EntityLiving) target;
                 AnimalData data = target.getCapability(ArmorModule.ANIMAL_DATA, null);
                 if (data.getTotalTrades() > data.getMaximumTotalTrades()) {

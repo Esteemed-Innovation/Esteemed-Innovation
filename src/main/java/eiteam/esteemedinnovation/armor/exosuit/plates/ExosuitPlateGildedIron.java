@@ -1,13 +1,15 @@
 package eiteam.esteemedinnovation.armor.exosuit.plates;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
+
+import javax.annotation.Nonnull;
 
 public class ExosuitPlateGildedIron extends ExosuitPlate {
     public ExosuitPlateGildedIron() {
@@ -23,7 +25,7 @@ public class ExosuitPlateGildedIron extends ExosuitPlate {
     }
 
     @Override
-    public void onPlayerPickupXP(PlayerPickupXpEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerPickupXP(PlayerPickupXpEvent event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         event.getOrb().xpValue = MathHelper.ceil(event.getOrb().xpValue * 1.125F);
     }
 }

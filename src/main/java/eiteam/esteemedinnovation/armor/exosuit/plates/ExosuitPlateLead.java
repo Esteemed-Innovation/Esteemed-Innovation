@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class ExosuitPlateLead extends ExosuitPlate {
@@ -17,7 +18,7 @@ public class ExosuitPlateLead extends ExosuitPlate {
     }
 
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, @Nonnull ItemStack armorPieceStack) {
         Multimap<String, AttributeModifier> map = HashMultimap.create();
         map.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(),
           new AttributeModifier(new UUID(776437, armorSlot.getSlotIndex()), "Lead exosuit " + armorSlot.getName(),

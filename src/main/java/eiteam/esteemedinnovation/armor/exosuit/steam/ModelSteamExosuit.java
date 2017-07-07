@@ -230,7 +230,7 @@ public class ModelSteamExosuit extends ModelBiped implements ModelExosuit {
 
         // Dye
         dye = -1;
-        if (exosuitArmor.getStackInSlot(itemStack, 2) != null) {
+        if (!exosuitArmor.getStackInSlot(itemStack, 2).isEmpty()) {
             dye = findDyeIndexFromItemStack(exosuitArmor.getStackInSlot(itemStack, 2));
         }
 
@@ -255,7 +255,7 @@ public class ModelSteamExosuit extends ModelBiped implements ModelExosuit {
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(@Nullable Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         // Ender Shroud is installed and the player is not being hurt, cancel all rendering for this frame.
         if (shroudEnabled && shroudModifier == 0F) {
             return;

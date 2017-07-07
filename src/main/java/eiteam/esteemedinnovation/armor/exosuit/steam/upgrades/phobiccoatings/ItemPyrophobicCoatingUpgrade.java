@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
@@ -46,7 +47,7 @@ public class ItemPyrophobicCoatingUpgrade extends ItemPhobicCoatingUpgrade {
     }
 
     @Override
-    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         DamageSource source = event.getSource();
         if (isHotDamageSource(source) && isInHotness(victim)) {
             event.getEntity().motionY = 0.5D;

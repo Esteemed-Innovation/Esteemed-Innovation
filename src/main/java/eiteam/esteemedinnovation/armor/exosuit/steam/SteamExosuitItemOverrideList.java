@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,20 +24,19 @@ public class SteamExosuitItemOverrideList extends ItemOverrideList {
         super(ImmutableList.of());
     }
 
+    @Nonnull
     @Override
-    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
         ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) stack.getItem();
 
         boolean isArmorDyed = false;
 
         ItemStack vanityStack = armor.getStackInSlot(stack, 2);
-        if (vanityStack != null) {
-            for (int id : OreDictionary.getOreIDs(vanityStack)) {
-                String str = OreDictionary.getOreName(id);
-                if (ModelSteamExosuit.findDyeStringFromOreDict(str) != null) {
-                    isArmorDyed = true;
-                    break;
-                }
+        for (int id : OreDictionary.getOreIDs(vanityStack)) {
+            String str = OreDictionary.getOreName(id);
+            if (ModelSteamExosuit.findDyeStringFromOreDict(str) != null) {
+                isArmorDyed = true;
+                break;
             }
         }
 

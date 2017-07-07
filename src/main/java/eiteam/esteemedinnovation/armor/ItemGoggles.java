@@ -12,6 +12,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
@@ -49,7 +50,7 @@ public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
     public void writeInfo(List list) {}

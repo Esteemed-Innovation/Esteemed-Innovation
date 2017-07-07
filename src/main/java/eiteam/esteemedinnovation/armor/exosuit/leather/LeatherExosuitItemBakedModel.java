@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraftforge.common.model.TRSRTransformation;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 
 public class LeatherExosuitItemBakedModel extends GenericPerspectiveAwareModel<LeatherExosuitItemModel> {
@@ -23,6 +24,7 @@ public class LeatherExosuitItemBakedModel extends GenericPerspectiveAwareModel<L
         return false;
     }
 
+    @Nonnull
     @Override
     public ItemOverrideList getOverrides() {
         return LeatherExosuitItemOverrideList.INSTANCE;

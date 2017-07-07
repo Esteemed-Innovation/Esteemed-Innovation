@@ -21,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
         }
     }
 
+    @Nonnull
     @Override
     public EnumRarity getRarity(ItemStack me) {
         if (me.hasTagCompound() && me.getTagCompound().hasKey("Flaxbeard")) {
@@ -52,6 +55,7 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
         return super.getRarity(me);
     }
 
+    @Nonnull
     @Override
     public String getUnlocalizedName(ItemStack me) {
         if (me.hasTagCompound() && me.getTagCompound().hasKey("Flaxbeard")) {
@@ -61,8 +65,8 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return par2ItemStack.isItemEqual(new ItemStack(Items.LEATHER)) || super.getIsRepairable(par1ItemStack, par2ItemStack);
+    public boolean getIsRepairable(ItemStack par1ItemStack, @Nullable ItemStack par2ItemStack) {
+        return (par2ItemStack != null && par2ItemStack.isItemEqual(new ItemStack(Items.LEATHER))) || super.getIsRepairable(par1ItemStack, par2ItemStack);
     }
 
     @Override
@@ -108,14 +112,14 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
+    public void updateModel(ModelBiped parentModel, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
     public void writeInfo(List list) {}
 
     @Override
-    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean par4) {
-        super.addInformation(me, player, list, par4);
+    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean advanced) {
+        super.addInformation(me, player, list, advanced);
         if (me.hasTagCompound() && me.getTagCompound().hasKey("NewTradesLevel")) {
             int level = me.getTagCompound().getInteger("NewTradesLevel");
             list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));

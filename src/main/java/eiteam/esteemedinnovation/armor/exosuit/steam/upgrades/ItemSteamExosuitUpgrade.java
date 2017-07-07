@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class ItemSteamExosuitUpgrade extends Item implements ExosuitUpgrade {
@@ -28,8 +29,9 @@ public class ItemSteamExosuitUpgrade extends Item implements ExosuitUpgrade {
         pri = priority;
     }
 
+    @Nonnull
     @Override
-    public EnumRarity getRarity(ItemStack p_77613_1_) {
+    public EnumRarity getRarity(ItemStack stack) {
         return EsteemedInnovation.upgrade;
     }
 
@@ -48,7 +50,7 @@ public class ItemSteamExosuitUpgrade extends Item implements ExosuitUpgrade {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
+    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {}
 
     @Override
     public void writeInfo(List<String> list) {

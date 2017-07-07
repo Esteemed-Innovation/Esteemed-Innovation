@@ -14,6 +14,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
+import javax.annotation.Nonnull;
+
 public class ItemWingsUpgrade extends ItemSteamExosuitUpgrade {
     public ItemWingsUpgrade() {
         super(ExosuitSlot.BODY_FRONT, "", "", 0);
@@ -40,7 +42,7 @@ public class ItemWingsUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
+    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
         int ticks = getTicks(entityLivingBase);
         float expansion = (float) (0.1F + (Math.sin(Math.toRadians(ticks * (20.0F / 15.0F) * 4.5F))) * 0.8F);
 
@@ -58,7 +60,7 @@ public class ItemWingsUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (player.fallDistance > 1.5F && !player.isSneaking()) {
             player.fallDistance = 1.5F;
             player.motionY = Math.max(player.motionY, -0.1F);

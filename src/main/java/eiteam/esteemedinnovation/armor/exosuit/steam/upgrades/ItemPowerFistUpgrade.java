@@ -13,6 +13,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
@@ -21,10 +23,10 @@ public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer attacker, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer attacker, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         boolean hasPower = ChargableUtility.hasPower(attacker, Config.powerFistConsumption);
         ItemStack stack = attacker.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        if (hasPower && attacker.getHeldItemMainhand() == null) {
+        if (hasPower && attacker.getHeldItemMainhand().isEmpty()) {
             Entity victim = event.getEntity();
             World world = victim.world;
             world.playSound(victim.posX, victim.posY, victim.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,

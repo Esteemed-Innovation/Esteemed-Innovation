@@ -19,6 +19,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
@@ -30,7 +32,7 @@ public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (player.onGround && armorStack.hasTagCompound()) {
             armorStack.getTagCompound().setBoolean("HasUsedDoubleJump", false);
         }
@@ -39,7 +41,7 @@ public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
     @Override
     public boolean isInstalled(EntityLivingBase entity) {
         ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        return super.isInstalled(entity) && chest != null && chest.getItem() instanceof SteamChargable;
+        return super.isInstalled(entity) && chest.getItem() instanceof SteamChargable;
     }
 
     public class EventHandler {

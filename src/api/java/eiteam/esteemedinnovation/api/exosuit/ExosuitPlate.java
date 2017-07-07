@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nonnull;
+
 public class ExosuitPlate implements ExosuitEventHandler {
     private String identifier;
     private String invMod;
@@ -72,7 +74,7 @@ public class ExosuitPlate implements ExosuitEventHandler {
     /**
      * @see ExosuitUpgrade#getAttributeModifiersForExosuit(EntityEquipmentSlot, ItemStack)
      */
-    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, ItemStack armorPieceStack) {
+    public Multimap<String, AttributeModifier> getAttributeModifiersForExosuit(EntityEquipmentSlot armorSlot, @Nonnull ItemStack armorPieceStack) {
         return HashMultimap.create();
     }
 }

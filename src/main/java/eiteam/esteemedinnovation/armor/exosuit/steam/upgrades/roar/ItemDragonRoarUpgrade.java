@@ -17,6 +17,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
+import javax.annotation.Nonnull;
+
 public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
     public ItemDragonRoarUpgrade() {
         super(ExosuitSlot.HEAD_GOGGLES, "", null, 0);
@@ -28,7 +30,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerAttacksOther(LivingAttackEvent event, EntityPlayer victim, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         // Explosions must be ignored in order to prevent infinite recursive hearMeRoar calls.
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getTrueSource();
@@ -36,7 +38,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
             EntityLivingBase entity = (EntityLivingBase) sourceEntity;
             World world = entity.world;
             ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (entity.getHeldItemMainhand() == null && entity.isSneaking() && chest != null &&
+            if (entity.getHeldItemMainhand().isEmpty() && entity.isSneaking() &&
               chest.getItem() instanceof ItemSteamExosuitArmor && chest.hasTagCompound()) {
                 int consumption = (chest.getTagCompound().getInteger("SteamCapacity") / 2) + Config.dragonRoarConsumption;
                 if (ChargableUtility.hasPower(entity, consumption)) {

@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
@@ -17,7 +19,7 @@ public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerJump(LivingEvent.LivingJumpEvent event, EntityPlayer jumper, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerJump(LivingEvent.LivingJumpEvent event, EntityPlayer jumper, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         boolean shiftJump = jumper.isSneaking() && ChargableUtility.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
 
         if (shiftJump || ChargableUtility.hasPower(jumper, Config.jumpBoostConsumption)) {

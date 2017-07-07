@@ -6,16 +6,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
+import javax.annotation.Nonnull;
+
 public class VillagerDataSerializer implements ICapabilitySerializable<NBTTagByte> {
     VillagerData instance = ArmorModule.VILLAGER_DATA.getDefaultInstance();
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
         return capability == ArmorModule.VILLAGER_DATA;
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
         return hasCapability(capability, facing) ? ArmorModule.VILLAGER_DATA.<T>cast(instance) : null;
     }
 

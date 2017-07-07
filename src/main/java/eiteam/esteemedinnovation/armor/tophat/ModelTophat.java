@@ -10,6 +10,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class ModelTophat extends ModelBiped {
     private ModelRenderer tophatBase;
     private ModelRenderer tophatHat;
@@ -27,9 +29,9 @@ public class ModelTophat extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(@Nullable Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
-        if (entity.isSneaking()) {
+        if (entity != null && entity.isSneaking()) {
             GlStateManager.translate(0, 0.2F, 0);
         }
         bipedHead.render(scale);
@@ -48,15 +50,17 @@ public class ModelTophat extends ModelBiped {
             level -= 8;
             itemStack = new ItemStack(Blocks.EMERALD_BLOCK);
         }
-        for (int i = 0; i < level; i++) {
-            GlStateManager.pushMatrix();
-            EntityItem item = new EntityItem(entity.world, 0.0F, 0.0F, 0.0F, itemStack);
-            item.hoverStart = 0.0F;
-            GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 10.0D) % 360 + (360F / level) * i, 0, 1, 0);
-            GlStateManager.translate(0.75F, 0.0F, 0.0F);
-            GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 11D) % 360, 0, 1, 0);
-            Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().player.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F, true);
-            GlStateManager.popMatrix();
+        if (entity != null) {
+            for (int i = 0; i < level; i++) {
+                GlStateManager.pushMatrix();
+                EntityItem item = new EntityItem(entity.world, 0.0F, 0.0F, 0.0F, itemStack);
+                item.hoverStart = 0.0F;
+                GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 10.0D) % 360 + (360F / level) * i, 0, 1, 0);
+                GlStateManager.translate(0.75F, 0.0F, 0.0F);
+                GlStateManager.rotate((float) (Minecraft.getMinecraft().player.ticksExisted * 11D) % 360, 0, 1, 0);
+                Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0.0D, -1.0D + 0.25F * Math.sin(Math.toRadians((Minecraft.getMinecraft().player.ticksExisted * 5) % 360) + (360F / level) * i), 0.0D, 0.0F, 0.0F, true);
+                GlStateManager.popMatrix();
+            }
         }
         GlStateManager.popMatrix();
     }

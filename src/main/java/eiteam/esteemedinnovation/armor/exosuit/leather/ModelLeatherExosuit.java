@@ -77,7 +77,7 @@ public class ModelLeatherExosuit extends ModelBiped implements ModelExosuit {
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(@Nullable Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         if (plateOverlay != null) {
             Minecraft.getMinecraft().renderEngine.bindTexture(plateOverlay);
@@ -88,7 +88,7 @@ public class ModelLeatherExosuit extends ModelBiped implements ModelExosuit {
         copyRotateAngles(pauldronLeft, bipedLeftArm);
         copyRotateAngles(pauldronRight, bipedRightArm);
         copyRotateAngles(breastPlate, bipedBody);
-        if (entity.isSneaking()) {
+        if (entity != null && entity.isSneaking()) {
             // Taken from ModelBiped#render.
             GlStateManager.translate(0, 0.2F, 0);
         }
@@ -123,13 +123,11 @@ public class ModelLeatherExosuit extends ModelBiped implements ModelExosuit {
     @Override
     public void updateModel(EntityLivingBase entityLivingBase, ItemStack itemStack, EntityEquipmentSlot slot) {
         ItemStack stack = ((Engineerable) itemStack.getItem()).getStackInSlot(itemStack, 0);
-        if (stack != null) {
-            ExosuitPlate plate = UtilPlates.getPlate(stack);
-            if (plate != null) {
-                plateOverlay = new ResourceLocation(MODEL_TEXTURE.getResourceDomain(),
-                  MODEL_TEXTURE.getResourcePath().replace(".png", "_" + plate.getArmorMod() + ".png"));
-                return;
-            }
+        ExosuitPlate plate = UtilPlates.getPlate(stack);
+        if (plate != null) {
+            plateOverlay = new ResourceLocation(MODEL_TEXTURE.getResourceDomain(),
+              MODEL_TEXTURE.getResourcePath().replace(".png", "_" + plate.getArmorMod() + ".png"));
+            return;
         }
         plateOverlay = null;
     }

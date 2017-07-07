@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
@@ -19,7 +21,7 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (ChargableUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
 

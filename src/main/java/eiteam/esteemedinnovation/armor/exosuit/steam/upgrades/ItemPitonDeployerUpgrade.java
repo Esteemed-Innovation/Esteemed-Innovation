@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
@@ -27,7 +28,7 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (armorStack.hasTagCompound()) {
             NBTTagCompound compound = armorStack.getTagCompound();
             if (compound.hasKey("IsGrappled") && compound.getBoolean("IsGrappled")) {
@@ -52,7 +53,7 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         BlockPos pos = event.getPos();
         int x = pos.getX();
         int y = pos.getY();
@@ -100,7 +101,7 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerTick(TickEvent.PlayerTickEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerTick(TickEvent.PlayerTickEvent event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         boolean isJumping = false;
         try {
             isJumping = ReflectionHelper.getIsEntityJumping(event.player);

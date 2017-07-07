@@ -6,14 +6,12 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class ItemSteamExosuitColorHandler implements IItemColor {
     @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-        if (stack == null) {
-            return -1;
-        }
+    public int getColorFromItemstack(@Nonnull ItemStack stack, int tintIndex) {
         Item item = stack.getItem();
         if (!(item instanceof ItemSteamExosuitArmor)) {
             return -1;
@@ -21,7 +19,7 @@ public class ItemSteamExosuitColorHandler implements IItemColor {
         ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) item;
 
         ItemStack vanity = armor.getStackInSlot(stack, 2);
-        if (vanity != null && (tintIndex == 1 || (tintIndex > 1 && !stack.getTagCompound().hasKey("Plate")))) {
+        if (!vanity.isEmpty() && (tintIndex == 1 || (tintIndex > 1 && !stack.getTagCompound().hasKey("Plate")))) {
             int dye = ModelSteamExosuit.findDyeIndexFromItemStack(vanity);
             if (dye != -1) {
                 float[] color = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(dye));

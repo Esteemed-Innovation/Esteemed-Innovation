@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 
@@ -18,7 +20,7 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerPickupItem(EntityItemPickupEvent event, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerPickupItem(EntityItemPickupEvent event, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
         if (player.world.isRemote) {
             return;
@@ -40,7 +42,7 @@ public class ItemCanningMachineUpgrade extends ItemSteamExosuitUpgrade {
             int numCans = 0;
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-                if (stackInSlot != null && stackInSlot.getItem() == ITEM_CANISTER) {
+                if (stackInSlot.getItem() == ITEM_CANISTER) {
                     numCans += stackInSlot.getCount();
                 }
             }

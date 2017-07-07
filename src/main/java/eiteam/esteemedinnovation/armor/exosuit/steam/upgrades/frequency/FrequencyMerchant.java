@@ -22,6 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 import static eiteam.esteemedinnovation.firearms.FirearmModule.MUSKET_CARTRIDGE;
@@ -49,18 +50,20 @@ public class FrequencyMerchant implements IMerchant {
         merchantName = name;
         stock = data.getStock();
     }
+
     @Override
-    public void setCustomer(EntityPlayer player) {
+    public void setCustomer(@Nonnull EntityPlayer player) {
         customer = player;
     }
 
+    @Nonnull
     @Override
     public EntityPlayer getCustomer() {
         return customer;
     }
 
     @Override
-    public MerchantRecipeList getRecipes(EntityPlayer player) {
+    public MerchantRecipeList getRecipes(@Nonnull EntityPlayer player) {
         if (existingList != null) {
             return existingList;
         }
@@ -146,7 +149,7 @@ public class FrequencyMerchant implements IMerchant {
 
         for (Pair<ItemStack, Integer> saleItem : saleItems) {
             ItemStack stack = saleItem.getLeft();
-            if (stack != null && stack.getItem() != null) {
+            if (!stack.isEmpty()) {
                 ItemStack currency = currencies.get(random.nextInt(currencies.size()));
                 int multiplier = saleItem.getRight();
                 ItemStack cost = currency.copy();
@@ -168,7 +171,7 @@ public class FrequencyMerchant implements IMerchant {
     }
 
     @Override
-    public void useRecipe(MerchantRecipe recipe) {
+    public void useRecipe(@Nonnull MerchantRecipe recipe) {
         if (entity != null && entity.isEntityAlive() && !entity.world.isRemote) {
             recipe.incrementToolUses();
             if (existingList != null) {
@@ -184,20 +187,23 @@ public class FrequencyMerchant implements IMerchant {
     }
 
     @Override
-    public void verifySellingItem(ItemStack stack) {
+    public void verifySellingItem(@Nonnull ItemStack stack) {
         entity.playLivingSound();
     }
 
+    @Nonnull
     @Override
     public ITextComponent getDisplayName() {
         return new TextComponentString(merchantName);
     }
 
+    @Nonnull
     @Override
     public World getWorld() {
         return customer.world;
     }
 
+    @Nonnull
     @Override
     public BlockPos getPos() {
         return new BlockPos(customer);

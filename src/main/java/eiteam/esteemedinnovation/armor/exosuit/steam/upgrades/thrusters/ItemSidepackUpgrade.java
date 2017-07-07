@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import javax.vecmath.Vector2d;
 
 public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
@@ -42,7 +43,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
+    public void updateModel(ModelBiped modelBiped, EntityLivingBase entityLivingBase, @Nonnull ItemStack itemStack, ModelExosuitUpgrade modelExosuitUpgrade) {
         Vector2d vector = new Vector2d(entityLivingBase.motionX, entityLivingBase.motionZ);
 
         if (entityLivingBase instanceof EntityPlayer && EntityHelper.hasEntityMoved(entityLivingBase)) {
@@ -59,7 +60,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
     }
 
     @Override
-    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event, EntityPlayer player, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         if (ChargableUtility.hasPower(player, 1)) {
             PlayerData data = player.getCapability(EsteemedInnovation.PLAYER_DATA, null);
             if (data.getLastMotions() == null) {
@@ -70,15 +71,13 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
               !player.onGround && isPlayerNotInWaterOrFlying(player)) {
                 player.move(MoverType.SELF, player.motionX, 0, player.motionZ);
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                if (chestStack != null) {
-                    Item chestItem = chestStack.getItem();
-                    if (chestItem instanceof ExosuitArmor && chestItem instanceof SteamChargable) {
-                        if (!chestStack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
-                            chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
-                        }
-                        if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
-                            ((SteamChargable) chestItem).drainSteam(chestStack, Config.thrusterConsumption, player);
-                        }
+                Item chestItem = chestStack.getItem();
+                if (chestItem instanceof ExosuitArmor && chestItem instanceof SteamChargable) {
+                    if (!chestStack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
+                        chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
+                    }
+                    if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
+                        ((SteamChargable) chestItem).drainSteam(chestStack, Config.thrusterConsumption, player);
                     }
                 }
             }

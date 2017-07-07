@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.SimpleModelState;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,9 @@ public class LeatherExosuitItemOverrideList extends ItemOverrideList {
         super(ImmutableList.of());
     }
 
+    @Nonnull
     @Override
-    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    public IBakedModel handleItemState(@Nonnull IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
         ItemLeatherExosuitArmor armor = (ItemLeatherExosuitArmor) stack.getItem();
 
         List<ResourceLocation> locations = new ArrayList<>();

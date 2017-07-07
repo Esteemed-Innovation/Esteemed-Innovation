@@ -29,6 +29,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+    public boolean getIsRepairable(ItemStack toRepair, @Nullable ItemStack repair) {
         return false;
     }
 
@@ -76,7 +77,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
         if (armor.hasTagCompound()) {
             if (armor.getTagCompound().hasKey("Plate")) {
                 ExosuitPlate plate = UtilPlates.getPlate(armor.getTagCompound().getString("Plate"));
@@ -105,7 +106,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+    public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
         if (armor.hasTagCompound()) {
             if (armor.getTagCompound().hasKey("Plate")) {
                 ExosuitPlate plate = UtilPlates.getPlate(armor.getTagCompound().getString("Plate"));
@@ -116,7 +117,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
+    public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
         if (armorType == EntityEquipmentSlot.CHEST) {
             drainSteam(stack, damage * 40, entity);
         }
@@ -167,7 +168,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     public boolean hasPlates(ItemStack me) {
-        if (getStackInSlot(me, 1) != null) {
+        if (!getStackInSlot(me, 1).isEmpty()) {
             if (!me.hasTagCompound()) {
                 me.setTagCompound(new NBTTagCompound());
             }
@@ -190,8 +191,8 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean hasUpgrade(ItemStack me, Item check) {
-        if (me != null && check != null && me.hasTagCompound() && me.getTagCompound().hasKey("Upgrades")) {
+    public boolean hasUpgrade(@Nonnull ItemStack me, Item check) {
+        if (check != null && me.hasTagCompound() && me.getTagCompound().hasKey("Upgrades")) {
             for (int i = 1; i < 10; i++) {
                 if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
                     ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
@@ -204,8 +205,9 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         return false;
     }
 
+    @Nonnull
     @Override
-    public ItemStack getStackInSlot(ItemStack me, int var1) {
+    public ItemStack getStackInSlot(@Nonnull ItemStack me, int var1) {
         if (me.hasTagCompound()) {
             if (me.getTagCompound().hasKey("Upgrades")) {
                 if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(var1))) {
@@ -213,11 +215,11 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public void setInventorySlotContents(ItemStack me, int var1, ItemStack stack) {
+    public void setInventorySlotContents(@Nonnull ItemStack me, int var1, @Nonnull ItemStack stack) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
@@ -228,52 +230,47 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             me.getTagCompound().getCompoundTag("Upgrades").removeTag(Integer.toString(var1));
         }
         NBTTagCompound stc = new NBTTagCompound();
-        if (stack != null) {
-            stack.writeToNBT(stc);
-            me.getTagCompound().getCompoundTag("Upgrades").setTag(Integer.toString(var1), stc);
-            if (var1 == 5 && armorType == EntityEquipmentSlot.CHEST) {
-                me.getTagCompound().setInteger("SteamStored", 0);
-                me.getTagCompound().setInteger("SteamCapacity", ((ExosuitTank) stack.getItem()).getStorage(me));
-                if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
-                    me.getTagCompound().setInteger("SteamStored", me.getTagCompound().getInteger("SteamCapacity"));
-                }
+        stack.writeToNBT(stc);
+        me.getTagCompound().getCompoundTag("Upgrades").setTag(Integer.toString(var1), stc);
+        if (var1 == 5 && armorType == EntityEquipmentSlot.CHEST) {
+            me.getTagCompound().setInteger("SteamStored", 0);
+            me.getTagCompound().setInteger("SteamCapacity", ((ExosuitTank) stack.getItem()).getStorage(me));
+            if (stack.getItem() instanceof BlockTankItem && stack.getItemDamage() == 1) {
+                me.getTagCompound().setInteger("SteamStored", me.getTagCompound().getInteger("SteamCapacity"));
             }
         }
         hasPlates(me);
     }
 
     @Override
-    public boolean isItemValidForSlot(ItemStack me, int var1, ItemStack var2) {
+    public boolean isItemValidForSlot(@Nonnull ItemStack me, int var1, @Nonnull ItemStack var2) {
         return true;
     }
 
+    @Nonnull
     @Override
-    public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
-        if (getStackInSlot(me, var1) != null) {
-            ItemStack itemstack;
-            if (getStackInSlot(me, var1).getCount() <= var2) {
-                itemstack = getStackInSlot(me, var1);
-                setInventorySlotContents(me, var1, null);
-                hasPlates(me);
-                return itemstack;
-            } else {
-                ItemStack stack2 = getStackInSlot(me, var1);
-                itemstack = stack2.splitStack(var2);
-                setInventorySlotContents(me, var1, stack2);
-
-                if (getStackInSlot(me, var1).isEmpty()) {
-                    setInventorySlotContents(me, var1, null);
-                }
-                hasPlates(me);
-                return itemstack;
-            }
+    public ItemStack decrStackSize(@Nonnull ItemStack me, int var1, int var2) {
+        ItemStack itemstack;
+        if (getStackInSlot(me, var1).getCount() <= var2) {
+            itemstack = getStackInSlot(me, var1);
+            setInventorySlotContents(me, var1, ItemStack.EMPTY);
+            hasPlates(me);
+            return itemstack;
         } else {
-            return null;
+            ItemStack stack2 = getStackInSlot(me, var1);
+            itemstack = stack2.splitStack(var2);
+            setInventorySlotContents(me, var1, stack2);
+
+            if (getStackInSlot(me, var1).isEmpty()) {
+                setInventorySlotContents(me, var1, ItemStack.EMPTY);
+            }
+            hasPlates(me);
+            return itemstack;
         }
     }
 
     @Override
-    public boolean canPutInSlot(ItemStack me, int slotNum, ItemStack upgrade) {
+    public boolean canPutInSlot(@Nonnull ItemStack me, int slotNum, @Nonnull ItemStack upgrade) {
         if (slotNum == 0) {
             ItemStack clone = upgrade.copy();
             clone.setCount(1);
@@ -313,7 +310,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean hasPower(ItemStack me, int powerNeeded) {
+    public boolean hasPower(@Nonnull ItemStack me, int powerNeeded) {
         if (armorType == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
             if (me.getTagCompound().getInteger("SteamStored") > powerNeeded) {
@@ -324,7 +321,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean needsPower(ItemStack me, int powerNeeded) {
+    public boolean needsPower(@Nonnull ItemStack me, int powerNeeded) {
         if (armorType == EntityEquipmentSlot.CHEST) {
             updateSteamNBT(me);
             if (me.getTagCompound().getInteger("SteamStored") + powerNeeded < me.getTagCompound().getInteger("SteamCapacity")) {
@@ -353,7 +350,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
             String s = Integer.toString(i);
             if (inv.hasKey(s)) {
                 ItemStack stack = new ItemStack(inv.getCompoundTag(s));
-                if (stack != null && stack.getItem() != null && stack.getItem() instanceof ExosuitTank) {
+                if (stack.getItem() instanceof ExosuitTank) {
                     return true;
                 }
             }
@@ -363,7 +360,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     @Nonnull
-    public ExosuitUpgrade[] getUpgrades(ItemStack me) {
+    public ExosuitUpgrade[] getUpgrades(@Nonnull ItemStack me) {
         ArrayList<ExosuitUpgrade> upgrades = new ArrayList<>();
         if (me.hasTagCompound()) {
             if (me.getTagCompound().hasKey("Upgrades")) {
@@ -447,10 +444,10 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean canCharge(ItemStack stack) {
+    public boolean canCharge(@Nonnull ItemStack stack) {
         if (armorType == EntityEquipmentSlot.CHEST) {
             ItemSteamExosuitArmor item = (ItemSteamExosuitArmor) stack.getItem();
-            if (item.getStackInSlot(stack, 5) != null && item.getStackInSlot(stack, 5).getItem() instanceof ExosuitTank) {
+            if (item.getStackInSlot(stack, 5).getItem() instanceof ExosuitTank) {
                 ExosuitTank tank = (ExosuitTank) item.getStackInSlot(stack, 5).getItem();
                 return tank.canFill(stack);
             }
@@ -459,7 +456,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean addSteam(ItemStack me, int amount, EntityLivingBase player) {
+    public boolean addSteam(@Nonnull ItemStack me, int amount, EntityLivingBase player) {
         int curSteam = me.getTagCompound().getInteger("SteamStored");
         if (needsPower(me, amount)) {
             me.getTagCompound().setInteger("SteamStored", curSteam + amount);
@@ -469,8 +466,8 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    public boolean drainSteam(ItemStack me, int amountToDrain, EntityLivingBase entity) {
-        if (me != null) {
+    public boolean drainSteam(@Nonnull ItemStack me, int amountToDrain, EntityLivingBase entity) {
+        if (!me.isEmpty()) {
             if (me.getTagCompound() == null) {
                 me.setTagCompound(new NBTTagCompound());
             }
@@ -485,8 +482,9 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         return false;
     }
 
+    @Nonnull
     @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot armorSlot, ItemStack stack) {
+    public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot armorSlot, ItemStack stack) {
         Multimap<String, AttributeModifier> map = HashMultimap.create();
 
         ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) stack.getItem();
@@ -557,7 +555,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Nonnull
     @Override
-    public ExosuitEventHandler[] getInstalledEventHandlers(ItemStack self) {
+    public ExosuitEventHandler[] getInstalledEventHandlers(@Nonnull ItemStack self) {
         List<ExosuitEventHandler> handlers = new ArrayList<>(Arrays.asList(getUpgrades(self)));
         if (self.hasTagCompound() && self.getTagCompound().hasKey("Plate")) {
             handlers.add(UtilPlates.getPlate(self.getTagCompound().getString("Plate")));

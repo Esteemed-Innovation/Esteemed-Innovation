@@ -18,6 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.materials.MaterialsModule.METAL_PLATE;
@@ -31,7 +32,7 @@ public class ExosuitPlateZinc extends ExosuitPlate {
       DamageSource.DROWN, DamageSource.OUT_OF_WORLD, DamageSource.STARVE, DamageSource.WITHER);
 
     @Override
-    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, ItemStack armorStack, EntityEquipmentSlot slot) {
+    public void onPlayerHurt(LivingHurtEvent event, EntityPlayer victim, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
         EntityLivingBase entity = event.getEntityLiving();
         float amount = event.getAmount();
 
