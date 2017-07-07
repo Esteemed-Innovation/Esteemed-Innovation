@@ -320,7 +320,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
 
     @Nonnull
     @Override
-    public World getWorld() {
+    public World getWorldObj() {
         return world;
     }
 
