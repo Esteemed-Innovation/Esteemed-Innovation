@@ -58,8 +58,7 @@ public class GuiBoiler extends GuiContainer {
         drawFluid(new FluidStack(FluidHelper.getWaterFluid(), 1), (int) (fill * 58.0F), k + 81, l + 14, 16, 58, false);
         mc.getTextureManager().bindTexture(BOILER_TEXTURES);
         drawTexturedModalRect(k + 80, l + 13, 190, 0, 18, 60);
-        fill = tileEntity.getPressure();
-        fill = Math.min(fill, 1.0F);
+        fill = Math.min(tileEntity.getPressure(), 1F);
         FluidStack stack = new FluidStack(FluidHelper.getWaterFluid(), 1);
         if (FluidRegistry.isFluidRegistered("steam")) {
             stack = new FluidStack(FluidRegistry.getFluid("steam"), 1);
@@ -83,8 +82,6 @@ public class GuiBoiler extends GuiContainer {
 //        RenderUtils.setGLColorFromInt(fluid.getFluid().getColor(fluid));
         int fullX = width / 16;
         int fullY = height / 16;
-        int lastX = width - fullX * 16;
-        int lastY = height - fullY * 16;
         int fullLvl = (height - level) / 16;
         int lastLvl = (height - level) - fullLvl * 16;
         for (int i = 0; i < fullX; i++) {
@@ -94,9 +91,11 @@ public class GuiBoiler extends GuiContainer {
                 }
             }
         }
+        int lastY = height - fullY * 16;
         for (int i = 0; i < fullX; i++) {
             drawCutIcon(icon, x + i * 16, y + fullY * 16, 16, lastY, fullLvl == fullY ? lastLvl : 0);
         }
+        int lastX = width - fullX * 16;
         for (int i = 0; i < fullY; i++) {
             if (i >= fullLvl) {
                 drawCutIcon(icon, x + fullX * 16, y + i * 16, lastX, 16, i == fullLvl ? lastLvl : 0);

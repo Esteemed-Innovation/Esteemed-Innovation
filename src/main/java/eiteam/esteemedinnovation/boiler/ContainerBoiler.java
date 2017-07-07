@@ -12,6 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ContainerBoiler extends Container {
     private TileEntityBoiler tileEntity;
     private int lastCookTime;
@@ -41,9 +43,9 @@ public class ContainerBoiler extends Container {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendWindowProperty(this, 0, tileEntity.furnaceCookTime);
-        listener.sendWindowProperty(this, 1, tileEntity.furnaceBurnTime);
-        listener.sendWindowProperty(this, 2, TileEntityBoiler.getItemBurnTime(null));
+        listener.sendWindowProperty(this, 0, tileEntity.cookTime);
+        listener.sendWindowProperty(this, 1, tileEntity.burnTime);
+        listener.sendWindowProperty(this, 2, TileEntityBoiler.getItemBurnTime(ItemStack.EMPTY));
         listener.sendWindowProperty(this, 3, (int) Math.floor((double) tileEntity.getPressure() * 1000));
     }
 
@@ -52,12 +54,12 @@ public class ContainerBoiler extends Container {
         super.detectAndSendChanges();
 
         for (IContainerListener listener : listeners) {
-            if (lastCookTime != tileEntity.furnaceCookTime) {
-                listener.sendWindowProperty(this, 0, tileEntity.furnaceCookTime);
+            if (lastCookTime != tileEntity.cookTime) {
+                listener.sendWindowProperty(this, 0, tileEntity.cookTime);
             }
 
-            if (lastBurnTime != tileEntity.furnaceBurnTime) {
-                listener.sendWindowProperty(this, 1, tileEntity.furnaceBurnTime);
+            if (lastBurnTime != tileEntity.burnTime) {
+                listener.sendWindowProperty(this, 1, tileEntity.burnTime);
             }
 
             if (lastItemBurnTime != tileEntity.currentItemBurnTime) {
@@ -73,8 +75,8 @@ public class ContainerBoiler extends Container {
             }
         }
 
-        lastCookTime = tileEntity.furnaceCookTime;
-        lastBurnTime = tileEntity.furnaceBurnTime;
+        lastCookTime = tileEntity.cookTime;
+        lastBurnTime = tileEntity.burnTime;
         lastItemBurnTime = tileEntity.currentItemBurnTime;
         lastPressure = tileEntity.getPressureAsInt();
         lastWater = tileEntity.getTank().getFluidAmount();
@@ -84,11 +86,11 @@ public class ContainerBoiler extends Container {
     @Override
     public void updateProgressBar(int id, int data) {
         if (id == 0) {
-            tileEntity.furnaceCookTime = data;
+            tileEntity.cookTime = data;
         }
 
         if (id == 1) {
-            tileEntity.furnaceBurnTime = data;
+            tileEntity.burnTime = data;
         }
 
         if (id == 2) {
@@ -109,13 +111,14 @@ public class ContainerBoiler extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+    public boolean canInteractWith(@Nonnull EntityPlayer par1EntityPlayer) {
         return tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
+    @Nonnull
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack()) {
@@ -123,35 +126,35 @@ public class ContainerBoiler extends Container {
             itemstack = itemstack1.copy();
 
             if (index == 2) {
-                return null;
+                return ItemStack.EMPTY;
             } else if (index != 1 && index != 0) {
                 if (FluidHelper.itemStackIsWaterContainer(itemstack1)) {
                     if (!mergeItemStack(itemstack1, 0, 1, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (TileEntityFurnace.isItemFuel(itemstack1)) {
                     if (!mergeItemStack(itemstack1, 1, 2, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 2 && index < 30) {
                     if (!mergeItemStack(itemstack1, 30, 38, false)) {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 } else if (index >= 30 && index < 39 && !mergeItemStack(itemstack1, 3, 30, false)) {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (!mergeItemStack(itemstack1, 3, 38, false)) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(null);
+                slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             slot.onTake(player, itemstack1);

@@ -14,13 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -35,17 +36,20 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class TileEntityBoiler extends SteamTransporterTileEntity implements ISidedInventory, Wrenchable, DisguisableBlock {
-    private static final int[] slotsTop = new int[]{0, 1};
-    private static final int[] slotsBottom = new int[]{0, 1};
-    private static final int[] slotsSides = new int[]{0, 1};
+    private static final int[] slotsTop = {0, 1};
+    private static final int[] slotsBottom = {0, 1};
+    private static final int[] slotsSides = {0, 1};
     public FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
-    public int furnaceCookTime;
-    public int furnaceBurnTime;
+    public int cookTime;
+    public int burnTime;
     public int currentItemBurnTime;
-    public Block disguiseBlock = null;
-    public int disguiseMeta = 0;
-    private ItemStack[] furnaceItemStacks = new ItemStack[2];
+    public Block disguiseBlock;
+    public int disguiseMeta;
+    @Nonnull
+    private NonNullList<ItemStack> itemContents = NonNullList.withSize(2, ItemStack.EMPTY);
     private String customName;
     private boolean wasBurning;
 
@@ -59,8 +63,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         this(50000);
     }
 
-    public static int getItemBurnTime(ItemStack stack) {
-        if (stack == null) {
+    public static int getItemBurnTime(@Nonnull ItemStack stack) {
+        if (stack.isEmpty()) {
             return 0;
         }
         Item item = stack.getItem();
@@ -81,13 +85,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             }
         }
 
-        if (item instanceof ItemTool && ((ItemTool) item).getToolMaterialName().equals("WOOD")) {
+        if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
             return 200;
         }
-        if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD")) {
+        if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
             return 200;
         }
-        if (item instanceof ItemHoe && ((ItemHoe) item).getMaterialName().equals("WOOD")) {
+        if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
             return 200;
         }
         if (OreDictHelper.listHasItem(OreDictHelper.sticks, item)) {
@@ -112,8 +116,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound access = super.getUpdateTag();
         access.setInteger("WaterStored", myTank.getFluidAmount());
-        access.setShort("BurnTime", (short) furnaceBurnTime);
-        access.setShort("CookTime", (short) furnaceCookTime);
+        access.setShort("BurnTime", (short) burnTime);
+        access.setShort("CookTime", (short) cookTime);
         access.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         access.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
         access.setInteger("DisguiseMetadata", disguiseMeta);
@@ -126,31 +130,21 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
         myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), access.getInteger("WaterStored")));
-        furnaceBurnTime = access.getShort("BurnTime");
+        burnTime = access.getShort("BurnTime");
         currentItemBurnTime = access.getShort("CurrentItemBurnTime");
-        furnaceCookTime = access.getShort("CookTime");
+        cookTime = access.getShort("CookTime");
         disguiseBlock = Block.getBlockById(access.getInteger("DisguiseBlock"));
         disguiseMeta = access.getInteger("DisguiseMetadata");
-        super.markForResync();
+        markForResync();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        NBTTagList nbttaglist = (NBTTagList) nbt.getTag("Items");
-        furnaceItemStacks = new ItemStack[2];
+        ItemStackHelper.loadAllItems(nbt, itemContents);
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            byte b0 = nbttagcompound1.getByte("Slot");
-
-            if (b0 >= 0 && b0 < furnaceItemStacks.length) {
-                furnaceItemStacks[b0] = new ItemStack(nbttagcompound1);
-            }
-        }
-
-        furnaceBurnTime = nbt.getShort("BurnTime");
-        furnaceCookTime = nbt.getShort("CookTime");
+        burnTime = nbt.getShort("BurnTime");
+        cookTime = nbt.getShort("CookTime");
         currentItemBurnTime = nbt.getShort("CurrentItemBurnTime");
 
         if (nbt.hasKey("CustomName")) {
@@ -164,28 +158,18 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         disguiseMeta = nbt.getInteger("DisguiseMetadata");
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setShort("BurnTime", (short) furnaceBurnTime);
+        nbt.setShort("BurnTime", (short) burnTime);
         nbt.setShort("WaterStored", (short) myTank.getFluidAmount());
-        nbt.setShort("CookTime", (short) furnaceCookTime);
+        nbt.setShort("CookTime", (short) cookTime);
         nbt.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         nbt.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
         nbt.setInteger("DisguiseMetadata", disguiseMeta);
 
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < furnaceItemStacks.length; ++i) {
-            if (furnaceItemStacks[i] != null) {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                furnaceItemStacks[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-
-        nbt.setTag("Items", nbttaglist);
+        ItemStackHelper.saveAllItems(nbt, itemContents);
 
         if (hasCustomName()) {
             nbt.setString("CustomName", customName);
@@ -217,24 +201,23 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             setInventorySlotContents(1, drainedItemStack);
         }
 
-        boolean isBurnTimeGreaterThanZero = furnaceBurnTime > 0;
-        if (furnaceBurnTime > 0) {
-            //maxThisTick = Math.min(furnaceBurnTime, 10);
-            furnaceBurnTime -= 1; //maxThisTick
+        boolean isBurnTimeGreaterThanZero = burnTime > 0;
+        if (burnTime > 0) {
+            //maxThisTick = Math.min(burnTime, 10);
+            burnTime -= 1; //maxThisTick
         }
 
 
         if (!world.isRemote) {
-            if (furnaceBurnTime == 0 && canSmelt()) {
-                currentItemBurnTime = furnaceBurnTime = getItemBurnTime(furnaceItemStacks[0]);
+            if (burnTime == 0 && canSmelt()) {
+                ItemStack stack = itemContents.get(0);
+                currentItemBurnTime = burnTime = getItemBurnTime(stack);
 
-                if (furnaceBurnTime > 0) {
-                    if (furnaceItemStacks[0] != null) {
-                        furnaceItemStacks[0].shrink(1);
-
-                        if (furnaceItemStacks[0].isEmpty()) {
-                            furnaceItemStacks[0] = furnaceItemStacks[0].getItem().getContainerItem(furnaceItemStacks[0]);
-                        }
+                if (burnTime > 0) {
+                    ItemStack container = stack.getItem().getContainerItem(stack);
+                    stack.shrink(1);
+                    if (stack.isEmpty()) {
+                        itemContents.set(0, container);
                     }
                 }
 
@@ -242,23 +225,23 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             }
 
             if (isBurning() && canSmelt() && getNetwork() != null) {
-                ++furnaceCookTime;
+                ++cookTime;
 
-                if (furnaceCookTime > 0) {
+                if (cookTime > 0) {
                     //int i = 0;
                     //while (i<maxThisTick && isBurning() && canSmelt()) {
                     getNetwork().addSteam(10);
                     myTank.drain(2, true);
                     ///i++;
                     //}
-                    furnaceCookTime = 0;
+                    cookTime = 0;
                 }
             } else {
-                furnaceCookTime = 0;
+                cookTime = 0;
             }
 
-            if (isBurnTimeGreaterThanZero != furnaceBurnTime > 0) {
-                super.markForResync();
+            if (isBurnTimeGreaterThanZero != burnTime > 0) {
+                markForResync();
             }
         }
 
@@ -275,17 +258,17 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     public boolean isBurning() {
-        return furnaceBurnTime > 0;
+        return burnTime > 0;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
             return (T) myTank;
         }
@@ -294,14 +277,14 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public int getSizeInventory() {
-        return furnaceItemStacks.length;
+        return itemContents.size();
     }
 
     @Override
     public boolean isEmpty() {
         // TODO: Rewrite this entirely
         int nonnulls = 0;
-        for (ItemStack stack : furnaceItemStacks) {
+        for (ItemStack stack : itemContents) {
             if (stack != null) {
                 nonnulls++;
             }
@@ -309,54 +292,33 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         return nonnulls == 0;
     }
 
+    @Nonnull
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return furnaceItemStacks[slot];
+        return itemContents.get(slot);
     }
 
+    @Nonnull
     @Override
-    public ItemStack decrStackSize(int par1, int par2) {
-        if (furnaceItemStacks[par1] != null) {
-            ItemStack itemstack;
-
-            if (furnaceItemStacks[par1].getCount() <= par2) {
-                itemstack = furnaceItemStacks[par1];
-                furnaceItemStacks[par1] = null;
-                return itemstack;
-            } else {
-                itemstack = furnaceItemStacks[par1].splitStack(par2);
-
-                if (furnaceItemStacks[par1].isEmpty()) {
-                    furnaceItemStacks[par1] = null;
-                }
-
-                return itemstack;
-            }
-        } else {
-            return null;
-        }
+    public ItemStack decrStackSize(int index, int count) {
+        return ItemStackHelper.getAndSplit(itemContents, index, count);
     }
 
+    @Nonnull
     @Override
     public ItemStack removeStackFromSlot(int slot) {
-        if (furnaceItemStacks[slot] != null) {
-            ItemStack itemstack = furnaceItemStacks[slot];
-            furnaceItemStacks[slot] = null;
-            return itemstack;
-        } else {
-            return null;
-        }
+        return ItemStackHelper.getAndRemove(itemContents, slot);
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-        furnaceItemStacks[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.getCount() > getInventoryStackLimit()) {
-            par2ItemStack.setCount(getInventoryStackLimit());
+    public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
+        if (stack.getCount() > getInventoryStackLimit()) {
+            stack.setCount(getInventoryStackLimit());
         }
+        itemContents.set(slot, stack);
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return hasCustomName() ? customName : "container.furnace";
@@ -364,9 +326,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public boolean hasCustomName() {
-        return customName != null && customName.length() > 0;
+        return customName != null && !customName.isEmpty();
     }
 
+    @Nonnull
     @Override
     public ITextComponent getDisplayName() {
         String name = getName();
@@ -379,27 +342,28 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return world.getTileEntity(pos) == this && player.getDistanceSq((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D) <= 64.0D;
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+        return world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {}
+    public void openInventory(@Nonnull EntityPlayer player) {}
 
     public int getPressureAsInt() {
         return (int) Math.floor((double) getPressure() * 1000);
     }
 
     @Override
-    public void closeInventory(EntityPlayer player) {}
+    public void closeInventory(@Nonnull EntityPlayer player) {}
 
     @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+    public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
         return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
     }
 
+    @Nonnull
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
         if (side == EnumFacing.DOWN) {
             return slotsBottom;
         } else {
@@ -408,27 +372,22 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
-    public boolean canInsertItem(int par1, ItemStack par2ItemStack, EnumFacing dir) {
+    public boolean canInsertItem(int par1, @Nonnull ItemStack par2ItemStack, @Nonnull EnumFacing dir) {
         return isItemValidForSlot(par1, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int par1, ItemStack par2ItemStack, EnumFacing dir) {
+    public boolean canExtractItem(int par1, @Nonnull ItemStack par2ItemStack, @Nonnull EnumFacing dir) {
         return par2ItemStack.getItem() == Items.BUCKET;
     }
 
     @SideOnly(Side.CLIENT)
-    public int getCookProgressScaled(int p_145953_1_) {
-        return furnaceCookTime * p_145953_1_ / 200;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getBurnTimeRemainingScaled(int p_145955_1_) {
+    public int getBurnTimeRemainingScaled(int pixels) {
         if (currentItemBurnTime == 0) {
             currentItemBurnTime = 200;
         }
 
-        return furnaceBurnTime * p_145955_1_ / currentItemBurnTime;
+        return burnTime * pixels / currentItemBurnTime;
     }
 
     public FluidTank getTank() {
@@ -436,26 +395,25 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
-            if (disguiseBlock != null) {
-                if (!player.capabilities.isCreativeMode) {
-                    EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock, 1, disguiseMeta));
-                    world.spawnEntity(entityItem);
-                }
-                SoundType sound = disguiseBlock.getSoundType();
-                world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F),
-                  (double) ((float) pos.getZ() + 0.5F), sound.getBreakSound(), SoundCategory.BLOCKS,
-                  (sound.getVolume() + 1F) / 2F, sound.getPitch() * 0.8F, false);
-                disguiseBlock = null;
-
-                super.markForResync();
-                return true;
+            Block disguiseBlock = getDisguiseBlock();
+            if (disguiseBlock == null) {
+                return false;
             }
-        } else {
-            return true;
+            if (!player.capabilities.isCreativeMode) {
+                EntityItem entityItem = new EntityItem(world, player.posX, player.posY, player.posZ, new ItemStack(disguiseBlock, 1, getDisguiseMeta()));
+                world.spawnEntity(entityItem);
+            }
+            SoundType sound = disguiseBlock.getSoundType(null, world, pos, player);
+            world.playSound((pos.getX() + 0.5F), (pos.getY() + 0.5F),
+              (pos.getZ() + 0.5F), sound.getBreakSound(), SoundCategory.BLOCKS,
+              (sound.getVolume() + 1F) / 2F, sound.getPitch() * 0.8F, false);
+            setDisguiseBlock(null);
+
+            markForResync();
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -482,13 +440,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public int getField(int id) {
         switch (id) {
             case 0: {
-                return furnaceBurnTime;
+                return burnTime;
             }
             case 1: {
                 return currentItemBurnTime;
             }
             case 2: {
-                return furnaceCookTime;
+                return cookTime;
             }
             case 3: {
                 return currentItemBurnTime;
@@ -503,7 +461,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     public void setField(int id, int value) {
         switch (id) {
             case 0: {
-                furnaceBurnTime = value;
+                burnTime = value;
                 break;
             }
             case 1: {
@@ -511,7 +469,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
                 break;
             }
             case 2: {
-                furnaceCookTime = value;
+                cookTime = value;
                 break;
             }
             case 3: {
@@ -527,8 +485,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public void clear() {
-        for (int i = 0; i < furnaceItemStacks.length; i++) {
-            furnaceItemStacks[i] = null;
-        }
+        itemContents.clear();
     }
 }

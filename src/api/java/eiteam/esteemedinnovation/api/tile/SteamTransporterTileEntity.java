@@ -333,6 +333,7 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
         shouldJoin = true;
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return name;

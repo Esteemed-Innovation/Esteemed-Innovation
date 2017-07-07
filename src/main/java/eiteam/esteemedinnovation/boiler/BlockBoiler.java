@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
@@ -36,6 +38,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         setResistance(10F);
     }
 
+    @Nonnull
     @Override
     public BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING, IS_ON);
@@ -46,13 +49,15 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         return state.getValue(FACING).getHorizontalIndex();
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
     }
 
+    @Nonnull
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tile = WorldHelper.getTileEntitySafely(world, pos);
         if (tile instanceof TileEntityBoiler) {
             TileEntityBoiler boiler = (TileEntityBoiler) tile;
@@ -61,13 +66,15 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         return state;
     }
 
+    @Nonnull
     @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
+    public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
         return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+    @Nonnull
     @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    public IBlockState withMirror(@Nonnull IBlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
@@ -75,20 +82,19 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile == null || !(tile instanceof TileEntityBoiler)) {
+        if (!(tile instanceof TileEntityBoiler)) {
             return;
         }
         TileEntityBoiler boiler = (TileEntityBoiler) tile;
         if (boiler.isBurning()) {
             EnumFacing facing = state.getValue(FACING);
-            float f = (float) pos.getX() + 0.5F;
-            float f1 = (float) pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
-            float f2 = (float) pos.getZ() + 0.5F;
+            float f = pos.getX() + 0.5F;
+            float f1 = pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
+            float f2 = pos.getZ() + 0.5F;
             float f3 = 0.52F;
             float f4 = rand.nextFloat() * 0.6F - 0.3F;
 
             double xCoord;
-            double yCoord = (double) f1;
             double zCoord;
 
             switch (facing) {
@@ -117,8 +123,8 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
                 }
             }
 
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xCoord, yCoord, zCoord, 0D, 0D, 0D);
-            world.spawnParticle(EnumParticleTypes.FLAME, xCoord, yCoord, zCoord, 0D, 0D, 0D);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, xCoord, f1, zCoord, 0D, 0D, 0D);
+            world.spawnParticle(EnumParticleTypes.FLAME, xCoord, f1, zCoord, 0D, 0D, 0D);
         }
     }
 
@@ -133,7 +139,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
         return new TileEntityBoiler();
     }
 
@@ -158,24 +164,26 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity != null && tileentity instanceof TileEntityBoiler) {
-            InventoryHelper.dropInventoryItems(world, pos, (TileEntityBoiler) tileentity);
+        if (tileentity instanceof TileEntityBoiler) {
+            InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
 
         super.breakBlock(world, pos, state);
     }
 
+    @Nonnull
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(@Nonnull IBlockState state, RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, EntityPlayer player) {
         return new ItemStack(BoilerModule.BOILER);
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
             return true;
-        } else if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
+        }
+        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
             WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         }
         return false;
