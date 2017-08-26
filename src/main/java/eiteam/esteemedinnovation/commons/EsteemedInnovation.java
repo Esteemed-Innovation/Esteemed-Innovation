@@ -51,7 +51,7 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.BRASS_PICKAXE;
   modid = EsteemedInnovation.MOD_ID,
   name = "Esteemed Innovation",
   version = Config.VERSION,
-  dependencies = "required-after:CodeChickenLib@[2.4.2,);required-after:Baubles;required-after:" + Constants.API_MODID
+  dependencies = "required-after:codechickenlib@[2.4.2,);required-after:baubles;required-after:" + Constants.API_MODID
 )
 public class EsteemedInnovation {
     // TODO: Migrate uses of MOD_ID to EI_MODID
