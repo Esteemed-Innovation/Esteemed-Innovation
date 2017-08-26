@@ -22,12 +22,12 @@ public final class InventoryUtility {
     /**
      * A Field for use with reflection which retrieves the {@link ContainerPlayer#player} field.
      */
-    private static final Field CONTAINERPLAYER_PLAYER_FIELD = ReflectionHelper.findField(ContainerPlayer.class, "thePlayer", "field_82862_h");
+    private static final Field CONTAINERPLAYER_PLAYER_FIELD = ReflectionHelper.findField(ContainerPlayer.class, "player", "field_82862_h");
 
     /**
      * A Field for use with reflection which retrieves the {@link SlotCrafting#player} field.
      */
-    private static final Field SLOTCRAFTING_PLAYER_FIELD = ReflectionHelper.findField(SlotCrafting.class, "thePlayer", "field_75238_b");
+    private static final Field SLOTCRAFTING_PLAYER_FIELD = ReflectionHelper.findField(SlotCrafting.class, "player", "field_75238_b");
 
     /**
      * Gets the player currently using this {@link InventoryCrafting}. This has support for the crafting inventory

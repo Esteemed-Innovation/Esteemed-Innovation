@@ -90,7 +90,7 @@ public class ReflectionHelper {
         timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
         buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
         isJumpingField = getField("isJumping", "field_70703_bu", EntityLivingBase.class);
-        createStackedBlockMethod = getMethod("createStackedBlock", "func_180643_i", Block.class, IBlockState.class);
+        createStackedBlockMethod = getMethod("getSilkTouchDrop", "func_180643_i", Block.class, IBlockState.class);
 
         setAccessible(lastBuyingPlayerField);
         setAccessible(timeUntilResetField);
