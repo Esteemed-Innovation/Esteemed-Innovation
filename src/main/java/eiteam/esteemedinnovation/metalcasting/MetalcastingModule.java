@@ -30,6 +30,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
@@ -70,13 +72,14 @@ public class MetalcastingModule extends ContentModule {
         MapGenStructureIO.registerStructureComponent(MetalcastingHutComponent.class, Constants.EI_MODID + ":metalcasting_hut");
     }
 
+    @Nonnull
     private static ItemStack findFirstOre(String ore) {
         for (ItemStack stack : OreDictionary.getOres(ore)) {
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 return stack;
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

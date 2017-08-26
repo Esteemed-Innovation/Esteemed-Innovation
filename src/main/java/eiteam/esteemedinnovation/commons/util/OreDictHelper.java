@@ -136,7 +136,7 @@ public class OreDictHelper {
         }, 3, 3);
 
         for (int i = 0; i < temporaryCraftingGrid.getSizeInventory(); i++) {
-            temporaryCraftingGrid.setInventorySlotContents(i, null);
+            temporaryCraftingGrid.setInventorySlotContents(i, ItemStack.EMPTY);
         }
 
         for (Pair<Item, Integer> log : logs) {

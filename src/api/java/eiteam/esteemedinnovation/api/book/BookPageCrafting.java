@@ -90,6 +90,8 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                 inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipe).recipeItems.toArray(new Object[((ShapelessRecipes) recipe).recipeItems.size()]));
             } else if (recipe instanceof ShapelessOreRecipe) {
                 shapeless = true;
+                ShapelessOreRecipe shapelessOreRecipe = (ShapelessOreRecipe) recipe;
+                NonNullList<Object> recipeInputs = shapelessOreRecipe.getInput();
                 for (int i = 0; i < 9; i++) {
                     Collection<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
@@ -99,11 +101,12 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapelessOreRecipe) recipe).getInput().size() > i && !((ItemStack) ((ShapelessOreRecipe) recipe).getInput().get(i)).isEmpty()) {
-                        if (((ShapelessOreRecipe) recipe).getInput().get(i) instanceof Collection) {
-                            newList.addAll((Collection) ((ShapelessOreRecipe) recipe).getInput().get(i));
+                    if (recipeInputs.size() > i) {
+                        Object inputAtIndex = recipeInputs.get(i);
+                        if (inputAtIndex instanceof Collection) {
+                            newList.addAll((Collection) inputAtIndex);
                         } else {
-                            newList.add(((ShapelessOreRecipe) recipe).getInput().get(i));
+                            newList.add(inputAtIndex);
                         }
                     }
                     inputs[i] = newList;
