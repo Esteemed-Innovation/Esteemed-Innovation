@@ -142,7 +142,7 @@ dependencies {
 //    compile ic2Version
     compile jeiVersion
     compile cclibVersion
-    debofCompile bloodmagicVersion
+    deobfCompile bloodmagicVersion
 //    These are dependent on libs which do not compile successfully.
 //    compile eioVersion
 //    compile ecoreVersion
