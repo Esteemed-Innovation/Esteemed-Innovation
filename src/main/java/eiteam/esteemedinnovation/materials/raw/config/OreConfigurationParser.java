@@ -185,6 +185,9 @@ public class OreConfigurationParser {
     /**
      * Writes the default ores ({@link #DEFAULT_ORES}) to the file ({@link #getFilename()}) using all of the write
      * methods.
+     * <br />
+     * If the file already exists, it does not write the default ores to this file and returns without modifying it at
+     * all.
      */
     private void writeDefault() throws IOException {
         File file = new File(getFilename());
