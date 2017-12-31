@@ -43,9 +43,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
         // FIXME: Z Fighting when really high above the mold.
         GlStateManager.translate(-0.5, (3.999F / 16F), -0.5);
 
-        if (mold.mold != null) {
-            renderMold(mold.mold, true);
-        }
+        renderMold(mold.mold, true);
         GlStateManager.translate(0, 0.001, 0);
         GlStateManager.popMatrix();
 
@@ -75,9 +73,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
         GlStateManager.translate(-0.5, -0.5, -0.5);
         GlStateManager.translate(0, 4 * PX, 6 * PX);
         GlStateManager.translate(0, 3.999 * PX, 0);
-        if (mold.mold != null) {
-            renderMold(mold.mold, true);
-        }
+        renderMold(mold.mold, true);
 
         GlStateManager.popMatrix();
 

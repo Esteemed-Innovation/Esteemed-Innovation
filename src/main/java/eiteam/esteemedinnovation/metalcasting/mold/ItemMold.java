@@ -11,6 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemMold extends Item implements CrucibleMold {
     public ItemMold() {
         setMaxStackSize(1);
@@ -18,23 +20,24 @@ public class ItemMold extends Item implements CrucibleMold {
     }
 
     @Override
-    public ResourceLocation getBlockTexture(ItemStack moldStack) {
+    public ResourceLocation getBlockTexture(@Nonnull ItemStack moldStack) {
         return Type.getFromMeta(moldStack.getItemDamage()).getBlockTexture();
     }
 
     @Override
-    public int getCostToMold(CrucibleLiquid liquid, ItemStack moldStack) {
+    public int getCostToMold(CrucibleLiquid liquid, @Nonnull ItemStack moldStack) {
         return Type.getFromMeta(moldStack.getItemDamage()).getCostToMold();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
+    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
         for (Type type : Type.LOOKUP) {
             subItems.add(new ItemStack(this, 1, type.ordinal()));
         }
     }
 
+    @Nonnull
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return getUnlocalizedName() + "." + Type.getFromMeta(stack.getItemDamage()).name().toLowerCase();

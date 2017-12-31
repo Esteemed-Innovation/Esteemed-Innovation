@@ -97,40 +97,30 @@ public class BlockMold extends Block implements Wrenchable {
             return false;
         }
         ItemStack heldItem = player.getHeldItem(hand);
-        boolean editingMold = false;
-        if (heldItem != null) {
-            if (heldItem.getItem() instanceof CrucibleMold) {
-                editingMold = true;
-            }
-        }
-        if (player.isSneaking()) {
-            editingMold = true;
-        }
+        boolean editingMold = heldItem.getItem() instanceof CrucibleMold || player.isSneaking();
         if (editingMold) {
             if (tile.isOpen) {
-                if (tile.mold != null) {
+                if (!tile.mold.isEmpty()) {
                     if (!world.isRemote) {
                         if (!player.capabilities.isCreativeMode) {
                             tile.dropItem(tile.mold);
                         }
                     }
-                    tile.mold = null;
+                    tile.mold = ItemStack.EMPTY;
                     // markDirty
                 }
-                if (heldItem != null) {
-                    if (heldItem.getItem() instanceof CrucibleMold) {
-                        tile.mold = heldItem;
-                        if (!player.capabilities.isCreativeMode) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        }
-                        // markDirty
-
+                if (heldItem.getItem() instanceof CrucibleMold) {
+                    tile.mold = heldItem;
+                    if (!player.capabilities.isCreativeMode) {
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
                     }
+                    // markDirty
+
                 }
             }
             return true;
         } else {
-            if (tile.changeTicks == 0 && (heldItem == null || !(heldItem.getItem() instanceof ItemBlock))) {
+            if (tile.changeTicks == 0 && (!(heldItem.getItem() instanceof ItemBlock))) {
                 tile.isOpen = !tile.isOpen;
                 tile.changeTicks = 20;
                 // markDirty

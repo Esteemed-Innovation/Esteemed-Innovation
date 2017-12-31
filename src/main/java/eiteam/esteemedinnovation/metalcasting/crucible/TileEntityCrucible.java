@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +36,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         isPowered = false;
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound getUpdateTag() {
         return writeToNBT(new NBTTagCompound());
@@ -55,6 +57,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         }
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
@@ -125,7 +128,7 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         if (targetFill < 0) {
             targetFill = getFill();
         }
-        if (this.getFill() == targetFill) {
+        if (getFill() == targetFill) {
             hasUpdated = true;
         }
         IBlockState state = world.getBlockState(pos);
@@ -142,9 +145,9 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
                 int posZ = pos.getZ() + myDir.getFrontOffsetZ();
                 BlockPos offsetPos = new BlockPos(posX, posY, posZ);
                 TileEntity tile = world.getTileEntity(offsetPos);
-                if (tile != null && tile instanceof TileEntityMold) {
+                if (tile instanceof TileEntityMold) {
                     TileEntityMold mold = (TileEntityMold) tile;
-                    if (mold.canPour() && contents.size() > 0) {
+                    if (mold.canPour() && !contents.isEmpty()) {
                         ItemStack moldStack = mold.mold;
                         CrucibleMold crucibleMold = (CrucibleMold) moldStack.getItem();
                         CrucibleLiquid liquid = getNextLiquid(crucibleMold, moldStack);

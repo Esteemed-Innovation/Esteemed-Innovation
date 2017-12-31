@@ -14,12 +14,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class TileEntityMold extends TileEntityBase implements ISidedInventory, ITickable {
     private static final int[] moldSlots = new int[] {0};
     public boolean isOpen = true;
-    public ItemStack mold;
+    @Nonnull
+    public ItemStack mold = ItemStack.EMPTY;
     public int changeTicks = 0;
-    private ItemStack inventory;
+    @Nonnull
+    private ItemStack inventory = ItemStack.EMPTY;
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
@@ -29,18 +34,14 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         access.setInteger("changeTicks", changeTicks);
         NBTTagCompound nbttagcompound1;
 
+        nbttagcompound1 = new NBTTagCompound();
+        mold.writeToNBT(nbttagcompound1);
+        access.setTag("mold", nbttagcompound1);
 
-        if (mold != null) {
-            nbttagcompound1 = new NBTTagCompound();
-            mold.writeToNBT(nbttagcompound1);
-            access.setTag("mold", nbttagcompound1);
-        }
+        nbttagcompound1 = new NBTTagCompound();
+        inventory.writeToNBT(nbttagcompound1);
+        access.setTag("inventory", nbttagcompound1);
 
-        if (inventory != null) {
-            nbttagcompound1 = new NBTTagCompound();
-            inventory.writeToNBT(nbttagcompound1);
-            access.setTag("inventory", nbttagcompound1);
-        }
         return new SPacketUpdateTileEntity(pos, 1, access);
     }
 
@@ -54,11 +55,8 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
             changeTicks = access.getInteger("changeTicks");
         }
 
-        if (access.hasKey("inventory")) {
-            inventory = new ItemStack(access.getCompoundTag("inventory"));
-        }
-
-        mold = access.hasKey("mold") ? new ItemStack(access.getCompoundTag("mold")) : null;
+        inventory = new ItemStack(access.getCompoundTag("inventory"));
+        mold = new ItemStack(access.getCompoundTag("mold"));
     }
 
 
@@ -67,34 +65,29 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         super.readFromNBT(nbt);
         isOpen = nbt.getBoolean("isOpen");
 
-        if (nbt.hasKey("inventory")) {
-            inventory = new ItemStack(nbt.getCompoundTag("inventory"));
-        }
-
-        mold = nbt.hasKey("mold") ? new ItemStack(nbt.getCompoundTag("mold")) : null;
+        inventory = new ItemStack(nbt.getCompoundTag("inventory"));
+        mold = new ItemStack(nbt.getCompoundTag("mold"));
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isOpen", isOpen);
 
         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-        if (mold != null) {
-            mold.writeToNBT(nbttagcompound1);
-            nbt.setTag("mold", nbttagcompound1);
-        }
 
-        if (inventory != null) {
-            inventory.writeToNBT(nbttagcompound1);
-            nbt.setTag("inventory", nbttagcompound1);
-        }
+        mold.writeToNBT(nbttagcompound1);
+        nbt.setTag("mold", nbttagcompound1);
+
+        inventory.writeToNBT(nbttagcompound1);
+        nbt.setTag("inventory", nbttagcompound1);
 
         return nbt;
     }
 
     public boolean canPour() {
-        return !isOpen && mold != null && inventory == null;
+        return !isOpen && !mold.isEmpty() && inventory.isEmpty();
     }
 
     public void pour(CrucibleLiquid liquid) {
@@ -113,41 +106,42 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         return 1;
     }
 
+    @Nonnull
     @Override
     public ItemStack getStackInSlot(int var1) {
         return inventory;
     }
 
+    @Nonnull
     @Override
     public ItemStack decrStackSize(int slot, int amt) {
         markDirty();
         if (inventory.getCount() <= amt) {
             ItemStack itemstack = inventory;
-            inventory = null;
+            inventory = ItemStack.EMPTY;
             return itemstack;
         }
         ItemStack itemstack = inventory.splitStack(amt);
         if (inventory.isEmpty()) {
-            inventory = null;
+            inventory = ItemStack.EMPTY;
         }
         return itemstack;
     }
 
+    @Nonnull
     @Override
     public ItemStack removeStackFromSlot(int slot) {
-        if (inventory != null) {
-            ItemStack itemstack = inventory;
-            inventory = null;
-            return itemstack;
-        }
-        return null;
+        ItemStack itemstack = inventory;
+        inventory = ItemStack.EMPTY;
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
+    public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
         inventory = stack;
     }
 
+    @Nonnull
     @Override
     public String getName() {
         return "container.mold";
@@ -158,6 +152,9 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         return false;
     }
 
+//    TileEntity defines this method as @Nullable.
+    @SuppressWarnings("NullableProblems")
+    @Nullable
     @Override
     public ITextComponent getDisplayName() {
         return null;
@@ -169,18 +166,18 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return this.isOpen;
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+        return isOpen;
     }
 
     @Override
-    public void openInventory(EntityPlayer player) {}
+    public void openInventory(@Nonnull EntityPlayer player) {}
 
     @Override
-    public void closeInventory(EntityPlayer player) {}
+    public void closeInventory(@Nonnull EntityPlayer player) {}
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
+    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
         return false;
     }
 
@@ -201,17 +198,18 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
 
     @Override
     public void clear() {
-        inventory = null;
+        inventory = ItemStack.EMPTY;
     }
 
     @Override
     public boolean isEmpty() {
         // TODO
-        return inventory == null;
+        return inventory.isEmpty();
     }
 
+    @Nonnull
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
         if (side == EnumFacing.DOWN) {
             return moldSlots;
         }
@@ -219,12 +217,12 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack item, EnumFacing side) {
+    public boolean canInsertItem(int slot, @Nonnull ItemStack item, @Nonnull EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack item, EnumFacing side) {
+    public boolean canExtractItem(int slot, @Nonnull ItemStack item, @Nonnull EnumFacing side) {
         return true;
     }
 
@@ -233,11 +231,11 @@ public class TileEntityMold extends TileEntityBase implements ISidedInventory, I
         if (changeTicks > 0) {
             changeTicks--;
         }
-        if (isOpen && inventory != null && changeTicks < 10) {
+        if (isOpen && !inventory.isEmpty() && changeTicks < 10) {
             if (!world.isRemote) {
                 dropItem(inventory);
             }
-            inventory = null;
+            inventory = ItemStack.EMPTY;
         }
     }
 }

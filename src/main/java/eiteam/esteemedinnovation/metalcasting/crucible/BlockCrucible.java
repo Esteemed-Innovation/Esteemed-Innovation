@@ -29,6 +29,8 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.HELL_CRUCIBLE;
 
 public class BlockCrucible extends Block implements Wrenchable {
@@ -43,6 +45,7 @@ public class BlockCrucible extends Block implements Wrenchable {
         setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
     }
 
+    @Nonnull
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
@@ -53,6 +56,7 @@ public class BlockCrucible extends Block implements Wrenchable {
         return false;
     }
 
+    @Nonnull
     @Override
     public BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, FACING);
@@ -63,6 +67,7 @@ public class BlockCrucible extends Block implements Wrenchable {
         return state.getValue(FACING).getIndex();
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing dir = EnumFacing.getFront(meta);
@@ -73,16 +78,19 @@ public class BlockCrucible extends Block implements Wrenchable {
         return getDefaultState().withProperty(FACING, dir);
     }
 
+    @Nonnull
     @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
+    public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
         return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+    @Nonnull
     @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    public IBlockState withMirror(@Nonnull IBlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
+    @Nonnull
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         return CRUCIBLE_AABB;
@@ -101,7 +109,7 @@ public class BlockCrucible extends Block implements Wrenchable {
     @Override
     public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
-        if (te != null && te instanceof TileEntityCrucible) {
+        if (te instanceof TileEntityCrucible) {
             TileEntityCrucible crucible = (TileEntityCrucible) te;
             return crucible.getComparatorOutput();
         }
@@ -182,7 +190,7 @@ public class BlockCrucible extends Block implements Wrenchable {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
+    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
         return new TileEntityCrucible();
     }
 
@@ -193,12 +201,12 @@ public class BlockCrucible extends Block implements Wrenchable {
             return false;
         }
         ItemStack heldItem = player.getHeldItem(hand);
-        if (!player.isSneaking() && heldItem == null) {
+        if (!player.isSneaking() && heldItem.isEmpty()) {
             if (!tile.isTipping()) {
                 tile.setTipping();
                 tile.needsUpdate = true;
             }
-        } else if (heldItem != null) {
+        } else if (!heldItem.isEmpty()) {
             for (CrucibleLiquid liquid : tile.contents) {
                 Triple<Item, Integer, CrucibleLiquid> triple = new ImmutableTriple<>(heldItem.getItem(), heldItem.getItemDamage(), liquid);
                 boolean valid;
@@ -238,7 +246,7 @@ public class BlockCrucible extends Block implements Wrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
             WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             return true;

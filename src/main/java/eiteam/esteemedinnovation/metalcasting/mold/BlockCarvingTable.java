@@ -24,24 +24,22 @@ public class BlockCarvingTable extends Block {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack held = player.getHeldItem(hand);
-        if (held != null) {
-            Item heldItem = held.getItem();
-            if (MoldRegistry.molds.stream().anyMatch(s -> s.getItem() == heldItem)) {
-                int index = 0;
-                int i = 0;
-                for (ItemStack item : MoldRegistry.molds) {
-                    if (heldItem == item.getItem() && held.getItemDamage() == item.getItemDamage()) {
-                        index = i;
-                    }
-                    i++;
+        Item heldItem = held.getItem();
+        if (MoldRegistry.molds.stream().anyMatch(s -> s.getItem() == heldItem)) {
+            int index = 0;
+            int i = 0;
+            for (ItemStack item : MoldRegistry.molds) {
+                if (heldItem == item.getItem() && held.getItemDamage() == item.getItemDamage()) {
+                    index = i;
                 }
-                if (index + 1 == MoldRegistry.molds.size()) {
-                    index = -1;
-                }
-                InventoryPlayer inventory = player.inventory;
-                inventory.setInventorySlotContents(inventory.currentItem, MoldRegistry.molds.get(index + 1));
-                return true;
+                i++;
             }
+            if (index + 1 == MoldRegistry.molds.size()) {
+                index = -1;
+            }
+            InventoryPlayer inventory = player.inventory;
+            inventory.setInventorySlotContents(inventory.currentItem, MoldRegistry.molds.get(index + 1));
+            return true;
         }
         return false;
     }

@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +45,7 @@ public class MetalcastingBookSection extends BookSection {
             EntityPlayer crafter = event.player;
             ItemStack output = event.crafting;
             Item anvil = Item.getItemFromBlock(Blocks.ANVIL);
-            if (anvil != null && output.getItem() == anvil && crafter instanceof EntityPlayerMP) {
+            if (anvil != Items.AIR && output.getItem() == anvil && crafter instanceof EntityPlayerMP) {
                 PlayerData data = crafter.getCapability(EsteemedInnovation.PLAYER_DATA, null);
                 if (data.setHasUnlockedBookPiece(NAME, true)) {
                     EsteemedInnovation.channel.sendTo(new BookPieceUnlockedStateChangePacket(NAME, true), (EntityPlayerMP) crafter);
