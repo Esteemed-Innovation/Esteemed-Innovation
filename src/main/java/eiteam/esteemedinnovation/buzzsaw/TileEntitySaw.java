@@ -69,14 +69,17 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
         if (woodItem == Items.AIR) {
             return;
         }
-        Pair<Item, Integer> pair = Pair.of(woodItem, woodBlock.damageDropped(woodState));
+        int meta = woodBlock.damageDropped(woodState);
+        Pair<Item, Integer> pair = Pair.of(woodItem, meta);
         ItemStack output = ItemStack.EMPTY;
         // If the block is a plankWood, output sticks; if the block is a logWood, output planks.
         if (OreDictHelper.arrayContains(OreDictHelper.planks, pair)) {
             output = new ItemStack(Items.STICK, world.rand.nextInt(2) + 2);
-        } else if (OreDictHelper.arrayContains(OreDictHelper.logToPlank.keySet(), pair)) {
-            Pair<Item, Integer> outPair = OreDictHelper.logToPlank.get(pair);
-            output = new ItemStack(outPair.getLeft(), world.rand.nextInt(3) + 4, outPair.getRight());
+        } else {
+            Pair<Item, Integer> outPair = OreDictHelper.getLogToPlankOutPair(woodItem, meta, world);
+            if (outPair != null) {
+                output = new ItemStack(outPair.getLeft(), world.rand.nextInt(3) + 4, outPair.getRight());
+            }
         }
 
         if (!output.isEmpty()) {

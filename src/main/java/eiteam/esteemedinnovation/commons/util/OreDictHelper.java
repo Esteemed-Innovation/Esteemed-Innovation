@@ -8,9 +8,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class OreDictHelper {
@@ -127,10 +131,38 @@ public class OreDictHelper {
         }
     }
 
-    public static void initializeGeneral() {
+    /**
+     * Used to prevent redundant crafting checks in {@link #getLogToPlankOutPair(Item, int, World)}. Contains a set
+     * of all Pairs of Item, Integer whose log -> plank recipes have been checked, regardless of whether they have
+     * an according log -> plank recipe.
+     */
+    private static Collection<Pair<Item, Integer>> logToPlankPairCheckCache = new HashSet<>();
+
+    /**
+     * This will automatically cache all checks into {@link #logToPlankPairCheckCache} in order to prevent redundant
+     * checks.
+     * @param log The item being tested against
+     * @param damage The item metadata being tested against
+     * @param world The present world
+     * @return If the provided item and metadata is a log that can be shapelessly crafted (1x log) into any kind of
+     *         plank, returns a Pair of the output plank item and metadata. If it cannot (because it is not a logWood,
+     *         or because it cannot be shapelessly crafted on its own into a plankWood), returns null.
+     */
+    @Nullable
+    public static Pair<Item, Integer> getLogToPlankOutPair(@Nonnull Item log, int damage, @Nonnull World world) {
+        Pair<Item, Integer> inPair = Pair.of(log, damage);
+        if (logToPlankPairCheckCache.contains(inPair)) {
+            return logToPlank.get(inPair);
+        }
+        logToPlankPairCheckCache.add(inPair);
+
+        if (!arrayContains(logs, inPair)) {
+            return null;
+        }
+
         InventoryCrafting temporaryCraftingGrid = new InventoryCrafting(new Container() {
             @Override
-            public boolean canInteractWith(EntityPlayer playerIn) {
+            public boolean canInteractWith(@Nonnull EntityPlayer playerIn) {
                 return false;
             }
         }, 3, 3);
@@ -139,16 +171,26 @@ public class OreDictHelper {
             temporaryCraftingGrid.setInventorySlotContents(i, ItemStack.EMPTY);
         }
 
-        for (Pair<Item, Integer> log : logs) {
-            temporaryCraftingGrid.setInventorySlotContents(0, new ItemStack(log.getLeft(), 1, log.getRight()));
-            CraftingManager.getInstance().getRecipeList().stream()
-              .filter(recipe -> recipe.matches(temporaryCraftingGrid, null))
-              .forEach(recipe -> {
-                ItemStack result = recipe.getRecipeOutput();
-                if (result != null && arrayContains(planks, Pair.of(result.getItem(), result.getItemDamage()))) {
-                    logToPlank.put(log, Pair.of(result.getItem(), result.getItemDamage()));
-                }
-            });
+        temporaryCraftingGrid.setInventorySlotContents(0, new ItemStack(log, 1, damage));
+
+        Optional<IRecipe> recipeOption = CraftingManager.getInstance().getRecipeList().stream()
+          .filter(irecipe -> {
+              if (irecipe.matches(temporaryCraftingGrid, world)) {
+                  ItemStack result = irecipe.getRecipeOutput();
+                  Pair<Item, Integer> outPair = Pair.of(result.getItem(), result.getItemDamage());
+                  return !result.isEmpty() && arrayContains(planks, outPair);
+              }
+              return false;
+          })
+          .findFirst();
+        if (recipeOption.isPresent()) {
+            IRecipe recipe = recipeOption.get();
+            ItemStack result = recipe.getRecipeOutput();
+            Pair<Item, Integer> outPair = Pair.of(result.getItem(), result.getItemDamage());
+            logToPlank.put(inPair, outPair);
+            return outPair;
+        } else {
+            return null;
         }
     }
 

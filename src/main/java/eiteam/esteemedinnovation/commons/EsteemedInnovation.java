@@ -146,7 +146,6 @@ public class EsteemedInnovation {
                 OreDictHelper.initializeOreDicts(s, stack);
             }
         }
-        OreDictHelper.initializeGeneral();
         long end = System.currentTimeMillis();
         int time = (int) (end - start);
         FMLLog.info("Finished initializing Esteemed Innovation OreDictHelper in %s ms", time);
