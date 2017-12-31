@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.naturalphilosophy;
 
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
@@ -13,22 +12,32 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
 
 public class NaturalPhilosophyModule extends ContentModule {
     public static Item SOIL_SAMPLING_KIT;
+    public static Item BLANK_RESEARCH_LOG;
     public static Item BIOME_LOG;
 
     @Override
     public void create(Side side) {
         SOIL_SAMPLING_KIT = setup(new ItemSoilSamplingKit(), "soil_sampling_kit");
+
+        BLANK_RESEARCH_LOG = setup(new Item(), "research_log_blank");
         BIOME_LOG = setup(new ItemResearchLog(), "research_log_biome");
     }
 
     @Override
     public void recipes(Side side) {
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG, BOOK,
-          OreDictEntries.DYE_WHITE, OreDictEntries.DYE_WHITE));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(BLANK_RESEARCH_LOG,
+          PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER));
+        GameRegistry.addRecipe(new ResearchLogCopyRecipe());
+
+        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
+          BLANK_RESEARCH_LOG, DIRT_ORE));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
+          BLANK_RESEARCH_LOG, SAND_ORE));
 
         for (Item vItem : Item.REGISTRY) {
             if (vItem instanceof ItemSpade) {
@@ -42,7 +51,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                   "MKS",
                   "WIW",
                   " W ",
-                  'M', OreDictEntries.DYE_WHITE,
+                  'M', DYE_WHITE,
                   'K', StorageModule.KIT_BAG,
                   'S', SUGAR,
                   'W', POTIONITEM,
