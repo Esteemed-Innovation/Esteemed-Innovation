@@ -3,8 +3,8 @@
   "defaults": {
     "model": "cube_top",
     "textures": {
-      "top": "esteemedinnovation:blocks/feetIndent3",
-      "side": "esteemedinnovation:blocks/blockBrass"
+      "top": "esteemedinnovation:blocks/feet_indent3",
+      "side": "esteemedinnovation:blocks/block_brass"
     }
   },
   "variants": {

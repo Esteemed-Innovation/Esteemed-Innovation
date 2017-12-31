@@ -1,7 +1,7 @@
 {
     "__comment": "That 0 texture is old. It is not actually used anymore, it is rendered through the TESR",
     "textures": {
-        "particle": "esteemedinnovation:blocks/blocks/blockBrass",
+        "particle": "esteemedinnovation:blocks/blocks/block_brass",
         "0": "esteemedinnovation:blocks/fan_blades_noise"
     },
     "elements": [

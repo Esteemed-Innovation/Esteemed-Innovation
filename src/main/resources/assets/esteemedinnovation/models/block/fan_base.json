@@ -1,9 +1,9 @@
 {
   "textures": {
-    "particle": "esteemedinnovation:blocks/blockBrass",
-    "0": "esteemedinnovation:blocks/blockBrass",
-    "1": "esteemedinnovation:blocks/blockBrassBolted",
-    "2": "esteemedinnovation:blocks/blockFanCage"
+    "particle": "esteemedinnovation:blocks/block_brass",
+    "0": "esteemedinnovation:blocks/block_brass",
+    "1": "esteemedinnovation:blocks/block_brass_bolted",
+    "2": "esteemedinnovation:blocks/block_fan_cage"
   },
   "elements": [
     {

@@ -1,7 +1,7 @@
 {
   "textures": {
     "side": "esteemedinnovation:blocks/item_mortar_base",
-    "top": "esteemedinnovation:blocks/blockCopper"
+    "top": "esteemedinnovation:blocks/block_copper"
   },
   "elements": [
     {

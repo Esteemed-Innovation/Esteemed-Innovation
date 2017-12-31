@@ -1,10 +1,10 @@
 {
     "textures": {
-        "particle": "esteemedinnovation:blocks/blockBrass",
-        "side": "esteemedinnovation:blocks/blockBrass",
-        "back": "esteemedinnovation:blocks/blockBrassBolted",
-        "front": "esteemedinnovation:blocks/blockFanCage",
-        "pipe": "esteemedinnovation:blocks/blockBrass_pipe"
+        "particle": "esteemedinnovation:blocks/block_brass",
+        "side": "esteemedinnovation:blocks/block_brass",
+        "back": "esteemedinnovation:blocks/block_brass_bolted",
+        "front": "esteemedinnovation:blocks/block_fan_cage",
+        "pipe": "esteemedinnovation:blocks/block_brass_pipe"
     },
     "elements": [
         {

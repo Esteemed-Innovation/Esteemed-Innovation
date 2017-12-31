@@ -3,7 +3,7 @@
   "defaults": {
     "model": "esteemedinnovation:item_mortar_base",
     "textures": {
-      "particle": "esteemedinnovation:blocks/blockBrass"
+      "particle": "esteemedinnovation:blocks/block_brass"
     }
   },
   "variants": {

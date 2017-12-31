@@ -1,8 +1,8 @@
 {
     "textures": {
-        "particle": "esteemedinnovation:blocks/blockCharger",
-        "0": "esteemedinnovation:blocks/blockCharger",
-        "1": "esteemedinnovation:blocks/blockChargerTop"
+        "particle": "esteemedinnovation:blocks/block_charger",
+        "0": "esteemedinnovation:blocks/block_charger",
+        "1": "esteemedinnovation:blocks/block_charger_top"
     },
     "elements": [
         {

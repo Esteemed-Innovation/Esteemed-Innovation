@@ -1,8 +1,8 @@
 {
   "textures": {
-    "front": "esteemedinnovation:blocks/gaugeFront",
-    "back": "esteemedinnovation:blocks/gaugeBack",
-    "else": "esteemedinnovation:blocks/blockBrass"
+    "front": "esteemedinnovation:blocks/gauge_front",
+    "back": "esteemedinnovation:blocks/gauge_back",
+    "else": "esteemedinnovation:blocks/block_brass"
   },
   "elements": [
     {

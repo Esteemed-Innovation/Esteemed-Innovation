@@ -3,7 +3,7 @@
   "defaults": {
     "model": "pressure_plate_up",
     "textures": {
-      "texture": "esteemedinnovation:blocks/blockZinc"
+      "texture": "esteemedinnovation:blocks/block_zinc"
     }
   },
   "variants": {

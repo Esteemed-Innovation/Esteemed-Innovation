@@ -8,12 +8,12 @@
     "is_creative": {
       "true": {
         "textures": {
-          "all": "esteemedinnovation:blocks/creativeTank"
+          "all": "esteemedinnovation:blocks/creative_tank"
         }
       },
       "false": {
         "textures": {
-          "all": "esteemedinnovation:blocks/brassTank"
+          "all": "esteemedinnovation:blocks/brass_tank"
         }
       }
     }

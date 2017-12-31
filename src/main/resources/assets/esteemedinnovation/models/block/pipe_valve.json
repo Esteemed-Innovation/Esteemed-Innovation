@@ -93,6 +93,6 @@
     }
   ],
   "textures": {
-    "all": "esteemedinnovation:blocks/blockCopper"
+    "all": "esteemedinnovation:blocks/block_copper"
   }
 }

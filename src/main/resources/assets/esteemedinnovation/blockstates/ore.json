@@ -8,32 +8,32 @@
     "variant": {
       "overworld_copper": {
         "textures": {
-          "all": "esteemedinnovation:blocks/oreCopper"
+          "all": "esteemedinnovation:blocks/ore_copper"
         }
       },
       "overworld_zinc": {
         "textures": {
-          "all": "esteemedinnovation:blocks/oreZinc"
+          "all": "esteemedinnovation:blocks/ore_zinc"
         }
       },
       "nether_copper": {
         "textures": {
-          "all": "esteemedinnovation:blocks/copper_nether"
+          "all": "esteemedinnovation:blocks/ore_copper_nether"
         }
       },
       "nether_zinc": {
         "textures": {
-          "all": "esteemedinnovation:blocks/zinc_nether"
+          "all": "esteemedinnovation:blocks/ore_zinc_nether"
         }
       },
       "end_copper": {
         "textures": {
-          "all": "esteemedinnovation:blocks/copper_end"
+          "all": "esteemedinnovation:blocks/ore_copper_end"
         }
       },
       "end_zinc": {
         "textures": {
-          "all": "esteemedinnovation:blocks/zinc_end"
+          "all": "esteemedinnovation:blocks/ore_zinc_end"
         }
       }
     }

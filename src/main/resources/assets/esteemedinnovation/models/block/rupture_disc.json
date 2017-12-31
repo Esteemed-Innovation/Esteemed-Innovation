@@ -74,8 +74,8 @@
     }
   ],
   "textures": {
-    "all": "esteemedinnovation:blocks/blockBrass",
-    "back": "esteemedinnovation:blocks/discBack",
-    "particle": "esteemedinnovation:blocks/blockBrass"
+    "all": "esteemedinnovation:blocks/block_brass",
+    "back": "esteemedinnovation:blocks/disc_back",
+    "particle": "esteemedinnovation:blocks/block_brass"
   }
 }

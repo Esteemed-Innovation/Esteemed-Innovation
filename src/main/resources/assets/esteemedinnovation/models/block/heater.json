@@ -1,8 +1,8 @@
 {
   "textures": {
-    "front": "esteemedinnovation:blocks/heaterOn",
-    "else": "esteemedinnovation:blocks/blockBrass",
-    "particle": "esteemedinnovation:blocks/blockBrass"
+    "front": "esteemedinnovation:blocks/heater_on",
+    "else": "esteemedinnovation:blocks/block_brass",
+    "particle": "esteemedinnovation:blocks/block_brass"
   },
   "elements": [
     {

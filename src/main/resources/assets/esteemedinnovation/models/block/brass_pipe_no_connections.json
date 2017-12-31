@@ -1,8 +1,8 @@
 {
   "textures": {
-    "open": "esteemedinnovation:blocks/blockBrass_pipe",
-    "side": "esteemedinnovation:blocks/blockBrass",
-    "particle": "esteemedinnovation:blocks/blockBrass"
+    "open": "esteemedinnovation:blocks/block_brass_pipe",
+    "side": "esteemedinnovation:blocks/block_brass",
+    "particle": "esteemedinnovation:blocks/block_brass"
   },
   "elements": [
     {

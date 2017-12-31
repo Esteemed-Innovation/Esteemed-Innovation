@@ -4,7 +4,7 @@
     "model": "esteemedinnovation:cube_front_else",
     "textures": {
       "front": "esteemedinnovation:blocks/boiler",
-      "else": "esteemedinnovation:blocks/blockBrass"
+      "else": "esteemedinnovation:blocks/block_brass"
     }
   },
   "variants": {
@@ -23,7 +23,7 @@
     "on": {
       "true": {
         "textures": {
-          "front": "esteemedinnovation:blocks/boilerOn"
+          "front": "esteemedinnovation:blocks/boiler_on"
         }
       },
       "false": {

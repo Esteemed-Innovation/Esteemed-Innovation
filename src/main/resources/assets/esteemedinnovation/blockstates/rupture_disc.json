@@ -22,12 +22,12 @@
     "is_burst": {
       "true": {
         "textures": {
-          "plate": "esteemedinnovation:blocks/discFrontRuptured"
+          "plate": "esteemedinnovation:blocks/disc_front_ruptured"
         }
       },
       "false": {
         "textures": {
-          "plate": "esteemedinnovation:blocks/discFront"
+          "plate": "esteemedinnovation:blocks/disc_front"
         }
       }
     },

@@ -1,10 +1,10 @@
 {
   "textures": {
-    "particle": "esteemedinnovation:blocks/blockBrass",
+    "particle": "esteemedinnovation:blocks/block_brass",
     "0": "esteemedinnovation:blocks/converter_front",
     "1": "esteemedinnovation:blocks/converter_front_side",
     "2": "esteemedinnovation:blocks/converter_side",
-    "3": "esteemedinnovation:blocks/blockBrass_pipe",
+    "3": "esteemedinnovation:blocks/block_brass_pipe",
     "4": "esteemedinnovation:blocks/steam"
   },
   "elements": [

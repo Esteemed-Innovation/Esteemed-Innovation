@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<TileEntitySteamGauge> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/blocks/gaugePointer.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/blocks/gauge_pointer.png");
     private static final ResourceLocation POINTER_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/steam_gauge_pointer");
 
     @Override

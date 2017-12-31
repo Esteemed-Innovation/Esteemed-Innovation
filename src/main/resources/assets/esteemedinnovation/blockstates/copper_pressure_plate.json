@@ -3,7 +3,7 @@
   "defaults": {
     "model": "pressure_plate_up",
     "textures": {
-      "texture": "esteemedinnovation:blocks/blockCopper"
+      "texture": "esteemedinnovation:blocks/block_copper"
     }
   },
   "variants": {

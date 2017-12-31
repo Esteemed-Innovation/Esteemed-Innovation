@@ -8,17 +8,17 @@
     "variant": {
       "copper": {
         "textures": {
-          "all": "esteemedinnovation:blocks/blockCopper"
+          "all": "esteemedinnovation:blocks/block_copper"
         }
       },
       "zinc": {
         "textures": {
-          "all": "esteemedinnovation:blocks/blockZinc"
+          "all": "esteemedinnovation:blocks/block_zinc"
         }
       },
       "brass": {
         "textures": {
-          "all": "esteemedinnovation:blocks/blockBrass"
+          "all": "esteemedinnovation:blocks/block_brass"
         }
       },
       "gilded_iron": {

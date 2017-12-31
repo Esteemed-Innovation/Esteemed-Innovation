@@ -1,7 +1,7 @@
 {
   "textures": {
-    "side": "esteemedinnovation:blocks/blockBrass",
-    "particle": "esteemedinnovation:blocks/blockBrass"
+    "side": "esteemedinnovation:blocks/block_brass",
+    "particle": "esteemedinnovation:blocks/block_brass"
   },
   "elements": [
     {

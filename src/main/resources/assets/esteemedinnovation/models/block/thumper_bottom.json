@@ -1,6 +1,6 @@
 {
   "textures": {
-    "particle": "esteemedinnovation:blocks/blockBrass",
+    "particle": "esteemedinnovation:blocks/block_brass",
     "0": "esteemedinnovation:models/thumper"
   },
   "elements": [

@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileEntityValvePipe> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID, "textures/blocks/blockCopper.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID, "textures/blocks/block_copper.png");
     private static final ResourceLocation VALVE_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/pipe_valve");
 
     @Override
