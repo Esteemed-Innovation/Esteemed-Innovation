@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.materials.raw.config;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
@@ -89,7 +90,7 @@ public class BiomeDefinition {
             return true;
         }
         Item itemBlock = Item.getItemFromBlock(block);
-        if (itemBlock == null) {
+        if (itemBlock == Items.AIR) {
             return false;
         }
         int[] ids = OreDictionary.getOreIDs(new ItemStack(itemBlock, 1, meta));

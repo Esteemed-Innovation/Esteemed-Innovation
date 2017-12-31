@@ -14,6 +14,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 import static eiteam.esteemedinnovation.commons.OreDictEntries.MATERIAL_COPPER;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.MATERIAL_ZINC;
 
@@ -28,6 +30,7 @@ public class BlockGenericOre extends Block {
         setHarvestLevel("pickaxe", 1);
     }
 
+    @Nonnull
     @Override
     public BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
@@ -38,6 +41,7 @@ public class BlockGenericOre extends Block {
         return state.getValue(VARIANT).getMetadata();
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(VARIANT, OreBlockTypes.byMetadata(meta));
@@ -45,7 +49,7 @@ public class BlockGenericOre extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
+    public void getSubBlocks(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
         for (OreBlockTypes type : OreBlockTypes.LOOKUP) {
             list.add(new ItemStack(this, 1, type.getMetadata()));
         }
@@ -64,10 +68,10 @@ public class BlockGenericOre extends Block {
         END_COPPER(4, MATERIAL_COPPER, 1),
         END_ZINC(5, MATERIAL_ZINC, 1);
 
-        private int meta;
-        private String oreMaterial;
-        private int preferredDimension;
-        public static OreBlockTypes[] LOOKUP = new OreBlockTypes[values().length];
+        private final int meta;
+        private final String oreMaterial;
+        private final int preferredDimension;
+        public static final OreBlockTypes[] LOOKUP = new OreBlockTypes[values().length];
 
         OreBlockTypes(int meta, String oreMaterial, int preferredDimension) {
             this.meta = meta;
