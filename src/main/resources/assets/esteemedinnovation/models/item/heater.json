@@ -1,8 +1,8 @@
 {
   "textures": {
-    "side": "esteemedinnovation:blocks/blockBrass",
-    "open": "esteemedinnovation:blocks/blockBrass_pipe",
-    "front": "esteemedinnovation:blocks/heaterOn"
+    "side": "esteemedinnovation:blocks/block_brass",
+    "open": "esteemedinnovation:blocks/block_brass_pipe",
+    "front": "esteemedinnovation:blocks/heater_on"
   },
   "__comment": "Elements are taken from block/pipe_center, pipe_connection, and heater",
   "elements": [

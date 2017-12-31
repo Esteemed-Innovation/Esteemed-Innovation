@@ -1,8 +1,8 @@
 {
   "parent":"item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/smashedOre",
-    "layer1": "esteemedinnovation:items/smashedOre_overlay"
+    "layer0": "esteemedinnovation:items/smashed_ore",
+    "layer1": "esteemedinnovation:items/smashed_ore_overlay"
   },
   "display": {
     "thirdperson": {

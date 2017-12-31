@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/gunBarrel"
+    "layer0": "esteemedinnovation:items/gun_barrel"
   }
 }

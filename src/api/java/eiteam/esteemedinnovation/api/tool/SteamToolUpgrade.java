@@ -67,8 +67,8 @@ public interface SteamToolUpgrade {
      *         Return null if the upgrade does not add any texture to the tool.
      * <p>
      * Examples:
-     * The void upgrade would return {@code esteemedinnovation:toolUpgrades/void}
-     * The thermal upgrade would return {@code esteemedinnovation:toolUpgrades/thermal}
+     * The void upgrade would return {@code esteemedinnovation:tool_upgrades/void}
+     * The thermal upgrade would return {@code esteemedinnovation:tool_upgrades/thermal}
      */
     ResourceLocation getBaseIcon();
 

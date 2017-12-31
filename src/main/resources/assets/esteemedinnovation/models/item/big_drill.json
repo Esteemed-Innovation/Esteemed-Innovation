@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/toolUpgrades/bigDrill0"
+    "layer0": "esteemedinnovation:items/tool_upgrades/big_drill0"
   }
 }

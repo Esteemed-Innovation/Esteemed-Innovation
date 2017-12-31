@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/chestBrass"
+    "layer0": "esteemedinnovation:items/chest_brass"
   }
 }

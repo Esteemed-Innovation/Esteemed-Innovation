@@ -36,10 +36,10 @@ public class SteamToolModel implements IModel {
 
     public SteamToolModel(@Nullable ResourceLocation core, @Nullable ResourceLocation head, int which, @Nonnull String tool) {
         if (core == null) {
-            core = new ResourceLocation(MOD_ID, "items/" + tool + "BaseCore" + which);
+            core = new ResourceLocation(MOD_ID, "items/" + tool + "_base_core" + which);
         }
         if (head == null) {
-            head = new ResourceLocation(MOD_ID, "items/" + tool + "BaseHead" + which);
+            head = new ResourceLocation(MOD_ID, "items/" + tool + "_base_head" + which);
         }
         this.core = core;
         this.head = head;
@@ -53,20 +53,20 @@ public class SteamToolModel implements IModel {
     @Override
     public Collection<ResourceLocation> getTextures() {
         Collection<ResourceLocation> resources = new ArrayList<>();
-        resources.add(new ResourceLocation(MOD_ID, "items/axeBaseCore0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/axeBaseCore1"));
-        resources.add(new ResourceLocation(MOD_ID, "items/axeBaseHead0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/axeBaseHead1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/axe_base_core0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/axe_base_core1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/axe_base_head0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/axe_base_head1"));
 
-        resources.add(new ResourceLocation(MOD_ID, "items/drillBaseCore0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/drillBaseCore1"));
-        resources.add(new ResourceLocation(MOD_ID, "items/drillBaseHead0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/drillBaseHead1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/drill_base_core0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/drill_base_core1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/drill_base_head0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/drill_base_head1"));
 
-        resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseCore0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseCore1"));
-        resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseHead0"));
-        resources.add(new ResourceLocation(MOD_ID, "items/shovelBaseHead1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/shovel_base_core0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/shovel_base_core1"));
+        resources.add(new ResourceLocation(MOD_ID, "items/shovel_base_head0"));
+        resources.add(new ResourceLocation(MOD_ID, "items/shovel_base_head1"));
 
         for (SteamToolUpgrade upgrade : ToolUpgradeRegistry.getUpgrades()) {
             Collections.addAll(resources, ToolUpgradeRegistry.getResources(upgrade));

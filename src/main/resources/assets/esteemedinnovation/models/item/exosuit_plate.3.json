@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/exosuitPlateZinc"
+    "layer0": "esteemedinnovation:items/exosuit_plate_zinc"
   }
 }

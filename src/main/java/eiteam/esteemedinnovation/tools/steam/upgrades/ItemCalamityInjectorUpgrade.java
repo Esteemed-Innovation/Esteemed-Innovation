@@ -36,7 +36,7 @@ public class ItemCalamityInjectorUpgrade extends ItemSteamToolUpgrade {
     private static final int HARD_CHARGE_MIN = 4 * 20;
 
     public ItemCalamityInjectorUpgrade() {
-        super(SteamToolSlot.DRILL_HEAD, upgradeResource("chargePlacer"), null, 1);
+        super(SteamToolSlot.DRILL_HEAD, upgradeResource("charge_placer"), null, 1);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

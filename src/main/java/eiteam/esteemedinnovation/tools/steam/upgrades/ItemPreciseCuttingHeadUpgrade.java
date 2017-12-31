@@ -17,7 +17,7 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
 
 public class ItemPreciseCuttingHeadUpgrade extends ItemSteamToolUpgrade {
     public ItemPreciseCuttingHeadUpgrade() {
-        super(SteamToolSlot.DRILL_HEAD, upgradeResource("preciseCuttingHead"), null, 1);
+        super(SteamToolSlot.DRILL_HEAD, upgradeResource("precise_cutting_head"), null, 1);
     }
 
     @Override

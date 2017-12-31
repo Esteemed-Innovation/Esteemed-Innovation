@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/fallUpgrade"
+    "layer0": "esteemedinnovation:items/fall_upgrade"
   }
 }

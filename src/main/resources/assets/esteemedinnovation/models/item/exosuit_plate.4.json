@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/exosuitPlateBrass"
+    "layer0": "esteemedinnovation:items/exosuit_plate_brass"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:blocks/discFrontRuptured"
+    "layer0": "esteemedinnovation:blocks/disc_front_ruptured"
   }
 }

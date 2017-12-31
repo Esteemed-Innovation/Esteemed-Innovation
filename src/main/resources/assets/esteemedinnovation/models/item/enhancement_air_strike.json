@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "esteemedinnovation:items/enhancementAirStrike"
+    "layer0": "esteemedinnovation:items/enhancement_air_strike"
   }
 }

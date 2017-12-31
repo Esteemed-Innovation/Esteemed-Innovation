@@ -1,7 +1,7 @@
 {
   "textures": {
-    "side": "esteemedinnovation:blocks/blockBrass",
-    "open": "esteemedinnovation:blocks/blockBrass_pipe"
+    "side": "esteemedinnovation:blocks/block_brass",
+    "open": "esteemedinnovation:blocks/block_brass_pipe"
   },
   "__comment": "Elements are taken from block/pipe_center and pipe_connection",
   "elements": [

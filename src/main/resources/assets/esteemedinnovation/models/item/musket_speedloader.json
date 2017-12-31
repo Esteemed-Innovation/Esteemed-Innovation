@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "esteemedinnovation:items/weaponMusketSpeedloader"
+    "layer0": "esteemedinnovation:items/weapon_musket_speedloader"
   }
 }

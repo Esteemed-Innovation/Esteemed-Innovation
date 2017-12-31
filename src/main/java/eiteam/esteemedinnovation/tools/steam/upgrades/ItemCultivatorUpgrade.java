@@ -15,7 +15,7 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
 
 public class ItemCultivatorUpgrade extends ItemSteamToolUpgrade {
     public ItemCultivatorUpgrade() {
-        super(SteamToolSlot.SHOVEL_HEAD, upgradeResource("cultivatorHead"), null, 1);
+        super(SteamToolSlot.SHOVEL_HEAD, upgradeResource("cultivator_head"), null, 1);
     }
 
     @Override

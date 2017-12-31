@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/frequencyShifter"
+    "layer0": "esteemedinnovation:items/frequency_shifter"
   }
 }

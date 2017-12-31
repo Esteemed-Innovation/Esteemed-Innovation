@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "esteemedinnovation:items/weaponBlunderbussAblaze"
+    "layer0": "esteemedinnovation:items/weapon_blunderbuss_ablaze"
   }
 }

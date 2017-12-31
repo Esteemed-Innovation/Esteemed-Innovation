@@ -1,8 +1,8 @@
 {
   "textures": {
-    "side": "esteemedinnovation:blocks/blockBrass",
-    "open": "esteemedinnovation:blocks/blockBrass_pipe",
-    "valve": "esteemedinnovation:blocks/blockCopper"
+    "side": "esteemedinnovation:blocks/block_brass",
+    "open": "esteemedinnovation:blocks/block_brass_pipe",
+    "valve": "esteemedinnovation:blocks/block_copper"
   },
   "__comment": "Elements are taken from block/pipe_center, pipe_connection, and pipe_valve",
   "elements": [

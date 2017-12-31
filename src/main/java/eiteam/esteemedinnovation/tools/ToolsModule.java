@@ -149,7 +149,7 @@ public class ToolsModule extends ContentModule {
     }
 
     public static String upgradeResource(String resource) {
-        return Constants.EI_MODID + ":items/toolUpgrades/" + resource;
+        return Constants.EI_MODID + ":items/tool_upgrades/" + resource;
     }
 
     @Override

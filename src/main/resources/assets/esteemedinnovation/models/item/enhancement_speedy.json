@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "esteemedinnovation:items/enhancementSpeedy"
+    "layer0": "esteemedinnovation:items/enhancement_speedy"
   }
 }

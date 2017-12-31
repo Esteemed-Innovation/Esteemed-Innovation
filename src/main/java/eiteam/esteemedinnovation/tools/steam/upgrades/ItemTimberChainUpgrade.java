@@ -20,7 +20,7 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.upgradeResource;
 
 public class ItemTimberChainUpgrade extends ItemSteamToolUpgrade {
     public ItemTimberChainUpgrade() {
-        super(SteamToolSlot.SAW_HEAD, upgradeResource("timberHead"), null, 1);
+        super(SteamToolSlot.SAW_HEAD, upgradeResource("timber_head"), null, 1);
     }
 
     @Override

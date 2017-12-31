@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/plateCopper"
+    "layer0": "esteemedinnovation:items/plate_copper"
   }
 }

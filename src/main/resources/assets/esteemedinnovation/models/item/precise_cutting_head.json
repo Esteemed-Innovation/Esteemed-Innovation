@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/toolUpgrades/preciseCuttingHeadDrill0"
+    "layer0": "esteemedinnovation:items/tool_upgrades/precise_cutting_head_drill0"
   }
 }

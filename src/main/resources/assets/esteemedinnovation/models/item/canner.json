@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/canningMachine"
+    "layer0": "esteemedinnovation:items/canning_machine"
   }
 }

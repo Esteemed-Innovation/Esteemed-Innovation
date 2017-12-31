@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/toolUpgrades/blowerAxe0"
+    "layer0": "esteemedinnovation:items/tool_upgrades/blower_axe0"
   }
 }

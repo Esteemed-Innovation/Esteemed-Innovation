@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "esteemedinnovation:items/ingotZinc"
+    "layer0": "esteemedinnovation:items/ingot_zinc"
   }
 }
