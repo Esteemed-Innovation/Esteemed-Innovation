@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.book.BookModule;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerDataStorage;
@@ -62,8 +61,6 @@ public class EsteemedInnovation {
 
     @CapabilityInject(PlayerData.class)
     public static final Capability<PlayerData> PLAYER_DATA = null;
-
-    public static SPLog log = SPLog.getInstance().setLogLevel(SPLog.NONE);
 
     public static SimpleNetworkWrapper channel;
 

@@ -8,7 +8,6 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUtility;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
-import eiteam.esteemedinnovation.api.util.SPLog;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
@@ -108,7 +107,6 @@ public class GenericEventHandler {
     public static int use = -1;
     boolean lastWearing = false;
     boolean worldStartUpdate = false;
-    private SPLog log = EsteemedInnovation.log;
     private static boolean isShiftDown;
     // TODO: Potion Helper class
     public static final Potion SLOWNESS_POTION = Potion.getPotionFromResourceLocation(PotionTypes.SLOWNESS.getRegistryName().toString());
