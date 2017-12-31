@@ -26,22 +26,22 @@ public class ToolUpgradeRegistry {
             String baseDomain = base.getResourceDomain();
             String basePath = base.getResourcePath();
             if (upgrade.isUniversal()) {
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Drill0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Drill1"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Axe0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Axe1"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Shovel0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Shovel1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_drill0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_drill1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_axe0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_axe1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_shovel0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_shovel1"));
             } else {
                 SteamToolSlot slot = upgrade.getToolSlot();
-                String tool = "Drill";
+                String tool = "drill";
                 switch (slot.tool) {
                     case 1: {
-                        tool = "Axe";
+                        tool = "axe";
                         break;
                     }
                     case 2: {
-                        tool = "Shovel";
+                        tool = "shovel";
                         break;
                     }
                     default: {
