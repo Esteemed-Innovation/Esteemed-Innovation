@@ -21,6 +21,7 @@ public class ItemResearchLog extends Item {
     }
 
     @SideOnly(Side.CLIENT)
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         if (GuiScreen.isShiftKeyDown()) {
             if (stack.hasTagCompound()) {

@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -35,7 +36,7 @@ public class ItemSoilSamplingKit extends Item {
         EntityPlayer player = (EntityPlayer) elb;
 
         Item itemFromBlock = Item.getItemFromBlock(state.getBlock());
-        if (itemFromBlock == null) {
+        if (itemFromBlock == Items.AIR) {
             return false;
         }
 
@@ -51,7 +52,7 @@ public class ItemSoilSamplingKit extends Item {
                     while (world.getBlockState(mutablePos.move(EnumFacing.DOWN, 1)).getBlock() != Blocks.BEDROCK) {
                         Block blockCheck = world.getBlockState(mutablePos).getBlock();
                         Item itemFromBlockCheck = Item.getItemFromBlock(blockCheck);
-                        if (itemFromBlockCheck != null) {
+                        if (itemFromBlockCheck != Items.AIR) {
                             if (OreDictHelper.ores.contains(itemFromBlockCheck)) {
                                 oresFound++;
                                 Integer currentlyInMap = ores.get(itemFromBlockCheck);
