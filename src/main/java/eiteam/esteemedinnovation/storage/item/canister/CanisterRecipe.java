@@ -9,6 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
@@ -19,14 +20,15 @@ public class CanisterRecipe implements IRecipe {
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World world) {
+    public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
         ItemStack toCan = getItemToCan(inv);
 
         return toCan != null;
     }
 
+    @Nonnull
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
         ItemStack toCan = getItemToCan(inv);
         if (toCan != null) {
             if (!toCan.hasTagCompound()) {
@@ -36,7 +38,7 @@ public class CanisterRecipe implements IRecipe {
             toCan.setCount(1);
             return toCan;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -51,7 +53,7 @@ public class CanisterRecipe implements IRecipe {
         int noncans = 0;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack itemStack = inv.getStackInSlot(i);
-            if (itemStack != null) {
+            if (!itemStack.isEmpty()) {
                 if (itemStack.getItem() == ITEM_CANISTER) {
                     cans++;
                 } else {
@@ -75,13 +77,15 @@ public class CanisterRecipe implements IRecipe {
         return 2;
     }
 
+    @Nonnull
     @Override
     public ItemStack getRecipeOutput() {
-        return null;
+        return ItemStack.EMPTY;
     }
 
+    @Nonnull
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    public NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
         return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
     }
 }

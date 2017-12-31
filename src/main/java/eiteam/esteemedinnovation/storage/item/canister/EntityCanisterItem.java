@@ -4,6 +4,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class EntityCanisterItem extends EntityItem {
     int randomDir;
     int randomDir2;
@@ -21,7 +23,7 @@ public class EntityCanisterItem extends EntityItem {
     }
 
     @Override
-    public boolean isEntityInvulnerable(DamageSource source) {
+    public boolean isEntityInvulnerable(@Nonnull DamageSource source) {
         return true;
     }
 
