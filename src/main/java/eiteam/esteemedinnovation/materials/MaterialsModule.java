@@ -11,8 +11,6 @@ import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
-import eiteam.esteemedinnovation.materials.raw.BlockOreDepositGenerator;
-import eiteam.esteemedinnovation.materials.raw.SurfaceDepositOreGenerator;
 import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
 import eiteam.esteemedinnovation.materials.raw.config.OreConfigurationParser;
 import eiteam.esteemedinnovation.materials.refined.BlockBeacon;
@@ -94,10 +92,8 @@ public class MaterialsModule extends ContentModule {
             throw new ReportedException(CrashReport.makeCrashReport(e, "Error loading Esteemed Innovation Ores config"));
         }
         GameRegistry.registerWorldGenerator(new ConfigurableOreGenerator(), 1);
-        GameRegistry.registerWorldGenerator(new SurfaceDepositOreGenerator(), 1);
 
         STORAGE_BLOCK = setup(new BlockBeacon(), "metal_storage_block", BlockManyMetadataItem::new);
-        ORE_DEPOSIT_GENERATOR = setup(new BlockOreDepositGenerator(), "ore_deposit_generator", BlockManyMetadataItem::new);
         ORE_BLOCK = setup(new BlockGenericOre(), "ore", BlockManyMetadataItem::new);
         METAL_INGOT = setup(new ItemMetalIngot(), "ingot");
         METAL_NUGGET = setup(new ItemMetalNugget(), "nugget");

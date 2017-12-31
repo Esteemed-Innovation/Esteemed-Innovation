@@ -1,9 +1,8 @@
 package eiteam.esteemedinnovation.naturalphilosophy;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
-import eiteam.esteemedinnovation.materials.MaterialsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,7 +41,6 @@ public class ItemSoilSamplingKit extends Item {
 
         int oresFound = 0;
         Map<Item, Integer> ores = new HashMap<>();
-        boolean oreDepositFound = false;
 
         if (OreDictHelper.dirts.contains(itemFromBlock) || OreDictHelper.grasses.contains(itemFromBlock) ||
           OreDictHelper.listHasItem(OreDictHelper.sands, itemFromBlock) || OreDictHelper.gravels.contains(itemFromBlock)) {
@@ -63,9 +61,6 @@ public class ItemSoilSamplingKit extends Item {
                                     ores.replace(itemFromBlockCheck, currentlyInMap + 1);
                                 }
                             }
-                            if (blockCheck == MaterialsModule.ORE_DEPOSIT_GENERATOR) {
-                                oreDepositFound = true;
-                            }
                         }
                     }
                 }
@@ -75,21 +70,6 @@ public class ItemSoilSamplingKit extends Item {
         // Handle ore uniqueness
         if (((float) ores.size() * 100 / oresFound) >= 2.2F) {
             EsteemedInnovation.proxy.spawnAsteriskParticles(world, pos.getX(), pos.getY(), pos.getZ());
-        }
-
-        // Handle ore density
-        if (!oreDepositFound) {
-            int largestOreQuantity = 0;
-            for (Item oreItem : ores.keySet()) {
-                int oreQuantity = ores.get(oreItem);
-                if (oreQuantity > largestOreQuantity) {
-                    largestOreQuantity = oreQuantity;
-                }
-            }
-            oreDepositFound = largestOreQuantity >= 60 && largestOreQuantity >= oresFound * (2F / 3F);
-        }
-        if (oreDepositFound) {
-            EsteemedInnovation.proxy.spawnExclamationParticles(world, pos.getX(), pos.getY(), pos.getZ());
         }
 
         ItemStack biomeLog = ItemStackUtility.findItemStackFromInventory(player.inventory, BIOME_LOG);
