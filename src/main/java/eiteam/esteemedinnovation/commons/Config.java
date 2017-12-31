@@ -34,8 +34,6 @@ public class Config {
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
 
-    public static boolean genCopperOverworldDeposits;
-    public static boolean genZincOverworldDeposits;
     public static boolean passiveDrain;
     public static boolean disableParticles;
     public static boolean genPoorZincOre;
@@ -244,8 +242,6 @@ public class Config {
         config.load();
 
         // WORLD GEN
-        genCopperOverworldDeposits = config.get("World Generation", "Generate Overworld Copper regenerating deposits", false).getBoolean();
-        genZincOverworldDeposits = config.get("World Generation", "Generate Overworld Zinc regenerating deposits", false).getBoolean();
         villagerId = config.get("World Generation", "Villager ID", 694).getInt();
         genPoorZincOre = config.get("Integration", "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get("World Generation", "Maximum number of Workshops allowed to generate per village", 1).getInt();
