@@ -19,7 +19,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemPowerFistUpgrade extends ItemSteamExosuitUpgrade {
     public ItemPowerFistUpgrade() {
-        super(ExosuitSlot.BODY_HAND, resource("fireFist"), null, 0);
+        super(ExosuitSlot.BODY_HAND, resource("fire_fist"), null, 0);
     }
 
     @Override

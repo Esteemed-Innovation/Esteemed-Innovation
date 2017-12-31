@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderMortarItem extends Render {
-    private static final ResourceLocation texture = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortarItem.png");
+    private static final ResourceLocation texture = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortar_item.png");
     private static final ResourceLocation b4 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_4.png");
     private static final ResourceLocation b5 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_5.png");
     private static final ResourceLocation b6 = new ResourceLocation("minecraft:textures/blocks/destroy_stage_6.png");

@@ -44,8 +44,8 @@ public class ItemMold extends Item implements CrucibleMold {
     }
 
     public enum Type {
-        INGOT(0, 9, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldIngot.png")),
-        NUGGET(1, 1, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/moldNugget.png")),
+        INGOT(0, 9, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mold_ingot.png")),
+        NUGGET(1, 1, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mold_nugget.png")),
         THIN_PLATE(2, 6, new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mold_thin_plate.png")),
         PIPE(3, 54, INGOT.getBlockTexture() /* TODO: Texture */),
         AXE(4, 27, INGOT.getBlockTexture() /* TODO: Texture */),

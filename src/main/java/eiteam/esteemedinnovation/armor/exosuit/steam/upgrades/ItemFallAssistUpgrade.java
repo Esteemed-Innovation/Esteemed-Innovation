@@ -16,7 +16,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemFallAssistUpgrade extends ItemSteamExosuitUpgrade {
     public ItemFallAssistUpgrade() {
-        super(ExosuitSlot.BOOTS_TOP, resource("fallUpgrade"), null, 0);
+        super(ExosuitSlot.BOOTS_TOP, resource("fall_upgrade"), null, 0);
     }
 
     @Override

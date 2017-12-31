@@ -17,7 +17,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
     public ItemModularAcceleratorUpgrade() {
-        super(ExosuitSlot.LEGS_LEGS, resource("runUpgrade"), null, 0);
+        super(ExosuitSlot.LEGS_LEGS, resource("run_upgrade"), null, 0);
     }
 
     @Override

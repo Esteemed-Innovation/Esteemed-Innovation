@@ -15,7 +15,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
     public ItemLeapActuatorUpgrade() {
-        super(ExosuitSlot.BOOTS_TOP, resource("jumpUpgrade"), null, 0);
+        super(ExosuitSlot.BOOTS_TOP, resource("jump_upgrade"), null, 0);
     }
 
     @Override

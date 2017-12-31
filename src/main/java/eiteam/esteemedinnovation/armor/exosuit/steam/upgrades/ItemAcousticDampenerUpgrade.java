@@ -22,7 +22,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemAcousticDampenerUpgrade extends ItemSteamExosuitUpgrade {
     public ItemAcousticDampenerUpgrade() {
-        super(ExosuitSlot.LEGS_LEGS, resource("stealthUpgrade"), null, 0);
+        super(ExosuitSlot.LEGS_LEGS, resource("stealth_upgrade"), null, 0);
         MinecraftForge.EVENT_BUS.register(new EventHandlers());
     }
 

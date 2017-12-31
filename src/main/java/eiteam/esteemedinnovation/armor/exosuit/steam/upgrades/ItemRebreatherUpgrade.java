@@ -15,7 +15,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemRebreatherUpgrade extends ItemSteamExosuitUpgrade {
     public ItemRebreatherUpgrade() {
-        super(ExosuitSlot.HEAD_GOGGLES, resource("rebreatherUpgrade"), null, 1);
+        super(ExosuitSlot.HEAD_GOGGLES, resource("rebreather_upgrade"), null, 1);
     }
 
     @Override

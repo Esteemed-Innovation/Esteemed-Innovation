@@ -25,7 +25,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemDoubleJumpUpgrade extends ItemSteamExosuitUpgrade {
     public ItemDoubleJumpUpgrade() {
-        super(ExosuitSlot.BOOTS_FEET, resource("doubleJump"), null, 1);
+        super(ExosuitSlot.BOOTS_FEET, resource("double_jump"), null, 1);
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(new EventHandler());
         }

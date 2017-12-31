@@ -33,7 +33,7 @@ public class ItemGoggles extends ItemGenericArmor implements ExosuitUpgrade {
 
     @Override
     public ResourceLocation getOverlay() {
-        return new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/armor/" + StringUtility.decapitalize(name) + "Exosuit.png");
+        return new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/armor/" + StringUtility.decapitalize(name) + "_exosuit.png");
     }
 
     @Override

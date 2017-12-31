@@ -24,7 +24,7 @@ import static eiteam.esteemedinnovation.armor.ArmorModule.resource;
 
 public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
     public ItemPitonDeployerUpgrade() {
-        super(ExosuitSlot.BODY_HAND, resource("pitonDeployer"), null, 1);
+        super(ExosuitSlot.BODY_HAND, resource("piton_deployer"), null, 1);
     }
 
     @Override

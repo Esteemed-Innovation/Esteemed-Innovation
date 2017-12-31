@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderCanister extends Render<EntityCanisterItem> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortarItem.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/mortar_item.png");
     private static final ModelCanister model = new ModelCanister();
 
     public RenderCanister(RenderManager renderManager) {
