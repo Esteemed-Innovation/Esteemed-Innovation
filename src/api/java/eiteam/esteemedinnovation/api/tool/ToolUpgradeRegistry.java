@@ -26,12 +26,12 @@ public class ToolUpgradeRegistry {
             String baseDomain = base.getResourceDomain();
             String basePath = base.getResourcePath();
             if (upgrade.isUniversal()) {
-                textures.add(new ResourceLocation(baseDomain, basePath + "Drill0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "Drill1"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "Axe0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "Axe1"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "Shovel0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + "Shovel1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Drill0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Drill1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Axe0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Axe1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Shovel0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + "Shovel1"));
             } else {
                 SteamToolSlot slot = upgrade.getToolSlot();
                 String tool = "Drill";
@@ -48,8 +48,8 @@ public class ToolUpgradeRegistry {
                         break;
                     }
                 }
-                textures.add(new ResourceLocation(baseDomain, basePath + tool + "0"));
-                textures.add(new ResourceLocation(baseDomain, basePath + tool + "1"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + tool + "0"));
+                textures.add(new ResourceLocation(baseDomain, basePath + "_" + tool + "1"));
             }
         }
 
