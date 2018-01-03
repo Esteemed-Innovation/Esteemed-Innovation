@@ -15,7 +15,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.List;
 
 import static eiteam.esteemedinnovation.heater.TileEntitySteamFurnace.*;
 
@@ -26,13 +28,12 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
     public static final int CONSUMPTION = Config.heaterConsumption;
 
     public TileEntitySteamHeater() {
-        super();
         addSidesToGaugeBlacklist(EnumFacing.VALUES);
     }
 
     public static void replaceWith(TileEntityFurnace current, TileEntityFurnace replacement) {
         if (current != null) {
-            ItemStack[] furnaceItemStacks = new ItemStack[] {
+            ItemStack[] furnaceItemStacks = {
               current.getStackInSlot(0),
               current.getStackInSlot(1),
               current.getStackInSlot(2)
@@ -41,6 +42,7 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
             int currentItemBurnTime = current.getField(CURRENT_ITEM_BURN_TIME_ID);
             int furnaceCookTime = current.getField(COOK_TIME_ID);
             current.getWorld().setTileEntity(current.getPos(), replacement);
+            @SuppressWarnings("TypeMayBeWeakened")
             TileEntityFurnace replaced = (TileEntityFurnace) current.getWorld().getTileEntity(current.getPos());
             assert replaced != null;
             replaced.setInventorySlotContents(0, furnaceItemStacks[0]);
@@ -59,12 +61,13 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        super.superReadFromNBT(nbt);
+        superReadFromNBT(nbt);
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        super.superWriteToNBT(nbt);
+        superWriteToNBT(nbt);
         return nbt;
     }
 
@@ -76,13 +79,13 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
 
     @Override
     public void safeUpdate() {
-        super.superUpdate();
+        superUpdate();
         EnumFacing dir = world.getBlockState(pos).getValue(BlockSteamHeater.FACING);
 
-        ArrayList<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
+        List<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
         TileEntity tile = world.getTileEntity(offsetPos);
-        if (tile == null || !(tile instanceof TileEntityFurnace)) {
+        if (!(tile instanceof TileEntityFurnace)) {
             return;
         }
         TileEntityFurnace furnace = (TileEntityFurnace) tile;

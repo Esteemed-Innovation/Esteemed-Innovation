@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
@@ -36,7 +37,6 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
     private static final AxisAlignedBB HEATER_AABB = new AxisAlignedBB(0, 0, 11F / 16F, 1, 1, 1);
 
     public BlockSteamHeater() {
-        super();
         setHardness(3.625F);
         setResistance(7.5F);
     }
@@ -51,18 +51,21 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
         return state.getValue(FACING).getIndex();
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
+    @Nonnull
     @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
+    public IBlockState withRotation(@Nonnull IBlockState state, Rotation rot) {
         return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+    @Nonnull
     @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    public IBlockState withMirror(@Nonnull IBlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
@@ -77,7 +80,7 @@ public class BlockSteamHeater extends BlockSteamPipe implements Wrenchable {
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         WorldHelper.rotateProperly(FACING, world, state, pos, facing);
         return true;
     }
