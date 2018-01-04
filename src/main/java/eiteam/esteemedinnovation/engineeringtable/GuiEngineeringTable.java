@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.Engineerable;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,18 +31,17 @@ public class GuiEngineeringTable extends GuiContainer {
         GL11.glEnable(3042);
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
-        if (tileEntity.getStackInSlot(0) != null) {
-            if (tileEntity.getStackInSlot(0).getItem() instanceof Engineerable) {
-                Engineerable item = (Engineerable) tileEntity.getStackInSlot(0).getItem();
-                item.drawBackground(this, 0, k + 52, l + 8);
+        Item engineeringItem = tileEntity.getStackInSlot(0).getItem();
+        if (engineeringItem instanceof Engineerable) {
+            Engineerable item = (Engineerable) engineeringItem;
+            item.drawBackground(this, 0, k + 52, l + 8);
 
-                int i = 0;
-                for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
-                    int x = pair.getLeft();
-                    int y = pair.getRight();
-                    item.drawSlot(this, i, k + x + 52, l + y + 8);
-                    i++;
-                }
+            int i = 0;
+            for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
+                int x = pair.getLeft();
+                int y = pair.getRight();
+                item.drawSlot(this, i, k + x + 52, l + y + 8);
+                i++;
             }
         }
     }

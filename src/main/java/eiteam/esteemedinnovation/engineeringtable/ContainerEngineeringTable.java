@@ -8,11 +8,14 @@ import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nonnull;
 
 public class ContainerEngineeringTable extends Container {
     private static final EntityEquipmentSlot[] ARMOR_SLOTS = {
@@ -26,7 +29,6 @@ public class ContainerEngineeringTable extends Container {
 
     public ContainerEngineeringTable(InventoryPlayer inventoryPlayer, TileEntityEngineeringTable tileEntityEngineeringTable) {
         tileEntity = tileEntityEngineeringTable;
-        final InventoryPlayer inv = inventoryPlayer;
 
         addSlotToContainer(new Slot(tileEntityEngineeringTable, 0, 30, 35));
         for (int i = 1; i < 10; i++) {
@@ -43,10 +45,10 @@ public class ContainerEngineeringTable extends Container {
         }
 
         for (i = 0; i < 4; ++i) {
-            final EntityEquipmentSlot equipmentSlot = ARMOR_SLOTS[i];
+            EntityEquipmentSlot equipmentSlot = ARMOR_SLOTS[i];
             // The index stuff is terrible. Sorry.
             addSlotToContainer(new Slot(inventoryPlayer, inventoryPlayer.getSizeInventory() - 2 - i, 8, 8 + i * 18) {
-                private EntityPlayer player = inv.player;
+                private EntityPlayer player = inventoryPlayer.player;
 
                 @Override
                 public int getSlotStackLimit() {
@@ -58,6 +60,7 @@ public class ContainerEngineeringTable extends Container {
                     return stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
                 }
 
+                @Override
                 @SideOnly(Side.CLIENT)
                 public String getSlotTexture() {
                     return ItemArmor.EMPTY_SLOT_NAMES[equipmentSlot.getIndex()];
@@ -66,6 +69,7 @@ public class ContainerEngineeringTable extends Container {
         }
 
         addSlotToContainer(new Slot(inventoryPlayer, 40, 30, 62) {
+            @Override
             @SideOnly(Side.CLIENT)
             public String getSlotTexture() {
                 return "minecraft:items/empty_armor_slot_shield";
@@ -78,37 +82,32 @@ public class ContainerEngineeringTable extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+    public boolean canInteractWith(@Nonnull EntityPlayer player) {
         return true;
     }
 
+    @Nonnull
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private void updateSlots() {
-        boolean hasEngineer = false;
-
         ItemStack stackInSlotZero = tileEntity.getStackInSlot(0);
-        if (stackInSlotZero != null) {
-            if (stackInSlotZero.getItem() instanceof Engineerable) {
-                Engineerable item = (Engineerable) stackInSlotZero.getItem();
-                hasEngineer = true;
-                int i = 1;
-                for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
-                    int x = pair.getLeft();
-                    int y = pair.getRight();
-                    ((SlotLimitedStackSize) getSlot(i)).setSlotStackLimit(1);
-                    getSlot(i).xPos = x + 53;
-                    getSlot(i).yPos = y + 9;
+        Item itemInSlotZero = stackInSlotZero.getItem();
+        if (itemInSlotZero instanceof Engineerable) {
+            Engineerable item = (Engineerable) itemInSlotZero;
+            int i = 1;
+            for (Pair<Integer, Integer> pair : item.engineerCoordinates()) {
+                int x = pair.getLeft();
+                int y = pair.getRight();
+                ((SlotLimitedStackSize) getSlot(i)).setSlotStackLimit(1);
+                getSlot(i).xPos = x + 53;
+                getSlot(i).yPos = y + 9;
 
-                    i++;
-                }
+                i++;
             }
-        }
-
-        if (!hasEngineer) {
+        } else {
             for (int i = 1; i < 10; i++) {
                 getSlot(i).xPos = -1000;
                 getSlot(i).yPos = -1000;
@@ -116,11 +115,7 @@ public class ContainerEngineeringTable extends Container {
         }
     }
 
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-    }
-
+    @Nonnull
     @Override
     public ItemStack slotClick(int slotID, int dragType, ClickType clickType, EntityPlayer player) {
         ItemStack toReturn = super.slotClick(slotID, dragType, clickType, player);
