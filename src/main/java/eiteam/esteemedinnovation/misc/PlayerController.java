@@ -5,7 +5,7 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 
 public class PlayerController extends PlayerControllerMP {
-    private double distance = 0F;
+    private double distance;
 
     public PlayerController(Minecraft minecraft, NetHandlerPlayClient nhpc) {
         super(minecraft, nhpc);
@@ -23,5 +23,4 @@ public class PlayerController extends PlayerControllerMP {
     public void setReachDistanceExtension(double d) {
         distance = d;
     }
-
 }

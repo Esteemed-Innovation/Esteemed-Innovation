@@ -7,37 +7,33 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ItemBauble extends Item implements IBauble {
-    public BaubleType baubleType;
+    private BaubleType baubleType;
 
     public ItemBauble(BaubleType t) {
         baubleType = t;
     }
 
     @Override
-    public BaubleType getBaubleType(ItemStack arg0) {
+    public BaubleType getBaubleType(ItemStack stack) {
         return baubleType;
     }
 
     @Override
-    public void onEquipped(ItemStack arg0, EntityLivingBase arg1) {
-    }
+    public void onEquipped(ItemStack stack, EntityLivingBase player) {}
 
     @Override
-    public void onUnequipped(ItemStack arg0, EntityLivingBase arg1) {
-    }
+    public void onUnequipped(ItemStack stack, EntityLivingBase player) {}
 
     @Override
-    public void onWornTick(ItemStack arg0, EntityLivingBase arg1) {
-    }
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {}
 
     @Override
-    public boolean canEquip(ItemStack arg0, EntityLivingBase arg1) {
+    public boolean canEquip(ItemStack stack, EntityLivingBase player) {
         return true;
     }
 
     @Override
-    public boolean canUnequip(ItemStack arg0, EntityLivingBase arg1) {
+    public boolean canUnequip(ItemStack stack, EntityLivingBase player) {
         return true;
     }
-
 }

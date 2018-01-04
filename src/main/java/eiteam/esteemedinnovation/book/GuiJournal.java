@@ -35,7 +35,8 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
     private int currPage;
     private int lastIndexPage;
     public String viewing = "";
-    private ItemStack book;
+    @Nonnull
+    private ItemStack book = ItemStack.EMPTY;
     private boolean mustReleaseMouse;
     public static final int BOOK_IMAGE_WIDTH = 192;
     public static final int BOOK_IMAGE_HEIGHT = 192;

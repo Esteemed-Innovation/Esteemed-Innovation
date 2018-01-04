@@ -7,6 +7,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemCraftingComponent extends Item {
     public ItemCraftingComponent() {
         setHasSubtypes(true);
@@ -14,12 +16,13 @@ public class ItemCraftingComponent extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
+    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
         for (Types component : Types.values()) {
             subItems.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
         }
     }
 
+    @Nonnull
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return getUnlocalizedName() + "." + stack.getItemDamage();
@@ -36,7 +39,7 @@ public class ItemCraftingComponent extends Item {
         HELLFORGE_BRICK_RAW(7),
         HELLFORGE_BRICK(8);
 
-        private int metadata;
+        private final int metadata;
 
         Types(int metadata) {
             this.metadata = metadata;
