@@ -1,16 +1,23 @@
 package eiteam.esteemedinnovation.api.steamnet;
 
 import eiteam.esteemedinnovation.api.APIConfig;
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.SteamTransporter;
 import eiteam.esteemedinnovation.api.util.Coord4;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.*;
 
 public class SteamNetwork {
+    /**
+     * A generic steamed DamageSource. The DamageSource counts as Fire damage. Use this for any damage that is caused by
+     * steam directly.
+     */
+    public static final DamageSource STEAMED_DAMAGE = new DamageSource(Constants.API_MODID + ":steamed").setFireDamage();
     private static Random random = new Random();
     private int refreshWaitTicks = 0;
     private int globalRefreshTicks = 300;

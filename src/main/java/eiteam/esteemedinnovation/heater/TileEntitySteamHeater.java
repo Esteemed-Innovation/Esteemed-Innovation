@@ -1,10 +1,12 @@
 package eiteam.esteemedinnovation.heater;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
+import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -85,6 +88,16 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         List<TileEntitySteamHeater> secondaryHeaters = new ArrayList<>();
         BlockPos offsetPos = getOffsetPos(dir);
         TileEntity tile = world.getTileEntity(offsetPos);
+        if (tile == null && getSteamShare() >= CONSUMPTION) {
+            AxisAlignedBB heaterAABB = new AxisAlignedBB(0, 0, 1, 1, 1, 21F / 16F);
+            heaterAABB = WorldHelper.getDirectionalBoundingBox(dir, heaterAABB, true).offset(pos);
+            List<Entity> burnedEntities = world.getEntitiesWithinAABB(Entity.class, heaterAABB);
+            for (Entity burnedEntity : burnedEntities) {
+                burnedEntity.attackEntityFrom(SteamNetwork.STEAMED_DAMAGE, 1F);
+                decrSteam(CONSUMPTION);
+            }
+            return;
+        }
         if (!(tile instanceof TileEntityFurnace)) {
             return;
         }
