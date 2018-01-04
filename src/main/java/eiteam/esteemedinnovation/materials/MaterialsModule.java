@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.materials;
 
 import eiteam.esteemedinnovation.api.APIConfig;
-import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
@@ -29,8 +28,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -58,9 +55,7 @@ import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class MaterialsModule extends ContentModule {
-    public static final ResourceLocation WORKED_OUT_ORE_DEPOSIT_LOOTTABLE = new ResourceLocation(Constants.EI_MODID, "worked_out_ore_deposit");
     public static Block STORAGE_BLOCK;
-    public static Block ORE_DEPOSIT_GENERATOR;
     public static Block ORE_BLOCK;
     public static Item METAL_INGOT;
     public static Item METAL_NUGGET;
@@ -189,8 +184,6 @@ public class MaterialsModule extends ContentModule {
         SmasherRegistry.registerSmashable(GRAVEL_ORE, new ItemStack(SAND));
         SmasherRegistry.registerSmashable(GLOWSTONE_ORE, new ItemStack(GLOWSTONE_DUST, 4));
         SmasherRegistry.registerSmashable(SANDSTONE_ORE, new ItemStack(SAND));
-
-        LootTableList.register(WORKED_OUT_ORE_DEPOSIT_LOOTTABLE);
 
         CrucibleRegistry.registerLiquid(IRON_LIQUID);
         CrucibleRegistry.registerLiquid(GOLD_LIQUID);
@@ -328,10 +321,6 @@ public class MaterialsModule extends ContentModule {
     public void preInitClient() {
         registerModelAllVariants(STORAGE_BLOCK, BlockBeacon.VARIANT.getName(), BlockBeacon.MetalBlockTypes.values());
         registerModelAllVariants(ORE_BLOCK, BlockGenericOre.VARIANT.getName(), LOOKUP);
-        for (int i = 0; i < 4; i++) {
-            String variant = "variant=" + (i % 2 == 0 ? "copper" : "zinc") + ",worked_out=" + (i > 1 ? "true" : "false");
-            registerModel(ORE_DEPOSIT_GENERATOR, i, variant);
-        }
         for (ItemMetalIngot.Types type : ItemMetalIngot.Types.values()) {
             registerModelItemStack(new ItemStack(METAL_INGOT, 1, type.getMeta()));
         }
