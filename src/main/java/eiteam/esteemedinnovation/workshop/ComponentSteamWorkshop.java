@@ -189,7 +189,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
             TileEntityBoiler boiler = (TileEntityBoiler) tile;
             boiler.refresh();
             boiler.insertSteam(1000 + rand.nextInt(3000), EnumFacing.UP);
-            boiler.myTank.setFluid(new FluidStack(FluidHelper.getWaterFluid(), 2000 + rand.nextInt(3000)));
+            boiler.getTank().setFluid(new FluidStack(FluidHelper.getWaterFluid(), 2000 + rand.nextInt(3000)));
         }
     }
 /* TODO

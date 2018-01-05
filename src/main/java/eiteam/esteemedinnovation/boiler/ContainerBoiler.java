@@ -70,7 +70,7 @@ public class ContainerBoiler extends Container {
                 listener.sendWindowProperty(this, 3, tileEntity.getPressureAsInt());
             }
 
-            if (this.lastWater != tileEntity.getTank().getFluidAmount()) {
+            if (lastWater != tileEntity.getTank().getFluidAmount()) {
                 listener.sendWindowProperty(this, 4, tileEntity.getTank().getFluidAmount());
             }
         }
@@ -97,7 +97,7 @@ public class ContainerBoiler extends Container {
             tileEntity.currentItemBurnTime = data;
         }
         if (id == 3) {
-            tileEntity.setPressure((float) data / 1000F);
+            tileEntity.setPressure(data / 1000F);
         }
         if (id == 4) {
             int current = tileEntity.getTank().getFluidAmount();

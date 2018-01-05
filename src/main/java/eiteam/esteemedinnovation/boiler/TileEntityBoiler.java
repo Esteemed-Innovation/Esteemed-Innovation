@@ -42,12 +42,12 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     private static final int[] slotsTop = {0, 1};
     private static final int[] slotsBottom = {0, 1};
     private static final int[] slotsSides = {0, 1};
-    public FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
+    private FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
     public int cookTime;
     public int burnTime;
     public int currentItemBurnTime;
-    public Block disguiseBlock;
-    public int disguiseMeta;
+    private Block disguiseBlock;
+    private int disguiseMeta;
     @Nonnull
     private NonNullList<ItemStack> itemContents = NonNullList.withSize(2, ItemStack.EMPTY);
     private String customName;
@@ -114,7 +114,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound access = super.getUpdateTag();
+        NBTTagCompound access = getUpdateTag();
         access.setInteger("WaterStored", myTank.getFluidAmount());
         access.setShort("BurnTime", (short) burnTime);
         access.setShort("CookTime", (short) cookTime);
@@ -474,6 +474,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             }
             case 3: {
                 currentItemBurnTime = value;
+                break;
+            }
+            default: {
+                break;
             }
         }
     }

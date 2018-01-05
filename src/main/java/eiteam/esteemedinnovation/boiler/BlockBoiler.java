@@ -32,7 +32,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyBool IS_ON = PropertyBool.create("on");
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-    public BlockBoiler() {
+    BlockBoiler() {
         super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
@@ -153,7 +153,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
             if (!FluidHelper.playerIsHoldingWaterContainer(player) && isClient) {
                 player.openGui(EsteemedInnovation.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             } else {
-                FluidHelper.fillTankFromItem(player.getHeldItem(hand), tileEntity.myTank, !player.capabilities.isCreativeMode);
+                FluidHelper.fillTankFromItem(player.getHeldItem(hand), tileEntity.getTank(), !player.capabilities.isCreativeMode);
             }
         }
 
