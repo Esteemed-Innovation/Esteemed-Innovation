@@ -299,14 +299,14 @@ public abstract class SteamTransporterTileEntity extends TileEntityTickableSafe 
             if (SteamNetworkRegistry.getInstance().isInitialized(getDimension())) {
                 /*
                 EsteemedInnovation.log.debug("Null network");
-				if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
-					EsteemedInnovation.log.debug("I have a network!");
-					this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
-					this.network.rejoin(this);
-				} else {
+                if (this.networkName != null && SteamNetworkRegistry.getInstance().isInitialized(this.getDimension())){
+                    EsteemedInnovation.log.debug("I have a network!");
+                    this.network = SteamNetworkRegistry.getInstance().getNetwork(this.networkName, this);
+                    this.network.rejoin(this);
+                } else {
                     EsteemedInnovation.log.debug("Requesting new network or joining existing.en");
-				}
-				*/
+                }
+                */
                 SteamNetwork.newOrJoin(this);
                 markForResync();
             }
