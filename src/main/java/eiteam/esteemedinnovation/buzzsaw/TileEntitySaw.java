@@ -25,7 +25,7 @@ public class TileEntitySaw extends SteamTransporterTileEntity {
     private boolean isWoundUp;
     private int windupTicks;
 
-    TileEntitySaw() {
+    public TileEntitySaw() {
         super(new EnumFacing[] { EnumFacing.DOWN, EnumFacing.EAST, EnumFacing.WEST, EnumFacing.NORTH, EnumFacing.SOUTH });
     }
 

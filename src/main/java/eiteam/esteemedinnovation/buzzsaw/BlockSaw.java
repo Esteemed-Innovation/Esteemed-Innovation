@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 public class BlockSaw extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-    public BlockSaw() {
+    BlockSaw() {
         super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
