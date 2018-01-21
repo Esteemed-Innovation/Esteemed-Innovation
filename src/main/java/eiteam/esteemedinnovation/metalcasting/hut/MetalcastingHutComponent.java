@@ -35,6 +35,8 @@ public class MetalcastingHutComponent extends StructureVillagePieces.Village {
     private static final IBlockState MOLD_STATE = MetalcastingModule.MOLD.getDefaultState();
     private static final IBlockState CARVING_TABLE_STATE = MetalcastingModule.CARVING_TABLE.getDefaultState();
 
+    public MetalcastingHutComponent() {}
+
     MetalcastingHutComponent(StructureVillagePieces.Start villagePiece, StructureBoundingBox sbb, EnumFacing direction) {
         setCoordBaseMode(direction);
         boundingBox = sbb;
