@@ -1,3 +1,5 @@
+import org.ajoberstar.grgit.Grgit
+
 import java.nio.file.Files
 import java.nio.file.Paths
 import groovy.json.JsonSlurper
@@ -19,7 +21,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.ajoberstar:grgit:1.1.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
     }
@@ -39,9 +41,9 @@ confusing). It increments the .alphaversion file's first line at the end, so it 
 
 Example: `gradle build -Palpha=1.0.0 -Pdev` => version # 1.0.0-alpha1-<commit>
 */
-def incrementAlphaVersion(int currentValue) {
+static def incrementAlphaVersion(int currentValue) {
     def file = new File('.alphaversion')
-    file.newWriter();
+    file.newWriter()
     file << "${currentValue + 1}"
 }
 
@@ -60,11 +62,11 @@ if (project.hasProperty('alpha')) {
 }
 
 if (project.hasProperty('dev')) {
-    def git = org.ajoberstar.grgit.Grgit.open(file('.'))
+    def git = Grgit.open(dir: '.')
     project.version += '-' + git.head().getAbbreviatedId(6)
 }
 
-task finalize << {
+finalize.doLast {
     if (project.hasProperty('alpha')) {
         incrementAlphaVersion(alpha)
     }
@@ -105,10 +107,6 @@ repositories {
         name "tterrag Repo"
         url "http://maven.tterrag.com"
     }
-    maven {
-        name "ProfMobius"
-        url "http://mobiusstrip.eu/maven"
-    }
 
     maven {
         name = "The CB Project"
@@ -120,29 +118,13 @@ repositories {
     }
 }
 
-/*
-TODO Update this.
-Coherent list of mods that we added integration for which do not support 1.9 yet:
-- Natura
-- CoFH Core/Thermal Foundation
-- Thaumcraft
-- Twilight Forest
-- Botania
-- Railcraft
-*/
 dependencies {
-    /*
-    These are the mods that have not updated to 1.9 yet.
+    compile mantleVersion
+    compile ticVersion
     compile naturaVersion
-    */
-//    There are some issues that I can't figure out with these mods.
-//    compile mantleVersion
-//    compile ticVersion
-//    Using different mappings, cannot generate world. TODO: Resolve this.
-//    compile ic2Version
+    compile ic2Version
     compile jeiVersion
     compile cclibVersion
-    deobfCompile bloodmagicVersion
 //    These are dependent on libs which do not compile successfully.
 //    compile eioVersion
 //    compile ecoreVersion
