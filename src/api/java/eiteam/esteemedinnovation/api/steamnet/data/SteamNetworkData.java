@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.api.steamnet.data;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 import javax.annotation.Nonnull;
 
