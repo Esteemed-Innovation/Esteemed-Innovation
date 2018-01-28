@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
@@ -58,15 +59,15 @@ public class EntityMusketBall extends Entity implements IProjectile {
         shootingEntity = player;
 
         setSize(0.5F, 0.5F);
-        setLocationAndAngles(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ, player.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), player.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
-        posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+        setLocationAndAngles(player.posX, player.posY + player.getEyeHeight(), player.posZ, player.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), player.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
+        posX -= (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         posY -= 0.10000000149011612D;
-        posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
-        setPosition(this.posX, this.posY, this.posZ);
-        motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
-        motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
-        motionY = (double) (-MathHelper.sin(this.rotationPitch / 180.0F * (float) Math.PI));
-        setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 10F, 1.0F);
+        posZ -= (MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+        setPosition(posX, posY, posZ);
+        motionX = (-MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+        motionZ = (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * MathHelper.cos(rotationPitch / 180.0F * (float) Math.PI));
+        motionY = (-MathHelper.sin(rotationPitch / 180.0F * (float) Math.PI));
+        shoot(motionX, motionY, motionZ, par3 * 10F, 1.0F);
     }
 
     @Override
@@ -75,25 +76,25 @@ public class EntityMusketBall extends Entity implements IProjectile {
     }
 
     @Override
-    public void setThrowableHeading(double x, double y, double z, float velocity, float inaccuracy) {
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         float var9 = MathHelper.sqrt(x * x + y * y + z * z);
-        x /= (double) var9;
-        y /= (double) var9;
-        z /= (double) var9;
-        x += this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        y += this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        z += this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        x *= (double) velocity;
-        y *= (double) velocity;
-        z *= (double) velocity;
-        this.motionX = x;
-        this.motionY = y;
-        this.motionZ = z;
+        x /= var9;
+        y /= var9;
+        z /= var9;
+        x += rand.nextGaussian() * 0.007499999832361937D * inaccuracy;
+        y += rand.nextGaussian() * 0.007499999832361937D * inaccuracy;
+        z += rand.nextGaussian() * 0.007499999832361937D * inaccuracy;
+        x *= velocity;
+        y *= velocity;
+        z *= velocity;
+        motionX = x;
+        motionY = y;
+        motionZ = z;
         float var10 = MathHelper.sqrt(x * x + z * z);
         //noinspection SuspiciousNameCombination
-        this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(y, (double) var10) * 180.0D / Math.PI);
-        this.ticksInGround = 0;
+        prevRotationYaw = rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
+        prevRotationPitch = rotationPitch = (float) (Math.atan2(y, var10) * 180.0D / Math.PI);
+        ticksInGround = 0;
     }
 
     @Override
@@ -107,7 +108,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             float var7 = MathHelper.sqrt(x * x + z * z);
             //noinspection SuspiciousNameCombination
             prevRotationYaw = rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
-            prevRotationPitch = rotationPitch = (float) (Math.atan2(y, (double) var7) * 180.0D / Math.PI);
+            prevRotationPitch = rotationPitch = (float) (Math.atan2(y, var7) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch;
             prevRotationYaw = rotationYaw;
             setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
@@ -123,7 +124,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             float var1 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
             //noinspection SuspiciousNameCombination
             prevRotationYaw = rotationYaw = (float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
-            prevRotationPitch = rotationPitch = (float) (Math.atan2(motionY, (double) var1) * 180.0D / Math.PI);
+            prevRotationPitch = rotationPitch = (float) (Math.atan2(motionY, var1) * 180.0D / Math.PI);
         }
 
         IBlockState state = world.getBlockState(tilePos);
@@ -159,9 +160,9 @@ public class EntityMusketBall extends Entity implements IProjectile {
                 }
             } else {
                 inGround = false;
-                motionX *= (double) (rand.nextFloat() * 0.2F);
-                motionY *= (double) (rand.nextFloat() * 0.2F);
-                motionZ *= (double) (rand.nextFloat() * 0.2F);
+                motionX *= (rand.nextFloat() * 0.2F);
+                motionY *= (rand.nextFloat() * 0.2F);
+                motionZ *= (rand.nextFloat() * 0.2F);
                 ticksInGround = 0;
                 ticksInAir = 0;
             }
@@ -185,7 +186,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
 
             for (Entity entity1 : entities) {
                 if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || ticksInAir >= 5)) {
-                    AxisAlignedBB aabb = entity1.getEntityBoundingBox().expand((double) f1, (double) f1, (double) f1);
+                    AxisAlignedBB aabb = entity1.getEntityBoundingBox().expand(f1, f1, f1);
                     RayTraceResult intercept = aabb.calculateIntercept(posVec, motionVec);
 
                     if (intercept != null) {
@@ -243,13 +244,13 @@ public class EntityMusketBall extends Entity implements IProjectile {
                     IBlockState inState = world.getBlockState(tilePos);
                     inTile = inState.getBlock();
                     inData = inTile.getMetaFromState(inState);
-                    motionX = (double) ((float) (rayTraceResult.hitVec.x - posX));
-                    motionY = (double) ((float) (rayTraceResult.hitVec.y - posY));
-                    motionZ = (double) ((float) (rayTraceResult.hitVec.z - posZ));
+                    motionX = ((float) (rayTraceResult.hitVec.x - posX));
+                    motionY = ((float) (rayTraceResult.hitVec.y - posY));
+                    motionZ = ((float) (rayTraceResult.hitVec.z - posZ));
                     float root = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-                    posX -= motionX / (double) root * 0.05000000074505806D;
-                    posY -= motionY / (double) root * 0.05000000074505806D;
-                    posZ -= motionZ / (double) root * 0.05000000074505806D;
+                    posX -= motionX / root * 0.05000000074505806D;
+                    posY -= motionY / root * 0.05000000074505806D;
+                    posZ -= motionZ / root * 0.05000000074505806D;
                     //this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     inGround = true;
                     arrowShake = 7;
@@ -282,7 +283,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
             float f3 = 0.99F;
             f1 = 0.05F;
 
-            if (this.isInWater()) {
+            if (isInWater()) {
                 double f2 = 0.25D;
                 for (int i = 0; i < 4; ++i) {
                     world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, posX - motionX * f2, posY - motionY * f2,
@@ -292,10 +293,10 @@ public class EntityMusketBall extends Entity implements IProjectile {
                 f3 = 0.8F;
             }
 
-            motionX *= (double) f3;
-            motionY *= (double) f3;
-            motionZ *= (double) f3;
-            motionY -= (double) f1;
+            motionX *= f3;
+            motionY *= f3;
+            motionZ *= f3;
+            motionY -= f1;
             setPosition(posX, posY, posZ);
             //this.do();
             //this.f
@@ -303,7 +304,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbt) {
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt) {
         nbt.setShort("xTile", (short) tilePos.getX());
         nbt.setShort("yTile", (short) tilePos.getY());
         nbt.setShort("zTile", (short) tilePos.getZ());
@@ -315,7 +316,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbt) {
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt) {
         int x = nbt.getShort("xTile");
         int y = nbt.getShort("yTile");
         int z = nbt.getShort("zTile");

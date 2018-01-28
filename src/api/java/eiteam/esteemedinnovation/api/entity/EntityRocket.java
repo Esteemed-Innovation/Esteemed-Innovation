@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 
@@ -38,14 +39,14 @@ public class EntityRocket extends Entity {
 
     public EntityRocket(World world) {
         super(world);
-        this.setSize(1.0F, 1.0F);
+        setSize(1.0F, 1.0F);
     }
 
     public EntityRocket(World world, double x, double y, double z, double p_i1760_8_, double p_i1760_10_, double p_i1760_12_) {
         super(world);
-        this.setSize(1.0F, 1.0F);
-        this.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
-        this.setPosition(x, y, z);
+        setSize(1.0F, 1.0F);
+        setLocationAndAngles(x, y, z, rotationYaw, rotationPitch);
+        setPosition(x, y, z);
     }
 
     public EntityRocket(World world, EntityPlayer player, float par4, float size) {
@@ -54,16 +55,16 @@ public class EntityRocket extends Entity {
         shootingEntity = player;
         explosionSize = size;
         setSize(0.25F, 0.25F);
-        setLocationAndAngles(player.posX, player.posY + (double) player.getEyeHeight(), player.posZ, player.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), player.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
-        setPosition(this.posX, this.posY, this.posZ);
-        posX -= 1.0D * (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
-        posZ -= 1.0D * (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+        setLocationAndAngles(player.posX, player.posY + player.getEyeHeight(), player.posZ, player.rotationYaw + ((itemRand.nextFloat() - 0.5F) * par4 * 15F), player.rotationPitch + ((itemRand.nextFloat() - 0.5F) * par4 * 15F));
+        setPosition(posX, posY, posZ);
+        posX -= 1.0D * (MathHelper.cos(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+        posZ -= 1.0D * (MathHelper.sin(rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
         motionX = motionY = motionZ = 0.0D;
         double p_i1760_8_ = player.getLookVec().x;
         double p_i1760_10_ = player.getLookVec().y;
         double p_i1760_12_ = player.getLookVec().z;
 
-        double d6 = (double) MathHelper.sqrt(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
+        double d6 = MathHelper.sqrt(p_i1760_8_ * p_i1760_8_ + p_i1760_10_ * p_i1760_10_ + p_i1760_12_ * p_i1760_12_);
         motionX = p_i1760_8_ / d6 * 1.0D;
         motionY = p_i1760_10_ / d6 * 1.0D;
         motionZ = p_i1760_12_ / d6 * 1.0D;
@@ -73,7 +74,7 @@ public class EntityRocket extends Entity {
         displayRotationYaw = rotationYaw;
         float f3 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
 
-        displayRotationPitch = (float) (Math.atan2(motionY, (double) f3) * 180.0D / Math.PI);
+        displayRotationPitch = (float) (Math.atan2(motionY, f3) * 180.0D / Math.PI);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class EntityRocket extends Entity {
 
             Vec3d vec3 = new Vec3d(posX, posY, posZ);
             Vec3d vec31 = new Vec3d(posX + motionX, posY + motionY, posZ + motionY);
-            RayTraceResult trace = this.world.rayTraceBlocks(vec3, vec31, false, true, false);
+            RayTraceResult trace = world.rayTraceBlocks(vec3, vec31, false, true, false);
             vec3 = new Vec3d(posX, posY, posZ);
             vec31 = new Vec3d(posX + motionX, posY + motionY, posZ + motionZ);
 
@@ -141,9 +142,9 @@ public class EntityRocket extends Entity {
             double d0 = 0.0D;
 
             for (Entity entity1 : list) {
-                if (entity1.canBeCollidedWith() && (!entity1.isEntityEqual(shootingEntity) || this.ticksInAir >= 25)) {
+                if (entity1.canBeCollidedWith() && (!entity1.isEntityEqual(shootingEntity) || ticksInAir >= 25)) {
                     float f = 0.3F;
-                    AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand((double) f, (double) f, (double) f);
+                    AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f, f, f);
                     RayTraceResult trace1 = axisalignedbb.calculateIntercept(vec3, vec31);
 
                     if (trace1 != null) {
@@ -162,7 +163,7 @@ public class EntityRocket extends Entity {
             }
 
             if (trace != null) {
-                this.onImpact();
+                onImpact();
             }
 
 
@@ -211,12 +212,12 @@ public class EntityRocket extends Entity {
 
 
     protected void onImpact() {
-        if (!this.world.isRemote) {
+        if (!world.isRemote) {
             //newExplosion(world, (Entity)null, this.posX, this.posY, this.posZ, (float)2.0F, true, this.world.getGameRules().getGameRuleBooleanValue("mobGriefing"));
 
             newExplosion(world, shootingEntity, posX, posY, posZ, explosionSize, true,
               world.getGameRules().getBoolean("mobGriefing"));
-            this.setDead();
+            setDead();
         }
     }
 
@@ -239,7 +240,7 @@ public class EntityRocket extends Entity {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbt) {
+    public void writeEntityToNBT(@Nonnull NBTTagCompound nbt) {
         nbt.setShort("xTile", (short) x);
         nbt.setShort("yTile", (short) y);
         nbt.setShort("zTile", (short) z);
@@ -249,7 +250,7 @@ public class EntityRocket extends Entity {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbt) {
+    public void readEntityFromNBT(@Nonnull NBTTagCompound nbt) {
         x = nbt.getShort("xTile");
         y = nbt.getShort("yTile");
         z = nbt.getShort("zTile");
@@ -277,11 +278,11 @@ public class EntityRocket extends Entity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
         if (isEntityInvulnerable(source)) {
             return false;
         } else {
-            setBeenAttacked();
+            markVelocityChanged();
             Entity entity = source.getTrueSource();
             if (entity != null) {
                 Vec3d vec3 = entity.getLookVec();
@@ -302,13 +303,13 @@ public class EntityRocket extends Entity {
     }
 
     @Override
-    public float getBrightness(float partialTicks) {
+    public float getBrightness() {
         return 1.0F;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks) {
+    public int getBrightnessForRender() {
         return 15728880;
     }
 }
