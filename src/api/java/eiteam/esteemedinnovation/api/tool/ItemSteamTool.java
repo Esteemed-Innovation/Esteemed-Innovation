@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.api.SteamChargable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,6 +52,10 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
         this.itemForStrength = itemForStrength;
     }
 
+    protected Item.ToolMaterial getToolMaterial() {
+        return toolMaterial;
+    }
+
     @Nonnull
     @Override
     public Set<String> getToolClasses(ItemStack stack) {
@@ -83,8 +88,8 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean advanced) {
-        super.addInformation(me, player, list, advanced);
+    public void addInformation(ItemStack me, World world, List<String> list, ITooltipFlag tooltipFlag) {
+        super.addInformation(me, world, list, tooltipFlag);
         list.add(TextFormatting.WHITE + "" + (me.getMaxDamage() - me.getItemDamage()) * steamPerDurability() + "/" + me.getMaxDamage() * steamPerDurability() + " SU");
         ArrayList<ItemStack> upgradeStacks = UtilSteamTool.getUpgradeStacks(me);
         ArrayList<String> upgradeStrings = UtilSteamTool.getInformationFromStacks(upgradeStacks, getRedSlot(), me);
@@ -186,10 +191,10 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     }
 
     @Override
-    public float getStrVsBlock(@Nonnull ItemStack stack, IBlockState state) {
+    public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
         NBTTagCompound nbt = UtilSteamTool.checkNBT(stack);
         int speed = nbt.getInteger("Speed");
-        return itemForStrength.getStrVsBlock(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
+        return itemForStrength.getDestroySpeed(stack, state) != 1F && speed > 0 ? getSpeed(speed) : 0F;
     }
 
     @Override
