@@ -1,0 +1,19 @@
+{
+  "type": "esteemedinnovationapi:shapeless_recipe",
+  "ingredients": [
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "oreCopper"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "oreZinc"
+    }
+  ],
+  "result": {
+    "item": "esteemedinnovation:book"
+  }
+}

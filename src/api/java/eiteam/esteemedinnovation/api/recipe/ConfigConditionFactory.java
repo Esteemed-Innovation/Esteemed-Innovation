@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.api.recipe;
 
 import com.google.gson.JsonObject;
+import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
@@ -15,6 +16,7 @@ public class ConfigConditionFactory implements IConditionFactory {
 
         switch (configSetting) {
             //TODO: add config options here
+            case "enableAstrolabe": return () -> Config.enableAstrolabe;
             default:
                 return () -> false;
         }

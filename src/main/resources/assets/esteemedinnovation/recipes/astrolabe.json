@@ -1,0 +1,29 @@
+{
+  "type": "esteemedinnovationapi:shaped_recipe",
+  "group": "wooden_fence",
+  "conditions": [
+    {
+      "type": "esteemedinnovationapi:config_enabled",
+      "config_setting": "enableAstrolabe"
+    }
+  ],
+  "pattern": [
+    " x ",
+    "xrx",
+    " x "
+  ],
+  "key": {
+    "x": {
+      "type": "forge:ore_dict",
+      "ore": "ingotBrass"
+    },
+    "r": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  },
+  "result": {
+    "item": "minecraft:fence",
+    "count": 3
+  }
+}
