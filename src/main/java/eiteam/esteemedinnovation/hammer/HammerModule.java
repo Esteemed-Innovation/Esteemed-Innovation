@@ -26,7 +26,8 @@ public class HammerModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableHammer) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableHammer) {
             BookRecipeRegistry.addRecipe("hammer1", new ShapedOreRecipe(STEAM_HAMMER,
               " ix",
               "bix",
@@ -42,6 +43,7 @@ public class HammerModule extends ContentModule {
               'b', BLOCK_IRON
             ));
         }
+        */
     }
 
     @Override

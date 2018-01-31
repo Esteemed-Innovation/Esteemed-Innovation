@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -118,11 +119,11 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
     public void writeInfo(List list) {}
 
     @Override
-    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean advanced) {
-        super.addInformation(me, player, list, advanced);
-        if (me.hasTagCompound() && me.getTagCompound().hasKey("NewTradesLevel")) {
-            int level = me.getTagCompound().getInteger("NewTradesLevel");
-            list.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("NewTradesLevel")) {
+            int level = stack.getTagCompound().getInteger("NewTradesLevel");
+            tooltip.add(TextFormatting.GREEN + I18n.format("esteemedinnovation.exosuit.level", level));
         }
     }
 }

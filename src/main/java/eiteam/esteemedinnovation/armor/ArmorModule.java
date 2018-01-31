@@ -261,7 +261,8 @@ public class ArmorModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableGoggles) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableGoggles) {
             BookRecipeRegistry.addRecipe("monocle1", new ShapedOreRecipe(MONOCLE,
               " l ",
               "l l",
@@ -797,6 +798,7 @@ public class ArmorModule extends ContentModule {
           'x', ore
         ));
     }
+    */
 
     /**
      * Adds exosuit plate recipe (2x2 of ingredient), and a melting recipe for the itemstack.
@@ -804,18 +806,18 @@ public class ArmorModule extends ContentModule {
      * @param ingredient The ingredient, either an ItemStack or an OreDict string.
      * @param plate The output plate.
      */
-    private static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
+  /*  private static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
         addExosuitPlateRecipes(str, ingredient, plate);
         CrucibleRegistry.registerMeltRecipe(plate.getItem(), plate.getItemDamage(), liq, 24);
     }
-
+*/
     /**
      * Adds an exosuit plate recipe (2x2 of ingredient), without a melting recipe for the itemstack.
      * @param str The name of the recipe for the book.
      * @param ingredient The ingredient, either an ItemStack or an OreDict string
      * @param plate The output plate.
      */
-    private static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate) {
+ /*   private static void addExosuitPlateRecipes(String str, Object ingredient, ItemStack plate) {
         BookRecipeRegistry.addRecipe(str, new ShapedOreRecipe(plate, "xx", "xx", 'x', ingredient));
         if (ingredient instanceof ItemStack) {
             ItemStack stack = ((ItemStack) ingredient).copy();
@@ -827,7 +829,7 @@ public class ArmorModule extends ContentModule {
                 stack.setCount(4);
                 GameRegistry.addRecipe(new ShapelessOreRecipe(stack, plate));
             }
-        }
+        }*/
     }
 
     @Override

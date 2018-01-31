@@ -39,7 +39,8 @@ public class ChargingModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableCharger) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableCharger) {
             if (Config.enableChargingPad) {
                 BookRecipeRegistry.addRecipe("fillingPad1", new ShapedOreRecipe(FILLING_PAD,
                   "p p",
@@ -88,6 +89,7 @@ public class ChargingModule extends ContentModule {
                   ));
             }
         }
+        */
     }
 
     @Override

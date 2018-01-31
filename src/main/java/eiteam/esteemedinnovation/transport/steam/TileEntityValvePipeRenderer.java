@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.transport.steam;
 
-import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +17,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
     private static final ResourceLocation VALVE_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/pipe_valve");
 
     @Override
-    public void renderTileEntityAt(TileEntityValvePipe valve, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityValvePipe valve, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
         World world = valve.getWorldObj();
@@ -67,7 +67,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
         GlStateManager.translate(-0.5, -0.5, -0.5);
 
         Tessellator tess = Tessellator.getInstance();
-        VertexBuffer buffer = tess.getBuffer();
+        BufferBuilder buffer = tess.getBuffer();
         RenderUtility.renderModel(buffer, VALVE_RL);
         bindTexture(TEXTURE);
         tess.draw();

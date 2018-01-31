@@ -13,7 +13,7 @@ public class TileEntityVacuumRenderer extends TileEntitySpecialRenderer<TileEnti
     private static final ResourceLocation SIDE_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/vacuum_front_side");
 
     @Override
-    public void renderTileEntityAt(TileEntityVacuum vacuum, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityVacuum vacuum, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         EnumFacing dir = vacuum.getWorldObj().getBlockState(vacuum.getPos()).getValue(BlockVacuum.FACING);

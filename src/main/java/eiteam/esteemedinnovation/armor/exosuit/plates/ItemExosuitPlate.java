@@ -24,10 +24,11 @@ public class ItemExosuitPlate extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
-            subItems.add(ArmorModule.plateStack(i));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(tab == EsteemedInnovation.tab) {
+            for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
+                items.add(ArmorModule.plateStack(i));
+            }
         }
     }
 

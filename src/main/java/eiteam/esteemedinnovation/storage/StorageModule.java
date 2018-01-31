@@ -54,7 +54,8 @@ public class StorageModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableTank) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableTank) {
             BookRecipeRegistry.addRecipe("tank1", new ShapedOreRecipe(STEAM_TANK,
               "iii",
               "i i",
@@ -94,6 +95,7 @@ public class StorageModule extends ContentModule {
             ));
             MinecraftForge.EVENT_BUS.register(new CanisterEntityCreator());
         }
+        */
     }
 
     @Override

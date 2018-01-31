@@ -32,7 +32,7 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
             double lastZ = data.getLastMotions().getRight();
             if ((player.moveForward > 0.0F) && (lastX != player.posX || lastZ != player.posZ) && player.onGround && !player.isInWater()) {
                 ItemStack chestStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                player.moveRelative(0F, 1F, 0.075F); //entity.moveFlying(0.0F, 1.0F, 0.075F); TODO Test this.
+                player.moveRelative(0F, 1F, 0.075F, 0.0F); //entity.moveFlying(0.0F, 1.0F, 0.075F); TODO Test this.
                 if (!chestStack.getTagCompound().hasKey("TicksUntilSteamDrain")) {
                     chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
                 }

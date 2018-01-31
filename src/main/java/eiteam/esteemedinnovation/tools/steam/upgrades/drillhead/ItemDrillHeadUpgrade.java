@@ -4,12 +4,15 @@ import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
@@ -31,9 +34,9 @@ public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
     }
 
     @Override
-    public void addInformation(ItemStack self, EntityPlayer player, List<String> list, boolean advanced) {
-        super.addInformation(self, player, list, advanced);
-        list.add(getInformation(self, null));
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(getInformation(stack, null));
     }
 
     @Override

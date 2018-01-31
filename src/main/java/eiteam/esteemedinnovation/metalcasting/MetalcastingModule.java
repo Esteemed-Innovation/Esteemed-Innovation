@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.crucible.CrucibleTweaker;
 import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucible;
@@ -84,8 +85,9 @@ public class MetalcastingModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(IRON_INGOT));
-        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()));
+        //TODO: transfer recipes to json
+        /*CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(IRON_INGOT));
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()));
         CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
 
         CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(GOLD_INGOT));
@@ -141,7 +143,7 @@ public class MetalcastingModule extends ContentModule {
             ));
             BookRecipeRegistry.addRecipe("blankMold", new ShapedOreRecipe(BLANK_MOLD, "xx", 'x', BRICK));
         }
-
+    */
         MinecraftForge.EVENT_BUS.register(new MetalcastingBookSection.Unlocker());
     }
 

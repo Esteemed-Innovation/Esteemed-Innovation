@@ -66,9 +66,8 @@ public class BlockSteamTank extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> subBlocks) {
-        subBlocks.add(new ItemStack(item, 1, 0));
-        subBlocks.add(new ItemStack(item, 1, 1));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
     }
 }

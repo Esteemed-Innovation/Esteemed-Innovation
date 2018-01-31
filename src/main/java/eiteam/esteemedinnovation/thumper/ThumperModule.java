@@ -30,7 +30,8 @@ public class ThumperModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableThumper) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableThumper) {
             BookRecipeRegistry.addRecipe("thumper1", new ShapedOreRecipe(THUMPER,
               "pbp",
               "ebe",
@@ -52,6 +53,7 @@ public class ThumperModule extends ContentModule {
               'x', INGOT_BRASS
             ));
         }
+        */
     }
 
     @Override

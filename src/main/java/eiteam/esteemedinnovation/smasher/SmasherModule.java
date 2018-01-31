@@ -44,7 +44,8 @@ public class SmasherModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableSmasher) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableSmasher) {
             BookRecipeRegistry.addRecipe("smasher1", new ShapedOreRecipe(ROCK_SMASHER,
               "bpi",
               "bpi",
@@ -78,6 +79,7 @@ public class SmasherModule extends ContentModule {
               'b', INGOT_BRASS
             ));
         }
+        */
         SMASHED_ORE.addSmelting();
     }
 

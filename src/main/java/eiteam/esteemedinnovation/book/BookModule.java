@@ -31,7 +31,8 @@ public class BookModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("book", new ShapelessOreRecipe(BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC));
+        //TODO: transfer recipes to json
+        //BookRecipeRegistry.addRecipe("book", new ShapelessOreRecipe(BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC));
     }
 
     public static void generateAllHints() {

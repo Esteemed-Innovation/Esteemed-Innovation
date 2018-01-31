@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class SteamDrillColorHandler implements IItemColor {
     @Override
-    public int getColorFromItemstack(ItemStack self, int tintIndex) {
+    public int colorMultiplier(ItemStack self, int tintIndex) {
         ArrayList<ItemStack> upgrades = UtilSteamTool.getUpgradeStacks(self);
         for (ItemStack upgrade : upgrades) {
             if (upgrade.getItem() instanceof ItemDrillHeadUpgrade && tintIndex == 1) {

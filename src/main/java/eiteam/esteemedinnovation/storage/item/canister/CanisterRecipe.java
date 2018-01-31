@@ -8,13 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static eiteam.esteemedinnovation.storage.StorageModule.ITEM_CANISTER;
 
-public class CanisterRecipe implements IRecipe {
+public class CanisterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
     static {
         RecipeSorter.register(EsteemedInnovation.MOD_ID + ":canisterHandler", CanisterRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
     }
@@ -39,6 +40,11 @@ public class CanisterRecipe implements IRecipe {
             return toCan;
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean canFit(int width, int height) {
+        return width * height == 2;
     }
 
     /**
@@ -70,11 +76,6 @@ public class CanisterRecipe implements IRecipe {
         }
 
         return cans == 1 && noncans == 1 ? output : null;
-    }
-
-    @Override
-    public int getRecipeSize() {
-        return 2;
     }
 
     @Nonnull

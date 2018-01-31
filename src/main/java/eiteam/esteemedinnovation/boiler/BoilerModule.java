@@ -27,7 +27,8 @@ public class BoilerModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableBoiler) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableBoiler) {
             BookRecipeRegistry.addRecipe("boiler1", new ShapedOreRecipe(BOILER,
               "xxx",
               "xfx",
@@ -43,6 +44,7 @@ public class BoilerModule extends ContentModule {
               'f', FURNACE
             ));
         }
+        */
     }
 
     @Override

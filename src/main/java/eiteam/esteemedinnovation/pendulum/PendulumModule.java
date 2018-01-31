@@ -25,12 +25,14 @@ public class PendulumModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("pendulum_torch", new ShapedOreRecipe(PENDULUM_TORCH,
+        //TODO: transfer recipes to json
+        /*BookRecipeRegistry.addRecipe("pendulum_torch", new ShapedOreRecipe(PENDULUM_TORCH,
           "  x",
           " x ",
           "t  ",
           't', Blocks.REDSTONE_TORCH,
           'x', OreDictEntries.STRING_ORE));
+          */
     }
 
     @Override

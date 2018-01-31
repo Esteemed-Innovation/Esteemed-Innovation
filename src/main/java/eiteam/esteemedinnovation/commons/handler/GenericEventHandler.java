@@ -180,8 +180,8 @@ public class GenericEventHandler {
 //    }
 
     @SubscribeEvent
-    public void initializeEntityCapabilities(AttachCapabilitiesEvent.Entity event) {
-        Entity entity = event.getEntity();
+    public void initializeEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        Entity entity = event.getObject();
         if (entity instanceof EntityPlayer) {
             event.addCapability(new ResourceLocation(EsteemedInnovation.MOD_ID, "PlayerData"), new PlayerDataSerializer());
         } else if (entity instanceof EntityVillager) {

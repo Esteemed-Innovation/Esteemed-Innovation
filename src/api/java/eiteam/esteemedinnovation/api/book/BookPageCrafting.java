@@ -1,6 +1,8 @@
 package eiteam.esteemedinnovation.api.book;
 
 import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.api.recipe.ShapedRecipeFactory;
+import eiteam.esteemedinnovation.api.recipe.ShapelessRecipeFactory;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderItem;
@@ -8,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
@@ -20,6 +23,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class BookPageCrafting extends BookPage implements CraftingPage {
@@ -50,6 +54,43 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         super(name);
         output = recipes[0].getRecipeOutput();
         for (IRecipe recipe : recipes) {
+            if (recipe instanceof ShapedRecipeFactory.ShapedRecipe) {
+                for (int i = 0; i < 9; i++) {
+                    Collection<Object> newList = new ArrayList<>();
+                    if (inputs[i] != null) {
+                        if (inputs[i] instanceof Collection) {
+                            newList.addAll((Collection) inputs[i]);
+                        } else {
+                            newList.add(inputs[i]); //probably not going to ever happen
+                        }
+                    }
+                    if (recipe.getIngredients().size() > i && recipe.getIngredients().get(i) != Ingredient.EMPTY) {
+                        newList.addAll(Arrays.asList(recipe.getIngredients().get(i).getMatchingStacks()));
+                    }
+                    inputs[i] = newList;
+                }
+
+            } else if (recipe instanceof ShapelessRecipeFactory.ShapelessRecipe) {
+                NonNullList<Ingredient> recipeInputs = recipe.getIngredients();
+                for (int i = 0; i < 9; i++) {
+                    Collection<Object> newList = new ArrayList<>();
+                    if (inputs[i] != null) {
+                        if (inputs[i] instanceof Collection) {
+                            newList.addAll((Collection) inputs[i]);
+                        } else {
+                            newList.add(inputs[i]); //probably not going to ever happen
+                        }
+                    }
+                    if (recipeInputs.size() > i) {
+                        newList.addAll(Arrays.asList(recipeInputs.get(i).getMatchingStacks()));
+                    }
+                    inputs[i] = newList;
+                }
+            }
+        }
+        //<editor-fold desc="Old Code">
+        /*
+        for (IRecipe recipe : recipes) {
             if (recipe instanceof ShapedOreRecipe) {
                 for (int i = 0; i < 9; i++) {
                     Collection<Object> newList = new ArrayList<>();
@@ -79,7 +120,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapedRecipes) recipe).recipeItems.length > i && ((ShapedRecipes) recipe).recipeItems[i] != null) {
+                    if (((ShapedRecipes) recipe).recipeItems.size() > i && ((ShapedRecipes) recipe).recipeItems[i] != null) {
                         newList.add(((ShapedRecipes) recipe).recipeItems[i]);
                     }
 
@@ -113,6 +154,8 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                 }
             }
         }
+        */
+        //</editor-fold>
         recipe = recipes;
     }
 
@@ -171,7 +214,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                                     ItemStack item = (ItemStack) obj;
                                     if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                                         NonNullList<ItemStack> list = NonNullList.create();
-                                        item.getItem().getSubItems(item.getItem(), CreativeTabs.SEARCH, list);
+                                        item.getItem().getSubItems(CreativeTabs.SEARCH, list);
                                         list2.addAll(list);
                                     } else {
                                         list2.add(item);

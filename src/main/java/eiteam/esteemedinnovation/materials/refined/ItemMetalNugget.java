@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials.refined;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,10 +14,11 @@ public class ItemMetalNugget extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types type : Types.values()) {
-            subItems.add(new ItemStack(this, 1, type.getMeta()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(tab == EsteemedInnovation.tab) {
+            for (Types type : Types.values()) {
+                items.add(new ItemStack(this, 1, type.getMeta()));
+            }
         }
     }
 

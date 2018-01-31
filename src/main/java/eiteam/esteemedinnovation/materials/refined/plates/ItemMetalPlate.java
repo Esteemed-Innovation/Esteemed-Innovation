@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials.refined.plates;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.materials.MaterialsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -20,10 +21,11 @@ public class ItemMetalPlate extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types type : Types.values()) {
-            subItems.add(new ItemStack(this, 1, type.getMeta()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(tab == EsteemedInnovation.tab) {
+            for (Types type : Types.values()) {
+                items.add(new ItemStack(this, 1, type.getMeta()));
+            }
         }
     }
 

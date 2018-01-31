@@ -6,7 +6,7 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -25,7 +25,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
     private static final float PX = (1.0F / 16.0F);
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         TileEntityPump pump = (TileEntityPump) tile;
         int meta = tile.getBlockMetadata();
         GL11.glPushMatrix();
@@ -84,7 +84,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
         float f2 = icon.getMinV();
         float f3 = icon.getMinU();
         float f4 = icon.getMinV() + (icon.getMaxV() - icon.getMinV()) * scaledProgress;
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         buffer.putNormal(0F, 0F, 1F);
         double y = 0.1875D + (1 - scaledProgress) * 1D;
         RenderUtility.addVertexWithUV(buffer, 0.3125D, y, 0D, f1, f4);
@@ -113,7 +113,7 @@ public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite icon = FluidHelper.getStillTexture(Minecraft.getMinecraft(), fluid);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 
         float f1 = (float) (icon.getMinU() + (icon.getMaxU() - icon.getMinU()) * 0.6);
         float f2 = icon.getMinV();

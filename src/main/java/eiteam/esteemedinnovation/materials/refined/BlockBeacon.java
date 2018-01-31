@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials.refined;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -33,9 +34,11 @@ public class BlockBeacon extends Block {
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (MetalBlockTypes type : MetalBlockTypes.values()) {
-            list.add(new ItemStack(this, 1, type.getMetadata()));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        if(itemIn == EsteemedInnovation.tab) {
+            for (MetalBlockTypes type : MetalBlockTypes.values()) {
+                items.add(new ItemStack(this, 1, type.getMetadata()));
+            }
         }
     }
 

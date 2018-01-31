@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.commons.particle;
 import eiteam.esteemedinnovation.commons.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -47,7 +47,7 @@ public class ParticleAlphabeticGeneric extends Particle {
 
     // Gross duplication of Particle#renderParticle in order to bypass the particleTexture null check.
     @Override
-    public void renderParticle(VertexBuffer buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+    public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         float f = particleTextureIndexX / 16.0F;
         float f1 = f + 0.0624375F;
         float f2 = particleTextureIndexY / 16.0F;

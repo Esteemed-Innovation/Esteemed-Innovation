@@ -20,7 +20,8 @@ public class EngineeringTableModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableEngineering) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableEngineering) {
             BookRecipeRegistry.addRecipe("engineering", new ShapedOreRecipe(ENGINEERING_TABLE,
               "xzx",
               "x x",
@@ -29,6 +30,7 @@ public class EngineeringTableModule extends ContentModule {
               'z', OreDictEntries.PLATE_THIN_IRON
             ));
         }
+        */
     }
 
     @SideOnly(Side.CLIENT)

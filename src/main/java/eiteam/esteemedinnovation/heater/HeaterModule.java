@@ -72,7 +72,8 @@ public class HeaterModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableHeater) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableHeater) {
             BookRecipeRegistry.addRecipe("heater1", new ShapedOreRecipe(STEAM_HEATER,
               "ccc",
               "xfx",
@@ -102,6 +103,7 @@ public class HeaterModule extends ContentModule {
         SteamingRegistry.addSteamingRecipe(new ItemStack(BEETROOT), new ItemStack(STEAMED_BEETROOT));
         SteamingRegistry.addSteamingRecipe(new ItemStack(CARROT), new ItemStack(STEAMED_CARROT));
         SteamingRegistry.addSteamingRecipe(new ItemStack(POTATO), new ItemStack(STEAMED_POTATO));
+        */
     }
 
     @Override

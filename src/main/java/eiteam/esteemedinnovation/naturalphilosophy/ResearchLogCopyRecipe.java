@@ -9,10 +9,11 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 
-public class ResearchLogCopyRecipe implements IRecipe {
+public class ResearchLogCopyRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
     static {
         RecipeSorter.register(EsteemedInnovation.MOD_ID + ":research_log_copy", ResearchLogCopyRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
     }
@@ -56,8 +57,8 @@ public class ResearchLogCopyRecipe implements IRecipe {
     }
 
     @Override
-    public int getRecipeSize() {
-        return 2;
+    public boolean canFit(int width, int height) {
+        return width * height == 2;
     }
 
     @Nonnull

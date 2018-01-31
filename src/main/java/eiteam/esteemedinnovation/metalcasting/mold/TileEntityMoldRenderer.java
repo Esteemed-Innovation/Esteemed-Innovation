@@ -3,9 +3,9 @@ package eiteam.esteemedinnovation.metalcasting.mold;
 import eiteam.esteemedinnovation.api.mold.CrucibleMold;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -23,7 +23,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
     private static final float PX = (1F / 16F);
 
     @Override
-    public void renderTileEntityAt(TileEntityMold mold, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityMold mold, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.disableBlend();
         GlStateManager.color(1, 1, 1, 1);
@@ -83,7 +83,7 @@ public class TileEntityMoldRenderer extends TileEntitySpecialRenderer<TileEntity
     private void renderMold(ItemStack item, boolean bottom) {
         bindTexture(((CrucibleMold) item.getItem()).getBlockTexture(item));
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 //        buffer.putNormal(0F, 0F, 1F);
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         if (bottom) {

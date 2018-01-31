@@ -25,7 +25,8 @@ public class BuzzsawModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableSaw) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableSaw) {
             BookRecipeRegistry.addRecipe("saw", new ShapedOreRecipe(BUZZSAW,
               "btb",
               "p p",
@@ -35,6 +36,6 @@ public class BuzzsawModule extends ContentModule {
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'm', PLATE_THIN_BRASS
             ));
-        }
+        }*/
     }
 }

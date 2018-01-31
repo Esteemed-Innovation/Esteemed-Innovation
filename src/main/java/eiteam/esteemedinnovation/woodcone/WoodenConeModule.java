@@ -26,7 +26,7 @@ public class WoodenConeModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("woodenCone", new ShapedOreRecipe(WOODEN_CONE,
+        /*BookRecipeRegistry.addRecipe("woodenCone", new ShapedOreRecipe(WOODEN_CONE,
           " s ",
           "p p",
           "l l",
@@ -34,6 +34,7 @@ public class WoodenConeModule extends ContentModule {
           'p', OreDictEntries.PLANK_WOOD,
           'l', OreDictEntries.LOG_WOOD
         ));
+        */
         if (Config.removeHopperRecipe) {
             RecipeUtility.removeRecipe(recipe -> {
                 ItemStack output = recipe.getRecipeOutput();

@@ -139,7 +139,7 @@ public class MaterialsModule extends ContentModule {
         OreDictionary.registerOre(NUGGET_ZINC, new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_BRASS, new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_GILDED_IRON, new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()));
-        OreDictionary.registerOre(NUGGET_IRON, new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()));
+        OreDictionary.registerOre(NUGGET_IRON, new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()));
 
         OreDictionary.registerOre(PLATE_THIN_COPPER, new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
         OreDictionary.registerOre(PLATE_THIN_ZINC, new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
@@ -151,7 +151,8 @@ public class MaterialsModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        for (MetalBlockTypes type : MetalBlockTypes.values()) {
+        //TODO: transfer recipes to json
+        /*for (MetalBlockTypes type : MetalBlockTypes.values()) {
             add3x3Recipe(new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
         }
 
@@ -265,6 +266,7 @@ public class MaterialsModule extends ContentModule {
 
         CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(BRASS_PIPE), BRASS_LIQUID, 54);
         CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(COPPER_PIPE), COPPER_LIQUID, 54);
+        */
     }
 
     @Override
@@ -308,7 +310,7 @@ public class MaterialsModule extends ContentModule {
                     new ItemStack(IRON_INGOT),
                     new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
-                    new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()),
+                    new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()),
                     new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
                     new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()),

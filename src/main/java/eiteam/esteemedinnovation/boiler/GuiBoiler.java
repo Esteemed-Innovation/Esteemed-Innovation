@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -106,7 +106,7 @@ public class GuiBoiler extends GuiContainer {
 
     private void drawCutIcon(TextureAtlasSprite icon, int x, int y, int width, int height, int cut) {
         Tessellator tess = Tessellator.getInstance();
-        VertexBuffer buffer = tess.getBuffer();
+        BufferBuilder buffer = tess.getBuffer();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         buffer.pos(x, y + height, zLevel).tex(icon.getMinU(), icon.getInterpolatedV(height)).endVertex();
         buffer.pos(x + width, y + height, zLevel).tex(icon.getInterpolatedU(width), icon.getInterpolatedV(height)).endVertex();

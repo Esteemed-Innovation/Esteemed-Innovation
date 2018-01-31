@@ -41,7 +41,8 @@ public class MiscellaneousModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("piston1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
+        //TODO: transfer recipes to json
+        /*BookRecipeRegistry.addRecipe("piston1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
           " x ",
           "xpx",
           " i ",
@@ -124,13 +125,13 @@ public class MiscellaneousModule extends ContentModule {
           "  i",
           'i', PLATE_THIN_BRASS
         ));
-
+*/
         SmasherRegistry.registerSmashable(NETHER_BRICK, new SmasherRegistry.TypicalBiFunction(Arrays.asList(
           new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
           new ItemStack(NETHERBRICK, 3))));
 
-        BookRecipeRegistry.addRecipe("hellforgeBrick", new ShapelessOreRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
-          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata())));
+       /* BookRecipeRegistry.addRecipe("hellforgeBrick", new ShapelessOreRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()))); */
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata()), 0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()), new ItemStack(NETHERBRICK), 0F);

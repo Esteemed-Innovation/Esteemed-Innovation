@@ -3,9 +3,9 @@ package eiteam.esteemedinnovation.metalcasting.crucible;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEntityCrucible> {
     @Override
-    public void renderTileEntityAt(TileEntityCrucible crucible, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityCrucible crucible, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         IBlockState state = crucible.getWorld().getBlockState(crucible.getPos());
         EnumFacing facing = state.getValue(BlockCrucible.FACING);
 
@@ -91,7 +91,7 @@ public class TileEntityCrucibleRenderer extends TileEntitySpecialRenderer<TileEn
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite icon = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(BlockCrucible.LIQUID_ICON_RL.toString());
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         float f1 = icon.getMaxU();
         float f4 = icon.getMaxV();
         float f2 = icon.getMinV();

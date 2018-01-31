@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,10 +64,10 @@ public class ItemSmashedOre extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(tab == EsteemedInnovation.tab)
         for (Entry<Integer, String[]> entry : map.entrySet()) {
-            list.add(new ItemStack(item, 1, entry.getKey()));
+            items.add(new ItemStack(this, 1, entry.getKey()));
         }
     }
 

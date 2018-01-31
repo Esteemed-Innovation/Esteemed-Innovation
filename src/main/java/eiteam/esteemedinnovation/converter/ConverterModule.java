@@ -25,7 +25,8 @@ public class ConverterModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("fsc1", new ShapedOreRecipe(PRESSURE_CONVERTER,
+        //TODO: transfer recipes to json
+        /*BookRecipeRegistry.addRecipe("fsc1", new ShapedOreRecipe(PRESSURE_CONVERTER,
           "xlx",
           "gpp",
           "xlx",
@@ -43,6 +44,7 @@ public class ConverterModule extends ContentModule {
           'p', TransportationModule.BRASS_PIPE,
           'g', PANE_GLASS_COLORLESS
         ));
+        */
     }
 
     @Override

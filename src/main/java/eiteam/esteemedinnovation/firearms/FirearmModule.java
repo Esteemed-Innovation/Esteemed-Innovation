@@ -108,7 +108,8 @@ public class FirearmModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableRL) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableRL) {
             addRocketLauncherRecipe("rocket1", PLATE_THIN_BRASS, PLATE_THIN_COPPER);
             addRocketLauncherRecipe("rocket2", INGOT_BRASS, PLATE_THIN_COPPER);
             addRocketLauncherRecipe("rocket3", PLATE_THIN_BRASS, INGOT_COPPER);
@@ -317,11 +318,11 @@ public class FirearmModule extends ContentModule {
               'g', PANE_GLASS_COLORLESS
             ));
         }
-
+*/
         MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandler());
     }
 
-    private static void addRocketLauncherRecipe(String name, String brassOre, String copperOre) {
+   /* private static void addRocketLauncherRecipe(String name, String brassOre, String copperOre) {
         BookRecipeRegistry.addRecipe(name, new ShapedOreRecipe(ROCKET_LAUNCHER,
           "bx ",
           "fic",
@@ -334,6 +335,7 @@ public class FirearmModule extends ContentModule {
           'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())
         ));
     }
+    */
 
     @Override
     public void finish(Side side) {

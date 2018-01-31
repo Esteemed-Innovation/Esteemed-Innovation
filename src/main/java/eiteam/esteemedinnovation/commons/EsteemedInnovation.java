@@ -88,9 +88,11 @@ public class EsteemedInnovation {
     public static final String MISC_SECTION = "section.Misc.name";
     public static final String STEAMTOOL_SECTION = "section.SteamTools.name";
 
+    //TODO: Fix sound registering
     private static SoundEvent registerSound(String soundName) {
-        final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
-        return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
+        //final ResourceLocation soundID = new ResourceLocation(MOD_ID, soundName);
+        //return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
+        return null;
     }
 
     @Mod.EventHandler

@@ -14,7 +14,7 @@ public class TileEntityFluidSteamRenderer extends TileEntitySpecialRenderer<Tile
     private static final ResourceLocation RING_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/converter_squisher_ring");
 
     @Override
-    public void renderTileEntityAt(TileEntityFluidSteamConverter converter, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityFluidSteamConverter converter, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         EnumFacing dir = converter.getWorld().getBlockState(converter.getPos()).getValue(BlockFluidSteamConverter.FACING);

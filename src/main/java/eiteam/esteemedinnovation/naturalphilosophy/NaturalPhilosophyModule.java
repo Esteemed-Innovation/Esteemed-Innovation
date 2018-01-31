@@ -30,7 +30,8 @@ public class NaturalPhilosophyModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BLANK_RESEARCH_LOG,
+        //TODO: transfer recipes to json
+        /*GameRegistry.addRecipe(new ShapelessOreRecipe(BLANK_RESEARCH_LOG,
           PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER));
         GameRegistry.addRecipe(new ResearchLogCopyRecipe());
 
@@ -58,7 +59,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                   'I', vItem
                 ));
             }
-        }
+        }*/
     }
 
     @SideOnly(Side.CLIENT)

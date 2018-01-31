@@ -13,7 +13,7 @@ public class TileEntityChargingPadRenderer extends TileEntitySpecialRenderer<Til
     private static final ResourceLocation POLES_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/charging_pad_poles");
 
     @Override
-    public void renderTileEntityAt(TileEntityChargingPad pad, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityChargingPad pad, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
         EnumFacing facing = pad.getWorld().getBlockState(pad.getPos()).getValue(BlockChargingPad.FACING);

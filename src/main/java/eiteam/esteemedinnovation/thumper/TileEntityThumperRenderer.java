@@ -13,7 +13,7 @@ public class TileEntityThumperRenderer extends TileEntitySpecialRenderer<TileEnt
     private static final ResourceLocation THUMPER_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/thumper_thumper");
 
     @Override
-    public void renderTileEntityAt(TileEntityThumper thumper, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityThumper thumper, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         EnumFacing facing = thumper.getWorldObj().getBlockState(thumper.getPos()).getValue(BlockThumper.FACING);

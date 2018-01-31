@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.misc;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,10 +16,11 @@ public class ItemCraftingComponent extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types component : Types.values()) {
-            subItems.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(tab == EsteemedInnovation.tab) {
+            for (Types component : Types.values()) {
+                items.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
+            }
         }
     }
 

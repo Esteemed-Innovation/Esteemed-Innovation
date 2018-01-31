@@ -157,6 +157,8 @@ public class ToolsModule extends ContentModule {
         RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
         DrillHeadMaterial.registerDefaults();
 
+        //TODO: transfer recipes to json
+        /*
         BookRecipeRegistry.addRecipe("wrench1", new ShapedOreRecipe(WRENCH,
           "  i",
           " bb",
@@ -523,6 +525,7 @@ public class ToolsModule extends ContentModule {
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
                   ));
             }
+
         }
 
         List<Item> castableTools = Arrays.asList(GOLDEN_AXE, GOLDEN_PICKAXE, GOLDEN_SHOVEL, GOLDEN_SWORD, GOLDEN_HOE);
@@ -547,6 +550,7 @@ public class ToolsModule extends ContentModule {
         addShovelRecipe(GILDED_IRON_SHOVEL, INGOT_GILDED_IRON);
         addSwordRecipe(GILDED_IRON_SWORD, INGOT_GILDED_IRON);
         addHoeRecipe(GILDED_IRON_HOE, INGOT_GILDED_IRON);
+        */
     }
 
     @Override
@@ -809,7 +813,7 @@ public class ToolsModule extends ContentModule {
         itemColors.registerItemColorHandler(new SteamDrillColorHandler(), STEAM_DRILL);
         itemColors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), DRILL_HEAD);
     }
-
+/*
     private static void addAxeRecipe(Item out, String material) {
         addAxeRecipe(new ItemStack(out), material);
     }
@@ -879,4 +883,5 @@ public class ToolsModule extends ContentModule {
           's', STICK_WOOD
         ));
     }
+    */
 }

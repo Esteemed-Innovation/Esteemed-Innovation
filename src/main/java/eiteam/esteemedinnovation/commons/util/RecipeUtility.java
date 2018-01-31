@@ -16,7 +16,7 @@ public class RecipeUtility {
      * @param predicate The predicate to check
      */
     public static void removeRecipe(Predicate<IRecipe> predicate) {
-        Iterator<IRecipe> iter = CraftingManager.getInstance().getRecipeList().iterator();
+        Iterator<IRecipe> iter = CraftingManager.REGISTRY.iterator();
         while (iter.hasNext()) {
             IRecipe recipe = iter.next();
             if (predicate.test(recipe)) {

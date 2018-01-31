@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -106,7 +107,7 @@ public class ContentModule {
      * Overload for {@link #setup(Block, String, Function)} that uses the default constructor for {@link ItemBlock} as
      * the function.
      */
-    protected Block setup(Block startingBlock, String path) {
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path) {
         return setup(startingBlock, path, ItemBlock::new);
     }
 
@@ -114,7 +115,7 @@ public class ContentModule {
      * Overload for {@link #setup(Block, String, CreativeTabs, Function)} that uses the default constructor for
      * {@link ItemBlock} as the function.
      */
-    protected Block setup(Block startingBlock, String path, CreativeTabs tab) {
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path, CreativeTabs tab) {
         return setup(startingBlock, path, tab, ItemBlock::new);
     }
 
@@ -122,7 +123,7 @@ public class ContentModule {
      * Overload for {@link #setup(Block, String, CreativeTabs, Function)} that uses {@link EsteemedInnovation#tab}
      * as the tab.
      */
-    protected Block setup(Block startingBlock, String path, Function<Block, ItemBlock> itemBlockFunc) {
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path, Function<Block, ItemBlock> itemBlockFunc) {
         return setup(startingBlock, path, EsteemedInnovation.tab, itemBlockFunc);
     }
 
@@ -138,13 +139,13 @@ public class ContentModule {
      *                      any item. You will have to cast the null to {@link Function}.
      * @return The registered block (ItemBlock is not returned).
      */
-    protected Block setup(Block startingBlock, String path, CreativeTabs tab, Function<Block, ItemBlock> itemBlockFunc) {
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path, CreativeTabs tab, Function<Block, ItemBlock> itemBlockFunc) {
         startingBlock.setUnlocalizedName(Constants.EI_MODID + ":" + path);
         if (tab != null) {
             startingBlock.setCreativeTab(tab);
         }
         startingBlock.setRegistryName(Constants.EI_MODID, path);
-        GameRegistry.register(startingBlock);
+        event.getRegistry().register(startingBlock);
         if (itemBlockFunc != null) {
             ItemBlock ib = itemBlockFunc.apply(startingBlock);
             ib.setRegistryName(startingBlock.getRegistryName());
@@ -241,16 +242,16 @@ public class ContentModule {
         ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(name, variant));
     }
 
-    protected void add3x3Recipe(ItemStack out, String in) {
+    /*protected void add3x3Recipe(ItemStack out, String in) {
         GameRegistry.addRecipe(new ShapedOreRecipe(out,
           "xxx",
           "xxx",
           "xxx",
           'x', in
         ));
-    }
+    }*/
 
     public void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
-        GameRegistry.registerTileEntityWithAlternatives(clazz, EsteemedInnovation.MOD_ID + ":" + key);
+        GameRegistry.registerTileEntity(clazz, EsteemedInnovation.MOD_ID + ":" + key);
     }
 }

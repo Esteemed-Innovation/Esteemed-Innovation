@@ -12,6 +12,7 @@ import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -505,20 +507,19 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack me, EntityPlayer player, List<String> list, boolean advanced) {
-        super.addInformation(me, player, list, advanced);
+    public void addInformation(ItemStack me, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(me, worldIn, tooltip, flagIn);
         if (me.hasTagCompound()) {
             // TODO: Abstract into API
             if (hasPlates(me) && !"Thaumium".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier()) &&
-              !"Terrasteel".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier())) {
-                list.add(TextFormatting.BLUE + UtilPlates.getPlate(me.getTagCompound().getString("Plate")).effect());
+                    !"Terrasteel".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier())) {
+                tooltip.add(TextFormatting.BLUE + UtilPlates.getPlate(me.getTagCompound().getString("Plate")).effect());
             }
             if (me.getTagCompound().hasKey("Upgrades")) {
                 for (int i = 3; i < 10; i++) {
                     if (me.getTagCompound().getCompoundTag("Upgrades").hasKey(Integer.toString(i))) {
                         ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag(Integer.toString(i)));
-                        list.add(TextFormatting.RED + stack.getDisplayName());
+                        tooltip.add(TextFormatting.RED + stack.getDisplayName());
                     }
                 }
             }
@@ -526,7 +527,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                 ItemStack stack = new ItemStack(me.getTagCompound().getCompoundTag("Upgrades").getCompoundTag("2"));
                 // TODO: Abstract into API
                 if (stack.getItem() == ArmorModule.ENDER_SHROUD) {
-                    list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
+                    tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.exosuit.shroud"));
                 } else {
                     int dye = -1;
                     int dyeIndex = ModelSteamExosuit.findDyeIndexFromItemStack(stack);
@@ -534,16 +535,16 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
                         dye = dyeIndex;
                     }
                     if (dye != -1) {
-                        list.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelSteamExosuit.DYES[dye].toLowerCase()));
+                        tooltip.add(TextFormatting.DARK_GREEN + I18n.format("esteemedinnovation.color." + ModelSteamExosuit.DYES[dye].toLowerCase()));
                     } else {
-                        list.add(TextFormatting.DARK_GREEN + stack.getDisplayName());
+                        tooltip.add(TextFormatting.DARK_GREEN + stack.getDisplayName());
                     }
                 }
             }
         }
         updateSteamNBT(me);
         if (armorType == EntityEquipmentSlot.CHEST) {
-           list.add(TextFormatting.WHITE + "" + me.getTagCompound().getInteger("SteamStored") * 5 + "/" + me.getTagCompound().getInteger("SteamCapacity") * 5 + " SU");
+            tooltip.add(TextFormatting.WHITE + "" + me.getTagCompound().getInteger("SteamStored") * 5 + "/" + me.getTagCompound().getInteger("SteamCapacity") * 5 + " SU");
         }
     }
 

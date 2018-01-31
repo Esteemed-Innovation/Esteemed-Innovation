@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,7 +37,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         NBTTagCompound plateNBT = getPlateNBT(stack);
         if (plateNBT != null) {
             ItemStack plateStack = new ItemStack(plateNBT.getCompoundTag("Stack"));
@@ -44,7 +46,7 @@ public class ItemLeatherExosuitArmor extends ItemArmor implements ExosuitArmor {
             }
         }
 
-        super.addInformation(stack, playerIn, tooltip, advanced);
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

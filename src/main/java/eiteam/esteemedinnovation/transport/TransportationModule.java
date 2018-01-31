@@ -82,7 +82,8 @@ public class TransportationModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enablePump) {
+        //TODO: transfer recipes to json
+        /*if (Config.enablePump) {
             BookRecipeRegistry.addRecipe("pump1", new ShapedOreRecipe(ARCHIMEDES_SCREW,
               "gng",
               "iii",
@@ -193,6 +194,7 @@ public class TransportationModule extends ContentModule {
             CrucibleRegistry.registerDunkRecipe(
               Item.getItemFromBlock(WOODEN_CONE), COPPER_LIQUID, 45, new ItemStack(FUNNEL));
         }
+        */
     }
 
     @Override

@@ -44,7 +44,8 @@ public class SafetyModule extends ContentModule {
 
     @Override
     public void recipes(Side side) {
-        if (Config.enableGauge) {
+        //TODO: transfer recipes to json
+        /*if (Config.enableGauge) {
             BookRecipeRegistry.addRecipe("gauge", new ShapedOreRecipe(STEAM_GAUGE,
               " x ",
               "xrx",
@@ -81,6 +82,7 @@ public class SafetyModule extends ContentModule {
               'p', TransportationModule.BRASS_PIPE
             ));
         }
+        */
     }
 
     @Override
