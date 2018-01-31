@@ -27,9 +27,11 @@ import eiteam.esteemedinnovation.woodcone.WoodenConeModule;
 import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -109,6 +111,11 @@ public class ContentModuleHandler {
     }
 
     public static void registerItems(RegistryEvent.Register<Item> event) {
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void registerModels(ModelRegistryEvent event) {
 
     }
 

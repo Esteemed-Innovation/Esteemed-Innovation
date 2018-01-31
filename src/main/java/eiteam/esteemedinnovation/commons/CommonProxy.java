@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.commons;
 
+import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,12 +34,12 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-
+        ContentModuleHandler.registerBlocks(event);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-
+        ContentModuleHandler.registerItems(event);
     }
 
     public static void logInfo(String string){

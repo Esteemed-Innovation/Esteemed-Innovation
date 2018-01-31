@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import codechicken.lib.render.CCIconRegister;
 import eiteam.esteemedinnovation.boiler.GuiBoiler;
+import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.commons.particle.ParticleAlphabeticGeneric;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.misc.PlayerController;
@@ -17,7 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
+@Mod.EventBusSubscriber(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation FONT_ASCII = new ResourceLocation("minecraft", "textures/font/ascii.png");
 
@@ -91,4 +97,8 @@ public class ClientProxy extends CommonProxy {
         }
     }
 
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        ContentModuleHandler.registerModels(event);
+    }
 }
