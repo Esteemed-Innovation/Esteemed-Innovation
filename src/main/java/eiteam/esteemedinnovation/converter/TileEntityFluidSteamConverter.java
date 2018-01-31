@@ -39,7 +39,7 @@ public class TileEntityFluidSteamConverter extends SteamTransporterTileEntity im
     public TileEntityFluidSteamConverter() {
         Fluid steam = FluidRegistry.getFluid("steam");
         if (steam == null && CrossMod.IC2) {
-            steam = FluidRegistry.getFluid("ic2steam");
+            //steam = FluidRegistry.getFluid("ic2steam");
         }
         if (steam != null) {
             tank = new FluidTank(steam, 0, getCapacity());

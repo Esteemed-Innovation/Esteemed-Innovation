@@ -809,7 +809,7 @@ public class ToolsModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void initClient() {
+    public void postInitClient() {
         ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
         itemColors.registerItemColorHandler(new SteamDrillColorHandler(), STEAM_DRILL);
         itemColors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), DRILL_HEAD);

@@ -138,7 +138,7 @@ dependencies {
     compile mantleVersion
     compile ticVersion
     compile naturaVersion
-    compile ic2Version
+    //compile ic2Version
     runtime jeiVersion
     compile cclibVersion
 	compile wailaVersion

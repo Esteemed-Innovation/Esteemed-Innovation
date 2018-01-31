@@ -1170,16 +1170,22 @@ public class ArmorModule extends ContentModule {
     @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
-        ItemColors colors = Minecraft.getMinecraft().getItemColors();
-        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_BOOTS);
-        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_CHEST);
-        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_HEAD);
-        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_LEGS);
+
         MinecraftForge.EVENT_BUS.register(SteamExosuitModelCache.INSTANCE);
         MinecraftForge.EVENT_BUS.register(LeatherExosuitModelCache.INSTANCE);
 
         MONOCLE_KEY = new KeyBinding("key.monocle.desc", Keyboard.KEY_Z, "key." + MOD_ID + ".category");
         ClientRegistry.registerKeyBinding(MONOCLE_KEY);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void postInitClient() {
+        ItemColors colors = Minecraft.getMinecraft().getItemColors();
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_BOOTS);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_CHEST);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_HEAD);
+        colors.registerItemColorHandler(new ItemSteamExosuitColorHandler(), STEAM_EXO_LEGS);
     }
 
     public static ItemStack plateStack(int meta, int size) {

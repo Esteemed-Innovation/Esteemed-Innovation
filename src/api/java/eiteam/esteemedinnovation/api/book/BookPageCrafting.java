@@ -164,7 +164,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         for (String key : keys) {
             recipes.add(BookRecipeRegistry.getRecipe(key));
         }
-        return recipes.toArray(new IRecipe[recipes.size()]);
+        return recipes.size() > 0 ? recipes.toArray(new IRecipe[recipes.size()]) : new IRecipe[0];
     }
 
     private void drawItemStackInPage(@Nonnull ItemStack itemStack, FontRenderer fontRenderer, int x, int j, int y, int i, RenderItem renderer) {

@@ -119,7 +119,12 @@ public class SmasherModule extends ContentModule {
     @SideOnly(Side.CLIENT)
     @Override
     public void initClient() {
-        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemSmashedOreColorHandler(), SMASHED_ORE);
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySmasher.class, new TileEntitySmasherRenderer());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void postInitClient() {
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new ItemSmashedOreColorHandler(), SMASHED_ORE);
     }
 }
