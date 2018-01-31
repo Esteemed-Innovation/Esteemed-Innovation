@@ -10,12 +10,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.function.Function;
 
@@ -34,9 +34,32 @@ import java.util.function.Function;
  * 7. {@link #finish(Side)}
  */
 public class ContentModule {
+
     /**
-     * Initialize and register your items. Called during preInit in both client and server.
-     * Use the setup methods below to easily handle registration; or just handle everything on your own.
+     * Register your blocks. Use the setup methods below to easily handle registration,
+     * or just handle everything on your own.
+     * @param event The block registry event
+     */
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {}
+
+    /**
+     * Register your items. Use the setup methods below to easily handle registration,
+     * or just handle everything on your own. Also, register oredict.
+     * @param event The item registry event
+     */
+    public static void registerItems(RegistryEvent.Register<Item> event) {}
+
+    /**
+     * Register your models. Use {@Link #postInitClient()} for special item models.
+     * Use the setup methods below to easily handle registration, or just handle everything on your own.
+     * @param event The model registry event
+     */
+    @SideOnly(Side.CLIENT)
+    public static void registerModels(ModelRegistryEvent event) {}
+
+    /**
+     * Called during init in both client and server.
+     * Use to register miscellaneous things for the module.
      * @param side The side currently on
      */
     public void create(Side side) {}
@@ -45,12 +68,14 @@ public class ContentModule {
      * Setup your Ore Dictionary registration. Called during preInit in both client and server after {@link #create(Side)}.
      * @param side
      */
+    @Deprecated
     public void oreDict(Side side) {}
 
     /**
      * Register your recipes for the things you initialized in {@link #create(Side)}. Called during init in both client and server.
      * @param side
      */
+    @Deprecated
     public void recipes(Side side) {}
 
     /**
@@ -80,10 +105,10 @@ public class ContentModule {
     public void finish(Side side) {}
 
     /**
-     * Overload for {@link #setup(Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
+     * Overload for {@Link #setup(RegistryEvent.Register<Item>, Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
      */
-    protected Item setup(Item startingItem, String path) {
-        return setup(startingItem, path, EsteemedInnovation.tab);
+    protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path) {
+        return setup(event, startingItem, path, EsteemedInnovation.tab);
     }
 
     /**
@@ -94,63 +119,41 @@ public class ContentModule {
      * @param tab The creative tab to add it to. Use null to not add it to a tab at all.
      * @return The registered item.
      */
-    protected Item setup(Item startingItem, String path, CreativeTabs tab) {
+    protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path, CreativeTabs tab) {
         startingItem.setUnlocalizedName(Constants.EI_MODID + ":" + path);
         if (tab != null) {
             startingItem.setCreativeTab(tab);
         }
         startingItem.setRegistryName(Constants.EI_MODID, path);
-        return GameRegistry.register(startingItem);
+        event.getRegistry().register(startingItem);
+        return startingItem;
     }
 
     /**
      * Overload for {@link #setup(Block, String, Function)} that uses the default constructor for {@link ItemBlock} as
      * the function.
      */
-    protected Block setup(Block startingBlock, String path) {
-        return setup(startingBlock, path, ItemBlock::new);
-    }
-
-    /**
-     * Overload for {@link #setup(Block, String, CreativeTabs, Function)} that uses the default constructor for
-     * {@link ItemBlock} as the function.
-     */
-    protected Block setup(Block startingBlock, String path, CreativeTabs tab) {
-        return setup(startingBlock, path, tab, ItemBlock::new);
-    }
-
-    /**
-     * Overload for {@link #setup(Block, String, CreativeTabs, Function)} that uses {@link EsteemedInnovation#tab}
-     * as the tab.
-     */
-    protected Block setup(Block startingBlock, String path, Function<Block, ItemBlock> itemBlockFunc) {
-        return setup(startingBlock, path, EsteemedInnovation.tab, itemBlockFunc);
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path) {
+        return setup(event, startingBlock, path, EsteemedInnovation.tab);
     }
 
     /**
      * Sets up a Block with an unlocalized name, a registry name, an optional creative tab, and registers it to the
      * Block registry.
+     * @param event The event to register on
      * @param startingBlock The block to start with
      * @param path The name of the block, excluding the EI mod ID
      * @param tab The creative tab to add it to. Use null to not add it to any tab. You will have to cast the null to
      *            {@link CreativeTabs}.
-     * @param itemBlockFunc A function that passes a {@link Block} and returns an {@link ItemBlock}. The returned value
-     *                      is what will be used as the block's according item. Pass null to make this Block not have
-     *                      any item. You will have to cast the null to {@link Function}.
      * @return The registered block (ItemBlock is not returned).
      */
-    protected Block setup(Block startingBlock, String path, CreativeTabs tab, Function<Block, ItemBlock> itemBlockFunc) {
+    protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path, CreativeTabs tab) {
         startingBlock.setUnlocalizedName(Constants.EI_MODID + ":" + path);
         if (tab != null) {
             startingBlock.setCreativeTab(tab);
         }
         startingBlock.setRegistryName(Constants.EI_MODID, path);
-        GameRegistry.register(startingBlock);
-        if (itemBlockFunc != null) {
-            ItemBlock ib = itemBlockFunc.apply(startingBlock);
-            ib.setRegistryName(startingBlock.getRegistryName());
-            GameRegistry.register(ib);
-        }
+        event.getRegistry().register(startingBlock);
         return startingBlock;
     }
 

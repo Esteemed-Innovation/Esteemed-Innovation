@@ -88,7 +88,7 @@ public class ContentModuleHandler {
         Side side = getSide();
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
-            module.recipes(side);
+            //module.recipes(side);
             if (isClient) {
                 module.initClient();
             }
@@ -107,16 +107,22 @@ public class ContentModuleHandler {
     }
 
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-
+        for (ContentModule module : modules) {
+            module.registerBlocks(event);
+        }
     }
 
     public static void registerItems(RegistryEvent.Register<Item> event) {
-
+        for (ContentModule module : modules) {
+            module.registerItems(event);
+        }
     }
 
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
-
+        for (ContentModule module : modules) {
+            module.registerModels(event);
+        }
     }
 
     private static Side getSide() {
