@@ -1,14 +1,12 @@
 package eiteam.esteemedinnovation.metalcasting;
 
+import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.crucible.CrucibleTweaker;
 import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucible;
@@ -16,8 +14,6 @@ import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucibleRendere
 import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutComponent;
 import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutCreationHandler;
 import eiteam.esteemedinnovation.metalcasting.mold.*;
-import eiteam.esteemedinnovation.misc.ItemCraftingComponent;
-import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,20 +26,10 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import javax.annotation.Nonnull;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
-import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
-import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
-import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
-import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
-import static net.minecraft.init.Items.*;
 
 public class MetalcastingModule extends ContentModule {
     public static final ResourceLocation CARVING_TABLE_LOOT = new ResourceLocation(Constants.EI_MODID, "metalcasting_hut_mold_chest");
@@ -163,8 +149,8 @@ public class MetalcastingModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (CrossMod.CRAFTTWEAKER) {
-            MineTweakerAPI.registerClass(CrucibleTweaker.class);
-            MineTweakerAPI.registerClass(CarvingTableTweaker.class);
+            CraftTweakerAPI.registerClass(CrucibleTweaker.class);
+            CraftTweakerAPI.registerClass(CarvingTableTweaker.class);
         }
 
         if (Config.enableCrucible) {

@@ -1,17 +1,16 @@
 package eiteam.esteemedinnovation.metalcasting.crucible;
 
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import minetweaker.IUndoableAction;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -20,7 +19,7 @@ public class CrucibleTweaker {
     @ZenMethod
     public static void addBasicLiquid(String name, int r, int g, int b) {
         CrucibleLiquid liquid = new CrucibleLiquid(name, r, g, b);
-        MineTweakerAPI.apply(new AddLiquid(liquid));
+        CraftTweakerAPI.apply(new AddLiquid(liquid));
     }
 
     @ZenMethod
@@ -31,13 +30,13 @@ public class CrucibleTweaker {
         if (crucibleLiquid1 != null && crucibleLiquid2 != null) {
             CrucibleLiquid out = new CrucibleLiquid(name, r, g, b);
             CrucibleFormula formula = new CrucibleFormula(out, amountOut, crucibleLiquid1, amount1, crucibleLiquid2, amount2);
-            MineTweakerAPI.apply(new AddLiquid(out, formula));
+            CraftTweakerAPI.apply(new AddLiquid(out, formula));
         } else {
-            FMLLog.warning("[EI-MT] One of your liquids is null: " + liquid1 + ", " + liquid2);
+            EsteemedInnovation.logger.warn("[EI-MT] One of your liquids is null: " + liquid1 + ", " + liquid2);
         }
     }
 
-    private static class AddLiquid implements IUndoableAction {
+    private static class AddLiquid implements IAction {
         private final CrucibleLiquid liquid;
         private final CrucibleFormula formula;
 
@@ -59,45 +58,23 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            CrucibleRegistry.removeLiquid(liquid);
-            if (formula != null) {
-                CrucibleRegistry.registerFormula(formula);
-            }
-        }
-
-        @Override
         public String describe() {
             return "Adding CrucibleLiquid " + liquid.getName();
         }
 
-        @Override
-        public String describeUndo() {
-            return "Removing CrucibleLiquid " + liquid.getName();
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
     @ZenMethod
     public static void removeLiquid(String name) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(name);
         if (liquid != null) {
-            MineTweakerAPI.apply(new RemoveLiquid(liquid));
+            CraftTweakerAPI.apply(new RemoveLiquid(liquid));
         } else {
-            FMLLog.warning("[EI-MT] Could not remove non-existant liquid " + name);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not remove non-existant liquid " + name);
         }
     }
 
-    private static class RemoveLiquid implements IUndoableAction {
+    private static class RemoveLiquid implements IAction {
         private final CrucibleLiquid liquid;
 
         RemoveLiquid(CrucibleLiquid liquid) {
@@ -110,39 +87,20 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            CrucibleRegistry.registerLiquid(liquid);
-        }
-
-        @Override
         public String describe() {
             return "Removing CrucibleLiquid " + liquid.getName();
         }
 
-        @Override
-        public String describeUndo() {
-            return "Adding CrucibleLiquid " + liquid.getName();
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
     @ZenMethod
     public static void addMeltRecipe(IItemStack item, String liquidName, int amountOut) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
-        ItemStack stack = MineTweakerMC.getItemStack(item);
+        ItemStack stack = CraftTweakerMC.getItemStack(item);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new AddMeltRecipe(stack, liquid, amountOut));
+            CraftTweakerAPI.apply(new AddMeltRecipe(stack, liquid, amountOut));
         }
     }
 
@@ -150,24 +108,24 @@ public class CrucibleTweaker {
     public static void addOreMeltRecipe(String dict, String liquidName, int amountOut) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new AddMeltRecipe(dict, liquid, amountOut));
+            CraftTweakerAPI.apply(new AddMeltRecipe(dict, liquid, amountOut));
         }
     }
 
     @ZenMethod
     public static void addToolMeltRecipe(IItemStack itemstack, String liquidName, int amountOut) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
-        Item item = MineTweakerMC.getItemStack(itemstack).getItem();
+        Item item = CraftTweakerMC.getItemStack(itemstack).getItem();
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new AddMeltRecipe(item, liquid, amountOut));
+            CraftTweakerAPI.apply(new AddMeltRecipe(item, liquid, amountOut));
         }
     }
 
-    private static class AddMeltRecipe implements IUndoableAction {
+    private static class AddMeltRecipe implements IAction {
         private final Object in;
         private final CrucibleLiquid liquid;
         private final int amountOut;
@@ -192,47 +150,19 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            if (in instanceof ItemStack) {
-                Item item = ((ItemStack) in).getItem();
-                int meta = ((ItemStack) in).getItemDamage();
-                CrucibleRegistry.removeMeltRecipe(item, meta, liquid);
-            } else if (in instanceof Item) {
-                CrucibleRegistry.removeMeltRecipeTool((Item) in, liquid);
-            } else if (in instanceof String) {
-                CrucibleRegistry.removeMeltRecipeOreDict((String) in, liquid);
-            }
-        }
-
-        @Override
         public String describe() {
             return "Adding Crucible melt recipe for " + liquid.getName();
-        }
-
-        @Override
-        public String describeUndo() {
-            return "Removing Crucible melt recipe for " + liquid.getName();
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
         }
     }
 
     @ZenMethod
     public static void removeMeltRecipe(IItemStack input, String output) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(output);
-        ItemStack stack = MineTweakerMC.getItemStack(input);
+        ItemStack stack = CraftTweakerMC.getItemStack(input);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + output);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + output);
         } else {
-            MineTweakerAPI.apply(new RemoveMeltRecipe(stack, liquid));
+            CraftTweakerAPI.apply(new RemoveMeltRecipe(stack, liquid));
         }
     }
 
@@ -240,24 +170,24 @@ public class CrucibleTweaker {
     public static void removeOreMeltRecipe(String dict, String liquidName) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new RemoveMeltRecipe(dict, liquid));
+            CraftTweakerAPI.apply(new RemoveMeltRecipe(dict, liquid));
         }
     }
 
     @ZenMethod
     public static void removeToolMeltRecipe(IItemStack itemstack, String liquidName) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
-        Item item = MineTweakerMC.getItemStack(itemstack).getItem();
+        Item item = CraftTweakerMC.getItemStack(itemstack).getItem();
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new RemoveMeltRecipe(item, liquid));
+            CraftTweakerAPI.apply(new RemoveMeltRecipe(item, liquid));
         }
     }
 
-    private static class RemoveMeltRecipe implements IUndoableAction {
+    private static class RemoveMeltRecipe implements IAction {
         private final Object in;
         private final CrucibleLiquid liquid;
 
@@ -280,54 +210,35 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return false;
-        }
-
-        @Override
-        public void undo() {
-        }
-
-        @Override
         public String describe() {
             return "Removing melting recipe for " + liquid.getName();
-        }
-
-        @Override
-        public String describeUndo() {
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
         }
     }
 
     @ZenMethod
     public static void addDunkRecipe(IItemStack in, String inLiq, int liquidAmount, IItemStack out) {
-        ItemStack inStack = MineTweakerMC.getItemStack(in);
+        ItemStack inStack = CraftTweakerMC.getItemStack(in);
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(inLiq);
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + inLiq);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + inLiq);
         } else {
-            MineTweakerAPI.apply(new AddDunkRecipe(inStack, liquid, liquidAmount, outStack));
+            CraftTweakerAPI.apply(new AddDunkRecipe(inStack, liquid, liquidAmount, outStack));
         }
     }
 
     @ZenMethod
     public static void addOreDunkRecipe(String dict, String liq, int amount, IItemStack out) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liq);
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liq);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liq);
         } else {
-            MineTweakerAPI.apply(new AddDunkRecipe(dict, liquid, amount, outStack));
+            CraftTweakerAPI.apply(new AddDunkRecipe(dict, liquid, amount, outStack));
         }
     }
 
-    private static class AddDunkRecipe implements IUndoableAction {
+    private static class AddDunkRecipe implements IAction {
         private final Object in;
         private final CrucibleLiquid liquid;
         private final int liquidAmount;
@@ -352,22 +263,6 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            if (in instanceof ItemStack) {
-                Item item = ((ItemStack) in).getItem();
-                int meta = ((ItemStack) in).getItemDamage();
-                CrucibleRegistry.removeDunkRecipe(item, meta, liquid);
-            } else if (in instanceof String) {
-                CrucibleRegistry.removeOreDictDunkRecipe((String) in, liquid);
-            }
-        }
-
-        @Override
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Adding dunk recipe for " + ((ItemStack) in).getUnlocalizedName() +
@@ -377,32 +272,16 @@ public class CrucibleTweaker {
             }
             return null;
         }
-
-        @Override
-        public String describeUndo() {
-            if (in instanceof ItemStack) {
-                return "Removing dunking recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.getName();
-            } else if (in instanceof String) {
-                return "Removing dunking recipe for " + in + " and " + liquid.getName();
-            }
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
     @ZenMethod
     public static void removeDunkRecipe(IItemStack in, String liquidName) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
-        ItemStack stack = MineTweakerMC.getItemStack(in);
+        ItemStack stack = CraftTweakerMC.getItemStack(in);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new RemoveDunkRecipe(stack, liquid));
+            CraftTweakerAPI.apply(new RemoveDunkRecipe(stack, liquid));
         }
     }
 
@@ -410,13 +289,13 @@ public class CrucibleTweaker {
     public static void removeOreDunkRecipe(String dict, String liquidName) {
         CrucibleLiquid liquid = CrucibleRegistry.getLiquidFromName(liquidName);
         if (liquid == null) {
-            FMLLog.warning("[EI-MT] Could not find liquid " + liquidName);
+            EsteemedInnovation.logger.warn("[EI-MT] Could not find liquid " + liquidName);
         } else {
-            MineTweakerAPI.apply(new RemoveDunkRecipe(dict, liquid));
+            CraftTweakerAPI.apply(new RemoveDunkRecipe(dict, liquid));
         }
     }
 
-    private static class RemoveDunkRecipe implements IUndoableAction {
+    private static class RemoveDunkRecipe implements IAction {
         private final Object in;
         private final CrucibleLiquid liquid;
 
@@ -437,22 +316,6 @@ public class CrucibleTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            if (in instanceof ItemStack) {
-                Item item = ((ItemStack) in).getItem();
-                int meta = ((ItemStack) in).getItemDamage();
-                CrucibleRegistry.removeDunkRecipe(item, meta, liquid);
-            } else if (in instanceof String) {
-                CrucibleRegistry.removeOreDictDunkRecipe((String) in, liquid);
-            }
-        }
-
-        @Override
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Removing dunking recipe for " + ((ItemStack) in).getUnlocalizedName() +
@@ -463,20 +326,5 @@ public class CrucibleTweaker {
             return null;
         }
 
-        @Override
-        public String describeUndo() {
-            if (in instanceof ItemStack) {
-                return "Adding dunk recipe for " + ((ItemStack) in).getUnlocalizedName() +
-                  " and " + liquid.getName();
-            } else if (in instanceof String) {
-                return "Adding dunk recipe for " + in + " and " + liquid.getName();
-            }
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 }

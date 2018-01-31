@@ -116,6 +116,22 @@ repositories {
     maven {
         url "http://tehnut.info/maven"
     }
+	
+	// url of the maven that hosts Enchiridions files
+	maven {
+		url "http://girafi.dk/maven/"
+	}
+	
+	maven {
+		name = "Jared"
+		url = "http://maven.blamejared.com/"
+	}
+	
+	//Baubles
+	maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -123,8 +139,13 @@ dependencies {
     compile ticVersion
     compile naturaVersion
     compile ic2Version
-    compile jeiVersion
+    runtime jeiVersion
     compile cclibVersion
+	compile wailaVersion
+	deobfCompile enchiridionVersion
+	compile craftTweaker2APIVersion
+	compile craftTweaker2Version
+	deobfCompile baublesVersion
 //    These are dependent on libs which do not compile successfully.
 //    compile eioVersion
 //    compile ecoreVersion

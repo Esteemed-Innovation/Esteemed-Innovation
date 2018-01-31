@@ -1,10 +1,10 @@
 package eiteam.esteemedinnovation.smasher;
 
+import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -93,7 +93,7 @@ public class SmasherModule extends ContentModule {
     @Override
     public void finish(Side side) {
         if (CrossMod.CRAFTTWEAKER) {
-            MineTweakerAPI.registerClass(RockSmasherTweaker.class);
+            CraftTweakerAPI.registerClass(RockSmasherTweaker.class);
         }
 
         if (Config.enableSmasher) {
