@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -54,20 +55,22 @@ public class TransportationModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        ARCHIMEDES_SCREW = setup(new BlockPump(), "pump");
-        FAN = setup(new BlockFan(), "fan");
-        VACUUM = setup(new BlockVacuum(), "vacuum");
-        PLONKER = setup(new BlockPlonker(), "plonker");
-        ITEM_MORTAR = setup(new BlockItemMortar(), "item_mortar");
-        ASTROLABE = setup(new ItemAstrolabe(), "astrolabe");
-        FUNNEL = setup(new BlockFunnel(), "funnel");
-        BRASS_PIPE = setup(new BlockSteamPipe(), "brass_pipe");
-        COPPER_PIPE = setup(new BlockColdFluidPipe(), "copper_pipe");
-        VALVE_PIPE = setup(new BlockValvePipe(), "valve_pipe");
-
         channel.registerMessage(ConnectPacketHandler.class, ConnectPacket.class, 2, Side.SERVER);
 
         EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "MortarItem"), EntityMortarItem.class, "MortarItem", 1, instance, 64, 20, true);
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        ARCHIMEDES_SCREW = setup(event, new BlockPump(), "pump");
+        FAN = setup(event, new BlockFan(), "fan");
+        VACUUM = setup(event, new BlockVacuum(), "vacuum");
+        PLONKER = setup(event, new BlockPlonker(), "plonker");
+        ITEM_MORTAR = setup(event, new BlockItemMortar(), "item_mortar");
+        FUNNEL = setup(event, new BlockFunnel(), "funnel");
+        BRASS_PIPE = setup(event, new BlockSteamPipe(), "brass_pipe");
+        COPPER_PIPE = setup(event, new BlockColdFluidPipe(), "copper_pipe");
+        VALVE_PIPE = setup(event, new BlockValvePipe(), "valve_pipe");
 
         registerTileEntity(TileEntitySteamPipe.class, "brass_pipe");
         registerTileEntity(TileEntityColdFluidPipe.class, "copper_pipe");
@@ -78,6 +81,21 @@ public class TransportationModule extends ContentModule {
         registerTileEntity(TileEntityVacuum.class, "vacuum");
         registerTileEntity(TileEntityFunnel.class, "funnel");
         registerTileEntity(TileEntityPlonker.class, "plonker");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, ARCHIMEDES_SCREW);
+        setupItemBlock(event, FAN);
+        setupItemBlock(event, VACUUM);
+        setupItemBlock(event, PLONKER);
+        setupItemBlock(event, ITEM_MORTAR);
+        setupItemBlock(event, FUNNEL);
+        setupItemBlock(event, BRASS_PIPE);
+        setupItemBlock(event, COPPER_PIPE);
+        setupItemBlock(event, VALVE_PIPE);
+
+        ASTROLABE = setup(event, new ItemAstrolabe(), "astrolabe");
     }
 
     @Override

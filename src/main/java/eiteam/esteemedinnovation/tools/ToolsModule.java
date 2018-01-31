@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -98,52 +99,51 @@ public class ToolsModule extends ContentModule {
     public static final Item.ToolMaterial STEAMSAW_MAT = EnumHelper.addToolMaterial("STEAMSAW", 2, 320, 1F, -1F, 0);
     public static final Item.ToolMaterial STEAMSHOVEL_MAT = EnumHelper.addToolMaterial("STEAMSHOVEL", 2, 320, 1F, -1F, 0);
 
-
     @Override
-    public void create(Side side) {
-        WRENCH = setup(new ItemWrench(), "wrench");
-        SURVIVALIST_TOOLKIT = setup(new ItemBauble(BaubleType.BELT).setMaxStackSize(1), "survivalist");
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        WRENCH = setup(event, new ItemWrench(), "wrench");
+        SURVIVALIST_TOOLKIT = setup(event, new ItemBauble(BaubleType.BELT).setMaxStackSize(1), "survivalist");
 
-        BRASS_SWORD = setup(new ItemGenericSword(BRASS_MAT, INGOT_BRASS), "brass_sword", tabTools);
-        BRASS_PICKAXE = setup(new ItemGenericPickaxe(BRASS_MAT, INGOT_BRASS), "brass_pickaxe", tabTools);
-        BRASS_AXE = setup(new ItemGenericAxe(BRASS_MAT, INGOT_BRASS), "brass_axe", tabTools);
-        BRASS_SHOVEL = setup(new ItemGenericShovel(BRASS_MAT, INGOT_BRASS), "brass_shovel", tabTools);
-        BRASS_HOE = setup(new ItemGenericHoe(BRASS_MAT, INGOT_BRASS), "brass_hoe", tabTools);
+        BRASS_SWORD = setup(event, new ItemGenericSword(BRASS_MAT, INGOT_BRASS), "brass_sword", tabTools);
+        BRASS_PICKAXE = setup(event, new ItemGenericPickaxe(BRASS_MAT, INGOT_BRASS), "brass_pickaxe", tabTools);
+        BRASS_AXE = setup(event, new ItemGenericAxe(BRASS_MAT, INGOT_BRASS), "brass_axe", tabTools);
+        BRASS_SHOVEL = setup(event, new ItemGenericShovel(BRASS_MAT, INGOT_BRASS), "brass_shovel", tabTools);
+        BRASS_HOE = setup(event, new ItemGenericHoe(BRASS_MAT, INGOT_BRASS), "brass_hoe", tabTools);
 
-        GILDED_IRON_SWORD = setup(new ItemGenericSword(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_sword", tabTools);
-        GILDED_IRON_PICKAXE = setup(new ItemGenericPickaxe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_pickaxe", tabTools);
-        GILDED_IRON_AXE = setup(new ItemGenericAxe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_axe", tabTools);
-        GILDED_IRON_SHOVEL = setup(new ItemGenericShovel(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_shovel", tabTools);
-        GILDED_IRON_HOE = setup(new ItemGenericHoe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_hoe", tabTools);
+        GILDED_IRON_SWORD = setup(event, new ItemGenericSword(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_sword", tabTools);
+        GILDED_IRON_PICKAXE = setup(event, new ItemGenericPickaxe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_pickaxe", tabTools);
+        GILDED_IRON_AXE = setup(event, new ItemGenericAxe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_axe", tabTools);
+        GILDED_IRON_SHOVEL = setup(event, new ItemGenericShovel(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_shovel", tabTools);
+        GILDED_IRON_HOE = setup(event, new ItemGenericHoe(GILDED_IRON_MAT, INGOT_GILDED_IRON), "gilded_iron_hoe", tabTools);
 
-        STEAM_DRILL = setup(new ItemSteamDrill(), "steam_drill");
-        STEAM_SAW = setup(new ItemSteamAxe(), "steam_saw");
-        STEAM_SHOVEL = setup(new ItemSteamShovel(), "steam_shovel");
+        STEAM_DRILL = setup(event, new ItemSteamDrill(), "steam_drill");
+        STEAM_SAW = setup(event, new ItemSteamAxe(), "steam_saw");
+        STEAM_SHOVEL = setup(event, new ItemSteamShovel(), "steam_shovel");
 
-        THE_VOID = setupUpgrade(new ItemTheVoidUpgrade(), "the_void");
-        EXOTHERMIC_PROJECTOR = setupUpgrade(new ItemExothermicProjector(), "exothermic_projector");
-        OVERCLOCKER = setupUpgrade(new ItemOverclockerUpgrade(), "overclocker");
-        BIG_DRILL = setupUpgrade(new ItemBigDrillUpgrade(), "big_drill");
-        BATTLE_DRILL = setupUpgrade(new ItemBattleDrillUpgrade(), "battle_drill");
-        STONE_GRINDER = setupUpgrade(new ItemStoneGrinderUpgrade(), "stone_grinder");
-        PRECISE_CUTTING_HEAD = setupUpgrade(new ItemPreciseCuttingHeadUpgrade(), "precise_cutting_head");
-        THERMAL_DRILL = setupUpgrade(new ItemThermalDrillUpgrade(), "thermal_drill");
-        MULTIPLICATIVE_RESONATOR = setupUpgrade(new ItemMultiplicativeResonatorUpgrade(), "multiplicative_resonator");
-        CALAMITY_INJECTOR = setupUpgrade(new ItemCalamityInjectorUpgrade(), "charge_placer");
-        DRILL_HEAD = setupUpgrade(new ItemDrillHeadUpgrade(), "drill_head");
-        INTERNAL_PROCESSING_UNIT = setupUpgrade(new ItemInternalProcessingUnitUpgrade(), "internal_processing_unit");
-        LEAF_BLOWER = setupUpgrade(new ItemLeafBlowerUpgrade(), "leaf_blower");
-        TIMBER_CHAIN = setupUpgrade(new ItemTimberChainUpgrade(), "timber_chain");
-        CHAINSAW = setupUpgrade(new ItemChainsawUpgrade(), "chainsaw");
-        FOREST_FIRE = setupUpgrade(new ItemForestFireUpgrade(), "forest_fire");
-        CULTIVATOR = setupUpgrade(new ItemCultivatorUpgrade(), "cultivator");
-        ROTARY_BLADES = setupUpgrade(new ItemRotaryBladesUpgrade(), "rotary_blades");
-        SIFTER = setupUpgrade(new ItemSifterUpgrade(), "sifter");
-        BACKHOE = setupUpgrade(new ItemBackhoeUpgrade(), "backhoe");
+        THE_VOID = setupUpgrade(event, new ItemTheVoidUpgrade(), "the_void");
+        EXOTHERMIC_PROJECTOR = setupUpgrade(event, new ItemExothermicProjector(), "exothermic_projector");
+        OVERCLOCKER = setupUpgrade(event, new ItemOverclockerUpgrade(), "overclocker");
+        BIG_DRILL = setupUpgrade(event, new ItemBigDrillUpgrade(), "big_drill");
+        BATTLE_DRILL = setupUpgrade(event, new ItemBattleDrillUpgrade(), "battle_drill");
+        STONE_GRINDER = setupUpgrade(event, new ItemStoneGrinderUpgrade(), "stone_grinder");
+        PRECISE_CUTTING_HEAD = setupUpgrade(event, new ItemPreciseCuttingHeadUpgrade(), "precise_cutting_head");
+        THERMAL_DRILL = setupUpgrade(event, new ItemThermalDrillUpgrade(), "thermal_drill");
+        MULTIPLICATIVE_RESONATOR = setupUpgrade(event, new ItemMultiplicativeResonatorUpgrade(), "multiplicative_resonator");
+        CALAMITY_INJECTOR = setupUpgrade(event, new ItemCalamityInjectorUpgrade(), "charge_placer");
+        DRILL_HEAD = setupUpgrade(event, new ItemDrillHeadUpgrade(), "drill_head");
+        INTERNAL_PROCESSING_UNIT = setupUpgrade(event, new ItemInternalProcessingUnitUpgrade(), "internal_processing_unit");
+        LEAF_BLOWER = setupUpgrade(event, new ItemLeafBlowerUpgrade(), "leaf_blower");
+        TIMBER_CHAIN = setupUpgrade(event, new ItemTimberChainUpgrade(), "timber_chain");
+        CHAINSAW = setupUpgrade(event, new ItemChainsawUpgrade(), "chainsaw");
+        FOREST_FIRE = setupUpgrade(event, new ItemForestFireUpgrade(), "forest_fire");
+        CULTIVATOR = setupUpgrade(event, new ItemCultivatorUpgrade(), "cultivator");
+        ROTARY_BLADES = setupUpgrade(event, new ItemRotaryBladesUpgrade(), "rotary_blades");
+        SIFTER = setupUpgrade(event, new ItemSifterUpgrade(), "sifter");
+        BACKHOE = setupUpgrade(event, new ItemBackhoeUpgrade(), "backhoe");
     }
 
-    private Item setupUpgrade(SteamToolUpgrade upgrade, String path) {
-        upgrade = (SteamToolUpgrade) setup((Item) upgrade, path);
+    private Item setupUpgrade(RegistryEvent.Register<Item> event, SteamToolUpgrade upgrade, String path) {
+        upgrade = (SteamToolUpgrade) setup(event, (Item) upgrade, path);
         ToolUpgradeRegistry.register(upgrade);
         return (Item) upgrade;
     }

@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,39 +72,43 @@ public class FirearmModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        MUSKET = setup(new ItemFirearm(Config.musketDamage, 84, 0.2F, 5.0F, false, 1, INGOT_IRON), "musket");
-        PISTOL = setup(new ItemFirearm(Config.pistolDamage, 42, 0.5F, 2.0F, false, 1, INGOT_IRON), "pistol");
-        ROCKET_LAUNCHER = setup(new ItemRocketLauncher(2.0F, 95, 10, 3.5F, 4, INGOT_IRON), "rocket_launcher");
-        BLUNDERBUSS = setup(new ItemFirearm(Config.blunderbussDamage, 95, 3.5F, 7.5F, true, 1, INGOT_BRASS), "blunderbuss");
-        MUSKET_CARTRIDGE = setup(new Item(), "musket_cartridge");
-        ROCKET = setup(new ItemRocketBasic(), "rocket");
+        EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "Rocket"), EntityRocket.class, "Rocket", 3, EsteemedInnovation.instance, 64, 20, true);
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        MUSKET = setup(event, new ItemFirearm(Config.musketDamage, 84, 0.2F, 5.0F, false, 1, INGOT_IRON), "musket");
+        PISTOL = setup(event, new ItemFirearm(Config.pistolDamage, 42, 0.5F, 2.0F, false, 1, INGOT_IRON), "pistol");
+        ROCKET_LAUNCHER = setup(event, new ItemRocketLauncher(2.0F, 95, 10, 3.5F, 4, INGOT_IRON), "rocket_launcher");
+        BLUNDERBUSS = setup(event, new ItemFirearm(Config.blunderbussDamage, 95, 3.5F, 7.5F, true, 1, INGOT_BRASS), "blunderbuss");
+        MUSKET_CARTRIDGE = setup(event, new Item(), "musket_cartridge");
+        ROCKET = setup(event, new ItemRocketBasic(), "rocket");
         EnhancementRegistry.registerRocket((Rocket) ROCKET);
-        CONCUSSIVE_ROCKET = setup(new ItemRocketConcussive(), "rocket_concussive");
+        CONCUSSIVE_ROCKET = setup(event, new ItemRocketConcussive(), "rocket_concussive");
         EnhancementRegistry.registerRocket((Rocket) CONCUSSIVE_ROCKET);
-        MINING_ROCKET = setup(new ItemRocketMining(), "rocket_miner");
+        MINING_ROCKET = setup(event, new ItemRocketMining(), "rocket_miner");
         EnhancementRegistry.registerRocket((Rocket) MINING_ROCKET);
-        BLAZE_BARREL = setup(new ItemEnhancementFireMusket(), "enhancement_blaze");
+        BLAZE_BARREL = setup(event, new ItemEnhancementFireMusket(), "enhancement_blaze");
         EnhancementRegistry.registerEnhancement((Enhancement) BLAZE_BARREL);
-        REVOLVER_CHAMBER = setup(new ItemEnhancementRevolver(), "enhancement_revolver");
+        REVOLVER_CHAMBER = setup(event, new ItemEnhancementRevolver(), "enhancement_revolver");
         EnhancementRegistry.registerEnhancement((Enhancement) REVOLVER_CHAMBER);
-        BREECH = setup(new ItemEnhancementSpeedloader(), "enhancement_speedloader");
+        BREECH = setup(event, new ItemEnhancementSpeedloader(), "enhancement_speedloader");
         EnhancementRegistry.registerEnhancement((Enhancement) BREECH);
-        MAKESHIFT_SUPPRESSOR = setup(new ItemEnhancementSilencer(), "enhancement_silencer");
+        MAKESHIFT_SUPPRESSOR = setup(event, new ItemEnhancementSilencer(), "enhancement_silencer");
         EnhancementRegistry.registerEnhancement((Enhancement) MAKESHIFT_SUPPRESSOR);
-        RECOIL_PAD = setup(new ItemEnhancementRecoil(), "enhancement_recoil");
+        RECOIL_PAD = setup(event, new ItemEnhancementRecoil(), "enhancement_recoil");
         EnhancementRegistry.registerEnhancement((Enhancement) RECOIL_PAD);
-        BOLT_ACTION = setup(new ItemEnhancementSpeedy(), "enhancement_speedy");
+        BOLT_ACTION = setup(event, new ItemEnhancementSpeedy(), "enhancement_speedy");
         EnhancementRegistry.registerEnhancement((Enhancement) BOLT_ACTION);
-        SPYGLASS = setup(new ItemSpyglass(), "spyglass");
+        SPYGLASS = setup(event, new ItemSpyglass(), "spyglass");
         EnhancementRegistry.registerEnhancement((Enhancement) SPYGLASS);
-        STREAMLINED_BARREL = setup(new ItemEnhancementFastRockets(), "enhancement_fast_rockets");
+        STREAMLINED_BARREL = setup(event, new ItemEnhancementFastRockets(), "enhancement_fast_rockets");
         EnhancementRegistry.registerEnhancement((Enhancement) STREAMLINED_BARREL);
-        AIR_STRIKE_CONVERSION_KIT = setup(new ItemEnhancementAirStrike(), "enhancement_air_strike");
+        AIR_STRIKE_CONVERSION_KIT = setup(event, new ItemEnhancementAirStrike(), "enhancement_air_strike");
         EnhancementRegistry.registerEnhancement((Enhancement) AIR_STRIKE_CONVERSION_KIT);
-        EXTENDED_MAGAZINE = setup(new ItemEnhancementAmmo(), "enhancement_ammo");
+        EXTENDED_MAGAZINE = setup(event, new ItemEnhancementAmmo(), "enhancement_ammo");
         EnhancementRegistry.registerEnhancement((Enhancement) EXTENDED_MAGAZINE);
 
-        EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "Rocket"), EntityRocket.class, "Rocket", 3, EsteemedInnovation.instance, 64, 20, true);
     }
 
     @Override

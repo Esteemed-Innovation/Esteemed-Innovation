@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,22 +56,34 @@ public class MetalcastingModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        CRUCIBLE = setup(new BlockCrucible(), "crucible");
-        HELL_CRUCIBLE = setup(new BlockCrucible(), "hell_crucible");
-        CARVING_TABLE = setup(new BlockCarvingTable(), "carving_table");
-        MOLD = setup(new BlockMold(), "mold");
-        BLANK_MOLD = setup(new Item().setMaxStackSize(1), "blank_mold");
-        MoldRegistry.addCarvableMold(BLANK_MOLD);
-        MOLD_ITEM = setup(new ItemMold(), "mold_item");
-        for (ItemMold.Type type : ItemMold.Type.LOOKUP) {
-            MoldRegistry.addCarvableMold(type.createItemStack(MOLD_ITEM));
-        }
+        VillagerRegistry.instance().registerVillageCreationHandler(new MetalcastingHutCreationHandler());
+        MapGenStructureIO.registerStructureComponent(MetalcastingHutComponent.class, Constants.EI_MODID + ":metalcasting_hut");
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        CRUCIBLE = setup(event, new BlockCrucible(), "crucible");
+        HELL_CRUCIBLE = setup(event, new BlockCrucible(), "hell_crucible");
+        CARVING_TABLE = setup(event, new BlockCarvingTable(), "carving_table");
+        MOLD = setup(event, new BlockMold(), "mold");
 
         registerTileEntity(TileEntityCrucible.class, "crucible");
         registerTileEntity(TileEntityMold.class, "mold");
+    }
 
-        VillagerRegistry.instance().registerVillageCreationHandler(new MetalcastingHutCreationHandler());
-        MapGenStructureIO.registerStructureComponent(MetalcastingHutComponent.class, Constants.EI_MODID + ":metalcasting_hut");
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, CRUCIBLE);
+        setupItemBlock(event, HELL_CRUCIBLE);
+        setupItemBlock(event, CARVING_TABLE);
+        setupItemBlock(event, MOLD);
+
+        BLANK_MOLD = setup(event, new Item().setMaxStackSize(1), "blank_mold");
+        MoldRegistry.addCarvableMold(BLANK_MOLD);
+        MOLD_ITEM = setup(event, new ItemMold(), "mold_item");
+        for (ItemMold.Type type : ItemMold.Type.LOOKUP) {
+            MoldRegistry.addCarvableMold(type.createItemStack(MOLD_ITEM));
+        }
     }
 
     @Nonnull

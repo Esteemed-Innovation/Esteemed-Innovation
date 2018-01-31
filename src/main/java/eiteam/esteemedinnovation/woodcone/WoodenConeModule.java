@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -20,8 +21,13 @@ public class WoodenConeModule extends ContentModule {
     public static Block WOODEN_CONE;
 
     @Override
-    public void create(Side side) {
-        WOODEN_CONE = setup(new BlockWoodenCone(), "wooden_cone");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        WOODEN_CONE = setup(event, new BlockWoodenCone(), "wooden_cone");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, WOODEN_CONE);
     }
 
     @Override

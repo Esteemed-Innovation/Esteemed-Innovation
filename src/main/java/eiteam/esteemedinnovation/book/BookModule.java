@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -26,7 +27,11 @@ public class BookModule extends ContentModule {
     @Override
     public void create(Side side) {
         channel.registerMessage(BookPieceUnlockedStateChangePacketHandler.class, BookPieceUnlockedStateChangePacket.class, 4, Side.CLIENT);
-        BOOK = setup(new ItemEsteemedInnovationJournal(), "book");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        BOOK = setup(event, new ItemEsteemedInnovationJournal(), "book");
     }
 
     @Override

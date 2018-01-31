@@ -19,7 +19,6 @@ import eiteam.esteemedinnovation.metalcasting.MetalcastingBookSection;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,7 +26,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,10 +33,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -58,6 +56,8 @@ public class EsteemedInnovation {
 
     @Mod.Instance(MOD_ID)
     public static EsteemedInnovation instance;
+
+    public static Logger logger;
 
     @CapabilityInject(PlayerData.class)
     public static final Capability<PlayerData> PLAYER_DATA = null;
@@ -98,7 +98,7 @@ public class EsteemedInnovation {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         Config.load();
-
+        logger = event.getModLog();
         tab = new EsteemedInnovationTab(CreativeTabs.getNextID(), MOD_ID, false).setBackgroundImageName("item_search.png");
         tabTools = new EsteemedInnovationTab(CreativeTabs.getNextID(), MOD_ID + "Tools", true);
 
@@ -147,7 +147,7 @@ public class EsteemedInnovation {
         }
         long end = System.currentTimeMillis();
         int time = (int) (end - start);
-        FMLLog.info("Finished initializing Esteemed Innovation OreDictHelper in %s ms", time);
+        logger.info("Finished initializing Esteemed Innovation OreDictHelper in %s ms", time);
 
         // We set up all of the top categories before calling #finish, so that every module has access to every category.
         // Ideally we'd have a better way to deal with this. I can't really think of anything that is better though.

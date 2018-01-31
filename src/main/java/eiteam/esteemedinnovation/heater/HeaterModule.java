@@ -1,24 +1,22 @@
 package eiteam.esteemedinnovation.heater;
 
-import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.transport.TransportationModule;
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static net.minecraft.init.Blocks.FURNACE;
 import static net.minecraft.init.Items.*;
 
 public class HeaterModule extends ContentModule {
@@ -35,25 +33,28 @@ public class HeaterModule extends ContentModule {
     public static Item STEAMED_POTATO;
 
     @Override
-    public void create(Side side) {
-        STEAM_HEATER = setup(new BlockSteamHeater(), "heater");
-        STEAMED_FISH = setup(new ItemSteamedFood((ItemFood) COOKED_FISH), "steamed_fish");
-        STEAMED_SALMON = setup(new ItemSteamedFood(new ItemStack(COOKED_FISH, 1, 1)), "steamed_salmon");
-        STEAMED_CHICKEN = setup(new ItemSteamedFood((ItemFood) COOKED_CHICKEN), "steamed_chicken");
-        STEAMED_BEEF = setup(new ItemSteamedFood((ItemFood) COOKED_BEEF), "steamed_beef");
-        STEAMED_PORKCHOP = setup(new ItemSteamedFood((ItemFood) COOKED_PORKCHOP), "steamed_porkchop");
-        STEAMED_MUTTON = setup(new ItemSteamedFood((ItemFood) COOKED_MUTTON), "steamed_mutton");
-        STEAMED_RABBIT = setup(new ItemSteamedFood((ItemFood) COOKED_RABBIT), "steamed_rabbit");
-        STEAMED_CARROT = setup(new ItemSteamedFood((ItemFood) CARROT), "steamed_carrot");
-        STEAMED_BEETROOT = setup(new ItemSteamedFood((ItemFood) BEETROOT), "steamed_beetroot");
-        STEAMED_POTATO = setup(new ItemSteamedFood((ItemFood) BAKED_POTATO), "steamed_potato");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_HEATER = setup(event, new BlockSteamHeater(), "heater");
 
         registerTileEntity(TileEntitySteamHeater.class, "heater");
         registerTileEntity(TileEntitySteamFurnace.class, "steamFurnace");
     }
 
     @Override
-    public void oreDict(Side side) {
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_HEATER);
+
+        STEAMED_FISH = setup(event, new ItemSteamedFood((ItemFood) COOKED_FISH), "steamed_fish");
+        STEAMED_SALMON = setup(event, new ItemSteamedFood(new ItemStack(COOKED_FISH, 1, 1)), "steamed_salmon");
+        STEAMED_CHICKEN = setup(event, new ItemSteamedFood((ItemFood) COOKED_CHICKEN), "steamed_chicken");
+        STEAMED_BEEF = setup(event, new ItemSteamedFood((ItemFood) COOKED_BEEF), "steamed_beef");
+        STEAMED_PORKCHOP = setup(event, new ItemSteamedFood((ItemFood) COOKED_PORKCHOP), "steamed_porkchop");
+        STEAMED_MUTTON = setup(event, new ItemSteamedFood((ItemFood) COOKED_MUTTON), "steamed_mutton");
+        STEAMED_RABBIT = setup(event, new ItemSteamedFood((ItemFood) COOKED_RABBIT), "steamed_rabbit");
+        STEAMED_CARROT = setup(event, new ItemSteamedFood((ItemFood) CARROT), "steamed_carrot");
+        STEAMED_BEETROOT = setup(event, new ItemSteamedFood((ItemFood) BEETROOT), "steamed_beetroot");
+        STEAMED_POTATO = setup(event, new ItemSteamedFood((ItemFood) BAKED_POTATO), "steamed_potato");
+
         OreDictionary.registerOre(ALL_FISH_COOKED, STEAMED_FISH);
         OreDictionary.registerOre(ALL_FISH_COOKED, STEAMED_SALMON);
         OreDictionary.registerOre(ALL_CHICKEN_COOKED, STEAMED_CHICKEN);

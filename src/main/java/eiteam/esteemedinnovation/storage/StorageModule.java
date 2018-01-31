@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -43,13 +44,23 @@ public class StorageModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        STEAM_TANK = setup(new BlockSteamTank(), "steam_tank", BlockTankItem::new);
-        KIT_BAG = setup(new ItemKitBag(), "kit_bag");
-        ITEM_CANISTER = setup(new Item(), "canister");
-
         EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "CanisterItem"), EntityCanisterItem.class, "CanisterItem", 2, EsteemedInnovation.instance, 64, 20, true);
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_TANK = setup(event, new BlockSteamTank(), "steam_tank");
+
         registerTileEntity(TileEntitySteamTank.class, "steamTank");
         registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_TANK, BlockTankItem::new);
+
+        KIT_BAG = setup(event, new ItemKitBag(), "kit_bag");
+        ITEM_CANISTER = setup(event, new Item(), "canister");
     }
 
     @Override

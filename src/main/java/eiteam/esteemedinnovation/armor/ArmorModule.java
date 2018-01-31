@@ -54,6 +54,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -170,40 +171,50 @@ public class ArmorModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        STEAM_EXO_HEAD = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.HEAD, STEAM_EXO_MAT), "steam_exosuit_head");
-        STEAM_EXO_CHEST = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.CHEST, STEAM_EXO_MAT), "steam_exosuit_body");
-        STEAM_EXO_LEGS = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.LEGS, STEAM_EXO_MAT), "steam_exosuit_legs");
-        STEAM_EXO_BOOTS = (ItemSteamExosuitArmor) setup(new ItemSteamExosuitArmor(EntityEquipmentSlot.FEET, STEAM_EXO_MAT), "steam_exosuit_feet");
 
-        LEATHER_EXO_HEAD = (ItemLeatherExosuitArmor) setup(new ItemLeatherExosuitArmor(EntityEquipmentSlot.HEAD), "leather_exosuit_head");
-        LEATHER_EXO_CHEST = (ItemLeatherExosuitArmor) setup(new ItemLeatherExosuitArmor(EntityEquipmentSlot.CHEST), "leather_exosuit_body");
-        LEATHER_EXO_LEGS = (ItemLeatherExosuitArmor) setup(new ItemLeatherExosuitArmor(EntityEquipmentSlot.LEGS), "leather_exosuit_legs");
-        LEATHER_EXO_BOOTS = (ItemLeatherExosuitArmor) setup(new ItemLeatherExosuitArmor(EntityEquipmentSlot.FEET), "leather_exosuit_feet");
+        CapabilityManager.INSTANCE.register(AnimalData.class, new AnimalDataStorage(), AnimalData.DefaultImplementation.class);
+        CapabilityManager.INSTANCE.register(VillagerData.class, new VillagerDataStorage(), VillagerData.DefaultImplementation.class);
 
-        JETPACK = setup(new ItemJetpackUpgrade(), "jetpack");
-        WINGS = setup(new ItemWingsUpgrade(), "wings");
-        POWER_FIST = setup(new ItemPowerFistUpgrade(), "power_fist");
-        EXTENDO_FIST = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
-        THRUSTERS = setup(new ItemSidepackUpgrade(), "thrusters");
-        FALL_ASSIST = setup(new ItemFallAssistUpgrade(), "fall_assist");
-        LEAP_ACTUATOR = setup(new ItemLeapActuatorUpgrade(), "jump_assist");
-        DOUBLE_JUMP = setup(new ItemDoubleJumpUpgrade(), "double_jump");
-        RUN_ASSIST = setup(new ItemModularAcceleratorUpgrade(), "run_assist");
-        CANNING_MACHINE = setup(new ItemCanningMachineUpgrade(), "canner");
-        PITON_DEPLOYER = setup(new ItemPitonDeployerUpgrade(), "piton_deployer");
-        STEALTH = setup(new ItemAcousticDampenerUpgrade(), "stealth_upgrade");
-        ENDER_SHROUD = setup(new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
-        REINFORCED_TANK = setup(new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
-        UBER_REINFORCED_TANK = setup(new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
-        REBREATHER = setup(new ItemRebreatherUpgrade(), "rebreather");
-        HYDROPHOBIC_COATINGS = setup(new ItemHydrophobicCoatingUpgrade(), "hydrophobic_coatings");
-        PYROPHOBIC_COATINGS = setup(new ItemPyrophobicCoatingUpgrade(), "pyrophobic_coatings");
-        ANCHOR_HEELS = setup(new ItemAnchorHeelsUpgrade(), "anchor_heels");
-        RELOADING_HOLSTERS = setup(new ItemReloadingHolsterUpgrade(), "reloading_holsters");
-        FREQUENCY_SHIFTER = setup(new ItemFrequencyShifterUpgrade(), "frequency_shifter");
-        DRAGON_ROAR = setup(new ItemDragonRoarUpgrade(), "dragon_roar");
-        EXOSUIT_PLATE = setup(new ItemExosuitPlate(), "exosuit_plate", EsteemedInnovation.tab, false);
-        PISTON_PUSH = setup(new ItemPistonPushUpgrade(), "piston_push");
+        channel.registerMessage(DoubleJumpServerActionPacketHandler.class, DoubleJumpServerActionPacket.class, 5, Side.SERVER);
+        channel.registerMessage(DoubleJumpClientResponsePacketHandler.class, DoubleJumpClientResponsePacket.class, 6, Side.CLIENT);
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        STEAM_EXO_HEAD = (ItemSteamExosuitArmor) setup(event, new ItemSteamExosuitArmor(EntityEquipmentSlot.HEAD, STEAM_EXO_MAT), "steam_exosuit_head");
+        STEAM_EXO_CHEST = (ItemSteamExosuitArmor) setup(event, new ItemSteamExosuitArmor(EntityEquipmentSlot.CHEST, STEAM_EXO_MAT), "steam_exosuit_body");
+        STEAM_EXO_LEGS = (ItemSteamExosuitArmor) setup(event, new ItemSteamExosuitArmor(EntityEquipmentSlot.LEGS, STEAM_EXO_MAT), "steam_exosuit_legs");
+        STEAM_EXO_BOOTS = (ItemSteamExosuitArmor) setup(event, new ItemSteamExosuitArmor(EntityEquipmentSlot.FEET, STEAM_EXO_MAT), "steam_exosuit_feet");
+
+        LEATHER_EXO_HEAD = (ItemLeatherExosuitArmor) setup(event, new ItemLeatherExosuitArmor(EntityEquipmentSlot.HEAD), "leather_exosuit_head");
+        LEATHER_EXO_CHEST = (ItemLeatherExosuitArmor) setup(event, new ItemLeatherExosuitArmor(EntityEquipmentSlot.CHEST), "leather_exosuit_body");
+        LEATHER_EXO_LEGS = (ItemLeatherExosuitArmor) setup(event, new ItemLeatherExosuitArmor(EntityEquipmentSlot.LEGS), "leather_exosuit_legs");
+        LEATHER_EXO_BOOTS = (ItemLeatherExosuitArmor) setup(event, new ItemLeatherExosuitArmor(EntityEquipmentSlot.FEET), "leather_exosuit_feet");
+
+        JETPACK = setup(event, new ItemJetpackUpgrade(), "jetpack");
+        WINGS = setup(event, new ItemWingsUpgrade(), "wings");
+        POWER_FIST = setup(event, new ItemPowerFistUpgrade(), "power_fist");
+        EXTENDO_FIST = setup(event, new ItemSteamExosuitUpgrade(ExosuitSlot.BODY_HAND, resource("extendoFist"), null, 0), "extendo_fist");
+        THRUSTERS = setup(event, new ItemSidepackUpgrade(), "thrusters");
+        FALL_ASSIST = setup(event, new ItemFallAssistUpgrade(), "fall_assist");
+        LEAP_ACTUATOR = setup(event, new ItemLeapActuatorUpgrade(), "jump_assist");
+        DOUBLE_JUMP = setup(event, new ItemDoubleJumpUpgrade(), "double_jump");
+        RUN_ASSIST = setup(event, new ItemModularAcceleratorUpgrade(), "run_assist");
+        CANNING_MACHINE = setup(event, new ItemCanningMachineUpgrade(), "canner");
+        PITON_DEPLOYER = setup(event, new ItemPitonDeployerUpgrade(), "piton_deployer");
+        STEALTH = setup(event, new ItemAcousticDampenerUpgrade(), "stealth_upgrade");
+        ENDER_SHROUD = setup(event, new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
+        REINFORCED_TANK = setup(event, new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
+        UBER_REINFORCED_TANK = setup(event, new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
+        REBREATHER = setup(event, new ItemRebreatherUpgrade(), "rebreather");
+        HYDROPHOBIC_COATINGS = setup(event, new ItemHydrophobicCoatingUpgrade(), "hydrophobic_coatings");
+        PYROPHOBIC_COATINGS = setup(event, new ItemPyrophobicCoatingUpgrade(), "pyrophobic_coatings");
+        ANCHOR_HEELS = setup(event, new ItemAnchorHeelsUpgrade(), "anchor_heels");
+        RELOADING_HOLSTERS = setup(event, new ItemReloadingHolsterUpgrade(), "reloading_holsters");
+        FREQUENCY_SHIFTER = setup(event, new ItemFrequencyShifterUpgrade(), "frequency_shifter");
+        DRAGON_ROAR = setup(event, new ItemDragonRoarUpgrade(), "dragon_roar");
+        EXOSUIT_PLATE = setup(event, new ItemExosuitPlate(), "exosuit_plate", EsteemedInnovation.tab, false);
+        PISTON_PUSH = setup(event, new ItemPistonPushUpgrade(), "piston_push");
 
         IRON_PLATE.setItem(plateStack(IRON_PLATE_META));
         ExosuitRegistry.addExosuitPlate(IRON_PLATE);
@@ -220,35 +231,30 @@ public class ArmorModule extends ContentModule {
         LEAD_PLATE.setItem(plateStack(LEAD_PLATE_META));
         ExosuitRegistry.addExosuitPlate(LEAD_PLATE);
 
-        GILDED_HEAD = setup(new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_helmet", EsteemedInnovation.tabTools);
-        GILDED_CHEST = setup(new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_chestplate", EsteemedInnovation.tabTools);
-        GILDED_LEGS = setup(new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_leggings", EsteemedInnovation.tabTools);
-        GILDED_BOOTS = setup(new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.FEET, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_boots", EsteemedInnovation.tabTools);
+        GILDED_HEAD = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_helmet", EsteemedInnovation.tabTools);
+        GILDED_CHEST = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_chestplate", EsteemedInnovation.tabTools);
+        GILDED_LEGS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_leggings", EsteemedInnovation.tabTools);
+        GILDED_BOOTS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.FEET, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_boots", EsteemedInnovation.tabTools);
 
-        BRASS_HEAD = setup(new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_BRASS, "Brass"), "brass_helmet", EsteemedInnovation.tabTools);
-        BRASS_CHEST = setup(new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_BRASS, "Brass"), "brass_chestplate", EsteemedInnovation.tabTools);
-        BRASS_LEGS = setup(new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_BRASS, "Brass"), "brass_leggings", EsteemedInnovation.tabTools);
-        BRASS_BOOTS = setup(new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.FEET, INGOT_BRASS, "Brass"), "brass_boots", EsteemedInnovation.tabTools);
+        BRASS_HEAD = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_BRASS, "Brass"), "brass_helmet", EsteemedInnovation.tabTools);
+        BRASS_CHEST = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_BRASS, "Brass"), "brass_chestplate", EsteemedInnovation.tabTools);
+        BRASS_LEGS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_BRASS, "Brass"), "brass_leggings", EsteemedInnovation.tabTools);
+        BRASS_BOOTS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.FEET, INGOT_BRASS, "Brass"), "brass_boots", EsteemedInnovation.tabTools);
 
-        MONOCLE = setup(new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monocle", EsteemedInnovation.tabTools);
-        GOGGLES = setup(new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", EsteemedInnovation.tabTools);
-        TOP_HAT = setup(new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", EsteemedInnovation.tabTools);
-        ENTREPRENEUR_TOP_HAT = setup(new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, true), "tophat", EsteemedInnovation.tabTools);
+        MONOCLE = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monocle", EsteemedInnovation.tabTools);
+        GOGGLES = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", EsteemedInnovation.tabTools);
+        TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", EsteemedInnovation.tabTools);
+        ENTREPRENEUR_TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, true), "tophat", EsteemedInnovation.tabTools);
 
-        CapabilityManager.INSTANCE.register(AnimalData.class, new AnimalDataStorage(), AnimalData.DefaultImplementation.class);
-        CapabilityManager.INSTANCE.register(VillagerData.class, new VillagerDataStorage(), VillagerData.DefaultImplementation.class);
-
-        channel.registerMessage(DoubleJumpServerActionPacketHandler.class, DoubleJumpServerActionPacket.class, 5, Side.SERVER);
-        channel.registerMessage(DoubleJumpClientResponsePacketHandler.class, DoubleJumpClientResponsePacket.class, 6, Side.CLIENT);
     }
 
     @Override
-    protected Item setup(Item startingItem, String path, CreativeTabs tab) {
-        return setup(startingItem, path, tab, true);
+    protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path, CreativeTabs tab) {
+        return setup(event, startingItem, path, tab, true);
     }
 
-    private Item setup(Item startingItem, String path, CreativeTabs tab, boolean normal) {
-        startingItem = super.setup(startingItem, path, tab);
+    private Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path, CreativeTabs tab, boolean normal) {
+        startingItem = super.setup(event, startingItem, path, tab);
         if (normal) {
             toRegisterNormally.add(startingItem);
         }

@@ -5,7 +5,9 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,9 +20,14 @@ public class ConverterModule extends ContentModule {
     public static Block PRESSURE_CONVERTER;
 
     @Override
-    public void create(Side side) {
-        PRESSURE_CONVERTER = setup(new BlockFluidSteamConverter(), "pressure_converter");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        PRESSURE_CONVERTER = setup(event, new BlockFluidSteamConverter(), "pressure_converter");
         registerTileEntity(TileEntityFluidSteamConverter.class, "fluidSteamConverter");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, PRESSURE_CONVERTER);
     }
 
     @Override

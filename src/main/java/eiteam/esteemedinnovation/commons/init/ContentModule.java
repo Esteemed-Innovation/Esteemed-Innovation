@@ -40,14 +40,14 @@ public class ContentModule {
      * or just handle everything on your own.
      * @param event The block registry event
      */
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {}
+    public void registerBlocks(RegistryEvent.Register<Block> event) {}
 
     /**
      * Register your items. Use the setup methods below to easily handle registration,
      * or just handle everything on your own. Also, register oredict.
      * @param event The item registry event
      */
-    public static void registerItems(RegistryEvent.Register<Item> event) {}
+    public void registerItems(RegistryEvent.Register<Item> event) {}
 
     /**
      * Register your models. Use {@Link #postInitClient()} for special item models.
@@ -55,7 +55,7 @@ public class ContentModule {
      * @param event The model registry event
      */
     @SideOnly(Side.CLIENT)
-    public static void registerModels(ModelRegistryEvent event) {}
+    public void registerModels(ModelRegistryEvent event) {}
 
     /**
      * Called during init in both client and server.
@@ -105,7 +105,7 @@ public class ContentModule {
     public void finish(Side side) {}
 
     /**
-     * Overload for {@Link #setup(RegistryEvent.Register<Item>, Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
+     * Overload for {@Link #setup(RegistryEvent.Register, Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
      */
     protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path) {
         return setup(event, startingItem, path, EsteemedInnovation.tab);
@@ -130,7 +130,7 @@ public class ContentModule {
     }
 
     /**
-     * Overload for {@link #setup(Block, String, Function)} that uses the default constructor for {@link ItemBlock} as
+     * Overload for {@link #setup(RegistryEvent.Register, Block, String)} that uses the default constructor for {@link ItemBlock} as
      * the function.
      */
     protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path) {
@@ -155,6 +155,29 @@ public class ContentModule {
         startingBlock.setRegistryName(Constants.EI_MODID, path);
         event.getRegistry().register(startingBlock);
         return startingBlock;
+    }
+
+    protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock) {
+        setupItemBlock(event, startingBlock, EsteemedInnovation.tab);
+    }
+
+    protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, Function<Block, ItemBlock> itemBlock) {
+        setupItemBlock(event, startingBlock, EsteemedInnovation.tab, itemBlock);
+    }
+
+    protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, CreativeTabs tab) {
+        setupItemBlock(event, startingBlock, tab, ItemBlock::new);
+    }
+
+
+    protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, CreativeTabs tab, Function<Block, ItemBlock> itemBlock) {
+        ItemBlock item = itemBlock.apply(startingBlock);
+        if(tab != null) {
+            item.setCreativeTab(tab);
+        }
+        //item.setUnlocalizedName(Constants.EI_MODID + ":" + path);
+        item.setRegistryName(startingBlock.getRegistryName());
+        event.getRegistry().register(item);
     }
 
     /**
@@ -244,15 +267,6 @@ public class ContentModule {
         String name = item.getRegistryName() + "." + stack.getItemDamage();
         ModelLoader.setCustomModelResourceLocation(item, stack.getItemDamage(), new ModelResourceLocation(name, variant));
     }
-
-    /*protected void add3x3Recipe(ItemStack out, String in) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
-          "xxx",
-          "xxx",
-          "xxx",
-          'x', in
-        ));
-    }*/
 
     public void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
         GameRegistry.registerTileEntity(clazz, EsteemedInnovation.MOD_ID + ":" + key);

@@ -4,7 +4,9 @@ import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -17,10 +19,16 @@ import static eiteam.esteemedinnovation.tools.ToolsModule.TIMBER_CHAIN;
 public class BuzzsawModule extends ContentModule {
     public static Block BUZZSAW;
 
+
     @Override
-    public void create(Side side) {
-        BUZZSAW = setup(new BlockSaw(), "saw");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        BUZZSAW = setup(event, new BlockSaw(), "saw");
         registerTileEntity(TileEntitySaw.class, "saw");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, BUZZSAW);
     }
 
     @Override

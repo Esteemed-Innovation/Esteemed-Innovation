@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,15 +27,22 @@ public class ChargingModule extends ContentModule {
     public static Item STEAM_CELL_FILLER;
 
     @Override
-    public void create(Side side) {
-        FILLING_PAD = setup(new BlockChargingPad(), "charging_pad");
-        STEAM_FILLER = setup(new BlockSteamCharger(), "charger");
-        STEAM_CELL_FULL = setup(new ItemSteamCell(), "steamcell_full");
-        STEAM_CELL_EMPTY = setup(new Item(), "steamcell_empty");
-        STEAM_CELL_FILLER = setup(new ItemSteamCellFiller(), "steamcell_filler");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        FILLING_PAD = setup(event, new BlockChargingPad(), "charging_pad");
+        STEAM_FILLER = setup(event, new BlockSteamCharger(), "charger");
 
         registerTileEntity(TileEntitySteamCharger.class, "steamCharger");
         registerTileEntity(TileEntityChargingPad.class, "chargingPad");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, FILLING_PAD);
+        setupItemBlock(event, STEAM_FILLER);
+
+        STEAM_CELL_FULL = setup(event, new ItemSteamCell(), "steamcell_full");
+        STEAM_CELL_EMPTY = setup(event, new Item(), "steamcell_empty");
+        STEAM_CELL_FILLER = setup(event, new ItemSteamCellFiller(), "steamcell_filler");
     }
 
     @Override

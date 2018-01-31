@@ -8,7 +8,9 @@ import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,20 +27,25 @@ public class SmasherModule extends ContentModule {
     public static ItemSmashedOre SMASHED_ORE;
 
     @Override
-    public void create(Side side) {
-        ROCK_SMASHER = setup(new BlockSmasher(), "smasher");
-        ROCK_SMASHER_DUMMY = setup(new BlockDummy(), "smasher_dummy", (CreativeTabs) null);
-        SMASHED_ORE = (ItemSmashedOre) setup(new ItemSmashedOre(), "smashed_ore");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        ROCK_SMASHER = setup(event, new BlockSmasher(), "smasher");
+        ROCK_SMASHER_DUMMY = setup(event, new BlockDummy(), "smasher_dummy", (CreativeTabs) null);
 
-        for (ItemSmashedOre.Types type : ItemSmashedOre.Types.values()) {
-            SMASHED_ORE.registerEntry(type);
-        }
         registerTileEntity(TileEntitySmasher.class, "smasher");
         registerTileEntity(TileEntityDummyBlock.class, "dummy");
     }
 
     @Override
-    public void oreDict(Side side) {
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, ROCK_SMASHER);
+        setupItemBlock(event, ROCK_SMASHER_DUMMY, (CreativeTabs) null);
+
+        SMASHED_ORE = (ItemSmashedOre) setup(event, new ItemSmashedOre(), "smashed_ore");
+
+        for (ItemSmashedOre.Types type : ItemSmashedOre.Types.values()) {
+            SMASHED_ORE.registerEntry(type);
+        }
+
         SMASHED_ORE.registerDusts();
     }
 

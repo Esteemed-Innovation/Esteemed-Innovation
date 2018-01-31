@@ -5,7 +5,9 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,10 +24,16 @@ public class ThumperModule extends ContentModule {
     public static Block THUMPER_DUMMY;
 
     @Override
-    public void create(Side side) {
-        THUMPER = setup(new BlockThumper(), "thumper");
-        THUMPER_DUMMY = setup(new BlockThumperDummy(), "thumper_dummy", (CreativeTabs) null);
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        THUMPER = setup(event, new BlockThumper(), "thumper");
+        THUMPER_DUMMY = setup(event, new BlockThumperDummy(), "thumper_dummy", (CreativeTabs) null);
         registerTileEntity(TileEntityThumper.class, "thumper");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, THUMPER);
+        setupItemBlock(event, THUMPER, (CreativeTabs) null);
     }
 
     @Override

@@ -4,7 +4,9 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -20,9 +22,14 @@ public class BoilerModule extends ContentModule {
     public static Block BOILER;
 
     @Override
-    public void create(Side side) {
-        BOILER = setup(new BlockBoiler(), "boiler");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        BOILER = setup(event, new BlockBoiler(), "boiler");
         registerTileEntity(TileEntityBoiler.class, "boiler");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, BOILER);
     }
 
     @Override

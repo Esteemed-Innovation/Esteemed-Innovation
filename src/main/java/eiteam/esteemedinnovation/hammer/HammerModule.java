@@ -4,7 +4,9 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,8 +22,17 @@ public class HammerModule extends ContentModule {
     @Override
     public void create(Side side) {
         channel.registerMessage(ItemNamePacketHandler.class, ItemNamePacket.class, 1, Side.SERVER);
-        STEAM_HAMMER = setup(new BlockSteamHammer(), "hammer");
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_HAMMER = setup(event, new BlockSteamHammer(), "hammer");
         registerTileEntity(TileEntitySteamHammer.class, "steamHammer");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_HAMMER);
     }
 
     @Override

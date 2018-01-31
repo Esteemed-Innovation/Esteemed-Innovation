@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,11 +22,11 @@ public class NaturalPhilosophyModule extends ContentModule {
     public static Item BIOME_LOG;
 
     @Override
-    public void create(Side side) {
-        SOIL_SAMPLING_KIT = setup(new ItemSoilSamplingKit(), "soil_sampling_kit");
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        SOIL_SAMPLING_KIT = setup(event, new ItemSoilSamplingKit(), "soil_sampling_kit");
 
-        BLANK_RESEARCH_LOG = setup(new Item(), "research_log_blank");
-        BIOME_LOG = setup(new ItemResearchLog(), "research_log_biome");
+        BLANK_RESEARCH_LOG = setup(event, new Item(), "research_log_blank");
+        BIOME_LOG = setup(event, new ItemResearchLog(), "research_log_biome");
     }
 
     @Override

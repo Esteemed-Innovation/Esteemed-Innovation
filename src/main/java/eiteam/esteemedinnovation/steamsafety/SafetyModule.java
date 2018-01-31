@@ -13,7 +13,9 @@ import eiteam.esteemedinnovation.steamsafety.whistle.BlockWhistle;
 import eiteam.esteemedinnovation.steamsafety.whistle.TileEntityWhistle;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,13 +35,24 @@ public class SafetyModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        STEAM_GAUGE = setup(new BlockSteamGauge(), "steam_gauge");
-        RUPTURE_DISC = setup(new BlockRuptureDisc(), "rupture_disc", BlockManyMetadataItem::new);
-        STEAM_WHISTLE = setup(new BlockWhistle(), "steam_whistle");
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_GAUGE = setup(event, new BlockSteamGauge(), "steam_gauge");
+        RUPTURE_DISC = setup(event, new BlockRuptureDisc(), "rupture_disc");
+        STEAM_WHISTLE = setup(event, new BlockWhistle(), "steam_whistle");
 
         registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
         registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
         registerTileEntity(TileEntityWhistle.class, "whistle");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_GAUGE);
+        setupItemBlock(event, RUPTURE_DISC, BlockManyMetadataItem::new);
+        setupItemBlock(event, STEAM_WHISTLE);
     }
 
     @Override

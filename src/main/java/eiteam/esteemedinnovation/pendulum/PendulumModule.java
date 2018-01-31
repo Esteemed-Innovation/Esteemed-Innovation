@@ -6,7 +6,9 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -18,9 +20,20 @@ public class PendulumModule extends ContentModule {
 
     @Override
     public void create(Side side) {
-        PENDULUM_STRING = setup(new BlockPendulumString(), "pendulum_string", (CreativeTabs) null);
-        PENDULUM_TORCH = setup(new BlockPendulumTorch(), "pendulum_torch", ItemRedstonePendulum::new);
+
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        PENDULUM_STRING = setup(event, new BlockPendulumString(), "pendulum_string", (CreativeTabs) null);
+        PENDULUM_TORCH = setup(event, new BlockPendulumTorch(), "pendulum_torch");
         registerTileEntity(TileEntityPendulumTorch.class, "pendulum_torch");
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, PENDULUM_STRING);
+        setupItemBlock(event, PENDULUM_TORCH, ItemRedstonePendulum::new);
     }
 
     @Override

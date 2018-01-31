@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -88,12 +89,6 @@ public class MaterialsModule extends ContentModule {
         }
         GameRegistry.registerWorldGenerator(new ConfigurableOreGenerator(), 1);
 
-        STORAGE_BLOCK = setup(new BlockBeacon(), "metal_storage_block", BlockManyMetadataItem::new);
-        ORE_BLOCK = setup(new BlockGenericOre(), "ore", BlockManyMetadataItem::new);
-        METAL_INGOT = setup(new ItemMetalIngot(), "ingot");
-        METAL_NUGGET = setup(new ItemMetalNugget(), "nugget");
-        METAL_PLATE = setup(new ItemMetalPlate(), "plate");
-
         IRON_LIQUID = new CrucibleLiquid("iron", 200, 200, 200);
         GOLD_LIQUID = new CrucibleLiquid("gold", 220, 157, 11);
         ZINC_LIQUID = new CrucibleLiquid("zinc", 225, 225, 225);
@@ -102,20 +97,33 @@ public class MaterialsModule extends ContentModule {
         LEAD_LIQUID = new CrucibleLiquid("lead", 118, 128, 157);
 
         BRASS_FORMULA = new CrucibleFormula(BRASS_LIQUID, 4, ZINC_LIQUID, 1, COPPER_LIQUID, 3);
+    }
 
-        COPPER_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(COPPER_PLATE.getMeta(), EntityMob.class), "copper_pressure_plate", (Function<Block, ItemBlock>) null);
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        COPPER_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(COPPER_PLATE.getMeta(), EntityMob.class), "copper_pressure_plate");
         pressurePlatesByMetadata.add(COPPER_PLATE.getMeta(), COPPER_PRESSURE_PLATE);
-        ZINC_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(ZINC_PLATE.getMeta(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate", (Function<Block, ItemBlock>) null);
+        ZINC_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(ZINC_PLATE.getMeta(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate");
         pressurePlatesByMetadata.add(ZINC_PLATE.getMeta(), ZINC_PRESSURE_PLATE);
-        BRASS_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(BRASS_PLATE.getMeta(), EntityAgeable.class, e -> !e.isChild()), "brass_pressure_plate", (Function<Block, ItemBlock>) null);
+        BRASS_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(BRASS_PLATE.getMeta(), EntityAgeable.class, e -> !e.isChild()), "brass_pressure_plate");
         pressurePlatesByMetadata.add(BRASS_PLATE.getMeta(), BRASS_PRESSURE_PLATE);
         // maxWeight values come from Block.registerBlocks
-        GILDED_IRON_PRESSURE_PLATE = setup(new BlockWeightedPlate(150, GILDED_IRON_PLATE.getMeta()), "gilded_iron_pressure_plate", (Function<Block, ItemBlock>) null);
+        GILDED_IRON_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(150, GILDED_IRON_PLATE.getMeta()), "gilded_iron_pressure_plate");
         pressurePlatesByMetadata.add(GILDED_IRON_PLATE.getMeta(), GILDED_IRON_PRESSURE_PLATE);
-        IRON_PRESSURE_PLATE = setup(new BlockWeightedPlate(150, IRON_PLATE.getMeta()), "iron_pressure_plate", (Function<Block, ItemBlock>) null);
+        IRON_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(150, IRON_PLATE.getMeta()), "iron_pressure_plate");
         pressurePlatesByMetadata.add(IRON_PLATE.getMeta(), IRON_PRESSURE_PLATE);
-        GOLD_PRESSURE_PLATE = setup(new BlockWeightedPlate(15, GOLD_PLATE.getMeta()), "gold_pressure_plate", (Function<Block, ItemBlock>) null);
+        GOLD_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(15, GOLD_PLATE.getMeta()), "gold_pressure_plate");
         pressurePlatesByMetadata.add(GOLD_PLATE.getMeta(), GOLD_PRESSURE_PLATE);
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        METAL_INGOT = setup(event, new ItemMetalIngot(), "ingot");
+        METAL_NUGGET = setup(event, new ItemMetalNugget(), "nugget");
+        METAL_PLATE = setup(event, new ItemMetalPlate(), "plate");
+
+        setupItemBlock(event, STORAGE_BLOCK, BlockManyMetadataItem::new);
+        setupItemBlock(event, ORE_BLOCK, BlockManyMetadataItem::new);
     }
 
     public static Block getPressurePlateFromItemMetadata(int meta) {

@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,12 +30,9 @@ public class MiscellaneousModule extends ContentModule {
     public static Item COMPONENT;
 
     @Override
-    public void create(Side side) {
-        COMPONENT = setup(new ItemCraftingComponent(), "crafting");
-    }
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        COMPONENT = setup(event, new ItemCraftingComponent(), "crafting");
 
-    @Override
-    public void oreDict(Side side) {
         OreDictionary.registerOre(DUST_NETHERBRICK, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()));
         OreDictionary.registerOre(BRICK_HELLFORGE, new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata()));
     }
