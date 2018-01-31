@@ -48,6 +48,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -1157,7 +1158,7 @@ public class ArmorModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         ModelLoaderRegistry.registerLoader(new GenericModelLoaderLocationMatch(SteamExosuitItemModel.GENERIC_MODEL, new ResourceLocation(MOD_ID, "models/block/steam_exosuit_piece")));
         ModelLoaderRegistry.registerLoader(new GenericModelLoaderLocationMatch(LeatherExosuitItemModel.GENERIC_MODEL, new ResourceLocation(MOD_ID, "models/block/leather_exosuit_piece")));
         toRegisterNormally.forEach(this::registerModel);

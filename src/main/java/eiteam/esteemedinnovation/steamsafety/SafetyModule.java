@@ -15,6 +15,7 @@ import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -128,7 +129,7 @@ public class SafetyModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModelItemStack(new ItemStack(RUPTURE_DISC, 1, 0));
         registerModelItemStack(new ItemStack(RUPTURE_DISC, 1, 1));
         registerModel(STEAM_GAUGE);

@@ -79,7 +79,7 @@ public class ContentModule {
     public void recipes(Side side) {}
 
     /**
-     * Handle any client-side preInit stuff here. Most likely, you'll want to use this to register your models. Called
+     * Handle any client-side preInit stuff here. Called
      * in preInit on the client after {@link #oreDict(Side)}.
      */
     @SideOnly(Side.CLIENT)
