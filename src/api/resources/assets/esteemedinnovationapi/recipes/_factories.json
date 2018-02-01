@@ -2,8 +2,5 @@
   "recipes": {
     "shaped_recipe": "eiteam.esteemedinnovation.api.recipe.ShapedRecipeFactory",
     "shapeless_recipe": "eiteam.esteemedinnovation.api.recipe.ShapelessRecipeFactory"
-  },
-  "conditions": {
-    "config_enabled": "eiteam.esteemedinnovation.api.recipe.ConfigConditionFactory"
   }
 }

@@ -3,7 +3,7 @@
   "group": "wooden_fence",
   "conditions": [
     {
-      "type": "esteemedinnovationapi:config_enabled",
+      "type": "esteemedinnovation:config_enabled",
       "config_setting": "enableAstrolabe"
     }
   ],

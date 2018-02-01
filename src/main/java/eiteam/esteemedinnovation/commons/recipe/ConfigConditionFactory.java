@@ -1,4 +1,4 @@
-package eiteam.esteemedinnovation.api.recipe;
+package eiteam.esteemedinnovation.commons.recipe;
 
 import com.google.gson.JsonObject;
 import eiteam.esteemedinnovation.commons.Config;
