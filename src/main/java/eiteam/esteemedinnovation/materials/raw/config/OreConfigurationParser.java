@@ -1,13 +1,13 @@
 package eiteam.esteemedinnovation.materials.raw.config;
 
 import com.google.gson.*;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.block.Block;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -246,7 +246,7 @@ public class OreConfigurationParser {
                 path = pieces[1];
             } else {
                 if (pieces.length > 3) {
-                    FMLLog.warning("[EI] More than 3 values separated by : in ReplaceableBlocks '%s' for Ore generation config. Expected maximum: 'domain:path:meta'. This may indicate a bug in your config!", str);
+                    EsteemedInnovation.logger.warn("[EI] More than 3 values separated by : in ReplaceableBlocks '%s' for Ore generation config. Expected maximum: 'domain:path:meta'. This may indicate a bug in your config!", str);
                 }
                 domain = pieces[0];
                 path = pieces[1];

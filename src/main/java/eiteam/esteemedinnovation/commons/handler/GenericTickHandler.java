@@ -23,7 +23,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,7 +50,7 @@ public class GenericTickHandler {
 
     static {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            FMLLog.info("[EI] Getting some fields from reflection for Tick Handling.");
+            EsteemedInnovation.logger.info("[EI] Getting some fields from reflection for Tick Handling.");
             itemInMainHandField = ReflectionHelper.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
             itemInOffHandField = ReflectionHelper.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
 

@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,7 +23,7 @@ public class ReflectionHelper {
         try {
             field = clazz.getDeclaredField(obfName);
         } catch (NoSuchFieldException e) {
-            FMLLog.warning("[EI] Unable to find field " + fieldName + " with its obfuscated " +
+            EsteemedInnovation.logger.warn("[EI] Unable to find field " + fieldName + " with its obfuscated " +
               "name. Trying to find it by its name " + fieldName);
             try {
                 field = clazz.getDeclaredField(fieldName);
@@ -38,7 +38,7 @@ public class ReflectionHelper {
                     builder.append(field1.getName());
                     builderHasAField = true;
                 }
-                FMLLog.warning("Unable to find " + fieldName + " field in " + clazz.getName() +
+                EsteemedInnovation.logger.warn("Unable to find " + fieldName + " field in " + clazz.getName() +
                   ".class. Available fields are: " + builder + ". Things are not going to work right.");
             }
         }
@@ -50,7 +50,7 @@ public class ReflectionHelper {
         try {
             method = clazz.getDeclaredMethod(obfName, params);
         } catch (NoSuchMethodException e) {
-            FMLLog.warning("[EI] Unable to find method " + methodName + " with its obfuscated name. Trying to" +
+            EsteemedInnovation.logger.warn("[EI] Unable to find method " + methodName + " with its obfuscated name. Trying to" +
               " find it by its name " + methodName);
             try {
                 method = clazz.getDeclaredMethod(methodName, params);
@@ -65,7 +65,7 @@ public class ReflectionHelper {
                     builder.append(method1.getName());
                     builderHasAMethod = true;
                 }
-                FMLLog.warning("[EI] Unable to find " + methodName + " method in " + clazz.getName() +
+                EsteemedInnovation.logger.warn("[EI] Unable to find " + methodName + " method in " + clazz.getName() +
                   ".class. Available methods are: " + builder + ". Things are not going to work right.");
             }
         }
@@ -85,7 +85,7 @@ public class ReflectionHelper {
     }
 
     public static void init() {
-        FMLLog.info("[EI] Getting some fields through reflection.");
+        EsteemedInnovation.logger.info("[EI] Getting some fields through reflection.");
         lastBuyingPlayerField = getField("lastBuyingPlayer", "field_82189_bL", EntityVillager.class);
         timeUntilResetField = getField("timeUntilReset", "field_70961_j", EntityVillager.class);
         buyingListField = getField("buyingList", "field_70963_i", EntityVillager.class);
@@ -102,7 +102,7 @@ public class ReflectionHelper {
             merchantField = getField("merchant", "field_147037_w", GuiMerchant.class);
             setAccessible(merchantField);
         } catch (NoClassDefFoundError ignore) {
-            FMLLog.warning("[EI] GuiMerchant class not found. You are probably a server.");
+            EsteemedInnovation.logger.warn("[EI] GuiMerchant class not found. You are probably a server.");
         }
     }
 

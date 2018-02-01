@@ -1,11 +1,11 @@
 package eiteam.esteemedinnovation.commons.util;
 
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -20,7 +20,7 @@ public class RecipeUtility {
         while (iter.hasNext()) {
             IRecipe recipe = iter.next();
             if (predicate.test(recipe)) {
-                FMLLog.info("Removing recipe for " + recipe.getRecipeOutput());
+                EsteemedInnovation.logger.info("Removing recipe for " + recipe.getRecipeOutput());
                 iter.remove();
             }
         }
