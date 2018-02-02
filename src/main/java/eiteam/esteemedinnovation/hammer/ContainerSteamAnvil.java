@@ -163,7 +163,7 @@ public class ContainerSteamAnvil extends Container {
             Enchantment enchantment;
 
             if (itemstack2 != null) {
-                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && EnchantmentHelper.getEnchantments(itemstack2).size() > 0;
+                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && !EnchantmentHelper.getEnchantments(itemstack2).isEmpty();
 
                 if (itemstack1.isItemStackDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2)) {
                     k = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);

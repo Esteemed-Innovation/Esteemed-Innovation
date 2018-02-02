@@ -17,7 +17,7 @@ public class ItemCraftingComponent extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(tab == EsteemedInnovation.tab) {
+        if (tab == EsteemedInnovation.tab) {
             for (Types component : Types.values()) {
                 items.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
             }

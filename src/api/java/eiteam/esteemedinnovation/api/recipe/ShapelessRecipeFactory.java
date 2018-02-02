@@ -16,16 +16,25 @@ import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class ShapelessRecipeFactory implements IRecipeFactory{
+
+    /**
+     * Creates a {@link ShapelessRecipe} based on the {@param context} and {@param json}
+     * @param context The {@link JsonContext}
+     * @param json The {@link JsonObject}
+     * @return The new {@link ShapelessRecipe}
+     */
     @Override
     public IRecipe parse(JsonContext context, JsonObject json) {
         String group = JsonUtils.getString(json, "group", "");
 
         NonNullList<Ingredient> ings = NonNullList.create();
-        for (JsonElement ele : JsonUtils.getJsonArray(json, "ingredients"))
+        for (JsonElement ele : JsonUtils.getJsonArray(json, "ingredients")) {
             ings.add(CraftingHelper.getIngredient(ele, context));
+        }
 
-        if (ings.isEmpty())
+        if (ings.isEmpty()) {
             throw new JsonParseException("No ingredients for shapeless recipe");
+        }
 
         ItemStack itemstack = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context);
 

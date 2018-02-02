@@ -65,9 +65,10 @@ public class ItemSmashedOre extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(tab == EsteemedInnovation.tab)
-        for (Entry<Integer, String[]> entry : map.entrySet()) {
-            items.add(new ItemStack(this, 1, entry.getKey()));
+        if (tab == EsteemedInnovation.tab) {
+            for (Entry<Integer, String[]> entry : map.entrySet()) {
+                items.add(new ItemStack(this, 1, entry.getKey()));
+            }
         }
     }
 

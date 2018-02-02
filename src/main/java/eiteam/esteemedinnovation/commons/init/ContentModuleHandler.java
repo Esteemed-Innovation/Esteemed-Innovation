@@ -77,7 +77,7 @@ public class ContentModuleHandler {
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
             module.create(side);
-            //module.oreDict(side);
+            module.oreDict(side);
             if (isClient) {
                 module.preInitClient();
             }
@@ -88,7 +88,7 @@ public class ContentModuleHandler {
         Side side = getSide();
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
-            //module.recipes(side);
+            module.recipes(side);
             if (isClient) {
                 module.initClient();
             }

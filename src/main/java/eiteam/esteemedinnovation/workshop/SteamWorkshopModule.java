@@ -22,7 +22,8 @@ public class SteamWorkshopModule extends ContentModule {
         // This deprecation is moderately useless unless we add our own engineer zombie texture.
         //noinspection deprecation
         STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession(Constants.EI_MODID + ":steam_engineer",
-          Constants.EI_MODID + ":textures/models/villager.png", Constants.EI_MODID + ":textures/models/zombie_villager.png");
+          Constants.EI_MODID + ":textures/models/villager.png",
+          Constants.EI_MODID + ":textures/models/zombie_villager.png");
         STEAM_ENGINEER_CAREER = new SteamEngineerCareer();
         ForgeRegistries.VILLAGER_PROFESSIONS.register(STEAM_ENGINEER_PROFESSION);
         VillagerRegistry.instance().registerVillageCreationHandler(new SteamWorkshopCreationHandler());

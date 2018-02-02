@@ -9,7 +9,6 @@ import net.minecraftforge.common.crafting.JsonContext;
 import java.util.function.BooleanSupplier;
 
 public class ConfigConditionFactory implements IConditionFactory {
-
     @Override
     public BooleanSupplier parse(JsonContext context, JsonObject json) {
         String configSetting = JsonUtils.getString(json, "config_setting", "");

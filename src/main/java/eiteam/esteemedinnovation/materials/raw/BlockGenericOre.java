@@ -49,8 +49,8 @@ public class BlockGenericOre extends Block {
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        if(itemIn == EsteemedInnovation.tab) {
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab == EsteemedInnovation.tab) {
             for (OreBlockTypes type : OreBlockTypes.LOOKUP) {
                 items.add(new ItemStack(this, 1, type.getMetadata()));
             }

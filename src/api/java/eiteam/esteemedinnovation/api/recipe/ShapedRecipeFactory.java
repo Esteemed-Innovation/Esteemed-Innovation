@@ -11,7 +11,14 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class ShapedRecipeFactory implements IRecipeFactory{
+public class ShapedRecipeFactory implements IRecipeFactory {
+
+    /**
+     * Creates a {@link ShapedRecipe} based on the {@param context} and {@param json}
+     * @param context The {@link JsonContext}
+     * @param json The {@link JsonObject}
+     * @return The new {@link ShapedRecipe}
+     */
     @Override
     public IRecipe parse(JsonContext context, JsonObject json) {
         String group = JsonUtils.getString(json, "group", "");

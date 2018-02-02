@@ -24,7 +24,7 @@ public class ItemResearchLog extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         if (GuiScreen.isShiftKeyDown()) {
             if (stack.hasTagCompound()) {
                 NBTTagCompound compound = stack.getTagCompound();

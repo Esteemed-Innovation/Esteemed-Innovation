@@ -58,8 +58,7 @@ public class ContentModule {
     public void registerModels(ModelRegistryEvent event) {}
 
     /**
-     * Called during init in both client and server.
-     * Use to register miscellaneous things for the module.
+     * Called during init in both client and server. Use to register miscellaneous things for the module.
      * @param side The side currently on
      */
     public void create(Side side) {}
@@ -79,8 +78,7 @@ public class ContentModule {
     public void recipes(Side side) {}
 
     /**
-     * Handle any client-side preInit stuff here. Called
-     * in preInit on the client after {@link #oreDict(Side)}.
+     * Handle any client-side preInit stuff here. Called in preInit on the client after {@link #oreDict(Side)}.
      */
     @SideOnly(Side.CLIENT)
     public void preInitClient() {}
@@ -105,7 +103,7 @@ public class ContentModule {
     public void finish(Side side) {}
 
     /**
-     * Overload for {@Link #setup(RegistryEvent.Register, Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
+     * Overload for {@link #setup(RegistryEvent.Register, Item, String, CreativeTabs)} that uses {@link EsteemedInnovation#tab} for the tab argument.
      */
     protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path) {
         return setup(event, startingItem, path, EsteemedInnovation.tab);
