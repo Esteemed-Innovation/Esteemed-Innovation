@@ -8,8 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -31,7 +29,7 @@ public class ItemMold extends Item implements CrucibleMold {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(tab == EsteemedInnovation.tab) {
+        if (this.isInCreativeTab(tab)) {
             for (Type type : Type.LOOKUP) {
                 items.add(new ItemStack(this, 1, type.ordinal()));
             }

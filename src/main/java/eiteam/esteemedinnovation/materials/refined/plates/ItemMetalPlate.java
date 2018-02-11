@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.materials.refined.plates;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.materials.MaterialsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -12,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMetalPlate extends Item {
     public ItemMetalPlate() {
@@ -22,7 +19,7 @@ public class ItemMetalPlate extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab == EsteemedInnovation.tab) {
+        if (this.isInCreativeTab(tab)) {
             for (Types type : Types.values()) {
                 items.add(new ItemStack(this, 1, type.getMeta()));
             }

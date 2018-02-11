@@ -7,8 +7,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +23,7 @@ public class ItemExosuitPlate extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab == EsteemedInnovation.tab) {
+        if (this.isInCreativeTab(tab)) {
             for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
                 items.add(ArmorModule.plateStack(i));
             }

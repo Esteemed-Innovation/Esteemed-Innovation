@@ -1,12 +1,9 @@
 package eiteam.esteemedinnovation.misc;
 
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -17,7 +14,7 @@ public class ItemCraftingComponent extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab == EsteemedInnovation.tab) {
+        if (this.isInCreativeTab(tab)) {
             for (Types component : Types.values()) {
                 items.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
             }

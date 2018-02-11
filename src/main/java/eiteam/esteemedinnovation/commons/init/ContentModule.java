@@ -170,7 +170,7 @@ public class ContentModule {
 
     protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, CreativeTabs tab, Function<Block, ItemBlock> itemBlock) {
         ItemBlock item = itemBlock.apply(startingBlock);
-        if(tab != null) {
+        if (tab != null) {
             item.setCreativeTab(tab);
         }
         //item.setUnlocalizedName(Constants.EI_MODID + ":" + path);
