@@ -139,7 +139,7 @@ dependencies {
     compile ticVersion
     compile naturaVersion
     // compile ic2Version
-    runtime jeiVersion
+    compile jeiVersion
     compile cclibVersion
     compile wailaVersion
     deobfCompile enchiridionVersion
