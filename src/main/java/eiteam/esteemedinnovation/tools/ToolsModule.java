@@ -141,8 +141,6 @@ public class ToolsModule extends ContentModule {
         ROTARY_BLADES = setupUpgrade(event, new ItemRotaryBladesUpgrade(), "rotary_blades");
         SIFTER = setupUpgrade(event, new ItemSifterUpgrade(), "sifter");
         BACKHOE = setupUpgrade(event, new ItemBackhoeUpgrade(), "backhoe");
-
-        DrillHeadMaterial.registerDefaults();
     }
 
     private Item setupUpgrade(RegistryEvent.Register<Item> event, SteamToolUpgrade upgrade, String path) {
@@ -558,6 +556,7 @@ public class ToolsModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
+        DrillHeadMaterial.registerDefaults();
         if (Config.enableWrench) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 0,
               new BookCategory("category.Wrench.name",
