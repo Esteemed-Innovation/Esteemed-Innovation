@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.commons.init;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.book.BookModule;
@@ -30,12 +31,15 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class ContentModuleHandler {
     private static final Set<ContentModule> modules = new HashSet<>();
 
@@ -106,12 +110,14 @@ public class ContentModuleHandler {
         }
     }
 
+    @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         for (ContentModule module : modules) {
             module.registerBlocks(event);
         }
     }
 
+    @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         for (ContentModule module : modules) {
             module.registerItems(event);
@@ -119,6 +125,7 @@ public class ContentModuleHandler {
     }
 
     @SideOnly(Side.CLIENT)
+    @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         for (ContentModule module : modules) {
             module.registerModels(event);

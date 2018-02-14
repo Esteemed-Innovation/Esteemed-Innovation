@@ -29,8 +29,12 @@ public class ItemDrillHeadUpgrade extends Item implements SteamToolUpgrade {
     @Override
     public String getInformation(ItemStack self, ItemStack tool) {
         DrillHeadMaterial mat = DrillHeadMaterial.materials.get(getMyMaterial(self));
-        String name = mat.locName;
-        return I18n.hasKey(name) ? I18n.format(name) : mat.materialName;
+        if (mat != null) {
+            String name = mat.locName;
+            return I18n.hasKey(name) ? I18n.format(name) : mat.materialName;
+        } else {
+            return "";
+        }
     }
 
     @Override
