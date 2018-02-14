@@ -33,7 +33,7 @@ public class ShapedRecipeFactory implements IRecipeFactory {
         ShapedRecipe shapedRecipe = new ShapedRecipe(group.isEmpty() ? null : new ResourceLocation(group), recipe.getRecipeOutput(), primer);
 
         String bookKey = JsonUtils.getString(json, "book_key", "");
-        if (!bookKey.equals("")) {
+        if (!bookKey.isEmpty()) {
             BookRecipeRegistry.addRecipe(bookKey, shapedRecipe);
         }
 

@@ -40,7 +40,7 @@ public class ShapelessRecipeFactory implements IRecipeFactory{
 
         ShapelessRecipe shapelessRecipe = new ShapelessRecipe(group.isEmpty() ? null : new ResourceLocation(group), ings, itemstack);
         String bookKey = JsonUtils.getString(json, "book_key", "");
-        if (!bookKey.equals("")) {
+        if (!bookKey.isEmpty()) {
             BookRecipeRegistry.addRecipe(bookKey, shapelessRecipe);
         }
 
