@@ -87,8 +87,8 @@ public class SmasherModule extends ContentModule {
               'b', INGOT_BRASS
             ));
         }
-        */
         SMASHED_ORE.addSmelting();
+        */
     }
 
     @Override

@@ -40,7 +40,6 @@ public class WoodenConeModule extends ContentModule {
           'p', OreDictEntries.PLANK_WOOD,
           'l', OreDictEntries.LOG_WOOD
         ));
-        */
         if (Config.removeHopperRecipe) {
             RecipeUtility.removeRecipe(recipe -> {
                 ItemStack output = recipe.getRecipeOutput();
@@ -49,6 +48,7 @@ public class WoodenConeModule extends ContentModule {
         }
         CrucibleRegistry.registerDunkRecipe(Item.getItemFromBlock(WOODEN_CONE), IRON_LIQUID, 45,
           new ItemStack(net.minecraft.init.Blocks.HOPPER));
+          */
     }
 
     @Override

@@ -102,6 +102,8 @@ public class MaterialsModule extends ContentModule {
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STORAGE_BLOCK = setup(event, new BlockBeacon(), "metal_storage_block");
+        ORE_BLOCK = setup(event, new BlockGenericOre(), "ore");
         COPPER_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(COPPER_PLATE.getMeta(), EntityMob.class), "copper_pressure_plate");
         pressurePlatesByMetadata.add(COPPER_PLATE.getMeta(), COPPER_PRESSURE_PLATE);
         ZINC_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(ZINC_PLATE.getMeta(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate");
