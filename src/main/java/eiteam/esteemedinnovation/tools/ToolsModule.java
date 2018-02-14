@@ -141,6 +141,8 @@ public class ToolsModule extends ContentModule {
         ROTARY_BLADES = setupUpgrade(event, new ItemRotaryBladesUpgrade(), "rotary_blades");
         SIFTER = setupUpgrade(event, new ItemSifterUpgrade(), "sifter");
         BACKHOE = setupUpgrade(event, new ItemBackhoeUpgrade(), "backhoe");
+
+        DrillHeadMaterial.registerDefaults();
     }
 
     private Item setupUpgrade(RegistryEvent.Register<Item> event, SteamToolUpgrade upgrade, String path) {
@@ -156,7 +158,7 @@ public class ToolsModule extends ContentModule {
     @Override
     public void recipes(Side side) {
         RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
-        DrillHeadMaterial.registerDefaults();
+
 
         //TODO: transfer recipes to json
         /*

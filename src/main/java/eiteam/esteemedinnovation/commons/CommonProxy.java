@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.commons;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -12,7 +13,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class CommonProxy {
     public void registerTexturesToStitch() {}
 

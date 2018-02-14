@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.commons;
 
 import codechicken.lib.render.CCIconRegister;
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.boiler.GuiBoiler;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.commons.particle.ParticleAlphabeticGeneric;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(Side.CLIENT)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = Constants.EI_MODID)
 public class ClientProxy extends CommonProxy {
     public static final ResourceLocation FONT_ASCII = new ResourceLocation("minecraft", "textures/font/ascii.png");
 
