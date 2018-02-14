@@ -1,7 +1,7 @@
 {
   "type": "esteemedinnovationapi:shaped_recipe",
   "group": "wooden_fence",
-  "book_key": "woodenCone",
+  "book_key": "astrolabe",
   "conditions": [
     {
       "type": "esteemedinnovation:config_enabled",
