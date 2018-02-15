@@ -15,7 +15,7 @@ import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class ShapelessRecipeFactory implements IRecipeFactory{
+public class ShapelessRecipeFactory implements IRecipeFactory {
 
     /**
      * Creates a {@link ShapelessRecipe} based on the {@param context} and {@param json}

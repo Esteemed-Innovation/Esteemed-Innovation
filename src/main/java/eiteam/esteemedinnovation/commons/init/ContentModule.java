@@ -34,7 +34,6 @@ import java.util.function.Function;
  * 7. {@link #finish(Side)}
  */
 public class ContentModule {
-
     /**
      * Register your blocks. Use the setup methods below to easily handle registration,
      * or just handle everything on your own.
@@ -166,7 +165,6 @@ public class ContentModule {
     protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, CreativeTabs tab) {
         setupItemBlock(event, startingBlock, tab, ItemBlock::new);
     }
-
 
     protected void setupItemBlock(RegistryEvent.Register<Item> event, Block startingBlock, CreativeTabs tab, Function<Block, ItemBlock> itemBlock) {
         ItemBlock item = itemBlock.apply(startingBlock);
