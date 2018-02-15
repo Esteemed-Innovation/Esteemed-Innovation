@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.commons.util;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemStack;
 
 public class EnchantmentUtility {
     /**
@@ -12,5 +13,13 @@ public class EnchantmentUtility {
      */
     public static int getFortuneModifier(EntityLivingBase entity) {
         return EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FORTUNE, entity);
+    }
+
+    /**
+     * @param stack The item to check.
+     * @return Whether the provided item has any enchantments.
+     */
+    public static boolean hasEnchantments(ItemStack stack) {
+        return !EnchantmentHelper.getEnchantments(stack).isEmpty();
     }
 }
