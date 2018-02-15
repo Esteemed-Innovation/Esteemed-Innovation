@@ -19,7 +19,7 @@ public class ItemMetalPlate extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab)) {
+        if (isInCreativeTab(tab)) {
             for (Types type : Types.values()) {
                 items.add(new ItemStack(this, 1, type.getMeta()));
             }

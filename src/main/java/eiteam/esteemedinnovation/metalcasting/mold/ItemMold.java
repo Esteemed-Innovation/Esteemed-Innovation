@@ -29,7 +29,7 @@ public class ItemMold extends Item implements CrucibleMold {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (this.isInCreativeTab(tab)) {
+        if (isInCreativeTab(tab)) {
             for (Type type : Type.LOOKUP) {
                 items.add(new ItemStack(this, 1, type.ordinal()));
             }
