@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.converter.ConverterModule;
+import eiteam.esteemedinnovation.hammer.HammerModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -89,7 +89,6 @@ public class Config {
     public static int thrusterConsumption;
     public static int runAssistConsumption;
     public static int powerFistConsumption;
-    public static int hammerConsumption;
     public static int fanConsumption;
     public static int screwConsumption;
     public static int heaterConsumption;
@@ -121,7 +120,6 @@ public class Config {
     public static boolean enableFan;
     public static boolean enableMortar;
     public static boolean enableGauge;
-    public static boolean enableHammer;
     public static boolean enableHeater;
     public static boolean enableHorn;
     public static boolean enableMold;
@@ -297,7 +295,6 @@ public class Config {
         enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
         enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();
-        enableHammer = config.get(CATEGORY_BLOCKS, "Enable Steam Hammer", true).getBoolean();
         enableHeater = config.get(CATEGORY_BLOCKS, "Enable Steam Heater", true).getBoolean();
         enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
         enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
@@ -306,7 +303,6 @@ public class Config {
         enableFunnel = config.get(CATEGORY_BLOCKS, "Enable Funnel", true).getBoolean();
 
         // BLOCK CONSUMPTION RATES
-        hammerConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Hammer consumption", 4000).getInt();
         fanConsumption = config.get(CATEGORY_CONSUMPTION, "Fan consumption", 1).getInt();
         screwConsumption = config.get(CATEGORY_CONSUMPTION, "Archimedes Screw consumption", 100).getInt();
         heaterConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Heater consumption", 20).getInt();

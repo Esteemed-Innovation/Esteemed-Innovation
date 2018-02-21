@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.hammer;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +27,7 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
     private boolean isWorking = false;
     private boolean hadItem = false;
     private ItemStack[] inventory = new ItemStack[3];
-    private static final int CONSUMPTION = Config.hammerConsumption;
+    private static final int CONSUMPTION = HammerModule.hammerConsumption;
     private static final float VOLUME = Blocks.ANVIL.getSoundType().getVolume();
 
     public TileEntitySteamHammer() {
