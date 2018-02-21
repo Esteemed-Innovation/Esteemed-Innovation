@@ -2,27 +2,27 @@ package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 
-public class ThumperModule extends ContentModule {
+public class ThumperModule extends ContentModule implements ConfigurableModule {
     public static Block THUMPER;
     public static Block THUMPER_DUMMY;
+    static boolean enableThumper;
+    static boolean dropItem;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -67,7 +67,7 @@ public class ThumperModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enableThumper) {
+        if (enableThumper) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 13,
               new BookCategory("category.Thumper.name",
                 new BookEntry("research.Thumper.name",
@@ -88,5 +88,21 @@ public class ThumperModule extends ContentModule {
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityThumper.class, new TileEntityThumperRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        dropItem = config.get(Config.CATEGORY_MACHINES, "Thumper drops items (may lag servers)", true).getBoolean();
+        enableThumper = config.get(CATEGORY_BLOCKS, "Enable Thumper", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableThumper".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableThumper;
     }
 }

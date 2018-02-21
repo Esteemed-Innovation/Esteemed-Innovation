@@ -76,7 +76,6 @@ public class Config {
     public static int mortarRadius;
     public static boolean expensiveMusketRecipes;
     public static int smasherDoubleChance;
-    public static boolean dropItem;
     public static int duplicateLogs;
     public static int exoConsumption;
     public static int basicTankCapacity;
@@ -135,7 +134,6 @@ public class Config {
     public static boolean enableRuptureDisc;
     public static boolean enableSmasher;
     public static boolean enableTank;
-    public static boolean enableThumper;
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
     public static boolean enableChargingPad;
@@ -289,7 +287,6 @@ public class Config {
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
         smasherDoubleChance = config.get(CATEGORY_MACHINES, "Chance of double drops from Rock Smasher (%)", 75).getInt();
         duplicateLogs = config.get(CATEGORY_MACHINES, "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
-        dropItem = config.get(CATEGORY_MACHINES, "Thumper drops items (may lag servers)", true).getBoolean();
 
         // STEAM SYSTEM
         config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
@@ -319,7 +316,6 @@ public class Config {
         enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
         enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
         enableSmasher = config.get(CATEGORY_BLOCKS, "Enable Rock Smasher", true).getBoolean();
-        enableThumper = config.get(CATEGORY_BLOCKS, "Enable Thumper", true).getBoolean();
         enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
         enablePlonker = config.get(CATEGORY_BLOCKS, "Enable Plonker", true).getBoolean();
         enableFunnel = config.get(CATEGORY_BLOCKS, "Enable Funnel", true).getBoolean();
