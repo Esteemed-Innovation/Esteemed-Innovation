@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
+import eiteam.esteemedinnovation.smasher.SmasherModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -75,7 +76,6 @@ public class Config {
     public static boolean enableAnchorAnvilRecipe;
     public static int mortarRadius;
     public static boolean expensiveMusketRecipes;
-    public static int smasherDoubleChance;
     public static int duplicateLogs;
     public static int exoConsumption;
     public static int basicTankCapacity;
@@ -132,7 +132,6 @@ public class Config {
     public static boolean enablePipe;
     public static boolean enablePump;
     public static boolean enableRuptureDisc;
-    public static boolean enableSmasher;
     public static boolean enableTank;
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
@@ -285,7 +284,6 @@ public class Config {
 
         // MACHINES
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
-        smasherDoubleChance = config.get(CATEGORY_MACHINES, "Chance of double drops from Rock Smasher (%)", 75).getInt();
         duplicateLogs = config.get(CATEGORY_MACHINES, "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
 
         // STEAM SYSTEM
@@ -315,7 +313,6 @@ public class Config {
         enableHeater = config.get(CATEGORY_BLOCKS, "Enable Steam Heater", true).getBoolean();
         enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
         enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
-        enableSmasher = config.get(CATEGORY_BLOCKS, "Enable Rock Smasher", true).getBoolean();
         enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
         enablePlonker = config.get(CATEGORY_BLOCKS, "Enable Plonker", true).getBoolean();
         enableFunnel = config.get(CATEGORY_BLOCKS, "Enable Funnel", true).getBoolean();

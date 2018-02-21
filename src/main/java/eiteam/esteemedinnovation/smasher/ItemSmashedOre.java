@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +32,7 @@ public class ItemSmashedOre extends Item {
         SmasherRegistry.registerSmashable(entry.getInputOre(), (input, world) -> {
             // Ore doubling
             int amount = input.getCount();
-            if (world.rand.nextInt(100) >= Config.smasherDoubleChance) {
+            if (world.rand.nextInt(100) >= SmasherModule.smasherDoubleChance) {
                 amount *= 2;
             }
             return Collections.singletonList(new ItemStack(this, amount, meta));
