@@ -245,5 +245,6 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
         if ("enableMold".equals(configSetting)) {
             return enableMold;
         }
+        return false;
     }
 }
