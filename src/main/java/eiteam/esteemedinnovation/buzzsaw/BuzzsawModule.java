@@ -1,24 +1,18 @@
 package eiteam.esteemedinnovation.buzzsaw;
 
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static eiteam.esteemedinnovation.tools.ToolsModule.TIMBER_CHAIN;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 
-public class BuzzsawModule extends ContentModule {
+public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     public static Block BUZZSAW;
-
+    static boolean enableSaw;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -45,5 +39,20 @@ public class BuzzsawModule extends ContentModule {
               'm', PLATE_THIN_BRASS
             ));
         }*/
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableSaw = config.get(CATEGORY_BLOCKS, "Enable the Buzzsaw", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableSaw".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableSaw;
     }
 }

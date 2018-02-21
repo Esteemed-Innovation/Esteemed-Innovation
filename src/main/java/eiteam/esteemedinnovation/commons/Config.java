@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
+import eiteam.esteemedinnovation.buzzsaw.BuzzsawModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.smasher.SmasherModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -136,7 +136,6 @@ public class Config {
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
     public static boolean enableChargingPad;
-    public static boolean enableSaw;
     public static boolean enableWrench;
 
     // items
@@ -300,7 +299,6 @@ public class Config {
 
 
         // BLOCKS
-        enableSaw = config.get(CATEGORY_BLOCKS, "Enable the Buzzsaw", true).getBoolean();
         enableCharger = config.get(CATEGORY_BLOCKS, "Enable Steam Filler", true).getBoolean();
         enableChargingPad = config.get(CATEGORY_BLOCKS, "Enable Filling Pad", true).getBoolean();
         enableCrucible = config.get(CATEGORY_BLOCKS, "Enable Crucible", true).getBoolean();
