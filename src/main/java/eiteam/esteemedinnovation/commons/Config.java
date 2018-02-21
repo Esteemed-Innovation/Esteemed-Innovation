@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
-import eiteam.esteemedinnovation.buzzsaw.BuzzsawModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import net.minecraftforge.common.config.Configuration;
 
@@ -44,7 +43,6 @@ public class Config {
     public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
     public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
     public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
-    public static final int STEAMCELL_CAPACITY_DEFAULT = 100;
 
     public static final float extendedRange = 2.0F; //Range extension in blocks
     public static final float fallAssistDivisor = 2;
@@ -103,7 +101,6 @@ public class Config {
     public static int pistonPushConsumption;
     public static int reloadingConsumption;
     public static int dragonRoarConsumption;
-    public static int steamCellCapacity;
     public static float musketDamage;
     public static float pistolDamage;
     public static float blunderbussDamage;
@@ -117,7 +114,6 @@ public class Config {
     public static boolean enableFunnel;
     public static boolean enablePlonker;
     public static boolean enableBoiler;
-    public static boolean enableCharger;
     public static boolean enableCrucible;
     public static boolean enableHellCrucible;
     public static boolean enableEngineering;
@@ -135,7 +131,6 @@ public class Config {
     public static boolean enableTank;
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
-    public static boolean enableChargingPad;
     public static boolean enableWrench;
 
     // items
@@ -186,8 +181,6 @@ public class Config {
     public static boolean enableReloadingHolsters;
     public static boolean enableFrequencyShifter;
     public static boolean enableDragonRoar;
-    public static boolean enableSteamCell;
-    public static boolean enableSteamCellBauble;
 
     // steam tool upgrades
     // core
@@ -299,8 +292,6 @@ public class Config {
 
 
         // BLOCKS
-        enableCharger = config.get(CATEGORY_BLOCKS, "Enable Steam Filler", true).getBoolean();
-        enableChargingPad = config.get(CATEGORY_BLOCKS, "Enable Filling Pad", true).getBoolean();
         enableCrucible = config.get(CATEGORY_BLOCKS, "Enable Crucible", true).getBoolean();
         enableHellCrucible = config.get(CATEGORY_BLOCKS, "Enable Nether Crucible", true).getBoolean();
         enableEngineering = config.get(CATEGORY_BLOCKS, "Enable Engineering Table", true).getBoolean();
@@ -403,9 +394,6 @@ public class Config {
         steamToolConsumptionAxe = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionDrill = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionShovel = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
-        enableSteamCell = config.get(CATEGORY_ITEMS, "Enable Steam Cell", true).getBoolean();
-        steamCellCapacity = config.get(CATEGORY_ITEMS, "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
-        enableSteamCellBauble = config.get(CATEGORY_ITEMS, "Enable Steam Cell Bauble", true).getBoolean();
         removeVanillaMetalToolRecipes = config.get(CATEGORY_ITEMS, "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
 
         // STEAM TOOL UPGRADES

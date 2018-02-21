@@ -1,31 +1,35 @@
 package eiteam.esteemedinnovation.charging;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
-import static net.minecraft.init.Items.BLAZE_POWDER;
-import static net.minecraft.init.Items.NETHERBRICK;
 
-public class ChargingModule extends ContentModule {
+public class ChargingModule extends ContentModule implements ConfigurableModule {
+    private static final int STEAMCELL_CAPACITY_DEFAULT = 100;
     public static Block FILLING_PAD;
     public static Block STEAM_FILLER;
     public static Item STEAM_CELL_FULL;
     public static Item STEAM_CELL_EMPTY;
     public static Item STEAM_CELL_FILLER;
+    static boolean enableSteamCellBauble;
+    static boolean enableSteamCell;
+    static boolean enableChargingPad;
+    static boolean enableCharger;
+    static int steamCellCapacity;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -103,7 +107,7 @@ public class ChargingModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enableSteamCell) {
+        if (enableSteamCell) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 7,
               new BookCategory("category.SteamCells.name",
                 new BookEntry("research.SteamCell.name",
@@ -111,14 +115,14 @@ public class ChargingModule extends ContentModule {
                   new BookPageCrafting("", "steamcell"))));
         }
 
-        if (Config.enableSteamCellBauble) {
+        if (enableSteamCellBauble) {
             BookPageRegistry.addEntryToCategory("category.SteamCells.name",
               new BookEntry("research.SteamCellFiller.name",
                 new BookPageItem("research.SteamCellFiller.name", "research.SteamCellFiller.0", new ItemStack(STEAM_CELL_FILLER)),
                 new BookPageCrafting("", "steamcellFiller")));
         }
 
-        if (Config.enableCharger) {
+        if (enableCharger) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 6,
               new BookCategory("category.Filler.name",
                 new BookEntry("research.Filler.name",
@@ -127,7 +131,7 @@ public class ChargingModule extends ContentModule {
                   new BookPageCrafting("", "filler"))));
         }
 
-        if (Config.enableChargingPad && Config.enableCharger) {
+        if (enableChargingPad && enableCharger) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 7,
               new BookCategory("category.FillingPad.name",
                 new BookEntry("research.Filler.name",
@@ -151,5 +155,39 @@ public class ChargingModule extends ContentModule {
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamCharger.class, new TileEntitySteamChargerRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChargingPad.class, new TileEntityChargingPadRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableCharger = config.get(CATEGORY_BLOCKS, "Enable Steam Filler", true).getBoolean();
+        enableChargingPad = config.get(CATEGORY_BLOCKS, "Enable Filling Pad", true).getBoolean();
+        enableSteamCell = config.get(CATEGORY_ITEMS, "Enable Steam Cell", true).getBoolean();
+        steamCellCapacity = config.get(CATEGORY_ITEMS, "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
+        enableSteamCellBauble = config.get(CATEGORY_ITEMS, "Enable Steam Cell Bauble", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableCharger".equals(configSetting) ||
+          "enableChargingPad".equals(configSetting) ||
+          "enableSteamCell".equals(configSetting) ||
+          "enableSteamCellBauble".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        if ("enableCharger".equals(configSetting)) {
+            return enableCharger;
+        }
+        if ("enableChargingPad".equals(configSetting)) {
+            return enableCharger && enableChargingPad;
+        }
+        if ("enableSteamCell".equals(configSetting)) {
+            return enableSteamCell;
+        }
+        if ("enableSteamCellBauble".equals(configSetting)) {
+            return enableSteamCell && enableSteamCellBauble;
+        }
+        return false;
     }
 }
