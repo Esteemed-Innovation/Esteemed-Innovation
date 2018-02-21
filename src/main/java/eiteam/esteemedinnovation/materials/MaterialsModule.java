@@ -1,13 +1,9 @@
 package eiteam.esteemedinnovation.materials;
 
 import eiteam.esteemedinnovation.api.APIConfig;
-import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
@@ -19,13 +15,13 @@ import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.materials.refined.plates.BlockClassSensitivePlate;
 import eiteam.esteemedinnovation.materials.refined.plates.BlockWeightedPlate;
 import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -34,13 +30,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
@@ -50,10 +44,6 @@ import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTy
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
-import static eiteam.esteemedinnovation.tools.ToolsModule.*;
-import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
-import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
-import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class MaterialsModule extends ContentModule {
@@ -308,7 +298,7 @@ public class MaterialsModule extends ContentModule {
                 new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta())),
               new BookPageAlloy("", BRASS_LIQUID, BRASS_FORMULA))));
 
-        if (Config.enableCrucible) {
+        if (MetalcastingModule.enableCrucible) {
             BookPageRegistry.addCategoryToSection(CASTING_SECTION, 6,
               new BookCategory("category.GildedGold.name",
                 new BookEntry("research.GildedGold.name",

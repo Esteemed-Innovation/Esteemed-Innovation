@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -52,8 +53,6 @@ public class Config {
     public static boolean genPoorZincOre;
     public static int workshopLimit;
     public static int workshopWeight;
-    public static int metalcastingHutLimit;
-    public static int metalcastingHutWeight;
 
     public static boolean easterEggs;
 
@@ -112,14 +111,11 @@ public class Config {
     public static boolean enableFunnel;
     public static boolean enablePlonker;
     public static boolean enableBoiler;
-    public static boolean enableCrucible;
-    public static boolean enableHellCrucible;
     public static boolean enableEngineering;
     public static boolean enableFan;
     public static boolean enableMortar;
     public static boolean enableGauge;
     public static boolean enableHorn;
-    public static boolean enableMold;
     public static boolean enablePipe;
     public static boolean enablePump;
     public static boolean enableRuptureDisc;
@@ -245,8 +241,6 @@ public class Config {
         genPoorZincOre = config.get(CATEGORY_INTEGRATION, "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get(CATEGORY_WORLD_GENERATION, "Workshop spawn weight", 7).getInt(7);
-        metalcastingHutLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Metalcasting Huts allowed to generate per village", 1).getInt();
-        metalcastingHutWeight = config.get(CATEGORY_WORLD_GENERATION, "Metalcasting Hut spawn weight", 5).getInt();
 
         // WEAPONS
         expensiveMusketRecipes = config.get(CATEGORY_WEAPONS, "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
@@ -286,13 +280,10 @@ public class Config {
 
 
         // BLOCKS
-        enableCrucible = config.get(CATEGORY_BLOCKS, "Enable Crucible", true).getBoolean();
-        enableHellCrucible = config.get(CATEGORY_BLOCKS, "Enable Nether Crucible", true).getBoolean();
         enableEngineering = config.get(CATEGORY_BLOCKS, "Enable Engineering Table", true).getBoolean();
         enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
         enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();
-        enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
         enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
         enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
         enablePlonker = config.get(CATEGORY_BLOCKS, "Enable Plonker", true).getBoolean();

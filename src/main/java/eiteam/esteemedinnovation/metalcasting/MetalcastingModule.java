@@ -4,8 +4,8 @@ import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.crucible.CrucibleTweaker;
@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
@@ -30,9 +31,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WORLD_GENERATION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
 
-public class MetalcastingModule extends ContentModule {
+public class MetalcastingModule extends ContentModule implements ConfigurableModule {
     public static final ResourceLocation CARVING_TABLE_LOOT = new ResourceLocation(Constants.EI_MODID, "metalcasting_hut_mold_chest");
     public static Block CRUCIBLE;
     public static Block HELL_CRUCIBLE;
@@ -40,6 +43,11 @@ public class MetalcastingModule extends ContentModule {
     public static Block MOLD;
     public static Item BLANK_MOLD;
     public static Item MOLD_ITEM;
+    public static int metalcastingHutWeight;
+    public static int metalcastingHutLimit;
+    private static boolean enableMold;
+    private static boolean enableHellCrucible;
+    public static boolean enableCrucible;
 
     @Override
     public void create(Side side) {
@@ -154,14 +162,14 @@ public class MetalcastingModule extends ContentModule {
             CraftTweakerAPI.registerClass(CarvingTableTweaker.class);
         }
 
-        if (Config.enableCrucible) {
+        if (enableCrucible) {
             BookPageRegistry.addCategoryToSection(CASTING_SECTION, 0,
               new BookCategory("category.Crucible.name",
                 new BookEntry("research.Crucible.name",
                   new BookPageItem("research.Crucible.name", "research.Crucible.0", new ItemStack(CRUCIBLE)),
                   new BookPageText("research.Crucible.name", "research.Crucible.1"),
                   new BookPageCrafting("", "crucible"))));
-            if (Config.enableHellCrucible) {
+            if (enableHellCrucible) {
                 BookPageRegistry.addCategoryToSection(CASTING_SECTION, 1,
                   new BookCategory("category.HellCrucible.name",
                     new BookEntry("research.HellCrucible.name",
@@ -169,7 +177,7 @@ public class MetalcastingModule extends ContentModule {
                       new BookPageCrafting("", "hellCrucible"))));
             }
         }
-        if (Config.enableMold) {
+        if (enableMold) {
             BookPageRegistry.addCategoryToSection(CASTING_SECTION, 2,
               new BookCategory("category.Mold.name",
                 new BookEntry("research.Mold.name",
@@ -208,5 +216,34 @@ public class MetalcastingModule extends ContentModule {
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrucible.class, new TileEntityCrucibleRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMold.class, new TileEntityMoldRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        metalcastingHutLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Metalcasting Huts allowed to generate per village", 1).getInt();
+        metalcastingHutWeight = config.get(CATEGORY_WORLD_GENERATION, "Metalcasting Hut spawn weight", 5).getInt();
+        enableCrucible = config.get(CATEGORY_BLOCKS, "Enable Crucible", true).getBoolean();
+        enableHellCrucible = config.get(CATEGORY_BLOCKS, "Enable Nether Crucible", true).getBoolean();
+        enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableCrucible".equals(configSetting) ||
+          "enableHellCrucible".equals(configSetting) ||
+          "enableMold".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        if ("enableCrucible".equals(configSetting)) {
+            return enableCrucible;
+        }
+        if ("enableHellCrucible".equals(configSetting)) {
+            return enableCrucible && enableHellCrucible;
+        }
+        if ("enableMold".equals(configSetting)) {
+            return enableMold;
+        }
     }
 }
