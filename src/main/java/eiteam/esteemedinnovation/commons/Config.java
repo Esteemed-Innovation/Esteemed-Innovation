@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
+import eiteam.esteemedinnovation.converter.ConverterModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -118,7 +119,6 @@ public class Config {
     public static boolean enableHellCrucible;
     public static boolean enableEngineering;
     public static boolean enableFan;
-    public static boolean enableFluidSteamConverter;
     public static boolean enableMortar;
     public static boolean enableGauge;
     public static boolean enableHammer;
@@ -287,7 +287,6 @@ public class Config {
         enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
         enableTank = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Tank (Crucial)", true).getBoolean();
         enableValvePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Valve Pipe", true).getBoolean();
-        enableFluidSteamConverter = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Converter", true).getBoolean();
         //enableBloodBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Blood Boiler", true).getBoolean();
 
 

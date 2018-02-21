@@ -1,24 +1,24 @@
 package eiteam.esteemedinnovation.converter;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
-public class ConverterModule extends ContentModule {
+public class ConverterModule extends ContentModule implements ConfigurableModule {
     public static Block PRESSURE_CONVERTER;
+    static boolean enableFluidSteamConverter;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -57,7 +57,7 @@ public class ConverterModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enableFluidSteamConverter) {
+        if (enableFluidSteamConverter) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 16,
               new BookCategory("category.FSC.name",
                 new BookEntry("research.FSC.name",
@@ -78,5 +78,20 @@ public class ConverterModule extends ContentModule {
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidSteamConverter.class, new TileEntityFluidSteamRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableFluidSteamConverter = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Converter", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableFluidSteamConverter".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableFluidSteamConverter;
     }
 }
