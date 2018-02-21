@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.hammer.HammerModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -91,7 +90,6 @@ public class Config {
     public static int powerFistConsumption;
     public static int fanConsumption;
     public static int screwConsumption;
-    public static int heaterConsumption;
     public static int vacuumConsumption;
     public static int plonkerConsumption;
     public static int zincPlateConsumption;
@@ -120,7 +118,6 @@ public class Config {
     public static boolean enableFan;
     public static boolean enableMortar;
     public static boolean enableGauge;
-    public static boolean enableHeater;
     public static boolean enableHorn;
     public static boolean enableMold;
     public static boolean enablePipe;
@@ -295,7 +292,6 @@ public class Config {
         enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
         enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();
-        enableHeater = config.get(CATEGORY_BLOCKS, "Enable Steam Heater", true).getBoolean();
         enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
         enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
         enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
@@ -305,7 +301,6 @@ public class Config {
         // BLOCK CONSUMPTION RATES
         fanConsumption = config.get(CATEGORY_CONSUMPTION, "Fan consumption", 1).getInt();
         screwConsumption = config.get(CATEGORY_CONSUMPTION, "Archimedes Screw consumption", 100).getInt();
-        heaterConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Heater consumption", 20).getInt();
         vacuumConsumption = config.get(CATEGORY_CONSUMPTION, "Vacuum consumption", 3).getInt();
         plonkerConsumption = config.get(CATEGORY_CONSUMPTION, "Plonker consumption", 5).getInt();
 

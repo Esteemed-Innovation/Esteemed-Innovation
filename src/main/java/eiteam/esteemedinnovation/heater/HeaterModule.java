@@ -2,24 +2,27 @@ package eiteam.esteemedinnovation.heater;
 
 import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.CrossMod;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_CONSUMPTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
 
-public class HeaterModule extends ContentModule {
+public class HeaterModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_HEATER;
     public static Item STEAMED_FISH;
     public static Item STEAMED_SALMON;
@@ -31,6 +34,8 @@ public class HeaterModule extends ContentModule {
     public static Item STEAMED_CARROT;
     public static Item STEAMED_BEETROOT;
     public static Item STEAMED_POTATO;
+    static boolean enableHeater;
+    static int heaterConsumption;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -113,7 +118,7 @@ public class HeaterModule extends ContentModule {
             CraftTweakerAPI.registerClass(SteamHeaterTweaker.class);
         }
 
-        if (Config.enableHeater) {
+        if (enableHeater) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 8,
               new BookCategory("category.Heater.name",
                 new BookEntry("research.Heater.name",
@@ -136,5 +141,21 @@ public class HeaterModule extends ContentModule {
         registerModel(STEAMED_POTATO);
         registerModel(STEAMED_RABBIT);
         registerModel(STEAMED_SALMON);
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableHeater = config.get(CATEGORY_BLOCKS, "Enable Steam Heater", true).getBoolean();
+        heaterConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Heater consumption", 20).getInt();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableHeater".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableHeater;
     }
 }
