@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
+import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -253,6 +254,7 @@ public class Config {
     public static void load() {
         Configuration config = new Configuration(APIConfig.getConfigFile("EsteemedInnovation.cfg"));
         config.load();
+        ContentModuleHandler.loadConfigs(config);
 
         // WORLD GEN
         villagerId = config.get(CATEGORY_WORLD_GENERATION, "Villager ID", 694).getInt();

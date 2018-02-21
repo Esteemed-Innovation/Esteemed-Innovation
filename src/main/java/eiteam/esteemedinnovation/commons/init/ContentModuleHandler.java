@@ -29,6 +29,7 @@ import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -36,12 +37,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class ContentModuleHandler {
     private static final Set<ContentModule> modules = new HashSet<>();
+    private static final Collection<ConfigurableModule> configurableModules = new HashSet<>();
 
     // This isn't preferential, however I fail to see good alternatives.
     static {
@@ -74,6 +78,9 @@ public class ContentModuleHandler {
 
     private static void registerModule(ContentModule module) {
         modules.add(module);
+        if (module instanceof ConfigurableModule) {
+            configurableModules.add((ConfigurableModule) module);
+        }
     }
 
     public static void preInit() {
@@ -108,6 +115,19 @@ public class ContentModuleHandler {
             }
             module.finish(side);
         }
+    }
+
+    public static void loadConfigs(Configuration configuration) {
+        for (ConfigurableModule module : configurableModules) {
+            module.loadConfigurationOptions(configuration);
+        }
+    }
+
+    public static Set<ConfigurableModule> findContentModulesForRecipe(String configSetting) {
+        return configurableModules
+          .stream()
+          .filter(module -> module.doesRecipeBelongTo(configSetting))
+          .collect(Collectors.toSet());
     }
 
     @SubscribeEvent
