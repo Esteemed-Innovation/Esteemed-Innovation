@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
+import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -110,7 +110,6 @@ public class Config {
     // blocks
     public static boolean enableFunnel;
     public static boolean enablePlonker;
-    public static boolean enableBoiler;
     public static boolean enableEngineering;
     public static boolean enableFan;
     public static boolean enableMortar;
@@ -269,7 +268,6 @@ public class Config {
 
         // STEAM SYSTEM
         config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
-        enableBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Boiler (Crucial)", true).getBoolean();
         enableHorn = config.get(CATEGORY_STEAM_SYSTEM, "Enable Horn", true).getBoolean();
         enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
         enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
@@ -426,7 +424,8 @@ public class Config {
         enableRailcraftIntegration = config.get(CATEGORY_INTEGRATION, "Enable Railcraft", true).getBoolean();
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
 
-        hasAllCrucial = enableBoiler && enableGauge && enableTank && enablePipe;
+        // TODO: Abstract this somehow
+        hasAllCrucial = BoilerModule.enableBoiler && enableGauge && enableTank && enablePipe;
 
         config.save();
     }

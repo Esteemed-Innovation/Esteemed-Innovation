@@ -1,26 +1,25 @@
 package eiteam.esteemedinnovation.boiler;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
-import static net.minecraft.init.Blocks.FURNACE;
 
-public class BoilerModule extends ContentModule {
+public class BoilerModule extends ContentModule implements ConfigurableModule {
     public static Block BOILER;
+    public static boolean enableBoiler;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -77,5 +76,20 @@ public class BoilerModule extends ContentModule {
     @Override
     public void registerModels(ModelRegistryEvent event) {
         registerModel(BOILER);
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Boiler (Crucial)", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableBoiler".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableBoiler;
     }
 }
