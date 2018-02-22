@@ -44,43 +44,25 @@ public class Config {
     public static boolean enableRailcraftIntegration;
     public static boolean enableNEIIntegration;
 
-    public static int mortarRadius;
-    public static int duplicateLogs;
-
-
-    public static int villagerId;
-
     public static boolean hasAllCrucial;
 
     public static boolean singleButtonTrackpad;
-    public static boolean removeVanillaMetalToolRecipes;
 
     public static void load() {
         Configuration config = new Configuration(APIConfig.getConfigFile("EsteemedInnovation.cfg"));
         config.load();
+        config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
         ContentModuleHandler.loadConfigs(config);
 
         // WORLD GEN
-        villagerId = config.get(CATEGORY_WORLD_GENERATION, "Villager ID", 694).getInt();
         genPoorZincOre = config.get(CATEGORY_INTEGRATION, "Railcraft Poor Zinc Ore", true).getBoolean();
 
-        // MACHINES
-        mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
-        duplicateLogs = config.get(CATEGORY_MACHINES, "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
-
         // STEAM SYSTEM
-        config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
         //enableBloodBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Blood Boiler", true).getBoolean();
 
 
         // BLOCKS
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
-
-        // ITEMS
-        removeVanillaMetalToolRecipes = config.get(CATEGORY_ITEMS, "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
-
-        // STEAM TOOL UPGRADES
-
 
         // OTHER
         easterEggs = config.get(CATEGORY_OTHER, "Enable Easter Eggs", true).getBoolean();

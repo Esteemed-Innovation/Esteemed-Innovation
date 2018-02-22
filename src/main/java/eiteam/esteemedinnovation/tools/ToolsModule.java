@@ -90,6 +90,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     public static final Item.ToolMaterial STEAMSHOVEL_MAT = EnumHelper.addToolMaterial("STEAMSHOVEL", 2, 320, 1F, -1F, 0);
     public static List<String> blacklistedStoneGrinderNuggets;
     public static int backhoeRange;
+    private static boolean removeVanillaMetalToolRecipes;
     private static boolean enableBackhoe;
     private static boolean enableSifter;
     private static boolean enableRotaryBlades;
@@ -893,6 +894,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
         blacklistedStoneGrinderNuggets = Arrays.asList(config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[] {}).getStringList());
 
+        removeVanillaMetalToolRecipes = config.get(CATEGORY_ITEMS, "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
     }
 
     @Override

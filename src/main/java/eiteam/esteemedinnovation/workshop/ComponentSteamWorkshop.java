@@ -195,7 +195,7 @@ public class ComponentSteamWorkshop extends StructureVillagePieces.Village {
 /* TODO
     @Override
     protected int chooseProfession(int villagersSpawned, int currentProfession) {
-        return Config.villagerId;
+        return SteamWorkshopModule.villagerId;
     }
     */
 }

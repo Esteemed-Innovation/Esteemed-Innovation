@@ -14,6 +14,7 @@ import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WORLD_GENERATION
 public class SteamWorkshopModule extends ContentModule implements ConfigurableModule {
     public static VillagerRegistry.VillagerProfession STEAM_ENGINEER_PROFESSION;
     public static VillagerRegistry.VillagerCareer STEAM_ENGINEER_CAREER;
+    static int villagerId;
     static int workshopWeight;
     static int workshopLimit;
 
@@ -39,6 +40,7 @@ public class SteamWorkshopModule extends ContentModule implements ConfigurableMo
     public void loadConfigurationOptions(Configuration config) {
         workshopLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get(CATEGORY_WORLD_GENERATION, "Workshop spawn weight", 7).getInt(7);
+        villagerId = config.get(CATEGORY_WORLD_GENERATION, "Villager ID", 694).getInt();
     }
 
     @Override

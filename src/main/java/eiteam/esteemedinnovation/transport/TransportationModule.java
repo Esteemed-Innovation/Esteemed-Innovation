@@ -52,6 +52,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
     public static Block BRASS_PIPE;
     public static Block COPPER_PIPE;
     public static Block VALVE_PIPE;
+    public static int mortarRadius;
     private static boolean enableAstrolabe;
     private static boolean enableValvePipe;
     private static boolean enableVacuum;
@@ -342,6 +343,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
         plonkerConsumption = config.get(CATEGORY_CONSUMPTION, "Plonker consumption", 5).getInt();
 
         enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
+        mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
     }
 
     @Override

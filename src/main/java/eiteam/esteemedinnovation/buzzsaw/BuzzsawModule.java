@@ -9,9 +9,11 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_MACHINES;
 
 public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     public static Block BUZZSAW;
+    static int duplicateLogs;
     static boolean enableSaw;
 
     @Override
@@ -44,6 +46,7 @@ public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     @Override
     public void loadConfigurationOptions(Configuration config) {
         enableSaw = config.get(CATEGORY_BLOCKS, "Enable the Buzzsaw", true).getBoolean();
+        duplicateLogs = config.get(CATEGORY_MACHINES, "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
     }
 
     @Override
