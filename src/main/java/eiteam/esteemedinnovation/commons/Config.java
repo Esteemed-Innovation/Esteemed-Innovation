@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
+import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -34,7 +35,6 @@ public class Config {
     public static final int RUN_ASSIST_CONSUMPTION_DEFAULT = 5;
     public static final int EXO_CONSUMPTION_DEFAULT = 5;
     public static final int STEAM_TOOL_CONSUMPTION_DEFAULT = 800;
-    public static final int BASIC_TANK_CAPACITY_DEFAULT = 36000;
     public static final int REINFORCED_TANK_CAPACITY_DEFAULT = 72000;
     public static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
     public static final int ZINC_PLATE_CONSUMPTION_DEFAULT = 30;
@@ -75,7 +75,6 @@ public class Config {
     public static int mortarRadius;
     public static int duplicateLogs;
     public static int exoConsumption;
-    public static int basicTankCapacity;
     public static int reinforcedTankCapacity;
     public static int uberReinforcedTankCapacity;
     public static int steamToolConsumptionDrill;
@@ -111,7 +110,6 @@ public class Config {
     public static boolean enableMortar;
     public static boolean enablePipe;
     public static boolean enablePump;
-    public static boolean enableTank;
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
     public static boolean enableWrench;
@@ -201,8 +199,6 @@ public class Config {
     public static boolean enableWings;
     public static boolean hasAllCrucial;
 
-    public static boolean enableCanister;
-
     public static boolean singleButtonTrackpad;
     public static boolean removeHopperRecipe;
     public static boolean removeVanillaMetalToolRecipes;
@@ -225,7 +221,6 @@ public class Config {
         // STEAM SYSTEM
         config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
         enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
-        enableTank = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Tank (Crucial)", true).getBoolean();
         enableValvePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Valve Pipe", true).getBoolean();
         //enableBloodBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Blood Boiler", true).getBoolean();
 
@@ -307,7 +302,6 @@ public class Config {
         enableEnderiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable enderium plate", true).getBoolean();
         enableGildedIronPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable gilded iron plate", true).getBoolean();
 
-        basicTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the basic tank can hold", BASIC_TANK_CAPACITY_DEFAULT).getInt();
         reinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
@@ -317,7 +311,6 @@ public class Config {
         enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
         enableSurvivalist = config.get(CATEGORY_ITEMS, "Enable Survivalist's Toolkit", true).getBoolean();
         enableWrench = config.get(CATEGORY_ITEMS, "Enable Pipe Wrench", true).getBoolean();
-        enableCanister = config.get(CATEGORY_ITEMS, "Enable Canisters", true).getBoolean();
         enableTopHat = config.get(CATEGORY_ITEMS, "Enable Top Hat", true).getBoolean();
         enableEmeraldHat = config.get(CATEGORY_ITEMS, "Enable Emerald Top Hat", true).getBoolean();
         enableGoggles = config.get(CATEGORY_ITEMS, "Enable Goggles/Monocle", true).getBoolean();
@@ -376,7 +369,7 @@ public class Config {
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
 
         // TODO: Abstract this somehow
-        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && enableTank && enablePipe;
+        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && StorageModule.enableTank && enablePipe;
 
         config.save();
     }

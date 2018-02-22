@@ -2,12 +2,12 @@ package eiteam.esteemedinnovation.storage.steam;
 
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ModelSteamExosuit;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitTank;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitUpgrade;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
+import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.EntityLivingBase;
@@ -74,7 +74,7 @@ public class BlockTankItem extends BlockManyMetadataItem implements ExosuitTank,
 
     @Override
     public int getStorage(ItemStack stack) {
-        int cap = Config.basicTankCapacity;
+        int cap = StorageModule.basicTankCapacity;
         if (((ItemSteamExosuitArmor) stack.getItem()).getStackInSlot(stack, 5).getItemDamage() == 1) {
             cap = Integer.MAX_VALUE;
         }
