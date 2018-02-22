@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.commons;
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
+import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -108,11 +109,8 @@ public class Config {
     public static boolean enablePlonker;
     public static boolean enableFan;
     public static boolean enableMortar;
-    public static boolean enableGauge;
-    public static boolean enableHorn;
     public static boolean enablePipe;
     public static boolean enablePump;
-    public static boolean enableRuptureDisc;
     public static boolean enableTank;
     public static boolean enableVacuum;
     public static boolean enableValvePipe;
@@ -226,10 +224,7 @@ public class Config {
 
         // STEAM SYSTEM
         config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
-        enableHorn = config.get(CATEGORY_STEAM_SYSTEM, "Enable Horn", true).getBoolean();
-        enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
         enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
-        enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
         enableTank = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Tank (Crucial)", true).getBoolean();
         enableValvePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Valve Pipe", true).getBoolean();
         //enableBloodBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Blood Boiler", true).getBoolean();
@@ -381,7 +376,7 @@ public class Config {
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
 
         // TODO: Abstract this somehow
-        hasAllCrucial = BoilerModule.enableBoiler && enableGauge && enableTank && enablePipe;
+        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && enableTank && enablePipe;
 
         config.save();
     }

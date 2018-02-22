@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.steamsafety;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
@@ -11,28 +11,26 @@ import eiteam.esteemedinnovation.steamsafety.gauge.TileEntitySteamGauge;
 import eiteam.esteemedinnovation.steamsafety.gauge.TileEntitySteamGaugeRenderer;
 import eiteam.esteemedinnovation.steamsafety.whistle.BlockWhistle;
 import eiteam.esteemedinnovation.steamsafety.whistle.TileEntityWhistle;
-import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_ZINC;
-import static net.minecraft.init.Items.COMPASS;
 
-public class SafetyModule extends ContentModule {
+public class SafetyModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_GAUGE;
     public static Block RUPTURE_DISC;
     public static Block STEAM_WHISTLE;
+    private static boolean enableRuptureDisc;
+    private static boolean enableHorn;
+    public static boolean enableGauge;
 
     @Override
     public void create(Side side) {
@@ -101,7 +99,7 @@ public class SafetyModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enableRuptureDisc) {
+        if (enableRuptureDisc) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 2,
               new BookCategory("category.RuptureDisc.name",
                 new BookEntry("research.RuptureDisc.name",
@@ -110,7 +108,7 @@ public class SafetyModule extends ContentModule {
                   new BookPageCrafting("", "disc"))));
         }
 
-        if (Config.enableHorn) {
+        if (enableHorn) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 3,
               new BookCategory("category.Whistle.name",
                 new BookEntry("research.Whistle.name",
@@ -118,7 +116,7 @@ public class SafetyModule extends ContentModule {
                   new BookPageCrafting("", "whistle1", "whistle2"))));
         }
 
-        if (Config.enableGauge) {
+        if (enableGauge) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 4,
               new BookCategory("category.Gauge.name",
                 new BookEntry("research.Gauge.name",
@@ -140,5 +138,33 @@ public class SafetyModule extends ContentModule {
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableHorn = config.get(CATEGORY_STEAM_SYSTEM, "Enable Horn", true).getBoolean();
+        enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
+        enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableHorn".equals(configSetting) ||
+          "enableGauge".equals(configSetting) ||
+          "enableRuptureDisc".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        if ("enableHorn".equals(configSetting)) {
+            return enableHorn;
+        }
+        if ("enableGauge".equals(configSetting)) {
+            return enableGauge;
+        }
+        if ("enableRuptureDisc".equals(configSetting)) {
+            return enableRuptureDisc;
+        }
+        return false;
     }
 }
