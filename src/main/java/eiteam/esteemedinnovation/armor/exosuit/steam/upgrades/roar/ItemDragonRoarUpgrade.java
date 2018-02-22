@@ -3,9 +3,9 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.roar;
 import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +40,7 @@ public class ItemDragonRoarUpgrade extends ItemSteamExosuitUpgrade {
             ItemStack chest = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
             if (entity.getHeldItemMainhand().isEmpty() && entity.isSneaking() &&
               chest.getItem() instanceof ItemSteamExosuitArmor && chest.hasTagCompound()) {
-                int consumption = (chest.getTagCompound().getInteger("SteamCapacity") / 2) + Config.dragonRoarConsumption;
+                int consumption = (chest.getTagCompound().getInteger("SteamCapacity") / 2) + ArmorModule.dragonRoarConsumption;
                 if (ChargableUtility.hasPower(entity, consumption)) {
                     if (world.isRemote) {
                         world.playSound(entity.posX, entity.posY, entity.posZ,

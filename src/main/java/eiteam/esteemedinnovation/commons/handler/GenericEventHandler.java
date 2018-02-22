@@ -10,6 +10,7 @@ import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.api.wrench.PipeWrench;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalData;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.frequency.AnimalDataSerializer;
@@ -844,7 +845,7 @@ public class GenericEventHandler {
 //                EsteemedInnovation.proxy.extendRange(entity,Config.extendedRange);
 //            }
             if (!wearing && lastWearing && entity.world.isRemote) {
-                EsteemedInnovation.proxy.extendRange(entity, -Config.extendedRange);
+                EsteemedInnovation.proxy.extendRange(entity, -ArmorModule.extendedRange);
             }
             lastWearing = wearing;
         }
@@ -875,12 +876,12 @@ public class GenericEventHandler {
                     if (!tag.isRangeExtended()) {
                         wearing = true;
                         tag.setRangeExtended(true);
-                        EsteemedInnovation.proxy.extendRange(entity, Config.extendedRange);
+                        EsteemedInnovation.proxy.extendRange(entity, extendedRange);
                     }
                 }
             }
             if (!wearing && tag.isRangeExtended()) {
-                EsteemedInnovation.proxy.extendRange(entity, -Config.extendedRange);
+                EsteemedInnovation.proxy.extendRange(entity, -extendedRange);
                 tag.setRangeExtended(false);
             }
         }
@@ -915,7 +916,7 @@ public class GenericEventHandler {
             double lastX = tag.getLastMotions().getLeft();
             double lastZ = tag.getLastMotions().getRight();
             if (ticksLeft <= 0) {
-                if (Config.passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
+                if (passiveDrain && (lastX != entity.posX || lastZ != entity.posZ)) {
                     ChargableUtility.drainSteam(stack, 1, entity);
                 }
                 ticksLeft = 2;

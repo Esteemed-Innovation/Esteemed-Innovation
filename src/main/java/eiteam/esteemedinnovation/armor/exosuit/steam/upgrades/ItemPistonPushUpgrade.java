@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
@@ -34,7 +34,7 @@ public class ItemPistonPushUpgrade extends ItemSteamExosuitUpgrade {
             return;
         }
         EntityPlayer player = event.getEntityPlayer();
-        if (player.getHeldItemMainhand().isEmpty() && ChargableUtility.hasPower(player, Config.pistonPushConsumption)) {
+        if (player.getHeldItemMainhand().isEmpty() && ChargableUtility.hasPower(player, ArmorModule.pistonPushConsumption)) {
             World world = event.getWorld();
             BlockPos curPos = event.getPos();
             BlockPos newPos = curPos.offset(face.getOpposite());

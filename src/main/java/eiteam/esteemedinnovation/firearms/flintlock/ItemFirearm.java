@@ -10,7 +10,6 @@ import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -102,12 +101,12 @@ public class ItemFirearm extends Item implements Engineerable {
                 if (legsItem instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor legsArmor = (ItemSteamExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
-                      ChargableUtility.hasPower(player, Config.reloadingConsumption) &&
+                      ChargableUtility.hasPower(player, ArmorModule.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
                         onItemRightClick(world, player, player.getActiveHand());
                         ChargableUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
-                          Config.reloadingConsumption, player);
+                          ArmorModule.reloadingConsumption, player);
                         ticksSinceReload = 0;
                         // TODO: Reload sound
                         // TODO: Out of ammo- cannot reload sound

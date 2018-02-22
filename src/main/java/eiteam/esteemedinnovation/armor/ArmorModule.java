@@ -29,11 +29,13 @@ import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.wings.ItemWingsUpg
 import eiteam.esteemedinnovation.armor.tophat.ItemTophat;
 import eiteam.esteemedinnovation.armor.tophat.VillagerData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
 import eiteam.esteemedinnovation.engineeringtable.EngineeringTableModule;
+import eiteam.esteemedinnovation.firearms.FirearmModule;
+import eiteam.esteemedinnovation.storage.StorageModule;
 import eiteam.esteemedinnovation.storage.steam.ItemTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -52,6 +54,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -61,21 +64,40 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Supplier;
 
+import static eiteam.esteemedinnovation.commons.Config.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.storage.StorageModule.STEAM_TANK;
-import static net.minecraft.init.Items.*;
+import static net.minecraft.init.Items.DYE;
+import static net.minecraft.init.Items.LEATHER;
 
-public class ArmorModule extends ContentModule {
+public class ArmorModule extends ContentModule implements ConfigurableModule {
     public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[] { 2, 5, 4, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
     @CapabilityInject(AnimalData.class)
     public static final Capability<AnimalData> ANIMAL_DATA = null;
     @CapabilityInject(VillagerData.class)
     public static final Capability<VillagerData> VILLAGER_DATA = null;
+    public static final float fallAssistDivisor = 2;
+    public static final float extendedRange = 2.0F; //Range extension in blocks
+    private static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
+    private static final int RELOADING_CONSUMPTION_DEFAULT = 15;
+    private static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
+    private static final int HYDROPHOBIC_CONSUMPTION_DEFAULT = 10;
+    private static final int PYROPHOBIC_CONSUMPTION_DEFAULT = 5;
+    private static final int REBREATHER_CONSUMPTION_DEFAULT = 5;
+    private static final int ZINC_PLATE_CONSUMPTION_DEFAULT = 30;
+    private static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
+    private static final int REINFORCED_TANK_CAPACITY_DEFAULT = 72000;
+    private static final int EXO_CONSUMPTION_DEFAULT = 5;
+    private static final int RUN_ASSIST_CONSUMPTION_DEFAULT = 5;
+    private static final int THRUSTER_CONSUMPTION_DEFAULT = 5;
+    private static final int POWER_FIST_CONSUMPTION_DEFAULT = 5;
+    private static final int JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT = 10;
+    private static final int JETPACK_CONSUMPTION_DEFAULT = 10;
+    private static final int JUMP_BOOST_CONSUMPTION_DEFAULT = 10;
 
     public static ItemSteamExosuitArmor STEAM_EXO_HEAD;
     public static ItemSteamExosuitArmor STEAM_EXO_CHEST;
@@ -154,6 +176,69 @@ public class ArmorModule extends ContentModule {
     @SideOnly(Side.CLIENT)
     public static KeyBinding MONOCLE_KEY;
 
+    private static boolean enableWings;
+    private static boolean enableGildedIronPlate;
+    private static boolean enableEnderiumPlate;
+    private static boolean enableVibrantPlate;
+    private static boolean enableSadistPlate;
+    private static boolean enableFieryPlate;
+    private static boolean enableYetiPlate;
+    private static boolean enableTerrasteelPlate;
+    private static boolean enableElementiumPlate;
+    private static boolean enableThaumiumPlate;
+    private static boolean enableLeadPlate;
+    private static boolean enableZincPlate;
+    private static boolean enableBrassPlate;
+    private static boolean enableGoldPlate;
+    private static boolean enableIronPlate;
+    private static boolean enableCopperPlate;
+    private static boolean enableDragonRoar;
+    private static boolean enableFrequencyShifter;
+    private static boolean enableReloadingHolsters;
+    private static boolean enablePistonPush;
+    private static boolean enableAnchorHeels;
+    private static boolean enablePyrophobic;
+    private static boolean enableHydrophobic;
+    private static boolean enableRebreather;
+    private static boolean enableEnderShroud;
+    private static boolean enableUberReinforcedTank;
+    private static boolean enableReinforcedTank;
+    private static boolean enablePitonDeployer;
+    private static boolean enableExtendoFist;
+    private static boolean enableCanningMachine;
+    private static boolean enableThrusters;
+    private static boolean enablePowerFist;
+    private static boolean enableJetpack;
+    private static boolean enableFallAssist;
+    private static boolean enableLeatherExosuit;
+    private static boolean enableSteamExosuit;
+    private static boolean enableExosuit;
+    private static boolean enableStealthUpgrade;
+    private static boolean enableRunAssist;
+    private static boolean enableJumpAssist;
+    private static boolean enableDoubleJump;
+    private static boolean enableGoggles;
+    private static boolean enableEmeraldHat;
+    private static boolean enableTopHat;
+    public static int dragonRoarConsumption;
+    public static int reloadingConsumption;
+    public static int pistonPushConsumption;
+    public static int pyrophobicConsumption;
+    public static int hydrophobicConsumption;
+    public static int rebreatherConsumption;
+    public static int zincPlateConsumption;
+    public static int powerFistConsumption;
+    public static int runAssistConsumption;
+    public static int thrusterConsumption;
+    public static int jumpBoostConsumptionShiftJump;
+    public static int jetpackConsumption;
+    public static int jumpBoostConsumption;
+    private static int uberReinforcedTankCapacity;
+    private static int reinforcedTankCapacity;
+    public static int exoConsumption;
+    private static boolean enableAnchorAnvilRecipe;
+    public static boolean passiveDrain;
+
     private static Set<Item> toRegisterNormally = new HashSet<>();
 
     @Override
@@ -191,8 +276,8 @@ public class ArmorModule extends ContentModule {
         PITON_DEPLOYER = setup(event, new ItemPitonDeployerUpgrade(), "piton_deployer");
         STEALTH = setup(event, new ItemAcousticDampenerUpgrade(), "stealth_upgrade");
         ENDER_SHROUD = setup(event, new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
-        REINFORCED_TANK = setup(event, new ItemTank(Config.reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
-        UBER_REINFORCED_TANK = setup(event, new ItemTank(Config.uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
+        REINFORCED_TANK = setup(event, new ItemTank(reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
+        UBER_REINFORCED_TANK = setup(event, new ItemTank(uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
         REBREATHER = setup(event, new ItemRebreatherUpgrade(), "rebreather");
         HYDROPHOBIC_COATINGS = setup(event, new ItemHydrophobicCoatingUpgrade(), "hydrophobic_coatings");
         PYROPHOBIC_COATINGS = setup(event, new ItemPyrophobicCoatingUpgrade(), "pyrophobic_coatings");
@@ -827,7 +912,7 @@ public class ArmorModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enableTopHat) {
+        if (enableTopHat) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 4,
               new BookCategory("category.TopHat.name",
                 new BookEntry("research.TopHat.name",
@@ -836,7 +921,7 @@ public class ArmorModule extends ContentModule {
                 )
               )
             );
-            if (Config.enableEmeraldHat) {
+            if (enableEmeraldHat) {
                 BookPageRegistry.addCategoryToSection(GADGET_SECTION, 5,
                   new BookCategory("category.TopHatEmerald.name",
                     new BookEntry("research.TopHatEmerald.name",
@@ -848,7 +933,7 @@ public class ArmorModule extends ContentModule {
             }
         }
 
-        if (Config.enableGoggles) {
+        if (enableGoggles) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 6,
               new BookCategory("category.Goggles.name",
                 new BookEntry("research.Goggles.name",
@@ -860,7 +945,7 @@ public class ArmorModule extends ContentModule {
             );
         }
 
-        if (Config.enableExosuit && EngineeringTableModule.enableEngineering) {
+        if (enableExosuit && EngineeringTableModule.enableEngineering) {
             BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION,
               new BookCategory("category.SteamExosuit.name",
                 new BookEntry("research.SteamExosuit.name",
@@ -888,12 +973,12 @@ public class ArmorModule extends ContentModule {
               )
             );
 
-            if (Config.enableReinforcedTank) {
+            if (enableReinforcedTank) {
                 tankCategory.appendEntries(new BookEntry("research.ExoTankUberReinforced",
                   new BookPageItem("research.ExoTankUberReinforced.name", "research.ExoTankUberReinforced.0", true, new ItemStack(UBER_REINFORCED_TANK)),
                   new BookPageCrafting("", "uberReinforcedTank1", "uberReinforcedTank2")));
             }
-            if (Config.enableUberReinforcedTank) {
+            if (enableUberReinforcedTank) {
                 tankCategory.appendEntries(new BookEntry("research.ExoTankUberReinforced",
                   new BookPageItem("research.ExoTankUberReinforced.name", "research.ExoTankUberReinforced.0", true, new ItemStack(UBER_REINFORCED_TANK)),
                   new BookPageCrafting("", "uberReinforcedTank1", "uberReinforcedTank2")));
@@ -926,32 +1011,32 @@ public class ArmorModule extends ContentModule {
                   )
                 );
 
-                if (Config.enableCopperPlate) {
+                if (enableCopperPlate) {
                     plateCategory.appendEntries(new BookEntry("research.PlateCopper.name",
                       new BookPageItem("research.PlateCopper.name", "research.PlateCopper.0", true, plateStack(COPPER_PLATE_META)),
                       new BookPageCrafting("", "exoCopper")));
                 }
-                if (Config.enableIronPlate) {
+                if (enableIronPlate) {
                     plateCategory.appendEntries(new BookEntry("research.PlateIron.name",
                       new BookPageItem("research.PlateIron.name", "research.PlateIron.0", true, plateStack(IRON_PLATE_META)),
                       new BookPageCrafting("", "exoIron")));
                 }
-                if (Config.enableBrassPlate) {
+                if (enableBrassPlate) {
                     plateCategory.appendEntries(new BookEntry("research.PlateBrass.name",
                       new BookPageItem("research.PlateBrass.name", "research.PlateBrass.0", true, plateStack(BRASS_PLATE_META)),
                       new BookPageCrafting("", "exoBrass")));
                 }
-                if (Config.enableGoldPlate) {
+                if (enableGoldPlate) {
                     plateCategory.appendEntries(new BookEntry("research.PlateGold.name",
                       new BookPageItem("research.PlateGold.name", "research.PlateGold.0", true, plateStack(GOLD_PLATE_META)),
                       new BookPageCrafting("", "exoGold")));
                 }
-                if (Config.enableGildedIronPlate) {
+                if (enableGildedIronPlate) {
                     plateCategory.appendEntries(new BookEntry("research.PlateGilded.name",
                       new BookPageItem("research.PlateGilded.name", "research.PlateGilded.0", true, plateStack(GILDED_IRON_PLATE_META)),
                       new BookPageCrafting("", "exoGildedIron")));
                 }
-                if (Config.enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty()) {
+                if (enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty()) {
                     plateCategory.appendEntries(new BookEntry("research.PlateLead.name",
                       new BookPageItem("research.PlateLead.name", "research.PlateLead.0", true, plateStack(LEAD_PLATE_META)),
                       new BookPageCrafting("", "exoLead")));
@@ -978,7 +1063,7 @@ public class ArmorModule extends ContentModule {
                     new BookPageItem("research.ExoVanity.name", "research.ExoVanity.0", stacks)),
                   new BookEntry("research.ExoDyes.name",
                     new BookPageItem("research.ExoDyes.name", "research.ExoDyes.0", true, dyes)));
-                if (Config.enableEnderShroud) {
+                if (enableEnderShroud) {
                     vanityCategory.appendEntries(
                       new BookEntry("research.EnderShroud.name",
                         new BookPageItem("research.EnderShroud.name", "research.EnderShroud.0", true, new ItemStack(ENDER_SHROUD)),
@@ -989,12 +1074,12 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory headHelmCategory = new BookCategory("category.ExoHeadHelm.name");
-                if (Config.enableTopHat) {
+                if (enableTopHat) {
                     headHelmCategory.appendEntries(new BookEntry("research.ExoTopHat.name",
                       new BookPageItem("research.ExoTopHat.name", "research.ExoTopHat.0", true, new ItemStack(TOP_HAT), new ItemStack(ENTREPRENEUR_TOP_HAT)),
                       new BookPage("")));
                 }
-                if (Config.enableFrequencyShifter) {
+                if (enableFrequencyShifter) {
                     headHelmCategory.appendEntries(new BookEntry("research.FrequencyShifter.name",
                       new BookPageItem("research.FrequencyShifter.name", "research.FrequencyShifter.0", true, new ItemStack(FREQUENCY_SHIFTER)),
                       new BookPageCrafting("", "frequencyShifter")));
@@ -1004,17 +1089,17 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory headGoggleCategory = new BookCategory("category.ExoHeadGoggle.name");
-                if (Config.enableGoggles) {
+                if (enableGoggles) {
                     headGoggleCategory.appendEntries(new BookEntry("research.ExoGoggles.name",
                       new BookPageItem("research.ExoGoggles.name", "research.ExoGoggles.0", true, new ItemStack(GOGGLES), new ItemStack(MONOCLE)),
                       new BookPage("")));
                 }
-                if (Config.enableRebreather) {
+                if (enableRebreather) {
                     headGoggleCategory.appendEntries(new BookEntry("research.Rebreather.name",
                       new BookPageItem("research.Rebreather.name", "research.Rebreather.0", true, new ItemStack(REBREATHER)),
                       new BookPageCrafting("", "rebreather")));
                 }
-                if (Config.enableDragonRoar) {
+                if (enableDragonRoar) {
                     headGoggleCategory.appendEntries(new BookEntry("research.DragonRoar.name",
                       new BookPageItem("research.DragonRoar.name", "research.DragonRoar.0", true, new ItemStack(DRAGON_ROAR)),
                       new BookPageCrafting("", "dragonRoar")));
@@ -1024,12 +1109,12 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory backCategory = new BookCategory("category.ExoBack.name");
-                if (Config.enableJetpack) {
+                if (enableJetpack) {
                     backCategory.appendEntries(new BookEntry("research.Jetpack.name",
                       new BookPageItem("research.Jetpack.name", "research.Jetpack.0", true, new ItemStack(JETPACK)),
                       new BookPageCrafting("", "jetpack1", "jetpack2")));
                 }
-                if (Config.enableWings) {
+                if (enableWings) {
                     backCategory.appendEntries(new BookEntry("research.Wings.name",
                       new BookPageItem("research.Wings.name", "research.Wings.0", true, new ItemStack(WINGS)),
                       new BookPageCrafting("", "wings1", "wings2")));
@@ -1039,22 +1124,22 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory armCategory = new BookCategory("category.ExoArm.name");
-                if (Config.enablePowerFist) {
+                if (enablePowerFist) {
                     armCategory.appendEntries(new BookEntry("research.Fist.name",
                       new BookPageItem("research.Fist.name", "research.Fist.0", true, new ItemStack(POWER_FIST)),
                       new BookPageCrafting("", "powerFist1", "powerFist2")));
                 }
-                if (Config.enableExtendoFist) {
+                if (enableExtendoFist) {
                     armCategory.appendEntries(new BookEntry("research.ExtendoFist.name",
                       new BookPageItem("research.ExtendoFist.name", "research.ExtendoFist.0", true, new ItemStack(EXTENDO_FIST)),
                       new BookPageCrafting("", "extendoFist1", "extendoFist2")));
                 }
-                if (Config.enablePitonDeployer) {
+                if (enablePitonDeployer) {
                     armCategory.appendEntries(new BookEntry("research.PitonDeployer.name",
                       new BookPageItem("research.PitonDeployer.name", "research.PitonDeployer.0", true, new ItemStack(PITON_DEPLOYER)),
                       new BookPageCrafting("", "pitonDeployer")));
                 }
-                if (Config.enablePistonPush) {
+                if (enablePistonPush) {
                     armCategory.appendEntries(new BookEntry("research.PistonPush.name",
                       new BookPageItem("research.PistonPush.name", "research.PistonPush.0", true, new ItemStack(PISTON_PUSH)),
                       new BookPageCrafting("", "pistonPush")));
@@ -1064,17 +1149,17 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory hipCategory = new BookCategory("category.ExoHip.name");
-                if (Config.enableThrusters) {
+                if (enableThrusters) {
                     hipCategory.appendEntries(new BookEntry("research.Thrusters.name",
                       new BookPageItem("research.Thrusters.name", "research.Thrusters.0", true, new ItemStack(THRUSTERS)),
                       new BookPageCrafting("", "thrusters1", "thrusters2")));
                 }
-                if (Config.enableCanningMachine) {
+                if (enableCanningMachine) {
                     hipCategory.appendEntries(new BookEntry("research.Canner.name",
                       new BookPageItem("research.Canner.name", "research.Canner.0", true, new ItemStack(CANNING_MACHINE)),
                       new BookPageCrafting("", "canner1", "canner2", "canner3", "canner4")));
                 }
-                if (Config.enableReloadingHolsters) {
+                if (enableReloadingHolsters) {
                     hipCategory.appendEntries(new BookEntry("research.ReloadingHolsters.name",
                       new BookPageItem("research.ReloadingHolsters.name", "research.ReloadingHolsters.0", true, new ItemStack(RELOADING_HOLSTERS)),
                       new BookPageCrafting("", "reloadingHolsters")));
@@ -1084,12 +1169,12 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory legCategory = new BookCategory("category.ExoLeg.name");
-                if (Config.enableRunAssist) {
+                if (enableRunAssist) {
                     legCategory.appendEntries(new BookEntry("research.RunAssist.name",
                       new BookPageItem("research.RunAssist.name", "research.RunAssist.0", true, new ItemStack(RUN_ASSIST)),
                       new BookPageCrafting("", "runAssist1", "runAssist2")));
                 }
-                if (Config.enableStealthUpgrade) {
+                if (enableStealthUpgrade) {
                     legCategory.appendEntries(new BookEntry("research.StealthUpgrade.name",
                       new BookPageItem("research.StealthUpgrade.name", "research.StealthUpgrade.0", true, new ItemStack(STEALTH)),
                       new BookPageCrafting("", "stealthUpgrade")));
@@ -1099,14 +1184,14 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory heelCategory = new BookCategory("category.ExoHeel.name");
-                if (Config.enableFallAssist) {
+                if (enableFallAssist) {
                     heelCategory.appendEntries(new BookEntry("research.FallAssist.name",
                       new BookPageItem("research.FallAssist.name", "research.FallAssist.0", true, new ItemStack(FALL_ASSIST)),
                       new BookPageCrafting("", "noFall")));
                 }
-                if (Config.enableAnchorHeels) {
-                    boolean lead = Config.enableLeadPlate &&
-                      !OreDictionary.getOres(INGOT_LEAD).isEmpty() && !Config.enableAnchorAnvilRecipe;
+                if (enableAnchorHeels) {
+                    boolean lead = enableLeadPlate &&
+                      !OreDictionary.getOres(INGOT_LEAD).isEmpty() && !enableAnchorAnvilRecipe;
                     String desc = lead ? "research.AnchorHeelsLead.0" : "research.AnchorHeelsIron.0";
                     heelCategory.appendEntries(new BookEntry("research.AnchorHeels.name",
                       new BookPageItem("research.AnchorHeels.name", desc, true, new ItemStack(ANCHOR_HEELS)),
@@ -1117,22 +1202,22 @@ public class ArmorModule extends ContentModule {
 
             {
                 BookCategory footCategory = new BookCategory("category.ExoFoot.name");
-                if (Config.enableDoubleJump) {
+                if (enableDoubleJump) {
                     footCategory.appendEntries(new BookEntry("research.DoubleJump.name",
                       new BookPageItem("research.DoubleJump.name", "research.DoubleJump.0", true, new ItemStack(DOUBLE_JUMP)),
                       new BookPageCrafting("", "doubleJump1", "doubleJump2")));
                 }
-                if (Config.enableHydrophobic) {
+                if (enableHydrophobic) {
                     footCategory.appendEntries(new BookEntry("research.Hydrophobic.name",
                       new BookPageItem("research.Hydrophobic.name", "research.Hydrophobic.0", true, new ItemStack(HYDROPHOBIC_COATINGS)),
                       new BookPageCrafting("", "hydrophobic")));
                 }
-                if (Config.enablePyrophobic) {
+                if (enablePyrophobic) {
                     footCategory.appendEntries(new BookEntry("research.Pyrophobic.name",
                       new BookPageItem("research.Pyrophobic.name", "research.Pyrophobic.0", true, new ItemStack(PYROPHOBIC_COATINGS)),
                       new BookPageCrafting("", "pyrophobic")));
                 }
-                if (Config.enableJumpAssist) {
+                if (enableJumpAssist) {
                     footCategory.appendEntries(new BookEntry("research.JumpAssist.name",
                       new BookPageItem("research.JumpAssist.name", "research.JumpAssist.0", true, new ItemStack(LEAP_ACTUATOR)),
                       new BookPageCrafting("", "jumpAssist1", "jumpAssist2")));
@@ -1180,5 +1265,128 @@ public class ArmorModule extends ContentModule {
 
     public static ItemStack plateStack(int meta) {
         return plateStack(meta, 1);
+    }
+
+    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
+        put("enableGoggles", () -> enableGoggles);
+        put("enableTopHat", () -> enableTopHat);
+        put("enableEmeraldHat", () -> enableTopHat && enableEmeraldHat);
+        put("enableSteamExosuit", () -> enableExosuit && enableSteamExosuit);
+        put("enableJetpack", () -> enableExosuit && enableSteamExosuit && enableJetpack);
+        put("enableWings", () -> enableExosuit && enableSteamExosuit && enableWings);
+        put("enablePowerFist", () -> enableExosuit && enableSteamExosuit && enablePowerFist);
+        put("enableExtendoFist", () -> enableExosuit && enableSteamExosuit && enableExtendoFist);
+        put("enableThrusters", () -> enableExosuit && enableSteamExosuit && enableThrusters);
+        put("enableFallAssist", () -> enableExosuit && enableSteamExosuit && enableFallAssist);
+        put("enableJumpAssist", () -> enableExosuit && enableSteamExosuit && enableJumpAssist);
+        put("enableRunAssist", () -> enableExosuit && enableSteamExosuit && enableRunAssist);
+        put("enableDoubleJump", () -> enableExosuit && enableSteamExosuit && enableDoubleJump);
+        put("enableCanner", () -> enableExosuit && enableSteamExosuit && enableCanningMachine && StorageModule.enableCanister);
+        put("enablePitonDeployer", () -> enableExosuit && enableSteamExosuit && enablePitonDeployer);
+        put("enableStealthUpgrade", () -> enableExosuit && enableSteamExosuit && enableStealthUpgrade);
+        put("enableEnderShroud", () -> enableExosuit && enableSteamExosuit && enableEnderShroud);
+        put("enableReinforcedTank", () -> enableExosuit && enableSteamExosuit && enableReinforcedTank);
+        put("enableUberReinforcedTank", () -> enableExosuit && enableSteamExosuit && enableReinforcedTank && enableUberReinforcedTank);
+        put("enableRebreather", () -> enableExosuit && enableSteamExosuit && enableRebreather);
+        put("enableHydrophobic", () -> enableExosuit && enableSteamExosuit && enableHydrophobic);
+        put("enablePyrophobic", () -> enableExosuit && enableSteamExosuit && enablePyrophobic);
+        put("enableAnchorHeels", () -> enableExosuit && enableSteamExosuit && enableAnchorHeels);
+        put("useLeadAnchorHeelsRecipe", () -> enableExosuit && enableSteamExosuit && enableAnchorHeels && enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty() && !enableAnchorAnvilRecipe);
+        put("enablePistonPush", () -> enableExosuit && enableSteamExosuit && enablePistonPush);
+        put("enableReloadingHolsters", () -> enableExosuit && enableSteamExosuit && enableReloadingHolsters && FirearmModule.enableFirearms && FirearmModule.enableEnhancementRevolver);
+        put("enableFrequencyShifter", () -> enableExosuit && enableSteamExosuit && enableFrequencyShifter);
+        put("enableDragonRoar", () -> enableExosuit && enableSteamExosuit && enableDragonRoar);
+        put("enableLeatherExosuit", () -> enableExosuit && enableLeatherExosuit);
+        put("enableIronPlate", () -> enableExosuit && enableIronPlate);
+        put("enableGoldPlate", () -> enableExosuit && enableGoldPlate);
+        put("enableCopperPlate", () -> enableExosuit && enableCopperPlate);
+        put("enableZincPlate", () -> enableExosuit && enableZincPlate);
+        put("enableBrassPlate", () -> enableExosuit && enableBrassPlate);
+        put("enableGildedIronPlate", () -> enableExosuit && enableGildedIronPlate);
+        put("enableLeadPlate", () -> enableExosuit && enableLeadPlate);
+    }};
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableTopHat = config.get(CATEGORY_ITEMS, "Enable Top Hat", true).getBoolean();
+        enableEmeraldHat = config.get(CATEGORY_ITEMS, "Enable Emerald Top Hat", true).getBoolean();
+        enableGoggles = config.get(CATEGORY_ITEMS, "Enable Goggles/Monocle", true).getBoolean();
+
+        // EXOSUIT
+        passiveDrain = config.get(CATEGORY_EXOSUIT, "Passively drain steam while in use", true).getBoolean();
+        enableExosuit = config.get(CATEGORY_EXOSUIT, "Enable Exosuits in general (disabling disables both suits, all upgrades, and plates)", true).getBoolean();
+        enableSteamExosuit = config.get(CATEGORY_EXOSUIT, "Enable Steam Exosuit (disabling disabled all its upgrades, as well)", true).getBoolean();
+        enableLeatherExosuit = config.get(CATEGORY_EXOSUIT, "Enable Leather Exosuit (disabling only disables the suit)", true).getBoolean();
+        exoConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit consumes", EXO_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam jump boost consumes", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
+        jetpackConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Jetpack consumes", JETPACK_CONSUMPTION_DEFAULT).getInt();
+        jumpBoostConsumptionShiftJump = config.get(CATEGORY_EXOSUIT, "The amount of steam the jump boost shift jump consumes", JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT).getInt();
+        thrusterConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Thrusters consumes", THRUSTER_CONSUMPTION_DEFAULT).getInt();
+        runAssistConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Run Assist consumes", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
+        powerFistConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
+        zincPlateConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Zinc Plate consumes", ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
+        rebreatherConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Rebreather consumes", REBREATHER_CONSUMPTION_DEFAULT).getInt();
+        hydrophobicConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Hydrophobic Coatings consume", HYDROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+        pyrophobicConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Pyrophobic Coatings consume", PYROPHOBIC_CONSUMPTION_DEFAULT).getInt();
+        enableAnchorAnvilRecipe = config.get(CATEGORY_EXOSUIT, "Use the leadless Anchor Heels recipe. This will always be true if there is no lead available.", false).getBoolean();
+        pistonPushConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Piston Push consumes", PISTON_PUSH_CONSUMPTION_DEFAULT).getInt();
+        reloadingConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Reloading Holsters consume", RELOADING_CONSUMPTION_DEFAULT).getInt();
+        dragonRoarConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Dragon Roar consumes", DRAGON_ROAR_CONSUMPTION_DEFAULT).getInt();
+
+        // EXOSUIT UPGRADES
+        enableFallAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Fall Assist", true).getBoolean();
+        enableJumpAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Leap Actuator", true).getBoolean();
+        enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Pulse Nozzle", true).getBoolean();
+        enableRunAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Modular Accelerator", true).getBoolean();
+        enableStealthUpgrade = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Acoustic Dampener", true).getBoolean();
+        enableJetpack = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Steam Jetpack", true).getBoolean();
+        enableThrusters = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Thrusters", true).getBoolean();
+        enableWings = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Wings", true).getBoolean();
+        enablePowerFist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Power Fist", true).getBoolean();
+        enableCanningMachine = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Canner", true).getBoolean();
+        enableExtendoFist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Extendo Fist", true).getBoolean();
+        enablePitonDeployer = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Piton Deployer", true).getBoolean();
+        enableReinforcedTank = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Reinforced Tank", true).getBoolean();
+        enableUberReinforcedTank = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Heavily Reinforced Tank", true).getBoolean();
+        enableEnderShroud = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Ender Shroud", true).getBoolean();
+        enableRebreather = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Rebreather", true).getBoolean();
+        enableHydrophobic = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Hydrophobic Coatings", true).getBoolean();
+        enablePyrophobic = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Pyrophobic Coatings", true).getBoolean();
+        enableAnchorHeels = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Anchor Heels", true).getBoolean();
+        enablePistonPush = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Piston Push", true).getBoolean();
+        enableReloadingHolsters = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Reloading Holsters", true).getBoolean();
+        enableFrequencyShifter = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Frequency Shifter", true).getBoolean();
+        enableDragonRoar = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Dragon Roar", true).getBoolean();
+
+        enableCopperPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable copper plate", true).getBoolean();
+        enableZincPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable zinc plate", true).getBoolean();
+        enableIronPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable iron plate", true).getBoolean();
+        enableGoldPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable gold plate", true).getBoolean();
+        enableBrassPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable brass plate", true).getBoolean();
+        enableLeadPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable lead plate", true).getBoolean();
+        enableThaumiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable thaumium plate", true).getBoolean();
+        enableElementiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable elementium plate", true).getBoolean();
+        enableTerrasteelPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable terrasteel plate", true).getBoolean();
+        enableYetiPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable yeti plate", true).getBoolean();
+        enableFieryPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable fiery plate", true).getBoolean();
+        enableSadistPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable sadist plate", true).getBoolean();
+        enableVibrantPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable vibrant plate", true).getBoolean();
+        enableEnderiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable enderium plate", true).getBoolean();
+        enableGildedIronPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable gilded iron plate", true).getBoolean();
+
+        reinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
+        uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
+        //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
+
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return RECIPE_CHECKERS.containsKey(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

@@ -6,7 +6,6 @@ import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.exosuit.*;
 import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.storage.steam.BlockTankItem;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -442,7 +441,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
 
     @Override
     public int steamPerDurability() {
-        return Config.exoConsumption;
+        return ArmorModule.exoConsumption;
     }
 
     @Override

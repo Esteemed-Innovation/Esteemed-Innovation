@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.jetpack;
 
 import eiteam.esteemedinnovation.api.SteamChargable;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
@@ -54,7 +54,7 @@ public class ItemJetpackUpgrade extends ItemSteamExosuitUpgrade {
             player.motionY += 0.06D;
             player.fallDistance = 0.0F;
             if (isServer) {
-                ((SteamChargable) chestArmor).drainSteam(chest, Config.jetpackConsumption, player);
+                ((SteamChargable) chestArmor).drainSteam(chest, ArmorModule.jetpackConsumption, player);
             } else {
                 World world = player.world;
                 double rotation = Math.toRadians(player.renderYawOffset);
@@ -99,7 +99,7 @@ public class ItemJetpackUpgrade extends ItemSteamExosuitUpgrade {
                 return null;
             }
             ExosuitArmor chestArmor = (ExosuitArmor) chestItem;
-            if (!((SteamChargable) chestArmor).hasPower(chest, Config.jetpackConsumption)) {
+            if (!((SteamChargable) chestArmor).hasPower(chest, ArmorModule.jetpackConsumption)) {
                 return null;
             }
 

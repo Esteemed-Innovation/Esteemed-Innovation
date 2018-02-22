@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.phobiccoatings;
 
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -20,7 +20,7 @@ public class ItemHydrophobicCoatingUpgrade extends ItemPhobicCoatingUpgrade {
 
     @Override
     protected int getConsumption() {
-        return Config.hydrophobicConsumption;
+        return ArmorModule.hydrophobicConsumption;
     }
 
     @Override

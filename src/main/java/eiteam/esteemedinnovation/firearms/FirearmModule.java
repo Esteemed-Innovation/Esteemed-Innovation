@@ -21,7 +21,6 @@ import eiteam.esteemedinnovation.firearms.rocket.ammo.RenderRocket;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
-import eiteam.esteemedinnovation.misc.MiscellaneousModule;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -75,7 +74,7 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     private static boolean enableRocketConcussive;
     private static boolean enableRocket;
     private static boolean enableRL;
-    private static boolean enableFirearms;
+    public static boolean enableFirearms;
     private static boolean enableEnhancementAirStrike;
     private static boolean enableEnhancementAmmo;
     private static boolean enableEnhancementFastRockets;
@@ -83,7 +82,7 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     private static boolean enableEnhancementRecoil;
     private static boolean enableEnhancementSilencer;
     private static boolean enableEnhancementSpeedloader;
-    private static boolean enableEnhancementRevolver;
+    public static boolean enableEnhancementRevolver;
     private static boolean enableEnhancementAblaze;
     private static float blunderbussDamage;
     private static float pistolDamage;

@@ -28,29 +28,9 @@ public class Config {
     public static final String CATEGORY_OTHER = "Other";
     public static final String CATEGORY_INTEGRATION = "Integration";
 
-    public static final int JUMP_BOOST_CONSUMPTION_DEFAULT = 10;
-    public static final int JETPACK_CONSUMPTION_DEFAULT = 10;
-    public static final int JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT = 10;
-    public static final int POWER_FIST_CONSUMPTION_DEFAULT = 5;
-    public static final int THRUSTER_CONSUMPTION_DEFAULT = 5;
-    public static final int RUN_ASSIST_CONSUMPTION_DEFAULT = 5;
-    public static final int EXO_CONSUMPTION_DEFAULT = 5;
     public static final int STEAM_TOOL_CONSUMPTION_DEFAULT = 800;
-    public static final int REINFORCED_TANK_CAPACITY_DEFAULT = 72000;
-    public static final int UBER_REINFORCED_TANK_CAPACITY_DEFAULT = 144000;
-    public static final int ZINC_PLATE_CONSUMPTION_DEFAULT = 30;
-    public static final int REBREATHER_CONSUMPTION_DEFAULT = 5;
-    public static final int PYROPHOBIC_CONSUMPTION_DEFAULT = 5;
-    public static final int HYDROPHOBIC_CONSUMPTION_DEFAULT = 10;
-    public static final int PISTON_PUSH_CONSUMPTION_DEFAULT = 5;
-    public static final int RELOADING_CONSUMPTION_DEFAULT = 15;
-    public static final int DRAGON_ROAR_CONSUMPTION_DEFAULT = 20000;
-    public static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
+    private static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
 
-    public static final float extendedRange = 2.0F; //Range extension in blocks
-    public static final float fallAssistDivisor = 2;
-
-    public static boolean passiveDrain;
     public static boolean disableParticles;
     public static boolean genPoorZincOre;
 
@@ -70,64 +50,19 @@ public class Config {
     public static boolean enableRailcraftIntegration;
     public static boolean enableNEIIntegration;
 
-    public static boolean enableAnchorAnvilRecipe;
     public static int mortarRadius;
     public static int duplicateLogs;
-    public static int exoConsumption;
-    public static int reinforcedTankCapacity;
-    public static int uberReinforcedTankCapacity;
     public static int steamToolConsumptionDrill;
     public static int steamToolConsumptionAxe;
     public static int steamToolConsumptionShovel;
-    public static int jumpBoostConsumption;
-    public static int jetpackConsumption;
-    public static int jumpBoostConsumptionShiftJump;
-    public static int thrusterConsumption;
-    public static int runAssistConsumption;
-    public static int powerFistConsumption;
-    public static int zincPlateConsumption;
-    public static int rebreatherConsumption;
-    public static int hydrophobicConsumption;
-    public static int pyrophobicConsumption;
-    public static int pistonPushConsumption;
-    public static int reloadingConsumption;
-    public static int dragonRoarConsumption;
 
 
     public static int villagerId;
 
     public static boolean enableWrench;
 
-    public static boolean enableTopHat;
-    public static boolean enableEmeraldHat;
-    public static boolean enableGoggles;
-    public static boolean enableDoubleJump;
-    public static boolean enableJumpAssist;
-    public static boolean enableRunAssist;
-    public static boolean enableStealthUpgrade;
-    public static boolean enableExosuit;
-    public static boolean enableSteamExosuit;
-    public static boolean enableLeatherExosuit;
-    public static boolean enableFallAssist;
-    public static boolean enableJetpack;
-    public static boolean enablePowerFist;
     public static boolean enableSteamTools;
     public static boolean enableSurvivalist;
-    public static boolean enableThrusters;
-    public static boolean enableCanningMachine;
-    public static boolean enableExtendoFist;
-    public static boolean enablePitonDeployer;
-    public static boolean enableReinforcedTank;
-    public static boolean enableUberReinforcedTank;
-    public static boolean enableEnderShroud;
-    public static boolean enableRebreather;
-    public static boolean enableHydrophobic;
-    public static boolean enablePyrophobic;
-    public static boolean enableAnchorHeels;
-    public static boolean enablePistonPush;
-    public static boolean enableReloadingHolsters;
-    public static boolean enableFrequencyShifter;
-    public static boolean enableDragonRoar;
 
     // steam tool upgrades
     // core
@@ -161,24 +96,6 @@ public class Config {
 
     public static List<String> blacklistedStoneGrinderNuggets;
 
-    //plates
-    public static boolean enableCopperPlate;
-    public static boolean enableIronPlate;
-    public static boolean enableGoldPlate;
-    public static boolean enableBrassPlate;
-    public static boolean enableZincPlate;
-    public static boolean enableLeadPlate;
-    public static boolean enableThaumiumPlate;
-    public static boolean enableElementiumPlate;
-    public static boolean enableTerrasteelPlate;
-    public static boolean enableYetiPlate;
-    public static boolean enableFieryPlate;
-    public static boolean enableSadistPlate;
-    public static boolean enableVibrantPlate;
-    public static boolean enableEnderiumPlate;
-    public static boolean enableGildedIronPlate;
-
-    public static boolean enableWings;
     public static boolean hasAllCrucial;
 
     public static boolean singleButtonTrackpad;
@@ -205,79 +122,10 @@ public class Config {
         // BLOCKS
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
 
-        // EXOSUIT
-        passiveDrain = config.get(CATEGORY_EXOSUIT, "Passively drain steam while in use", true).getBoolean();
-        enableExosuit = config.get(CATEGORY_EXOSUIT, "Enable Exosuits in general (disabling disables both suits, all upgrades, and plates)", true).getBoolean();
-        enableSteamExosuit = config.get(CATEGORY_EXOSUIT, "Enable Steam Exosuit (disabling disabled all its upgrades, as well)", true).getBoolean();
-        enableLeatherExosuit = config.get(CATEGORY_EXOSUIT, "Enable Leather Exosuit (disabling only disables the suit)", true).getBoolean();
-        exoConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit consumes", EXO_CONSUMPTION_DEFAULT).getInt();
-        jumpBoostConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam jump boost consumes", JUMP_BOOST_CONSUMPTION_DEFAULT).getInt();
-        jetpackConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Jetpack consumes", JETPACK_CONSUMPTION_DEFAULT).getInt();
-        jumpBoostConsumptionShiftJump = config.get(CATEGORY_EXOSUIT, "The amount of steam the jump boost shift jump consumes", JUMP_BOOST_CONSUMPTION_SHIFT_BOOST_DEFAULT).getInt();
-        thrusterConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Thrusters consumes", THRUSTER_CONSUMPTION_DEFAULT).getInt();
-        runAssistConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Run Assist consumes", RUN_ASSIST_CONSUMPTION_DEFAULT).getInt();
-        powerFistConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Power Fist consumes", POWER_FIST_CONSUMPTION_DEFAULT).getInt();
-        zincPlateConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Exosuit Zinc Plate consumes", ZINC_PLATE_CONSUMPTION_DEFAULT).getInt();
-        rebreatherConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Rebreather consumes", REBREATHER_CONSUMPTION_DEFAULT).getInt();
-        hydrophobicConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Hydrophobic Coatings consume", HYDROPHOBIC_CONSUMPTION_DEFAULT).getInt();
-        pyrophobicConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Pyrophobic Coatings consume", PYROPHOBIC_CONSUMPTION_DEFAULT).getInt();
-        enableAnchorAnvilRecipe = config.get(CATEGORY_EXOSUIT, "Use the leadless Anchor Heels recipe. This will always be true if there is no lead available.", false).getBoolean();
-        pistonPushConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Piston Push consumes", PISTON_PUSH_CONSUMPTION_DEFAULT).getInt();
-        reloadingConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Reloading Holsters consume", RELOADING_CONSUMPTION_DEFAULT).getInt();
-        dragonRoarConsumption = config.get(CATEGORY_EXOSUIT, "The amount of steam the Dragon Roar consumes", DRAGON_ROAR_CONSUMPTION_DEFAULT).getInt();
-
-        // EXOSUIT UPGRADES
-        enableFallAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Fall Assist", true).getBoolean();
-        enableJumpAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Leap Actuator", true).getBoolean();
-        enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Pulse Nozzle", true).getBoolean();
-        enableRunAssist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Modular Accelerator", true).getBoolean();
-        enableStealthUpgrade = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Acoustic Dampener", true).getBoolean();
-        enableJetpack = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Steam Jetpack", true).getBoolean();
-        enableThrusters = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Thrusters", true).getBoolean();
-        enableWings = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Wings", true).getBoolean();
-        enablePowerFist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Power Fist", true).getBoolean();
-        enableCanningMachine = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Canner", true).getBoolean();
-        enableExtendoFist = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Extendo Fist", true).getBoolean();
-        enablePitonDeployer = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Piton Deployer", true).getBoolean();
-        enableReinforcedTank = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Reinforced Tank", true).getBoolean();
-        enableUberReinforcedTank = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Heavily Reinforced Tank", true).getBoolean();
-        enableEnderShroud = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Ender Shroud", true).getBoolean();
-        enableRebreather = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Rebreather", true).getBoolean();
-        enableHydrophobic = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Hydrophobic Coatings", true).getBoolean();
-        enablePyrophobic = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Pyrophobic Coatings", true).getBoolean();
-        enableAnchorHeels = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Anchor Heels", true).getBoolean();
-        enablePistonPush = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Piston Push", true).getBoolean();
-        enableReloadingHolsters = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Reloading Holsters", true).getBoolean();
-        enableFrequencyShifter = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Frequency Shifter", true).getBoolean();
-        enableDragonRoar = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable Dragon Roar", true).getBoolean();
-
-        enableCopperPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable copper plate", true).getBoolean();
-        enableZincPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable zinc plate", true).getBoolean();
-        enableIronPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable iron plate", true).getBoolean();
-        enableGoldPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable gold plate", true).getBoolean();
-        enableBrassPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable brass plate", true).getBoolean();
-        enableLeadPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable lead plate", true).getBoolean();
-        enableThaumiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable thaumium plate", true).getBoolean();
-        enableElementiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable elementium plate", true).getBoolean();
-        enableTerrasteelPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable terrasteel plate", true).getBoolean();
-        enableYetiPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable yeti plate", true).getBoolean();
-        enableFieryPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable fiery plate", true).getBoolean();
-        enableSadistPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable sadist plate", true).getBoolean();
-        enableVibrantPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable vibrant plate", true).getBoolean();
-        enableEnderiumPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable enderium plate", true).getBoolean();
-        enableGildedIronPlate = config.get(CATEGORY_EXOSUIT_PLATES, "Enable gilded iron plate", true).getBoolean();
-
-        reinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
-        uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
-        //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
-
         // ITEMS
         enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
         enableSurvivalist = config.get(CATEGORY_ITEMS, "Enable Survivalist's Toolkit", true).getBoolean();
         enableWrench = config.get(CATEGORY_ITEMS, "Enable Pipe Wrench", true).getBoolean();
-        enableTopHat = config.get(CATEGORY_ITEMS, "Enable Top Hat", true).getBoolean();
-        enableEmeraldHat = config.get(CATEGORY_ITEMS, "Enable Emerald Top Hat", true).getBoolean();
-        enableGoggles = config.get(CATEGORY_ITEMS, "Enable Goggles/Monocle", true).getBoolean();
         steamToolConsumptionAxe = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionDrill = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
         steamToolConsumptionShovel = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();

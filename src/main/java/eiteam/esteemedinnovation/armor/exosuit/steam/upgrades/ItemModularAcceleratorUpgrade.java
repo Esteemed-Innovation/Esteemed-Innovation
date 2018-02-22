@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,7 @@ public class ItemModularAcceleratorUpgrade extends ItemSteamExosuitUpgrade {
                     chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
                 }
                 if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
-                    ChargableUtility.drainSteam(chestStack, Config.runAssistConsumption, player);
+                    ChargableUtility.drainSteam(chestStack, ArmorModule.runAssistConsumption, player);
                 }
             }
         }

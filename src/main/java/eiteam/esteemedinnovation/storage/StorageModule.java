@@ -38,7 +38,7 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_TANK;
     public static Item KIT_BAG;
     public static Item ITEM_CANISTER;
-    private static boolean enableCanister;
+    public static boolean enableCanister;
     public static boolean enableTank;
     public static int basicTankCapacity;
 

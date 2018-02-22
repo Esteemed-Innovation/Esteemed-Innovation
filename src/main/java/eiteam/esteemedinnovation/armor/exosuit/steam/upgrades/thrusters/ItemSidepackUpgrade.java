@@ -5,8 +5,8 @@ import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitArmor;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
 import eiteam.esteemedinnovation.api.exosuit.ModelExosuitUpgrade;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.ItemSteamExosuitUpgrade;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.capabilities.player.PlayerData;
 import eiteam.esteemedinnovation.commons.util.EntityHelper;
@@ -77,7 +77,7 @@ public class ItemSidepackUpgrade extends ItemSteamExosuitUpgrade {
                         chestStack.getTagCompound().setInteger("TicksUntilSteamDrain", 2);
                     }
                     if (chestStack.getTagCompound().getInteger("TicksUntilSteamDrain") <= 0) {
-                        ((SteamChargable) chestItem).drainSteam(chestStack, Config.thrusterConsumption, player);
+                        ((SteamChargable) chestItem).drainSteam(chestStack, ArmorModule.thrusterConsumption, player);
                     }
                 }
             }
