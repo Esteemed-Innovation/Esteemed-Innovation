@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.storage.StorageModule;
+import eiteam.esteemedinnovation.woodcone.WoodenConeModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -200,7 +201,6 @@ public class Config {
     public static boolean hasAllCrucial;
 
     public static boolean singleButtonTrackpad;
-    public static boolean removeHopperRecipe;
     public static boolean removeVanillaMetalToolRecipes;
 
     public static void load() {
@@ -351,7 +351,6 @@ public class Config {
         enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
         disableParticles = config.get(CATEGORY_OTHER, "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get(CATEGORY_OTHER, "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();
-        removeHopperRecipe = config.get(CATEGORY_OTHER, "Remove Hopper crafting recipes (can still be made with the crucible)", true).getBoolean();
 
         //INTEGRATION
         enableThaumcraftIntegration = config.get(CATEGORY_INTEGRATION, "Enable Thaumcraft", true).getBoolean();
