@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.storage.StorageModule;
-import eiteam.esteemedinnovation.woodcone.WoodenConeModule;
+import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -53,8 +53,6 @@ public class Config {
     public static boolean passiveDrain;
     public static boolean disableParticles;
     public static boolean genPoorZincOre;
-    public static int workshopLimit;
-    public static int workshopWeight;
 
     public static boolean easterEggs;
 
@@ -211,8 +209,6 @@ public class Config {
         // WORLD GEN
         villagerId = config.get(CATEGORY_WORLD_GENERATION, "Villager ID", 694).getInt();
         genPoorZincOre = config.get(CATEGORY_INTEGRATION, "Railcraft Poor Zinc Ore", true).getBoolean();
-        workshopLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Workshops allowed to generate per village", 1).getInt();
-        workshopWeight = config.get(CATEGORY_WORLD_GENERATION, "Workshop spawn weight", 7).getInt(7);
 
         // MACHINES
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
