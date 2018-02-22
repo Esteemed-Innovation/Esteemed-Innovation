@@ -7,10 +7,8 @@ import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.enhancement.Rocket;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
-import eiteam.esteemedinnovation.api.research.ResearchRecipe;
-import eiteam.esteemedinnovation.api.research.ShapelessResearchRecipe;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.firearms.flintlock.FlintlockBookCategory;
 import eiteam.esteemedinnovation.firearms.flintlock.ItemFirearm;
@@ -23,7 +21,6 @@ import eiteam.esteemedinnovation.firearms.rocket.ammo.RenderRocket;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
-import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -32,26 +29,28 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WEAPONS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_IRON;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.*;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static net.minecraft.init.Blocks.SAND;
-import static net.minecraft.init.Blocks.WOOL;
-import static net.minecraft.init.Items.*;
 
-public class FirearmModule extends ContentModule {
+public class FirearmModule extends ContentModule implements ConfigurableModule {
     public static Item MUSKET;
     public static Item PISTOL;
     public static Item ROCKET_LAUNCHER;
@@ -70,6 +69,26 @@ public class FirearmModule extends ContentModule {
     public static Item STREAMLINED_BARREL;
     public static Item AIR_STRIKE_CONVERSION_KIT;
     public static Item EXTENDED_MAGAZINE;
+    private static boolean enableSpyglass;
+    private static boolean disableMainBarrelRecipe;
+    private static boolean enableRocketMining;
+    private static boolean enableRocketConcussive;
+    private static boolean enableRocket;
+    private static boolean enableRL;
+    private static boolean enableFirearms;
+    private static boolean enableEnhancementAirStrike;
+    private static boolean enableEnhancementAmmo;
+    private static boolean enableEnhancementFastRockets;
+    private static boolean enableEnhancementSpeedy;
+    private static boolean enableEnhancementRecoil;
+    private static boolean enableEnhancementSilencer;
+    private static boolean enableEnhancementSpeedloader;
+    private static boolean enableEnhancementRevolver;
+    private static boolean enableEnhancementAblaze;
+    private static float blunderbussDamage;
+    private static float pistolDamage;
+    private static float musketDamage;
+    private static boolean expensiveMusketRecipes;
 
     @Override
     public void create(Side side) {
@@ -78,10 +97,10 @@ public class FirearmModule extends ContentModule {
 
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
-        MUSKET = setup(event, new ItemFirearm(Config.musketDamage, 84, 0.2F, 5.0F, false, 1, INGOT_IRON), "musket");
-        PISTOL = setup(event, new ItemFirearm(Config.pistolDamage, 42, 0.5F, 2.0F, false, 1, INGOT_IRON), "pistol");
+        MUSKET = setup(event, new ItemFirearm(musketDamage, 84, 0.2F, 5.0F, false, 1, INGOT_IRON), "musket");
+        PISTOL = setup(event, new ItemFirearm(pistolDamage, 42, 0.5F, 2.0F, false, 1, INGOT_IRON), "pistol");
         ROCKET_LAUNCHER = setup(event, new ItemRocketLauncher(2.0F, 95, 10, 3.5F, 4, INGOT_IRON), "rocket_launcher");
-        BLUNDERBUSS = setup(event, new ItemFirearm(Config.blunderbussDamage, 95, 3.5F, 7.5F, true, 1, INGOT_BRASS), "blunderbuss");
+        BLUNDERBUSS = setup(event, new ItemFirearm(blunderbussDamage, 95, 3.5F, 7.5F, true, 1, INGOT_BRASS), "blunderbuss");
         MUSKET_CARTRIDGE = setup(event, new Item(), "musket_cartridge");
         ROCKET = setup(event, new ItemRocketBasic(), "rocket");
         EnhancementRegistry.registerRocket((Rocket) ROCKET);
@@ -345,7 +364,7 @@ public class FirearmModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (!Config.enableFirearms && !Config.enableRL) {
+        if (!enableFirearms && !enableRL) {
             return;
         }
         BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION,
@@ -361,7 +380,7 @@ public class FirearmModule extends ContentModule {
               new BookPageCrafting("", "blunderBarrel1", "blunderBarrel2"),
               new BookPageCrafting("", "flintlock1", "flintlock2"))));
 
-        if (Config.enableFirearms) {
+        if (enableFirearms) {
             BookCategory musketCategory = new FlintlockBookCategory("category.Musket.name",
               new BookEntry("research.Musket.name",
                 new BookPageItem("research.Musket.name", "research.Musket.0", new ItemStack(MUSKET)),
@@ -372,11 +391,11 @@ public class FirearmModule extends ContentModule {
                 new BookPageItem("research.Blunderbuss.name", "research.Blunderbuss.0", new ItemStack(BLUNDERBUSS)),
                 new BookPageCrafting("", "blunderbuss")));
 
-            if (Config.enableSpyglass) {
+            if (enableSpyglass) {
                 musketCategory.appendEntries(new BookEntry("research.EnhancementSpyglass.name",
                   new BookPageItem("research.EnhancementSpyglass.name", "research.EnhancementSpyglass.0", true, new ItemStack(SPYGLASS))));
             }
-            if (Config.enableEnhancementAblaze) {
+            if (enableEnhancementAblaze) {
                 BookPageCrafting ablazeCraft = new BookPageCrafting("", "ablaze");
                 musketCategory.appendEntries(new BookEntry("research.EnhancementAblaze.name",
                   new BookPageItem("research.EnhancementAblaze.name", "research.EnhancementAblaze.0", true, new ItemStack(BLAZE_BARREL)),
@@ -385,7 +404,7 @@ public class FirearmModule extends ContentModule {
                   new BookPageItem("research.EnhancementAblaze2.name", "research.EnhancementAblaze2.0", true, new ItemStack(BLAZE_BARREL)),
                   ablazeCraft));
             }
-            if (Config.enableEnhancementSpeedloader) {
+            if (enableEnhancementSpeedloader) {
                 BookPageCrafting speedloaderCraft = new BookPageCrafting("", "speedloader1", "speedloader2");
                 musketCategory.appendEntries(new BookEntry("research.EnhancementSpeedloader.name",
                   new BookPageItem("research.EnhancementSpeedloader.name", "research.EnhancementSpeedloader.0", true, new ItemStack(BOLT_ACTION)),
@@ -394,7 +413,7 @@ public class FirearmModule extends ContentModule {
                   new BookPageItem("research.EnhancementSpeedloader2.name", "research.EnhancementSpeedloader2.0", true, new ItemStack(BOLT_ACTION)),
                   speedloaderCraft));
             }
-            if (Config.enableEnhancementRecoil) {
+            if (enableEnhancementRecoil) {
                 blunderbussCategory.appendEntries(new BookEntry("research.EnhancementRecoil.name",
                   new BookPageItem("research.EnhancementRecoil.name", "research.EnhancementRecoil.0", true, new ItemStack(RECOIL_PAD)),
                   new BookPageCrafting("", "recoil")));
@@ -405,17 +424,17 @@ public class FirearmModule extends ContentModule {
                 new BookPageItem("research.Pistol.name", "research.Pistol.0", new ItemStack(PISTOL)),
                 new BookPageCrafting("", "pistol")));
 
-            if (Config.enableEnhancementRevolver) {
+            if (enableEnhancementRevolver) {
                 pistolCategory.appendEntries(new BookEntry("research.EnhancementRevolver.name",
                   new BookPageItem("research.EnhancementRevolver.name", "research.EnhancementRevolver.0", true, new ItemStack(REVOLVER_CHAMBER)),
                   new BookPageCrafting("", "revolver")));
             }
-            if (Config.enableEnhancementSilencer) {
+            if (enableEnhancementSilencer) {
                 pistolCategory.appendEntries(new BookEntry("research.EnhancementSilencer.name",
                   new BookPageItem("research.EnhancementSilencer.name", "research.EnhancementSilencer.0", true, new ItemStack(MAKESHIFT_SUPPRESSOR)),
                   new BookPageCrafting("", "silencer")));
             }
-            if (Config.enableEnhancementSpeedy) {
+            if (enableEnhancementSpeedy) {
                 pistolCategory.appendEntries(new BookEntry("research.EnhancementSpeedy.name",
                   new BookPageItem("research.EnhancementSpeedy.name", "research.EnhancementSpeedy.0", true, new ItemStack(BREECH)),
                   new BookPageCrafting("", "speedy")));
@@ -425,41 +444,41 @@ public class FirearmModule extends ContentModule {
             BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, blunderbussCategory);
             BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, pistolCategory);
         }
-        if (Config.enableRL) {
+        if (enableRL) {
             BookCategory rocketLauncherCategory = new BookCategory("category.RocketLauncher.name",
               new BookEntry("research.RocketLauncher.name",
                 new BookPageItem("research.RocketLauncher.name", "research.RocketLauncher.0", new ItemStack(ROCKET_LAUNCHER)),
                 new BookPageCrafting("", "rocket1", "rocket2", "rocket3", "rocket4")));
 
-            if (Config.enableEnhancementFastRockets) {
+            if (enableEnhancementFastRockets) {
                 rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancementFastRockets.name",
                   new BookPageItem("research.EnhancementFastRockets.name", "research.EnhancementFastRockets.0", true, new ItemStack(STREAMLINED_BARREL)),
                   new BookPageCrafting("", "fastRockets")));
             }
-            if (Config.enableEnhancementAmmo) {
+            if (enableEnhancementAmmo) {
                 rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancementAmmo.name",
                   new BookPageItem("research.EnhancementAmmo.name", "research.EnhancementAmmo.0", true, new ItemStack(EXTENDED_MAGAZINE)),
                   new BookPageCrafting("", "ammo1", "ammo2")));
             }
-            if (Config.enableEnhancementAirStrike) {
+            if (enableEnhancementAirStrike) {
                 rocketLauncherCategory.appendEntries(new BookEntry("research.EnhancemenAirStrike.name",
                   new BookPageItem("research.EnhancementAirStrike.name", "research.EnhancementAirStrike.0", true, new ItemStack(AIR_STRIKE_CONVERSION_KIT)),
                   new BookPageCrafting("", "airStrike1", "airStrike2")));
             }
 
             BookCategory rocketsCategory = new BookCategory("category.Rockets.name");
-            if (Config.enableRocket) {
+            if (enableRocket) {
                 rocketsCategory.appendEntries(new BookEntry("research.Rocket.name",
                   new BookPageItem("research.Rocket.name", "research.Rocket.0", true, new ItemStack(ROCKET)),
                   new BookPageCrafting("", "normalRocket1", "normalRocket2")));
             }
-            if (Config.enableRocketConcussive) {
-                BookPageCrafting crafting = Config.enableRocket ? new BookPageCrafting("", "concussiveRocket") : new BookPageCrafting("", "concussiveRocket1", "concussiveRocket2");
+            if (enableRocketConcussive) {
+                BookPageCrafting crafting = enableRocket ? new BookPageCrafting("", "concussiveRocket") : new BookPageCrafting("", "concussiveRocket1", "concussiveRocket2");
                 rocketsCategory.appendEntries(new BookEntry("research.RocketConcussive.name",
                   new BookPageItem("research.RocketConcussive.name", "research.RocketConcussive.0", true, new ItemStack(CONCUSSIVE_ROCKET)),
                   crafting));
             }
-            if (Config.enableRocketMining) {
+            if (enableRocketMining) {
                 rocketsCategory.appendEntries(new BookEntry("research.RocketMining.name",
                   new BookPageItem("research.RocketMining.name", "research.RocketMining.0", true, new ItemStack(MINING_ROCKET)),
                   new BookPageCrafting("", "miningRocket")));
@@ -469,7 +488,7 @@ public class FirearmModule extends ContentModule {
             BookPageRegistry.addCategoryToSection(EsteemedInnovation.FLINTLOCK_SECTION, rocketsCategory);
         }
 
-        if (Config.enableSpyglass) {
+        if (enableSpyglass) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 1,
               new BookCategory("category.Spyglass.name",
                 new BookEntry("research.Spyglass.name",
@@ -523,5 +542,56 @@ public class FirearmModule extends ContentModule {
     @Override
     public void initClient() {
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, RenderRocket::new);
+    }
+
+    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
+        put("enableRL", () -> enableRL);
+        put("enableRocket", () -> enableRL && enableRocket);
+        put("enableRocketConcussive", () -> enableRL && enableRocketConcussive);
+        put("enableRocketMining", () -> enableRL && enableRocketMining);
+        put("enableEnhancementAblaze", () -> enableFirearms && enableEnhancementAblaze);
+        put("enableEnhancementRevolver", () -> enableFirearms && enableEnhancementRevolver);
+        put("enableEnhancementSpeedloader", () -> enableFirearms && enableEnhancementSpeedloader);
+        put("enableEnhancementSilencer", () -> enableFirearms && enableEnhancementSilencer);
+        put("enableEnhancementRecoil", () -> enableFirearms && enableEnhancementRecoil);
+        put("enableEnhancementSpeedy", () -> enableFirearms && enableEnhancementSpeedy);
+        put("enableEnhancementFastRockets", () -> enableRL && enableEnhancementFastRockets);
+        put("enableEnhancementAmmo", () -> enableRL && enableEnhancementAmmo);
+        put("enableEnhancementAirStrike", () -> enableRL && enableEnhancementAirStrike);
+        put("enableSpyglass", () -> enableSpyglass);
+    }};
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        expensiveMusketRecipes = config.get(CATEGORY_WEAPONS, "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
+        disableMainBarrelRecipe = config.get(CATEGORY_WEAPONS, "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean();
+        enableFirearms = config.get(CATEGORY_WEAPONS, "Enable firearms", true).getBoolean();
+        enableRL = config.get(CATEGORY_WEAPONS, "Enable Rocket Launcher", true).getBoolean();
+        enableRocket = config.get(CATEGORY_WEAPONS, "Enable Normal Rocket", true).getBoolean();
+        enableRocketConcussive = config.get(CATEGORY_WEAPONS, "Enable Concussive Rocket", true).getBoolean();
+        enableRocketMining = config.get(CATEGORY_WEAPONS, "Enable Mining Charge", true).getBoolean();
+        enableEnhancementAblaze = config.get(CATEGORY_WEAPONS, "Enable Blaze Barrel enhancement", true).getBoolean();
+        enableEnhancementRevolver = config.get(CATEGORY_WEAPONS, "Enable Revolver enhancement", true).getBoolean();
+        enableEnhancementSpeedloader = config.get(CATEGORY_WEAPONS, "Enable Bolt Action enhancement", true).getBoolean();
+        enableEnhancementSilencer = config.get(CATEGORY_WEAPONS, "Enable Makeshift Suppressor enhancement", true).getBoolean();
+        enableEnhancementRecoil = config.get(CATEGORY_WEAPONS, "Enable Recoil Pad enhancement", true).getBoolean();
+        enableEnhancementSpeedy = config.get(CATEGORY_WEAPONS, "Enable Breech Loader enhancement", true).getBoolean();
+        enableEnhancementFastRockets = config.get(CATEGORY_WEAPONS, "Enable Streamlined Barrel enhancement", true).getBoolean();
+        enableEnhancementAmmo = config.get(CATEGORY_WEAPONS, "Enable extended Magazine enhancement", true).getBoolean();
+        enableEnhancementAirStrike = config.get(CATEGORY_WEAPONS, "Enable Air Strike enhancement", true).getBoolean();
+        musketDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Musket damage", "20.0F").getString());
+        pistolDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Pistol damage", "15.0F").getString());
+        blunderbussDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Blunderbuss damage", "25.0F").getString());
+        enableSpyglass = config.get(CATEGORY_ITEMS, "Enable Spyglass", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return RECIPE_CHECKERS.containsKey(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

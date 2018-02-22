@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.commons;
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.engineeringtable.EngineeringTableModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -73,7 +72,6 @@ public class Config {
 
     public static boolean enableAnchorAnvilRecipe;
     public static int mortarRadius;
-    public static boolean expensiveMusketRecipes;
     public static int duplicateLogs;
     public static int exoConsumption;
     public static int basicTankCapacity;
@@ -99,9 +97,6 @@ public class Config {
     public static int pistonPushConsumption;
     public static int reloadingConsumption;
     public static int dragonRoarConsumption;
-    public static float musketDamage;
-    public static float pistolDamage;
-    public static float blunderbussDamage;
 
 
     public static int villagerId;
@@ -132,34 +127,18 @@ public class Config {
     public static boolean enableJumpAssist;
     public static boolean enableRunAssist;
     public static boolean enableStealthUpgrade;
-    public static boolean enableEnhancementAblaze;
-    public static boolean enableEnhancementRevolver;
-    public static boolean enableEnhancementSpeedloader;
-    public static boolean enableEnhancementSilencer;
-    public static boolean enableEnhancementRecoil;
-    public static boolean enableEnhancementSpeedy;
-    public static boolean enableEnhancementFastRockets;
-    public static boolean enableEnhancementAmmo;
-    public static boolean enableEnhancementAirStrike;
     public static boolean enableExosuit;
     public static boolean enableSteamExosuit;
     public static boolean enableLeatherExosuit;
     public static boolean enableFallAssist;
     public static boolean enableJetpack;
-    public static boolean enableFirearms;
-    public static boolean enableRL;
-    public static boolean enableRocket;
-    public static boolean enableRocketConcussive;
-    public static boolean enableRocketMining;
     public static boolean enablePowerFist;
-    public static boolean enableSpyglass;
     public static boolean enableSteamTools;
     public static boolean enableSurvivalist;
     public static boolean enableThrusters;
     public static boolean enableCanningMachine;
     public static boolean enableExtendoFist;
     public static boolean enablePitonDeployer;
-    public static boolean disableMainBarrelRecipe;
     public static boolean enableReinforcedTank;
     public static boolean enableUberReinforcedTank;
     public static boolean enableEnderShroud;
@@ -240,27 +219,6 @@ public class Config {
         genPoorZincOre = config.get(CATEGORY_INTEGRATION, "Railcraft Poor Zinc Ore", true).getBoolean();
         workshopLimit = config.get(CATEGORY_WORLD_GENERATION, "Maximum number of Workshops allowed to generate per village", 1).getInt();
         workshopWeight = config.get(CATEGORY_WORLD_GENERATION, "Workshop spawn weight", 7).getInt(7);
-
-        // WEAPONS
-        expensiveMusketRecipes = config.get(CATEGORY_WEAPONS, "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
-        disableMainBarrelRecipe = config.get(CATEGORY_WEAPONS, "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean();
-        enableFirearms = config.get(CATEGORY_WEAPONS, "Enable firearms", true).getBoolean();
-        enableRL = config.get(CATEGORY_WEAPONS, "Enable Rocket Launcher", true).getBoolean();
-        enableRocket = config.get(CATEGORY_WEAPONS, "Enable Normal Rocket", true).getBoolean();
-        enableRocketConcussive = config.get(CATEGORY_WEAPONS, "Enable Concussive Rocket", true).getBoolean();
-        enableRocketMining = config.get(CATEGORY_WEAPONS, "Enable Mining Charge", true).getBoolean();
-        enableEnhancementAblaze = config.get(CATEGORY_WEAPONS, "Enable Blaze Barrel enhancement", true).getBoolean();
-        enableEnhancementRevolver = config.get(CATEGORY_WEAPONS, "Enable Revolver enhancement", true).getBoolean();
-        enableEnhancementSpeedloader = config.get(CATEGORY_WEAPONS, "Enable Bolt Action enhancement", true).getBoolean();
-        enableEnhancementSilencer = config.get(CATEGORY_WEAPONS, "Enable Makeshift Suppressor enhancement", true).getBoolean();
-        enableEnhancementRecoil = config.get(CATEGORY_WEAPONS, "Enable Recoil Pad enhancement", true).getBoolean();
-        enableEnhancementSpeedy = config.get(CATEGORY_WEAPONS, "Enable Breech Loader enhancement", true).getBoolean();
-        enableEnhancementFastRockets = config.get(CATEGORY_WEAPONS, "Enable Streamlined Barrel enhancement", true).getBoolean();
-        enableEnhancementAmmo = config.get(CATEGORY_WEAPONS, "Enable extended Magazine enhancement", true).getBoolean();
-        enableEnhancementAirStrike = config.get(CATEGORY_WEAPONS, "Enable Air Strike enhancement", true).getBoolean();
-        musketDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Musket damage", "20.0F").getString());
-        pistolDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Pistol damage", "15.0F").getString());
-        blunderbussDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Blunderbuss damage", "25.0F").getString());
 
         // MACHINES
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
@@ -361,7 +319,6 @@ public class Config {
 
         // ITEMS
         enableAstrolabe = config.get(CATEGORY_ITEMS, "Enable Astrolabe", true).getBoolean();
-        enableSpyglass = config.get(CATEGORY_ITEMS, "Enable Spyglass", true).getBoolean();
         enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
         enableSurvivalist = config.get(CATEGORY_ITEMS, "Enable Survivalist's Toolkit", true).getBoolean();
         enableWrench = config.get(CATEGORY_ITEMS, "Enable Pipe Wrench", true).getBoolean();
