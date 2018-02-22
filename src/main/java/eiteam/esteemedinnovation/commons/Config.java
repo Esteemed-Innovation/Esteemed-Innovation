@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.commons;
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
+import eiteam.esteemedinnovation.engineeringtable.EngineeringTableModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -110,7 +111,6 @@ public class Config {
     // blocks
     public static boolean enableFunnel;
     public static boolean enablePlonker;
-    public static boolean enableEngineering;
     public static boolean enableFan;
     public static boolean enableMortar;
     public static boolean enableGauge;
@@ -278,7 +278,6 @@ public class Config {
 
 
         // BLOCKS
-        enableEngineering = config.get(CATEGORY_BLOCKS, "Enable Engineering Table", true).getBoolean();
         enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
         enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();

@@ -1,19 +1,20 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.commons.OreDictEntries;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class EngineeringTableModule extends ContentModule {
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
+
+public class EngineeringTableModule extends ContentModule implements ConfigurableModule {
     public static Block ENGINEERING_TABLE;
+    public static boolean enableEngineering;
 
     @Override
     public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -45,5 +46,20 @@ public class EngineeringTableModule extends ContentModule {
     @Override
     public void registerModels(ModelRegistryEvent event) {
         registerModel(ENGINEERING_TABLE);
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableEngineering = config.get(CATEGORY_BLOCKS, "Enable Engineering Table", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "enableEngineering".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return enableEngineering;
     }
 }

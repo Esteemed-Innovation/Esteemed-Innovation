@@ -2,8 +2,6 @@ package eiteam.esteemedinnovation.armor;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
-import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitRegistry;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
@@ -35,6 +33,7 @@ import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
+import eiteam.esteemedinnovation.engineeringtable.EngineeringTableModule;
 import eiteam.esteemedinnovation.storage.steam.ItemTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -42,7 +41,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -57,12 +55,9 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
@@ -72,16 +67,7 @@ import java.util.Set;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.firearms.FirearmModule.REVOLVER_CHAMBER;
-import static eiteam.esteemedinnovation.firearms.FirearmModule.SPYGLASS;
-import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
-import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static eiteam.esteemedinnovation.steamsafety.SafetyModule.STEAM_GAUGE;
 import static eiteam.esteemedinnovation.storage.StorageModule.STEAM_TANK;
-import static eiteam.esteemedinnovation.transport.TransportationModule.*;
-import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class ArmorModule extends ContentModule {
@@ -874,7 +860,7 @@ public class ArmorModule extends ContentModule {
             );
         }
 
-        if (Config.enableExosuit && Config.enableEngineering) {
+        if (Config.enableExosuit && EngineeringTableModule.enableEngineering) {
             BookPageRegistry.addCategoryToSection(EXOSUIT_SECTION,
               new BookCategory("category.SteamExosuit.name",
                 new BookEntry("research.SteamExosuit.name",
