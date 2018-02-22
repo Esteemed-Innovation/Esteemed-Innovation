@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.tools.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.tool.SteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.tools.ToolsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
@@ -31,8 +31,8 @@ public class ItemBackhoeUpgrade extends ItemSteamToolUpgrade {
         Block block = state.getBlock();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(startPos);
         boolean isFalling = block instanceof BlockFalling;
-        int end = isFalling ? startPos.getY() + Config.backhoeRange : startPos.getY();
-        for (int i = startPos.getY() - Config.backhoeRange; i < end; i++) {
+        int end = isFalling ? startPos.getY() + ToolsModule.backhoeRange : startPos.getY();
+        for (int i = startPos.getY() - ToolsModule.backhoeRange; i < end; i++) {
             if (i < 0) {
                 continue;
             }

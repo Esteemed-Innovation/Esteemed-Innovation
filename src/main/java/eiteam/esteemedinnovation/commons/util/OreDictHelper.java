@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.commons.util;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
+import eiteam.esteemedinnovation.tools.ToolsModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -63,7 +63,7 @@ public class OreDictHelper {
             if (name.endsWith(OreDictEntries.MATERIAL_GOLD)) {
                 goldNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
-            if (!Config.blacklistedStoneGrinderNuggets.contains(name)) {
+            if (!ToolsModule.blacklistedStoneGrinderNuggets.contains(name)) {
                 stoneGrinderNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
         }

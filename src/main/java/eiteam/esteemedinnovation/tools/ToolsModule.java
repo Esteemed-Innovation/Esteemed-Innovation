@@ -3,14 +3,11 @@ package eiteam.esteemedinnovation.tools;
 import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
-import eiteam.esteemedinnovation.metalcasting.mold.ItemMold;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
 import eiteam.esteemedinnovation.tools.steam.*;
@@ -22,38 +19,30 @@ import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.SteamDrillHeadUp
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.*;
+import java.util.function.Supplier;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_TOOL_UPGRADES;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
-import static eiteam.esteemedinnovation.materials.MaterialsModule.BRASS_LIQUID;
-import static eiteam.esteemedinnovation.materials.MaterialsModule.GOLD_LIQUID;
-import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.MOLD_ITEM;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
-import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER;
-import static eiteam.esteemedinnovation.transport.TransportationModule.*;
-import static net.minecraft.init.Blocks.*;
-import static net.minecraft.init.Items.*;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_GILDED_IRON;
 
-public class ToolsModule extends ContentModule {
+public class ToolsModule extends ContentModule implements ConfigurableModule {
+    private static final int STEAM_TOOL_CONSUMPTION_DEFAULT = 800;
+    private static final int BATTLE_DRILL_CONSUMPTION_DEFAULT = 20;
     public static Item WRENCH;
     public static Item SURVIVALIST_TOOLKIT;
 
@@ -99,6 +88,34 @@ public class ToolsModule extends ContentModule {
     public static final Item.ToolMaterial STEAMDRILL_MAT = EnumHelper.addToolMaterial("STEAMDRILL", 2, 320, 1F, -1F, 0);
     public static final Item.ToolMaterial STEAMSAW_MAT = EnumHelper.addToolMaterial("STEAMSAW", 2, 320, 1F, -1F, 0);
     public static final Item.ToolMaterial STEAMSHOVEL_MAT = EnumHelper.addToolMaterial("STEAMSHOVEL", 2, 320, 1F, -1F, 0);
+    public static List<String> blacklistedStoneGrinderNuggets;
+    public static int backhoeRange;
+    private static boolean enableBackhoe;
+    private static boolean enableSifter;
+    private static boolean enableRotaryBlades;
+    private static boolean enableCultivator;
+    private static boolean enableForestFire;
+    private static boolean enableChainsaw;
+    private static boolean enableTreeFeller;
+    private static boolean enableLeafBlower;
+    public static int battleDrillConsumption;
+    private static boolean enableChargePlacer;
+    private static boolean enableThermalDrill;
+    private static boolean enableInternalProcessingUnit;
+    private static boolean enablePreciseCuttingHead;
+    private static boolean enableStoneGrinder;
+    private static boolean enableBattleDrill;
+    private static boolean enableBigDrill;
+    private static boolean enableFortune;
+    private static boolean enableOverclocker;
+    private static boolean enableAutosmelting;
+    private static boolean enableTheVoid;
+    private static boolean enableSurvivalist;
+    private static boolean enableSteamTools;
+    private static boolean enableWrench;
+    public static int steamToolConsumptionShovel;
+    public static int steamToolConsumptionAxe;
+    public static int steamToolConsumptionDrill;
 
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
@@ -557,7 +574,7 @@ public class ToolsModule extends ContentModule {
     @Override
     public void finish(Side side) {
         DrillHeadMaterial.registerDefaults();
-        if (Config.enableWrench) {
+        if (enableWrench) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 0,
               new BookCategory("category.Wrench.name",
                 new BookEntry("research.Wrench.name",
@@ -565,7 +582,7 @@ public class ToolsModule extends ContentModule {
                   new BookPageText("research.Wrench.name", "research.Wrench.1"),
                   new BookPageCrafting("", "wrench1", "wrench2"))));
         }
-        if (Config.enableSurvivalist) {
+        if (enableSurvivalist) {
             BookPageRegistry.addCategoryToSection(GADGET_SECTION, 2,
               new BookCategory("category.Survivalist.name",
                 new BookEntry("research.Survivalist.name",
@@ -573,7 +590,7 @@ public class ToolsModule extends ContentModule {
                   new BookPageCrafting("", "survivalist"))));
         }
 
-        if (Config.enableSteamTools) {
+        if (enableSteamTools) {
             BookPageRegistry.addCategoryToSection(STEAMTOOL_SECTION,
               new BookCategory("category.SteamTools.name",
                 new BookEntry("research.SteamTools.name",
@@ -613,43 +630,43 @@ public class ToolsModule extends ContentModule {
                       new BookPage("")));
                 }
 
-                if (Config.enableFortune) {
+                if (enableFortune) {
                     drillHeadCategory.appendEntries(new BookEntry("research.MultiplicativeResonator.name",
                       new BookPageItem("research.MultiplicativeResonator.name", "research.MultiplicativeResonator.0", true, new ItemStack(MULTIPLICATIVE_RESONATOR)),
                       new BookPageCrafting("", "multiplicativeResonator")));
                 }
 
-                if (Config.enableBigDrill) {
+                if (enableBigDrill) {
                     drillHeadCategory.appendEntries(new BookEntry("research.BigDrill.name",
                       new BookPageItem("research.BigDrill.name", "research.BigDrill.0", true, new ItemStack(BIG_DRILL)),
                       new BookPageCrafting("", "bigDrill")));
                 }
 
-                if (Config.enableBattleDrill) {
+                if (enableBattleDrill) {
                     drillHeadCategory.appendEntries(new BookEntry("research.BattleDrill.name",
                       new BookPageItem("research.BattleDrill.name", "research.BattleDrill.0", true, new ItemStack(BATTLE_DRILL)),
                       new BookPageCrafting("", "battleDrill")));
                 }
 
-                if (Config.enablePreciseCuttingHead) {
+                if (enablePreciseCuttingHead) {
                     drillHeadCategory.appendEntries(new BookEntry("research.PreciseCuttingHead.name",
                       new BookPageItem("research.PreciseCuttingHead.name", "research.PreciseCuttingHead.0", true, new ItemStack(PRECISE_CUTTING_HEAD)),
                       new BookPageCrafting("", "preciseCuttingHead")));
                 }
 
-                if (Config.enableStoneGrinder) {
+                if (enableStoneGrinder) {
                     drillHeadCategory.appendEntries(new BookEntry("research.StoneGrinder.name",
                       new BookPageItem("research.StoneGrinder.name", "research.StoneGrinder.0", true, new ItemStack(STONE_GRINDER)),
                       new BookPageCrafting("", "stoneGrinder")));
                 }
 
-                if (Config.enableThermalDrill) {
+                if (enableThermalDrill) {
                     drillHeadCategory.appendEntries(new BookEntry("research.ThermalDrill.name",
                       new BookPageItem("research.ThermalDrill.name", "research.ThermalDrill.0", true, new ItemStack(THERMAL_DRILL)),
                       new BookPageCrafting("", "thermalDrill")));
                 }
 
-                if (Config.enableChargePlacer) {
+                if (enableChargePlacer) {
                     drillHeadCategory.appendEntries(new BookEntry("research.CalamityInjector.name",
                       new BookPageItem("research.CalamityInjector.name", "research.CalamityInjector.0", true, new ItemStack(CALAMITY_INJECTOR)),
                       new BookPageCrafting("", "chargePlacer")));
@@ -660,7 +677,7 @@ public class ToolsModule extends ContentModule {
             {
                 BookCategory drillCoreCategory = new BookCategory("category.SteamDrillCore.name");
 
-                if (Config.enableInternalProcessingUnit) {
+                if (enableInternalProcessingUnit) {
                     drillCoreCategory.appendEntries(new BookEntry("research.InternalProcessingUnit.name",
                       new BookPageItem("research.InternalProcessingUnit.name", "research.InternalProcessingUnit.0", true, new ItemStack(INTERNAL_PROCESSING_UNIT)),
                       new BookPageCrafting("", "internalProcessingUnit")));
@@ -672,25 +689,25 @@ public class ToolsModule extends ContentModule {
             {
                 BookCategory sawHeadCategory = new BookCategory("category.SteamSawHead.name");
 
-                if (Config.enableForestFire) {
+                if (enableForestFire) {
                     sawHeadCategory.appendEntries(new BookEntry("research.ForestFire.name",
                       new BookPageItem("research.ForestFire.name", "research.ForestFire.0", true, new ItemStack(FOREST_FIRE)),
                       new BookPageCrafting("", "forestFire")));
                 }
 
-                if (Config.enableTreeFeller) {
+                if (enableTreeFeller) {
                     sawHeadCategory.appendEntries(new BookEntry("research.TimberChain.name",
                       new BookPageItem("research.TimberChain.name", "research.TimberChain.0", true, new ItemStack(TIMBER_CHAIN)),
                       new BookPageCrafting("", "treeFeller")));
                 }
 
-                if (Config.enableLeafBlower) {
+                if (enableLeafBlower) {
                     sawHeadCategory.appendEntries(new BookEntry("research.LeafBlower.name",
                       new BookPageItem("research.LeafBlower.name", "research.LeafBlower.0", true, new ItemStack(LEAF_BLOWER)),
                       new BookPageCrafting("", "leafBlower")));
                 }
 
-                if (Config.enableChainsaw) {
+                if (enableChainsaw) {
                     sawHeadCategory.appendEntries(new BookEntry("research.Chainsaw.name",
                       new BookPageItem("research.Chainsaw.name", "research.Chainsaw.0", true, new ItemStack(CHAINSAW)),
                       new BookPageCrafting("", "chainsaw")));
@@ -708,19 +725,19 @@ public class ToolsModule extends ContentModule {
             {
                 BookCategory shovelHeadCategory = new BookCategory("category.SteamShovelHead.name");
 
-                if (Config.enableBackhoe) {
+                if (enableBackhoe) {
                     shovelHeadCategory.appendEntries(new BookEntry("research.Backhoe.name",
                       new BookPageItem("research.Backhoe.name", "research.Backhoe.0", true, new ItemStack(BACKHOE)),
                       new BookPageCrafting("", "backhoe")));
                 }
 
-                if (Config.enableCultivator) {
+                if (enableCultivator) {
                     shovelHeadCategory.appendEntries(new BookEntry("research.Cultivator.name",
                       new BookPageItem("research.Cultivator.name", "research.Cultivator.0", true, new ItemStack(CULTIVATOR)),
                       new BookPageCrafting("", "cultivator")));
                 }
 
-                if (Config.enableRotaryBlades) {
+                if (enableRotaryBlades) {
                     shovelHeadCategory.appendEntries(new BookEntry("research.RotaryBlades.name",
                       new BookPageItem("research.RotaryBlades.name", "research.RotaryBlades.0", true, new ItemStack(ROTARY_BLADES)),
                       new BookPageCrafting("", "rotaryBlades")));
@@ -732,7 +749,7 @@ public class ToolsModule extends ContentModule {
             {
                 BookCategory shovelCoreCategory = new BookCategory("category.SteamShovelCore.name");
 
-                if (Config.enableSifter) {
+                if (enableSifter) {
                     shovelCoreCategory.appendEntries(new BookEntry("research.Sifter.name",
                       new BookPageItem("research.Sifter.name", "research.Sifter.0", true, new ItemStack(SIFTER)),
                       new BookPageCrafting("", "sifter")));
@@ -744,19 +761,19 @@ public class ToolsModule extends ContentModule {
             {
                 BookCategory universalCoreCategory = new BookCategory("category.SteamUniversalCore.name");
 
-                if (Config.enableOverclocker) {
+                if (enableOverclocker) {
                     universalCoreCategory.appendEntries(new BookEntry("research.Overclocker.name",
                       new BookPageItem("research.Overclocker.name", "research.Overclocker.0", true, new ItemStack(OVERCLOCKER)),
                       new BookPageCrafting("", "overclocker")));
                 }
 
-                if (Config.enableAutosmelting) {
+                if (enableAutosmelting) {
                     universalCoreCategory.appendEntries(new BookEntry("research.ExothermicProjector.name",
                       new BookPageItem("research.ExothermicProjector.name", "research.ExothermicProjector.0", true, new ItemStack(EXOTHERMIC_PROJECTOR)),
                       new BookPageCrafting("", "autosmelting")));
                 }
 
-                if (Config.enableTheVoid) {
+                if (enableTheVoid) {
                     universalCoreCategory.appendEntries(new BookEntry("research.TheVoid.name",
                       new BookPageItem("research.TheVoid.name", "research.TheVoid.0", true, new ItemStack(THE_VOID)),
                       new BookPageCrafting("", "theVoid")));
@@ -814,6 +831,78 @@ public class ToolsModule extends ContentModule {
         ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
         itemColors.registerItemColorHandler(new SteamDrillColorHandler(), STEAM_DRILL);
         itemColors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), DRILL_HEAD);
+    }
+
+    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
+        put("enableSurvivalist", () -> enableSurvivalist);
+        put("enableSteamTools", () -> enableSteamTools);
+        put("enableBigDrill", () -> enableSteamTools && enableBigDrill);
+        put("enableBattleDrill", () -> enableSteamTools && enableBattleDrill);
+        put("enableStoneGrinder", () -> enableSteamTools && enableStoneGrinder);
+        put("enablePreciseCuttingHead", () -> enableSteamTools && enablePreciseCuttingHead);
+        put("enableThermalDrill", () -> enableSteamTools && enableThermalDrill);
+        put("enableFortune", () -> enableSteamTools && enableFortune);
+        put("enableChargePlacer", () -> enableSteamTools && enableChargePlacer);
+        put("enableInternalProcessingUnit", () -> enableSteamTools && enableInternalProcessingUnit);
+        put("enableLeafBlower", () -> enableSteamTools && enableLeafBlower);
+        put("enableTreeFeller", () -> enableSteamTools && enableTreeFeller);
+        put("enableChainsaw", () -> enableSteamTools && enableChainsaw);
+        put("enableForestFire", () -> enableSteamTools && enableForestFire);
+        put("enableCultivator", () -> enableSteamTools && enableCultivator);
+        put("enableRotaryBlades", () -> enableSteamTools && enableRotaryBlades);
+        put("enableSifter", () -> enableSteamTools && enableSifter);
+        put("enableBackhoe", () -> enableSteamTools && enableBackhoe);
+        put("enableTheVoid", () -> enableSteamTools && enableTheVoid);
+        put("enableAutosmelting", () -> enableSteamTools && enableAutosmelting);
+        put("enableOverclocker", () -> enableSteamTools && enableOverclocker);
+    }};
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
+        enableSurvivalist = config.get(CATEGORY_ITEMS, "Enable Survivalist's Toolkit", true).getBoolean();
+        enableWrench = config.get(CATEGORY_ITEMS, "Enable Pipe Wrench", true).getBoolean();
+        // STEAM TOOL UPGRADES
+        enableBigDrill = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Hammer Head upgrade", true).getBoolean();
+        enableLeafBlower = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Axe's Leaf Blower upgrade", true).getBoolean();
+        enableCultivator = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Shovel's Cultivator upgrade", true).getBoolean();
+        enableRotaryBlades = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Shovel's Rotary Blades upgrade", true).getBoolean();
+        enableBattleDrill = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable BattleDrill", true).getBoolean();
+        enableSifter = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Shovel's Sifter upgrade", true).getBoolean();
+        enableStoneGrinder = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Stone Grinder upgrade", true).getBoolean();
+        enableBackhoe = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Shovel's Backhoe upgrade", true).getBoolean();
+        enableTheVoid = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Tool core upgrade the Void", true).getBoolean();
+        enableAutosmelting = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Tool core upgrade autosmelting", true).getBoolean();
+        enableOverclocker = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Tool core upgrade overclocker", true).getBoolean();
+        enablePreciseCuttingHead = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Precise Cutting Head", true).getBoolean();
+        enableInternalProcessingUnit = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Internal Processing Unit", true).getBoolean();
+        enableTreeFeller = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Axe's Tree Felling upgrade", true).getBoolean();
+        enableChainsaw = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Axe's Chainsaw upgrade", true).getBoolean();
+        enableFortune = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's fortune upgrade", true).getBoolean();
+        enableForestFire = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Axe's Forest Fire upgrade", true).getBoolean();
+        enableThermalDrill = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Thermal Drill upgrade", true).getBoolean();
+        enableChargePlacer = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Enable Steam Drill's Charge Placer upgrade", true).getBoolean();
+
+        steamToolConsumptionAxe = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Axe", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        steamToolConsumptionDrill = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Drill", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+        steamToolConsumptionShovel = config.get(CATEGORY_ITEMS, "The consumption rate of the Steam Shovel", STEAM_TOOL_CONSUMPTION_DEFAULT).getInt();
+
+        backhoeRange = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "The range (in each direction) that the Backhoe upgrade effects", 16).getInt();
+        battleDrillConsumption = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Steam consumption for the " +
+            "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
+          BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
+        blacklistedStoneGrinderNuggets = Arrays.asList(config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[] {}).getStringList());
+
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return RECIPE_CHECKERS.containsKey(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return RECIPE_CHECKERS.get(configSetting).get();
     }
 /*
     private static void addAxeRecipe(Item out, String material) {

@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.EntityHelper;
+import eiteam.esteemedinnovation.tools.ToolsModule;
 import eiteam.esteemedinnovation.tools.steam.ItemSteamDrill;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,6 +65,6 @@ public class ItemBattleDrillUpgrade extends ItemSteamToolUpgrade {
         }
 
         target.attackEntityFrom(DamageSource.causePlayerDamage(player), 9.0F);
-        drill.drainSteam(equipped, (Config.battleDrillConsumption * drill.steamPerDurability()), player);
+        drill.drainSteam(equipped, (ToolsModule.battleDrillConsumption * drill.steamPerDurability()), player);
     }
 }
