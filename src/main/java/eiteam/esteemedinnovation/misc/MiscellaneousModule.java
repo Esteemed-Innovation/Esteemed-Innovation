@@ -2,33 +2,31 @@ package eiteam.esteemedinnovation.misc;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types;
-import eiteam.esteemedinnovation.transport.TransportationModule;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.Arrays;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WEAPONS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.BRICK_HELLFORGE;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.DUST_NETHERBRICK;
 import static net.minecraft.init.Blocks.NETHER_BRICK;
-import static net.minecraft.init.Blocks.PISTON;
-import static net.minecraft.init.Items.FLINT_AND_STEEL;
 import static net.minecraft.init.Items.NETHERBRICK;
 
-public class MiscellaneousModule extends ContentModule {
+public class MiscellaneousModule extends ContentModule implements ConfigurableModule {
     public static Item COMPONENT;
+    private static boolean disableMainBarrelRecipe;
 
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
@@ -158,5 +156,20 @@ public class MiscellaneousModule extends ContentModule {
         for (ItemCraftingComponent.Types type : ItemCraftingComponent.Types.values()) {
             registerModelItemStack(new ItemStack(COMPONENT, 1, type.getMetadata()));
         }
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        disableMainBarrelRecipe = config.get(CATEGORY_WEAPONS, "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return "disableMainBarrelRecipe".equals(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return disableMainBarrelRecipe;
     }
 }

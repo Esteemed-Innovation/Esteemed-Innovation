@@ -21,6 +21,7 @@ import eiteam.esteemedinnovation.firearms.rocket.ammo.RenderRocket;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
+import eiteam.esteemedinnovation.misc.MiscellaneousModule;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -70,7 +71,6 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     public static Item AIR_STRIKE_CONVERSION_KIT;
     public static Item EXTENDED_MAGAZINE;
     private static boolean enableSpyglass;
-    private static boolean disableMainBarrelRecipe;
     private static boolean enableRocketMining;
     private static boolean enableRocketConcussive;
     private static boolean enableRocket;
@@ -564,7 +564,6 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     @Override
     public void loadConfigurationOptions(Configuration config) {
         expensiveMusketRecipes = config.get(CATEGORY_WEAPONS, "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
-        disableMainBarrelRecipe = config.get(CATEGORY_WEAPONS, "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean();
         enableFirearms = config.get(CATEGORY_WEAPONS, "Enable firearms", true).getBoolean();
         enableRL = config.get(CATEGORY_WEAPONS, "Enable Rocket Launcher", true).getBoolean();
         enableRocket = config.get(CATEGORY_WEAPONS, "Enable Normal Rocket", true).getBoolean();
