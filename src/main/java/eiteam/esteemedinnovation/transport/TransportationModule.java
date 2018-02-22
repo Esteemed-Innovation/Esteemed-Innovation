@@ -2,8 +2,7 @@ package eiteam.esteemedinnovation.transport;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.transport.block.BlockPlonker;
 import eiteam.esteemedinnovation.transport.block.TileEntityPlonker;
@@ -25,24 +24,24 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import static eiteam.esteemedinnovation.commons.Config.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.COPPER_LIQUID;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
-import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
-import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static eiteam.esteemedinnovation.woodcone.WoodenConeModule.WOODEN_CONE;
-import static net.minecraft.init.Blocks.IRON_BARS;
 
-public class TransportationModule extends ContentModule {
+public class TransportationModule extends ContentModule implements ConfigurableModule {
     public static Block ARCHIMEDES_SCREW;
     public static Block VACUUM;
     public static Block FAN;
@@ -53,6 +52,20 @@ public class TransportationModule extends ContentModule {
     public static Block BRASS_PIPE;
     public static Block COPPER_PIPE;
     public static Block VALVE_PIPE;
+    private static boolean enableAstrolabe;
+    private static boolean enableValvePipe;
+    private static boolean enableVacuum;
+    private static boolean enablePump;
+    public static boolean enablePipe;
+    private static boolean enableMortar;
+    private static boolean enableFan;
+    private static boolean enablePlonker;
+    private static boolean enableFunnel;
+    public static boolean enableRedstoneValvePipe;
+    public static int plonkerConsumption;
+    public static int vacuumConsumption;
+    public static int screwConsumption;
+    public static int fanConsumption;
 
     @Override
     public void create(Side side) {
@@ -218,7 +231,7 @@ public class TransportationModule extends ContentModule {
 
     @Override
     public void finish(Side side) {
-        if (Config.enablePipe) {
+        if (enablePipe) {
             MinecraftForge.EVENT_BUS.register(BRASS_PIPE);
         }
 
@@ -236,7 +249,7 @@ public class TransportationModule extends ContentModule {
               new BookPageItem("research.Pipe.name", "research.Pipe.0", new ItemStack(BRASS_PIPE), new ItemStack(VALVE_PIPE)),
               new BookPageText("research.Pipe.name", "research.Pipe.1"))));
 
-        if (Config.enableMortar && Config.enableAstrolabe) {
+        if (enableMortar && enableAstrolabe) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 9,
               new BookCategory("category.ItemMortar.name",
                 new BookEntry("research.ItemMortar.name",
@@ -246,7 +259,7 @@ public class TransportationModule extends ContentModule {
                   new BookPageCrafting("", "itemMortar2", "itemMortar3"))));
         }
 
-        if (Config.enablePump) {
+        if (enablePump) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 11,
               new BookCategory("category.Screw.name",
                 new BookEntry("research.Screw.name",
@@ -254,13 +267,13 @@ public class TransportationModule extends ContentModule {
                   new BookPageCrafting("", "pump1", "pump2"))));
         }
 
-        if (Config.enableFan) {
+        if (enableFan) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 14,
               new BookCategory("category.Fan.name",
                 new BookEntry("research.Fan.name",
                   new BookPageItem("research.Fan.name", "research.Fan.0", new ItemStack(FAN)),
                   new BookPageCrafting("", "fan1", "fan2"))));
-            if (Config.enableVacuum) {
+            if (enableVacuum) {
                 BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 15,
                   new BookCategory("category.Vacuum.name",
                     new BookEntry("research.Vacuum.name",
@@ -269,7 +282,7 @@ public class TransportationModule extends ContentModule {
             }
         }
 
-        if (Config.enableFunnel) {
+        if (enableFunnel) {
             BookPageRegistry.addCategoryToSection(MISC_SECTION,
               new BookCategory("category.Funnel.name",
                 new BookEntry("research.Funnel.name",
@@ -300,5 +313,44 @@ public class TransportationModule extends ContentModule {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityValvePipe.class, new TileEntityValvePipeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFan.class, new TileEntityFanRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVacuum.class, new TileEntityVacuumRenderer());
+    }
+
+    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
+        put("enablePump", () -> enablePump);
+        put("enableFan", () -> enableFan);
+        put("enableVacuum", () -> enableVacuum);
+        put("enableMortar", () -> enableMortar);
+        put("enablePlonker", () -> enablePlonker);
+        put("enableAstrolabe", () -> enableAstrolabe);
+    }};
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
+        enableValvePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Valve Pipe", true).getBoolean();
+        enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
+        enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();
+        enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
+        enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
+        enablePlonker = config.get(CATEGORY_BLOCKS, "Enable Plonker", true).getBoolean();
+        enableFunnel = config.get(CATEGORY_BLOCKS, "Enable Funnel", true).getBoolean();
+        enableAstrolabe = config.get(CATEGORY_ITEMS, "Enable Astrolabe", true).getBoolean();
+
+        fanConsumption = config.get(CATEGORY_CONSUMPTION, "Fan consumption", 1).getInt();
+        screwConsumption = config.get(CATEGORY_CONSUMPTION, "Archimedes Screw consumption", 100).getInt();
+        vacuumConsumption = config.get(CATEGORY_CONSUMPTION, "Vacuum consumption", 3).getInt();
+        plonkerConsumption = config.get(CATEGORY_CONSUMPTION, "Plonker consumption", 5).getInt();
+
+        enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
+    }
+
+    @Override
+    public boolean doesRecipeBelongTo(String configSetting) {
+        return RECIPE_CHECKERS.containsKey(configSetting);
+    }
+
+    @Override
+    public boolean isRecipeEnabled(String configSetting) {
+        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

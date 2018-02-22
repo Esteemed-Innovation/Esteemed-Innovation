@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
 import eiteam.esteemedinnovation.transport.TransportationModule;
@@ -41,7 +40,7 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
     public boolean lastSteam = false;
     public int rotateTicks = 0;
     public int range = 9;
-    private static final int STEAM_CONSUMPTION = Config.fanConsumption;
+    private static final int STEAM_CONSUMPTION = TransportationModule.fanConsumption;
 
     public TileEntityFan() {
         addSidesToGaugeBlacklist(EnumFacing.HORIZONTALS);

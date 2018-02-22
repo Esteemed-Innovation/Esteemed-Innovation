@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.transport.fluid.screw;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +28,7 @@ public class TileEntityPump extends SteamTransporterTileEntity {
     public int progress = 0;
     public int rotateTicks = 0;
     private boolean running = false;
-    private static final int STEAM_CONSUMPTION = Config.screwConsumption;
+    private static final int STEAM_CONSUMPTION = TransportationModule.screwConsumption;
 
     public TileEntityPump() {
         super(EnumFacing.VALUES);

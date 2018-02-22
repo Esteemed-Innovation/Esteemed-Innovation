@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.storage.StorageModule;
-import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.Arrays;
@@ -85,10 +85,6 @@ public class Config {
     public static int thrusterConsumption;
     public static int runAssistConsumption;
     public static int powerFistConsumption;
-    public static int fanConsumption;
-    public static int screwConsumption;
-    public static int vacuumConsumption;
-    public static int plonkerConsumption;
     public static int zincPlateConsumption;
     public static int rebreatherConsumption;
     public static int hydrophobicConsumption;
@@ -100,21 +96,8 @@ public class Config {
 
     public static int villagerId;
 
-    public static boolean enableRedstoneValvePipe;
-
-    // blocks
-    public static boolean enableFunnel;
-    public static boolean enablePlonker;
-    public static boolean enableFan;
-    public static boolean enableMortar;
-    public static boolean enablePipe;
-    public static boolean enablePump;
-    public static boolean enableVacuum;
-    public static boolean enableValvePipe;
     public static boolean enableWrench;
 
-    // items
-    public static boolean enableAstrolabe;
     public static boolean enableTopHat;
     public static boolean enableEmeraldHat;
     public static boolean enableGoggles;
@@ -216,25 +199,11 @@ public class Config {
 
         // STEAM SYSTEM
         config.addCustomCategoryComment(CATEGORY_STEAM_SYSTEM, "Disabling any piece marked crucial disables pretty much the whole mod.");
-        enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
-        enableValvePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Valve Pipe", true).getBoolean();
         //enableBloodBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Blood Boiler", true).getBoolean();
 
 
         // BLOCKS
-        enableFan = config.get(CATEGORY_BLOCKS, "Enable Fan (disabling this disables Vacuum)", true).getBoolean();
         //enableGenocide = config.get(CATEGORY_BLOCKS, "Enable Aquatic Genocide Machine", true).getBoolean();
-        enableMortar = config.get(CATEGORY_BLOCKS, "Enable Item Mortar", true).getBoolean();
-        enablePump = config.get(CATEGORY_BLOCKS, "Enable Archimedes Screw", true).getBoolean();
-        enableVacuum = config.get(CATEGORY_BLOCKS, "Enable Vacuum", true).getBoolean();
-        enablePlonker = config.get(CATEGORY_BLOCKS, "Enable Plonker", true).getBoolean();
-        enableFunnel = config.get(CATEGORY_BLOCKS, "Enable Funnel", true).getBoolean();
-
-        // BLOCK CONSUMPTION RATES
-        fanConsumption = config.get(CATEGORY_CONSUMPTION, "Fan consumption", 1).getInt();
-        screwConsumption = config.get(CATEGORY_CONSUMPTION, "Archimedes Screw consumption", 100).getInt();
-        vacuumConsumption = config.get(CATEGORY_CONSUMPTION, "Vacuum consumption", 3).getInt();
-        plonkerConsumption = config.get(CATEGORY_CONSUMPTION, "Plonker consumption", 5).getInt();
 
         // EXOSUIT
         passiveDrain = config.get(CATEGORY_EXOSUIT, "Passively drain steam while in use", true).getBoolean();
@@ -303,7 +272,6 @@ public class Config {
         //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
 
         // ITEMS
-        enableAstrolabe = config.get(CATEGORY_ITEMS, "Enable Astrolabe", true).getBoolean();
         enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
         enableSurvivalist = config.get(CATEGORY_ITEMS, "Enable Survivalist's Toolkit", true).getBoolean();
         enableWrench = config.get(CATEGORY_ITEMS, "Enable Pipe Wrench", true).getBoolean();
@@ -344,7 +312,6 @@ public class Config {
 
         // OTHER
         easterEggs = config.get(CATEGORY_OTHER, "Enable Easter Eggs", true).getBoolean();
-        enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
         disableParticles = config.get(CATEGORY_OTHER, "Disable block break particles (May solve crashes with guns, thumper)", false).getBoolean();
         singleButtonTrackpad = config.get(CATEGORY_OTHER, "Check both mouse buttons for the journal ctrl-click feature for single-button trackpad users. If you have trouble getting the ctrl-click feature to work on a trackpad, enable this.", false).getBoolean();
 
@@ -364,7 +331,7 @@ public class Config {
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
 
         // TODO: Abstract this somehow
-        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && StorageModule.enableTank && enablePipe;
+        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && StorageModule.enableTank && TransportationModule.enablePipe;
 
         config.save();
     }
