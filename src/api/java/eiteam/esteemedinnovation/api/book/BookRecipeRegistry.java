@@ -15,10 +15,17 @@ public class BookRecipeRegistry {
         recipes.put(key, recipe);
     }
 
+    /**
+     * @Deprecated Use {@link #addRecipe(ResourceLocation, ItemStack, Object...)} instead
+     */
+    @Deprecated
     public static void addRecipe(String key, ItemStack output, Object... params) {
-        ResourceLocation group = new ResourceLocation(Constants.EI_MODID, key);
+        addRecipe(new ResourceLocation(Constants.EI_MODID, key), output, params);
+    }
+
+    public static void addRecipe(ResourceLocation group, ItemStack output, Object... params) {
         ShapedOreRecipe recipe = new ShapedOreRecipe(group, output, params);
-        addRecipe(key, recipe);
+        addRecipe(group.getResourcePath(), recipe);
     }
 
     public static IRecipe getRecipe(String key) {
