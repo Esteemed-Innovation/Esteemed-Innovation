@@ -33,10 +33,7 @@ public class WoodenConeModule extends ContentModule implements ConfigurableModul
     @Override
     public void recipes(Side side) {
         if (removeHopperRecipe) {
-            RecipeUtility.removeRecipe(recipe -> {
-                ItemStack output = recipe.getRecipeOutput();
-                return output.getItem() == Item.getItemFromBlock(net.minecraft.init.Blocks.HOPPER);
-            });
+            RecipeUtility.removeRecipeByOutput(Item.getItemFromBlock(Blocks.HOPPER));
         }
         /*BookRecipeRegistry.addRecipe("woodenCone", new ShapedOreRecipe(WOODEN_CONE,
           " s ",

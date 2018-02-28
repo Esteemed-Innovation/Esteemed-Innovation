@@ -6,23 +6,41 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryModifiable;
 
-import java.util.Iterator;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class RecipeUtility {
+/**
+ * A collection of static utility functions relating to Minecraft recipes.
+ */
+public final class RecipeUtility {
     /**
-     * Removes recipes that match the provided predicate. Outputs to the FML Log for each recipe removed.
+     * Removes recipes that match the provided predicate. Outputs to the mod log for each recipe removed.
      * @param predicate The predicate to check
      */
     public static void removeRecipe(Predicate<IRecipe> predicate) {
-        Iterator<IRecipe> iter = CraftingManager.REGISTRY.iterator();
-        while (iter.hasNext()) {
-            IRecipe recipe = iter.next();
-            if (predicate.test(recipe)) {
-                EsteemedInnovation.logger.info("Removing recipe for " + recipe.getRecipeOutput());
-                iter.remove();
-            }
+        // The collect call prevents a ConcurrentModification by moving all of the IRecipes into a separate collection.
+        CraftingManager.REGISTRY.getKeys().stream()
+          .filter(key -> {
+              IRecipe recipe = CraftingManager.REGISTRY.getObject(key);
+              return recipe != null && predicate.test(recipe);
+          })
+          .collect(Collectors.toSet())
+          .forEach(RecipeUtility::removeRecipe);
+    }
+
+    /**
+     * Removes the recipe by the provided registry name. Outputs to the mod log for the recipe removed.
+     * @param key The registry name of the recipe to remove.
+     */
+    public static void removeRecipe(ResourceLocation key) {
+        IRecipe recipe = CraftingManager.REGISTRY.getObject(key);
+        if (recipe != null) {
+            EsteemedInnovation.logger.info(String.format("Removing recipe for %s (key: %s)", recipe.getRecipeOutput(), key));
+            ((IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES).remove(key);
         }
     }
 
@@ -31,10 +49,7 @@ public class RecipeUtility {
      * @param removeFor The ItemStack to remove recipes for.
      */
     public static void removeRecipeByOutput(ItemStack removeFor) {
-        removeRecipe(recipe -> {
-            ItemStack out = recipe.getRecipeOutput();
-            return out != null && ItemStackUtility.compareItemStacks(out, removeFor);
-        });
+        removeRecipe(recipe -> ItemStackUtility.compareItemStacks(recipe.getRecipeOutput(), removeFor));
     }
 
     /**
