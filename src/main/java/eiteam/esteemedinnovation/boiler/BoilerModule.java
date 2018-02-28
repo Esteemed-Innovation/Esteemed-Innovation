@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,7 +16,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static net.minecraft.init.Blocks.FURNACE;
 
 public class BoilerModule extends ContentModule implements ConfigurableModule {
     public static Block BOILER;
@@ -33,25 +37,23 @@ public class BoilerModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableBoiler) {
-            BookRecipeRegistry.addRecipe("boiler1", new ShapedOreRecipe(BOILER,
-              "xxx",
-              "xfx",
-              "xxx",
-              'x', INGOT_BRASS,
-              'f', FURNACE
-            ));
-            BookRecipeRegistry.addRecipe("boiler2", new ShapedOreRecipe(BOILER,
-              "xxx",
-              "xfx",
-              "xxx",
-              'x', PLATE_THIN_BRASS,
-              'f', FURNACE
-            ));
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableBoiler) {
+            addRecipe(event, true, "boiler1", BOILER,
+                    "xxx",
+                    "xfx",
+                    "xxx",
+                    'x', INGOT_BRASS,
+                    'f', FURNACE
+            );
+            addRecipe(event, true, "boiler2",BOILER,
+                    "xxx",
+                    "xfx",
+                    "xxx",
+                    'x', PLATE_THIN_BRASS,
+                    'f', FURNACE
+            );
         }
-        */
     }
 
     @Override
