@@ -28,8 +28,7 @@ public class ItemMetalNugget extends Item {
         COPPER_NUGGET(0),
         ZINC_NUGGET(1),
         BRASS_NUGGET(2),
-        GILDED_IRON_NUGGET(3),
-        IRON_NUGGET(4); // I hate you, Vanilla, and your lack of iron nuggets.
+        GILDED_IRON_NUGGET(3);
 
         private final int meta;
 

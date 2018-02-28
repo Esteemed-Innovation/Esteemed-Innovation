@@ -21,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ReportedException;
@@ -44,7 +45,7 @@ import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTy
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
-import static net.minecraft.init.Items.*;
+import static net.minecraft.init.Items.IRON_INGOT;
 
 public class MaterialsModule extends ContentModule {
     public static Block STORAGE_BLOCK;
@@ -140,7 +141,6 @@ public class MaterialsModule extends ContentModule {
         OreDictionary.registerOre(NUGGET_ZINC, new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_BRASS, new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_GILDED_IRON, new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()));
-        OreDictionary.registerOre(NUGGET_IRON, new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()));
 
         OreDictionary.registerOre(PLATE_THIN_COPPER, new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
         OreDictionary.registerOre(PLATE_THIN_ZINC, new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
@@ -311,7 +311,7 @@ public class MaterialsModule extends ContentModule {
                     new ItemStack(IRON_INGOT),
                     new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
-                    new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()),
+                    new ItemStack(Items.IRON_NUGGET),
                     new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
                     new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()),
