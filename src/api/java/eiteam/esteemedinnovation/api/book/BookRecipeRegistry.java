@@ -4,7 +4,6 @@ import eiteam.esteemedinnovation.api.Constants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.util.HashMap;
@@ -17,7 +16,8 @@ public class BookRecipeRegistry {
     }
 
     public static void addRecipe(String key, ItemStack output, Object... params) {
-        ShapedOreRecipe recipe = new ShapedOreRecipe(null, output, params);
+        ResourceLocation group = new ResourceLocation(Constants.EI_MODID, key);
+        ShapedOreRecipe recipe = new ShapedOreRecipe(group, output, params);
         addRecipe(key, recipe);
     }
 

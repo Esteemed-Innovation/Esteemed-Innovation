@@ -28,6 +28,7 @@ import eiteam.esteemedinnovation.woodcone.WoodenConeModule;
 import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -99,7 +100,6 @@ public class ContentModuleHandler {
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
             module.oreDict(side);
-            module.recipes(side);
             if (isClient) {
                 module.initClient();
             }
@@ -141,6 +141,13 @@ public class ContentModuleHandler {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         for (ContentModule module : modules) {
             module.registerItems(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        for (ContentModule module : modules) {
+            module.recipes(event);
         }
     }
 
