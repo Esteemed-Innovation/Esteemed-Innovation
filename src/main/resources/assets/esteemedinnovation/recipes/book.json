@@ -1,5 +1,6 @@
 {
   "type": "esteemedinnovationapi:shapeless_recipe",
+  "book_key": "book",
   "ingredients": [
     {
       "item": "minecraft:book"
