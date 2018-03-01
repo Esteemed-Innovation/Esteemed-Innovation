@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -16,6 +17,7 @@ import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_CONSUMPTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.channel;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 
 public class HammerModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_HAMMER;
@@ -39,25 +41,23 @@ public class HammerModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableHammer) {
-            BookRecipeRegistry.addRecipe("hammer1", new ShapedOreRecipe(STEAM_HAMMER,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableHammer) {
+            addRecipe(event, true, "hammer1", STEAM_HAMMER,
               " ix",
               "bix",
               'x', INGOT_BRASS,
               'i', INGOT_IRON,
               'b', BLOCK_IRON
-            ));
-            BookRecipeRegistry.addRecipe("hammer2", new ShapedOreRecipe(STEAM_HAMMER,
+            );
+            addRecipe(event, true, "hammer2", STEAM_HAMMER,
               " ix",
               "bix",
               'x', PLATE_THIN_BRASS,
               'i', INGOT_IRON,
               'b', BLOCK_IRON
-            ));
+            );
         }
-        */
     }
 
     @Override
