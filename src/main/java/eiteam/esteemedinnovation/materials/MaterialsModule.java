@@ -1,9 +1,12 @@
 package eiteam.esteemedinnovation.materials;
 
 import eiteam.esteemedinnovation.api.APIConfig;
+import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
@@ -24,6 +27,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -45,7 +49,13 @@ import static eiteam.esteemedinnovation.materials.raw.BlockGenericOre.OreBlockTy
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.*;
 import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
-import static net.minecraft.init.Items.IRON_INGOT;
+import static eiteam.esteemedinnovation.tools.ToolsModule.*;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
+import static net.minecraft.init.Blocks.COBBLESTONE_WALL;
+import static net.minecraft.init.Blocks.GRAVEL;
+import static net.minecraft.init.Blocks.SAND;
+import static net.minecraft.init.Items.*;
 
 public class MaterialsModule extends ContentModule {
     public static Block STORAGE_BLOCK;
@@ -151,28 +161,25 @@ public class MaterialsModule extends ContentModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*for (MetalBlockTypes type : MetalBlockTypes.values()) {
-            add3x3Recipe(new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        for (MetalBlockTypes type : MetalBlockTypes.values()) {
+            add3x3Recipe(event, false, type.getName(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
         }
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON));
+        addShapelessRecipe(event, false, BLOCK_BRASS, new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS);
+        addShapelessRecipe(event, false, BLOCK_COPPER, new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER);
+        addShapelessRecipe(event, false, BLOCK_ZINC, new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC);
+        addShapelessRecipe(event, false, BLOCK_GILDED_IRON, new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON);
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, IRON_NUGGET.getMeta()), INGOT_IRON));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON));
+        addShapelessRecipe(event, false, INGOT_COPPER, new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER);
+        addShapelessRecipe(event, false, INGOT_ZINC, new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC);
+        addShapelessRecipe(event, false, INGOT_BRASS, new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS);
+        addShapelessRecipe(event, false, INGOT_GILDED_IRON, new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON);
 
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
-        add3x3Recipe(new ItemStack(IRON_INGOT), NUGGET_IRON);
+        add3x3Recipe(event, false, COPPER_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
+        add3x3Recipe(event, false, ZINC_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
+        add3x3Recipe(event, false, BRASS_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
+        add3x3Recipe(event, false, GILDED_IRON_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
 
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, OVERWORLD_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, NETHER_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);
@@ -267,7 +274,6 @@ public class MaterialsModule extends ContentModule {
 
         CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(BRASS_PIPE), BRASS_LIQUID, 54);
         CrucibleRegistry.registerMeltRecipe(Item.getItemFromBlock(COPPER_PIPE), COPPER_LIQUID, 54);
-        */
     }
 
     @Override

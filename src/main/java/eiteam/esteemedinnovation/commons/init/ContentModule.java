@@ -315,4 +315,12 @@ public class ContentModule {
         }
         return recipe;
     }
+
+    public static IRecipe add3x3Recipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack output, String input) {
+        return addRecipe(event, createBookRecipeRegistry, recipeName, output,
+          "xxx",
+          "xxx",
+          "xxx",
+          'x', input);
+    }
 }
