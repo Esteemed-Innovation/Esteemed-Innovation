@@ -1,9 +1,11 @@
 package eiteam.esteemedinnovation.engineeringtable;
 
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -28,18 +30,16 @@ public class EngineeringTableModule extends ContentModule implements Configurabl
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableEngineering) {
-            BookRecipeRegistry.addRecipe("engineering", new ShapedOreRecipe(ENGINEERING_TABLE,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableEngineering) {
+            addRecipe(event, true, "engineering", ENGINEERING_TABLE,
               "xzx",
               "x x",
               "xxx",
               'x', OreDictEntries.COBBLESTONE_ORE,
               'z', OreDictEntries.PLATE_THIN_IRON
-            ));
+            );
         }
-        */
     }
 
     @SideOnly(Side.CLIENT)
