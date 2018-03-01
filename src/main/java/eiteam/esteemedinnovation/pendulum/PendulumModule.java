@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -38,15 +39,13 @@ public class PendulumModule extends ContentModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*BookRecipeRegistry.addRecipe("pendulum_torch", new ShapedOreRecipe(PENDULUM_TORCH,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        addRecipe(event, true, "pendulum_torch", PENDULUM_TORCH,
           "  x",
           " x ",
           "t  ",
           't', Blocks.REDSTONE_TORCH,
-          'x', OreDictEntries.STRING_ORE));
-          */
+          'x', OreDictEntries.STRING_ORE);
     }
 
     @Override
