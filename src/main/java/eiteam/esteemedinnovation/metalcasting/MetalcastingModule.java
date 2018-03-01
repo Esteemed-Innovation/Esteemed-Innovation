@@ -3,10 +3,13 @@ package eiteam.esteemedinnovation.metalcasting;
 import crafttweaker.CraftTweakerAPI;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
+import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.crucible.CrucibleTweaker;
 import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucible;
@@ -14,9 +17,11 @@ import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucibleRendere
 import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutComponent;
 import eiteam.esteemedinnovation.metalcasting.hut.MetalcastingHutCreationHandler;
 import eiteam.esteemedinnovation.metalcasting.mold.*;
+import eiteam.esteemedinnovation.misc.ItemCraftingComponent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -34,6 +39,19 @@ import javax.annotation.Nonnull;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WORLD_GENERATION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.CASTING_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.*;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.BRASS_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.COPPER_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalIngot.Types.ZINC_INGOT;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.BRASS_NUGGET;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.COPPER_NUGGET;
+import static eiteam.esteemedinnovation.materials.refined.ItemMetalNugget.Types.ZINC_NUGGET;
+import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.Types.*;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
+import static net.minecraft.init.Items.*;
 
 public class MetalcastingModule extends ContentModule implements ConfigurableModule {
     public static final ResourceLocation CARVING_TABLE_LOOT = new ResourceLocation(Constants.EI_MODID, "metalcasting_hut_mold_chest");
@@ -53,6 +71,7 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
     public void create(Side side) {
         VillagerRegistry.instance().registerVillageCreationHandler(new MetalcastingHutCreationHandler());
         MapGenStructureIO.registerStructureComponent(MetalcastingHutComponent.class, Constants.EI_MODID + ":metalcasting_hut");
+        MinecraftForge.EVENT_BUS.register(new MetalcastingBookSection.Unlocker());
     }
 
     @Override
@@ -92,10 +111,9 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(IRON_INGOT));
-        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(METAL_NUGGET, 1, ItemMetalNugget.Types.IRON_NUGGET.getMeta()));
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(IRON_INGOT));
+        CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), new ItemStack(IRON_NUGGET));
         CrucibleRegistry.registerMoldingRecipe(IRON_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
 
         CrucibleRegistry.registerMoldingRecipe(GOLD_LIQUID, ItemMold.Type.INGOT.createItemStack(MOLD_ITEM), new ItemStack(GOLD_INGOT));
@@ -120,15 +138,15 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.NUGGET.createItemStack(MOLD_ITEM), findFirstOre(NUGGET_LEAD));
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
 
-        if (Config.enableCrucible) {
-            BookRecipeRegistry.addRecipe("crucible", new ResearchRecipe(new ItemStack(CRUCIBLE), MetalcastingBookSection.NAME,
+        if (enableCrucible) {
+            addRecipe(event, true, "crucible", new ResearchRecipe(new ItemStack(CRUCIBLE), MetalcastingBookSection.NAME,
               "x x",
               "x x",
               "xxx",
               'x', BRICK
             ));
-            if (Config.enableHellCrucible) {
-                BookRecipeRegistry.addRecipe("hellCrucible", new ItemStack(HELL_CRUCIBLE),
+            if (enableHellCrucible) {
+                addRecipe(event, true, "hellCrucible", new ItemStack(HELL_CRUCIBLE),
                   "x x",
                   "x x",
                   "xxx",
@@ -136,25 +154,23 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
                 );
             }
         }
-        if (Config.enableMold) {
-            BookRecipeRegistry.addRecipe("carving", new ResearchRecipe(new ItemStack(CARVING_TABLE), MetalcastingBookSection.NAME,
+        if (enableMold) {
+            addRecipe(event, true, "carving", new ResearchRecipe(new ItemStack(CARVING_TABLE), MetalcastingBookSection.NAME,
               "xzx",
               "x x",
               "xxx",
               'x', PLANK_WOOD,
               'z', BLANK_MOLD
             ));
-            BookRecipeRegistry.addRecipe("mold", new ResearchRecipe(new ItemStack(MOLD), MetalcastingBookSection.NAME,
+            addRecipe(event, true, "mold", new ResearchRecipe(new ItemStack(MOLD), MetalcastingBookSection.NAME,
               "xxx",
               "xxx",
               'x', BRICK
             ));
-            BookRecipeRegistry.addRecipe("blankMold", new ShapedOreRecipe(BLANK_MOLD, "xx", 'x', BRICK));
+            addRecipe(event, true, "blankMold", BLANK_MOLD, "xx", 'x', BRICK);
         }
-    */
-        MinecraftForge.EVENT_BUS.register(new MetalcastingBookSection.Unlocker());
     }
-
+    
     @Override
     public void finish(Side side) {
         if (CrossMod.CRAFTTWEAKER) {
