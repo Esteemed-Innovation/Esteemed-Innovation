@@ -1,14 +1,17 @@
 package eiteam.esteemedinnovation.heater;
 
 import crafttweaker.CraftTweakerAPI;
+import eiteam.esteemedinnovation.api.SteamingRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -20,6 +23,7 @@ import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_CONSUMPTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static net.minecraft.init.Blocks.FURNACE;
 import static net.minecraft.init.Items.*;
 
 public class HeaterModule extends ContentModule implements ConfigurableModule {
@@ -77,10 +81,9 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableHeater) {
-            BookRecipeRegistry.addRecipe("heater1", new ShapedOreRecipe(STEAM_HEATER,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableHeater) {
+            addRecipe(event, true, "heater1", STEAM_HEATER,
               "ccc",
               "xfx",
               " p ",
@@ -88,8 +91,8 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
               'c', NUGGET_COPPER,
               'f', FURNACE,
               'p', TransportationModule.BRASS_PIPE
-            ));
-            BookRecipeRegistry.addRecipe("heater2", new ShapedOreRecipe(STEAM_HEATER,
+            );
+            addRecipe(event, true, "heater2", STEAM_HEATER,
               "ccc",
               "xfx",
               " p ",
@@ -97,7 +100,7 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
               'c', NUGGET_COPPER,
               'f', FURNACE,
               'p', TransportationModule.BRASS_PIPE
-            ));
+            );
         }
         SteamingRegistry.addSteamingRecipe(new ItemStack(BEEF), new ItemStack(STEAMED_BEEF));
         SteamingRegistry.addSteamingRecipe(new ItemStack(CHICKEN), new ItemStack(STEAMED_CHICKEN));
@@ -109,7 +112,6 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
         SteamingRegistry.addSteamingRecipe(new ItemStack(BEETROOT), new ItemStack(STEAMED_BEETROOT));
         SteamingRegistry.addSteamingRecipe(new ItemStack(CARROT), new ItemStack(STEAMED_CARROT));
         SteamingRegistry.addSteamingRecipe(new ItemStack(POTATO), new ItemStack(STEAMED_POTATO));
-        */
     }
 
     @Override
