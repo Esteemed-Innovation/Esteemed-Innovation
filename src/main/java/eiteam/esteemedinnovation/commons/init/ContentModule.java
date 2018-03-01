@@ -291,11 +291,7 @@ public class ContentModule {
     public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack result, Object... obj) {
         ResourceLocation group = new ResourceLocation(Constants.EI_MODID, recipeName);
         ShapedOreRecipe recipe = new ShapedOreRecipe(group, result, obj);
-        event.getRegistry().register(recipe);
-        if (createBookRecipeRegistry) {
-            BookRecipeRegistry.addRecipe(recipeName, recipe);
-        }
-        return recipe;
+        return addRecipe(event, createBookRecipeRegistry, recipeName, recipe);
     }
 
     public static IRecipe addShapelessRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, Block block, Object... obj) {
@@ -309,6 +305,10 @@ public class ContentModule {
     public static IRecipe addShapelessRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack result, Object... obj) {
         ResourceLocation group = new ResourceLocation(Constants.EI_MODID, recipeName);
         ShapelessOreRecipe recipe = new ShapelessOreRecipe(group, result, obj);
+        return addRecipe(event, createBookRecipeRegistry, recipeName, recipe);
+    }
+
+    public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, IRecipe recipe) {
         event.getRegistry().register(recipe);
         if (createBookRecipeRegistry) {
             BookRecipeRegistry.addRecipe(recipeName, recipe);

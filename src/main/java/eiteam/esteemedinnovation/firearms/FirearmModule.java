@@ -7,6 +7,8 @@ import eiteam.esteemedinnovation.api.enhancement.EnhancementRegistry;
 import eiteam.esteemedinnovation.api.enhancement.Rocket;
 import eiteam.esteemedinnovation.api.enhancement.UtilEnhancements;
 import eiteam.esteemedinnovation.api.entity.EntityRocket;
+import eiteam.esteemedinnovation.api.research.ResearchRecipe;
+import eiteam.esteemedinnovation.api.research.ShapelessResearchRecipe;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
@@ -21,10 +23,12 @@ import eiteam.esteemedinnovation.firearms.rocket.ammo.RenderRocket;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAirStrike;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementAmmo;
 import eiteam.esteemedinnovation.firearms.rocket.enhancements.ItemEnhancementFastRockets;
+import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -45,10 +49,12 @@ import java.util.stream.Collectors;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WEAPONS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_IRON;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.*;
 import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static net.minecraft.init.Blocks.SAND;
+import static net.minecraft.init.Blocks.WOOL;
+import static net.minecraft.init.Items.*;
 
 public class FirearmModule extends ContentModule implements ConfigurableModule {
     public static Item MUSKET;
@@ -92,6 +98,7 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     @Override
     public void create(Side side) {
         EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "Rocket"), EntityRocket.class, "Rocket", 3, EsteemedInnovation.instance, 64, 20, true);
+        MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandler());
     }
 
     @Override
@@ -131,59 +138,58 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableRL) {
-            addRocketLauncherRecipe("rocket1", PLATE_THIN_BRASS, PLATE_THIN_COPPER);
-            addRocketLauncherRecipe("rocket2", INGOT_BRASS, PLATE_THIN_COPPER);
-            addRocketLauncherRecipe("rocket3", PLATE_THIN_BRASS, INGOT_COPPER);
-            addRocketLauncherRecipe("rocket4", INGOT_BRASS, INGOT_COPPER);
-            if (Config.enableRocket) {
-                BookRecipeRegistry.addRecipe("normalRocket1", new ShapedOreRecipe(ROCKET,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableRL) {
+            addRocketLauncherRecipe(event, "rocket1", PLATE_THIN_BRASS, PLATE_THIN_COPPER);
+            addRocketLauncherRecipe(event, "rocket2", INGOT_BRASS, PLATE_THIN_COPPER);
+            addRocketLauncherRecipe(event, "rocket3", PLATE_THIN_BRASS, INGOT_COPPER);
+            addRocketLauncherRecipe(event, "rocket4", INGOT_BRASS, INGOT_COPPER);
+            if (enableRocket) {
+                addRecipe(event, true, "normalRocket1", ROCKET,
                   " i ",
                   "igi",
                   'i', INGOT_IRON,
                   'g', GUNPOWDER
-                ));
-                BookRecipeRegistry.addRecipe("normalRocket2", new ShapedOreRecipe(ROCKET,
+                );
+                addRecipe(event, true, "normalRocket2", ROCKET,
                   " i ",
                   "igi",
                   'i', PLATE_THIN_IRON,
                   'g', GUNPOWDER
-                ));
+                );
             }
-            if (Config.enableRocketConcussive) {
-                if (Config.enableRocket) {
-                    BookRecipeRegistry.addRecipe("concussiveRocket", new ShapelessOreRecipe(CONCUSSIVE_ROCKET,
-                      ROCKET, SAND));
+            if (enableRocketConcussive) {
+                if (enableRocket) {
+                    addShapelessRecipe(event, true, "concussiveRocket", CONCUSSIVE_ROCKET,
+                      ROCKET, SAND);
                 } else {
-                    BookRecipeRegistry.addRecipe("concussiveRocket1", new ShapedOreRecipe(CONCUSSIVE_ROCKET,
+                    addRecipe(event, true, "concussiveRocket1", CONCUSSIVE_ROCKET,
                       " i ",
                       "igi",
                       'i', INGOT_IRON,
                       'g', GUNPOWDER
-                    ));
-                    BookRecipeRegistry.addRecipe("concussiveRocket2", new ShapedOreRecipe(CONCUSSIVE_ROCKET,
+                    );
+                    addRecipe(event, true, "concussiveRocket2", CONCUSSIVE_ROCKET,
                       " i ",
                       "igi",
                       'i', PLATE_THIN_IRON,
                       'g', GUNPOWDER
-                    ));
+                    );
                 }
             }
-            if (Config.enableRocketMining) {
-                if (Config.enableRocket) {
-                    BookRecipeRegistry.addRecipe("miningRocket", new ShapelessOreRecipe(MINING_ROCKET,
+            if (enableRocketMining) {
+                if (enableRocket) {
+                    addShapelessRecipe(event, true, "miningRocket", MINING_ROCKET,
                       ROCKET, STRING, STRING, GUNPOWDER
-                    ));
+                    );
                 } else {
-                    BookRecipeRegistry.addRecipe("miningRocket", new ShapelessOreRecipe(MINING_ROCKET,
+                    addShapelessRecipe(event, true, "miningRocket", MINING_ROCKET,
                       CONCUSSIVE_ROCKET, STRING, STRING, GUNPOWDER
-                    ));
+                    );
                 }
             }
-            if (Config.enableEnhancementFastRockets) {
-                BookRecipeRegistry.addRecipe("fastRockets", new ShapedOreRecipe(STREAMLINED_BARREL,
+            if (enableEnhancementFastRockets) {
+                addRecipe(event, true, "fastRockets", STREAMLINED_BARREL,
                   "b  ",
                   "gid",
                   "  i",
@@ -191,35 +197,35 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
                   'g', SafetyModule.STEAM_GAUGE,
                   'i', new ItemStack(COMPONENT, 1, IRON_BARREL.getMetadata()),
                   'd', SafetyModule.RUPTURE_DISC
-                ));
+                );
             }
-            if (Config.enableEnhancementAirStrike) {
-                BookRecipeRegistry.addRecipe("airStrike1", new ShapelessOreRecipe(AIR_STRIKE_CONVERSION_KIT,
+            if (enableEnhancementAirStrike) {
+                addShapelessRecipe(event, true, "airStrike1", AIR_STRIKE_CONVERSION_KIT,
                   INGOT_IRON, INGOT_IRON, PLANK_WOOD, PLANK_WOOD,
-                  new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())));
-                BookRecipeRegistry.addRecipe("airStrike2", new ShapelessOreRecipe(AIR_STRIKE_CONVERSION_KIT,
+                  new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()));
+                addShapelessRecipe(event, true, "airStrike2", AIR_STRIKE_CONVERSION_KIT,
                   PLATE_THIN_IRON, PLATE_THIN_IRON, PLANK_WOOD, PLANK_WOOD,
-                  new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())));
+                  new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()));
             }
-            if (Config.enableEnhancementAmmo) {
-                BookRecipeRegistry.addRecipe("ammo1", new ShapedOreRecipe(EXTENDED_MAGAZINE,
+            if (enableEnhancementAmmo) {
+                addRecipe(event, true, "ammo1", EXTENDED_MAGAZINE,
                   "icc",
                   "icc",
                   "cc ",
                   'i', NUGGET_IRON,
                   'c', INGOT_COPPER
-                ));
-                BookRecipeRegistry.addRecipe("ammo2", new ShapedOreRecipe(EXTENDED_MAGAZINE,
+                );
+                addRecipe(event, true, "ammo2", EXTENDED_MAGAZINE,
                   "icc",
                   "icc",
                   "cc ",
                   'i', NUGGET_IRON,
                   'c', PLATE_THIN_COPPER
-                ));
+                );
             }
         }
-        if (Config.enableFirearms) {
-            BookRecipeRegistry.addRecipe("musket", new ResearchRecipe(new ItemStack(MUSKET), "category.Musket.name",
+        if (enableFirearms) {
+            addRecipe(event, true, "musket", new ResearchRecipe(new ItemStack(MUSKET), "category.Musket.name",
               "b  ",
               " bf",
               "  s",
@@ -227,7 +233,7 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
               'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata()),
               's', new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("pistol", new ResearchRecipe(new ItemStack(PISTOL), "category.Pistol.name",
+            addRecipe(event, true, "pistol", new ResearchRecipe(new ItemStack(PISTOL), "category.Pistol.name",
               "b  ",
               " pf",
               " p ",
@@ -235,7 +241,7 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
               'p', PLANK_WOOD,
               'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())
             ));
-            BookRecipeRegistry.addRecipe("blunderbuss", new ResearchRecipe(new ItemStack(BLUNDERBUSS), "category.Blunderbuss.name",
+            addRecipe(event, true, "blunderbuss", new ResearchRecipe(new ItemStack(BLUNDERBUSS), "category.Blunderbuss.name",
               "b  ",
               " bf",
               "  s",
@@ -244,110 +250,108 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
               's', new ItemStack(COMPONENT, 1, GUN_STOCK.getMetadata())
             ));
             // TODO: ShapelessResearchRecipe
-            String[] ores = { NUGGET_IRON, NUGGET_LEAD, NUGGET_STEEL, NUGGET_SILVER };
-            if (Config.expensiveMusketRecipes) {
+            String[] ores = {NUGGET_IRON, NUGGET_LEAD, NUGGET_STEEL, NUGGET_SILVER};
+            if (expensiveMusketRecipes) {
                 int i = 1;
                 for (String ore : ores) {
-                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE),
+                    addRecipe(event, true, "cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE),
                       "category.Musket.name", ore, PAPER, GUNPOWDER));
                     i++;
                 }
             } else {
                 int i = 1;
                 for (String ore : ores) {
-                    BookRecipeRegistry.addRecipe("cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE, 2, 0),
+                    addRecipe(event, true, "cartridge" + i, new ShapelessResearchRecipe(new ItemStack(MUSKET_CARTRIDGE, 2, 0),
                       "category.Musket.name", ore, ore, PAPER, PAPER, GUNPOWDER));
                     i++;
                 }
             }
 
-            if (Config.enableEnhancementAblaze) {
-                BookRecipeRegistry.addRecipe("ablaze", new ShapedOreRecipe(BLAZE_BARREL,
+            if (enableEnhancementAblaze) {
+                addRecipe(event, true, "ablaze", BLAZE_BARREL,
                   "rp ",
                   "pbp",
                   " pr",
                   'r', BLAZE_ROD,
                   'p', BLAZE_POWDER,
                   'b', new ItemStack(COMPONENT, 1, IRON_BARREL.getMetadata())
-                ));
+                );
             }
-            if (Config.enableEnhancementRevolver) {
-                BookRecipeRegistry.addRecipe("revolver", new ShapedOreRecipe(REVOLVER_CHAMBER,
+            if (enableEnhancementRevolver) {
+                addRecipe(event, true, "revolver", REVOLVER_CHAMBER,
                   "ni ",
                   "iii",
                   " in",
                   'n', NUGGET_IRON,
                   'i', INGOT_IRON
-                ));
+                );
             }
-            if (Config.enableEnhancementSpeedy) {
-                BookRecipeRegistry.addRecipe("speedy", new ShapedOreRecipe(BREECH,
+            if (enableEnhancementSpeedy) {
+                addRecipe(event, true, "speedy", BREECH,
                   "iii",
                   "iii",
                   " n ",
                   'i', INGOT_IRON,
                   'n', NUGGET_IRON
-                ));
+                );
             }
-            if (Config.enableEnhancementSilencer) {
-                BookRecipeRegistry.addRecipe("silencer", new ShapedOreRecipe(MAKESHIFT_SUPPRESSOR,
+            if (enableEnhancementSilencer) {
+                addRecipe(event, true, "silencer", MAKESHIFT_SUPPRESSOR,
                   "wls",
                   "lll",
                   "slw",
                   'l', LEATHER,
                   'w', WOOL,
                   's', STRING
-                ));
+                );
             }
-            if (Config.enableEnhancementRecoil) {
-                BookRecipeRegistry.addRecipe("recoil", new ShapedOreRecipe(RECOIL_PAD,
+            if (enableEnhancementRecoil) {
+                addRecipe(event, true, "recoil", RECOIL_PAD,
                   "ss ",
                   " ss",
                   "ss ",
                   's', SLIMEBALL_ORE
-                ));
+                );
             }
-            if (Config.enableEnhancementSpeedloader) {
-                BookRecipeRegistry.addRecipe("speedloader1", new ShapedOreRecipe(BOLT_ACTION,
+            if (enableEnhancementSpeedloader) {
+                addRecipe(event, true, "speedloader1", BOLT_ACTION,
                   "  n",
                   "iii",
                   "iri",
                   'n', NUGGET_IRON,
                   'i', INGOT_IRON,
                   'r', DUST_REDSTONE
-                ));
-                BookRecipeRegistry.addRecipe("speedloader2", new ShapedOreRecipe(BOLT_ACTION,
+                );
+                addRecipe(event, true, "speedloader2", BOLT_ACTION,
                   "  n",
                   "iii",
                   "iri",
                   'n', NUGGET_IRON,
                   'i', PLATE_THIN_IRON,
                   'r', DUST_REDSTONE
-                ));
+                );
             }
         }
-        if (Config.enableSpyglass) {
-            BookRecipeRegistry.addRecipe("spyglass1", new ShapedOreRecipe(SPYGLASS,
+        if (enableSpyglass) {
+            addRecipe(event, true, "spyglass1", SPYGLASS,
               "gb ",
               "bgb",
               " bb",
               'b', INGOT_BRASS,
               'g', PANE_GLASS_COLORLESS
-            ));
-            BookRecipeRegistry.addRecipe("spyglass2", new ShapedOreRecipe(SPYGLASS,
+            );
+            addRecipe(event, true, "spyglass2", SPYGLASS,
               "gb ",
               "bgb",
               " bb",
               'b', PLATE_THIN_BRASS,
               'g', PANE_GLASS_COLORLESS
-            ));
+            );
         }
-*/
-        MinecraftForge.EVENT_BUS.register(new FlintlockBookCategory.EventHandler());
     }
 
-   /* private static void addRocketLauncherRecipe(String name, String brassOre, String copperOre) {
-        BookRecipeRegistry.addRecipe(name, new ShapedOreRecipe(ROCKET_LAUNCHER,
+    private static void addRocketLauncherRecipe(RegistryEvent.Register<IRecipe> event, String name, String brassOre, String copperOre) {
+        addRecipe(event, true, name, ROCKET_LAUNCHER,
           "bx ",
           "fic",
           " pi",
@@ -357,9 +361,9 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
           'p', PLANK_WOOD,
           'b', new ItemStack(COMPONENT, 1, BLUNDERBUSS_BARREL.getMetadata()),
           'f', new ItemStack(COMPONENT, 1, FLINTLOCK.getMetadata())
-        ));
+        );
     }
-    */
+
 
     @Override
     public void finish(Side side) {
