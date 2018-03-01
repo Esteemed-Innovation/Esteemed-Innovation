@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +18,10 @@ import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static net.minecraft.init.Items.BLAZE_POWDER;
+import static net.minecraft.init.Items.NETHERBRICK;
 
 public class ChargingModule extends ContentModule implements ConfigurableModule {
     private static final int STEAMCELL_CAPACITY_DEFAULT = 100;
@@ -51,58 +56,54 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableCharger) {
-            if (Config.enableChargingPad) {
-                BookRecipeRegistry.addRecipe("fillingPad1", new ShapedOreRecipe(FILLING_PAD,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableCharger) {
+            if (enableChargingPad) {
+                addRecipe(event, true, "fillingPad1", FILLING_PAD,
                   "p p",
                   "pcp",
                   "pbp",
                   'c', STEAM_FILLER,
                   'p', BRASS_PIPE,
                   'b', INGOT_BRASS
-                ));
-                BookRecipeRegistry.addRecipe("fillingPad2", new ShapedOreRecipe(FILLING_PAD,
+                );
+                addRecipe(event, true, "fillingPad2", FILLING_PAD,
                   "p p",
                   "pcp",
                   "pbp",
                   'c', STEAM_FILLER,
                   'p', BRASS_PIPE,
                   'b', PLATE_THIN_BRASS
-                ));
+                );
             }
-            BookRecipeRegistry.addRecipe("filler", new ShapedOreRecipe(STEAM_FILLER,
+            addRecipe(event, true, "filler", STEAM_FILLER,
               " p ",
               "xpx",
               "xpx",
               'x', COBBLESTONE_ORE,
               'p', BRASS_PIPE
-            ));
+            );
         }
 
-        if (Config.enableSteamCell) {
-            BookRecipeRegistry.addRecipe("steamcell",
-              new ShapedOreRecipe(STEAM_CELL_EMPTY,
-                "nbn",
-                "bpb",
-                "nbn",
-                'n', NUGGET_BRASS,
-                'b', NETHERBRICK,
-                'p', BLAZE_POWDER
-              ));
-            if (Config.enableSteamCellBauble) {
-                BookRecipeRegistry.addRecipe("steamcellFiller",
-                  new ShapedOreRecipe(STEAM_CELL_FILLER,
-                    " p ",
-                    "i i",
-                    "i i",
-                    'p', BRASS_PIPE,
-                    'i', PLATE_THIN_IRON
-                  ));
+        if (enableSteamCell) {
+            addRecipe(event, true, "steamcell", STEAM_CELL_EMPTY,
+              "nbn",
+              "bpb",
+              "nbn",
+              'n', NUGGET_BRASS,
+              'b', NETHERBRICK,
+              'p', BLAZE_POWDER
+            );
+            if (enableSteamCellBauble) {
+                addRecipe(event, true, "steamcellFiller", STEAM_CELL_FILLER,
+                  " p ",
+                  "i i",
+                  "i i",
+                  'p', BRASS_PIPE,
+                  'i', PLATE_THIN_IRON
+                );
             }
         }
-        */
     }
 
     @Override
