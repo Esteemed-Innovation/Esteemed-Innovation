@@ -3,8 +3,10 @@ package eiteam.esteemedinnovation.workshop;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,9 +27,7 @@ public class SteamWorkshopModule extends ContentModule implements ConfigurableMo
     }
 
     @Override
-    public void recipes(Side side) {
-        // This deprecation is moderately useless unless we add our own engineer zombie texture.
-        //noinspection deprecation
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
         STEAM_ENGINEER_PROFESSION = new VillagerRegistry.VillagerProfession(Constants.EI_MODID + ":steam_engineer",
           Constants.EI_MODID + ":textures/models/villager.png",
           Constants.EI_MODID + ":textures/models/zombie_villager.png");
