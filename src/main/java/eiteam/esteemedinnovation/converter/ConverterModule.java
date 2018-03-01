@@ -3,9 +3,11 @@ package eiteam.esteemedinnovation.converter;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,6 +17,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.LEATHER_ORE;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.PANE_GLASS_COLORLESS;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
 
 public class ConverterModule extends ContentModule implements ConfigurableModule {
     public static Block PRESSURE_CONVERTER;
@@ -32,9 +37,8 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*BookRecipeRegistry.addRecipe("fsc1", new ShapedOreRecipe(PRESSURE_CONVERTER,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
           "xlx",
           "gpp",
           "xlx",
@@ -42,8 +46,8 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
           'l', LEATHER_ORE,
           'p', TransportationModule.BRASS_PIPE,
           'g', PANE_GLASS_COLORLESS
-        ));
-        BookRecipeRegistry.addRecipe("fsc1", new ShapedOreRecipe(PRESSURE_CONVERTER,
+        );
+        addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
           "xlx",
           "gpp",
           "xlx",
@@ -51,8 +55,7 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
           'l', LEATHER_ORE,
           'p', TransportationModule.BRASS_PIPE,
           'g', PANE_GLASS_COLORLESS
-        ));
-        */
+        );
     }
 
     @Override
