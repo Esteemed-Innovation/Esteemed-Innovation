@@ -6,6 +6,8 @@ import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
+import eiteam.esteemedinnovation.storage.item.canister.CanisterEntityCreator;
+import eiteam.esteemedinnovation.storage.item.canister.CanisterRecipe;
 import eiteam.esteemedinnovation.storage.item.canister.EntityCanisterItem;
 import eiteam.esteemedinnovation.storage.item.canister.RenderCanister;
 import eiteam.esteemedinnovation.storage.steam.BlockSteamTank;
@@ -14,24 +16,30 @@ import eiteam.esteemedinnovation.storage.steam.TileEntityCreativeTank;
 import eiteam.esteemedinnovation.storage.steam.TileEntitySteamTank;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_EXOSUIT_UPGRADES;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static net.minecraft.init.Items.RABBIT_HIDE;
 
 public class StorageModule extends ContentModule implements ConfigurableModule {
     private static final int BASIC_TANK_CAPACITY_DEFAULT = 36000;
@@ -64,49 +72,48 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableTank) {
-            BookRecipeRegistry.addRecipe("tank1", new ShapedOreRecipe(STEAM_TANK,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableTank) {
+            addRecipe(event, true, "tank1", STEAM_TANK,
               "iii",
               "i i",
               "iii",
               'i', PLATE_THIN_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("tank2", new ShapedOreRecipe(STEAM_TANK,
+            );
+            addRecipe(event, true, "tank2", STEAM_TANK,
               "iii",
               "i i",
               "iii",
               'i', INGOT_BRASS
-            ));
+            );
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(KIT_BAG,
+        addRecipe(event, false, "kitBag1", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
           'S', STRING_ORE,
           'L', LEATHER_ORE,
-          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
-        GameRegistry.addRecipe(new ShapedOreRecipe(KIT_BAG,
+          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
+        addRecipe(event, false, "kitBag2", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
           'S', STRING_ORE,
           'L', RABBIT_HIDE,
-          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
+          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
 
-        if (Config.enableCanister) {
-            GameRegistry.addRecipe(new CanisterRecipe());
-            BookRecipeRegistry.addRecipe("canister", new ShapedOreRecipe(ITEM_CANISTER,
+        if (enableCanister) {
+            //TODO: make sure this works
+            addRecipe(event, false, "canister2", new CanisterRecipe());
+            addRecipe(event, true, "canister",ITEM_CANISTER,
               " i ",
               "i i",
               " i ",
               'i', NUGGET_ZINC
-            ));
+            );
             MinecraftForge.EVENT_BUS.register(new CanisterEntityCreator());
         }
-        */
     }
 
     @Override
