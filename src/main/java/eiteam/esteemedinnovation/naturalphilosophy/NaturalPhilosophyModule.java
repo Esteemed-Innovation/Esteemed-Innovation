@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -31,16 +32,16 @@ public class NaturalPhilosophyModule extends ContentModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*GameRegistry.addRecipe(new ShapelessOreRecipe(BLANK_RESEARCH_LOG,
-          PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER));
-        GameRegistry.addRecipe(new ResearchLogCopyRecipe());
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        addShapelessRecipe(event, false, "blank_research_log", BLANK_RESEARCH_LOG,
+          PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER);
+        //TODO: make sure this works
+        addRecipe(event, false, "research_log_copy", new ResearchLogCopyRecipe());
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
-          BLANK_RESEARCH_LOG, DIRT_ORE));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
-          BLANK_RESEARCH_LOG, SAND_ORE));
+        addShapelessRecipe(event, false, "biome_log", BIOME_LOG,
+          BLANK_RESEARCH_LOG, DIRT_ORE);
+        addShapelessRecipe(event, false, "biome_log2", BIOME_LOG,
+          BLANK_RESEARCH_LOG, SAND_ORE);
 
         for (Item vItem : Item.REGISTRY) {
             if (vItem instanceof ItemSpade) {
@@ -50,7 +51,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                 nbt.setInteger("Damage", max);
                 ItemStack result = new ItemStack(SOIL_SAMPLING_KIT);
                 result.setTagCompound(nbt);
-                GameRegistry.addRecipe(new ShapedOreRecipe(result,
+                addRecipe(event, false, vItem.getRegistryName().getResourcePath() + "soil", result,
                   "MKS",
                   "WIW",
                   " W ",
@@ -59,9 +60,9 @@ public class NaturalPhilosophyModule extends ContentModule {
                   'S', SUGAR,
                   'W', POTIONITEM,
                   'I', vItem
-                ));
+                );
             }
-        }*/
+        }
     }
 
     @SideOnly(Side.CLIENT)
