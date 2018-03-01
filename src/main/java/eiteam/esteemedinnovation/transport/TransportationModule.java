@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.transport;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.transport.block.BlockPlonker;
@@ -20,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -38,8 +40,13 @@ import java.util.function.Supplier;
 
 import static eiteam.esteemedinnovation.commons.Config.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static eiteam.esteemedinnovation.materials.MaterialsModule.COPPER_LIQUID;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static eiteam.esteemedinnovation.woodcone.WoodenConeModule.WOODEN_CONE;
+import static net.minecraft.init.Blocks.IRON_BARS;
 
 public class TransportationModule extends ContentModule implements ConfigurableModule {
     public static Block ARCHIMEDES_SCREW;
@@ -114,120 +121,118 @@ public class TransportationModule extends ContentModule implements ConfigurableM
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enablePump) {
-            BookRecipeRegistry.addRecipe("pump1", new ShapedOreRecipe(ARCHIMEDES_SCREW,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enablePump) {
+            addRecipe(event, true, "pump1", ARCHIMEDES_SCREW,
               "gng",
               "iii",
               "ngn",
               'i', PLATE_THIN_BRASS,
               'n', NUGGET_BRASS,
               'g', PANE_GLASS_COLORLESS
-            ));
-            BookRecipeRegistry.addRecipe("pump2", new ShapedOreRecipe(ARCHIMEDES_SCREW,
+            );
+            addRecipe(event, true, "pump2", ARCHIMEDES_SCREW,
               "gng",
               "iii",
               "ngn",
               'i', INGOT_BRASS,
               'n', NUGGET_BRASS,
               'g', PANE_GLASS_COLORLESS
-            ));
+            );
         }
-        if (Config.enableFan) {
-            BookRecipeRegistry.addRecipe("fan1", new ShapedOreRecipe(FAN,
+        if (enableFan) {
+            addRecipe(event, true, "fan1", FAN,
               "xxx",
               "btb",
               "xxx",
               'x', INGOT_BRASS,
               'b', IRON_BARS,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("fan2", new ShapedOreRecipe(FAN,
+            );
+            addRecipe(event, true, "fan2", FAN,
               "xxx",
               "btb",
               "xxx",
               'x', PLATE_THIN_BRASS,
               'b', IRON_BARS,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            if (Config.enableVacuum) {
-                BookRecipeRegistry.addRecipe("vacuum1", new ShapedOreRecipe(VACUUM,
+            );
+            if (enableVacuum) {
+                addRecipe(event, true, "vacuum1", VACUUM,
                   " x ",
                   "pfx",
                   " x ",
                   'x', INGOT_BRASS,
                   'p', BRASS_PIPE,
                   'f', FAN
-                ));
-                BookRecipeRegistry.addRecipe("vacuum2", new ShapedOreRecipe(VACUUM,
+                );
+                addRecipe(event, true, "vacuum2", VACUUM,
                   " x ",
                   "pfx",
                   " x ",
                   'x', PLATE_THIN_BRASS,
                   'p', BRASS_PIPE,
                   'f', FAN
-                ));
+                );
             }
         }
-        if (Config.enablePlonker) {
-            BookRecipeRegistry.addRecipe("plonker", new ShapedOreRecipe(PLONKER,
+        if (enablePlonker) {
+            addRecipe(event, true, "plonker", PLONKER,
               "ccb",
               "c r",
               "ccb",
               'c', COBBLESTONE_ORE,
               'b', PLATE_THIN_BRASS,
               'r', DUST_REDSTONE
+            );
+        }
+        if (enableMortar) {
+            addRecipe(event, true, "itemMortar1", ITEM_MORTAR,
+              "p p",
+              "pbp",
+              "ccc",
+              'p', PLATE_THIN_BRASS,
+              'c', PLATE_THIN_COPPER,
+              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
+            ));
+            addRecipe(event, true, "itemMortar2", ITEM_MORTAR,
+              "p p",
+              "pbp",
+              "ccc",
+              'p', INGOT_BRASS,
+              'c', PLATE_THIN_COPPER,
+              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
+            ));
+            addRecipe(event, true, "itemMortar3", ITEM_MORTAR,
+              "p p",
+              "pbp",
+              "ccc",
+              'p', PLATE_THIN_BRASS,
+              'c', INGOT_COPPER,
+              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
+            ));
+            addRecipe(event, true, "itemMortar4", ITEM_MORTAR,
+              "p p",
+              "pbp",
+              "ccc",
+              'p', INGOT_BRASS,
+              'c', INGOT_COPPER,
+              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
             ));
         }
-        if (Config.enableMortar) {
-            BookRecipeRegistry.addRecipe("itemMortar1", new ShapedOreRecipe(ITEM_MORTAR,
-              "p p",
-              "pbp",
-              "ccc",
-              'p', PLATE_THIN_BRASS,
-              'c', PLATE_THIN_COPPER,
-              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
-            )));
-            BookRecipeRegistry.addRecipe("itemMortar2", new ShapedOreRecipe(ITEM_MORTAR,
-              "p p",
-              "pbp",
-              "ccc",
-              'p', INGOT_BRASS,
-              'c', PLATE_THIN_COPPER,
-              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
-            )));
-            BookRecipeRegistry.addRecipe("itemMortar3", new ShapedOreRecipe(ITEM_MORTAR,
-              "p p",
-              "pbp",
-              "ccc",
-              'p', PLATE_THIN_BRASS,
-              'c', INGOT_COPPER,
-              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
-            )));
-            BookRecipeRegistry.addRecipe("itemMortar4", new ShapedOreRecipe(ITEM_MORTAR,
-              "p p",
-              "pbp",
-              "ccc",
-              'p', INGOT_BRASS,
-              'c', INGOT_COPPER,
-              'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
-            )));
-        }
-        if (Config.enableAstrolabe) {
-            BookRecipeRegistry.addRecipe("astrolabe", new ShapedOreRecipe(ASTROLABE,
+        if (enableAstrolabe) {
+            addRecipe(event, true, "astrolabe", ASTROLABE,
               " x ",
               "xrx",
               " x ",
               'x', INGOT_BRASS,
               'r', DUST_REDSTONE
-            ));
+            );
         }
-        if (Config.enableFunnel) {
+        if (enableFunnel) {
             CrucibleRegistry.registerDunkRecipe(
               Item.getItemFromBlock(WOODEN_CONE), COPPER_LIQUID, 45, new ItemStack(FUNNEL));
         }
-        */
     }
 
     @Override
