@@ -1,6 +1,8 @@
 package eiteam.esteemedinnovation.woodcone;
 
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
+import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.commons.util.RecipeUtility;
@@ -8,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,26 +34,25 @@ public class WoodenConeModule extends ContentModule implements ConfigurableModul
     }
 
     @Override
-    public void recipes(Side side) {
-        if (removeHopperRecipe) {
-            RecipeUtility.removeRecipeByOutput(Item.getItemFromBlock(Blocks.HOPPER));
-        }
-        /*BookRecipeRegistry.addRecipe("woodenCone", new ShapedOreRecipe(WOODEN_CONE,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        addRecipe(event, true, "woodenCone", WOODEN_CONE,
           " s ",
           "p p",
           "l l",
           's', OreDictEntries.STICK_WOOD,
           'p', OreDictEntries.PLANK_WOOD,
           'l', OreDictEntries.LOG_WOOD
-        ));
+        );
 
         CrucibleRegistry.registerDunkRecipe(Item.getItemFromBlock(WOODEN_CONE), IRON_LIQUID, 45,
           new ItemStack(net.minecraft.init.Blocks.HOPPER));
-          */
     }
 
     @Override
     public void finish(Side side) {
+        if (removeHopperRecipe) {
+            RecipeUtility.removeRecipeByOutput(Item.getItemFromBlock(Blocks.HOPPER));
+        }
         BookPageRegistry.addCategoryToSection(MISC_SECTION,
           new BookCategory("category.WoodenCone.name",
             new BookEntry("research.WoodenCone.name",
