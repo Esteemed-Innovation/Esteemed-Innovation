@@ -3,11 +3,14 @@ package eiteam.esteemedinnovation.tools;
 import baubles.api.BaubleType;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
+import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.api.tool.SteamToolUpgrade;
 import eiteam.esteemedinnovation.api.tool.ToolUpgradeRegistry;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
+import eiteam.esteemedinnovation.metalcasting.mold.ItemMold;
 import eiteam.esteemedinnovation.misc.ItemBauble;
 import eiteam.esteemedinnovation.tools.standard.*;
 import eiteam.esteemedinnovation.tools.steam.*;
@@ -19,8 +22,10 @@ import eiteam.esteemedinnovation.tools.steam.upgrades.drillhead.SteamDrillHeadUp
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -37,8 +42,20 @@ import java.util.function.Supplier;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_TOOL_UPGRADES;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_GILDED_IRON;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.heater.HeaterModule.STEAM_HEATER;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.BRASS_LIQUID;
+import static eiteam.esteemedinnovation.materials.MaterialsModule.GOLD_LIQUID;
+import static eiteam.esteemedinnovation.metalcasting.MetalcastingModule.MOLD_ITEM;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static eiteam.esteemedinnovation.smasher.SmasherModule.ROCK_SMASHER;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
+import static eiteam.esteemedinnovation.transport.TransportationModule.FAN;
+import static eiteam.esteemedinnovation.transport.TransportationModule.VALVE_PIPE;
+import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Items.*;
 
 public class ToolsModule extends ContentModule implements ConfigurableModule {
     private static final int STEAM_TOOL_CONSUMPTION_DEFAULT = 800;
@@ -172,29 +189,26 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
         RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
 
-
-        //TODO: transfer recipes to json
-        /*
-        BookRecipeRegistry.addRecipe("wrench1", new ShapedOreRecipe(WRENCH,
+        addRecipe(event, true, "wrench1", WRENCH,
           "  i",
           " bb",
           "b  ",
           'i', INGOT_IRON,
           'b', PLATE_THIN_BRASS
-        ));
-        BookRecipeRegistry.addRecipe("wrench2", new ShapedOreRecipe(WRENCH,
+        );
+        addRecipe(event, true, "wrench2", WRENCH,
           "  i",
           " bb",
           "b  ",
           'i', INGOT_IRON,
           'b', INGOT_BRASS
-        ));
+        );
 
-        if (Config.enableSurvivalist) {
-            BookRecipeRegistry.addRecipe("survivalist", new ShapedOreRecipe(SURVIVALIST_TOOLKIT,
+        if (enableSurvivalist) {
+            addRecipe(event, true, "survivalist", SURVIVALIST_TOOLKIT,
               "b s",
               "xwx",
               "xxx",
@@ -202,12 +216,12 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               's', STRING_ORE,
               'b', BRICK,
               'w', STICK_WOOD
-            ));
+            );
         }
 
-        if (Config.enableSteamTools) {
+        if (enableSteamTools) {
             ItemStack drill = new ItemStack(STEAM_DRILL, 1, STEAM_DRILL.getMaxDamage() - 1);
-            BookRecipeRegistry.addRecipe("drill1", new ShapedOreRecipe(drill,
+            addRecipe(event, true, "drill1", drill,
               "xii",
               "pti",
               "xpx",
@@ -215,8 +229,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', INGOT_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("drill2", new ShapedOreRecipe(drill,
+            );
+            addRecipe(event, true, "drill2", drill,
               "xii",
               "pti",
               "xpx",
@@ -224,8 +238,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', INGOT_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("drill3", new ShapedOreRecipe(drill,
+            );
+            addRecipe(event, true, "drill3", drill,
               "xii",
               "pti",
               "xpx",
@@ -233,8 +247,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', PLATE_THIN_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("drill4", new ShapedOreRecipe(drill,
+            );
+            addRecipe(event, true, "drill4", drill,
               "xii",
               "pti",
               "xpx",
@@ -242,10 +256,10 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', PLATE_THIN_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
+            );
 
             ItemStack saw = new ItemStack(STEAM_SAW, 1, STEAM_SAW.getMaxDamage() - 1);
-            BookRecipeRegistry.addRecipe("axe1", new ShapedOreRecipe(saw,
+            addRecipe(event, true, "axe1", saw,
               "ini",
               "ptn",
               "xpi",
@@ -254,8 +268,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
-            ));
-            BookRecipeRegistry.addRecipe("axe2", new ShapedOreRecipe(saw,
+            );
+            addRecipe(event, true, "axe2", saw,
               "ini",
               "ptn",
               "xpi",
@@ -264,8 +278,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
-            ));
-            BookRecipeRegistry.addRecipe("axe3", new ShapedOreRecipe(saw,
+            );
+            addRecipe(event, true, "axe3", saw,
               "ini",
               "ptn",
               "xpi",
@@ -274,8 +288,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
-            ));
-            BookRecipeRegistry.addRecipe("axe4", new ShapedOreRecipe(saw,
+            );
+            addRecipe(event, true, "axe4", saw,
               "ini",
               "ptn",
               "xpi",
@@ -284,10 +298,10 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
-            ));
+            );
 
             ItemStack shovel = new ItemStack(STEAM_SHOVEL, 1, STEAM_SHOVEL.getMaxDamage() - 1);
-            BookRecipeRegistry.addRecipe("shovel1", new ShapedOreRecipe(shovel,
+            addRecipe(event, true, "shovel1", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -295,8 +309,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', INGOT_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("shovel2", new ShapedOreRecipe(shovel,
+            );
+            addRecipe(event, true, "shovel2", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -304,8 +318,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', INGOT_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("shovel3", new ShapedOreRecipe(shovel,
+            );
+            addRecipe(event, true, "shovel3", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -313,8 +327,8 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', PLATE_THIN_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
-            BookRecipeRegistry.addRecipe("shovel4", new ShapedOreRecipe(shovel,
+            );
+            addRecipe(event, true, "shovel4", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -322,13 +336,13 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'i', PLATE_THIN_IRON,
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-            ));
+            );
 
             for (Map.Entry<String, DrillHeadMaterial> entry : DrillHeadMaterial.materials.entrySet()) {
                 String materialString = entry.getKey();
                 DrillHeadMaterial headMat = entry.getValue();
                 if (headMat.standard) {
-                    GameRegistry.addRecipe(new DrillHeadRecipe(DRILL_HEAD,
+                    addRecipe(event, false,"drillHead1", new DrillHeadRecipe(DRILL_HEAD,
                       " n ",
                       "iii",
                       "ppp",
@@ -337,7 +351,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                       'p', PLATE_THIN_IRON)
                     );
                 } else {
-                    GameRegistry.addRecipe(new DrillHeadRecipe(DRILL_HEAD,
+                    addRecipe(event, false,"drillHead2", new DrillHeadRecipe(DRILL_HEAD,
                       " g ",
                       "ggg",
                       "ppp",
@@ -347,30 +361,30 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                 }
             }
 
-            if (Config.enableBigDrill) {
-                BookRecipeRegistry.addRecipe("bigDrill", new ShapedOreRecipe(BIG_DRILL,
+            if (enableBigDrill) {
+                addRecipe(event, true, "bigDrill", BIG_DRILL,
                   " p ",
                   "pip",
                   "ibi",
                   'p', PLATE_THIN_IRON,
                   'i', INGOT_IRON,
                   'b', BLOCK_IRON
-                ));
+                );
             }
-            if (Config.enableBattleDrill) {
-                BookRecipeRegistry.addRecipe("battleDrill",
-                  new ShapedOreRecipe(BATTLE_DRILL,
+            if (enableBattleDrill) {
+                addRecipe(event, true, "battleDrill",
+                  BATTLE_DRILL,
                     " s ",
                     "sbs",
                     " p ",
                     's', IRON_SWORD,
                     'b', PLATE_THIN_BRASS,
                     'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableStoneGrinder) {
-                BookRecipeRegistry.addRecipe("stoneGrinder",
-                  new ShapedOreRecipe(STONE_GRINDER,
+            if (enableStoneGrinder) {
+                addRecipe(event, true, "stoneGrinder",
+                  STONE_GRINDER,
                     "i i",
                     "ctc",
                     "pcp",
@@ -378,46 +392,46 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                     'c', COBBLESTONE_ORE,
                     'p', PLATE_THIN_IRON,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enablePreciseCuttingHead) {
-                BookRecipeRegistry.addRecipe("preciseCuttingHead",
-                  new ShapedOreRecipe(PRECISE_CUTTING_HEAD,
+            if (enablePreciseCuttingHead) {
+                addRecipe(event, true, "preciseCuttingHead",
+                  PRECISE_CUTTING_HEAD,
                     "f f",
                     "pdp",
                     "p p",
                     'f', FLINT,
                     'p', PLATE_THIN_BRASS,
                     'd', GEM_DIAMOND
-                  ));
+                  );
             }
-            if (Config.enableThermalDrill) {
-                BookRecipeRegistry.addRecipe("thermalDrill",
-                  new ShapedOreRecipe(THERMAL_DRILL,
+            if (enableThermalDrill) {
+                addRecipe(event, true, "thermalDrill",
+                  THERMAL_DRILL,
                     " b ",
                     "bnb",
                     "iii",
                     'b', BLAZE_ROD,
                     'n', NETHER_BRICK,
                     'i', INGOT_BRASS
-                  ));
+                  );
             }
-            if (Config.enableFortune) {
+            if (enableFortune) {
                 ItemStack fortuneBook = new ItemStack(ENCHANTED_BOOK);
                 fortuneBook.addEnchantment(Enchantments.FORTUNE, 3);
-                BookRecipeRegistry.addRecipe("multiplicativeResonator",
-                  new ShapedOreRecipe(MULTIPLICATIVE_RESONATOR,
+                addRecipe(event, true, "multiplicativeResonator",
+                  MULTIPLICATIVE_RESONATOR,
                     "rgr",
                     "rbr",
                     "rgr",
                     'r', DUST_REDSTONE,
                     'g', PLATE_THIN_GILDED_IRON,
                     'b', fortuneBook
-                  ));
+                  );
             }
-            if (Config.enableChargePlacer) {
-                BookRecipeRegistry.addRecipe("chargePlacer",
-                  new ShapedOreRecipe(CALAMITY_INJECTOR,
+            if (enableChargePlacer) {
+                addRecipe(event, true, "chargePlacer",
+                  CALAMITY_INJECTOR,
                     "g g",
                     "vbv",
                     "sps",
@@ -426,104 +440,104 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                     'b', STONE_BUTTON,
                     's', BRASS_PIPE,
                     'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableInternalProcessingUnit) {
-                BookRecipeRegistry.addRecipe("internalProcessingUnit",
-                  new ShapedOreRecipe(INTERNAL_PROCESSING_UNIT,
+            if (enableInternalProcessingUnit) {
+                addRecipe(event, true, "internalProcessingUnit",
+                  INTERNAL_PROCESSING_UNIT,
                     "sco",
                     's', ROCK_SMASHER,
                     'c', CHEST,
                     'o', OBSIDIAN
-                  ));
+                  );
             }
-            if (Config.enableLeafBlower) {
-                BookRecipeRegistry.addRecipe("leafBlower",
-                  new ShapedOreRecipe(LEAF_BLOWER,
+            if (enableLeafBlower) {
+                addRecipe(event, true, "leafBlower",
+                  LEAF_BLOWER,
                     " p ",
                     "ptp",
                     " p ",
                     'p', PLATE_THIN_BRASS,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableTreeFeller) {
-                BookRecipeRegistry.addRecipe("treeFeller",
-                  new ShapedOreRecipe(TIMBER_CHAIN,
+            if (enableTreeFeller) {
+                addRecipe(event, true, "treeFeller",
+                  TIMBER_CHAIN,
                     "fpf",
                     "p p",
                     "fpf",
                     'f', FLINT,
                     'p', PLATE_THIN_IRON
-                  ));
+                  );
             }
-            if (Config.enableChainsaw) {
-                BookRecipeRegistry.addRecipe("chainsaw",
-                  new ShapedOreRecipe(CHAINSAW,
+            if (enableChainsaw) {
+                addRecipe(event, true, "chainsaw",
+                  CHAINSAW,
                     " s ",
                     "sps",
                     " t ",
                     's', IRON_SWORD,
                     'p', PLATE_THIN_BRASS,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableForestFire) {
-                BookRecipeRegistry.addRecipe("forestFire",
-                  new ShapedOreRecipe(FOREST_FIRE,
+            if (enableForestFire) {
+                addRecipe(event, true, "forestFire",
+                  FOREST_FIRE,
                     " b ",
                     "btb",
                     " b ",
                     'b', BLAZE_ROD,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableCultivator) {
-                BookRecipeRegistry.addRecipe("cultivator",
-                  new ShapedOreRecipe(CULTIVATOR,
+            if (enableCultivator) {
+                addRecipe(event, true, "cultivator",
+                  CULTIVATOR,
                     "zsz",
                     " z ",
                     'z', PLATE_THIN_ZINC,
                     's', STICK_WOOD
-                  ));
+                  );
             }
-            if (Config.enableRotaryBlades) {
-                BookRecipeRegistry.addRecipe("rotaryBlades",
-                  new ShapedOreRecipe(ROTARY_BLADES,
+            if (enableRotaryBlades) {
+                addRecipe(event, true, "rotaryBlades",
+                  ROTARY_BLADES,
                     " f ",
                     "ftf",
                     " f ",
                     'f', FLINT,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableSifter) {
-                BookRecipeRegistry.addRecipe("sifter",
-                  new ShapedOreRecipe(SIFTER,
+            if (enableSifter) {
+                addRecipe(event, true, "sifter",
+                  SIFTER,
                     " p ",
                     "ctc",
                     " p ",
                     'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                     'c', COBBLESTONE_ORE,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableBackhoe) {
-                BookRecipeRegistry.addRecipe("backhoe",
-                  new ShapedOreRecipe(BACKHOE,
+            if (enableBackhoe) {
+                addRecipe(event, true, "backhoe",
+                  BACKHOE,
                     "s",
                     "p",
                     "p",
                     's', BRASS_SHOVEL,
                     'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
-                  ));
+                  );
             }
-            if (Config.enableTheVoid) {
-                BookRecipeRegistry.addRecipe("theVoid", new ShapelessOreRecipe(THE_VOID, ENDER_CHEST, HOPPER));
+            if (enableTheVoid) {
+                addShapelessRecipe(event, true, "theVoid", THE_VOID, ENDER_CHEST, HOPPER);
             }
-            if (Config.enableAutosmelting) {
-                BookRecipeRegistry.addRecipe("autosmelting",
-                  new ShapedOreRecipe(EXOTHERMIC_PROJECTOR,
+            if (enableAutosmelting) {
+                addRecipe(event, true, "autosmelting",
+                  EXOTHERMIC_PROJECTOR,
                     " f ",
                     " h ",
                     "rpr",
@@ -531,25 +545,25 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                     'h', STEAM_HEATER,
                     'r', BLAZE_ROD,
                     'p', BLAZE_POWDER
-                  ));
+                  );
             }
-            if (Config.enableOverclocker) {
-                BookRecipeRegistry.addRecipe("overclocker",
-                  new ShapedOreRecipe(OVERCLOCKER,
+            if (enableOverclocker) {
+                addRecipe(event, true, "overclocker",
+                  OVERCLOCKER,
                     "r r",
                     "btb",
                     "r r",
                     'r', DUST_REDSTONE,
                     'b', INGOT_BRASS,
                     't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
-                  ));
+                  );
             }
 
         }
 
         List<Item> castableTools = Arrays.asList(GOLDEN_AXE, GOLDEN_PICKAXE, GOLDEN_SHOVEL, GOLDEN_SWORD, GOLDEN_HOE);
 
-        if (Config.removeVanillaMetalToolRecipes) {
+        if (removeVanillaMetalToolRecipes) {
             castableTools.forEach(RecipeUtility::removeRecipeByOutput);
         }
 
@@ -564,12 +578,11 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
         CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.SWORD.createItemStack(MOLD_ITEM), new ItemStack(BRASS_SWORD));
         CrucibleRegistry.registerMoldingRecipe(BRASS_LIQUID, ItemMold.Type.HOE.createItemStack(MOLD_ITEM), new ItemStack(BRASS_HOE));
 
-        addAxeRecipe(GILDED_IRON_AXE, INGOT_GILDED_IRON);
-        addPickaxeRecipe(GILDED_IRON_PICKAXE, INGOT_GILDED_IRON);
-        addShovelRecipe(GILDED_IRON_SHOVEL, INGOT_GILDED_IRON);
-        addSwordRecipe(GILDED_IRON_SWORD, INGOT_GILDED_IRON);
-        addHoeRecipe(GILDED_IRON_HOE, INGOT_GILDED_IRON);
-        */
+        addAxeRecipe(event, GILDED_IRON_AXE, INGOT_GILDED_IRON);
+        addPickaxeRecipe(event, GILDED_IRON_PICKAXE, INGOT_GILDED_IRON);
+        addShovelRecipe(event, GILDED_IRON_SHOVEL, INGOT_GILDED_IRON);
+        addSwordRecipe(event, GILDED_IRON_SWORD, INGOT_GILDED_IRON);
+        addHoeRecipe(event, GILDED_IRON_HOE, INGOT_GILDED_IRON);
     }
 
     @Override
@@ -892,7 +905,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
         battleDrillConsumption = config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Steam consumption for the " +
             "BattleDrill. This is not the actual amount of steam, but the relative item damage.",
           BATTLE_DRILL_CONSUMPTION_DEFAULT).getInt();
-        blacklistedStoneGrinderNuggets = Arrays.asList(config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[] {}).getStringList());
+        blacklistedStoneGrinderNuggets = Arrays.asList(config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[]{}).getStringList());
 
         removeVanillaMetalToolRecipes = config.get(CATEGORY_ITEMS, "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
     }
@@ -906,75 +919,75 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     public boolean isRecipeEnabled(String configSetting) {
         return RECIPE_CHECKERS.get(configSetting).get();
     }
-/*
-    private static void addAxeRecipe(Item out, String material) {
-        addAxeRecipe(new ItemStack(out), material);
+
+    private static void addAxeRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {
+        addAxeRecipe(event, new ItemStack(out), material);
     }
 
-    private static void addAxeRecipe(ItemStack out, String material) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
+    private static void addAxeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
+        addRecipe(event, false, material + "Axe", out,
           "xx",
           "xs",
           " s",
           'x', material,
           's', STICK_WOOD
-        ));
+        );
     }
 
-    private static void addPickaxeRecipe(Item out, String material) {
-        addPickaxeRecipe(new ItemStack(out), material);
+    private static void addPickaxeRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {
+        addPickaxeRecipe(event, new ItemStack(out), material);
     }
 
-    private static void addPickaxeRecipe(ItemStack out, String material) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
+    private static void addPickaxeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
+        addRecipe(event, false, material + "Pickaxe", out,
           "xxx",
           " s ",
           " s ",
           'x', material,
           's', STICK_WOOD
-        ));
+        );
     }
 
-    private static void addShovelRecipe(Item out, String material) {
-        addShovelRecipe(new ItemStack(out), material);
+    private static void addShovelRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {
+        addShovelRecipe(event, new ItemStack(out), material);
     }
 
-    private static void addShovelRecipe(ItemStack out, String material) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
+    private static void addShovelRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
+        addRecipe(event, false, material + "Shovel", out,
           "x",
           "s",
           "s",
           'x', material,
           's', STICK_WOOD
-        ));
+        );
     }
 
-    private static void addSwordRecipe(Item out, String material) {
-        addSwordRecipe(new ItemStack(out), material);
+    private static void addSwordRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {
+        addSwordRecipe(event, new ItemStack(out), material);
     }
 
-    private static void addSwordRecipe(ItemStack out, String material) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
+    private static void addSwordRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
+        addRecipe(event, false, material + "Sword", out,
           "x",
           "x",
           "s",
           'x', material,
           's', STICK_WOOD
-        ));
+        );
     }
 
-    private static void addHoeRecipe(Item out, String material) {
-        addHoeRecipe(new ItemStack(out), material);
+    private static void addHoeRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {
+        addHoeRecipe(event, new ItemStack(out), material);
     }
 
-    private static void addHoeRecipe(ItemStack out, String material) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(out,
-            "xx",
+    private static void addHoeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
+        addRecipe(event, false, material + "Hoe", out,
+          "xx",
           " s",
           " s",
           'x', material,
           's', STICK_WOOD
-        ));
+        );
     }
-    */
+
 }
