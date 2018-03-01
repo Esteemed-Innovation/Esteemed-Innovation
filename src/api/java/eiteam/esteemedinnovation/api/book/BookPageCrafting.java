@@ -54,6 +54,8 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         super(name);
         output = recipes[0].getRecipeOutput();
         for (IRecipe recipe : recipes) {
+            //TODO: Investigate how it could possibly be null
+            if(recipe != null) {
                 for (int i = 0; i < 9; i++) {
                     Collection<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
@@ -69,6 +71,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                     }
                     inputs[i] = newList;
                 }
+            }
         }
 
         recipe = recipes;

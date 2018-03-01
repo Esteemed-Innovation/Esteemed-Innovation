@@ -309,6 +309,7 @@ public class ContentModule {
     }
 
     public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, IRecipe recipe) {
+        recipe.setRegistryName(new ResourceLocation(Constants.EI_MODID, recipeName));
         event.getRegistry().register(recipe);
         if (createBookRecipeRegistry) {
             BookRecipeRegistry.addRecipe(recipeName, recipe);

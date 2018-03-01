@@ -394,7 +394,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     " l ",
                     " l ",
                     "lll",
-                    'e', GEM_EMERALD,
                     'l', new ItemStack(WOOL, 1, EnumDyeColor.BLACK.getMetadata())
             );
             if (enableEmeraldHat) {
@@ -434,7 +433,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         "p p",
                         "x x",
                         'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
                         'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
 
@@ -556,7 +554,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             "p p",
                             "s s",
                             "p p",
-                            'b', LEATHER_BOOTS,
                             'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                             's', INGOT_BRASS
                     );
@@ -564,7 +561,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             "p p",
                             "s s",
                             "p p",
-                            'b', LEATHER_BOOTS,
                             'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                             's', PLATE_THIN_BRASS
                     );
@@ -818,7 +814,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         "p p",
                         "x x",
                         'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
                         'p', LEATHER_BOOTS
                 );
             }

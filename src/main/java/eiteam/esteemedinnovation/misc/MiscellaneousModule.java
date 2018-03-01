@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types;
 import eiteam.esteemedinnovation.transport.TransportationModule;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -130,8 +131,8 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
           new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
           new ItemStack(NETHERBRICK, 3))));
 
-       /* addRecipe(event, true, "hellforgeBrick", new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
-          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata())); */
+        addShapelessRecipe(event, true, "hellforgeBrick", new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()));
         GameRegistry.addSmelting(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata()), 0F);
         GameRegistry.addSmelting(new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()), new ItemStack(NETHERBRICK), 0F);

@@ -39,7 +39,7 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
         setupItemBlock(event, THUMPER);
-        setupItemBlock(event, THUMPER, (CreativeTabs) null);
+        setupItemBlock(event, THUMPER_DUMMY, (CreativeTabs) null);
     }
 
     @Override
