@@ -5,12 +5,15 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,9 +22,10 @@ import java.util.Arrays;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_WEAPONS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.BRICK_HELLFORGE;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.DUST_NETHERBRICK;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Blocks.NETHER_BRICK;
+import static net.minecraft.init.Blocks.PISTON;
+import static net.minecraft.init.Items.FLINT_AND_STEEL;
 import static net.minecraft.init.Items.NETHERBRICK;
 
 public class MiscellaneousModule extends ContentModule implements ConfigurableModule {
@@ -37,101 +41,101 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*BookRecipeRegistry.addRecipe("piston1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        addRecipe(event, true, "piston1", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
           " x ",
           "xpx",
           " i ",
           'x', INGOT_BRASS,
           'p', PISTON,
           'i', TransportationModule.BRASS_PIPE
-        ));
-        BookRecipeRegistry.addRecipe("piston2", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
+        );
+        addRecipe(event, true, "piston2", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
           " x ",
           "xpx",
           " i ",
           'x', PLATE_THIN_BRASS,
           'p', PISTON,
           'i', TransportationModule.BRASS_PIPE
-        ));
-        BookRecipeRegistry.addRecipe("turbine1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
+        );
+        addRecipe(event, true, "turbine1", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
           " x ",
           "xnx",
           " x ",
           'x', INGOT_BRASS,
           'n', NUGGET_BRASS
-        ));
-        BookRecipeRegistry.addRecipe("turbine2", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
+        );
+        addRecipe(event, true, "turbine2", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
           " x ",
           "xnx",
           " x ",
           'x', PLATE_THIN_BRASS,
           'n', NUGGET_BRASS
-        ));
-        BookRecipeRegistry.addRecipe("stock", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.GUN_STOCK.getMetadata()),
+        );
+        addRecipe(event, true, "stock", new ItemStack(COMPONENT, 1, Types.GUN_STOCK.getMetadata()),
           "p  ",
           " p ",
           " pp",
           'p', PLANK_WOOD
-        ));
-        BookRecipeRegistry.addRecipe("flintlock1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
+        );
+        addRecipe(event, true, "flintlock1", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
           "f i",
           "iri",
           'i', INGOT_IRON,
           'r', DUST_REDSTONE,
           'f', FLINT_AND_STEEL
-        ));
-        BookRecipeRegistry.addRecipe("flintlock2", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
+        );
+        addRecipe(event, true, "flintlock2", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
           "f i",
           "iri",
           'i', PLATE_THIN_IRON,
           'r', DUST_REDSTONE,
           'f', FLINT_AND_STEEL
-        ));
-        if (Config.disableMainBarrelRecipe) {
-            BookRecipeRegistry.addRecipe("barrel1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+        );
+        if (disableMainBarrelRecipe) {
+            addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
               "i  ",
               " i ",
               "  i",
               'i', INGOT_IRON
-            ));
+            );
         } else {
-            BookRecipeRegistry.addRecipe("barrel1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+            addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
               "i  ",
               " i ",
               "  i",
               'i', PLATE_THIN_IRON
-            ));
+            );
         }
-        BookRecipeRegistry.addRecipe("barrel2", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+        addRecipe(event, true, "barrel2", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
           'i', PLATE_THIN_IRON
-        ));
-        BookRecipeRegistry.addRecipe("blunderBarrel1", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
+        );
+        addRecipe(event, true, "blunderBarrel1", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
           'i', INGOT_BRASS
-        ));
-        BookRecipeRegistry.addRecipe("blunderBarrel2", new ShapedOreRecipe(new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
+        );
+        addRecipe(event, true, "blunderBarrel2", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
           'i', PLATE_THIN_BRASS
-        ));
-*/
+        );
+
         SmasherRegistry.registerSmashable(NETHER_BRICK, new SmasherRegistry.TypicalBiFunction(Arrays.asList(
           new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
           new ItemStack(NETHERBRICK, 3))));
 
-       /* BookRecipeRegistry.addRecipe("hellforgeBrick", new ShapelessOreRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
-          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()))); */
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+       /* addRecipe(event, true, "hellforgeBrick", new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+          DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata())); */
+        GameRegistry.addSmelting(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata()), 0F);
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()), new ItemStack(NETHERBRICK), 0F);
+        GameRegistry.addSmelting(new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()), new ItemStack(NETHERBRICK), 0F);
+
     }
 
     @Override

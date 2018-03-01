@@ -170,7 +170,7 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
             addRecipe(event, true, "blankMold", BLANK_MOLD, "xx", 'x', BRICK);
         }
     }
-    
+
     @Override
     public void finish(Side side) {
         if (CrossMod.CRAFTTWEAKER) {
