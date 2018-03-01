@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 
 public class ThumperModule extends ContentModule implements ConfigurableModule {
     public static Block THUMPER;
@@ -38,10 +43,9 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableThumper) {
-            BookRecipeRegistry.addRecipe("thumper1", new ShapedOreRecipe(THUMPER,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableThumper) {
+            addRecipe(event, true, "thumper1", THUMPER,
               "pbp",
               "ebe",
               "xix",
@@ -50,8 +54,8 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
               'e', BRASS_PIPE,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'x', PLATE_THIN_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("thumper2", new ShapedOreRecipe(THUMPER,
+            );
+            addRecipe(event, true, "thumper2", THUMPER,
               "pbp",
               "ebe",
               "xix",
@@ -60,9 +64,8 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
               'e', BRASS_PIPE,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'x', INGOT_BRASS
-            ));
+            );
         }
-        */
     }
 
     @Override

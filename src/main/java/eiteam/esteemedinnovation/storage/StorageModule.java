@@ -106,7 +106,7 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
         if (enableCanister) {
             //TODO: make sure this works
             addRecipe(event, false, "canister2", new CanisterRecipe());
-            addRecipe(event, true, "canister",ITEM_CANISTER,
+            addRecipe(event, true, "canister", ITEM_CANISTER,
               " i ",
               "i i",
               " i ",
