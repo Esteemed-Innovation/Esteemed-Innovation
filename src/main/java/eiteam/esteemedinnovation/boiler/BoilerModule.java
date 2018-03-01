@@ -40,18 +40,18 @@ public class BoilerModule extends ContentModule implements ConfigurableModule {
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableBoiler) {
             addRecipe(event, true, "boiler1", BOILER,
-                    "xxx",
-                    "xfx",
-                    "xxx",
-                    'x', INGOT_BRASS,
-                    'f', FURNACE
+              "xxx",
+              "xfx",
+              "xxx",
+              'x', INGOT_BRASS,
+              'f', FURNACE
             );
-            addRecipe(event, true, "boiler2",BOILER,
-                    "xxx",
-                    "xfx",
-                    "xxx",
-                    'x', PLATE_THIN_BRASS,
-                    'f', FURNACE
+            addRecipe(event, true, "boiler2", BOILER,
+              "xxx",
+              "xfx",
+              "xxx",
+              'x', PLATE_THIN_BRASS,
+              'f', FURNACE
             );
         }
     }
