@@ -11,9 +11,11 @@ import eiteam.esteemedinnovation.steamsafety.gauge.TileEntitySteamGauge;
 import eiteam.esteemedinnovation.steamsafety.gauge.TileEntitySteamGaugeRenderer;
 import eiteam.esteemedinnovation.steamsafety.whistle.BlockWhistle;
 import eiteam.esteemedinnovation.steamsafety.whistle.TileEntityWhistle;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,6 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static net.minecraft.init.Items.COMPASS;
 
 public class SafetyModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_GAUGE;
@@ -55,46 +59,44 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableGauge) {
-            BookRecipeRegistry.addRecipe("gauge", new ShapedOreRecipe(STEAM_GAUGE,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableGauge) {
+            addRecipe(event, true, "gauge", STEAM_GAUGE,
               " x ",
               "xrx",
               " x ",
               'x', INGOT_BRASS,
-              'r', COMPASS));
+              'r', COMPASS);
         }
-        if (Config.enableRuptureDisc) {
-            BookRecipeRegistry.addRecipe("disc", new ShapedOreRecipe(RUPTURE_DISC,
+        if (enableRuptureDisc) {
+            addRecipe(event, true, "disc", RUPTURE_DISC,
               " x ",
               "xrx",
               " x ",
               'x', NUGGET_BRASS,
               'r', PLATE_THIN_ZINC
-            ));
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(RUPTURE_DISC, 1, 0),
-              PLATE_THIN_ZINC, new ItemStack(RUPTURE_DISC, 1, 1)));
+            );
+            addShapelessRecipe(event, false, "disc_repair", new ItemStack(RUPTURE_DISC, 1, 0),
+              PLATE_THIN_ZINC, new ItemStack(RUPTURE_DISC, 1, 1));
         }
-        if (Config.enableHorn) {
-            BookRecipeRegistry.addRecipe("whistle1", new ShapedOreRecipe(STEAM_WHISTLE,
+        if (enableHorn) {
+            addRecipe(event, true, "whistle1", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",
               'n', NUGGET_BRASS,
               'b', PLATE_THIN_BRASS,
               'p', TransportationModule.BRASS_PIPE
-            ));
-            BookRecipeRegistry.addRecipe("whistle2", new ShapedOreRecipe(STEAM_WHISTLE,
+            );
+            addRecipe(event, true, "whistle2", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",
               'n', NUGGET_BRASS,
               'b', INGOT_BRASS,
               'p', TransportationModule.BRASS_PIPE
-            ));
+            );
         }
-        */
     }
 
     @Override
