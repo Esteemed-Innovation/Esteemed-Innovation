@@ -4,12 +4,18 @@ import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_MACHINES;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_TURBINE;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
+import static eiteam.esteemedinnovation.tools.ToolsModule.TIMBER_CHAIN;
 
 public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     public static Block BUZZSAW;
@@ -28,19 +34,18 @@ public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableSaw) {
-            BookRecipeRegistry.addRecipe("saw", new ShapedOreRecipe(BUZZSAW,
-              "btb",
-              "p p",
-              "mmm",
-              'b', TIMBER_CHAIN,
-              't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
-              'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-              'm', PLATE_THIN_BRASS
-            ));
-        }*/
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableSaw) {
+            addRecipe(event, true, "saw", BUZZSAW,
+                    "btb",
+                    "p p",
+                    "mmm",
+                    'b', TIMBER_CHAIN,
+                    't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
+                    'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                    'm', PLATE_THIN_BRASS
+            );
+        }
     }
 
     @Override
