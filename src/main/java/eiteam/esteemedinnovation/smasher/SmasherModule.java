@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
@@ -20,6 +21,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_BLOCKS;
 import static eiteam.esteemedinnovation.commons.Config.CATEGORY_MACHINES;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
+import static eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types.BRASS_PISTON;
+import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 
 public class SmasherModule extends ContentModule implements ConfigurableModule {
     public static Block ROCK_SMASHER;
@@ -52,44 +56,42 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        //TODO: transfer recipes to json
-        /*if (Config.enableSmasher) {
-            BookRecipeRegistry.addRecipe("smasher1", new ShapedOreRecipe(ROCK_SMASHER,
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableSmasher) {
+            addRecipe(event, true, "smasher1", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
               'i', PLATE_THIN_IRON,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', PLATE_THIN_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("smasher2", new ShapedOreRecipe(ROCK_SMASHER,
+            );
+            addRecipe(event, true, "smasher2", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
               'i', INGOT_IRON,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', INGOT_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("smasher3", new ShapedOreRecipe(ROCK_SMASHER,
+            );
+            addRecipe(event, true, "smasher3", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
               'i', INGOT_IRON,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', PLATE_THIN_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("smasher4", new ShapedOreRecipe(ROCK_SMASHER,
+            );
+            addRecipe(event, true, "smasher4", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
               'i', PLATE_THIN_IRON,
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', INGOT_BRASS
-            ));
+            );
         }
         SMASHED_ORE.addSmelting();
-        */
     }
 
     @Override
