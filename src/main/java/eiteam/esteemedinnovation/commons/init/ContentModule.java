@@ -260,7 +260,7 @@ public class ContentModule {
     }
 
     /**
-     * Registers an item model for the given itemstack, based on its unlocalized name.
+     * Registers an item model for the given itemstack, based on its registry name.
      */
     protected void registerModelItemStack(ItemStack stack, String variant) {
         Item item = stack.getItem();

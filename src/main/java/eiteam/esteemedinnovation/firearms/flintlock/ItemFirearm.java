@@ -342,14 +342,14 @@ public class ItemFirearm extends Item implements Engineerable {
             Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
             return new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static void initializeEnhancementsNBT(ItemStack me, ItemStack stack) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             Enhancement enhancement = (Enhancement) stack.getItem();
             NBTTagCompound enhancements = new NBTTagCompound();
             enhancements.setString("id", enhancement.getID());
@@ -374,7 +374,7 @@ public class ItemFirearm extends Item implements Engineerable {
             UtilEnhancements.removeEnhancement(me);
             return new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

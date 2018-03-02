@@ -299,9 +299,9 @@ public class ItemRocketLauncher extends Item implements Engineerable {
     public ItemStack getStackInSlot(ItemStack me, int var1) {
         if (UtilEnhancements.hasEnhancement(me)) {
             Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
-            return item == null ? null : new ItemStack(item);
+            return item == null ? ItemStack.EMPTY : new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -319,9 +319,9 @@ public class ItemRocketLauncher extends Item implements Engineerable {
         if (UtilEnhancements.hasEnhancement(me)) {
             Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
             UtilEnhancements.removeEnhancement(me);
-            return item == null ? null : new ItemStack(item);
+            return item == null ? ItemStack.EMPTY : new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
