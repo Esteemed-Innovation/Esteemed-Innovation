@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.steamsafety;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.steamsafety.disc.TileEntityRuptureDisc;
@@ -61,7 +62,7 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableGauge) {
-            addRecipe(event, true, "gauge", STEAM_GAUGE,
+            RecipeUtility.addRecipe(event, true, "gauge", STEAM_GAUGE,
               " x ",
               "xrx",
               " x ",
@@ -69,18 +70,18 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
               'r', COMPASS);
         }
         if (enableRuptureDisc) {
-            addRecipe(event, true, "disc", RUPTURE_DISC,
+            RecipeUtility.addRecipe(event, true, "disc", RUPTURE_DISC,
               " x ",
               "xrx",
               " x ",
               'x', NUGGET_BRASS,
               'r', PLATE_THIN_ZINC
             );
-            addShapelessRecipe(event, false, "disc_repair", new ItemStack(RUPTURE_DISC, 1, 0),
+            RecipeUtility.addShapelessRecipe(event, false, "disc_repair", new ItemStack(RUPTURE_DISC, 1, 0),
               PLATE_THIN_ZINC, new ItemStack(RUPTURE_DISC, 1, 1));
         }
         if (enableHorn) {
-            addRecipe(event, true, "whistle1", STEAM_WHISTLE,
+            RecipeUtility.addRecipe(event, true, "whistle1", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",
@@ -88,7 +89,7 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
               'b', PLATE_THIN_BRASS,
               'p', TransportationModule.BRASS_PIPE
             );
-            addRecipe(event, true, "whistle2", STEAM_WHISTLE,
+            RecipeUtility.addRecipe(event, true, "whistle2", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",

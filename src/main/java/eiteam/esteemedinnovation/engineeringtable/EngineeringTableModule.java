@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.engineeringtable;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -32,7 +33,7 @@ public class EngineeringTableModule extends ContentModule implements Configurabl
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableEngineering) {
-            addRecipe(event, true, "engineering", ENGINEERING_TABLE,
+            RecipeUtility.addRecipe(event, true, "engineering", ENGINEERING_TABLE,
               "xzx",
               "x x",
               "xxx",

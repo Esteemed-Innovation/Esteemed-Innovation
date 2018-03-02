@@ -192,14 +192,14 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         RecipeSorter.register(Constants.EI_MODID + ":drill_head", DrillHeadRecipe.class, RecipeSorter.Category.SHAPED, "before:forge:shapedore");
 
-        addRecipe(event, true, "wrench1", WRENCH,
+        RecipeUtility.addRecipe(event, true, "wrench1", WRENCH,
           "  i",
           " bb",
           "b  ",
           'i', INGOT_IRON,
           'b', PLATE_THIN_BRASS
         );
-        addRecipe(event, true, "wrench2", WRENCH,
+        RecipeUtility.addRecipe(event, true, "wrench2", WRENCH,
           "  i",
           " bb",
           "b  ",
@@ -208,7 +208,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
         );
 
         if (enableSurvivalist) {
-            addRecipe(event, true, "survivalist", SURVIVALIST_TOOLKIT,
+            RecipeUtility.addRecipe(event, true, "survivalist", SURVIVALIST_TOOLKIT,
               "b s",
               "xwx",
               "xxx",
@@ -221,7 +221,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
 
         if (enableSteamTools) {
             ItemStack drill = new ItemStack(STEAM_DRILL, 1, STEAM_DRILL.getMaxDamage() - 1);
-            addRecipe(event, true, "drill1", drill,
+            RecipeUtility.addRecipe(event, true, "drill1", drill,
               "xii",
               "pti",
               "xpx",
@@ -230,7 +230,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "drill2", drill,
+            RecipeUtility.addRecipe(event, true, "drill2", drill,
               "xii",
               "pti",
               "xpx",
@@ -239,7 +239,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "drill3", drill,
+            RecipeUtility.addRecipe(event, true, "drill3", drill,
               "xii",
               "pti",
               "xpx",
@@ -248,7 +248,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "drill4", drill,
+            RecipeUtility.addRecipe(event, true, "drill4", drill,
               "xii",
               "pti",
               "xpx",
@@ -259,7 +259,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
             );
 
             ItemStack saw = new ItemStack(STEAM_SAW, 1, STEAM_SAW.getMaxDamage() - 1);
-            addRecipe(event, true, "axe1", saw,
+            RecipeUtility.addRecipe(event, true, "axe1", saw,
               "ini",
               "ptn",
               "xpi",
@@ -269,7 +269,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
             );
-            addRecipe(event, true, "axe2", saw,
+            RecipeUtility.addRecipe(event, true, "axe2", saw,
               "ini",
               "ptn",
               "xpi",
@@ -279,7 +279,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
             );
-            addRecipe(event, true, "axe3", saw,
+            RecipeUtility.addRecipe(event, true, "axe3", saw,
               "ini",
               "ptn",
               "xpi",
@@ -289,7 +289,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
               'n', NUGGET_IRON
             );
-            addRecipe(event, true, "axe4", saw,
+            RecipeUtility.addRecipe(event, true, "axe4", saw,
               "ini",
               "ptn",
               "xpi",
@@ -301,7 +301,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
             );
 
             ItemStack shovel = new ItemStack(STEAM_SHOVEL, 1, STEAM_SHOVEL.getMaxDamage() - 1);
-            addRecipe(event, true, "shovel1", shovel,
+            RecipeUtility.addRecipe(event, true, "shovel1", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -310,7 +310,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "shovel2", shovel,
+            RecipeUtility.addRecipe(event, true, "shovel2", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -319,7 +319,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "shovel3", shovel,
+            RecipeUtility.addRecipe(event, true, "shovel3", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -328,7 +328,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
               'p', BRASS_PIPE,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "shovel4", shovel,
+            RecipeUtility.addRecipe(event, true, "shovel4", shovel,
               "ixi",
               "ptx",
               "xpi",
@@ -342,7 +342,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                 String materialString = entry.getKey();
                 DrillHeadMaterial headMat = entry.getValue();
                 if (headMat.standard) {
-                    addRecipe(event, false,"drillHead1", new DrillHeadRecipe(DRILL_HEAD,
+                    RecipeUtility.addRecipe(event, false,"drillHead1", new DrillHeadRecipe(DRILL_HEAD,
                       " n ",
                       "iii",
                       "ppp",
@@ -351,7 +351,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                       'p', PLATE_THIN_IRON)
                     );
                 } else {
-                    addRecipe(event, false,"drillHead2", new DrillHeadRecipe(DRILL_HEAD,
+                    RecipeUtility.addRecipe(event, false,"drillHead2", new DrillHeadRecipe(DRILL_HEAD,
                       " g ",
                       "ggg",
                       "ppp",
@@ -362,7 +362,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
             }
 
             if (enableBigDrill) {
-                addRecipe(event, true, "bigDrill", BIG_DRILL,
+                RecipeUtility.addRecipe(event, true, "bigDrill", BIG_DRILL,
                   " p ",
                   "pip",
                   "ibi",
@@ -372,7 +372,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                 );
             }
             if (enableBattleDrill) {
-                addRecipe(event, true, "battleDrill",
+                RecipeUtility.addRecipe(event, true, "battleDrill",
                   BATTLE_DRILL,
                     " s ",
                     "sbs",
@@ -383,7 +383,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableStoneGrinder) {
-                addRecipe(event, true, "stoneGrinder",
+                RecipeUtility.addRecipe(event, true, "stoneGrinder",
                   STONE_GRINDER,
                     "i i",
                     "ctc",
@@ -395,7 +395,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enablePreciseCuttingHead) {
-                addRecipe(event, true, "preciseCuttingHead",
+                RecipeUtility.addRecipe(event, true, "preciseCuttingHead",
                   PRECISE_CUTTING_HEAD,
                     "f f",
                     "pdp",
@@ -406,7 +406,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableThermalDrill) {
-                addRecipe(event, true, "thermalDrill",
+                RecipeUtility.addRecipe(event, true, "thermalDrill",
                   THERMAL_DRILL,
                     " b ",
                     "bnb",
@@ -419,7 +419,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
             if (enableFortune) {
                 ItemStack fortuneBook = new ItemStack(ENCHANTED_BOOK);
                 fortuneBook.addEnchantment(Enchantments.FORTUNE, 3);
-                addRecipe(event, true, "multiplicativeResonator",
+                RecipeUtility.addRecipe(event, true, "multiplicativeResonator",
                   MULTIPLICATIVE_RESONATOR,
                     "rgr",
                     "rbr",
@@ -430,7 +430,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableChargePlacer) {
-                addRecipe(event, true, "chargePlacer",
+                RecipeUtility.addRecipe(event, true, "chargePlacer",
                   CALAMITY_INJECTOR,
                     "g g",
                     "vbv",
@@ -443,7 +443,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableInternalProcessingUnit) {
-                addRecipe(event, true, "internalProcessingUnit",
+                RecipeUtility.addRecipe(event, true, "internalProcessingUnit",
                   INTERNAL_PROCESSING_UNIT,
                     "sco",
                     's', ROCK_SMASHER,
@@ -452,7 +452,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableLeafBlower) {
-                addRecipe(event, true, "leafBlower",
+                RecipeUtility.addRecipe(event, true, "leafBlower",
                   LEAF_BLOWER,
                     " p ",
                     "ptp",
@@ -462,7 +462,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableTreeFeller) {
-                addRecipe(event, true, "treeFeller",
+                RecipeUtility.addRecipe(event, true, "treeFeller",
                   TIMBER_CHAIN,
                     "fpf",
                     "p p",
@@ -472,7 +472,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableChainsaw) {
-                addRecipe(event, true, "chainsaw",
+                RecipeUtility.addRecipe(event, true, "chainsaw",
                   CHAINSAW,
                     " s ",
                     "sps",
@@ -483,7 +483,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableForestFire) {
-                addRecipe(event, true, "forestFire",
+                RecipeUtility.addRecipe(event, true, "forestFire",
                   FOREST_FIRE,
                     " b ",
                     "btb",
@@ -493,7 +493,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableCultivator) {
-                addRecipe(event, true, "cultivator",
+                RecipeUtility.addRecipe(event, true, "cultivator",
                   CULTIVATOR,
                     "zsz",
                     " z ",
@@ -502,7 +502,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableRotaryBlades) {
-                addRecipe(event, true, "rotaryBlades",
+                RecipeUtility.addRecipe(event, true, "rotaryBlades",
                   ROTARY_BLADES,
                     " f ",
                     "ftf",
@@ -512,7 +512,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableSifter) {
-                addRecipe(event, true, "sifter",
+                RecipeUtility.addRecipe(event, true, "sifter",
                   SIFTER,
                     " p ",
                     "ctc",
@@ -523,7 +523,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableBackhoe) {
-                addRecipe(event, true, "backhoe",
+                RecipeUtility.addRecipe(event, true, "backhoe",
                   BACKHOE,
                     "s",
                     "p",
@@ -533,10 +533,10 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableTheVoid) {
-                addShapelessRecipe(event, true, "theVoid", THE_VOID, ENDER_CHEST, HOPPER);
+                RecipeUtility.addShapelessRecipe(event, true, "theVoid", THE_VOID, ENDER_CHEST, HOPPER);
             }
             if (enableAutosmelting) {
-                addRecipe(event, true, "autosmelting",
+                RecipeUtility.addRecipe(event, true, "autosmelting",
                   EXOTHERMIC_PROJECTOR,
                     " f ",
                     " h ",
@@ -548,7 +548,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
                   );
             }
             if (enableOverclocker) {
-                addRecipe(event, true, "overclocker",
+                RecipeUtility.addRecipe(event, true, "overclocker",
                   OVERCLOCKER,
                     "r r",
                     "btb",
@@ -925,7 +925,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addAxeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
-        addRecipe(event, false, material + "Axe", out,
+        RecipeUtility.addRecipe(event, false, material + "Axe", out,
           "xx",
           "xs",
           " s",
@@ -939,7 +939,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addPickaxeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
-        addRecipe(event, false, material + "Pickaxe", out,
+        RecipeUtility.addRecipe(event, false, material + "Pickaxe", out,
           "xxx",
           " s ",
           " s ",
@@ -953,7 +953,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addShovelRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
-        addRecipe(event, false, material + "Shovel", out,
+        RecipeUtility.addRecipe(event, false, material + "Shovel", out,
           "x",
           "s",
           "s",
@@ -967,7 +967,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addSwordRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
-        addRecipe(event, false, material + "Sword", out,
+        RecipeUtility.addRecipe(event, false, material + "Sword", out,
           "x",
           "x",
           "s",
@@ -981,7 +981,7 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addHoeRecipe(RegistryEvent.Register<IRecipe> event, ItemStack out, String material) {
-        addRecipe(event, false, material + "Hoe", out,
+        RecipeUtility.addRecipe(event, false, material + "Hoe", out,
           "xx",
           " s",
           " s",

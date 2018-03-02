@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.hammer;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,14 +44,14 @@ public class HammerModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableHammer) {
-            addRecipe(event, true, "hammer1", STEAM_HAMMER,
+            RecipeUtility.addRecipe(event, true, "hammer1", STEAM_HAMMER,
               " ix",
               "bix",
               'x', INGOT_BRASS,
               'i', INGOT_IRON,
               'b', BLOCK_IRON
             );
-            addRecipe(event, true, "hammer2", STEAM_HAMMER,
+            RecipeUtility.addRecipe(event, true, "hammer2", STEAM_HAMMER,
               " ix",
               "bix",
               'x', PLATE_THIN_BRASS,

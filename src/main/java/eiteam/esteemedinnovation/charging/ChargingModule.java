@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.charging;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableCharger) {
             if (enableChargingPad) {
-                addRecipe(event, true, "fillingPad1", FILLING_PAD,
+                RecipeUtility.addRecipe(event, true, "fillingPad1", FILLING_PAD,
                   "p p",
                   "pcp",
                   "pbp",
@@ -67,7 +68,7 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
                   'p', BRASS_PIPE,
                   'b', INGOT_BRASS
                 );
-                addRecipe(event, true, "fillingPad2", FILLING_PAD,
+                RecipeUtility.addRecipe(event, true, "fillingPad2", FILLING_PAD,
                   "p p",
                   "pcp",
                   "pbp",
@@ -76,7 +77,7 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
                   'b', PLATE_THIN_BRASS
                 );
             }
-            addRecipe(event, true, "filler", STEAM_FILLER,
+            RecipeUtility.addRecipe(event, true, "filler", STEAM_FILLER,
               " p ",
               "xpx",
               "xpx",
@@ -86,7 +87,7 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
         }
 
         if (enableSteamCell) {
-            addRecipe(event, true, "steamcell", STEAM_CELL_EMPTY,
+            RecipeUtility.addRecipe(event, true, "steamcell", STEAM_CELL_EMPTY,
               "nbn",
               "bpb",
               "nbn",
@@ -95,7 +96,7 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
               'p', BLAZE_POWDER
             );
             if (enableSteamCellBauble) {
-                addRecipe(event, true, "steamcellFiller", STEAM_CELL_FILLER,
+                RecipeUtility.addRecipe(event, true, "steamcellFiller", STEAM_CELL_FILLER,
                   " p ",
                   "i i",
                   "i i",

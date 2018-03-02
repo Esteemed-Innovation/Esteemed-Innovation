@@ -1,6 +1,7 @@
 package eiteam.esteemedinnovation.naturalphilosophy;
 
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
@@ -9,11 +10,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
@@ -33,14 +31,14 @@ public class NaturalPhilosophyModule extends ContentModule {
 
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
-        addShapelessRecipe(event, false, "blank_research_log", BLANK_RESEARCH_LOG,
+        RecipeUtility.addShapelessRecipe(event, false, "blank_research_log", BLANK_RESEARCH_LOG,
           PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER);
         //TODO: make sure this works
-        addRecipe(event, false, "research_log_copy", new ResearchLogCopyRecipe());
+        RecipeUtility.addRecipe(event, false, "research_log_copy", new ResearchLogCopyRecipe());
 
-        addShapelessRecipe(event, false, "biome_log", BIOME_LOG,
+        RecipeUtility.addShapelessRecipe(event, false, "biome_log", BIOME_LOG,
           BLANK_RESEARCH_LOG, DIRT_ORE);
-        addShapelessRecipe(event, false, "biome_log2", BIOME_LOG,
+        RecipeUtility.addShapelessRecipe(event, false, "biome_log2", BIOME_LOG,
           BLANK_RESEARCH_LOG, SAND_ORE);
 
         for (Item vItem : Item.REGISTRY) {
@@ -51,7 +49,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                 nbt.setInteger("Damage", max);
                 ItemStack result = new ItemStack(SOIL_SAMPLING_KIT);
                 result.setTagCompound(nbt);
-                addRecipe(event, false, vItem.getRegistryName().getResourcePath() + "soil", result,
+                RecipeUtility.addRecipe(event, false, vItem.getRegistryName().getResourcePath() + "soil", result,
                   "MKS",
                   "WIW",
                   " W ",

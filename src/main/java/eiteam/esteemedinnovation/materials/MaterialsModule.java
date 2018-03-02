@@ -8,6 +8,7 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
 import eiteam.esteemedinnovation.materials.raw.config.OreConfigurationParser;
@@ -160,23 +161,23 @@ public class MaterialsModule extends ContentModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         for (MetalBlockTypes type : MetalBlockTypes.values()) {
-            add3x3Recipe(event, false, type.getName(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
+            RecipeUtility.add3x3Recipe(event, false, type.getName(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
         }
 
-        addShapelessRecipe(event, false, BLOCK_BRASS, new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS);
-        addShapelessRecipe(event, false, BLOCK_COPPER, new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER);
-        addShapelessRecipe(event, false, BLOCK_ZINC, new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC);
-        addShapelessRecipe(event, false, BLOCK_GILDED_IRON, new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_BRASS, new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_COPPER, new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_ZINC, new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_GILDED_IRON, new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON);
 
-        addShapelessRecipe(event, false, INGOT_COPPER, new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER);
-        addShapelessRecipe(event, false, INGOT_ZINC, new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC);
-        addShapelessRecipe(event, false, INGOT_BRASS, new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS);
-        addShapelessRecipe(event, false, INGOT_GILDED_IRON, new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_COPPER, new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_ZINC, new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_BRASS, new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_GILDED_IRON, new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON);
 
-        add3x3Recipe(event, false, COPPER_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
-        add3x3Recipe(event, false, ZINC_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
-        add3x3Recipe(event, false, BRASS_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
-        add3x3Recipe(event, false, GILDED_IRON_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
+        RecipeUtility.add3x3Recipe(event, false, COPPER_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
+        RecipeUtility.add3x3Recipe(event, false, ZINC_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
+        RecipeUtility.add3x3Recipe(event, false, BRASS_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
+        RecipeUtility.add3x3Recipe(event, false, GILDED_IRON_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
 
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, OVERWORLD_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, NETHER_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);

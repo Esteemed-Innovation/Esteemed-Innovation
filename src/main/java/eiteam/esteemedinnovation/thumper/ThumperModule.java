@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -45,7 +46,7 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableThumper) {
-            addRecipe(event, true, "thumper1", THUMPER,
+            RecipeUtility.addRecipe(event, true, "thumper1", THUMPER,
               "pbp",
               "ebe",
               "xix",
@@ -55,7 +56,7 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'x', PLATE_THIN_BRASS
             );
-            addRecipe(event, true, "thumper2", THUMPER,
+            RecipeUtility.addRecipe(event, true, "thumper2", THUMPER,
               "pbp",
               "ebe",
               "xix",

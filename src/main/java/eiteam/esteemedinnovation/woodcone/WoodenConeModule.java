@@ -35,7 +35,7 @@ public class WoodenConeModule extends ContentModule implements ConfigurableModul
 
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
-        addRecipe(event, true, "woodenCone", WOODEN_CONE,
+        RecipeUtility.addRecipe(event, true, "woodenCone", WOODEN_CONE,
           " s ",
           "p p",
           "l l",

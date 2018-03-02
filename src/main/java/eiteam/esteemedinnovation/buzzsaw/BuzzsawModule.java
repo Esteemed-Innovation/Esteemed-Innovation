@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.buzzsaw;
 
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,7 @@ public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableSaw) {
-            addRecipe(event, true, "saw", BUZZSAW,
+            RecipeUtility.addRecipe(event, true, "saw", BUZZSAW,
                     "btb",
                     "p p",
                     "mmm",

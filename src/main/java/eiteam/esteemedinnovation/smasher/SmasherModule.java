@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -58,7 +59,7 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableSmasher) {
-            addRecipe(event, true, "smasher1", ROCK_SMASHER,
+            RecipeUtility.addRecipe(event, true, "smasher1", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
@@ -66,7 +67,7 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', PLATE_THIN_BRASS
             );
-            addRecipe(event, true, "smasher2", ROCK_SMASHER,
+            RecipeUtility.addRecipe(event, true, "smasher2", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
@@ -74,7 +75,7 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', INGOT_BRASS
             );
-            addRecipe(event, true, "smasher3", ROCK_SMASHER,
+            RecipeUtility.addRecipe(event, true, "smasher3", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",
@@ -82,7 +83,7 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
               'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
               'b', PLATE_THIN_BRASS
             );
-            addRecipe(event, true, "smasher4", ROCK_SMASHER,
+            RecipeUtility.addRecipe(event, true, "smasher4", ROCK_SMASHER,
               "bpi",
               "bpi",
               "bpi",

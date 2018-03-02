@@ -6,6 +6,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -83,7 +84,7 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableHeater) {
-            addRecipe(event, true, "heater1", STEAM_HEATER,
+            RecipeUtility.addRecipe(event, true, "heater1", STEAM_HEATER,
               "ccc",
               "xfx",
               " p ",
@@ -92,7 +93,7 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
               'f', FURNACE,
               'p', TransportationModule.BRASS_PIPE
             );
-            addRecipe(event, true, "heater2", STEAM_HEATER,
+            RecipeUtility.addRecipe(event, true, "heater2", STEAM_HEATER,
               "ccc",
               "xfx",
               " p ",

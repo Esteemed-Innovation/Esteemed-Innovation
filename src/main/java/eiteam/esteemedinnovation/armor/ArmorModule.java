@@ -34,10 +34,9 @@ import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.commons.visual.GenericModelLoaderLocationMatch;
 import eiteam.esteemedinnovation.engineeringtable.EngineeringTableModule;
-import eiteam.esteemedinnovation.firearms.FirearmModule;
-import eiteam.esteemedinnovation.storage.StorageModule;
 import eiteam.esteemedinnovation.storage.steam.ItemTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
@@ -354,7 +353,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableGoggles) {
-            addRecipe(event, true, "monocle1", MONOCLE,
+            RecipeUtility.addRecipe(event, true, "monocle1", MONOCLE,
                     " l ",
                     "l l",
                     "btb",
@@ -362,7 +361,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     'l', LEATHER_ORE,
                     't', SPYGLASS
             );
-            addRecipe(event, true, "monocle2", MONOCLE,
+            RecipeUtility.addRecipe(event, true, "monocle2", MONOCLE,
                     " l ",
                     "l l",
                     "btb",
@@ -370,7 +369,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     'l', LEATHER_ORE,
                     't', SPYGLASS
             );
-            addRecipe(event, true, "goggles1", GOGGLES,
+            RecipeUtility.addRecipe(event, true, "goggles1", GOGGLES,
                     " l ",
                     "l l",
                     "tbg",
@@ -379,7 +378,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     't', SPYGLASS,
                     'g', BLOCK_GLASS_COLORLESS
             );
-            addRecipe(event, true, "goggles2", GOGGLES,
+            RecipeUtility.addRecipe(event, true, "goggles2", GOGGLES,
                     " l ",
                     "l l",
                     "tbg",
@@ -390,20 +389,20 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
             );
         }
         if (enableTopHat) {
-            addRecipe(event, true, "hat", TOP_HAT,
+            RecipeUtility.addRecipe(event, true, "hat", TOP_HAT,
                     " l ",
                     " l ",
                     "lll",
                     'l', new ItemStack(WOOL, 1, EnumDyeColor.BLACK.getMetadata())
             );
             if (enableEmeraldHat) {
-                addShapelessRecipe(event, true, "hatEmerald",
+                RecipeUtility.addShapelessRecipe(event, true, "hatEmerald",
                         ENTREPRENEUR_TOP_HAT, TOP_HAT, BLOCK_EMERALD);
             }
         }
         if (enableExosuit) {
             if (enableSteamExosuit) {
-                addRecipe(event, true, "steamExoHead", STEAM_EXO_HEAD,
+                RecipeUtility.addRecipe(event, true, "steamExoHead", STEAM_EXO_HEAD,
                         "xyx",
                         "p p",
                         "xyx",
@@ -411,7 +410,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'y', NUGGET_BRASS,
                         'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
-                addRecipe(event, true, "steamExoBody",
+                RecipeUtility.addRecipe(event, true, "steamExoBody",
                         new ItemStack(STEAM_EXO_CHEST, 1, STEAM_EXO_CHEST.getMaxDamage() - 1),
                         "p p",
                         "ygy",
@@ -421,7 +420,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'g', STEAM_GAUGE,
                         'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
-                addRecipe(event, true, "steamExoLegs", STEAM_EXO_LEGS,
+                RecipeUtility.addRecipe(event, true, "steamExoLegs", STEAM_EXO_LEGS,
                         "yxy",
                         "p p",
                         "x x",
@@ -429,7 +428,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'y', NUGGET_BRASS,
                         'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
-                addRecipe(event, true, "steamExoFeet", STEAM_EXO_BOOTS,
+                RecipeUtility.addRecipe(event, true, "steamExoFeet", STEAM_EXO_BOOTS,
                         "p p",
                         "x x",
                         'x', PLATE_THIN_BRASS,
@@ -437,7 +436,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                 );
 
                 if (enableJetpack) {
-                    addRecipe(event, true, "jetpack1", JETPACK,
+                    RecipeUtility.addRecipe(event, true, "jetpack1", JETPACK,
                             "p p",
                             "ptg",
                             "p p",
@@ -445,7 +444,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'g', STEAM_GAUGE,
                             't', INGOT_BRASS
                     );
-                    addRecipe(event, true, "jetpack2", JETPACK,
+                    RecipeUtility.addRecipe(event, true, "jetpack2", JETPACK,
                             "p p",
                             "ptg",
                             "p p",
@@ -455,14 +454,14 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableWings) {
-                    addRecipe(event, true, "wings1", WINGS,
+                    RecipeUtility.addRecipe(event, true, "wings1", WINGS,
                             "xxx",
                             "ccc",
                             "c c",
                             'x', INGOT_BRASS,
                             'c', PLATE_THIN_COPPER
                     );
-                    addRecipe(event, true, "wings2", WINGS,
+                    RecipeUtility.addRecipe(event, true, "wings2", WINGS,
                             "xxx",
                             "ccc",
                             "c c",
@@ -471,7 +470,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enablePowerFist) {
-                    addRecipe(event, true, "powerFist1", POWER_FIST,
+                    RecipeUtility.addRecipe(event, true, "powerFist1", POWER_FIST,
                             "b i",
                             "bpi",
                             "b i",
@@ -479,7 +478,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                             'b', NUGGET_BRASS
                     );
-                    addRecipe(event, true, "powerFist2", POWER_FIST,
+                    RecipeUtility.addRecipe(event, true, "powerFist2", POWER_FIST,
                             "b i",
                             "bpi",
                             "b i",
@@ -489,14 +488,14 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableExtendoFist) {
-                    addRecipe(event, true, "extendoFist1", EXTENDO_FIST,
+                    RecipeUtility.addRecipe(event, true, "extendoFist1", EXTENDO_FIST,
                             " ii",
                             "bbi",
                             "bb ",
                             'i', INGOT_IRON,
                             'b', NUGGET_BRASS
                     );
-                    addRecipe(event, true, "extendoFist2", EXTENDO_FIST,
+                    RecipeUtility.addRecipe(event, true, "extendoFist2", EXTENDO_FIST,
                             " ii",
                             "bbi",
                             "bb ",
@@ -505,7 +504,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableThrusters) {
-                    addRecipe(event, true, "thrusters1", THRUSTERS,
+                    RecipeUtility.addRecipe(event, true, "thrusters1", THRUSTERS,
                             "tnt",
                             "ptp",
                             "tnt",
@@ -513,7 +512,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             't', INGOT_BRASS,
                             'n', NUGGET_BRASS
                     );
-                    addRecipe(event, true, "thrusters2", THRUSTERS,
+                    RecipeUtility.addRecipe(event, true, "thrusters2", THRUSTERS,
                             "tnt",
                             "ptp",
                             "tnt",
@@ -523,7 +522,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableFallAssist) {
-                    addRecipe(event, true, "noFall", FALL_ASSIST,
+                    RecipeUtility.addRecipe(event, true, "noFall", FALL_ASSIST,
                             "pbp",
                             "sss",
                             'b', LEATHER_BOOTS,
@@ -532,7 +531,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableJumpAssist) {
-                    addRecipe(event, true, "jumpAssist1", LEAP_ACTUATOR,
+                    RecipeUtility.addRecipe(event, true, "jumpAssist1", LEAP_ACTUATOR,
                             "s s",
                             "pbp",
                             "s s",
@@ -540,7 +539,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                             's', INGOT_BRASS
                     );
-                    addRecipe(event, true, "jumpAssist2", LEAP_ACTUATOR,
+                    RecipeUtility.addRecipe(event, true, "jumpAssist2", LEAP_ACTUATOR,
                             "s s",
                             "pbp",
                             "s s",
@@ -550,14 +549,14 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableRunAssist) {
-                    addRecipe(event, true, "runAssist1", RUN_ASSIST,
+                    RecipeUtility.addRecipe(event, true, "runAssist1", RUN_ASSIST,
                             "p p",
                             "s s",
                             "p p",
                             'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
                             's', INGOT_BRASS
                     );
-                    addRecipe(event, true, "runAssist2", RUN_ASSIST,
+                    RecipeUtility.addRecipe(event, true, "runAssist2", RUN_ASSIST,
                             "p p",
                             "s s",
                             "p p",
@@ -566,13 +565,13 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableDoubleJump) {
-                    addRecipe(event, true, "doubleJump1", DOUBLE_JUMP,
+                    RecipeUtility.addRecipe(event, true, "doubleJump1", DOUBLE_JUMP,
                             "s s",
                             "v v",
                             'v', VALVE_PIPE,
                             's', INGOT_BRASS
                     );
-                    addRecipe(event, true, "doubleJump2", DOUBLE_JUMP,
+                    RecipeUtility.addRecipe(event, true, "doubleJump2", DOUBLE_JUMP,
                             "s s",
                             "v v",
                             'v', VALVE_PIPE,
@@ -580,7 +579,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableCanningMachine && enableCanister) {
-                    addRecipe(event, true, "canner1", CANNING_MACHINE,
+                    RecipeUtility.addRecipe(event, true, "canner1", CANNING_MACHINE,
                             "bbn",
                             "p p",
                             "i i",
@@ -589,7 +588,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'n', NUGGET_IRON,
                             'i', INGOT_IRON
                     );
-                    addRecipe(event, true, "canner2", CANNING_MACHINE,
+                    RecipeUtility.addRecipe(event, true, "canner2", CANNING_MACHINE,
                             "bbn",
                             "p p",
                             "i i",
@@ -598,7 +597,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'n', NUGGET_IRON,
                             'i', PLATE_THIN_IRON
                     );
-                    addRecipe(event, true, "canner3", CANNING_MACHINE,
+                    RecipeUtility.addRecipe(event, true, "canner3", CANNING_MACHINE,
                             "bbn",
                             "p p",
                             "i i",
@@ -607,7 +606,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'n', NUGGET_IRON,
                             'i', INGOT_IRON
                     );
-                    addRecipe(event, true, "canner4", CANNING_MACHINE,
+                    RecipeUtility.addRecipe(event, true, "canner4", CANNING_MACHINE,
                             "bbn",
                             "p p",
                             "i i",
@@ -618,7 +617,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enablePitonDeployer) {
-                    addRecipe(event, true, "pitonDeployer", PITON_DEPLOYER,
+                    RecipeUtility.addRecipe(event, true, "pitonDeployer", PITON_DEPLOYER,
                             " i ",
                             "lli",
                             "ll ",
@@ -627,7 +626,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableStealthUpgrade) {
-                    addRecipe(event, true, "stealthUpgrade", STEALTH,
+                    RecipeUtility.addRecipe(event, true, "stealthUpgrade", STEALTH,
                             "lwl",
                             "lsl",
                             "lwl",
@@ -637,7 +636,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableEnderShroud) {
-                    addRecipe(event, true, "enderShroud", ENDER_SHROUD,
+                    RecipeUtility.addRecipe(event, true, "enderShroud", ENDER_SHROUD,
                             " g ",
                             "geg",
                             " g ",
@@ -646,14 +645,14 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     );
                 }
                 if (enableReinforcedTank) {
-                    addRecipe(event, true, "reinforcedTank1", REINFORCED_TANK,
+                    RecipeUtility.addRecipe(event, true, "reinforcedTank1", REINFORCED_TANK,
                             "ppp",
                             "tpt",
                             "ppp",
                             't', STEAM_TANK,
                             'p', INGOT_BRASS
                     );
-                    addRecipe(event, true, "reinforcedTank2", REINFORCED_TANK,
+                    RecipeUtility.addRecipe(event, true, "reinforcedTank2", REINFORCED_TANK,
                             "ppp",
                             "tpt",
                             "ppp",
@@ -661,7 +660,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             'p', PLATE_THIN_BRASS
                     );
                     if (enableUberReinforcedTank) {
-                        addRecipe(event, true, "uberReinforcedTank1", UBER_REINFORCED_TANK,
+                        RecipeUtility.addRecipe(event, true, "uberReinforcedTank1", UBER_REINFORCED_TANK,
                                 "ppp",
                                 "tbt",
                                 "ppp",
@@ -669,7 +668,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                                 'p', INGOT_BRASS,
                                 'b', BLOCK_BRASS
                         );
-                        addRecipe(event, true, "uberReinforcedTank2", UBER_REINFORCED_TANK,
+                        RecipeUtility.addRecipe(event, true, "uberReinforcedTank2", UBER_REINFORCED_TANK,
                                 "ppp",
                                 "tbt",
                                 "ppp",
@@ -680,7 +679,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     }
                 }
                 if (enableRebreather) {
-                    addRecipe(event, true, "rebreather",
+                    RecipeUtility.addRecipe(event, true, "rebreather",
                             REBREATHER,
                                     " l ",
                                     "ptp",
@@ -692,7 +691,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             );
                 }
                 if (enableHydrophobic) {
-                    addRecipe(event, true, "hydrophobic",
+                    RecipeUtility.addRecipe(event, true, "hydrophobic",
                             HYDROPHOBIC_COATINGS,
                                     "zbz",
                                     "hzh",
@@ -704,7 +703,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             );
                 }
                 if (enablePyrophobic) {
-                    addRecipe(event, true, "pyrophobic",
+                    RecipeUtility.addRecipe(event, true, "pyrophobic",
                             PYROPHOBIC_COATINGS,
                                     "cbc",
                                     "hch",
@@ -718,7 +717,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                 if (enableAnchorHeels) {
                     if (enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty() &&
                             !enableAnchorAnvilRecipe) {
-                        addRecipe(event, true, "anchorHeels",
+                        RecipeUtility.addRecipe(event, true, "anchorHeels",
                                 new ItemStack(ANCHOR_HEELS),
                                 "p p",
                                 "e e",
@@ -726,7 +725,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                                 'e', plateStack(LEAD_PLATE_META)
                         );
                     } else {
-                        addRecipe(event, true, "anchorHeels",
+                        RecipeUtility.addRecipe(event, true, "anchorHeels",
                                 new ItemStack(ANCHOR_HEELS),
                                 "p p",
                                 "eae",
@@ -737,7 +736,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                     }
                 }
                 if (enablePistonPush) {
-                    addRecipe(event, true, "pistonPush",
+                    RecipeUtility.addRecipe(event, true, "pistonPush",
                             PISTON_PUSH,
                                     "n p",
                                     "nbp",
@@ -748,7 +747,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             );
                 }
                 if (enableReloadingHolsters && enableFirearms && enableEnhancementRevolver) {
-                    addRecipe(event, true, "reloadingHolsters",
+                    RecipeUtility.addRecipe(event, true, "reloadingHolsters",
                             RELOADING_HOLSTERS,
                                     "lbl",
                                     "c c",
@@ -760,7 +759,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             );
                 }
                 if (enableFrequencyShifter) {
-                    addRecipe(event, true, "frequencyShifter",
+                    RecipeUtility.addRecipe(event, true, "frequencyShifter",
                             FREQUENCY_SHIFTER,
                                     "t n",
                                     "pjp",
@@ -772,7 +771,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                             );
                 }
                 if (enableDragonRoar) {
-                    addRecipe(event, true, "dragonRoar",
+                    RecipeUtility.addRecipe(event, true, "dragonRoar",
                             DRAGON_ROAR,
                                     "ccc",
                                     "cfc",
@@ -785,7 +784,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
             }
 
             if (enableLeatherExosuit) {
-                addRecipe(event, true, "leatherExoHead", LEATHER_EXO_HEAD,
+                RecipeUtility.addRecipe(event, true, "leatherExoHead", LEATHER_EXO_HEAD,
                         "xyx",
                         "p p",
                         "xyx",
@@ -793,7 +792,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'y', NUGGET_BRASS,
                         'p', LEATHER_HELMET
                 );
-                addRecipe(event, true, "leatherExoBody", LEATHER_EXO_CHEST,
+                RecipeUtility.addRecipe(event, true, "leatherExoBody", LEATHER_EXO_CHEST,
                         "p p",
                         "ygy",
                         "xxx",
@@ -802,7 +801,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'g', LEATHER_ORE,
                         'p', LEATHER_CHESTPLATE
                 );
-                addRecipe(event, true, "leatherExoLegs", LEATHER_EXO_LEGS,
+                RecipeUtility.addRecipe(event, true, "leatherExoLegs", LEATHER_EXO_LEGS,
                         "yxy",
                         "p p",
                         "x x",
@@ -810,7 +809,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
                         'y', NUGGET_BRASS,
                         'p', LEATHER_LEGGINGS
                 );
-                addRecipe(event, true, "leatherExoFeet", LEATHER_EXO_BOOTS,
+                RecipeUtility.addRecipe(event, true, "leatherExoFeet", LEATHER_EXO_BOOTS,
                         "p p",
                         "x x",
                         'x', PLATE_THIN_BRASS,
@@ -854,7 +853,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
 
     private static void addLegRecipe(RegistryEvent.Register<IRecipe> event, Item item, String ore) {
-        addRecipe(event, false, ore + "leg", item,
+        RecipeUtility.addRecipe(event, false, ore + "leg", item,
           "xxx",
           "x x",
           "x x",
@@ -863,7 +862,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addHelmetRecipe(RegistryEvent.Register<IRecipe> event, Item item, String ore) {
-        addRecipe(event, false, ore + "helmet", item,
+        RecipeUtility.addRecipe(event, false, ore + "helmet", item,
           "xxx",
           "x x",
           'x', ore
@@ -871,7 +870,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addChestRecipe(RegistryEvent.Register<IRecipe> event, Item item, String ore) {
-        addRecipe(event, false, ore + "chest", item,
+        RecipeUtility.addRecipe(event, false, ore + "chest", item,
           "x x",
           "xxx",
           "xxx",
@@ -880,7 +879,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     }
 
     private static void addFootRecipe(RegistryEvent.Register<IRecipe> event, Item item, String ore) {
-        addRecipe(event, false, ore + "foot", item,
+        RecipeUtility.addRecipe(event, false, ore + "foot", item,
           "x x",
           "x x",
           'x', ore
@@ -906,17 +905,17 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
      * @param plate The output plate.
      */
     private static void addExosuitPlateRecipes(RegistryEvent.Register<IRecipe> event, String str, Object ingredient, ItemStack plate) {
-        addRecipe(event, true, str, plate, "xx", "xx", 'x', ingredient);
+        RecipeUtility.addRecipe(event, true, str, plate, "xx", "xx", 'x', ingredient);
         if (ingredient instanceof ItemStack) {
             ItemStack stack = ((ItemStack) ingredient).copy();
             stack.setCount(4);
-            addShapelessRecipe(event, false, stack.getItem().getRegistryName().toString()
+            RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().toString()
               + plate.getItem().getRegistryName().toString(), stack, plate);
         } else if (ingredient instanceof String) {
             for (ItemStack ore : OreDictionary.getOres((String) ingredient)) {
                 ItemStack stack = ore.copy();
                 stack.setCount(4);
-                addShapelessRecipe(event, false, stack.getItem().getRegistryName().toString()
+                RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().toString()
                   + plate.getItem().getRegistryName().toString(), stack, plate);
             }
         }

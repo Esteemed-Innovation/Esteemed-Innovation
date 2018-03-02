@@ -9,7 +9,7 @@ import eiteam.esteemedinnovation.api.research.ResearchRecipe;
 import eiteam.esteemedinnovation.commons.CrossMod;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
-import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.metalcasting.crucible.BlockCrucible;
 import eiteam.esteemedinnovation.metalcasting.crucible.CrucibleTweaker;
 import eiteam.esteemedinnovation.metalcasting.crucible.TileEntityCrucible;
@@ -139,14 +139,14 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
         CrucibleRegistry.registerMoldingRecipe(LEAD_LIQUID, ItemMold.Type.THIN_PLATE.createItemStack(MOLD_ITEM), findFirstOre(PLATE_THIN_LEAD));
 
         if (enableCrucible) {
-            addRecipe(event, true, "crucible", new ResearchRecipe(new ItemStack(CRUCIBLE), MetalcastingBookSection.NAME,
+            RecipeUtility.addRecipe(event, true, "crucible", new ResearchRecipe(new ItemStack(CRUCIBLE), MetalcastingBookSection.NAME,
               "x x",
               "x x",
               "xxx",
               'x', BRICK
             ));
             if (enableHellCrucible) {
-                addRecipe(event, true, "hellCrucible", new ItemStack(HELL_CRUCIBLE),
+                RecipeUtility.addRecipe(event, true, "hellCrucible", new ItemStack(HELL_CRUCIBLE),
                   "x x",
                   "x x",
                   "xxx",
@@ -155,19 +155,19 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
             }
         }
         if (enableMold) {
-            addRecipe(event, true, "carving", new ResearchRecipe(new ItemStack(CARVING_TABLE), MetalcastingBookSection.NAME,
+            RecipeUtility.addRecipe(event, true, "carving", new ResearchRecipe(new ItemStack(CARVING_TABLE), MetalcastingBookSection.NAME,
               "xzx",
               "x x",
               "xxx",
               'x', PLANK_WOOD,
               'z', BLANK_MOLD
             ));
-            addRecipe(event, true, "mold", new ResearchRecipe(new ItemStack(MOLD), MetalcastingBookSection.NAME,
+            RecipeUtility.addRecipe(event, true, "mold", new ResearchRecipe(new ItemStack(MOLD), MetalcastingBookSection.NAME,
               "xxx",
               "xxx",
               'x', BRICK
             ));
-            addRecipe(event, true, "blankMold", BLANK_MOLD, "xx", 'x', BRICK);
+            RecipeUtility.addRecipe(event, true, "blankMold", BLANK_MOLD, "xx", 'x', BRICK);
         }
     }
 

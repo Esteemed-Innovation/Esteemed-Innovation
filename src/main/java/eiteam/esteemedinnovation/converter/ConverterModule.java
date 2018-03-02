@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.converter;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -38,7 +39,7 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
 
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
-        addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
+        RecipeUtility.addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
           "xlx",
           "gpp",
           "xlx",
@@ -47,7 +48,7 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
           'p', TransportationModule.BRASS_PIPE,
           'g', PANE_GLASS_COLORLESS
         );
-        addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
+        RecipeUtility.addRecipe(event, true, "fsc1", PRESSURE_CONVERTER,
           "xlx",
           "gpp",
           "xlx",

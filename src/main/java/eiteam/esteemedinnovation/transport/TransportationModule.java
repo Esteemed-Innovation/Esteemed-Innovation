@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.transport.block.BlockPlonker;
 import eiteam.esteemedinnovation.transport.block.TileEntityPlonker;
 import eiteam.esteemedinnovation.transport.entity.*;
@@ -123,7 +124,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enablePump) {
-            addRecipe(event, true, "pump1", ARCHIMEDES_SCREW,
+            RecipeUtility.addRecipe(event, true, "pump1", ARCHIMEDES_SCREW,
               "gng",
               "iii",
               "ngn",
@@ -131,7 +132,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               'n', NUGGET_BRASS,
               'g', PANE_GLASS_COLORLESS
             );
-            addRecipe(event, true, "pump2", ARCHIMEDES_SCREW,
+            RecipeUtility.addRecipe(event, true, "pump2", ARCHIMEDES_SCREW,
               "gng",
               "iii",
               "ngn",
@@ -141,7 +142,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
             );
         }
         if (enableFan) {
-            addRecipe(event, true, "fan1", FAN,
+            RecipeUtility.addRecipe(event, true, "fan1", FAN,
               "xxx",
               "btb",
               "xxx",
@@ -149,7 +150,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               'b', IRON_BARS,
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
-            addRecipe(event, true, "fan2", FAN,
+            RecipeUtility.addRecipe(event, true, "fan2", FAN,
               "xxx",
               "btb",
               "xxx",
@@ -158,7 +159,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata())
             );
             if (enableVacuum) {
-                addRecipe(event, true, "vacuum1", VACUUM,
+                RecipeUtility.addRecipe(event, true, "vacuum1", VACUUM,
                   " x ",
                   "pfx",
                   " x ",
@@ -166,7 +167,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
                   'p', BRASS_PIPE,
                   'f', FAN
                 );
-                addRecipe(event, true, "vacuum2", VACUUM,
+                RecipeUtility.addRecipe(event, true, "vacuum2", VACUUM,
                   " x ",
                   "pfx",
                   " x ",
@@ -177,7 +178,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
             }
         }
         if (enablePlonker) {
-            addRecipe(event, true, "plonker", PLONKER,
+            RecipeUtility.addRecipe(event, true, "plonker", PLONKER,
               "ccb",
               "c r",
               "ccb",
@@ -187,7 +188,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
             );
         }
         if (enableMortar) {
-            addRecipe(event, true, "itemMortar1", ITEM_MORTAR,
+            RecipeUtility.addRecipe(event, true, "itemMortar1", ITEM_MORTAR,
               "p p",
               "pbp",
               "ccc",
@@ -195,7 +196,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               'c', PLATE_THIN_COPPER,
               'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
             ));
-            addRecipe(event, true, "itemMortar2", ITEM_MORTAR,
+            RecipeUtility.addRecipe(event, true, "itemMortar2", ITEM_MORTAR,
               "p p",
               "pbp",
               "ccc",
@@ -203,7 +204,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               'c', PLATE_THIN_COPPER,
               'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
             ));
-            addRecipe(event, true, "itemMortar3", ITEM_MORTAR,
+            RecipeUtility.addRecipe(event, true, "itemMortar3", ITEM_MORTAR,
               "p p",
               "pbp",
               "ccc",
@@ -211,7 +212,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
               'c', INGOT_COPPER,
               'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()
             ));
-            addRecipe(event, true, "itemMortar4", ITEM_MORTAR,
+            RecipeUtility.addRecipe(event, true, "itemMortar4", ITEM_MORTAR,
               "p p",
               "pbp",
               "ccc",
@@ -221,7 +222,7 @@ public class TransportationModule extends ContentModule implements ConfigurableM
             ));
         }
         if (enableAstrolabe) {
-            addRecipe(event, true, "astrolabe", ASTROLABE,
+            RecipeUtility.addRecipe(event, true, "astrolabe", ASTROLABE,
               " x ",
               "xrx",
               " x ",

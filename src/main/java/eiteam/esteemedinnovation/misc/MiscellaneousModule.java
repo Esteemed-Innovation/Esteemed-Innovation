@@ -4,12 +4,12 @@ import eiteam.esteemedinnovation.api.SmasherRegistry;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.misc.ItemCraftingComponent.Types;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
@@ -43,7 +43,7 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
 
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
-        addRecipe(event, true, "piston1", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "piston1", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
           " x ",
           "xpx",
           " i ",
@@ -51,7 +51,7 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
           'p', PISTON,
           'i', TransportationModule.BRASS_PIPE
         );
-        addRecipe(event, true, "piston2", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "piston2", new ItemStack(COMPONENT, 1, Types.BRASS_PISTON.getMetadata()),
           " x ",
           "xpx",
           " i ",
@@ -59,34 +59,34 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
           'p', PISTON,
           'i', TransportationModule.BRASS_PIPE
         );
-        addRecipe(event, true, "turbine1", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "turbine1", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
           " x ",
           "xnx",
           " x ",
           'x', INGOT_BRASS,
           'n', NUGGET_BRASS
         );
-        addRecipe(event, true, "turbine2", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "turbine2", new ItemStack(COMPONENT, 1, Types.BRASS_TURBINE.getMetadata()),
           " x ",
           "xnx",
           " x ",
           'x', PLATE_THIN_BRASS,
           'n', NUGGET_BRASS
         );
-        addRecipe(event, true, "stock", new ItemStack(COMPONENT, 1, Types.GUN_STOCK.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "stock", new ItemStack(COMPONENT, 1, Types.GUN_STOCK.getMetadata()),
           "p  ",
           " p ",
           " pp",
           'p', PLANK_WOOD
         );
-        addRecipe(event, true, "flintlock1", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "flintlock1", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
           "f i",
           "iri",
           'i', INGOT_IRON,
           'r', DUST_REDSTONE,
           'f', FLINT_AND_STEEL
         );
-        addRecipe(event, true, "flintlock2", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "flintlock2", new ItemStack(COMPONENT, 1, Types.FLINTLOCK.getMetadata()),
           "f i",
           "iri",
           'i', PLATE_THIN_IRON,
@@ -94,33 +94,33 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
           'f', FLINT_AND_STEEL
         );
         if (disableMainBarrelRecipe) {
-            addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+            RecipeUtility.addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
               "i  ",
               " i ",
               "  i",
               'i', INGOT_IRON
             );
         } else {
-            addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+            RecipeUtility.addRecipe(event, true, "barrel1", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
               "i  ",
               " i ",
               "  i",
               'i', PLATE_THIN_IRON
             );
         }
-        addRecipe(event, true, "barrel2", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "barrel2", new ItemStack(COMPONENT, 1, Types.IRON_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
           'i', PLATE_THIN_IRON
         );
-        addRecipe(event, true, "blunderBarrel1", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "blunderBarrel1", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
           'i', INGOT_BRASS
         );
-        addRecipe(event, true, "blunderBarrel2", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
+        RecipeUtility.addRecipe(event, true, "blunderBarrel2", new ItemStack(COMPONENT, 1, Types.BLUNDERBUSS_BARREL.getMetadata()),
           "i  ",
           " i ",
           "  i",
@@ -131,7 +131,7 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
           new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()),
           new ItemStack(NETHERBRICK, 3))));
 
-        addShapelessRecipe(event, true, "hellforgeBrick", new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
+        RecipeUtility.addShapelessRecipe(event, true, "hellforgeBrick", new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           DUST_ZINC, Items.MAGMA_CREAM, new ItemStack(COMPONENT, 1, Types.NETHERBRICK_DUST.getMetadata()));
         GameRegistry.addSmelting(new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK_RAW.getMetadata()),
           new ItemStack(COMPONENT, 1, Types.HELLFORGE_BRICK.getMetadata()), 0F);

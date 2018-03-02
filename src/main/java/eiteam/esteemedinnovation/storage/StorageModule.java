@@ -5,6 +5,7 @@ import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
 import eiteam.esteemedinnovation.storage.item.canister.CanisterEntityCreator;
 import eiteam.esteemedinnovation.storage.item.canister.CanisterRecipe;
@@ -74,13 +75,13 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableTank) {
-            addRecipe(event, true, "tank1", STEAM_TANK,
+            RecipeUtility.addRecipe(event, true, "tank1", STEAM_TANK,
               "iii",
               "i i",
               "iii",
               'i', PLATE_THIN_BRASS
             );
-            addRecipe(event, true, "tank2", STEAM_TANK,
+            RecipeUtility.addRecipe(event, true, "tank2", STEAM_TANK,
               "iii",
               "i i",
               "iii",
@@ -88,14 +89,14 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
             );
         }
 
-        addRecipe(event, false, "kitBag1", KIT_BAG,
+        RecipeUtility.addRecipe(event, false, "kitBag1", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
           'S', STRING_ORE,
           'L', LEATHER_ORE,
           'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
-        addRecipe(event, false, "kitBag2", KIT_BAG,
+        RecipeUtility.addRecipe(event, false, "kitBag2", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
@@ -105,8 +106,8 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
 
         if (enableCanister) {
             //TODO: make sure this works
-            addRecipe(event, false, "canister2", new CanisterRecipe());
-            addRecipe(event, true, "canister", ITEM_CANISTER,
+            RecipeUtility.addRecipe(event, false, "canister2", new CanisterRecipe());
+            RecipeUtility.addRecipe(event, true, "canister", ITEM_CANISTER,
               " i ",
               "i i",
               " i ",

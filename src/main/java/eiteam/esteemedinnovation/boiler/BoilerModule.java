@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.boiler;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,14 +40,14 @@ public class BoilerModule extends ContentModule implements ConfigurableModule {
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableBoiler) {
-            addRecipe(event, true, "boiler1", BOILER,
+            RecipeUtility.addRecipe(event, true, "boiler1", BOILER,
               "xxx",
               "xfx",
               "xxx",
               'x', INGOT_BRASS,
               'f', FURNACE
             );
-            addRecipe(event, true, "boiler2", BOILER,
+            RecipeUtility.addRecipe(event, true, "boiler2", BOILER,
               "xxx",
               "xfx",
               "xxx",

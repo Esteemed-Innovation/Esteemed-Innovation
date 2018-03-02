@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.commons.init;
 
 import eiteam.esteemedinnovation.api.Constants;
-import eiteam.esteemedinnovation.api.book.BookRecipeRegistry;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -12,15 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.function.Function;
 
@@ -274,50 +270,5 @@ public class ContentModule {
 
     public void registerTileEntity(Class<? extends TileEntity> clazz, String key) {
         GameRegistry.registerTileEntity(clazz, EsteemedInnovation.MOD_ID + ":" + key);
-    }
-
-    public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, Block block, Object... obj) {
-        return addRecipe(event, createBookRecipeRegistry, recipeName, new ItemStack(block), obj);
-    }
-
-    public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, Item item, Object... obj) {
-        return addRecipe(event, createBookRecipeRegistry, recipeName, new ItemStack(item), obj);
-    }
-
-    public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack result, Object... obj) {
-        ResourceLocation group = new ResourceLocation(Constants.EI_MODID, recipeName);
-        ShapedOreRecipe recipe = new ShapedOreRecipe(group, result, obj);
-        return addRecipe(event, createBookRecipeRegistry, recipeName, recipe);
-    }
-
-    public static IRecipe addShapelessRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, Block block, Object... obj) {
-        return addShapelessRecipe(event, createBookRecipeRegistry, recipeName, new ItemStack(block), obj);
-    }
-
-    public static IRecipe addShapelessRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, Item item, Object... obj) {
-        return addShapelessRecipe(event, createBookRecipeRegistry, recipeName, new ItemStack(item), obj);
-    }
-
-    public static IRecipe addShapelessRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack result, Object... obj) {
-        ResourceLocation group = new ResourceLocation(Constants.EI_MODID, recipeName);
-        ShapelessOreRecipe recipe = new ShapelessOreRecipe(group, result, obj);
-        return addRecipe(event, createBookRecipeRegistry, recipeName, recipe);
-    }
-
-    public static IRecipe addRecipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, IRecipe recipe) {
-        recipe.setRegistryName(new ResourceLocation(Constants.EI_MODID, recipeName));
-        event.getRegistry().register(recipe);
-        if (createBookRecipeRegistry) {
-            BookRecipeRegistry.addRecipe(recipeName, recipe);
-        }
-        return recipe;
-    }
-
-    public static IRecipe add3x3Recipe(RegistryEvent.Register<IRecipe> event, boolean createBookRecipeRegistry, String recipeName, ItemStack output, String input) {
-        return addRecipe(event, createBookRecipeRegistry, recipeName, output,
-          "xxx",
-          "xxx",
-          "xxx",
-          'x', input);
     }
 }

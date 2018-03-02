@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.pendulum;
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -12,7 +13,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MISC_SECTION;
 
@@ -40,7 +40,7 @@ public class PendulumModule extends ContentModule {
 
     @Override
     public void recipes(RegistryEvent.Register<IRecipe> event) {
-        addRecipe(event, true, "pendulum_torch", PENDULUM_TORCH,
+        RecipeUtility.addRecipe(event, true, "pendulum_torch", PENDULUM_TORCH,
           "  x",
           " x ",
           "t  ",
