@@ -128,14 +128,7 @@ public class MaterialsModule extends ContentModule {
 
         setupItemBlock(event, STORAGE_BLOCK, BlockManyMetadataItem::new);
         setupItemBlock(event, ORE_BLOCK, BlockManyMetadataItem::new);
-    }
 
-    public static Block getPressurePlateFromItemMetadata(int meta) {
-        return pressurePlatesByMetadata.get(meta);
-    }
-
-    @Override
-    public void oreDict(Side side) {
         for (MetalBlockTypes type : MetalBlockTypes.values()) {
             OreDictionary.registerOre(PREFIX_BLOCK + type.getOreMaterial(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()));
         }
@@ -158,6 +151,10 @@ public class MaterialsModule extends ContentModule {
         OreDictionary.registerOre(PLATE_THIN_GILDED_IRON, new ItemStack(METAL_PLATE, 1, GILDED_IRON_PLATE.getMeta()));
         OreDictionary.registerOre(PLATE_THIN_IRON, new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()));
         OreDictionary.registerOre(PLATE_THIN_GOLD, new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()));
+    }
+
+    public static Block getPressurePlateFromItemMetadata(int meta) {
+        return pressurePlatesByMetadata.get(meta);
     }
 
     @Override

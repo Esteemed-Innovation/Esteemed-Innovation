@@ -15,7 +15,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,15 +28,26 @@ import java.util.function.Function;
  * A class for handling base initialization of content. See {@link eiteam.esteemedinnovation.armor.ArmorModule} for
  * a good example. Register it (so that the content actually gets initialized) in {@link ContentModuleHandler}. That
  * class will handle calling all of the methods within each ContentModule.
- *
+ * <br />
  * The order that the methods are called is as follows:
- * 1. {@link #create(Side)}
- * 2. {@link #oreDict(Side)}
- * 3. {@link #preInitClient()}
- * 4. {@link #recipes(Side)}
- * 5. {@link #initClient()}
- * 6. {@link #postInitClient()}
- * 7. {@link #finish(Side)}
+ * <ol>
+ *     <li>{@link #create(Side)}</li>
+ *     <li>{@link #preInitClient()}</li>
+ *     <li>{@link #initClient()}</li>
+ *     <li>{@link #postInitClient()}</li>
+ *     <li>{@link #finish(Side)}</li>
+ * </ol>
+ * <br />
+ * It also includes {@link RegistryEvent} methods which are automatically called by the ContentModuleHandler. Registration
+ * of supported types should be handled in these methods:
+ * <ul>
+ *     <li>{@link #registerBlocks(RegistryEvent.Register)}</li>
+ *     <li>{@link #registerItems(RegistryEvent.Register)}</li>
+ *     <li>{@link #registerModels(ModelRegistryEvent)}</li>
+ *     <li>{@link #recipes(RegistryEvent.Register)}</li>
+ * </ul>
+ * <br />
+ * Register {@link net.minecraftforge.oredict.OreDictionary} entries in {@link #registerItems(RegistryEvent.Register)}.
  */
 public class ContentModule {
     /**
@@ -49,13 +59,13 @@ public class ContentModule {
 
     /**
      * Register your items. Use the setup methods below to easily handle registration,
-     * or just handle everything on your own. Also, register oredict.
+     * or just handle everything on your own. OreDictionary entries should be registered in this method.
      * @param event The item registry event
      */
     public void registerItems(RegistryEvent.Register<Item> event) {}
 
     /**
-     * Register your models. Use {@Link #postInitClient()} for special item models.
+     * Register your models. Use {@link #postInitClient()} for special item models.
      * Use the setup methods below to easily handle registration, or just handle everything on your own.
      * @param event The model registry event
      */
@@ -69,34 +79,20 @@ public class ContentModule {
     public void create(Side side) {}
 
     /**
-     * Setup your Ore Dictionary registration. Called during preInit in both client and server after {@link #create(Side)}.
-     * @param side
-     */
-    @Deprecated
-    public void oreDict(Side side) {}
-
-    /**
-     * Register your recipes for the things you initialized in {@link #create(Side)}. Called during init in both client and server.
-     * @param side
-     */
-    @Deprecated
-    public void recipes(Side side) {}
-
-    /**
-     * Register your recipes. Called between preinit and init, after item & block registrations
+     * Register your recipes. Called between preinit and init, after item & block registrations.
      * @param event
      */
     public void recipes(RegistryEvent.Register<IRecipe> event) {}
 
     /**
-     * Handle any client-side preInit stuff here. Called in preInit on the client after {@link #oreDict(Side)}.
+     * Handle any client-side preInit stuff here. Called in preInit on the client.
      */
     @SideOnly(Side.CLIENT)
     public void preInitClient() {}
 
     /**
      * Handle any client-side init stuff here. Use this to, for example, register client-side event handlers or register
-     * color handlers. Called in init on the client after {@link #recipes(Side)}.
+     * color handlers. Called in init on the client.
      */
     @SideOnly(Side.CLIENT)
     public void initClient() {}

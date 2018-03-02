@@ -99,7 +99,6 @@ public class ContentModuleHandler {
         Side side = getSide();
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
-            module.oreDict(side);
             if (isClient) {
                 module.initClient();
             }
