@@ -80,9 +80,4 @@ public class LeatherExosuitItemModel implements IModel {
 
         return new LeatherExosuitItemBakedModel(this, builder.build(), someTexture, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
     }
-
-    @Override
-    public IModelState getDefaultState() {
-        return null;
-    }
 }
