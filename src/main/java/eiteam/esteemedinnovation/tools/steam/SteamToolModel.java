@@ -89,8 +89,4 @@ public class SteamToolModel implements IModel {
         return new SteamToolBakedModel(this, builder.build(), headTexture, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
     }
 
-    @Override
-    public IModelState getDefaultState() {
-        return null;
-    }
 }
