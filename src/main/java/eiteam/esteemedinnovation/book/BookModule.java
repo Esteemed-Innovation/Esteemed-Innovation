@@ -2,7 +2,10 @@ package eiteam.esteemedinnovation.book;
 
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,6 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.channel;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.ORE_COPPER;
+import static eiteam.esteemedinnovation.commons.OreDictEntries.ORE_ZINC;
 
 public class BookModule extends ContentModule {
     public static Item BOOK;
@@ -29,6 +34,11 @@ public class BookModule extends ContentModule {
     @Override
     public void registerItems(RegistryEvent.Register<Item> event) {
         BOOK = setup(event, new ItemEsteemedInnovationJournal(), "book");
+    }
+
+    @Override
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        RecipeUtility.addShapelessRecipe(event, true, "book", BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC);
     }
 
     public static void generateAllHints() {
