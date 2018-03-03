@@ -166,7 +166,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
             nbt.setInteger("Ticks", ticks);
             nbt.setInteger("Speed", speed);
         }
-        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        return ActionResult.newResult(EnumActionResult.PASS, stack);
     }
 
     @Override
