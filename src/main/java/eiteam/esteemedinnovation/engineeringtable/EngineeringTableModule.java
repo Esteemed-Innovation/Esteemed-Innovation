@@ -53,14 +53,4 @@ public class EngineeringTableModule extends ContentModule implements Configurabl
     public void loadConfigurationOptions(Configuration config) {
         enableEngineering = config.get(CATEGORY_BLOCKS, "Enable Engineering Table", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableEngineering".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableEngineering;
-    }
 }

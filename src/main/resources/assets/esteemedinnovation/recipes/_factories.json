@@ -1,5 +1,0 @@
-{
-  "conditions": {
-    "config_enabled": "eiteam.esteemedinnovation.commons.recipe.ConfigConditionFactory"
-  }
-}

@@ -1279,45 +1279,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         return plateStack(meta, 1);
     }
 
-    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
-        put("enableGoggles", () -> enableGoggles);
-        put("enableTopHat", () -> enableTopHat);
-        put("enableEmeraldHat", () -> enableTopHat && enableEmeraldHat);
-        put("enableSteamExosuit", () -> enableExosuit && enableSteamExosuit);
-        put("enableJetpack", () -> enableExosuit && enableSteamExosuit && enableJetpack);
-        put("enableWings", () -> enableExosuit && enableSteamExosuit && enableWings);
-        put("enablePowerFist", () -> enableExosuit && enableSteamExosuit && enablePowerFist);
-        put("enableExtendoFist", () -> enableExosuit && enableSteamExosuit && enableExtendoFist);
-        put("enableThrusters", () -> enableExosuit && enableSteamExosuit && enableThrusters);
-        put("enableFallAssist", () -> enableExosuit && enableSteamExosuit && enableFallAssist);
-        put("enableJumpAssist", () -> enableExosuit && enableSteamExosuit && enableJumpAssist);
-        put("enableRunAssist", () -> enableExosuit && enableSteamExosuit && enableRunAssist);
-        put("enableDoubleJump", () -> enableExosuit && enableSteamExosuit && enableDoubleJump);
-        put("enableCanner", () -> enableExosuit && enableSteamExosuit && enableCanningMachine && enableCanister);
-        put("enablePitonDeployer", () -> enableExosuit && enableSteamExosuit && enablePitonDeployer);
-        put("enableStealthUpgrade", () -> enableExosuit && enableSteamExosuit && enableStealthUpgrade);
-        put("enableEnderShroud", () -> enableExosuit && enableSteamExosuit && enableEnderShroud);
-        put("enableReinforcedTank", () -> enableExosuit && enableSteamExosuit && enableReinforcedTank);
-        put("enableUberReinforcedTank", () -> enableExosuit && enableSteamExosuit && enableReinforcedTank && enableUberReinforcedTank);
-        put("enableRebreather", () -> enableExosuit && enableSteamExosuit && enableRebreather);
-        put("enableHydrophobic", () -> enableExosuit && enableSteamExosuit && enableHydrophobic);
-        put("enablePyrophobic", () -> enableExosuit && enableSteamExosuit && enablePyrophobic);
-        put("enableAnchorHeels", () -> enableExosuit && enableSteamExosuit && enableAnchorHeels);
-        put("useLeadAnchorHeelsRecipe", () -> enableExosuit && enableSteamExosuit && enableAnchorHeels && enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty() && !enableAnchorAnvilRecipe);
-        put("enablePistonPush", () -> enableExosuit && enableSteamExosuit && enablePistonPush);
-        put("enableReloadingHolsters", () -> enableExosuit && enableSteamExosuit && enableReloadingHolsters && enableFirearms && enableEnhancementRevolver);
-        put("enableFrequencyShifter", () -> enableExosuit && enableSteamExosuit && enableFrequencyShifter);
-        put("enableDragonRoar", () -> enableExosuit && enableSteamExosuit && enableDragonRoar);
-        put("enableLeatherExosuit", () -> enableExosuit && enableLeatherExosuit);
-        put("enableIronPlate", () -> enableExosuit && enableIronPlate);
-        put("enableGoldPlate", () -> enableExosuit && enableGoldPlate);
-        put("enableCopperPlate", () -> enableExosuit && enableCopperPlate);
-        put("enableZincPlate", () -> enableExosuit && enableZincPlate);
-        put("enableBrassPlate", () -> enableExosuit && enableBrassPlate);
-        put("enableGildedIronPlate", () -> enableExosuit && enableGildedIronPlate);
-        put("enableLeadPlate", () -> enableExosuit && enableLeadPlate);
-    }};
-
     @Override
     public void loadConfigurationOptions(Configuration config) {
         enableTopHat = config.get(CATEGORY_ITEMS, "Enable Top Hat", true).getBoolean();
@@ -1390,15 +1351,5 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
 
-    }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return RECIPE_CHECKERS.containsKey(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

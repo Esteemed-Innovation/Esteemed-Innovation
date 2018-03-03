@@ -151,14 +151,4 @@ public class HeaterModule extends ContentModule implements ConfigurableModule {
         enableHeater = config.get(CATEGORY_BLOCKS, "Enable Steam Heater", true).getBoolean();
         heaterConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Heater consumption", 20).getInt();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableHeater".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableHeater;
-    }
 }

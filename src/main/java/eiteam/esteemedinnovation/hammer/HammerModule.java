@@ -84,14 +84,4 @@ public class HammerModule extends ContentModule implements ConfigurableModule {
         enableHammer = config.get(CATEGORY_BLOCKS, "Enable Steam Hammer", true).getBoolean();
         hammerConsumption = config.get(CATEGORY_CONSUMPTION, "Steam Hammer consumption", 4000).getInt();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableHammer".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableHammer;
-    }
 }

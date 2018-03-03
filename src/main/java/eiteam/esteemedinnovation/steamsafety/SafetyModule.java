@@ -149,25 +149,4 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
         enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
         enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableHorn".equals(configSetting) ||
-          "enableGauge".equals(configSetting) ||
-          "enableRuptureDisc".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        if ("enableHorn".equals(configSetting)) {
-            return enableHorn;
-        }
-        if ("enableGauge".equals(configSetting)) {
-            return enableGauge;
-        }
-        if ("enableRuptureDisc".equals(configSetting)) {
-            return enableRuptureDisc;
-        }
-        return false;
-    }
 }

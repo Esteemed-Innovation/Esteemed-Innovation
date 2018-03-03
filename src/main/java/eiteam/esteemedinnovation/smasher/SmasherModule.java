@@ -137,14 +137,4 @@ public class SmasherModule extends ContentModule implements ConfigurableModule {
         smasherDoubleChance = config.get(CATEGORY_MACHINES, "Chance of double drops from Rock Smasher (%)", 75).getInt();
         enableSmasher = config.get(CATEGORY_BLOCKS, "Enable Rock Smasher", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableSmasher".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableSmasher;
-    }
 }

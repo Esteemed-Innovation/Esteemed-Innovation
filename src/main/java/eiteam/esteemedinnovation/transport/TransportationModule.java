@@ -322,15 +322,6 @@ public class TransportationModule extends ContentModule implements ConfigurableM
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityVacuum.class, new TileEntityVacuumRenderer());
     }
 
-    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
-        put("enablePump", () -> enablePump);
-        put("enableFan", () -> enableFan);
-        put("enableVacuum", () -> enableVacuum);
-        put("enableMortar", () -> enableMortar);
-        put("enablePlonker", () -> enablePlonker);
-        put("enableAstrolabe", () -> enableAstrolabe);
-    }};
-
     @Override
     public void loadConfigurationOptions(Configuration config) {
         enablePipe = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Pipe (Crucial)", true).getBoolean();
@@ -350,15 +341,5 @@ public class TransportationModule extends ContentModule implements ConfigurableM
 
         enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
-    }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return RECIPE_CHECKERS.containsKey(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

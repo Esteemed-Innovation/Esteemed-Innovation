@@ -14,18 +14,4 @@ public interface ConfigurableModule {
      * @param config The Configuration object representing the loaded config file.
      */
     void loadConfigurationOptions(Configuration config);
-
-    /**
-     * @param configSetting The config_setting option as defined by the Minecraft/Forge recipe JSON structure.
-     * @return Whether this recipe belongs to this content module.
-     */
-    boolean doesRecipeBelongTo(String configSetting);
-
-    /**
-     * Called from the {@link eiteam.esteemedinnovation.commons.recipe.ConfigConditionFactory} to determine whether
-     * a recipe is enabled or not.
-     * @param configSetting The config_setting option as defined by the Minecraft/Forge recipe JSON structure.
-     * @return Whether this recipe should be enabled or not.
-     */
-    boolean isRecipeEnabled(String configSetting);
 }

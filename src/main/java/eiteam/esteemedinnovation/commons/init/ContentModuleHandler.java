@@ -41,7 +41,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class ContentModuleHandler {
@@ -120,13 +119,6 @@ public class ContentModuleHandler {
         for (ConfigurableModule module : configurableModules) {
             module.loadConfigurationOptions(configuration);
         }
-    }
-
-    public static Set<ConfigurableModule> findContentModulesForRecipe(String configSetting) {
-        return configurableModules
-          .stream()
-          .filter(module -> module.doesRecipeBelongTo(configSetting))
-          .collect(Collectors.toSet());
     }
 
     @SubscribeEvent

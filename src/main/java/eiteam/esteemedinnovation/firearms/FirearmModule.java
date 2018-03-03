@@ -548,23 +548,6 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, RenderRocket::new);
     }
 
-    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
-        put("enableRL", () -> enableRL);
-        put("enableRocket", () -> enableRL && enableRocket);
-        put("enableRocketConcussive", () -> enableRL && enableRocketConcussive);
-        put("enableRocketMining", () -> enableRL && enableRocketMining);
-        put("enableEnhancementAblaze", () -> enableFirearms && enableEnhancementAblaze);
-        put("enableEnhancementRevolver", () -> enableFirearms && enableEnhancementRevolver);
-        put("enableEnhancementSpeedloader", () -> enableFirearms && enableEnhancementSpeedloader);
-        put("enableEnhancementSilencer", () -> enableFirearms && enableEnhancementSilencer);
-        put("enableEnhancementRecoil", () -> enableFirearms && enableEnhancementRecoil);
-        put("enableEnhancementSpeedy", () -> enableFirearms && enableEnhancementSpeedy);
-        put("enableEnhancementFastRockets", () -> enableRL && enableEnhancementFastRockets);
-        put("enableEnhancementAmmo", () -> enableRL && enableEnhancementAmmo);
-        put("enableEnhancementAirStrike", () -> enableRL && enableEnhancementAirStrike);
-        put("enableSpyglass", () -> enableSpyglass);
-    }};
-
     @Override
     public void loadConfigurationOptions(Configuration config) {
         expensiveMusketRecipes = config.get(CATEGORY_WEAPONS, "Hardcore Musket Cartridge recipe (1 gunpowder per cartridge)", false).getBoolean();
@@ -586,15 +569,5 @@ public class FirearmModule extends ContentModule implements ConfigurableModule {
         pistolDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Pistol damage", "15.0F").getString());
         blunderbussDamage = Float.valueOf(config.get(CATEGORY_WEAPONS, "Blunderbuss damage", "25.0F").getString());
         enableSpyglass = config.get(CATEGORY_ITEMS, "Enable Spyglass", true).getBoolean();
-    }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return RECIPE_CHECKERS.containsKey(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return RECIPE_CHECKERS.get(configSetting).get();
     }
 }

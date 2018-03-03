@@ -54,14 +54,4 @@ public class BuzzsawModule extends ContentModule implements ConfigurableModule {
         enableSaw = config.get(CATEGORY_BLOCKS, "Enable the Buzzsaw", true).getBoolean();
         duplicateLogs = config.get(CATEGORY_MACHINES, "Chance of duplicate drops from Buzzsaw (1 in X)", 6).getInt();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableSaw".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableSaw;
-    }
 }

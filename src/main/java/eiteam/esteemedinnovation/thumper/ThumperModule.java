@@ -99,14 +99,4 @@ public class ThumperModule extends ContentModule implements ConfigurableModule {
         dropItem = config.get(Config.CATEGORY_MACHINES, "Thumper drops items (may lag servers)", true).getBoolean();
         enableThumper = config.get(CATEGORY_BLOCKS, "Enable Thumper", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableThumper".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableThumper;
-    }
 }

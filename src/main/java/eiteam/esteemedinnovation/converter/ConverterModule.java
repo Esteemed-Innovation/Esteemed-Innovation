@@ -88,14 +88,4 @@ public class ConverterModule extends ContentModule implements ConfigurableModule
     public void loadConfigurationOptions(Configuration config) {
         enableFluidSteamConverter = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Converter", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableFluidSteamConverter".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return enableFluidSteamConverter;
-    }
 }

@@ -161,14 +161,4 @@ public class StorageModule extends ContentModule implements ConfigurableModule {
         basicTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the basic tank can hold", StorageModule.BASIC_TANK_CAPACITY_DEFAULT).getInt();
         enableCanister = config.get(CATEGORY_ITEMS, "Enable Canisters", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return false;
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return false;
-    }
 }

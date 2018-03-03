@@ -167,29 +167,4 @@ public class ChargingModule extends ContentModule implements ConfigurableModule 
         steamCellCapacity = config.get(CATEGORY_ITEMS, "Steam Cell capacity", STEAMCELL_CAPACITY_DEFAULT).getInt();
         enableSteamCellBauble = config.get(CATEGORY_ITEMS, "Enable Steam Cell Bauble", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableCharger".equals(configSetting) ||
-          "enableChargingPad".equals(configSetting) ||
-          "enableSteamCell".equals(configSetting) ||
-          "enableSteamCellBauble".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        if ("enableCharger".equals(configSetting)) {
-            return enableCharger;
-        }
-        if ("enableChargingPad".equals(configSetting)) {
-            return enableCharger && enableChargingPad;
-        }
-        if ("enableSteamCell".equals(configSetting)) {
-            return enableSteamCell;
-        }
-        if ("enableSteamCellBauble".equals(configSetting)) {
-            return enableSteamCell && enableSteamCellBauble;
-        }
-        return false;
-    }
 }

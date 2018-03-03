@@ -847,30 +847,6 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
         itemColors.registerItemColorHandler(new SteamDrillHeadUpgradeColorHandler(), DRILL_HEAD);
     }
 
-    private static final Map<String, Supplier<Boolean>> RECIPE_CHECKERS = new HashMap<String, Supplier<Boolean>>() {{
-        put("enableSurvivalist", () -> enableSurvivalist);
-        put("enableSteamTools", () -> enableSteamTools);
-        put("enableBigDrill", () -> enableSteamTools && enableBigDrill);
-        put("enableBattleDrill", () -> enableSteamTools && enableBattleDrill);
-        put("enableStoneGrinder", () -> enableSteamTools && enableStoneGrinder);
-        put("enablePreciseCuttingHead", () -> enableSteamTools && enablePreciseCuttingHead);
-        put("enableThermalDrill", () -> enableSteamTools && enableThermalDrill);
-        put("enableFortune", () -> enableSteamTools && enableFortune);
-        put("enableChargePlacer", () -> enableSteamTools && enableChargePlacer);
-        put("enableInternalProcessingUnit", () -> enableSteamTools && enableInternalProcessingUnit);
-        put("enableLeafBlower", () -> enableSteamTools && enableLeafBlower);
-        put("enableTreeFeller", () -> enableSteamTools && enableTreeFeller);
-        put("enableChainsaw", () -> enableSteamTools && enableChainsaw);
-        put("enableForestFire", () -> enableSteamTools && enableForestFire);
-        put("enableCultivator", () -> enableSteamTools && enableCultivator);
-        put("enableRotaryBlades", () -> enableSteamTools && enableRotaryBlades);
-        put("enableSifter", () -> enableSteamTools && enableSifter);
-        put("enableBackhoe", () -> enableSteamTools && enableBackhoe);
-        put("enableTheVoid", () -> enableSteamTools && enableTheVoid);
-        put("enableAutosmelting", () -> enableSteamTools && enableAutosmelting);
-        put("enableOverclocker", () -> enableSteamTools && enableOverclocker);
-    }};
-
     @Override
     public void loadConfigurationOptions(Configuration config) {
         enableSteamTools = config.get(CATEGORY_ITEMS, "Enable steam tools", true).getBoolean();
@@ -908,16 +884,6 @@ public class ToolsModule extends ContentModule implements ConfigurableModule {
         blacklistedStoneGrinderNuggets = Arrays.asList(config.get(CATEGORY_STEAM_TOOL_UPGRADES, "Nuggets that the Stone Grinder cannot produce. These are OreDict entries", new String[]{}).getStringList());
 
         removeVanillaMetalToolRecipes = config.get(CATEGORY_ITEMS, "Remove Vanilla-style tool recipes for castable tools", true).getBoolean();
-    }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return RECIPE_CHECKERS.containsKey(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return RECIPE_CHECKERS.get(configSetting).get();
     }
 
     private static void addAxeRecipe(RegistryEvent.Register<IRecipe> event, Item out, String material) {

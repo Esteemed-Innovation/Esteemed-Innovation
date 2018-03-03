@@ -42,14 +42,4 @@ public class SteamWorkshopModule extends ContentModule implements ConfigurableMo
         workshopWeight = config.get(CATEGORY_WORLD_GENERATION, "Workshop spawn weight", 7).getInt(7);
         villagerId = config.get(CATEGORY_WORLD_GENERATION, "Villager ID", 694).getInt();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return false;
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return false;
-    }
 }

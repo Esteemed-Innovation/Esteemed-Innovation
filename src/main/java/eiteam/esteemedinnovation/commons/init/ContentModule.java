@@ -44,6 +44,8 @@ import java.util.function.Function;
  * </ul>
  * <br />
  * Register {@link net.minecraftforge.oredict.OreDictionary} entries in {@link #registerItems(RegistryEvent.Register)}.
+ * <br />
+ * To handle configuration options, your ContentModule class should inherit {@link ConfigurableModule}.
  */
 public class ContentModule {
     /**

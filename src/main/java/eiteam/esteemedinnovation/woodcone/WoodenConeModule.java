@@ -65,14 +65,4 @@ public class WoodenConeModule extends ContentModule implements ConfigurableModul
     public void loadConfigurationOptions(Configuration config) {
         removeHopperRecipe = config.get(CATEGORY_OTHER, "Remove Hopper crafting recipes (can still be made with the crucible)", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return false;
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return false;
-    }
 }

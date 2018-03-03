@@ -167,14 +167,4 @@ public class MiscellaneousModule extends ContentModule implements ConfigurableMo
     public void loadConfigurationOptions(Configuration config) {
         disableMainBarrelRecipe = config.get(CATEGORY_WEAPONS, "Remove ingot barrel recipe in case of conflicts (keeps plate recipe)", false).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "disableMainBarrelRecipe".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        return disableMainBarrelRecipe;
-    }
 }

@@ -242,25 +242,4 @@ public class MetalcastingModule extends ContentModule implements ConfigurableMod
         enableHellCrucible = config.get(CATEGORY_BLOCKS, "Enable Nether Crucible", true).getBoolean();
         enableMold = config.get(CATEGORY_BLOCKS, "Enable Mold block", true).getBoolean();
     }
-
-    @Override
-    public boolean doesRecipeBelongTo(String configSetting) {
-        return "enableCrucible".equals(configSetting) ||
-          "enableHellCrucible".equals(configSetting) ||
-          "enableMold".equals(configSetting);
-    }
-
-    @Override
-    public boolean isRecipeEnabled(String configSetting) {
-        if ("enableCrucible".equals(configSetting)) {
-            return enableCrucible;
-        }
-        if ("enableHellCrucible".equals(configSetting)) {
-            return enableCrucible && enableHellCrucible;
-        }
-        if ("enableMold".equals(configSetting)) {
-            return enableMold;
-        }
-        return false;
-    }
 }
