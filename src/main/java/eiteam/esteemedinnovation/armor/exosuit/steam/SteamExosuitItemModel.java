@@ -81,9 +81,4 @@ public class SteamExosuitItemModel implements IModel {
 
         return new SteamExosuitItemBakedModel(this, builder.build(), someTexture, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
     }
-
-    @Override
-    public IModelState getDefaultState() {
-        return null;
-    }
 }
