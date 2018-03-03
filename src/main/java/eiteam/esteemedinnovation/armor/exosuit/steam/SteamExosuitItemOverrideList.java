@@ -32,11 +32,13 @@ public class SteamExosuitItemOverrideList extends ItemOverrideList {
         boolean isArmorDyed = false;
 
         ItemStack vanityStack = armor.getStackInSlot(stack, 2);
-        for (int id : OreDictionary.getOreIDs(vanityStack)) {
-            String str = OreDictionary.getOreName(id);
-            if (ModelSteamExosuit.findDyeStringFromOreDict(str) != null) {
-                isArmorDyed = true;
-                break;
+        if (!vanityStack.isEmpty()) {
+            for (int id : OreDictionary.getOreIDs(vanityStack)) {
+                String str = OreDictionary.getOreName(id);
+                if (ModelSteamExosuit.findDyeStringFromOreDict(str) != null) {
+                    isArmorDyed = true;
+                    break;
+                }
             }
         }
 
