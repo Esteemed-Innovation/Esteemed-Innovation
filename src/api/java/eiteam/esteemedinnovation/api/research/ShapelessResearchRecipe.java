@@ -29,7 +29,7 @@ public class ShapelessResearchRecipe extends ShapelessOreRecipe {
      * @see ResearchRecipe#ResearchRecipe(ItemStack, TriPredicate, Object...)
      */
     public ShapelessResearchRecipe(@Nonnull ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
-        super(new ResourceLocation(Constants.EI_MODID, "shapeless_research"), result, recipe);
+        super(new ResourceLocation(Constants.API_MODID, "shapeless_research"), result, recipe);
         this.matcher = matcher;
     }
 

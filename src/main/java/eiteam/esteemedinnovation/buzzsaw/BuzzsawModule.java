@@ -38,13 +38,13 @@ public class BuzzsawModule extends ContentModule implements ConfigurableModule {
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableSaw) {
             RecipeUtility.addRecipe(event, true, "saw", BUZZSAW,
-                    "btb",
-                    "p p",
-                    "mmm",
-                    'b', TIMBER_CHAIN,
-                    't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
-                    'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                    'm', PLATE_THIN_BRASS
+              "btb",
+              "p p",
+              "mmm",
+              'b', TIMBER_CHAIN,
+              't', new ItemStack(COMPONENT, 1, BRASS_TURBINE.getMetadata()),
+              'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+              'm', PLATE_THIN_BRASS
             );
         }
     }

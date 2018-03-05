@@ -38,7 +38,7 @@ public class ResearchRecipe extends ShapedOreRecipe {
      * @param recipe The recipe shape (see {@link ShapedOreRecipe}).
      */
     public ResearchRecipe(@Nonnull ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
-        super(new ResourceLocation(Constants.EI_MODID, "shaped_research"), result, recipe);
+        super(new ResourceLocation(Constants.API_MODID, "shaped_research"), result, recipe);
         this.matcher = matcher;
     }
 

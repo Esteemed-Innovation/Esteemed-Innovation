@@ -511,7 +511,7 @@ public class ItemSteamExosuitArmor extends ItemArmor implements ExosuitArmor, St
         if (me.hasTagCompound()) {
             // TODO: Abstract into API
             if (hasPlates(me) && !"Thaumium".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier()) &&
-                  !"Terrasteel".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier())) {
+              !"Terrasteel".equals(UtilPlates.getPlate(me.getTagCompound().getString("Plate")).getIdentifier())) {
                 tooltip.add(TextFormatting.BLUE + UtilPlates.getPlate(me.getTagCompound().getString("Plate")).effect());
             }
             if (me.getTagCompound().hasKey("Upgrades")) {

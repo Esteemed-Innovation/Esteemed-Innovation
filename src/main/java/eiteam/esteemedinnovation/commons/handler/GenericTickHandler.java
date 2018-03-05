@@ -50,7 +50,7 @@ public class GenericTickHandler {
 
     static {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-            EsteemedInnovation.logger.info("[EI] Getting some fields from reflection for Tick Handling.");
+            EsteemedInnovation.logger.info("Getting some fields from reflection for Tick Handling.");
             itemInMainHandField = ReflectionHelper.getField("itemStackMainHand", "field_187467_d", ItemRenderer.class);
             itemInOffHandField = ReflectionHelper.getField("itemStackOffHand", "field_187468_e", ItemRenderer.class);
 

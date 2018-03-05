@@ -246,7 +246,7 @@ public class OreConfigurationParser {
                 path = pieces[1];
             } else {
                 if (pieces.length > 3) {
-                    EsteemedInnovation.logger.warn("[EI] More than 3 values separated by : in ReplaceableBlocks '%s' for Ore generation config. Expected maximum: 'domain:path:meta'. This may indicate a bug in your config!", str);
+                    EsteemedInnovation.logger.warn("More than 3 values separated by : in ReplaceableBlocks '%s' for Ore generation config. Expected maximum: 'domain:path:meta'. This may indicate a bug in your config!", str);
                 }
                 domain = pieces[0];
                 path = pieces[1];
