@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
 import eiteam.esteemedinnovation.steamsafety.SafetyModule;
 import eiteam.esteemedinnovation.storage.StorageModule;
@@ -84,8 +85,13 @@ public class Config {
         enableRailcraftIntegration = config.get(CATEGORY_INTEGRATION, "Enable Railcraft", true).getBoolean();
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
 
-        // TODO: Abstract this somehow
-        hasAllCrucial = BoilerModule.enableBoiler && SafetyModule.enableGauge && StorageModule.enableTank && TransportationModule.enablePipe;
+        hasAllCrucial = true;
+        for (ConfigurableModule module : ContentModuleHandler.configurableModules) {
+            if (!module.areCrucialOptionsEnabled()) {
+                hasAllCrucial = false;
+                break;
+            }
+        }
 
         config.save();
     }

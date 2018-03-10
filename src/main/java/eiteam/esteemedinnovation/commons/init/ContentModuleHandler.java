@@ -45,7 +45,7 @@ import java.util.Set;
 @Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class ContentModuleHandler {
     private static final Set<ContentModule> modules = new HashSet<>();
-    private static final Collection<ConfigurableModule> configurableModules = new HashSet<>();
+    public static final Collection<ConfigurableModule> configurableModules = new HashSet<>();
 
     // This isn't preferential, however I fail to see good alternatives.
     static {

@@ -342,4 +342,9 @@ public class TransportationModule extends ContentModule implements ConfigurableM
         enableRedstoneValvePipe = config.get(CATEGORY_OTHER, "Enable redstone support for Valve Pipes", true).getBoolean();
         mortarRadius = config.get(CATEGORY_MACHINES, "Item Mortar accuracy (radius in blocks)", 2).getInt();
     }
+
+    @Override
+    public boolean areCrucialOptionsEnabled() {
+        return enablePipe;
+    }
 }
