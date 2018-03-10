@@ -88,7 +88,7 @@ import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class ArmorModule extends ContentModule implements ConfigurableModule {
-    public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[] { 2, 5, 4, 1 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
+    public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[]{2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
     @CapabilityInject(AnimalData.class)
     public static final Capability<AnimalData> ANIMAL_DATA = null;
     @CapabilityInject(VillagerData.class)
@@ -119,7 +119,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     // Most values taken from LEATHER ArmorMaterial enum value
     public static final ItemArmor.ArmorMaterial LEATHER_EXO_MAT = EnumHelper.addArmorMaterial(
-      "LEATHEREXOSUIT", "", 5, new int[] { 1, 2, 3, 1 },
+      "LEATHEREXOSUIT", "", 5, new int[]{1, 2, 3, 1},
       0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F
     );
     public static ItemLeatherExosuitArmor LEATHER_EXO_HEAD;
@@ -168,19 +168,19 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     public static ExosuitPlate LEAD_PLATE = new ExosuitPlateLead();
     public static final int MAX_PLATE_META = LEAD_PLATE_META;
 
-    public static final ItemArmor.ArmorMaterial GILDED_MAT = EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[] {2, 6, 5, 2 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F);
+    public static final ItemArmor.ArmorMaterial GILDED_MAT = EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F);
     public static Item GILDED_HEAD;
     public static Item GILDED_CHEST;
     public static Item GILDED_LEGS;
     public static Item GILDED_BOOTS;
 
-    public static final ItemArmor.ArmorMaterial BRASS_MAT = EnumHelper.addArmorMaterial("BRASS", EsteemedInnovation.MOD_ID + ":brass", 11, new int[] { 2, 7, 6, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+    public static final ItemArmor.ArmorMaterial BRASS_MAT = EnumHelper.addArmorMaterial("BRASS", EsteemedInnovation.MOD_ID + ":brass", 11, new int[]{2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
     public static Item BRASS_HEAD;
     public static Item BRASS_CHEST;
     public static Item BRASS_LEGS;
     public static Item BRASS_BOOTS;
 
-    public static final ItemArmor.ArmorMaterial MONOCLE_MAT = EnumHelper.addArmorMaterial("MONOCLE", EsteemedInnovation.MOD_ID + ":monocle", 5, new int[] { 1, 3, 2, 1 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F);
+    public static final ItemArmor.ArmorMaterial MONOCLE_MAT = EnumHelper.addArmorMaterial("MONOCLE", EsteemedInnovation.MOD_ID + ":monocle", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F);
     public static Item MONOCLE;
     public static Item GOGGLES;
     public static Item TOP_HAT;
@@ -256,7 +256,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     @Override
     public void create(Side side) {
-
         CapabilityManager.INSTANCE.register(AnimalData.class, new AnimalDataStorage(), AnimalData.DefaultImplementation.class);
         CapabilityManager.INSTANCE.register(VillagerData.class, new VillagerDataStorage(), VillagerData.DefaultImplementation.class);
 
@@ -354,466 +353,466 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     public void recipes(RegistryEvent.Register<IRecipe> event) {
         if (enableGoggles) {
             RecipeUtility.addRecipe(event, true, "monocle1", MONOCLE,
-                    " l ",
-                    "l l",
-                    "btb",
-                    'b', INGOT_BRASS,
-                    'l', LEATHER_ORE,
-                    't', SPYGLASS
+              " l ",
+              "l l",
+              "btb",
+              'b', INGOT_BRASS,
+              'l', LEATHER_ORE,
+              't', SPYGLASS
             );
             RecipeUtility.addRecipe(event, true, "monocle2", MONOCLE,
-                    " l ",
-                    "l l",
-                    "btb",
-                    'b', PLATE_THIN_BRASS,
-                    'l', LEATHER_ORE,
-                    't', SPYGLASS
+              " l ",
+              "l l",
+              "btb",
+              'b', PLATE_THIN_BRASS,
+              'l', LEATHER_ORE,
+              't', SPYGLASS
             );
             RecipeUtility.addRecipe(event, true, "goggles1", GOGGLES,
-                    " l ",
-                    "l l",
-                    "tbg",
-                    'b', INGOT_BRASS,
-                    'l', LEATHER_ORE,
-                    't', SPYGLASS,
-                    'g', BLOCK_GLASS_COLORLESS
+              " l ",
+              "l l",
+              "tbg",
+              'b', INGOT_BRASS,
+              'l', LEATHER_ORE,
+              't', SPYGLASS,
+              'g', BLOCK_GLASS_COLORLESS
             );
             RecipeUtility.addRecipe(event, true, "goggles2", GOGGLES,
-                    " l ",
-                    "l l",
-                    "tbg",
-                    'b', PLATE_THIN_BRASS,
-                    'l', LEATHER_ORE,
-                    't', SPYGLASS,
-                    'g', BLOCK_GLASS_COLORLESS
+              " l ",
+              "l l",
+              "tbg",
+              'b', PLATE_THIN_BRASS,
+              'l', LEATHER_ORE,
+              't', SPYGLASS,
+              'g', BLOCK_GLASS_COLORLESS
             );
         }
         if (enableTopHat) {
             RecipeUtility.addRecipe(event, true, "hat", TOP_HAT,
-                    " l ",
-                    " l ",
-                    "lll",
-                    'l', new ItemStack(WOOL, 1, EnumDyeColor.BLACK.getMetadata())
+              " l ",
+              " l ",
+              "lll",
+              'l', new ItemStack(WOOL, 1, EnumDyeColor.BLACK.getMetadata())
             );
             if (enableEmeraldHat) {
                 RecipeUtility.addShapelessRecipe(event, true, "hatEmerald",
-                        ENTREPRENEUR_TOP_HAT, TOP_HAT, BLOCK_EMERALD);
+                  ENTREPRENEUR_TOP_HAT, TOP_HAT, BLOCK_EMERALD);
             }
         }
         if (enableExosuit) {
             if (enableSteamExosuit) {
                 RecipeUtility.addRecipe(event, true, "steamExoHead", STEAM_EXO_HEAD,
-                        "xyx",
-                        "p p",
-                        "xyx",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                  "xyx",
+                  "p p",
+                  "xyx",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
                 RecipeUtility.addRecipe(event, true, "steamExoBody",
-                        new ItemStack(STEAM_EXO_CHEST, 1, STEAM_EXO_CHEST.getMaxDamage() - 1),
-                        "p p",
-                        "ygy",
-                        "xxx",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'g', STEAM_GAUGE,
-                        'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                  new ItemStack(STEAM_EXO_CHEST, 1, STEAM_EXO_CHEST.getMaxDamage() - 1),
+                  "p p",
+                  "ygy",
+                  "xxx",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'g', STEAM_GAUGE,
+                  'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
                 RecipeUtility.addRecipe(event, true, "steamExoLegs", STEAM_EXO_LEGS,
-                        "yxy",
-                        "p p",
-                        "x x",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                  "yxy",
+                  "p p",
+                  "x x",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
                 RecipeUtility.addRecipe(event, true, "steamExoFeet", STEAM_EXO_BOOTS,
-                        "p p",
-                        "x x",
-                        'x', PLATE_THIN_BRASS,
-                        'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                  "p p",
+                  "x x",
+                  'x', PLATE_THIN_BRASS,
+                  'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
                 );
 
                 if (enableJetpack) {
                     RecipeUtility.addRecipe(event, true, "jetpack1", JETPACK,
-                            "p p",
-                            "ptg",
-                            "p p",
-                            'p', BRASS_PIPE,
-                            'g', STEAM_GAUGE,
-                            't', INGOT_BRASS
+                      "p p",
+                      "ptg",
+                      "p p",
+                      'p', BRASS_PIPE,
+                      'g', STEAM_GAUGE,
+                      't', INGOT_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "jetpack2", JETPACK,
-                            "p p",
-                            "ptg",
-                            "p p",
-                            'p', BRASS_PIPE,
-                            'g', STEAM_GAUGE,
-                            't', PLATE_THIN_BRASS
+                      "p p",
+                      "ptg",
+                      "p p",
+                      'p', BRASS_PIPE,
+                      'g', STEAM_GAUGE,
+                      't', PLATE_THIN_BRASS
                     );
                 }
                 if (enableWings) {
                     RecipeUtility.addRecipe(event, true, "wings1", WINGS,
-                            "xxx",
-                            "ccc",
-                            "c c",
-                            'x', INGOT_BRASS,
-                            'c', PLATE_THIN_COPPER
+                      "xxx",
+                      "ccc",
+                      "c c",
+                      'x', INGOT_BRASS,
+                      'c', PLATE_THIN_COPPER
                     );
                     RecipeUtility.addRecipe(event, true, "wings2", WINGS,
-                            "xxx",
-                            "ccc",
-                            "c c",
-                            'x', PLATE_THIN_BRASS,
-                            'c', PLATE_THIN_COPPER
+                      "xxx",
+                      "ccc",
+                      "c c",
+                      'x', PLATE_THIN_BRASS,
+                      'c', PLATE_THIN_COPPER
                     );
                 }
                 if (enablePowerFist) {
                     RecipeUtility.addRecipe(event, true, "powerFist1", POWER_FIST,
-                            "b i",
-                            "bpi",
-                            "b i",
-                            'i', NUGGET_IRON,
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', NUGGET_BRASS
+                      "b i",
+                      "bpi",
+                      "b i",
+                      'i', NUGGET_IRON,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', NUGGET_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "powerFist2", POWER_FIST,
-                            "b i",
-                            "bpi",
-                            "b i",
-                            'i', PLATE_THIN_IRON,
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', NUGGET_BRASS
+                      "b i",
+                      "bpi",
+                      "b i",
+                      'i', PLATE_THIN_IRON,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', NUGGET_BRASS
                     );
                 }
                 if (enableExtendoFist) {
                     RecipeUtility.addRecipe(event, true, "extendoFist1", EXTENDO_FIST,
-                            " ii",
-                            "bbi",
-                            "bb ",
-                            'i', INGOT_IRON,
-                            'b', NUGGET_BRASS
+                      " ii",
+                      "bbi",
+                      "bb ",
+                      'i', INGOT_IRON,
+                      'b', NUGGET_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "extendoFist2", EXTENDO_FIST,
-                            " ii",
-                            "bbi",
-                            "bb ",
-                            'i', PLATE_THIN_IRON,
-                            'b', NUGGET_BRASS
+                      " ii",
+                      "bbi",
+                      "bb ",
+                      'i', PLATE_THIN_IRON,
+                      'b', NUGGET_BRASS
                     );
                 }
                 if (enableThrusters) {
                     RecipeUtility.addRecipe(event, true, "thrusters1", THRUSTERS,
-                            "tnt",
-                            "ptp",
-                            "tnt",
-                            'p', BRASS_PIPE,
-                            't', INGOT_BRASS,
-                            'n', NUGGET_BRASS
+                      "tnt",
+                      "ptp",
+                      "tnt",
+                      'p', BRASS_PIPE,
+                      't', INGOT_BRASS,
+                      'n', NUGGET_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "thrusters2", THRUSTERS,
-                            "tnt",
-                            "ptp",
-                            "tnt",
-                            'p', BRASS_PIPE,
-                            't', PLATE_THIN_BRASS,
-                            'n', NUGGET_BRASS
+                      "tnt",
+                      "ptp",
+                      "tnt",
+                      'p', BRASS_PIPE,
+                      't', PLATE_THIN_BRASS,
+                      'n', NUGGET_BRASS
                     );
                 }
                 if (enableFallAssist) {
                     RecipeUtility.addRecipe(event, true, "noFall", FALL_ASSIST,
-                            "pbp",
-                            "sss",
-                            'b', LEATHER_BOOTS,
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            's', SLIMEBALL_ORE
+                      "pbp",
+                      "sss",
+                      'b', LEATHER_BOOTS,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      's', SLIMEBALL_ORE
                     );
                 }
                 if (enableJumpAssist) {
                     RecipeUtility.addRecipe(event, true, "jumpAssist1", LEAP_ACTUATOR,
-                            "s s",
-                            "pbp",
-                            "s s",
-                            'b', LEATHER_BOOTS,
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            's', INGOT_BRASS
+                      "s s",
+                      "pbp",
+                      "s s",
+                      'b', LEATHER_BOOTS,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      's', INGOT_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "jumpAssist2", LEAP_ACTUATOR,
-                            "s s",
-                            "pbp",
-                            "s s",
-                            'b', LEATHER_BOOTS,
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            's', PLATE_THIN_BRASS
+                      "s s",
+                      "pbp",
+                      "s s",
+                      'b', LEATHER_BOOTS,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      's', PLATE_THIN_BRASS
                     );
                 }
                 if (enableRunAssist) {
                     RecipeUtility.addRecipe(event, true, "runAssist1", RUN_ASSIST,
-                            "p p",
-                            "s s",
-                            "p p",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            's', INGOT_BRASS
+                      "p p",
+                      "s s",
+                      "p p",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      's', INGOT_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "runAssist2", RUN_ASSIST,
-                            "p p",
-                            "s s",
-                            "p p",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            's', PLATE_THIN_BRASS
+                      "p p",
+                      "s s",
+                      "p p",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      's', PLATE_THIN_BRASS
                     );
                 }
                 if (enableDoubleJump) {
                     RecipeUtility.addRecipe(event, true, "doubleJump1", DOUBLE_JUMP,
-                            "s s",
-                            "v v",
-                            'v', VALVE_PIPE,
-                            's', INGOT_BRASS
+                      "s s",
+                      "v v",
+                      'v', VALVE_PIPE,
+                      's', INGOT_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "doubleJump2", DOUBLE_JUMP,
-                            "s s",
-                            "v v",
-                            'v', VALVE_PIPE,
-                            's', PLATE_THIN_BRASS
+                      "s s",
+                      "v v",
+                      'v', VALVE_PIPE,
+                      's', PLATE_THIN_BRASS
                     );
                 }
                 if (enableCanningMachine && enableCanister) {
                     RecipeUtility.addRecipe(event, true, "canner1", CANNING_MACHINE,
-                            "bbn",
-                            "p p",
-                            "i i",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', INGOT_BRASS,
-                            'n', NUGGET_IRON,
-                            'i', INGOT_IRON
+                      "bbn",
+                      "p p",
+                      "i i",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', INGOT_BRASS,
+                      'n', NUGGET_IRON,
+                      'i', INGOT_IRON
                     );
                     RecipeUtility.addRecipe(event, true, "canner2", CANNING_MACHINE,
-                            "bbn",
-                            "p p",
-                            "i i",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', PLATE_THIN_BRASS,
-                            'n', NUGGET_IRON,
-                            'i', PLATE_THIN_IRON
+                      "bbn",
+                      "p p",
+                      "i i",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', PLATE_THIN_BRASS,
+                      'n', NUGGET_IRON,
+                      'i', PLATE_THIN_IRON
                     );
                     RecipeUtility.addRecipe(event, true, "canner3", CANNING_MACHINE,
-                            "bbn",
-                            "p p",
-                            "i i",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', INGOT_BRASS,
-                            'n', NUGGET_IRON,
-                            'i', INGOT_IRON
+                      "bbn",
+                      "p p",
+                      "i i",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', INGOT_BRASS,
+                      'n', NUGGET_IRON,
+                      'i', INGOT_IRON
                     );
                     RecipeUtility.addRecipe(event, true, "canner4", CANNING_MACHINE,
-                            "bbn",
-                            "p p",
-                            "i i",
-                            'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
-                            'b', PLATE_THIN_BRASS,
-                            'n', NUGGET_IRON,
-                            'i', PLATE_THIN_IRON
+                      "bbn",
+                      "p p",
+                      "i i",
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata()),
+                      'b', PLATE_THIN_BRASS,
+                      'n', NUGGET_IRON,
+                      'i', PLATE_THIN_IRON
                     );
                 }
                 if (enablePitonDeployer) {
                     RecipeUtility.addRecipe(event, true, "pitonDeployer", PITON_DEPLOYER,
-                            " i ",
-                            "lli",
-                            "ll ",
-                            'l', LEATHER,
-                            'i', NUGGET_IRON
+                      " i ",
+                      "lli",
+                      "ll ",
+                      'l', LEATHER,
+                      'i', NUGGET_IRON
                     );
                 }
                 if (enableStealthUpgrade) {
                     RecipeUtility.addRecipe(event, true, "stealthUpgrade", STEALTH,
-                            "lwl",
-                            "lsl",
-                            "lwl",
-                            'l', LEATHER,
-                            'w', WOOL,
-                            's', STRING
+                      "lwl",
+                      "lsl",
+                      "lwl",
+                      'l', LEATHER,
+                      'w', WOOL,
+                      's', STRING
                     );
                 }
                 if (enableEnderShroud) {
                     RecipeUtility.addRecipe(event, true, "enderShroud", ENDER_SHROUD,
-                            " g ",
-                            "geg",
-                            " g ",
-                            'g', GLASS,
-                            'e', ENDER_PEARL
+                      " g ",
+                      "geg",
+                      " g ",
+                      'g', GLASS,
+                      'e', ENDER_PEARL
                     );
                 }
                 if (enableReinforcedTank) {
                     RecipeUtility.addRecipe(event, true, "reinforcedTank1", REINFORCED_TANK,
-                            "ppp",
-                            "tpt",
-                            "ppp",
-                            't', STEAM_TANK,
-                            'p', INGOT_BRASS
+                      "ppp",
+                      "tpt",
+                      "ppp",
+                      't', STEAM_TANK,
+                      'p', INGOT_BRASS
                     );
                     RecipeUtility.addRecipe(event, true, "reinforcedTank2", REINFORCED_TANK,
-                            "ppp",
-                            "tpt",
-                            "ppp",
-                            't', STEAM_TANK,
-                            'p', PLATE_THIN_BRASS
+                      "ppp",
+                      "tpt",
+                      "ppp",
+                      't', STEAM_TANK,
+                      'p', PLATE_THIN_BRASS
                     );
                     if (enableUberReinforcedTank) {
                         RecipeUtility.addRecipe(event, true, "uberReinforcedTank1", UBER_REINFORCED_TANK,
-                                "ppp",
-                                "tbt",
-                                "ppp",
-                                't', REINFORCED_TANK,
-                                'p', INGOT_BRASS,
-                                'b', BLOCK_BRASS
+                          "ppp",
+                          "tbt",
+                          "ppp",
+                          't', REINFORCED_TANK,
+                          'p', INGOT_BRASS,
+                          'b', BLOCK_BRASS
                         );
                         RecipeUtility.addRecipe(event, true, "uberReinforcedTank2", UBER_REINFORCED_TANK,
-                                "ppp",
-                                "tbt",
-                                "ppp",
-                                't', REINFORCED_TANK,
-                                'p', PLATE_THIN_BRASS,
-                                'b', BLOCK_BRASS
+                          "ppp",
+                          "tbt",
+                          "ppp",
+                          't', REINFORCED_TANK,
+                          'p', PLATE_THIN_BRASS,
+                          'b', BLOCK_BRASS
                         );
                     }
                 }
                 if (enableRebreather) {
                     RecipeUtility.addRecipe(event, true, "rebreather",
-                            REBREATHER,
-                                    " l ",
-                                    "ptp",
-                                    " c ",
-                                    'l', LEATHER,
-                                    'p', VALVE_PIPE,
-                                    't', STEAM_TANK,
-                                    'c', new ItemStack(CARPET, 1, OreDictionary.WILDCARD_VALUE)
-                            );
+                      REBREATHER,
+                      " l ",
+                      "ptp",
+                      " c ",
+                      'l', LEATHER,
+                      'p', VALVE_PIPE,
+                      't', STEAM_TANK,
+                      'c', new ItemStack(CARPET, 1, OreDictionary.WILDCARD_VALUE)
+                    );
                 }
                 if (enableHydrophobic) {
                     RecipeUtility.addRecipe(event, true, "hydrophobic",
-                            HYDROPHOBIC_COATINGS,
-                                    "zbz",
-                                    "hzh",
-                                    "sss",
-                                    'z', PLATE_THIN_ZINC,
-                                    'b', LEATHER_BOOTS,
-                                    'h', STEAM_HEATER,
-                                    's', SLIMEBALL_ORE
-                            );
+                      HYDROPHOBIC_COATINGS,
+                      "zbz",
+                      "hzh",
+                      "sss",
+                      'z', PLATE_THIN_ZINC,
+                      'b', LEATHER_BOOTS,
+                      'h', STEAM_HEATER,
+                      's', SLIMEBALL_ORE
+                    );
                 }
                 if (enablePyrophobic) {
                     RecipeUtility.addRecipe(event, true, "pyrophobic",
-                            PYROPHOBIC_COATINGS,
-                                    "cbc",
-                                    "hch",
-                                    "mmm",
-                                    'c', PLATE_THIN_COPPER,
-                                    'b', LEATHER_BOOTS,
-                                    'h', STEAM_HEATER,
-                                    'm', MAGMA_CREAM
-                            );
+                      PYROPHOBIC_COATINGS,
+                      "cbc",
+                      "hch",
+                      "mmm",
+                      'c', PLATE_THIN_COPPER,
+                      'b', LEATHER_BOOTS,
+                      'h', STEAM_HEATER,
+                      'm', MAGMA_CREAM
+                    );
                 }
                 if (enableAnchorHeels) {
                     if (enableLeadPlate && !OreDictionary.getOres(INGOT_LEAD).isEmpty() &&
-                            !enableAnchorAnvilRecipe) {
+                      !enableAnchorAnvilRecipe) {
                         RecipeUtility.addRecipe(event, true, "anchorHeels",
-                                new ItemStack(ANCHOR_HEELS),
-                                "p p",
-                                "e e",
-                                'p', PLATE_THIN_LEAD,
-                                'e', plateStack(LEAD_PLATE_META)
+                          new ItemStack(ANCHOR_HEELS),
+                          "p p",
+                          "e e",
+                          'p', PLATE_THIN_LEAD,
+                          'e', plateStack(LEAD_PLATE_META)
                         );
                     } else {
                         RecipeUtility.addRecipe(event, true, "anchorHeels",
-                                new ItemStack(ANCHOR_HEELS),
-                                "p p",
-                                "eae",
-                                'p', PLATE_THIN_IRON,
-                                'e', plateStack(IRON_PLATE_META),
-                                'a', ANVIL
+                          new ItemStack(ANCHOR_HEELS),
+                          "p p",
+                          "eae",
+                          'p', PLATE_THIN_IRON,
+                          'e', plateStack(IRON_PLATE_META),
+                          'a', ANVIL
                         );
                     }
                 }
                 if (enablePistonPush) {
                     RecipeUtility.addRecipe(event, true, "pistonPush",
-                            PISTON_PUSH,
-                                    "n p",
-                                    "nbp",
-                                    "n p",
-                                    'n', NUGGET_BRASS,
-                                    'p', PISTON,
-                                    'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
-                            );
+                      PISTON_PUSH,
+                      "n p",
+                      "nbp",
+                      "n p",
+                      'n', NUGGET_BRASS,
+                      'p', PISTON,
+                      'b', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                    );
                 }
                 if (enableReloadingHolsters && enableFirearms && enableEnhancementRevolver) {
                     RecipeUtility.addRecipe(event, true, "reloadingHolsters",
-                            RELOADING_HOLSTERS,
-                                    "lbl",
-                                    "c c",
-                                    "p p",
-                                    'l', LEATHER,
-                                    'b', PLATE_THIN_BRASS,
-                                    'c', REVOLVER_CHAMBER,
-                                    'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
-                            );
+                      RELOADING_HOLSTERS,
+                      "lbl",
+                      "c c",
+                      "p p",
+                      'l', LEATHER,
+                      'b', PLATE_THIN_BRASS,
+                      'c', REVOLVER_CHAMBER,
+                      'p', new ItemStack(COMPONENT, 1, BRASS_PISTON.getMetadata())
+                    );
                 }
                 if (enableFrequencyShifter) {
                     RecipeUtility.addRecipe(event, true, "frequencyShifter",
-                            FREQUENCY_SHIFTER,
-                                    "t n",
-                                    "pjp",
-                                    " p ",
-                                    't', REDSTONE_TORCH,
-                                    'n', NUGGET_BRASS,
-                                    'p', PLATE_THIN_BRASS,
-                                    'j', JUKEBOX
-                            );
+                      FREQUENCY_SHIFTER,
+                      "t n",
+                      "pjp",
+                      " p ",
+                      't', REDSTONE_TORCH,
+                      'n', NUGGET_BRASS,
+                      'p', PLATE_THIN_BRASS,
+                      'j', JUKEBOX
+                    );
                 }
                 if (enableDragonRoar) {
                     RecipeUtility.addRecipe(event, true, "dragonRoar",
-                            DRAGON_ROAR,
-                                    "ccc",
-                                    "cfc",
-                                    "cpc",
-                                    'c', PLATE_THIN_COPPER,
-                                    'f', FAN,
-                                    'p', VALVE_PIPE
-                            );
+                      DRAGON_ROAR,
+                      "ccc",
+                      "cfc",
+                      "cpc",
+                      'c', PLATE_THIN_COPPER,
+                      'f', FAN,
+                      'p', VALVE_PIPE
+                    );
                 }
             }
 
             if (enableLeatherExosuit) {
                 RecipeUtility.addRecipe(event, true, "leatherExoHead", LEATHER_EXO_HEAD,
-                        "xyx",
-                        "p p",
-                        "xyx",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'p', LEATHER_HELMET
+                  "xyx",
+                  "p p",
+                  "xyx",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'p', LEATHER_HELMET
                 );
                 RecipeUtility.addRecipe(event, true, "leatherExoBody", LEATHER_EXO_CHEST,
-                        "p p",
-                        "ygy",
-                        "xxx",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'g', LEATHER_ORE,
-                        'p', LEATHER_CHESTPLATE
+                  "p p",
+                  "ygy",
+                  "xxx",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'g', LEATHER_ORE,
+                  'p', LEATHER_CHESTPLATE
                 );
                 RecipeUtility.addRecipe(event, true, "leatherExoLegs", LEATHER_EXO_LEGS,
-                        "yxy",
-                        "p p",
-                        "x x",
-                        'x', PLATE_THIN_BRASS,
-                        'y', NUGGET_BRASS,
-                        'p', LEATHER_LEGGINGS
+                  "yxy",
+                  "p p",
+                  "x x",
+                  'x', PLATE_THIN_BRASS,
+                  'y', NUGGET_BRASS,
+                  'p', LEATHER_LEGGINGS
                 );
                 RecipeUtility.addRecipe(event, true, "leatherExoFeet", LEATHER_EXO_BOOTS,
-                        "p p",
-                        "x x",
-                        'x', PLATE_THIN_BRASS,
-                        'p', LEATHER_BOOTS
+                  "p p",
+                  "x x",
+                  'x', PLATE_THIN_BRASS,
+                  'p', LEATHER_BOOTS
                 );
             }
 
@@ -849,7 +848,6 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         addFootRecipe(event, GILDED_BOOTS, INGOT_GILDED_IRON);
         addFootRecipe(event, BRASS_BOOTS, INGOT_BRASS);
     }
-
 
 
     private static void addLegRecipe(RegistryEvent.Register<IRecipe> event, Item item, String ore) {
@@ -889,9 +887,10 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     /**
      * Adds exosuit plate recipe (2x2 of ingredient), and a melting recipe for the itemstack.
-     * @param str The name of the recipe for the book.
+     *
+     * @param str        The name of the recipe for the book.
      * @param ingredient The ingredient, either an ItemStack or an OreDict string.
-     * @param plate The output plate.
+     * @param plate      The output plate.
      */
     private static void addExosuitPlateRecipes(RegistryEvent.Register<IRecipe> event, String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
         addExosuitPlateRecipes(event, str, ingredient, plate);
@@ -900,9 +899,10 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     /**
      * Adds an exosuit plate recipe (2x2 of ingredient), without a melting recipe for the itemstack.
-     * @param str The name of the recipe for the book.
+     *
+     * @param str        The name of the recipe for the book.
      * @param ingredient The ingredient, either an ItemStack or an OreDict string
-     * @param plate The output plate.
+     * @param plate      The output plate.
      */
     private static void addExosuitPlateRecipes(RegistryEvent.Register<IRecipe> event, String str, Object ingredient, ItemStack plate) {
         RecipeUtility.addRecipe(event, true, str, plate, "xx", "xx", 'x', ingredient);
