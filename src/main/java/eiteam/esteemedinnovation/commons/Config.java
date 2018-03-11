@@ -1,12 +1,7 @@
 package eiteam.esteemedinnovation.commons;
 
 import eiteam.esteemedinnovation.api.APIConfig;
-import eiteam.esteemedinnovation.boiler.BoilerModule;
-import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModuleHandler;
-import eiteam.esteemedinnovation.steamsafety.SafetyModule;
-import eiteam.esteemedinnovation.storage.StorageModule;
-import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
@@ -45,8 +40,6 @@ public class Config {
     public static boolean enableRailcraftIntegration;
     public static boolean enableNEIIntegration;
 
-    public static boolean hasAllCrucial;
-
     public static boolean singleButtonTrackpad;
 
     public static void load() {
@@ -84,14 +77,6 @@ public class Config {
         enableTinkersConstruct = config.get(CATEGORY_INTEGRATION, "Enable Tinker's Construct", true).getBoolean();
         enableRailcraftIntegration = config.get(CATEGORY_INTEGRATION, "Enable Railcraft", true).getBoolean();
         enableNEIIntegration = config.get(CATEGORY_INTEGRATION, "Enable NEI", true).getBoolean();
-
-        hasAllCrucial = true;
-        for (ConfigurableModule module : ContentModuleHandler.configurableModules) {
-            if (!module.areCrucialOptionsEnabled()) {
-                hasAllCrucial = false;
-                break;
-            }
-        }
 
         config.save();
     }

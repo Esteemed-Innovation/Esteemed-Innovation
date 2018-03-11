@@ -14,8 +14,4 @@ public interface ConfigurableModule {
      * @param config The Configuration object representing the loaded config file.
      */
     void loadConfigurationOptions(Configuration config);
-
-    default boolean areCrucialOptionsEnabled() {
-        return true;
-    }
 }

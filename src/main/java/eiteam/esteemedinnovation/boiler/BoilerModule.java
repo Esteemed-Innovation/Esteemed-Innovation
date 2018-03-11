@@ -85,9 +85,4 @@ public class BoilerModule extends ContentModule implements ConfigurableModule {
     public void loadConfigurationOptions(Configuration config) {
         enableBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Boiler (Crucial)", true).getBoolean();
     }
-
-    @Override
-    public boolean areCrucialOptionsEnabled() {
-        return enableBoiler;
-    }
 }

@@ -149,9 +149,4 @@ public class SafetyModule extends ContentModule implements ConfigurableModule {
         enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
         enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
     }
-
-    @Override
-    public boolean areCrucialOptionsEnabled() {
-        return enableGauge;
-    }
 }
