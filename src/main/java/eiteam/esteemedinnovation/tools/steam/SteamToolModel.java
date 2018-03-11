@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.tools.steam;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -13,8 +12,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.ItemLayerModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
@@ -23,6 +22,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Function;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.MOD_ID;
 
@@ -77,7 +77,7 @@ public class SteamToolModel implements IModel {
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
+        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transformMap = PerspectiveMapWrapper.getTransforms(state);
 
         ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 
@@ -89,8 +89,4 @@ public class SteamToolModel implements IModel {
         return new SteamToolBakedModel(this, builder.build(), headTexture, format, Maps.immutableEnumMap(transformMap), Maps.newHashMap());
     }
 
-    @Override
-    public IModelState getDefaultState() {
-        return null;
-    }
 }

@@ -4,8 +4,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -15,10 +13,11 @@ public class ItemCraftingComponent extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types component : Types.values()) {
-            subItems.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (Types component : Types.values()) {
+                items.add(new ItemStack(MiscellaneousModule.COMPONENT, 1, component.getMetadata()));
+            }
         }
     }
 

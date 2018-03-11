@@ -1,9 +1,12 @@
 package eiteam.esteemedinnovation.tools.steam.upgrades.drillhead;
 
+import eiteam.esteemedinnovation.api.Constants;
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.OreDictHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -13,7 +16,7 @@ import java.util.Map;
 
 public class DrillHeadRecipe extends ShapedOreRecipe {
     public DrillHeadRecipe(Item result, Object... recipe) {
-        super(result, recipe);
+        super(new ResourceLocation(Constants.EI_MODID, "drill_head"), result, recipe);
     }
 
     @Override

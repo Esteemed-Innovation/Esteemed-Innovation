@@ -2,7 +2,7 @@ package eiteam.esteemedinnovation.armor.exosuit.steam.upgrades;
 
 import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitSlot;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -20,9 +20,9 @@ public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
 
     @Override
     public void onPlayerJump(LivingEvent.LivingJumpEvent event, EntityPlayer jumper, @Nonnull ItemStack armorStack, EntityEquipmentSlot slot) {
-        boolean shiftJump = jumper.isSneaking() && ChargableUtility.hasPower(jumper, Config.jumpBoostConsumptionShiftJump);
+        boolean shiftJump = jumper.isSneaking() && ChargableUtility.hasPower(jumper, ArmorModule.jumpBoostConsumptionShiftJump);
 
-        if (shiftJump || ChargableUtility.hasPower(jumper, Config.jumpBoostConsumption)) {
+        if (shiftJump || ChargableUtility.hasPower(jumper, ArmorModule.jumpBoostConsumption)) {
             if (shiftJump) {
                 Vec3d vector = jumper.getLook(0.5F);
                 double total = Math.abs(vector.z + vector.x);
@@ -31,9 +31,9 @@ public class ItemLeapActuatorUpgrade extends ItemSteamExosuitUpgrade {
                 jumper.motionY += (y) / 1.5F;
                 jumper.motionZ += vector.z * 2;
                 jumper.motionX += vector.x * 2;
-                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumptionShiftJump, jumper);
+                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ArmorModule.jumpBoostConsumptionShiftJump, jumper);
             } else {
-                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.jumpBoostConsumption, jumper);
+                ChargableUtility.drainSteam(jumper.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ArmorModule.jumpBoostConsumption, jumper);
                 jumper.motionY += 0.2750000059604645D;
             }
         }

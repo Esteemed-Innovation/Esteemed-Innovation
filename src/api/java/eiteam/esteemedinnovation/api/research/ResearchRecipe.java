@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.api.research;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.BookPageRegistry;
 import eiteam.esteemedinnovation.api.book.BookPiece;
 import eiteam.esteemedinnovation.api.util.InventoryUtility;
@@ -7,6 +8,7 @@ import eiteam.esteemedinnovation.api.util.TriPredicate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -36,7 +38,7 @@ public class ResearchRecipe extends ShapedOreRecipe {
      * @param recipe The recipe shape (see {@link ShapedOreRecipe}).
      */
     public ResearchRecipe(@Nonnull ItemStack result, TriPredicate<InventoryCrafting, EntityPlayer, World> matcher, Object... recipe) {
-        super(result, recipe);
+        super(new ResourceLocation(Constants.API_MODID, "shaped_research"), result, recipe);
         this.matcher = matcher;
     }
 

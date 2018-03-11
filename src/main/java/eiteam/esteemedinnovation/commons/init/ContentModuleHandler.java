@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.commons.init;
 
+import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.boiler.BoilerModule;
 import eiteam.esteemedinnovation.book.BookModule;
@@ -25,14 +26,26 @@ import eiteam.esteemedinnovation.tools.ToolsModule;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import eiteam.esteemedinnovation.woodcone.WoodenConeModule;
 import eiteam.esteemedinnovation.workshop.SteamWorkshopModule;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Mod.EventBusSubscriber(modid = Constants.EI_MODID)
 public class ContentModuleHandler {
     private static final Set<ContentModule> modules = new HashSet<>();
+    public static final Collection<ConfigurableModule> configurableModules = new HashSet<>();
 
     // This isn't preferential, however I fail to see good alternatives.
     static {
@@ -65,6 +78,9 @@ public class ContentModuleHandler {
 
     private static void registerModule(ContentModule module) {
         modules.add(module);
+        if (module instanceof ConfigurableModule) {
+            configurableModules.add((ConfigurableModule) module);
+        }
     }
 
     public static void preInit() {
@@ -72,7 +88,6 @@ public class ContentModuleHandler {
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
             module.create(side);
-            module.oreDict(side);
             if (isClient) {
                 module.preInitClient();
             }
@@ -83,7 +98,6 @@ public class ContentModuleHandler {
         Side side = getSide();
         boolean isClient = side == Side.CLIENT;
         for (ContentModule module : modules) {
-            module.recipes(side);
             if (isClient) {
                 module.initClient();
             }
@@ -98,6 +112,41 @@ public class ContentModuleHandler {
                 module.postInitClient();
             }
             module.finish(side);
+        }
+    }
+
+    public static void loadConfigs(Configuration configuration) {
+        for (ConfigurableModule module : configurableModules) {
+            module.loadConfigurationOptions(configuration);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        for (ContentModule module : modules) {
+            module.registerBlocks(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        for (ContentModule module : modules) {
+            module.registerItems(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        for (ContentModule module : modules) {
+            module.recipes(event);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        for (ContentModule module : modules) {
+            module.registerModels(event);
         }
     }
 

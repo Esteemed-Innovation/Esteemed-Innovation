@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.materials.raw;
 
+import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -48,10 +49,11 @@ public class BlockGenericOre extends Block {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
-        for (OreBlockTypes type : OreBlockTypes.LOOKUP) {
-            list.add(new ItemStack(this, 1, type.getMetadata()));
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab == EsteemedInnovation.tab) {
+            for (OreBlockTypes type : OreBlockTypes.LOOKUP) {
+                items.add(new ItemStack(this, 1, type.getMetadata()));
+            }
         }
     }
 

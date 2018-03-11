@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class SteamDrillHeadUpgradeColorHandler implements IItemColor {
     @Override
-    public int getColorFromItemstack(ItemStack stack, int renderPass) {
+    public int colorMultiplier(ItemStack stack, int renderPass) {
         return DrillHeadMaterial.materials.get(ItemDrillHeadUpgrade.getMyMaterial(stack)).getColorInt();
     }
 }

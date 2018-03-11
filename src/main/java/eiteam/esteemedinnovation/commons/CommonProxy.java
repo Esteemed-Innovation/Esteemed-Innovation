@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class CommonProxy {
     public void registerTexturesToStitch() {}
@@ -25,8 +24,4 @@ public class CommonProxy {
     }
 
     public void checkRange(EntityLivingBase entity) {}
-
-    public static void logInfo(String string){
-        FMLLog.info("[EI]: " + string);
-    }
 }

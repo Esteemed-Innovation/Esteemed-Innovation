@@ -15,7 +15,7 @@ public class TileEntityItemMortarRenderer extends TileEntitySpecialRenderer<Tile
     private static final ResourceLocation ELSE_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/item_mortar_else");
 
     @Override
-    public void renderTileEntityAt(TileEntityItemMortar mortar, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityItemMortar mortar, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         BlockPos pos = mortar.getPos();
         int zTile = pos.getZ();
         int xTile = pos.getX();

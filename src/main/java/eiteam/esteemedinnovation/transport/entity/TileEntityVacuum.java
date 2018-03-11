@@ -5,7 +5,6 @@ import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.tile.ThumperAdjacentBehaviorModifier;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.MathUtility;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class TileEntityVacuum extends SteamTransporterTileEntity implements Wrenchable, WrenchDisplay, ThumperAdjacentBehaviorModifier {
-    private static final int VACUUM_STEAM_CONSUMPTION = Config.vacuumConsumption;
+    private static final int VACUUM_STEAM_CONSUMPTION = TransportationModule.vacuumConsumption;
 
     // half angle of cone
     private static final float THETA = (float) Math.PI / 2.0F;

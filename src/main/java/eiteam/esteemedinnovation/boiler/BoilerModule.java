@@ -1,14 +1,20 @@
 package eiteam.esteemedinnovation.boiler;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.INGOT_BRASS;
@@ -16,32 +22,38 @@ import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_BRASS;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 import static net.minecraft.init.Blocks.FURNACE;
 
-public class BoilerModule extends ContentModule {
+public class BoilerModule extends ContentModule implements ConfigurableModule {
     public static Block BOILER;
+    public static boolean enableBoiler;
 
     @Override
-    public void create(Side side) {
-        BOILER = setup(new BlockBoiler(), "boiler");
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        BOILER = setup(event, new BlockBoiler(), "boiler");
         registerTileEntity(TileEntityBoiler.class, "boiler");
     }
 
     @Override
-    public void recipes(Side side) {
-        if (Config.enableBoiler) {
-            BookRecipeRegistry.addRecipe("boiler1", new ShapedOreRecipe(BOILER,
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, BOILER);
+    }
+
+    @Override
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableBoiler) {
+            RecipeUtility.addRecipe(event, true, "boiler1", BOILER,
               "xxx",
               "xfx",
               "xxx",
               'x', INGOT_BRASS,
               'f', FURNACE
-            ));
-            BookRecipeRegistry.addRecipe("boiler2", new ShapedOreRecipe(BOILER,
+            );
+            RecipeUtility.addRecipe(event, true, "boiler2", BOILER,
               "xxx",
               "xfx",
               "xxx",
               'x', PLATE_THIN_BRASS,
               'f', FURNACE
-            ));
+            );
         }
     }
 
@@ -65,7 +77,12 @@ public class BoilerModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModel(BOILER);
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableBoiler = config.get(CATEGORY_STEAM_SYSTEM, "Enable Boiler (Crucial)", true).getBoolean();
     }
 }

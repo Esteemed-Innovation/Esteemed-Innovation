@@ -4,7 +4,7 @@ import eiteam.esteemedinnovation.api.entity.EntityRocket;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -41,7 +41,7 @@ public class RenderRocket extends Render {
         GL11.glRotatef((float) Math.toDegrees(yaw) - 90, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef((float) Math.toDegrees(pitch), 0.0F, 0.0F, 1.0F);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         byte b0 = 0;
         float f2 = 0.0F;
         float f3 = 0.5F;

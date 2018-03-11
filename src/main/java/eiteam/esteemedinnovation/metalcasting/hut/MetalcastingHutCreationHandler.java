@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.metalcasting.hut;
 
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -13,7 +13,7 @@ import java.util.Random;
 public class MetalcastingHutCreationHandler implements VillagerRegistry.IVillageCreationHandler {
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
-        return new StructureVillagePieces.PieceWeight(MetalcastingHutComponent.class, Config.metalcastingHutWeight, Config.metalcastingHutLimit);
+        return new StructureVillagePieces.PieceWeight(MetalcastingHutComponent.class, MetalcastingModule.metalcastingHutWeight, MetalcastingModule.metalcastingHutLimit);
     }
 
     @Override

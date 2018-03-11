@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.book.BookModule.BOOK;
+import static net.minecraft.client.util.ITooltipFlag.TooltipFlags.ADVANCED;
+import static net.minecraft.client.util.ITooltipFlag.TooltipFlags.NORMAL;
 
 public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.api.book.GuiJournal {
     private static final ResourceLocation BOOK_RIGHT_GUI_TEXTURES = new ResourceLocation(Constants.API_MODID, "textures/gui/book_right.png");
@@ -372,7 +374,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
 
     @Override
     public void renderToolTip(ItemStack stack0, int mouseX, int mouseY, boolean renderHyperlink) {
-        List<String> list = stack0.getTooltip(mc.player, mc.gameSettings.advancedItemTooltips);
+        List<String> list = stack0.getTooltip(mc.player, mc.gameSettings.advancedItemTooltips ? ADVANCED : NORMAL);
         zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k) {
             if (k == 0) {
@@ -431,7 +433,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         }
 
         @Override
-        public void drawButton(@Nonnull Minecraft minecraft, int mouseX, int mouseY) {
+        public void drawButton(@Nonnull Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
             if (visible) {
                 boolean isMouseInBookBounds = MathUtility.isBetweenMinInclusive(x, mouseX, x + width) &&
                   MathUtility.isBetweenMinInclusive(y, mouseY, y + height);
@@ -465,8 +467,9 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
             fontRenderer.drawString(str, x, y, color);
         }
 
+
         @Override
-        public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
+        public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
             if (visible) {
                 FontRenderer fontRenderer = mc.fontRenderer;
                 GlStateManager.color(1, 1, 1, 1);

@@ -19,6 +19,7 @@ public class BlockEngineeringTable extends Block {
     BlockEngineeringTable() {
         super(Material.ROCK);
         setHardness(3.5F);
+        setHarvestLevel("pickaxe", 1);
         setCreativeTab(EsteemedInnovation.tab);
     }
 

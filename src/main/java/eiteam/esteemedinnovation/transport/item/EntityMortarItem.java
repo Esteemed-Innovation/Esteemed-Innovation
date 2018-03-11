@@ -1,6 +1,6 @@
 package eiteam.esteemedinnovation.transport.item;
 
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,7 +74,7 @@ public class EntityMortarItem extends EntityItem {
             }
             if (posY > 256) {
                 motionY = 0.0F;
-                int r = Config.mortarRadius;
+                int r = TransportationModule.mortarRadius;
                 setPosition(xTarget + (world.rand.nextInt((2 * r) + 1) - r), 256,
                   zTarget + (world.rand.nextInt((2 * r) + 1) - r));
                 goingUp = false;

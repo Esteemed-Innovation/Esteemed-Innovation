@@ -2,11 +2,14 @@ package eiteam.esteemedinnovation.book;
 
 import eiteam.esteemedinnovation.api.book.*;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,12 +29,16 @@ public class BookModule extends ContentModule {
     @Override
     public void create(Side side) {
         channel.registerMessage(BookPieceUnlockedStateChangePacketHandler.class, BookPieceUnlockedStateChangePacket.class, 4, Side.CLIENT);
-        BOOK = setup(new ItemEsteemedInnovationJournal(), "book");
     }
 
     @Override
-    public void recipes(Side side) {
-        BookRecipeRegistry.addRecipe("book", new ShapelessOreRecipe(BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC));
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        BOOK = setup(event, new ItemEsteemedInnovationJournal(), "book");
+    }
+
+    @Override
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        RecipeUtility.addShapelessRecipe(event, true, "book", BOOK, Items.BOOK, ORE_COPPER, ORE_ZINC);
     }
 
     public static void generateAllHints() {
@@ -56,7 +63,7 @@ public class BookModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModel(BOOK);
     }
 }

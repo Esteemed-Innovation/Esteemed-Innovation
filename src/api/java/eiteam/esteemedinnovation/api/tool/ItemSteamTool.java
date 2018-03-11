@@ -42,7 +42,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
     protected static final ResourceLocation LARGE_ICONS = new ResourceLocation(Constants.EI_MODID + ":textures/gui/engineering2.png");
     private IdentityHashMap<ItemStack, MutablePair<Integer, Integer>> ticksSpeed = new IdentityHashMap<>();
     /**
-     * The Item used in getStrVsBlock. Basically, assuming there are no strength modifying upgrades, this item's {@link #getStrVsBlock(ItemStack, IBlockState)}
+     * The Item used in getStrVsBlock. Basically, assuming there are no strength modifying upgrades, this item's {@link #getDestroySpeed(ItemStack, IBlockState)}
      * will be called to determine the strength (along with the speed, of course).
      */
     private final Item itemForStrength;
@@ -166,7 +166,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
             nbt.setInteger("Ticks", ticks);
             nbt.setInteger("Speed", speed);
         }
-        return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        return ActionResult.newResult(EnumActionResult.PASS, stack);
     }
 
     @Override
@@ -256,7 +256,7 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
           me.getTagCompound().getCompoundTag("upgrades").hasKey(Integer.toString(slot))) {
             return new ItemStack(me.getTagCompound().getCompoundTag("upgrades").getCompoundTag(Integer.toString(slot)));
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -271,22 +271,22 @@ public abstract class ItemSteamTool extends ItemTool implements SteamChargable, 
 
     @Override
     public ItemStack decrStackSize(ItemStack me, int var1, int var2) {
-        if (getStackInSlot(me, var1) != null) {
+        if (!getStackInSlot(me, var1).isEmpty()) {
             ItemStack stack;
             if (getStackInSlot(me, var1).getCount() <= var2) {
                 stack = getStackInSlot(me, var1);
-                setInventorySlotContents(me, var1, null);
+                setInventorySlotContents(me, var1, ItemStack.EMPTY);
             } else {
                 stack = getStackInSlot(me, var1).splitStack(var2);
                 setInventorySlotContents(me, var1, getStackInSlot(me, var1));
 
                 if (getStackInSlot(me, var1).isEmpty()) {
-                    setInventorySlotContents(me, var1, null);
+                    setInventorySlotContents(me, var1, ItemStack.EMPTY);
                 }
             }
             return stack;
         } else {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

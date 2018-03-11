@@ -1,5 +1,6 @@
 package eiteam.esteemedinnovation.hammer;
 
+import eiteam.esteemedinnovation.commons.util.EnchantmentUtility;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -163,7 +164,7 @@ public class ContainerSteamAnvil extends Container {
             Enchantment enchantment;
 
             if (itemstack2 != null) {
-                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && Items.ENCHANTED_BOOK.getEnchantments(itemstack2).tagCount() > 0;
+                flag = itemstack2.getItem() == Items.ENCHANTED_BOOK && EnchantmentUtility.hasEnchantments(itemstack2);
 
                 if (itemstack1.isItemStackDamageable() && itemstack1.getItem().getIsRepairable(itemstack, itemstack2)) {
                     k = Math.min(itemstack1.getItemDamage(), itemstack1.getMaxDamage() / 4);
@@ -237,7 +238,7 @@ public class ContainerSteamAnvil extends Container {
                         for (Object o : map.keySet()) {
                             int j2 = ((Integer) o);
 
-                            if (j2 != i1 && !enchantment.func_191560_c(Enchantment.getEnchantmentByID(j2))) {
+                            if (j2 != i1 && !enchantment.isCompatibleWith(Enchantment.getEnchantmentByID(j2))) {
                                 flag1 = false;
                                 i += i2;
                             }

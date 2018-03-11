@@ -7,8 +7,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -24,10 +22,11 @@ public class ItemExosuitPlate extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
-            subItems.add(ArmorModule.plateStack(i));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (int i = 0; i < ArmorModule.MAX_PLATE_META; i++) {
+                items.add(ArmorModule.plateStack(i));
+            }
         }
     }
 

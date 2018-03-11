@@ -3,7 +3,6 @@ package eiteam.esteemedinnovation.transport.block;
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.wrench.WrenchDisplay;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -58,7 +57,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
     @Override
     public void safeUpdate() {
         EnumFacing dir = world.getBlockState(pos).getValue(BlockPlonker.FACING);
-        if (getSteamShare() < Config.plonkerConsumption) {
+        if (getSteamShare() < TransportationModule.plonkerConsumption) {
             return;
         }
 
@@ -68,7 +67,7 @@ public class TileEntityPlonker extends SteamTransporterTileEntity implements Wre
             FakePlayer player = FakePlayerFactory.getMinecraft((WorldServer) world);
             inventory.getItem().onItemUse(player, world, getOffsetPos(dir), player.getActiveHand(), dir.getOpposite(), 0.5F, 0.5F, 0.5F);
             if (mode == Mode.ALWAYS_ON) {
-                decrSteam(Config.plonkerConsumption);
+                decrSteam(TransportationModule.plonkerConsumption);
             }
         }
 

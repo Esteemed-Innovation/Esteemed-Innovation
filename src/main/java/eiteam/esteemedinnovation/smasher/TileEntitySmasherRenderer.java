@@ -13,7 +13,7 @@ public class TileEntitySmasherRenderer extends TileEntitySpecialRenderer<TileEnt
     private static final ResourceLocation HEAD_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/smasher_head");
 
     @Override
-    public void renderTileEntityAt(TileEntitySmasher smasher, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntitySmasher smasher, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         double dist;

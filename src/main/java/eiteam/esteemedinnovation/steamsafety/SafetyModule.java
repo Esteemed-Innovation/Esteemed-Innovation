@@ -1,8 +1,9 @@
 package eiteam.esteemedinnovation.steamsafety;
 
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import eiteam.esteemedinnovation.steamsafety.disc.BlockRuptureDisc;
 import eiteam.esteemedinnovation.steamsafety.disc.TileEntityRuptureDisc;
@@ -13,29 +14,38 @@ import eiteam.esteemedinnovation.steamsafety.whistle.BlockWhistle;
 import eiteam.esteemedinnovation.steamsafety.whistle.TileEntityWhistle;
 import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
-import static eiteam.esteemedinnovation.commons.OreDictEntries.PLATE_THIN_ZINC;
 import static net.minecraft.init.Items.COMPASS;
 
-public class SafetyModule extends ContentModule {
+public class SafetyModule extends ContentModule implements ConfigurableModule {
     public static Block STEAM_GAUGE;
     public static Block RUPTURE_DISC;
     public static Block STEAM_WHISTLE;
+    private static boolean enableRuptureDisc;
+    private static boolean enableHorn;
+    public static boolean enableGauge;
 
     @Override
     public void create(Side side) {
-        STEAM_GAUGE = setup(new BlockSteamGauge(), "steam_gauge");
-        RUPTURE_DISC = setup(new BlockRuptureDisc(), "rupture_disc", BlockManyMetadataItem::new);
-        STEAM_WHISTLE = setup(new BlockWhistle(), "steam_whistle");
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_GAUGE = setup(event, new BlockSteamGauge(), "steam_gauge");
+        RUPTURE_DISC = setup(event, new BlockRuptureDisc(), "rupture_disc");
+        STEAM_WHISTLE = setup(event, new BlockWhistle(), "steam_whistle");
 
         registerTileEntity(TileEntitySteamGauge.class, "steamGauge");
         registerTileEntity(TileEntityRuptureDisc.class, "ruptureDisc");
@@ -43,49 +53,56 @@ public class SafetyModule extends ContentModule {
     }
 
     @Override
-    public void recipes(Side side) {
-        if (Config.enableGauge) {
-            BookRecipeRegistry.addRecipe("gauge", new ShapedOreRecipe(STEAM_GAUGE,
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_GAUGE);
+        setupItemBlock(event, RUPTURE_DISC, BlockManyMetadataItem::new);
+        setupItemBlock(event, STEAM_WHISTLE);
+    }
+
+    @Override
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableGauge) {
+            RecipeUtility.addRecipe(event, true, "gauge", STEAM_GAUGE,
               " x ",
               "xrx",
               " x ",
               'x', INGOT_BRASS,
-              'r', COMPASS));
+              'r', COMPASS);
         }
-        if (Config.enableRuptureDisc) {
-            BookRecipeRegistry.addRecipe("disc", new ShapedOreRecipe(RUPTURE_DISC,
+        if (enableRuptureDisc) {
+            RecipeUtility.addRecipe(event, true, "disc", RUPTURE_DISC,
               " x ",
               "xrx",
               " x ",
               'x', NUGGET_BRASS,
               'r', PLATE_THIN_ZINC
-            ));
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(RUPTURE_DISC, 1, 0),
-              PLATE_THIN_ZINC, new ItemStack(RUPTURE_DISC, 1, 1)));
+            );
+            RecipeUtility.addShapelessRecipe(event, false, "disc_repair", new ItemStack(RUPTURE_DISC, 1, 0),
+              PLATE_THIN_ZINC, new ItemStack(RUPTURE_DISC, 1, 1));
         }
-        if (Config.enableHorn) {
-            BookRecipeRegistry.addRecipe("whistle1", new ShapedOreRecipe(STEAM_WHISTLE,
+        if (enableHorn) {
+            RecipeUtility.addRecipe(event, true, "whistle1", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",
               'n', NUGGET_BRASS,
               'b', PLATE_THIN_BRASS,
               'p', TransportationModule.BRASS_PIPE
-            ));
-            BookRecipeRegistry.addRecipe("whistle2", new ShapedOreRecipe(STEAM_WHISTLE,
+            );
+            RecipeUtility.addRecipe(event, true, "whistle2", STEAM_WHISTLE,
               " bb",
               " bn",
               "pp ",
               'n', NUGGET_BRASS,
               'b', INGOT_BRASS,
               'p', TransportationModule.BRASS_PIPE
-            ));
+            );
         }
     }
 
     @Override
     public void finish(Side side) {
-        if (Config.enableRuptureDisc) {
+        if (enableRuptureDisc) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 2,
               new BookCategory("category.RuptureDisc.name",
                 new BookEntry("research.RuptureDisc.name",
@@ -94,7 +111,7 @@ public class SafetyModule extends ContentModule {
                   new BookPageCrafting("", "disc"))));
         }
 
-        if (Config.enableHorn) {
+        if (enableHorn) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 3,
               new BookCategory("category.Whistle.name",
                 new BookEntry("research.Whistle.name",
@@ -102,7 +119,7 @@ public class SafetyModule extends ContentModule {
                   new BookPageCrafting("", "whistle1", "whistle2"))));
         }
 
-        if (Config.enableGauge) {
+        if (enableGauge) {
             BookPageRegistry.addCategoryToSection(STEAMPOWER_SECTION, 4,
               new BookCategory("category.Gauge.name",
                 new BookEntry("research.Gauge.name",
@@ -113,7 +130,7 @@ public class SafetyModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModelItemStack(new ItemStack(RUPTURE_DISC, 1, 0));
         registerModelItemStack(new ItemStack(RUPTURE_DISC, 1, 1));
         registerModel(STEAM_GAUGE);
@@ -124,5 +141,12 @@ public class SafetyModule extends ContentModule {
     @Override
     public void initClient() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySteamGauge.class, new TileEntitySteamGaugeRenderer());
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableHorn = config.get(CATEGORY_STEAM_SYSTEM, "Enable Horn", true).getBoolean();
+        enableGauge = config.get(CATEGORY_STEAM_SYSTEM, "Enable Pressure Gauge (Crucial)", true).getBoolean();
+        enableRuptureDisc = config.get(CATEGORY_STEAM_SYSTEM, "Enable Rupture Disc", true).getBoolean();
     }
 }

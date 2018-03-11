@@ -11,7 +11,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import eiteam.esteemedinnovation.commons.Config;
 
 public class ItemSteamCell extends Item {
     public ItemSteamCell() {
@@ -26,7 +25,7 @@ public class ItemSteamCell extends Item {
      */
     public static boolean chargeItems(EntityPlayer player, boolean skipExo) {
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-        int steamToAdd = Config.steamCellCapacity;
+        int steamToAdd = ChargingModule.steamCellCapacity;
         if (!skipExo && chest != null && chest.getItem() instanceof ItemSteamExosuitArmor) {
             ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) chest.getItem();
             boolean bool = armor.addSteam(chest, steamToAdd, player);

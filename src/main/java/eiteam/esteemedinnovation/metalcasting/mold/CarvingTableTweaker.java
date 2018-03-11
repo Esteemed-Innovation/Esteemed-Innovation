@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.metalcasting.mold;
 
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 
 import eiteam.esteemedinnovation.api.mold.MoldRegistry;
-import minetweaker.IUndoableAction;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.Item;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,17 +15,17 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CarvingTableTweaker {
     @ZenMethod
     public static void addCarvable(IItemStack stack) {
-        Item item = MineTweakerMC.getItemStack(stack).getItem();
-        MineTweakerAPI.apply(new Add(item));
+        Item item = CraftTweakerMC.getItemStack(stack).getItem();
+        CraftTweakerAPI.apply(new Add(item));
     }
 
     @ZenMethod
     public static void removeCarvable(IItemStack stack) {
-        Item item = MineTweakerMC.getItemStack(stack).getItem();
-        MineTweakerAPI.apply(new Remove(item));
+        Item item = CraftTweakerMC.getItemStack(stack).getItem();
+        CraftTweakerAPI.apply(new Remove(item));
     }
 
-    private static class Add implements IUndoableAction {
+    private static class Add implements IAction {
         private final Item item;
 
         public Add(Item item) {
@@ -38,32 +38,12 @@ public class CarvingTableTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            MoldRegistry.removeMold(item);
-        }
-
-        @Override
         public String describe() {
             return "Adding " + item.getUnlocalizedName() + " to list of Carving Table molds";
         }
-
-        @Override
-        public String describeUndo() {
-            return "Removing " + item.getUnlocalizedName() + " from the list of Carving Table molds";
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
-    private static class Remove implements IUndoableAction {
+    private static class Remove implements IAction {
         private final Item item;
 
         public Remove(Item item) {
@@ -76,28 +56,8 @@ public class CarvingTableTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            MoldRegistry.addCarvableMold(item);
-        }
-
-        @Override
         public String describe() {
             return "Removing " + item.getUnlocalizedName() + " from the list of Carving Table molds";
-        }
-
-        @Override
-        public String describeUndo() {
-            return "Adding " + item.getUnlocalizedName() + " to the list of Carving Table molds";
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
         }
     }
 }

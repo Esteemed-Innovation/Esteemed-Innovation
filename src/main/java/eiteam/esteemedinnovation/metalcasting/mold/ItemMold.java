@@ -8,8 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -30,10 +28,11 @@ public class ItemMold extends Item implements CrucibleMold {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(@Nonnull Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Type type : Type.LOOKUP) {
-            subItems.add(new ItemStack(this, 1, type.ordinal()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (Type type : Type.LOOKUP) {
+                items.add(new ItemStack(this, 1, type.ordinal()));
+            }
         }
     }
 

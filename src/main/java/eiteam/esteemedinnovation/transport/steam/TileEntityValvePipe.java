@@ -1,8 +1,8 @@
 package eiteam.esteemedinnovation.transport.steam;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
 import eiteam.esteemedinnovation.api.steamnet.SteamNetworkRegistry;
+import eiteam.esteemedinnovation.transport.TransportationModule;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ public class TileEntityValvePipe extends TileEntitySteamPipe {
      * @param flag True to isOpen it, false to close it.
      */
     public void updateRedstoneState(boolean flag) {
-        if (Config.enableRedstoneValvePipe) {
+        if (TransportationModule.enableRedstoneValvePipe) {
             if (!isTurning()) {
                 setOpen(flag);
             }

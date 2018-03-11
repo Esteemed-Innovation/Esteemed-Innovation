@@ -1,6 +1,5 @@
 package eiteam.esteemedinnovation.workshop;
 
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
@@ -15,7 +14,7 @@ public class SteamWorkshopCreationHandler implements VillagerRegistry.IVillageCr
 
     @Override
     public PieceWeight getVillagePieceWeight(Random random, int i) {
-        return new StructureVillagePieces.PieceWeight(ComponentSteamWorkshop.class, Config.workshopWeight, Config.workshopLimit);
+        return new StructureVillagePieces.PieceWeight(ComponentSteamWorkshop.class, SteamWorkshopModule.workshopWeight, SteamWorkshopModule.workshopLimit);
     }
 
     @Override

@@ -1,16 +1,17 @@
 package eiteam.esteemedinnovation.naturalphilosophy;
 
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.storage.StorageModule;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Items.*;
@@ -21,23 +22,24 @@ public class NaturalPhilosophyModule extends ContentModule {
     public static Item BIOME_LOG;
 
     @Override
-    public void create(Side side) {
-        SOIL_SAMPLING_KIT = setup(new ItemSoilSamplingKit(), "soil_sampling_kit");
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        SOIL_SAMPLING_KIT = setup(event, new ItemSoilSamplingKit(), "soil_sampling_kit");
 
-        BLANK_RESEARCH_LOG = setup(new Item(), "research_log_blank");
-        BIOME_LOG = setup(new ItemResearchLog(), "research_log_biome");
+        BLANK_RESEARCH_LOG = setup(event, new Item(), "research_log_blank");
+        BIOME_LOG = setup(event, new ItemResearchLog(), "research_log_biome");
     }
 
     @Override
-    public void recipes(Side side) {
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BLANK_RESEARCH_LOG,
-          PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER));
-        GameRegistry.addRecipe(new ResearchLogCopyRecipe());
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        RecipeUtility.addShapelessRecipe(event, false, "blank_research_log", BLANK_RESEARCH_LOG,
+          PLANK_WOOD, PLANK_WOOD, STRING_ORE, PAPER, PAPER, PAPER);
+        //TODO: make sure this works
+        RecipeUtility.addRecipe(event, false, "research_log_copy", new ResearchLogCopyRecipe());
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
-          BLANK_RESEARCH_LOG, DIRT_ORE));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BIOME_LOG,
-          BLANK_RESEARCH_LOG, SAND_ORE));
+        RecipeUtility.addShapelessRecipe(event, false, "biome_log", BIOME_LOG,
+          BLANK_RESEARCH_LOG, DIRT_ORE);
+        RecipeUtility.addShapelessRecipe(event, false, "biome_log2", BIOME_LOG,
+          BLANK_RESEARCH_LOG, SAND_ORE);
 
         for (Item vItem : Item.REGISTRY) {
             if (vItem instanceof ItemSpade) {
@@ -47,7 +49,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                 nbt.setInteger("Damage", max);
                 ItemStack result = new ItemStack(SOIL_SAMPLING_KIT);
                 result.setTagCompound(nbt);
-                GameRegistry.addRecipe(new ShapedOreRecipe(result,
+                RecipeUtility.addRecipe(event, false, vItem.getRegistryName().getResourcePath() + "soil", result,
                   "MKS",
                   "WIW",
                   " W ",
@@ -56,14 +58,14 @@ public class NaturalPhilosophyModule extends ContentModule {
                   'S', SUGAR,
                   'W', POTIONITEM,
                   'I', vItem
-                ));
+                );
             }
         }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModel(SOIL_SAMPLING_KIT);
         registerModel(BIOME_LOG);
     }

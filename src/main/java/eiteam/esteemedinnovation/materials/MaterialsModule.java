@@ -7,8 +7,8 @@ import eiteam.esteemedinnovation.api.crucible.CrucibleFormula;
 import eiteam.esteemedinnovation.api.crucible.CrucibleLiquid;
 import eiteam.esteemedinnovation.api.crucible.CrucibleRegistry;
 import eiteam.esteemedinnovation.armor.ArmorModule;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.materials.raw.BlockGenericOre;
 import eiteam.esteemedinnovation.materials.raw.config.ConfigurableOreGenerator;
 import eiteam.esteemedinnovation.materials.raw.config.OreConfigurationParser;
@@ -19,26 +19,28 @@ import eiteam.esteemedinnovation.materials.refined.ItemMetalNugget;
 import eiteam.esteemedinnovation.materials.refined.plates.BlockClassSensitivePlate;
 import eiteam.esteemedinnovation.materials.refined.plates.BlockWeightedPlate;
 import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
+import eiteam.esteemedinnovation.metalcasting.MetalcastingModule;
 import eiteam.esteemedinnovation.misc.BlockManyMetadataItem;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ReportedException;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.BASICS_SECTION;
@@ -51,7 +53,9 @@ import static eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate.
 import static eiteam.esteemedinnovation.tools.ToolsModule.*;
 import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
 import static eiteam.esteemedinnovation.transport.TransportationModule.COPPER_PIPE;
-import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Blocks.COBBLESTONE_WALL;
+import static net.minecraft.init.Blocks.GRAVEL;
+import static net.minecraft.init.Blocks.SAND;
 import static net.minecraft.init.Items.*;
 
 public class MaterialsModule extends ContentModule {
@@ -88,12 +92,6 @@ public class MaterialsModule extends ContentModule {
         }
         GameRegistry.registerWorldGenerator(new ConfigurableOreGenerator(), 1);
 
-        STORAGE_BLOCK = setup(new BlockBeacon(), "metal_storage_block", BlockManyMetadataItem::new);
-        ORE_BLOCK = setup(new BlockGenericOre(), "ore", BlockManyMetadataItem::new);
-        METAL_INGOT = setup(new ItemMetalIngot(), "ingot");
-        METAL_NUGGET = setup(new ItemMetalNugget(), "nugget");
-        METAL_PLATE = setup(new ItemMetalPlate(), "plate");
-
         IRON_LIQUID = new CrucibleLiquid("iron", 200, 200, 200);
         GOLD_LIQUID = new CrucibleLiquid("gold", 220, 157, 11);
         ZINC_LIQUID = new CrucibleLiquid("zinc", 225, 225, 225);
@@ -102,28 +100,36 @@ public class MaterialsModule extends ContentModule {
         LEAD_LIQUID = new CrucibleLiquid("lead", 118, 128, 157);
 
         BRASS_FORMULA = new CrucibleFormula(BRASS_LIQUID, 4, ZINC_LIQUID, 1, COPPER_LIQUID, 3);
-
-        COPPER_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(COPPER_PLATE.getMeta(), EntityMob.class), "copper_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(COPPER_PLATE.getMeta(), COPPER_PRESSURE_PLATE);
-        ZINC_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(ZINC_PLATE.getMeta(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(ZINC_PLATE.getMeta(), ZINC_PRESSURE_PLATE);
-        BRASS_PRESSURE_PLATE = setup(new BlockClassSensitivePlate<>(BRASS_PLATE.getMeta(), EntityAgeable.class, e -> !e.isChild()), "brass_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(BRASS_PLATE.getMeta(), BRASS_PRESSURE_PLATE);
-        // maxWeight values come from Block.registerBlocks
-        GILDED_IRON_PRESSURE_PLATE = setup(new BlockWeightedPlate(150, GILDED_IRON_PLATE.getMeta()), "gilded_iron_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(GILDED_IRON_PLATE.getMeta(), GILDED_IRON_PRESSURE_PLATE);
-        IRON_PRESSURE_PLATE = setup(new BlockWeightedPlate(150, IRON_PLATE.getMeta()), "iron_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(IRON_PLATE.getMeta(), IRON_PRESSURE_PLATE);
-        GOLD_PRESSURE_PLATE = setup(new BlockWeightedPlate(15, GOLD_PLATE.getMeta()), "gold_pressure_plate", (Function<Block, ItemBlock>) null);
-        pressurePlatesByMetadata.add(GOLD_PLATE.getMeta(), GOLD_PRESSURE_PLATE);
-    }
-
-    public static Block getPressurePlateFromItemMetadata(int meta) {
-        return pressurePlatesByMetadata.get(meta);
     }
 
     @Override
-    public void oreDict(Side side) {
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STORAGE_BLOCK = setup(event, new BlockBeacon(), "metal_storage_block");
+        ORE_BLOCK = setup(event, new BlockGenericOre(), "ore");
+        COPPER_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(COPPER_PLATE.getMeta(), EntityMob.class), "copper_pressure_plate");
+        pressurePlatesByMetadata.add(COPPER_PLATE.getMeta(), COPPER_PRESSURE_PLATE);
+        ZINC_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(ZINC_PLATE.getMeta(), EntityAgeable.class, EntityAgeable::isChild), "zinc_pressure_plate");
+        pressurePlatesByMetadata.add(ZINC_PLATE.getMeta(), ZINC_PRESSURE_PLATE);
+        BRASS_PRESSURE_PLATE = setup(event, new BlockClassSensitivePlate<>(BRASS_PLATE.getMeta(), EntityAgeable.class, e -> !e.isChild()), "brass_pressure_plate");
+        pressurePlatesByMetadata.add(BRASS_PLATE.getMeta(), BRASS_PRESSURE_PLATE);
+        // maxWeight values come from Block.registerBlocks
+        GILDED_IRON_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(150, GILDED_IRON_PLATE.getMeta()), "gilded_iron_pressure_plate");
+        pressurePlatesByMetadata.add(GILDED_IRON_PLATE.getMeta(), GILDED_IRON_PRESSURE_PLATE);
+        IRON_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(150, IRON_PLATE.getMeta()), "iron_pressure_plate");
+        pressurePlatesByMetadata.add(IRON_PLATE.getMeta(), IRON_PRESSURE_PLATE);
+        GOLD_PRESSURE_PLATE = setup(event, new BlockWeightedPlate(15, GOLD_PLATE.getMeta()), "gold_pressure_plate");
+        pressurePlatesByMetadata.add(GOLD_PLATE.getMeta(), GOLD_PRESSURE_PLATE);
+    }
+
+    @Override
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        METAL_INGOT = setup(event, new ItemMetalIngot(), "ingot");
+        METAL_NUGGET = setup(event, new ItemMetalNugget(), "nugget");
+        METAL_PLATE = setup(event, new ItemMetalPlate(), "plate");
+
+        setupItemBlock(event, STORAGE_BLOCK, BlockManyMetadataItem::new);
+        setupItemBlock(event, ORE_BLOCK, BlockManyMetadataItem::new);
+
         for (MetalBlockTypes type : MetalBlockTypes.values()) {
             OreDictionary.registerOre(PREFIX_BLOCK + type.getOreMaterial(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()));
         }
@@ -139,7 +145,6 @@ public class MaterialsModule extends ContentModule {
         OreDictionary.registerOre(NUGGET_ZINC, new ItemStack(METAL_NUGGET, 1, ZINC_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_BRASS, new ItemStack(METAL_NUGGET, 1, BRASS_NUGGET.getMeta()));
         OreDictionary.registerOre(NUGGET_GILDED_IRON, new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta()));
-        OreDictionary.registerOre(NUGGET_IRON, new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()));
 
         OreDictionary.registerOre(PLATE_THIN_COPPER, new ItemStack(METAL_PLATE, 1, COPPER_PLATE.getMeta()));
         OreDictionary.registerOre(PLATE_THIN_ZINC, new ItemStack(METAL_PLATE, 1, ZINC_PLATE.getMeta()));
@@ -149,28 +154,30 @@ public class MaterialsModule extends ContentModule {
         OreDictionary.registerOre(PLATE_THIN_GOLD, new ItemStack(METAL_PLATE, 1, GOLD_PLATE.getMeta()));
     }
 
+    public static Block getPressurePlateFromItemMetadata(int meta) {
+        return pressurePlatesByMetadata.get(meta);
+    }
+
     @Override
-    public void recipes(Side side) {
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
         for (MetalBlockTypes type : MetalBlockTypes.values()) {
-            add3x3Recipe(new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
+            RecipeUtility.add3x3Recipe(event, false, type.getName(), new ItemStack(STORAGE_BLOCK, 1, type.getMetadata()), PREFIX_INGOT + type.getOreMaterial());
         }
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON));
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_BRASS, new ItemStack(METAL_INGOT, 9, BRASS_INGOT.getMeta()), BLOCK_BRASS);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_COPPER, new ItemStack(METAL_INGOT, 9, COPPER_INGOT.getMeta()), BLOCK_COPPER);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_ZINC, new ItemStack(METAL_INGOT, 9, ZINC_INGOT.getMeta()), BLOCK_ZINC);
+        RecipeUtility.addShapelessRecipe(event, false, BLOCK_GILDED_IRON, new ItemStack(METAL_INGOT, 9, GILDED_IRON_INGOT.getMeta()), BLOCK_GILDED_IRON);
 
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, IRON_NUGGET.getMeta()), INGOT_IRON));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON));
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_COPPER, new ItemStack(METAL_NUGGET, 9, COPPER_NUGGET.getMeta()), INGOT_COPPER);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_ZINC, new ItemStack(METAL_NUGGET, 9, ZINC_NUGGET.getMeta()), INGOT_ZINC);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_BRASS, new ItemStack(METAL_NUGGET, 9, BRASS_NUGGET.getMeta()), INGOT_BRASS);
+        RecipeUtility.addShapelessRecipe(event, false, INGOT_GILDED_IRON, new ItemStack(METAL_NUGGET, 9, GILDED_IRON_NUGGET.getMeta()), INGOT_GILDED_IRON);
 
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
-        add3x3Recipe(new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
-        add3x3Recipe(new ItemStack(IRON_INGOT), NUGGET_IRON);
+        RecipeUtility.add3x3Recipe(event, false, COPPER_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), NUGGET_COPPER);
+        RecipeUtility.add3x3Recipe(event, false, ZINC_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, ZINC_INGOT.getMeta()), NUGGET_ZINC);
+        RecipeUtility.add3x3Recipe(event, false, BRASS_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta()), NUGGET_BRASS);
+        RecipeUtility.add3x3Recipe(event, false, GILDED_IRON_INGOT.name() + "3x3", new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta()), NUGGET_GILDED_IRON);
 
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, OVERWORLD_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);
         GameRegistry.addSmelting(new ItemStack(ORE_BLOCK, 1, NETHER_COPPER.getMetadata()), new ItemStack(METAL_INGOT, 1, COPPER_INGOT.getMeta()), 0.5F);
@@ -295,7 +302,7 @@ public class MaterialsModule extends ContentModule {
                 new ItemStack(METAL_INGOT, 1, BRASS_INGOT.getMeta())),
               new BookPageAlloy("", BRASS_LIQUID, BRASS_FORMULA))));
 
-        if (Config.enableCrucible) {
+        if (MetalcastingModule.enableCrucible) {
             BookPageRegistry.addCategoryToSection(CASTING_SECTION, 6,
               new BookCategory("category.GildedGold.name",
                 new BookEntry("research.GildedGold.name",
@@ -308,7 +315,7 @@ public class MaterialsModule extends ContentModule {
                     new ItemStack(IRON_INGOT),
                     new ItemStack(METAL_INGOT, 1, GILDED_IRON_INGOT.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
-                    new ItemStack(METAL_NUGGET, 1, IRON_NUGGET.getMeta()),
+                    new ItemStack(Items.IRON_NUGGET),
                     new ItemStack(METAL_NUGGET, 1, GILDED_IRON_NUGGET.getMeta())),
                   new BookPageDip("", GOLD_LIQUID, 1,
                     new ItemStack(METAL_PLATE, 1, IRON_PLATE.getMeta()),
@@ -318,7 +325,7 @@ public class MaterialsModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModelAllVariants(STORAGE_BLOCK, BlockBeacon.VARIANT.getName(), BlockBeacon.MetalBlockTypes.values());
         registerModelAllVariants(ORE_BLOCK, BlockGenericOre.VARIANT.getName(), LOOKUP);
         for (ItemMetalIngot.Types type : ItemMetalIngot.Types.values()) {

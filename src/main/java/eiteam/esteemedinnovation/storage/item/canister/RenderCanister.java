@@ -42,7 +42,7 @@ public class RenderCanister extends Render<EntityCanisterItem> {
         if (renderManager.options.fancyGraphics || item.getItem().getItem() instanceof ItemBlock) {
             GL11.glRotatef(Minecraft.getMinecraft().player.ticksExisted * 3 % 360, 0.0F, 1.0F, 0.0F);
         }
-        renderManager.doRenderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
+        renderManager.renderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
         GL11.glPopMatrix();
     }
 

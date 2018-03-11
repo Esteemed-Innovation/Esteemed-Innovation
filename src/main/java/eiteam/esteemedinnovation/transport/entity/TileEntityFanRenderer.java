@@ -14,7 +14,7 @@ public class TileEntityFanRenderer extends TileEntitySpecialRenderer<TileEntityF
     static final ResourceLocation BLADES_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/fan_blades");
 
     @Override
-    public void renderTileEntityAt(TileEntityFan tile, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntityFan tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
         IBlockState state = tile.getWorldObj().getBlockState(tile.getPos());

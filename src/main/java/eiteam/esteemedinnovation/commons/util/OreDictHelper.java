@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.commons.util;
 
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.OreDictEntries;
+import eiteam.esteemedinnovation.tools.ToolsModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
@@ -62,7 +63,7 @@ public class OreDictHelper {
             if (name.endsWith(OreDictEntries.MATERIAL_GOLD)) {
                 goldNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
-            if (!Config.blacklistedStoneGrinderNuggets.contains(name)) {
+            if (!ToolsModule.blacklistedStoneGrinderNuggets.contains(name)) {
                 stoneGrinderNuggets.add(Pair.of(stack.getItem(), stack.getItemDamage()));
             }
         }
@@ -173,18 +174,17 @@ public class OreDictHelper {
 
         temporaryCraftingGrid.setInventorySlotContents(0, new ItemStack(log, 1, damage));
 
-        Optional<IRecipe> recipeOption = CraftingManager.getInstance().getRecipeList().stream()
-          .filter(irecipe -> {
-              if (irecipe.matches(temporaryCraftingGrid, world)) {
-                  ItemStack result = irecipe.getRecipeOutput();
+        Optional<ResourceLocation> recipeOption = CraftingManager.REGISTRY.getKeys().stream()
+          .filter(resource -> {
+              if (CraftingManager.REGISTRY.getObject(resource).matches(temporaryCraftingGrid, world)) {
+                  ItemStack result = CraftingManager.REGISTRY.getObject(resource).getRecipeOutput();
                   Pair<Item, Integer> outPair = Pair.of(result.getItem(), result.getItemDamage());
                   return !result.isEmpty() && arrayContains(planks, outPair);
               }
               return false;
-          })
-          .findFirst();
+          }).findFirst();
         if (recipeOption.isPresent()) {
-            IRecipe recipe = recipeOption.get();
+            IRecipe recipe = CraftingManager.REGISTRY.getObject(recipeOption.get());
             ItemStack result = recipe.getRecipeOutput();
             Pair<Item, Integer> outPair = Pair.of(result.getItem(), result.getItemDamage());
             logToPlank.put(inPair, outPair);

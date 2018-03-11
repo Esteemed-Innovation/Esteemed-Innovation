@@ -2,9 +2,10 @@ package eiteam.esteemedinnovation.storage;
 
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.book.*;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
+import eiteam.esteemedinnovation.commons.util.RecipeUtility;
 import eiteam.esteemedinnovation.storage.item.ItemKitBag;
 import eiteam.esteemedinnovation.storage.item.canister.CanisterEntityCreator;
 import eiteam.esteemedinnovation.storage.item.canister.CanisterRecipe;
@@ -20,85 +21,105 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_EXOSUIT_UPGRADES;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_ITEMS;
+import static eiteam.esteemedinnovation.commons.Config.CATEGORY_STEAM_SYSTEM;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.GADGET_SECTION;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.STEAMPOWER_SECTION;
 import static eiteam.esteemedinnovation.commons.OreDictEntries.*;
 import static net.minecraft.init.Items.RABBIT_HIDE;
 
-public class StorageModule extends ContentModule {
+public class StorageModule extends ContentModule implements ConfigurableModule {
+    private static final int BASIC_TANK_CAPACITY_DEFAULT = 36000;
     public static Block STEAM_TANK;
     public static Item KIT_BAG;
     public static Item ITEM_CANISTER;
+    public static boolean enableCanister;
+    public static boolean enableTank;
+    public static int basicTankCapacity;
 
     @Override
     public void create(Side side) {
-        STEAM_TANK = setup(new BlockSteamTank(), "steam_tank", BlockTankItem::new);
-        KIT_BAG = setup(new ItemKitBag(), "kit_bag");
-        ITEM_CANISTER = setup(new Item(), "canister");
-
         EntityRegistry.registerModEntity(new ResourceLocation(Constants.EI_MODID, "CanisterItem"), EntityCanisterItem.class, "CanisterItem", 2, EsteemedInnovation.instance, 64, 20, true);
+    }
+
+    @Override
+    public void registerBlocks(RegistryEvent.Register<Block> event) {
+        STEAM_TANK = setup(event, new BlockSteamTank(), "steam_tank");
+
         registerTileEntity(TileEntitySteamTank.class, "steamTank");
         registerTileEntity(TileEntityCreativeTank.class, "creativeSteamTank");
     }
 
     @Override
-    public void recipes(Side side) {
-        if (Config.enableTank) {
-            BookRecipeRegistry.addRecipe("tank1", new ShapedOreRecipe(STEAM_TANK,
+    public void registerItems(RegistryEvent.Register<Item> event) {
+        setupItemBlock(event, STEAM_TANK, BlockTankItem::new);
+
+        KIT_BAG = setup(event, new ItemKitBag(), "kit_bag");
+        ITEM_CANISTER = setup(event, new Item(), "canister");
+    }
+
+    @Override
+    public void recipes(RegistryEvent.Register<IRecipe> event) {
+        if (enableTank) {
+            RecipeUtility.addRecipe(event, true, "tank1", STEAM_TANK,
               "iii",
               "i i",
               "iii",
               'i', PLATE_THIN_BRASS
-            ));
-            BookRecipeRegistry.addRecipe("tank2", new ShapedOreRecipe(STEAM_TANK,
+            );
+            RecipeUtility.addRecipe(event, true, "tank2", STEAM_TANK,
               "iii",
               "i i",
               "iii",
               'i', INGOT_BRASS
-            ));
+            );
         }
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(KIT_BAG,
+        RecipeUtility.addRecipe(event, false, "kitBag1", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
           'S', STRING_ORE,
           'L', LEATHER_ORE,
-          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
-        GameRegistry.addRecipe(new ShapedOreRecipe(KIT_BAG,
+          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
+        RecipeUtility.addRecipe(event, false, "kitBag2", KIT_BAG,
           "SSS",
           "LWL",
           " L ",
           'S', STRING_ORE,
           'L', RABBIT_HIDE,
-          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE)));
+          'W', new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
 
-        if (Config.enableCanister) {
-            GameRegistry.addRecipe(new CanisterRecipe());
-            BookRecipeRegistry.addRecipe("canister", new ShapedOreRecipe(ITEM_CANISTER,
+        if (enableCanister) {
+            //TODO: make sure this works
+            RecipeUtility.addRecipe(event, false, "canister2", new CanisterRecipe());
+            RecipeUtility.addRecipe(event, true, "canister", ITEM_CANISTER,
               " i ",
               "i i",
               " i ",
               'i', NUGGET_ZINC
-            ));
+            );
             MinecraftForge.EVENT_BUS.register(new CanisterEntityCreator());
         }
     }
 
     @Override
     public void finish(Side side) {
-        if (Config.enableCanister) {
+        if (enableCanister) {
             ItemStack output = new ItemStack(Items.DIAMOND_SWORD);
             output.setTagCompound(new NBTTagCompound());
             output.getTagCompound().setInteger("Canned", 0);
@@ -126,11 +147,18 @@ public class StorageModule extends ContentModule {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void preInitClient() {
+    public void registerModels(ModelRegistryEvent event) {
         registerModel(STEAM_TANK, 0, "is_creative=false");
         registerModel(STEAM_TANK, 1, "is_creative=true");
         registerModel(ITEM_CANISTER);
         registerModel(KIT_BAG);
         RenderingRegistry.registerEntityRenderingHandler(EntityCanisterItem.class, RenderCanister::new);
+    }
+
+    @Override
+    public void loadConfigurationOptions(Configuration config) {
+        enableTank = config.get(CATEGORY_STEAM_SYSTEM, "Enable Steam Tank (Crucial)", true).getBoolean();
+        basicTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the basic tank can hold", StorageModule.BASIC_TANK_CAPACITY_DEFAULT).getInt();
+        enableCanister = config.get(CATEGORY_ITEMS, "Enable Canisters", true).getBoolean();
     }
 }

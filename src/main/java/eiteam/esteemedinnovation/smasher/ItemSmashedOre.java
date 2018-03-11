@@ -1,14 +1,11 @@
 package eiteam.esteemedinnovation.smasher;
 
 import eiteam.esteemedinnovation.api.SmasherRegistry;
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collections;
@@ -35,7 +32,7 @@ public class ItemSmashedOre extends Item {
         SmasherRegistry.registerSmashable(entry.getInputOre(), (input, world) -> {
             // Ore doubling
             int amount = input.getCount();
-            if (world.rand.nextInt(100) >= Config.smasherDoubleChance) {
+            if (world.rand.nextInt(100) >= SmasherModule.smasherDoubleChance) {
                 amount *= 2;
             }
             return Collections.singletonList(new ItemStack(this, amount, meta));
@@ -63,10 +60,11 @@ public class ItemSmashedOre extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> list) {
-        for (Entry<Integer, String[]> entry : map.entrySet()) {
-            list.add(new ItemStack(item, 1, entry.getKey()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (Entry<Integer, String[]> entry : map.entrySet()) {
+                items.add(new ItemStack(this, 1, entry.getKey()));
+            }
         }
     }
 

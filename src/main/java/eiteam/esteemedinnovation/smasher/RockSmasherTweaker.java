@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.smasher;
 
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SmasherRegistry;
 
-import minetweaker.IUndoableAction;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,18 +15,18 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class RockSmasherTweaker {
     @ZenMethod
     public static void addSmashingRecipe(IItemStack in, IItemStack out) {
-        ItemStack inStack = MineTweakerMC.getItemStack(in);
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
-        MineTweakerAPI.apply(new Add(inStack, outStack));
+        ItemStack inStack = CraftTweakerMC.getItemStack(in);
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
+        CraftTweakerAPI.apply(new Add(inStack, outStack));
     }
 
     @ZenMethod
     public static void addSmashingOreRecipe(String dict, IItemStack out) {
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
-        MineTweakerAPI.apply(new Add(dict, outStack));
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
+        CraftTweakerAPI.apply(new Add(dict, outStack));
     }
 
-    private static class Add implements IUndoableAction {
+    private static class Add implements IAction {
         private final Object in;
         private final ItemStack out;
 
@@ -45,20 +45,6 @@ public class RockSmasherTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            if (in instanceof ItemStack) {
-                SmasherRegistry.removeSmashable((ItemStack) in);
-            } else if (in instanceof String) {
-                SmasherRegistry.removeSmashable((String) in);
-            }
-        }
-
-        @Override
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Adding smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
@@ -68,36 +54,22 @@ public class RockSmasherTweaker {
             return null;
         }
 
-        @Override
-        public String describeUndo() {
-            if (in instanceof ItemStack) {
-                return "Removing smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
-            } else if (in instanceof String) {
-                return "Removing smashing recipe for " + in;
-            }
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
     @ZenMethod
     public static void removeSmashingRecipe(IItemStack in, IItemStack out) {
-        ItemStack inStack = MineTweakerMC.getItemStack(in);
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
-        MineTweakerAPI.apply(new Remove(inStack, outStack));
+        ItemStack inStack = CraftTweakerMC.getItemStack(in);
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
+        CraftTweakerAPI.apply(new Remove(inStack, outStack));
     }
 
     @ZenMethod
     public static void removeSmashingOreRecipe(String dict, IItemStack out) {
-        ItemStack outStack = MineTweakerMC.getItemStack(out);
-        MineTweakerAPI.apply(new Remove(dict, outStack));
+        ItemStack outStack = CraftTweakerMC.getItemStack(out);
+        CraftTweakerAPI.apply(new Remove(dict, outStack));
     }
 
-    private static class Remove implements IUndoableAction {
+    private static class Remove implements IAction {
         private final Object in;
         private final ItemStack out;
 
@@ -116,41 +88,12 @@ public class RockSmasherTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            if (in instanceof ItemStack) {
-                SmasherRegistry.registerSmashable((ItemStack) in, out);
-            } else if (in instanceof String) {
-                SmasherRegistry.registerSmashable((String) in, out);
-            }
-        }
-
-        @Override
         public String describe() {
             if (in instanceof ItemStack) {
                 return "Removing smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
             } else if (in instanceof String) {
                 return "Removing smashing recipe for " + in;
             }
-            return null;
-        }
-
-        @Override
-        public String describeUndo() {
-            if (in instanceof ItemStack) {
-                return "Adding smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
-            } else if (in instanceof String) {
-                return "Adding smashing recipe for " + in;
-            }
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
             return null;
         }
     }

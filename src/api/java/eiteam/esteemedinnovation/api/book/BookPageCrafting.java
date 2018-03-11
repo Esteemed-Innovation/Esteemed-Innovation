@@ -8,18 +8,16 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class BookPageCrafting extends BookPage implements CraftingPage {
@@ -50,69 +48,26 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         super(name);
         output = recipes[0].getRecipeOutput();
         for (IRecipe recipe : recipes) {
-            if (recipe instanceof ShapedOreRecipe) {
+            //TODO: Investigate how it could possibly be null
+            if(recipe != null) {
                 for (int i = 0; i < 9; i++) {
                     Collection<Object> newList = new ArrayList<>();
                     if (inputs[i] != null) {
                         if (inputs[i] instanceof Collection) {
                             newList.addAll((Collection) inputs[i]);
                         } else {
+                            //probably not going to ever happen
                             newList.add(inputs[i]);
                         }
                     }
-                    if (((ShapedOreRecipe) recipe).getInput().length > i && ((ShapedOreRecipe) recipe).getInput()[i] != null) {
-                        if (((ShapedOreRecipe) recipe).getInput()[i] instanceof Collection) {
-                            newList.addAll((Collection) ((ShapedOreRecipe) recipe).getInput()[i]);
-                        } else {
-                            newList.add(((ShapedOreRecipe) recipe).getInput()[i]);
-                        }
-                    }
-                    inputs[i] = newList;
-                }
-            } else if (recipe instanceof ShapedRecipes) {
-                for (int i = 0; i < 10; i++) {
-                    Collection<Object> newList = new ArrayList<>();
-                    if (inputs[i] != null) {
-                        if (inputs[i] instanceof Collection) {
-                            newList.addAll((Collection) inputs[i]);
-                        } else {
-                            newList.add(inputs[i]);
-                        }
-                    }
-                    if (((ShapedRecipes) recipe).recipeItems.length > i && ((ShapedRecipes) recipe).recipeItems[i] != null) {
-                        newList.add(((ShapedRecipes) recipe).recipeItems[i]);
-                    }
-
-                    inputs[i] = newList;
-                }
-            } else if (recipe instanceof ShapelessRecipes) {
-                shapeless = true;
-                inputs = ArrayUtils.addAll(inputs, ((ShapelessRecipes) recipe).recipeItems.toArray(new Object[((ShapelessRecipes) recipe).recipeItems.size()]));
-            } else if (recipe instanceof ShapelessOreRecipe) {
-                shapeless = true;
-                ShapelessOreRecipe shapelessOreRecipe = (ShapelessOreRecipe) recipe;
-                NonNullList<Object> recipeInputs = shapelessOreRecipe.getInput();
-                for (int i = 0; i < 9; i++) {
-                    Collection<Object> newList = new ArrayList<>();
-                    if (inputs[i] != null) {
-                        if (inputs[i] instanceof Collection) {
-                            newList.addAll((Collection) inputs[i]);
-                        } else {
-                            newList.add(inputs[i]);
-                        }
-                    }
-                    if (recipeInputs.size() > i) {
-                        Object inputAtIndex = recipeInputs.get(i);
-                        if (inputAtIndex instanceof Collection) {
-                            newList.addAll((Collection) inputAtIndex);
-                        } else {
-                            newList.add(inputAtIndex);
-                        }
+                    if (recipe.getIngredients().size() > i && recipe.getIngredients().get(i) != Ingredient.EMPTY) {
+                        newList.addAll(Arrays.asList(recipe.getIngredients().get(i).getMatchingStacks()));
                     }
                     inputs[i] = newList;
                 }
             }
         }
+
         recipe = recipes;
     }
 
@@ -121,7 +76,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
         for (String key : keys) {
             recipes.add(BookRecipeRegistry.getRecipe(key));
         }
-        return recipes.toArray(new IRecipe[recipes.size()]);
+        return !recipes.isEmpty() ? recipes.toArray(new IRecipe[recipes.size()]) : new IRecipe[0];
     }
 
     private void drawItemStackInPage(@Nonnull ItemStack itemStack, FontRenderer fontRenderer, int x, int j, int y, int i, RenderItem renderer) {
@@ -171,7 +126,7 @@ public class BookPageCrafting extends BookPage implements CraftingPage {
                                     ItemStack item = (ItemStack) obj;
                                     if (item.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                                         NonNullList<ItemStack> list = NonNullList.create();
-                                        item.getItem().getSubItems(item.getItem(), CreativeTabs.SEARCH, list);
+                                        item.getItem().getSubItems(CreativeTabs.SEARCH, list);
                                         list2.addAll(list);
                                     } else {
                                         list2.add(item);

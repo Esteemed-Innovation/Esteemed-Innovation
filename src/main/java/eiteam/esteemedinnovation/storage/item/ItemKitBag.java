@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.storage.item;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,6 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemKitBag extends Item {
@@ -25,7 +27,7 @@ public class ItemKitBag extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (isEmpty(stack)) {
             tooltip.add(I18n.format(EsteemedInnovation.MOD_ID + ".kitbag.empty"));
         } else {

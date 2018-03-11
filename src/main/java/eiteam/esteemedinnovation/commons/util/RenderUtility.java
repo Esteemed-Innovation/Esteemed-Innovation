@@ -1,7 +1,7 @@
 package eiteam.esteemedinnovation.commons.util;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -29,7 +29,7 @@ public class RenderUtility {
      * @param u
      * @param v
      */
-    public static void addVertexWithUV(VertexBuffer buffer, double x, double y, double z, double u, double v) {
+    public static void addVertexWithUV(BufferBuilder buffer, double x, double y, double z, double u, double v) {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         buffer.pos(x, y, z);
         buffer.tex(u, v);
@@ -37,7 +37,7 @@ public class RenderUtility {
     }
 
     public static void renderQuad(Tessellator tessellator, int par2, int par3, int par4, int par5, int par6) {
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         buffer.putColor4(par6);
         buffer.pos(par2, par3, 0D);
@@ -74,7 +74,7 @@ public class RenderUtility {
      * @param buffer The VertexBuffer
      * @param modelLocation The model, do not include .json
      */
-    public static void renderModel(VertexBuffer buffer, ResourceLocation modelLocation) {
+    public static void renderModel(BufferBuilder buffer, ResourceLocation modelLocation) {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         IBakedModel model = bakeModel(modelLocation);
         for (BakedQuad quad : model.getQuads(null, null, 0)) {

@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A base standard implementation of {@link IPerspectiveAwareModel}. It does not implement certain subclass-specific
- * ones like {@link IPerspectiveAwareModel#isGui3d()} and {@link IPerspectiveAwareModel#getOverrides()}.
+ * A base standard implementation of {@link IBakedModel}. It does not implement certain subclass-specific
+ * ones like {@link IBakedModel#isGui3d()} and {@link IBakedModel#getOverrides()}.
  * @param <MODEL> The model type that this baked model is for.
  */
-public abstract class GenericPerspectiveAwareModel<MODEL extends IModel> implements IPerspectiveAwareModel {
+public abstract class GenericPerspectiveAwareModel<MODEL extends IModel> implements IBakedModel {
     private final MODEL parent;
     private final Map<String, IBakedModel> cache;
     private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
@@ -68,7 +68,7 @@ public abstract class GenericPerspectiveAwareModel<MODEL extends IModel> impleme
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return IPerspectiveAwareModel.MapWrapper.handlePerspective(this, transforms, cameraTransformType);
+        return PerspectiveMapWrapper.handlePerspective(this, transforms, cameraTransformType);
     }
 
     public boolean isCached(String mapString) {

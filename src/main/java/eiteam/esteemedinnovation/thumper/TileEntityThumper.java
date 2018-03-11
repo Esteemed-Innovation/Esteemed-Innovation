@@ -2,7 +2,6 @@ package eiteam.esteemedinnovation.thumper;
 
 import eiteam.esteemedinnovation.api.tile.SteamTransporterTileEntity;
 import eiteam.esteemedinnovation.api.tile.ThumperAdjacentBehaviorModifier;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -174,7 +173,7 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
     private void harvestBlock(BlockPos position) {
         IBlockState state = world.getBlockState(position);
         Block block = state.getBlock();
-        if (Config.dropItem) {
+        if (ThumperModule.dropItem) {
             Map<EnumFacing, ThumperAdjacentBehaviorModifier> modifiers = getAllAdjacentBehaviorModifiers();
             List<ItemStack> drops = block.getDrops(world, position, state, 0);
             for (Map.Entry<EnumFacing, ThumperAdjacentBehaviorModifier> entry : modifiers.entrySet()) {

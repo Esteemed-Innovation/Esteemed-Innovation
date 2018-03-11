@@ -4,8 +4,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMetalIngot extends Item {
     public ItemMetalIngot() {
@@ -13,10 +11,11 @@ public class ItemMetalIngot extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types type : Types.values()) {
-            subItems.add(new ItemStack(this, 1, type.getMeta()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (Types type : Types.values()) {
+                items.add(new ItemStack(this, 1, type.getMeta()));
+            }
         }
     }
 

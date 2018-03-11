@@ -19,7 +19,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
     private static final float PX = (1.0F / 16.0F);
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
         TileEntitySteamHammer hammer = (TileEntitySteamHammer) te;
@@ -64,7 +64,7 @@ public class TileEntitySteamHammerRenderer extends TileEntitySpecialRenderer imp
             item.hoverStart = 0.0F;
             boolean fancy = settings.fancyGraphics;
             settings.fancyGraphics = true;
-            Minecraft.getMinecraft().getRenderManager().doRenderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
+            Minecraft.getMinecraft().getRenderManager().renderEntity(item, 0D, 0D, 0D, 0F, 0F, false);
             settings.fancyGraphics = fancy;
             GL11.glPopMatrix();
         }

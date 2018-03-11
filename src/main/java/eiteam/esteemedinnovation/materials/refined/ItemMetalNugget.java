@@ -4,8 +4,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMetalNugget extends Item {
     public ItemMetalNugget() {
@@ -13,10 +11,11 @@ public class ItemMetalNugget extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, NonNullList<ItemStack> subItems) {
-        for (Types type : Types.values()) {
-            subItems.add(new ItemStack(this, 1, type.getMeta()));
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (isInCreativeTab(tab)) {
+            for (Types type : Types.values()) {
+                items.add(new ItemStack(this, 1, type.getMeta()));
+            }
         }
     }
 
@@ -29,8 +28,7 @@ public class ItemMetalNugget extends Item {
         COPPER_NUGGET(0),
         ZINC_NUGGET(1),
         BRASS_NUGGET(2),
-        GILDED_IRON_NUGGET(3),
-        IRON_NUGGET(4); // I hate you, Vanilla, and your lack of iron nuggets.
+        GILDED_IRON_NUGGET(3);
 
         private final int meta;
 

@@ -1,12 +1,12 @@
 package eiteam.esteemedinnovation.heater;
 
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.SteamingRegistry;
 
-import minetweaker.IUndoableAction;
-import minetweaker.MineTweakerAPI;
-import minetweaker.api.item.IItemStack;
-import minetweaker.api.minecraft.MineTweakerMC;
 import net.minecraft.item.ItemStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -15,12 +15,12 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class SteamHeaterTweaker {
     @ZenMethod
     public static void addSteamingReplacementRecipe(IItemStack inputI, IItemStack outputI) {
-        ItemStack input = MineTweakerMC.getItemStack(inputI);
-        ItemStack output = MineTweakerMC.getItemStack(outputI);
-        MineTweakerAPI.apply(new Add(input, output));
+        ItemStack input = CraftTweakerMC.getItemStack(inputI);
+        ItemStack output = CraftTweakerMC.getItemStack(outputI);
+        CraftTweakerAPI.apply(new Add(input, output));
     }
 
-    private static class Add implements IUndoableAction {
+    private static class Add implements IAction {
         private final ItemStack input;
         private final ItemStack output;
 
@@ -35,38 +35,19 @@ public class SteamHeaterTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return true;
-        }
-
-        @Override
-        public void undo() {
-            SteamingRegistry.removeSteamingRecipe(input);
-        }
-
-        @Override
         public String describe() {
             return "Adding steaming recipe for " + input.getUnlocalizedName() + " -> " + output.getUnlocalizedName();
         }
 
-        @Override
-        public String describeUndo() {
-            return "Removing steaming recipe for " + input.getUnlocalizedName() + " -> " + output.getUnlocalizedName();
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 
     @ZenMethod
     public static void removeSteamingReplacementRecipe(IItemStack original) {
-        ItemStack stack = MineTweakerMC.getItemStack(original);
-        MineTweakerAPI.apply(new Remove(stack));
+        ItemStack stack = CraftTweakerMC.getItemStack(original);
+        CraftTweakerAPI.apply(new Remove(stack));
     }
 
-    private static class Remove implements IUndoableAction {
+    private static class Remove implements IAction {
         private final ItemStack input;
 
         public Remove(ItemStack input) {
@@ -79,26 +60,9 @@ public class SteamHeaterTweaker {
         }
 
         @Override
-        public boolean canUndo() {
-            return false;
-        }
-
-        @Override
-        public void undo() {}
-
-        @Override
         public String describe() {
             return "Removing steaming recipe for " + input.getUnlocalizedName();
         }
 
-        @Override
-        public String describeUndo() {
-            return null;
-        }
-
-        @Override
-        public Object getOverrideKey() {
-            return null;
-        }
     }
 }

@@ -10,8 +10,8 @@ import eiteam.esteemedinnovation.api.entity.EntityMusketBall;
 import eiteam.esteemedinnovation.api.util.ItemStackUtility;
 import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.armor.exosuit.steam.ItemSteamExosuitArmor;
-import eiteam.esteemedinnovation.commons.Config;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,6 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static eiteam.esteemedinnovation.firearms.FirearmModule.*;
@@ -74,11 +75,11 @@ public class ItemFirearm extends Item implements Engineerable {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (UtilEnhancements.hasEnhancement(stack)) {
-            list.add(UtilEnhancements.getEnhancementDisplayText(stack));
+            tooltip.add(UtilEnhancements.getEnhancementDisplayText(stack));
         }
-        super.addInformation(stack, player, list, advanced);
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -100,12 +101,12 @@ public class ItemFirearm extends Item implements Engineerable {
                 if (legsItem instanceof ItemSteamExosuitArmor) {
                     ItemSteamExosuitArmor legsArmor = (ItemSteamExosuitArmor) legsItem;
                     if (legsArmor.hasUpgrade(legs, ArmorModule.RELOADING_HOLSTERS) &&
-                      ChargableUtility.hasPower(player, Config.reloadingConsumption) &&
+                      ChargableUtility.hasPower(player, ArmorModule.reloadingConsumption) &&
                       ItemStackUtility.inventoryHasItem(player.inventory, MUSKET_CARTRIDGE)) {
                         onItemUseFinish(stack, world, player);
                         onItemRightClick(world, player, player.getActiveHand());
                         ChargableUtility.drainSteam(player.getItemStackFromSlot(EntityEquipmentSlot.CHEST),
-                          Config.reloadingConsumption, player);
+                          ArmorModule.reloadingConsumption, player);
                         ticksSinceReload = 0;
                         // TODO: Reload sound
                         // TODO: Out of ammo- cannot reload sound
@@ -341,14 +342,14 @@ public class ItemFirearm extends Item implements Engineerable {
             Item item = (Item) UtilEnhancements.getEnhancementFromItem(me);
             return new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public static void initializeEnhancementsNBT(ItemStack me, ItemStack stack) {
         if (!me.hasTagCompound()) {
             me.setTagCompound(new NBTTagCompound());
         }
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             Enhancement enhancement = (Enhancement) stack.getItem();
             NBTTagCompound enhancements = new NBTTagCompound();
             enhancements.setString("id", enhancement.getID());
@@ -373,7 +374,7 @@ public class ItemFirearm extends Item implements Engineerable {
             UtilEnhancements.removeEnhancement(me);
             return new ItemStack(item);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override

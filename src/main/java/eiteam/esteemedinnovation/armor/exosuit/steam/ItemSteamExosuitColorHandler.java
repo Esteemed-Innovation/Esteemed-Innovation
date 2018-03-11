@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class ItemSteamExosuitColorHandler implements IItemColor {
     @Override
-    public int getColorFromItemstack(@Nonnull ItemStack stack, int tintIndex) {
+    public int colorMultiplier(@Nonnull ItemStack stack, int tintIndex) {
         Item item = stack.getItem();
         if (!(item instanceof ItemSteamExosuitArmor)) {
             return -1;

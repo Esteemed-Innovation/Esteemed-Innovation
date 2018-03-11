@@ -1,7 +1,6 @@
 package eiteam.esteemedinnovation.heater;
 
 import eiteam.esteemedinnovation.api.steamnet.SteamNetwork;
-import eiteam.esteemedinnovation.commons.Config;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
 import net.minecraft.block.BlockFurnace;
@@ -28,7 +27,7 @@ import static eiteam.esteemedinnovation.heater.TileEntitySteamFurnace.*;
 public class TileEntitySteamHeater extends TileEntitySteamPipe {
     // When multiple heaters are used on a furnace, there is a single primary heater
     public boolean isPrimaryHeater;
-    public static final int CONSUMPTION = Config.heaterConsumption;
+    public static final int CONSUMPTION = HeaterModule.heaterConsumption;
 
     public TileEntitySteamHeater() {
         addSidesToGaugeBlacklist(EnumFacing.VALUES);

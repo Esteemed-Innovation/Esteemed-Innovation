@@ -57,7 +57,7 @@ public class ContainerEngineeringTable extends Container {
 
                 @Override
                 public boolean isItemValid(ItemStack stack) {
-                    return stack != null && stack.getItem().isValidArmor(stack, equipmentSlot, player);
+                    return !stack.isEmpty() && stack.getItem().isValidArmor(stack, equipmentSlot, player);
                 }
 
                 @Override

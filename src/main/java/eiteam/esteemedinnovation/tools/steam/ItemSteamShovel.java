@@ -3,7 +3,7 @@ package eiteam.esteemedinnovation.tools.steam;
 import com.google.common.collect.Sets;
 import eiteam.esteemedinnovation.api.tool.ItemSteamTool;
 import eiteam.esteemedinnovation.api.tool.SteamToolSlot;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.tools.ToolsModule;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -26,7 +26,7 @@ public class ItemSteamShovel extends ItemSteamTool {
 
     @Override
     public int steamPerDurability() {
-        return Config.steamToolConsumptionShovel;
+        return ToolsModule.steamToolConsumptionShovel;
     }
 
     @Override

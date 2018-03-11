@@ -5,7 +5,7 @@ import eiteam.esteemedinnovation.api.ChargableUtility;
 import eiteam.esteemedinnovation.api.Constants;
 import eiteam.esteemedinnovation.api.exosuit.ExosuitPlate;
 import eiteam.esteemedinnovation.api.exosuit.UtilPlates;
-import eiteam.esteemedinnovation.commons.Config;
+import eiteam.esteemedinnovation.armor.ArmorModule;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.materials.refined.plates.ItemMetalPlate;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,14 +36,14 @@ public class ExosuitPlateZinc extends ExosuitPlate {
         EntityLivingBase entity = event.getEntityLiving();
         float amount = event.getAmount();
 
-        if (!INVALID_SOURCES.contains(event.getSource()) && ChargableUtility.hasPower(entity, Config.zincPlateConsumption)) {
+        if (!INVALID_SOURCES.contains(event.getSource()) && ChargableUtility.hasPower(entity, ArmorModule.zincPlateConsumption)) {
             float health = victim.getHealth();
             float maxHealth = victim.getMaxHealth();
             float halfOfMax = maxHealth / 2;
             if (amount >= halfOfMax || health <= halfOfMax) {
                 ItemStack zincPlates = new ItemStack(METAL_PLATE, 2, ItemMetalPlate.Types.ZINC_PLATE.getMeta());
                 World world = victim.world;
-                ChargableUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), Config.zincPlateConsumption, victim);
+                ChargableUtility.drainSteam(victim.getItemStackFromSlot(EntityEquipmentSlot.CHEST), ArmorModule.zincPlateConsumption, victim);
                 UtilPlates.removePlate(armorStack);
                 EntityItem entityItem = new EntityItem(world, victim.posX, victim.posY, victim.posZ, zincPlates);
                 world.spawnEntity(entityItem);

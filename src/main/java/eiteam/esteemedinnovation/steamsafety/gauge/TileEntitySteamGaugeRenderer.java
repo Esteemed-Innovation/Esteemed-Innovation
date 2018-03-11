@@ -5,9 +5,9 @@ import eiteam.esteemedinnovation.charging.TileEntitySteamCharger;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.util.RenderUtility;
 import eiteam.esteemedinnovation.transport.steam.TileEntitySteamPipe;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -20,7 +20,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
     private static final ResourceLocation POINTER_RL = new ResourceLocation(EsteemedInnovation.MOD_ID, "block/steam_gauge_pointer");
 
     @Override
-    public void renderTileEntityAt(TileEntitySteamGauge gauge, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void render(TileEntitySteamGauge gauge, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5, y, z + 0.5);
         World world = gauge.getWorld();
@@ -67,7 +67,7 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
             GlStateManager.translate(-7F / 16F, 0, -17F / 16F);
 
             Tessellator tess = Tessellator.getInstance();
-            VertexBuffer buffer = tess.getBuffer();
+            BufferBuilder buffer = tess.getBuffer();
             RenderUtility.renderModel(buffer, POINTER_RL);
             bindTexture(TEXTURE);
             tess.draw();
