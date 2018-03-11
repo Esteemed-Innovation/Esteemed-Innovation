@@ -31,7 +31,6 @@ import eiteam.esteemedinnovation.armor.exosuit.steam.upgrades.wings.ItemWingsUpg
 import eiteam.esteemedinnovation.armor.tophat.ItemTophat;
 import eiteam.esteemedinnovation.armor.tophat.VillagerData;
 import eiteam.esteemedinnovation.armor.tophat.VillagerDataStorage;
-import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.commons.init.ConfigurableModule;
 import eiteam.esteemedinnovation.commons.init.ContentModule;
 import eiteam.esteemedinnovation.commons.util.RecipeUtility;
@@ -67,8 +66,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import static eiteam.esteemedinnovation.commons.Config.*;
 import static eiteam.esteemedinnovation.commons.EsteemedInnovation.*;
@@ -81,14 +81,12 @@ import static eiteam.esteemedinnovation.misc.MiscellaneousModule.COMPONENT;
 import static eiteam.esteemedinnovation.steamsafety.SafetyModule.STEAM_GAUGE;
 import static eiteam.esteemedinnovation.storage.StorageModule.STEAM_TANK;
 import static eiteam.esteemedinnovation.storage.StorageModule.enableCanister;
-import static eiteam.esteemedinnovation.transport.TransportationModule.BRASS_PIPE;
-import static eiteam.esteemedinnovation.transport.TransportationModule.FAN;
-import static eiteam.esteemedinnovation.transport.TransportationModule.VALVE_PIPE;
+import static eiteam.esteemedinnovation.transport.TransportationModule.*;
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
 
 public class ArmorModule extends ContentModule implements ConfigurableModule {
-    public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[]{2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
+    public static final ItemArmor.ArmorMaterial STEAM_EXO_MAT = EnumHelper.addArmorMaterial("STEAMEXOSUIT", MOD_ID + ":steam_exo", 15, new int[] {2, 5, 4, 1}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
     @CapabilityInject(AnimalData.class)
     public static final Capability<AnimalData> ANIMAL_DATA = null;
     @CapabilityInject(VillagerData.class)
@@ -168,19 +166,19 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
     public static ExosuitPlate LEAD_PLATE = new ExosuitPlateLead();
     public static final int MAX_PLATE_META = LEAD_PLATE_META;
 
-    public static final ItemArmor.ArmorMaterial GILDED_MAT = EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[]{2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F);
+    public static final ItemArmor.ArmorMaterial GILDED_MAT = EnumHelper.addArmorMaterial("GILDEDGOLD", "minecraft:gold", 15, new int[] {2, 6, 5, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0F);
     public static Item GILDED_HEAD;
     public static Item GILDED_CHEST;
     public static Item GILDED_LEGS;
     public static Item GILDED_BOOTS;
 
-    public static final ItemArmor.ArmorMaterial BRASS_MAT = EnumHelper.addArmorMaterial("BRASS", EsteemedInnovation.MOD_ID + ":brass", 11, new int[]{2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
+    public static final ItemArmor.ArmorMaterial BRASS_MAT = EnumHelper.addArmorMaterial("BRASS", MOD_ID + ":brass", 11, new int[] {2, 7, 6, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0F);
     public static Item BRASS_HEAD;
     public static Item BRASS_CHEST;
     public static Item BRASS_LEGS;
     public static Item BRASS_BOOTS;
 
-    public static final ItemArmor.ArmorMaterial MONOCLE_MAT = EnumHelper.addArmorMaterial("MONOCLE", EsteemedInnovation.MOD_ID + ":monocle", 5, new int[]{1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F);
+    public static final ItemArmor.ArmorMaterial MONOCLE_MAT = EnumHelper.addArmorMaterial("MONOCLE", MOD_ID + ":monocle", 5, new int[] {1, 3, 2, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0F);
     public static Item MONOCLE;
     public static Item GOGGLES;
     public static Item TOP_HAT;
@@ -288,8 +286,8 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         PITON_DEPLOYER = setup(event, new ItemPitonDeployerUpgrade(), "piton_deployer");
         STEALTH = setup(event, new ItemAcousticDampenerUpgrade(), "stealth_upgrade");
         ENDER_SHROUD = setup(event, new ItemSteamExosuitUpgrade(ExosuitSlot.VANITY, null, null, 0), "ender_shroud");
-        REINFORCED_TANK = setup(event, new ItemTank(reinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
-        UBER_REINFORCED_TANK = setup(event, new ItemTank(uberReinforcedTankCapacity, EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank.png", EsteemedInnovation.MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
+        REINFORCED_TANK = setup(event, new ItemTank(reinforcedTankCapacity, MOD_ID + ":textures/models/armor/reinforcedTank.png", MOD_ID + ":textures/models/armor/reinforcedTank_grey.png"), "reinforced_tank");
+        UBER_REINFORCED_TANK = setup(event, new ItemTank(uberReinforcedTankCapacity, MOD_ID + ":textures/models/armor/uberReinforcedTank.png", MOD_ID + ":textures/models/armor/uberReinforcedTank_grey.png"), "uber_reinforced_tank");
         REBREATHER = setup(event, new ItemRebreatherUpgrade(), "rebreather");
         HYDROPHOBIC_COATINGS = setup(event, new ItemHydrophobicCoatingUpgrade(), "hydrophobic_coatings");
         PYROPHOBIC_COATINGS = setup(event, new ItemPyrophobicCoatingUpgrade(), "pyrophobic_coatings");
@@ -297,7 +295,7 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         RELOADING_HOLSTERS = setup(event, new ItemReloadingHolsterUpgrade(), "reloading_holsters");
         FREQUENCY_SHIFTER = setup(event, new ItemFrequencyShifterUpgrade(), "frequency_shifter");
         DRAGON_ROAR = setup(event, new ItemDragonRoarUpgrade(), "dragon_roar");
-        EXOSUIT_PLATE = setup(event, new ItemExosuitPlate(), "exosuit_plate", EsteemedInnovation.tab, false);
+        EXOSUIT_PLATE = setup(event, new ItemExosuitPlate(), "exosuit_plate", tab, false);
         PISTON_PUSH = setup(event, new ItemPistonPushUpgrade(), "piston_push");
 
         IRON_PLATE.setItem(plateStack(IRON_PLATE_META));
@@ -315,20 +313,20 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         LEAD_PLATE.setItem(plateStack(LEAD_PLATE_META));
         ExosuitRegistry.addExosuitPlate(LEAD_PLATE);
 
-        GILDED_HEAD = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_helmet", EsteemedInnovation.tabTools);
-        GILDED_CHEST = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_chestplate", EsteemedInnovation.tabTools);
-        GILDED_LEGS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_leggings", EsteemedInnovation.tabTools);
-        GILDED_BOOTS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.FEET, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_boots", EsteemedInnovation.tabTools);
+        GILDED_HEAD = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_helmet", tabTools);
+        GILDED_CHEST = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_chestplate", tabTools);
+        GILDED_LEGS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_leggings", tabTools);
+        GILDED_BOOTS = setup(event, new ItemGenericArmor(GILDED_MAT, 2, EntityEquipmentSlot.FEET, INGOT_GILDED_IRON, "GildedIron"), "gilded_iron_boots", tabTools);
 
-        BRASS_HEAD = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_BRASS, "Brass"), "brass_helmet", EsteemedInnovation.tabTools);
-        BRASS_CHEST = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_BRASS, "Brass"), "brass_chestplate", EsteemedInnovation.tabTools);
-        BRASS_LEGS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_BRASS, "Brass"), "brass_leggings", EsteemedInnovation.tabTools);
-        BRASS_BOOTS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.FEET, INGOT_BRASS, "Brass"), "brass_boots", EsteemedInnovation.tabTools);
+        BRASS_HEAD = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.HEAD, INGOT_BRASS, "Brass"), "brass_helmet", tabTools);
+        BRASS_CHEST = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.CHEST, INGOT_BRASS, "Brass"), "brass_chestplate", tabTools);
+        BRASS_LEGS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.LEGS, INGOT_BRASS, "Brass"), "brass_leggings", tabTools);
+        BRASS_BOOTS = setup(event, new ItemGenericArmor(BRASS_MAT, 2, EntityEquipmentSlot.FEET, INGOT_BRASS, "Brass"), "brass_boots", tabTools);
 
-        MONOCLE = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monocle", EsteemedInnovation.tabTools);
-        GOGGLES = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", EsteemedInnovation.tabTools);
-        TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", EsteemedInnovation.tabTools);
-        ENTREPRENEUR_TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, true), "tophat", EsteemedInnovation.tabTools);
+        MONOCLE = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Monocle"), "monocle", tabTools);
+        GOGGLES = setup(event, new ItemGoggles(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, LEATHER, "Goggles"), "goggles", tabTools);
+        TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, false), "tophat_no_emerald", tabTools);
+        ENTREPRENEUR_TOP_HAT = setup(event, new ItemTophat(MONOCLE_MAT, 2, EntityEquipmentSlot.HEAD, true), "tophat", tabTools);
 
     }
 
@@ -887,10 +885,9 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     /**
      * Adds exosuit plate recipe (2x2 of ingredient), and a melting recipe for the itemstack.
-     *
-     * @param str        The name of the recipe for the book.
+     * @param str The name of the recipe for the book.
      * @param ingredient The ingredient, either an ItemStack or an OreDict string.
-     * @param plate      The output plate.
+     * @param plate The output plate.
      */
     private static void addExosuitPlateRecipes(RegistryEvent.Register<IRecipe> event, String str, Object ingredient, ItemStack plate, CrucibleLiquid liq) {
         addExosuitPlateRecipes(event, str, ingredient, plate);
@@ -899,10 +896,9 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
 
     /**
      * Adds an exosuit plate recipe (2x2 of ingredient), without a melting recipe for the itemstack.
-     *
-     * @param str        The name of the recipe for the book.
+     * @param str The name of the recipe for the book.
      * @param ingredient The ingredient, either an ItemStack or an OreDict string
-     * @param plate      The output plate.
+     * @param plate The output plate.
      */
     private static void addExosuitPlateRecipes(RegistryEvent.Register<IRecipe> event, String str, Object ingredient, ItemStack plate) {
         RecipeUtility.addRecipe(event, true, str, plate, "xx", "xx", 'x', ingredient);
@@ -1350,6 +1346,5 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         reinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the reinforced tank can hold", REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         uberReinforcedTankCapacity = config.get(CATEGORY_EXOSUIT_UPGRADES, "The amount of steam the heavily reinforced tank can hold", UBER_REINFORCED_TANK_CAPACITY_DEFAULT).getInt();
         //enableDoubleJump = config.get(CATEGORY_EXOSUIT_UPGRADES, "Enable double jump", true).getBoolean();
-
     }
 }
