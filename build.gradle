@@ -78,7 +78,7 @@ task finalize << {
 build.finalizedBy(finalize)
 
 group = "eiteam.esteemedinnovation"
-archivesBaseName = "EsteemedInnovation-1.10"
+archivesBaseName = "EsteemedInnovation-1.12"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
