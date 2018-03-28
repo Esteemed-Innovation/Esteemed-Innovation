@@ -19,14 +19,14 @@ import org.lwjgl.opengl.GL12;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityPumpRenderer extends TileEntitySpecialRenderer implements InventoryTESR {
+public class TileEntityPumpRenderer extends TileEntitySpecialRenderer<TileEntityPump> implements InventoryTESR {
     private static final ModelPump MODEL = new ModelPump();
     private static final ResourceLocation TEXTURE = new ResourceLocation(EsteemedInnovation.MOD_ID + ":textures/models/test.png");
     private static final float PX = (1.0F / 16.0F);
 
     @Override
-    public void render(TileEntity tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        TileEntityPump pump = (TileEntityPump) tile;
+    public void render(TileEntityPump tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        TileEntityPump pump = tile;
         int meta = tile.getBlockMetadata();
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

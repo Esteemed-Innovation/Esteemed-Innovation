@@ -33,6 +33,7 @@ public class GuiBoiler extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        super.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(BOILER_TEXTURES);
         int k = (width - xSize) / 2;
