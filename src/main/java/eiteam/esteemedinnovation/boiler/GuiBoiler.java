@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.boiler;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -29,23 +30,29 @@ public class GuiBoiler extends GuiContainer {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {}
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        super.drawDefaultBackground();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1F, 1F, 1F, 1F);
         mc.getTextureManager().bindTexture(BOILER_TEXTURES);
         int k = (width - xSize) / 2;
         int l = (height - ySize) / 2;
-        GL11.glEnable(3042);
+        GlStateManager.enableBlend();
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
         int i1;
 
         i1 = tileEntity.getBurnTimeRemainingScaled(14);
         drawTexturedModalRect(k + 58, l + 15 + 14 - i1, 176, 14 - i1, 14, i1);
-        GL11.glDisable(3042);
+        GlStateManager.disableBlend();
         FluidTank tank = tileEntity.getTank();
         if (tank == null) {
             return;
@@ -68,7 +75,7 @@ public class GuiBoiler extends GuiContainer {
         mc.getTextureManager().bindTexture(BOILER_TEXTURES);
         drawTexturedModalRect(k + 103, l + 13, 190, 0, 18, 60);
 
-        GL11.glDisable(3042);
+        GlStateManager.disableBlend();
     }
 
     private void drawFluid(FluidStack fluid, int level, int x, int y, int width, int height, boolean steam) {
