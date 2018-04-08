@@ -2,33 +2,64 @@ package eiteam.esteemedinnovation.engineeringtable;
 
 import eiteam.esteemedinnovation.api.Engineerable;
 import eiteam.esteemedinnovation.api.tile.TileEntityBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class TileEntityEngineeringTable extends TileEntityBase implements IInventory {
-    private NonNullList<ItemStack> contents = NonNullList.withSize(1, ItemStack.EMPTY);
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+
+public class TileEntityEngineeringTable extends TileEntityBase {
+    private final IItemHandler engineerableItem = new ItemStackHandler(1) {
+        private void setUpgradeSlotContents(int slot, ItemStack upgradeStack) {
+            ItemStack mainStack = getStackInSlot(0);
+            Item mainItem = mainStack.getItem();
+            if (mainItem instanceof Engineerable) {
+                ((Engineerable) mainItem).setInventorySlotContents(mainStack, slot, upgradeStack);
+            }
+        }
+
+        @Override
+        public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+            super.setStackInSlot(slot, stack);
+            if (slot > 0) {
+                setUpgradeSlotContents(slot, stack);
+            }
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            ItemStack remaining = super.insertItem(slot, stack, simulate);
+            if (slot > 0 && !simulate) {
+                setUpgradeSlotContents(slot, stack);
+            }
+            return remaining;
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            ItemStack remaining = super.extractItem(slot, amount, simulate);
+            if (slot > 0 && !simulate) {
+                ItemStack mainStack = getStackInSlot(0);
+                ((Engineerable) mainStack.getItem()).decrStackSize(mainStack, slot, amount);
+            }
+            return remaining;
+        }
+    };
     
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        contents = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
-        if (compound.hasKey("Items")) {
-            NBTTagList nbttaglist = (NBTTagList) compound.getTag("Items");
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
-            byte b0 = nbttagcompound1.getByte("Slot");
-
-            if (b0 >= 0 && b0 < contents.size()) {
-                contents.set(b0, new ItemStack(nbttagcompound1));
-            }
+        if (compound.hasKey("Item")) {
+            engineerableItem.insertItem(0, new ItemStack(compound.getCompoundTag("Item")), false);
         }
     }
 
@@ -36,146 +67,18 @@ public class TileEntityEngineeringTable extends TileEntityBase implements IInven
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        NBTTagList nbttaglist = new NBTTagList();
-
-        if (!contents.get(0).isEmpty()) {
-            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            nbttagcompound1.setByte("Slot", (byte) 0);
-            contents.get(0).writeToNBT(nbttagcompound1);
-            nbttaglist.appendTag(nbttagcompound1);
-        }
-
-        compound.setTag("Items", nbttaglist);
-
+        compound.setTag("Item", engineerableItem.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
         return compound;
     }
 
     @Override
-    public int getSizeInventory() {
-        return 10;
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
-    @Nonnull
+    @Nullable
     @Override
-    public ItemStack getStackInSlot(int index) {
-        if (index == 0) {
-            return contents.get(0);
-        } else {
-            ItemStack stackInSlotZero = getStackInSlot(0);
-            Item itemInSlotZero = stackInSlotZero.getItem();
-            if (itemInSlotZero instanceof Engineerable) {
-                Engineerable item = (Engineerable) itemInSlotZero;
-                return item.getStackInSlot(stackInSlotZero, index);
-            }
-            return ItemStack.EMPTY;
-        }
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        if (index == 0) {
-            return contents.get(0).isEmpty() ? ItemStack.EMPTY : contents.get(index).splitStack(count);
-        } else {
-            ItemStack stackInSlotZero = getStackInSlot(0);
-            Item itemInSlotZero = stackInSlotZero.getItem();
-            if (itemInSlotZero instanceof Engineerable) {
-                Engineerable item = (Engineerable) itemInSlotZero;
-                return item.decrStackSize(stackInSlotZero, index, count);
-            }
-            return ItemStack.EMPTY;
-        }
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        // For some reason these two methods did exactly the same thing.
-        return getStackInSlot(index);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-        if (index == 0) {
-            contents.set(index, stack);
-        } else {
-            ItemStack stackInSlotZero = getStackInSlot(0);
-            Item itemInSlotZero = stackInSlotZero.getItem();
-            if (itemInSlotZero instanceof Engineerable) {
-                Engineerable item = (Engineerable) itemInSlotZero;
-                item.setInventorySlotContents(stackInSlotZero, index, stack);
-            }
-        }
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(@Nonnull EntityPlayer player) {}
-
-    @Override
-    public void closeInventory(@Nonnull EntityPlayer player) {}
-
-    @Override
-    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
-        if (index == 0) {
-            return true;
-        } else {
-            ItemStack stackInSlotZero = getStackInSlot(0);
-            Item itemInSlotZero = stackInSlotZero.getItem();
-            if (itemInSlotZero instanceof Engineerable) {
-                Engineerable item = (Engineerable) itemInSlotZero;
-                return item.isItemValidForSlot(stackInSlotZero, index, stack);
-            }
-            return false;
-        }
-    }
-
-    @Override
-    public void setField(int id, int value) {}
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Nonnull
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentString("");
-    }
-
-    @Nonnull
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    @Override
-    public void clear() {
-        contents.clear();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return contents.isEmpty() || contents.stream().allMatch(ItemStack::isEmpty);
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        return capability == ITEM_HANDLER_CAPABILITY ? ITEM_HANDLER_CAPABILITY.cast(engineerableItem) : super.getCapability(capability, facing);
     }
 }
