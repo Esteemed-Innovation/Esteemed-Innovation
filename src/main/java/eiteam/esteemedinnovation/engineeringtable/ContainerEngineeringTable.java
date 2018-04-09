@@ -39,7 +39,6 @@ public class ContainerEngineeringTable extends Container {
         tileEntity = tileEntityEngineeringTable;
 
         itemHandler = tileEntityEngineeringTable.getCapability(ITEM_HANDLER_CAPABILITY, null);
-        assert itemHandler != null;
         addSlotToContainer(new SlotItemHandler(itemHandler, 0, 30, 35));
 
         for (int i = 0; i < 3; ++i) {

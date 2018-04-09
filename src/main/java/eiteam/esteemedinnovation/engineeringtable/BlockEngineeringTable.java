@@ -39,9 +39,8 @@ public class BlockEngineeringTable extends Block {
     public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
         TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityEngineeringTable) {
-            IItemHandler itemHandler = tileentity.getCapability(ITEM_HANDLER_CAPABILITY, null);
-            assert itemHandler != null;
+        IItemHandler itemHandler = tileentity.getCapability(ITEM_HANDLER_CAPABILITY, null);
+        if (itemHandler != null) {
             InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(0));
         }
 

@@ -42,7 +42,9 @@ public class GuiEngineeringTable extends GuiContainer {
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
         IItemHandler itemHandler = tileEntity.getCapability(ITEM_HANDLER_CAPABILITY, null);
-        assert itemHandler != null;
+        if (itemHandler == null) {
+            return;
+        }
         Item engineeringItem = itemHandler.getStackInSlot(0).getItem();
         if (engineeringItem instanceof Engineerable) {
             Engineerable item = (Engineerable) engineeringItem;
