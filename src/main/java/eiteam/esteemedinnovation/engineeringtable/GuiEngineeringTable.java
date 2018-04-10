@@ -7,8 +7,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
+
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 @SideOnly(Side.CLIENT)
 public class GuiEngineeringTable extends GuiContainer {
@@ -38,7 +41,11 @@ public class GuiEngineeringTable extends GuiContainer {
         GL11.glEnable(3042);
         drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
 
-        Item engineeringItem = tileEntity.getStackInSlot(0).getItem();
+        IItemHandler itemHandler = tileEntity.getCapability(ITEM_HANDLER_CAPABILITY, null);
+        if (itemHandler == null) {
+            return;
+        }
+        Item engineeringItem = itemHandler.getStackInSlot(0).getItem();
         if (engineeringItem instanceof Engineerable) {
             Engineerable item = (Engineerable) engineeringItem;
             item.drawBackground(this, 0, k + 52, l + 8);

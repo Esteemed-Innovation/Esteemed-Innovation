@@ -5,15 +5,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
+
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 public class BlockEngineeringTable extends Block {
     BlockEngineeringTable() {
@@ -37,8 +39,9 @@ public class BlockEngineeringTable extends Block {
     public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
         TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity instanceof TileEntityEngineeringTable) {
-            InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
+        IItemHandler itemHandler = tileentity.getCapability(ITEM_HANDLER_CAPABILITY, null);
+        if (itemHandler != null) {
+            InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(0));
         }
 
         super.breakBlock(world, pos, state);
