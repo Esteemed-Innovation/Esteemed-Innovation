@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
 
 public class FluidHelper {
     private static Fluid water = FluidRegistry.WATER;
@@ -56,7 +58,7 @@ public class FluidHelper {
     public static boolean itemStackIsWaterContainer(ItemStack itemStack) {
         FluidStack fluid = getFluidFromItemStack(itemStack);
 
-        return itemStack != null && fluid != null && fluid.getFluid() == water;
+        return !itemStack.isEmpty() && fluid != null && fluid.getFluid() == water;
     }
 
     /**
@@ -65,11 +67,11 @@ public class FluidHelper {
      * @return The FluidStack in the ItemStack fluid container.
      */
     private static FluidStack getFluidFromItemStack(ItemStack itemStack) {
-        if (itemStack == null || !itemStack.hasCapability(FLUID_HANDLER_CAPABILITY, null)) {
+        if (itemStack.isEmpty() || !itemStack.hasCapability(FLUID_HANDLER_ITEM_CAPABILITY, null)) {
             return null;
         }
 
-        IFluidHandler handler = itemStack.getCapability(FLUID_HANDLER_CAPABILITY, null);
+        IFluidHandler handler = itemStack.getCapability(FLUID_HANDLER_ITEM_CAPABILITY, null);
         for (IFluidTankProperties prop : handler.getTankProperties()) {
             FluidStack fluid = prop.getContents();
             if (fluid != null) {
@@ -107,12 +109,11 @@ public class FluidHelper {
      * @return The modified ItemStack, which probably has no fluid in it anymore.
      */
     public static ItemStack fillTankFromItem(ItemStack container, IFluidTank tank, boolean drainContainer) {
-        if (container == null || !container.hasCapability(FLUID_HANDLER_CAPABILITY, null)) {
-            return null;
+        if (container.isEmpty() || !container.hasCapability(FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+            return container;
         }
 
-        IFluidHandler handler = container.getCapability(FLUID_HANDLER_CAPABILITY, null);
-
+        IFluidHandlerItem handler = container.getCapability(FLUID_HANDLER_ITEM_CAPABILITY, null);
         int roomLeftInContainer = getRoomLeftInTank(tank);
 
         if (roomLeftInContainer > 0) {
@@ -120,7 +121,7 @@ public class FluidHelper {
             tank.fill(drained, true);
         }
 
-        return container;
+        return handler.getContainer();
     }
 
     /**

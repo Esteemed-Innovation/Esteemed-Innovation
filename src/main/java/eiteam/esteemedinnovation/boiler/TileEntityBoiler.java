@@ -29,6 +29,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -68,48 +69,51 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             return 0;
         }
         Item item = stack.getItem();
-
+        int burnTime = ForgeEventFactory.getItemBurnTime(stack);
+        if (burnTime >= 0) {
+            return burnTime;
+        }
         if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) {
             Block block = Block.getBlockFromItem(item);
 
             if (OreDictHelper.slabWoods.contains(item)) {
-                return 150;
+                burnTime = 150;
             }
 
             if (block.getDefaultState().getMaterial() == Material.WOOD) {
-                return 300;
+                burnTime =  300;
             }
 
             if (OreDictHelper.blockCoals.contains(item)) {
-                return 16000;
+                burnTime =  16000;
             }
         }
 
         if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (OreDictHelper.listHasItem(OreDictHelper.sticks, item)) {
-            return 100;
+            burnTime =  100;
         }
         if (item == Items.COAL) {
-            return 1600;
+            burnTime =  1600;
         }
         if (item == Items.LAVA_BUCKET) {
-            return 20000;
+            burnTime = 20000;
         }
         if (OreDictHelper.saplings.contains(item)) {
-            return 100;
+            burnTime = 100;
         }
         if (item == Items.BLAZE_ROD) {
-            return 2400;
+            burnTime = 2400;
         }
-        return GameRegistry.getFuelValue(stack);
+        return burnTime;
     }
 
     @Override
@@ -196,9 +200,11 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         */
 
         ItemStack stackInInput = getStackInSlot(1);
-        if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
-            ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
-            setInventorySlotContents(1, drainedItemStack);
+        if (!stackInInput.isEmpty()) {
+            if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+                ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
+                setInventorySlotContents(1, drainedItemStack);
+            }
         }
 
         boolean isBurnTimeGreaterThanZero = burnTime > 0;
@@ -206,13 +212,15 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             //maxThisTick = Math.min(burnTime, 10);
             burnTime -= 1; //maxThisTick
         }
+        if (burnTime < 0) {
+            burnTime = 0;
+        }
 
 
         if (!world.isRemote) {
             if (burnTime == 0 && canSmelt()) {
                 ItemStack stack = itemContents.get(0);
                 currentItemBurnTime = burnTime = getItemBurnTime(stack);
-
                 if (burnTime > 0) {
                     ItemStack container = stack.getItem().getContainerItem(stack);
                     stack.shrink(1);
