@@ -265,7 +265,7 @@ public class CrucibleTweaker {
         @Override
         public String describe() {
             if (in instanceof ItemStack) {
-                return "Adding dunk recipe for " + ((ItemStack) in).getUnlocalizedName() +
+                return "Adding dunk recipe for " + ((ItemStack) in).getTranslationKey() +
                   " and " + liquid.getName();
             } else if (in instanceof String) {
                 return "Adding dunk recipe for " + in + " and " + liquid.getName();
@@ -318,7 +318,7 @@ public class CrucibleTweaker {
         @Override
         public String describe() {
             if (in instanceof ItemStack) {
-                return "Removing dunking recipe for " + ((ItemStack) in).getUnlocalizedName() +
+                return "Removing dunking recipe for " + ((ItemStack) in).getTranslationKey() +
                   " and " + liquid.getName();
             } else if (in instanceof String) {
                 return "Removing dunking recipe for " + in + " and " + liquid.getName();

@@ -34,7 +34,7 @@ public class ItemKitBag extends Item {
             if (GuiScreen.isShiftKeyDown()) {
                 NBTTagList list = stack.getTagCompound().getTagList("Items", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < list.tagCount(); i++) {
-                    String unloc = new ItemStack(list.getCompoundTagAt(i)).getUnlocalizedName();
+                    String unloc = new ItemStack(list.getCompoundTagAt(i)).getTranslationKey();
                     tooltip.add(I18n.format(unloc + ".name"));
                 }
             } else {
@@ -73,7 +73,7 @@ public class ItemKitBag extends Item {
             nbt.setTag("Items", new NBTTagList());
         }
         NBTTagList items = nbt.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-        return items.hasNoTags();
+        return items.isEmpty();
     }
 
     /**

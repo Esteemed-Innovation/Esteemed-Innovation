@@ -70,7 +70,7 @@ public class BlockCrucible extends Block implements Wrenchable {
     @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing dir = EnumFacing.getFront(meta);
+        EnumFacing dir = EnumFacing.byIndex(meta);
 
         if (dir.getAxis() == EnumFacing.Axis.Y) {
             dir = EnumFacing.NORTH;
@@ -140,7 +140,7 @@ public class BlockCrucible extends Block implements Wrenchable {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+    public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (entity instanceof EntityItem) {
             EntityItem item = (EntityItem) entity;
             if (isCrucibleHeated(world, pos)) {

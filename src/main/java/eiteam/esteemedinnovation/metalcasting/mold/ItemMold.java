@@ -38,8 +38,8 @@ public class ItemMold extends Item implements CrucibleMold {
 
     @Nonnull
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + Type.getFromMeta(stack.getItemDamage()).name().toLowerCase();
+    public String getTranslationKey(ItemStack stack) {
+        return getTranslationKey() + "." + Type.getFromMeta(stack.getItemDamage()).name().toLowerCase();
     }
 
     public enum Type {

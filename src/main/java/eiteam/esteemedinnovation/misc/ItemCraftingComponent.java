@@ -23,8 +23,8 @@ public class ItemCraftingComponent extends Item {
 
     @Nonnull
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return getUnlocalizedName() + "." + stack.getItemDamage();
+    public String getTranslationKey(ItemStack stack) {
+        return getTranslationKey() + "." + stack.getItemDamage();
     }
 
     public enum Types {

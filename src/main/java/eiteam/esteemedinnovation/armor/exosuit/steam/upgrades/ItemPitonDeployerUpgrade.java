@@ -67,13 +67,13 @@ public class ItemPitonDeployerUpgrade extends ItemSteamExosuitUpgrade {
         if (face != EnumFacing.UP && block.isSideSolid(state, world, pos, face)) {
             AxisAlignedBB aabb;
             if (face == EnumFacing.DOWN) {
-                aabb = new AxisAlignedBB(x - 0.5F, y + (face.getFrontOffsetY() / 6F) - 0.4F,
-                  z - 0.20F, x + 0.5F + 1, y + (face.getFrontOffsetY() / 6F) + 1, z + 0.5F + 1);
+                aabb = new AxisAlignedBB(x - 0.5F, y + (face.getYOffset() / 6F) - 0.4F,
+                  z - 0.20F, x + 0.5F + 1, y + (face.getYOffset() / 6F) + 1, z + 0.5F + 1);
             } else {
-                aabb = new AxisAlignedBB(x + (face.getFrontOffsetX() / 6F),
-                  y + (face.getFrontOffsetY() / 6F) - 1.0F, z + (face.getFrontOffsetZ() / 6F),
-                  x + (face.getFrontOffsetX() / 6F) + 1, y + (face.getFrontOffsetY() / 6F) + 2.0F,
-                  z + (face.getFrontOffsetZ() / 6F) + 1);
+                aabb = new AxisAlignedBB(x + (face.getXOffset() / 6F),
+                  y + (face.getYOffset() / 6F) - 1.0F, z + (face.getZOffset() / 6F),
+                  x + (face.getXOffset() / 6F) + 1, y + (face.getYOffset() / 6F) + 2.0F,
+                  z + (face.getZOffset() / 6F) + 1);
             }
             boolean canStick = false;
             List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);

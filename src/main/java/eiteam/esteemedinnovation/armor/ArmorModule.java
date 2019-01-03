@@ -905,14 +905,14 @@ public class ArmorModule extends ContentModule implements ConfigurableModule {
         if (ingredient instanceof ItemStack) {
             ItemStack stack = ((ItemStack) ingredient).copy();
             stack.setCount(4);
-            RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().getResourcePath()
-              + plate.getItem().getRegistryName().getResourcePath(), stack, plate);
+            RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().getPath()
+              + plate.getItem().getRegistryName().getPath(), stack, plate);
         } else if (ingredient instanceof String) {
             for (ItemStack ore : OreDictionary.getOres((String) ingredient)) {
                 ItemStack stack = ore.copy();
                 stack.setCount(4);
-                RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().getResourcePath()
-                  + plate.getItem().getRegistryName().getResourcePath(), stack, plate);
+                RecipeUtility.addShapelessRecipe(event, false, stack.getItem().getRegistryName().getPath()
+                  + plate.getItem().getRegistryName().getPath(), stack, plate);
             }
         }
     }

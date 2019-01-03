@@ -134,15 +134,15 @@ public class TileEntityCrucible extends TileEntityTickableSafe {
         IBlockState state = world.getBlockState(pos);
         EnumFacing myDir = state.getValue(BlockCrucible.FACING);
 
-        if (world.isBlockIndirectlyGettingPowered(pos) > 0) {
+        if (world.getRedstonePowerFromNeighbors(pos) > 0) {
             isPowered = true;
         }
         if (tipping || isPowered) {
             tipTicks++;
             if (tipTicks == 45 && !world.isRemote) {
-                int posX = pos.getX() + myDir.getFrontOffsetX();
+                int posX = pos.getX() + myDir.getXOffset();
                 int posY = pos.getY();
-                int posZ = pos.getZ() + myDir.getFrontOffsetZ();
+                int posZ = pos.getZ() + myDir.getZOffset();
                 BlockPos offsetPos = new BlockPos(posX, posY, posZ);
                 TileEntity tile = world.getTileEntity(offsetPos);
                 if (tile instanceof TileEntityMold) {
