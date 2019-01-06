@@ -127,16 +127,20 @@ public class TileEntityPump extends SteamTransporterTileEntity {
             offsetPos = getOffsetPos(outputDir);
             if (myTank.getFluidAmount() > 0 && progress == 100) {
                 TileEntity tile = world.getTileEntity(offsetPos);
-                IFluidHandler fluidHandler = FluidHelper.getFluidHandler(tile, outputDir);
-                if (fluidHandler != null) {
-                    int testFill = fluidHandler.fill(myTank.getFluid(), false);
-                    if (testFill != 0) {
-                        int amnt = fluidHandler.fill(myTank.getFluid(), true);
-                        if (amnt > 0) {
-                            myTank.drain(amnt, true);
-                            if (myTank.getFluidAmount() == 0) {
+                if (tile != null) {
+                    IFluidHandler fluidHandler = FluidHelper.getFluidHandler(tile, outputDir);
+                    if (fluidHandler != null) {
+                        int testFill = fluidHandler.fill(myTank.getFluid(), false);
+                        if (testFill != 0) {
+                            int amnt = fluidHandler.fill(myTank.getFluid(), true);
+                            if (amnt > 0) {
+                                myTank.drain(amnt, true);
+                                if (myTank.getFluidAmount() == 0) {
+                                    running = false;
+                                    progress = 0;
+                                }
+                            } else if (running) {
                                 running = false;
-                                progress = 0;
                             }
                         } else if (running) {
                             running = false;
@@ -144,8 +148,6 @@ public class TileEntityPump extends SteamTransporterTileEntity {
                     } else if (running) {
                         running = false;
                     }
-                } else if (running) {
-                    running = false;
                 }
                 markDirty();
             }
