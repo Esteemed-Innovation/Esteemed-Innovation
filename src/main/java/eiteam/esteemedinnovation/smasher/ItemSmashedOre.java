@@ -69,8 +69,8 @@ public class ItemSmashedOre extends Item {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + map.get(stack.getItemDamage())[0];
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey() + "." + map.get(stack.getItemDamage())[0];
     }
 
     public enum Types {

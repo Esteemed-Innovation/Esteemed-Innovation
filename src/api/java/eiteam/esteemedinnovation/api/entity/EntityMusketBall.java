@@ -256,7 +256,7 @@ public class EntityMusketBall extends Entity implements IProjectile {
                     arrowShake = 7;
 
                     if (inTile != null) {
-                        inTile.onEntityCollidedWithBlock(world, tilePos, inState, this);
+                        inTile.onEntityCollision(world, tilePos, inState, this);
                     }
                 }
             }

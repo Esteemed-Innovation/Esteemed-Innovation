@@ -23,8 +23,8 @@ public class ToolUpgradeRegistry {
         List<ResourceLocation> textures = new ArrayList<>();
         ResourceLocation base = upgrade.getBaseIcon();
         if (base != null) {
-            String baseDomain = base.getResourceDomain();
-            String basePath = base.getResourcePath();
+            String baseDomain = base.getNamespace();
+            String basePath = base.getPath();
             if (upgrade.isUniversal()) {
                 textures.add(new ResourceLocation(baseDomain, basePath + "_drill0"));
                 textures.add(new ResourceLocation(baseDomain, basePath + "_drill1"));

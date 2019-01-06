@@ -58,8 +58,8 @@ public class TileEntitySteamHammer extends SteamTransporterTileEntity implements
                 if (hammerTicks == 20) {
                     for (int i = 0; i < 5; i++) {
                         EsteemedInnovation.proxy.spawnBreakParticles(world,
-                          pos.getX() + 0.5F + 0.25F * dir.getFrontOffsetX(), pos.getY(),
-                          pos.getZ() + 0.5F + 0.25F * dir.getFrontOffsetZ(), Blocks.ANVIL,
+                          pos.getX() + 0.5F + 0.25F * dir.getXOffset(), pos.getY(),
+                          pos.getZ() + 0.5F + 0.25F * dir.getZOffset(), Blocks.ANVIL,
                           (float) (Math.random() - 0.5F) / 12F, 0F, (float) (Math.random() - 0.5F) / 12F
                         );
                     }
