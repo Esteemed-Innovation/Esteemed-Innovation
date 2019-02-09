@@ -49,7 +49,7 @@ public class NaturalPhilosophyModule extends ContentModule {
                 nbt.setInteger("Damage", max);
                 ItemStack result = new ItemStack(SOIL_SAMPLING_KIT);
                 result.setTagCompound(nbt);
-                RecipeUtility.addRecipe(event, false, vItem.getRegistryName().getResourcePath() + "soil", result,
+                RecipeUtility.addRecipe(event, false, vItem.getRegistryName().getPath() + "soil", result,
                   "MKS",
                   "WIW",
                   " W ",

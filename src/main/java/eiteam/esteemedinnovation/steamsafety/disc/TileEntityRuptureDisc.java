@@ -41,12 +41,12 @@ public class TileEntityRuptureDisc extends SteamReactorTileEntity {
         if (world.isRemote) {
             if (isLeaking) {
                 float offset = 10.0F / 16.0F;
-                float xOffset = dir.getOpposite().getFrontOffsetX() * offset;
-                float yOffset = dir.getOpposite().getFrontOffsetY() * offset;
-                float zOffset = dir.getOpposite().getFrontOffsetZ() * offset;
+                float xOffset = dir.getOpposite().getXOffset() * offset;
+                float yOffset = dir.getOpposite().getYOffset() * offset;
+                float zOffset = dir.getOpposite().getZOffset() * offset;
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F + xOffset,
-                  pos.getY() + 0.5F + yOffset, pos.getZ() + 0.5F + zOffset, dir.getFrontOffsetX() * 0.1F,
-                  dir.getFrontOffsetY() * 0.1F, dir.getFrontOffsetZ() * 0.1F);
+                  pos.getY() + 0.5F + yOffset, pos.getZ() + 0.5F + zOffset, dir.getXOffset() * 0.1F,
+                  dir.getYOffset() * 0.1F, dir.getZOffset() * 0.1F);
             }
         } else {
             if (getPressure(dir) > 1.1F && !startingState.getValue(BlockRuptureDisc.IS_BURST)) {

@@ -25,8 +25,8 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
         IBlockState state = world.getBlockState(pos);
         EnumFacing facing = state.getValue(BlockValvePipe.FACING);
         float outset = 3.5F + (valve.open ? 0.0F : -1.0F) + (valve.open ? -0.1F * valve.turnTicks : 0.1F * valve.turnTicks);
-        GlStateManager.translate(outset * facing.getFrontOffsetX() / 16F, outset * facing.getFrontOffsetY() / 16F,
-          outset * facing.getFrontOffsetZ() / 16F);
+        GlStateManager.translate(outset * facing.getXOffset() / 16F, outset * facing.getYOffset() / 16F,
+          outset * facing.getZOffset() / 16F);
         IBlockState actualState = state.getActualState(world, pos);
 
         // The no_connections model is actually slightly larger than the normal pipe, by a single cube in each direction
@@ -35,7 +35,7 @@ public class TileEntityValvePipeRenderer extends TileEntitySpecialRenderer<TileE
           actualState.getValue(BlockValvePipe.EAST) || actualState.getValue(BlockValvePipe.WEST) ||
           actualState.getValue(BlockValvePipe.NORTH) || actualState.getValue(BlockValvePipe.SOUTH);
         if (!anyConnections) {
-            GlStateManager.translate(facing.getFrontOffsetX() / 16F, facing.getFrontOffsetY() / 16F, facing.getFrontOffsetZ() / 16F);
+            GlStateManager.translate(facing.getXOffset() / 16F, facing.getYOffset() / 16F, facing.getZOffset() / 16F);
         }
         GlStateManager.translate(0.5, 0.5, 0.5);
         switch (facing) {

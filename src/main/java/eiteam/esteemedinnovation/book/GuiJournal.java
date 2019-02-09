@@ -378,7 +378,7 @@ public class GuiJournal extends GuiScreen implements eiteam.esteemedinnovation.a
         zLevel = 1.0F;
         for (int k = 0; k < list.size(); ++k) {
             if (k == 0) {
-                list.set(k, stack0.getRarity().rarityColor + list.get(k));
+                list.set(k, stack0.getRarity().color + list.get(k));
             } else {
                 list.set(k, TextFormatting.GRAY + list.get(k));
             }

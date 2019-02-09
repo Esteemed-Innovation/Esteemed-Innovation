@@ -81,11 +81,11 @@ public class TileEntityWhistle extends SteamReactorTileEntity implements SoundTi
                 }
                 float offset2 = (2.0F / 16.0F / 3.0F);
 
-                float xOffset = dir.getFrontOffsetX() * offset;
-                float zOffset = dir.getFrontOffsetZ() * offset;
-                float yOffset = dir.getFrontOffsetY() * offset;
-                float xOffset2 = dir.getFrontOffsetX() * offset2;
-                float zOffset2 = dir.getFrontOffsetZ() * offset2;
+                float xOffset = dir.getXOffset() * offset;
+                float zOffset = dir.getZOffset() * offset;
+                float yOffset = dir.getYOffset() * offset;
+                float xOffset2 = dir.getXOffset() * offset2;
+                float zOffset2 = dir.getZOffset() * offset2;
                 world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5D + xOffset,
                   pos.getY() + 0.7D + yOffset, pos.getZ() + 0.5D + zOffset, 0F - xOffset2, 0.05F, 0F - zOffset2);
 

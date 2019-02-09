@@ -26,8 +26,8 @@ public class TileEntitySteamGaugeRenderer extends TileEntitySpecialRenderer<Tile
         World world = gauge.getWorld();
         BlockPos gaugePos = gauge.getPos();
         EnumFacing dir = world.getBlockState(gaugePos).getValue(BlockSteamGauge.FACING).getOpposite();
-        int offsetX = dir.getFrontOffsetX();
-        int offsetZ = dir.getFrontOffsetZ();
+        int offsetX = dir.getXOffset();
+        int offsetZ = dir.getZOffset();
         TileEntity tile = world.getTileEntity(gaugePos.offset(dir));
         if (tile != null) {
             SteamTransporter trans = (SteamTransporter) tile;

@@ -16,7 +16,7 @@ public class BlockManyMetadataItem extends ItemBlock {
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + stack.getItemDamage();
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey() + "." + stack.getItemDamage();
     }
 }

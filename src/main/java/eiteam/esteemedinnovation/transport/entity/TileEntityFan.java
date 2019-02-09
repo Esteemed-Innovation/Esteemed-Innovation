@@ -100,9 +100,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
      */
     private double[] getSmokePositions(EnumFacing dir) {
         return new double[] {
-          pos.getX() + getRandomOrSlight(dir.getFrontOffsetX()),
-          pos.getY() + getRandomOrSlight(dir.getFrontOffsetY()),
-          pos.getZ() + getRandomOrSlight(dir.getFrontOffsetZ())
+          pos.getX() + getRandomOrSlight(dir.getXOffset()),
+          pos.getY() + getRandomOrSlight(dir.getYOffset()),
+          pos.getZ() + getRandomOrSlight(dir.getZOffset())
         };
     }
 
@@ -113,9 +113,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
      */
     private double[] getSmokeSpeeds(EnumFacing dir) {
         return new double[] {
-          dir.getFrontOffsetX() * 0.2F,
-          dir.getFrontOffsetY() * 0.2F,
-          dir.getFrontOffsetZ() * 0.2F
+          dir.getXOffset() * 0.2F,
+          dir.getYOffset() * 0.2F,
+          dir.getZOffset() * 0.2F
         };
     }
 
@@ -156,9 +156,9 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
             int blocksInFront = 0;
             boolean blocked = false;
             for (int i = 1; i < range; i++) {
-                int x = pos.getX() + dir.getFrontOffsetX() * i;
-                int y = pos.getY() + dir.getFrontOffsetY() * i;
-                int z = pos.getZ() + dir.getFrontOffsetZ() * i;
+                int x = pos.getX() + dir.getXOffset() * i;
+                int y = pos.getY() + dir.getYOffset() * i;
+                int z = pos.getZ() + dir.getZOffset() * i;
                 BlockPos offsetPos = new BlockPos(x, y, z);
                 IBlockState offsetState = world.getBlockState(offsetPos);
                 Block offsetBlock = offsetState.getBlock();
@@ -176,25 +176,25 @@ public class TileEntityFan extends SteamTransporterTileEntity implements Wrencha
                   offsetBlock instanceof BlockTrapDoor || offsetState.getCollisionBoundingBox(world, offsetPos) == null)) {
                     blocksInFront = i;
                     if (i != range - 1) {
-                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + getRandomOrSlight(dir.getFrontOffsetX()),
-                          y + getRandomOrSlight(dir.getFrontOffsetY()), z + getRandomOrSlight(dir.getFrontOffsetZ()),
+                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + getRandomOrSlight(dir.getXOffset()),
+                          y + getRandomOrSlight(dir.getYOffset()), z + getRandomOrSlight(dir.getZOffset()),
                           speeds[0], speeds[1], speeds[2]);
                     }
                 } else {
                     blocked = true;
                 }
             }
-            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + (dir.getFrontOffsetX() < 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + (dir.getFrontOffsetY() < 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + (dir.getFrontOffsetZ() < 0 ? dir.getFrontOffsetZ() * blocksInFront : 0), pos.getX() + 1 + (dir.getFrontOffsetX() > 0 ? dir.getFrontOffsetX() * blocksInFront : 0), pos.getY() + 1 + (dir.getFrontOffsetY() > 0 ? dir.getFrontOffsetY() * blocksInFront : 0), pos.getZ() + 1 + (dir.getFrontOffsetZ() > 0 ? dir.getFrontOffsetZ() * blocksInFront : 0)));
+            List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.getX() + (dir.getXOffset() < 0 ? dir.getXOffset() * blocksInFront : 0), pos.getY() + (dir.getYOffset() < 0 ? dir.getYOffset() * blocksInFront : 0), pos.getZ() + (dir.getZOffset() < 0 ? dir.getZOffset() * blocksInFront : 0), pos.getX() + 1 + (dir.getXOffset() > 0 ? dir.getXOffset() * blocksInFront : 0), pos.getY() + 1 + (dir.getYOffset() > 0 ? dir.getYOffset() * blocksInFront : 0), pos.getZ() + 1 + (dir.getZOffset() > 0 ? dir.getZOffset() * blocksInFront : 0)));
             for (Entity entity : entities) {
                 if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying && ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                     if (entity instanceof EntityPlayer && entity.isSneaking()) {
-                        entity.motionX += dir.getFrontOffsetX() * 0.025F;
-                        entity.motionY += dir.getFrontOffsetY() * 0.05F;
-                        entity.motionZ += dir.getFrontOffsetZ() * 0.025F;
+                        entity.motionX += dir.getXOffset() * 0.025F;
+                        entity.motionY += dir.getYOffset() * 0.05F;
+                        entity.motionZ += dir.getZOffset() * 0.025F;
                     } else {
-                        entity.motionX += dir.getFrontOffsetX() * 0.075F;
-                        entity.motionY += dir.getFrontOffsetY() * 0.1F;
-                        entity.motionZ += dir.getFrontOffsetZ() * 0.075F;
+                        entity.motionX += dir.getXOffset() * 0.075F;
+                        entity.motionY += dir.getYOffset() * 0.1F;
+                        entity.motionZ += dir.getZOffset() * 0.075F;
                     }
                     entity.fallDistance = 0.0F;
                 }

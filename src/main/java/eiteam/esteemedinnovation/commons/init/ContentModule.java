@@ -127,7 +127,7 @@ public class ContentModule {
      * @return The registered item.
      */
     protected Item setup(RegistryEvent.Register<Item> event, Item startingItem, String path, CreativeTabs tab) {
-        startingItem.setUnlocalizedName(Constants.EI_MODID + ":" + path);
+        startingItem.setTranslationKey(Constants.EI_MODID + ":" + path);
         if (tab != null) {
             startingItem.setCreativeTab(tab);
         }
@@ -157,7 +157,7 @@ public class ContentModule {
      * @return The registered block (ItemBlock is not returned).
      */
     protected Block setup(RegistryEvent.Register<Block> event, Block startingBlock, String path, CreativeTabs tab) {
-        startingBlock.setUnlocalizedName(Constants.EI_MODID + ":" + path);
+        startingBlock.setTranslationKey(Constants.EI_MODID + ":" + path);
         if (tab != null) {
             startingBlock.setCreativeTab(tab);
         }

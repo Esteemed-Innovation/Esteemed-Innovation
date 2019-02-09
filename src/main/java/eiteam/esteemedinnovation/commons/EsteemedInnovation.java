@@ -185,7 +185,7 @@ public class EsteemedInnovation {
         @Nonnull
         @Override
         @SideOnly(Side.CLIENT)
-        public ItemStack getTabIconItem() {
+        public ItemStack createIcon() {
             return new ItemStack(isToolTab ? BRASS_PICKAXE : BOOK);
         }
 

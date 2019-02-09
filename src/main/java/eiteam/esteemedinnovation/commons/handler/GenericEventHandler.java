@@ -249,7 +249,7 @@ public class GenericEventHandler {
             if (selectedRocketType > EnhancementRegistry.rockets.size() - 1) {
                 selectedRocketType = 0;
             }
-            String name = selectedRocketType == 0 ? "item.esteemedinnovation:rocket.name.2" : ((Item) EnhancementRegistry.rockets.get(selectedRocketType)).getUnlocalizedName() + ".name";
+            String name = selectedRocketType == 0 ? "item.esteemedinnovation:rocket.name.2" : ((Item) EnhancementRegistry.rockets.get(selectedRocketType)).getTranslationKey() + ".name";
             String tooltip = I18n.format("esteemedinnovation.rocket", I18n.format(name));
 
             int tooltipStartX = (width - fontRenderer.getStringWidth(tooltip)) / 2;
