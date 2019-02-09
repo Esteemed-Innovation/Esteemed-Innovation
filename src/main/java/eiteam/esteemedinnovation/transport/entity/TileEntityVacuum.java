@@ -132,9 +132,9 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
               pos.getZ() + 0.5F
             };
             float[] N = {
-              pos.getX() + 0.5F + range * dir.getXOffset(),
-              pos.getY() + 0.5F + range * dir.getYOffset(),
-              pos.getZ() + 0.5F + range * dir.getZOffset()
+              pos.getX() + 0.5F + range * dir.getFrontOffsetX(),
+              pos.getY() + 0.5F + range * dir.getFrontOffsetY(),
+              pos.getZ() + 0.5F + range * dir.getFrontOffsetZ()
             };
             //List entities = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+(dir.offsetX < 0 ? dir.offsetX * blocksInFront : 0), yCoord+(dir.offsetY < 0 ? dir.offsetY * blocksInFront : 0), zCoord+(dir.offsetZ < 0 ? dir.offsetZ * blocksInFront : 0), xCoord+1+(dir.offsetX > 0 ? dir.offsetX * blocksInFront : 0), yCoord+1+(dir.offsetY > 0 ? dir.offsetY * blocksInFront : 0), zCoord+1+(dir.offsetZ > 0 ? dir.offsetZ * blocksInFront : 0)));
             List<Entity> entities = world.getEntitiesWithinAABB(Entity.class,
@@ -146,8 +146,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
                   (world.rand.nextFloat() * 40.0F) - 20.0F + pos.getZ()
                 };
                 if (isLyingInCone(X, M, N, THETA) && world.rayTraceBlocks(new Vec3d(X[0], X[1], X[2]),
-                  new Vec3d(pos.getX() + 0.5F + dir.getXOffset(), pos.getY() + 0.5F + dir.getYOffset(),
-                  pos.getZ() + 0.5F + dir.getZOffset())) == null) {
+                  new Vec3d(pos.getX() + 0.5F + dir.getFrontOffsetX(), pos.getY() + 0.5F + dir.getFrontOffsetY(),
+                  pos.getZ() + 0.5F + dir.getFrontOffsetZ())) == null) {
                     Vec3d vec = new Vec3d(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
                     vec = vec.normalize();
                     world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, X[0], X[1], X[2], -vec.x * 0.5F,
@@ -164,8 +164,8 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
 
                 if (isLyingInCone(X, M, N, THETA) && world.rayTraceBlocks(
                   new Vec3d(entity.posX, entity.posY, entity.posZ),
-                  new Vec3d(pos.getX() + 0.5F + dir.getXOffset(), pos.getY() + 0.5F + dir.getYOffset(),
-                  pos.getZ() + 0.5F + dir.getZOffset())) == null) {
+                  new Vec3d(pos.getX() + 0.5F + dir.getFrontOffsetX(), pos.getY() + 0.5F + dir.getFrontOffsetY(),
+                  pos.getZ() + 0.5F + dir.getFrontOffsetZ())) == null) {
                     if (!(entity instanceof EntityPlayer) || !(((EntityPlayer) entity).capabilities.isFlying &&
                       ((EntityPlayer) entity).capabilities.isCreativeMode)) {
                         Vec3d vec = new Vec3d(X[0] - M[0], X[1] - M[1], X[2] - M[2]);
@@ -189,9 +189,9 @@ public class TileEntityVacuum extends SteamTransporterTileEntity implements Wren
             }
 
             List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(
-              pos.getX() + dir.getXOffset() * 0.25F, pos.getY() + dir.getYOffset() * 0.25F,
-              pos.getZ() + dir.getZOffset() * 0.25F, pos.getX() + 1.0D + dir.getXOffset() * 0.25F,
-              pos.getY() + 1.0D + dir.getYOffset() * 0.25F, pos.getZ() + 1.0D + dir.getZOffset() * 0.25F));
+              pos.getX() + dir.getFrontOffsetX() * 0.25F, pos.getY() + dir.getFrontOffsetY() * 0.25F,
+              pos.getZ() + dir.getFrontOffsetZ() * 0.25F, pos.getX() + 1.0D + dir.getFrontOffsetX() * 0.25F,
+              pos.getY() + 1.0D + dir.getFrontOffsetY() * 0.25F, pos.getZ() + 1.0D + dir.getFrontOffsetZ() * 0.25F));
 
             // TODO: This may be able to be optimized by iterating over the entire list. Test.
             if (!list.isEmpty()) {

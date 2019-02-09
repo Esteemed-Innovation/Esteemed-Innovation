@@ -52,7 +52,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
     }
 
     @Nonnull

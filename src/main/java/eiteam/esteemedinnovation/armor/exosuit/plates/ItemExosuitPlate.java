@@ -32,7 +32,7 @@ public class ItemExosuitPlate extends Item {
 
     @Nonnull
     @Override
-    public String getTranslationKey(ItemStack stack) {
-        return getTranslationKey() + "." + stack.getItemDamage();
+    public String getUnlocalizedName(ItemStack stack) {
+        return getUnlocalizedName() + "." + stack.getItemDamage();
     }
 }

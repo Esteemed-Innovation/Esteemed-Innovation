@@ -82,8 +82,8 @@ public class ItemRocketLauncher extends Item implements Engineerable {
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack) {
-        return UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getNameFromEnhancement(stack) : super.getTranslationKey(stack);
+    public String getUnlocalizedName(ItemStack stack) {
+        return UtilEnhancements.hasEnhancement(stack) ? UtilEnhancements.getNameFromEnhancement(stack) : super.getUnlocalizedName(stack);
     }
 
     @Override

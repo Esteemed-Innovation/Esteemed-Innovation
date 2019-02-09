@@ -47,7 +47,7 @@ public class RockSmasherTweaker {
         @Override
         public String describe() {
             if (in instanceof ItemStack) {
-                return "Adding smashing recipe for " + ((ItemStack) in).getTranslationKey();
+                return "Adding smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
             } else if (in instanceof String) {
                 return "Adding smashing recipe for " + in;
             }
@@ -90,7 +90,7 @@ public class RockSmasherTweaker {
         @Override
         public String describe() {
             if (in instanceof ItemStack) {
-                return "Removing smashing recipe for " + ((ItemStack) in).getTranslationKey();
+                return "Removing smashing recipe for " + ((ItemStack) in).getUnlocalizedName();
             } else if (in instanceof String) {
                 return "Removing smashing recipe for " + in;
             }

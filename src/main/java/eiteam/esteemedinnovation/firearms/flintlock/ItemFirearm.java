@@ -117,11 +117,11 @@ public class ItemFirearm extends Item implements Engineerable {
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack) {
+    public String getUnlocalizedName(ItemStack stack) {
         if (UtilEnhancements.hasEnhancement(stack)) {
             return UtilEnhancements.getNameFromEnhancement(stack);
         } else {
-            return super.getTranslationKey(stack);
+            return super.getUnlocalizedName(stack);
         }
     }
 

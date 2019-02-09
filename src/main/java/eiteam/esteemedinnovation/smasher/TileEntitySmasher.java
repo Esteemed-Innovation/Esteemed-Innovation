@@ -120,11 +120,11 @@ public class TileEntitySmasher extends SteamTransporterTileEntity implements Wre
                 double zOffset = 0D;
                 EnumFacing facing = world.getBlockState(pos).getValue(BlockSmasher.FACING);
                 if (facing.getAxis() == EnumFacing.Axis.X) {
-                    xVelocity = 0.05F * -facing.getXOffset();
-                    xOffset = 0.1D * -facing.getXOffset();
+                    xVelocity = 0.05F * -facing.getFrontOffsetX();
+                    xOffset = 0.1D * -facing.getFrontOffsetX();
                 } else {
-                    zVelocity = 0.05F * -facing.getZOffset();
-                    zOffset = 0.1D * -facing.getZOffset();
+                    zVelocity = 0.05F * -facing.getFrontOffsetZ();
+                    zOffset = 0.1D * -facing.getFrontOffsetZ();
                 }
                 double xParticle = pos.getX() + 0.5D + xOffset;
                 double yParticle = pos.getY() + 1.1D;

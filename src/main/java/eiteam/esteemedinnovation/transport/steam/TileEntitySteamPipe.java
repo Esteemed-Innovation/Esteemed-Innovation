@@ -186,8 +186,8 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
             }
         } else if (isLeaking) {
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5F, pos.getY() + 0.5F,
-              pos.getZ() + 0.5F, direction.getXOffset() * 0.1F, direction.getYOffset() * 0.1F,
-              direction.getZOffset() * 0.1F);
+              pos.getZ() + 0.5F, direction.getFrontOffsetX() * 0.1F, direction.getFrontOffsetY() * 0.1F,
+              direction.getFrontOffsetZ() * 0.1F);
         }
     }
 
@@ -228,7 +228,7 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
         HashSet<EnumFacing> out = new HashSet<>();
         HashSet<EnumFacing> blacklist = new HashSet<>();
         for (int i : blacklistedSides) {
-            blacklist.add(EnumFacing.byIndex(i));
+            blacklist.add(EnumFacing.getFront(i));
         }
         for (EnumFacing d : distributionDirections) {
             if (!blacklist.contains(d)) {
@@ -408,13 +408,13 @@ public class TileEntitySteamPipe extends SteamTransporterTileEntity implements W
             //Make sure that you can't make an 'end cap' by allowing less than 2 directions to connect
             int sidesConnect = 0;
             for (int i = 0; i < 6; i++) {
-                if (doesConnect(EnumFacing.byIndex(i))) {
+                if (doesConnect(EnumFacing.getFront(i))) {
                     sidesConnect++;
                 }
             }
             boolean netChange = false;
             //If does connect on this side, and has adequate sides left
-            EnumFacing direction = EnumFacing.byIndex(subHit);
+            EnumFacing direction = EnumFacing.getFront(subHit);
             if (doesConnect(direction)) {
                 BlockPos offsetPos = getOffsetPos(direction);
                 TileEntity tile = world.getTileEntity(offsetPos);

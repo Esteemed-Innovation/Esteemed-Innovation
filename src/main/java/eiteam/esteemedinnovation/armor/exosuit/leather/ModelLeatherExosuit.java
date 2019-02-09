@@ -125,8 +125,8 @@ public class ModelLeatherExosuit extends ModelBiped implements ModelExosuit {
         ItemStack stack = ((Engineerable) itemStack.getItem()).getStackInSlot(itemStack, 0);
         ExosuitPlate plate = UtilPlates.getPlate(stack);
         if (plate != null) {
-            plateOverlay = new ResourceLocation(MODEL_TEXTURE.getNamespace(),
-              MODEL_TEXTURE.getPath().replace(".png", "_" + plate.getArmorMod() + ".png"));
+            plateOverlay = new ResourceLocation(MODEL_TEXTURE.getResourceDomain(),
+              MODEL_TEXTURE.getResourcePath().replace(".png", "_" + plate.getArmorMod() + ".png"));
             return;
         }
         plateOverlay = null;

@@ -39,7 +39,7 @@ public class CarvingTableTweaker {
 
         @Override
         public String describe() {
-            return "Adding " + item.getTranslationKey() + " to list of Carving Table molds";
+            return "Adding " + item.getUnlocalizedName() + " to list of Carving Table molds";
         }
     }
 
@@ -57,7 +57,7 @@ public class CarvingTableTweaker {
 
         @Override
         public String describe() {
-            return "Removing " + item.getTranslationKey() + " from the list of Carving Table molds";
+            return "Removing " + item.getUnlocalizedName() + " from the list of Carving Table molds";
         }
     }
 }

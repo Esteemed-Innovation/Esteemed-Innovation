@@ -42,7 +42,7 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements W
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta));
+        return getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class BlockFluidSteamConverter extends BlockSteamTransporter implements W
     }
 
     @Override
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 }

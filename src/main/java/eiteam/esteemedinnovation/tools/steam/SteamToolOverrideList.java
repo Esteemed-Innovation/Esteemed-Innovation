@@ -69,10 +69,10 @@ public final class SteamToolOverrideList extends ItemOverrideList {
             return steamToolBakedModel.getCachedModel(mapString);
         }
 
-        ResourceLocation trueCore = core == null ? null : new ResourceLocation(core.getNamespace(),
-          core.getPath() + "_" + toolName + which);
-        ResourceLocation trueHead = head == null ? null : new ResourceLocation(head.getNamespace(),
-          head.getPath() + "_" + toolName + which);
+        ResourceLocation trueCore = core == null ? null : new ResourceLocation(core.getResourceDomain(),
+          core.getResourcePath() + "_" + toolName + which);
+        ResourceLocation trueHead = head == null ? null : new ResourceLocation(head.getResourceDomain(),
+          head.getResourcePath() + "_" + toolName + which);
 
         IModel processed = new SteamToolModel(trueCore, trueHead, which, toolName);
 

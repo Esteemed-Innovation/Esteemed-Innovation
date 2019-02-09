@@ -16,7 +16,7 @@ public class BookRecipeRegistry {
 
     public static void addRecipe(ResourceLocation group, ItemStack output, Object... params) {
         ShapedOreRecipe recipe = new ShapedOreRecipe(group, output, params);
-        addRecipe(group.getPath(), recipe);
+        addRecipe(group.getResourcePath(), recipe);
     }
 
     public static IRecipe getRecipe(String key) {

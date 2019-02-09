@@ -161,7 +161,7 @@ public class UtilSteamTool {
             SteamToolUpgrade upgrade = (SteamToolUpgrade) stack.getItem();
             TextFormatting format = upgrade.getToolSlot() == redSlot ? TextFormatting.RED : TextFormatting.DARK_GREEN;
             String info = upgrade.getInformation(stack, tool);
-            String toAdd = info == null ? stack.getItem().getTranslationKey() + ".name" : info;
+            String toAdd = info == null ? stack.getItem().getUnlocalizedName() + ".name" : info;
             strings.add(format + "" + I18n.format(toAdd));
         }
 

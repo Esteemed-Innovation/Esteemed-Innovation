@@ -20,8 +20,8 @@ public class ItemMetalIngot extends Item {
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack) {
-        return super.getTranslationKey() + "." + stack.getItemDamage();
+    public String getUnlocalizedName(ItemStack stack) {
+        return super.getUnlocalizedName() + "." + stack.getItemDamage();
     }
 
     public enum Types {

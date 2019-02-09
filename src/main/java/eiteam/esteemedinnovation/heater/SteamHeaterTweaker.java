@@ -36,7 +36,7 @@ public class SteamHeaterTweaker {
 
         @Override
         public String describe() {
-            return "Adding steaming recipe for " + input.getTranslationKey() + " -> " + output.getTranslationKey();
+            return "Adding steaming recipe for " + input.getUnlocalizedName() + " -> " + output.getUnlocalizedName();
         }
 
     }
@@ -61,7 +61,7 @@ public class SteamHeaterTweaker {
 
         @Override
         public String describe() {
-            return "Removing steaming recipe for " + input.getTranslationKey();
+            return "Removing steaming recipe for " + input.getUnlocalizedName();
         }
 
     }

@@ -49,7 +49,7 @@ public class BlockSmasher extends BlockSteamTransporter implements Wrenchable {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class BlockSmasher extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 

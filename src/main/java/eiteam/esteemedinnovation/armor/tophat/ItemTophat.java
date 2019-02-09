@@ -58,11 +58,11 @@ public class ItemTophat extends ItemArmor implements ExosuitUpgrade {
 
     @Nonnull
     @Override
-    public String getTranslationKey(ItemStack me) {
+    public String getUnlocalizedName(ItemStack me) {
         if (me.hasTagCompound() && me.getTagCompound().hasKey("Flaxbeard")) {
             return "item.esteemedinnovation:kek";
         }
-        return super.getTranslationKey(me);
+        return super.getUnlocalizedName(me);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ItemPistonPushUpgrade extends ItemSteamExosuitUpgrade {
             IBlockState stateInPlace = world.getBlockState(newPos);
             Block clickedBlock = clickedState.getBlock();
             Block blockInPlace = stateInPlace.getBlock();
-            EnumPushReaction reaction = clickedState.getPushReaction();
+            EnumPushReaction reaction = clickedState.getMobilityFlag();
             if ((blockInPlace == Blocks.AIR || blockInPlace instanceof BlockFluidBase) &&
               clickedState.getBlockHardness(world, curPos) >= 0F &&
               reaction != EnumPushReaction.IGNORE && reaction != EnumPushReaction.DESTROY &&

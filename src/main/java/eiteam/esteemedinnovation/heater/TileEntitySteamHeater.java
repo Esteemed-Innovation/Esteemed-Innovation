@@ -105,9 +105,9 @@ public class TileEntitySteamHeater extends TileEntitySteamPipe {
         int numHeaters = 0;
         isPrimaryHeater = false;
         for (EnumFacing dir2 : EnumFacing.VALUES) {
-            int x = pos.getX() + dir.getXOffset() + dir2.getXOffset();
-            int y = pos.getY() + dir.getYOffset() + dir2.getYOffset();
-            int z = pos.getZ() + dir.getZOffset() + dir2.getZOffset();
+            int x = pos.getX() + dir.getFrontOffsetX() + dir2.getFrontOffsetX();
+            int y = pos.getY() + dir.getFrontOffsetY() + dir2.getFrontOffsetY();
+            int z = pos.getZ() + dir.getFrontOffsetZ() + dir2.getFrontOffsetZ();
             BlockPos pos2 = new BlockPos(x, y, z);
             TileEntity tile2 = world.getTileEntity(pos2);
             IBlockState state2 = world.getBlockState(pos2);

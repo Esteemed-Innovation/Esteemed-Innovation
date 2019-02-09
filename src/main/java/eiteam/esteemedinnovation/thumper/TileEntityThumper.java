@@ -144,17 +144,17 @@ public class TileEntityThumper extends SteamTransporterTileEntity {
                                     if (world.rand.nextInt(50) == 0) {
                                         direction = forbiddenDirs[world.rand.nextInt(forbiddenDirs.length)];
                                     }
-                                    target = new BlockPos(target.getX() + direction.getXOffset(),
-                                      target.getY() + direction.getYOffset(),
-                                      target.getZ() + direction.getZOffset());
+                                    target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
+                                      target.getY() + direction.getFrontOffsetY(),
+                                      target.getZ() + direction.getFrontOffsetZ());
                                 } else {
                                     EnumFacing direction = moveDirsNotUp[world.rand.nextInt(moveDirsNotUp.length)];
                                     if (world.rand.nextInt(50) == 0) {
                                         direction = forbiddenDirs[world.rand.nextInt(forbiddenDirs.length)];
                                     }
-                                    target = new BlockPos(target.getX() + direction.getXOffset(),
-                                      target.getY() + direction.getYOffset(),
-                                      target.getZ() + direction.getZOffset());
+                                    target = new BlockPos(target.getX() + direction.getFrontOffsetX(),
+                                      target.getY() + direction.getFrontOffsetY(),
+                                      target.getZ() + direction.getFrontOffsetZ());
                                 }
                             }
                             i++;

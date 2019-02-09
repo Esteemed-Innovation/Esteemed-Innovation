@@ -70,7 +70,7 @@ public class AnimalDataStorage implements Capability.IStorage<AnimalData> {
         instance.setMerchantName(nbt.getString("MerchantName"));
         if (nbt.hasKey("Stock")) {
             NBTTagCompound stock = nbt.getCompoundTag("Stock");
-            MerchantRecipeList recipes = stock.isEmpty() ? new MerchantRecipeList() : new MerchantRecipeList(stock);
+            MerchantRecipeList recipes = stock.hasNoTags() ? new MerchantRecipeList() : new MerchantRecipeList(stock);
             instance.setStock(recipes);
         }
     }
