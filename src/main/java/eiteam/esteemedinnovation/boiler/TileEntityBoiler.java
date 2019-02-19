@@ -206,11 +206,9 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements Wren
         */
 
         ItemStack stackInInput = inventory.getStackInSlot(1);
-        if (!stackInInput.isEmpty()) {
-            if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
-                ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
-                inventory.setStackInSlot(1, drainedItemStack);
-            }
+        if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
+            ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
+            inventory.setStackInSlot(1, drainedItemStack);
         }
 
         boolean isBurnTimeGreaterThanZero = burnTime > 0;
