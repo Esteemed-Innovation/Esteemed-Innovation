@@ -237,7 +237,7 @@ public class FluidHelper {
      * @return An {@link IFluidHandler} for the Tile and direction. If it uses the deprecated API, returns a new wrapper.
      */
     public static IFluidHandler getFluidHandler(TileEntity tile, EnumFacing dir) {
-        if(tile == null) {
+        if (tile == null) {
             return null;
         }
         if (tile.hasCapability(FLUID_HANDLER_CAPABILITY, dir)) {
