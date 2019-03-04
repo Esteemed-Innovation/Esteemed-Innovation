@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
@@ -25,8 +26,8 @@ public class ContainerBoiler extends Container {
     public ContainerBoiler(InventoryPlayer inv, TileEntityBoiler tileEntity) {
         this.tileEntity = tileEntity;
 
-        addSlotToContainer(new Slot(tileEntity, 1, 58, 55));
-        addSlotToContainer(new Slot(tileEntity, 0, 58, 32));
+        addSlotToContainer(new SlotItemHandler(tileEntity.inventory, 1, 58, 55));
+        addSlotToContainer(new SlotItemHandler(tileEntity.inventory, 0, 58, 32));
         int i;
 
         for (i = 0; i < 3; ++i) {
@@ -111,8 +112,8 @@ public class ContainerBoiler extends Container {
     }
 
     @Override
-    public boolean canInteractWith(@Nonnull EntityPlayer par1EntityPlayer) {
-        return tileEntity.isUsableByPlayer(par1EntityPlayer);
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return true;
     }
 
     @Nonnull

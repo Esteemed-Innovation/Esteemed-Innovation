@@ -73,7 +73,7 @@ public class ItemStackUtility {
         ItemStack offHand = player.getHeldItemOffhand();
 
         if (mainHand.isEmpty()) {
-            return offHand.isEmpty() ? null : offHand;
+            return offHand.isEmpty() ? ItemStack.EMPTY : offHand;
         } else {
             return mainHand;
         }

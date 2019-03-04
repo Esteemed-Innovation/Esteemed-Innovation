@@ -13,15 +13,12 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -29,27 +26,39 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 
-public class TileEntityBoiler extends SteamTransporterTileEntity implements ISidedInventory, Wrenchable, DisguisableBlock {
-    private static final int[] slotsTop = {0, 1};
-    private static final int[] slotsBottom = {0, 1};
-    private static final int[] slotsSides = {0, 1};
+public class TileEntityBoiler extends SteamTransporterTileEntity implements Wrenchable, DisguisableBlock {
+    public ItemStackHandler inventory = new ItemStackHandler(2) {
+        @Override
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+            if (slot == 0) {
+                return getItemBurnTime(stack) > 0;
+            } else {
+                return slot == 1 && FluidHelper.itemStackIsWaterContainer(stack);
+            }
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            TileEntityBoiler.this.markDirty();
+        }
+    };
     private FluidTank myTank = new FluidTank(new FluidStack(FluidHelper.getWaterFluid(), 0), 10000);
     public int cookTime;
     public int burnTime;
     public int currentItemBurnTime;
     private Block disguiseBlock;
     private int disguiseMeta;
-    @Nonnull
-    private NonNullList<ItemStack> itemContents = NonNullList.withSize(2, ItemStack.EMPTY);
     private String customName;
     private boolean wasBurning;
 
@@ -68,48 +77,51 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             return 0;
         }
         Item item = stack.getItem();
-
+        int burnTime = ForgeEventFactory.getItemBurnTime(stack);
+        if (burnTime >= 0) {
+            return burnTime;
+        }
         if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR) {
             Block block = Block.getBlockFromItem(item);
 
             if (OreDictHelper.slabWoods.contains(item)) {
-                return 150;
+                burnTime = 150;
             }
 
             if (block.getDefaultState().getMaterial() == Material.WOOD) {
-                return 300;
+                burnTime =  300;
             }
 
             if (OreDictHelper.blockCoals.contains(item)) {
-                return 16000;
+                burnTime =  16000;
             }
         }
 
         if (item instanceof ItemTool && "WOOD".equals(((ItemTool) item).getToolMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (item instanceof ItemSword && "WOOD".equals(((ItemSword) item).getToolMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (item instanceof ItemHoe && "WOOD".equals(((ItemHoe) item).getMaterialName())) {
-            return 200;
+            burnTime = 200;
         }
         if (OreDictHelper.listHasItem(OreDictHelper.sticks, item)) {
-            return 100;
+            burnTime =  100;
         }
         if (item == Items.COAL) {
-            return 1600;
+            burnTime =  1600;
         }
         if (item == Items.LAVA_BUCKET) {
-            return 20000;
+            burnTime = 20000;
         }
         if (OreDictHelper.saplings.contains(item)) {
-            return 100;
+            burnTime = 100;
         }
         if (item == Items.BLAZE_ROD) {
-            return 2400;
+            burnTime = 2400;
         }
-        return GameRegistry.getFuelValue(stack);
+        return burnTime;
     }
 
     @Override
@@ -141,8 +153,7 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-        ItemStackHelper.loadAllItems(nbt, itemContents);
-
+        inventory.deserializeNBT(nbt.getCompoundTag("Items"));
         burnTime = nbt.getShort("BurnTime");
         cookTime = nbt.getShort("CookTime");
         currentItemBurnTime = nbt.getShort("CurrentItemBurnTime");
@@ -162,14 +173,13 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
+        nbt.setTag("Items", inventory.serializeNBT());
         nbt.setShort("BurnTime", (short) burnTime);
         nbt.setShort("WaterStored", (short) myTank.getFluidAmount());
         nbt.setShort("CookTime", (short) cookTime);
         nbt.setShort("CurrentItemBurnTime", (short) currentItemBurnTime);
         nbt.setInteger("DisguiseBlock", Block.getIdFromBlock(disguiseBlock));
         nbt.setInteger("DisguiseMetadata", disguiseMeta);
-
-        ItemStackHelper.saveAllItems(nbt, itemContents);
 
         if (hasCustomName()) {
             nbt.setString("CustomName", customName);
@@ -195,10 +205,10 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         }
         */
 
-        ItemStack stackInInput = getStackInSlot(1);
+        ItemStack stackInInput = inventory.getStackInSlot(1);
         if (FluidHelper.itemStackIsWaterContainer(stackInInput)) {
             ItemStack drainedItemStack = FluidHelper.fillTankFromItem(stackInInput, myTank, true);
-            setInventorySlotContents(1, drainedItemStack);
+            inventory.setStackInSlot(1, drainedItemStack);
         }
 
         boolean isBurnTimeGreaterThanZero = burnTime > 0;
@@ -206,18 +216,20 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
             //maxThisTick = Math.min(burnTime, 10);
             burnTime -= 1; //maxThisTick
         }
+        if (burnTime < 0) {
+            burnTime = 0;
+        }
 
 
         if (!world.isRemote) {
             if (burnTime == 0 && canSmelt()) {
-                ItemStack stack = itemContents.get(0);
+                ItemStack stack = inventory.getStackInSlot(0);
                 currentItemBurnTime = burnTime = getItemBurnTime(stack);
-
                 if (burnTime > 0) {
                     ItemStack container = stack.getItem().getContainerItem(stack);
                     stack.shrink(1);
                     if (stack.isEmpty()) {
-                        itemContents.set(0, container);
+                        inventory.setStackInSlot(0, container);
                     }
                 }
 
@@ -263,59 +275,19 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-            return (T) myTank;
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(myTank);
+        }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         }
         return super.getCapability(capability, facing);
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return itemContents.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        // TODO: Rewrite this entirely
-        int nonnulls = 0;
-        for (ItemStack stack : itemContents) {
-            if (stack != null) {
-                nonnulls++;
-            }
-        }
-        return nonnulls == 0;
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return itemContents.get(slot);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(itemContents, index, count);
-    }
-
-    @Nonnull
-    @Override
-    public ItemStack removeStackFromSlot(int slot) {
-        return ItemStackHelper.getAndRemove(itemContents, slot);
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
-        if (stack.getCount() > getInventoryStackLimit()) {
-            stack.setCount(getInventoryStackLimit());
-        }
-        itemContents.set(slot, stack);
     }
 
     @Nonnull
@@ -324,7 +296,6 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         return hasCustomName() ? customName : "container.furnace";
     }
 
-    @Override
     public boolean hasCustomName() {
         return customName != null && !customName.isEmpty();
     }
@@ -336,49 +307,8 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
         return (hasCustomName() ? new TextComponentString(name) : new TextComponentTranslation(name));
     }
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return world.getTileEntity(pos) == this && player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
-    }
-
-    @Override
-    public void openInventory(@Nonnull EntityPlayer player) {}
-
     public int getPressureAsInt() {
         return (int) Math.floor((double) getPressure() * 1000);
-    }
-
-    @Override
-    public void closeInventory(@Nonnull EntityPlayer player) {}
-
-    @Override
-    public boolean isItemValidForSlot(int slot, @Nonnull ItemStack stack) {
-        return slot == 0 ? getItemBurnTime(stack) > 0 : FluidHelper.itemStackIsWaterContainer(stack);
-    }
-
-    @Nonnull
-    @Override
-    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
-        if (side == EnumFacing.DOWN) {
-            return slotsBottom;
-        } else {
-            return side == EnumFacing.UP ? slotsTop : slotsSides;
-        }
-    }
-
-    @Override
-    public boolean canInsertItem(int par1, @Nonnull ItemStack par2ItemStack, @Nonnull EnumFacing dir) {
-        return isItemValidForSlot(par1, par2ItemStack);
-    }
-
-    @Override
-    public boolean canExtractItem(int par1, @Nonnull ItemStack par2ItemStack, @Nonnull EnumFacing dir) {
-        return par2ItemStack.getItem() == Items.BUCKET;
     }
 
     @SideOnly(Side.CLIENT)
@@ -434,61 +364,5 @@ public class TileEntityBoiler extends SteamTransporterTileEntity implements ISid
     @Override
     public void setDisguiseMeta(int meta) {
         disguiseMeta = meta;
-    }
-
-    @Override
-    public int getField(int id) {
-        switch (id) {
-            case 0: {
-                return burnTime;
-            }
-            case 1: {
-                return currentItemBurnTime;
-            }
-            case 2: {
-                return cookTime;
-            }
-            case 3: {
-                return currentItemBurnTime;
-            }
-            default: {
-                return 0;
-            }
-        }
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        switch (id) {
-            case 0: {
-                burnTime = value;
-                break;
-            }
-            case 1: {
-                currentItemBurnTime = value;
-                break;
-            }
-            case 2: {
-                cookTime = value;
-                break;
-            }
-            case 3: {
-                currentItemBurnTime = value;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 4;
-    }
-
-    @Override
-    public void clear() {
-        itemContents.clear();
     }
 }

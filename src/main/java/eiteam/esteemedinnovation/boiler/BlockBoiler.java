@@ -1,9 +1,9 @@
 package eiteam.esteemedinnovation.boiler;
 
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
+import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
-import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -12,9 +12,8 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -36,6 +35,8 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         super(Material.IRON);
         setHardness(5F);
         setResistance(10F);
+
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(IS_ON, false));
     }
 
     @Nonnull
@@ -64,6 +65,11 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
             return getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(IS_ON, boiler.isBurning());
         }
         return state;
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
     }
 
     @Nonnull
@@ -129,11 +135,6 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase elb, ItemStack stack) {
-        world.setBlockState(pos, state.withProperty(FACING, elb.getHorizontalFacing().getOpposite()));
-    }
-
-    @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
     }
@@ -165,7 +166,11 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
         TileEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEntityBoiler) {
-            InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileentity);
+            TileEntityBoiler boiler = (TileEntityBoiler) tileentity;
+            for (int i = 0; i < boiler.inventory.getSlots(); i++) {
+                EntityItem entityItem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), boiler.inventory.getStackInSlot(i));
+                world.spawnEntity(entityItem);
+            }
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
 
