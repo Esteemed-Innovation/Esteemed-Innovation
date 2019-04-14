@@ -4,6 +4,7 @@ import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.util.FluidHelper;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
 import eiteam.esteemedinnovation.commons.EsteemedInnovation;
+import eiteam.esteemedinnovation.commons.util.ItemStackHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -167,10 +168,7 @@ public class BlockBoiler extends BlockSteamTransporter implements Wrenchable {
 
         if (tileentity instanceof TileEntityBoiler) {
             TileEntityBoiler boiler = (TileEntityBoiler) tileentity;
-            for (int i = 0; i < boiler.inventory.getSlots(); i++) {
-                EntityItem entityItem = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), boiler.inventory.getStackInSlot(i));
-                world.spawnEntity(entityItem);
-            }
+            ItemStackHelper.dropItems(boiler.inventory, world, pos);
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
 

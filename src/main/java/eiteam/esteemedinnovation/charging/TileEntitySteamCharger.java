@@ -14,13 +14,16 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntitySteamCharger extends SteamTransporterTileEntity implements IInventory {
+import javax.annotation.Nonnull;
+
+public class TileEntitySteamCharger extends SteamTransporterTileEntity {
     public int randomDegrees;
     private boolean isCharging = false;
     private boolean hadItem = false;
     private float prevPercent = 0F;
-    private ItemStack inventory = null;
+    protected ItemStackHandler inventory = new ItemStackHandler(1);
 
     public TileEntitySteamCharger() {
         super(new EnumFacing[] { EnumFacing.DOWN });
@@ -32,7 +35,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.readFromNBT(nbt);
         randomDegrees = (int) (Math.random() * 360);
         if (nbt.hasKey("Inventory")) {
-            inventory = new ItemStack(nbt.getCompoundTag("Inventory"));
+            inventory.deserializeNBT(nbt.getCompoundTag("Inventory"));
         }
     }
 
@@ -40,8 +43,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         if (inventory != null) {
-            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            inventory.writeToNBT(nbttagcompound1);
+            NBTTagCompound nbttagcompound1 = inventory.serializeNBT();
             nbt.setTag("Inventory", nbttagcompound1);
         }
         return nbt;
@@ -52,8 +54,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         NBTTagCompound access = super.getUpdateTag();
 
         if (inventory != null) {
-            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-            inventory.writeToNBT(nbttagcompound1);
+            NBTTagCompound nbttagcompound1 = inventory.serializeNBT();
             access.setTag("Inventory", nbttagcompound1);
         }
         access.setBoolean("IsCharging", isCharging);
@@ -65,9 +66,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.onDataPacket(net, pkt);
         NBTTagCompound access = pkt.getNbtCompound();
         if (access.hasKey("Inventory")) {
-            inventory = new ItemStack(access.getCompoundTag("Inventory"));
-        } else {
-            clear();
+            inventory.deserializeNBT(access.getCompoundTag("Inventory"));
         }
         isCharging = access.getBoolean("IsCharging");
         markForResync();
@@ -88,8 +87,8 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         } else {
             if (inventory != null) {
                 // TODO: Abstract into API
-                if (inventory.getItem() == ChargingModule.STEAM_CELL_EMPTY && getSteamShare() > ChargingModule.steamCellCapacity) {
-                    clear();
+                if (inventory.getStackInSlot(0).getItem() == ChargingModule.STEAM_CELL_EMPTY && getSteamShare() > ChargingModule.steamCellCapacity) {
+                    inventory.setStackInSlot(0, ItemStack.EMPTY);
                     dropItem(new ItemStack(ChargingModule.STEAM_CELL_FULL));
                     decrSteam(ChargingModule.steamCellCapacity);
                     markForResync();
@@ -100,9 +99,9 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                     markForResync();
                 }
 
-                if (inventory.getItem() instanceof SteamChargable) {
-                    SteamChargable item = (SteamChargable) inventory.getItem();
-                    ItemStack stack = inventory.copy();
+                if (inventory.getStackInSlot(0).getItem() instanceof SteamChargable) {
+                    SteamChargable item = (SteamChargable) inventory.getStackInSlot(0).getItem();
+                    ItemStack stack = inventory.getStackInSlot(0);
                     if (!(item instanceof ItemSteamExosuitArmor)) {
                         if (getSteamShare() > 0 && stack.getItemDamage() > 0) {
                             if (!isCharging) {
@@ -121,7 +120,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                               && (getSteamShare() > item.steamPerDurability() && stack.getItemDamage() > 0)) {
                                 decrSteam(item.steamPerDurability());
                                 stack.setItemDamage(stack.getItemDamage() - 1);
-                                setInventorySlotContents(0, stack);
+                                inventory.setStackInSlot(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
@@ -163,7 +162,7 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
                                 decrSteam(item.steamPerDurability());
                                 stack.getTagCompound().setInteger("SteamStored",
                                   stack.getTagCompound().getInteger("SteamStored") + 1);
-                                this.setInventorySlotContents(0, stack);
+                                inventory.setStackInSlot(0, stack);
                                 i++;
                             }
                             float currentPerc = getChargingPercent(stack);
@@ -225,46 +224,13 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         super.safeUpdate();
     }
 
-    @Override
-    public int getSizeInventory() {
-        return 1;
-    }
-
     public void dropItem(ItemStack item) {
         EntityItem entityItem = new EntityItem(world, pos.getX() + 0.5F, pos.getY() + 1.25F, pos.getZ() + 0.5F, item);
         world.spawnEntity(entityItem);
     }
 
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory;
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int count) {
-        if (inventory != null) {
-            ItemStack itemstack;
-
-            if (inventory.getCount() <= count) {
-                itemstack = inventory;
-                clear();
-                return itemstack;
-            } else {
-                itemstack = inventory.splitStack(count);
-
-                if (inventory.isEmpty()) {
-                    clear();
-                }
-
-                return itemstack;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    private float getChargingPercent(ItemStack stack) {
-        if (stack == null) {
+    private float getChargingPercent(@Nonnull ItemStack stack) {
+        if (stack.isEmpty()) {
             return 0F;
         }
         if (stack.getItem() instanceof ItemSteamExosuitArmor) {
@@ -284,83 +250,23 @@ public class TileEntitySteamCharger extends SteamTransporterTileEntity implement
         return 1.0f - ((float) stack.getItemDamage() / (float) stack.getMaxDamage());
     }
 
-    @Override
-    public ItemStack removeStackFromSlot(int slot) {
-        return inventory;
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory = stack;
-    }
 
     @Override
     public String getName() {
         return null;
     }
 
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
 
     @Override
     public ITextComponent getDisplayName() {
         return null;
     }
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {}
-
-    @Override
-    public void closeInventory(EntityPlayer player) {}
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack.getItem() instanceof SteamChargable || stack.getItem() == ChargingModule.STEAM_CELL_EMPTY;
-    }
-
-    @Override
-    public int getField(int id) {
-        return randomDegrees;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        randomDegrees = value;
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 1;
-    }
-
-    @Override
-    public void clear() {
-        inventory = null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        // TODO
-        return inventory == null;
-    }
-
     public float getSteamInItem() {
-        ItemStack stack = inventory;
-        if (stack != null) {
-            return getChargingPercent(stack);
+        ItemStack stack = inventory.getStackInSlot(0);
+        if (!stack.isEmpty()) {
+            return 0.0f;
         }
-        return 0.0f;
+        return getChargingPercent(stack);
     }
 }

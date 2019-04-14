@@ -3,6 +3,7 @@ package eiteam.esteemedinnovation.charging;
 import eiteam.esteemedinnovation.api.SteamChargable;
 import eiteam.esteemedinnovation.api.block.BlockSteamTransporter;
 import eiteam.esteemedinnovation.api.wrench.Wrenchable;
+import eiteam.esteemedinnovation.commons.util.ItemStackHelper;
 import eiteam.esteemedinnovation.commons.util.WorldHelper;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -21,6 +22,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import javax.annotation.Nonnull;
 
 public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchable {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -62,7 +65,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
      * @return Whether the item can be placed in the TileEntity's inventory.
      */
     private boolean canItemBeCharged(ItemStack item) {
-        if (item == null) {
+        if (item.isEmpty()) {
             return false;
         }
         if (item.getItem() instanceof SteamChargable) {
@@ -84,23 +87,23 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
         if (tile == null) {
             return false;
         }
-        ItemStack stackInSlot = tile.getStackInSlot(0);
-        if (stackInSlot != null) {
-            if (!world.isRemote) {
-                tile.dropItem(stackInSlot);
-            }
-            tile.setInventorySlotContents(0, null);
-            return true;
-        } else {
+        ItemStack stackInSlot = tile.inventory.getStackInSlot(0);
+        if (stackInSlot.isEmpty()) {
             ItemStack heldItem = player.getHeldItem(hand);
             if (canItemBeCharged(heldItem)) {
                 ItemStack copy = heldItem.copy();
                 copy.setCount(1);
-                tile.setInventorySlotContents(0, copy);
+                tile.inventory.setStackInSlot(0, copy);
                 heldItem.shrink(1);
                 tile.randomDegrees = world.rand.nextInt(361);
                 return true;
             }
+        } else {
+            if (!world.isRemote) {
+                tile.dropItem(stackInSlot);
+            }
+            tile.inventory.setStackInSlot(0, ItemStack.EMPTY);
+            return true;
         }
         return false;
     }
@@ -120,7 +123,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
         TileEntitySteamCharger tileentitysteamcharger = (TileEntitySteamCharger) world.getTileEntity(pos);
 
         if (tileentitysteamcharger != null) {
-            InventoryHelper.dropInventoryItems(world, pos, tileentitysteamcharger);
+            ItemStackHelper.dropItems(tileentitysteamcharger.inventory, world, pos);
             world.updateComparatorOutputLevel(pos, state.getBlock());
         }
 
@@ -128,7 +131,7 @@ public class BlockSteamCharger extends BlockSteamTransporter implements Wrenchab
     }
 
     @Override
-    public boolean onWrench(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
+    public boolean onWrench(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, IBlockState state, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.DOWN && facing != EnumFacing.UP) {
             WorldHelper.rotateProperly(FACING, world, state, pos, facing);
             return true;

@@ -26,14 +26,14 @@ public class ItemSteamCell extends Item {
     public static boolean chargeItems(EntityPlayer player, boolean skipExo) {
         ItemStack chest = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
         int steamToAdd = ChargingModule.steamCellCapacity;
-        if (!skipExo && chest != null && chest.getItem() instanceof ItemSteamExosuitArmor) {
+        if (!skipExo && !chest.isEmpty() && chest.getItem() instanceof ItemSteamExosuitArmor) {
             ItemSteamExosuitArmor armor = (ItemSteamExosuitArmor) chest.getItem();
             boolean bool = armor.addSteam(chest, steamToAdd, player);
             return bool || chargeItems(player, true);
         } else {
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                 ItemStack item = player.inventory.getStackInSlot(i);
-                if (item != null && item.getItem() instanceof SteamChargable) {
+                if (!item.isEmpty() && item.getItem() instanceof SteamChargable) {
                     SteamChargable cha = (SteamChargable) item.getItem();
                     if (cha.canCharge(item) && cha.addSteam(item, steamToAdd, player)) {
                         return true;

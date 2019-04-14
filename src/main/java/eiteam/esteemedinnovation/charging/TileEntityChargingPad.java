@@ -104,10 +104,10 @@ public class TileEntityChargingPad extends SteamTransporterTileEntity {
 
             if (entity != null) {
                 ItemStack equipment = entity.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-                if (equipment != null && equipment.getItem() instanceof ItemSteamExosuitArmor && entity == target &&
+                if (!equipment.isEmpty() && equipment.getItem() instanceof ItemSteamExosuitArmor && entity == target &&
                   Math.abs(entity.posX - (pos.getX() + 0.5F)) <= 0.05F && Math.abs(entity.posZ - (pos.getZ() + 0.5F)) <= 0.06F) {
                     ItemSteamExosuitArmor armorItem = (ItemSteamExosuitArmor) equipment.getItem();
-                    if (armorItem.getStackInSlot(equipment, 5) != null) {
+                    if (!armorItem.getStackInSlot(equipment, 5).isEmpty()) {
                         if (extendTicks < 40) {
                             extendTicks++;
                         }

@@ -24,7 +24,7 @@ public class ItemSteamCellFiller extends ItemBauble {
         if (player.ticksExisted % 50 == 0) {
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                 ItemStack item = player.inventory.getStackInSlot(i);
-                if (item != null && item.getItem() instanceof ItemSteamCell &&
+                if (!item.isEmpty() && item.getItem() instanceof ItemSteamCell &&
                   ItemSteamCell.chargeItems(player, false)) {
                     player.inventory.decrStackSize(i, 1);
                     break;

@@ -11,8 +11,8 @@ import net.minecraft.util.EnumFacing;
 public class TileEntitySteamChargerRenderer extends TileEntitySpecialRenderer<TileEntitySteamCharger> {
     @Override
     public void render(TileEntitySteamCharger charger, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-        ItemStack stackInSlotZero = charger.getStackInSlot(0);
-        if (stackInSlotZero == null) {
+        ItemStack stackInSlotZero = charger.inventory.getStackInSlot(0);
+        if (stackInSlotZero.isEmpty()) {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
