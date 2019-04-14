@@ -2,6 +2,7 @@ package eiteam.esteemedinnovation.pendulum;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
@@ -29,7 +30,8 @@ public class BlockPendulumString extends Block {
 
     private static boolean canSelfBeRemoved(IBlockAccess world, BlockPos selfPosition, EnumFacing inDirection) {
         Block block = world.getBlockState(selfPosition.offset(inDirection)).getBlock();
-        return block != PendulumModule.PENDULUM_TORCH && block != PendulumModule.PENDULUM_STRING;
+        return (block != PendulumModule.PENDULUM_TORCH && block != PendulumModule.PENDULUM_STRING) &&
+          !world.getBlockState(selfPosition.offset(inDirection)).isSideSolid(world, selfPosition.offset(inDirection), inDirection.getOpposite());
     }
 
     @Nullable
